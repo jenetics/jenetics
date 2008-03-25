@@ -1,0 +1,11 @@
+Jenetics-0.1.0.4
+- Adding @Override annotation where possible.
+- The factory method IntegerGene.valueOf(long min, long max) and
+  the DoubleGene.valueOf(double min, double max) now creates a Gene with a random value
+  within the given range. Adding comments to this methods.
+
+Jenetics-0.1.0.3
+- Using javolution.context.LocalContext.Reference in RandomRegistry.
+- New version of the private PermutationChromosome.randomize method.
+- Adding private helper class Arrays.
+

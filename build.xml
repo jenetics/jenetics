@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="all">
-	<property name="version" value="0.1.0.3" />
+	<property name="version" value="0.1.0.4" />
 	<property name="sourcedir" value="./src" />
 	<property name="testng.sourcedir" value="./testng" />
 	<property name="testng.reportdir" value="./testng-report" />
@@ -24,7 +24,7 @@
 	</path>
 
 	<taskdef resource="testngtasks" classpathref="build.classpath" />
-
+	
 	<target name="compile">
 		<mkdir dir="${compiledir}" />
 		<javac destdir="${compiledir}" 
