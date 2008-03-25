@@ -8,8 +8,8 @@
 	<property name="libdir" value="./lib" />
 	<property name="builddir" value="./lib" />
 	<property name="javadocdir" value="./javadoc" />
-	<property name="colapi.classpath" value="./build/colapi.jar" />
-	<property name="java2html.classpath" value="./build/ant-java2html.jar" />
+	<property name="colapi.classpath" value="./lib/build/colapi.jar" />
+	<property name="java2html.classpath" value="./lib/build/ant-java2html.jar" />
 
 	<path id="classpath">
 		<fileset dir="./lib" >
