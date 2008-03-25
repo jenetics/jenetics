@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Jenetics" verbose="2" system-id="http://testng.org/testng-1.0.dtd">
+	<test name="org.jenetics.BitChromosome">
+		<classes>
+			<class name="org.jenetics.BitChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.BitGene">
+		<classes>
+			<class name="org.jenetics.BitGeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.BitUtils">
+		<classes>
+			<class name="org.jenetics.BitUtilsTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.CharacterChromosome">
+		<classes>
+			<class name="org.jenetics.CharacterChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.CharacterGene">
+		<classes>
+			<class name="org.jenetics.CharacterGeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.DoubleChromosome">
+		<classes>
+			<class name="org.jenetics.DoubleChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.DoubleGene">
+		<classes>
+			<class name="org.jenetics.DoubleGeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Genotype">
+		<classes>
+			<class name="org.jenetics.GenotypeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.PartiallyMatchedCrossover">
+		<classes>
+			<class name="org.jenetics.PartiallyMatchedCrossoverTest" />
+		</classes>
+	</test>
+</suite>
+

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="all">
+	<property name="version" value="0.1.0.3" />
+	<property name="sourcedir" value="./src" />
+	<property name="testng.sourcedir" value="./testng" />
+	<property name="testng.reportdir" value="./testng-report" />
+	<property name="compiledir" value="./bin" />
+	<property name="libdir" value="./lib" />
+	<property name="builddir" value="./lib" />
+	<property name="javadocdir" value="./javadoc" />
+	<property name="colapi.classpath" value="./build/colapi.jar" />
+	<property name="java2html.classpath" value="./build/ant-java2html.jar" />
+
+	<path id="classpath">
+		<fileset dir="./lib" >
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="build.classpath">
+		<fileset dir="./lib/build" >
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef resource="testngtasks" classpathref="build.classpath" />
+
+	<target name="compile">
+		<mkdir dir="${compiledir}" />
+		<javac destdir="${compiledir}" 
+			srcdir="${sourcedir}" 
+			debug="false" 
+			source="1.6" target="1.6" 
+			encoding="UTF-8" listfiles="yes"
+		>
+			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg value="-Xlint:deprecation" />
+			<classpath refid="classpath" />
+			<include name="org/jenetics/*.gif" />
+			<include name="org/jenetics/*.html" />
+			<include name="org/jenetics/*.java" />
+			<include name="org/jenetics/examples/*.java" />
+		</javac>		
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar 
+			destfile="Jenetics-${version}.jar" 
+			filesetmanifest="mergewithoutmain" 
+			index="true" update="true" 
+			level="9" duplicate="preserve"
+		>
+			<fileset dir="${compiledir}" />
+			<manifest>
+				<attribute name="ProjectName" value="Jenetics" />
+				<attribute name="Version" value="${version}" />
+				<attribute name="Vendor" value="Franz Wilhelmstötter" />
+				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
+			</manifest>
+		</jar>
+		
+		<jar 
+			destfile="Jenetics-all-${version}.jar" 
+			filesetmanifest="mergewithoutmain" 
+			index="true" update="true" 
+			level="9" duplicate="preserve"
+		>
+			<zipfileset src="${libdir}/jscience.jar" />
+			<fileset dir="${compiledir}" />
+			<manifest>
+				<attribute name="ProjectName" value="Jenetics" />
+				<attribute name="Version" value="${version}" />
+				<attribute name="Vendor" value="Franz Wilhelmstötter" />
+				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
+			</manifest>
+		</jar>		
+	</target>
+
+	<target name="javadoc">
+		<tstamp>
+			<format property="JAVADOC_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
+		</tstamp>	
+		<javadoc 
+			classpathref="classpath" 
+			destdir="${javadocdir}" 
+			author="true" version="true" use="true" 
+			linksource="yes" source="1.6" 
+			useexternalfile="true" access="protected" 
+			breakiterator="yes" 
+			windowtitle="Jenetics API" failonerror="false" 
+			includenosourcepackages="true" docencoding="UTF-8" 
+			Encoding="UTF-8"
+		>
+			<classpath refid="classpath" />
+			<fileset dir="${sourcedir}">
+				<include name="org/jenetics/*/.gif" />
+				<include name="org/jenetics/*.html" />
+				<include name="org/jenetics/*.java" />
+				<include name="org/jenetics/examples/*.java" />
+				<and>
+					<filename name="**/*.java" />
+				</and>
+			</fileset>
+			<doctitle>&lt;h1&gt;Jenetics API&lt;/h1&gt;</doctitle>
+			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
+		</javadoc>
+		
+		<taskdef 
+			name="java2html" classname="de.java2html.anttasks.Java2HtmlTask"
+			classpath="${java2html.classpath}"
+		/>
+		<java2html srcdir="${sourcedir}"
+				   destdir="${javadocdir}/src-html"
+			style="eclipse" showLineNumbers="true" showFileName="true"
+			tabs="4" showTableBorder="true" outputFormat="html"
+			useShortFileName="true" overwrite="true"
+		>
+			<include name="org/jenetics/**/.gif" />
+			<include name="org/jenetics/*.html" />
+			<include name="org/jenetics/*.java" />
+			<include name="org/jenetics/examples/*.java" />
+		</java2html>
+		
+    	<!-- Formats/colarizes code between [code]...[/code] -->
+		<java
+			  classname="Colapi"
+			  classpath="${colapi.classpath}"
+		>
+			<arg value="${javadocdir}" />
+		</java>		
+		
+		<copy todir="${javadocdir}/org/jenetics/doc-files" >
+			<fileset dir="${sourcedir}/org/jenetics/doc-files" />
+		</copy>
+	</target>
+	
+	<target name="all" depends="jar, javadoc" />
+
+	<target name="compile-tests" depends="compile">
+		<javac destdir="${compiledir}" 
+			srcdir="${testng.sourcedir}" 
+			debug="true"
+			 debuglevel="lines,vars,source"
+			source="1.6" target="1.6" 
+			encoding="UTF-8" listfiles="yes"
+		>
+			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg value="-Xlint:deprecation" />
+			<classpath refid="classpath" />
+			<classpath refid="build.classpath" />
+			<classpath path="${compiledir}" />
+			<include name="org/jenetics/*.gif" />
+			<include name="org/jenetics/*.html" />
+			<include name="org/jenetics/*.java" />
+			<include name="org/jenetics/examples/*.java" />
+		</javac>			
+	</target>
+
+	<target name="run-tests" depends="compile-tests">
+		<mkdir dir="${testng.reportdir}" />
+		<testng outputdir="${testng.reportdir}"
+				sourcedir="${testng.sourcedir}"
+				haltonfailure="false" dumpCommand="false"
+		>
+			<classpath refid="classpath" />
+			<classpath refid="build.classpath" />
+			<classpath path="${compiledir}" />
+			<xmlfileset dir="${testng.sourcedir}/org/jenetics" includes="testng.xml" />
+		</testng>
+	</target>
+	
+	<target name="clean" >
+		<delete dir="${compiledir}" />
+		<delete dir="${javadocdir}" />
+		<delete dir="${testng.reportdir}" />
+		<delete file="Jenetics-${version}.jar" />
+		<delete file="Jenetics-all-${version}.jar" />
+	</target>
+</project>
+
+
+
+
+

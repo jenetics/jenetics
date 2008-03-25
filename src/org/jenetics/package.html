@@ -1,0 +1,284 @@
+<body>
+Provides a <a href="http://en.wikipedia.org/wiki/Genetic_algorithm" >Genetic Algorithm</a> 
+(GA) implementation. Genetic Algorithms was first proposed and analyzed by 
+<a href="http://en.wikipedia.org/wiki/John_Henry_Holland" >John Holland</a> in 1975.
+The GA consists of the following steps:
+[code]
+   Initialize population;
+   Measure fitness of populaton;
+   while (!stopCondition) {
+       select offsprings;
+       select survivors;
+       increase survirvor age;
+       alter offsprings;
+       add survivors and offsprings to new population;
+       measure fitness of new population;
+   } 
+[/code]
+
+
+<h3>Data structures</h3>
+<img alt="Structure Diagram" src="doc-files/structure.gif" ></img>
+<p/>
+The diagram above shows the main data structures of the GA implementation. The 
+{@link org.jenetics.Gene} is the base of the building block. Genes are aggregated in 
+{@link org.jenetics.Chromosome}s. One to n Chromosomes are aggregated in 
+{@link org.jenetics.Genotype}s. A Genptype and a
+{@link org.jenetics.FitnessFunction} form the 
+{@link org.jenetics.Phenotype}.
+Phenotypes are collected into a {@link org.jenetics.Population}.
+
+
+<h3>Settting up the {@link org.jenetics.GeneticAlgorithm}</h3>
+The minimum GA setup needs a {@link org.jenetics.GenotypeFactory} and an 
+{@link org.jenetics.FitnessFunction}. The 
+{@link org.jenetics.Genotype} implements the 
+{@link org.jenetics.GenotypeFactory} interface and can be used 
+as prototype.
+[code]
+//Defining a Genotype prototype.
+Genotype<BitGene> gt = Genotype.create(
+    BitChromosome.valueOf(10, Probability.valueOf(0.5));
+);
+FitnessFunction<BitGene> ff = ...//FitnessFunction implementation
+GeneticAlgorithm<BitGene> ga = new GeneticAlgorithm<BitGene>(gt, ff);
+[/code]
+All other needed GA parameters are initialized with default values. Therefore
+the GA is ready for use now.
+[code]
+ga.setup();
+ga.evolve(100);
+System.out.println(ga.getStatistic());
+[/code]
+The {@link org.jenetics.GeneticAlgorithm#setup} call creates the initial
+population and calculates its fitness. Then the GA evolves 100 generations and
+prints the (last) populations statistic.
+<p/>
+In a more advanced setup you want to define mutation and/or selection 
+strategies.
+[code]
+...
+Selector<BitGene> selector = new StochasticUniversalSelector();
+ga.setOffspringSelector(selector);
+ga.setSurvivorSelector(selector);
+Alterer alterer = 
+	new SinglePointCrossover<BitGene>(Probability.valueOf(0.1)).append(
+    new Mutation<BitGene>(Probability.valueOf(0.001)));
+ga.setAlterer(alterer);
+[/code]
+You can define selection strategies for survivors and offsprings independently.
+The Alterers are concatenated, first the crossover (with crossover probability
+0.1) is performed and than the chromosomes are mutated (with a probability
+0.001).
+
+
+<h3>Examles</h3>
+
+<h4>0/1 knapsack problem</h4>
+In the knapsack problem a set of items, together with their size and value, is
+given. The task is to select a disjoint subset so that the total size does
+not exeed the knapsacks size. 
+(<a href="http://en.wikipedia.org/wiki/Knapsack_problem">Wikipedia: 
+Knapsack problem</a>)<p/>
+
+For the 0/1 knapsack problem we define a {@link org.jenetics.BitChromosome}, 
+one bit for each item. If the i<sup>th</sup> {@link org.jenetics.BitGene} is 
+set to one the i<sup>th</sup> item is selected.
+
+[code]
+class Item {
+    public double size;
+    public double value;
+}
+class KnappsackFunction implements FitnessFunction<BitGene> {
+    private final Item[] items;
+    private final double knapsackSize;
+    
+    public KnappsackFunction(Item[] items, double knapsackSize) {
+        this.items = items;
+        this.knapsackSize = knapsackSize;
+    }
+    
+    public double evaluate(Genotype<BitGene> genotype) {
+        Chromosome<BitGene> ch = genotype.getChromosome();
+        
+        double size = 0;
+        double value = 0;
+        for (int i = 0, n = ch.length(); i < n; ++i) {
+            if (ch.getGene(i).getBit()) {
+                size += items[i].size;
+                value += items[i].value;
+            }
+        }
+        
+        if (size > knapsackSize) {
+            return 0;
+        } else {
+            return value;
+        }
+    }
+}
+
+public class Knapsack {
+    public static void main(String[] argv) {
+        //Setting up the available items.
+        Item[] items = new Item[15];
+        for (int i = 0; i < items.length; ++i) {
+            items[i] = new Item();
+            items[i].size = (Math.random() + 1)*10;
+            items[i].value = (Math.random() + 1)*15;
+        }
+        
+        KnappsackFunction ff = new KnappsackFunction(items, 100);
+        Genotype<BitGene> gt = Genotype.create(
+            BitChromosome.valueOf(15, Probability.valueOf(0.5))
+        );
+        
+        GeneticAlgorithm<BitGene> ga = new GeneticAlgorithm<BitGene>(gt, ff);
+        ga.setPopulationSize(150);
+        ga.setSelectors(new RouletteWheelSelector<BitGene>());
+        ga.setAlterer(
+            new Mutation<BitGene>(Probability.valueOf(0.015).append( 
+            new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
+        );
+        ga.setup();
+        ga.evolve(100);
+        System.out.println(ga.getBestPhenotype());
+    }
+}
+[/code]
+
+<h4>Ones counting</h4>
+Ones counting is one of the simplest model-problem and consists of a binary
+chromosome. The fitness of a {@link org.jenetics.Genotype} is proportional to 
+the number of ones. The {@link org.jenetics.FitnessFunction} looks like 
+this:[code]
+class OneCounter implements FitnessFunction<BitGene> {
+    public double eval(Genotype<BitGene> genotype) {
+        int count = 0;
+        for (BitGene gene : genotype.getChromosome()) {
+            if (gene.getBit()) {
+                ++count;
+            }
+        }
+        return count;
+    }
+}
+[/code]
+
+<h4>Real function</h4>
+The GA also works with NumberGenes. In the given example the FitnessFunction tries 
+to find the value where the sinus becomes a maximum.
+[code]
+class RealFunction implements FitnessFunction<DoubleGene> {
+    public double evaluate(Genotype<DoubleGene> genotype) {
+        return Math.sin(genotype.getChromosome().getGene(0).doubleValue());
+    }
+}
+[/code]
+
+To narrow the search space a number range for the 
+{@link org.jenetics.DoubleGene} must be definde. 
+In our example we restrict the values to the closed interval [0,2Ï].
+[code]
+//The Genotype implements the GenotypeFactory interface.
+GenotypeFactory<DoubleGene> gtf = Genotype.newGenotype(
+    DoubleChromosome.valueOf(0, 2*Math.PI)
+);
+
+GeneticAlgorithm<DoubleGene> ga = new GeneticAlgorithm<DoubleGene>(gtf, ff);
+ga.setFitnessScaler(new PowerScaler(2.0));
+ga.setPopulationSize(20);
+
+ga.setAlterer(
+    new Mutation<DoubleGene>(Probability.valueOf(0.05)).append(
+    new MeanAlterer<DoubleGene>(Probability.valueOf(0.5)))
+);
+ga.setup();     
+for (int i = 0; i < 50; ++i) {
+    ga.evolve();
+    System.out.println(
+        Integer.toString(i) + ":" + ga.getBestPhenotype() +  
+        "-->" + ga.getBestPhenotype().getFitness()
+    );
+}
+[/code]
+
+Here a sample of the generated output:
+<pre>
+0:[[[1.4549854720851316]]]-->0.9933014148604516
+1:[[[1.4549854720851316]]]-->0.9933014148604516
+2:[[[1.4549854720851316]]]-->0.9933014148604516
+3:[[[1.4998327705116134]]]-->0.9974831433102411
+4:[[[1.6323317560285898]]]-->0.9981072928327804
+5:[[[1.5660822632701014]]]-->0.9999888888231185
+20:[[[1.5714328118531032]]]-->0.9999997974433922
+21:[[[1.5714328118531032]]]-->0.9999997974433922
+22:[[[1.5708158640359156]]]-->0.9999999998091481
+49:[[[1.5708158640359156]]]-->0.9999999998091481
+</pre>
+
+<h4>TSP</h4>
+
+Implemenentaion of the classical TSP problem.
+
+[code]
+private static class Function implements FitnessFunction<IntegerGene> {
+	private static final long serialVersionUID = 8402072476064049463L;
+	
+	private final double[][] adjacence;
+	
+	public Function(final double[][] adjacence) {
+		this.adjacence = adjacence;
+	}
+
+	public double evaluate(final Genotype<IntegerGene> genotype) {
+		final Chromosome<IntegerGene> path = genotype.getChromosome();
+		
+		double length = 0.0;
+		for (int i = 0, n = path.length(); i < n; ++i) {
+			final int from = path.getGene(i).intValue();
+			final int to = path.getGene((i + 1)%n).intValue();
+			length -= adjacence[from][to];
+		}
+		return length;
+	}
+}
+
+public static void main(String[] args) {
+	final int stops = 10;
+	
+	final FitnessFunction<IntegerGene> ff = new Function(adjacencyMatrix(stops));
+	final GenotypeFactory<IntegerGene> gtf = Genotype.valueOf(
+		PermutationChromosome.valueOf(stops)
+	);
+	final GeneticAlgorithm<IntegerGene> ga = new GeneticAlgorithm<IntegerGene>(gtf, ff);
+	
+       ga.setAlterer(
+           new Mutation<IntegerGene>(Probability.valueOf(0.1), 
+           new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
+       );
+       
+       long start = System.currentTimeMillis();
+       ga.setup();
+       for (int i = 0; i < 30; ++i) {
+       	ga.evolve();
+       	Phenotype<IntegerGene> bpt = ga.getStatistic().getBestPhenotype();
+       	System.out.println(
+       		bpt + " --> " + bpt.getFitness() +  " : " + 
+       			ga.getStatistic().getVarianceFitness()
+       	);
+       }
+       
+       System.out.println("Best found path:");
+       System.out.println(ga.getBestPhenotype() + " --> " + ga.getBestPhenotype().getFitness());
+       long end = System.currentTimeMillis();
+       System.out.println("Time: " + ((end -start)/1000.0) + "s");
+}
+[/code]
+
+</body>
+
+
+
+
