@@ -1,0 +1,102 @@
+/*
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
+ *  
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
+ */
+package org.jenetics;
+
+import java.util.Random;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id: Crossover.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ */
+public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
+	private static final long serialVersionUID = 6083622511856683392L;
+
+	public Crossover(final Alterer<T> component) {
+		super(component);
+	}
+	
+	public Crossover(final Probability probability, final Alterer<T> component) {
+		super(probability, component);
+	}
+
+	public Crossover(final Probability probability) {
+		super(probability);
+	}
+
+	@Override
+	protected void componentAlter(final Population<T> population) {
+		assert(population != null) : "Not null is guaranteed from base class.";
+		
+		final Random random = RandomRegistry.getRandom();
+		for (int i = 0, size = population.size(); i < size; ++i) { 
+			//Performing the crossover with the given probability.
+			if (!_probability.isLargerThan(random.nextDouble())) {
+				final int ptIndex = random.nextInt(population.size());
+				final Phenotype<T> pt1 = population.get(i);
+				final Phenotype<T> pt2 = population.get(ptIndex);
+				final Genotype<T> gt1 = pt1.getGenotype();
+				final Genotype<T> gt2 = pt2.getGenotype();
+				
+				//Choosing two Chromosome for crossover randomly.
+				final int chIndex1 = random.nextInt(gt1.chromosomes());
+				final int chIndex2 = random.nextInt(gt2.chromosomes());
+				
+				final Chromosome<T>[] chromosomes1 = gt1.getChromosomes();
+				final Chromosome<T>[] chromosomes2 = gt2.getChromosomes();
+				final T[] genes1 = chromosomes1[chIndex1].getGenes();
+				final T[] genes2 = chromosomes2[chIndex2].getGenes();
+				
+				crossover(genes1, genes2);
+				
+				chromosomes1[chIndex1] = chromosomes1[chIndex1].newChromosome(genes1);
+				chromosomes2[chIndex2] = chromosomes2[chIndex2].newChromosome(genes2);
+				
+				//Creating two new Phenotypes and exchanging it with the old.
+				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1)));
+				population.set(ptIndex, pt2.newInstance(Genotype.valueOf(chromosomes1)));
+			}
+		}
+	}
+
+	/**
+	 * Template method which performs the crossover.
+	 */
+	protected abstract void crossover(T[] that, T[] other);
+//	protected void crossover(Chromosome<T> that, Chromosome<T> other) {
+//		final Random random = RandomRegistry.getRandom();
+//		int from = random.nextInt(that.length());
+//		int to = random.nextInt(other.length());
+//		from = min(from, to);
+//		to = max(from, to) + 1;
+//		
+//		for (int i = from; i < to; ++i) {
+//			T temp = that.getGene(i);
+//			that.setGene(i, other.getGene(i));
+//			other.setGene(i, temp);
+//		}
+//	}
+}
+
+
+
+
