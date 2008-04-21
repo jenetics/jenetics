@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Math.sqrt;
+import static org.jenetics.Checker.checkNull;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -32,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.2 2008-04-21 21:29:08 fwilhelm Exp $
  */
 public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -8980979460645713414L;
@@ -49,12 +50,16 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * Evaluates statistic valus from a givem population
 	 * 
 	 * @param population The population to calculate the statistic.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */ 
-	Statistic(
+	public Statistic(
 		final Phenotype<T> best, final Phenotype<T> worst, 
 		final double fitnessMean, final double fitnessVariance,
 		final double ageMean, final double ageVariance
 	) {
+		checkNull(best, "Best phenotype");
+		checkNull(worst, "Worst phenotype");
+		
 		this._bestPhenotype = best;
 		this._worstPhenotype = worst;
 		this._fitnessMean = fitnessMean;
