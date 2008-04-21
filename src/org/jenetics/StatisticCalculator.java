@@ -22,18 +22,19 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.min;
+import java.util.List;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.2 2008-04-21 21:29:08 fwilhelm Exp $
  */
-class StatisticCalculator {
+public class StatisticCalculator {
 	
 	public StatisticCalculator() {
 	}
 	
-	public <T extends Gene<?>> Statistic<T> evaluate(final Population<T> population) {
+	public <T extends Gene<?>> Statistic<T> evaluate(final List<? extends Phenotype<T>> population) {
 		if (population == null || population.isEmpty()) {
 			return new Statistic<T>(null, null, 0.0, 0.0, 0.0, 0.0);
 		} 
@@ -83,31 +84,6 @@ class StatisticCalculator {
 			meanAge, varianceAge
 		);
 		
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param size
-	 * @param p
-	 * @return
-	 */
-	static int[] partition(final int size, final int p) {
-		final int parts = min(size, p);
-		final int[] partition = new int[parts + 1];
-		
-		final int bulk = size != 0 ? size/parts : 0;
-		final int rest = size != 0 ? size%parts : 0;
-		assert ((bulk*parts + rest) == size);
-		
-		for (int i = 0, n = parts - rest; i < n; ++i) {
-			partition[i] = i*bulk;
-		}
-		for (int i = 0, n = rest + 1; i < n; ++i) {
-			partition[parts - rest + i] = (parts - rest)*bulk + i*(bulk + 1);
-		}
-		
-		return partition;
 	}
 	
 }

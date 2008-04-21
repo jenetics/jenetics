@@ -49,7 +49,7 @@ import java.util.Random;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.2 2008-04-21 21:29:08 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  */
@@ -510,6 +510,26 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 */
 	public Population<T> getPopulation() {
 		return _population;
+	}
+	
+	/**
+	 * Set the statistic calculator for this genetic algorithm instance.
+	 * 
+	 * @param calculator the new statistic calculator.
+	 * @throws NullPointerException if the given {@code calculator} is {@code null}.
+	 */
+	public void setStatisticCalculator(final StatisticCalculator calculator) {
+		checkNull(calculator, "Statistic calculator");
+		this._calculator = calculator;
+	}
+	
+	/**
+	 * Return the current statistic calculator.
+	 * 
+	 * @return the current statistic calculator.
+	 */
+	public StatisticCalculator getStatisticCalculator() {
+		return _calculator;
 	}
 
 }
