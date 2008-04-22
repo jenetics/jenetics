@@ -25,6 +25,11 @@
 			<class name="org.jenetics.CharacterGeneTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.ConcurrentStatisticCalculator">
+		<classes>
+			<class name="org.jenetics.ConcurrentStatisticCalculatorTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.DoubleChromosome">
 		<classes>
 			<class name="org.jenetics.DoubleChromosomeTest" />
