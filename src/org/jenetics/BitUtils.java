@@ -27,9 +27,9 @@ import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.2 2008-04-22 15:23:54 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.3 2008-04-22 21:12:42 fwilhelm Exp $
  */
-final class BitUtils {
+public final class BitUtils {
 
 	private BitUtils() {
 	}
@@ -240,10 +240,10 @@ final class BitUtils {
 		return (d & (1 << bitPos)) != 0;
 	}
 	
-	/*
+	/**
 	 * \\TODO: Handle possible overflow
 	 */
-	static long ulpDistance(final double a, final double b) {
+	public static long ulpDistance(final double a, final double b) {
 		return Math.abs(ulpPosition(a) - ulpPosition(b));
 	}
 	
@@ -265,7 +265,7 @@ final class BitUtils {
 	 *     }
 	 * [/code]
 	 * 
-	 * The code fragment will create the following output:
+	 * The code fragment above will create the following output:
 	 * <pre>
 	 *     4.4E-323    9    9
 	 *     4.0E-323    8    8
@@ -291,7 +291,7 @@ final class BitUtils {
 	 * @param a the double number.
 	 * @return the ULP position.
 	 */
-	static long ulpPosition(final double a) {
+	public static long ulpPosition(final double a) {
 		long t = Double.doubleToLongBits(a);
 		if (t < 0) {
 			t = Long.MIN_VALUE - t;

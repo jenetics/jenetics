@@ -35,7 +35,7 @@ import java.util.concurrent.Future;
  * threads.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculator.java,v 1.2 2008-04-22 15:25:36 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculator.java,v 1.3 2008-04-22 21:12:42 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculator extends StatisticCalculator {
 	private final int _numberOfThreads;
@@ -158,9 +158,17 @@ public class ConcurrentStatisticCalculator extends StatisticCalculator {
 	 * 
 	 * @param size the size of the array to partition.
 	 * @param p the number of parts the (virtual) array should be partitioned.
-	 * @return
+	 * @return the partition array
+	 * @throws IllegalArgumentException if {@code size} or {@code p} is less than one.
 	 */
 	protected static int[] partition(final int size, final int p) {
+		if (size < 0) {
+			throw new IllegalArgumentException("Size must greater than zero: " + size);
+		}
+		if (p < 0) {
+			throw new IllegalArgumentException("Number of partitions must greater than zero: " + p);
+		}
+		
 		final int parts = min(size, p);
 		final int[] partition = new int[parts + 1];
 		
