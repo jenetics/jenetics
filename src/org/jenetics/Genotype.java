@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.2 2008-04-22 15:25:35 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -86,6 +86,20 @@ public class Genotype<T extends Gene<?>>
 		@SuppressWarnings("unchecked")
 		Chromosome<T> chromosome = _chromosomes[0];
 		return chromosome;
+	}
+	
+	/**
+	 * Return the first {@link Gene} of the first {@link Chromosome} of this
+	 * {@code Genotype}.
+	 * 
+	 * @return the first {@link Gene} of the first {@link Chromosome} of this
+	 *         {@code Genotype}.
+	 */
+	@SuppressWarnings("unchecked")
+	public T getGene() {
+		assert(_chromosomes != null);
+		assert(_chromosomes[0] != null);
+		return (T)_chromosomes[0].getGene();
 	}
 	
 	@SuppressWarnings("unchecked")

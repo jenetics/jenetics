@@ -1,4 +1,7 @@
-- Adding the ThreadedStatisticCalculator class.
+- Adding StatisticTest class.
+- Adding the (shortcut)method Genotype.getGene()
+- Adding the method Chromosome.getGene() to the Chromosome interface.
+- Adding the ConcurrentStatisticCalculator class.
 - Making the StatisticsCalculator class public.
 
 Jenetics-0.1.0.4
