@@ -25,15 +25,26 @@ package org.jenetics;
 import java.util.Random;
 
 /**
+ * Utility class concerning arrays.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Arrays.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Arrays.java,v 1.2 2008-04-22 21:01:16 fwilhelm Exp $
  */
-final class Arrays {
+public final class Arrays {
 
 	private Arrays() {
 	}
 	
-	static <T> void swap(final T[] array, final int i, final int j) {
+	/**
+	 * Swap two elements of an given array.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array
+	 * @param i index of the first array element.
+	 * @param j index of the second array element.
+	 * @throws ArrayIndexOutOfBoundsException if one of the given indexes is out of bounds.
+	 */
+	public static <T> void swap(final T[] array, final int i, final int j) {
 		final T temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
@@ -48,9 +59,43 @@ final class Arrays {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param array the {@code array} to randomize.
 	 */
-	static <T> void randomize(final Random random, final T[] array) {
+	public static <T> void randomize(final Random random, final T[] array) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
 	}
+	
+	/**
+	 * Reverses the part of the array determined by the to indexes.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array to reverse
+	 * @param from the first index (inclusive)
+	 * @param to the second index (exclusive)
+	 */
+	public static <T> void reverse(final T[] array, int from, int to) {
+		int i = from;
+		int j = to;
+		
+		while (i < j) {
+			--j;
+			swap(array, i, j);
+			++i;
+		}
+	}
+	
+	/**
+	 * Reverses the given array.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array to reverse.
+	 */
+	public static <T> void reverse(final T[] array) {
+		reverse(array, 0, array.length);
+	}
+	
+	
 }
+
+
+
