@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.2 2008-04-21 21:29:08 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.3 2008-04-22 15:25:36 fwilhelm Exp $
  */
 public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -8980979460645713414L;
@@ -46,6 +46,12 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	private final double _ageMean;
 	private final double _ageVariance;
 	
+	private int _samples = 0;
+	private double _fitnessSum = 0.0;
+	private double _fitnessSquareSum = 0.0;
+	private long _ageSum = 0;
+	private long _ageSquareSum = 0;
+
 	/**
 	 * Evaluates statistic valus from a givem population
 	 * 
@@ -164,6 +170,46 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 		return (getFitnessMean() - previous.getFitnessMean())/sqrt(getFitnessVariance());
 	}
 	
+	int getSamples() {
+		return _samples;
+	}
+
+	void setSamples(final int samples) {
+		this._samples = samples;
+	}
+
+	double getFitnessSum() {
+		return _fitnessSum;
+	}
+
+	void setFitnessSum(final double sum) {
+		_fitnessSum = sum;
+	}
+
+	double getFitnessSquareSum() {
+		return _fitnessSquareSum;
+	}
+
+	void setFitnessSquareSum(final double squareSum) {
+		_fitnessSquareSum = squareSum;
+	}
+
+	long getAgeSum() {
+		return _ageSum;
+	}
+
+	void setAgeSum(final long sum) {
+		_ageSum = sum;
+	}
+
+	long getAgeSquareSum() {
+		return _ageSquareSum;
+	}
+
+	void setAgeSquareSum(final long squareSum) {
+		_ageSquareSum = squareSum;
+	}
+	
 	@Override
 	public int hashCode() {
 		int hash = 17;
@@ -192,6 +238,27 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 			doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&
 			_bestPhenotype != null ? _bestPhenotype.equals(statistic._bestPhenotype) : statistic._bestPhenotype == null &&
 			_worstPhenotype != null ? _worstPhenotype.equals(statistic._worstPhenotype) : statistic._worstPhenotype == null;
+	}
+	
+	public boolean equals(final Statistic<T> statistic, final int ulps) {
+		if (statistic == this) {
+			return true;
+		}
+		
+		return equals(statistic._fitnessMean, _fitnessMean, ulps) &&
+				equals(statistic._fitnessVariance, _fitnessVariance, ulps) &&
+				equals(statistic._ageMean, _ageMean, ulps) &&
+				equals(statistic._ageVariance, _ageVariance, ulps) &&
+				_bestPhenotype != null ? _bestPhenotype.equals(statistic._bestPhenotype) : statistic._bestPhenotype == null &&
+				_worstPhenotype != null ? _worstPhenotype.equals(statistic._worstPhenotype) : statistic._worstPhenotype == null;
+	}
+	
+	static boolean equals(final double a, final double b, final int ulpDistance) {
+		if (Double.isNaN(a) || Double.isNaN(b)) {
+			return false;
+		}
+		
+		return BitUtils.ulpDistance(a, b) <= ulpDistance;
 	}
 
 	@Override

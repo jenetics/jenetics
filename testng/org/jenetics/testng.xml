@@ -50,5 +50,10 @@
 			<class name="org.jenetics.PartiallyMatchedCrossoverTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.Statistic">
+		<classes>
+			<class name="org.jenetics.StatisticTest" />
+		</classes>
+	</test>	
 </suite>
 

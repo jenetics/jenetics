@@ -34,7 +34,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.2 2008-04-22 15:25:36 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?>> 
 	extends Verifiable, Iterable<T>, Immutable, ChromosomeFactory<T>, Serializable
@@ -48,10 +48,17 @@ public interface Chromosome<T extends Gene<?>>
 	public Class<T> getType();
 	
 	/**
+	 * Return the first gene of this chromosome.
+	 * 
+	 * @return the first gene of this chromosome.
+	 */
+	public T getGene();
+	
+	/**
 	 * Return the gene on the specified index.
 	 * 
 	 * @param index The gene index.
-	 * @return The wanted gene.
+	 * @return the wanted gene.
 	 * @throws IndexOutOfBoundsException if the index is out of range 
 	 * 		(index < 0 || index >= length()).
 	 */
@@ -61,7 +68,7 @@ public interface Chromosome<T extends Gene<?>>
 	 * Return the {@link Gene}s of this {@code Chromosome}.  Changes to the returned
 	 * array doesn't effect this {@code Chromosome}.
 	 * 
-	 * @return
+	 * @return an array of this {@code Chromosome}.
 	 */
 	public T[] getGenes();
 		
