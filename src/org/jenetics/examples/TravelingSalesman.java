@@ -39,8 +39,10 @@ import org.jenetics.Phenotype;
 import org.jenetics.Probability;
 
 /**
+ * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.1 2008-03-25 18:31:58 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.2 2008-04-22 21:12:42 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	

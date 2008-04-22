@@ -27,15 +27,15 @@ package org.jenetics;
  * required for the {@link MeanAlterer}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mean.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Mean.java,v 1.2 2008-04-22 21:12:42 fwilhelm Exp $
  * 
  * @see MeanAlterer
  */
 public interface Mean<T> {
 
 	/**
-	 * Return the mean value of <code>this</code> and <code>that</code>. For 
-	 * {@link NumberGene}s the mean is the arithmetic mean.
+	 * Return the (usually arithmetic) mean value of <code>this</code> and <code>that</code>. 
+	 * For {@link NumberGene}s the mean is the arithmetic mean.
 	 * 
 	 * @param that the second value for calculating the mean.
 	 * @return the mean value of <code>this</code> and <code>that</code>.

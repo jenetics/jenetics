@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.2 2008-04-22 15:25:35 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.3 2008-04-22 21:12:42 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -213,7 +213,6 @@ public class Genotype<T extends Gene<?>>
 	private static final GenotypeFactory<? extends Gene<?>> 
 	FACTORY = new GenotypeFactory<Gene<?>>();
 	
-	@SuppressWarnings("unchecked")
 	static <G extends Gene<?>> Genotype<G> newInstance(final int length) {
 		@SuppressWarnings("unchecked")
 		Genotype<G> genotype = (Genotype<G>)FACTORY.object();
