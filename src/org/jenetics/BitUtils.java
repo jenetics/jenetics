@@ -27,7 +27,7 @@ import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.2 2008-04-22 15:23:54 fwilhelm Exp $
  */
 final class BitUtils {
 
@@ -239,6 +239,65 @@ final class BitUtils {
 		final int d = data[pos] & 0xFF;
 		return (d & (1 << bitPos)) != 0;
 	}
+	
+	/*
+	 * \\TODO: Handle possible overflow
+	 */
+	static long ulpDistance(final double a, final double b) {
+		return Math.abs(ulpPosition(a) - ulpPosition(b));
+	}
+	
+	/**
+	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a> 
+	 * position of a double number.
+	 * 
+	 * [code]
+	 *    double a = 0.0;
+	 *    for (int i = 0; i < 10; ++i) {
+	 *        a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
+	 *    }
+	 *
+	 *    for (int i = 0; i < 19; ++i) {
+	 *        a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
+	 *        System.out.println(
+	 *            a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
+	 *        );
+	 *     }
+	 * [/code]
+	 * 
+	 * The code fragment will create the following output:
+	 * <pre>
+	 *     4.4E-323    9    9
+	 *     4.0E-323    8    8
+	 *     3.5E-323    7    7
+	 *     3.0E-323    6    6
+	 *     2.5E-323    5    5
+	 *     2.0E-323    4    4
+	 *     1.5E-323    3    3
+	 *     1.0E-323    2    2
+	 *     4.9E-324    1    1
+	 *     0.0         0    0
+	 *    -4.9E-324   -1    1
+	 *    -1.0E-323   -2    2
+	 *    -1.5E-323   -3    3
+	 *    -2.0E-323   -4    4
+	 *    -2.5E-323   -5    5
+	 *    -3.0E-323   -6    6
+	 *    -3.5E-323   -7    7
+	 *    -4.0E-323   -8    8
+	 *    -4.4E-323   -9    9
+	 * </pre>
+	 * 
+	 * @param a the double number.
+	 * @return the ULP position.
+	 */
+	static long ulpPosition(final double a) {
+		long t = Double.doubleToLongBits(a);
+		if (t < 0) {
+			t = Long.MIN_VALUE - t;
+		}
+		return t;
+	}	
 	
 	public static String toString(final long n) {
 		final StringBuilder out = new StringBuilder();
