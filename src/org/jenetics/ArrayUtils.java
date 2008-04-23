@@ -30,7 +30,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.2 2008-04-23 08:25:02 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.3 2008-04-23 08:58:21 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -98,7 +98,8 @@ public final class ArrayUtils {
 	
 	/**
 	 * Return a array with the indexes of the partitions of an array with the given size.
-	 * 
+	 * The length of the returned array is {@code min(size, prts) + 1}.
+	 * <p/>
 	 * Some examples:
 	 * <pre>
 	 *     partition(10, 3): [0, 3, 6, 10]
@@ -125,16 +126,16 @@ public final class ArrayUtils {
 	 * 
 	 * @param size the size of the array to partition.
 	 * @param prts the number of parts the (virtual) array should be partitioned.
-	 * @return the partition array
+	 * @return the partition array with the length of {@code min(size, prts) + 1}.
 	 * @throws IllegalArgumentException if {@code size} or {@code p} is less than one.
 	 */
 	public static int[] partition(final int size, final int prts) {
-		if (size < 0) {
+		if (size < 1) {
 			throw new IllegalArgumentException(
 				"Size must greater than zero: " + size
 			);
 		}
-		if (prts < 0) {
+		if (prts < 1) {
 			throw new IllegalArgumentException(
 				"Number of partitions must greater than zero: " + prts
 			);
