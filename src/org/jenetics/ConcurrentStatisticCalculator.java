@@ -35,22 +35,27 @@ import java.util.concurrent.Future;
  * threads.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculator.java,v 1.4 2008-04-23 08:25:02 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculator.java,v 1.5 2008-04-23 19:20:20 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculator extends StatisticCalculator {
-	private final int _numberOfThreads;
+	private final int _numberOfPartitions;
 	private final ExecutorService _pool;
 	
 	/**
 	 * Create a new ConcurentStatisticCalculator.
 	 * 
 	 * @param pool the 'thread pool'.
+	 * @param numberOfPartitions the number of partitions.
 	 * @throws NullPointerException if the given {@code pool} is {@code null}.
+	 * @throws IllegalArgumentException if the {@code numberOfPartitions} is smaller than one.
 	 */
-	public ConcurrentStatisticCalculator(final int numberOfThreads, final ExecutorService pool) {
+	public ConcurrentStatisticCalculator(final int numberOfPartitions, final ExecutorService pool) {
 		Checker.checkNull(pool, "Thread pool");
+		if (numberOfPartitions < 1) {
+			throw new IllegalArgumentException("Number of partitions is " + numberOfPartitions);
+		}
 		
-		this._numberOfThreads = numberOfThreads;
+		this._numberOfPartitions = numberOfPartitions;
 		this._pool = pool;
 	}
 	
@@ -59,8 +64,8 @@ public class ConcurrentStatisticCalculator extends StatisticCalculator {
 	 * 
 	 * @return the number of threads.
 	 */
-	public int getNumberOfThreads() {
-		return _numberOfThreads;
+	public int getNumberOfPartitions() {
+		return _numberOfPartitions;
 	}
 	
 	@Override
@@ -71,7 +76,7 @@ public class ConcurrentStatisticCalculator extends StatisticCalculator {
 				return new Statistic<T>(null, null, 0.0, 0.0, 0.0, 0.0);
 			} 
 			
-			final int[] indexes = partition(population.size(), _numberOfThreads);
+			final int[] indexes = partition(population.size(), _numberOfPartitions);
 			final List<Callable<Statistic<T>>> tasks = 
 				new ArrayList<Callable<Statistic<T>>>(indexes.length - 1);
 			for (int i = 0; i < indexes.length - 1; ++i) {
@@ -102,7 +107,7 @@ public class ConcurrentStatisticCalculator extends StatisticCalculator {
 		}
 	}
 	
-	private <T extends Gene<?>> Statistic<T> join(final List<Future<Statistic<T>>> results) 
+	private static <T extends Gene<?>> Statistic<T> join(final List<Future<Statistic<T>>> results) 
 		throws InterruptedException, ExecutionException 
 	{
 		if (results.isEmpty()) {
