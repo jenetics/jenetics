@@ -21,7 +21,7 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.min;
+import static org.jenetics.ArrayUtils.partition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.concurrent.Future;
  * threads.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculator.java,v 1.3 2008-04-22 21:12:42 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculator.java,v 1.4 2008-04-23 08:25:02 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculator extends StatisticCalculator {
 	private final int _numberOfThreads;
@@ -150,40 +150,6 @@ public class ConcurrentStatisticCalculator extends StatisticCalculator {
 			meanFitness, varianceFitness,
 			meanAge, varianceAge
 		);
-	}
-
-	/**
-	 * Return a array with the indexes of the partitions of an array with the given size.
-	 * 
-	 * 
-	 * @param size the size of the array to partition.
-	 * @param p the number of parts the (virtual) array should be partitioned.
-	 * @return the partition array
-	 * @throws IllegalArgumentException if {@code size} or {@code p} is less than one.
-	 */
-	protected static int[] partition(final int size, final int p) {
-		if (size < 0) {
-			throw new IllegalArgumentException("Size must greater than zero: " + size);
-		}
-		if (p < 0) {
-			throw new IllegalArgumentException("Number of partitions must greater than zero: " + p);
-		}
-		
-		final int parts = min(size, p);
-		final int[] partition = new int[parts + 1];
-		
-		final int bulk = size != 0 ? size/parts : 0;
-		final int rest = size != 0 ? size%parts : 0;
-		assert ((bulk*parts + rest) == size);
-		
-		for (int i = 0, n = parts - rest; i < n; ++i) {
-			partition[i] = i*bulk;
-		}
-		for (int i = 0, n = rest + 1; i < n; ++i) {
-			partition[parts - rest + i] = (parts - rest)*bulk + i*(bulk + 1);
-		}
-		
-		return partition;
 	}
 
 }

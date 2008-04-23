@@ -28,14 +28,21 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.2 2008-04-22 15:25:36 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.3 2008-04-23 08:25:13 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculatorTest {
 
 	@Test
 	public void partition() {
-		int[] parts = ConcurrentStatisticCalculator.partition(10, 9);
-		System.out.println(Arrays.toString(parts));
+		int[] parts = ArrayUtils.partition(10, 3);
+		System.out.println(Arrays.toString(ArrayUtils.partition(10, 3)));
+		System.out.println(Arrays.toString(ArrayUtils.partition(15, 6)));
+		System.out.println(Arrays.toString(ArrayUtils.partition(5, 10)));
+		
+		parts = ArrayUtils.partition(15, 6);
+		for (int i = 0; i < parts.length - 1; ++i) {
+			System.out.println(parts[i] + "\t" + parts[i + 1]); 
+		}		
 	}
 	
 	
