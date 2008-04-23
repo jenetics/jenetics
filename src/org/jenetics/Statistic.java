@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.4 2008-04-23 08:18:52 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.5 2008-04-23 12:08:25 fwilhelm Exp $
  */
 public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -8980979460645713414L;
@@ -257,7 +257,11 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 			return false;
 		}
 		
-		return BitUtils.ulpDistance(a, b) <= ulpDistance;
+		boolean equals = false;
+		try {
+			equals = Math.abs(BitUtils.ulpDistance(a, b)) <= ulpDistance;
+		} catch (ArithmeticException e) {}
+		return equals;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.3 2008-04-22 21:12:42 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.4 2008-04-23 12:07:33 fwilhelm Exp $
  */
 public final class BitUtils {
 
@@ -241,10 +241,16 @@ public final class BitUtils {
 	}
 	
 	/**
-	 * \\TODO: Handle possible overflow
+	 * Return the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
+	 * distance of the given two double values.
+	 * 
+	 * @param a first double.
+	 * @param b second double.
+	 * @return the ULP distance.
+	 * @throws ArithmeticException if the distance doesn't fit in a long value.
 	 */
 	public static long ulpDistance(final double a, final double b) {
-		return Math.abs(ulpPosition(a) - ulpPosition(b));
+		return sub(ulpPosition(a), ulpPosition(b));
 	}
 	
 	/**
@@ -319,6 +325,80 @@ public final class BitUtils {
 
 		return out.toString();
 	}
+	
+	
+	
+	/*
+	 * The following methods are copied from the Apache.Commons.Math library.
+	 * The copied methods was 
+	 * - org.apache.commons.math.util.MathUtil.addAndCheck(long, long, String) and
+	 * - org.apache.commons.math.util.MathUtil.subAndCheck(long, long)
+	 * *************************************************************************
+	 * 
+	 * Licensed to the Apache Software Foundation (ASF) under one or more
+	 * contributor license agreements.  See the NOTICE file distributed with
+	 * this work for additional information regarding copyright ownership.
+	 * The ASF licenses this file to You under the Apache License, Version 2.0
+	 * (the "License"); you may not use this file except in compliance with
+	 * the License.  You may obtain a copy of the License at
+	 *
+	 *      http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 */	
+	private static long add(final long a, final long b) {
+		long sum = 0;
+		if (a > b) {
+			// use symmetry to reduce boundry cases
+			sum = add(b, a);
+		} else {
+			assert a <= b;
+			
+			if (a < 0) {
+				if (b < 0) {
+					// check for negative overflow
+					if (Long.MIN_VALUE - b <= a) {
+						sum = a + b;
+					} else {
+						throw new ArithmeticException();
+					}
+				} else {
+					// opposite sign addition is always safe
+					sum = a + b;
+				}
+			} else {
+				assert a >= 0;
+				assert b >= 0;
+
+				// check for positive overflow
+				if (a <= Long.MAX_VALUE - b) {
+					sum = a + b;
+				} else {
+					throw new ArithmeticException();
+				}
+			}
+		}
+		return sum;
+	}	
+	
+	private static long sub(final long a, final long b) {
+		long ret = 0;
+		if (b == Long.MIN_VALUE) {
+			if (a < 0) {
+				ret = a - b;
+			} else {
+				throw new ArithmeticException();
+			}
+		} else {
+			// use additive inverse
+			ret = add(a, -b);
+		}
+		return ret;
+	}    
 	
 }
 
