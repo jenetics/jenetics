@@ -33,21 +33,32 @@ import javolution.context.LocalContext;
  * seed value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RandomRegistry.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: RandomRegistry.java,v 1.2 2008-04-23 06:21:19 fwilhelm Exp $
  */
-final class RandomRegistry {
+public final class RandomRegistry {
 	private static final LocalContext.Reference<Random> 
 		RANDOM = new LocalContext.Reference<Random>(new Random(System.currentTimeMillis()));
 	
 	private RandomRegistry() {
 	}
 	
+	/**
+	 * Return the global {@link Random} object.
+	 * 
+	 * @return the global {@link Random} object.
+	 */
 	public static Random getRandom() {
 		return RANDOM.get();
 	}
 	
+	/**
+	 * Set the new global {@link Random} object for the GA.
+	 * 
+	 * @param random the new global {@link Random} object for the GA.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 */
 	public static void setRandom(final Random random) {
-		assert (random != null);
+		Checker.checkNull(random, "Random object");
 		RANDOM.set(random);
 	}
 
