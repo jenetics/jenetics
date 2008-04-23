@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.3 2008-04-22 15:25:36 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.4 2008-04-23 08:18:52 fwilhelm Exp $
  */
 public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -8980979460645713414L;
@@ -55,7 +55,6 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	/**
 	 * Evaluates statistic valus from a givem population
 	 * 
-	 * @param population The population to calculate the statistic.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */ 
 	public Statistic(
