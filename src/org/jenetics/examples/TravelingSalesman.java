@@ -26,7 +26,12 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.jenetics.Chromosome;
+import org.jenetics.ConcurrentStatisticCalculator;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -42,7 +47,7 @@ import org.jenetics.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.2 2008-04-22 21:12:42 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.3 2008-04-23 14:19:46 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -69,7 +74,7 @@ public class TravelingSalesman {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		final int stops = 10;
 		
 		final FitnessFunction<IntegerGene> ff = new Function(adjacencyMatrix(stops));
@@ -77,6 +82,13 @@ public class TravelingSalesman {
 			PermutationChromosome.valueOf(stops)
 		);
 		final GeneticAlgorithm<IntegerGene> ga = new GeneticAlgorithm<IntegerGene>(gtf, ff);
+		ga.setPopulationSize(10000);
+		
+		final int threads = 4;
+		final ExecutorService pool = Executors.newFixedThreadPool(threads);
+		ga.setStatisticCalculator(
+			new ConcurrentStatisticCalculator(threads, pool)
+		);
 		
         ga.setAlterer(
             new Mutation<IntegerGene>(Probability.valueOf(0.1), 
@@ -93,8 +105,10 @@ public class TravelingSalesman {
         			ga.getStatistic().getFitnessVariance()
         	);
         }
+        pool.awaitTermination(1, TimeUnit.SECONDS);
+        pool.shutdown();
         
-        System.out.println("Best found path:");
+        System.out.println("Best path found:");
         System.out.println(ga.getBestPhenotype() + " --> " + ga.getBestPhenotype().getFitness());
         System.out.println("Minimal tour length: " + (chord(stops, 1, RADIUS)*stops));
         long end = System.currentTimeMillis();
@@ -103,7 +117,7 @@ public class TravelingSalesman {
 	
 	/**
 	 * All points in the created adjacency matrix lie on a circle. So it is easy 
-	 * to check the quality of solution found by the GA.
+	 * to check the quality of the solution found by the GA.
 	 */
 	private static double[][] adjacencyMatrix(int stops) {
 		double[][] matrix = new double[stops][stops];
