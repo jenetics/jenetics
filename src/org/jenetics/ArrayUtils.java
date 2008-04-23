@@ -28,11 +28,11 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Arrays.java,v 1.2 2008-04-22 21:01:16 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.1 2008-04-23 06:13:29 fwilhelm Exp $
  */
-public final class Arrays {
+public final class ArrayUtils {
 
-	private Arrays() {
+	private ArrayUtils() {
 	}
 	
 	/**

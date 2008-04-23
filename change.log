@@ -1,3 +1,4 @@
+- Rename util class org.jenetics.Arrays to org.jenetics.ArrayUtils.
 - Adding StatisticTest class.
 - Adding the (shortcut)method Genotype.getGene()
 - Adding the method Chromosome.getGene() to the Chromosome interface.
