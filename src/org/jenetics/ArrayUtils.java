@@ -22,13 +22,15 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
+
 import java.util.Random;
 
 /**
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.1 2008-04-23 06:13:29 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.2 2008-04-23 08:25:02 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -94,6 +96,66 @@ public final class ArrayUtils {
 		reverse(array, 0, array.length);
 	}
 	
+	/**
+	 * Return a array with the indexes of the partitions of an array with the given size.
+	 * 
+	 * Some examples:
+	 * <pre>
+	 *     partition(10, 3): [0, 3, 6, 10]
+	 *     partition(15, 6): [0, 2, 4, 6, 9, 12, 15]
+	 *     partition(5, 10): [0, 1, 2, 3, 4, 5]
+	 * </pre>
+	 * 
+	 * The following examples prints the start index (inclusive) and the end
+	 * index (exclusive) of the {@code partition(15, 6)}.
+	 * [code]
+	 *     int[] parts = partition(15, 6);
+	 *     for (int i = 0; i < parts.length - 1; ++i) {
+	 *         System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]); 
+	 *     }
+	 * [/code]
+	 * <pre>
+	 *     0: 0    2
+	 *     1: 2    4
+	 *     2: 4    6
+	 *     3: 6    9
+	 *     4: 9    12
+	 *     5: 12   15	
+	 * </pre>
+	 * 
+	 * @param size the size of the array to partition.
+	 * @param prts the number of parts the (virtual) array should be partitioned.
+	 * @return the partition array
+	 * @throws IllegalArgumentException if {@code size} or {@code p} is less than one.
+	 */
+	public static int[] partition(final int size, final int prts) {
+		if (size < 0) {
+			throw new IllegalArgumentException(
+				"Size must greater than zero: " + size
+			);
+		}
+		if (prts < 0) {
+			throw new IllegalArgumentException(
+				"Number of partitions must greater than zero: " + prts
+			);
+		}
+		
+		final int parts = min(size, prts);
+		final int[] partition = new int[parts + 1];
+		
+		final int bulk = size != 0 ? size/parts : 0;
+		final int rest = size != 0 ? size%parts : 0;
+		assert ((bulk*parts + rest) == size);
+		
+		for (int i = 0, n = parts - rest; i < n; ++i) {
+			partition[i] = i*bulk;
+		}
+		for (int i = 0, n = rest + 1; i < n; ++i) {
+			partition[parts - rest + i] = (parts - rest)*bulk + i*(bulk + 1);
+		}
+		
+		return partition;
+	}	
 	
 }
 
