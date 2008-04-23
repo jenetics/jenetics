@@ -29,7 +29,7 @@ import java.util.Random;
  * Crossover</a> of two {@link Chromosome}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.2 2008-04-22 21:12:42 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.3 2008-04-23 13:52:50 fwilhelm Exp $
  */
 public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 6083622511856683392L;
@@ -76,7 +76,7 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 				
 				//Creating two new Phenotypes and exchanging it with the old.
 				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1)));
-				population.set(ptIndex, pt2.newInstance(Genotype.valueOf(chromosomes1)));
+				population.set(ptIndex, pt2.newInstance(Genotype.valueOf(chromosomes2)));
 			}
 		}
 	}
