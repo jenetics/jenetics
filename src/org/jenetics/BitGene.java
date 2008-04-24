@@ -30,7 +30,7 @@ import javolution.xml.stream.XMLStreamException;
  * Implementation of a BitGene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitGene.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: BitGene.java,v 1.2 2008-04-24 18:19:40 fwilhelm Exp $
  */
 public class BitGene implements Gene<Boolean>, Comparable<BitGene>, XMLSerializable {
 	private static final long serialVersionUID = 71303038065442905L;
@@ -95,9 +95,9 @@ public class BitGene implements Gene<Boolean>, Comparable<BitGene>, XMLSerializa
 	public int compareTo(final BitGene gene) {
 		if (this == gene) {
 			return 0;
-		} else if (this.getAllele().booleanValue() && !gene.getAllele().booleanValue()) {
+		} else if (_value && !gene._value) {
 			return 1;
-		} else if (!this.getAllele().booleanValue() && gene.getAllele().booleanValue()) {
+		} else if (!_value && gene._value) {
 			return -1;
 		} else {
 			return 0;

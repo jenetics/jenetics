@@ -109,8 +109,15 @@
 			name="java2html" classname="de.java2html.anttasks.Java2HtmlTask"
 			classpath="${java2html.classpath}"
 		/>
-		<java2html srcdir="${sourcedir}"
-				   destdir="${javadocdir}/src-html"
+
+    	<!-- Formats/colarizes code between [code]...[/code] -->
+		<java classname="Colapi" classpath="${colapi.classpath}" >
+			<arg value="${javadocdir}" />
+		</java>
+		
+		<java2html 
+			srcdir="${sourcedir}"
+			destdir="${javadocdir}/src-html"
 			style="eclipse" showLineNumbers="true" showFileName="true"
 			tabs="4" showTableBorder="true" outputFormat="html"
 			useShortFileName="true" overwrite="true"
@@ -120,15 +127,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 		</java2html>
-		
-    	<!-- Formats/colarizes code between [code]...[/code] -->
-		<java
-			  classname="Colapi"
-			  classpath="${colapi.classpath}"
-		>
-			<arg value="${javadocdir}" />
-		</java>		
-		
+			
 		<copy todir="${javadocdir}/org/jenetics/doc-files" >
 			<fileset dir="${sourcedir}/org/jenetics/doc-files" />
 		</copy>
@@ -140,7 +139,7 @@
 		<javac destdir="${compiledir}" 
 			srcdir="${testng.sourcedir}" 
 			debug="true"
-			 debuglevel="lines,vars,source"
+			debuglevel="lines,vars,source"
 			source="1.6" target="1.6" 
 			encoding="UTF-8" listfiles="yes"
 		>
@@ -158,9 +157,11 @@
 
 	<target name="run-tests" depends="compile-tests">
 		<mkdir dir="${testng.reportdir}" />
-		<testng outputdir="${testng.reportdir}"
-				sourcedir="${testng.sourcedir}"
-				haltonfailure="false" dumpCommand="false"
+		<testng 
+			outputdir="${testng.reportdir}"
+			sourcedir="${testng.sourcedir}"
+			haltonfailure="false" 
+			dumpCommand="false"
 		>
 			<classpath refid="classpath" />
 			<classpath refid="build.classpath" />
