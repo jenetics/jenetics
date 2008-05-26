@@ -35,7 +35,7 @@ import javolution.text.Text;
  * <code>null</code> and the lenght of the <code>_genes</code> > 0.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.2 2008-05-26 20:36:53 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.3 2008-05-26 20:44:12 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -52,6 +52,9 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 * initialized by the child class.
 	 */
 	protected int _length = 0;
+	
+	//
+	private Boolean _valid = null;
 
 	/**
 	 * Default constructor of the AbstractChromosome.
@@ -82,8 +85,13 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
-		for (int i = 0; i < _length && valid; ++i) {
-			valid = _genes[i].isValid();
+		if (_valid == null) {
+			for (int i = 0; i < _length && valid; ++i) {
+				valid = _genes[i].isValid();
+			}
+			_valid = valid ? Boolean.TRUE : Boolean.FALSE;
+		} else {
+			valid = _valid.booleanValue();
 		}
 		return valid;
 	}

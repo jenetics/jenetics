@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.3 2008-04-22 21:12:42 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.4 2008-05-26 20:46:48 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -52,6 +52,9 @@ public class Genotype<T extends Gene<?>>
 	@SuppressWarnings("unchecked")
 	private Chromosome[] _chromosomes; 
 	private int _length;
+	
+	//Caching isValid value.
+	private Boolean _valid = null;
 	
 	protected Genotype() {
 	}
@@ -146,8 +149,13 @@ public class Genotype<T extends Gene<?>>
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
-		for (int i = 0; i < _length && valid; ++i) {
-			valid = ((Verifiable)_chromosomes[i]).isValid();
+		if (_valid == null) {
+			for (int i = 0; i < _length && valid; ++i) {
+				valid = ((Verifiable)_chromosomes[i]).isValid();
+			}
+			_valid = valid ? Boolean.TRUE : Boolean.FALSE;
+		} else {
+			valid = _valid.booleanValue();
 		}
 		return valid;
 	}
