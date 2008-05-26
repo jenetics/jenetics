@@ -1,3 +1,4 @@
+- Only add valid phenotypes to surviving phenotypes.
 - Caching the isValid value in AbstractChromosome and Genotype.
 - Rename util class org.jenetics.Arrays to org.jenetics.ArrayUtils.
 - Adding StatisticTest class.

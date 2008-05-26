@@ -49,7 +49,7 @@ import java.util.Random;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.2 2008-04-21 21:29:08 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.3 2008-05-26 21:01:47 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  */
@@ -173,8 +173,8 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		for (int i = 0, n = survivors.size(); i < n; ++i) {
 			final Phenotype<T> survivor = survivors.get(i);
 			
-			//Survivor is still alive.
-			if ((_generation - survivor.getGeneration()) <= _maximalPhenotypeAge) {
+			//Survivor is still alive and valid.
+			if ((_generation - survivor.getGeneration()) <= _maximalPhenotypeAge && survivor.isValid()) {
 				_population.add(survivor);
 				
 			//Create new phenotypes for dead survivors.
