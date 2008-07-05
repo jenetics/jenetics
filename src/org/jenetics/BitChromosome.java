@@ -38,14 +38,15 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.LargeInteger;
+import org.jscience.mathematics.number.Number;
 
 /**
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.2 2008-04-22 15:25:36 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.3 2008-07-05 20:28:11 fwilhelm Exp $
  */
-public class BitChromosome extends org.jscience.mathematics.number.Number<LargeInteger> 
+public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
 {
 	private static final long serialVersionUID = 1347736183659208046L;
@@ -101,10 +102,10 @@ public class BitChromosome extends org.jscience.mathematics.number.Number<LargeI
 	}
 	
 	@Override
-	public BitGene[] getGenes() {
-		BitGene[] genes = new BitGene[_length];
+	public Array<BitGene> getGenes() {
+		Array<BitGene> genes = Array.newInstance(_length);
 		for (int i = 0; i < _length; ++i) {
-			genes[i] = _genes[i] ? BitGene.TRUE : BitGene.FALSE;
+			genes.set(i, _genes[i] ? BitGene.TRUE : BitGene.FALSE);
 		}
 		return genes;
 	}
@@ -278,10 +279,10 @@ public class BitChromosome extends org.jscience.mathematics.number.Number<LargeI
 	 * randomized.
 	 */
 	@Override
-	public BitChromosome newChromosome(final BitGene[] genes) {
-		BitChromosome chromosome = BitChromosome.newInstance(genes.length, _p);
-		for (int i = 0; i < genes.length; ++i) {
-			chromosome._genes[i] = genes[i].booleanValue();
+	public BitChromosome newChromosome(final Array<BitGene> genes) {
+		BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
+		for (int i = 0; i < genes.length(); ++i) {
+			chromosome._genes[i] = genes.get(i).booleanValue();
 		}
 		return chromosome;
 	}

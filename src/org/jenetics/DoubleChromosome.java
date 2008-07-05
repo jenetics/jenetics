@@ -24,7 +24,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import javolution.context.ObjectFactory;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
@@ -36,14 +35,61 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.2 2008-07-05 20:28:11 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
 {	
 	private static final long serialVersionUID = 6018295796115102264L;
 	
-	protected DoubleChromosome() {
+	protected DoubleChromosome(final Array<DoubleGene> genes) {
+		super(genes);
+	}
+	
+	public DoubleChromosome(final double min, final double max) {
+		this(Float64.valueOf(min), Float64.valueOf(max));
+	}
+	
+	public DoubleChromosome(final Float64 min, final Float64 max) {
+		this(min, max, 1);
+	}
+	
+	public DoubleChromosome(double min, double max, int length) {
+		this(Float64.valueOf(min), Float64.valueOf(max), length);
+	}
+	
+	public DoubleChromosome(final DoubleGene... genes) {
+		super(genes.length);
+		
+		_min = genes[0]._max;
+		_max = genes[0]._max;
+		for (int i = 0; i < genes.length; ++i) {
+			_genes.set(i, genes[i]);
+		}
+	}
+	
+	/**
+	 * Create a new random DoubleChromosome.
+	 * 
+	 * @param min the min value of the {@link DoubleGene}s.
+	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param length the length of the chromosome.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
+	public DoubleChromosome(final Float64 min, final Float64 max, final int length) {
+		super(length);
+		
+		if (!min.isLessThan(max)) {
+			throw new IllegalArgumentException(
+				"Minumum must be less than maximim: " + min + " not less " + max
+			);
+		}
+		_min = min;
+		_max = max;
+		
+		for (int i = 0; i < length; ++i) {
+			_genes.set(i, DoubleGene.valueOf(min, max));
+		}
 	}
 
 	@Override
@@ -52,53 +98,43 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	}
 	
 	@Override
-	public DoubleGene[] getGenes() {
-		DoubleGene[] genes = new DoubleGene[_length];
-		System.arraycopy(_genes, 0, genes, 0, _length);
-		return genes;
-	}
-	
-	@Override
 	public DoubleChromosome mutate(final int index) {
-		final DoubleChromosome chromosome = newInstance(_length);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
+		final DoubleChromosome chromosome = new DoubleChromosome(_genes);
 		
-		final DoubleGene gene = _genes[index];
+		final DoubleGene gene = _genes.get(index);
 		final Random random = RandomRegistry.getRandom(); 
 		double value = random.nextDouble()*
 			(_max.doubleValue() - _min.doubleValue()) + _min.doubleValue();
-		chromosome._genes[index] = gene.newInstance(value);
+		chromosome._genes.set(index, gene.newInstance(value));
 		
 		return chromosome;
 	}
 	
 	@Override
-	public DoubleChromosome newChromosome(final DoubleGene[] genes) {
-		DoubleChromosome chromosome = newInstance(_length);
-		System.arraycopy(genes, 0, chromosome._genes, 0, _length);
-		
-		chromosome._min = genes[0]._min;
-		chromosome._max = genes[0]._max;
+	public DoubleChromosome newChromosome(final Array<DoubleGene> genes) {
+		final DoubleChromosome chromosome = new DoubleChromosome(genes);		
+		chromosome._min = genes.get(0)._min;
+		chromosome._max = genes.get(0)._max;
 		return chromosome;
 	}
 
 	@Override
 	public DoubleChromosome newChromosome() {
-		final DoubleChromosome chromosome = newInstance(_length);
-		chromosome._min = _min;
-		chromosome._max = _max;
-		
+		final Array<DoubleGene> genes = Array.newInstance(length());
 		final Random random = RandomRegistry.getRandom(); 
 		
-		for (int i = 0; i < _length; ++i) {
-			double value = random.nextDouble()*
+		for (int i = 0; i < length(); ++i) {
+			final double value = random.nextDouble()*
 				(_max.doubleValue() - _min.doubleValue()) + _min.doubleValue();
 			
-			chromosome._genes[i] = DoubleGene.valueOf(
+			genes.set(i, DoubleGene.valueOf(
 				value, _min.doubleValue(), _max.doubleValue()
-			);
+			));
 		}
 		
+		final DoubleChromosome chromosome = new DoubleChromosome(genes);
+		chromosome._min = _min;
+		chromosome._max = _max;
 		return chromosome;
 	}
 	
@@ -131,71 +167,8 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		return super.equals(obj);
 	}
 	
-	private static final ObjectFactory<DoubleChromosome> 
-	FACTORY = new ObjectFactory<DoubleChromosome>() {
-		@Override protected DoubleChromosome create() {
-			return new DoubleChromosome();
-		}
-	};
 	
-	static DoubleChromosome newInstance(final int length) {
-		DoubleChromosome chromosome = FACTORY.object();
-		if (chromosome._genes == null || chromosome._genes.length != length) {
-			chromosome._genes = new DoubleGene[length];
-			chromosome._length = length;
-		}
-		return chromosome;
-	}
-	
-	public static DoubleChromosome valueOf(final double min, final double max) {
-		return valueOf(Float64.valueOf(min), Float64.valueOf(max));
-	}
-	
-	public static DoubleChromosome valueOf(final Float64 min, final Float64 max) {
-		return valueOf(min, max, 1);
-	}
-	
-	public static DoubleChromosome valueOf(double min, double max, int length) {
-		return valueOf(Float64.valueOf(min), Float64.valueOf(max), length);
-	}
-	
-	public static DoubleChromosome valueOf(final DoubleGene... genes) {
-		DoubleChromosome chromosome = newInstance(genes.length);
-		
-		chromosome._min = genes[0]._max;
-		chromosome._max = genes[0]._max;
-		
-		for (int i = 0; i < genes.length; ++i) {
-			chromosome._genes[i] = genes[i];
-		}
-		
-		 return chromosome;
-	}
-	
-	/**
-	 * Create a new random DoubleChromosome.
-	 * 
-	 * @param min the min value of the {@link DoubleGene}s.
-	 * @param max the max value of the {@link DoubleGene}s.
-	 * @param length the length of the chromosome.
-	 * @return a new DoubleChromosome.
-	 * @throws IllegalArgumentException if min is not less max.
-	 */
-	public static DoubleChromosome valueOf(final Float64 min, final Float64 max, final int length) {
-		if (!min.isLessThan(max)) {
-			throw new IllegalArgumentException(
-				"Minumum must be less than maximim: " + min + " not less " + max
-			);
-		}
-		DoubleChromosome chromosome = newInstance(length);
-		chromosome._min = min;
-		chromosome._max = max;
-		
-		for (int i = 0; i < length; ++i) {
-			chromosome._genes[i] = DoubleGene.valueOf(min, max);
-		}
-		return chromosome;
-	}
+
 	
 	static final XMLFormat<DoubleChromosome> 
 	XML = new XMLFormat<DoubleChromosome>(DoubleChromosome.class) 
@@ -205,18 +178,18 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 			final Class<DoubleChromosome> cls, final InputElement xml
 		) throws XMLStreamException {
 			final int length = xml.getAttribute("length", 0);
-			final DoubleChromosome chromosome = DoubleChromosome.newInstance(length);
+			final Array<DoubleGene> genes = Array.newInstance(length);
 			for (int i = 0; i < length; ++i) {
 				final DoubleGene gene = xml.getNext();
-				chromosome._genes[i] = gene;
+				genes.set(i, gene);
 			}
-			return chromosome;
+			return new DoubleChromosome(genes);
 		}
 		@Override
 		public void write(final DoubleChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", chromosome._length);
+			xml.setAttribute("length", chromosome.length());
 			for (DoubleGene gene : chromosome) {
 				xml.add(gene);
 			}

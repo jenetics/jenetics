@@ -33,10 +33,11 @@ import java.util.Random;
  * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.2 2008-07-05 20:28:11 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector<T> {
-	
+	private static final long serialVersionUID = -2980541308499034709L;
+
 	protected ProbabilitySelector() {
 	}
 

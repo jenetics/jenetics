@@ -26,7 +26,6 @@ import static org.jenetics.Checker.checkNull;
 
 import java.util.Iterator;
 
-import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -41,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.4 2008-05-26 20:46:48 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.5 2008-07-05 20:28:12 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -49,14 +48,13 @@ public class Genotype<T extends Gene<?>>
 {
 	private static final long serialVersionUID = 868536407305322003L;
 	
-	@SuppressWarnings("unchecked")
-	private Chromosome[] _chromosomes; 
-	private int _length;
+	private final Array<Chromosome<T>> _chromosomes; 
 	
 	//Caching isValid value.
 	private Boolean _valid = null;
 	
-	protected Genotype() {
+	protected Genotype(final int length) {
+		_chromosomes = Array.newInstance(length);
 	}
 	
 	/**
@@ -70,11 +68,9 @@ public class Genotype<T extends Gene<?>>
 	public Chromosome<T> getChromosome(final int index) {
 		checkIndex(index);
 		assert(_chromosomes != null);
-		assert(_chromosomes[index] != null);
+		assert(_chromosomes.get(index) != null);
 		
-		@SuppressWarnings("unchecked")
-		Chromosome<T> chromosome = _chromosomes[index];
-		return chromosome;
+		return _chromosomes.get(index);
 	}
 	
 	/**
@@ -84,11 +80,9 @@ public class Genotype<T extends Gene<?>>
 	 */
 	public Chromosome<T> getChromosome() {
 		assert(_chromosomes != null);
-		assert(_chromosomes[0] != null);
+		assert(_chromosomes.get(0) != null);
 		
-		@SuppressWarnings("unchecked")
-		Chromosome<T> chromosome = _chromosomes[0];
-		return chromosome;
+		return _chromosomes.get(0);
 	}
 	
 	/**
@@ -98,28 +92,23 @@ public class Genotype<T extends Gene<?>>
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *         {@code Genotype}.
 	 */
-	@SuppressWarnings("unchecked")
 	public T getGene() {
 		assert(_chromosomes != null);
-		assert(_chromosomes[0] != null);
-		return (T)_chromosomes[0].getGene();
+		assert(_chromosomes.get(0) != null);
+		return _chromosomes.get(0).getGene();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Chromosome<T>[] getChromosomes() {
-		Chromosome<T>[] chromosomes = new Chromosome[_length];
-		for (int i = 0; i < _length; ++i) {
-			chromosomes[i] = _chromosomes[i];
+	public Array<Chromosome<T>> getChromosomes() {
+		Array<Chromosome<T>> chromosomes = Array.newInstance(_chromosomes.length());
+		for (int i = 0; i < _chromosomes.length(); ++i) {
+			chromosomes.set(i, _chromosomes.get(i));
 		}
 		return chromosomes;
 	}
 	
 	@Override
 	public Iterator<Chromosome<T>> iterator() {
-		@SuppressWarnings("unchecked") 
-		final ArrayIterator<Chromosome<T>> 
-		it = new ArrayIterator<Chromosome<T>>(_chromosomes);
-		return it;
+		return _chromosomes.iterator();
 	}
 	
 	/**
@@ -128,7 +117,7 @@ public class Genotype<T extends Gene<?>>
 	 * @return number of _chromosomes.
 	 */
 	public int chromosomes() {
-		return _length;
+		return _chromosomes.length();
 	}
 	
 	/**
@@ -137,7 +126,7 @@ public class Genotype<T extends Gene<?>>
 	 * @return number of _chromosomes.
 	 */ 
 	public int length() {
-		return _length;
+		return _chromosomes.length();
 	}
 	
 	/**
@@ -150,8 +139,8 @@ public class Genotype<T extends Gene<?>>
 	public boolean isValid() {
 		boolean valid = true;
 		if (_valid == null) {
-			for (int i = 0; i < _length && valid; ++i) {
-				valid = ((Verifiable)_chromosomes[i]).isValid();
+			for (int i = 0; i < _chromosomes.length() && valid; ++i) {
+				valid = ((Verifiable)_chromosomes.get(i)).isValid();
 			}
 			_valid = valid ? Boolean.TRUE : Boolean.FALSE;
 		} else {
@@ -162,9 +151,9 @@ public class Genotype<T extends Gene<?>>
 	
 	@Override
 	public Genotype<T> newGenotype() {
-		Genotype<T> genotype = newInstance(_length);
-		for (int i = 0; i < _length; ++i) {
-			genotype._chromosomes[i] = _chromosomes[i].newChromosome();
+		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length());
+		for (int i = 0; i < _chromosomes.length(); ++i) {
+			genotype._chromosomes.set(i, _chromosomes.get(i).newChromosome());
 		}
 		return genotype;
 	}
@@ -195,9 +184,9 @@ public class Genotype<T extends Gene<?>>
 	}
 	
 	private void checkIndex(final int index) {
-		if (index < 0 || index >= _length) {
+		if (index < 0 || index >= length()) {
 			throw new IndexOutOfBoundsException(
-				"Invalid index: " + index + ", _length: " + _length
+				"Invalid index: " + index + ", _length: " + length()
 			);
 		}
 	}
@@ -213,25 +202,6 @@ public class Genotype<T extends Gene<?>>
 		return out.toText();
 	}
 	
-	private static class GenotypeFactory<A extends Gene<?>> extends ObjectFactory<Genotype<A>> {
-		@Override protected Genotype<A> create() {
-			return new Genotype<A>();
-		}	
-	}
-	private static final GenotypeFactory<? extends Gene<?>> 
-	FACTORY = new GenotypeFactory<Gene<?>>();
-	
-	static <G extends Gene<?>> Genotype<G> newInstance(final int length) {
-		@SuppressWarnings("unchecked")
-		Genotype<G> genotype = (Genotype<G>)FACTORY.object();
-		
-		if (genotype._chromosomes == null || genotype._length != length) {
-			genotype._chromosomes = new Chromosome[length];
-			genotype._length = length;
-		}
-		return genotype;
-	}
-	
 	/**
 	 * Create a new Genotype from a given array of <code>Chromosomes</code>.
 	 * The <code>Chromosome</code> array <code>c</code> is cloned.
@@ -242,16 +212,16 @@ public class Genotype<T extends Gene<?>>
 	 * 		   chromosome.
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
-	public static <G extends Gene<?>> Genotype<G> valueOf(final Chromosome<G>[] chromosomes) {
+	public static <G extends Gene<?>> Genotype<G> valueOf(final Array<Chromosome<G>> chromosomes) {
 		checkNull(chromosomes, "Chromosomes");
-		if (chromosomes.length == 0) {
+		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 		
-		Genotype<G> genotype = newInstance(chromosomes.length);
-		for (int i = 0; i < chromosomes.length; ++i) {
-			checkNull(chromosomes[i], "Chromosome[" + i + "]");
-			genotype._chromosomes[i] = chromosomes[i];
+		final Genotype<G> genotype = new Genotype<G>(chromosomes.length());
+		for (int i = 0; i < chromosomes.length(); ++i) {
+			checkNull(chromosomes.get(i), "Chromosome[" + i + "]");
+			genotype._chromosomes.set(i, chromosomes.get(i));
 		}
 		return genotype;
 	}
@@ -266,8 +236,8 @@ public class Genotype<T extends Gene<?>>
 	public static <G extends Gene<?>> Genotype<G> valueOf(final Chromosome<G> chromosome) {
 		checkNull(chromosome, "Chromosome");
 		
-		Genotype<G> genotype = newInstance(1);
-		genotype._chromosomes[0] = chromosome;
+		final Genotype<G> genotype = new Genotype<G>(1);
+		genotype._chromosomes.set(0, chromosome);
 		return genotype;
 	}
 	
@@ -278,9 +248,9 @@ public class Genotype<T extends Gene<?>>
 		checkNull(chrom1, "Chromosome 1");
 		checkNull(chrom2, "Chromosome 2");
 		
-		Genotype<G> genotype = newInstance(2);
-		genotype._chromosomes[0] = chrom1;
-		genotype._chromosomes[1] = chrom2;
+		final Genotype<G> genotype = new Genotype<G>(2);
+		genotype._chromosomes.set(0, chrom1);
+		genotype._chromosomes.set(1, chrom2);
 		return genotype;
 	}
 	
@@ -293,19 +263,19 @@ public class Genotype<T extends Gene<?>>
 		checkNull(chrom2, "Chromosome 2");
 		checkNull(chrom3, "Chromosome 3");
 		
-		Genotype<G> genotype = newInstance(3);
-		genotype._chromosomes[0] = chrom1;
-		genotype._chromosomes[1] = chrom2;
-		genotype._chromosomes[2] = chrom3;
+		final Genotype<G> genotype = new Genotype<G>(3);
+		genotype._chromosomes.set(0, chrom1);
+		genotype._chromosomes.set(1, chrom2);
+		genotype._chromosomes.set(2, chrom3);
 		return genotype;
 	}
 	
 	public static <G extends Gene<?>> Genotype<G> valueOf(final Genotype<G> genotype) {
 		checkNull(genotype, "Genotype");
 		
-		Genotype<G> gtype = newInstance(genotype._length);
-		for (int i = 0; i < genotype._chromosomes.length; ++i) {
-			gtype._chromosomes[i] = genotype._chromosomes[i];
+		final Genotype<G> gtype = new Genotype<G>(genotype.length());
+		for (int i = 0; i < genotype.length(); ++i) {
+			gtype._chromosomes.set(i, genotype._chromosomes.get(i));
 		}
 		return gtype;
 	}
@@ -318,10 +288,10 @@ public class Genotype<T extends Gene<?>>
 			throws XMLStreamException 
 		{
 			final int length = xml.getAttribute("length", 0);
-			final Genotype genotype = Genotype.newInstance(length);
+			final Genotype genotype = new Genotype(length);
 			for (int i = 0; i < length; ++i) {
 				final Chromosome<?> c = xml.getNext();
-				genotype._chromosomes[i] = c;
+				genotype._chromosomes.set(i, c);
 			}
 			return genotype;
 		}
@@ -329,9 +299,9 @@ public class Genotype<T extends Gene<?>>
 		public void write(final Genotype gt, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", gt._length);
-			for (int i = 0; i < gt._length; ++i) {
-				xml.add(gt._chromosomes[i]);
+			xml.setAttribute("length", gt.length());
+			for (int i = 0; i < gt.length(); ++i) {
+				xml.add(gt._chromosomes.get(i));
 			}
 		}
 		@Override

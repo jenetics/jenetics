@@ -30,11 +30,13 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.2 2008-07-05 20:28:14 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>> 
 	extends Number<NumberGene<N>> implements Gene<N> 
 {
+	private static final long serialVersionUID = 9160065700657586640L;
+
 	/**
 	 * The minimum value of this <code>NumberGene</code>.
 	 */

@@ -24,9 +24,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import javolution.context.ObjectFactory;
-import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -36,86 +33,107 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.2 2008-07-05 20:28:12 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
-	protected IntegerChromosome() {
+	protected IntegerChromosome(final Array<IntegerGene> genes) {
+		super(genes);
 	}
 	
+	public IntegerChromosome(final long min, final long max) {
+		this(Integer64.valueOf(min), Integer64.valueOf(max));
+	}
+	
+	public IntegerChromosome(final Integer64 min, final Integer64 max) {
+		this(min, max, 1);
+	}
+	
+	public IntegerChromosome(final long min, final long max, int length) {
+		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
+	}
+	
+	public IntegerChromosome(final IntegerGene... genes) {
+		super(genes.length);
+		
+		_min = genes[0]._max;
+		_max = genes[0]._max;
+		for (int i = 0; i < genes.length; ++i) {
+			_genes.set(i, genes[i]);
+		}
+	}
+	
+	/**
+	 * Create a new random DoubleChromosome.
+	 * 
+	 * @param min the min value of the {@link DoubleGene}s.
+	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param length the length of the chromosome.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
+	public IntegerChromosome(final Integer64 min, final Integer64 max, final int length) {
+		super(length);
+		
+		if (!min.isLessThan(max)) {
+			throw new IllegalArgumentException(
+				"Minumum must be less than maximim: " + min + " not less " + max
+			);
+		}
+		_min = min;
+		_max = max;
+		
+		for (int i = 0; i < length; ++i) {
+			_genes.set(i, IntegerGene.valueOf(min, max));
+		}
+	}
+
 	@Override
 	public Class<IntegerGene> getType() {
 		return IntegerGene.class;
 	}
 	
 	@Override
-	public IntegerGene[] getGenes() {
-		IntegerGene[] genes = new IntegerGene[_length];
-		System.arraycopy(_genes, 0, genes, 0, _length);
-		return genes;
-	}
-
-	@Override
 	public IntegerChromosome mutate(final int index) {
-		IntegerChromosome chromosome = newInstance(_length);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
+		final IntegerChromosome chromosome = new IntegerChromosome(_genes);
 		
-		final int value = RandomRegistry.getRandom().nextInt(_max.intValue() + 1) + _min.intValue();
-		chromosome._genes[index] = IntegerGene.valueOf(value, _min.intValue(), _max.intValue());
+		final IntegerGene gene = _genes.get(index);
+		final Random random = RandomRegistry.getRandom(); 
+		long value = ((long)random.nextDouble()*
+			(_max.longValue() - _min.longValue()) + _min.longValue());
+		chromosome._genes.set(index, gene.newInstance(value));
 		
 		return chromosome;
 	}
 	
 	@Override
-	public IntegerChromosome newChromosome(final IntegerGene[] genes) {
-		IntegerChromosome chromosome = newInstance(_length);
-		System.arraycopy(genes, 0, chromosome._genes, 0, _length);
-		
-		chromosome._min = genes[0]._min;
-		chromosome._max = genes[0]._max;
+	public IntegerChromosome newChromosome(final Array<IntegerGene> genes) {
+		final IntegerChromosome chromosome = new IntegerChromosome(genes);		
+		chromosome._min = genes.get(0)._min;
+		chromosome._max = genes.get(0)._max;
 		return chromosome;
 	}
 
 	@Override
 	public IntegerChromosome newChromosome() {
-		IntegerChromosome chromosome = newInstance(_length);
+		final Array<IntegerGene> genes = Array.newInstance(length());
+		final Random random = RandomRegistry.getRandom(); 
+		
+		for (int i = 0; i < length(); ++i) {
+			final long value = ((long)random.nextDouble()*
+				(_max.longValue() - _min.longValue()) + _min.longValue());
+			
+			genes.set(i, IntegerGene.valueOf(
+				value, _min.longValue(), _max.longValue()
+			));
+		}
+		
+		final IntegerChromosome chromosome = new IntegerChromosome(genes);
 		chromosome._min = _min;
 		chromosome._max = _max;
-		
-		final Random random = RandomRegistry.getRandom();
-		for (int i = 0; i < _length; ++i) {
-			final int value = random.nextInt(_max.intValue() + 1) + _min.intValue();
-			chromosome._genes[i] = IntegerGene.valueOf(value, _min.intValue(), _max.intValue());
-		}
-		
 		return chromosome;
-	}
-
-	@Override
-	public Text toText() {
-		TextBuilder out = TextBuilder.newInstance();
-		out.append("[");
-		for (NumberGene<Integer64> gene : this) {
-			out.append(gene.toText());
-		}
-		out.append("]");
-		return out.toText();
-	}
-
-	public IntegerChromosome copy() {
-		IntegerChromosome c = newInstance(_length);
-		c._min = _min;
-		c._max = _max;
-		System.arraycopy(_genes, 0, c._genes, 0, c._length);
-		return c;
-	}
-	
-	@Override
-	public IntegerChromosome clone() {
-		return copy();
 	}
 	
 	@Override
@@ -136,61 +154,6 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 		return super.equals(obj);
 	}
 	
-	static final ObjectFactory<IntegerChromosome> 
-	FACTORY = new ObjectFactory<IntegerChromosome>() {
-		@Override protected IntegerChromosome create() {
-			return new IntegerChromosome();
-		}
-	};
-	
-	static IntegerChromosome newInstance(final int length) {
-		IntegerChromosome chromosome = FACTORY.object();
-		if (chromosome._genes == null || chromosome._genes.length != length) {
-			chromosome._genes = new IntegerGene[length];
-			chromosome._length = length;
-		}
-		return chromosome;
-	}
-	
-	public static IntegerChromosome valueOf(final Integer64 min, final Integer64 max) {
-		return valueOf(min, max, 1);
-	}
-	
-	public static IntegerChromosome valueOf(final long min, final long max) {
-		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max));
-	}
-	
-	public static IntegerChromosome valueOf(final int min, final int max, final int length) {
-		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max), length);
-	}
-	
-	/**
-	 * Create a new random IntegerChromosome.
-	 * 
-	 * @param min the min value of the {@link IntegerGene}s.
-	 * @param max the max value of the {@link IntegerGene}s.
-	 * @param length the length of the chromosome.
-	 * @return a new IntegerChromosome.
-	 * @throws IllegalArgumentException if min is not less max.
-	 */
-	public static IntegerChromosome valueOf(final Integer64 min, final Integer64 max, final int length) {
-		if (!min.isLessThan(max)) {
-			throw new IllegalArgumentException(
-				"Minumum must be less than maximim: " + min + " not less " + max
-			);
-		}
-		
-		IntegerChromosome chromosome = newInstance(length);
-		chromosome._min = min;
-		chromosome._max = max;
-		
-		for (int i = 0; i < length; ++i) {
-			chromosome._genes[i] = IntegerGene.valueOf(min, max);
-		}
-		
-		return chromosome;
-	}
-	
 	static final XMLFormat<IntegerChromosome> 
 	XML = new XMLFormat<IntegerChromosome>(IntegerChromosome.class) {
 		@Override
@@ -198,18 +161,19 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 			final Class<IntegerChromosome> cls, final InputElement element
 		) throws XMLStreamException {
 			final int length = element.getAttribute("length", 0);
-			final IntegerChromosome chromosome = IntegerChromosome.newInstance(length);
+			final Array<IntegerGene> genes = Array.newInstance(length);
+			
 			for (int i = 0; i < length; ++i) {
-				IntegerGene gene = element.getNext();
-				chromosome._genes[i] = gene;
+				final IntegerGene gene = element.getNext();
+				genes.set(i, gene);
 			}
-			return chromosome;
+			return new IntegerChromosome(genes);
 		}
 		@Override
 		public void write(final IntegerChromosome chromosome, final OutputElement element) 
 			throws XMLStreamException 
 		{
-			element.setAttribute("length", chromosome._length);
+			element.setAttribute("length", chromosome.length());
 			for (IntegerGene gene : chromosome) {
 				element.add(gene);
 			}

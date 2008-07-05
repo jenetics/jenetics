@@ -30,7 +30,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.2 2008-07-05 20:28:11 fwilhelm Exp $
  */
 public class MeanAlterer<T extends Gene<?> & Mean<T>> extends Alterer<T> {
 	private static final long serialVersionUID = 4680966822655548466L;
@@ -61,17 +61,17 @@ public class MeanAlterer<T extends Gene<?> & Mean<T>> extends Alterer<T> {
 				final Genotype<T> gt2 = pt2.getGenotype();
 				
 				final int chIndex = random.nextInt(gt1.chromosomes());
-				final Chromosome<T>[] chromosomes1 = gt1.getChromosomes();
-				final Chromosome<T>[] chromosomes2 = gt2.getChromosomes();
-				final T[] genes1 = chromosomes1[chIndex].getGenes();
-				final T[] genes2 = chromosomes2[chIndex].getGenes();
+				final Array<Chromosome<T>> chromosomes1 = gt1.getChromosomes();
+				final Array<Chromosome<T>> chromosomes2 = gt2.getChromosomes();
+				final Array<T> genes1 = chromosomes1.get(chIndex).getGenes();
+				final Array<T> genes2 = chromosomes2.get(chIndex).getGenes();
 				
-				final int geneIndex = random.nextInt(genes1.length);
+				final int geneIndex = random.nextInt(genes1.length());
 				
-				genes1[geneIndex] = genes1[geneIndex].mean(genes2[geneIndex]);
-				genes2[geneIndex] = genes1[geneIndex];
-				chromosomes1[chIndex] = chromosomes1[chIndex].newChromosome(genes1);
-				chromosomes2[chIndex] = chromosomes2[chIndex].newChromosome(genes2);
+				genes1.set(geneIndex, genes1.get(geneIndex).mean(genes2.get(geneIndex)));
+				genes2.set(geneIndex, genes1.get(geneIndex));
+				chromosomes1.set(chIndex, chromosomes1.get(chIndex).newChromosome(genes1));
+				chromosomes2.set(chIndex, chromosomes2.get(chIndex).newChromosome(genes2));
 				
 				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1)));
 				population.set(pt2Index, pt2.newInstance(Genotype.valueOf(chromosomes2))); 

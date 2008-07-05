@@ -28,13 +28,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosomeTest.java,v 1.1 2008-03-25 18:31:58 fwilhelm Exp $
+ * @version $Id: CharacterChromosomeTest.java,v 1.2 2008-07-05 20:28:52 fwilhelm Exp $
  */
 public class CharacterChromosomeTest  {
 
     @Test
     public void testMutate() {
-        CharacterChromosome c = CharacterChromosome.valueOf(23);
+        CharacterChromosome c = new CharacterChromosome(23);
         CharacterGene g1 = c.getGene(5);
         c.mutate(5);
         CharacterGene g2 = c.getGene(5);
@@ -44,7 +44,7 @@ public class CharacterChromosomeTest  {
 
     @Test
     public void testCreate() {
-        CharacterChromosome c1 = CharacterChromosome.valueOf(34);
+        CharacterChromosome c1 = new CharacterChromosome(34);
         CharacterChromosome c2 = c1.newChromosome();
         
         assertEquals(c1.length(), c2.length());
@@ -52,15 +52,15 @@ public class CharacterChromosomeTest  {
 
     @Test
     public void testHashCode() {
-        CharacterChromosome c1 = CharacterChromosome.valueOf(23);
-        CharacterChromosome c2 = CharacterChromosome.valueOf(23);
+        CharacterChromosome c1 = new CharacterChromosome(23);
+        CharacterChromosome c2 = new CharacterChromosome(23);
         
         assertEquals(c1.equals(c2), c1.hashCode() == c2.hashCode());
     }
 
     @Test
     public void testIterator() {
-        CharacterChromosome c = CharacterChromosome.valueOf(17);
+        CharacterChromosome c = new CharacterChromosome(17);
         
         int index = 0;
         for (CharacterGene g : c) {

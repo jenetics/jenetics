@@ -70,7 +70,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.2 2008-04-22 21:12:42 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.3 2008-07-05 20:28:12 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 	private static final long serialVersionUID = 4100745364870900673L;
@@ -88,53 +88,54 @@ public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 	}
 	
 	@Override 
-	@SuppressWarnings("unchecked")
-	protected void crossover(T[] that, T[] other) {
+	protected void crossover(Array<T> that, Array<T> other) {
 		final Random random = RandomRegistry.getRandom();
-		int index1 = random.nextInt(that.length);
-		int index2 = random.nextInt(other.length);
+		int index1 = random.nextInt(that.length());
+		int index2 = random.nextInt(other.length());
 		index1 = min(index1, index2);
 		index2 = max(index1, index2) + 1;
 		
-		final Object[] thatGenes = new Object[index2 - index1];
-		final Object[] otherGenes = new Object[index2 - index1];
+		final Array<T> thatGenes = Array.newInstance(index2 - index1);
+		final Array<T> otherGenes = Array.newInstance(index2 - index1);
 		
 		//Swap the gene range.
 		for (int i = index1; i < index2; ++i) {
 			final int index = i - index1;
 			
-			thatGenes[index] = that[i];
-			otherGenes[index] = other[i];
+			thatGenes.set(index, that.get(i));
+			otherGenes.set(index, other.get(i));
 			
-			that[i] = (T)otherGenes[index];
-			other[i] = (T)thatGenes[index];
+			that.set(i, otherGenes.get(index));
+			other.set(i, thatGenes.get(index));
 		}
 		
 		//Repare the chromosomes.
 		for (int i = 0; i < (index2 - index1); ++i) {
-			int thatIndex = indexOf(that, index1, index2, otherGenes[i]);
-			int otherIndex = indexOf(other, index1, index2, thatGenes[i]);
+			int thatIndex = indexOf(that, index1, index2, otherGenes.get(i));
+			int otherIndex = indexOf(other, index1, index2, thatGenes.get(i));
 			
-			that[thatIndex] = (T)thatGenes[i];
-			other[otherIndex] = (T)otherGenes[i];
+			that.set(thatIndex, thatGenes.get(i));
+			other.set(otherIndex, otherGenes.get(i));
 		}
 		
 	}
 	
-	private static int indexOf(final Object[] genes, final int idx1, final int idx2, final Object gene) {
+	private static <A extends Gene<?>> int indexOf(
+		final Array<A> genes, final int idx1, final int idx2, final A gene
+	) {
 		int index = -1;
 		for (int i = 0; index == -1 && i < idx1; ++i) {
-			if (genes[i].equals(gene)) {
+			if (genes.get(i).equals(gene)) {
 				index = i;
 			}
 		}
-		for (int i = idx2; index == -1 && i < genes.length; ++i) {
-			if (genes[i].equals(gene)) {
+		for (int i = idx2; index == -1 && i < genes.length(); ++i) {
+			if (genes.get(i).equals(gene)) {
 				index = i;
 			}
 		}
 		for (int i = idx1; index == -1 && i < idx2; ++i) {
-			if (genes[i].equals(gene)) {
+			if (genes.get(i).equals(gene)) {
 				index = i;
 			}
 		}

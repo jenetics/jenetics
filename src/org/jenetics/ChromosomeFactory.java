@@ -30,7 +30,7 @@ package org.jenetics;
  * @see Chromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChromosomeFactory.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: ChromosomeFactory.java,v 1.2 2008-07-05 20:28:10 fwilhelm Exp $
  */
 public interface ChromosomeFactory<T extends Gene<?>> {
 
@@ -40,7 +40,7 @@ public interface ChromosomeFactory<T extends Gene<?>> {
 	 * 
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 */
-	public Chromosome<T> newChromosome(final T[] genes);
+	public Chromosome<T> newChromosome(final Array<T> genes);
 	
 	/**
 	 * A factory method which creates a new random{@link Chromosome}.

@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.RandomAccess;
 
@@ -35,23 +34,18 @@ import javolution.text.Text;
  * <code>null</code> and the lenght of the <code>_genes</code> > 0.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.3 2008-05-26 20:44:12 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.4 2008-07-05 20:28:14 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
 {
-	
+	private static final long serialVersionUID = 8283543816229993099L;
+
 	/**
 	 * Array of genes which forms the chromosome. This array must
 	 * be initialized by the derived classes.
 	 */
-	protected T[] _genes = null;
-	
-	/**
-	 * Length of the chromosome. The chromosome length must be 
-	 * initialized by the child class.
-	 */
-	protected int _length = 0;
+	protected Array<T> _genes = null;
 	
 	//
 	private Boolean _valid = null;
@@ -59,35 +53,40 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	/**
 	 * Default constructor of the AbstractChromosome.
 	 */
-	protected AbstractChromosome() {
+	protected AbstractChromosome(final int length) {
+		_genes = Array.newInstance(length);
 	}
 	
-	protected void rangeCheck(final int index) {
-		assert(_length >= 0);
-		if (index < 0 || index >= _length) {
-			throw new IndexOutOfBoundsException(
-			"Index: " + index + ", Length: " + _length);
-		}
+	protected AbstractChromosome(final Array<T> genes) {
+		_genes = genes.copy();
 	}
 	
 	@Override
 	public T getGene(final int index) {
-		rangeCheck(index);
-		return _genes[index];
+		return _genes.get(index);
 	}
 	
 	@Override
 	public T getGene() {
-		assert(_length > 0);
-		return _genes[0];
+		return _genes.get(0);
+	}
+
+	/**
+	 * Return a unmodifyabble array instance. A call of the 
+	 * {@link Array#set(int, Object)} will throw an 
+	 * {@link UnsupportedOperationException}.
+	 */
+	@Override
+	public Array<T> getGenes() {
+		return new ImmutableArray<T>(_genes);
 	}
 	
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
 		if (_valid == null) {
-			for (int i = 0; i < _length && valid; ++i) {
-				valid = _genes[i].isValid();
+			for (int i = 0; i < _genes.length() && valid; ++i) {
+				valid = _genes.get(i).isValid();
 			}
 			_valid = valid ? Boolean.TRUE : Boolean.FALSE;
 		} else {
@@ -98,14 +97,12 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	
 	@Override
 	public Iterator<T> iterator() {
-		assert(_genes != null) : "Implementor must assure that genes are not null.";
-		assert(_length > 0) : "Implementor must assure that genes are not empty.";
-		return new ArrayIterator<T>(_genes);
+		return _genes.iterator();
 	}
 	
 	@Override
 	public int length() {
-		return _length;
+		return _genes.length();
 	}
 	
 	/**
@@ -116,8 +113,8 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 */
 	protected int firstIndexOf(final T gene) {
 		int index = -1;
-		for (int i = 0; i < _length && index == -1; ++i) {
-			if (_genes[i].equals(gene)) {
+		for (int i = 0; i < length() && index == -1; ++i) {
+			if (_genes.get(i).equals(gene)) {
 				index = i;
 			}
 		}
@@ -144,20 +141,20 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 		
 		final AbstractChromosome<?> chromosome = (AbstractChromosome<?>)obj;
 		boolean equals = length() == chromosome.length();
-		for (int i = 0; equals && i < _length; ++i) {
-			equals = _genes[i].equals(chromosome._genes[i]);
+		for (int i = 0; equals && i < length(); ++i) {
+			equals = _genes.get(i).equals(chromosome._genes.get(i));
 		}
 		return equals;
 	}
 
 	@Override
 	public Text toText() {
-		return Text.valueOf(Arrays.toString(_genes));
+		return Text.valueOf(_genes.toString());
 	}
 	
 	@Override
 	public String toString() {
-		return toText().toString();
+		return _genes.toString();
 	}
 	
 }

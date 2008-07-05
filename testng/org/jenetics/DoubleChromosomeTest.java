@@ -30,14 +30,14 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosomeTest.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: DoubleChromosomeTest.java,v 1.2 2008-07-05 20:28:52 fwilhelm Exp $
  */
 public class DoubleChromosomeTest {
 
 
     @Test
     public void testMutate() {
-        DoubleChromosome c = DoubleChromosome.valueOf(0.0, 10.12, 20);
+        DoubleChromosome c = new DoubleChromosome(0.0, 10.12, 20);
         NumberGene<Float64> g = c.getGene(12);
         assertTrue(g.equals(c.getGene(12)));
         c.mutate(12);
@@ -46,7 +46,7 @@ public class DoubleChromosomeTest {
 
     @Test
     public void testCreate() {
-        DoubleChromosome c1 = DoubleChromosome.valueOf(-12.0, 230.123, 100);
+        DoubleChromosome c1 = new DoubleChromosome(-12.0, 230.123, 100);
         DoubleChromosome c2 = c1.newChromosome();
         
         for (NumberGene<Float64> g : c2) {
