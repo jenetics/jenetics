@@ -1,3 +1,6 @@
+- Replace array types (e.g. IntegerGene[]) with Array<T> class
+  (e.g. Array<IntegerGene>). This moves all the 'unchecked' stuff in the new
+  Array class.
 - Only add valid phenotypes to surviving phenotypes.
 - Caching the isValid value in AbstractChromosome and Genotype.
 - Rename util class org.jenetics.Arrays to org.jenetics.ArrayUtils.

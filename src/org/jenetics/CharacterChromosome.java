@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import javolution.context.ObjectFactory;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
@@ -31,50 +30,46 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.2 2008-07-05 20:28:10 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, XMLSerializable
 {	
 	private static final long serialVersionUID = 8213347401351340289L;
 
-	protected CharacterChromosome() {
+	public CharacterChromosome(final int length) {
+		super(length);
+		for (int i = 0; i < length(); ++i) {
+			_genes.set(i, CharacterGene.valueOf());
+		}
+	}
+	
+	public CharacterChromosome(final Array<CharacterGene> genes) {
+		super(genes);
 	}
 	
 	@Override
 	public Class<CharacterGene> getType() {
 		return CharacterGene.class;
 	}
-	
-	@Override
-	public CharacterGene[] getGenes() {
-		CharacterGene[] genes = new CharacterGene[_length];
-		System.arraycopy(_genes, 0, genes, 0, _length);
-		return genes;
-	}
 
 	@Override
 	public CharacterChromosome mutate(final int index) {
-		rangeCheck(index);
-		
-		CharacterChromosome chromosome = CharacterChromosome.newInstance(_length);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
-		chromosome._genes[index] = CharacterGene.valueOf();
+		final CharacterChromosome chromosome = new CharacterChromosome(_genes);
+		chromosome._genes.set(index, CharacterGene.valueOf());
 		return chromosome;
 	}
 
 	@Override
-	public CharacterChromosome newChromosome(final CharacterGene[] genes) {
-		CharacterChromosome chromosome = CharacterChromosome.newInstance(_length);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
-		return chromosome;
+	public CharacterChromosome newChromosome(final Array<CharacterGene> genes) {
+		return new CharacterChromosome(genes);
 	}
 	
 	@Override
 	public CharacterChromosome newChromosome() {
-		CharacterChromosome chromosome = CharacterChromosome.newInstance(_length);
-		for (int i = 0; i < _length; ++i) {
-			chromosome._genes[i] = CharacterGene.valueOf();
+		final CharacterChromosome chromosome = new CharacterChromosome(length());
+		for (int i = 0; i < length(); ++i) {
+			chromosome._genes.set(i, CharacterGene.valueOf());
 		}
 		return chromosome;
 	}
@@ -109,42 +104,6 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		return super.equals(obj); 
 	}
 	
-	static final ObjectFactory<CharacterChromosome> 
-	FACTORY = new ObjectFactory<CharacterChromosome>() {
-		@Override protected CharacterChromosome create() {
-			return new CharacterChromosome();
-		}
-	};
-	
-	static CharacterChromosome newInstance(final int length) {
-		CharacterChromosome chromosome = FACTORY.object();
-		if (chromosome._genes == null || chromosome._genes.length != length) {
-			chromosome._genes = new CharacterGene[length];
-			chromosome._length = length;
-		}
-		return chromosome;
-	}
-	
-	/**
-	 * Create a CharacterChromosome with the given length.
-	 * 
-	 * @param length the length of the chromosome.
-	 * @throws IllegalArgumentException if the length is smaller then one.
-	 */
-	public static CharacterChromosome valueOf(final int length) {
-		if (length < 1) {
-			throw new IllegalArgumentException(
-				"Chromosome length must be at least one, but was " + length
-			);
-		}
-		
-		CharacterChromosome chromosome = newInstance(length);
-		for (int i = 0; i < chromosome._length; ++i) {
-			chromosome._genes[i] = CharacterGene.valueOf();
-		}
-		return chromosome;
-	}
-	
 	
 	static final XMLFormat<CharacterChromosome> 
 	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class) {
@@ -153,10 +112,10 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 			throws XMLStreamException 
 		{
 			final int length = xml.getAttribute("length", 0);
-			final CharacterChromosome chromosome = CharacterChromosome.newInstance(length);
+			final CharacterChromosome chromosome = new CharacterChromosome(length);
 			for (int i = 0; i < length; ++i) {
 				CharacterGene gene = xml.getNext();
-				chromosome._genes[i] = gene;
+				chromosome._genes.set(i, gene);
 			}
 			return chromosome;
 		}
@@ -164,7 +123,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		public void write(final CharacterChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", chromosome._length);
+			xml.setAttribute("length", chromosome.length());
 			for (CharacterGene gene : chromosome) {
 				xml.add(gene);
 			}

@@ -29,7 +29,7 @@ import java.util.Random;
  * Crossover</a> of two {@link Chromosome}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.3 2008-04-23 13:52:50 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.4 2008-07-05 20:28:13 fwilhelm Exp $
  */
 public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 6083622511856683392L;
@@ -64,15 +64,15 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 				final int chIndex1 = random.nextInt(gt1.chromosomes());
 				final int chIndex2 = random.nextInt(gt2.chromosomes());
 				
-				final Chromosome<T>[] chromosomes1 = gt1.getChromosomes();
-				final Chromosome<T>[] chromosomes2 = gt2.getChromosomes();
-				final T[] genes1 = chromosomes1[chIndex1].getGenes();
-				final T[] genes2 = chromosomes2[chIndex2].getGenes();
+				final Array<Chromosome<T>> chromosomes1 = gt1.getChromosomes();
+				final Array<Chromosome<T>> chromosomes2 = gt2.getChromosomes();
+				final Array<T> genes1 = chromosomes1.get(chIndex1).getGenes().copy();
+				final Array<T> genes2 = chromosomes2.get(chIndex2).getGenes().copy();
 				
 				crossover(genes1, genes2);
 				
-				chromosomes1[chIndex1] = chromosomes1[chIndex1].newChromosome(genes1);
-				chromosomes2[chIndex2] = chromosomes2[chIndex2].newChromosome(genes2);
+				chromosomes1.set(chIndex1, chromosomes1.get(chIndex1).newChromosome(genes1));
+				chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newChromosome(genes2));
 				
 				//Creating two new Phenotypes and exchanging it with the old.
 				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1)));
@@ -84,7 +84,7 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	/**
 	 * Template method which performs the crossover.
 	 */
-	protected abstract void crossover(T[] that, T[] other);
+	protected abstract void crossover(Array<T> that, Array<T> other);
 //	protected void crossover(Chromosome<T> that, Chromosome<T> other) {
 //		final Random random = RandomRegistry.getRandom();
 //		int from = random.nextInt(that.length());

@@ -38,7 +38,7 @@ import org.jenetics.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.1 2008-03-25 18:31:58 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.2 2008-07-05 20:28:33 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene> {
@@ -52,7 +52,7 @@ public class RealFunction {
 	
 	
 	public static void main(String[] args) {
-		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(DoubleChromosome.valueOf(0, 360));
+		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final Function ff = new Function();
 		final GeneticAlgorithm<DoubleGene> ga = new GeneticAlgorithm<DoubleGene>(gtf, ff);
 		

@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.3 2008-04-23 08:25:13 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.4 2008-07-05 20:28:52 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculatorTest {
 
@@ -61,7 +61,7 @@ public class ConcurrentStatisticCalculatorTest {
 		
 		for (int i = 0; i < size; ++i) {
 			Genotype<DoubleGene> gt = Genotype.valueOf(
-				DoubleChromosome.valueOf(DoubleGene.valueOf(i, 0, size - 1))
+				new DoubleChromosome(DoubleGene.valueOf(i, 0, size - 1))
 			);
 			population.add(Phenotype.valueOf(gt, FF, i));
 		}

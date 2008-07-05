@@ -25,7 +25,6 @@ package org.jenetics;
 import java.util.Arrays;
 import java.util.Random;
 
-import javolution.context.ObjectFactory;
 import javolution.xml.XMLSerializable;
 
 /**
@@ -33,153 +32,21 @@ import javolution.xml.XMLSerializable;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.2 2008-07-05 20:28:13 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
 {
 	private static final long serialVersionUID = 3504723054127043564L;
 
-	protected PermutationChromosome() {
-	}
-	
-	@Override
-	public Class<IntegerGene> getType() {
-		return IntegerGene.class;
-	}
-	
-	@Override
-	public IntegerGene[] getGenes() {
-		IntegerGene[] genes = new IntegerGene[_length];
-		System.arraycopy(_genes, 0, genes, 0, _length);
-		return genes;
-	}
-
-	/**
-	 * Mutates the given gene. To keep this chromosome in a valid state the mutation is
-	 * performed by a swap with a second, randomly choosen, gene of this chromosome. This
-	 * mutation method is equivalent to:
-	 * 
-	 * [code]
-	 *     final Random random = ...;
-	 *     this.swap(index, random.nextInt(this.length()));
-	 * [/code]
-	 */
-	@Override
-	public PermutationChromosome mutate(final int index) {
-		PermutationChromosome chromosome = newInstance(_length);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
-		
-		final Random random = RandomRegistry.getRandom();
-		final int otherIndex = random.nextInt(_length);
-		IntegerGene temp = chromosome._genes[index];
-		chromosome._genes[index] = chromosome._genes[otherIndex];
-		chromosome._genes[otherIndex] = temp;
-		
-		return chromosome;
-	}
-	
-	/**
-	 * Check if this chromosome represents still a valid permutation. 
-	 */
-	@Override
-	public boolean isValid() {
-		byte[] check = new byte[_length/8 + 1];
-		Arrays.fill(check, (byte)0);
-		
-		boolean valid = true;
-		for (int i = 0; i < _length && valid; ++i) {
-			final int value = _genes[i].intValue();
-			if (value >= 0 && value < _length) {
-				if (BitUtils.getBit(check, value)) {
-					valid = false;
-				} else {
-					BitUtils.setBit(check, value, true);
-				}
-			} else {
-				valid = false;
-			}
-		}
-		return valid;
-	}
-
-	@Override
-	public PermutationChromosome newChromosome() {
-		return valueOf(_length, true);
-	}
-	
-	@Override
-	public PermutationChromosome newChromosome(final IntegerGene[] genes) {
-		PermutationChromosome chromosome = newInstance(_length);
-		System.arraycopy(genes, 0, chromosome._genes, 0, _length);
-		return chromosome;
-	}
-	
-	/**
-	 * Create an exact copy of this chromosome.
-	 * 
-	 * @return the copied chromosome.
-	 */
-	public PermutationChromosome copy() {
-		PermutationChromosome c = newInstance(_length);
-		System.arraycopy(_genes, 0, c._genes, 0, c._length);
-		return c;
-	}
-	
-	@Override
-	public PermutationChromosome clone() {
-		return copy();
-	}
-	
-	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += super.hashCode()*37;
-		return hash;
-	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof PermutationChromosome)) {
-			return false;
-		}
-		return super.equals(obj);
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder out = new StringBuilder();
-		out.append(_genes[0].getAllele().intValue());
-		for (int i = 1; i < _length; ++i) {
-			out.append("|").append(_genes[i].getAllele().intValue());
-		}
-		return out.toString();
-	}
-	
-	static final ObjectFactory<PermutationChromosome> 
-	FACTORY = new ObjectFactory<PermutationChromosome>() {
-		@Override protected PermutationChromosome create() {
-			return new PermutationChromosome();
-		}
-	};
-	
-	static PermutationChromosome newInstance(final int length) {
-		PermutationChromosome chromosome = FACTORY.object();
-		if (chromosome._genes == null || chromosome._genes.length != length) {
-			chromosome._genes = new IntegerGene[length];
-			chromosome._length = length;
-		}
-		return chromosome;
+	protected PermutationChromosome(final Array<IntegerGene> genes) {
+		super(genes);
 	}
 	
 	/**
 	 * Create a new PermutationChromosome from the given {@code values}.
 	 * 
 	 * @param values the values of the newly created PermutationChromosome.
-	 * @return the newly create PermutationChromosome.
 	 * @throws NullPointerException it the given {@code values} are {@code null}.
 	 * @throws IllegalArgumentException if
 	 *          <ul>
@@ -189,7 +56,9 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 	 *             <li>the array length is smaller than 1</li>
 	 *          </ul>
 	 */
-	public static PermutationChromosome valueOf(final int[] values) {
+	public PermutationChromosome(final int[] values) {
+		super(values.length);
+		
 		//Check the input.
 		Checker.checkNull(values, "Values");
 		if (values.length < 1) {
@@ -218,11 +87,9 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			}
 		}
 		
-		PermutationChromosome chromosome = newInstance(values.length);
 		for (int i = 0; i < values.length; ++i) {
-			chromosome._genes[i] = IntegerGene.valueOf(values[i], 0, values.length - 1);
+			_genes.set(i, IntegerGene.valueOf(values[i], 0, values.length - 1));
 		}
-		return chromosome;
 	}
 	
 	/**
@@ -232,15 +99,13 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 	 * @param randomize if true, the chromosome is randomized, otherwise the
 	 *        values of the chromosome are in ascending order from 0 to 
 	 *        {@code length - 1}
-	 * @return the newly created chromosome.
 	 * @throws IllegalArgumentException if the given {@code length} is smaller than 1.
 	 */
-	public static PermutationChromosome valueOf(final int length, final boolean randomize) {
+	public PermutationChromosome(final int length, final boolean randomize) {
+		super(length);
 		if (length < 1) {
 			throw new IllegalArgumentException("Length must be greater than 1, but was " + length);
 		}
-		
-		PermutationChromosome chromosome = newInstance(length);
 		
 		final Random random = RandomRegistry.getRandom();
 		if (randomize) {
@@ -248,27 +113,113 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			//Third edition, page 145, Algorith P (Shuffling).
 			for (int j = 0; j < length; ++j) {
 				final int i = random.nextInt(j + 1);
-				chromosome._genes[j] = chromosome._genes[i];
-				chromosome._genes[i] = IntegerGene.valueOf(j, 0, length - 1);
+				_genes.set(j, _genes.get(i));
+				_genes.set(i, IntegerGene.valueOf(j, 0, length - 1));
 			}
 		} else {
 			for (int i = 0; i < length; ++i) {
-				chromosome._genes[i] = IntegerGene.valueOf(i, 0, length - 1);
+				_genes.set(i, IntegerGene.valueOf(i, 0, length - 1));
 			}
 		}
-		
-		return chromosome;
 	}
 	
 	/**
 	 * Create a new randomly created permutation with the length {@code length}.
 	 * 
 	 * @param length the length of the chromosome.
-	 * @return the newly created chromosome.
 	 * @throws IllegalArgumentException if the given {@code length} is smaller than 1.
 	 */
-	public static PermutationChromosome valueOf(final int length) {
-		return valueOf(length, false);
+	public PermutationChromosome(final int length) {
+		this(length, false);
+	}
+	
+	@Override
+	public Class<IntegerGene> getType() {
+		return IntegerGene.class;
+	}
+
+	/**
+	 * Mutates the given gene. To keep this chromosome in a valid state the mutation is
+	 * performed by a swap with a second, randomly choosen, gene of this chromosome. This
+	 * mutation method is equivalent to:
+	 * 
+	 * [code]
+	 *     final Random random = ...;
+	 *     this.swap(index, random.nextInt(this.length()));
+	 * [/code]
+	 */
+	@Override
+	public PermutationChromosome mutate(final int index) {
+		final PermutationChromosome chromosome = new PermutationChromosome(_genes);
+		final Random random = RandomRegistry.getRandom();
+		final int otherIndex = random.nextInt(length());
+		final IntegerGene temp = chromosome._genes.get(index);
+		chromosome._genes.set(index, chromosome._genes.get(otherIndex));
+		chromosome._genes.set(otherIndex, temp);
+		
+		return chromosome;
+	}
+	
+	/**
+	 * Check if this chromosome represents still a valid permutation. 
+	 */
+	@Override
+	public boolean isValid() {
+		byte[] check = new byte[length()/8 + 1];
+		Arrays.fill(check, (byte)0);
+		
+		boolean valid = true;
+		for (int i = 0; i < length() && valid; ++i) {
+			final int value = _genes.get(i).intValue();
+			if (value >= 0 && value < length()) {
+				if (BitUtils.getBit(check, value)) {
+					valid = false;
+				} else {
+					BitUtils.setBit(check, value, true);
+				}
+			} else {
+				valid = false;
+			}
+		}
+		return valid;
+	}
+
+	@Override
+	public PermutationChromosome newChromosome() {
+		return new PermutationChromosome(length(), true);
+	}
+	
+	@Override
+	public PermutationChromosome newChromosome(final Array<IntegerGene> genes) {
+		return new PermutationChromosome(genes);
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += super.hashCode()*37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof PermutationChromosome)) {
+			return false;
+		}
+		return super.equals(obj);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder out = new StringBuilder();
+		out.append(_genes.get(0).getAllele().intValue());
+		for (int i = 1; i < length(); ++i) {
+			out.append("|").append(_genes.get(i).getAllele().intValue());
+		}
+		return out.toString();
 	}
 	
 }

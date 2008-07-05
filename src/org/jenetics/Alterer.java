@@ -45,9 +45,10 @@ import javolution.xml.XMLSerializable;
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.2 2008-07-05 20:28:10 fwilhelm Exp $
  */
 public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
+	private static final long serialVersionUID = -675546015545758480L;
 
 	/**
 	 * The Alterer which is executed after <code>this</code> alterer.

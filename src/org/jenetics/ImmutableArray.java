@@ -1,7 +1,7 @@
-/*
+/* 
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,78 +18,67 @@
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
  */
 package org.jenetics;
 
+import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.NoSuchElementException;
 
 /**
- * Helper class which iterates over an given array.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayIterator.java,v 1.2 2008-07-05 20:28:13 fwilhelm Exp $
+ * @version $Id: ImmutableArray.java,v 1.1 2008-07-05 20:28:13 fwilhelm Exp $
  */
-final class ArrayIterator<T> implements ListIterator<T> {
-	private final Object[] _array;
-	private int _pos = -1;
-	
-	public ArrayIterator(final Object[] array) {
-		this._array = array;
+final class ImmutableArray<T> extends Array<T> {
+	private Array<T> _array;
+
+	public ImmutableArray(final Array<T> array) {
+		_array = array;
 	}
 	
 	@Override
-	public boolean hasNext() {
-		return _pos < _array.length - 1;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public T next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return (T)_array[++_pos];
-	}
-	
-	@Override
-	public int nextIndex() {
-		return _pos + 1;
-	}
-	
-	@Override
-	public boolean hasPrevious() {
-		return _pos > 0;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public T previous() {
-		if (!hasPrevious()) {
-			throw new NoSuchElementException();
-		}
-		return (T)_array[--_pos];
+	public Array<T> copy() {
+		return _array.copy();
 	}
 
 	@Override
-	public int previousIndex() {
-		return _pos - 1;
+	public boolean equals(Object obj) {
+		return _array.equals(obj);
 	}
-	
+
 	@Override
-	public void set(final T value) {
-		_array[_pos] = value;
+	public T get(int index) {
+		return _array.get(index);
 	}
-	
+
 	@Override
-	public void add(final T o) {
+	public int hashCode() {
+		return _array.hashCode();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return _array.iterator();
+	}
+
+	@Override
+	public int length() {
+		return _array.length();
+	}
+
+	@Override
+	public ListIterator<T> listIterator() {
+		return _array.listIterator();
+	}
+
+	@Override
+	public void set(int index, T value) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
+	public String toString() {
+		return _array.toString();
 	}
+	
 	
 }

@@ -38,7 +38,7 @@ import org.jenetics.Statistic;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.1 2008-03-25 18:31:58 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.2 2008-07-05 20:28:33 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -72,7 +72,7 @@ public class StringGenerator {
 		final String value = "A test string";
 		
 		final GenotypeFactory<CharacterGene> gtf = Genotype.valueOf(
-			CharacterChromosome.valueOf(value.length())
+			new CharacterChromosome(value.length())
 		);
 		final Function ff = new Function(value);
 		final GeneticAlgorithm<CharacterGene> 

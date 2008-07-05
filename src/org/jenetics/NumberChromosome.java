@@ -25,11 +25,13 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.2 2008-07-05 20:28:13 fwilhelm Exp $
  */
 public abstract class NumberChromosome<N extends NumberGene<?>> 
 	extends AbstractChromosome<N> 
 {
+	private static final long serialVersionUID = 5563733927327762322L;
+
 	/**
 	 * The minimum value of this <code>NumberChromosome</code>.
 	 */
@@ -40,7 +42,12 @@ public abstract class NumberChromosome<N extends NumberGene<?>>
 	 */
 	protected org.jscience.mathematics.number.Number<?> _max;
 	
-	protected NumberChromosome() {
+	protected NumberChromosome(final int length) {
+		super(length);
+	}
+	
+	protected NumberChromosome(final Array<N> genes) {
+		super(genes);
 	}
 	
 	/**

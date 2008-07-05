@@ -30,11 +30,10 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GenotypeTest.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: GenotypeTest.java,v 1.2 2008-07-05 20:28:52 fwilhelm Exp $
  */
 public class GenotypeTest {
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testHashCode() {
         BitChromosome c1 = BitChromosome.valueOf(12);
@@ -66,10 +65,10 @@ public class GenotypeTest {
 
     @Test
     public void testSetGetChromosome() {
-        IntegerChromosome c1 = IntegerChromosome.valueOf(0, 100, 10);
-        IntegerChromosome c2 = IntegerChromosome.valueOf(0, 100, 10);
+        IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
+        IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
         @SuppressWarnings("unused")
-		IntegerChromosome c3 = IntegerChromosome.valueOf(0, 100, 10);
+		IntegerChromosome c3 = new IntegerChromosome(0, 100, 10);
         @SuppressWarnings("unused")
 		Genotype<IntegerGene> g = Genotype.valueOf(c1, c2);
     }
@@ -77,8 +76,8 @@ public class GenotypeTest {
 
     @Test
     public void testCreate() {
-        IntegerChromosome c1 = IntegerChromosome.valueOf(0, 100, 10);
-        IntegerChromosome c2 = IntegerChromosome.valueOf(0, 100, 10);
+        IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
+        IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
         Genotype<IntegerGene> g1 = Genotype.valueOf(c1, c2);
         Genotype<IntegerGene> g2 = g1.newGenotype();
         
