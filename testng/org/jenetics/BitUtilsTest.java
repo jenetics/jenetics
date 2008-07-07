@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtilsTest.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: BitUtilsTest.java,v 1.2 2008-07-07 21:18:03 fwilhelm Exp $
  */
 public class BitUtilsTest {
 
@@ -102,5 +102,23 @@ public class BitUtilsTest {
 		BitUtils.invert(idata);
 		Assert.assertEquals(idata, data);
 	}
+
+	@Test
+	public void toStringToByteArray() {
+		byte[] data = new byte[10];
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = (byte)(Math.random()*256);
+		}
+		
+		final String dataString = BitUtils.toString(data);
+		System.out.println(dataString);
+		
+		final byte[] sdata = BitUtils.toByteArray(dataString);
+		Assert.assertEquals(sdata, data);
+	}
 	
 }
+
+
+
+

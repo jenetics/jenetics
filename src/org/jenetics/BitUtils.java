@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * Some bit utils.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.5 2008-04-23 19:20:20 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.6 2008-07-07 21:17:40 fwilhelm Exp $
  */
 public final class BitUtils {
 
@@ -318,14 +318,49 @@ public final class BitUtils {
 	public static String toString(final byte... data) {
 		final StringBuilder out = new StringBuilder();
 		
-		for (int i = 0; i < data.length; ++i) {
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[0] >>> j) & 1);
+			}
+		}
+		for (int i = 1; i < data.length; ++i) {
+			out.append('|');
 			for (int j = 7; j >= 0; --j) {
 				out.append((data[i] >>> j) & 1);
 			}
-			out.append('|');
 		}
 
 		return out.toString();
+	}
+	
+	/**
+	 * Convert a string which was created with the {@link #toString(byte...)}
+	 * method back to an byte array.
+	 * 
+	 * @param data the string to convert.
+	 * @return the byte array.
+	 * @throws IllegalArgumentException if the given data string could not be
+	 *         converted.
+	 */
+	public static byte[] toByteArray(final String data) {
+		final String[] parts = data.split("\\|");
+		final byte[] bytes = new byte[parts.length];
+		
+		for (int i = 0; i < parts.length; ++i) {
+			if (parts[i].length() != 8) {
+				throw new IllegalArgumentException(
+					"Byte value doesn't contain 8 bit: " + parts[i]
+				);
+			} else {
+				try {
+					bytes[i] = (byte)Integer.parseInt(parts[i], 2);
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException(e);
+				}
+			}
+		}
+		
+		return bytes;
 	}
 	
 	
