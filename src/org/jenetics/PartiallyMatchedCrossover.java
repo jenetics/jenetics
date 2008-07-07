@@ -70,7 +70,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.3 2008-07-05 20:28:12 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.4 2008-07-07 22:01:24 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 	private static final long serialVersionUID = 4100745364870900673L;
@@ -88,7 +88,7 @@ public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 	}
 	
 	@Override 
-	protected void crossover(Array<T> that, Array<T> other) {
+	protected void crossover(final Array<T> that, final Array<T> other) {
 		final Random random = RandomRegistry.getRandom();
 		int index1 = random.nextInt(that.length());
 		int index2 = random.nextInt(other.length());
@@ -120,7 +120,7 @@ public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 		
 	}
 	
-	private static <A extends Gene<?>> int indexOf(
+	private static <A> int indexOf(
 		final Array<A> genes, final int idx1, final int idx2, final A gene
 	) {
 		int index = -1;

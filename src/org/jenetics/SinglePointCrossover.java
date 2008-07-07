@@ -49,7 +49,7 @@ import javolution.xml.stream.XMLStreamException;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SinglePointCrossover.java,v 1.2 2008-07-05 20:28:10 fwilhelm Exp $
+ * @version $Id: SinglePointCrossover.java,v 1.3 2008-07-07 22:01:25 fwilhelm Exp $
  */
 public class SinglePointCrossover<T extends Gene<?>> extends Crossover<T> {
 	private static final long serialVersionUID = -5901453762256113098L;
@@ -67,7 +67,7 @@ public class SinglePointCrossover<T extends Gene<?>> extends Crossover<T> {
 	}
 	
 	@Override
-	protected void crossover(Array<T> that, Array<T> other) {
+	protected void crossover(final Array<T> that, final Array<T> other) {
 		final Random random = RandomRegistry.getRandom();
 		final int index = random.nextInt(that.length());
 		
@@ -79,10 +79,12 @@ public class SinglePointCrossover<T extends Gene<?>> extends Crossover<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	static final XMLFormat<SinglePointCrossover> XML = new XMLFormat<SinglePointCrossover>(SinglePointCrossover.class) {
+	static final XMLFormat<SinglePointCrossover> 
+	XML = new XMLFormat<SinglePointCrossover>(SinglePointCrossover.class) {
 		@Override
-		public SinglePointCrossover newInstance(final Class<SinglePointCrossover> cls, final InputElement xml) 
-			throws XMLStreamException 
+		public SinglePointCrossover newInstance(
+			final Class<SinglePointCrossover> cls, final InputElement xml
+		) throws XMLStreamException 
 		{
 			final double p = xml.getAttribute("probability", 0.5);
 			final boolean hasAlterer = xml.getAttribute("has-alterer", false);

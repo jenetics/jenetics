@@ -29,7 +29,7 @@ import java.util.Random;
  * Crossover</a> of two {@link Chromosome}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.4 2008-07-05 20:28:13 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.5 2008-07-07 22:01:25 fwilhelm Exp $
  */
 public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 6083622511856683392L;
@@ -84,7 +84,7 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	/**
 	 * Template method which performs the crossover.
 	 */
-	protected abstract void crossover(Array<T> that, Array<T> other);
+	protected abstract void crossover(final Array<T> that, final Array<T> other);
 //	protected void crossover(Chromosome<T> that, Chromosome<T> other) {
 //		final Random random = RandomRegistry.getRandom();
 //		int from = random.nextInt(that.length());
