@@ -33,12 +33,13 @@ import java.util.BitSet;
 import javolution.xml.XMLObjectWriter;
 
 import org.jscience.mathematics.number.LargeInteger;
+import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.2 2008-07-07 21:18:03 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.3 2008-07-07 22:01:43 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -180,11 +181,22 @@ public class BitChromosomeTest {
     }
     
     @Test
+    public void toByteArray() {
+    	byte[] data = new byte[16];
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = (byte)(Math.random()*256);
+		}
+    	BitChromosome bc = BitChromosome.valueOf(data);
+    	
+    	Assert.assertEquals(bc.toByteArray(), data);
+    	
+    }
+    
+    @Test
     public void serialize() throws Exception {
     	StringWriter out = new StringWriter();
     	
     	BitChromosome chromosome = BitChromosome.valueOf(10);
-    	System.out.println("ch: " + BitUtils.toString(chromosome.toByteArray()));
     	XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
     	writer.setIndentation("    ");
     	

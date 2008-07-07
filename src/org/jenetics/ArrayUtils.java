@@ -30,7 +30,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.4 2008-07-07 21:17:40 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.5 2008-07-07 22:01:27 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -73,12 +73,12 @@ public final class ArrayUtils {
 	 * Randomize the {@code array} with the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * @param array the {@code array} to randomize.
+	 * @param random the {@link Random} object to use for randomize.
 	 * 
 	 * @param <T> the component type of the array to randomize.
-	 * @param random the {@link Random} object to use for randomize.
-	 * @param array the {@code array} to randomize.
 	 */
-	public static <T> void randomize(final Random random, final T[] array) {
+	public static <T> void randomize(final T[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -88,12 +88,12 @@ public final class ArrayUtils {
 	 * Randomize the {@code array} with the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * @param array the {@code array} to randomize.
+	 * @param random the {@link Random} object to use for randomize.
 	 * 
 	 * @param <T> the component type of the array to randomize.
-	 * @param random the {@link Random} object to use for randomize.
-	 * @param array the {@code array} to randomize.
 	 */
-	public static <T> void randomize(final Random random, final Array<T> array) {
+	public static <T> void randomize(final Array<T> array, final Random random) {
 		for (int j = array.length() - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

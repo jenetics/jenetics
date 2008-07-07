@@ -44,7 +44,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.4 2008-07-07 21:17:40 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.5 2008-07-07 22:01:26 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -225,7 +225,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 * @return LargeInteger value this BitChromosome represents.
 	 */
 	public LargeInteger toLargeInteger() {
-		final byte[] data = new byte[(length() >> 3) + 1];
+		final byte[] data = new byte[(int)Math.ceil(length()/8.0)];
 		toByteArray(data);
 		return LargeInteger.valueOf(data, 0, data.length);
 	}
@@ -243,10 +243,10 @@ public class BitChromosome extends Number<LargeInteger>
      *         (two's-complement) of this large integer.
      * @return the number of bytes written.
      * @throws IndexOutOfBoundsException 
-     *         if <code>bytes.length < (bitLength() >> 3) + 1</code>  
+     *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
      */
     public int toByteArray(byte[] bytes) {
-    	int bytesLength = (length() >> 3 + 1);
+    	final int bytesLength = (int)Math.ceil(length()/8.0);
     	if (bytes.length < bytesLength) {
     		throw new IndexOutOfBoundsException(); 
     	}
@@ -266,7 +266,8 @@ public class BitChromosome extends Number<LargeInteger>
      * @see {@link #toByteArray(byte[])}
      */
     public byte[] toByteArray() {
-    	final byte[] data = new byte[length() >> 3 + 1];
+    	final int bytesLength = (int)Math.ceil(length()/8.0);
+    	final byte[] data = new byte[bytesLength];
     	final int length = toByteArray(data);
     	assert (length == data.length);
     	return data;
