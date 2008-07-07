@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.1 2008-03-25 18:31:58 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.2 2008-07-07 21:18:03 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -184,6 +184,7 @@ public class BitChromosomeTest {
     	StringWriter out = new StringWriter();
     	
     	BitChromosome chromosome = BitChromosome.valueOf(10);
+    	System.out.println("ch: " + BitUtils.toString(chromosome.toByteArray()));
     	XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
     	writer.setIndentation("    ");
     	

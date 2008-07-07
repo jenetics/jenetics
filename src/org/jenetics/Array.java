@@ -29,8 +29,10 @@ import java.util.ListIterator;
 import javolution.context.ObjectFactory;
 
 /** 
+ * Array class which wraps the the java build in array type T[].
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.1 2008-07-05 20:28:13 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.2 2008-07-07 21:17:40 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T> {
 	private Object[] _array;
@@ -51,8 +53,29 @@ public class Array<T> implements Iterable<T> {
 		_array = new Object[length];
 	}
 	
+	/**
+	 * Set the {@code value} at the given {@code index}.
+	 * 
+	 * @param index the index of the new value.
+	 * @param value the new value.
+	 * @throws IndexOutOfBoundsException if the index is out of range 
+	 *         {@code (index < 0 || index >= size())}.
+	 */
 	public void set(final int index, final T value) {
 		_array[index] = value;
+	}
+	
+	/**
+	 * Return the value at the given {@code index}.
+	 * 
+	 * @param index index of the element to return.
+	 * @return the value at the given {@code index}.
+	 * @throws IndexOutOfBoundsException if the index is out of range 
+	 *         {@code (index < 0 || index >= size())}.
+	 */
+	@SuppressWarnings("unchecked")
+	public T get(final int index) {
+		return (T)_array[index];
 	}
 	
 	void setAllNull() {
@@ -61,11 +84,12 @@ public class Array<T> implements Iterable<T> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T get(final int index) {
-		return (T)_array[index];
-	}
-	
+	/**
+	 * Return the length of this array. Once the array is created, the length
+	 * can't be changed.
+	 * 
+	 * @return the length of this array.
+	 */
 	public int length() {
 		return _array.length;
 	}
@@ -77,6 +101,49 @@ public class Array<T> implements Iterable<T> {
 	
 	public ListIterator<T> listIterator() {
 		return new ArrayIterator<T>(_array);
+	}
+	
+	/**
+	 * Return a shallow copy of this array. The array elements are not copied.
+	 * 
+	 * @return a shallow copy of this array.
+	 */
+	public Array<T> copy() {
+		Array<T> copy = newInstance(length());
+		System.arraycopy(_array, 0, copy._array, 0, length());
+		return copy;
+	}
+	
+	@Override
+	public int hashCode() {
+		int code = 17;
+		for (Object element : _array) {
+			if (element != null) {
+				code += 37*element.hashCode() + 17;
+			}
+		}
+		return code;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Array)) {
+			return false;
+		}
+		
+		final Array<?> array = (Array<?>)obj;
+		boolean equals = (length() == array.length());
+		for (int i = 0; equals && i < length(); ++i) {
+			if (_array[i] != null) {
+				equals = _array[i].equals(array._array[i]);
+			} else {
+				equals = array._array[i] == null;
+			}
+		}
+		return equals;
 	}
 	
 	@Override
@@ -101,12 +168,6 @@ public class Array<T> implements Iterable<T> {
 			a.setAllNull();
 		}
 		return a;
-	}
-	
-	public Array<T> copy() {
-		Array<T> copy = newInstance(length());
-		System.arraycopy(_array, 0, copy._array, 0, length());
-		return copy;
 	}
 	
 }

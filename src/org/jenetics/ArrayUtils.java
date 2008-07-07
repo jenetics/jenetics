@@ -30,7 +30,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.3 2008-04-23 08:58:21 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.4 2008-07-07 21:17:40 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -44,12 +44,29 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	 * @throws ArrayIndexOutOfBoundsException if one of the given indexes is out of bounds.
+	 * @throws ArrayIndexOutOfBoundsException if one of the given indexes is out 
+	 *         of bounds.
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		final T temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
+	}
+	
+	/**
+	 * Swap two elements of an given array.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array
+	 * @param i index of the first array element.
+	 * @param j index of the second array element.
+	 * @throws ArrayIndexOutOfBoundsException if one of the given indexes is out 
+	 *         of bounds.
+	 */
+	public static <T> void swap(final Array<T> array, final int i, final int j) {
+		final T temp = array.get(i);
+		array.set(i, array.get(j));
+		array.set(j, temp);
 	}
 	
 	/**
@@ -68,6 +85,21 @@ public final class ArrayUtils {
 	}
 	
 	/**
+	 * Randomize the {@code array} with the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param <T> the component type of the array to randomize.
+	 * @param random the {@link Random} object to use for randomize.
+	 * @param array the {@code array} to randomize.
+	 */
+	public static <T> void randomize(final Random random, final Array<T> array) {
+		for (int j = array.length() - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
+		}
+	}
+	
+	/**
 	 * Reverses the part of the array determined by the to indexes.
 	 * 
 	 * @param <T> the array type.
@@ -75,7 +107,26 @@ public final class ArrayUtils {
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
 	 */
-	public static <T> void reverse(final T[] array, int from, int to) {
+	public static <T> void reverse(final T[] array, final int from, final int to) {
+		int i = from;
+		int j = to;
+		
+		while (i < j) {
+			--j;
+			swap(array, i, j);
+			++i;
+		}
+	}
+	
+	/**
+	 * Reverses the part of the array determined by the to indexes.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array to reverse
+	 * @param from the first index (inclusive)
+	 * @param to the second index (exclusive)
+	 */
+	public static <T> void reverse(final Array<T> array, final int from, final int to) {
 		int i = from;
 		int j = to;
 		
@@ -94,6 +145,10 @@ public final class ArrayUtils {
 	 */
 	public static <T> void reverse(final T[] array) {
 		reverse(array, 0, array.length);
+	}
+	
+	public static <T> void reverse(final Array<T> array) {
+		reverse(array, 0, array.length());
 	}
 	
 	/**
