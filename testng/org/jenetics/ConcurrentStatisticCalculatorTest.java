@@ -1,5 +1,5 @@
 /* 
- * ConcurrentStatisticCalculatorTest.java, @!identifier!@
+ * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
  *
  * This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.4 2008-07-05 20:28:52 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.5 2008-07-08 17:02:27 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculatorTest {
 

@@ -1,6 +1,6 @@
 /*
- * Java Genetic Algorithm Library (Jenetics-0.1.0.3).
- * Copyright (c) 2007 Franz Wilhelmstötter
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
  *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,7 +47,7 @@ import org.jenetics.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.4 2008-07-05 20:28:33 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.5 2008-07-08 17:03:36 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
