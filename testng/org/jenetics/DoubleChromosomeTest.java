@@ -1,6 +1,6 @@
 /*
- * Java Genetic Algorithm Library (Jenetics-0.1.0.3).
- * Copyright (c) 2007 Franz Wilhelmstötter
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
  *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosomeTest.java,v 1.2 2008-07-05 20:28:52 fwilhelm Exp $
+ * @version $Id: DoubleChromosomeTest.java,v 1.3 2008-07-08 17:02:25 fwilhelm Exp $
  */
 public class DoubleChromosomeTest {
 
