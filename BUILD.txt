@@ -27,7 +27,7 @@ TEST
 ---------------------------------------
 
 For running the tests execute
-    ant run-tests
+    ant testng
 
 Additional tests must be stored in the testng subdirectory.
 You must also add the testng.xml file in the testng/org/jenetics
