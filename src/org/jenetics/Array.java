@@ -32,10 +32,10 @@ import javolution.context.ObjectFactory;
  * Array class which wraps the the java build in array type T[].
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.2 2008-07-07 21:17:40 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.3 2008-07-08 18:58:08 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T> {
-	private Object[] _array;
+	Object[] _array;
 	
 	Array() {
 		_array = new Object[0];

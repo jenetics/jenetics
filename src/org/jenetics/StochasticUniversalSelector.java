@@ -35,7 +35,7 @@ import javolution.xml.XMLSerializable;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<T extends Gene<?>> 
 	extends RouletteWheelSelector<T> implements XMLSerializable 
@@ -60,8 +60,8 @@ public class StochasticUniversalSelector<T extends Gene<?>>
 		}
 		
 		population.sort();
-		Probability[] probabilities = probabilities(population, count);
-		assert(population.size() == probabilities.length) :
+		final double[] probabilities = probabilities(population, count);
+		assert (population.size() == probabilities.length) :
 			"Population size and propability length must be equal.";
 		
 		//Calculating the equally spaces random points.
@@ -76,7 +76,7 @@ public class StochasticUniversalSelector<T extends Gene<?>>
 		double prop = 0;
 		for (int i = 0; i < count; ++i) {
 			while (points[i] > prop) {
-				prop += probabilities[j].doubleValue();
+				prop += probabilities[j];
 				++j;
 			}
 			selection.add(population.get(j));

@@ -55,7 +55,7 @@ import javolution.xml.stream.XMLStreamException;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
  */
 public final class LinearRankSelector<T extends Gene<?>> 
 	extends ProbabilitySelector<T> implements XMLSerializable
@@ -76,17 +76,15 @@ public final class LinearRankSelector<T extends Gene<?>>
 	}
 
 	@Override
-	protected Probability[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<T> population, final int count) {
 		assert(population != null);
 		assert(count >= 0);
 		
 		final double N = population.size();
-		Probability[] props = new Probability[population.size()];
+		final double[] props = new double[population.size()];
 
-		double p = 0;
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			p = (_nminus + ((_nplus - _nminus)*i)/(N - 1)) / N;
-			props[n - i - 1] = Probability.valueOf(p);
+			props[n - i - 1] = (_nminus + ((_nplus - _nminus)*i)/(N - 1)) / N;
 		}
 		
 		return props;
