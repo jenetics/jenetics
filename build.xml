@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="all">
 	<property name="version" value="0.2.0.0" />
-	<property name="sourcedir" value="./src" />
-	<property name="testng.sourcedir" value="./testng" />
-	<property name="testng.reportdir" value="./testng-report" />
-	<property name="compiledir" value="./bin" />
-	<property name="libdir" value="./lib" />
-	<property name="builddir" value="./lib" />
-	<property name="javadocdir" value="./javadoc" />
+	<property name="identifier" value="Jentics-${version}" />
+	<property name="year" value="2007-2008" />
+	<property name="source.dir" value="./src" />
+	<property name="testng.source.dir" value="./testng" />
+	<property name="testng.report.dir" value="./testng-report" />
+	<property name="compile.dir" value="./bin" />
+	<property name="lib.dir" value="./lib" />
+	<property name="export.dir" value="./export/Jenetics-${version}" />
+	<property name="javadoc.dir" value="./javadoc" />
 	<property name="colapi.classpath" value="./lib/build/colapi.jar" />
 	<property name="java2html.classpath" value="./lib/build/ant-java2html.jar" />
 
@@ -26,9 +28,9 @@
 	<taskdef resource="testngtasks" classpathref="build.classpath" />
 	
 	<target name="compile">
-		<mkdir dir="${compiledir}" />
-		<javac destdir="${compiledir}" 
-			srcdir="${sourcedir}" 
+		<mkdir dir="${compile.dir}" />
+		<javac destdir="${compile.dir}" 
+			srcdir="${source.dir}" 
 			debug="false" 
 			source="1.6" target="1.6" 
 			encoding="UTF-8" listfiles="yes"
@@ -50,7 +52,7 @@
 			index="true" update="true" 
 			level="9" duplicate="preserve"
 		>
-			<fileset dir="${compiledir}" />
+			<fileset dir="${compile.dir}" />
 			<manifest>
 				<attribute name="ProjectName" value="Jenetics" />
 				<attribute name="Version" value="${version}" />
@@ -65,8 +67,8 @@
 			index="true" update="true" 
 			level="9" duplicate="preserve"
 		>
-			<zipfileset src="${libdir}/jscience.jar" />
-			<fileset dir="${compiledir}" />
+			<zipfileset src="${lib.dir}/jscience.jar" />
+			<fileset dir="${compile.dir}" />
 			<manifest>
 				<attribute name="ProjectName" value="Jenetics" />
 				<attribute name="Version" value="${version}" />
@@ -82,7 +84,7 @@
 		</tstamp>	
 		<javadoc 
 			classpathref="classpath" 
-			destdir="${javadocdir}" 
+			destdir="${javadoc.dir}" 
 			author="true" version="true" use="true" 
 			linksource="yes" source="1.6" 
 			useexternalfile="true" access="protected" 
@@ -92,7 +94,7 @@
 			Encoding="UTF-8"
 		>
 			<classpath refid="classpath" />
-			<fileset dir="${sourcedir}">
+			<fileset dir="${source.dir}">
 				<include name="org/jenetics/*/.gif" />
 				<include name="org/jenetics/*.html" />
 				<include name="org/jenetics/*.java" />
@@ -112,12 +114,12 @@
 
     	<!-- Formats/colarizes code between [code]...[/code] -->
 		<java classname="Colapi" classpath="${colapi.classpath}" >
-			<arg value="${javadocdir}" />
+			<arg value="${javadoc.dir}" />
 		</java>
 		
 		<java2html 
-			srcdir="${sourcedir}"
-			destdir="${javadocdir}/src-html"
+			srcdir="${source.dir}"
+			destdir="${javadoc.dir}/src-html"
 			style="eclipse" showLineNumbers="true" showFileName="true"
 			tabs="4" showTableBorder="true" outputFormat="html"
 			useShortFileName="true" overwrite="true"
@@ -128,16 +130,16 @@
 			<include name="org/jenetics/examples/*.java" />
 		</java2html>
 			
-		<copy todir="${javadocdir}/org/jenetics/doc-files" >
-			<fileset dir="${sourcedir}/org/jenetics/doc-files" />
+		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/doc-files" />
 		</copy>
 	</target>
 	
 	<target name="all" depends="jar, javadoc" />
 
 	<target name="compile-tests" depends="compile">
-		<javac destdir="${compiledir}" 
-			srcdir="${testng.sourcedir}" 
+		<javac destdir="${compile.dir}" 
+			srcdir="${testng.source.dir}" 
 			debug="true"
 			debuglevel="lines,vars,source"
 			source="1.6" target="1.6" 
@@ -147,7 +149,7 @@
 			<compilerarg value="-Xlint:deprecation" />
 			<classpath refid="classpath" />
 			<classpath refid="build.classpath" />
-			<classpath path="${compiledir}" />
+			<classpath path="${compile.dir}" />
 			<include name="org/jenetics/*.gif" />
 			<include name="org/jenetics/*.html" />
 			<include name="org/jenetics/*.java" />
@@ -156,27 +158,62 @@
 	</target>
 
 	<target name="run-tests" depends="compile-tests">
-		<mkdir dir="${testng.reportdir}" />
+		<mkdir dir="${testng.report.dir}" />
 		<testng 
-			outputdir="${testng.reportdir}"
-			sourcedir="${testng.sourcedir}"
+			outputdir="${testng.report.dir}"
+			sourcedir="${testng.source.dir}"
 			haltonfailure="false" 
 			dumpCommand="false"
 		>
 			<classpath refid="classpath" />
 			<classpath refid="build.classpath" />
-			<classpath path="${compiledir}" />
-			<xmlfileset dir="${testng.sourcedir}/org/jenetics" includes="testng.xml" />
+			<classpath path="${compile.dir}" />
+			<xmlfileset dir="${testng.source.dir}/org/jenetics" includes="testng.xml" />
 		</testng>
 	</target>
 	
 	<target name="clean" >
-		<delete dir="${compiledir}" />
-		<delete dir="${javadocdir}" />
-		<delete dir="${testng.reportdir}" />
-		<delete file="Jenetics-${version}.jar" />
-		<delete file="Jenetics-all-${version}.jar" />
+		<delete dir="${compile.dir}" />
+		<delete dir="${javadoc.dir}" />
+		<delete dir="${export.dir}" />
+		<delete dir="${testng.report.dir}" />
+		<delete file="Jenetics-*.jar" />
+		<delete file="Jenetics-all-*.jar" />
 	</target>
+	
+	<target name="export" depends="jar">
+		<mkdir dir="${export.dir}/src"/>
+		<copy todir="${export.dir}/src" >
+			<fileset dir="${source.dir}" />
+		</copy>
+		<replace dir="${export.dir}/src" token="@!identifier!@" value="${identifier}" />
+		<replace dir="${export.dir}/src" token="@!year!@" value="${year}" />
+		
+		<mkdir dir="${export.dir}/testng"/>
+		<copy todir="${export.dir}/testng" >
+			<fileset dir="${testng.source.dir}" />
+		</copy>
+		<replace dir="${export.dir}/testng" token="@!identifier!@" value="${identifier}" />
+		<replace dir="${export.dir}/testng" token="@!year!@" value="${year}" />
+		
+		<mkdir dir="${export.dir}/lib"/>
+		<copy todir="${export.dir}/lib" >
+			<fileset dir="${lib.dir}" />
+		</copy>
+		
+		<copy todir="${export.dir}" file="BUILD.txt"/>
+		<copy todir="${export.dir}" file="build.xml"/>
+		<copy todir="${export.dir}" file="change.log"/>
+		<copy todir="${export.dir}" file="LGPL.txt"/>
+		<copy todir="${export.dir}" file="README"/>
+		<copy todir="${export.dir}/build" file="Jenetics-all-${version}.jar"/>
+		<copy todir="${export.dir}/build" file="Jenetics-${version}.jar"/>
+		
+		<zip destfile="export/Jenetics-${version}.zip">
+			<fileset dir="${export.dir}"/>
+		</zip>
+	</target>
+	
 </project>
 
 
