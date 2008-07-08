@@ -32,10 +32,11 @@ import javolution.context.ObjectFactory;
  * Array class which wraps the the java build in array type T[].
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.3 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.4 2008-07-08 19:28:43 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T> {
-	Object[] _array;
+	protected Object[] _array;
+	protected boolean _immutable = false;
 	
 	Array() {
 		_array = new Object[0];
@@ -62,6 +63,9 @@ public class Array<T> implements Iterable<T> {
 	 *         {@code (index < 0 || index >= size())}.
 	 */
 	public void set(final int index, final T value) {
+		if (_immutable) {
+			throw new UnsupportedOperationException();
+		}
 		_array[index] = value;
 	}
 	
@@ -76,6 +80,14 @@ public class Array<T> implements Iterable<T> {
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
 		return (T)_array[index];
+	}
+	
+	/**
+	 * Making this array immutable.
+	 */
+	public Array<T> seal() {
+		_immutable = true;
+		return this;
 	}
 	
 	void setAllNull() {
@@ -162,6 +174,7 @@ public class Array<T> implements Iterable<T> {
 	public static <A> Array<A> newInstance(final int length) {
 		@SuppressWarnings("unchecked")
 		final Array<A> a = (Array<A>)FACTORY.object();
+		a._immutable = false;
 		if (a._array == null || a._array.length != length) {
 			a._array = new Object[length];
 		} else {
