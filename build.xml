@@ -157,7 +157,7 @@
 		</javac>			
 	</target>
 
-	<target name="run-tests" depends="compile-tests">
+	<target name="testng" depends="compile-tests">
 		<mkdir dir="${testng.report.dir}" />
 		<testng 
 			outputdir="${testng.report.dir}"
@@ -175,10 +175,12 @@
 	<target name="clean" >
 		<delete dir="${compile.dir}" />
 		<delete dir="${javadoc.dir}" />
-		<delete dir="${export.dir}" />
+		<delete dir="export" />
+		<delete dir="test-output" />
 		<delete dir="${testng.report.dir}" />
-		<delete file="Jenetics-*.jar" />
-		<delete file="Jenetics-all-*.jar" />
+		<delete>
+			<fileset dir="." includes="Jenetics-*.jar"/>	
+		</delete>
 	</target>
 	
 	<target name="export" depends="jar">
