@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.3 2008-04-22 15:25:36 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.4 2008-07-08 19:28:43 fwilhelm Exp $
  */
 public class StatisticCalculator {
 	protected long _startEvaluationTime = 0;
@@ -36,7 +36,9 @@ public class StatisticCalculator {
 	public StatisticCalculator() {
 	}
 	
-	public <T extends Gene<?>> Statistic<T> evaluate(final List<? extends Phenotype<T>> population) {
+	public <T extends Gene<?>> Statistic<T> evaluate(
+		final List<? extends Phenotype<T>> population
+	) {
 		_startEvaluationTime = System.currentTimeMillis();
 		try {
 			if (population == null || population.isEmpty()) {
@@ -76,11 +78,13 @@ public class StatisticCalculator {
 			}
 			
 			final double meanFitness = fitnessSum/population.size();
-			final double varianceFitness = fitnessSquareSum/population.size() - meanFitness*meanFitness;
+			final double varianceFitness = fitnessSquareSum/population.size() - 
+							meanFitness*meanFitness;
 			final double meanAge = (double)ageSum/(double)population.size();
-			final double varianceAge = (double)ageSquareSum/(double)population.size() - meanAge*meanAge;
+			final double varianceAge = (double)ageSquareSum/(double)population.size() - 
+							meanAge*meanAge;
 			
-			Statistic<T> statistic = new Statistic<T>(
+			final Statistic<T> statistic = new Statistic<T>(
 				bestPhenotype, worstPhenotype, 
 				meanFitness, varianceFitness,
 				meanAge, varianceAge

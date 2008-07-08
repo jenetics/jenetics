@@ -34,7 +34,7 @@ import javolution.text.Text;
  * <code>null</code> and the lenght of the <code>_genes</code> > 0.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.5 2008-07-07 21:17:40 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.6 2008-07-08 19:28:43 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -80,7 +80,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 
 	@Override
 	public Array<T> getGenes() {
-		return new ImmutableArray<T>(_genes);
+		return _genes.seal();
 	}
 	
 	@Override
