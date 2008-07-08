@@ -32,7 +32,7 @@ import javolution.xml.XMLSerializable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
  */
 public class RouletteWheelSelector<T extends Gene<?>> extends ProbabilitySelector<T> 
 	implements XMLSerializable
@@ -43,11 +43,11 @@ public class RouletteWheelSelector<T extends Gene<?>> extends ProbabilitySelecto
 	}
 
 	@Override
-	protected Probability[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<T> population, final int count) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		
-		final Probability[] probabilities = new Probability[population.size()];
+		final double[] probabilities = new double[population.size()];
 		final double worstFitness = population.get(population.size() - 1).getFitness();
 		
 		double sum = 0.0;
@@ -56,7 +56,7 @@ public class RouletteWheelSelector<T extends Gene<?>> extends ProbabilitySelecto
 		}
 		
 		if (abs(sum) <= 0.0) {
-			final Probability p = Probability.valueOf(1.0/probabilities.length);
+			final double p = 1.0/probabilities.length;
 			for (int i = 0; i < probabilities.length; ++i) {
 				probabilities[i] = p; 
 			}
@@ -67,11 +67,14 @@ public class RouletteWheelSelector<T extends Gene<?>> extends ProbabilitySelecto
 
 		int i = 0;
 		for (Iterator<Phenotype<T>> it = population.iterator(); it.hasNext(); ++i) {
-			probabilities[i] = Probability.valueOf(
-				max(0.0, (it.next().getFitness() - worstFitness)/sum)
-			);
+			probabilities[i] = max(0.0, (it.next().getFitness() - worstFitness)/sum);
 		}
 		
 		return probabilities;
 	}
 }
+
+
+
+
+

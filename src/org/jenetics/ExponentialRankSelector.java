@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.pow;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -39,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
  */
 public class ExponentialRankSelector<T extends Gene<?>> 
 	extends ProbabilitySelector<T> implements XMLSerializable
@@ -53,17 +54,15 @@ public class ExponentialRankSelector<T extends Gene<?>>
 	}
 
 	@Override
-	protected Probability[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<T> population, final int count) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double N = population.size();
-		Probability[] props = new Probability[population.size()];
+		final double[] props = new double[population.size()];
 		
-		double p = 0;
 		for (int i = 0, n = population.size(); i < N; ++i) {
-			p = ((_c - 1)*Math.pow(_c, N - i - 1))/(Math.pow(_c, N) - 1);
-			props[n - i - 1] = Probability.valueOf(p); 
+			props[n - i - 1] = ((_c - 1)*pow(_c, N - i - 1))/(pow(_c, N) - 1);
 		}
 	
 		return props;
@@ -75,7 +74,8 @@ public class ExponentialRankSelector<T extends Gene<?>>
 		@Override
 		public ExponentialRankSelector newInstance(
 			final Class<ExponentialRankSelector> cls, final InputElement xml
-		)  throws XMLStreamException {
+		)  throws XMLStreamException 
+		{
 			final double beta = xml.getAttribute("c", 1.0);
 			return new ExponentialRankSelector(beta);
 		}

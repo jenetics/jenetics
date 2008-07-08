@@ -30,7 +30,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.5 2008-07-07 22:01:27 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.6 2008-07-08 18:58:09 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -64,9 +64,7 @@ public final class ArrayUtils {
 	 *         of bounds.
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
-		final T temp = array.get(i);
-		array.set(i, array.get(j));
-		array.set(j, temp);
+		swap(array._array, i, j);
 	}
 	
 	/**
@@ -94,9 +92,7 @@ public final class ArrayUtils {
 	 * @param <T> the component type of the array to randomize.
 	 */
 	public static <T> void randomize(final Array<T> array, final Random random) {
-		for (int j = array.length() - 1; j > 0; --j) {
-			swap(array, j, random.nextInt(j + 1));
-		}
+		randomize(array._array, random);
 	}
 	
 	/**
@@ -127,14 +123,7 @@ public final class ArrayUtils {
 	 * @param to the second index (exclusive)
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
-		int i = from;
-		int j = to;
-		
-		while (i < j) {
-			--j;
-			swap(array, i, j);
-			++i;
-		}
+		reverse(array._array, from, to);
 	}
 	
 	/**
@@ -148,7 +137,7 @@ public final class ArrayUtils {
 	}
 	
 	public static <T> void reverse(final Array<T> array) {
-		reverse(array, 0, array.length());
+		reverse(array._array);
 	}
 	
 	/**

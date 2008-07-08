@@ -33,7 +33,7 @@ import java.util.Random;
  * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.2 2008-07-05 20:28:11 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.3 2008-07-08 18:58:08 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector<T> {
 	private static final long serialVersionUID = -2980541308499034709L;
@@ -56,17 +56,17 @@ public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector
 		}
 		
 		population.sort();
-		final Probability[] probabilities = probabilities(population, count);
+		final double[] probabilities = probabilities(population, count);
 		assert (population.size() == probabilities.length);
 		final Random random = RandomRegistry.getRandom();
 		
 		for (int i = 0; i < count; ++i) {
-			double prop = random.nextDouble();
+			final double prop = random.nextDouble();
 			int j = -1;
 			double sum = 0;
 			do {
 				++j;
-				sum += probabilities[j].doubleValue(); 
+				sum += probabilities[j]; 
 			} while (j < probabilities.length && sum < prop);
 			
 			selection.add(population.get(j));
@@ -86,7 +86,7 @@ public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector
 	 * @param count 
 	 * @return Probability array.
 	 */
-	protected abstract Probability[] probabilities(
+	protected abstract double[] probabilities(
 		final Population<T> population, final int count
 	);
 

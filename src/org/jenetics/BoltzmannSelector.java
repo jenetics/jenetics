@@ -46,7 +46,7 @@ import javolution.xml.stream.XMLStreamException;
  * f_j denotes the fitness value of the jth individium.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.2 2008-07-08 18:58:09 fwilhelm Exp $
  */
 public class BoltzmannSelector<T extends Gene<?>> extends ProbabilitySelector<T> 
 	implements XMLSerializable
@@ -67,21 +67,19 @@ public class BoltzmannSelector<T extends Gene<?>> extends ProbabilitySelector<T>
 	}
 
 	@Override
-	protected Probability[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<T> population, final int count) {
 		assert (population != null) : "Population must not be null. ";
 		assert (count >= 0) : "Population to select must be greater than zero. ";
 		
-		final Probability[] props = new Probability[population.size()];
+		final double[] props = new double[population.size()];
 		
 		double z = 0;
 		for (Phenotype<T> pt : population) {
 			z += exp(_beta*pt.getFitness());
 		}
 		
-		double p = 0;
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			p = exp(_beta*population.get(i).getFitness())/z;
-			props[i] = Probability.valueOf(p); 
+			props[i] = exp(_beta*population.get(i).getFitness())/z;
 		}
 	
 		return props;
@@ -91,8 +89,9 @@ public class BoltzmannSelector<T extends Gene<?>> extends ProbabilitySelector<T>
 	static final XMLFormat<BoltzmannSelector> 
 	XML = new XMLFormat<BoltzmannSelector>(BoltzmannSelector.class) {
 		@Override
-		public BoltzmannSelector newInstance(final Class<BoltzmannSelector> cls, final InputElement xml) 
-			throws XMLStreamException 
+		public BoltzmannSelector newInstance(
+			final Class<BoltzmannSelector> cls, final InputElement xml
+		) throws XMLStreamException 
 		{
 			final double beta = xml.getAttribute("beta", 0.2);
 			return new BoltzmannSelector(beta);
