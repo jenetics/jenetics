@@ -1,4 +1,8 @@
 Jenetics-0.2.0.0
+- Removing Randomizable interface.
+- Changing the template method return value of the 
+  ProbabilitySelector.probabilities(Population<T>,int) from
+  Probabilities[] to double[].
 - Replace array types (e.g. IntegerGene[]) with Array<T> class
   (e.g. Array<IntegerGene>). This moves all the 'unchecked' stuff in the new
   Array class.
