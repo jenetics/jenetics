@@ -185,7 +185,7 @@
 		</delete>
 	</target>
 	
-	<target name="export" depends="jar">
+	<target name="export" depends="clean, jar, javadoc, testng">
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
 			<fileset dir="${source.dir}" />
@@ -205,6 +205,11 @@
 			<fileset dir="${lib.dir}" />
 		</copy>
 		
+		<mkdir dir="${export.dir}/javadoc"/>
+		<copy todir="${export.dir}/javadoc" >
+			<fileset dir="${javadoc.dir}" />
+		</copy>
+		
 		<copy todir="${export.dir}" file="BUILD.txt"/>
 		<copy todir="${export.dir}" file="build.xml"/>
 		<copy todir="${export.dir}" file="change.log"/>
@@ -213,7 +218,7 @@
 		<copy todir="${export.dir}/build" file="Jenetics-all-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="Jenetics-${version}.jar"/>
 		
-		<zip destfile="export/Jenetics-${version}.zip">
+		<zip destfile="export/Jenetics-${version}.zip" level="9">
 			<fileset dir="${export.dir}"/>
 		</zip>
 	</target>
