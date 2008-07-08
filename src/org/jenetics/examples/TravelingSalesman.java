@@ -26,12 +26,12 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.TimeUnit;
 
 import org.jenetics.Chromosome;
-import org.jenetics.ConcurrentStatisticCalculator;
+//import org.jenetics.ConcurrentStatisticCalculator;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -47,7 +47,7 @@ import org.jenetics.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.5 2008-07-08 17:03:36 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.6 2008-07-08 19:37:11 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -74,7 +74,7 @@ public class TravelingSalesman {
 		}
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		final int stops = 10;
 		
 		final FitnessFunction<IntegerGene> ff = new Function(adjacencyMatrix(stops));
@@ -84,11 +84,11 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<IntegerGene> ga = new GeneticAlgorithm<IntegerGene>(gtf, ff);
 		ga.setPopulationSize(10000);
 		
-		final int threads = 4;
-		final ExecutorService pool = Executors.newFixedThreadPool(threads);
-		ga.setStatisticCalculator(
-			new ConcurrentStatisticCalculator(threads, pool)
-		);
+//		final int threads = 4;
+//		final ExecutorService pool = Executors.newFixedThreadPool(threads);
+//		ga.setStatisticCalculator(
+//			new ConcurrentStatisticCalculator(threads, pool)
+//		);
 		
         ga.setAlterer(
             new Mutation<IntegerGene>(Probability.valueOf(0.1), 
@@ -105,8 +105,8 @@ public class TravelingSalesman {
         			ga.getStatistic().getFitnessVariance()
         	);
         }
-        pool.awaitTermination(1, TimeUnit.SECONDS);
-        pool.shutdown();
+//        pool.awaitTermination(1, TimeUnit.SECONDS);
+//        pool.shutdown();
         
         System.out.println("Best path found:");
         System.out.println(ga.getBestPhenotype() + " --> " + ga.getBestPhenotype().getFitness());
