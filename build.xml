@@ -177,9 +177,11 @@
 		<delete dir="${javadoc.dir}" />
 		<delete dir="export" />
 		<delete dir="test-output" />
+		<delete dir="bin" />
 		<delete dir="${testng.report.dir}" />
 		<delete>
-			<fileset dir="." includes="Jenetics-*.jar"/>	
+			<fileset dir="." includes="Jenetics-*.jar"/>
+			<fileset dir="." includes="temp-testng-*"/>
 		</delete>
 	</target>
 	
