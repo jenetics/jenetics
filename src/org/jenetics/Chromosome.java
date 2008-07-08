@@ -34,7 +34,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.4 2008-07-07 21:17:40 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.5 2008-07-08 19:35:34 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?>> 
 	extends Verifiable, Iterable<T>, Immutable, ChromosomeFactory<T>, Serializable
@@ -68,7 +68,7 @@ public interface Chromosome<T extends Gene<?>>
 	 * Return a unmodifyabble array instance. A call of the 
 	 * {@link Array#set(int, Object)} will throw an 
 	 * {@link UnsupportedOperationException}. To get a mutable version of the
-	 * genes array you have to call {@link #getGenes().copy()}
+	 * genes array you have to call {@code getGenes().copy()}
 	 * 
 	 * @return a immutable genes array.
 	 */
