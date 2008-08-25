@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
@@ -34,7 +34,7 @@ import org.jscience.mathematics.structure.Structure;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Probability.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Probability.java,v 1.1 2008-08-25 19:36:07 fwilhelm Exp $
  */
 public final class Probability extends Number
 	implements Comparable<Probability>, XMLSerializable, 

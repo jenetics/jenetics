@@ -25,6 +25,8 @@ package org.jenetics;
 import java.util.Iterator;
 import java.util.RandomAccess;
 
+import org.jenetics.util.Array;
+
 import javolution.lang.Realtime;
 import javolution.text.Text;
 
@@ -34,7 +36,7 @@ import javolution.text.Text;
  * <code>null</code> and the lenght of the <code>_genes</code> > 0.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.6 2008-07-08 19:28:43 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.7 2008-08-25 19:35:25 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess

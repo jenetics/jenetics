@@ -22,13 +22,15 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Validator;
+
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.1 2008-03-25 18:31:57 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.2 2008-08-25 19:35:25 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E>, Mean<EnumGene<E>>, Realtime
@@ -47,7 +49,7 @@ public class EnumGene<E extends Enum<E>>
 	
 	@Override
 	public EnumGene<E> mean(EnumGene<E> that) {
-		Checker.checkNull(that, "Enum value");
+		Validator.notNull(that, "Enum value");
 		
 		if (that._value == _value) {
 			return that;
@@ -114,7 +116,7 @@ public class EnumGene<E extends Enum<E>>
 	}
 	
 	public static <T extends Enum<T>> EnumGene<T> valueOf(final T value) {
-		Checker.checkNull(value, "Enum value");
+		Validator.notNull(value, "Enum value");
 		return newInstance(value);
 	}
 
@@ -122,4 +124,28 @@ public class EnumGene<E extends Enum<E>>
 		return Text.valueOf(_value.toString());
 	}
 	
+//	static final XMLFormat<EnumGene> XML = new XMLFormat<EnumGene>(EnumGene.class) {
+//		@Override
+//		public EnumGene newInstance(final Class<EnumGene> cls, final InputElement xml) 
+//			throws XMLStreamException 
+//		{
+//			return null;
+//		}
+//		@Override
+//		public void write(final EnumGene gene, final OutputElement xml) 
+//			throws XMLStreamException 
+//		{
+//			xml.setAttribute("value", gene._value);
+//		}
+//		@Override
+//		public void read(final InputElement element, final EnumGene gene) {
+//		}
+//	};
+
 }
+
+
+
+
+
+

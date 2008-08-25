@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Array;
+
 /**
  * This interface decouples the {@link Chromosome} creation from the {@link Chromosome}.
  * The ChromosomeFactory creates a new (randomized) {@link Chromosome} from a
@@ -30,7 +32,7 @@ package org.jenetics;
  * @see Chromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChromosomeFactory.java,v 1.2 2008-07-05 20:28:10 fwilhelm Exp $
+ * @version $Id: ChromosomeFactory.java,v 1.3 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public interface ChromosomeFactory<T extends Gene<?>> {
 

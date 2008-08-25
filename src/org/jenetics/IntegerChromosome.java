@@ -28,12 +28,13 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Array;
 import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.2 2008-07-05 20:28:12 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable

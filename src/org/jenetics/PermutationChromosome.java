@@ -25,6 +25,10 @@ package org.jenetics;
 import java.util.Arrays;
 import java.util.Random;
 
+import org.jenetics.util.Array;
+import org.jenetics.util.BitUtils;
+import org.jenetics.util.Validator;
+
 import javolution.xml.XMLSerializable;
 
 /**
@@ -32,7 +36,7 @@ import javolution.xml.XMLSerializable;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.2 2008-07-05 20:28:13 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -60,7 +64,7 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 		super(values.length);
 		
 		//Check the input.
-		Checker.checkNull(values, "Values");
+		Validator.notNull(values, "Values");
 		if (values.length < 1) {
 			throw new IllegalArgumentException("Array must contain at least one value.");
 		}

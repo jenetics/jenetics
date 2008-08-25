@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Validator;
+
 import javolution.xml.XMLSerializable;
 
 
@@ -35,7 +37,7 @@ import javolution.xml.XMLSerializable;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<T extends Gene<?>> 
 	extends RouletteWheelSelector<T> implements XMLSerializable 
@@ -47,7 +49,7 @@ public class StochasticUniversalSelector<T extends Gene<?>>
 
 	@Override
 	public Population<T> select(final Population<T> population, final int count) {
-		Checker.checkNull(population, "Population");
+		Validator.notNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
 				"Selection count must be greater or equal then zero, but was " + count

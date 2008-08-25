@@ -34,11 +34,11 @@ import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
-import org.jenetics.Probability;
+import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.3 2008-07-08 17:03:36 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.4 2008-08-25 19:35:43 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene> {

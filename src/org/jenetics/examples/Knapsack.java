@@ -34,12 +34,12 @@ import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.Phenotype;
-import org.jenetics.Probability;
 import org.jenetics.RouletteWheelSelector;
+import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.2 2008-07-08 17:03:36 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.3 2008-08-25 19:35:43 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;

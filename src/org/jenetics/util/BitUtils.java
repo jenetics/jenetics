@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import org.jscience.mathematics.number.LargeInteger;
 
@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * Some bit utils.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.6 2008-07-07 21:17:40 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.1 2008-08-25 19:36:05 fwilhelm Exp $
  */
 public final class BitUtils {
 

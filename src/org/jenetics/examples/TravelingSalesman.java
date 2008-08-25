@@ -41,13 +41,13 @@ import org.jenetics.Mutation;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.Phenotype;
-import org.jenetics.Probability;
+import org.jenetics.util.Probability;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.6 2008-07-08 19:37:11 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.7 2008-08-25 19:35:43 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	

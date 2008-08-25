@@ -20,19 +20,19 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Checker.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: Validator.java,v 1.1 2008-08-25 19:36:06 fwilhelm Exp $
  */
-final class Checker {
+public final class Validator {
 
-	private Checker() {
+	private Validator() {
 		super();
 	}
 
-	public static void checkNull(final Object obj, final String message) {
+	public static void notNull(final Object obj, final String message) {
 		if (obj == null) {
 			throw new NullPointerException(message + " must not be null. ");
 		}

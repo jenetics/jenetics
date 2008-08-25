@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.util.Validator;
+
 
 /**
  * The ProbabilitySelector selects the new population according the 
@@ -33,7 +35,7 @@ import java.util.Random;
  * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.3 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.4 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector<T> {
 	private static final long serialVersionUID = -2980541308499034709L;
@@ -43,7 +45,7 @@ public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector
 
 	@Override
 	public Population<T> select(final Population<T> population, final int count) {
-		Checker.checkNull(population, "Population");
+		Validator.notNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
 				"Selection count must be greater or equal then zero, but was " + count

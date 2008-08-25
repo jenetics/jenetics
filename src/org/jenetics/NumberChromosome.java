@@ -22,10 +22,12 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Array;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.2 2008-07-05 20:28:13 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.3 2008-08-25 19:35:25 fwilhelm Exp $
  */
 public abstract class NumberChromosome<N extends NumberGene<?>> 
 	extends AbstractChromosome<N> 

@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
 
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
@@ -45,7 +45,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.2 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public class Phenotype<T extends Gene<?>> 
 	implements Comparable<Phenotype<T>>, Immutable, Verifiable, XMLSerializable, Realtime
@@ -128,7 +128,7 @@ public class Phenotype<T extends Gene<?>>
 	
 	@Override
 	public int compareTo(final Phenotype<T> pt) {
-		checkNull(pt, "Phenotype");
+		notNull(pt, "Phenotype");
 		if (getFitness() < pt.getFitness()) {
 			return -1;
 		} else if (getFitness() > pt.getFitness()) {
@@ -189,7 +189,7 @@ public class Phenotype<T extends Gene<?>>
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
 	Phenotype<T> newInstance(final Genotype<T> genotype) {
-		checkNull(genotype, "Genotype");
+		notNull(genotype, "Genotype");
 		return Phenotype.valueOf(
 			genotype, _fitnessFunction, _fitnessScaler, _generation
 		);
@@ -217,9 +217,9 @@ public class Phenotype<T extends Gene<?>>
 		final FitnessScaler fitnessScaler,
 		final int generation
 	) {
-		checkNull(genotype, "Genotype");
-		checkNull(fitnessFunction, "Fitness function");
-		checkNull(fitnessScaler, "Fitness scaler");
+		notNull(genotype, "Genotype");
+		notNull(fitnessFunction, "Fitness function");
+		notNull(fitnessScaler, "Fitness scaler");
 		
 		@SuppressWarnings("unchecked")
 		Phenotype<G> p = (Phenotype<G>)FACTORY.object();

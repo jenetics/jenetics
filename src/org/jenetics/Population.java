@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.2 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class Population<T extends Gene<?>> 
 	implements List<Phenotype<T>>, Iterable<Phenotype<T>>, 
@@ -74,7 +74,7 @@ public class Population<T extends Gene<?>>
 	 */
 	@Override
 	public boolean add(final Phenotype<T> phenotype) {
-		checkNull(phenotype, "Phenotype");
+		notNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
 	
@@ -86,7 +86,7 @@ public class Population<T extends Gene<?>>
 	 */
 	@Override
 	public void add(final int index, final Phenotype<T> phenotype) {
-		checkNull(phenotype, "Phenotype");
+		notNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
 	
@@ -107,12 +107,12 @@ public class Population<T extends Gene<?>>
 	
 	@Override
 	public Phenotype<T> set(final int index, final Phenotype<T> phenotype) {
-		checkNull(phenotype, "Phenotype");
+		notNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
 	
 	public void remove(final Phenotype<T> phenotype) {
-		checkNull(phenotype, "Phenotype");
+		notNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
 	

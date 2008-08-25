@@ -20,11 +20,12 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.ListIterator;
+
 
 import javolution.context.ObjectFactory;
 
@@ -32,7 +33,7 @@ import javolution.context.ObjectFactory;
  * Array class which wraps the the java build in array type T[].
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.4 2008-07-08 19:28:43 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.1 2008-08-25 19:36:05 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T> {
 	protected Object[] _array;
@@ -68,6 +69,10 @@ public class Array<T> implements Iterable<T> {
 		}
 		_array[index] = value;
 	}
+	
+//	public void set(final int index, final Array<? extends T> values) {
+//		System.arraycopy(values._array, 0, _array, index, values.length());
+//	}
 	
 	/**
 	 * Return the value at the given {@code index}.
@@ -184,5 +189,11 @@ public class Array<T> implements Iterable<T> {
 	}
 	
 }
+
+
+
+
+
+
 
 

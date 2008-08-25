@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
 
 import org.jscience.mathematics.number.Number;
 
@@ -30,7 +30,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.2 2008-07-05 20:28:14 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.3 2008-08-25 19:35:25 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>> 
 	extends Number<NumberGene<N>> implements Gene<N> 
@@ -65,9 +65,9 @@ public abstract class NumberGene<N extends Number<N>>
 	 * @throws IllegalArgumentException if min > max.
 	 */
 	protected void set(final N value, final N min, final N max) {
-		checkNull(value, "Gene value");
-		checkNull(min, "Min value");
-		checkNull(max, "Max value");
+		notNull(value, "Gene value");
+		notNull(min, "Min value");
+		notNull(max, "Max value");
 		
 		if (min.isGreaterThan(max)) {
 			throw new IllegalArgumentException(
@@ -102,6 +102,11 @@ public abstract class NumberGene<N extends Number<N>>
 	 */
 	public abstract NumberGene<N> newInstance(final N value); 
 	
+	/**
+	 * Return the number value of this gene.
+	 * 
+	 * @return the number value of this gene.
+	 */
 	public N getNumber() {
 		return _value;
 	}

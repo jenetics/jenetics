@@ -31,14 +31,14 @@ import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.Population;
-import org.jenetics.Probability;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.Statistic;
+import org.jenetics.util.Probability;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java,v 1.2 2008-07-08 17:03:36 fwilhelm Exp $
+ * @version $Id: OnesCounting.java,v 1.3 2008-08-25 19:35:43 fwilhelm Exp $
  */
 public class OnesCounting {
 

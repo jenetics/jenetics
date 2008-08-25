@@ -21,7 +21,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.ArrayUtils.partition;
+import static org.jenetics.util.ArrayUtils.partition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +30,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.jenetics.util.Validator;
+
 /**
  * This {@link StatisticCalculator} calculates the fitness of a population in several
  * threads.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculator.java,v 1.5 2008-04-23 19:20:20 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculator.java,v 1.6 2008-08-25 19:35:25 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculator extends StatisticCalculator {
 	private final int _numberOfPartitions;
@@ -50,7 +52,7 @@ public class ConcurrentStatisticCalculator extends StatisticCalculator {
 	 * @throws IllegalArgumentException if the {@code numberOfPartitions} is smaller than one.
 	 */
 	public ConcurrentStatisticCalculator(final int numberOfPartitions, final ExecutorService pool) {
-		Checker.checkNull(pool, "Thread pool");
+		Validator.notNull(pool, "Thread pool");
 		if (numberOfPartitions < 1) {
 			throw new IllegalArgumentException("Number of partitions is " + numberOfPartitions);
 		}
