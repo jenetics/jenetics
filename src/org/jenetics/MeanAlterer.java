@@ -24,13 +24,16 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.util.Array;
+import org.jenetics.util.Probability;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.2 2008-07-05 20:28:11 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.3 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class MeanAlterer<T extends Gene<?> & Mean<T>> extends Alterer<T> {
 	private static final long serialVersionUID = 4680966822655548466L;

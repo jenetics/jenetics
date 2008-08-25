@@ -27,6 +27,9 @@ import static java.lang.Math.min;
 
 import java.util.Random;
 
+import org.jenetics.util.Array;
+import org.jenetics.util.Probability;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
@@ -70,7 +73,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.5 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.6 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 	private static final long serialVersionUID = 4100745364870900673L;

@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.util.Validator;
+
 import javolution.context.LocalContext;
 
 /**
@@ -33,7 +35,7 @@ import javolution.context.LocalContext;
  * seed value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RandomRegistry.java,v 1.2 2008-04-23 06:21:19 fwilhelm Exp $
+ * @version $Id: RandomRegistry.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public final class RandomRegistry {
 	private static final LocalContext.Reference<Random> 
@@ -58,7 +60,7 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		Checker.checkNull(random, "Random object");
+		Validator.notNull(random, "Random object");
 		RANDOM.set(random);
 	}
 

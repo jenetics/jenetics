@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
  * Helper class which iterates over an given array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayIterator.java,v 1.2 2008-07-05 20:28:13 fwilhelm Exp $
+ * @version $Id: ArrayIterator.java,v 1.1 2008-08-25 19:36:07 fwilhelm Exp $
  */
 final class ArrayIterator<T> implements ListIterator<T> {
 	private final Object[] _array;

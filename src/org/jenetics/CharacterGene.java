@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.2 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character>, Comparable<CharacterGene>, Realtime, XMLSerializable 
@@ -184,7 +184,7 @@ public class CharacterGene
 	 * 		and {@link CharacterGene#getValidCharacters()}.
 	 */
 	public static CharacterGene valueOf(final Character character) {
-		checkNull(character, "Character");
+		notNull(character, "Character");
 		
 		CharacterGene g = FACTORY.object();
 		if (!CHARACTER_SET.contains(character)) {

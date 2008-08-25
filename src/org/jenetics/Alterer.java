@@ -22,7 +22,10 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
+
+import org.jenetics.util.Probability;
+
 import javolution.xml.XMLSerializable;
 
 /**
@@ -45,7 +48,7 @@ import javolution.xml.XMLSerializable;
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.2 2008-07-05 20:28:10 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
  */
 public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -675546015545758480L;
@@ -79,7 +82,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * 		<code>null</code>.
 	 */
 	public Alterer(final Probability probability) {
-		checkNull(probability, "Probability");
+		notNull(probability, "Probability");
 		this._probability = probability;
 	}
 	
@@ -93,8 +96,8 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * 		<code>component</code> is <code>null</code>. 
 	 */
 	public Alterer(final Probability probability, final Alterer<T> component) {
-		checkNull(probability, "Probability");
-		checkNull(component, "Alterer components");
+		notNull(probability, "Probability");
+		notNull(component, "Alterer components");
 		
 		this._probability = probability;
 		this._component = component;
@@ -108,7 +111,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 *         <code>null</code>.
 	 */
 	public Alterer<T> append(final Alterer<T> alterer) {
-		checkNull(alterer, "Alterer");
+		notNull(alterer, "Alterer");
 
 		if (_component == null) {
 			_component = alterer;

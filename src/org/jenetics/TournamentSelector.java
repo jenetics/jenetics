@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.util.Validator;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -38,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.2 2008-08-25 19:35:25 fwilhelm Exp $
  */
 public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSerializable {
 	private static final long serialVersionUID = -5342297228328820942L;
@@ -75,7 +77,7 @@ public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSe
 	 */
 	@Override
 	public Population<T> select(final Population<T> population, final int count) {
-		Checker.checkNull(population, "Population");
+		Validator.notNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
 				"Selection count must be greater or equal then zero, but was " + count

@@ -22,11 +22,13 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Probability;
+
 /**
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: NullAlterer.java,v 1.2 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class NullAlterer<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 7892835302001002915L;

@@ -25,6 +25,8 @@ package org.jenetics;
 import java.util.ListIterator;
 import java.util.Random;
 
+import org.jenetics.util.Probability;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
@@ -59,7 +61,7 @@ import javolution.xml.stream.XMLStreamException;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.2 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class Mutation<T extends Gene<?>> extends Alterer<T> {	
 	private static final long serialVersionUID = -7012689808565856577L;

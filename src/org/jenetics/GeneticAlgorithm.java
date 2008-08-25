@@ -23,9 +23,11 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
 
 import java.util.Random;
+
+import org.jenetics.util.Probability;
 
 /**
  * Main class. 
@@ -49,7 +51,7 @@ import java.util.Random;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.4 2008-07-08 19:28:43 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.5 2008-08-25 19:35:23 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  */
@@ -99,9 +101,9 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		final FitnessFunction<T> fitnessFunction, 
 		final FitnessScaler fitnessScaler
 	) {	 
-		checkNull(genotypeFactory, "GenotypeFactory");
-		checkNull(fitnessFunction, "FitnessFunction");
-		checkNull(fitnessScaler, "FitnessScaler");
+		notNull(genotypeFactory, "GenotypeFactory");
+		notNull(fitnessFunction, "FitnessFunction");
+		notNull(fitnessScaler, "FitnessScaler");
 		
 		this._genotypeFactory = genotypeFactory;
 		this._fitnessFunction = fitnessFunction;
@@ -260,7 +262,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException if the scaler is null.
 	 */
 	public void setFitnessScaler(final FitnessScaler scaler) {
-		checkNull(scaler, "FitnessScaler");
+		notNull(scaler, "FitnessScaler");
 		this._fitnessScaler = scaler;
 	}
 	
@@ -370,12 +372,12 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException if the given random engine is null.
 	 */
 	public static void setRandom(final Random random) {
-		checkNull(random, "Random engine");
+		notNull(random, "Random engine");
 		RandomRegistry.setRandom(random);
 	}
 	
 	public void setFitnessCalculator(final StatisticCalculator calculator) {
-		checkNull(calculator, "Fitness calculator");
+		notNull(calculator, "Fitness calculator");
 		_calculator = calculator;
 	}
 
@@ -386,7 +388,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<T> selector) {
-		checkNull(selector, "Offspring selector");
+		notNull(selector, "Offspring selector");
 		_offspringSelector = selector;
 	}
 
@@ -397,7 +399,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<T> selector) {
-		checkNull(selector, "Survivor selector");
+		notNull(selector, "Survivor selector");
 		_survivorSelector = selector;
 	}
 	
@@ -417,7 +419,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException if the survivor fraction is null.
 	 */
 	public void setSurvivorFraction(final Probability survivorFraction) {
-		checkNull(survivorFraction, "Survivor fraction");
+		notNull(survivorFraction, "Survivor fraction");
 		this._survivorFraction = survivorFraction;
 	}
 	
@@ -428,7 +430,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException if the offspring fraction is null.
 	 */
 	public void setOffspringFraction(final Probability offspringFraction) {
-		checkNull(offspringFraction, "Offspring fraction");
+		notNull(offspringFraction, "Offspring fraction");
 		this._offspringFraction = offspringFraction;
 	}
 	
@@ -439,7 +441,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException if the alterer is null.
 	 */
 	public void setAlterer(final Alterer<T> alterer) {
-		checkNull(alterer, "Alterer");
+		notNull(alterer, "Alterer");
 		this._alterer = alterer;
 	}
 	
@@ -449,7 +451,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @param alterer the {@link Alterer} to add.
 	 */
 	public void addAlterer(final Alterer<T> alterer) {
-		checkNull(alterer, "Alterer");
+		notNull(alterer, "Alterer");
 		this._alterer.append(alterer);
 	}
 	
@@ -494,7 +496,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 		one.
 	 */
 	public void setPopulation(final Population<T> population) {
-		checkNull(population, "Population");
+		notNull(population, "Population");
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(
 				"Population size must be greater than zero, but was " +
@@ -521,7 +523,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws NullPointerException if the given {@code calculator} is {@code null}.
 	 */
 	public void setStatisticCalculator(final StatisticCalculator calculator) {
-		checkNull(calculator, "Statistic calculator");
+		notNull(calculator, "Statistic calculator");
 		this._calculator = calculator;
 	}
 	

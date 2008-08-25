@@ -20,17 +20,18 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import static java.lang.Math.min;
 
 import java.util.Random;
 
+
 /**
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.6 2008-07-08 18:58:09 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.1 2008-08-25 19:36:06 fwilhelm Exp $
  */
 public final class ArrayUtils {
 

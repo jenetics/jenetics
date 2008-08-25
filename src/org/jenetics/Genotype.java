@@ -22,9 +22,11 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.notNull;
 
 import java.util.Iterator;
+
+import org.jenetics.util.Array;
 
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -40,7 +42,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.5 2008-07-05 20:28:12 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.6 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -213,14 +215,14 @@ public class Genotype<T extends Gene<?>>
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
 	public static <G extends Gene<?>> Genotype<G> valueOf(final Array<Chromosome<G>> chromosomes) {
-		checkNull(chromosomes, "Chromosomes");
+		notNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 		
 		final Genotype<G> genotype = new Genotype<G>(chromosomes.length());
 		for (int i = 0; i < chromosomes.length(); ++i) {
-			checkNull(chromosomes.get(i), "Chromosome[" + i + "]");
+			notNull(chromosomes.get(i), "Chromosome[" + i + "]");
 			genotype._chromosomes.set(i, chromosomes.get(i));
 		}
 		return genotype;
@@ -234,7 +236,7 @@ public class Genotype<T extends Gene<?>>
 	 * @throws NullPointerException if <code>chromosome</code> is null.
 	 */
 	public static <G extends Gene<?>> Genotype<G> valueOf(final Chromosome<G> chromosome) {
-		checkNull(chromosome, "Chromosome");
+		notNull(chromosome, "Chromosome");
 		
 		final Genotype<G> genotype = new Genotype<G>(1);
 		genotype._chromosomes.set(0, chromosome);
@@ -245,8 +247,8 @@ public class Genotype<T extends Gene<?>>
 		final Chromosome<G> chrom1, 
 		final Chromosome<G> chrom2
 	) {
-		checkNull(chrom1, "Chromosome 1");
-		checkNull(chrom2, "Chromosome 2");
+		notNull(chrom1, "Chromosome 1");
+		notNull(chrom2, "Chromosome 2");
 		
 		final Genotype<G> genotype = new Genotype<G>(2);
 		genotype._chromosomes.set(0, chrom1);
@@ -259,9 +261,9 @@ public class Genotype<T extends Gene<?>>
 			final Chromosome<G> chrom2, 
 			final Chromosome<G> chrom3
 	) {
-		checkNull(chrom1, "Chromosome 1");
-		checkNull(chrom2, "Chromosome 2");
-		checkNull(chrom3, "Chromosome 3");
+		notNull(chrom1, "Chromosome 1");
+		notNull(chrom2, "Chromosome 2");
+		notNull(chrom3, "Chromosome 3");
 		
 		final Genotype<G> genotype = new Genotype<G>(3);
 		genotype._chromosomes.set(0, chrom1);
@@ -271,7 +273,7 @@ public class Genotype<T extends Gene<?>>
 	}
 	
 	public static <G extends Gene<?>> Genotype<G> valueOf(final Genotype<G> genotype) {
-		checkNull(genotype, "Genotype");
+		notNull(genotype, "Genotype");
 		
 		final Genotype<G> gtype = new Genotype<G>(genotype.length());
 		for (int i = 0; i < genotype.length(); ++i) {

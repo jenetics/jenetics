@@ -22,8 +22,8 @@
  */
 package org.jenetics;
 
-import static org.jenetics.Checker.checkChromosomeLength;
-import static org.jenetics.Checker.checkNull;
+import static org.jenetics.util.Validator.checkChromosomeLength;
+import static org.jenetics.util.Validator.notNull;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -37,6 +37,9 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Array;
+import org.jenetics.util.BitUtils;
+import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
@@ -44,7 +47,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.6 2008-07-08 19:35:34 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.7 2008-08-25 19:35:24 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -421,7 +424,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 */
 	public static BitChromosome valueOf(final int length, final Probability p) {
 		checkChromosomeLength(length);
-		checkNull(p, "Probability");
+		notNull(p, "Probability");
 		
 		final Random random = RandomRegistry.getRandom();
 		BitChromosome chromosome = newInstance(length, p);
@@ -466,7 +469,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 *         <code>null</code>.
 	 */
 	public static BitChromosome valueOf(final int length, final BitSet bits) {
-		checkNull(bits, "BitSet");
+		notNull(bits, "BitSet");
 		
 		BitChromosome chromosome = newInstance(length, null);
 		int ones = 0;
