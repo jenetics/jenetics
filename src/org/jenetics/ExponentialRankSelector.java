@@ -40,10 +40,10 @@ import javolution.xml.stream.XMLStreamException;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.3 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public class ExponentialRankSelector<T extends Gene<?>> 
-	extends ProbabilitySelector<T> implements XMLSerializable
+public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>> 
+	extends ProbabilitySelector<T, C> implements XMLSerializable
 {
 	private static final long serialVersionUID = -5633748296591142197L;
 	
@@ -54,7 +54,7 @@ public class ExponentialRankSelector<T extends Gene<?>>
 	}
 
 	@Override
-	protected double[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<T, C> population, final int count) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		

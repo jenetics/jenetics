@@ -25,13 +25,15 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import javolution.xml.XMLObjectWriter;
+import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGeneTest.java,v 1.3 2008-07-08 17:02:29 fwilhelm Exp $
+ * @version $Id: DoubleGeneTest.java,v 1.4 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class DoubleGeneTest { 
     
@@ -184,4 +186,20 @@ public class DoubleGeneTest {
         assertTrue(g1.toString() != null);
         assertTrue(g1.toString().length() > 0);
     }
+	
+	@Test
+	public void serialize() throws XMLStreamException {
+		 DoubleGene gene = DoubleGene.valueOf(3.5, 0.5, 5.5);
+		 XMLObjectWriter writer = XMLObjectWriter.newInstance(System.out);
+		 writer.setIndentation("\t");
+		 writer.write(gene);
+		 writer.close();
+	}
 }
+
+
+
+
+
+
+

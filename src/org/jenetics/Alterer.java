@@ -48,15 +48,15 @@ import javolution.xml.XMLSerializable;
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.4 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
+public abstract class Alterer<G extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -675546015545758480L;
 
 	/**
 	 * The Alterer which is executed after <code>this</code> alterer.
 	 */
-	protected Alterer<T> _component;
+	protected Alterer<G> _component;
 	
 	/**
 	 * The altering probability. 
@@ -70,7 +70,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * @param component the <code>Alterer</code>S this <code>Alterer</code>
 	 *        consists.
 	 */
-	public Alterer(final Alterer<T> component) {
+	public Alterer(final Alterer<G> component) {
 		this(Probability.ONE, component);
 	}
 	
@@ -95,7 +95,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * @throws NullPointerException if the <code>probability</code> or the
 	 * 		<code>component</code> is <code>null</code>. 
 	 */
-	public Alterer(final Probability probability, final Alterer<T> component) {
+	public Alterer(final Probability probability, final Alterer<G> component) {
 		notNull(probability, "Probability");
 		notNull(component, "Alterer components");
 		
@@ -110,7 +110,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * @throws NullPointerException if the <code>alterer</code> is 
 	 *         <code>null</code>.
 	 */
-	public Alterer<T> append(final Alterer<T> alterer) {
+	public Alterer<G> append(final Alterer<G> alterer) {
 		notNull(alterer, "Alterer");
 
 		if (_component == null) {
@@ -130,7 +130,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 *        <code>population</code> is <code>null</code> or empty, nothing is 
 	 *        altered.
 	 */
-	public void alter(final Population<T> population) {
+	public <C extends Comparable<C>> void alter(final Population<G, C> population) {
 		if (population == null || population.isEmpty()) {
 			return;
 		}
@@ -148,7 +148,8 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @param population the Population to be altered.
 	 */
-	protected abstract void componentAlter(Population<T> population);
+	protected abstract <C extends Comparable<C>> void
+		componentAlter(Population<G, C> population);
 	
 	/**
 	 * Return the component alterer.
@@ -156,7 +157,7 @@ public abstract class Alterer<T extends Gene<?>> implements XMLSerializable {
 	 * @return The component alterer, or <code>null</code> if this alterer has no
 	 *         component alterer.
 	 */
-	public Alterer<T> getComponentAlterer() {
+	public Alterer<G> getComponentAlterer() {
 		return _component;
 	}
 	

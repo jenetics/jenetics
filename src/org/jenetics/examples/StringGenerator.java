@@ -35,14 +35,15 @@ import org.jenetics.Population;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.Statistic;
 import org.jenetics.util.Probability;
+import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.4 2008-08-25 19:35:43 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.5 2008-08-26 22:29:36 fwilhelm Exp $
  */
 public class StringGenerator {
 
-	private static class Function implements FitnessFunction<CharacterGene> {
+	private static class Function implements FitnessFunction<CharacterGene, Integer64> {
 		private static final long serialVersionUID = 644284481730863472L;
 		
 		private final String value;
@@ -51,7 +52,7 @@ public class StringGenerator {
 			this.value = value;
 		}
 		
-		public double evaluate(Genotype<CharacterGene> genotype) {
+		public Integer64 evaluate(Genotype<CharacterGene> genotype) {
 			int matches = 0;
 			Chromosome<CharacterGene> chromosome = genotype.getChromosome();
 			
@@ -61,7 +62,7 @@ public class StringGenerator {
 				}
 			}
 			
-			return matches;
+			return Integer64.valueOf(matches);
 		}
 		
 	}
@@ -75,22 +76,22 @@ public class StringGenerator {
 			new CharacterChromosome(value.length())
 		);
 		final Function ff = new Function(value);
-		final GeneticAlgorithm<CharacterGene> 
-		ga = new GeneticAlgorithm<CharacterGene>(gtf, ff);
+		final GeneticAlgorithm<CharacterGene, Integer64> 
+		ga = new GeneticAlgorithm<CharacterGene, Integer64>(gtf, ff);
 		
 		ga.setPopulationSize(100);
 		ga.setSurvivorFraction(Probability.valueOf(0.3));
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
-		ga.setSelectors(new RouletteWheelSelector<CharacterGene>());
+		ga.setSelectors(new RouletteWheelSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
 		ga.setup();
 		
-		Population<CharacterGene> p = ga.getPopulation();
-		Statistic<CharacterGene> stat = ga.getStatistic(); 		
+		Population<CharacterGene, Integer64> p = ga.getPopulation();
+		Statistic<CharacterGene, Integer64> stat = ga.getStatistic(); 		
 		
 		for (int i = 0; i < 200; ++i) {
 			ga.evolve();

@@ -28,16 +28,16 @@ import org.jenetics.util.Probability;
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.2 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: NullAlterer.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class NullAlterer<T extends Gene<?>> extends Alterer<T> {
+public class NullAlterer<G extends Gene<?>> extends Alterer<G> {
 	private static final long serialVersionUID = 7892835302001002915L;
 
-	public NullAlterer(final Alterer<T> component) {
+	public NullAlterer(final Alterer<G> component) {
 		super(component);
 	}
 
-	public NullAlterer(final Probability probability, final Alterer<T> component) {
+	public NullAlterer(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
 
@@ -46,7 +46,7 @@ public class NullAlterer<T extends Gene<?>> extends Alterer<T> {
 	}
 
 	@Override
-	protected void componentAlter(Population<T> population) {
+	protected <C extends Comparable<C>> void componentAlter(Population<G, C> population) {
 	}
 
 }

@@ -22,16 +22,17 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.pow;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Float64;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PowerScaler.java,v 1.1 2008-03-25 18:31:54 fwilhelm Exp $
+ * @version $Id: PowerScaler.java,v 1.2 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public class PowerScaler implements FitnessScaler, XMLSerializable {
+public class PowerScaler implements FitnessScaler<Float64>, XMLSerializable {
 	private static final long serialVersionUID = -5895077899454677843L;
 	
 	public static final PowerScaler SQR_SCALER = new PowerScaler(2);
@@ -44,8 +45,8 @@ public class PowerScaler implements FitnessScaler, XMLSerializable {
 	}
 
 	@Override
-	public double scale(final double value) {
-		return pow(value, _exponent);
+	public Float64 scale(final Float64 value) {
+		return value.pow(_exponent);
 	}
 
 	static final XMLFormat<PowerScaler> 

@@ -24,13 +24,14 @@ package org.jenetics;
 
 import java.util.Arrays;
 
+import org.jenetics.util.BitUtils;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtilsTest.java,v 1.3 2008-07-08 17:02:27 fwilhelm Exp $
+ * @version $Id: BitUtilsTest.java,v 1.4 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class BitUtilsTest {
 

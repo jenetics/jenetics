@@ -27,6 +27,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Number;
+
 /**
  * In this <code>Selector</code>, the probability for selection is defined as:
  * <p/>
@@ -46,10 +48,10 @@ import javolution.xml.stream.XMLStreamException;
  * f_j denotes the fitness value of the jth individium.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.2 2008-07-08 18:58:09 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class BoltzmannSelector<T extends Gene<?>> extends ProbabilitySelector<T> 
-	implements XMLSerializable
+public class BoltzmannSelector<T extends Gene<?>, N extends Number<N>> 
+	extends ProbabilitySelector<T, N> implements XMLSerializable
 {
 	private static final long serialVersionUID = 4785987330242283796L;
 	
@@ -67,19 +69,19 @@ public class BoltzmannSelector<T extends Gene<?>> extends ProbabilitySelector<T>
 	}
 
 	@Override
-	protected double[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<T, N> population, final int count) {
 		assert (population != null) : "Population must not be null. ";
 		assert (count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double[] props = new double[population.size()];
 		
 		double z = 0;
-		for (Phenotype<T> pt : population) {
-			z += exp(_beta*pt.getFitness());
+		for (Phenotype<T, N> pt : population) {
+			z += exp(_beta*pt.getFitness().doubleValue());
 		}
 		
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[i] = exp(_beta*population.get(i).getFitness())/z;
+			props[i] = exp(_beta*population.get(i).getFitness().doubleValue())/z;
 		}
 	
 		return props;

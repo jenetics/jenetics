@@ -22,11 +22,12 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.BitUtils;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticTest.java,v 1.1 2008-04-22 15:25:36 fwilhelm Exp $
+ * @version $Id: StatisticTest.java,v 1.2 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class StatisticTest {
 

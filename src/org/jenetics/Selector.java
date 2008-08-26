@@ -28,9 +28,11 @@ import java.io.Serializable;
  * A Selector selects a given number of Chromosoms from the Population.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Selector.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: Selector.java,v 1.2 2008-08-26 22:29:35 fwilhelm Exp $
  */
-public interface Selector<T extends Gene<?>> extends Serializable {
+public interface Selector<G extends Gene<?>, C extends Comparable<C>> 
+	extends Serializable 
+{
 
 	/**
 	 * Select phenotypes from the Population.
@@ -41,6 +43,6 @@ public interface Selector<T extends Gene<?>> extends Serializable {
 	 * @throws NullPointerException if the population is <code>null</code>.
 	 * @throws IllegalArgumentException if the select count is smaller than zero.
 	 */
-	public Population<T> select(final Population<T> population, final int count);
+	public Population<G, C> select(final Population<G, C> population, final int count);
 
 }

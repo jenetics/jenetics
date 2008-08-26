@@ -40,9 +40,11 @@ import javolution.xml.stream.XMLStreamException;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.2 2008-08-25 19:35:25 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.3 2008-08-26 22:29:35 fwilhelm Exp $
  */
-public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSerializable {
+public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>> 
+	implements Selector<G, C>, XMLSerializable 
+{
 	private static final long serialVersionUID = -5342297228328820942L;
 	
 	private final int _sampleSize;
@@ -66,7 +68,7 @@ public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSe
 				"Sample size must be greater than one, but was " + sampleSize
 			);
 		}
-		this._sampleSize = sampleSize;
+		_sampleSize = sampleSize;
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSe
 	 *         <code>null</code>.
 	 */
 	@Override
-	public Population<T> select(final Population<T> population, final int count) {
+	public Population<G, C> select(final Population<G, C> population, final int count) {
 		Validator.notNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
@@ -91,23 +93,24 @@ public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSe
 			);
 		}
 		
-		Population<T> pop = new Population<T>();
+		final Population<G, C> pop = new Population<G, C>();
 		if (count == 0) {
 			return pop;
 		}
 		
-		Phenotype<T> winner = null;
-		Phenotype<T> selection = null;
-		double bestFitness = -Double.MAX_VALUE;
+		Phenotype<G, C> winner = null;
+		Phenotype<G, C> selection = null;
+		C bestFitness = null;
+		
 		final int N = population.size();
 		final Random random = RandomRegistry.getRandom();
 		
 		for (int i = 0; i < count; ++i) {
-			bestFitness = -Double.MAX_VALUE;
+			bestFitness = population.get(random.nextInt(N)).getFitness();
 			
 			for (int j = 0; j < _sampleSize; ++j) {
 				selection = population.get(random.nextInt(N));
-				if (selection.getFitness() > bestFitness) {
+				if (selection.getFitness().compareTo(bestFitness) > 0) {
 					bestFitness = selection.getFitness();
 					winner = selection;
 				}
@@ -118,6 +121,16 @@ public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSe
 		}
 		
 		return pop;
+	}
+	
+	public static <SG extends Gene<?>, SC extends Comparable<SC>> 
+	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
+		return new TournamentSelector<SG, SC>(sampleSize);
+	}
+	
+	public static <SG extends Gene<?>, SC extends Comparable<SC>> 
+	TournamentSelector<SG, SC> valueOf() {
+		return new TournamentSelector<SG, SC>();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -144,6 +157,7 @@ public class TournamentSelector<T extends Gene<?>> implements Selector<T>, XMLSe
 	};
 
 }
+
 
 
 

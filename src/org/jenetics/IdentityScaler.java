@@ -24,12 +24,10 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IdentityScaler.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: IdentityScaler.java,v 1.2 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class IdentityScaler implements FitnessScaler {
+public class IdentityScaler<C extends Comparable<C>> implements FitnessScaler<C> {
 	private static final long serialVersionUID = -8781746035187241816L;
-	
-	public static final IdentityScaler INSTANCE = new IdentityScaler();
 
 	public IdentityScaler() {
 		super();
@@ -41,8 +39,12 @@ public class IdentityScaler implements FitnessScaler {
 	 *  @return the input {@code value}.
 	 */
 	@Override
-	public double scale(double value) {
+	public C scale(final C value) {
 		return value;
 	}
 
+	public static <SC extends Comparable<SC>> IdentityScaler<SC> valueOf() {
+		return new IdentityScaler<SC>();
+	}
+	
 }

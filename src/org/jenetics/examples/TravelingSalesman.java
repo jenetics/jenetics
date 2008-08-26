@@ -47,11 +47,11 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.7 2008-08-25 19:35:43 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.8 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
-	private static class Function implements FitnessFunction<IntegerGene> {
+	private static class Function implements FitnessFunction<IntegerGene, Integer> {
 		private static final long serialVersionUID = 8402072476064049463L;
 		
 		private final double[][] adjacence;
@@ -61,7 +61,7 @@ public class TravelingSalesman {
 		}
 		
 		@Override
-		public double evaluate(final Genotype<IntegerGene> genotype) {
+		public Integer evaluate(final Genotype<IntegerGene> genotype) {
 			final Chromosome<IntegerGene> path = genotype.getChromosome();
 			
 			double length = 0.0;
@@ -70,18 +70,18 @@ public class TravelingSalesman {
 				final int to = path.getGene((i + 1)%n).intValue();
 				length -= adjacence[from][to];
 			}
-			return length;
+			return (int)length*100;
 		}
 	}
 	
 	public static void main(String[] args) {
 		final int stops = 10;
 		
-		final FitnessFunction<IntegerGene> ff = new Function(adjacencyMatrix(stops));
+		final FitnessFunction<IntegerGene, Integer> ff = new Function(adjacencyMatrix(stops));
 		final GenotypeFactory<IntegerGene> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<IntegerGene> ga = new GeneticAlgorithm<IntegerGene>(gtf, ff);
+		final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<IntegerGene, Integer>(gtf, ff);
 		ga.setPopulationSize(10000);
 		
 //		final int threads = 4;
@@ -99,7 +99,7 @@ public class TravelingSalesman {
         ga.setup();
         for (int i = 0; i < 30; ++i) {
         	ga.evolve();
-        	Phenotype<IntegerGene> bpt = ga.getStatistic().getBestPhenotype();
+        	Phenotype<IntegerGene, Integer> bpt = ga.getStatistic().getBestPhenotype();
         	System.out.println(
         		bpt + " --> " + bpt.getFitness() +  " : " + 
         			ga.getStatistic().getFitnessVariance()

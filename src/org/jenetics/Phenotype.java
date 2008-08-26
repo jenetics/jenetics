@@ -23,14 +23,11 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
-
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
 import javolution.text.Text;
-import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 
 /**
@@ -45,24 +42,24 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.2 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.3 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public class Phenotype<T extends Gene<?>> 
-	implements Comparable<Phenotype<T>>, Immutable, Verifiable, XMLSerializable, Realtime
+public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
+	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
+				XMLSerializable, Realtime
 {
 	private static final long serialVersionUID = 1614815678599076552L;
 	
-	private Genotype<T> _genotype;
-	private FitnessFunction<T> _fitnessFunction;
-	private FitnessScaler _fitnessScaler;
+	private Genotype<G> _genotype;
+	private FitnessFunction<G, C> _fitnessFunction;
+	private FitnessScaler<C> _fitnessScaler;
 	
 	private int _generation = 0;
 	
 	//Storing the fitness value and a fitnessCalculated flag
 	//for lazy evaluation.
-	private boolean _fitnessCalculated = false;
-	private double _rawFitness = 0.0;
-	private double _fitness = 0.0;
+	private C _rawFitness = null;
+	private C _fitness = null;
 	
 	protected Phenotype() {
 	}
@@ -74,15 +71,14 @@ public class Phenotype<T extends Gene<?>>
 	 * @return the cloned <code>Genotype</code> of this <code>Phenotype</code>.
 	 * @throws NullPointerException if one of the arguments is <code>null</code>.
 	 */
-	public Genotype<T> getGenotype() {
+	public Genotype<G> getGenotype() {
 		return _genotype;
 	}
 	
 	private void calculateFitness() {
-		if (!_fitnessCalculated) {
+		if (_rawFitness == null) {
 			_rawFitness = _fitnessFunction.evaluate(_genotype);
 			_fitness = _fitnessScaler.scale(_rawFitness);
-			_fitnessCalculated = true;
 		}
 	}
 	
@@ -91,7 +87,7 @@ public class Phenotype<T extends Gene<?>>
 	 * 
 	 * @return The fitness value of this <code>Phenotyp</code>.
 	 */
-	public double getFitness() {
+	public C getFitness() {
 		calculateFitness();
 		return _fitness;
 	}
@@ -101,7 +97,7 @@ public class Phenotype<T extends Gene<?>>
 	 * 
 	 * @return The raw fitness (befor scaling) of the phenotype.
 	 */
-	public double getRawFitness() {
+	public C getRawFitness() {
 		calculateFitness();
 		return _rawFitness;
 	}
@@ -127,15 +123,9 @@ public class Phenotype<T extends Gene<?>>
 	}
 	
 	@Override
-	public int compareTo(final Phenotype<T> pt) {
+	public int compareTo(final Phenotype<G, C> pt) {
 		notNull(pt, "Phenotype");
-		if (getFitness() < pt.getFitness()) {
-			return -1;
-		} else if (getFitness() > pt.getFitness()) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return getFitness().compareTo(pt.getFitness());
 	}	
 	
 	@Override
@@ -158,7 +148,7 @@ public class Phenotype<T extends Gene<?>>
 			return false;
 		}
 		
-		final Phenotype<?> pt = (Phenotype<?>)obj;
+		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
 		return pt._fitnessFunction.equals(_fitnessFunction) &&
 				pt._fitnessScaler.equals(_fitnessScaler) &&
 				pt._genotype.equals(_genotype);
@@ -174,10 +164,10 @@ public class Phenotype<T extends Gene<?>>
 		return toText().toString();
 	}
 	
-	private static final ObjectFactory<Phenotype<Gene<?>>> 
-	FACTORY = new ObjectFactory<Phenotype<Gene<?>>>() {
-		@Override protected Phenotype<Gene<?>> create() {
-			return new Phenotype<Gene<?>>(); 
+	@SuppressWarnings("unchecked")
+	private static final ObjectFactory FACTORY = new ObjectFactory() {
+		@Override protected Object create() {
+			return new Phenotype();
 		}
 	};
 	
@@ -188,19 +178,11 @@ public class Phenotype<T extends Gene<?>>
 	 * @return New {@link Phenotype} whith the same {@link FitnessFunction}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<T> newInstance(final Genotype<T> genotype) {
+	Phenotype<G, C> newInstance(final Genotype<G> genotype) {
 		notNull(genotype, "Genotype");
 		return Phenotype.valueOf(
 			genotype, _fitnessFunction, _fitnessScaler, _generation
 		);
-	}
-	
-	public static <G extends Gene<?>> Phenotype<G> valueOf(
-		final Genotype<G> genotype, 
-		final FitnessFunction<G> fitnessFunction,
-		final int generation
-	) {
-		return valueOf(genotype, fitnessFunction, IdentityScaler.INSTANCE, generation);
 	}
 	
 	/**
@@ -209,63 +191,90 @@ public class Phenotype<T extends Gene<?>>
 	 * 
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
+	 * @param generation the current generation of the generated phenotype.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static <G extends Gene<?>> Phenotype<G> valueOf(
-		final Genotype<G> genotype, 
-		final FitnessFunction<G> fitnessFunction, 
-		final FitnessScaler fitnessScaler,
+	public static<SG extends Gene<?>, SC extends Comparable<SC>> 
+	Phenotype<SG, SC> valueOf(
+		final Genotype<SG> genotype, 
+		final FitnessFunction<SG, SC> fitnessFunction,
+		final int generation
+	) {
+		return valueOf(genotype, fitnessFunction, new IdentityScaler<SC>(), generation);
+	}
+	
+	/**
+	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only 
+	 * the age of the <code>Phenotype</code> can be incremented.
+	 * 
+	 * @param genotype the genotype of this phenotype.
+	 * @param fitnessFunction the fitness function of this phenotype.
+	 * @param fitnessScaler the fitness scaler.
+	 * @param generation the current generation of the generated phenotype.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 */
+	public static <SG extends Gene<?>, SC extends Comparable<SC>> 
+	Phenotype<SG, SC> valueOf(
+		final Genotype<SG> genotype, 
+		final FitnessFunction<SG, SC> fitnessFunction, 
+		final FitnessScaler<SC> fitnessScaler,
 		final int generation
 	) {
 		notNull(genotype, "Genotype");
 		notNull(fitnessFunction, "Fitness function");
 		notNull(fitnessScaler, "Fitness scaler");
+		if (generation < 0) {
+			throw new IllegalArgumentException("Generation must not < 0: " + generation);
+		}
 		
 		@SuppressWarnings("unchecked")
-		Phenotype<G> p = (Phenotype<G>)FACTORY.object();
+		Phenotype<SG, SC> p = (Phenotype<SG, SC>)FACTORY.object();
 		p._genotype = Genotype.valueOf(genotype);
 		p._fitnessFunction = fitnessFunction;
 		p._fitnessScaler = fitnessScaler;
 		p._generation = generation;
 		
-		p._rawFitness = 0;
-		p._fitness = 0;
-		p._fitnessCalculated = false;
+		p._rawFitness = null;
+		p._fitness = null;
 		return p;
 	}
 	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<Phenotype> 
-	XML = new XMLFormat<Phenotype>(Phenotype.class) {
-		@Override
-		public Phenotype<Gene<?>> newInstance(
-			final Class<Phenotype> cls, final InputElement xml
-		) throws XMLStreamException {
-			final Genotype<Gene<?>> gt = xml.getNext();
-			final FitnessFunction<Gene<?>> ff = xml.getNext();
-			final FitnessScaler fs = xml.getNext();
-			final int generation = xml.getAttribute("generation", 0);
-			final Phenotype<Gene<?>> pt = Phenotype.valueOf(gt, ff, fs, generation);
-			
-			pt._fitness = xml.getAttribute("fitness", 0);
-			pt._rawFitness = xml.getAttribute("raw-fitness", 0);
-			return pt;
-		}
-		@Override 
-		public void write(final Phenotype pt, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("generation", pt._generation);
-			xml.setAttribute("fitness", pt.getFitness());
-			xml.setAttribute("raw-fitness", pt.getRawFitness());
-			xml.add(pt._genotype);
-			xml.add(pt._fitnessFunction);
-			xml.add(pt._fitnessScaler);
-		}
-		@Override
-		public void read(final InputElement xml, final Phenotype gt) {	
-		}
-	};
+//	@SuppressWarnings("unchecked")
+//	static final XMLFormat<Phenotype> 
+//	XML = new XMLFormat<Phenotype>(Phenotype.class) {
+//		@Override
+//		public Phenotype<Gene<?>, ? extends Comparable<?>> newInstance(
+//			final Class<Phenotype> cls, final InputElement xml
+//		) throws XMLStreamException {
+//			final Genotype<Gene<?>> gt = xml.getNext();
+//			final FitnessFunction<Gene<?>> ff = xml.getNext();
+//			final FitnessScaler fs = xml.getNext();
+//			final int generation = xml.getAttribute("generation", 0);
+//			final Phenotype<Gene<?>, ? extends Comparable<?>> pt = 
+//				Phenotype.valueOf(gt, ff, fs, generation);
+//			
+//			pt._fitness = xml.getAttribute("fitness", 0);
+//			pt._rawFitness = xml.getAttribute("raw-fitness", 0);
+//			return pt;
+//		}
+//		@Override 
+//		public void write(final Phenotype pt, final OutputElement xml) 
+//			throws XMLStreamException 
+//		{
+//			xml.setAttribute("generation", pt._generation);
+//			xml.setAttribute("fitness", pt.getFitness());
+//			xml.setAttribute("raw-fitness", pt.getRawFitness());
+//			xml.add(pt._genotype);
+//			xml.add(pt._fitnessFunction);
+//			xml.add(pt._fitnessScaler);
+//		}
+//		@Override
+//		public void read(final InputElement xml, final Phenotype gt) {	
+//		}
+//	};
+
 }
 
 

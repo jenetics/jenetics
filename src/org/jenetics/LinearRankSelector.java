@@ -55,10 +55,10 @@ import javolution.xml.stream.XMLStreamException;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.3 2008-08-26 22:29:30 fwilhelm Exp $
  */
-public final class LinearRankSelector<T extends Gene<?>> 
-	extends ProbabilitySelector<T> implements XMLSerializable
+public final class LinearRankSelector<G extends Gene<?>, C extends Comparable<C>> 
+	extends ProbabilitySelector<G, C> implements XMLSerializable
 {
 	private static final long serialVersionUID = -7633503361447837511L;
 	
@@ -76,7 +76,7 @@ public final class LinearRankSelector<T extends Gene<?>>
 	}
 
 	@Override
-	protected double[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<G, C> population, final int count) {
 		assert(population != null);
 		assert(count >= 0);
 		

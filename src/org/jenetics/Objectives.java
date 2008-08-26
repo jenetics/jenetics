@@ -23,8 +23,8 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Objectives.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Objectives.java,v 1.2 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public interface Objectives<T extends Gene<?>> extends FitnessFunction<T> {
+public interface Objectives<T extends Gene<?>>  {
 
 }
