@@ -52,9 +52,9 @@ import javolution.xml.stream.XMLStreamException;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SinglePointCrossover.java,v 1.4 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: SinglePointCrossover.java,v 1.5 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class SinglePointCrossover<T extends Gene<?>> extends Crossover<T> {
+public class SinglePointCrossover<G extends Gene<?>> extends Crossover<G> {
 	private static final long serialVersionUID = -5901453762256113098L;
 
 	public SinglePointCrossover() {
@@ -65,17 +65,17 @@ public class SinglePointCrossover<T extends Gene<?>> extends Crossover<T> {
 		super(probability);
 	}
 
-	public SinglePointCrossover(final Probability probability, final Alterer<T> component) {
+	public SinglePointCrossover(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
 	
 	@Override
-	protected void crossover(final Array<T> that, final Array<T> other) {
+	protected void crossover(final Array<G> that, final Array<G> other) {
 		final Random random = RandomRegistry.getRandom();
 		final int index = random.nextInt(that.length());
 		
 		for (int j = 0; j <= index; ++j) {
-			final T temp = that.get(j);
+			final G temp = that.get(j);
 			that.set(j, other.get(j));
 			other.set(j, temp);
 		}

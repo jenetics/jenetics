@@ -34,25 +34,26 @@ import org.jenetics.Population;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.Statistic;
 import org.jenetics.util.Probability;
+import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java,v 1.3 2008-08-25 19:35:43 fwilhelm Exp $
+ * @version $Id: OnesCounting.java,v 1.4 2008-08-26 22:29:36 fwilhelm Exp $
  */
 public class OnesCounting {
 
-	private static class OneCounter implements FitnessFunction<BitGene> {
+	private static class OneCounter implements FitnessFunction<BitGene, Integer64> {
 		private static final long serialVersionUID = 5457381926611887312L;
 
-		public double evaluate(Genotype<BitGene> genotype) {
+		public Integer64 evaluate(Genotype<BitGene> genotype) {
 			int count = 0;
 			for (BitGene gene : genotype.getChromosome()) {
 				if (gene.getBit()) {
 					++count;
 				}
 			}
-			return count;
+			return Integer64.valueOf(count);
 		}
 		
 	}
@@ -63,18 +64,18 @@ public class OnesCounting {
 			BitChromosome.valueOf(20, Probability.valueOf(0.15))
 		);
 		final OneCounter ff = new OneCounter();
-		final GeneticAlgorithm<BitGene> ga = new GeneticAlgorithm<BitGene>(gtf, ff);
+		final GeneticAlgorithm<BitGene, Integer64> ga = new GeneticAlgorithm<BitGene, Integer64>(gtf, ff);
 		
 		ga.setPopulationSize(50);
-		ga.setSelectors(new RouletteWheelSelector<BitGene>());
+		ga.setSelectors(new RouletteWheelSelector<BitGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<BitGene>(Probability.valueOf(0.55), 
 			new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
 		);
 		ga.setup();
 		
-		Population<BitGene> p = ga.getPopulation();
-		Statistic<BitGene> stat = ga.getStatistic();
+		Population<BitGene,Integer64> p = ga.getPopulation();
+		Statistic<BitGene, Integer64> stat = ga.getStatistic();
 		System.out.print("" + p.size() + ": ");
 		System.out.println(
 			stat.getBestPhenotype().getFitness() + ": " + 

@@ -61,9 +61,9 @@ import javolution.xml.stream.XMLStreamException;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.2 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class Mutation<T extends Gene<?>> extends Alterer<T> {	
+public class Mutation<G extends Gene<?>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
 
 	/**
@@ -92,7 +92,7 @@ public class Mutation<T extends Gene<?>> extends Alterer<T> {
 	 *        the concrete mutation probability.
 	 * @param component The next Alterers in Alterer-Chain.
 	 */
-	public Mutation(final Probability probability, final Alterer<T> component) {
+	public Mutation(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
  
@@ -100,20 +100,20 @@ public class Mutation<T extends Gene<?>> extends Alterer<T> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	protected void componentAlter(Population<T> population) {
+	protected <C extends Comparable<C>> void componentAlter(Population<G, C> population) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final double prop = _probability.doubleValue()/
 								population.get(0).getGenotype().length();
 		
 		final Random random = RandomRegistry.getRandom();
-		for (ListIterator<Phenotype<T>> it = population.listIterator(); it.hasNext();) { 
-			final Phenotype<T> pt = it.next();
+		for (ListIterator<Phenotype<G, C>> it = population.listIterator(); it.hasNext();) { 
+			final Phenotype<G, C> pt = it.next();
 			
 			if (random.nextDouble() < prop) {
-				final Genotype<T> gt = pt.getGenotype(); 
+				final Genotype<G> gt = pt.getGenotype(); 
 				final int chIndex = random.nextInt(gt.chromosomes());
-				final Chromosome<T> ch = gt.getChromosome(chIndex);
+				final Chromosome<G> ch = gt.getChromosome(chIndex);
 				
 				final int geneIndex = random.nextInt(ch.length());
 				ch.mutate(geneIndex);

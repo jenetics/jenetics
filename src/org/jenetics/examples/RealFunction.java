@@ -35,18 +35,19 @@ import org.jenetics.GenotypeFactory;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
 import org.jenetics.util.Probability;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.4 2008-08-25 19:35:43 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.5 2008-08-26 22:29:36 fwilhelm Exp $
  */
 public class RealFunction {
-	private static final class Function implements FitnessFunction<DoubleGene> {
+	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
 		
-		public double evaluate(final Genotype<DoubleGene> genotype) {
+		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
 			final DoubleGene gene = genotype.getChromosome().getGene(0);
-			return sin(toRadians(gene.doubleValue()));
+			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
 		}
 	}
 	
@@ -54,7 +55,7 @@ public class RealFunction {
 	public static void main(String[] args) {
 		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final Function ff = new Function();
-		final GeneticAlgorithm<DoubleGene> ga = new GeneticAlgorithm<DoubleGene>(gtf, ff);
+		final GeneticAlgorithm<DoubleGene, Float64> ga = new GeneticAlgorithm<DoubleGene, Float64>(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(100);

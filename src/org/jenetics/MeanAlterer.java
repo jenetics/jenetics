@@ -33,9 +33,9 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.3 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.4 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class MeanAlterer<T extends Gene<?> & Mean<T>> extends Alterer<T> {
+public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 	private static final long serialVersionUID = 4680966822655548466L;
 
 	public MeanAlterer() {
@@ -46,28 +46,28 @@ public class MeanAlterer<T extends Gene<?> & Mean<T>> extends Alterer<T> {
 		super(probability);
 	}
 
-	public MeanAlterer(final Probability probability, final Alterer<T> component) {
+	public MeanAlterer(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
 
 	@Override
-	protected void componentAlter(Population<T> population) {
+	protected <C extends Comparable<C>> void componentAlter(Population<G, C> population) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0, size = population.size(); i < size; ++i) {
 			if (random.nextDouble() < _probability.doubleValue()) {
 				final int pt2Index = random.nextInt(population.size());
-				final Phenotype<T> pt1 = population.get(i);
-				final Phenotype<T> pt2 = population.get(pt2Index);
-				final Genotype<T> gt1 = pt1.getGenotype();
-				final Genotype<T> gt2 = pt2.getGenotype();
+				final Phenotype<G, C> pt1 = population.get(i);
+				final Phenotype<G, C> pt2 = population.get(pt2Index);
+				final Genotype<G> gt1 = pt1.getGenotype();
+				final Genotype<G> gt2 = pt2.getGenotype();
 				
 				final int chIndex = random.nextInt(gt1.chromosomes());
-				final Array<Chromosome<T>> chromosomes1 = gt1.getChromosomes();
-				final Array<Chromosome<T>> chromosomes2 = gt2.getChromosomes();
-				final Array<T> genes1 = chromosomes1.get(chIndex).getGenes();
-				final Array<T> genes2 = chromosomes2.get(chIndex).getGenes();
+				final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
+				final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
+				final Array<G> genes1 = chromosomes1.get(chIndex).getGenes();
+				final Array<G> genes2 = chromosomes2.get(chIndex).getGenes();
 				
 				final int geneIndex = random.nextInt(genes1.length());
 				

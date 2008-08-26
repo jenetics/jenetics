@@ -32,7 +32,7 @@ import org.jenetics.util.Probability;
  * Crossover</a> of two {@link Chromosome}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.6 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.7 2008-08-26 22:29:34 fwilhelm Exp $
  */
 public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 6083622511856683392L;
@@ -50,7 +50,7 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	}
 
 	@Override
-	protected void componentAlter(final Population<T> population) {
+	protected <C extends Comparable<C>> void componentAlter(final Population<T, C> population) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
@@ -58,8 +58,8 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 			//Performing the crossover with the given probability.
 			if (!_probability.isLargerThan(random.nextDouble())) {
 				final int ptIndex = random.nextInt(population.size());
-				final Phenotype<T> pt1 = population.get(i);
-				final Phenotype<T> pt2 = population.get(ptIndex);
+				final Phenotype<T, C> pt1 = population.get(i);
+				final Phenotype<T, C> pt2 = population.get(ptIndex);
 				final Genotype<T> gt1 = pt1.getGenotype();
 				final Genotype<T> gt2 = pt2.getGenotype();
 				

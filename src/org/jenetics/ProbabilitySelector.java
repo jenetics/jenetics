@@ -35,16 +35,18 @@ import org.jenetics.util.Validator;
  * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.4 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.5 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector<T> {
+public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
+	implements Selector<G, C> 
+{
 	private static final long serialVersionUID = -2980541308499034709L;
 
 	protected ProbabilitySelector() {
 	}
 
 	@Override
-	public Population<T> select(final Population<T> population, final int count) {
+	public Population<G, C> select(final Population<G, C> population, final int count) {
 		Validator.notNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
@@ -52,7 +54,7 @@ public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector
 			);
 		}
 		
-		final Population<T> selection = new Population<T>(count);
+		final Population<G, C> selection = new Population<G, C>(count);
 		if (count == 0) {
 			return selection;
 		}
@@ -89,7 +91,7 @@ public abstract class ProbabilitySelector<T extends Gene<?>> implements Selector
 	 * @return Probability array.
 	 */
 	protected abstract double[] probabilities(
-		final Population<T> population, final int count
+		final Population<G, C> population, final int count
 	);
 
 }

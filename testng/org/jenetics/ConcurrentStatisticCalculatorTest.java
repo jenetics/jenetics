@@ -22,13 +22,14 @@
 package org.jenetics;
 
 import java.util.Arrays;
-import java.util.concurrent.Executors;
+//import java.util.concurrent.Executors;
 
+import org.jenetics.util.ArrayUtils;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.5 2008-07-08 17:02:27 fwilhelm Exp $
+ * @version $Id: ConcurrentStatisticCalculatorTest.java,v 1.6 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class ConcurrentStatisticCalculatorTest {
 
@@ -46,43 +47,43 @@ public class ConcurrentStatisticCalculatorTest {
 	}
 	
 	
-	private static class FF implements FitnessFunction<DoubleGene> {
-		private static final long serialVersionUID = 7847202960080699398L;
-		@Override public double evaluate(final Genotype<DoubleGene> genotype) {
-			return genotype.getGene().doubleValue();
-		}
-	}
-	final static FitnessFunction<DoubleGene> FF = new FF();
-	
-	private Population<DoubleGene> newPopulation() {
-		final int size = 1001;
-		Population<DoubleGene> population = new Population<DoubleGene>(size);
-		
-		
-		for (int i = 0; i < size; ++i) {
-			Genotype<DoubleGene> gt = Genotype.valueOf(
-				new DoubleChromosome(DoubleGene.valueOf(i, 0, size - 1))
-			);
-			population.add(Phenotype.valueOf(gt, FF, i));
-		}
-		return population;
-	}
-	
-	@Test
-	public void evaluate() {
-		StatisticCalculator calculator = new StatisticCalculator();
-		Statistic<DoubleGene> s1 = calculator.evaluate(newPopulation());
-		System.out.println(s1);
-		System.out.println("Time: " + calculator.getLastEvaluationTime());
-		System.out.println("---------------------------------");
-		
-		calculator = new ConcurrentStatisticCalculator(2, Executors.newFixedThreadPool(2));
-		Statistic<DoubleGene> s2 = calculator.evaluate(newPopulation());
-		System.out.println(s2);
-		System.out.println("Time: " + calculator.getLastEvaluationTime());
-		
-		assert s1.equals(s2, 10);
-	}
+//	private static class FF implements FitnessFunction<DoubleGene> {
+//		private static final long serialVersionUID = 7847202960080699398L;
+//		@Override public double evaluate(final Genotype<DoubleGene> genotype) {
+//			return genotype.getGene().doubleValue();
+//		}
+//	}
+//	final static FitnessFunction<DoubleGene> FF = new FF();
+//	
+//	private Population<DoubleGene> newPopulation() {
+//		final int size = 1001;
+//		Population<DoubleGene> population = new Population<DoubleGene>(size);
+//		
+//		
+//		for (int i = 0; i < size; ++i) {
+//			Genotype<DoubleGene> gt = Genotype.valueOf(
+//				new DoubleChromosome(DoubleGene.valueOf(i, 0, size - 1))
+//			);
+//			population.add(Phenotype.valueOf(gt, FF, i));
+//		}
+//		return population;
+//	}
+//	
+//	@Test
+//	public void evaluate() {
+//		StatisticCalculator calculator = new StatisticCalculator();
+//		Statistic<DoubleGene> s1 = calculator.evaluate(newPopulation());
+//		System.out.println(s1);
+//		System.out.println("Time: " + calculator.getLastEvaluationTime());
+//		System.out.println("---------------------------------");
+//		
+//		calculator = new ConcurrentStatisticCalculator(2, Executors.newFixedThreadPool(2));
+//		Statistic<DoubleGene> s2 = calculator.evaluate(newPopulation());
+//		System.out.println(s2);
+//		System.out.println("Time: " + calculator.getLastEvaluationTime());
+//		
+//		assert s1.equals(s2, 10);
+//	}
 	
 }
 

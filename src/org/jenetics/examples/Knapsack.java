@@ -36,10 +36,11 @@ import org.jenetics.Mutation;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Probability;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.3 2008-08-25 19:35:43 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.4 2008-08-26 22:29:35 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;
@@ -47,7 +48,7 @@ class Item implements Serializable {
     public double value;
 }
 
-class KnappsackFunction implements FitnessFunction<BitGene> {
+class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
 	private static final long serialVersionUID = -924756568100918419L;
 	
 	private final Item[] _items;
@@ -62,7 +63,7 @@ class KnappsackFunction implements FitnessFunction<BitGene> {
     	return _items;
     }
     
-    public double evaluate(final Genotype<BitGene> genotype) {
+    public Float64 evaluate(final Genotype<BitGene> genotype) {
         final Chromosome<BitGene> ch = genotype.getChromosome();
         
         double size = 0;
@@ -75,9 +76,9 @@ class KnappsackFunction implements FitnessFunction<BitGene> {
         }
         
         if (size > _knapsackSize) {
-            return 0;
+            return Float64.ZERO;
         } else {
-            return value;
+            return Float64.valueOf(value);
         }
     }
 }
@@ -102,10 +103,10 @@ public class Knapsack {
             BitChromosome.valueOf(15, Probability.valueOf(0.5))
         );
         
-        GeneticAlgorithm<BitGene> ga = new GeneticAlgorithm<BitGene>(genotype, ff);
+        GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<BitGene, Float64>(genotype, ff);
         ga.setMaximalPhenotypeAge(10);
         ga.setPopulationSize(100);
-        ga.setSelectors(new RouletteWheelSelector<BitGene>());
+        ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
         ga.setAlterer(
             new Mutation<BitGene>(Probability.valueOf(0.115), 
             new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
@@ -115,7 +116,7 @@ public class Knapsack {
         ga.setup();
         for (int i = 0; i < 100; ++i) {
         	ga.evolve();
-        	Phenotype<BitGene> bpt = ga.getStatistic().getBestPhenotype();
+        	Phenotype<BitGene, Float64> bpt = ga.getStatistic().getBestPhenotype();
         	System.out.println(
         		bpt + "-->" + bpt.getFitness() +  " : " + 
         			ga.getStatistic().getFitnessVariance()

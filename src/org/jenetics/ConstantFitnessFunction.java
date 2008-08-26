@@ -31,23 +31,21 @@ import javolution.xml.stream.XMLStreamException;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  *
  * @param <T> the gene type.
- * @version $Id: ConstantFitnessFunction.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: ConstantFitnessFunction.java,v 1.2 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class ConstantFitnessFunction<T extends Gene<?>> implements FitnessFunction<T> {
+public class ConstantFitnessFunction<T extends Gene<?>, C extends Comparable<C>> 
+	implements FitnessFunction<T, C> 
+{
 	private static final long serialVersionUID = 8766537513371578351L;
 	
-	private final double _value;
+	private final C _value;
 	
-	public ConstantFitnessFunction() {
-		this(0);
-	}
-	
-	public ConstantFitnessFunction(final double value) {
+	public ConstantFitnessFunction(final C value) {
 		this._value = value;
 	}
 	
 	@Override
-	public double evaluate(final Genotype<T> genotype) {
+	public C evaluate(final Genotype<T> genotype) {
 		return _value;
 	}
 

@@ -32,6 +32,7 @@ import java.util.BitSet;
 
 import javolution.xml.XMLObjectWriter;
 
+import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -39,7 +40,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.4 2008-07-08 17:02:26 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.5 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 

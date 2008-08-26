@@ -31,10 +31,10 @@ import javolution.xml.XMLSerializable;
  * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessScaler.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: FitnessScaler.java,v 1.2 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public interface FitnessScaler extends XMLSerializable {
+public interface FitnessScaler<C extends Comparable<C>> extends XMLSerializable {
 	
-	public double scale(final double value);
+	public C scale(final C value);
 	
 }

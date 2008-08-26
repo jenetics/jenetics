@@ -41,15 +41,15 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.2 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class Population<T extends Gene<?>> 
-	implements List<Phenotype<T>>, Iterable<Phenotype<T>>, 
+public class Population<T extends Gene<?>, C extends Comparable<C>> 
+	implements List<Phenotype<T, C>>, Iterable<Phenotype<T, C>>, 
 				RandomAccess, XMLSerializable
 {
 	private static final long serialVersionUID = -959370026031769242L;
 	
-	private final List<Phenotype<T>> _population;
+	private final List<Phenotype<T, C>> _population;
 	
 	/**
 	 * Creating a new <code>Population</code> with the prealocated population size.
@@ -57,14 +57,14 @@ public class Population<T extends Gene<?>>
 	 * @param size Prealocated population size.
 	 */
 	public Population(final int size) {
-		_population = new ArrayList<Phenotype<T>>(size);
+		_population = new ArrayList<Phenotype<T, C>>(size);
 	}
 	
 	/**
 	 * Creating a new <code>Population</code>.
 	 */
 	public Population() {
-		_population = new ArrayList<Phenotype<T>>();
+		_population = new ArrayList<Phenotype<T, C>>();
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class Population<T extends Gene<?>>
 	 * @param phenotype <code>Phenotype</code> to be add.
 	 */
 	@Override
-	public boolean add(final Phenotype<T> phenotype) {
+	public boolean add(final Phenotype<T, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
@@ -85,33 +85,33 @@ public class Population<T extends Gene<?>>
 	 * @param phenotype <code>Phenotype</code> to be add.
 	 */
 	@Override
-	public void add(final int index, final Phenotype<T> phenotype) {
+	public void add(final int index, final Phenotype<T, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
 	
 	@Override
-	public boolean addAll(final Collection<? extends Phenotype<T>> c) {
+	public boolean addAll(final Collection<? extends Phenotype<T, C>> c) {
 		return _population.addAll(c);
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends Phenotype<T>> c) {
+	public boolean addAll(int index, Collection<? extends Phenotype<T, C>> c) {
 		return _population.addAll(index, c);
 	}
 
 	@Override
-	public Phenotype<T> get(final int index) {
+	public Phenotype<T, C> get(final int index) {
 		return _population.get(index);
 	}
 	
 	@Override
-	public Phenotype<T> set(final int index, final Phenotype<T> phenotype) {
+	public Phenotype<T, C> set(final int index, final Phenotype<T, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
 	
-	public void remove(final Phenotype<T> phenotype) {
+	public void remove(final Phenotype<T, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
@@ -127,7 +127,7 @@ public class Population<T extends Gene<?>>
 	}
 	
 	@Override
-	public Phenotype<T> remove(final int index) {
+	public Phenotype<T, C> remove(final int index) {
 		return _population.remove(index);
 	}
 	
@@ -141,9 +141,9 @@ public class Population<T extends Gene<?>>
 	 * value in descending order.
 	 */
 	public void sort() {
-		Collections.sort(_population, new Comparator<Phenotype<T>>() {
+		Collections.sort(_population, new Comparator<Phenotype<T, C>>() {
 			@Override 
-			public int compare(final Phenotype<T> that, final Phenotype<T> other) {
+			public int compare(final Phenotype<T, C> that, final Phenotype<T, C> other) {
 				return -that.compareTo(other);
 			}
 		});
@@ -157,17 +157,17 @@ public class Population<T extends Gene<?>>
 	}
 	
 	@Override
-	public Iterator<Phenotype<T>> iterator() {
+	public Iterator<Phenotype<T, C>> iterator() {
 		return _population.iterator();
 	}
 	
 	@Override
-	public ListIterator<Phenotype<T>> listIterator() {
+	public ListIterator<Phenotype<T, C>> listIterator() {
 		return _population.listIterator();
 	}
 	
 	@Override
-	public ListIterator<Phenotype<T>> listIterator(final int index) {
+	public ListIterator<Phenotype<T, C>> listIterator(final int index) {
 		return _population.listIterator(index);
 	}
 
@@ -207,7 +207,7 @@ public class Population<T extends Gene<?>>
 	}
 
 	@Override
-	public List<Phenotype<T>> subList(final int fromIndex, final int toIndex) {
+	public List<Phenotype<T, C>> subList(final int fromIndex, final int toIndex) {
 		return _population.subList(fromIndex, toIndex);
 	}
 
@@ -225,7 +225,7 @@ public class Population<T extends Gene<?>>
 	public String toString() {
 		StringBuilder out = new StringBuilder();
 		
-		for (Phenotype<?> pt : this) {
+		for (Phenotype<?, ?> pt : this) {
 			out.append(pt.toString() + "\n");
 		}
 		

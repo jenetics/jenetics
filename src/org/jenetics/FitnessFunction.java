@@ -30,14 +30,16 @@ import javolution.xml.XMLSerializable;
  * together form the {@link Genotype}.
  * <p/>
  * The <code>FitnessFunction</code> is shared by all <code>Phenotypes</code> and 
- * should be thread save. Typically the <code>eval</code> method is reentrant.
+ * should be thread save. Typically the <code>evaluate</code> method is reentrant.
  * 
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessFunction.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: FitnessFunction.java,v 1.2 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public interface FitnessFunction<T extends Gene<?>> extends XMLSerializable {
+public interface FitnessFunction<G extends Gene<?>, C extends Comparable<C>> 
+	extends XMLSerializable 
+{
 
 	/**
 	 * Evaluating the FitnessFunction.
@@ -45,6 +47,6 @@ public interface FitnessFunction<T extends Gene<?>> extends XMLSerializable {
 	 * @param genotype The FitnessFunction argument.
 	 * @return The fitness value.
 	 */
-	public double evaluate(final Genotype<T> genotype);
+	public C evaluate(final Genotype<G> genotype);
 	
 }

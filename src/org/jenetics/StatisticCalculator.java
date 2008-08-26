@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.4 2008-07-08 19:28:43 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.5 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class StatisticCalculator {
 	protected long _startEvaluationTime = 0;
@@ -36,17 +36,17 @@ public class StatisticCalculator {
 	public StatisticCalculator() {
 	}
 	
-	public <T extends Gene<?>> Statistic<T> evaluate(
-		final List<? extends Phenotype<T>> population
+	public <T extends Gene<?>, C extends Comparable<C>> Statistic<T, C> evaluate(
+		final List<? extends Phenotype<T, C>> population
 	) {
 		_startEvaluationTime = System.currentTimeMillis();
 		try {
 			if (population == null || population.isEmpty()) {
-				return new Statistic<T>(null, null, 0.0, 0.0, 0.0, 0.0);
+				return new Statistic<T, C>(null, null, null, null, 0.0, 0.0);
 			} 
 			
-			Phenotype<T> bestPhenotype = null;
-			Phenotype<T> worstPhenotype = null;
+			Phenotype<T, C> bestPhenotype = null;
+			Phenotype<T, C> worstPhenotype = null;
 			
 			double fitnessSum = 0.0;
 			double fitnessSquareSum = 0.0;
@@ -55,26 +55,26 @@ public class StatisticCalculator {
 			long ageSum = 0;
 			long ageSquareSum = 0;
 			
-			double fitness = 0;
+			C fitness = null;
 			int age = 0;
 			
-			for (final Phenotype<T> phenotype : population) {
+			for (final Phenotype<T, C> phenotype : population) {
 				fitness = phenotype.getFitness(); 
-				fitnessSum += fitness;
-				fitnessSquareSum += fitness*fitness;
+//				fitnessSum += fitness;
+//				fitnessSquareSum += fitness*fitness;
 				
 				age = phenotype.getGeneration();
 				ageSum += age;
 				ageSquareSum += age*age;
 	
-				if (minFitness > fitness) {
-					minFitness = fitness;
-					worstPhenotype = phenotype;
-				}
-				if (maxFitness < fitness) {
-					maxFitness = fitness;
-					bestPhenotype = phenotype;
-				}
+//				if (minFitness > fitness) {
+//					minFitness = fitness;
+//					worstPhenotype = phenotype;
+//				}
+//				if (maxFitness < fitness) {
+//					maxFitness = fitness;
+//					bestPhenotype = phenotype;
+//				}
 			}
 			
 			final double meanFitness = fitnessSum/population.size();
@@ -84,11 +84,11 @@ public class StatisticCalculator {
 			final double varianceAge = (double)ageSquareSum/(double)population.size() - 
 							meanAge*meanAge;
 			
-			final Statistic<T> statistic = new Statistic<T>(
+			final Statistic<T, C> statistic = null;/*new Statistic<T, C>(
 				bestPhenotype, worstPhenotype, 
 				meanFitness, varianceFitness,
 				meanAge, varianceAge
-			);
+			);*/
 			statistic.setSamples(population.size());
 			statistic.setAgeSum(ageSum);
 			statistic.setAgeSquareSum(ageSquareSum);

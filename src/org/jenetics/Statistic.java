@@ -22,30 +22,29 @@
  */
 package org.jenetics;
 
-import static java.lang.Double.doubleToLongBits;
-import static java.lang.Math.sqrt;
 import static org.jenetics.util.Validator.notNull;
-
-import org.jenetics.util.BitUtils;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.util.BitUtils;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.7 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.8 2008-08-26 22:29:35 fwilhelm Exp $
  */
-public class Statistic<T extends Gene<?>> implements XMLSerializable {
+public class Statistic<T extends Gene<?>, C extends Comparable<C>> 
+	implements XMLSerializable 
+{
 	private static final long serialVersionUID = -8980979460645713414L;
 	
-	private final Phenotype<T> _bestPhenotype;
-	private final Phenotype<T> _worstPhenotype;
+	private final Phenotype<T, C> _bestPhenotype;
+	private final Phenotype<T, C> _worstPhenotype;
 	
-	private final double _fitnessMean;
-	private final double _fitnessVariance;
+	private final C _fitnessMean;
+	private final C _fitnessVariance;
 	private final double _ageMean;
 	private final double _ageVariance;
 	
@@ -61,12 +60,14 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */ 
 	public Statistic(
-		final Phenotype<T> best, final Phenotype<T> worst, 
-		final double fitnessMean, final double fitnessVariance,
+		final Phenotype<T, C> best, final Phenotype<T, C> worst, 
+		final C fitnessMean, final C fitnessVariance,
 		final double ageMean, final double ageVariance
 	) {
 		notNull(best, "Best phenotype");
 		notNull(worst, "Worst phenotype");
+		notNull(fitnessMean, "Fitness mean");
+		notNull(fitnessVariance, "Fitness average");
 		
 		this._bestPhenotype = best;
 		this._worstPhenotype = worst;
@@ -81,7 +82,7 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @return The best population Phenotype.
 	 */
-	public Phenotype<T> getBestPhenotype() {
+	public Phenotype<T, C> getBestPhenotype() {
 		return _bestPhenotype;
 	}
 	
@@ -90,7 +91,7 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @return The worst population Phenotype.
 	 */
-	public Phenotype<T> getWorstPhenotype() {
+	public Phenotype<T, C> getWorstPhenotype() {
 		return _worstPhenotype;
 	}
 	
@@ -99,9 +100,9 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @return The best population fitness.
 	 */
-	public double getBestFitness() {
+	public C getBestFitness() {
 		if (_bestPhenotype == null) {
-			return 0;
+			return null;
 		}
 		return _bestPhenotype.getFitness(); 
 	}
@@ -111,9 +112,9 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @return The worst population fitness.
 	 */
-	public double getWorstFitness() {
+	public C getWorstFitness() {
 		if (_worstPhenotype == null) {
-			return 0;
+			return null;
 		}
 		return _worstPhenotype.getFitness();
 	}
@@ -123,7 +124,7 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @return The average population fitness.
 	 */
-	public double getFitnessMean() {
+	public C getFitnessMean() {
 		return _fitnessMean;
 	}
 	
@@ -132,7 +133,7 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 * 
 	 * @return The variance of the population fitness.
 	 */
-	public double getFitnessVariance() {
+	public C getFitnessVariance() {
 		return _fitnessVariance;
 	}
 	
@@ -169,17 +170,18 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	 *        selection strength is zero.
 	 * @return The selection strength.
 	 */
-	public double selectionStrength(final Statistic<T> previous) {
+	public double selectionStrength(final Statistic<T, C> previous) {
 		if (previous == null) {
 			return 0.0;
 		}
 		
-		final double variance = getFitnessVariance();
-		if (variance == 0.0) {
-			return 0.0;
-		}
-		
-		return (getFitnessMean() - previous.getFitnessMean())/sqrt(getFitnessVariance());
+//		final C variance = getFitnessVariance();
+//		if (variance == 0.0) {
+//			return 0.0;
+//		}
+//		
+//		return (getFitnessMean() - previous.getFitnessMean())/sqrt(getFitnessVariance());
+		return 0;
 	}
 	
 	int getSamples() {
@@ -225,10 +227,10 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += (int)doubleToLongBits(_fitnessMean)*37;
-		hash += (int)doubleToLongBits(_fitnessVariance)*37;
+		/*hash += _fitnessMean.hashCode()*37;
+		hash += _fitnessVariance.hashCode()*37;
 		hash += (int)doubleToLongBits(_ageMean)*37;
-		hash += (int)doubleToLongBits(_ageVariance)*37;
+		hash += (int)doubleToLongBits(_ageVariance)*37;*/
 		hash += (_bestPhenotype != null ? _bestPhenotype.hashCode() : 1)*37; 
 		hash += (_worstPhenotype != null ? _worstPhenotype.hashCode() : 1)*37; 
 		return hash;
@@ -243,24 +245,24 @@ public class Statistic<T extends Gene<?>> implements XMLSerializable {
 			return false;
 		}
 		
-		final Statistic<?> statistic = (Statistic<?>)obj;
-		return doubleToLongBits(statistic._fitnessMean) == doubleToLongBits(_fitnessMean) &&
+		final Statistic<?, ?> statistic = (Statistic<?, ?>)obj;
+		return /*doubleToLongBits(statistic._fitnessMean) == doubleToLongBits(_fitnessMean) &&
 			doubleToLongBits(statistic._fitnessVariance) == doubleToLongBits(_fitnessVariance) &&
 			doubleToLongBits(statistic._ageMean) == doubleToLongBits(_ageMean) &&
-			doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&
+			doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&*/
 			_bestPhenotype != null ? _bestPhenotype.equals(statistic._bestPhenotype) : statistic._bestPhenotype == null &&
 			_worstPhenotype != null ? _worstPhenotype.equals(statistic._worstPhenotype) : statistic._worstPhenotype == null;
 	}
 	
-	public boolean equals(final Statistic<T> statistic, final int ulps) {
+	public boolean equals(final Statistic<T, C> statistic, final int ulps) {
 		if (statistic == this) {
 			return true;
 		}
 		
-		return equals(statistic._fitnessMean, _fitnessMean, ulps) &&
+		return /*equals(statistic._fitnessMean, _fitnessMean, ulps) &&
 				equals(statistic._fitnessVariance, _fitnessVariance, ulps) &&
 				equals(statistic._ageMean, _ageMean, ulps) &&
-				equals(statistic._ageVariance, _ageVariance, ulps) &&
+				equals(statistic._ageVariance, _ageVariance, ulps) &&*/
 				_bestPhenotype != null ? _bestPhenotype.equals(statistic._bestPhenotype) : statistic._bestPhenotype == null &&
 				_worstPhenotype != null ? _worstPhenotype.equals(statistic._worstPhenotype) : statistic._worstPhenotype == null;
 	}

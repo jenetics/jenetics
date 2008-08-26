@@ -22,9 +22,10 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Validator;
-
 import javolution.xml.XMLSerializable;
+
+import org.jenetics.util.Validator;
+import org.jscience.mathematics.number.Number;
 
 
 /**
@@ -37,10 +38,10 @@ import javolution.xml.XMLSerializable;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.4 2008-08-26 22:29:33 fwilhelm Exp $
  */
-public class StochasticUniversalSelector<T extends Gene<?>> 
-	extends RouletteWheelSelector<T> implements XMLSerializable 
+public class StochasticUniversalSelector<G extends Gene<?>, N extends Number<N>> 
+	extends RouletteWheelSelector<G, N> implements XMLSerializable 
 {
 	private static final long serialVersionUID = 3673324276572086631L;
 
@@ -48,7 +49,7 @@ public class StochasticUniversalSelector<T extends Gene<?>>
 	}
 
 	@Override
-	public Population<T> select(final Population<T> population, final int count) {
+	public Population<G, N> select(final Population<G, N> population, final int count) {
 		Validator.notNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
@@ -56,7 +57,7 @@ public class StochasticUniversalSelector<T extends Gene<?>>
 			);
 		}
 		
-		Population<T> selection = new Population<T>();
+		Population<G, N> selection = new Population<G, N>();
 		if (count == 0) {
 			return selection;
 		}

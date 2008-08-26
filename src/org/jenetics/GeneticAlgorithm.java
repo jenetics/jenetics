@@ -51,15 +51,15 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.5 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.6 2008-08-26 22:29:33 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  */
-public class GeneticAlgorithm<T extends Gene<?>> {
+public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	
 	private GenotypeFactory<T> _genotypeFactory = null;
-	private FitnessFunction<T> _fitnessFunction = null;
-	private FitnessScaler _fitnessScaler = null;
+	private FitnessFunction<T, C> _fitnessFunction = null;
+	private FitnessScaler<C> _fitnessScaler = null;
 	
 	private Probability _survivorFraction = Probability.valueOf(0.4);
 	private Probability _offspringFraction = Probability.valueOf(0.6);
@@ -68,25 +68,25 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		new SinglePointCrossover<T>(Probability.valueOf(0.1))).append(
 		new Mutation<T>(Probability.valueOf(0.05))
 	);
-	private Selector<T> _survivorSelector = new RouletteWheelSelector<T>();
-	private Selector<T> _offspringSelector = new RouletteWheelSelector<T>();
+	private Selector<T, C> _survivorSelector = new TournamentSelector<T, C>();
+	private Selector<T, C> _offspringSelector = new TournamentSelector<T,C>();
 	
 	private int _populationSize = 50;
-	private Population<T> _population = new Population<T>();
+	private Population<T, C> _population = new Population<T, C>();
 	private int _maximalPhenotypeAge = 70;
 	private int _generation = 0;
 	
-	private Phenotype<T> _bestPhenotype = null;
-	private Statistic<T> _statistic = null;
-	private Statistic<T> _previousStatistic = null;
+	private Phenotype<T, C> _bestPhenotype = null;
+	private Statistic<T, C> _statistic = null;
+	private Statistic<T, C> _previousStatistic = null;
 	private StatisticCalculator _calculator = new StatisticCalculator();
 	private double _selectionStrength = 0.0;
 
 	public GeneticAlgorithm(
 		final GenotypeFactory<T> genotypeFactory, 
-		final FitnessFunction<T> fitnessFunction
+		final FitnessFunction<T, C> fitnessFunction
 	) {	 
-		this(genotypeFactory, fitnessFunction, IdentityScaler.INSTANCE);
+		this(genotypeFactory, fitnessFunction, new IdentityScaler<C>());
 	}
 	
 	/**
@@ -98,8 +98,8 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 */
 	public GeneticAlgorithm(
 		final GenotypeFactory<T> genotypeFactory, 
-		final FitnessFunction<T> fitnessFunction, 
-		final FitnessScaler fitnessScaler
+		final FitnessFunction<T, C> fitnessFunction, 
+		final FitnessScaler<C> fitnessScaler
 	) {	 
 		notNull(genotypeFactory, "GenotypeFactory");
 		notNull(fitnessFunction, "FitnessFunction");
@@ -125,7 +125,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		
 		//Initializing the Population 
 		for (int i = _population.size(); i < _populationSize; ++i) {
-			final Phenotype<T> pt = Phenotype.valueOf(
+			final Phenotype<T, C> pt = Phenotype.valueOf(
 				_genotypeFactory.newGenotype(), _fitnessFunction, 
 				_fitnessScaler, _generation
 			);
@@ -158,12 +158,12 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		++_generation;
 		
 		//Select the survivors.
-		final Population<T> survivors = _survivorSelector.select(
+		final Population<T, C> survivors = _survivorSelector.select(
 			_population, getNumberOfSurvivors()
 		);
 
 		//Generate the offspring.
-		final Population<T> offspring = _offspringSelector.select(
+		final Population<T, C> offspring = _offspringSelector.select(
 			_population, getNumberOfOffsprings()
 		);
 		
@@ -171,9 +171,9 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		_alterer.alter(offspring);
 		
 		//Accepting the new population.
-		_population = new Population<T>(_populationSize);
+		_population = new Population<T, C>(_populationSize);
 		for (int i = 0, n = survivors.size(); i < n; ++i) {
-			final Phenotype<T> survivor = survivors.get(i);
+			final Phenotype<T, C> survivor = survivors.get(i);
 			
 			//Survivor is still alive and valid.
 			if ((_generation - survivor.getGeneration()) <=
@@ -183,7 +183,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 				
 			//Create new phenotypes for dead survivors.
 			} else {
-				final Phenotype<T> pt = Phenotype.<T>valueOf(
+				final Phenotype<T, C> pt = Phenotype.valueOf(
 					_genotypeFactory.newGenotype(), _fitnessFunction, 
 					_fitnessScaler, _generation
 				);
@@ -198,7 +198,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 		_previousStatistic = _statistic;
 		_statistic = _calculator.evaluate(_population);
 		_selectionStrength = _statistic.selectionStrength(_previousStatistic);
-		if (_bestPhenotype.getFitness() < _statistic.getBestFitness()) {
+		if (_bestPhenotype.getFitness().compareTo(_statistic.getBestFitness()) < 0) {
 			_bestPhenotype = _statistic.getBestPhenotype();
 		}	
 	}
@@ -251,7 +251,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return the currently used {@link FitnessFunction} of the GA. 
 	 */
-	public FitnessFunction<T> getFitnessFunction() {
+	public FitnessFunction<T, C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 	
@@ -261,7 +261,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is null.
 	 */
-	public void setFitnessScaler(final FitnessScaler scaler) {
+	public void setFitnessScaler(final FitnessScaler<C> scaler) {
 		notNull(scaler, "FitnessScaler");
 		this._fitnessScaler = scaler;
 	}
@@ -271,7 +271,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return the currently used {@link FitnessScaler} of the GA. 
 	 */
-	public FitnessScaler getFitnessScaler() {
+	public FitnessScaler<C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
 	
@@ -298,7 +298,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return the currently used offspring {@link Selector} of the GA. 
 	 */
-	public Selector<T> getOffspringSelector() {
+	public Selector<T, C> getOffspringSelector() {
 		return _offspringSelector;
 	}
 
@@ -307,7 +307,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return the currently used survivor {@link Selector} of the GA. 
 	 */
-	public Selector<T> getSurvivorSelector() {
+	public Selector<T, C> getSurvivorSelector() {
 		return _survivorSelector;
 	}
 
@@ -343,7 +343,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return the best {@link Phenotype} so far.
 	 */
-	public Phenotype<T> getBestPhenotype() {
+	public Phenotype<T, C> getBestPhenotype() {
 		return _bestPhenotype;
 	}
 	
@@ -352,7 +352,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return the current {@link Population} {@link Statistic}.
 	 */
-	public Statistic<T> getStatistic() {
+	public Statistic<T, C> getStatistic() {
 		return _statistic;
 	}
 	
@@ -387,7 +387,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @param selector The offspring selector.
 	 * @throws NullPointerException, if the given selector is null.
 	 */
-	public void setOffspringSelector(final Selector<T> selector) {
+	public void setOffspringSelector(final Selector<T, C> selector) {
 		notNull(selector, "Offspring selector");
 		_offspringSelector = selector;
 	}
@@ -398,7 +398,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @param selector The survivor selector.
 	 * @throws NullPointerException, if the given selector is null.
 	 */
-	public void setSurvivorSelector(final Selector<T> selector) {
+	public void setSurvivorSelector(final Selector<T, C> selector) {
 		notNull(selector, "Survivor selector");
 		_survivorSelector = selector;
 	}
@@ -408,7 +408,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @param selector The selector for the offsprings and the survivors.
 	 */
-	public void setSelectors(final Selector<T> selector) {
+	public void setSelectors(final Selector<T, C> selector) {
 		setOffspringSelector(selector);
 		setSurvivorSelector(selector);
 	}
@@ -495,7 +495,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 * 		one.
 	 */
-	public void setPopulation(final Population<T> population) {
+	public void setPopulation(final Population<T, C> population) {
 		notNull(population, "Population");
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(
@@ -512,7 +512,7 @@ public class GeneticAlgorithm<T extends Gene<?>> {
 	 * 
 	 * @return The current population.
 	 */
-	public Population<T> getPopulation() {
+	public Population<T, C> getPopulation() {
 		return _population;
 	}
 	

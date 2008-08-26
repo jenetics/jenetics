@@ -27,15 +27,18 @@ import static java.lang.Math.max;
 
 import java.util.Iterator;
 
+import javolution.context.StackContext;
 import javolution.xml.XMLSerializable;
+
+import org.jscience.mathematics.number.Number;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.2 2008-07-08 18:58:08 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
  */
-public class RouletteWheelSelector<T extends Gene<?>> extends ProbabilitySelector<T> 
-	implements XMLSerializable
+public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>> 
+	extends ProbabilitySelector<G, N> implements XMLSerializable
 {
 	private static final long serialVersionUID = 6434924633105671176L;
 
@@ -43,31 +46,43 @@ public class RouletteWheelSelector<T extends Gene<?>> extends ProbabilitySelecto
 	}
 
 	@Override
-	protected double[] probabilities(final Population<T> population, final int count) {
+	protected double[] probabilities(final Population<G, N> population, final int count) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double[] probabilities = new double[population.size()];
-		final double worstFitness = population.get(population.size() - 1).getFitness();
+		final N worstFitness = population.get(population.size() - 1).getFitness();
 		
-		double sum = 0.0;
-		for (Phenotype<T> pt : population) {
-			sum += (pt.getFitness() - worstFitness);
-		}
-		
-		if (abs(sum) <= 0.0) {
-			final double p = 1.0/probabilities.length;
-			for (int i = 0; i < probabilities.length; ++i) {
-				probabilities[i] = p; 
+		StackContext.enter();
+		try {
+			N sum = null;
+			for (Phenotype<G, N> pt : population) {
+				if (sum == null) {
+					sum = pt.getFitness().minus(worstFitness);
+				} else {
+					sum = sum.plus(pt.getFitness().minus(worstFitness));
+				}
 			}
-			return probabilities;
-		}
-		
-		assert(sum > 0.0);
+			
+			if (abs(sum.doubleValue()) <= 0.0) {
+				final double p = 1.0/probabilities.length;
+				for (int i = 0; i < probabilities.length; ++i) {
+					probabilities[i] = p; 
+				}
+				return probabilities;
+			}
+			
+			assert(sum.doubleValue() > 0.0);
 
-		int i = 0;
-		for (Iterator<Phenotype<T>> it = population.iterator(); it.hasNext(); ++i) {
-			probabilities[i] = max(0.0, (it.next().getFitness() - worstFitness)/sum);
+			int i = 0;
+			for (Iterator<Phenotype<G, N>> it = population.iterator(); it.hasNext(); ++i) {
+				probabilities[i] = max(0.0, 
+						(it.next().getFitness().doubleValue() - 
+								worstFitness.doubleValue())/sum.doubleValue()
+					);
+			}
+		} finally {
+			StackContext.exit();
 		}
 		
 		return probabilities;

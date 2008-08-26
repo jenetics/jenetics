@@ -1,5 +1,17 @@
-Jenetics-0.2.0.1
+Jenetics-0.3.0.0
 - Adding javadoc to exported zip file.
+- Moving classes 
+     * Array
+     * ArrayIterator
+     * ArrayUtils
+     * BitUtils
+     * Probability
+     * Validator
+  into new org.jenetics.util package.
+- Changing interface 'FitnessFunction'. It converts a given Genotyp<G> to an
+  (more general) java.lang.Comparable instead of a double value. An additional
+  generic parameter (C extends Comparable<C>) was therefor introduced in the
+  FitnessScaler, Phenotype, Population, Selector and GeneticAlgorithm class.
 
 Jenetics-0.2.0.0
 - Removing Randomizable interface.

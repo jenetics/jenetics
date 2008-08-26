@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="lib/build/ant-java2html.jar"/>
 	<classpathentry kind="lib" path="lib/build/colapi.jar"/>
 	<classpathentry kind="lib" path="lib/build/testng-5.6-jdk15.jar"/>
-	<classpathentry kind="lib" path="lib/jscience.jar"/>
+	<classpathentry kind="lib" path="lib/jscience.jar" sourcepath="/Plato/External/JScience/4.3.1/src/src.zip"/>
 	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
