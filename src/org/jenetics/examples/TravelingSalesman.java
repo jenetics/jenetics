@@ -47,7 +47,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.8 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.9 2008-08-27 20:30:32 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -101,8 +101,7 @@ public class TravelingSalesman {
         	ga.evolve();
         	Phenotype<IntegerGene, Integer> bpt = ga.getStatistic().getBestPhenotype();
         	System.out.println(
-        		bpt + " --> " + bpt.getFitness() +  " : " + 
-        			ga.getStatistic().getFitnessVariance()
+        		bpt + " --> " + bpt.getFitness()
         	);
         }
 //        pool.awaitTermination(1, TimeUnit.SECONDS);

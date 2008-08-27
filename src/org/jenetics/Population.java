@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.4 2008-08-27 20:30:20 fwilhelm Exp $
  */
 public class Population<T extends Gene<?>, C extends Comparable<C>> 
 	implements List<Phenotype<T, C>>, Iterable<Phenotype<T, C>>, 
@@ -71,6 +71,7 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	 * Add <code>Phenotype</code> to the <code>Population</code>.
 	 * 
 	 * @param phenotype <code>Phenotype</code> to be add.
+	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
 	@Override
 	public boolean add(final Phenotype<T, C> phenotype) {

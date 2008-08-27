@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.4 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.5 2008-08-27 20:30:32 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;
@@ -117,10 +117,7 @@ public class Knapsack {
         for (int i = 0; i < 100; ++i) {
         	ga.evolve();
         	Phenotype<BitGene, Float64> bpt = ga.getStatistic().getBestPhenotype();
-        	System.out.println(
-        		bpt + "-->" + bpt.getFitness() +  " : " + 
-        			ga.getStatistic().getFitnessVariance()
-        	);
+        	System.out.println(bpt + "-->" + bpt.getFitness());
         }
         System.out.println(ga.getBestPhenotype() + "-->" + ga.getBestPhenotype().getFitness());
         long end = System.currentTimeMillis();

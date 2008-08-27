@@ -12,6 +12,8 @@ Jenetics-0.3.0.0
   (more general) java.lang.Comparable instead of a double value. An additional
   generic parameter (C extends Comparable<C>) was therefor introduced in the
   FitnessScaler, Phenotype, Population, Selector and GeneticAlgorithm class.
+- Adding NumericStatistic and NumericStatisticCalculator. Move functionality
+  from old Statistic class into the new NumericStatistic class. 
 
 Jenetics-0.2.0.0
 - Removing Randomizable interface.

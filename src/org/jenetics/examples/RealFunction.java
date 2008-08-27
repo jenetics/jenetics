@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.5 2008-08-26 22:29:36 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.6 2008-08-27 20:30:31 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
@@ -55,7 +55,7 @@ public class RealFunction {
 	public static void main(String[] args) {
 		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final Function ff = new Function();
-		final GeneticAlgorithm<DoubleGene, Float64> ga = new GeneticAlgorithm<DoubleGene, Float64>(gtf, ff);
+		final GeneticAlgorithm<DoubleGene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(100);
@@ -69,8 +69,7 @@ public class RealFunction {
 			ga.evolve();
 			System.out.println(
 				Integer.toString(i) + ":" + ga.getBestPhenotype() + "-->" + 
-				ga.getBestPhenotype().getFitness() + " : " +
-				ga.getStatistic().getFitnessVariance()
+				ga.getBestPhenotype().getFitness()
 			);
 		}		 
 	}

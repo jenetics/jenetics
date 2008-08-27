@@ -27,82 +27,71 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.5 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.6 2008-08-27 20:30:28 fwilhelm Exp $
  */
-public class StatisticCalculator {
+public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
 	protected long _stopEvaluationTime = 0;
 	
 	public StatisticCalculator() {
 	}
 	
-	public <T extends Gene<?>, C extends Comparable<C>> Statistic<T, C> evaluate(
-		final List<? extends Phenotype<T, C>> population
-	) {
+	public Statistic<G, C> evaluate(final List<? extends Phenotype<G, C>> population) {
 		_startEvaluationTime = System.currentTimeMillis();
-		try {
-			if (population == null || population.isEmpty()) {
-				return new Statistic<T, C>(null, null, null, null, 0.0, 0.0);
-			} 
+		
+		Statistic<G, C> statistic = new Statistic<G, C>(null, null, 0, 0.0, 0.0);
+		if (!population.isEmpty()) {		
+			int age = 0;
 			
-			Phenotype<T, C> bestPhenotype = null;
-			Phenotype<T, C> worstPhenotype = null;
+			Phenotype<G, C> bestPhenotype = null;
+			Phenotype<G, C> worstPhenotype = null;
 			
-			double fitnessSum = 0.0;
-			double fitnessSquareSum = 0.0;
-			double minFitness = Double.MAX_VALUE;
-			double maxFitness = -Double.MAX_VALUE;
+			C fitness = null;
+			C minFitness = null;
+			C maxFitness = null;
 			long ageSum = 0;
 			long ageSquareSum = 0;
 			
-			C fitness = null;
-			int age = 0;
-			
-			for (final Phenotype<T, C> phenotype : population) {
+			for (final Phenotype<G, C> phenotype : population) {
 				fitness = phenotype.getFitness(); 
-//				fitnessSum += fitness;
-//				fitnessSquareSum += fitness*fitness;
 				
 				age = phenotype.getGeneration();
 				ageSum += age;
 				ageSquareSum += age*age;
 	
-//				if (minFitness > fitness) {
-//					minFitness = fitness;
-//					worstPhenotype = phenotype;
-//				}
-//				if (maxFitness < fitness) {
-//					maxFitness = fitness;
-//					bestPhenotype = phenotype;
-//				}
+				if (minFitness == null || minFitness.compareTo(fitness) > 0) {
+					minFitness = fitness;
+					worstPhenotype = phenotype;
+				}
+				if (maxFitness == null || maxFitness.compareTo(fitness) < 0) {
+					maxFitness = fitness;
+					bestPhenotype = phenotype;
+				}
 			}
 			
-			final double meanFitness = fitnessSum/population.size();
-			final double varianceFitness = fitnessSquareSum/population.size() - 
-							meanFitness*meanFitness;
-			final double meanAge = (double)ageSum/(double)population.size();
-			final double varianceAge = (double)ageSquareSum/(double)population.size() - 
-							meanAge*meanAge;
+			final double meanAge = 
+				(double)ageSum/(double)population.size();
+			final double varianceAge = 
+				(double)ageSquareSum/(double)population.size() - meanAge*meanAge;
 			
-			final Statistic<T, C> statistic = null;/*new Statistic<T, C>(
+			statistic = new Statistic<G, C>(
 				bestPhenotype, worstPhenotype, 
-				meanFitness, varianceFitness,
-				meanAge, varianceAge
-			);*/
-			statistic.setSamples(population.size());
-			statistic.setAgeSum(ageSum);
-			statistic.setAgeSquareSum(ageSquareSum);
-			statistic.setFitnessSum(fitnessSum);
-			statistic.setFitnessSquareSum(fitnessSquareSum);
-			
-			return statistic;
-		} finally {
-			_stopEvaluationTime = System.currentTimeMillis();
+				population.size(), meanAge, varianceAge
+			);
 		}
+
+		_stopEvaluationTime = System.currentTimeMillis();
+		return statistic;
+	}
+	
+	public C median(final List<? extends Phenotype<G, C>> population) {
+		return null;
 	}
 	
 	public long getLastEvaluationTime() {
 		return _stopEvaluationTime - _startEvaluationTime;
 	}
+	
+	
 	
 }
