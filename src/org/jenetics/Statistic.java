@@ -22,7 +22,9 @@
  */
 package org.jenetics;
 
+import static java.lang.Double.doubleToLongBits;
 import static org.jenetics.util.Validator.notNull;
+import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -33,48 +35,43 @@ import org.jenetics.util.BitUtils;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.8 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.9 2008-08-27 20:30:26 fwilhelm Exp $
  */
-public class Statistic<T extends Gene<?>, C extends Comparable<C>> 
-	implements XMLSerializable 
+public class Statistic<G extends Gene<?>, C extends Comparable<C>> 
+	implements Immutable, XMLSerializable 
 {
 	private static final long serialVersionUID = -8980979460645713414L;
 	
-	private final Phenotype<T, C> _bestPhenotype;
-	private final Phenotype<T, C> _worstPhenotype;
-	
-	private final C _fitnessMean;
-	private final C _fitnessVariance;
-	private final double _ageMean;
-	private final double _ageVariance;
-	
-	private int _samples = 0;
-	private double _fitnessSum = 0.0;
-	private double _fitnessSquareSum = 0.0;
-	private long _ageSum = 0;
-	private long _ageSquareSum = 0;
+	protected final Phenotype<G, C> _best;
+	protected final Phenotype<G, C> _worst;
+	protected final int _samples;
+	protected final double _ageMean;
+	protected final double _ageVariance;
 
 	/**
 	 * Evaluates statistic valus from a givem population
 	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */ 
-	public Statistic(
-		final Phenotype<T, C> best, final Phenotype<T, C> worst, 
-		final C fitnessMean, final C fitnessVariance,
-		final double ageMean, final double ageVariance
+	protected Statistic(
+		final Phenotype<G, C> best, final Phenotype<G, C> worst,
+		final int samples, final double ageMean, final double ageVariance
 	) {
 		notNull(best, "Best phenotype");
 		notNull(worst, "Worst phenotype");
-		notNull(fitnessMean, "Fitness mean");
-		notNull(fitnessVariance, "Fitness average");
 		
-		this._bestPhenotype = best;
-		this._worstPhenotype = worst;
-		this._fitnessMean = fitnessMean;
-		this._fitnessVariance = fitnessVariance;
-		this._ageMean = ageMean;
-		this._ageVariance = ageVariance;
+		_best = best;
+		_worst = worst;
+		_samples = samples;
+		_ageMean = ageMean;
+		_ageVariance = ageVariance;
+	}
+	
+	protected Statistic(final Statistic<G, C> other) {
+		this(
+			other.getBestPhenotype(), other.getWorstPhenotype(),
+			other.getSamples(), other.getAgeMean(), other.getAgeVariance()
+		);
 	}
 	
 	/**
@@ -82,8 +79,8 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 	 * 
 	 * @return The best population Phenotype.
 	 */
-	public Phenotype<T, C> getBestPhenotype() {
-		return _bestPhenotype;
+	public Phenotype<G, C> getBestPhenotype() {
+		return _best;
 	}
 	
 	/**
@@ -91,8 +88,8 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 	 * 
 	 * @return The worst population Phenotype.
 	 */
-	public Phenotype<T, C> getWorstPhenotype() {
-		return _worstPhenotype;
+	public Phenotype<G, C> getWorstPhenotype() {
+		return _worst;
 	}
 	
 	/**
@@ -101,10 +98,11 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 	 * @return The best population fitness.
 	 */
 	public C getBestFitness() {
-		if (_bestPhenotype == null) {
-			return null;
+		C fitness = null;
+		if (_best != null) {
+			fitness = _best.getFitness();
 		}
-		return _bestPhenotype.getFitness(); 
+		return fitness; 
 	}
 	
 	/**
@@ -113,126 +111,32 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 	 * @return The worst population fitness.
 	 */
 	public C getWorstFitness() {
-		if (_worstPhenotype == null) {
-			return null;
+		C fitness = null;
+		if (_worst != null) {
+			fitness = _worst.getFitness();
 		}
-		return _worstPhenotype.getFitness();
+		return fitness;
 	}
 	
-	/**
-	 * Return the average population fitness.
-	 * 
-	 * @return The average population fitness.
-	 */
-	public C getFitnessMean() {
-		return _fitnessMean;
+	public int getSamples() {
+		return _samples;
 	}
 	
-	/**
-	 * Return the variance of the population fitness.
-	 * 
-	 * @return The variance of the population fitness.
-	 */
-	public C getFitnessVariance() {
-		return _fitnessVariance;
-	}
-	
-	/**
-	 * Return the age mean of the population.
-	 * 
-	 * @return the age mean.
-	 */
 	public double getAgeMean() {
 		return _ageMean;
 	}
 	
-	/**
-	 * Return the age variance.
-	 * 
-	 * @return the age variance.
-	 */
 	public double getAgeVariance() {
 		return _ageVariance;
-	}
-	
-	/**
-	 * The selection strength measures how strongly the fitter individuals are 
-	 * selected over the less fit individuals. One measure would be
-	 * <pre>
-	 *                             increase in average fitness
-	 * 	selection strength = ---------------------------------------
-	 *                         standard deviation of the population 
-	 * </pre>
-	 * 
-	 * 
-	 * @param previous The Statistic of the previous population. If the given
-	 *        Statistic is null or the current variance is zero, the returned 
-	 *        selection strength is zero.
-	 * @return The selection strength.
-	 */
-	public double selectionStrength(final Statistic<T, C> previous) {
-		if (previous == null) {
-			return 0.0;
-		}
-		
-//		final C variance = getFitnessVariance();
-//		if (variance == 0.0) {
-//			return 0.0;
-//		}
-//		
-//		return (getFitnessMean() - previous.getFitnessMean())/sqrt(getFitnessVariance());
-		return 0;
-	}
-	
-	int getSamples() {
-		return _samples;
-	}
-
-	void setSamples(final int samples) {
-		this._samples = samples;
-	}
-
-	double getFitnessSum() {
-		return _fitnessSum;
-	}
-
-	void setFitnessSum(final double sum) {
-		_fitnessSum = sum;
-	}
-
-	double getFitnessSquareSum() {
-		return _fitnessSquareSum;
-	}
-
-	void setFitnessSquareSum(final double squareSum) {
-		_fitnessSquareSum = squareSum;
-	}
-
-	long getAgeSum() {
-		return _ageSum;
-	}
-
-	void setAgeSum(final long sum) {
-		_ageSum = sum;
-	}
-
-	long getAgeSquareSum() {
-		return _ageSquareSum;
-	}
-
-	void setAgeSquareSum(final long squareSum) {
-		_ageSquareSum = squareSum;
 	}
 	
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		/*hash += _fitnessMean.hashCode()*37;
-		hash += _fitnessVariance.hashCode()*37;
 		hash += (int)doubleToLongBits(_ageMean)*37;
-		hash += (int)doubleToLongBits(_ageVariance)*37;*/
-		hash += (_bestPhenotype != null ? _bestPhenotype.hashCode() : 1)*37; 
-		hash += (_worstPhenotype != null ? _worstPhenotype.hashCode() : 1)*37; 
+		hash += (int)doubleToLongBits(_ageVariance)*37;
+		hash += (_best != null ? _best.hashCode() : 1)*37; 
+		hash += (_worst != null ? _worst.hashCode() : 1)*37; 
 		return hash;
 	}
 	
@@ -246,25 +150,24 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 		}
 		
 		final Statistic<?, ?> statistic = (Statistic<?, ?>)obj;
-		return /*doubleToLongBits(statistic._fitnessMean) == doubleToLongBits(_fitnessMean) &&
-			doubleToLongBits(statistic._fitnessVariance) == doubleToLongBits(_fitnessVariance) &&
-			doubleToLongBits(statistic._ageMean) == doubleToLongBits(_ageMean) &&
-			doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&*/
-			_bestPhenotype != null ? _bestPhenotype.equals(statistic._bestPhenotype) : statistic._bestPhenotype == null &&
-			_worstPhenotype != null ? _worstPhenotype.equals(statistic._worstPhenotype) : statistic._worstPhenotype == null;
+		
+		return 
+		doubleToLongBits(statistic._ageMean) == doubleToLongBits(_ageMean) &&
+		doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&
+		_best != null ? _best.equals(statistic._best) : statistic._best == null &&
+		_worst != null ? _worst.equals(statistic._worst) : statistic._worst == null;
 	}
 	
-	public boolean equals(final Statistic<T, C> statistic, final int ulps) {
+	public boolean equals(final Statistic<G, C> statistic, final int ulps) {
 		if (statistic == this) {
 			return true;
 		}
 		
-		return /*equals(statistic._fitnessMean, _fitnessMean, ulps) &&
-				equals(statistic._fitnessVariance, _fitnessVariance, ulps) &&
-				equals(statistic._ageMean, _ageMean, ulps) &&
-				equals(statistic._ageVariance, _ageVariance, ulps) &&*/
-				_bestPhenotype != null ? _bestPhenotype.equals(statistic._bestPhenotype) : statistic._bestPhenotype == null &&
-				_worstPhenotype != null ? _worstPhenotype.equals(statistic._worstPhenotype) : statistic._worstPhenotype == null;
+		return 
+		equals(statistic._ageMean, _ageMean, ulps) &&
+		equals(statistic._ageVariance, _ageVariance, ulps) &&
+		_best != null ? _best.equals(statistic._best) : statistic._best == null &&
+		_worst != null ? _worst.equals(statistic._worst) : statistic._worst == null;
 	}
 	
 	static boolean equals(final double a, final double b, final int ulpDistance) {
@@ -281,9 +184,7 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 
 	@Override
 	public String toString() {
-		String ret = "Mean          : " + getFitnessMean() + "\n" +
-					 "Var           : " + getFitnessVariance() + "\n" +
-					 "Best Phenotype: " + getBestPhenotype();
+		String ret = "Best Phenotype: " + getBestPhenotype();
 		return ret;
 	}
 	
@@ -293,25 +194,23 @@ public class Statistic<T extends Gene<?>, C extends Comparable<C>>
 		public Statistic newInstance(final Class<Statistic> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
-			final double meanFitness = xml.getAttribute("meanfitness", 1.0);
-			final double varianceFitness = xml.getAttribute("variancefitness", 1.0);
 			final double meanAge = xml.getAttribute("meanage", 1.0);
 			final double varianceAge = xml.getAttribute("varianceage", 1.0);
+			final int samples = xml.getAttribute("samples", 1);
 			final Phenotype best = xml.getNext();
 			final Phenotype worst = xml.getNext();
-			return new Statistic(best, worst, meanFitness, varianceFitness, meanAge, varianceAge);
+			return new Statistic(best, worst, samples, meanAge, varianceAge);
 
 		}
 		@Override
 		public void write(final Statistic s, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("meanfitness", s._fitnessMean);
-			xml.setAttribute("variancefitness", s._fitnessVariance);
 			xml.setAttribute("meanage", s._ageMean);
 			xml.setAttribute("varianceage", s._ageVariance);
-			xml.add(s._bestPhenotype, "best");
-			xml.add(s._worstPhenotype, "worst");
+			xml.setAttribute("samples", s._samples);
+			xml.add(s._best, "best");
+			xml.add(s._worst, "worst");
 		}
 		@Override
 		public void read(final InputElement xml, final Statistic p) 

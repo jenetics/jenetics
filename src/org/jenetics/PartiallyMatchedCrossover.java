@@ -73,16 +73,16 @@ import javolution.xml.stream.XMLStreamException;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.6 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.7 2008-08-27 20:30:28 fwilhelm Exp $
  */
-public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
+public class PartiallyMatchedCrossover<G extends Gene<?>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
 
-	public PartiallyMatchedCrossover(final Alterer<T> component) {
+	public PartiallyMatchedCrossover(final Alterer<G> component) {
 		super(component);
 	}
 
-	public PartiallyMatchedCrossover(final Probability probability, final Alterer<T> component) {
+	public PartiallyMatchedCrossover(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
 
@@ -91,15 +91,15 @@ public class PartiallyMatchedCrossover<T extends Gene<?>> extends Crossover<T> {
 	}
 	
 	@Override 
-	protected void crossover(final Array<T> that, final Array<T> other) {
+	protected void crossover(final Array<G> that, final Array<G> other) {
 		final Random random = RandomRegistry.getRandom();
 		int index1 = random.nextInt(that.length());
 		int index2 = random.nextInt(other.length());
 		index1 = min(index1, index2);
 		index2 = max(index1, index2) + 1;
 		
-		final Array<T> thatGenes = Array.newInstance(index2 - index1);
-		final Array<T> otherGenes = Array.newInstance(index2 - index1);
+		final Array<G> thatGenes = Array.newInstance(index2 - index1);
+		final Array<G> otherGenes = Array.newInstance(index2 - index1);
 		
 		//Swap the gene range.
 		for (int i = index1; i < index2; ++i) {

@@ -40,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.3 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.4 2008-08-27 20:30:31 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C>, XMLSerializable 
@@ -99,24 +99,23 @@ public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>>
 		}
 		
 		Phenotype<G, C> winner = null;
-		Phenotype<G, C> selection = null;
 		C bestFitness = null;
 		
 		final int N = population.size();
 		final Random random = RandomRegistry.getRandom();
 		
 		for (int i = 0; i < count; ++i) {
-			bestFitness = population.get(random.nextInt(N)).getFitness();
+			winner = population.get(random.nextInt(N));
+			bestFitness = winner.getFitness();
 			
 			for (int j = 0; j < _sampleSize; ++j) {
-				selection = population.get(random.nextInt(N));
+				final Phenotype<G, C> selection = population.get(random.nextInt(N));
 				if (selection.getFitness().compareTo(bestFitness) > 0) {
 					bestFitness = selection.getFitness();
 					winner = selection;
 				}
 			}
 			
-			assert (winner != null);
 			pop.add(winner);
 		}
 		

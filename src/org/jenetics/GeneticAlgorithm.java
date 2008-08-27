@@ -31,7 +31,7 @@ import org.jenetics.util.Probability;
 
 /**
  * Main class. 
- * </p>
+ * <p/>
  * 
  * A simple GeneticAlgorithm setup.
  * [code]
@@ -39,8 +39,8 @@ import org.jenetics.util.Probability;
  *     Genotype<BitGene> gt = Genotype.newGenotype(
  *         BitChromosome.valueOf(10, Probability.valueOf(0.5));
  *     );
- *     FitnessFunction<BitGene> ff = ...//FitnessFunction implementation
- *     GeneticAlgorithm<BitGene> ga = new GeneticAlgorithm<BitGene>(gt, ff);
+ *     FitnessFunction<BitGene, Float64> ff = ...//FitnessFunction implementation
+ *     GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm.valueOf(gt, ff);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
@@ -51,54 +51,62 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.6 2008-08-26 22:29:33 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.7 2008-08-27 20:30:28 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
+ * 
+ * <G> 
  */
-public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
+public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	
-	private GenotypeFactory<T> _genotypeFactory = null;
-	private FitnessFunction<T, C> _fitnessFunction = null;
+	private GenotypeFactory<G> _genotypeFactory = null;
+	private FitnessFunction<G, C> _fitnessFunction = null;
 	private FitnessScaler<C> _fitnessScaler = null;
 	
 	private Probability _survivorFraction = Probability.valueOf(0.4);
 	private Probability _offspringFraction = Probability.valueOf(0.6);
 	
-	private Alterer<T> _alterer = ( 
-		new SinglePointCrossover<T>(Probability.valueOf(0.1))).append(
-		new Mutation<T>(Probability.valueOf(0.05))
+	private Alterer<G> _alterer = ( 
+		new SinglePointCrossover<G>(Probability.valueOf(0.1))).append(
+		new Mutation<G>(Probability.valueOf(0.05))
 	);
-	private Selector<T, C> _survivorSelector = new TournamentSelector<T, C>();
-	private Selector<T, C> _offspringSelector = new TournamentSelector<T,C>();
+	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>();
+	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>();
 	
 	private int _populationSize = 50;
-	private Population<T, C> _population = new Population<T, C>();
+	private Population<G, C> _population = new Population<G, C>();
 	private int _maximalPhenotypeAge = 70;
 	private int _generation = 0;
 	
-	private Phenotype<T, C> _bestPhenotype = null;
-	private Statistic<T, C> _statistic = null;
-	private Statistic<T, C> _previousStatistic = null;
-	private StatisticCalculator _calculator = new StatisticCalculator();
-	private double _selectionStrength = 0.0;
+	private Phenotype<G, C> _bestPhenotype = null;
+	private Statistic<G, C> _statistic = null;
+	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
 
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
 	public GeneticAlgorithm(
-		final GenotypeFactory<T> genotypeFactory, 
-		final FitnessFunction<T, C> fitnessFunction
+		final GenotypeFactory<G> genotypeFactory, 
+		final FitnessFunction<G, C> fitnessFunction
 	) {	 
 		this(genotypeFactory, fitnessFunction, new IdentityScaler<C>());
 	}
 	
 	/**
-	 * Create a new GeneticAlgorithm
+	 * Create a new genetic algorithm.
 	 * 
-	 * @throws NullPointerException if the <code>genotypeFactory</code>,
-	 *         <code>fitnessFunction</code> or <code>fitnessScaler</code> is
-	 *         <code>null</code>.
+	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final GenotypeFactory<T> genotypeFactory, 
-		final FitnessFunction<T, C> fitnessFunction, 
+		final GenotypeFactory<G> genotypeFactory, 
+		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
 		notNull(genotypeFactory, "GenotypeFactory");
@@ -123,9 +131,9 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 			);
 		}
 		
-		//Initializing the Population 
+		//Initializing/filling up the Population 
 		for (int i = _population.size(); i < _populationSize; ++i) {
-			final Phenotype<T, C> pt = Phenotype.valueOf(
+			final Phenotype<G, C> pt = Phenotype.valueOf(
 				_genotypeFactory.newGenotype(), _fitnessFunction, 
 				_fitnessScaler, _generation
 			);
@@ -133,9 +141,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 		}
 		
 		//First valuation of the initial population.
-		_previousStatistic = _statistic;
 		_statistic = _calculator.evaluate(_population);
-		_selectionStrength = _statistic.selectionStrength(_previousStatistic);
 		_bestPhenotype = _statistic.getBestPhenotype();
 		++_generation;
 	}
@@ -158,12 +164,12 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 		++_generation;
 		
 		//Select the survivors.
-		final Population<T, C> survivors = _survivorSelector.select(
+		final Population<G, C> survivors = _survivorSelector.select(
 			_population, getNumberOfSurvivors()
 		);
 
 		//Generate the offspring.
-		final Population<T, C> offspring = _offspringSelector.select(
+		final Population<G, C> offspring = _offspringSelector.select(
 			_population, getNumberOfOffsprings()
 		);
 		
@@ -171,9 +177,9 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 		_alterer.alter(offspring);
 		
 		//Accepting the new population.
-		_population = new Population<T, C>(_populationSize);
+		_population = new Population<G, C>(_populationSize);
 		for (int i = 0, n = survivors.size(); i < n; ++i) {
-			final Phenotype<T, C> survivor = survivors.get(i);
+			final Phenotype<G, C> survivor = survivors.get(i);
 			
 			//Survivor is still alive and valid.
 			if ((_generation - survivor.getGeneration()) <=
@@ -183,7 +189,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 				
 			//Create new phenotypes for dead survivors.
 			} else {
-				final Phenotype<T, C> pt = Phenotype.valueOf(
+				final Phenotype<G, C> pt = Phenotype.valueOf(
 					_genotypeFactory.newGenotype(), _fitnessFunction, 
 					_fitnessScaler, _generation
 				);
@@ -195,9 +201,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 		}
 		
 		//Evaluate the population. All the fitness calculation is done here.
-		_previousStatistic = _statistic;
 		_statistic = _calculator.evaluate(_population);
-		_selectionStrength = _statistic.selectionStrength(_previousStatistic);
 		if (_bestPhenotype.getFitness().compareTo(_statistic.getBestFitness()) < 0) {
 			_bestPhenotype = _statistic.getBestPhenotype();
 		}	
@@ -229,20 +233,11 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the current selection strength.
-	 * 
-	 * @return the current selection strength.
-	 */
-	public double getSelectionStrength() {
-		return _selectionStrength;
-	}
-	
-	/**
 	 * Return the currently used {@link GenotypeFactory} of the GA. 
 	 * 
 	 * @return the currently used {@link GenotypeFactory} of the GA. 
 	 */
-	public GenotypeFactory<T> getGenotypeFactory() {
+	public GenotypeFactory<G> getGenotypeFactory() {
 		return _genotypeFactory;
 	}
 	
@@ -251,7 +246,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the currently used {@link FitnessFunction} of the GA. 
 	 */
-	public FitnessFunction<T, C> getFitnessFunction() {
+	public FitnessFunction<G, C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 	
@@ -298,7 +293,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the currently used offspring {@link Selector} of the GA. 
 	 */
-	public Selector<T, C> getOffspringSelector() {
+	public Selector<G, C> getOffspringSelector() {
 		return _offspringSelector;
 	}
 
@@ -307,7 +302,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the currently used survivor {@link Selector} of the GA. 
 	 */
-	public Selector<T, C> getSurvivorSelector() {
+	public Selector<G, C> getSurvivorSelector() {
 		return _survivorSelector;
 	}
 
@@ -316,7 +311,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the currently used {@link Alterer} of the GA. 
 	 */
-	public Alterer<T> getAlterer() {
+	public Alterer<G> getAlterer() {
 		return _alterer;
 	}
 	
@@ -343,7 +338,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the best {@link Phenotype} so far.
 	 */
-	public Phenotype<T, C> getBestPhenotype() {
+	public Phenotype<G, C> getBestPhenotype() {
 		return _bestPhenotype;
 	}
 	
@@ -352,7 +347,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the current {@link Population} {@link Statistic}.
 	 */
-	public Statistic<T, C> getStatistic() {
+	public Statistic<G, C> getStatistic() {
 		return _statistic;
 	}
 	
@@ -375,11 +370,6 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 		notNull(random, "Random engine");
 		RandomRegistry.setRandom(random);
 	}
-	
-	public void setFitnessCalculator(final StatisticCalculator calculator) {
-		notNull(calculator, "Fitness calculator");
-		_calculator = calculator;
-	}
 
 	/**
 	 * Set the offspring selector.
@@ -387,7 +377,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * @param selector The offspring selector.
 	 * @throws NullPointerException, if the given selector is null.
 	 */
-	public void setOffspringSelector(final Selector<T, C> selector) {
+	public void setOffspringSelector(final Selector<G, C> selector) {
 		notNull(selector, "Offspring selector");
 		_offspringSelector = selector;
 	}
@@ -398,7 +388,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * @param selector The survivor selector.
 	 * @throws NullPointerException, if the given selector is null.
 	 */
-	public void setSurvivorSelector(final Selector<T, C> selector) {
+	public void setSurvivorSelector(final Selector<G, C> selector) {
 		notNull(selector, "Survivor selector");
 		_survivorSelector = selector;
 	}
@@ -408,7 +398,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @param selector The selector for the offsprings and the survivors.
 	 */
-	public void setSelectors(final Selector<T, C> selector) {
+	public void setSelectors(final Selector<G, C> selector) {
 		setOffspringSelector(selector);
 		setSurvivorSelector(selector);
 	}
@@ -440,7 +430,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * @param alterer The alterer.
 	 * @throws NullPointerException if the alterer is null.
 	 */
-	public void setAlterer(final Alterer<T> alterer) {
+	public void setAlterer(final Alterer<G> alterer) {
 		notNull(alterer, "Alterer");
 		this._alterer = alterer;
 	}
@@ -450,7 +440,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @param alterer the {@link Alterer} to add.
 	 */
-	public void addAlterer(final Alterer<T> alterer) {
+	public void addAlterer(final Alterer<G> alterer) {
 		notNull(alterer, "Alterer");
 		this._alterer.append(alterer);
 	}
@@ -487,7 +477,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Set the population.
+	 * Set the (initial) population.
 	 * 
 	 * @param population The population to set. The population size is set to
 	 * 	  <code>population.size()</code>.
@@ -495,7 +485,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 * 		one.
 	 */
-	public void setPopulation(final Population<T, C> population) {
+	public void setPopulation(final Population<G, C> population) {
 		notNull(population, "Population");
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(
@@ -512,7 +502,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return The current population.
 	 */
-	public Population<T, C> getPopulation() {
+	public Population<G, C> getPopulation() {
 		return _population;
 	}
 	
@@ -522,7 +512,7 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * @param calculator the new statistic calculator.
 	 * @throws NullPointerException if the given {@code calculator} is {@code null}.
 	 */
-	public void setStatisticCalculator(final StatisticCalculator calculator) {
+	public void setStatisticCalculator(final StatisticCalculator<G, C> calculator) {
 		notNull(calculator, "Statistic calculator");
 		this._calculator = calculator;
 	}
@@ -532,10 +522,45 @@ public class GeneticAlgorithm<T extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the current statistic calculator.
 	 */
-	public StatisticCalculator getStatisticCalculator() {
+	public StatisticCalculator<G, C> getStatisticCalculator() {
 		return _calculator;
 	}
+	
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <SG extends Gene<?>, SC extends Comparable<SC>>
+	GeneticAlgorithm<SG, SC> valueOf(
+		final GenotypeFactory<SG> genotypeFactory, 
+		final FitnessFunction<SG, SC> fitnessFunction, 
+		final FitnessScaler<SC> fitnessScaler
+	)
+	{
+		return new GeneticAlgorithm<SG, SC>(
+			genotypeFactory, fitnessFunction, fitnessScaler
+		);
+	}
 
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <SG extends Gene<?>, SC extends Comparable<SC>>
+	GeneticAlgorithm<SG, SC> valueOf(
+		final GenotypeFactory<SG> genotypeFactory, 
+		final FitnessFunction<SG, SC> fitnessFunction
+	) 
+	{
+		return new GeneticAlgorithm<SG, SC>(genotypeFactory, fitnessFunction);
+	}
 }
 
 
