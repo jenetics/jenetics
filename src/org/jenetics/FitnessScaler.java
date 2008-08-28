@@ -28,10 +28,12 @@ import javolution.xml.XMLSerializable;
 /**
  * Interface for scaling the 'raw' fitness of a given chromosome. 
  * 
+ * @param <C> the result type of the fitness function to scale. The scaled value
+ *            must (of coures) of the same type.
  * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessScaler.java,v 1.2 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: FitnessScaler.java,v 1.3 2008-08-28 21:21:12 fwilhelm Exp $
  */
 public interface FitnessScaler<C extends Comparable<C>> extends XMLSerializable {
 	

@@ -30,8 +30,11 @@ import javolution.lang.ValueType;
  * The <code>Gene</code> is the base of this genetic algorithm implementation.
  * A common interface for Genes.
  * 
+ * @param <A> the <a href="http://en.wikipedia.org/wiki/Allele">Allele</a> type
+ *            of this gene.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Gene.java,v 1.1 2008-03-25 18:31:55 fwilhelm Exp $
+ * @version $Id: Gene.java,v 1.2 2008-08-28 21:21:13 fwilhelm Exp $
  */
 public interface Gene<A> extends Serializable, ValueType, Verifiable {
 	
@@ -41,13 +44,5 @@ public interface Gene<A> extends Serializable, ValueType, Verifiable {
 	 * @return the allel of this gene.
 	 */
 	public A getAllele();
-	
-	/**
-	 * Test whether the given gene is valid (in the current problem space).
-	 * 
-	 * @return true if the gene is valid, false otherwise.
-	 */
-	@Override
-	public boolean isValid();
 	
 }

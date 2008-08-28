@@ -35,8 +35,10 @@ import javolution.text.Text;
  * of this class must assure that the protected member <code>_genes</code> is not
  * <code>null</code> and the lenght of the <code>_genes</code> > 0.
  * 
+ * @param <T> the gene type.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.7 2008-08-25 19:35:25 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.8 2008-08-28 21:21:13 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess

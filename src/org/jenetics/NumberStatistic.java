@@ -27,9 +27,9 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.1 2008-08-27 20:30:26 fwilhelm Exp $
+ * @version $Id: NumberStatistic.java,v 1.2 2008-08-28 21:21:13 fwilhelm Exp $
  */
-public class NumberStatistic<G extends Gene<?>, N extends Number<N>>
+class NumberStatistic<G extends Gene<?>, N extends Number<N>>
 	extends Statistic<G, N> 
 {
 	private static final long serialVersionUID = -7468324436514041360L;

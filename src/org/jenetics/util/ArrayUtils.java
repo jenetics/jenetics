@@ -31,7 +31,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.1 2008-08-25 19:36:06 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.2 2008-08-28 21:21:13 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -67,6 +67,80 @@ public final class ArrayUtils {
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
 		swap(array._array, i, j);
 	}
+	
+	/**
+	 * Finds the minimum and maximum value of the given array. 
+	 * 
+	 * @param <T> the comparable type.
+	 * @param values the array to search.
+	 * @return an array of size two. The first element contains the minimum and
+	 *         the second element contains the maximum value. If the given array
+	 *         has size zero, the min and max values of the returned array are 
+	 *         {@code null}.
+	 */
+	public static <T extends Comparable<T>> Array<T> minmax(final Array<T> values) {
+		final int size = values.length();
+		
+		T min = null;
+		T max = null;
+		int start = 0;
+		
+		if (size%2 == 0 && size > 0) {
+			start = 2;
+			if (values.get(0).compareTo(values.get(1)) < 0) {
+				min = values.get(0);
+				max = values.get(1);
+			} else {
+				min = values.get(1);
+				max = values.get(0);
+			}
+		} else if (size%2 == 1) {
+			start = 1;
+			min = values.get(0);
+			max = values.get(0);
+		}
+		
+		for (int i = start; i < size; i += 2) {
+			final T first = values.get(i);
+			final T second = values.get(i + 1);
+			
+			if (first.compareTo(second) < 0) {
+				if (first.compareTo(min) < 0) {
+					min = first;
+				}
+				if (second.compareTo(max) > 0) {
+					max = second;
+				}
+			} else {
+				if (second.compareTo(min) < 0) {
+					min = second;
+				}
+				if (first.compareTo(max) > 0) {
+					max = first;
+				}
+			}
+		}
+		
+		Array<T> mm = Array.newInstance(2);
+		mm.set(0, min);
+		mm.set(1, max);
+		return mm;
+	}
+	
+	public static <T extends Comparable<T>> T median(final Array<T> values) {
+		
+		
+		return null;
+	}
+	
+//	public static void main(String[] args) {
+//		Array<Double> values = Array.newInstance(0);
+//		for (int i = 0; i < values.length(); ++i) {
+//			values.set(i, new Double(i*3 + 4));
+//		}
+//		
+//		minmax(values);
+//	}
 	
 	/**
 	 * Randomize the {@code array} with the given {@link Random} object. The used
@@ -128,7 +202,7 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Reverses the given array.
+	 * Reverses the given array in place.
 	 * 
 	 * @param <T> the array type.
 	 * @param array the array to reverse.
@@ -137,6 +211,12 @@ public final class ArrayUtils {
 		reverse(array, 0, array.length);
 	}
 	
+	/**
+	 * Reverses the given array in place.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array to reverse.
+	 */
 	public static <T> void reverse(final Array<T> array) {
 		reverse(array._array);
 	}

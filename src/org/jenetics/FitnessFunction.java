@@ -32,10 +32,13 @@ import javolution.xml.XMLSerializable;
  * The <code>FitnessFunction</code> is shared by all <code>Phenotypes</code> and 
  * should be thread save. Typically the <code>evaluate</code> method is reentrant.
  * 
+ * @param <G> the gene type.
+ * @param <C> the result type of the fitness function. The result type must be
+ *            at least comparable to define a fitness order on the genotype.
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessFunction.java,v 1.2 2008-08-26 22:29:33 fwilhelm Exp $
+ * @version $Id: FitnessFunction.java,v 1.3 2008-08-28 21:21:13 fwilhelm Exp $
  */
 public interface FitnessFunction<G extends Gene<?>, C extends Comparable<C>> 
 	extends XMLSerializable 
