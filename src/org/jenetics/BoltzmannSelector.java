@@ -47,8 +47,11 @@ import org.jscience.mathematics.number.Number;
  * 
  * f_j denotes the fitness value of the jth individium.
  * 
+ * @param <T> the gene type.
+ * @param <N> the BoltzmannSelector requires a number type.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.4 2008-08-28 21:21:13 fwilhelm Exp $
  */
 public class BoltzmannSelector<T extends Gene<?>, N extends Number<N>> 
 	extends ProbabilitySelector<T, N> implements XMLSerializable

@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.6 2008-08-27 20:30:28 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.7 2008-08-28 21:21:13 fwilhelm Exp $
  */
 public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
@@ -40,52 +40,70 @@ public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 		_startEvaluationTime = System.currentTimeMillis();
 		
 		Statistic<G, C> statistic = new Statistic<G, C>(null, null, 0, 0.0, 0.0);
-		if (!population.isEmpty()) {		
-			int age = 0;
+		final int size = population.size();
+		
+		Phenotype<G, C> best = null;
+		Phenotype<G, C> worst = null;
+		long ageSum = 0;
+		long ageSquareSum = 0;
+		int start = 0;
+		
+		if (size%2 == 0 && size > 0) {
+			start = 2;
+			if (population.get(0).compareTo(population.get(1)) < 0) {
+				worst = population.get(0);
+				best = population.get(1);
+			} else {
+				worst = population.get(1);
+				best = population.get(0);
+			}
 			
-			Phenotype<G, C> bestPhenotype = null;
-			Phenotype<G, C> worstPhenotype = null;
+			ageSum += best.getGeneration() + worst.getGeneration();
+			ageSquareSum = best.getGeneration()*best.getGeneration();
+			ageSquareSum += worst.getGeneration()*worst.getGeneration();
+		} else if (size%2 == 1) {
+			start = 1;
+			worst = population.get(0);
+			best = population.get(0);
 			
-			C fitness = null;
-			C minFitness = null;
-			C maxFitness = null;
-			long ageSum = 0;
-			long ageSquareSum = 0;
+			ageSum = best.getGeneration();
+			ageSquareSum = best.getGeneration()*best.getGeneration();
+		}
+		
+		for (int i = start; i < size; i += 2) {
+			final Phenotype<G, C> first = population.get(i);
+			final Phenotype<G, C> second = population.get(i + 1);
 			
-			for (final Phenotype<G, C> phenotype : population) {
-				fitness = phenotype.getFitness(); 
-				
-				age = phenotype.getGeneration();
-				ageSum += age;
-				ageSquareSum += age*age;
-	
-				if (minFitness == null || minFitness.compareTo(fitness) > 0) {
-					minFitness = fitness;
-					worstPhenotype = phenotype;
+			if (first.compareTo(second) < 0) {
+				if (first.compareTo(worst) < 0) {
+					worst = first;
 				}
-				if (maxFitness == null || maxFitness.compareTo(fitness) < 0) {
-					maxFitness = fitness;
-					bestPhenotype = phenotype;
+				if (second.compareTo(best) > 0) {
+					best = second;
+				}
+			} else {
+				if (second.compareTo(worst) < 0) {
+					worst = second;
+				}
+				if (first.compareTo(best) > 0) {
+					best = first;
 				}
 			}
 			
-			final double meanAge = 
-				(double)ageSum/(double)population.size();
-			final double varianceAge = 
-				(double)ageSquareSum/(double)population.size() - meanAge*meanAge;
+			ageSum += best.getGeneration() + worst.getGeneration();
+			ageSquareSum = best.getGeneration()*best.getGeneration();
+			ageSquareSum += worst.getGeneration()*worst.getGeneration();
+		}
+		
+		if (size > 0) {		
+			final double meanAge = (double)ageSum/(double)size;
+			final double varianceAge = (double)ageSquareSum/(double)size - meanAge*meanAge;
 			
-			statistic = new Statistic<G, C>(
-				bestPhenotype, worstPhenotype, 
-				population.size(), meanAge, varianceAge
-			);
+			statistic = new Statistic<G, C>(best, worst, size, meanAge, varianceAge);
 		}
 
 		_stopEvaluationTime = System.currentTimeMillis();
 		return statistic;
-	}
-	
-	public C median(final List<? extends Phenotype<G, C>> population) {
-		return null;
 	}
 	
 	public long getLastEvaluationTime() {
