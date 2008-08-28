@@ -142,6 +142,8 @@
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/doc-files" />
 		</copy>
+		<replace dir="${javadoc.dir}" token="@!identifier!@" value="${identifier}" />
+		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
 	
 	<target name="all" depends="jar, javadoc" />
@@ -162,7 +164,7 @@
 			<include name="org/jenetics/*.gif" />
 			<include name="org/jenetics/*.html" />
 			<include name="org/jenetics/*.java" />
-			<include name="org/jenetics/examples/*.java" />
+			<include name="org/jenetics/**/*.java" />
 		</javac>			
 	</target>
 
