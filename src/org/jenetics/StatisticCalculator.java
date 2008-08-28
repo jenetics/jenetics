@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.7 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.8 2008-08-28 21:46:50 fwilhelm Exp $
  */
 public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
@@ -59,7 +59,7 @@ public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 			}
 			
 			ageSum += best.getGeneration() + worst.getGeneration();
-			ageSquareSum = best.getGeneration()*best.getGeneration();
+			ageSquareSum += best.getGeneration()*best.getGeneration();
 			ageSquareSum += worst.getGeneration()*worst.getGeneration();
 		} else if (size%2 == 1) {
 			start = 1;
@@ -91,7 +91,7 @@ public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 			}
 			
 			ageSum += best.getGeneration() + worst.getGeneration();
-			ageSquareSum = best.getGeneration()*best.getGeneration();
+			ageSquareSum += best.getGeneration()*best.getGeneration();
 			ageSquareSum += worst.getGeneration()*worst.getGeneration();
 		}
 		
