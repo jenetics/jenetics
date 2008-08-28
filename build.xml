@@ -41,7 +41,7 @@
 			<include name="org/jenetics/*.gif" />
 			<include name="org/jenetics/*.html" />
 			<include name="org/jenetics/*.java" />
-			<include name="org/jenetics/examples/*.java" />
+			<include name="org/jenetics/**/*.java" />
 		</javac>		
 	</target>
 	
@@ -93,20 +93,29 @@
 			includenosourcepackages="true" docencoding="UTF-8" 
 			Encoding="UTF-8"
 		>
+			<arg line="-charset UTF-8" />
 			<classpath refid="classpath" />
 			<fileset dir="${source.dir}">
 				<include name="org/jenetics/*/.gif" />
 				<include name="org/jenetics/*.html" />
 				<include name="org/jenetics/*.java" />
-				<include name="org/jenetics/examples/*.java" />
+				<include name="org/jenetics/**/*.java" />
 				<and>
 					<filename name="**/*.java" />
 				</and>
 			</fileset>
 			<doctitle>&lt;h1&gt;Jenetics API&lt;/h1&gt;</doctitle>
 			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
+			<link offline="true" packagelistLoc="./resources/javadoc/jdk" 
+					href="http://java.sun.com/javase/6/docs/api/"  
+			/>
+			<link offline="true" packagelistLoc="./resources/javadoc/jscience" 
+					href="http://jscience.org/api/"  
+			/>
+			<link offline="true" packagelistLoc="./resources/javadoc/javolution" 
+					href="http://javolution.org/api/"  
+			/>
 		</javadoc>
-		
 		<taskdef 
 			name="java2html" classname="de.java2html.anttasks.Java2HtmlTask"
 			classpath="${java2html.classpath}"
@@ -127,7 +136,7 @@
 			<include name="org/jenetics/**/.gif" />
 			<include name="org/jenetics/*.html" />
 			<include name="org/jenetics/*.java" />
-			<include name="org/jenetics/examples/*.java" />
+			<include name="org/jenetics/**/*.java" />
 		</java2html>
 			
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
