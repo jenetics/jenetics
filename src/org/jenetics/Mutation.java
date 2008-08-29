@@ -61,7 +61,7 @@ import javolution.xml.stream.XMLStreamException;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.4 2008-08-29 21:18:16 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -100,7 +100,7 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	protected <C extends Comparable<C>> void componentAlter(Population<G, C> population) {
+	protected <C extends Comparable<C>> void componentAlter(final Population<G, C> population) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final double prop = _probability.doubleValue()/

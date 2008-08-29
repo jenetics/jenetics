@@ -14,6 +14,7 @@ Jenetics-0.3.0.0
   FitnessScaler, Phenotype, Population, Selector and GeneticAlgorithm class.
 - Adding NumericStatistic and NumericStatisticCalculator. Move functionality
   from old Statistic class into the new NumericStatistic class. 
+- Some additional helper methods in the ArrayUtils class.
 
 Jenetics-0.2.0.0
 - Removing Randomizable interface.

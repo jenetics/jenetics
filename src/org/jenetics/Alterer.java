@@ -23,10 +23,9 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
+import javolution.xml.XMLSerializable;
 
 import org.jenetics.util.Probability;
-
-import javolution.xml.XMLSerializable;
 
 /**
  * Population based methods provide the possibility of incorporating a new set 
@@ -50,7 +49,7 @@ import javolution.xml.XMLSerializable;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.5 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.6 2008-08-29 21:18:15 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?>> implements XMLSerializable {
 	private static final long serialVersionUID = -675546015545758480L;
@@ -131,15 +130,17 @@ public abstract class Alterer<G extends Gene<?>> implements XMLSerializable {
 	 * @param population The Population to be altered. If the 
 	 *        <code>population</code> is <code>null</code> or empty, nothing is 
 	 *        altered.
+	 * @throws NullPointerException if the given {@code population} is 
+	 *         {@code null}.
 	 */
 	public <C extends Comparable<C>> void alter(final Population<G, C> population) {
-		if (population == null || population.isEmpty()) {
-			return;
-		}
+		notNull(population, "Population");
 		
-		componentAlter(population);
-		if (_component != null) {
-			_component.alter(population);
+		if (!population.isEmpty()) {
+			componentAlter(population);
+			if (_component != null) {
+				_component.alter(population);
+			}
 		}
 	}
 	

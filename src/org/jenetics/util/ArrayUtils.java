@@ -24,18 +24,36 @@ package org.jenetics.util;
 
 import static java.lang.Math.min;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
+import java.util.RandomAccess;
 
 
 /**
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.2 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.3 2008-08-29 21:18:15 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
 	private ArrayUtils() {
+	}
+	
+	/**
+	 * Returns a fixed-size list backed by the specified array. (Changes to
+	 * the returned list "write through" to the array.) The returned list is
+	 * fixed size, serializable and implements {@link RandomAccess}.
+	 *
+	 * @param array the array by which the list will be backed
+	 * @return a list view of the specified array
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */	
+	public static <T> List<T> asList(final Array<T> array) {
+		Validator.notNull(array, "Array");
+		return new org.jenetics.util.ArrayList<T>(array._array);
 	}
 	
 	/**
@@ -45,8 +63,9 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	 * @throws ArrayIndexOutOfBoundsException if one of the given indexes is out 
-	 *         of bounds.
+     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+     *         <tt>j &gt; a.length</tt>
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		final T temp = array[i];
@@ -61,12 +80,73 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	 * @throws ArrayIndexOutOfBoundsException if one of the given indexes is out 
-	 *         of bounds.
+     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+     *         <tt>j &gt; a.length</tt>
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
 		swap(array._array, i, j);
 	}
+	
+	/**
+	 * Calls the sort method on the {@link Arrays} class.
+	 * 
+	 * @see Arrays#sort(Object[], int, int, Comparator)
+     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+     *         <tt>to &gt; a.length</tt>
+	 */
+	public static <T> void sort(
+		final Array<T> array, final int from, final int to,
+		final Comparator<? super T> comparator
+	) {
+		@SuppressWarnings("unchecked")
+		final Comparator<Object> c = (Comparator<Object>)comparator;
+		Arrays.sort(array._array, from, to, c);
+	}
+	
+	/**
+	 * Calls the sort method on the {@link Arrays} class.
+	 * @see Arrays#sort(Object[], Comparator)
+	 */
+	public static <T> void sort(final Array<T> array, final Comparator<? super T> comparator) {
+		sort(array, 0, array.length(), comparator);
+	}
+	
+	/**
+	 * Calls the sort method on the {@link Arrays} class.
+	 * @see Arrays#sort(Object[], int, int)
+     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+     *         <tt>to &gt; a.length</tt>
+	 */
+	public static <T> void sort(final Array<T> array, final int from, final int to) {
+		Arrays.sort(array._array, from, to);
+	}
+	
+	/**
+	 * Calls the sort method on the {@link Arrays} class.
+	 * 
+	 * @see Arrays#sort(Object[])
+	 */
+	public static <T> void sort(final Array<T> array) {
+		Arrays.sort(array._array, 0, array.length());
+	}
+	
+//	public static void main(String[] args) {
+//		Array<Integer> array = Array.newInstance(10);
+//		for (int i = 0; i < array.length(); ++i) {
+//			array.set(i, array.length() - i);
+//		}
+//		
+//		sort(array, 0, array.length(), new Comparator<Integer>() {
+//			@Override public int compare(Integer o1, Integer o2) {
+//				return o1.compareTo(o2);
+//			}
+//		});
+//		
+//		System.out.println(Arrays.toString(array._array));
+//	}
 	
 	/**
 	 * Finds the minimum and maximum value of the given array. 
@@ -121,10 +201,10 @@ public final class ArrayUtils {
 			}
 		}
 		
-		Array<T> mm = Array.newInstance(2);
+		final Array<T> mm = Array.newInstance(2);
 		mm.set(0, min);
 		mm.set(1, max);
-		return mm;
+		return mm;  
 	}
 	
 	public static <T extends Comparable<T>> T median(final Array<T> values) {
@@ -132,15 +212,6 @@ public final class ArrayUtils {
 		
 		return null;
 	}
-	
-//	public static void main(String[] args) {
-//		Array<Double> values = Array.newInstance(0);
-//		for (int i = 0; i < values.length(); ++i) {
-//			values.set(i, new Double(i*3 + 4));
-//		}
-//		
-//		minmax(values);
-//	}
 	
 	/**
 	 * Randomize the {@code array} with the given {@link Random} object. The used
@@ -177,8 +248,12 @@ public final class ArrayUtils {
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
+     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+     *         <tt>to &gt; a.length</tt>
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
+		rangeCheck(array.length, from, to);
 		int i = from;
 		int j = to;
 		
@@ -196,6 +271,9 @@ public final class ArrayUtils {
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
+     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+     *         <tt>to &gt; a.length</tt>
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
 		reverse(array._array, from, to);
@@ -219,6 +297,20 @@ public final class ArrayUtils {
 	 */
 	public static <T> void reverse(final Array<T> array) {
 		reverse(array._array);
+	}
+	
+	private static void rangeCheck(int length, int from, int to) {
+		if (from > to) {
+			throw new IllegalArgumentException(
+				"fromIndex(" + from + ") > toIndex(" + to+ ")"
+			);
+		}
+		if (from < 0) {
+			throw new ArrayIndexOutOfBoundsException(from);
+		}
+		if (to > length) {
+			throw new ArrayIndexOutOfBoundsException(to);
+		}
 	}
 	
 	/**
@@ -282,6 +374,24 @@ public final class ArrayUtils {
 		
 		return partition;
 	}	
+	
+	static int indexOf(final Object[] array, final Object element) {
+		int index = -1;
+		if (element != null) {
+			for (int i = 0; i < array.length && index == -1; ++i) {
+				if (element.equals(array[i])) {
+					index = i;
+				}
+			}
+		} else {
+			for (int i = 0; i < array.length && index == -1; ++i) {
+				if (array[i] == null) {
+					index = i;
+				}
+			}	
+		}
+		return index;
+	}
 	
 }
 
