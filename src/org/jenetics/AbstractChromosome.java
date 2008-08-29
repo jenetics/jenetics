@@ -38,7 +38,7 @@ import javolution.text.Text;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.8 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.9 2008-08-29 21:18:16 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -51,7 +51,6 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 */
 	protected Array<T> _genes = null;
 	
-	//
 	private Boolean _valid = null;
 
 	/**

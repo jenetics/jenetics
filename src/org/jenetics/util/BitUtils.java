@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * Some bit utils.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.1 2008-08-25 19:36:05 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.2 2008-08-29 21:18:15 fwilhelm Exp $
  */
 public final class BitUtils {
 
@@ -202,6 +202,15 @@ public final class BitUtils {
 		return increment(invert(data));
 	}
 	
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to the specified value.
+	 * 
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @param value the value to set.
+	 * @return the given data array.
+	 */
 	public static byte[] setBit(final byte[] data, final int index, final boolean value) {
 		if (data.length == 0) {
 			return data;
@@ -226,6 +235,13 @@ public final class BitUtils {
 		return data;
 	}
 	
+	/**
+	 * Return the (boolean) value of the byte array at the given bit index.
+	 * 
+	 * @param data the byte array.
+	 * @param index the bit index.
+	 * @return the value at the given bit index.
+	 */
 	public static boolean getBit(final byte[] data, final int index) {
 		if (data.length == 0) {
 			return false;

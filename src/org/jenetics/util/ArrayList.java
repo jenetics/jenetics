@@ -22,75 +22,86 @@
  */
 package org.jenetics.util;
 
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.RandomAccess;
 
 /**
- * Helper class which iterates over an given array.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayIterator.java,v 1.2 2008-08-29 21:18:15 fwilhelm Exp $
+ * @version $Id: ArrayList.java,v 1.1 2008-08-29 21:18:15 fwilhelm Exp $
  */
-final class ArrayIterator<T> implements ListIterator<T> {
+final class ArrayList<T> extends AbstractList<T> 
+	implements RandomAccess, java.io.Serializable 
+{
+	private static final long serialVersionUID = -3687635182118067928L;
+
 	private final Object[] _array;
-	private int _pos = -1;
 	
-	public ArrayIterator(final Object[] array) {
+	public ArrayList(final Object[] array) {
 		Validator.notNull(array, "Array");
-		this._array = array;
+		_array = array;
 	}
 	
 	@Override
-	public boolean hasNext() {
-		return _pos < _array.length - 1;
-	}
-	
 	@SuppressWarnings("unchecked")
-	@Override
-	public T next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return (T)_array[++_pos];
+	public T get(final int index) {
+		return (T)_array[index];
 	}
 	
 	@Override
-	public int nextIndex() {
-		return _pos + 1;
-	}
-	
-	@Override
-	public boolean hasPrevious() {
-		return _pos > 0;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public T previous() {
-		if (!hasPrevious()) {
-			throw new NoSuchElementException();
-		}
-		return (T)_array[--_pos];
+	public T set(int index, T element) {
+		@SuppressWarnings("unchecked")
+		final T old = (T)_array[index];
+		_array[index] = element;
+		return old;
 	}
 
 	@Override
-	public int previousIndex() {
-		return _pos - 1;
+	public int size() {
+		return _array.length;
+	}
+
+	@Override
+	public int indexOf(final Object element) {
+		return ArrayUtils.indexOf(_array, element);
 	}
 	
 	@Override
-	public void set(final T value) {
-		_array[_pos] = value;
+	public boolean contains(final Object element) {
+		return indexOf(element) != -1;
 	}
 	
 	@Override
-	public void add(final T o) {
-		throw new UnsupportedOperationException("Can't change array size.");
+	public Object[] toArray() {
+		return _array.clone();
 	}
 	
 	@Override
-	public void remove() {
-		throw new UnsupportedOperationException("Can't change array size.");
+	public <E> E[] toArray(final E[] array) {
+		final int size = size();
+		
+		if (array.length < size) {
+			@SuppressWarnings("unchecked")
+			final E[] copy = (E[])Arrays.copyOf(
+				_array, size, (Class<? extends T[]>) array.getClass()
+			);
+			return copy;
+		}
+		
+		System.arraycopy(_array, 0, array, 0, size);
+		if (array.length > size) {
+			array[size] = null;
+		}
+		return array;
 	}
-	
+    
 }
+
+
+
+
+
+
+
+
+
