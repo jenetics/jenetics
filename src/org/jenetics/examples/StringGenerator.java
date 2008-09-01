@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.5 2008-08-26 22:29:36 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.6 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -57,7 +57,7 @@ public class StringGenerator {
 			Chromosome<CharacterGene> chromosome = genotype.getChromosome();
 			
 			for (int i = 0; i < value.length(); ++i) {
-				if (chromosome.getGene(i).getCharacter().equals(value.charAt(i))) {
+				if (chromosome.getGene(i).getAllele().equals(value.charAt(i))) {
 					++matches;
 				}
 			}
@@ -66,8 +66,6 @@ public class StringGenerator {
 		}
 		
 	}
-	
-	
 	
 	public static void main(String[] args) {
 		final String value = "A test string";
@@ -79,7 +77,7 @@ public class StringGenerator {
 		final GeneticAlgorithm<CharacterGene, Integer64> 
 		ga = new GeneticAlgorithm<CharacterGene, Integer64>(gtf, ff);
 		
-		ga.setPopulationSize(100);
+		ga.setPopulationSize(500);
 		ga.setSurvivorFraction(Probability.valueOf(0.3));
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
@@ -93,7 +91,7 @@ public class StringGenerator {
 		Population<CharacterGene, Integer64> p = ga.getPopulation();
 		Statistic<CharacterGene, Integer64> stat = ga.getStatistic(); 		
 		
-		for (int i = 0; i < 200; ++i) {
+		for (int i = 0; i < 25; ++i) {
 			ga.evolve();
 			p = ga.getPopulation();
 			System.out.print("" + p.size() + ": ");

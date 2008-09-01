@@ -36,29 +36,59 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.3 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
 {	
 	private static final long serialVersionUID = 6018295796115102264L;
 	
+	
 	protected DoubleChromosome(final Array<DoubleGene> genes) {
 		super(genes);
 	}
 	
+	/**
+	 * Create a new chromosome
+	 * 
+	 * @param min the minimal value of this chromosome.
+	 * @param max the maximal value of this chromosome.
+	 */
 	public DoubleChromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
 	}
 	
+	/**
+	 * Create a new chromosome
+	 * 
+	 * @param min the minimal value of this chromosome.
+	 * @param max the maximal value of this chromosome.
+	 */
 	public DoubleChromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);
 	}
 	
+	/**
+	 * Create a new chromosome
+	 * 
+	 * @param min the minimal value of this chromosome.
+	 * @param max the maximal value of this chromosome.
+	 * @param length the {@code length} of the new chromosome.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 *         one.
+	 */
 	public DoubleChromosome(double min, double max, int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
 	}
 	
+	/**
+	 * Create a new chromosome.
+	 * 
+	 * @param genes the genes this chromosome consists.
+	 * @throws IllegalArgumentException if the number of genes is smaller than 
+	 *        one.
+	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 */
 	public DoubleChromosome(final DoubleGene... genes) {
 		super(genes.length);
 		

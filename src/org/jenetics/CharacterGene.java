@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.2 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.3 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character>, Comparable<CharacterGene>, Realtime, XMLSerializable 
@@ -76,15 +76,6 @@ public class CharacterGene
 	@Override
 	public boolean isValid() {
 		return true;
-	}
-	
-	/**
-	 * Return the current character allel.
-	 * 
-	 * @return The current character allel.
-	 */
-	public Character getCharacter() {
-		return _character;
 	}
 	
 	@Override
@@ -145,7 +136,12 @@ public class CharacterGene
 			return false;
 		}
 		CharacterGene gene = (CharacterGene)obj;
-		return getCharacter().equals(gene.getCharacter());
+		return getAllele().equals(gene.getAllele());
+	}
+	
+	@Override
+	public String toString() {
+		return _character.toString();
 	}
 	
 	@Override

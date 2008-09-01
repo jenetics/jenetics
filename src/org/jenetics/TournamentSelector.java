@@ -40,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.4 2008-08-27 20:30:31 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.5 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C>, XMLSerializable 
@@ -87,13 +87,13 @@ public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>>
 		}
 		
 		if (_sampleSize > population.size()) {
-			throw new IllegalArgumentException(
-				"Tournament size is greater than the population size! " +
-				 _sampleSize + " > " + population.size()
-			);
+			throw new IllegalArgumentException(String.format(
+				"Tournament size is greater than the population size! %d > %d.",
+				 _sampleSize, population.size()
+			));
 		}
 		
-		final Population<G, C> pop = new Population<G, C>();
+		final Population<G, C> pop = new Population<G, C>(count);
 		if (count == 0) {
 			return pop;
 		}

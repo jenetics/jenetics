@@ -51,7 +51,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.7 2008-08-27 20:30:28 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.8 2008-09-01 21:03:31 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -70,8 +70,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		new SinglePointCrossover<G>(Probability.valueOf(0.1))).append(
 		new Mutation<G>(Probability.valueOf(0.05))
 	);
-	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>();
-	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>();
+	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
+	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
 	private int _populationSize = 50;
 	private Population<G, C> _population = new Population<G, C>();

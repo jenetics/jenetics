@@ -15,6 +15,9 @@ Jenetics-0.3.0.0
 - Adding NumericStatistic and NumericStatisticCalculator. Move functionality
   from old Statistic class into the new NumericStatistic class. 
 - Some additional helper methods in the ArrayUtils class.
+- Remove method CharacterGene.getCharacter(), use CharacterGene.getAllele() 
+  instead.
+- adding interface org.jenetics.util.Copyable.
 
 Jenetics-0.2.0.0
 - Removing Randomizable interface.

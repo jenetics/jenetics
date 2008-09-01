@@ -47,7 +47,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.9 2008-08-27 20:30:32 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.10 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -82,7 +82,7 @@ public class TravelingSalesman {
 			new PermutationChromosome(stops)
 		);
 		final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<IntegerGene, Integer>(gtf, ff);
-		ga.setPopulationSize(10000);
+		ga.setPopulationSize(1000);
 		
 //		final int threads = 4;
 //		final ExecutorService pool = Executors.newFixedThreadPool(threads);

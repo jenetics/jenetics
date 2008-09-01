@@ -25,6 +25,7 @@ package org.jenetics.util;
 import java.util.Arrays;
 import java.util.ListIterator;
 
+
 import javolution.context.ObjectFactory;
 
 /** 
@@ -34,9 +35,9 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.2 2008-08-29 21:18:15 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.3 2008-09-01 21:03:31 fwilhelm Exp $
  */
-public class Array<T> implements Iterable<T> {
+public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
 	Object[] _array = {};
 	boolean _sealed = false;
 	
@@ -112,6 +113,7 @@ public class Array<T> implements Iterable<T> {
 	/**
 	 * Making this array immutable. After sealing, calls to the 
 	 * {@link #set(int, Object)} will throw an {@link UnsupportedOperationException}.
+	 * Once an array is seald, it can't be made mutable again.
 	 * 
 	 * @return {@code this} array.
 	 */
@@ -240,7 +242,18 @@ public class Array<T> implements Iterable<T> {
 		return a;
 	}
 	
+	public static <A> Array<A> valueOf(final A... values) {
+		final Array<A> a = newInstance(values.length);
+		System.arraycopy(values, 0, a._array, 0, values.length);
+		return a;
+	}
+	
 }
+
+
+
+
+
 
 
 
