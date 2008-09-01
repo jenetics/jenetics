@@ -36,7 +36,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.6 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.7 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?>> 
 	extends Verifiable, Iterable<T>, Immutable, ChromosomeFactory<T>, Serializable
@@ -97,7 +97,8 @@ public interface Chromosome<T extends Gene<?>>
 	public boolean isValid();
 	
 	/**
-	 * Returns the length of the Chromosome
+	 * Returns the length of the Chromosome. The minimal length of a
+	 * chromosome is one.
 	 * 
 	 * @return Length of the Chromosome
 	 */

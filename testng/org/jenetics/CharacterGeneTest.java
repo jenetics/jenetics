@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGeneTest.java,v 1.2 2008-07-08 17:02:28 fwilhelm Exp $
+ * @version $Id: CharacterGeneTest.java,v 1.3 2008-09-01 21:03:32 fwilhelm Exp $
  */
 public class CharacterGeneTest {
 
@@ -50,21 +50,21 @@ public class CharacterGeneTest {
     @Test
     public void testCharacterGene() {
         CharacterGene gene = CharacterGene.valueOf();
-        assertTrue(CharacterGene.isValidCharacter(gene.getCharacter()));
+        assertTrue(CharacterGene.isValidCharacter(gene.getAllele()));
     }
 
     @Test
     public void testCharacterGeneCharacter() {
         CharacterGene gene = CharacterGene.valueOf('4');
         
-        assertEquals(new Character('4'), gene.getCharacter());
+        assertEquals(new Character('4'), gene.getAllele());
     }
 
     @Test
     public void testGetCharacter() {
         CharacterGene gene = CharacterGene.valueOf('6');
         
-        assertEquals(new Character('6'), gene.getCharacter());
+        assertEquals(new Character('6'), gene.getAllele());
     }
 
     @Test

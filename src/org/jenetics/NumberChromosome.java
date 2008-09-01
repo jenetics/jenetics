@@ -24,10 +24,12 @@ package org.jenetics;
 
 import org.jenetics.util.Array;
 
+import org.jscience.mathematics.number.Number;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.3 2008-08-25 19:35:25 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public abstract class NumberChromosome<N extends NumberGene<?>> 
 	extends AbstractChromosome<N> 
@@ -37,13 +39,18 @@ public abstract class NumberChromosome<N extends NumberGene<?>>
 	/**
 	 * The minimum value of this <code>NumberChromosome</code>.
 	 */
-	protected org.jscience.mathematics.number.Number<?> _min;
+	protected Number<?> _min;
 	
 	/**
 	 * The maximum value of this <code>NumberChromosome</code>.
 	 */
-	protected org.jscience.mathematics.number.Number<?> _max;
+	protected Number<?> _max;
 	
+	/**
+	 * Create a new number chromosome with the given {@code length}.
+	 * 
+	 * @param length the {@code length} of the chromosome.
+	 */
 	protected NumberChromosome(final int length) {
 		super(length);
 	}

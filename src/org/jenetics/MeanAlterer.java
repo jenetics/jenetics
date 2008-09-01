@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.4 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.5 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 	private static final long serialVersionUID = 4680966822655548466L;
@@ -66,8 +66,8 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 				final int chIndex = random.nextInt(gt1.chromosomes());
 				final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
 				final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
-				final Array<G> genes1 = chromosomes1.get(chIndex).getGenes();
-				final Array<G> genes2 = chromosomes2.get(chIndex).getGenes();
+				final Array<G> genes1 = chromosomes1.get(chIndex).getGenes().copy();
+				final Array<G> genes2 = chromosomes2.get(chIndex).getGenes().copy();
 				
 				final int geneIndex = random.nextInt(genes1.length());
 				

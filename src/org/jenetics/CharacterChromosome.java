@@ -32,13 +32,20 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.3 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, XMLSerializable
 {	
 	private static final long serialVersionUID = 8213347401351340289L;
 
+	/**
+	 * Create a new chromosome
+	 * 
+	 * @param length the {@code length} of the new chromosome.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 *         one.
+	 */
 	public CharacterChromosome(final int length) {
 		super(length);
 		for (int i = 0; i < length(); ++i) {
@@ -46,6 +53,16 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		}
 	}
 	
+	/**
+	 * Create a new chromosome from the given {@code genes} array. The genes 
+	 * array is copied, so changes to the given genes array doesn't effect the 
+	 * genes of this chromosome.
+	 * 
+	 * @param genes the genes that form the chromosome.
+	 * @throws NullPointerException if the given gene array is {@code null}.
+	 * @throws new IllegalArgumentException if the length of the gene array is
+	 *         smaller than one.
+	 */
 	public CharacterChromosome(final Array<CharacterGene> genes) {
 		super(genes);
 	}

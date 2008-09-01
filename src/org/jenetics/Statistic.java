@@ -23,7 +23,6 @@
 package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
-import static org.jenetics.util.Validator.notNull;
 import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -35,7 +34,7 @@ import org.jenetics.util.BitUtils;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.9 2008-08-27 20:30:26 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.10 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public class Statistic<G extends Gene<?>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -57,9 +56,6 @@ public class Statistic<G extends Gene<?>, C extends Comparable<C>>
 		final Phenotype<G, C> best, final Phenotype<G, C> worst,
 		final int samples, final double ageMean, final double ageVariance
 	) {
-		notNull(best, "Best phenotype");
-		notNull(worst, "Worst phenotype");
-		
 		_best = best;
 		_worst = worst;
 		_samples = samples;

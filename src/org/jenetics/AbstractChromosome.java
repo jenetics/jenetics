@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.RandomAccess;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Validator;
 
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -38,7 +39,7 @@ import javolution.text.Text;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.9 2008-08-29 21:18:16 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.10 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -54,9 +55,18 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	private Boolean _valid = null;
 
 	/**
-	 * Default constructor of the AbstractChromosome.
+	 * Create a new chromosome
+	 * 
+	 * @param length the {@code length} of the new chromosome.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 *         one.
 	 */
 	protected AbstractChromosome(final int length) {
+		if (length < 1) {
+			throw new IllegalArgumentException(String.format(
+				"Chromosome length < 1: %d", length
+			));
+		}
 		_genes = Array.newInstance(length);
 	}
 	
@@ -66,8 +76,18 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 * doesn't effect the genes of this chromosome.
 	 * 
 	 * @param genes the genes that form the chromosome.
+	 * @throws NullPointerException if the given gene array is {@code null}.
+	 * @throws new IllegalArgumentException if the length of the gene array is
+	 *         smaller than one.
 	 */
 	protected AbstractChromosome(final Array<T> genes) {
+		Validator.notNull(genes, "Gene array");
+		if (genes.length() < 1) {
+			throw new IllegalArgumentException(String.format(
+				"Chromosome length < 1: %d", genes.length()
+			));
+		}
+		
 		_genes = genes.copy();
 	}
 	
@@ -116,14 +136,8 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not found.
 	 */
-	protected int firstIndexOf(final T gene) {
-		int index = -1;
-		for (int i = 0; i < length() && index == -1; ++i) {
-			if (_genes.get(i).equals(gene)) {
-				index = i;
-			}
-		}
-		return index;
+	protected int indexOf(final T gene) {
+		return _genes.indexOf(gene);
 	}
 	
 	@Override

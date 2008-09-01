@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.3 2008-08-29 21:18:15 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -134,18 +134,19 @@ public final class ArrayUtils {
 	}
 	
 //	public static void main(String[] args) {
-//		Array<Integer> array = Array.newInstance(10);
+//		Array<Integer> array = Array.newInstance(11);
 //		for (int i = 0; i < array.length(); ++i) {
-//			array.set(i, array.length() - i);
+//			array.set(i, i);
 //		}
 //		
-//		sort(array, 0, array.length(), new Comparator<Integer>() {
-//			@Override public int compare(Integer o1, Integer o2) {
-//				return o1.compareTo(o2);
-//			}
-//		});
+////		sort(array, 0, array.length(), new Comparator<Integer>() {
+////			@Override public int compare(Integer o1, Integer o2) {
+////				return o1.compareTo(o2);
+////			}
+////		});
 //		
-//		System.out.println(Arrays.toString(array._array));
+//		System.out.println(array.toString());
+//		System.out.println(median(array));
 //	}
 	
 	/**
@@ -158,7 +159,9 @@ public final class ArrayUtils {
 	 *         has size zero, the min and max values of the returned array are 
 	 *         {@code null}.
 	 */
-	public static <T extends Comparable<T>> Array<T> minmax(final Array<T> values) {
+	public static <T extends Object & Comparable<? super T>> Array<T> 
+	minmax(final Array<T> values) 
+	{
 		final int size = values.length();
 		
 		T min = null;
@@ -200,17 +203,130 @@ public final class ArrayUtils {
 				}
 			}
 		}
-		
-		final Array<T> mm = Array.newInstance(2);
-		mm.set(0, min);
-		mm.set(1, max);
-		return mm;  
+		 
+		@SuppressWarnings("unchecked")
+		Array<T> mm = Array.valueOf(min, max);
+		return mm;
 	}
 	
-	public static <T extends Comparable<T>> T median(final Array<T> values) {
+	/**
+	 * Returnthe <i>k</i>th smallest value of the {@code values} array. The input
+	 * array will not be rearranged.
+	 * 
+	 * @param <T> the array element type.
+	 * @param values the array.
+	 * @param k searching the <i>k</i>th samllest value.
+	 * @return the <i>k</i>th samllest value.
+	 * @throws NullPointerException if the {@code values} array or one of it's
+	 *         element is {@code null}.
+	 * @throws IllegalArgumentException if {@code k < 0} or 
+	 *         {@code k > values.length() - 1}.
+	 */
+	public static <T extends Object & Comparable<? super T>> T 
+	select(final Array<T> values, final int k) 
+	{
+		Validator.notNull(values, "Values array");
+		if (k < 0) {
+			throw new IllegalArgumentException("k is smaller than zero: " + k);
+		}
+		if (k > values.length() - 1) {
+			throw new IllegalArgumentException(String.format(
+				"k is greater than values.length() - 1 (%d): %d", 
+				values.length() - 1, k
+			));
+		}
+
+		//Init the pivot array. This avoids the rearrangement of the given array.
+		final int[] pivot = new int[values.length()];
+		for (int i = 0; i < pivot.length; ++i) {
+			pivot[i] = i;
+		}
 		
+		int l = 0;
+		int ir = values.length() - 1;
+		T value = null;
+		while (value == null) {
+			if (ir <= l + 1) {
+				if (ir == l + 1 && values.get(pivot[ir]).compareTo(values.get(pivot[l])) < 0) {
+					swap(pivot, l, ir);
+				}
+				value = values.get(pivot[k]);
+			} else {
+				final int mid = (l + ir) >> 1;
+				swap(pivot, mid, l + 1);
+				if (values.get(pivot[l]).compareTo(values.get(pivot[ir])) > 0) {
+					swap(pivot, l, ir);
+				}
+				if (values.get(pivot[l + 1]).compareTo(values.get(pivot[ir])) > 0) {
+					swap(pivot, l + 1, ir);
+				}
+				if (values.get(pivot[l]).compareTo(values.get(pivot[l + 1])) > 0) {
+					swap(pivot, l, l + 1);
+				}
+				
+				int i = l + 1;
+				int j = ir;
+				final T a = values.get(pivot[l + 1]);
+				while (true) {
+					do {
+						++i;
+					} while (values.get(pivot[i]).compareTo(a) < 0);
+					do {
+						--j;
+					} while (values.get(pivot[j]).compareTo(a) > 0);
+					if (j < i) {
+						break;
+					}
+					swap(pivot, i, j);
+				}
+				
+				values.set(pivot[l + 1], values.get(pivot[j]));
+				values.set(pivot[j], a);
+				if (j >= k) {
+					ir = j -1;
+				}
+				if (j <= k) {
+					l = i;
+				}
+			}
+		}
 		
-		return null;
+		return value;
+	}
+	private static void swap(final int[] array, final int i, final int j) {
+		final int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+	
+	/**
+	 * Finding the median of the give array.
+	 * 
+	 * @param <T> the array element type.
+	 * @param values the array.
+	 * @return the median
+	 */
+	public static <T extends Object & Comparable<? super T>> T 
+	median(final Array<T> values) 
+	{
+		Validator.notNull(values, "Array");
+		if (values.length() == 0) {
+			throw new IllegalArgumentException("Array length is zero.");
+		}
+		
+		T median = null;
+		if (values.length() == 1) {
+			median = values.get(0);
+		} else if (values.length() == 2) {
+			if (values.get(0).compareTo(values.get(1)) < 0) {
+				median = values.get(0);
+			} else {
+				median = values.get(1);
+			}
+		} else {
+			median = select(values, values.length()/2);
+		}
+		return median;
 	}
 	
 	/**
