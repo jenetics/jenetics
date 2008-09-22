@@ -22,28 +22,30 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
+import java.io.IOException;
 
-import org.jscience.mathematics.number.Float64;
+import javolution.xml.stream.XMLStreamException;
+
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PowerScaler.java,v 1.3 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: EnumGeneTest.java,v 1.1 2008-09-22 21:39:44 fwilhelm Exp $
  */
-public class PowerScaler implements FitnessScaler<Float64>, Serializable {
-	private static final long serialVersionUID = -5895077899454677843L;
-	
-	public static final PowerScaler SQR_SCALER = new PowerScaler(2);
-	public static final PowerScaler SQRT_SCALER = new PowerScaler(0.5);
+public class EnumGeneTest {
 
-	private final double _exponent;
-	
-	public PowerScaler(final double exponent) {
-		this._exponent = exponent;
+	public static enum TestEnum {
+		ONE, TWO, THREE, FOUR, FIVE, SIX
 	}
-
-	@Override
-	public Float64 scale(final Float64 value) {
-		return value.pow(_exponent);
+	
+	@Test
+	public void serialize() throws XMLStreamException, IOException {
+		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
 	}
 }
+
+
+
+
+
+

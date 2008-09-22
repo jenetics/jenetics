@@ -30,7 +30,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.3 2008-08-25 19:35:25 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.4 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>> 
 	extends Number<NumberGene<N>> implements Gene<N> 
@@ -70,9 +70,9 @@ public abstract class NumberGene<N extends Number<N>>
 		notNull(max, "Max value");
 		
 		if (min.isGreaterThan(max)) {
-			throw new IllegalArgumentException(
-				"Max value must be greater than min value."
-			);
+			throw new IllegalArgumentException(String.format(
+				"Max value must be greater than min value. [%s, %s]", min, max
+			));
 		}
 
 		this._min = min;

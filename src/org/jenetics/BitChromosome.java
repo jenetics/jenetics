@@ -32,7 +32,6 @@ import java.util.Random;
 
 import javolution.context.ObjectFactory;
 import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -47,7 +46,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.8 2008-08-29 21:18:16 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.9 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -68,7 +67,7 @@ public class BitChromosome extends Number<LargeInteger>
 	/**
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
-	protected boolean[] _genes;
+	protected byte[] _genes;
 	
 	/**
 	 * Protected constructor, needed for the FACTORY.
@@ -90,25 +89,33 @@ public class BitChromosome extends Number<LargeInteger>
 		}
 	}
 	
+	private void set(final int index, final boolean value) {
+		BitUtils.setBit(_genes, index, value);
+	}
+	
+	private boolean get(final int index) {
+		return BitUtils.getBit(_genes, index);
+	}
+	
 	@Override
 	public BitGene getGene() {
 		assert (_genes != null);
 		assert (_genes.length > 0);
-		return _genes[0] ? BitGene.TRUE : BitGene.FALSE;
+		return get(0) ? BitGene.TRUE : BitGene.FALSE;
 	}
 	
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
 		assert(_genes != null);
-		return _genes[index] ? BitGene.TRUE : BitGene.FALSE;
+		return get(index) ? BitGene.TRUE : BitGene.FALSE;
 	}
 	
 	@Override
 	public Array<BitGene> getGenes() {
 		final Array<BitGene> genes = Array.newInstance(_length);
 		for (int i = 0; i < _length; ++i) {
-			genes.set(i, _genes[i] ? BitGene.TRUE : BitGene.FALSE);
+			genes.set(i, BitUtils.getBit(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
 		}
 		return genes;
 	}
@@ -123,10 +130,10 @@ public class BitChromosome extends Number<LargeInteger>
 		return new Iterator<BitGene>() {
 			private int _pos = 0;
 			public boolean hasNext() {
-				return _pos < _genes.length;
+				return _pos < _length;
 			}
 			public BitGene next()  {
-				return _genes[_pos++] ? BitGene.TRUE : BitGene.FALSE;
+				return get(_pos++) ? BitGene.TRUE : BitGene.FALSE;
 			}
 			public void remove() {
 				throw new UnsupportedOperationException();
@@ -149,9 +156,9 @@ public class BitChromosome extends Number<LargeInteger>
 	public BitChromosome flip(final int index) {
 		rangeCheck(index);
 		
-		BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
-		chromosome._genes[index] = !chromosome._genes[index];
+		final BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
+		System.arraycopy(_genes, 0, chromosome._genes, 0, chromosome._genes.length);
+		BitUtils.flip(chromosome._genes, index);
 		return chromosome;
 	}
 	
@@ -297,7 +304,7 @@ public class BitChromosome extends Number<LargeInteger>
 	public BitChromosome newChromosome(final Array<BitGene> genes) {
 		BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
 		for (int i = 0; i < genes.length(); ++i) {
-			chromosome._genes[i] = genes.get(i).booleanValue();
+			BitUtils.setBit(chromosome._genes, i, genes.get(i).booleanValue());
 		}
 		return chromosome;
 	}
@@ -307,7 +314,7 @@ public class BitChromosome extends Number<LargeInteger>
 		final Random random = RandomRegistry.getRandom();
 		BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
 		for (int i = 0; i < _length; ++i) {
-			chromosome._genes[i] = random.nextDouble() < _p.doubleValue();
+			BitUtils.setBit(chromosome._genes, i, random.nextDouble() < _p.doubleValue());
 		}
 		return chromosome;
 	}
@@ -322,7 +329,7 @@ public class BitChromosome extends Number<LargeInteger>
 	public String toCanonicalString() {
 		StringBuilder out = new StringBuilder(length());
 		for (int i = 0; i < _length; ++i) {
-			out.append(_genes[i] ? '1' : '0');
+			out.append(BitUtils.getBit(_genes, i) ? '1' : '0');
 		}
 		return out.toString();
 	}
@@ -380,19 +387,13 @@ public class BitChromosome extends Number<LargeInteger>
 
 	@Override
 	public Text toText() {
-		TextBuilder out = TextBuilder.newInstance();
-		out.append("[");
-		for (int i = 1; i < length(); ++i) {
-			out.append(_genes[i] ? '1' : '0');
-		}
-		out.append("]");
-		return out.toText();
+		return Text.valueOf(BitUtils.toString(toByteArray()));
 	}
 	
 	@Override
 	public BitChromosome copy() {
 		BitChromosome chromosome = newInstance(_length, _p);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, _length);
+		System.arraycopy(_genes, 0, chromosome._genes, 0, chromosome._genes.length);
 		return chromosome;
 	}
 		
@@ -404,12 +405,15 @@ public class BitChromosome extends Number<LargeInteger>
 	};
 	
 	static BitChromosome newInstance(final int length, final Probability p) {
-		BitChromosome chromosome = FACTORY.object();
-		if (chromosome._genes == null || chromosome._genes.length != length) {
-			chromosome._genes = new boolean[length];
+		final BitChromosome chromosome = FACTORY.object();
+		final int size = (int)Math.ceil(length/8.0);
+		
+		if (chromosome._genes == null || chromosome._genes.length != size) {
+			chromosome._genes = new byte[size];
 			chromosome._length = length;
 			chromosome._p = p;
 		}
+		Arrays.fill(chromosome._genes, (byte)0);
 		return chromosome;
 	}
 	
@@ -427,9 +431,9 @@ public class BitChromosome extends Number<LargeInteger>
 		notNull(p, "Probability");
 		
 		final Random random = RandomRegistry.getRandom();
-		BitChromosome chromosome = newInstance(length, p);
-		for (int i = 0, n = chromosome._length; i < n; ++i) {
-			chromosome._genes[i] = random.nextDouble() < p.doubleValue();
+		final BitChromosome chromosome = newInstance(length, p);
+		for (int i = 0, n = chromosome.length(); i < n; ++i) {
+			chromosome.set(i, random.nextDouble() < p.doubleValue());
 		}
 		return chromosome;
 	}
@@ -474,8 +478,8 @@ public class BitChromosome extends Number<LargeInteger>
 		BitChromosome chromosome = newInstance(length, null);
 		int ones = 0;
 		for (int i = 0; i < length; ++i) {
-			chromosome._genes[i] = bits.get(i);
-			if (chromosome._genes[i]) {
+			BitUtils.setBit(chromosome._genes, i, bits.get(i));
+			if (chromosome.get(i)) {
 				++ones;
 			}
 		}
@@ -491,8 +495,8 @@ public class BitChromosome extends Number<LargeInteger>
 	public static BitChromosome valueOf(final byte[] value) {
 		final int bitLength = value.length*8;
 		BitChromosome chromosome = BitChromosome.valueOf(bitLength);
-    	for (int i = 0; i < bitLength; ++i) {
-    		chromosome._genes[i] = BitUtils.getBit(value, i);
+    	for (int i = 0; i < value.length; ++i) {
+    		chromosome._genes[i] = value[i];
     	}
 		return chromosome;
 	}
@@ -505,16 +509,19 @@ public class BitChromosome extends Number<LargeInteger>
 		public BitChromosome newInstance(final Class<BitChromosome> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
+			final int length = xml.getAttribute("length", 1);
 			final double probability = xml.getAttribute("probability", 0.5);
 			final byte[] data = BitUtils.toByteArray(xml.getText().toString());
 			final BitChromosome chromosome = BitChromosome.valueOf(data);
 			chromosome._p = Probability.valueOf(probability);
+			chromosome._length = length;
 			return chromosome;
 		} 
 		@Override
 		public void write(final BitChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
+			xml.setAttribute("length", chromosome._length);
 			xml.setAttribute("probability", chromosome._p.doubleValue());
 			xml.addText(BitUtils.toString(chromosome.toByteArray()));
 		}

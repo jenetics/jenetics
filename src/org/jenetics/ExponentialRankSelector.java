@@ -23,9 +23,8 @@
 package org.jenetics;
 
 import static java.lang.Math.pow;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
+
+import java.io.Serializable;
 
 /**
  * An alternative to the "weak" <code>LinearRankSelector</code> is to assign
@@ -40,10 +39,10 @@ import javolution.xml.stream.XMLStreamException;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.3 2008-08-26 22:29:33 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>> 
-	extends ProbabilitySelector<T, C> implements XMLSerializable
+	extends ProbabilitySelector<T, C> implements Serializable
 {
 	private static final long serialVersionUID = -5633748296591142197L;
 	
@@ -67,30 +66,6 @@ public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>>
 	
 		return props;
 	}
-	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<ExponentialRankSelector> 
-	XML = new XMLFormat<ExponentialRankSelector>(ExponentialRankSelector.class) {
-		@Override
-		public ExponentialRankSelector newInstance(
-			final Class<ExponentialRankSelector> cls, final InputElement xml
-		)  throws XMLStreamException 
-		{
-			final double beta = xml.getAttribute("c", 1.0);
-			return new ExponentialRankSelector(beta);
-		}
-		@Override
-		public void write(final ExponentialRankSelector s, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("c", s._c);
-		}
-		@Override
-		public void read(final InputElement xml, final ExponentialRankSelector s) 
-			throws XMLStreamException 
-		{
-		}
-	};
 
 }
 

@@ -22,13 +22,10 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.jenetics.util.Validator;
-
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
 
 /**
  * In tournament selection the best {@link Phenotype} from a random sample of s 
@@ -40,10 +37,10 @@ import javolution.xml.stream.XMLStreamException;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.5 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.6 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>> 
-	implements Selector<G, C>, XMLSerializable 
+	implements Selector<G, C>, Serializable 
 {
 	private static final long serialVersionUID = -5342297228328820942L;
 	
@@ -131,29 +128,6 @@ public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>>
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<SG, SC>();
 	}
-	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<TournamentSelector> 
-	XML = new XMLFormat<TournamentSelector>(TournamentSelector.class) {
-		@Override
-		public TournamentSelector newInstance(
-			final Class<TournamentSelector> cls, final InputElement xml
-		) throws XMLStreamException {
-			final int sampleSize = xml.getAttribute("samplesize", 2);
-			return new TournamentSelector(sampleSize);
-		}
-		@Override
-		public void write(final TournamentSelector s, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("samplesize", s._sampleSize);
-		}
-		@Override
-		public void read(final InputElement xml, final TournamentSelector s) 
-			throws XMLStreamException 
-		{
-		}
-	};
 
 }
 

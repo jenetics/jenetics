@@ -27,13 +27,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.Set;
+
+import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGeneTest.java,v 1.3 2008-09-01 21:03:32 fwilhelm Exp $
+ * @version $Id: CharacterGeneTest.java,v 1.4 2008-09-22 21:39:49 fwilhelm Exp $
  */
 public class CharacterGeneTest {
 
@@ -114,6 +117,11 @@ public class CharacterGeneTest {
         
         assertNotNull(g1.toString());
         assertTrue(g1.toString().length() > 0);
+    }
+    
+    @Test
+    public void serialize() throws IOException, XMLStreamException {
+    	SerializeUtils.testSerialization(CharacterGene.valueOf());
     }
 
 }

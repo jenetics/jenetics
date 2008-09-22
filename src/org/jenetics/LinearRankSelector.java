@@ -22,9 +22,7 @@
  */
 package org.jenetics;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
+import java.io.Serializable;
 
 
 /**
@@ -55,10 +53,10 @@ import javolution.xml.stream.XMLStreamException;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.3 2008-08-26 22:29:30 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public final class LinearRankSelector<G extends Gene<?>, C extends Comparable<C>> 
-	extends ProbabilitySelector<G, C> implements XMLSerializable
+	extends ProbabilitySelector<G, C> implements Serializable
 {
 	private static final long serialVersionUID = -7633503361447837511L;
 	
@@ -89,30 +87,5 @@ public final class LinearRankSelector<G extends Gene<?>, C extends Comparable<C>
 		
 		return props;
 	}
-
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<LinearRankSelector> 
-	XML = new XMLFormat<LinearRankSelector>(LinearRankSelector.class) {
-		@Override
-		public LinearRankSelector newInstance(
-			final Class<LinearRankSelector> cls, final InputElement xml
-		)  throws XMLStreamException {
-			final double nminus = xml.getAttribute("nminus", 0.5);
-			final double nplus = xml.getAttribute("nplus", 1.5);
-			return new LinearRankSelector(nminus, nplus);
-		}
-		@Override
-		public void write(final LinearRankSelector s, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("nminus", s._nminus);
-			xml.setAttribute("nplus", s._nplus);
-		}
-		@Override
-		public void read(final InputElement xml, final LinearRankSelector s) 
-			throws XMLStreamException 
-		{
-		}
-	};
 
 }

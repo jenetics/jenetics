@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import javolution.xml.XMLSerializable;
+import java.io.Serializable;
 
 /**
  * The <code>FitnessFunction</code> represents the the <i>environment</i> a given
@@ -38,10 +38,10 @@ import javolution.xml.XMLSerializable;
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessFunction.java,v 1.3 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: FitnessFunction.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public interface FitnessFunction<G extends Gene<?>, C extends Comparable<C>> 
-	extends XMLSerializable 
+	extends Serializable 
 {
 
 	/**

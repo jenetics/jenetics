@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import javolution.util.FastList;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -41,15 +42,15 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.4 2008-08-27 20:30:20 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
  */
-public class Population<T extends Gene<?>, C extends Comparable<C>> 
-	implements List<Phenotype<T, C>>, Iterable<Phenotype<T, C>>, 
+public class Population<G extends Gene<?>, C extends Comparable<C>> 
+	implements List<Phenotype<G, C>>, Iterable<Phenotype<G, C>>, 
 				RandomAccess, XMLSerializable
 {
 	private static final long serialVersionUID = -959370026031769242L;
 	
-	private final List<Phenotype<T, C>> _population;
+	private final List<Phenotype<G, C>> _population;
 	
 	/**
 	 * Creating a new <code>Population</code> with the prealocated population size.
@@ -57,14 +58,14 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	 * @param size Prealocated population size.
 	 */
 	public Population(final int size) {
-		_population = new ArrayList<Phenotype<T, C>>(size);
+		_population = new ArrayList<Phenotype<G, C>>(size);
 	}
 	
 	/**
 	 * Creating a new <code>Population</code>.
 	 */
 	public Population() {
-		_population = new ArrayList<Phenotype<T, C>>();
+		_population = new ArrayList<Phenotype<G, C>>();
 	}
 	
 	/**
@@ -74,7 +75,7 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
 	@Override
-	public boolean add(final Phenotype<T, C> phenotype) {
+	public boolean add(final Phenotype<G, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
@@ -86,33 +87,33 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	 * @param phenotype <code>Phenotype</code> to be add.
 	 */
 	@Override
-	public void add(final int index, final Phenotype<T, C> phenotype) {
+	public void add(final int index, final Phenotype<G, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
 	
 	@Override
-	public boolean addAll(final Collection<? extends Phenotype<T, C>> c) {
+	public boolean addAll(final Collection<? extends Phenotype<G, C>> c) {
 		return _population.addAll(c);
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends Phenotype<T, C>> c) {
+	public boolean addAll(int index, Collection<? extends Phenotype<G, C>> c) {
 		return _population.addAll(index, c);
 	}
 
 	@Override
-	public Phenotype<T, C> get(final int index) {
+	public Phenotype<G, C> get(final int index) {
 		return _population.get(index);
 	}
 	
 	@Override
-	public Phenotype<T, C> set(final int index, final Phenotype<T, C> phenotype) {
+	public Phenotype<G, C> set(final int index, final Phenotype<G, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
 	
-	public void remove(final Phenotype<T, C> phenotype) {
+	public void remove(final Phenotype<G, C> phenotype) {
 		notNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
@@ -128,7 +129,7 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	}
 	
 	@Override
-	public Phenotype<T, C> remove(final int index) {
+	public Phenotype<G, C> remove(final int index) {
 		return _population.remove(index);
 	}
 	
@@ -142,9 +143,9 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	 * value in descending order.
 	 */
 	public void sort() {
-		Collections.sort(_population, new Comparator<Phenotype<T, C>>() {
+		Collections.sort(_population, new Comparator<Phenotype<G, C>>() {
 			@Override 
-			public int compare(final Phenotype<T, C> that, final Phenotype<T, C> other) {
+			public int compare(final Phenotype<G, C> that, final Phenotype<G, C> other) {
 				return -that.compareTo(other);
 			}
 		});
@@ -158,17 +159,17 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	}
 	
 	@Override
-	public Iterator<Phenotype<T, C>> iterator() {
+	public Iterator<Phenotype<G, C>> iterator() {
 		return _population.iterator();
 	}
 	
 	@Override
-	public ListIterator<Phenotype<T, C>> listIterator() {
+	public ListIterator<Phenotype<G, C>> listIterator() {
 		return _population.listIterator();
 	}
 	
 	@Override
-	public ListIterator<Phenotype<T, C>> listIterator(final int index) {
+	public ListIterator<Phenotype<G, C>> listIterator(final int index) {
 		return _population.listIterator(index);
 	}
 
@@ -208,7 +209,7 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 	}
 
 	@Override
-	public List<Phenotype<T, C>> subList(final int fromIndex, final int toIndex) {
+	public List<Phenotype<G, C>> subList(final int fromIndex, final int toIndex) {
 		return _population.subList(fromIndex, toIndex);
 	}
 
@@ -222,6 +223,32 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 		return _population.toArray(a);
 	}
 	
+	public List<Genotype<G>> getGenotypes() {
+		final List<Genotype<G>> genotypes = new FastList<Genotype<G>>(_population.size());
+		for (Phenotype<G, C> phenotype : _population) {
+			genotypes.add(phenotype.getGenotype());
+		}
+		return genotypes;
+	}
+	
+	@Override
+	public int hashCode() {
+		return _population.hashCode();
+	}
+	
+	@Override
+	public boolean equals(final Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof Population)) {
+			return false;
+		}
+		
+		final Population<?, ?> population = (Population<?, ?>)object;
+		return population.equals(_population);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
@@ -233,34 +260,32 @@ public class Population<T extends Gene<?>, C extends Comparable<C>>
 		return out.toString();
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	static final XMLFormat<Population> 
 	XML = new XMLFormat<Population>(Population.class) {
 		@Override
-		public Population newInstance(final Class<Population> cls, final InputElement xml)
-			throws XMLStreamException
+		public Population newInstance(final Class<Population> cls, final InputElement xml) 
+			throws XMLStreamException 
 		{
-			final int length = xml.getAttribute("length", 0);
-			Population p = new Population(length);
-			for (int i = 0; i < length; ++i) {
-				Phenotype pt = xml.getNext();
-				p.add(pt);
+			final int size = xml.getAttribute("size", 10);
+			final Population p = new Population(size);
+			for (int i = 0; i < size; ++i) {
+				p.add(xml.getNext());
 			}
 			return p;
 		}
-		@Override
-		public void write(final Population p, final OutputElement xml)
+		@Override 
+		public void write(final Population p, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", p.size());
-			for (int i = 0; i < p.size(); ++i) {
-				xml.add(p.get(i)); 
+			xml.setAttribute("size", p.size());
+			for (Object phenotype : p) {
+				xml.add(phenotype);
 			}
 		}
 		@Override
-		public void read(final InputElement xml, final Population p) 
-			throws XMLStreamException 
-		{
+		public void read(final InputElement xml, final Population p) {	
 		}
 	};
 	

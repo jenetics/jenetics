@@ -25,12 +25,16 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
+
+import javolution.xml.stream.XMLStreamException;
+
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosomeTest.java,v 1.3 2008-07-08 17:02:25 fwilhelm Exp $
+ * @version $Id: DoubleChromosomeTest.java,v 1.4 2008-09-22 21:39:48 fwilhelm Exp $
  */
 public class DoubleChromosomeTest {
 
@@ -53,6 +57,11 @@ public class DoubleChromosomeTest {
             assertEquals(-12.0, g.getMinValue().doubleValue());
             assertEquals(230.123, g.getMaxValue().doubleValue());
         }
+    }
+    
+    @Test
+    public void serialize() throws XMLStreamException, IOException {
+    	SerializeUtils.testSerialization(new DoubleChromosome(-12.0, 230.123, 10));
     }
 
 }

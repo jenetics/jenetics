@@ -25,20 +25,20 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import javolution.context.StackContext;
-import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Number;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.3 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.4 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>> 
-	extends ProbabilitySelector<G, N> implements XMLSerializable
+	extends ProbabilitySelector<G, N> implements Serializable
 {
 	private static final long serialVersionUID = 6434924633105671176L;
 

@@ -39,7 +39,7 @@ import javolution.text.Text;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.10 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.11 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -159,11 +159,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 		}
 		
 		final AbstractChromosome<?> chromosome = (AbstractChromosome<?>)obj;
-		boolean equals = length() == chromosome.length();
-		for (int i = 0; equals && i < length(); ++i) {
-			equals = _genes.get(i).equals(chromosome._genes.get(i));
-		}
-		return equals;
+		return _genes.equals(chromosome._genes);
 	}
 
 	@Override

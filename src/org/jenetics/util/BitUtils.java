@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * Some bit utils.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.2 2008-08-29 21:18:15 fwilhelm Exp $
+ * @version $Id: BitUtils.java,v 1.3 2008-09-22 21:39:02 fwilhelm Exp $
  */
 public final class BitUtils {
 
@@ -216,8 +216,8 @@ public final class BitUtils {
 			return data;
 		}
 		
-		final int MAX = data.length*8;
-		if (index >= MAX || index < 0) {
+		final int max = data.length*8;
+		if (index >= max || index < 0) {
 			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
 		}
 		
@@ -247,8 +247,8 @@ public final class BitUtils {
 			return false;
 		}
 		
-		final int MAX = data.length*8;
-		if (index >= MAX || index < 0) {
+		final int max = data.length*8;
+		if (index >= max || index < 0) {
 			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
 		}
 		
@@ -256,6 +256,37 @@ public final class BitUtils {
 		final int bitPos = index%8;
 		final int d = data[pos] & 0xFF;
 		return (d & (1 << bitPos)) != 0;
+	}
+	
+	/**
+	 * Flip the bit at the given index.
+	 * 
+	 * @param data the data array.
+	 * @param index the index of the bit to flip.
+	 */
+	public static void flip(final byte[] data, final int index) {
+		if (data.length == 0) {
+			return;
+		}
+		
+		final int max = data.length*8;
+		if (index >= max || index < 0) {
+			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+		}
+		
+		//Reading the value.
+		final int pos = data.length - index/8 - 1;
+		final int bitPos = index%8;
+		int d = data[pos] & 0xFF;
+		final boolean value = (d & (1 << bitPos)) != 0;
+		
+		//Setting the value.
+		if (value) {
+			d = d | (1 << bitPos);
+		} else {
+			d = d & ~(1 << bitPos);
+		}
+		data[pos] = (byte)d;
 	}
 	
 	/**

@@ -26,11 +26,15 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
+
+import javolution.xml.stream.XMLStreamException;
+
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GenotypeTest.java,v 1.3 2008-07-08 17:02:24 fwilhelm Exp $
+ * @version $Id: GenotypeTest.java,v 1.4 2008-09-22 21:39:47 fwilhelm Exp $
  */
 public class GenotypeTest {
 
@@ -85,5 +89,19 @@ public class GenotypeTest {
         assertFalse(g1.equals(g2));
     }
 
+    @Test
+    public void serialize() throws XMLStreamException, IOException {
+        IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
+        IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
+        IntegerChromosome c3 = new IntegerChromosome(0, 100, 10);
+        Genotype<IntegerGene> g1 = Genotype.valueOf(c1, c2, c3);
+        
+    	SerializeUtils.testSerialization(g1);
+    }
 
 }
+
+
+
+
+

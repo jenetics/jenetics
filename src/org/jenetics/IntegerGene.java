@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.1 2008-03-25 18:31:56 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.2 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64> 
 	implements Mean<IntegerGene>, XMLSerializable 
@@ -221,7 +221,7 @@ public class IntegerGene extends NumberGene<Integer64>
 			final long min = element.getAttribute("min", 0);
 			final long max = element.getAttribute("max", 100);
 			final long value = element.<Long>getNext();
-			return IntegerGene.valueOf(min, max, value);
+			return IntegerGene.valueOf(value, min, max);
 		}
 		@Override
 		public void write(final IntegerGene gene, final OutputElement element) 
