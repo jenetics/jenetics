@@ -30,9 +30,6 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 /**
  * <p>
  * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s 
@@ -73,7 +70,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.7 2008-08-27 20:30:28 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.8 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<G extends Gene<?>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
@@ -143,44 +140,6 @@ public class PartiallyMatchedCrossover<G extends Gene<?>> extends Crossover<G> {
 		}
 		return index;
 	}
-	
-	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<PartiallyMatchedCrossover> 
-	XML = new XMLFormat<PartiallyMatchedCrossover>(PartiallyMatchedCrossover.class) {
-		@Override
-		public PartiallyMatchedCrossover newInstance(
-			final Class<PartiallyMatchedCrossover> cls, final InputElement xml
-		) throws XMLStreamException {
-			final double p = xml.getAttribute("probability", 0.5);
-			final boolean hasAlterer = xml.getAttribute("has-alterer", false);
-			PartiallyMatchedCrossover alterer = null;
-			
-			if (hasAlterer) {
-				Alterer component = xml.getNext();
-				alterer = new PartiallyMatchedCrossover(Probability.valueOf(p), component);
-			} else {
-				alterer = new PartiallyMatchedCrossover(Probability.valueOf(p));
-			}
-			
-			return alterer;
-		}
-		@Override
-		public void write(final PartiallyMatchedCrossover a, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("probability", a._probability.doubleValue());
-			xml.setAttribute("has-alterer", a._component != null);
-			if (a._component != null) {
-				xml.add(a._component);
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final PartiallyMatchedCrossover a) 
-			throws XMLStreamException 
-		{
-		}
-	};
 
 }
 

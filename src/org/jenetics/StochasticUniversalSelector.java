@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import javolution.xml.XMLSerializable;
+import java.io.Serializable;
 
 import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.Number;
@@ -38,10 +38,10 @@ import org.jscience.mathematics.number.Number;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.4 2008-08-26 22:29:33 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.5 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<G extends Gene<?>, N extends Number<N>> 
-	extends RouletteWheelSelector<G, N> implements XMLSerializable 
+	extends RouletteWheelSelector<G, N> implements Serializable 
 {
 	private static final long serialVersionUID = 3673324276572086631L;
 

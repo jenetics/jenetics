@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -159,24 +159,29 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	XML = new XMLFormat<IntegerChromosome>(IntegerChromosome.class) {
 		@Override
 		public IntegerChromosome newInstance(
-			final Class<IntegerChromosome> cls, final InputElement element
-		) throws XMLStreamException {
-			final int length = element.getAttribute("length", 0);
+			final Class<IntegerChromosome> cls, final InputElement xml
+		) throws XMLStreamException 
+		{
+			final int length = xml.getAttribute("length", 0);
+			final int min = xml.getAttribute("min", 0);
+			final int max = xml.getAttribute("max", 10);
 			final Array<IntegerGene> genes = Array.newInstance(length);
 			
 			for (int i = 0; i < length; ++i) {
-				final IntegerGene gene = element.getNext();
-				genes.set(i, gene);
+				final Integer64 value = xml.getNext();
+				genes.set(i, IntegerGene.valueOf(value.longValue(), min, max));
 			}
 			return new IntegerChromosome(genes);
 		}
 		@Override
-		public void write(final IntegerChromosome chromosome, final OutputElement element) 
+		public void write(final IntegerChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			element.setAttribute("length", chromosome.length());
+			xml.setAttribute("length", chromosome.length());
+			xml.setAttribute("min", chromosome._min.intValue());
+			xml.setAttribute("max", chromosome._max.intValue());
 			for (IntegerGene gene : chromosome) {
-				element.add(gene);
+				xml.add(gene.getAllele());
 			}
 		}
 		@Override

@@ -23,9 +23,8 @@
 package org.jenetics;
 
 import static java.lang.Math.exp;
-import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
+
+import java.io.Serializable;
 
 import org.jscience.mathematics.number.Number;
 
@@ -51,10 +50,10 @@ import org.jscience.mathematics.number.Number;
  * @param <N> the BoltzmannSelector requires a number type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.4 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class BoltzmannSelector<T extends Gene<?>, N extends Number<N>> 
-	extends ProbabilitySelector<T, N> implements XMLSerializable
+	extends ProbabilitySelector<T, N> implements Serializable
 {
 	private static final long serialVersionUID = 4785987330242283796L;
 	
@@ -89,28 +88,6 @@ public class BoltzmannSelector<T extends Gene<?>, N extends Number<N>>
 	
 		return props;
 	}
-	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<BoltzmannSelector> 
-	XML = new XMLFormat<BoltzmannSelector>(BoltzmannSelector.class) {
-		@Override
-		public BoltzmannSelector newInstance(
-			final Class<BoltzmannSelector> cls, final InputElement xml
-		) throws XMLStreamException 
-		{
-			final double beta = xml.getAttribute("beta", 0.2);
-			return new BoltzmannSelector(beta);
-		}
-		@Override
-		public void write(final BoltzmannSelector s, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("beta", s._beta);
-		}
-		@Override
-		public void read(final InputElement xml, final BoltzmannSelector s) {
-		}
-	};
 
 }
 

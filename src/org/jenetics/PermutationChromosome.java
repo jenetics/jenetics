@@ -25,18 +25,21 @@ package org.jenetics;
 import java.util.Arrays;
 import java.util.Random;
 
+import javolution.xml.XMLFormat;
+import javolution.xml.XMLSerializable;
+import javolution.xml.stream.XMLStreamException;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Validator;
-
-import javolution.xml.XMLSerializable;
+import org.jscience.mathematics.number.Integer64;
 
 /**
  * The mutable methods of the {@link AbstractChromosome} has been overridden so 
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -225,6 +228,42 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 		}
 		return out.toString();
 	}
+	
+	static final XMLFormat<PermutationChromosome> 
+	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
+		@Override
+		public PermutationChromosome newInstance(
+			final Class<PermutationChromosome> cls, final InputElement xml
+		) throws XMLStreamException 
+		{
+			final int length = xml.getAttribute("length", 0);
+			final int min = xml.getAttribute("min", 0);
+			final int max = xml.getAttribute("max", length);
+			final Array<IntegerGene> genes = Array.newInstance(length);
+			
+			for (int i = 0; i < length; ++i) {
+				final Integer64 value = xml.getNext();
+				genes.set(i, IntegerGene.valueOf(value.longValue(), min, max));
+			}
+			return new PermutationChromosome(genes);
+		}
+		@Override
+		public void write(final PermutationChromosome chromosome, final OutputElement xml) 
+			throws XMLStreamException 
+		{
+			xml.setAttribute("length", chromosome.length());
+			xml.setAttribute("min", 0);
+			xml.setAttribute("max", chromosome.length() - 1);
+			for (IntegerGene gene : chromosome) {
+				xml.add(gene.getAllele());
+			}
+		}
+		@Override
+		public void read(final InputElement element, final PermutationChromosome chromosome) 
+			throws XMLStreamException 
+		{
+		}
+	};
 	
 }
 

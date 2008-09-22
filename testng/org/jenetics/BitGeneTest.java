@@ -26,11 +26,15 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
+
+import javolution.xml.stream.XMLStreamException;
+
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitGeneTest.java,v 1.2 2008-07-08 17:02:27 fwilhelm Exp $
+ * @version $Id: BitGeneTest.java,v 1.3 2008-09-22 21:39:24 fwilhelm Exp $
  */
 public class BitGeneTest {
 
@@ -66,6 +70,12 @@ public class BitGeneTest {
         assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
         assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
         assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
+    }
+    
+    @Test
+    public void serialize() throws XMLStreamException, IOException {
+    	SerializeUtils.testSerialization(BitGene.TRUE);
+    	SerializeUtils.testSerialization(BitGene.FALSE);
     }
     
 }

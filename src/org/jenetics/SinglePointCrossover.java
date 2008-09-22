@@ -27,9 +27,6 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 
 /** 
  * <strong><p>Single point crossover</p></strong>
@@ -52,7 +49,7 @@ import javolution.xml.stream.XMLStreamException;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SinglePointCrossover.java,v 1.5 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: SinglePointCrossover.java,v 1.6 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class SinglePointCrossover<G extends Gene<?>> extends Crossover<G> {
 	private static final long serialVersionUID = -5901453762256113098L;
@@ -80,42 +77,6 @@ public class SinglePointCrossover<G extends Gene<?>> extends Crossover<G> {
 			other.set(j, temp);
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<SinglePointCrossover> 
-	XML = new XMLFormat<SinglePointCrossover>(SinglePointCrossover.class) {
-		@Override
-		public SinglePointCrossover newInstance(
-			final Class<SinglePointCrossover> cls, final InputElement xml
-		) throws XMLStreamException 
-		{
-			final double p = xml.getAttribute("probability", 0.5);
-			final boolean hasAlterer = xml.getAttribute("has-alterer", false);
-			SinglePointCrossover alterer = null;
-			
-			if (hasAlterer) {
-				Alterer component = xml.getNext();
-				alterer = new SinglePointCrossover(Probability.valueOf(p), component);
-			} else {
-				alterer = new SinglePointCrossover(Probability.valueOf(p));
-			}
-			
-			return alterer;
-		}
-		@Override
-		public void write(final SinglePointCrossover a, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("probability", a._probability.doubleValue());
-			xml.setAttribute("has-alterer", a._component != null);
-			if (a._component != null) {
-				xml.add(a._component);
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final SinglePointCrossover a) {
-		}
-	};
 	
 }
 

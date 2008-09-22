@@ -24,6 +24,7 @@ package org.jenetics;
 
 import org.jenetics.util.Array;
 
+import javolution.text.CharArray;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
@@ -32,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, XMLSerializable
@@ -132,9 +133,9 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		{
 			final int length = xml.getAttribute("length", 0);
 			final CharacterChromosome chromosome = new CharacterChromosome(length);
+			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
-				CharacterGene gene = xml.getNext();
-				chromosome._genes.set(i, gene);
+				chromosome._genes.set(i, CharacterGene.valueOf(values.charAt(i)));
 			}
 			return chromosome;
 		}
@@ -143,9 +144,11 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 			throws XMLStreamException 
 		{
 			xml.setAttribute("length", chromosome.length());
+			final StringBuilder out = new StringBuilder(chromosome.length());
 			for (CharacterGene gene : chromosome) {
-				xml.add(gene);
+				out.append(gene.getAllele().charValue());
 			}
+			xml.addText(out.toString());
 		}
 		@Override
 		public void read(final InputElement element, final CharacterChromosome chromosome) {

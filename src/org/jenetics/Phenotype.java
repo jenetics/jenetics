@@ -27,7 +27,9 @@ import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
 import javolution.text.Text;
+import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
+import javolution.xml.stream.XMLStreamException;
 
 
 /**
@@ -42,7 +44,7 @@ import javolution.xml.XMLSerializable;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.3 2008-08-26 22:29:33 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -132,9 +134,9 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	public int hashCode() {
 		int hash = 17;
 		
-		hash = 37*_genotype.hashCode() + 17;
-		hash = 37*_fitnessFunction.hashCode() + 17;
-		hash = 37*_fitnessScaler.hashCode() + 17;
+		hash = 37*(_genotype != null ? _genotype.hashCode() : 1) + 17;
+		hash = 37*(_fitnessFunction != null ? _fitnessFunction.hashCode() : 1) + 17;
+		hash = 37*(_fitnessScaler != null ?_fitnessScaler.hashCode() : 1) + 17;
 		
 		return hash;
 	}
@@ -149,9 +151,15 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 		}
 		
 		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
-		return pt._fitnessFunction.equals(_fitnessFunction) &&
-				pt._fitnessScaler.equals(_fitnessScaler) &&
-				pt._genotype.equals(_genotype);
+		return (_fitnessFunction != null) ? 
+					_fitnessFunction.equals(pt._fitnessFunction) : 
+					pt._fitnessFunction == null &&
+				(_fitnessScaler != null) ? 
+					_fitnessScaler.equals(pt._fitnessScaler) : 
+					pt._fitnessScaler == null &&
+				(_genotype != null) ? 
+					_genotype.equals(pt._genotype) : 
+					pt._genotype == null;
 	}
 
 	@Override
@@ -240,41 +248,39 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 		p._fitness = null;
 		return p;
 	}
-	
-//	@SuppressWarnings("unchecked")
-//	static final XMLFormat<Phenotype> 
-//	XML = new XMLFormat<Phenotype>(Phenotype.class) {
-//		@Override
-//		public Phenotype<Gene<?>, ? extends Comparable<?>> newInstance(
-//			final Class<Phenotype> cls, final InputElement xml
-//		) throws XMLStreamException {
-//			final Genotype<Gene<?>> gt = xml.getNext();
-//			final FitnessFunction<Gene<?>> ff = xml.getNext();
-//			final FitnessScaler fs = xml.getNext();
-//			final int generation = xml.getAttribute("generation", 0);
-//			final Phenotype<Gene<?>, ? extends Comparable<?>> pt = 
-//				Phenotype.valueOf(gt, ff, fs, generation);
-//			
-//			pt._fitness = xml.getAttribute("fitness", 0);
-//			pt._rawFitness = xml.getAttribute("raw-fitness", 0);
-//			return pt;
-//		}
-//		@Override 
-//		public void write(final Phenotype pt, final OutputElement xml) 
-//			throws XMLStreamException 
-//		{
-//			xml.setAttribute("generation", pt._generation);
-//			xml.setAttribute("fitness", pt.getFitness());
-//			xml.setAttribute("raw-fitness", pt.getRawFitness());
-//			xml.add(pt._genotype);
-//			xml.add(pt._fitnessFunction);
-//			xml.add(pt._fitnessScaler);
-//		}
-//		@Override
-//		public void read(final InputElement xml, final Phenotype gt) {	
-//		}
-//	};
 
+	@SuppressWarnings("unchecked")
+	static final XMLFormat<Phenotype> 
+	XML = new XMLFormat<Phenotype>(Phenotype.class) {
+		@Override
+		public Phenotype newInstance(final Class<Phenotype> cls, final InputElement xml) 
+			throws XMLStreamException 
+		{
+			final int generation = xml.getAttribute("generation", 0);
+			final Genotype gt = xml.getNext();
+			final Phenotype pt = (Phenotype)FACTORY.object();
+			pt._genotype = gt;
+			pt._generation = generation;
+			return pt;
+		}
+		@Override 
+		public void write(final Phenotype pt, final OutputElement xml) 
+			throws XMLStreamException 
+		{
+			xml.setAttribute("fitness", Phenotype.toString(pt.getFitness()));
+			xml.setAttribute("raw-fitness", Phenotype.toString(pt.getRawFitness()));
+			xml.setAttribute("generation", pt._generation);
+			xml.add(pt._genotype);
+		}
+		@Override
+		public void read(final InputElement xml, final Phenotype gt) {	
+		}
+	};
+	
+	static String toString(final Object value) {
+		return value != null ? value.toString() : "null";
+	}
+	
 }
 
 

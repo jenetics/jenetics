@@ -27,10 +27,12 @@ import org.jenetics.util.Validator;
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
+import javolution.xml.XMLFormat;
+import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.2 2008-08-25 19:35:25 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.3 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E>, Mean<EnumGene<E>>, Realtime
@@ -48,7 +50,7 @@ public class EnumGene<E extends Enum<E>>
 	}
 	
 	@Override
-	public EnumGene<E> mean(EnumGene<E> that) {
+	public EnumGene<E> mean(final EnumGene<E> that) {
 		Validator.notNull(that, "Enum value");
 		
 		if (that._value == _value) {
@@ -82,7 +84,7 @@ public class EnumGene<E extends Enum<E>>
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		}
@@ -124,23 +126,34 @@ public class EnumGene<E extends Enum<E>>
 		return Text.valueOf(_value.toString());
 	}
 	
-//	static final XMLFormat<EnumGene> XML = new XMLFormat<EnumGene>(EnumGene.class) {
-//		@Override
-//		public EnumGene newInstance(final Class<EnumGene> cls, final InputElement xml) 
-//			throws XMLStreamException 
-//		{
-//			return null;
-//		}
-//		@Override
-//		public void write(final EnumGene gene, final OutputElement xml) 
-//			throws XMLStreamException 
-//		{
-//			xml.setAttribute("value", gene._value);
-//		}
-//		@Override
-//		public void read(final InputElement element, final EnumGene gene) {
-//		}
-//	};
+	@SuppressWarnings("unchecked")
+	static final XMLFormat<EnumGene> XML = new XMLFormat<EnumGene>(EnumGene.class) {
+		@Override
+		public EnumGene newInstance(final Class<EnumGene> cls, final InputElement xml) 
+			throws XMLStreamException 
+		{
+			try {
+				final Class<Enum> type = (Class<Enum>)Class.forName(
+						xml.getAttribute("type", "null")
+					);
+				final String value = xml.getAttribute("value", "null");
+				
+				return EnumGene.valueOf(Enum.valueOf(type, value));
+			} catch (ClassNotFoundException e) {
+				throw new XMLStreamException(e);
+			}
+		}
+		@Override
+		public void write(final EnumGene gene, final OutputElement xml) 
+			throws XMLStreamException 
+		{
+			xml.setAttribute("type", gene._value.getClass().getName());
+			xml.setAttribute("value", gene._value.name());
+		}
+		@Override
+		public void read(final InputElement element, final EnumGene gene) {
+		}
+	};
 
 }
 

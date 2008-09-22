@@ -27,20 +27,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.StringWriter;
 import java.util.BitSet;
-
-import javolution.xml.XMLObjectWriter;
 
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
-import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.5 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.6 2008-09-22 21:39:48 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -195,17 +191,7 @@ public class BitChromosomeTest {
     
     @Test
     public void serialize() throws Exception {
-    	StringWriter out = new StringWriter();
-    	
-    	BitChromosome chromosome = BitChromosome.valueOf(10);
-    	XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
-    	writer.setIndentation("    ");
-    	
-    	writer.write(chromosome);
-    	writer.close();
-    	out.flush();
-    	
-    	Reporter.log(out.toString(), true);
+    	SerializeUtils.testSerialization(BitChromosome.valueOf(10));
     }
 
 

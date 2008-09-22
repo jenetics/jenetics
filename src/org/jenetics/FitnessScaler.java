@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import javolution.xml.XMLSerializable;
+import java.io.Serializable;
 
 
 /**
@@ -33,9 +33,9 @@ import javolution.xml.XMLSerializable;
  * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessScaler.java,v 1.3 2008-08-28 21:21:12 fwilhelm Exp $
+ * @version $Id: FitnessScaler.java,v 1.4 2008-09-22 21:38:31 fwilhelm Exp $
  */
-public interface FitnessScaler<C extends Comparable<C>> extends XMLSerializable {
+public interface FitnessScaler<C extends Comparable<C>> extends Serializable {
 	
 	public C scale(final C value);
 	

@@ -27,13 +27,10 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.5 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.6 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 	private static final long serialVersionUID = 4680966822655548466L;
@@ -82,39 +79,6 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<MeanAlterer> XML = new XMLFormat<MeanAlterer>(MeanAlterer.class) {
-		@Override
-		public MeanAlterer newInstance(final Class<MeanAlterer> cls, final InputElement xml) 
-			throws XMLStreamException 
-		{
-			final double p = xml.getAttribute("probability", 0.5);
-			final boolean hasAlterer = xml.getAttribute("has-alterer", false);
-			MeanAlterer alterer = null;
-			
-			if (hasAlterer) {
-				Alterer component = xml.getNext();
-				alterer = new MeanAlterer(Probability.valueOf(p), component);
-			} else {
-				alterer = new MeanAlterer(Probability.valueOf(p));
-			}
-			
-			return alterer;
-		}
-		@Override
-		public void write(final MeanAlterer a, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("probability", a._probability.doubleValue());
-			xml.setAttribute("has-alterer", a._component != null);
-			if (a._component != null) {
-				xml.add(a._component);
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final MeanAlterer a) {
-		}
-	};
 }
 
 

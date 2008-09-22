@@ -41,7 +41,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.3 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character>, Comparable<CharacterGene>, Realtime, XMLSerializable 
@@ -205,7 +205,7 @@ public class CharacterGene
 		public void write(final CharacterGene gene, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("value", gene._character);
+			xml.setAttribute("value", gene._character.charValue());
 		}
 		@Override
 		public void read(final InputElement element, final CharacterGene gene) {

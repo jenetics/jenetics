@@ -23,7 +23,8 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
-import javolution.xml.XMLSerializable;
+
+import java.io.Serializable;
 
 import org.jenetics.util.Probability;
 
@@ -49,9 +50,9 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.6 2008-08-29 21:18:15 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.7 2008-09-22 21:38:30 fwilhelm Exp $
  */
-public abstract class Alterer<G extends Gene<?>> implements XMLSerializable {
+public abstract class Alterer<G extends Gene<?>> implements Serializable {
 	private static final long serialVersionUID = -675546015545758480L;
 
 	/**

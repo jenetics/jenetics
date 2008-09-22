@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
 
 /**
  *  A {@link FitnessFunction} which always returns a given constant value.
@@ -31,7 +29,7 @@ import javolution.xml.stream.XMLStreamException;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  *
  * @param <T> the gene type.
- * @version $Id: ConstantFitnessFunction.java,v 1.2 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: ConstantFitnessFunction.java,v 1.3 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class ConstantFitnessFunction<T extends Gene<?>, C extends Comparable<C>> 
 	implements FitnessFunction<T, C> 
@@ -48,26 +46,5 @@ public class ConstantFitnessFunction<T extends Gene<?>, C extends Comparable<C>>
 	public C evaluate(final Genotype<T> genotype) {
 		return _value;
 	}
-
 	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<ConstantFitnessFunction> 
-	XML = new XMLFormat<ConstantFitnessFunction>(ConstantFitnessFunction.class) {
-		@Override
-		public ConstantFitnessFunction newInstance(
-			final Class<ConstantFitnessFunction> cls, final InputElement xml
-		)  throws XMLStreamException {
-			final double value = xml.getAttribute("value", 1.0);
-			return new ConstantFitnessFunction(value);
-		}
-		@Override
-		public void write(final ConstantFitnessFunction ff, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("value", ff._value);
-		}
-		@Override
-		public void read(final InputElement xml, final ConstantFitnessFunction a) {
-		}
-	};
 }

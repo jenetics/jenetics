@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -209,10 +209,13 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 			final Class<DoubleChromosome> cls, final InputElement xml
 		) throws XMLStreamException {
 			final int length = xml.getAttribute("length", 0);
+			final double min = xml.getAttribute("min", 0.0);
+			final double max = xml.getAttribute("max", 1.0);
+			
 			final Array<DoubleGene> genes = Array.newInstance(length);
 			for (int i = 0; i < length; ++i) {
-				final DoubleGene gene = xml.getNext();
-				genes.set(i, gene);
+				final Float64 value = xml.getNext();
+				genes.set(i, DoubleGene.valueOf(value.doubleValue(), min, max));
 			}
 			return new DoubleChromosome(genes);
 		}
@@ -221,8 +224,10 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 			throws XMLStreamException 
 		{
 			xml.setAttribute("length", chromosome.length());
+			xml.setAttribute("min", chromosome._min.doubleValue());
+			xml.setAttribute("max", chromosome._max.doubleValue());
 			for (DoubleGene gene : chromosome) {
-				xml.add(gene);
+				xml.add(gene.getAllele());
 			}
 		}
 		@Override

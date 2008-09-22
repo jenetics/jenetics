@@ -22,28 +22,45 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
-import org.jscience.mathematics.number.Float64;
+import javolution.xml.XMLObjectReader;
+import javolution.xml.XMLObjectWriter;
+import javolution.xml.stream.XMLStreamException;
+
+import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PowerScaler.java,v 1.3 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: SerializeUtils.java,v 1.1 2008-09-22 21:39:47 fwilhelm Exp $
  */
-public class PowerScaler implements FitnessScaler<Float64>, Serializable {
-	private static final long serialVersionUID = -5895077899454677843L;
-	
-	public static final PowerScaler SQR_SCALER = new PowerScaler(2);
-	public static final PowerScaler SQRT_SCALER = new PowerScaler(0.5);
+class SerializeUtils {
 
-	private final double _exponent;
+	public static void testSerialization(final Object object) 
+		throws XMLStreamException, IOException 
+	{
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		final XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
+		writer.setIndentation("\t");
+		writer.write(object);
+		writer.close();
+		out.close();
+		
+		final byte[] data = out.toByteArray();
+		System.out.println(new String(data));
+		
+		final ByteArrayInputStream in = new ByteArrayInputStream(data);
+		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
+		final Object p = reader.read();
+		
+		Assert.assertEquals(p, object);
+	}
 	
-	public PowerScaler(final double exponent) {
-		this._exponent = exponent;
-	}
-
-	@Override
-	public Float64 scale(final Float64 value) {
-		return value.pow(_exponent);
-	}
 }
+
+
+
+
+

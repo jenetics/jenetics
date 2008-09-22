@@ -25,6 +25,7 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static org.jenetics.util.Validator.notNull;
 
+import java.util.List;
 import java.util.Random;
 
 import org.jenetics.util.Probability;
@@ -51,7 +52,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.8 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.9 2008-09-22 21:38:30 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -113,9 +114,9 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		notNull(fitnessFunction, "FitnessFunction");
 		notNull(fitnessScaler, "FitnessScaler");
 		
-		this._genotypeFactory = genotypeFactory;
-		this._fitnessFunction = fitnessFunction;
-		this._fitnessScaler = fitnessScaler;
+		_genotypeFactory = genotypeFactory;
+		_fitnessFunction = fitnessFunction;
+		_fitnessScaler = fitnessScaler;
 	}
 	
 	/**
@@ -258,7 +259,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public void setFitnessScaler(final FitnessScaler<C> scaler) {
 		notNull(scaler, "FitnessScaler");
-		this._fitnessScaler = scaler;
+		_fitnessScaler = scaler;
 	}
 	
 	/**
@@ -410,7 +411,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public void setSurvivorFraction(final Probability survivorFraction) {
 		notNull(survivorFraction, "Survivor fraction");
-		this._survivorFraction = survivorFraction;
+		_survivorFraction = survivorFraction;
 	}
 	
 	/**
@@ -421,7 +422,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public void setOffspringFraction(final Probability offspringFraction) {
 		notNull(offspringFraction, "Offspring fraction");
-		this._offspringFraction = offspringFraction;
+		_offspringFraction = offspringFraction;
 	}
 	
 	/**
@@ -432,7 +433,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public void setAlterer(final Alterer<G> alterer) {
 		notNull(alterer, "Alterer");
-		this._alterer = alterer;
+		_alterer = alterer;
 	}
 	
 	/**
@@ -442,7 +443,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public void addAlterer(final Alterer<G> alterer) {
 		notNull(alterer, "Alterer");
-		this._alterer.append(alterer);
+		_alterer.append(alterer);
 	}
 	
 	/**
@@ -477,15 +478,15 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Set the (initial) population.
+	 * Set the (initial) population in form of a list of genotypes.
 	 * 
-	 * @param population The population to set. The population size is set to
-	 * 	  <code>population.size()</code>.
+	 * @param population The list of genotypes to set. The population size is set to
+	 * 	  <code>genotypes.size()</code>.
 	 * @throws NullPointerException if the population is null.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 * 		one.
 	 */
-	public void setPopulation(final Population<G, C> population) {
+	public void setPopulation(final List<Phenotype<G, ?>> population) {
 		notNull(population, "Population");
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(
@@ -493,8 +494,14 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 				population.size() + ". "
 			);
 		}
-		this._population = population;
-		this._populationSize = population.size();
+		
+		_population.clear();
+		for (Phenotype<G, ?> phenotype : population) {
+			_population.add(Phenotype.valueOf(
+				phenotype.getGenotype(), _fitnessFunction, _generation
+			));
+		}
+		_populationSize = population.size();
 	}
 	
 	/**
@@ -514,7 +521,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public void setStatisticCalculator(final StatisticCalculator<G, C> calculator) {
 		notNull(calculator, "Statistic calculator");
-		this._calculator = calculator;
+		_calculator = calculator;
 	}
 	
 	/**
