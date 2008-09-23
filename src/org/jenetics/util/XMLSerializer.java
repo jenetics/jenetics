@@ -1,6 +1,7 @@
-/* 
- * XMLSerializer.java, 23.09.2008
- *
+/*
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
+ *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -17,6 +18,7 @@
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
 package org.jenetics.util;
 
@@ -31,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: XMLSerializer.java,v 1.2 2008-09-23 18:16:30 fwilhelm Exp $
+ * @version $Id: XMLSerializer.java,v 1.3 2008-09-23 18:17:24 fwilhelm Exp $
  */
 public class XMLSerializer {
 
