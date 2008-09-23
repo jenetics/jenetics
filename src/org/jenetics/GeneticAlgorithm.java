@@ -52,7 +52,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.9 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.10 2008-09-23 14:16:37 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -478,10 +478,10 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Set the (initial) population in form of a list of genotypes.
+	 * Set the (initial) population in form of a list of phenootypes.
 	 * 
-	 * @param population The list of genotypes to set. The population size is set to
-	 * 	  <code>genotypes.size()</code>.
+	 * @param population The list of phenotypes to set. The population size is set to
+	 * 	  <code>phenotype.size()</code>.
 	 * @throws NullPointerException if the population is null.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 * 		one.
@@ -502,6 +502,33 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			));
 		}
 		_populationSize = population.size();
+	}
+	
+	/**
+	 * Set the (initial) population in form of a list of genotypes.
+	 * 
+	 * @param genotypes The list of genotypes to set. The population size is set 
+	 *        to <code>genotypes.size()</code>.
+	 * @throws NullPointerException if the population is null.
+	 * @throws IllegalArgumentException it the population size is smaller than
+	 * 		one.
+	 */
+	public void setGenotypes(final List<Genotype<G>> genotypes) {
+		notNull(genotypes, "Genotypes");
+		if (genotypes.size() < 1) {
+			throw new IllegalArgumentException(
+				"Genotype size must be greater than zero, but was " +
+				genotypes.size() + ". "
+			);
+		}
+		
+		_population.clear();
+		for (Genotype<G> genotype : genotypes) {
+			_population.add(Phenotype.valueOf(
+				genotype, _fitnessFunction, _generation
+			));
+		}
+		_populationSize = genotypes.size();
 	}
 	
 	/**
