@@ -146,7 +146,7 @@
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
 	
-	<target name="all" depends="jar, javadoc" />
+	<target name="all" depends="jar, javadoc, testng" />
 
 	<target name="compile-tests" depends="compile">
 		<javac destdir="${compile.dir}" 

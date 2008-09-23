@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.6 2008-09-23 18:01:49 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.7 2008-09-23 19:18:57 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -204,7 +204,12 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 				final Float64 value = xml.getNext();
 				genes.set(i, DoubleGene.valueOf(value.doubleValue(), min, max));
 			}
-			return new DoubleChromosome(genes);
+			
+			final DoubleChromosome chromosome = new DoubleChromosome(genes);
+			chromosome._min = Float64.valueOf(min);
+			chromosome._max = Float64.valueOf(max);
+			
+			return chromosome;
 		}
 		@Override
 		public void write(final DoubleChromosome chromosome, final OutputElement xml) 

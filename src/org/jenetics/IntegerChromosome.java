@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.5 2008-09-23 19:18:57 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -171,7 +171,12 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 				final Integer64 value = xml.getNext();
 				genes.set(i, IntegerGene.valueOf(value.longValue(), min, max));
 			}
-			return new IntegerChromosome(genes);
+			
+			final IntegerChromosome chromosome = new IntegerChromosome(genes);
+			chromosome._min = Integer64.valueOf(min);
+			chromosome._max = Integer64.valueOf(max);
+			
+			return chromosome;
 		}
 		@Override
 		public void write(final IntegerChromosome chromosome, final OutputElement xml) 
