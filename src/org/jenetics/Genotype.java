@@ -42,7 +42,7 @@ import javolution.xml.stream.XMLStreamException;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.8 2008-09-23 18:01:50 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.9 2008-09-23 19:18:57 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -198,6 +198,11 @@ public class Genotype<T extends Gene<?>>
 		}
 		out.append("]");
 		return out.toText();
+	}
+	
+	@Override
+	public String toString() {
+		return toText().toString();
 	}
 	
 	/**

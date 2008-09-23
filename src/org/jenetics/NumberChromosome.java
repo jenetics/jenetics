@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.5 2008-09-23 18:01:51 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.6 2008-09-23 19:18:57 fwilhelm Exp $
  */
 public abstract class NumberChromosome<N extends NumberGene<?>> 
 	extends AbstractChromosome<N> 
@@ -213,7 +213,7 @@ public abstract class NumberChromosome<N extends NumberGene<?>>
 			return true;
 		}
 		if (!(object instanceof NumberChromosome<?>)) {
-			
+			return false;
 		}
 		
 		final NumberChromosome<?> nc = (NumberChromosome<?>)object;
