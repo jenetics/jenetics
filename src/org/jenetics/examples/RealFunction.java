@@ -34,12 +34,13 @@ import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
+import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.6 2008-08-27 20:30:31 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.7 2008-09-23 18:01:53 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
@@ -47,7 +48,8 @@ public class RealFunction {
 		
 		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
 			final DoubleGene gene = genotype.getChromosome().getGene(0);
-			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
+			final double radians = toRadians(gene.doubleValue());
+			return Float64.valueOf(sin(radians)*Math.cos(radians));
 		}
 	}
 	
@@ -58,20 +60,14 @@ public class RealFunction {
 		final GeneticAlgorithm<DoubleGene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);
-		ga.setPopulationSize(100);
+		ga.setPopulationSize(10);
 		ga.setAlterer(
-			new Mutation<DoubleGene>(Probability.valueOf(0.1)).append(
+			new Mutation<DoubleGene>(Probability.valueOf(0.9)).append(
 			new MeanAlterer<DoubleGene>(Probability.valueOf(0.1)))
 		);
+		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
 		
-		ga.setup();		
-		for (int i = 0; i < 10; ++i) {
-			ga.evolve();
-			System.out.println(
-				Integer.toString(i) + ":" + ga.getBestPhenotype() + "-->" + 
-				ga.getBestPhenotype().getFitness()
-			);
-		}		 
+		GAUtils.execute(ga, 10);
 	}
 	
 }

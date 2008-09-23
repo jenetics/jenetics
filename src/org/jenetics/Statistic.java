@@ -34,7 +34,7 @@ import org.jenetics.util.BitUtils;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.10 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.11 2008-09-23 18:01:49 fwilhelm Exp $
  */
 public class Statistic<G extends Gene<?>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -180,8 +180,13 @@ public class Statistic<G extends Gene<?>, C extends Comparable<C>>
 
 	@Override
 	public String toString() {
-		String ret = "Best Phenotype: " + getBestPhenotype();
-		return ret;
+		final StringBuilder out = new StringBuilder();
+		
+		out.append("Samples:         " + _samples + "\n");
+		out.append("Best Phenotype:  " + getBestPhenotype() + "\n");
+		out.append("Worst Phenotype: " + getWorstPhenotype() + "\n");
+		
+		return out.toString();
 	}
 	
 	@SuppressWarnings("unchecked")

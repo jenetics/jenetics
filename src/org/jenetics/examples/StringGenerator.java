@@ -25,21 +25,19 @@ package org.jenetics.examples;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.Chromosome;
-import org.jenetics.SinglePointCrossover;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
-import org.jenetics.Population;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.Statistic;
+import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.6 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.7 2008-09-23 18:01:53 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -86,21 +84,8 @@ public class StringGenerator {
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
-		ga.setup();
-		
-		Population<CharacterGene, Integer64> p = ga.getPopulation();
-		Statistic<CharacterGene, Integer64> stat = ga.getStatistic(); 		
-		
-		for (int i = 0; i < 25; ++i) {
-			ga.evolve();
-			p = ga.getPopulation();
-			System.out.print("" + p.size() + ": ");
-			System.out.println(ga.getStatistic().getBestPhenotype().toText());
-			
-			stat = ga.getStatistic();
-		}
-		
-		System.out.println(stat); 
+
+		GAUtils.execute(ga, 25);
 	}
 	
 }

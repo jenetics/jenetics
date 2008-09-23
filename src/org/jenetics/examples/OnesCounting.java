@@ -24,22 +24,20 @@ package org.jenetics.examples;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.SinglePointCrossover;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
-import org.jenetics.Population;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.Statistic;
+import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java,v 1.4 2008-08-26 22:29:36 fwilhelm Exp $
+ * @version $Id: OnesCounting.java,v 1.5 2008-09-23 18:01:53 fwilhelm Exp $
  */
 public class OnesCounting {
 
@@ -72,29 +70,8 @@ public class OnesCounting {
 			new Mutation<BitGene>(Probability.valueOf(0.55), 
 			new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
 		);
-		ga.setup();
 		
-		Population<BitGene,Integer64> p = ga.getPopulation();
-		Statistic<BitGene, Integer64> stat = ga.getStatistic();
-		System.out.print("" + p.size() + ": ");
-		System.out.println(
-			stat.getBestPhenotype().getFitness() + ": " + 
-			stat.getBestPhenotype()
-		); 		  
-		
-		for (int i = 0; i < 100; ++i) {
-			ga.evolve();
-			p = ga.getPopulation();
-			stat = ga.getStatistic();
-			System.out.print("" + p.size() + ": ");
-			System.out.println(
-				stat.getBestPhenotype().getFitness() + ": " + 
-				stat.getBestPhenotype().toText()
-			);
-		}
-		
-		System.out.println(ga.getBestPhenotype());
-		System.out.println(stat);
+		GAUtils.execute(ga, 100);
 	}
 
 }

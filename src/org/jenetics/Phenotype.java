@@ -44,7 +44,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.5 2008-09-23 18:01:50 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -169,7 +169,7 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	
 	@Override
 	public String toString() {
-		return toText().toString();
+		return toText().toString() + " --> " + getFitness();
 	}
 	
 	@SuppressWarnings("unchecked")

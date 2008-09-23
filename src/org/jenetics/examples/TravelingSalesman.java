@@ -26,12 +26,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
-//import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
-//import java.util.concurrent.TimeUnit;
-
 import org.jenetics.Chromosome;
-//import org.jenetics.ConcurrentStatisticCalculator;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -40,14 +35,13 @@ import org.jenetics.IntegerGene;
 import org.jenetics.Mutation;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
-import org.jenetics.Phenotype;
 import org.jenetics.util.Probability;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.10 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.11 2008-09-23 18:01:52 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -81,37 +75,15 @@ public class TravelingSalesman {
 		final GenotypeFactory<IntegerGene> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<IntegerGene, Integer> ga = new GeneticAlgorithm<IntegerGene, Integer>(gtf, ff);
+		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(1000);
-		
-//		final int threads = 4;
-//		final ExecutorService pool = Executors.newFixedThreadPool(threads);
-//		ga.setStatisticCalculator(
-//			new ConcurrentStatisticCalculator(threads, pool)
-//		);
 		
         ga.setAlterer(
             new Mutation<IntegerGene>(Probability.valueOf(0.1), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
         
-        long start = System.currentTimeMillis();
-        ga.setup();
-        for (int i = 0; i < 30; ++i) {
-        	ga.evolve();
-        	Phenotype<IntegerGene, Integer> bpt = ga.getStatistic().getBestPhenotype();
-        	System.out.println(
-        		bpt + " --> " + bpt.getFitness()
-        	);
-        }
-//        pool.awaitTermination(1, TimeUnit.SECONDS);
-//        pool.shutdown();
-        
-        System.out.println("Best path found:");
-        System.out.println(ga.getBestPhenotype() + " --> " + ga.getBestPhenotype().getFitness());
-        System.out.println("Minimal tour length: " + (chord(stops, 1, RADIUS)*stops));
-        long end = System.currentTimeMillis();
-        System.out.println("Time: " + ((end -start)/1000.0) + "s");
+        GAUtils.execute(ga, 30);
 	}
 	
 	/**
