@@ -1,6 +1,7 @@
-/* 
- * GAUtils.java, 23.09.2008
- *
+/*
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
+ *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -17,6 +18,7 @@
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
 package org.jenetics.examples;
 
@@ -24,7 +26,7 @@ import org.jenetics.GeneticAlgorithm;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.1 2008-09-23 18:01:54 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.2 2008-09-23 18:17:10 fwilhelm Exp $
  */
 public class GAUtils {
 
