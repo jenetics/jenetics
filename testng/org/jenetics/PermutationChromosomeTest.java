@@ -22,20 +22,18 @@
  */
 package org.jenetics;
 
-import java.io.IOException;
-
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosomeTest.java,v 1.1 2008-09-22 21:39:46 fwilhelm Exp $
+ * @version $Id: PermutationChromosomeTest.java,v 1.2 2008-09-23 19:18:26 fwilhelm Exp $
  */
 public class PermutationChromosomeTest {
 
 	@Test
-	public void serialize() throws XMLStreamException, IOException {
+	public void serialize() throws XMLStreamException {
 		SerializeUtils.testSerialization(new PermutationChromosome(10));
 	}
 	

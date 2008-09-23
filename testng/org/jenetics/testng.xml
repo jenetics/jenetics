@@ -40,14 +40,44 @@
 			<class name="org.jenetics.DoubleGeneTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.EnumGene">
+		<classes>
+			<class name="org.jenetics.EnumGeneTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.Genotype">
 		<classes>
 			<class name="org.jenetics.GenotypeTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.IntegerChromosome">
+		<classes>
+			<class name="org.jenetics.IntegerChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.IntegerGene">
+		<classes>
+			<class name="org.jenetics.IntegerGeneTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.PartiallyMatchedCrossover">
 		<classes>
 			<class name="org.jenetics.PartiallyMatchedCrossoverTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.PermutationChromosome">
+		<classes>
+			<class name="org.jenetics.PermutationChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Phenotype">
+		<classes>
+			<class name="org.jenetics.PhenotypeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Population">
+		<classes>
+			<class name="org.jenetics.PopulationTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.Statistic">
