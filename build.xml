@@ -10,6 +10,7 @@
 	<property name="lib.dir" value="./lib" />
 	<property name="export.dir" value="./export/Jenetics-${version}" />
 	<property name="javadoc.dir" value="./javadoc" />
+	<property name="resources.dir" value="./resources" />
 	<property name="colapi.classpath" value="./lib/build/colapi.jar" />
 	<property name="java2html.classpath" value="./lib/build/ant-java2html.jar" />
 
@@ -220,6 +221,11 @@
 		<copy todir="${export.dir}/javadoc" >
 			<fileset dir="${javadoc.dir}" />
 		</copy>
+		
+		<mkdir dir="${export.dir}/resources"/>
+		<copy todir="${export.dir}/resources" >
+			<fileset dir="${resources.dir}" />
+		</copy>		
 		
 		<copy todir="${export.dir}" file="BUILD.txt"/>
 		<copy todir="${export.dir}" file="build.xml"/>
