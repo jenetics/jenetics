@@ -42,7 +42,7 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.6 2008-09-23 18:01:49 fwilhelm Exp $
  */
 public class Population<G extends Gene<?>, C extends Comparable<C>> 
 	implements List<Phenotype<G, C>>, Iterable<Phenotype<G, C>>, 
@@ -53,9 +53,22 @@ public class Population<G extends Gene<?>, C extends Comparable<C>>
 	private final List<Phenotype<G, C>> _population;
 	
 	/**
+	 * Constructs a population containing the elements of the specified collection, 
+	 * in the order they are returned by the collection's iterator.  
+	 *
+	 * @param population the collection whose elements are to be placed into 
+	 *        this list.
+	 * @throws NullPointerException if the specified population is {@code null}.
+	 */
+	public Population(final Collection<? extends Phenotype<G, C>> population) {
+		_population = new ArrayList<Phenotype<G,C>>(population);
+	}
+	
+	/**
 	 * Creating a new <code>Population</code> with the prealocated population size.
 	 * 
 	 * @param size Prealocated population size.
+	 * @throws IllegalArgumentException if the specified initial capacity is negative
 	 */
 	public Population(final int size) {
 		_population = new ArrayList<Phenotype<G, C>>(size);

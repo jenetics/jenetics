@@ -27,20 +27,19 @@ import java.io.Serializable;
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Chromosome;
-import org.jenetics.SinglePointCrossover;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
-import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
+import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.5 2008-08-27 20:30:32 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.6 2008-09-23 18:01:53 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;
@@ -98,30 +97,21 @@ public class Knapsack {
 	
     public static void main(String[] argv) throws Exception {
     	//Defining the fitness function and the genotype.
-        KnappsackFunction ff = newFitnessFuntion(15, 100);
-        GenotypeFactory<BitGene> genotype = Genotype.valueOf(
+        final KnappsackFunction ff = newFitnessFuntion(15, 100);
+        final GenotypeFactory<BitGene> genotype = Genotype.valueOf(
             BitChromosome.valueOf(15, Probability.valueOf(0.5))
         );
         
-        GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<BitGene, Float64>(genotype, ff);
+        final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
         ga.setMaximalPhenotypeAge(10);
-        ga.setPopulationSize(100);
+        ga.setPopulationSize(1000);
         ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
         ga.setAlterer(
             new Mutation<BitGene>(Probability.valueOf(0.115), 
             new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
         );
         
-        long start = System.currentTimeMillis();
-        ga.setup();
-        for (int i = 0; i < 100; ++i) {
-        	ga.evolve();
-        	Phenotype<BitGene, Float64> bpt = ga.getStatistic().getBestPhenotype();
-        	System.out.println(bpt + "-->" + bpt.getFitness());
-        }
-        System.out.println(ga.getBestPhenotype() + "-->" + ga.getBestPhenotype().getFitness());
-        long end = System.currentTimeMillis();
-        System.out.println("Time: " + ((end -start)/1000.0) + "s");
+        GAUtils.execute(ga, 100);
     }
 }
 

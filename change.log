@@ -19,6 +19,7 @@ Jenetics-0.3.0.0
   instead.
 - adding interface org.jenetics.util.Copyable.
 - Streamline XML-Serialization.
+- Streamline toString methods and examples.
 
 Jenetics-0.2.0.0
 - Removing Randomizable interface.

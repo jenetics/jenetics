@@ -28,6 +28,11 @@ import static org.jenetics.util.Validator.notNull;
 import java.util.List;
 import java.util.Random;
 
+import javax.measure.Measurable;
+import javax.measure.Measure;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
+
 import org.jenetics.util.Probability;
 
 /**
@@ -52,7 +57,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.10 2008-09-23 14:16:37 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.11 2008-09-23 18:01:51 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -80,8 +85,13 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	private int _generation = 0;
 	
 	private Phenotype<G, C> _bestPhenotype = null;
+	private Statistic<G, C> _bestStatistic = null;
+	
 	private Statistic<G, C> _statistic = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
+	
+	private long _startTime =  System.currentTimeMillis();
+	private long _stopTime = System.currentTimeMillis();
 
 	/**
 	 * Create a new genetic algorithm.
@@ -132,6 +142,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			);
 		}
 		
+		_startTime = System.currentTimeMillis();
+		
 		//Initializing/filling up the Population 
 		for (int i = _population.size(); i < _populationSize; ++i) {
 			final Phenotype<G, C> pt = Phenotype.valueOf(
@@ -144,6 +156,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		//First valuation of the initial population.
 		_statistic = _calculator.evaluate(_population);
 		_bestPhenotype = _statistic.getBestPhenotype();
+		_bestStatistic = _statistic;
 		++_generation;
 	}
 	
@@ -205,7 +218,10 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		_statistic = _calculator.evaluate(_population);
 		if (_bestPhenotype.getFitness().compareTo(_statistic.getBestFitness()) < 0) {
 			_bestPhenotype = _statistic.getBestPhenotype();
-		}	
+			_bestStatistic = _statistic;
+		}
+		
+		_stopTime = System.currentTimeMillis();
 	}
 	
 	/**
@@ -532,12 +548,16 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the current population.
+	 * Return a copy of the current population.
 	 * 
-	 * @return The current population.
+	 * @return The copy of the current population.
 	 */
 	public Population<G, C> getPopulation() {
-		return _population;
+		return new Population<G, C>(_population);
+	}
+	
+	public Statistic<G, C> getBestStatistic() {
+		return _bestStatistic;
 	}
 	
 	/**
@@ -558,6 +578,24 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public StatisticCalculator<G, C> getStatisticCalculator() {
 		return _calculator;
+	}
+	
+	/**
+	 * Return the execution time elapsed so far.
+	 * 
+	 * @return the execution time.
+	 */
+	public Measurable<Duration> getExecutionTime() {
+		return Measure.valueOf(_stopTime - _startTime, SI.MILLI(SI.SECOND));
+	}
+	
+	@Override
+	public String toString() {
+		final StringBuilder out = new StringBuilder();
+		out.append(String.format(
+			"%4d: (best): %s", _generation, getStatistic().getBestPhenotype()
+		));
+		return out.toString();
 	}
 	
 	/**

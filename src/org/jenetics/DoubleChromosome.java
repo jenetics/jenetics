@@ -24,8 +24,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -36,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.6 2008-09-23 18:01:49 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -167,17 +165,6 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		chromosome._min = _min;
 		chromosome._max = _max;
 		return chromosome;
-	}
-	
-	@Override
-	public Text toText() {
-		TextBuilder out = TextBuilder.newInstance();
-		out.append("[");
-		for (NumberGene<Float64> gene : this) {
-			out.append(gene.toText());
-		}
-		out.append("]");
-		return out.toText();
 	}
 	
 	@Override

@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import javolution.text.Text;
+import javolution.text.TextBuilder;
+
 import org.jenetics.util.Array;
 
 import org.jscience.mathematics.number.Number;
@@ -29,7 +32,7 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.5 2008-09-23 18:01:51 fwilhelm Exp $
  */
 public abstract class NumberChromosome<N extends NumberGene<?>> 
 	extends AbstractChromosome<N> 
@@ -197,6 +200,45 @@ public abstract class NumberChromosome<N extends NumberGene<?>>
 		return doubleValue(0);
 	}
 
+	@Override
+	public int hashCode() {
+		return 17 + (_min != null ? _min.hashCode() : 1)*37 +
+				17 + (_max != null ? _max.hashCode() : 1)*37 +
+				17 + super.hashCode()*37;
+	}
+	
+	@Override
+	public boolean equals(final Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof NumberChromosome<?>)) {
+			
+		}
+		
+		final NumberChromosome<?> nc = (NumberChromosome<?>)object;
+		return (_min != null ? _min.equals(nc._min) : nc._min == null) &&
+				(_max != null ? _max.equals(nc._max) : nc._max == null) &&
+				super.equals(nc);
+	}
+	
+	@Override
+	public Text toText() {
+		final TextBuilder out = TextBuilder.newInstance();
+		
+		out.append("[");
+		if (length() > 0) {
+			out.append(getGene(0)._value);
+		}
+		for (int i = 1; i < length(); ++i) {
+			out.append(", ");
+			out.append(getGene(i)._value);
+		}
+		out.append("]");
+		
+		return out.toText();
+	}
+	
 }
 
 
