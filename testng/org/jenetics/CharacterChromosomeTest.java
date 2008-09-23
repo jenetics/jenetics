@@ -23,16 +23,13 @@
 package org.jenetics;
 
 import static org.testng.Assert.assertEquals;
-
-import java.io.IOException;
-
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosomeTest.java,v 1.4 2008-09-22 21:39:47 fwilhelm Exp $
+ * @version $Id: CharacterChromosomeTest.java,v 1.5 2008-09-23 19:18:26 fwilhelm Exp $
  */
 public class CharacterChromosomeTest  {
 
@@ -75,7 +72,7 @@ public class CharacterChromosomeTest  {
     }
 
     @Test
-    public void serialize() throws XMLStreamException, IOException {
+    public void serialize() throws XMLStreamException {
     	SerializeUtils.testSerialization(new CharacterChromosome(23));
     }
 

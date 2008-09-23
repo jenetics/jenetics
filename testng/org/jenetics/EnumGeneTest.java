@@ -22,15 +22,13 @@
  */
 package org.jenetics;
 
-import java.io.IOException;
-
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGeneTest.java,v 1.1 2008-09-22 21:39:44 fwilhelm Exp $
+ * @version $Id: EnumGeneTest.java,v 1.2 2008-09-23 19:18:28 fwilhelm Exp $
  */
 public class EnumGeneTest {
 
@@ -39,7 +37,7 @@ public class EnumGeneTest {
 	}
 	
 	@Test
-	public void serialize() throws XMLStreamException, IOException {
+	public void serialize() throws XMLStreamException {
 		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
 	}
 }

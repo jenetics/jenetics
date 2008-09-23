@@ -27,7 +27,6 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.Set;
 
 import javolution.xml.stream.XMLStreamException;
@@ -36,7 +35,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGeneTest.java,v 1.4 2008-09-22 21:39:49 fwilhelm Exp $
+ * @version $Id: CharacterGeneTest.java,v 1.5 2008-09-23 19:18:29 fwilhelm Exp $
  */
 public class CharacterGeneTest {
 
@@ -120,7 +119,7 @@ public class CharacterGeneTest {
     }
     
     @Test
-    public void serialize() throws IOException, XMLStreamException {
+    public void serialize() throws XMLStreamException {
     	SerializeUtils.testSerialization(CharacterGene.valueOf());
     }
 

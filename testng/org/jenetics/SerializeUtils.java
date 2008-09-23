@@ -24,7 +24,6 @@ package org.jenetics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
@@ -34,19 +33,18 @@ import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerializeUtils.java,v 1.1 2008-09-22 21:39:47 fwilhelm Exp $
+ * @version $Id: SerializeUtils.java,v 1.2 2008-09-23 19:18:27 fwilhelm Exp $
  */
 class SerializeUtils {
 
 	public static void testSerialization(final Object object) 
-		throws XMLStreamException, IOException 
+		throws XMLStreamException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
 		writer.setIndentation("\t");
 		writer.write(object);
 		writer.close();
-		out.close();
 		
 		final byte[] data = out.toByteArray();
 		System.out.println(new String(data));

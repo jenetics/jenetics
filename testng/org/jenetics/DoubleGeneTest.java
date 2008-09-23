@@ -25,9 +25,6 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-
-import java.io.IOException;
-
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
@@ -35,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGeneTest.java,v 1.5 2008-09-22 21:39:46 fwilhelm Exp $
+ * @version $Id: DoubleGeneTest.java,v 1.6 2008-09-23 19:18:29 fwilhelm Exp $
  */
 public class DoubleGeneTest { 
     
@@ -190,7 +187,7 @@ public class DoubleGeneTest {
     }
 	
 	@Test
-	public void serialize() throws XMLStreamException, IOException {
+	public void serialize() throws XMLStreamException {
 		SerializeUtils.testSerialization(DoubleGene.valueOf(3.5, 0.5, 5.5));
 		SerializeUtils.testSerialization(DoubleGene.valueOf(Math.PI, 0.5, 5.5));
 	}
