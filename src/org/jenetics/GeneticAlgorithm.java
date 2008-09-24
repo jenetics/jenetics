@@ -57,7 +57,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.11 2008-09-23 18:01:51 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.12 2008-09-24 20:20:13 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -89,6 +89,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	
 	private Statistic<G, C> _statistic = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
+	
+	private FitnessEvaluator _evaluator = new FitnessEvaluator();
 	
 	private long _startTime =  System.currentTimeMillis();
 	private long _stopTime = System.currentTimeMillis();
@@ -153,6 +155,9 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			_population.add(pt);
 		}
 		
+		//Evaluate the fitness.
+		_evaluator.evaluate(_population);
+		
 		//First valuation of the initial population.
 		_statistic = _calculator.evaluate(_population);
 		_bestPhenotype = _statistic.getBestPhenotype();
@@ -214,7 +219,10 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			_population.add(offspring.get(i));
 		}
 		
-		//Evaluate the population. All the fitness calculation is done here.
+		//Evaluate the fitness
+		_evaluator.evaluate(_population);		
+		
+		//Evaluate the statistic
 		_statistic = _calculator.evaluate(_population);
 		if (_bestPhenotype.getFitness().compareTo(_statistic.getBestFitness()) < 0) {
 			_bestPhenotype = _statistic.getBestPhenotype();
@@ -271,7 +279,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * Set the fitness scaler.
 	 * 
 	 * @param scaler The fitness scaler.
-	 * @throws NullPointerException if the scaler is null.
+	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
 	public void setFitnessScaler(final FitnessScaler<C> scaler) {
 		notNull(scaler, "FitnessScaler");
@@ -285,6 +293,26 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public FitnessScaler<C> getFitnessScaler() {
 		return _fitnessScaler;
+	}
+	
+	/**
+	 * Set a fitness evaluator.
+	 * 
+	 * @param evaluator the fitness evaluator.
+	 * @throws NullPointerException if the evaluator is {@code null}.
+	 */
+	public void setFitnessEvaluator(final FitnessEvaluator evaluator) {
+		notNull(evaluator, "Fitness evaluator");
+		_evaluator = evaluator;
+	}
+	
+	/**
+	 * Return the fitness evaluator.
+	 * 
+	 * @return the fitness evaluator.
+	 */
+	public FitnessEvaluator getFitnessEvaluator() {
+		return _evaluator;
 	}
 	
 	/**
