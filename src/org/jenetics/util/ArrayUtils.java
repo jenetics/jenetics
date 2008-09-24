@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.4 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.5 2008-09-24 20:20:19 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -456,6 +456,14 @@ public final class ArrayUtils {
 	 *     4: 9    12
 	 *     5: 12   15	
 	 * </pre>
+	 * 
+	 * [code]
+	 *     final List<Object> objects = ...
+	 *     final parts[] parts = partition(objects.size(), 16);
+	 *     for (int i = 0; i < 16; ++i) {
+	 *         doSomethingWithSubList(objects.subList(parts[i], parts[i + 1]));
+	 *     }
+	 * [/code]
 	 * 
 	 * @param size the size of the array to partition.
 	 * @param prts the number of parts the (virtual) array should be partitioned.

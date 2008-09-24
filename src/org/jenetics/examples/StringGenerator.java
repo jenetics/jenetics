@@ -25,6 +25,7 @@ package org.jenetics.examples;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.Chromosome;
+import org.jenetics.ConcurrentFitnessEvaluator;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -37,7 +38,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.7 2008-09-23 18:01:53 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.8 2008-09-24 20:20:09 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -46,7 +47,7 @@ public class StringGenerator {
 		
 		private final String value;
 		
-		public Function(final String value) {
+		public Function(final String value) { 
 			this.value = value;
 		}
 		
@@ -59,14 +60,14 @@ public class StringGenerator {
 					++matches;
 				}
 			}
-			
+
 			return Integer64.valueOf(matches);
 		}
 		
 	}
 	
 	public static void main(String[] args) {
-		final String value = "A test string";
+		final String value = "A test string must be found!";
 		
 		final GenotypeFactory<CharacterGene> gtf = Genotype.valueOf(
 			new CharacterChromosome(value.length())
@@ -75,7 +76,7 @@ public class StringGenerator {
 		final GeneticAlgorithm<CharacterGene, Integer64> 
 		ga = new GeneticAlgorithm<CharacterGene, Integer64>(gtf, ff);
 		
-		ga.setPopulationSize(500);
+		ga.setPopulationSize(5000);
 		ga.setSurvivorFraction(Probability.valueOf(0.3));
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
@@ -84,8 +85,9 @@ public class StringGenerator {
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
+		ga.setFitnessEvaluator(new ConcurrentFitnessEvaluator(4));
 
-		GAUtils.execute(ga, 25);
+		GAUtils.execute(ga, 20);
 	}
 	
 }

@@ -1,3 +1,8 @@
+- Deleting ConcurrentStatisticCalculator
+- Adding concurrence support on the level of the fitness calculation of the
+  phenotypes of the population. This will the job of the 
+  (Concurrent)FitnessEvaluator.
+
 Jenetics-0.3.0.0
 - Adding javadoc to exported zip file.
 - Moving classes 
