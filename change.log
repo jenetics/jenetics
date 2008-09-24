@@ -2,6 +2,8 @@
 - Adding concurrence support on the level of the fitness calculation of the
   phenotypes of the population. This will the job of the 
   (Concurrent)FitnessEvaluator.
+- CharacterChromosome implements java.lang.CharSequence interface.
+- Adding method org.jenetics.util.Array.subArray(start, end).
 
 Jenetics-0.3.0.0
 - Adding javadoc to exported zip file.

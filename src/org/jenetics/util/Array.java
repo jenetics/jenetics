@@ -35,7 +35,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.3 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.4 2008-09-24 21:28:48 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
 	Object[] _array = {};
@@ -161,6 +161,27 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
 		final Array<T> copy = newInstance(length());
 		System.arraycopy(_array, 0, copy._array, 0, length());
 		return copy;
+	}
+	
+	/**
+	 * Return a new array that is a sub array of {@code this} array. 
+	 * 
+	 * @param start low endpoint (inclusive) of the subArray.
+	 * @param end high endpoint (exclusive) of the subArray.
+	 * @return a copy of the specified range within this array.
+	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 *        (start < 0 || end > length || start > end)
+	 */
+	public Array<T> subArray(final int start, final int end) {
+		if (start < 0 || end > length() || start > end) {
+			throw new IndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", start, end
+			));
+		}
+		
+		final Array<T> array = newInstance(end - start);
+		System.arraycopy(_array, start, array._array, 0, end - start);
+		return array;
 	}
 	
 	@Override

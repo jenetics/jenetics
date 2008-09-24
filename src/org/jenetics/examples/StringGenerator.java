@@ -24,7 +24,6 @@ package org.jenetics.examples;
 
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.Chromosome;
 import org.jenetics.ConcurrentFitnessEvaluator;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
@@ -38,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.8 2008-09-24 20:20:09 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.9 2008-09-24 21:28:48 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -52,16 +51,8 @@ public class StringGenerator {
 		}
 		
 		public Integer64 evaluate(Genotype<CharacterGene> genotype) {
-			int matches = 0;
-			Chromosome<CharacterGene> chromosome = genotype.getChromosome();
-			
-			for (int i = 0; i < value.length(); ++i) {
-				if (chromosome.getGene(i).getAllele().equals(value.charAt(i))) {
-					++matches;
-				}
-			}
-
-			return Integer64.valueOf(matches);
+			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
+			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
 		}
 		
 	}
@@ -87,7 +78,64 @@ public class StringGenerator {
 		));
 		ga.setFitnessEvaluator(new ConcurrentFitnessEvaluator(4));
 
-		GAUtils.execute(ga, 20);
+		GAUtils.execute(ga, 25);
+	}
+	
+	
+	/**
+	 * Return Levenshtein distance of two character sequences.
+	 */
+	private static int levenshtein(final CharSequence s, final CharSequence t) {
+		//Step 1:
+		final int n = s.length();
+		final int m = t.length();
+		if (n == 0 || m == 0) {
+			return Math.max(n, m);
+		}
+		
+		//Step 2:
+		int d[][] = new int[n + 1][m +1];
+		for (int i = 0; i <= n; ++i) {
+			d[i][0] = i;
+		}
+		for (int j = 0; j <= m; ++j) {
+			d[0][j] = j;
+		}
+		
+		//Step 3:
+		for (int i = 1; i <= n; ++i) {
+			final char si = s.charAt(i - 1);
+			
+			//Step 4:
+			for (int j = 1; j <= m; ++j) {
+				final char tj = t.charAt(j - 1);
+				
+				//Step 5:
+				int cost = 0;
+				if (si == tj) {
+					cost = 0;
+				} else {
+					cost = 1;
+				}
+				
+				//Step 6:
+				d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+			}
+		}
+		
+		//Step 7:
+		return d[n][m];
+	}
+
+	private static int min(final int a, final int b, final int c) {
+		int m = a;
+		if (b < m) {
+			m = b;
+		}
+		if (c < m) {
+			m = c;
+		}
+		return m;
 	}
 	
 }
