@@ -22,15 +22,12 @@
  */
 package org.jenetics.examples;
 
-import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.FitnessEvaluators;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
-import org.jenetics.LinearRankSelector;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
@@ -39,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.10 2008-09-26 18:39:41 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.11 2008-09-26 21:36:33 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -82,7 +79,7 @@ public class StringGenerator {
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
-//		ga.setFitnessEvaluator(FitnessEvaluators.CONCURRENT);
+//		ga.setFitnessEvaluator(new ConcurrentEvaluator());
 
 		GAUtils.execute(ga, 25);
 	}
