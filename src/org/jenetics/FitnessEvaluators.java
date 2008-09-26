@@ -1,6 +1,7 @@
-/* 
- * FitnessEvaluators.java, 25.09.2008
- *
+/*
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
+ *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -17,6 +18,7 @@
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
 package org.jenetics;
 
@@ -29,7 +31,7 @@ import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessEvaluators.java,v 1.1 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: FitnessEvaluators.java,v 1.2 2008-09-26 18:41:39 fwilhelm Exp $
  */
 public class FitnessEvaluators {
 
