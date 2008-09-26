@@ -20,32 +20,27 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics.examples;
+package org.jenetics;
 
-import org.jenetics.GeneticAlgorithm;
+import java.util.List;
+
+import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.4 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.1 2008-09-26 21:36:33 fwilhelm Exp $
  */
-public class GAUtils {
+public class SerialEvaluator implements FitnessEvaluator {
 
-	private GAUtils() {
-	}
-	
-	public static void execute(final GeneticAlgorithm<?, ?> ga, int generations) {
-		ga.setup();	
-		System.out.println(ga);
-		for (int i = 1; i < generations; ++i) {
-			ga.evolve();
-			System.out.println(ga);
+	@Override
+	public <G extends Gene<?>, C extends Comparable<C>> 
+	void evaluate(final List<Phenotype<G, C>> population)
+	{
+		Validator.notNull(population, "Population");
+		
+		for (int i = population.size(); --i >= 0;) {
+			population.get(i).evaluate();
 		}
-		System.out.println();
-		System.out.println("Execution time: " + ga.getExecutionTime());
-		System.out.println(ga._selectTimer);
-		System.out.println(ga._alterTimer);
-		System.out.println(ga._evaluateTimer);
-		System.out.println(ga.getBestStatistic());
 	}
 	
 }

@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.5 2008-09-24 20:20:19 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.6 2008-09-26 21:36:34 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -457,11 +457,24 @@ public final class ArrayUtils {
 	 *     5: 12   15	
 	 * </pre>
 	 * 
+	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
-	 *     final List<Object> objects = ...
-	 *     final parts[] parts = partition(objects.size(), 16);
-	 *     for (int i = 0; i < 16; ++i) {
-	 *         doSomethingWithSubList(objects.subList(parts[i], parts[i + 1]));
+	 *     ConcurrentContext.enter();
+	 *     try {
+	 *        final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
+	 *		
+	 *        for (int i = 0; i < parts.length - 1; ++i) {
+	 *            final int part = i;
+	 *            ConcurrentContext.execute(new Runnable() {
+	 *                public void run() {
+	 *                    for (int j = parts[part + 1]; --j >= parts[part];) {
+	 *                        population.get(j).evaluate();
+	 *                    }
+	 *                }
+	 *            });
+	 *        }
+	 *     } finally {
+	 *         ConcurrentContext.exit();
 	 *     }
 	 * [/code]
 	 * 

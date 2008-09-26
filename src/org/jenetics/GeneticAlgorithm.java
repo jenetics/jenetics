@@ -57,7 +57,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.13 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.14 2008-09-26 21:36:33 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -90,11 +90,15 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	private Statistic<G, C> _statistic = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
 	
-	private FitnessEvaluator _evaluator = FitnessEvaluators.SERIAL;
+	private FitnessEvaluator _evaluator = new SerialEvaluator();
 	
 	private long _startTime =  System.currentTimeMillis();
 	private long _stopTime = System.currentTimeMillis();
 
+	public final Timer _selectTimer = new Timer("Select");
+	public final Timer _alterTimer = new Timer("Alter");
+	public final Timer _evaluateTimer = new Timer("Evaluate");
+	
 	/**
 	 * Create a new genetic algorithm.
 	 * 
@@ -182,6 +186,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		//Increment the generation and the generation.
 		++_generation;
 		
+		_selectTimer.start();
 		//Select the survivors.
 		final Population<G, C> survivors = _survivorSelector.select(
 			_population, getNumberOfSurvivors()
@@ -191,9 +196,12 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		final Population<G, C> offspring = _offspringSelector.select(
 			_population, getNumberOfOffsprings()
 		);
+		_selectTimer.stop();
 		
+		_alterTimer.start();
 		//Altering the offpring (Recombination, Mutation ...).
 		_alterer.alter(offspring);
+		_alterTimer.stop();
 		
 		//Accepting the new population.
 		_population = new Population<G, C>(_populationSize);
@@ -215,12 +223,12 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 				_population.add(pt);
 			}
 		}
-		for (int i = 0, n = offspring.size(); i < n; ++i) {
-			_population.add(offspring.get(i));
-		}
+		_population.addAll(offspring);
 		
+		_evaluateTimer.start();
 		//Evaluate the fitness
 		_evaluator.evaluate(_population);		
+		_evaluateTimer.stop();
 		
 		//Evaluate the statistic
 		_statistic = _calculator.evaluate(_population);
