@@ -44,11 +44,11 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.5 2008-09-23 18:01:50 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.6 2008-09-26 18:39:40 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
-				XMLSerializable, Realtime
+				XMLSerializable, Realtime, Runnable
 {
 	private static final long serialVersionUID = 1614815678599076552L;
 	
@@ -77,11 +77,28 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 		return _genotype;
 	}
 	
-	private void calculateFitness() {
+	/**
+	 * Evaluates the (raw) fitness values and caches it so the fitness calculation
+	 * is performed only once.
+	 */
+	public void evaluate() {
 		if (_rawFitness == null) {
 			_rawFitness = _fitnessFunction.evaluate(_genotype);
 			_fitness = _fitnessScaler.scale(_rawFitness);
+			
+			assert (_rawFitness != null);
+			assert (_fitness != null);
 		}
+	}
+	
+	/**
+	 * This method simply calls the {@link #evaluate()} method. The purpose of
+	 * this method is to have a simple way for concurrent fitness calculation
+	 * for expensive fitness values.
+	 */
+	@Override
+	public void run() {
+		evaluate();
 	}
 	
 	/**
@@ -90,7 +107,7 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	 * @return The fitness value of this <code>Phenotyp</code>.
 	 */
 	public C getFitness() {
-		calculateFitness();
+		evaluate();
 		return _fitness;
 	}
 	
@@ -100,7 +117,7 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	 * @return The raw fitness (befor scaling) of the phenotype.
 	 */
 	public C getRawFitness() {
-		calculateFitness();
+		evaluate();
 		return _rawFitness;
 	}
 	

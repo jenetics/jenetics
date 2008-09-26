@@ -42,7 +42,7 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.7 2008-09-23 19:18:57 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.8 2008-09-26 18:39:40 fwilhelm Exp $
  */
 public class Population<G extends Gene<?>, C extends Comparable<C>> 
 	implements List<Phenotype<G, C>>, Iterable<Phenotype<G, C>>, 
@@ -158,8 +158,10 @@ public class Population<G extends Gene<?>, C extends Comparable<C>>
 	public void sort() {
 		Collections.sort(_population, new Comparator<Phenotype<G, C>>() {
 			@Override 
-			public int compare(final Phenotype<G, C> that, final Phenotype<G, C> other) {
-				return -that.compareTo(other);
+			public int compare(
+				final Phenotype<G, C> that, final Phenotype<G, C> other
+			) {
+				return other.getFitness().compareTo(that.getFitness());
 			}
 		});
 	}

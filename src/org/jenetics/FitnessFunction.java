@@ -38,17 +38,19 @@ import java.io.Serializable;
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessFunction.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: FitnessFunction.java,v 1.5 2008-09-26 18:39:40 fwilhelm Exp $
  */
 public interface FitnessFunction<G extends Gene<?>, C extends Comparable<C>> 
 	extends Serializable 
 {
 
 	/**
-	 * Evaluating the FitnessFunction.
+	 * Evaluating the FitnessFunction. The returned value <em>must</em> not be 
+	 * {@code null}.
 	 * 
 	 * @param genotype The FitnessFunction argument.
-	 * @return The fitness value.
+	 * @return The fitness value. The returned value <em>must</em> not be 
+	 *        {@code null}.
 	 */
 	public C evaluate(final Genotype<G> genotype);
 	

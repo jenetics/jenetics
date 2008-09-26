@@ -22,13 +22,15 @@
  */
 package org.jenetics.examples;
 
+import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.ConcurrentFitnessEvaluator;
+import org.jenetics.FitnessEvaluators;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
+import org.jenetics.LinearRankSelector;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
@@ -37,7 +39,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.9 2008-09-24 21:28:48 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.10 2008-09-26 18:39:41 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -58,7 +60,9 @@ public class StringGenerator {
 	}
 	
 	public static void main(String[] args) {
-		final String value = "A test string must be found!";
+		final String value = 
+			"To be, or not to be: that is the question: " +
+			"Whether 'tis nobler in the mind to suffer...";
 		
 		final GenotypeFactory<CharacterGene> gtf = Genotype.valueOf(
 			new CharacterChromosome(value.length())
@@ -72,11 +76,13 @@ public class StringGenerator {
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
 		ga.setSelectors(new RouletteWheelSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new LinearRankSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
-		ga.setFitnessEvaluator(new ConcurrentFitnessEvaluator(4));
+//		ga.setFitnessEvaluator(FitnessEvaluators.CONCURRENT);
 
 		GAUtils.execute(ga, 25);
 	}
