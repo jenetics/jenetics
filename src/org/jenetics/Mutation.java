@@ -22,13 +22,12 @@
  */
 package org.jenetics;
 
-import java.util.ListIterator;
 import java.util.Random;
-
-import org.jenetics.util.Probability;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.util.Probability;
 
 
 /**
@@ -61,7 +60,7 @@ import javolution.xml.stream.XMLStreamException;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.4 2008-08-29 21:18:16 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.5 2008-09-26 18:39:41 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -107,8 +106,9 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 								population.get(0).getGenotype().length();
 		
 		final Random random = RandomRegistry.getRandom();
-		for (ListIterator<Phenotype<G, C>> it = population.listIterator(); it.hasNext();) { 
-			final Phenotype<G, C> pt = it.next();
+		
+		for (int i = population.size(); --i >= 0;) {
+			final Phenotype<G, C> pt = population.get(i);
 			
 			if (random.nextDouble() < prop) {
 				final Genotype<G> gt = pt.getGenotype(); 
@@ -118,7 +118,7 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 				final int geneIndex = random.nextInt(ch.length());
 				ch.mutate(geneIndex);
 				
-				it.set(pt.newInstance(gt));
+				population.set(i, pt.newInstance(gt));
 			}
 		}
 	}

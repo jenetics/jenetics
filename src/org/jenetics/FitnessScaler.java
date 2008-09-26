@@ -33,10 +33,18 @@ import java.io.Serializable;
  * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessScaler.java,v 1.4 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: FitnessScaler.java,v 1.5 2008-09-26 18:39:40 fwilhelm Exp $
  */
 public interface FitnessScaler<C extends Comparable<C>> extends Serializable {
 	
+	/**
+	 * Return the scaled fitness value. The returned value <em>must</em> not be 
+	 * {@code null}.
+	 * 
+	 * @param value the fitness value to scale.
+	 * @return The scaled fitness value. The returned value <em>must</em> not be 
+	 *        {@code null}.
+	 */
 	public C scale(final C value);
 	
 }

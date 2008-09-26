@@ -24,8 +24,6 @@ package org.jenetics;
 
 import java.util.List;
 
-import org.jenetics.util.Validator;
-
 /**
  * The FitnessEvaluator is used for evaluating the fitness of each phenotype of 
  * an population. This is necessary to have an defined point where the fitness
@@ -34,9 +32,9 @@ import org.jenetics.util.Validator;
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessEvaluator.java,v 1.1 2008-09-24 20:20:13 fwilhelm Exp $
+ * @version $Id: FitnessEvaluator.java,v 1.2 2008-09-26 18:39:40 fwilhelm Exp $
  */
-public class FitnessEvaluator {
+public interface FitnessEvaluator {
 
 	/**
 	 * Evaluates the fitness of all phenotypes of a given population.
@@ -45,12 +43,13 @@ public class FitnessEvaluator {
 	 * @throws NullPointerException if the population is {@code null}.
 	 */
 	public <G extends Gene<?>, C extends Comparable<C>> 
-	void evaluate(final List<Phenotype<G, C>> population) {
-		Validator.notNull(population, "Population");
-		
-		for (int i = population.size(); --i >= 0;) {
-			population.get(i).getFitness();
-		}
-	}
+	void evaluate(final List<Phenotype<G, C>> population);
+//	{
+//		Validator.notNull(population, "Population");
+//		
+//		for (int i = population.size(); --i >= 0;) {
+//			population.get(i).getFitness();
+//		}
+//	}
 	
 }

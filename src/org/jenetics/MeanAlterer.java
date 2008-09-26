@@ -30,7 +30,7 @@ import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.6 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.7 2008-09-26 18:39:40 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 	private static final long serialVersionUID = 4680966822655548466L;
@@ -53,7 +53,7 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 		
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0, size = population.size(); i < size; ++i) {
-			if (random.nextDouble() < _probability.doubleValue()) {
+			if (_probability.isLargerThan(random.nextDouble())) {
 				final int pt2Index = random.nextInt(population.size());
 				final Phenotype<G, C> pt1 = population.get(i);
 				final Phenotype<G, C> pt2 = population.get(pt2Index);

@@ -26,7 +26,7 @@ import org.jenetics.GeneticAlgorithm;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.2 2008-09-23 18:17:10 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.3 2008-09-26 18:39:41 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -36,7 +36,7 @@ public class GAUtils {
 	public static void execute(final GeneticAlgorithm<?, ?> ga, int generations) {
 		ga.setup();	
 		System.out.println(ga);
-		for (int i = 0; i < generations; ++i) {
+		for (int i = 1; i < generations; ++i) {
 			ga.evolve();
 			System.out.println(ga);
 		}

@@ -57,7 +57,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.12 2008-09-24 20:20:13 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.13 2008-09-26 18:39:40 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -90,7 +90,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	private Statistic<G, C> _statistic = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
 	
-	private FitnessEvaluator _evaluator = new FitnessEvaluator();
+	private FitnessEvaluator _evaluator = FitnessEvaluators.SERIAL;
 	
 	private long _startTime =  System.currentTimeMillis();
 	private long _stopTime = System.currentTimeMillis();
@@ -621,7 +621,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 		out.append(String.format(
-			"%4d: (best): %s", _generation, getStatistic().getBestPhenotype()
+			"%4d: (best) %s", _generation, getStatistic().getBestPhenotype()
 		));
 		return out.toString();
 	}

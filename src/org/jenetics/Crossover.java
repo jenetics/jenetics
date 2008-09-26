@@ -34,7 +34,7 @@ import org.jenetics.util.Probability;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.8 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.9 2008-09-26 18:39:40 fwilhelm Exp $
  */
 public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 6083622511856683392L;
@@ -56,7 +56,7 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
-		for (int i = 0, size = population.size(); i < size; ++i) { 
+		for (int i = population.size(); --i >= 0;) { 
 			//Performing the crossover with the given probability.
 			if (!_probability.isLargerThan(random.nextDouble())) {
 				final int ptIndex = random.nextInt(population.size());
