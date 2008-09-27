@@ -28,18 +28,16 @@ import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerialEvaluator.java,v 1.1 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.2 2008-09-27 16:20:11 fwilhelm Exp $
  */
 public class SerialEvaluator implements FitnessEvaluator {
 
 	@Override
-	public <G extends Gene<?>, C extends Comparable<C>> 
-	void evaluate(final List<Phenotype<G, C>> population)
-	{
-		Validator.notNull(population, "Population");
+	public void evaluate(final List<? extends Runnable> runnables) {
+		Validator.notNull(runnables, "Runnables");
 		
-		for (int i = population.size(); --i >= 0;) {
-			population.get(i).evaluate();
+		for (int i = runnables.size(); --i >= 0;) {
+			runnables.get(i).run();
 		}
 	}
 	

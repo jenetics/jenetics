@@ -36,7 +36,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.7 2008-09-01 21:03:31 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.8 2008-09-27 16:20:12 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?>> 
 	extends Verifiable, Iterable<T>, Immutable, ChromosomeFactory<T>, Serializable
@@ -87,14 +87,6 @@ public interface Chromosome<T extends Gene<?>>
 	 */
 	public Chromosome<T> mutate(final int index);
 	 
-	/**
-	 * Test whether this chromosome is valid. In general a chromosome is valid
-	 * if all its {@link Gene}s are valid.
-	 * 
-	 * @return true if this chromosome is valid, false otherwise.
-	 */
-	@Override
-	public boolean isValid();
 	
 	/**
 	 * Returns the length of the Chromosome. The minimal length of a

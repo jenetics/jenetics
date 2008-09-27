@@ -32,7 +32,7 @@ import java.util.List;
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessEvaluator.java,v 1.2 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: FitnessEvaluator.java,v 1.3 2008-09-27 16:20:11 fwilhelm Exp $
  */
 public interface FitnessEvaluator {
 
@@ -42,8 +42,8 @@ public interface FitnessEvaluator {
 	 * @param population the population to evaluate.
 	 * @throws NullPointerException if the population is {@code null}.
 	 */
-	public <G extends Gene<?>, C extends Comparable<C>> 
-	void evaluate(final List<Phenotype<G, C>> population);
+//	public <G extends Gene<?>, C extends Comparable<C>> 
+	public void evaluate(final List<? extends Runnable> runnables);
 //	{
 //		Validator.notNull(population, "Population");
 //		

@@ -22,6 +22,9 @@
  */
 package org.jenetics.examples;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.FitnessFunction;
@@ -31,12 +34,13 @@ import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.ThreadedEvaluator;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.11 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.12 2008-09-27 16:20:11 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -57,6 +61,9 @@ public class StringGenerator {
 	}
 	
 	public static void main(String[] args) {
+		final int maxThreads = 2;
+		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
+		
 		final String value = 
 			"To be, or not to be: that is the question: " +
 			"Whether 'tis nobler in the mind to suffer...";
@@ -80,8 +87,11 @@ public class StringGenerator {
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
 //		ga.setFitnessEvaluator(new ConcurrentEvaluator());
+//		ga.setFitnessEvaluator(new ThreadedEvaluator(pool, maxThreads));
 
 		GAUtils.execute(ga, 25);
+		
+		pool.shutdown();
 	}
 	
 	
