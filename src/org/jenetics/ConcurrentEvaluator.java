@@ -31,7 +31,7 @@ import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.1 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.2 2008-09-27 16:20:12 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements FitnessEvaluator {
 	private final int _maxThreads;
@@ -49,21 +49,19 @@ public class ConcurrentEvaluator implements FitnessEvaluator {
 	}
 	
 	@Override
-	public <G extends Gene<?>, C extends Comparable<C>> 
-	void evaluate(final List<Phenotype<G, C>> population) 
-	{
-		Validator.notNull(population, "Population");
+	public void evaluate(final List<? extends Runnable> runnables) {
+		Validator.notNull(runnables, "Runnables");
 		
 		ConcurrentContext.enter();
 		try {
-			final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
+			final int[] parts = ArrayUtils.partition(runnables.size(), _maxThreads);
 			
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;
 				ConcurrentContext.execute(new Runnable() {
 					@Override public void run() {
 						for (int j = parts[part + 1]; --j >= parts[part];) {
-							population.get(j).evaluate();
+							runnables.get(j).run();
 						}
 					}
 				});
