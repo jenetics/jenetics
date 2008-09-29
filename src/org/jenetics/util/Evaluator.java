@@ -20,36 +20,32 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.List;
 
+import org.jenetics.Phenotype;
+
 /**
- * The FitnessEvaluator is used for evaluating the fitness of each phenotype of 
+ * The Evaluator is used for evaluating the fitness of each phenotype of 
  * an population. This is necessary to have an defined point where the fitness
  * calculation is performed. Otherwise the fitness calculation is performed
- * at the time where the {@link Phenotype#getFitness()} is called the first time.
+ * at the time where the {@link Phenotype#run()} is called the first time.
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessEvaluator.java,v 1.3 2008-09-27 16:20:11 fwilhelm Exp $
+ * @version $Id: Evaluator.java,v 1.1 2008-09-29 20:39:32 fwilhelm Exp $
  */
-public interface FitnessEvaluator {
+public interface Evaluator {
 
 	/**
-	 * Evaluates the fitness of all phenotypes of a given population.
+	 * Evaluates (calls the {@link Runnable#run()} of the given list of
+	 * {@link Runnable} objects.
 	 * 
-	 * @param population the population to evaluate.
-	 * @throws NullPointerException if the population is {@code null}.
+	 * @param runnables the runnables to evaluate.
+	 * @throws NullPointerException if the runnable list (or one of its element)
+	 *         is {@code null}.
 	 */
-//	public <G extends Gene<?>, C extends Comparable<C>> 
 	public void evaluate(final List<? extends Runnable> runnables);
-//	{
-//		Validator.notNull(population, "Population");
-//		
-//		for (int i = population.size(); --i >= 0;) {
-//			population.get(i).getFitness();
-//		}
-//	}
 	
 }

@@ -20,31 +20,43 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.List;
 
 import javolution.context.ConcurrentContext;
 
-import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.Validator;
 
 /**
+ * Evaluate the fitness function of an given list of {@link Runnable}s concurrently.
+ * This implementation uses the {@link ConcurrentContext} of the 
+ * <a href="http://javolution.org/api/index.html">Javolution</a> libarary.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.2 2008-09-27 16:20:12 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.1 2008-09-29 20:39:33 fwilhelm Exp $
  */
-public class ConcurrentEvaluator implements FitnessEvaluator {
-	private final int _maxThreads;
+public class ConcurrentEvaluator implements Evaluator {
+	private final int _numberOfThreads;
 	
+	/**
+	 * Create a concurrent evaluator object where the number of concurrent threads
+	 * is equal to the number of available cores.
+	 */
 	public ConcurrentEvaluator() {
 		this(ConcurrentContext.getConcurrency() + 1);
 	}
 	
-	public ConcurrentEvaluator(final int maxThreads) {
-		if (maxThreads <= 0) {
-			_maxThreads = 1;
+	/**
+	 * Create a concurrent evaluator object with the given number of concurrent
+	 * threas.
+	 * 
+	 * @param numberOfThreads the number of concurrent threads.
+	 */
+	public ConcurrentEvaluator(final int numberOfThreads) {
+		if (numberOfThreads <= 0) {
+			_numberOfThreads = 1;
 		} else {
-			_maxThreads = maxThreads;
+			_numberOfThreads = numberOfThreads;
 		}
 	}
 	
@@ -54,7 +66,7 @@ public class ConcurrentEvaluator implements FitnessEvaluator {
 		
 		ConcurrentContext.enter();
 		try {
-			final int[] parts = ArrayUtils.partition(runnables.size(), _maxThreads);
+			final int[] parts = ArrayUtils.partition(runnables.size(), _numberOfThreads);
 			
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;

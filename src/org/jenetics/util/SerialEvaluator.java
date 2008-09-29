@@ -20,16 +20,14 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.List;
 
-import org.jenetics.util.Evaluator;
-import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerialEvaluator.java,v 1.3 2008-09-29 20:39:31 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.1 2008-09-29 20:42:36 fwilhelm Exp $
  */
 public class SerialEvaluator implements Evaluator {
 

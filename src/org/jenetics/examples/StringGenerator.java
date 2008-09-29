@@ -34,13 +34,13 @@ import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.ThreadedEvaluator;
 import org.jenetics.util.Probability;
+import org.jenetics.util.ThreadedEvaluator;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.12 2008-09-27 16:20:11 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.13 2008-09-29 20:39:31 fwilhelm Exp $
  */
 public class StringGenerator {
 
