@@ -35,6 +35,7 @@ import javax.measure.unit.SI;
 
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.Probability;
+import org.jenetics.util.SerialEvaluator;
 
 /**
  * Main class. 
@@ -58,7 +59,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.15 2008-09-29 20:39:31 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.16 2008-09-29 20:42:36 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 

@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,35 +29,52 @@ import java.util.concurrent.ExecutorService;
 
 import javolution.context.ConcurrentContext;
 
-import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.Validator;
 
 
 /**
+ * Evaluate the fitness function of an given list of {@link Runnable}s concurrently.
+ * This implementation uses the {@link ExecutorService} of the 
+ * {@code java.util.concurrent} libarary.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.1 2008-09-27 16:20:12 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.1 2008-09-29 20:39:33 fwilhelm Exp $
  */
-public class ThreadedEvaluator implements FitnessEvaluator {
-	private final int _maxThreads;
+public class ThreadedEvaluator implements Evaluator {
+	private final int _numberOfThreads;
 	private final ExecutorService _pool;
 	private final List<Evaluator> _tasks;
 	
+	/**
+	 * Create a threaded evaluator object where the number of concurrent threads
+	 * is equal to the number of available cores.
+	 * 
+	 * @param pool the executor service (thread pool).
+	 * @throws NullPointerException if the given thread pool is {@code null}.
+	 */
 	public ThreadedEvaluator(final ExecutorService pool) {
 		this(pool, ConcurrentContext.getConcurrency() + 1);
 	}
 	
-	public ThreadedEvaluator(final ExecutorService pool, final int maxThreads) {
+	/**
+	 * Create a concurrent evaluator object with the given number of concurrent
+	 * threas.
+	 * 
+	 * @param numberOfThreads the number of concurrent threads.
+	 * @param pool the executor service (thread pool).
+	 * @throws NullPointerException if the given thread pool is {@code null}.
+	 */
+	public ThreadedEvaluator(final ExecutorService pool, final int numberOfThreads) {
 		Validator.notNull(pool, "Thread pool");
 		
-		if (maxThreads <= 0) {
-			_maxThreads = 1;
+		if (numberOfThreads <= 0) {
+			_numberOfThreads = 1;
 		} else {
-			_maxThreads = maxThreads;
+			_numberOfThreads = numberOfThreads;
 		}
 		_pool = pool;
 		
-		_tasks = new ArrayList<Evaluator>(_maxThreads);
-		for (int i = 0; i < _maxThreads; ++i) {
+		_tasks = new ArrayList<Evaluator>(_numberOfThreads);
+		for (int i = 0; i < _numberOfThreads; ++i) {
 			_tasks.add(new Evaluator());
 		}
 	}
@@ -67,9 +84,12 @@ public class ThreadedEvaluator implements FitnessEvaluator {
 		Validator.notNull(evaluables, "Population");
 		
 		//Creating the tasks.
-		final int[] parts = ArrayUtils.partition(evaluables.size(), _maxThreads);
+		final int[] parts = ArrayUtils.partition(evaluables.size(), _numberOfThreads);
 		for (int i = 0; i < parts.length - 1; ++i) {
 			_tasks.get(i).init(evaluables, parts[i], parts[i + 1]);
+		}
+		for (int i = parts.length - 1; i < _numberOfThreads; ++i) {
+			_tasks.get(i).init(null, 0, 0);
 		}
 		
 		//Executing the tasks.
