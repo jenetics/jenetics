@@ -24,13 +24,14 @@ package org.jenetics;
 
 import java.util.List;
 
+import org.jenetics.util.Evaluator;
 import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerialEvaluator.java,v 1.2 2008-09-27 16:20:11 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.3 2008-09-29 20:39:31 fwilhelm Exp $
  */
-public class SerialEvaluator implements FitnessEvaluator {
+public class SerialEvaluator implements Evaluator {
 
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
