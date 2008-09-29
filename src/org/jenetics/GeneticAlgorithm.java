@@ -33,6 +33,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import org.jenetics.util.Evaluator;
 import org.jenetics.util.Probability;
 
 /**
@@ -57,7 +58,7 @@ import org.jenetics.util.Probability;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.14 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.15 2008-09-29 20:39:31 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -90,7 +91,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	private Statistic<G, C> _statistic = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
 	
-	private FitnessEvaluator _evaluator = new SerialEvaluator();
+	private Evaluator _evaluator = new SerialEvaluator();
 	
 	private long _startTime =  System.currentTimeMillis();
 	private long _stopTime = System.currentTimeMillis();
@@ -309,7 +310,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * @param evaluator the fitness evaluator.
 	 * @throws NullPointerException if the evaluator is {@code null}.
 	 */
-	public void setFitnessEvaluator(final FitnessEvaluator evaluator) {
+	public void setFitnessEvaluator(final Evaluator evaluator) {
 		notNull(evaluator, "Fitness evaluator");
 		_evaluator = evaluator;
 	}
@@ -319,7 +320,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the fitness evaluator.
 	 */
-	public FitnessEvaluator getFitnessEvaluator() {
+	public Evaluator getFitnessEvaluator() {
 		return _evaluator;
 	}
 	
