@@ -22,6 +22,7 @@
  */
 package org.jenetics.examples;
 
+import static java.lang.Math.acos;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
@@ -41,7 +42,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.8 2008-09-24 20:20:10 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.9 2008-09-29 21:42:49 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
@@ -50,7 +51,7 @@ public class RealFunction {
 		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
 			final DoubleGene gene = genotype.getChromosome().getGene(0);
 			final double radians = toRadians(gene.doubleValue());
-			return Float64.valueOf(sin(radians)*cos(radians));
+			return Float64.valueOf(acos(sin(radians)*cos(radians)));
 		}
 	}
 	
@@ -61,10 +62,10 @@ public class RealFunction {
 		final GeneticAlgorithm<DoubleGene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);
-		ga.setPopulationSize(10);
+		ga.setPopulationSize(1000);
 		ga.setAlterer(
-			new Mutation<DoubleGene>(Probability.valueOf(0.1)).append(
-			new MeanAlterer<DoubleGene>(Probability.valueOf(0.5)))
+			new Mutation<DoubleGene>(Probability.valueOf(0.3)).append(
+			new MeanAlterer<DoubleGene>(Probability.valueOf(0.6)))
 		);
 		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
 		

@@ -28,14 +28,10 @@ import static org.jenetics.util.Validator.notNull;
 import java.util.List;
 import java.util.Random;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.Probability;
 import org.jenetics.util.SerialEvaluator;
+import org.jenetics.util.Timer;
 
 /**
  * Main class. 
@@ -59,7 +55,7 @@ import org.jenetics.util.SerialEvaluator;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.16 2008-09-29 20:42:36 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.17 2008-09-29 21:42:50 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -94,12 +90,11 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	
 	private Evaluator _evaluator = new SerialEvaluator();
 	
-	private long _startTime =  System.currentTimeMillis();
-	private long _stopTime = System.currentTimeMillis();
-
-	public final Timer _selectTimer = new Timer("Select");
-	public final Timer _alterTimer = new Timer("Alter");
-	public final Timer _evaluateTimer = new Timer("Evaluate");
+	//Some performance measure.
+	private final Timer _executionTimer = new Timer("Execution time");
+	private final Timer _selectTimer = new Timer("Select time");
+	private final Timer _alterTimer = new Timer("Alter time");
+	private final Timer _evaluateTimer = new Timer("Evaluate time");
 	
 	/**
 	 * Create a new genetic algorithm.
@@ -150,7 +145,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			);
 		}
 		
-		_startTime = System.currentTimeMillis();
+		_executionTimer.start();
 		
 		//Initializing/filling up the Population 
 		for (int i = _population.size(); i < _populationSize; ++i) {
@@ -169,6 +164,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		_bestPhenotype = _statistic.getBestPhenotype();
 		_bestStatistic = _statistic;
 		++_generation;
+		
+		_executionTimer.stop();
 	}
 	
 	/**
@@ -185,11 +182,13 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			);
 		}
 		
+		_executionTimer.start();
+		
 		//Increment the generation and the generation.
 		++_generation;
 		
-		_selectTimer.start();
 		//Select the survivors.
+		_selectTimer.start();
 		final Population<G, C> survivors = _survivorSelector.select(
 			_population, getNumberOfSurvivors()
 		);
@@ -200,8 +199,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		);
 		_selectTimer.stop();
 		
-		_alterTimer.start();
 		//Altering the offpring (Recombination, Mutation ...).
+		_alterTimer.start();
 		_alterer.alter(offspring);
 		_alterTimer.stop();
 		
@@ -227,8 +226,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		}
 		_population.addAll(offspring);
 		
-		_evaluateTimer.start();
 		//Evaluate the fitness
+		_evaluateTimer.start();
 		_evaluator.evaluate(_population);		
 		_evaluateTimer.stop();
 		
@@ -239,7 +238,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			_bestStatistic = _statistic;
 		}
 		
-		_stopTime = System.currentTimeMillis();
+		_executionTimer.stop();
 	}
 	
 	/**
@@ -623,8 +622,20 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the execution time.
 	 */
-	public Measurable<Duration> getExecutionTime() {
-		return Measure.valueOf(_stopTime - _startTime, SI.MILLI(SI.SECOND));
+	public Timer getExecutionTimeer() {
+		return _executionTimer;
+	}
+	
+	public Timer getSelectTimer() {
+		return _selectTimer;
+	}
+	
+	public Timer getAlterTimer() {
+		return _alterTimer;
+	}
+	
+	public Timer getEvaluateTime() {
+		return _evaluateTimer;
 	}
 	
 	@Override
