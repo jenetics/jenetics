@@ -32,15 +32,14 @@ import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
-import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Probability;
-import org.jenetics.util.ThreadedEvaluator;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.13 2008-09-29 20:39:31 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.14 2008-09-29 21:42:49 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -79,15 +78,14 @@ public class StringGenerator {
 		ga.setSurvivorFraction(Probability.valueOf(0.3));
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
-		ga.setSelectors(new RouletteWheelSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new RouletteWheelSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new LinearRankSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
-//		ga.setFitnessEvaluator(new ConcurrentEvaluator());
-//		ga.setFitnessEvaluator(new ThreadedEvaluator(pool, maxThreads));
+		ga.setFitnessEvaluator(new ConcurrentEvaluator());
 
 		GAUtils.execute(ga, 25);
 		

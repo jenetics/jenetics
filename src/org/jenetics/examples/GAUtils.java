@@ -26,7 +26,7 @@ import org.jenetics.GeneticAlgorithm;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.4 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.5 2008-09-29 21:42:49 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -41,10 +41,12 @@ public class GAUtils {
 			System.out.println(ga);
 		}
 		System.out.println();
-		System.out.println("Execution time: " + ga.getExecutionTime());
-		System.out.println(ga._selectTimer);
-		System.out.println(ga._alterTimer);
-		System.out.println(ga._evaluateTimer);
+		System.out.println(ga.getSelectTimer());
+		System.out.println(ga.getAlterTimer());
+		System.out.println(ga.getEvaluateTime());
+		System.out.println("---------------------------");
+		System.out.println(ga.getExecutionTimeer());
+		System.out.println();
 		System.out.println(ga.getBestStatistic());
 	}
 	

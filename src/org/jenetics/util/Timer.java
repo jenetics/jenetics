@@ -1,11 +1,11 @@
-package org.jenetics;
+package org.jenetics.util;
 
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.1 2008-09-26 21:36:33 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.1 2008-09-29 21:42:51 fwilhelm Exp $
  */
 public class Timer {
 	private final String _label;
@@ -26,7 +26,7 @@ public class Timer {
 	
 	@Override
 	public String toString() {
-		return _label + ": " + Measure.valueOf(_sum, SI.MILLI(SI.SECOND)).toString();
+		return String.format("%15s: %10s", _label, Measure.valueOf(_sum, SI.MILLI(SI.SECOND)));
 	}
 	
 }
