@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.14 2008-09-29 21:42:49 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.15 2008-10-02 19:40:17 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -78,9 +78,9 @@ public class StringGenerator {
 		ga.setSurvivorFraction(Probability.valueOf(0.3));
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
-//		ga.setSelectors(new RouletteWheelSelector<CharacterGene, Integer64>());
-//		ga.setSelectors(new LinearRankSelector<CharacterGene, Integer64>());
-//		ga.setSelectors(new BoltzmannSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))

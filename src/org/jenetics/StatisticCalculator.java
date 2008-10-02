@@ -24,10 +24,15 @@ package org.jenetics;
 
 import java.util.List;
 
+import javax.measure.Measurable;
+import javax.measure.Measure;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.8 2008-08-28 21:46:50 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.9 2008-10-02 19:40:17 fwilhelm Exp $
  */
 public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
@@ -106,8 +111,8 @@ public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 		return statistic;
 	}
 	
-	public long getLastEvaluationTime() {
-		return _stopEvaluationTime - _startEvaluationTime;
+	public Measurable<Duration> getEvaluationTime() {
+		return Measure.valueOf(_stopEvaluationTime - _startEvaluationTime, SI.MILLI(SI.SECOND));
 	}
 	
 	

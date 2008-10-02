@@ -28,6 +28,9 @@ import static org.jenetics.util.Validator.notNull;
 import java.util.List;
 import java.util.Random;
 
+import javolution.context.ConcurrentContext;
+
+import org.jenetics.util.Array;
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.Probability;
 import org.jenetics.util.SerialEvaluator;
@@ -55,7 +58,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.17 2008-09-29 21:42:50 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.18 2008-10-02 19:40:17 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -182,49 +185,27 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			);
 		}
 		
+		//Start the overall execution timer.s
 		_executionTimer.start();
 		
 		//Increment the generation and the generation.
 		++_generation;
 		
-		//Select the survivors.
+		//Select the survivors and the offsprings.
 		_selectTimer.start();
-		final Population<G, C> survivors = _survivorSelector.select(
-			_population, getNumberOfSurvivors()
-		);
-
-		//Generate the offspring.
-		final Population<G, C> offspring = _offspringSelector.select(
-			_population, getNumberOfOffsprings()
-		);
+		final Array<Population<G, C>> selection = select();
+		final Population<G, C> survivors = selection.get(0);
+		final Population<G, C> offsprings = selection.get(1);
 		_selectTimer.stop();
 		
-		//Altering the offpring (Recombination, Mutation ...).
+		//Alter the offprings (Recombination, Mutation ...).
 		_alterTimer.start();
-		_alterer.alter(offspring);
+		_alterer.alter(offsprings);
 		_alterTimer.stop();
 		
-		//Accepting the new population.
-		_population = new Population<G, C>(_populationSize);
-		for (int i = 0, n = survivors.size(); i < n; ++i) {
-			final Phenotype<G, C> survivor = survivors.get(i);
-			
-			//Survivor is still alive and valid.
-			if ((_generation - survivor.getGeneration()) <=
-				_maximalPhenotypeAge && survivor.isValid()) 
-			{
-				_population.add(survivor);
-				
-			//Create new phenotypes for dead survivors.
-			} else {
-				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newGenotype(), _fitnessFunction, 
-					_fitnessScaler, _generation
-				);
-				_population.add(pt);
-			}
-		}
-		_population.addAll(offspring);
+		//Combining the new population (containing the survivors and the altered
+		//offsprings).
+		_population = combine(survivors, offsprings);
 		
 		//Evaluate the fitness
 		_evaluateTimer.start();
@@ -250,6 +231,63 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		for (int i = 0; i < generations; ++i) {
 			evolve();
 		}
+	}
+	
+	private Array<Population<G, C>> select() {
+		final Array<Population<G, C>> selection = Array.newInstance(2);
+		
+		ConcurrentContext.enter();
+		try {
+			//Select the survivors.
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					final Population<G, C> survivors = _survivorSelector.select(
+						_population, getNumberOfSurvivors()
+					);
+					selection.set(0, survivors);
+				}
+			});
+
+			//Generate the offsprings.
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					final Population<G, C> offsprings = _offspringSelector.select(
+						_population, getNumberOfOffsprings()
+					);	
+					selection.set(1, offsprings);
+				}
+			});
+		} finally {
+			ConcurrentContext.exit();
+		}
+	
+		return selection;
+	}
+	
+	private Population<G, C> combine(final Population<G, C> survivors, final Population<G, C> offsprings) {
+		final Population<G, C> population = new Population<G, C>(_populationSize);
+		
+		for (int i = 0, n = survivors.size(); i < n; ++i) {
+			final Phenotype<G, C> survivor = survivors.get(i);
+			
+			//Survivor is still alive and valid.
+			if ((_generation - survivor.getGeneration()) <=
+				_maximalPhenotypeAge && survivor.isValid()) 
+			{
+				population.add(survivor);
+				
+			//Create new phenotypes for dead survivors.
+			} else {
+				final Phenotype<G, C> pt = Phenotype.valueOf(
+					_genotypeFactory.newGenotype(), _fitnessFunction, 
+					_fitnessScaler, _generation
+				);
+				population.add(pt);
+			}
+		}
+		population.addAll(offsprings);
+		
+		return population;
 	}
 	
 	private int getNumberOfSurvivors() {

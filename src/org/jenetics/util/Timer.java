@@ -1,11 +1,13 @@
 package org.jenetics.util;
 
+import javax.measure.Measurable;
 import javax.measure.Measure;
+import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.1 2008-09-29 21:42:51 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.2 2008-10-02 19:40:17 fwilhelm Exp $
  */
 public class Timer {
 	private final String _label;
@@ -24,9 +26,17 @@ public class Timer {
 		_sum += System.currentTimeMillis() - _start;
 	}
 	
+	public void reset() {
+		_sum = 0;
+	}
+	
+	public Measurable<Duration> getTime() {
+		return Measure.valueOf(_sum, SI.MILLI(SI.SECOND));
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("%15s: %10s", _label, Measure.valueOf(_sum, SI.MILLI(SI.SECOND)));
+		return String.format("%15s: %10s", _label, getTime());
 	}
 	
 }
