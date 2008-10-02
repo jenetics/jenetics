@@ -58,7 +58,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.18 2008-10-02 19:40:17 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.19 2008-10-02 21:21:15 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -656,22 +656,40 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the execution time elapsed so far.
+	 * Return the timer which measures the overall execution time.
 	 * 
-	 * @return the execution time.
+	 * @return the execution timer.
 	 */
-	public Timer getExecutionTimeer() {
+	public Timer getExecutionTimer() {
 		return _executionTimer;
 	}
 	
+	/**
+	 * Return the timer which measures the time needed for selecting the 
+	 * survivors and offsprings.
+	 * 
+	 * @return the selection timer.
+	 */
 	public Timer getSelectTimer() {
 		return _selectTimer;
 	}
 	
+	/**
+	 * Return the timer which measures the time needed for altering the 
+	 * population.
+	 * 
+	 * @return the alter timer.
+	 */
 	public Timer getAlterTimer() {
 		return _alterTimer;
 	}
 	
+	/**
+	 * Return the timer which measures the time needed for evaluating the
+	 * fitness function.
+	 * 
+	 * @return the fitness function evaluation timer.
+	 */
 	public Timer getEvaluateTime() {
 		return _evaluateTimer;
 	}

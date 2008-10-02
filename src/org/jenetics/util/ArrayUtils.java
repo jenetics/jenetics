@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.6 2008-09-26 21:36:34 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.7 2008-10-02 21:21:16 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -66,8 +66,11 @@ public final class ArrayUtils {
      * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
      *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
      *         <tt>j &gt; a.length</tt>
+     * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
+		Validator.notNull(array, "Array");
+		
 		final T temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
@@ -83,6 +86,7 @@ public final class ArrayUtils {
      * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
      *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
      *         <tt>j &gt; a.length</tt>
+     * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
 		swap(array._array, i, j);
@@ -95,11 +99,16 @@ public final class ArrayUtils {
      * @throws IllegalArgumentException if <tt>from &gt; to</tt>
      * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
      *         <tt>to &gt; a.length</tt>
+     * @throws NullPointerException if the give array or comparator is 
+     *         {@code null}.
 	 */
 	public static <T> void sort(
 		final Array<T> array, final int from, final int to,
 		final Comparator<? super T> comparator
 	) {
+		Validator.notNull(array, "Array");
+		Validator.notNull(comparator, "Comparator");
+		
 		@SuppressWarnings("unchecked")
 		final Comparator<Object> c = (Comparator<Object>)comparator;
 		Arrays.sort(array._array, from, to, c);
@@ -108,6 +117,9 @@ public final class ArrayUtils {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * @see Arrays#sort(Object[], Comparator)
+	 * 
+     * @throws NullPointerException if the give array or comparator is 
+     *         {@code null}.
 	 */
 	public static <T> void sort(final Array<T> array, final Comparator<? super T> comparator) {
 		sort(array, 0, array.length(), comparator);
@@ -119,6 +131,8 @@ public final class ArrayUtils {
      * @throws IllegalArgumentException if <tt>from &gt; to</tt>
      * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
      *         <tt>to &gt; a.length</tt>
+     * @throws NullPointerException if the give array or comparator is 
+     *         {@code null}.
 	 */
 	public static <T> void sort(final Array<T> array, final int from, final int to) {
 		Arrays.sort(array._array, from, to);
@@ -128,6 +142,7 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
 	 * @see Arrays#sort(Object[])
+     * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void sort(final Array<T> array) {
 		Arrays.sort(array._array, 0, array.length());
@@ -153,16 +168,19 @@ public final class ArrayUtils {
 	 * Finds the minimum and maximum value of the given array. 
 	 * 
 	 * @param <T> the comparable type.
-	 * @param values the array to search.
+	 * @param array the array to search.
 	 * @return an array of size two. The first element contains the minimum and
 	 *         the second element contains the maximum value. If the given array
 	 *         has size zero, the min and max values of the returned array are 
 	 *         {@code null}.
+     * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T extends Object & Comparable<? super T>> Array<T> 
-	minmax(final Array<T> values) 
+	minmax(final Array<T> array) 
 	{
-		final int size = values.length();
+		Validator.notNull(array, "Array");
+		
+		final int size = array.length();
 		
 		T min = null;
 		T max = null;
@@ -170,22 +188,22 @@ public final class ArrayUtils {
 		
 		if (size%2 == 0 && size > 0) {
 			start = 2;
-			if (values.get(0).compareTo(values.get(1)) < 0) {
-				min = values.get(0);
-				max = values.get(1);
+			if (array.get(0).compareTo(array.get(1)) < 0) {
+				min = array.get(0);
+				max = array.get(1);
 			} else {
-				min = values.get(1);
-				max = values.get(0);
+				min = array.get(1);
+				max = array.get(0);
 			}
 		} else if (size%2 == 1) {
 			start = 1;
-			min = values.get(0);
-			max = values.get(0);
+			min = array.get(0);
+			max = array.get(0);
 		}
 		
 		for (int i = start; i < size; i += 2) {
-			final T first = values.get(i);
-			final T second = values.get(i + 1);
+			final T first = array.get(i);
+			final T second = array.get(i + 1);
 			
 			if (first.compareTo(second) < 0) {
 				if (first.compareTo(min) < 0) {
@@ -214,74 +232,74 @@ public final class ArrayUtils {
 	 * array will not be rearranged.
 	 * 
 	 * @param <T> the array element type.
-	 * @param values the array.
+	 * @param array the array.
 	 * @param k searching the <i>k</i>th samllest value.
 	 * @return the <i>k</i>th samllest value.
-	 * @throws NullPointerException if the {@code values} array or one of it's
-	 *         element is {@code null}.
+	 * @throws NullPointerException if the {@code array} or one of it's element 
+	 *         is {@code null}.
 	 * @throws IllegalArgumentException if {@code k < 0} or 
 	 *         {@code k > values.length() - 1}.
 	 */
 	public static <T extends Object & Comparable<? super T>> T 
-	select(final Array<T> values, final int k) 
+	select(final Array<T> array, final int k) 
 	{
-		Validator.notNull(values, "Values array");
+		Validator.notNull(array, "Array");
 		if (k < 0) {
 			throw new IllegalArgumentException("k is smaller than zero: " + k);
 		}
-		if (k > values.length() - 1) {
+		if (k > array.length() - 1) {
 			throw new IllegalArgumentException(String.format(
 				"k is greater than values.length() - 1 (%d): %d", 
-				values.length() - 1, k
+				array.length() - 1, k
 			));
 		}
 
 		//Init the pivot array. This avoids the rearrangement of the given array.
-		final int[] pivot = new int[values.length()];
+		final int[] pivot = new int[array.length()];
 		for (int i = 0; i < pivot.length; ++i) {
 			pivot[i] = i;
 		}
 		
 		int l = 0;
-		int ir = values.length() - 1;
+		int ir = array.length() - 1;
 		T value = null;
 		while (value == null) {
 			if (ir <= l + 1) {
-				if (ir == l + 1 && values.get(pivot[ir]).compareTo(values.get(pivot[l])) < 0) {
+				if (ir == l + 1 && array.get(pivot[ir]).compareTo(array.get(pivot[l])) < 0) {
 					swap(pivot, l, ir);
 				}
-				value = values.get(pivot[k]);
+				value = array.get(pivot[k]);
 			} else {
 				final int mid = (l + ir) >> 1;
 				swap(pivot, mid, l + 1);
-				if (values.get(pivot[l]).compareTo(values.get(pivot[ir])) > 0) {
+				if (array.get(pivot[l]).compareTo(array.get(pivot[ir])) > 0) {
 					swap(pivot, l, ir);
 				}
-				if (values.get(pivot[l + 1]).compareTo(values.get(pivot[ir])) > 0) {
+				if (array.get(pivot[l + 1]).compareTo(array.get(pivot[ir])) > 0) {
 					swap(pivot, l + 1, ir);
 				}
-				if (values.get(pivot[l]).compareTo(values.get(pivot[l + 1])) > 0) {
+				if (array.get(pivot[l]).compareTo(array.get(pivot[l + 1])) > 0) {
 					swap(pivot, l, l + 1);
 				}
 				
 				int i = l + 1;
 				int j = ir;
-				final T a = values.get(pivot[l + 1]);
+				final T a = array.get(pivot[l + 1]);
 				while (true) {
 					do {
 						++i;
-					} while (values.get(pivot[i]).compareTo(a) < 0);
+					} while (array.get(pivot[i]).compareTo(a) < 0);
 					do {
 						--j;
-					} while (values.get(pivot[j]).compareTo(a) > 0);
+					} while (array.get(pivot[j]).compareTo(a) > 0);
 					if (j < i) {
 						break;
 					}
 					swap(pivot, i, j);
 				}
 				
-				values.set(pivot[l + 1], values.get(pivot[j]));
-				values.set(pivot[j], a);
+				array.set(pivot[l + 1], array.get(pivot[j]));
+				array.set(pivot[j], a);
 				if (j >= k) {
 					ir = j -1;
 				}
@@ -300,31 +318,33 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Finding the median of the give array.
+	 * Finding the median of the give array. The input array will not be 
+	 * rearranged.
 	 * 
 	 * @param <T> the array element type.
-	 * @param values the array.
+	 * @param array the array.
 	 * @return the median
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T extends Object & Comparable<? super T>> T 
-	median(final Array<T> values) 
+	median(final Array<T> array) 
 	{
-		Validator.notNull(values, "Array");
-		if (values.length() == 0) {
+		Validator.notNull(array, "Array");
+		if (array.length() == 0) {
 			throw new IllegalArgumentException("Array length is zero.");
 		}
 		
 		T median = null;
-		if (values.length() == 1) {
-			median = values.get(0);
-		} else if (values.length() == 2) {
-			if (values.get(0).compareTo(values.get(1)) < 0) {
-				median = values.get(0);
+		if (array.length() == 1) {
+			median = array.get(0);
+		} else if (array.length() == 2) {
+			if (array.get(0).compareTo(array.get(1)) < 0) {
+				median = array.get(0);
 			} else {
-				median = values.get(1);
+				median = array.get(1);
 			}
 		} else {
-			median = select(values, values.length()/2);
+			median = select(array, array.length()/2);
 		}
 		return median;
 	}
@@ -335,10 +355,12 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
-	 * 
 	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void randomize(final T[] array, final Random random) {
+		Validator.notNull(array, "Array");
+		
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -350,8 +372,8 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
-	 * 
 	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void randomize(final Array<T> array, final Random random) {
 		randomize(array._array, random);
@@ -367,9 +389,12 @@ public final class ArrayUtils {
      * @throws IllegalArgumentException if <tt>from &gt; to</tt>
      * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
      *         <tt>to &gt; a.length</tt>
+     * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
+		Validator.notNull(array, "Array");
 		rangeCheck(array.length, from, to);
+		
 		int i = from;
 		int j = to;
 		
@@ -390,6 +415,7 @@ public final class ArrayUtils {
      * @throws IllegalArgumentException if <tt>from &gt; to</tt>
      * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
      *         <tt>to &gt; a.length</tt>
+     * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
 		reverse(array._array, from, to);
@@ -400,6 +426,7 @@ public final class ArrayUtils {
 	 * 
 	 * @param <T> the array type.
 	 * @param array the array to reverse.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array) {
 		reverse(array, 0, array.length);
@@ -410,6 +437,7 @@ public final class ArrayUtils {
 	 * 
 	 * @param <T> the array type.
 	 * @param array the array to reverse.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final Array<T> array) {
 		reverse(array._array);

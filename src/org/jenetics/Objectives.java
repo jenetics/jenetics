@@ -22,8 +22,10 @@
 package org.jenetics;
 
 /**
+ * TODO: implement
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Objectives.java,v 1.2 2008-08-26 22:29:33 fwilhelm Exp $
+ * @version $Id: Objectives.java,v 1.3 2008-10-02 21:21:15 fwilhelm Exp $
  */
 public interface Objectives<T extends Gene<?>>  {
 
