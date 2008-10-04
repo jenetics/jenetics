@@ -34,9 +34,11 @@ import javax.measure.quantity.Duration;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.Probability;
 import org.jenetics.util.SerialEvaluator;
+import org.jenetics.util.ThreadedEvaluator;
 import org.jenetics.util.Timer;
 
 /**
@@ -60,8 +62,16 @@ import org.jenetics.util.Timer;
  *     System.out.println(ga.getStatistic());
  * [/code]
  * 
+ * If you have a problem to solve which requires expensive fitness calculation
+ * you can parallelize the fitness calculation by using the {@link ConcurrentEvaluator}
+ * of {@link ThreadedEvaluator}.
+ * [code]
+ *     final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
+ *     ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
+ * [/code]
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.20 2008-10-04 09:22:53 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.21 2008-10-04 14:42:53 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -84,7 +94,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
 	private int _populationSize = 50;
-	private Population<G, C> _population = new Population<G, C>();
+	private Population<G, C> _population = new Population<G, C>(_populationSize);
 	private int _maximalPhenotypeAge = 70;
 	private int _generation = 0;
 	
