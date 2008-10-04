@@ -35,7 +35,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.4 2008-09-24 21:28:48 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.5 2008-10-04 14:42:53 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
 	Object[] _array = {};
@@ -92,7 +92,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
 	 * Returns the index of the first occurrence of the specified element
 	 * in this array, or -1 if this array does not contain the element.
 	 * 
-	 * @param element element to search for
+	 * @param element element to search for, can be {@code null}
 	 * @return the index of the first occurrence of the specified element in
 	 *         this array, or -1 if this array does not contain the element
 	 */
@@ -103,7 +103,8 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
 	/**
 	 * Returns {@code true} if this array contains the specified element.
 	 *
-	 * @param element element whose presence in this array is to be tested
+	 * @param element element whose presence in this array is to be tested. The
+	 *        tested element can be {@code null}.
 	 * @return {@code true} if this array contains the specified element
 	 */
 	public boolean contains(final Object element) {

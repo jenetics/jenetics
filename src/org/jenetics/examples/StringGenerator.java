@@ -33,13 +33,12 @@ import org.jenetics.Genotype;
 import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.15 2008-10-02 19:40:17 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.16 2008-10-04 14:42:53 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -52,7 +51,7 @@ public class StringGenerator {
 			this.value = value;
 		}
 		
-		public Integer64 evaluate(Genotype<CharacterGene> genotype) {
+		public Integer64 evaluate(final Genotype<CharacterGene> genotype) {
 			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
 			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
 		}
@@ -85,7 +84,7 @@ public class StringGenerator {
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
-		ga.setFitnessEvaluator(new ConcurrentEvaluator());
+		ga.setFitnessEvaluator(new org.jenetics.util.ConcurrentEvaluator());
 
 		GAUtils.execute(ga, 25);
 		

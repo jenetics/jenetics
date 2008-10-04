@@ -33,17 +33,17 @@ import javolution.context.ConcurrentContext;
  * <a href="http://javolution.org/api/index.html">Javolution</a> libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.1 2008-09-29 20:39:33 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.2 2008-10-04 14:42:53 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
 	private final int _numberOfThreads;
 	
 	/**
 	 * Create a concurrent evaluator object where the number of concurrent threads
-	 * is equal to the number of available cores.
+	 * is equal to the number of available cores + one.
 	 */
 	public ConcurrentEvaluator() {
-		this(ConcurrentContext.getConcurrency() + 1);
+		this(Runtime.getRuntime().availableProcessors() + 1);
 	}
 	
 	/**
