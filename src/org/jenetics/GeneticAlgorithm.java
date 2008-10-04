@@ -28,6 +28,9 @@ import static org.jenetics.util.Validator.notNull;
 import java.util.List;
 import java.util.Random;
 
+import javax.measure.Measurable;
+import javax.measure.quantity.Duration;
+
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
@@ -58,7 +61,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.19 2008-10-02 21:21:15 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.20 2008-10-04 09:22:53 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -656,42 +659,39 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the timer which measures the overall execution time.
+	 * Return the overall execution time.
 	 * 
-	 * @return the execution timer.
+	 * @return the execution time.
 	 */
-	public Timer getExecutionTimer() {
-		return _executionTimer;
+	public Measurable<Duration> getExecutionTime() {
+		return _executionTimer.getTime();
 	}
 	
 	/**
-	 * Return the timer which measures the time needed for selecting the 
-	 * survivors and offsprings.
+	 * Return the time needed for selecting the survivors and offsprings.
 	 * 
-	 * @return the selection timer.
+	 * @return the selection time.
 	 */
-	public Timer getSelectTimer() {
-		return _selectTimer;
+	public Measurable<Duration> getSelectTime() {
+		return _selectTimer.getTime();
 	}
 	
 	/**
-	 * Return the timer which measures the time needed for altering the 
-	 * population.
+	 * Return the time needed for altering the population.
 	 * 
-	 * @return the alter timer.
+	 * @return the alter time.
 	 */
-	public Timer getAlterTimer() {
-		return _alterTimer;
+	public Measurable<Duration> getAlterTime() {
+		return _alterTimer.getTime();
 	}
 	
 	/**
-	 * Return the timer which measures the time needed for evaluating the
-	 * fitness function.
+	 * Return the time needed for evaluating the fitness function.
 	 * 
-	 * @return the fitness function evaluation timer.
+	 * @return the fitness function evaluation time.
 	 */
-	public Timer getEvaluateTime() {
-		return _evaluateTimer;
+	public Measurable<Duration> getEvaluateTime() {
+		return _evaluateTimer.getTime();
 	}
 	
 	@Override

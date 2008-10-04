@@ -1,9 +1,12 @@
+Jenetics-0.3.1.0
 - Deleting ConcurrentStatisticCalculator
 - Adding concurrence support on the level of the fitness calculation of the
   phenotypes of the population. This will the job of the 
-  (Concurrent)FitnessEvaluator.
+  (Concurrent)Evaluator.
 - CharacterChromosome implements java.lang.CharSequence interface.
 - Adding method org.jenetics.util.Array.subArray(start, end).
+- Adding timer which measures the time spend for selecting, altering and 
+  calculating the fitness of a population.
 
 Jenetics-0.3.0.0
 - Adding javadoc to exported zip file.
