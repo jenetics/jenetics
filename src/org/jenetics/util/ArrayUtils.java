@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.8 2008-10-13 19:10:37 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.9 2008-10-13 21:13:02 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -539,7 +539,20 @@ public final class ArrayUtils {
 		return partition;
 	}	
 	
+	/**
+	 * Returns the index of the first occurrence of the specified element in 
+	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
+	 * 
+	 * @param array the array to search.
+	 * @param element the element to search for.
+	 * @return the inde of the first occurrence of the specified element in the
+	 *         given {@code array}, of -1 if the {@code array} does not contain
+	 *         the element.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */
 	public static int indexOf(final Object[] array, final Object element) {
+		Validator.notNull(array, "Array");
+		
 		int index = -1;
 		if (element != null) {
 			for (int i = 0; i < array.length && index == -1; ++i) {
@@ -555,6 +568,23 @@ public final class ArrayUtils {
 			}	
 		}
 		return index;
+	}
+	
+	/**
+	 * Returns the index of the first occurrence of the specified element in 
+	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
+	 * 
+	 * @param array the array to search.
+	 * @param element the element to search for.
+	 * @return the inde of the first occurrence of the specified element in the
+	 *         given {@code array}, of -1 if the {@code array} does not contain
+	 *         the element.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */
+	public static <T> int indexOf(final Array<T> array, final T element) {
+		Validator.notNull(array, "Array");
+		
+		return indexOf(array._array, element);
 	}
 	
 //	public static <T> int indexOf(final T[] array, final Comparator<? super T> comparator) {

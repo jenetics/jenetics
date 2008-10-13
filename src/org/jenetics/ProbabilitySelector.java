@@ -32,10 +32,9 @@ import org.jenetics.util.Validator;
  * Probability array the method getProbabilties returns. The size of
  * the Probability array and the size of the population must be the same.
  * The order of the population and the probabilities has to be the same too.
- * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.7 2008-10-13 19:15:01 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.8 2008-10-13 21:13:02 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -94,7 +93,7 @@ public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparabl
 	 * @param random the random number generator.
 	 * @return the random index.
 	 */
-	public static int nextIndex(final double[] probabilities, final Random random) {
+	static int nextIndex(final double[] probabilities, final Random random) {
 		final double prop = random.nextDouble();
 		
 		int j = -1;
