@@ -35,13 +35,14 @@ import org.jenetics.IntegerGene;
 import org.jenetics.Mutation;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
+import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Probability;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.14 2008-09-29 21:42:49 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.15 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -69,7 +70,7 @@ public class TravelingSalesman {
 	}
 	
 	public static void main(String[] args) {
-		final int stops = 10;
+		final int stops = 300;
 		
 		final FitnessFunction<IntegerGene, Integer> ff = new Function(adjacencyMatrix(stops));
 		final GenotypeFactory<IntegerGene> gtf = Genotype.valueOf(
@@ -77,13 +78,13 @@ public class TravelingSalesman {
 		);
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(10000);
-
+		ga.setFitnessEvaluator(new ConcurrentEvaluator(2));
         ga.setAlterer(
             new Mutation<IntegerGene>(Probability.valueOf(0.5), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
         
-        GAUtils.execute(ga, 10);
+        GAUtils.execute(ga, 20);
 	}
 	
 	/**

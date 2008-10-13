@@ -39,7 +39,7 @@ import java.io.Serializable;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.5 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>> 
 	extends ProbabilitySelector<T, C> implements Serializable
@@ -56,6 +56,9 @@ public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>>
 	protected double[] probabilities(final Population<T, C> population, final int count) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";
+		
+		//Sort the popoulation.
+		population.sort();
 		
 		final double N = population.size();
 		final double[] props = new double[population.size()];

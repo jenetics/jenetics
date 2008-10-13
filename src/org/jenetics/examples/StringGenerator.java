@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.16 2008-10-04 14:42:53 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.17 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -78,7 +78,7 @@ public class StringGenerator {
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
 //		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
-//		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
+		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(

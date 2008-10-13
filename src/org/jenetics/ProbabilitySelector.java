@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.5 2008-08-26 22:29:34 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.6 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -59,21 +59,12 @@ public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparabl
 			return selection;
 		}
 		
-		population.sort();
 		final double[] probabilities = probabilities(population, count);
 		assert (population.size() == probabilities.length);
 		final Random random = RandomRegistry.getRandom();
 		
 		for (int i = 0; i < count; ++i) {
-			final double prop = random.nextDouble();
-			int j = -1;
-			double sum = 0;
-			do {
-				++j;
-				sum += probabilities[j]; 
-			} while (j < probabilities.length && sum < prop);
-			
-			selection.add(population.get(j));
+			selection.add(population.get(nextIndex(probabilities, random)));
 		}
 		
 		assert(count == selection.size());
@@ -82,17 +73,30 @@ public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparabl
 	
 	/**
 	 * Return a Probability array, which corresponds to the given 
-	 * Population. The pobability array and the population must have the same
-	 * size.
+	 * Population. The probability array and the population must have the same
+	 * size. The population is not sorted. If a subclass needs a sorted 
+	 * population, the subclass is responsible to sort the population.
 	 * 
-	 * @param population The population, which has been sortet ascending 
-	 * 	  according to the fitness value.
+	 * @param population The <em>unsorted</em> population.
 	 * @param count 
 	 * @return Probability array.
 	 */
 	protected abstract double[] probabilities(
 		final Population<G, C> population, final int count
 	);
+	
+	static int nextIndex(final double[] probabilities, final Random random) {
+		final double prop = random.nextDouble();
+		
+		int j = -1;
+		double sum = 0;
+		do {
+			++j;
+			sum += probabilities[j]; 
+		} while (j < probabilities.length && sum < prop);
+		
+		return j;
+	}
 
 }
 

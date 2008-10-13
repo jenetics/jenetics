@@ -26,6 +26,7 @@ import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javolution.context.StackContext;
@@ -35,7 +36,7 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.4 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.5 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
@@ -51,7 +52,7 @@ public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>>
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double[] probabilities = new double[population.size()];
-		final N worstFitness = population.get(population.size() - 1).getFitness();
+		final N worstFitness = Collections.min(population).getFitness();
 		
 		StackContext.enter();
 		try {

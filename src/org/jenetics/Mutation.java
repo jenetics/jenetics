@@ -24,9 +24,6 @@ package org.jenetics;
 
 import java.util.Random;
 
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 import org.jenetics.util.Probability;
 
 
@@ -60,7 +57,7 @@ import org.jenetics.util.Probability;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.5 2008-09-26 18:39:41 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.6 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -123,41 +120,6 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	static final XMLFormat<Mutation> XML = new XMLFormat<Mutation>(Mutation.class) {
-		@Override
-		public Mutation newInstance(final Class<Mutation> cls, final InputElement xml) 
-			throws XMLStreamException 
-		{
-			final double p = xml.getAttribute("probability", 0.5);
-			final boolean hasAlterer = xml.getAttribute("has-alterer", false);
-			Mutation alterer = null;
-			
-			if (hasAlterer) {
-				Alterer component = xml.getNext();
-				alterer = new Mutation(Probability.valueOf(p), component);
-			} else {
-				alterer = new Mutation(Probability.valueOf(p));
-			}
-			
-			return alterer;
-		}
-		@Override
-		public void write(final Mutation a, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute("probability", a._probability.doubleValue());
-			xml.setAttribute("has-alterer", a._component != null);
-			if (a._component != null) {
-				xml.add(a._component);
-			}
-		}
-		@Override
-		public void read(final InputElement xml, final Mutation a) 
-			throws XMLStreamException 
-		{
-		}
-	};
 
 }
 
