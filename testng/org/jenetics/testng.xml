@@ -80,6 +80,11 @@
 			<class name="org.jenetics.PopulationTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.ProbabilitySelector">
+		<classes>
+			<class name="org.jenetics.ProbabilitySelectorTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.Statistic">
 		<classes>
 			<class name="org.jenetics.StatisticTest" />

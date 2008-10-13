@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.7 2008-10-02 21:21:16 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.8 2008-10-13 19:10:37 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -360,7 +360,6 @@ public final class ArrayUtils {
 	 */
 	public static <T> void randomize(final T[] array, final Random random) {
 		Validator.notNull(array, "Array");
-		
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -540,7 +539,7 @@ public final class ArrayUtils {
 		return partition;
 	}	
 	
-	static int indexOf(final Object[] array, final Object element) {
+	public static int indexOf(final Object[] array, final Object element) {
 		int index = -1;
 		if (element != null) {
 			for (int i = 0; i < array.length && index == -1; ++i) {
@@ -558,7 +557,24 @@ public final class ArrayUtils {
 		return index;
 	}
 	
+//	public static <T> int indexOf(final T[] array, final Comparator<? super T> comparator) {
+//		int index = -1;
+//		
+//		for (int i = 0; i < array.length && index == -1; ++i) {
+//		}
+//		
+//		return index;
+//	}
+	
 }
+
+
+
+
+
+
+
+
 
 
 
