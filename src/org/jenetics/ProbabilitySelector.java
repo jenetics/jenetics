@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The probabilities in the array must sum to one!
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.6 2008-10-13 19:10:37 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.7 2008-10-13 19:15:01 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -85,7 +85,16 @@ public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparabl
 		final Population<G, C> population, final int count
 	);
 	
-	static int nextIndex(final double[] probabilities, final Random random) {
+	/**
+	 * Return the next random index. The index probability is given by the 
+	 * {@code probabilities} array. The values of the {@code probabilities} array
+	 * must sum to one.
+	 * 
+	 * @param probabilities the probabilities array (must sum to one).
+	 * @param random the random number generator.
+	 * @return the random index.
+	 */
+	public static int nextIndex(final double[] probabilities, final Random random) {
 		final double prop = random.nextDouble();
 		
 		int j = -1;
