@@ -24,9 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
 
-import java.util.Iterator;
-
-import org.jenetics.util.Array;
+import java.util.ListIterator;
 
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -36,13 +34,15 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Array;
+
 /**
  * This class is the encoded problem solution with one to many Chromosomes.
  * 
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.9 2008-09-23 19:18:57 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.10 2008-10-13 21:13:02 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -105,7 +105,7 @@ public class Genotype<T extends Gene<?>>
 	}
 	
 	@Override
-	public Iterator<Chromosome<T>> iterator() {
+	public ListIterator<Chromosome<T>> iterator() {
 		return _chromosomes.iterator();
 	}
 	

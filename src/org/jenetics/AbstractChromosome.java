@@ -22,14 +22,14 @@
  */
 package org.jenetics;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.RandomAccess;
-
-import org.jenetics.util.Array;
-import org.jenetics.util.Validator;
 
 import javolution.lang.Realtime;
 import javolution.text.Text;
+
+import org.jenetics.util.Array;
+import org.jenetics.util.Validator;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
@@ -39,7 +39,7 @@ import javolution.text.Text;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.11 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.12 2008-10-13 21:13:02 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -121,7 +121,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	}
 	
 	@Override
-	public Iterator<T> iterator() {
+	public ListIterator<T> iterator() {
 		return _genes.iterator();
 	}
 	
