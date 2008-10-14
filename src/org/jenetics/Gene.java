@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.io.Serializable;
 
+import org.jenetics.util.Verifiable;
+
 import javolution.lang.ValueType;
 
 /**
@@ -34,7 +36,7 @@ import javolution.lang.ValueType;
  *            of this gene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Gene.java,v 1.2 2008-08-28 21:21:13 fwilhelm Exp $
+ * @version $Id: Gene.java,v 1.3 2008-10-14 20:07:40 fwilhelm Exp $
  */
 public interface Gene<A> extends Serializable, ValueType, Verifiable {
 	

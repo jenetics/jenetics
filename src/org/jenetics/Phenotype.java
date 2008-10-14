@@ -23,6 +23,9 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
+
+import org.jenetics.util.Verifiable;
+
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -44,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.6 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.7 2008-10-14 20:07:40 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 

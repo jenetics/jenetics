@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 
 
 import javolution.context.ObjectFactory;
@@ -35,9 +36,9 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.5 2008-10-04 14:42:53 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.6 2008-10-14 20:07:40 fwilhelm Exp $
  */
-public class Array<T> implements Iterable<T>, Copyable<Array<T>> {
+public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
 	boolean _sealed = false;
 	
