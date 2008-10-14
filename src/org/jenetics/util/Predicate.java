@@ -20,35 +20,14 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
-
-import org.jenetics.util.Probability;
+package org.jenetics.util;
 
 /**
- * This alterer does nothing.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.4 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: Predicate.java,v 1.1 2008-10-14 21:10:04 fwilhelm Exp $
  */
-public class NullAlterer<G extends Gene<?>> extends Alterer<G> {
-	private static final long serialVersionUID = 7892835302001002915L;
+public interface Predicate<T> {
 
-	public NullAlterer(final Alterer<G> component) {
-		super(component);
-	}
-
-	public NullAlterer(final Probability probability, final Alterer<G> component) {
-		super(probability, component);
-	}
-
-	public NullAlterer(final Probability probability) {
-		super(probability);
-	}
-
-	@Override
-	protected <C extends Comparable<C>> void componentAlter(
-		final Population<G, C> population, final int generation
-	) {
-	}
-
+	public boolean evaluate(T object);
+	
 }

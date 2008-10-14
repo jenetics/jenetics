@@ -50,7 +50,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.7 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.8 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?>> implements Serializable {
 	private static final long serialVersionUID = -675546015545758480L;
@@ -131,16 +131,19 @@ public abstract class Alterer<G extends Gene<?>> implements Serializable {
 	 * @param population The Population to be altered. If the 
 	 *        <code>population</code> is <code>null</code> or empty, nothing is 
 	 *        altered.
+	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @throws NullPointerException if the given {@code population} is 
 	 *         {@code null}.
 	 */
-	public <C extends Comparable<C>> void alter(final Population<G, C> population) {
+	public <C extends Comparable<C>> void alter(
+		final Population<G, C> population, final int generation
+	) {
 		notNull(population, "Population");
 		
 		if (!population.isEmpty()) {
-			componentAlter(population);
+			componentAlter(population, generation);
 			if (_component != null) {
-				_component.alter(population);
+				_component.alter(population, generation);
 			}
 		}
 	}
@@ -151,9 +154,10 @@ public abstract class Alterer<G extends Gene<?>> implements Serializable {
 	 * empty.
 	 * 
 	 * @param population the Population to be altered.
+	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 */
 	protected abstract <C extends Comparable<C>> void
-		componentAlter(Population<G, C> population);
+		componentAlter(Population<G, C> population, final int generation);
 	
 	/**
 	 * Return the component alterer.

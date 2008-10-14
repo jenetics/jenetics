@@ -30,7 +30,7 @@ import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.7 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.8 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 	private static final long serialVersionUID = 4680966822655548466L;
@@ -48,7 +48,9 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 	}
 
 	@Override
-	protected <C extends Comparable<C>> void componentAlter(Population<G, C> population) {
+	protected <C extends Comparable<C>> void componentAlter(
+		final Population<G, C> population, final int generation
+	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
@@ -73,8 +75,8 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Alterer<G> {
 				chromosomes1.set(chIndex, chromosomes1.get(chIndex).newChromosome(genes1));
 				chromosomes2.set(chIndex, chromosomes2.get(chIndex).newChromosome(genes2));
 				
-				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1)));
-				population.set(pt2Index, pt2.newInstance(Genotype.valueOf(chromosomes2))); 
+				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
+				population.set(pt2Index, pt2.newInstance(Genotype.valueOf(chromosomes2), generation)); 
 			}
 		}
 	}

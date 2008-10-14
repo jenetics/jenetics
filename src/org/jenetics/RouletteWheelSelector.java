@@ -22,21 +22,16 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.max;
-
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
-
-import javolution.context.StackContext;
 
 import org.jscience.mathematics.number.Number;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.5 2008-10-13 19:10:37 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.6 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
@@ -52,38 +47,19 @@ public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>>
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double[] probabilities = new double[population.size()];
-		final N worstFitness = Collections.min(population).getFitness();
+		final double worst = Collections.min(population).getFitness().doubleValue();
 		
-		StackContext.enter();
-		try {
-			N sum = null;
-			for (Phenotype<G, N> pt : population) {
-				if (sum == null) {
-					sum = pt.getFitness().minus(worstFitness);
-				} else {
-					sum = sum.plus(pt.getFitness().minus(worstFitness));
-				}
+		double sum = -worst*population.size();
+		for (int i = population.size(); --i >= 0;) {
+			sum += population.get(i).getFitness().doubleValue();
+		}
+		
+		if (sum > 0.0) {
+			for (int i = population.size(); --i >= 0;) {
+				probabilities[i] = (population.get(i).getFitness().doubleValue() - worst)/sum;
 			}
-			
-			if (abs(sum.doubleValue()) <= 0.0) {
-				final double p = 1.0/probabilities.length;
-				for (int i = 0; i < probabilities.length; ++i) {
-					probabilities[i] = p; 
-				}
-				return probabilities;
-			}
-			
-			assert(sum.doubleValue() > 0.0);
-
-			int i = 0;
-			for (Iterator<Phenotype<G, N>> it = population.iterator(); it.hasNext(); ++i) {
-				probabilities[i] = max(0.0, 
-						(it.next().getFitness().doubleValue() - 
-								worstFitness.doubleValue())/sum.doubleValue()
-					);
-			}
-		} finally {
-			StackContext.exit();
+		} else {
+			Arrays.fill(probabilities, 1.0/population.size());
 		}
 		
 		return probabilities;

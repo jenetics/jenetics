@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.10 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.11 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -567,6 +567,7 @@ public final class ArrayUtils {
 				}
 			}	
 		}
+		
 		return index;
 	}
 	
@@ -587,17 +588,25 @@ public final class ArrayUtils {
 		return indexOf(array._array, element);
 	}
 	
-//	public static <T> int indexOf(final T[] array, final Function<? super T, Boolean> predicate) {
-//		int index = -1;
-//		
-//		for (int i = 0; i < array.length && index == -1; ++i) {
-//			if (predicate.evaluate(array[i])) {
-//				index = i;
-//			}
-//		}
-//		
-//		return index;
-//	}
+	public static <T> int indexOf(final T[] array, final Predicate<? super T> predicate) {
+		Validator.notNull(array, "Array");
+		Validator.notNull(predicate, "Predicate");
+		
+		int index = -1;
+		
+		for (int i = 0; i < array.length && index == -1; ++i) {
+			if (predicate.evaluate(array[i])) {
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+	
+	
+	public static <T> int indexOf(final Array<T> array, final Predicate<? super T> predicate) {
+		return indexOf(array._array, predicate);
+	}
 	
 }
 
