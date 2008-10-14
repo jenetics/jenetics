@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.List;
+import java.util.RandomAccess;
 
 import javolution.context.ConcurrentContext;
 
@@ -33,7 +34,7 @@ import javolution.context.ConcurrentContext;
  * <a href="http://javolution.org/api/index.html">Javolution</a> libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.2 2008-10-04 14:42:53 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.3 2008-10-14 20:07:40 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -68,15 +69,28 @@ public class ConcurrentEvaluator implements Evaluator {
 		try {
 			final int[] parts = ArrayUtils.partition(runnables.size(), _numberOfThreads);
 			
-			for (int i = 0; i < parts.length - 1; ++i) {
-				final int part = i;
-				ConcurrentContext.execute(new Runnable() {
-					@Override public void run() {
-						for (int j = parts[part + 1]; --j >= parts[part];) {
-							runnables.get(j).run();
+			if (runnables instanceof RandomAccess) {
+				for (int i = 0; i < parts.length - 1; ++i) {
+					final int part = i;
+					ConcurrentContext.execute(new Runnable() {
+						@Override public void run() {
+							for (int j = parts[part + 1]; --j >= parts[part];) {
+								runnables.get(j).run();
+							}
 						}
-					}
-				});
+					});
+				}
+			} else {
+				for (int i = 0; i < parts.length - 1; ++i) {
+					final int part = i;
+					ConcurrentContext.execute(new Runnable() {
+						@Override public void run() {
+							for (Runnable runnable : runnables.subList(parts[part], parts[part + 1])) {
+								runnable.run();
+							}
+						}
+					});
+				}
 			}
 		} finally {
 			ConcurrentContext.exit();
@@ -84,3 +98,11 @@ public class ConcurrentEvaluator implements Evaluator {
 	}
 	
 }
+
+
+
+
+
+
+
+

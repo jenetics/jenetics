@@ -23,11 +23,12 @@
 package org.jenetics.util;
 
 import java.util.List;
+import java.util.RandomAccess;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerialEvaluator.java,v 1.1 2008-09-29 20:42:36 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.2 2008-10-14 20:07:40 fwilhelm Exp $
  */
 public class SerialEvaluator implements Evaluator {
 
@@ -35,8 +36,14 @@ public class SerialEvaluator implements Evaluator {
 	public void evaluate(final List<? extends Runnable> runnables) {
 		Validator.notNull(runnables, "Runnables");
 		
-		for (int i = runnables.size(); --i >= 0;) {
-			runnables.get(i).run();
+		if (runnables instanceof RandomAccess) {
+			for (int i = runnables.size(); --i >= 0;) {
+				runnables.get(i).run();
+			}
+		} else {
+			for (Runnable runnable : runnables) {
+				runnable.run();
+			}
 		}
 	}
 	

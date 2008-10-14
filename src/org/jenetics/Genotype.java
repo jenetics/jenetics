@@ -35,6 +35,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Verifiable;
 
 /**
  * This class is the encoded problem solution with one to many Chromosomes.
@@ -42,7 +43,7 @@ import org.jenetics.util.Array;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.10 2008-10-13 21:13:02 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.11 2008-10-14 20:07:40 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 

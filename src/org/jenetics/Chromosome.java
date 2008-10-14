@@ -25,6 +25,7 @@ package org.jenetics;
 import java.io.Serializable;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Verifiable;
 
 import javolution.lang.Immutable;
 
@@ -36,7 +37,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.8 2008-09-27 16:20:12 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.9 2008-10-14 20:07:40 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?>> 
 	extends Verifiable, Iterable<T>, Immutable, ChromosomeFactory<T>, Serializable
