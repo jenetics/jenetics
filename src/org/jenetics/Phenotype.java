@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.7 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.8 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -203,13 +203,15 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	 * Factorymethod for creating a new {@link Phenotype} whith the same 
 	 * {@link FitnessFunction} and age as this {@link Phenotype}.
 	 * 
+	 * @param genotype the new genotype of the new phenotype.
+	 * @param generation date of birth (generation) of the new phenotype.
 	 * @return New {@link Phenotype} whith the same {@link FitnessFunction}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
-	Phenotype<G, C> newInstance(final Genotype<G> genotype) {
+	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
 		notNull(genotype, "Genotype");
 		return Phenotype.valueOf(
-			genotype, _fitnessFunction, _fitnessScaler, _generation
+			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
 	}
 	
@@ -258,15 +260,15 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 		}
 		
 		@SuppressWarnings("unchecked")
-		Phenotype<SG, SC> p = (Phenotype<SG, SC>)FACTORY.object();
-		p._genotype = Genotype.valueOf(genotype);
-		p._fitnessFunction = fitnessFunction;
-		p._fitnessScaler = fitnessScaler;
-		p._generation = generation;
+		Phenotype<SG, SC> pt = (Phenotype<SG, SC>)FACTORY.object();
+		pt._genotype = Genotype.valueOf(genotype);
+		pt._fitnessFunction = fitnessFunction;
+		pt._fitnessScaler = fitnessScaler;
+		pt._generation = generation;
 		
-		p._rawFitness = null;
-		p._fitness = null;
-		return p;
+		pt._rawFitness = null;
+		pt._fitness = null;
+		return pt;
 	}
 
 	@SuppressWarnings("unchecked")

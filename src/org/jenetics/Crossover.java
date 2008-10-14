@@ -34,7 +34,7 @@ import org.jenetics.util.Probability;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.9 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.10 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	private static final long serialVersionUID = 6083622511856683392L;
@@ -52,7 +52,9 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 	}
 
 	@Override
-	protected <C extends Comparable<C>> void componentAlter(final Population<T, C> population) {
+	protected <C extends Comparable<C>> void componentAlter(
+		final Population<T, C> population, final int generation
+	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
@@ -80,8 +82,8 @@ public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
 				chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newChromosome(genes2));
 				
 				//Creating two new Phenotypes and exchanging it with the old.
-				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1)));
-				population.set(ptIndex, pt2.newInstance(Genotype.valueOf(chromosomes2)));
+				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
+				population.set(ptIndex, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
 			}
 		}
 	}

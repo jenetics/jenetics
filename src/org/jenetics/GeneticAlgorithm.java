@@ -71,7 +71,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.21 2008-10-04 14:42:53 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.22 2008-10-14 21:10:04 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -161,6 +161,8 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			);
 		}
 		
+		++_generation;
+		
 		_executionTimer.start();
 		
 		//Initializing/filling up the Population 
@@ -179,7 +181,6 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		_statistic = _calculator.evaluate(_population);
 		_bestPhenotype = _statistic.getBestPhenotype();
 		_bestStatistic = _statistic;
-		++_generation;
 		
 		_executionTimer.stop();
 	}
@@ -213,7 +214,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		
 		//Alter the offprings (Recombination, Mutation ...).
 		_alterTimer.start();
-		_alterer.alter(offsprings);
+		_alterer.alter(offsprings, _generation);
 		_alterTimer.stop();
 		
 		//Combining the new population (containing the survivors and the altered

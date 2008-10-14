@@ -22,6 +22,7 @@
  */
 package org.jenetics.examples;
 
+import java.io.FileOutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,11 +35,12 @@ import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Probability;
+import org.jenetics.util.XMLSerializer;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.17 2008-10-13 19:10:37 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.18 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -58,7 +60,7 @@ public class StringGenerator {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		final int maxThreads = 2;
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 		
@@ -78,7 +80,7 @@ public class StringGenerator {
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
 //		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
-		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
+//		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
 			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
@@ -87,6 +89,10 @@ public class StringGenerator {
 		ga.setFitnessEvaluator(new org.jenetics.util.ConcurrentEvaluator());
 
 		GAUtils.execute(ga, 25);
+		
+		FileOutputStream out = new FileOutputStream("/home/fwilhelm/population.xml");
+		XMLSerializer.write(ga.getPopulation(), out);
+		out.close();
 		
 		pool.shutdown();
 	}
