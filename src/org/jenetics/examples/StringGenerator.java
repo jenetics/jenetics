@@ -22,7 +22,6 @@
  */
 package org.jenetics.examples;
 
-import java.io.FileOutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,12 +34,11 @@ import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Probability;
-import org.jenetics.util.XMLSerializer;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.18 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.19 2008-10-14 21:14:42 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -90,9 +88,9 @@ public class StringGenerator {
 
 		GAUtils.execute(ga, 25);
 		
-		FileOutputStream out = new FileOutputStream("/home/fwilhelm/population.xml");
-		XMLSerializer.write(ga.getPopulation(), out);
-		out.close();
+//		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/fwilhelm/population.xml");
+//		org.jenetics.util.XMLSerializer.write(ga.getPopulation(), out);
+//		out.close();
 		
 		pool.shutdown();
 	}
