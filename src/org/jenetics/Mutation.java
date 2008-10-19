@@ -57,7 +57,7 @@ import org.jenetics.util.Probability;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.7 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.8 2008-10-19 19:58:44 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -96,7 +96,7 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	protected <C extends Comparable<C>> void componentAlter(
+	protected <C extends Comparable<C>> void change(
 		final Population<G, C> population, final int generation
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";

@@ -34,64 +34,56 @@ import org.jenetics.util.Probability;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.10 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.11 2008-10-19 19:58:44 fwilhelm Exp $
  */
-public abstract class Crossover<T extends Gene<?>> extends Alterer<T> {
-	private static final long serialVersionUID = 6083622511856683392L;
+public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 
-	public Crossover(final Alterer<T> component) {
+	public Crossover(final Alterer<G> component) {
 		super(component);
 	}
 	
-	public Crossover(final Probability probability, final Alterer<T> component) {
+	public Crossover(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
 
 	public Crossover(final Probability probability) {
 		super(probability);
 	}
-
+	
 	@Override
-	protected <C extends Comparable<C>> void componentAlter(
-		final Population<T, C> population, final int generation
+	protected final <C extends Comparable<C>> void recombinate(
+		Population<G, C> population, int first, int second, int generation
 	) {
-		assert(population != null) : "Not null is guaranteed from base class.";
-		
 		final Random random = RandomRegistry.getRandom();
-		for (int i = population.size(); --i >= 0;) { 
-			//Performing the crossover with the given probability.
-			if (!_probability.isLargerThan(random.nextDouble())) {
-				final int ptIndex = random.nextInt(population.size());
-				final Phenotype<T, C> pt1 = population.get(i);
-				final Phenotype<T, C> pt2 = population.get(ptIndex);
-				final Genotype<T> gt1 = pt1.getGenotype();
-				final Genotype<T> gt2 = pt2.getGenotype();
-				
-				//Choosing two Chromosome for crossover randomly.
-				final int chIndex1 = random.nextInt(gt1.chromosomes());
-				final int chIndex2 = random.nextInt(gt2.chromosomes());
-				
-				final Array<Chromosome<T>> chromosomes1 = gt1.getChromosomes();
-				final Array<Chromosome<T>> chromosomes2 = gt2.getChromosomes();
-				final Array<T> genes1 = chromosomes1.get(chIndex1).getGenes().copy();
-				final Array<T> genes2 = chromosomes2.get(chIndex2).getGenes().copy();
-				
-				crossover(genes1, genes2);
-				
-				chromosomes1.set(chIndex1, chromosomes1.get(chIndex1).newChromosome(genes1));
-				chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newChromosome(genes2));
-				
-				//Creating two new Phenotypes and exchanging it with the old.
-				population.set(i, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
-				population.set(ptIndex, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
-			}
-		}
+		
+		final Phenotype<G, C> pt1 = population.get(first);
+		final Phenotype<G, C> pt2 = population.get(second);
+		final Genotype<G> gt1 = pt1.getGenotype();
+		final Genotype<G> gt2 = pt2.getGenotype();
+		
+		//Choosing two Chromosome for crossover randomly.
+		final int chIndex1 = random.nextInt(gt1.chromosomes());
+		final int chIndex2 = random.nextInt(gt2.chromosomes());
+		
+		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
+		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
+		final Array<G> genes1 = chromosomes1.get(chIndex1).getGenes().copy();
+		final Array<G> genes2 = chromosomes2.get(chIndex2).getGenes().copy();
+		
+		crossover(genes1, genes2);
+		
+		chromosomes1.set(chIndex1, chromosomes1.get(chIndex1).newChromosome(genes1));
+		chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newChromosome(genes2));
+		
+		//Creating two new Phenotypes and exchanging it with the old.
+		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
+		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
 	}
 
 	/**
 	 * Template method which performs the crossover.
 	 */
-	protected abstract void crossover(final Array<T> that, final Array<T> other);
+	protected abstract void crossover(final Array<G> that, final Array<G> other);
 //	protected void crossover(Chromosome<T> that, Chromosome<T> other) {
 //		final Random random = RandomRegistry.getRandom();
 //		int from = random.nextInt(that.length());

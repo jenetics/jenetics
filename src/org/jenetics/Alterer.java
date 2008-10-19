@@ -24,8 +24,6 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
 
-import java.io.Serializable;
-
 import org.jenetics.util.Probability;
 
 /**
@@ -50,10 +48,10 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.8 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.9 2008-10-19 19:58:44 fwilhelm Exp $
  */
-public abstract class Alterer<G extends Gene<?>> implements Serializable {
-	private static final long serialVersionUID = -675546015545758480L;
+public abstract class Alterer<G extends Gene<?>> {
+
 
 	/**
 	 * The Alterer which is executed after <code>this</code> alterer.
@@ -141,7 +139,8 @@ public abstract class Alterer<G extends Gene<?>> implements Serializable {
 		notNull(population, "Population");
 		
 		if (!population.isEmpty()) {
-			componentAlter(population, generation);
+			change(population, generation);
+	
 			if (_component != null) {
 				_component.alter(population, generation);
 			}
@@ -156,8 +155,9 @@ public abstract class Alterer<G extends Gene<?>> implements Serializable {
 	 * @param population the Population to be altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 */
-	protected abstract <C extends Comparable<C>> void
-		componentAlter(Population<G, C> population, final int generation);
+	protected abstract <C extends Comparable<C>> void change(
+		Population<G, C> population, int generation
+	);
 	
 	/**
 	 * Return the component alterer.

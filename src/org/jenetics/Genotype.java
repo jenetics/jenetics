@@ -43,7 +43,7 @@ import org.jenetics.util.Verifiable;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.11 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.12 2008-10-19 19:58:44 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -259,9 +259,9 @@ public class Genotype<T extends Gene<?>>
 	}
 	
 	public static <G extends Gene<?>> Genotype<G> valueOf(
-			final Chromosome<G> chrom1, 
-			final Chromosome<G> chrom2, 
-			final Chromosome<G> chrom3
+		final Chromosome<G> chrom1, 
+		final Chromosome<G> chrom2, 
+		final Chromosome<G> chrom3
 	) {
 		notNull(chrom1, "Chromosome 1");
 		notNull(chrom2, "Chromosome 2");
@@ -271,6 +271,25 @@ public class Genotype<T extends Gene<?>>
 		genotype._chromosomes.set(0, chrom1);
 		genotype._chromosomes.set(1, chrom2);
 		genotype._chromosomes.set(2, chrom3);
+		return genotype;
+	}
+	
+	public static <G extends Gene<?>> Genotype<G> valueOf(
+		final Chromosome<G> chrom1, 
+		final Chromosome<G> chrom2, 
+		final Chromosome<G> chrom3,
+		final Chromosome<G> chrom4
+	) {
+		notNull(chrom1, "Chromosome 1");
+		notNull(chrom2, "Chromosome 2");
+		notNull(chrom3, "Chromosome 3");
+		notNull(chrom4, "Chromosome 4");
+		
+		final Genotype<G> genotype = new Genotype<G>(4);
+		genotype._chromosomes.set(0, chrom1);
+		genotype._chromosomes.set(1, chrom2);
+		genotype._chromosomes.set(2, chrom3);
+		genotype._chromosomes.set(3, chrom4);
 		return genotype;
 	}
 	
