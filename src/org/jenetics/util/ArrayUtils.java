@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.11 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.12 2008-10-19 19:58:44 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -582,7 +582,7 @@ public final class ArrayUtils {
 	 *         the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
-	public static <T> int indexOf(final Array<T> array, final T element) {
+	public static <T> int indexOf(final Array<? extends T> array, final T element) {
 		Validator.notNull(array, "Array");
 		
 		return indexOf(array._array, element);
@@ -604,7 +604,7 @@ public final class ArrayUtils {
 	}
 	
 	
-	public static <T> int indexOf(final Array<T> array, final Predicate<? super T> predicate) {
+	public static <T> int indexOf(final Array<? extends T> array, final Predicate<? super T> predicate) {
 		return indexOf(array._array, predicate);
 	}
 	

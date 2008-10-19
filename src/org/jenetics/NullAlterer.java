@@ -28,7 +28,7 @@ import org.jenetics.util.Probability;
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.4 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: NullAlterer.java,v 1.5 2008-10-19 19:58:44 fwilhelm Exp $
  */
 public class NullAlterer<G extends Gene<?>> extends Alterer<G> {
 	private static final long serialVersionUID = 7892835302001002915L;
@@ -46,7 +46,7 @@ public class NullAlterer<G extends Gene<?>> extends Alterer<G> {
 	}
 
 	@Override
-	protected <C extends Comparable<C>> void componentAlter(
+	protected <C extends Comparable<C>> void change(
 		final Population<G, C> population, final int generation
 	) {
 	}
