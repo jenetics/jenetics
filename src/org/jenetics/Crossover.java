@@ -31,10 +31,10 @@ import org.jenetics.util.Probability;
  * Performs a <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">
  * Crossover</a> of two {@link Chromosome}.
  * 
- * @param <T> the gene type.
+ * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.11 2008-10-19 19:58:44 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.12 2008-10-23 22:46:06 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 
