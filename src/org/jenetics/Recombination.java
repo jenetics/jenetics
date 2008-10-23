@@ -28,7 +28,7 @@ import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.1 2008-10-19 19:58:44 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.2 2008-10-23 22:46:06 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 
@@ -77,9 +77,19 @@ public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 			//Performing the recombination with the given probability.
 			if (_probability.isLargerThan(random.nextDouble())) {
 				final int second = random.nextInt(population.size());
-				
-				recombinate(population, i, second, generation);
+				if (second != i) {
+					recombinate(population, i, second, generation);
+				}
 			}
+		}
+	}
+	
+	private static void part(int size, final int[] first, final int[] second) {
+		final Random random = RandomRegistry.getRandom();
+		
+		for (int i = 0; i < size; ++i) {
+			first[i] = random.nextInt(size);
+			second[i] = random.nextInt(size);
 		}
 	}
 	

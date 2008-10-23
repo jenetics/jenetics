@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.12 2008-10-19 19:58:44 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.13 2008-10-23 22:46:06 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -538,6 +538,118 @@ public final class ArrayUtils {
 		
 		return partition;
 	}	
+
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 * 
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @param sub the sub set array.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws IllegalArgumentException if {@code k <= 0}, {@code n < k} or
+	 *         {@code sub.length < k}.
+	 */
+	public static void subset(final int n, final int k, final int sub[], final Random random) {
+		Validator.notNull(random, "Random");
+		if (k <= 0) {
+			throw new IllegalArgumentException(String.format(
+				"Subset size smaller or equal zero: %s", k
+			));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(String.format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		if (sub.length < k) {
+			throw new IllegalArgumentException(String.format(
+				"Sub length must equal or greater than k: %s < %s", sub.length, k
+			));
+		}
+		
+		for (int i = 0; i < k; ++i) {
+			sub[i] = (i*n)/k;
+		}
+
+		int l = 0;
+		int ix = 0;
+		for (int i = 0; i < k; ++i) {
+			do {
+				ix = uniform(1, n, random);
+				l = (ix*k - 1)/n;
+			} while (sub[l] >= ix);
+			
+			sub[l] = sub[l] + 1;
+		}
+
+		int m = 0;
+		int ip = 0;
+		int is = k;
+		for (int i = 0; i < k; ++i) {
+			m = sub[i];
+			sub[i] = 0;
+
+			if (m != (i*n)/k) {
+				ip = ip + 1;
+				sub[ip - 1] = m;
+			}
+		}
+
+		int ihi = ip;
+		int ids = 0;
+		for (int i = 1; i <= ihi; ++i) {
+			ip = ihi + 1 - i;
+			l = 1 + (sub[ip - 1]*k - 1)/n;
+			ids = sub[ip - 1] - ((l - 1)*n)/k;
+			sub[ip - 1] = 0;
+			sub[is - 1] = l;
+			is = is - ids;
+		}
+
+		int ir = 0;
+		int m0 = 0;
+		for (int ll = 1; ll <= k; ++ll) {
+			l = k + 1 - ll;
+			
+			if (sub[l - 1] != 0) {
+				ir = l;
+				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
+				m = (sub[l-1]*n)/k - m0 + 1;
+			}
+
+			ix = uniform(m0, m0 + m - 1, random);
+
+			int i = l + 1;
+			while (i <= ir && ix >= sub[i - 1]) {
+				ix = ix + 1;
+				sub[i-2] = sub[i-1];
+				i = i + 1;
+			}
+			
+			sub[i-2] = ix;
+			m = m - 1;
+		}
+	}
+
+	private static int uniform(final int a, final int b, final Random random) {
+		int value = 0;
+		
+		if (a == b) {
+			value = a - 1;
+		} else {
+			value = random.nextInt(b - a) + a;
+		}
+		
+		return value;
+	}
+
+	
+	public static void main(String[] args) {
+		int[] set = new int[5];
+		subset(10, set.length, set, new Random());
+		System.out.println(Arrays.toString(set));
+	}
 	
 	/**
 	 * Returns the index of the first occurrence of the specified element in 
