@@ -22,13 +22,17 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.rint;
+import static org.jenetics.util.ArrayUtils.shuffle;
+import static org.jenetics.util.ArrayUtils.subset;
+
 import java.util.Random;
 
 import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.2 2008-10-23 22:46:06 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.3 2008-10-24 20:08:14 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 
@@ -72,25 +76,29 @@ public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 		final Population<G, C> population, final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
-		for (int i = 0, size = population.size(); i < size; ++i) {
-			
-			//Performing the recombination with the given probability.
-			if (_probability.isLargerThan(random.nextDouble())) {
-				final int second = random.nextInt(population.size());
-				if (second != i) {
-					recombinate(population, i, second, generation);
-				}
-			}
-		}
-	}
-	
-	private static void part(int size, final int[] first, final int[] second) {
-		final Random random = RandomRegistry.getRandom();
 		
-		for (int i = 0; i < size; ++i) {
-			first[i] = random.nextInt(size);
-			second[i] = random.nextInt(size);
+		final int populationsToChange = (int)rint(population.size()*_probability.doubleValue());
+		final int[] first = new int[populationsToChange];
+		final int[] second = new int[populationsToChange];
+		
+		subset(population.size(), first, random);
+		subset(population.size(), second, random);
+		shuffle(second, random);
+		
+		for (int i = 0; i < populationsToChange; ++i) {
+			recombinate(population, first[i], second[i], generation);
 		}
+		
+//		for (int i = 0, size = population.size(); i < size; ++i) {
+//			
+//			//Performing the recombination with the given probability.
+//			if (_probability.isLargerThan(random.nextDouble())) {
+//				final int second = random.nextInt(population.size());
+//				if (second != i) {
+//					recombinate(population, i, second, generation);
+//				}
+//			}
+//		}
 	}
 	
 	/**
