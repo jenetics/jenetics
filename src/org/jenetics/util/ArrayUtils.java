@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.13 2008-10-23 22:46:06 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.14 2008-10-24 20:08:14 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -54,6 +54,12 @@ public final class ArrayUtils {
 	public static <T> List<T> asList(final Array<T> array) {
 		Validator.notNull(array, "Array");
 		return new org.jenetics.util.ArrayList<T>(array._array);
+	}
+	
+	public static void swap(final int[] array, final int i, final int j) {
+		final int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 	}
 	
 	/**
@@ -147,22 +153,6 @@ public final class ArrayUtils {
 	public static <T> void sort(final Array<T> array) {
 		Arrays.sort(array._array, 0, array.length());
 	}
-	
-//	public static void main(String[] args) {
-//		Array<Integer> array = Array.newInstance(11);
-//		for (int i = 0; i < array.length(); ++i) {
-//			array.set(i, i);
-//		}
-//		
-////		sort(array, 0, array.length(), new Comparator<Integer>() {
-////			@Override public int compare(Integer o1, Integer o2) {
-////				return o1.compareTo(o2);
-////			}
-////		});
-//		
-//		System.out.println(array.toString());
-//		System.out.println(median(array));
-//	}
 	
 	/**
 	 * Finds the minimum and maximum value of the given array. 
@@ -311,11 +301,6 @@ public final class ArrayUtils {
 		
 		return value;
 	}
-	private static void swap(final int[] array, final int i, final int j) {
-		final int temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
-	}
 	
 	/**
 	 * Finding the median of the give array. The input array will not be 
@@ -353,12 +338,12 @@ public final class ArrayUtils {
 	 * Randomize the {@code array} with the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
-	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void randomize(final T[] array, final Random random) {
+	public static void shuffle(final int[] array, final Random random) {
 		Validator.notNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
@@ -369,13 +354,31 @@ public final class ArrayUtils {
 	 * Randomize the {@code array} with the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void randomize(final Array<T> array, final Random random) {
-		randomize(array._array, random);
+	public static <T> void shuffle(final T[] array, final Random random) {
+		Validator.notNull(array, "Array");
+		for (int j = array.length - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
+		}
+	}
+	
+	/**
+	 * Randomize the {@code array} with the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param array the {@code array} to randomize.
+	 * @param random the {@link Random} object to use for randomize.
+	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give array is {@code null}.
+	 */
+	public static <T> void shuffle(final Array<T> array, final Random random) {
+		shuffle(array._array, random);
 	}
 	
 	/**
@@ -540,17 +543,33 @@ public final class ArrayUtils {
 	}	
 
 	/**
-	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size 
+	 * {@code n}.
+	 * </p>
+	 * 
+	 * <p><i>
+	 *     Albert Nijenhuis, Herbert Wilf,
+	 *     Combinatorial Algorithms for Computers and Calculators,
+	 *     Second Edition,
+	 *     Academic Press, 1978,
+	 *     ISBN: 0-12-519260-6,
+	 *     LC: QA164.N54.
+	 *     <a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *         Homepage
+	 *     </a>
+	 * </i></p>
 	 * 
 	 * @param n the size of the set.
-	 * @param k the size of the subset.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code random} is {@code null}.
-	 * @throws IllegalArgumentException if {@code k <= 0}, {@code n < k} or
-	 *         {@code sub.length < k}.
+	 * @throws IllegalArgumentException if {@code n < sub.length}, 
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an 
+	 *         integer overflow.
 	 */
-	public static void subset(final int n, final int k, final int sub[], final Random random) {
+	public static void subset(final int n, final int sub[], final Random random) {
+		final int k = sub.length;
 		Validator.notNull(random, "Random");
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
@@ -562,10 +581,8 @@ public final class ArrayUtils {
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
-		if (sub.length < k) {
-			throw new IllegalArgumentException(String.format(
-				"Sub length must equal or greater than k: %s < %s", sub.length, k
-			));
+		if (((long)n)*((long)k) > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException("Values too big.");
 		}
 		
 		for (int i = 0; i < k; ++i) {
@@ -576,7 +593,7 @@ public final class ArrayUtils {
 		int ix = 0;
 		for (int i = 0; i < k; ++i) {
 			do {
-				ix = uniform(1, n, random);
+				ix = nextInt(random, 1, n);
 				l = (ix*k - 1)/n;
 			} while (sub[l] >= ix);
 			
@@ -618,7 +635,7 @@ public final class ArrayUtils {
 				m = (sub[l-1]*n)/k - m0 + 1;
 			}
 
-			ix = uniform(m0, m0 + m - 1, random);
+			ix = nextInt(random, m0, m0 + m - 1);
 
 			int i = l + 1;
 			while (i <= ir && ix >= sub[i - 1]) {
@@ -631,8 +648,8 @@ public final class ArrayUtils {
 			m = m - 1;
 		}
 	}
-
-	private static int uniform(final int a, final int b, final Random random) {
+	
+	private static int nextInt(final Random random, final int a, final int b) {
 		int value = 0;
 		
 		if (a == b) {
@@ -642,13 +659,6 @@ public final class ArrayUtils {
 		}
 		
 		return value;
-	}
-
-	
-	public static void main(String[] args) {
-		int[] set = new int[5];
-		subset(10, set.length, set, new Random());
-		System.out.println(Arrays.toString(set));
 	}
 	
 	/**
