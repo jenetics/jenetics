@@ -25,7 +25,10 @@ package org.jenetics;
 import static java.lang.Math.rint;
 import static org.jenetics.util.ArrayUtils.shuffle;
 import static org.jenetics.util.ArrayUtils.subset;
+import static org.jenetics.util.EvaluatorRegistry.evaluate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.jenetics.util.Probability;
@@ -33,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.4 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.5 2008-11-13 20:59:30 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 
@@ -86,29 +89,29 @@ public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 		subset(population.size(), second, random);
 		shuffle(second, random);
 		
+		final List<Runnable> tasks = new ArrayList<Runnable>(changeSize);
 		for (int i = 0; i < changeSize; ++i) {
-			recombinate(population, first[i], second[i], generation);
+			final int index = i;
+			tasks.add(new Runnable() {
+				@Override public void run() {
+					recombinate(population, first[index], second[index], generation);
+				}
+			});
 		}
-		
-//		for (int i = 0, size = population.size(); i < size; ++i) {	
-//			//Performing the recombination with the given probability.
-//			if (_probability.isLargerThan(random.nextDouble())) {
-//				final int second = random.nextInt(population.size());
-//				if (second != i) {
-//					recombinate(population, i, second, generation);
-//				}
-//			}
+		evaluate(tasks);
+//		for (int i = 0; i < changeSize; ++i) {
+//			recombinate(population, first[i], second[i], generation);
 //		}
 	}
 	
 	/**
 	 * Recombination template method.
 	 * 
-	 * @param <C>
-	 * @param population
-	 * @param first
-	 * @param second
-	 * @param generation
+	 * @param <C> the fitness result type
+	 * @param population the population to recombinate
+	 * @param first the source index array.
+	 * @param second the target index array.
+	 * @param generation the current generation.
 	 */
 	protected abstract <C extends Comparable<C>> void recombinate(
 			Population<G, C> population, int first, int second, int generation
