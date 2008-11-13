@@ -29,12 +29,13 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.7 2008-09-23 19:18:57 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.8 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable

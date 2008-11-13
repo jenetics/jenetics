@@ -26,6 +26,7 @@ import java.util.Random;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * Performs a <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">
@@ -34,7 +35,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.12 2008-10-23 22:46:06 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.13 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 

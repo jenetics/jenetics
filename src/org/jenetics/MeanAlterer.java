@@ -26,11 +26,12 @@ import java.util.Random;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
+import org.jenetics.util.RandomRegistry;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.9 2008-10-19 19:58:44 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.10 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Recombination<G> {
 

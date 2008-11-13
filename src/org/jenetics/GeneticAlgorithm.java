@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
+import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.notNull;
 
 import java.util.List;
@@ -35,9 +36,8 @@ import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ConcurrentEvaluator;
-import org.jenetics.util.Evaluator;
 import org.jenetics.util.Probability;
-import org.jenetics.util.SerialEvaluator;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.ThreadedEvaluator;
 import org.jenetics.util.Timer;
 
@@ -71,7 +71,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.22 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.23 2008-11-13 20:37:40 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -103,8 +103,6 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	
 	private Statistic<G, C> _statistic = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
-	
-	private Evaluator _evaluator = new SerialEvaluator();
 	
 	//Some performance measure.
 	private final Timer _executionTimer = new Timer("Execution time");
@@ -175,7 +173,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		}
 		
 		//Evaluate the fitness.
-		_evaluator.evaluate(_population);
+		evaluate(_population);
 		
 		//First valuation of the initial population.
 		_statistic = _calculator.evaluate(_population);
@@ -223,7 +221,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		
 		//Evaluate the fitness
 		_evaluateTimer.start();
-		_evaluator.evaluate(_population);		
+		evaluate(_population);		
 		_evaluateTimer.stop();
 		
 		//Evaluate the statistic
@@ -354,26 +352,6 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public FitnessScaler<C> getFitnessScaler() {
 		return _fitnessScaler;
-	}
-	
-	/**
-	 * Set a fitness evaluator.
-	 * 
-	 * @param evaluator the fitness evaluator.
-	 * @throws NullPointerException if the evaluator is {@code null}.
-	 */
-	public void setFitnessEvaluator(final Evaluator evaluator) {
-		notNull(evaluator, "Fitness evaluator");
-		_evaluator = evaluator;
-	}
-	
-	/**
-	 * Return the fitness evaluator.
-	 * 
-	 * @return the fitness evaluator.
-	 */
-	public Evaluator getFitnessEvaluator() {
-		return _evaluator;
 	}
 	
 	/**

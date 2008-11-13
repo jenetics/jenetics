@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.jenetics.util.RandomRegistry;
+
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -41,7 +43,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.5 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character>, Comparable<CharacterGene>, Realtime, XMLSerializable 

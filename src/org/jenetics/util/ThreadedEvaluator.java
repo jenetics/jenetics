@@ -37,7 +37,7 @@ import javolution.context.ConcurrentContext;
  * {@code java.util.concurrent} libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.1 2008-09-29 20:39:33 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.2 2008-11-13 20:37:41 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -101,7 +101,7 @@ public class ThreadedEvaluator implements Evaluator {
 		} 
 	}
 	
-	private static final class Evaluator  implements Callable<Void> {
+	private static final class Evaluator implements Callable<Void> {
 		private List<? extends Runnable> _runnables;
 		private int _fromIndex;
 		private int _toIndex;

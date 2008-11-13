@@ -24,6 +24,7 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
 
@@ -34,7 +35,7 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.8 2008-10-13 21:13:02 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.9 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C> 

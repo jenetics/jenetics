@@ -31,12 +31,13 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.2 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.3 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64> 
 	implements Mean<DoubleGene>, XMLSerializable 
