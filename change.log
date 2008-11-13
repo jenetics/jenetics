@@ -8,6 +8,7 @@ Jenetics-0.3.2.0
 - Add new abstract Alterer class Recombination.
 - Move RandomRegistry into org.jenetics.util package.
 - Add org.jenetics.util.EvaluatorRegistry class.
+- Parallelize the recombination in the Recombination class.
 
 Jenetics-0.3.1.0
 - Deleting ConcurrentStatisticCalculator
