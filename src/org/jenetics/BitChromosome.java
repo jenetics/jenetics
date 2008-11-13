@@ -39,6 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Probability;
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
@@ -46,7 +47,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.9 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.10 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 

@@ -25,6 +25,7 @@ package org.jenetics;
 import java.io.Serializable;
 import java.util.Random;
 
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
 /**
@@ -37,7 +38,7 @@ import org.jenetics.util.Validator;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.6 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.7 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 

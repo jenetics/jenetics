@@ -31,6 +31,7 @@ import javolution.context.StackContext;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * <p>
@@ -72,7 +73,7 @@ import org.jenetics.util.Probability;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.9 2008-10-13 19:10:37 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.10 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<G extends Gene<?>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;

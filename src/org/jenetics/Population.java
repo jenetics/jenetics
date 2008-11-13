@@ -42,11 +42,10 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.8 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.9 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class Population<G extends Gene<?>, C extends Comparable<C>> 
-	implements List<Phenotype<G, C>>, Iterable<Phenotype<G, C>>, 
-				RandomAccess, XMLSerializable
+	implements List<Phenotype<G, C>>, RandomAccess, XMLSerializable
 {
 	private static final long serialVersionUID = -959370026031769242L;
 	
@@ -98,6 +97,7 @@ public class Population<G extends Gene<?>, C extends Comparable<C>>
 	 * 
 	 * @param index Index of the 
 	 * @param phenotype <code>Phenotype</code> to be add.
+	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
 	@Override
 	public void add(final int index, final Phenotype<G, C> phenotype) {

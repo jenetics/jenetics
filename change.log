@@ -6,6 +6,8 @@ Jenetics-0.3.2.0
 - Change signature of the Alterer.alter(Population, int) method. Adding the
   generation of the altered phenotype.
 - Add new abstract Alterer class Recombination.
+- Move RandomRegistry into org.jenetics.util package.
+- Add org.jenetics.util.EvaluatorRegistry class.
 
 Jenetics-0.3.1.0
 - Deleting ConcurrentStatisticCalculator

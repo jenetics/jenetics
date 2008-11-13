@@ -31,6 +31,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.Integer64;
 
@@ -39,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.4 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.5 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable

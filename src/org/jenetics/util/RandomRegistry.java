@@ -20,11 +20,10 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.util.Random;
 
-import org.jenetics.util.Validator;
 
 import javolution.context.LocalContext;
 
@@ -35,11 +34,11 @@ import javolution.context.LocalContext;
  * seed value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RandomRegistry.java,v 1.3 2008-08-25 19:35:23 fwilhelm Exp $
+ * @version $Id: RandomRegistry.java,v 1.1 2008-11-13 20:37:41 fwilhelm Exp $
  */
 public final class RandomRegistry {
-	private static final LocalContext.Reference<Random> 
-		RANDOM = new LocalContext.Reference<Random>(new Random(System.currentTimeMillis()));
+	private static final LocalContext.Reference<Random> RANDOM = 
+		new LocalContext.Reference<Random>(new Random(System.currentTimeMillis()));
 	
 	private RandomRegistry() {
 	}

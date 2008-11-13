@@ -31,12 +31,13 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.2 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.3 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64> 
 	implements Mean<IntegerGene>, XMLSerializable 

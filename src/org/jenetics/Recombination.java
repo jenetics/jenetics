@@ -29,10 +29,11 @@ import static org.jenetics.util.ArrayUtils.subset;
 import java.util.Random;
 
 import org.jenetics.util.Probability;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.3 2008-10-24 20:08:14 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.4 2008-11-13 20:37:40 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 
@@ -77,20 +78,19 @@ public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 	) {
 		final Random random = RandomRegistry.getRandom();
 		
-		final int populationsToChange = (int)rint(population.size()*_probability.doubleValue());
-		final int[] first = new int[populationsToChange];
-		final int[] second = new int[populationsToChange];
+		final int changeSize = (int)rint(population.size()*_probability.doubleValue());
+		final int[] first = new int[changeSize];
+		final int[] second = new int[changeSize];
 		
 		subset(population.size(), first, random);
 		subset(population.size(), second, random);
 		shuffle(second, random);
 		
-		for (int i = 0; i < populationsToChange; ++i) {
+		for (int i = 0; i < changeSize; ++i) {
 			recombinate(population, first[i], second[i], generation);
 		}
 		
-//		for (int i = 0, size = population.size(); i < size; ++i) {
-//			
+//		for (int i = 0, size = population.size(); i < size; ++i) {	
 //			//Performing the recombination with the given probability.
 //			if (_probability.isLargerThan(random.nextDouble())) {
 //				final int second = random.nextInt(population.size());
