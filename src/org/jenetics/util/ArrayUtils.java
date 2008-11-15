@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.14 2008-10-24 20:08:14 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.15 2008-11-15 16:55:21 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -335,7 +335,7 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Randomize the {@code array} with the given {@link Random} object. The used
+	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
@@ -351,7 +351,7 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Randomize the {@code array} with the given {@link Random} object. The used
+	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
@@ -368,7 +368,7 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Randomize the {@code array} with the given {@link Random} object. The used
+	 * Randomize the {@code array} usin the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
@@ -543,6 +543,38 @@ public final class ArrayUtils {
 	}	
 
 	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 * 
+	 * @see #subset(int, int[], Random)
+	 * 
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code random} or {@code sub} is 
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if 
+	 *         {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k, final Random random) {
+		Validator.notNull(random, "Random");
+		if (k <= 0) {
+			throw new IllegalArgumentException(String.format(
+				"Subset size smaller or equal zero: %s", k
+			));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(String.format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		
+		final int[] sub = new int[k];
+		subset(n, sub,random);
+		return sub;
+	}
+	
+	/**
 	 * <p>
 	 * Selects a random subset of size {@code sub.length} from a set of size 
 	 * {@code n}.
@@ -563,14 +595,17 @@ public final class ArrayUtils {
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws NullPointerException if {@code random} or {@code sub} is 
+	 *         {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length}, 
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an 
 	 *         integer overflow.
 	 */
 	public static void subset(final int n, final int sub[], final Random random) {
-		final int k = sub.length;
 		Validator.notNull(random, "Random");
+		Validator.notNull(sub, "Sub set array");
+		
+		final int k = sub.length;
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
 				"Subset size smaller or equal zero: %s", k
