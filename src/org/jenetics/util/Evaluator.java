@@ -24,17 +24,15 @@ package org.jenetics.util;
 
 import java.util.List;
 
-import org.jenetics.Phenotype;
-
 /**
  * The Evaluator is used for evaluating the fitness of each phenotype of 
  * an population. This is necessary to have an defined point where the fitness
  * calculation is performed. Otherwise the fitness calculation is performed
- * at the time where the {@link Phenotype#run()} is called the first time.
+ * at the time where the {@link org.jenetics.Phenotype#run()} is called the first time.
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Evaluator.java,v 1.1 2008-09-29 20:39:32 fwilhelm Exp $
+ * @version $Id: Evaluator.java,v 1.2 2008-11-15 16:33:38 fwilhelm Exp $
  */
 public interface Evaluator {
 
