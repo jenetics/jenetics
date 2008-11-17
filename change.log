@@ -1,3 +1,5 @@
+- Adding and extending javadoc comments.
+
 Jenetics-0.3.2.0
 - The PropabilitySelector no longer sorts the population before calling the
   ProbabilitySelector.probabilities() method. The subclass must sort the
