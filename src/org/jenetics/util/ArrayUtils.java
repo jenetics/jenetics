@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.15 2008-11-15 16:55:21 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.16 2008-11-17 21:29:28 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -580,17 +580,21 @@ public final class ArrayUtils {
 	 * {@code n}.
 	 * </p>
 	 * 
-	 * <p><i>
+	 * <p>
+	 * <em>Authors:</em>
+	 *     FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 *     version based on the  C++ version by John Burkardt.
+	 * </p>
+	 * 
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
 	 *     Albert Nijenhuis, Herbert Wilf,
 	 *     Combinatorial Algorithms for Computers and Calculators,
 	 *     Second Edition,
 	 *     Academic Press, 1978,
 	 *     ISBN: 0-12-519260-6,
 	 *     LC: QA164.N54.
-	 *     <a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
-	 *         Homepage
-	 *     </a>
-	 * </i></p>
+	 * </p>
 	 * 
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
@@ -694,6 +698,85 @@ public final class ArrayUtils {
 		}
 		
 		return value;
+	}
+	
+	/**
+	 * Calculates a random permutation.
+	 * 
+	 * @param p the permutation array.
+	 * @param random the random number generator.
+	 * @throws NullPointerException if the permutation array or the random number
+	 *         generator is {@code null}.
+	 */
+	public static void permutation(final int[] p, final Random random) {
+		Validator.notNull(p, "Permutation array");
+		Validator.notNull(random, "Random");
+		
+		for (int i = 0; i < p.length; ++i) {
+			p[i] = i;
+		}
+		shuffle(p, random);
+	}
+	
+	/**
+	 * Calculates the permutation with the given {@code rank}.
+	 * 
+	 * <p>
+	 * <em>Authors:</em>
+	 *     FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 *     version based on the  C++ version by John Burkardt.
+	 * </p>
+	 * 
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 *     Albert Nijenhuis, Herbert Wilf,
+	 *     Combinatorial Algorithms for Computers and Calculators,
+	 *     Second Edition,
+	 *     Academic Press, 1978,
+	 *     ISBN: 0-12-519260-6,
+	 *     LC: QA164.N54.
+	 * </p>
+	 * 
+	 * @param p the permutation array.
+	 * @param rank the permutation rank.
+	 * @throws NullPointerException it the permutation array is {@code null}.
+	 * @throws IllegalArgumentException if {@code rank < 1}.
+	 */
+	public static void permutation(final int[] p, final long rank) {
+		Validator.notNull(p, "Permutation array");
+		if (rank < 1) {
+			throw new IllegalArgumentException();
+		}
+		
+		Arrays.fill(p, 0);
+
+		long jrank = rank - 1;
+		for (int i = 1; i <= p.length; ++i) {
+			int iprev = p.length + 1 - i;
+			int irem = (int)(jrank%iprev);
+			jrank = jrank/iprev;
+
+			int j = 0;
+			int jdir = 0;
+			if ((jrank%2) == 1) {
+				j = 0;
+				jdir = 1;
+			} else {
+				j = p.length + 1;
+				jdir = -1;
+			}
+
+			int icount = 0;
+			do {
+				j = j + jdir;
+
+				if (p[j - 1] == 0) {
+					++icount;
+				}
+			} while (irem >= icount);
+			
+			p[j - 1] = iprev;
+		}
 	}
 	
 	/**
