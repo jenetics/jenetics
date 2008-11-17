@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.5 2008-11-13 20:59:30 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.6 2008-11-17 21:36:34 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 
@@ -81,16 +81,13 @@ public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 	) {
 		final Random random = RandomRegistry.getRandom();
 		
-		final int changeSize = (int)rint(population.size()*_probability.doubleValue());
-		final int[] first = new int[changeSize];
-		final int[] second = new int[changeSize];
-		
-		subset(population.size(), first, random);
-		subset(population.size(), second, random);
+		final int subsetSize = (int)rint(population.size()*_probability.doubleValue());
+		final int[] first = subset(population.size(), subsetSize, random);
+		final int[] second = subset(population.size(), subsetSize, random);
 		shuffle(second, random);
 		
-		final List<Runnable> tasks = new ArrayList<Runnable>(changeSize);
-		for (int i = 0; i < changeSize; ++i) {
+		final List<Runnable> tasks = new ArrayList<Runnable>(subsetSize);
+		for (int i = 0; i < subsetSize; ++i) {
 			final int index = i;
 			tasks.add(new Runnable() {
 				@Override public void run() {
