@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.16 2008-11-17 21:29:28 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.17 2008-12-01 21:32:44 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -140,7 +140,8 @@ public final class ArrayUtils {
      * @throws NullPointerException if the give array or comparator is 
      *         {@code null}.
 	 */
-	public static <T> void sort(final Array<T> array, final int from, final int to) {
+	public static <T extends Object & Comparable<? super T>> void 
+	sort(final Array<T> array, final int from, final int to) {
 		Arrays.sort(array._array, from, to);
 	}
 	
@@ -150,9 +151,74 @@ public final class ArrayUtils {
 	 * @see Arrays#sort(Object[])
      * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void sort(final Array<T> array) {
+	public static <T extends Object & Comparable<? super T>> void 
+	sort(final Array<T> array) 
+	{
 		Arrays.sort(array._array, 0, array.length());
 	}
+	
+	
+	/*
+	 * Some experiments with quick sort. Is more efficient on large arrays.
+	 * The java build in merge sort performs an array copy which can lead to
+	 * an OutOfMemoryError.
+	 * 
+	 */
+	static <T extends Object & Comparable<? super T>> void 
+	quicksort(final Array<T> array) 
+	{
+		quicksort(array, 0, array.length());
+	}
+	
+	static <T extends Object & Comparable<? super T>> void 
+	quicksort(final Array<T> array, final int from, final int to) 
+	{	
+		quicksort(array, from, to, new Comparator<T>() {
+			@Override public int compare(final T o1, final T o2) {
+				return o1.compareTo(o2);
+			}
+		});
+	}
+	
+	
+	static <T> void quicksort(
+		final Array<T> array, final int from, final int to,
+		final Comparator<? super T> comparator
+	) {
+		Validator.notNull(array, "Array");
+		Validator.notNull(comparator, "Comparator");
+			
+		_quicksort(array, from, to - 1, comparator);
+	}
+	
+	static <T> void _quicksort(
+		final Array<T> array, final int left, final int right,
+		final Comparator<? super T> comparator
+	) {
+		if (right <= left) {
+			return;
+		}
+		
+		final T pivot = array.get(left);
+		int i = left;
+		int j = right + 1;
+		while (true) {
+			do i++; while(i < right && comparator.compare(array.get(i), pivot) < 0);
+			do j--; while(j > left && comparator.compare(array.get(j), pivot) > 0);
+			if(j <= i) break;
+			_swap(array._array, i, j);
+		}
+		
+		_swap(array._array, left, j);
+		_quicksort(array, left, j - 1, comparator);
+		_quicksort(array, j + 1, right, comparator);
+	}
+	private static <T> void _swap(final T[] array, final int i, final int j) {
+		final T temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+	
 	
 	/**
 	 * Finds the minimum and maximum value of the given array. 
@@ -460,8 +526,8 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Return a array with the indexes of the partitions of an array with the given size.
-	 * The length of the returned array is {@code min(size, prts) + 1}.
+	 * Return a array with the indexes of the partitions of an array with the 
+	 * given size. The length of the returned array is {@code min(size, prts) + 1}.
 	 * <p/>
 	 * Some examples:
 	 * <pre>
@@ -849,14 +915,5 @@ public final class ArrayUtils {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
 
 

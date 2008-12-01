@@ -32,7 +32,7 @@ import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.9 2008-10-02 19:40:17 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.10 2008-12-01 21:32:44 fwilhelm Exp $
  */
 public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
@@ -106,7 +106,7 @@ public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
 			
 			statistic = new Statistic<G, C>(best, worst, size, meanAge, varianceAge);
 		}
-
+		
 		_stopEvaluationTime = System.currentTimeMillis();
 		return statistic;
 	}

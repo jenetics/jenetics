@@ -22,15 +22,13 @@ package org.jenetics;
 
 import java.util.List;
 
-import javolution.context.StackContext;
-
-import org.jscience.mathematics.structure.Ring;
+import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatisticCalculator.java,v 1.3 2008-10-02 19:40:17 fwilhelm Exp $
+ * @version $Id: NumberStatisticCalculator.java,v 1.4 2008-12-01 21:32:44 fwilhelm Exp $
  */
-class NumberStatisticCalculator<G extends Gene<?>, R extends Ring<R> & Comparable<R>>
+class NumberStatisticCalculator<G extends Gene<?>, R extends Number<R>>
 	extends StatisticCalculator<G, R>
 {
 
@@ -42,28 +40,21 @@ class NumberStatisticCalculator<G extends Gene<?>, R extends Ring<R> & Comparabl
 		final Statistic<G, R> s = super.evaluate(population);
 		final int size = population.size();
 		
-		R fitnessSum = null;
-		R fitnessSquareSum = null;
-		if (size > 0) {
-			fitnessSum = population.get(0).getFitness();
-			fitnessSquareSum = fitnessSum.times(fitnessSum);
-		}
+		double fitnessSum = 0;
+		double fitnessSquareSum = 0;
+		
+		for (int i = 0; i < size; ++i) {
+			final Phenotype<G, R> phenotype = population.get(i); 
 
-		StackContext.enter();
-		try {
-			for (int i = 1; i < size; ++i) {
-				final Phenotype<G, R> phenotype = population.get(i); 
-
-				R fitness = phenotype.getFitness();
-				fitnessSum = fitnessSum.plus(fitness);
-				fitnessSquareSum = fitnessSquareSum.plus(fitness.times(fitness));
-			}
-			
-		} finally {
-			StackContext.exit();
+			final double fitness = phenotype.getFitness().doubleValue();
+			fitnessSum += fitness;
+			fitnessSquareSum += fitness*fitness;
 		}
 		
-		return new NumberStatistic<G, R>(s, null, null);
+		final double mean = fitnessSum/population.size();
+		final double variance = fitnessSquareSum/size - mean*mean;
+		
+		return new NumberStatistic<G, R>(s, mean, variance);
 	}
 	
 //	static double torben(double m[]){
