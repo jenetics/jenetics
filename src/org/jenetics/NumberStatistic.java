@@ -22,48 +22,45 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Validator;
-import org.jscience.mathematics.structure.Ring;
+import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.3 2008-10-02 19:40:17 fwilhelm Exp $
+ * @version $Id: NumberStatistic.java,v 1.4 2008-12-01 21:32:43 fwilhelm Exp $
  */
-class NumberStatistic<G extends Gene<?>, R extends Ring<R> & Comparable<R>>
+class NumberStatistic<G extends Gene<?>, R extends Number<R>>
 	extends Statistic<G, R> 
 {
 	private static final long serialVersionUID = -7468324436514041360L;
 	
-	protected final R _fitnessMean;
-	protected final R _fitnessVariance;
+	protected final double _fitnessMean;
+	protected final double _fitnessVariance;
 	
 	protected NumberStatistic(
 		final Phenotype<G, R> best, final Phenotype<G, R> worst, 
-		final R fitnessMean, final R fitnessVariance,
+		final double fitnessMean, final double fitnessVariance,
 		final int samples, final double ageMean, final double ageVariance
 	) {
 		super(best, worst, samples, ageMean, ageVariance);
-		
-		Validator.notNull(fitnessMean, "Fitness mean value");
-		Validator.notNull(fitnessVariance, "Fitness variance");
 		
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
 	}
 	
 	protected NumberStatistic(
-		final Statistic<G, R> other, final R fitnessMean, final R fitnessVariance
+		final Statistic<G, R> other, 
+		final double fitnessMean, final double fitnessVariance
 	) {
 		super(other);
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
 	}
 
-	public R getFitnessMean() {
+	public double getFitnessMean() {
 		return _fitnessMean;
 	}
 	
-	public R getFitnessVariance() {
+	public double getFitnessVariance() {
 		return _fitnessVariance;
 	}
 
