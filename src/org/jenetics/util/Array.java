@@ -36,7 +36,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.6 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.7 2008-12-11 22:55:57 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -133,7 +133,10 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		return _sealed;
 	}
 	
-	void init() {
+	/**
+	 * Set all array elements to {@code null}.
+	 */
+	public void clear() {
 		for (int i = 0; i < _array.length; ++i) {
 			_array[i] = null;
 		}
@@ -260,12 +263,21 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		if (a._array.length != length) {
 			a._array = new Object[length];
 		} else {
-			a.init();
+			a.clear();
 		}
 		return a;
 	}
 	
+	/**
+	 * Create a new Array from the given vararg of type T.
+	 * 
+	 * @param <A> the array type.
+	 * @param values the array values.
+	 * @return a new Array created from the given values.
+	 * @throws NullPointerException if the {@code values} are {@code null}.
+	 */
 	public static <A> Array<A> valueOf(final A... values) {
+		Validator.notNull(values, "Values");
 		final Array<A> a = newInstance(values.length);
 		System.arraycopy(values, 0, a._array, 0, values.length);
 		return a;
