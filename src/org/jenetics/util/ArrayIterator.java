@@ -29,22 +29,30 @@ import java.util.NoSuchElementException;
  * Helper class which iterates over an given array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayIterator.java,v 1.3 2009-01-05 20:38:44 fwilhelm Exp $
+ * @version $Id: ArrayIterator.java,v 1.4 2009-01-05 21:42:50 fwilhelm Exp $
  */
 final class ArrayIterator<T> implements ListIterator<T> {
 	private final Object[] _array;
 	private final boolean _sealed;
-	private int _pos = -1;
+	private final int _start;
+	private final int _end;
+	private int _pos;
 	
-	public ArrayIterator(final Object[] array, final boolean sealed) {
+	public ArrayIterator(
+		final Object[] array, 
+		final int start, final int end, final boolean sealed
+	) {
 		Validator.notNull(array, "Array");
+		_start = start;
+		_end = end;
 		_array = array;
 		_sealed = sealed;
+		_pos = _start - 1;
 	}
 	
 	@Override
 	public boolean hasNext() {
-		return _pos < _array.length - 1;
+		return _pos < _end - 1;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -63,7 +71,7 @@ final class ArrayIterator<T> implements ListIterator<T> {
 	
 	@Override
 	public boolean hasPrevious() {
-		return _pos > 0;
+		return _pos > _start;
 	}
 	
 	@SuppressWarnings("unchecked")

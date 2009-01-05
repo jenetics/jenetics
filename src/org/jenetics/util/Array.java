@@ -37,7 +37,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.8 2009-01-05 20:38:44 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.9 2009-01-05 21:42:50 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -156,7 +156,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 
 	@Override
 	public ListIterator<T> iterator() {
-		return new ArrayIterator<T>(_array, _sealed);
+		return new ArrayIterator<T>(_array, 0, _array.length, _sealed);
 	}
 	
 	/**
@@ -200,6 +200,16 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		final Array<T> array = newInstance(end - start);
 		System.arraycopy(_array, start, array._array, 0, end - start);
 		return array;
+	}
+	
+	public Array<T> subArray(final int start, final int end) {
+		if (start < 0 || end > length() || start > end) {
+			throw new IndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", start, end
+			));
+		}
+		
+		return new SubArray<T>(_array, start, end, _sealed);
 	}
 	
 	@Override

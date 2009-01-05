@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.18 2009-01-05 20:39:11 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.19 2009-01-05 21:42:50 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -848,26 +848,37 @@ public final class ArrayUtils {
 	/**
 	 * Returns the index of the first occurrence of the specified element in 
 	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
-	 * 
 	 * @param array the array to search.
+	 * @param start the start index of the search.
 	 * @param element the element to search for.
+	 * 
 	 * @return the inde of the first occurrence of the specified element in the
 	 *         given {@code array}, of -1 if the {@code array} does not contain
 	 *         the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 *        (start < 0 || end > length || start > end)
 	 */
-	public static int indexOf(final Object[] array, final Object element) {
+	public static int indexOf(
+		final Object[] array, final int start, final int end, 
+		final Object element
+	) {
 		Validator.notNull(array, "Array");
+		if (start < 0 || end > array.length || start > end) {
+			throw new IndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", start, end
+			));
+		}
 		
 		int index = -1;
 		if (element != null) {
-			for (int i = 0; i < array.length && index == -1; ++i) {
+			for (int i = start; i < end && index == -1; ++i) {
 				if (element.equals(array[i])) {
 					index = i;
 				}
 			}
 		} else {
-			for (int i = 0; i < array.length && index == -1; ++i) {
+			for (int i = start; i < end && index == -1; ++i) {
 				if (array[i] == null) {
 					index = i;
 				}
@@ -875,6 +886,14 @@ public final class ArrayUtils {
 		}
 		
 		return index;
+	}
+	
+	public static int indexOf(final Object[] array, final int start, final Object element) {
+		return indexOf(array, start, array.length, element);
+	}
+	
+	public static int indexOf(final Object[] array, final Object element) {
+		return indexOf(array, 0, element);
 	}
 	
 	/**
