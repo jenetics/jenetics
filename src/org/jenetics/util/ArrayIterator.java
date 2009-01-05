@@ -29,15 +29,17 @@ import java.util.NoSuchElementException;
  * Helper class which iterates over an given array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayIterator.java,v 1.2 2008-08-29 21:18:15 fwilhelm Exp $
+ * @version $Id: ArrayIterator.java,v 1.3 2009-01-05 20:38:44 fwilhelm Exp $
  */
 final class ArrayIterator<T> implements ListIterator<T> {
 	private final Object[] _array;
+	private final boolean _sealed;
 	private int _pos = -1;
 	
-	public ArrayIterator(final Object[] array) {
+	public ArrayIterator(final Object[] array, final boolean sealed) {
 		Validator.notNull(array, "Array");
-		this._array = array;
+		_array = array;
+		_sealed = sealed;
 	}
 	
 	@Override
@@ -80,6 +82,9 @@ final class ArrayIterator<T> implements ListIterator<T> {
 	
 	@Override
 	public void set(final T value) {
+		if (_sealed) {
+			throw new UnsupportedOperationException("Array is sealed.");
+		}
 		_array[_pos] = value;
 	}
 	

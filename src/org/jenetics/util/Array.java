@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
@@ -36,7 +37,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.7 2008-12-11 22:55:57 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.8 2009-01-05 20:38:44 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -46,8 +47,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	}
 	
 	/**
-	 * @param length
-	 * 
+	 * @param length the array length.
      * @throws NegativeArraySizeException if the specified {@code length} 
      *         is negative
 	 */
@@ -67,14 +67,10 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 */
 	public void set(final int index, final T value) {
 		if (_sealed) {
-			throw new UnsupportedOperationException();
+			throw new UnsupportedOperationException("Array is sealed");
 		}
 		_array[index] = value;
 	}
-	
-//	public void set(final int index, final Array<? extends T> values) {
-//		System.arraycopy(values._array, 0, _array, index, values.length());
-//	}
 	
 	/**
 	 * Return the value at the given {@code index}.
@@ -135,8 +131,14 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	
 	/**
 	 * Set all array elements to {@code null}.
+	 * 
+	 * @throws UnsupportedOperationException if this array is sealed 
+	 *         ({@code isSealed() == true}).
 	 */
 	public void clear() {
+		if (_sealed) {
+			throw new UnsupportedOperationException("Array is sealed.");
+		}
 		for (int i = 0; i < _array.length; ++i) {
 			_array[i] = null;
 		}
@@ -154,7 +156,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 
 	@Override
 	public ListIterator<T> iterator() {
-		return new ArrayIterator<T>(_array);
+		return new ArrayIterator<T>(_array, _sealed);
 	}
 	
 	/**
@@ -163,21 +165,32 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * @return a shallow copy of this array.
 	 */
 	public Array<T> copy() {
-		final Array<T> copy = newInstance(length());
-		System.arraycopy(_array, 0, copy._array, 0, length());
-		return copy;
+		return copy(0, length());
 	}
 	
 	/**
-	 * Return a new array that is a sub array of {@code this} array. 
+	 * Return a shallow copy of this array. The array elements are not cloned.
 	 * 
-	 * @param start low endpoint (inclusive) of the subArray.
-	 * @param end high endpoint (exclusive) of the subArray.
+	 * @param start low endpoint (inclusive) of the new array.
+	 * @param end high endpoint (exclusive) of the new array.
+	 * @return a copy of the specified range within this array.
+	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 *        (start < 0 || start > length)
+	 */
+	public Array<T> copy(final int start) {
+		return copy(start, length());
+	}
+	
+	/**
+	 * Return a shallow copy of this array. The array elements are not cloned.
+	 * 
+	 * @param start low endpoint (inclusive) of the new array.
+	 * @param end high endpoint (exclusive) of the new array.
 	 * @return a copy of the specified range within this array.
 	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
 	 *        (start < 0 || end > length || start > end)
 	 */
-	public Array<T> subArray(final int start, final int end) {
+	public Array<T> copy(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new IndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", start, end
@@ -231,7 +244,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 
 	
 	/*
-	 * Array creation pars.
+	 * Array creation part.
 	 */
 
 	private static final ObjectFactory<Array<Object>> 
@@ -264,6 +277,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 			a._array = new Object[length];
 		} else {
 			a.clear();
+//			a._array = new Object[length];
 		}
 		return a;
 	}
@@ -278,8 +292,20 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 */
 	public static <A> Array<A> valueOf(final A... values) {
 		Validator.notNull(values, "Values");
+		
 		final Array<A> a = newInstance(values.length);
 		System.arraycopy(values, 0, a._array, 0, values.length);
+		return a;
+	}
+	
+	public static <A> Array<A> valueOf(final Collection<A> values) {
+		Validator.notNull(values, "Values");
+		
+		final Array<A> a = newInstance(values.size());
+		int index = 0;
+		for (A value : values) {
+			a.set(index++, value);
+		}
 		return a;
 	}
 	
