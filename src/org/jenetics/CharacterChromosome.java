@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.6 2008-09-24 21:28:48 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.7 2009-01-05 20:39:11 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
@@ -163,7 +163,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 
 	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
-		return new CharacterChromosome(_genes.subArray(start, end));
+		return new CharacterChromosome(_genes.copy(start, end));
 	}
 
 }

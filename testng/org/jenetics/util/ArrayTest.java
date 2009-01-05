@@ -27,18 +27,18 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.1 2008-09-24 21:28:47 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.2 2009-01-05 20:39:11 fwilhelm Exp $
  */
 public class ArrayTest {
 
 	@Test
-	public void subArray() {
+	public void copy() {
 		final Array<Integer> array = Array.newInstance(10);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
 		
-		final Array<Integer> sub = array.subArray(3, 8);
+		final Array<Integer> sub = array.copy(3, 8);
 		Assert.assertEquals(sub.length(), 5);
 		for (int i = 0; i < 5; ++i) {
 			Assert.assertEquals(sub.get(i), new Integer(i + 3));
