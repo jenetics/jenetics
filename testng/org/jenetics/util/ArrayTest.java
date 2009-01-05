@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.2 2009-01-05 20:39:11 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.3 2009-01-05 21:42:50 fwilhelm Exp $
  */
 public class ArrayTest {
 
@@ -38,11 +38,43 @@ public class ArrayTest {
 			array.set(i, i);
 		}
 		
-		final Array<Integer> sub = array.copy(3, 8);
+		final Array<Integer> copy = array.copy(3, 8);
+		Assert.assertEquals(copy.length(), 5);
+		for (int i = 0; i < 5; ++i) {
+			Assert.assertEquals(copy.get(i), new Integer(i + 3));
+		}
+	}
+	
+	@Test
+	public void subArray() {
+		final Array<Integer> array = Array.newInstance(10);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		
+		final Array<Integer> sub = array.subArray(3, 8);
 		Assert.assertEquals(sub.length(), 5);
 		for (int i = 0; i < 5; ++i) {
 			Assert.assertEquals(sub.get(i), new Integer(i + 3));
+			sub.set(i, i + 100);
 		}
+		
+		for (int i = 3; i < 8; ++i) {
+			Assert.assertEquals(array.get(i), new Integer(i + 97));
+		}
+		
+		final Array<Integer> copy = sub.copy();
+		Assert.assertEquals(copy.length(), 5);
+		for (int i = 0; i < 5; ++i) {
+			Assert.assertEquals(sub.get(i), new Integer(i + 100));
+		}
+		
+		int count = 0;
+		for (Integer i : sub) {
+			Assert.assertEquals(i, new Integer(count + 100));
+			++count;
+		}
+		Assert.assertEquals(count, 5);
 	}
 	
 }
