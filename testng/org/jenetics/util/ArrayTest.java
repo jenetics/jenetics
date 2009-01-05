@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.3 2009-01-05 21:42:50 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.4 2009-01-05 21:50:38 fwilhelm Exp $
  */
 public class ArrayTest {
 
@@ -75,6 +75,9 @@ public class ArrayTest {
 			++count;
 		}
 		Assert.assertEquals(count, 5);
+		
+//		System.out.println(sub);
+//		System.out.println(array);
 	}
 	
 }

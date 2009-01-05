@@ -26,13 +26,17 @@ import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SubArray.java,v 1.2 2009-01-05 21:43:47 fwilhelm Exp $
+ * @version $Id: SubArray.java,v 1.3 2009-01-05 21:50:38 fwilhelm Exp $
  */
-class SubArray<T> extends Array<T> {
-	int _start;
-	int _end;
+final class SubArray<T> extends Array<T> {
+	private int _start;
+	private int _end;
 	
-	SubArray(final Object[] array, final int start, final int end, final boolean sealed) {
+	SubArray(
+		final Object[] array, 
+		final int start, final int end, 
+		final boolean sealed
+	) {
 		_start = start;
 		_end = end;
 		_array = array;
@@ -180,7 +184,14 @@ class SubArray<T> extends Array<T> {
 
 	@Override
 	public String toString() {
-		return super.toString();
+        StringBuilder b = new StringBuilder();
+        b.append('[');
+        for (int i = _start; ; ++i) {
+            b.append(String.valueOf(_array[i]));
+            if (i == _end - 1)
+                return b.append(']').toString();
+            b.append(", ");
+        }
 	}
 
 }
