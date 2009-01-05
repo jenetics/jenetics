@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.17 2008-12-01 21:32:44 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.18 2009-01-05 20:39:11 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -191,7 +191,7 @@ public final class ArrayUtils {
 		_quicksort(array, from, to - 1, comparator);
 	}
 	
-	static <T> void _quicksort(
+	private static <T> void _quicksort(
 		final Array<T> array, final int left, final int right,
 		final Comparator<? super T> comparator
 	) {
@@ -289,8 +289,8 @@ public final class ArrayUtils {
 	 * 
 	 * @param <T> the array element type.
 	 * @param array the array.
-	 * @param k searching the <i>k</i>th samllest value.
-	 * @return the <i>k</i>th samllest value.
+	 * @param k searching the <i>k</i><sup>th</sup> samllest value.
+	 * @return the <i>k</i><sup>th</sup> samllest value.
 	 * @throws NullPointerException if the {@code array} or one of it's element 
 	 *         is {@code null}.
 	 * @throws IllegalArgumentException if {@code k < 0} or 
