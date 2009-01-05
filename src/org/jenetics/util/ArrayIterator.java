@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
  * Helper class which iterates over an given array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayIterator.java,v 1.4 2009-01-05 21:42:50 fwilhelm Exp $
+ * @version $Id: ArrayIterator.java,v 1.5 2009-01-05 21:50:38 fwilhelm Exp $
  */
 final class ArrayIterator<T> implements ListIterator<T> {
 	private final Object[] _array;
@@ -40,9 +40,9 @@ final class ArrayIterator<T> implements ListIterator<T> {
 	
 	public ArrayIterator(
 		final Object[] array, 
-		final int start, final int end, final boolean sealed
+		final int start, final int end, 
+		final boolean sealed
 	) {
-		Validator.notNull(array, "Array");
 		_start = start;
 		_end = end;
 		_array = array;
