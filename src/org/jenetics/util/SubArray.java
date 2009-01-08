@@ -26,7 +26,7 @@ import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SubArray.java,v 1.3 2009-01-05 21:50:38 fwilhelm Exp $
+ * @version $Id: SubArray.java,v 1.4 2009-01-08 22:09:21 fwilhelm Exp $
  */
 final class SubArray<T> extends Array<T> {
 	private int _start;
@@ -34,7 +34,8 @@ final class SubArray<T> extends Array<T> {
 	
 	SubArray(
 		final Object[] array, 
-		final int start, final int end, 
+		final int start, 
+		final int end, 
 		final boolean sealed
 	) {
 		_start = start;
@@ -172,11 +173,11 @@ final class SubArray<T> extends Array<T> {
 		
 		final Array<?> array = (Array<?>)obj;
 		boolean equals = (length() == array.length());
-		for (int i = _start; equals && i < _end; ++i) {
-			if (_array[i] != null) {
-				equals = _array[i].equals(array._array[i]);
+		for (int i = 0; equals && i < length(); ++i) {
+			if (get(i) != null) {
+				equals = get(i).equals(array.get(i));
 			} else {
-				equals = array._array[i] == null;
+				equals = array.get(i) == null;
 			}
 		}
 		return equals;
