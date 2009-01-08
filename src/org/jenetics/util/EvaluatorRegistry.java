@@ -28,7 +28,7 @@ import javolution.context.LocalContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EvaluatorRegistry.java,v 1.1 2008-11-13 20:37:41 fwilhelm Exp $
+ * @version $Id: EvaluatorRegistry.java,v 1.2 2009-01-08 22:09:21 fwilhelm Exp $
  */
 public class EvaluatorRegistry {
 	private static final LocalContext.Reference<Evaluator> EVALUATOR = 
@@ -41,7 +41,7 @@ public class EvaluatorRegistry {
 	/**
 	 * Return the currently registered evaluator.
 	 * 
-	 * @return teh currently registered evaluator.
+	 * @return the currently registered evaluator.
 	 */
 	public static Evaluator getEvaluator() {
 		return EVALUATOR.get();
@@ -51,6 +51,7 @@ public class EvaluatorRegistry {
 	 * Set the evaluator to use.
 	 * 
 	 * @param evaluator set the evaluator to use.
+	 * @throws NullPointerException if the given {@code evaluator} is {@code null}.
 	 */
 	public static void setEvaluator(final Evaluator evaluator) {
 		Validator.notNull(evaluator, "Evaluator");
@@ -61,6 +62,7 @@ public class EvaluatorRegistry {
 	 * Evaluates the given task list with the currently registered evaluator.
 	 * 
 	 * @param tasks the tasks to evaluate.
+	 * @throws NullPointerException if the given {@code tasks} list is {@code null}.
 	 */
 	public static void evaluate(final List<? extends Runnable> tasks) {
 		Validator.notNull(tasks, "Task list");
