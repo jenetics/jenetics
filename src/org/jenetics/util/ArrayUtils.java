@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.20 2009-01-09 21:56:40 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.21 2009-01-09 22:12:57 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -158,8 +158,7 @@ public final class ArrayUtils {
      * @throws IllegalArgumentException if <tt>from &gt; to</tt>
      * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
      *         <tt>to &gt; a.length</tt>
-     * @throws NullPointerException if the give array or comparator is 
-     *         {@code null}.
+     * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 *         ({@code array.isSealed() == true}).
 	 */
@@ -744,8 +743,13 @@ public final class ArrayUtils {
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
-		if (((long)n)*((long)k) > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Values too big.");
+		final long product = (long)n*(long)k;
+		if (product > Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(String.format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)", 
+				n, sub.length, product, Integer.MAX_VALUE
+					
+			));
 		}
 		
 		for (int i = 0; i < k; ++i) {
