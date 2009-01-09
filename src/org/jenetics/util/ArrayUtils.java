@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.19 2009-01-05 21:42:50 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.20 2009-01-09 21:56:40 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -93,8 +93,14 @@ public final class ArrayUtils {
      *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
      *         <tt>j &gt; a.length</tt>
      * @throws NullPointerException if the give array is {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
+		Validator.notNull(array, "Array");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
 		swap(array._array, i, j);
 	}
 	
@@ -107,6 +113,8 @@ public final class ArrayUtils {
      *         <tt>to &gt; a.length</tt>
      * @throws NullPointerException if the give array or comparator is 
      *         {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void sort(
 		final Array<T> array, final int from, final int to,
@@ -114,6 +122,9 @@ public final class ArrayUtils {
 	) {
 		Validator.notNull(array, "Array");
 		Validator.notNull(comparator, "Comparator");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
 		
 		@SuppressWarnings("unchecked")
 		final Comparator<Object> c = (Comparator<Object>)comparator;
@@ -126,8 +137,18 @@ public final class ArrayUtils {
 	 * 
      * @throws NullPointerException if the give array or comparator is 
      *         {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
-	public static <T> void sort(final Array<T> array, final Comparator<? super T> comparator) {
+	public static <T> void sort(
+		final Array<T> array, final Comparator<? super T> comparator
+	) {
+		Validator.notNull(array, "Array");
+		Validator.notNull(comparator, "Comparator");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+		
 		sort(array, 0, array.length(), comparator);
 	}
 	
@@ -139,9 +160,16 @@ public final class ArrayUtils {
      *         <tt>to &gt; a.length</tt>
      * @throws NullPointerException if the give array or comparator is 
      *         {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array, final int from, final int to) {
+		Validator.notNull(array, "Array");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+		
 		Arrays.sort(array._array, from, to);
 	}
 	
@@ -150,10 +178,17 @@ public final class ArrayUtils {
 	 * 
 	 * @see Arrays#sort(Object[])
      * @throws NullPointerException if the give array is {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array) 
 	{
+		Validator.notNull(array, "Array");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+		
 		Arrays.sort(array._array, 0, array.length());
 	}
 	
@@ -441,9 +476,18 @@ public final class ArrayUtils {
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give array is {@code null}.
+	 * @throws NullPointerException if the give array or the random object is 
+	 *         {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void shuffle(final Array<T> array, final Random random) {
+		Validator.notNull(array, "Array");
+		Validator.notNull(random, "Random");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+		
 		shuffle(array._array, random);
 	}
 	
@@ -484,8 +528,15 @@ public final class ArrayUtils {
      * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
      *         <tt>to &gt; a.length</tt>
      * @throws NullPointerException if the give array is {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
+		Validator.notNull(array, "Array");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+		
 		reverse(array._array, from, to);
 	}
 	
@@ -506,8 +557,15 @@ public final class ArrayUtils {
 	 * @param <T> the array type.
 	 * @param array the array to reverse.
 	 * @throws NullPointerException if the give array is {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void reverse(final Array<T> array) {
+		Validator.notNull(array, "Array");
+		if (array.isSealed()) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+		
 		reverse(array._array);
 	}
 	
