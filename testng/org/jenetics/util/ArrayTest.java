@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.4 2009-01-05 21:50:38 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.5 2009-01-09 21:29:40 fwilhelm Exp $
  */
 public class ArrayTest {
 
@@ -38,7 +38,7 @@ public class ArrayTest {
 			array.set(i, i);
 		}
 		
-		final Array<Integer> copy = array.copy(3, 8);
+		final Array<Integer> copy = array.subArray(3, 8).copy();
 		Assert.assertEquals(copy.length(), 5);
 		for (int i = 0; i < 5; ++i) {
 			Assert.assertEquals(copy.get(i), new Integer(i + 3));
