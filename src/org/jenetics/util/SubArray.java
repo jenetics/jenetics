@@ -26,7 +26,7 @@ import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SubArray.java,v 1.5 2009-01-09 21:29:40 fwilhelm Exp $
+ * @version $Id: SubArray.java,v 1.6 2009-01-09 21:39:09 fwilhelm Exp $
  */
 final class SubArray<T> extends Array<T> {
 	private int _start;
@@ -135,8 +135,8 @@ final class SubArray<T> extends Array<T> {
 	@Override
 	public int hashCode() {
 		int code = 17;
-		for (int i = _start; i < _end; ++i) {
-			final Object element = _array[i];
+		for (int i = 0; i < length(); ++i) {
+			final Object element = get(i);
 			if (element != null) {
 				code += 37*element.hashCode() + 17;
 			} else {
