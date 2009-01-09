@@ -26,14 +26,11 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.jscience.mathematics.number.Number;
-
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.6 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.7 2009-01-09 20:42:53 fwilhelm Exp $
  */
-public class RouletteWheelSelector<G extends Gene<?>, N extends Number<N>> 
+public class RouletteWheelSelector<G extends Gene<?>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
 {
 	private static final long serialVersionUID = 6434924633105671176L;
