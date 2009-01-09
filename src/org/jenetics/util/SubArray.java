@@ -26,7 +26,7 @@ import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SubArray.java,v 1.4 2009-01-08 22:09:21 fwilhelm Exp $
+ * @version $Id: SubArray.java,v 1.5 2009-01-09 21:29:40 fwilhelm Exp $
  */
 final class SubArray<T> extends Array<T> {
 	private int _start;
@@ -117,24 +117,8 @@ final class SubArray<T> extends Array<T> {
 	
 	@Override
 	public Array<T> copy() {
-		return copy(0, length());
-	}
-
-	@Override
-	public Array<T> copy(int start) {
-		return copy(start, length());
-	}
-	
-	@Override
-	public Array<T> copy(int start, int end) {
-		if (start < 0 || end > length() || start > end) {
-			throw new IndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", start, end
-			));
-		}
-		
-		final Array<T> array = Array.newInstance(end - start);
-		System.arraycopy(_array, start + _start, array._array, 0, end - start);
+		final Array<T> array = Array.newInstance(length());
+		System.arraycopy(_array, _start, array._array, 0, length());
 		return array;
 	}
 

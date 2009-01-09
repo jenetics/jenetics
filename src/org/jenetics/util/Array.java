@@ -37,7 +37,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.9 2009-01-05 21:42:50 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.10 2009-01-09 21:29:40 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -165,43 +165,33 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * @return a shallow copy of this array.
 	 */
 	public Array<T> copy() {
-		return copy(0, length());
-	}
-	
-	/**
-	 * Return a shallow copy of this array. The array elements are not cloned.
-	 * 
-	 * @param start low endpoint (inclusive) of the new array.
-	 * @param end high endpoint (exclusive) of the new array.
-	 * @return a copy of the specified range within this array.
-	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
-	 *        (start < 0 || start > length)
-	 */
-	public Array<T> copy(final int start) {
-		return copy(start, length());
-	}
-	
-	/**
-	 * Return a shallow copy of this array. The array elements are not cloned.
-	 * 
-	 * @param start low endpoint (inclusive) of the new array.
-	 * @param end high endpoint (exclusive) of the new array.
-	 * @return a copy of the specified range within this array.
-	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
-	 *        (start < 0 || end > length || start > end)
-	 */
-	public Array<T> copy(final int start, final int end) {
-		if (start < 0 || end > length() || start > end) {
-			throw new IndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", start, end
-			));
-		}
-		
-		final Array<T> array = newInstance(end - start);
-		System.arraycopy(_array, start, array._array, 0, end - start);
+		final Array<T> array = newInstance(length());
+		System.arraycopy(_array, 0, array._array, 0, length());
 		return array;
 	}
 	
+	/**
+	 * Returns a view of the portion of this array between the specified 
+	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start} 
+	 * and {@code end} are equal, the returned array has the length zero.) The 
+	 * returned array is backed by this array, so non-structural changes in the 
+	 * returned array are reflected in this array, and vice-versa.
+	 * <p/>
+	 * This method eliminates the need for explicit range operations (of the 
+	 * sort that commonly exist for arrays). Any operation that expects an array 
+	 * can be used as a range operation by passing an sub array view instead of 
+	 * an whole array. E.g.:
+	 * [code]
+	 *     array.subArray(4, 10).clear();
+	 *     Array<?> copy = array.subArray(5, 7).copy();
+	 * [/code]
+	 * 
+	 * @param start low endpoint (inclusive) of the sub array.
+	 * @param end high endpoint (exclusive) of the sub array.
+	 * @return a view of the specified range within this array.
+	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 *         ({@code start < 0 || end > lenght() || start > end}).
+	 */
 	public Array<T> subArray(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new IndexOutOfBoundsException(String.format(
