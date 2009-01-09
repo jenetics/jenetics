@@ -26,7 +26,6 @@ import java.io.Serializable;
 
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
-import org.jscience.mathematics.number.Number;
 
 
 /**
@@ -39,9 +38,9 @@ import org.jscience.mathematics.number.Number;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.6 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.7 2009-01-09 20:42:53 fwilhelm Exp $
  */
-public class StochasticUniversalSelector<G extends Gene<?>, N extends Number<N>> 
+public class StochasticUniversalSelector<G extends Gene<?>, N extends Number & Comparable<N>> 
 	extends RouletteWheelSelector<G, N> implements Serializable 
 {
 	private static final long serialVersionUID = 3673324276572086631L;

@@ -26,8 +26,6 @@ import static java.lang.Math.exp;
 
 import java.io.Serializable;
 
-import org.jscience.mathematics.number.Number;
-
 /**
  * In this <code>Selector</code>, the probability for selection is defined as:
  * <p/>
@@ -50,9 +48,9 @@ import org.jscience.mathematics.number.Number;
  * @param <N> the BoltzmannSelector requires a number type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.5 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.6 2009-01-09 20:42:53 fwilhelm Exp $
  */
-public class BoltzmannSelector<T extends Gene<?>, N extends Number<N>> 
+public class BoltzmannSelector<T extends Gene<?>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<T, N> implements Serializable
 {
 	private static final long serialVersionUID = 4785987330242283796L;
