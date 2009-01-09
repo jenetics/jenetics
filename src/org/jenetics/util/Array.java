@@ -37,7 +37,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.10 2009-01-09 21:29:40 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.11 2009-01-09 21:39:09 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -161,6 +161,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	
 	/**
 	 * Return a shallow copy of this array. The array elements are not cloned.
+	 * The copied array is not sealed.
 	 * 
 	 * @return a shallow copy of this array.
 	 */
@@ -175,7 +176,9 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start} 
 	 * and {@code end} are equal, the returned array has the length zero.) The 
 	 * returned array is backed by this array, so non-structural changes in the 
-	 * returned array are reflected in this array, and vice-versa.
+	 * returned array are reflected in this array, and vice-versa. The sealing
+	 * state is copied from this array 
+	 * ({@code this.isSealed() == this.subArray(start, end).isSealed()}).
 	 * <p/>
 	 * This method eliminates the need for explicit range operations (of the 
 	 * sort that commonly exist for arrays). Any operation that expects an array 
