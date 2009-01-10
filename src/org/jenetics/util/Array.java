@@ -37,7 +37,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.11 2009-01-09 21:39:09 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.12 2009-01-10 12:09:02 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -130,17 +130,17 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	}
 	
 	/**
-	 * Set all array elements to {@code null}.
+	 * Set all array elements to the given {@code value}.
 	 * 
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 *         ({@code isSealed() == true}).
 	 */
-	public void clear() {
+	public void fill(final T value) {
 		if (_sealed) {
 			throw new UnsupportedOperationException("Array is sealed.");
 		}
 		for (int i = 0; i < _array.length; ++i) {
-			_array[i] = null;
+			_array[i] = value;
 		}
 	}
 	
@@ -279,7 +279,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		if (a._array.length != length) {
 			a._array = new Object[length];
 		} else {
-			a.clear();
+			a.fill(null);
 //			a._array = new Object[length];
 		}
 		return a;

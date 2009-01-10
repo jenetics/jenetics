@@ -2,6 +2,7 @@
 - Finish NumericStatistic/Calculator implementation.
 - Fixing minor flaws of the Arrays sealed state.
 - Adding method Array.subArray(int, int).
+- Generalize the method Array.clear() to Array.fill(T value).
 
 Jenetics-0.3.2.0
 - The PropabilitySelector no longer sorts the population before calling the
