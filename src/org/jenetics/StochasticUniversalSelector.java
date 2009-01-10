@@ -38,7 +38,7 @@ import org.jenetics.util.Validator;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.7 2009-01-09 20:42:53 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.8 2009-01-10 12:19:11 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<G extends Gene<?>, N extends Number & Comparable<N>> 
 	extends RouletteWheelSelector<G, N> implements Serializable 
@@ -57,7 +57,7 @@ public class StochasticUniversalSelector<G extends Gene<?>, N extends Number & C
 			);
 		}
 		
-		Population<G, N> selection = new Population<G, N>();
+		Population<G, N> selection = new Population<G, N>(count);
 		if (count == 0) {
 			return selection;
 		}
