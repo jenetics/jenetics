@@ -26,7 +26,7 @@ import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SubArray.java,v 1.6 2009-01-09 21:39:09 fwilhelm Exp $
+ * @version $Id: SubArray.java,v 1.7 2009-01-10 12:09:02 fwilhelm Exp $
  */
 final class SubArray<T> extends Array<T> {
 	private int _start;
@@ -96,12 +96,12 @@ final class SubArray<T> extends Array<T> {
 	}
 	
 	@Override
-	public void clear() {
+	public void fill(final T value) {
 		if (_sealed) {
 			throw new UnsupportedOperationException("Array is sealed.");
 		}
 		for (int i = _start; i < _end; ++i) {
-			_array[i] = null;
+			_array[i] = value;
 		}
 	}
 	
