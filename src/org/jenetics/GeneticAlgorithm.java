@@ -27,7 +27,6 @@ import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.notNull;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.measure.Measurable;
 import javax.measure.quantity.Duration;
@@ -37,7 +36,6 @@ import javolution.context.ConcurrentContext;
 import org.jenetics.util.Array;
 import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Probability;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.ThreadedEvaluator;
 import org.jenetics.util.Timer;
 
@@ -71,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.23 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.24 2009-01-12 23:29:05 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -433,26 +431,6 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 */
 	public Statistic<G, C> getStatistic() {
 		return _statistic;
-	}
-	
-	/**
-	 * Return the currently used random number generator.
-	 * 
-	 * @return the currently used random number generator.
-	 */
-	public static Random getRandom() {
-		return RandomRegistry.getRandom();
-	}
-
-	/**
-	 * Set the random engine.
-	 * 
-	 * @param random The random engine.
-	 * @throws NullPointerException if the given random engine is null.
-	 */
-	public static void setRandom(final Random random) {
-		notNull(random, "Random engine");
-		RandomRegistry.setRandom(random);
 	}
 
 	/**
