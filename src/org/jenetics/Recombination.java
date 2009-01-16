@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.6 2008-11-17 21:36:34 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.7 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 
@@ -71,7 +71,9 @@ public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
 	 * @throws NullPointerException if the <code>probability</code> or the
 	 * 		<code>component</code> is <code>null</code>. 
 	 */
-	public Recombination(final Probability probability, final Alterer<G> component) {
+	public Recombination(
+		final Probability probability, final Alterer<G> component
+	) {
 		super(probability, component);
 	}
 

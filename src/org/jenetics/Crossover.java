@@ -35,7 +35,7 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.13 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.14 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 
@@ -53,7 +53,8 @@ public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 	
 	@Override
 	protected final <C extends Comparable<C>> void recombinate(
-		Population<G, C> population, int first, int second, int generation
+		final Population<G, C> population, 
+		final int first, final int second, final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		

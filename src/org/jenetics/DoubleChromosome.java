@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.8 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.9 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -76,7 +76,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
 	 *         one.
 	 */
-	public DoubleChromosome(double min, double max, int length) {
+	public DoubleChromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
 	}
 	

@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.5 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.6 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -260,7 +260,9 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			}
 		}
 		@Override
-		public void read(final InputElement element, final PermutationChromosome chromosome) 
+		public void read(
+			final InputElement element, final PermutationChromosome chromosome
+		) 
 			throws XMLStreamException 
 		{
 		}

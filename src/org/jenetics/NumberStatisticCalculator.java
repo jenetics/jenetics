@@ -22,13 +22,11 @@ package org.jenetics;
 
 import java.util.List;
 
-import org.jscience.mathematics.number.Number;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatisticCalculator.java,v 1.4 2008-12-01 21:32:44 fwilhelm Exp $
+ * @version $Id: NumberStatisticCalculator.java,v 1.5 2009-01-16 23:16:35 fwilhelm Exp $
  */
-class NumberStatisticCalculator<G extends Gene<?>, R extends Number<R>>
+public class NumberStatisticCalculator<G extends Gene<?>, R extends Number & Comparable<R>>
 	extends StatisticCalculator<G, R>
 {
 
@@ -36,7 +34,9 @@ class NumberStatisticCalculator<G extends Gene<?>, R extends Number<R>>
 	}
 	
 	@Override
-	public NumberStatistic<G, R> evaluate(final List<? extends Phenotype<G, R>> population) {
+	public NumberStatistic<G, R> evaluate(
+		final List<? extends Phenotype<G, R>> population
+	) {
 		final Statistic<G, R> s = super.evaluate(population);
 		final int size = population.size();
 		

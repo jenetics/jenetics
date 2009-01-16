@@ -22,13 +22,12 @@
  */
 package org.jenetics;
 
-import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.4 2008-12-01 21:32:43 fwilhelm Exp $
+ * @version $Id: NumberStatistic.java,v 1.5 2009-01-16 23:16:35 fwilhelm Exp $
  */
-class NumberStatistic<G extends Gene<?>, R extends Number<R>>
+public class NumberStatistic<G extends Gene<?>, R extends Number & Comparable<R>>
 	extends Statistic<G, R> 
 {
 	private static final long serialVersionUID = -7468324436514041360L;
