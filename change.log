@@ -1,3 +1,6 @@
+- Making all method parameters final.
+
+Jenetics-0.3.2.1
 - Adding and extending javadoc comments.
 - Finish NumericStatistic/Calculator implementation.
 - Fixing minor flaws of the Arrays sealed state.

@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.3 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.4 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64> 
 	implements Mean<DoubleGene>, XMLSerializable 
@@ -160,7 +160,9 @@ public class DoubleGene extends NumberGene<Float64>
 	 * @return the new created DoubleGene with the given {@code value}.
 	 * @throws IllegalArgumentException if min > max.
 	 */
-	public static DoubleGene valueOf(final Float64 value, final Float64 min, final Float64 max) {
+	public static DoubleGene valueOf(
+		final Float64 value, final Float64 min, final Float64 max
+	) {
 		DoubleGene gene = FACTORY.object();
 		gene.set(value, min, max);
 		return gene;
@@ -177,7 +179,9 @@ public class DoubleGene extends NumberGene<Float64>
 	 * @return the new created DoubleGene with the given {@code value}.
 	 * @throws IllegalArgumentException if min > max.
 	 */
-	public static DoubleGene valueOf(final double value, final double min, final double max) {
+	public static DoubleGene valueOf(
+		final double value, final double min, final double max
+	) {
 		return valueOf(
 			Float64.valueOf(value),
 			Float64.valueOf(min), 
@@ -196,7 +200,10 @@ public class DoubleGene extends NumberGene<Float64>
 	 */
 	public static DoubleGene valueOf(final Float64 min, final Float64 max) {
 		final Random random = RandomRegistry.getRandom();
-		final double value = min.doubleValue() + random.nextDouble()*(max.doubleValue() - min.doubleValue());
+		final double value = min.doubleValue() + 
+							random.nextDouble()*(max.doubleValue() - 
+							min.doubleValue());
+		
 		return valueOf(Float64.valueOf(value), min, max);
 	}
 	

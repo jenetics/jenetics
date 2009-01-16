@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.24 2009-01-12 23:29:05 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.25 2009-01-16 23:16:35 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
@@ -274,7 +274,10 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		return selection;
 	}
 	
-	private Population<G, C> combine(final Population<G, C> survivors, final Population<G, C> offsprings) {
+	private Population<G, C> combine(
+		final Population<G, C> survivors, 
+		final Population<G, C> offsprings
+	) {
 		final Population<G, C> population = new Population<G, C>(_populationSize);
 		
 		for (int i = 0, n = survivors.size(); i < n; ++i) {

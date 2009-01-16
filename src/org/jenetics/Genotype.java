@@ -43,7 +43,7 @@ import org.jenetics.util.Verifiable;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.12 2008-10-19 19:58:44 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.13 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?>> 
 	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
@@ -216,7 +216,9 @@ public class Genotype<T extends Gene<?>>
 	 * 		   chromosome.
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
-	public static <G extends Gene<?>> Genotype<G> valueOf(final Array<Chromosome<G>> chromosomes) {
+	public static <G extends Gene<?>> Genotype<G> valueOf(
+		final Array<Chromosome<G>> chromosomes
+	) {
 		notNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
@@ -237,7 +239,9 @@ public class Genotype<T extends Gene<?>>
 	 *        consists of.
 	 * @throws NullPointerException if <code>chromosome</code> is null.
 	 */
-	public static <G extends Gene<?>> Genotype<G> valueOf(final Chromosome<G> chromosome) {
+	public static <G extends Gene<?>> Genotype<G> valueOf(
+		final Chromosome<G> chromosome
+	) {
 		notNull(chromosome, "Chromosome");
 		
 		final Genotype<G> genotype = new Genotype<G>(1);
@@ -293,7 +297,9 @@ public class Genotype<T extends Gene<?>>
 		return genotype;
 	}
 	
-	public static <G extends Gene<?>> Genotype<G> valueOf(final Genotype<G> genotype) {
+	public static <G extends Gene<?>> Genotype<G> valueOf(
+		final Genotype<G> genotype
+	) {
 		notNull(genotype, "Genotype");
 		
 		final Genotype<G> gtype = new Genotype<G>(genotype.length());

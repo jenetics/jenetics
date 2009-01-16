@@ -47,7 +47,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.10 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.11 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -256,7 +256,7 @@ public class BitChromosome extends Number<LargeInteger>
      * @throws IndexOutOfBoundsException 
      *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
      */
-    public int toByteArray(byte[] bytes) {
+    public int toByteArray(final byte[] bytes) {
     	final int bytesLength = (int)Math.ceil(length()/8.0);
     	if (bytes.length < bytesLength) {
     		throw new IndexOutOfBoundsException(); 

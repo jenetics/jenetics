@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.3 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.4 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64> 
 	implements Mean<IntegerGene>, XMLSerializable 
@@ -142,7 +142,8 @@ public class IntegerGene extends NumberGene<Integer64>
 	}
 
 	
-	private static final ObjectFactory<IntegerGene> FACTORY = new ObjectFactory<IntegerGene>() {
+	private static final ObjectFactory<IntegerGene> FACTORY = 
+	new ObjectFactory<IntegerGene>() {
 		@Override protected IntegerGene create() {
 			return new IntegerGene();
 		}
@@ -160,7 +161,11 @@ public class IntegerGene extends NumberGene<Integer64>
 	 * @throws IllegalArgumentException if min > max.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static IntegerGene valueOf(Integer64 value, Integer64 min, Integer64 max) {
+	public static IntegerGene valueOf(
+		final Integer64 value, 
+		final Integer64 min, 
+		final Integer64 max
+	) {
 		IntegerGene gene = FACTORY.object();
 		gene.set(value, min, max);
 		return gene;
@@ -195,9 +200,10 @@ public class IntegerGene extends NumberGene<Integer64>
 	 * @throws IllegalArgumentException if min > max
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static IntegerGene valueOf(Integer64 min, Integer64 max) {
+	public static IntegerGene valueOf(final Integer64 min, final Integer64 max) {
 		final Random random = RandomRegistry.getRandom();
-		final int value = min.intValue() + random.nextInt(max.intValue() - min.intValue() + 1);
+		final int value = min.intValue() + 
+						random.nextInt(max.intValue() - min.intValue() + 1);
 		return valueOf(Integer64.valueOf(value), min, max);
 	}
 	
@@ -210,7 +216,7 @@ public class IntegerGene extends NumberGene<Integer64>
 	 * @return the new created Integer gene.
 	 * @throws IllegalArgumentException if min > max
 	 */
-	public static IntegerGene valueOf(int min, int max) {
+	public static IntegerGene valueOf(final int min, final int max) {
 		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
 	

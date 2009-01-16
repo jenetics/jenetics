@@ -28,7 +28,7 @@ import java.util.Collections;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.7 2009-01-09 20:42:53 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.8 2009-01-16 23:16:35 fwilhelm Exp $
  */
 public class RouletteWheelSelector<G extends Gene<?>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
@@ -53,7 +53,8 @@ public class RouletteWheelSelector<G extends Gene<?>, N extends Number & Compara
 		
 		if (sum > 0.0) {
 			for (int i = population.size(); --i >= 0;) {
-				probabilities[i] = (population.get(i).getFitness().doubleValue() - worst)/sum;
+				probabilities[i] = 
+					(population.get(i).getFitness().doubleValue() - worst)/sum;
 			}
 		} else {
 			Arrays.fill(probabilities, 1.0/population.size());
