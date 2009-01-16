@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="all">
-	<property name="version" value="0.3.2.0" />
+	<property name="version" value="0.3.2.1" />
 	<property name="identifier" value="Jentics-${version}" />
-	<property name="year" value="2007-2008" />
+	<property name="year" value="2007-2009" />
 	<property name="source.dir" value="./src" />
 	<property name="testng.source.dir" value="./testng" />
 	<property name="testng.report.dir" value="./testng-report" />
