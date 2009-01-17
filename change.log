@@ -1,3 +1,4 @@
+- Rename Chromosome.getGenes() to Chromosome.toArray().
 - Making all method parameters final.
 
 Jenetics-0.3.2.1

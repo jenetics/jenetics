@@ -47,7 +47,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.11 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.12 2009-01-17 21:34:26 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -113,7 +113,7 @@ public class BitChromosome extends Number<LargeInteger>
 	}
 	
 	@Override
-	public Array<BitGene> getGenes() {
+	public Array<BitGene> toArray() {
 		final Array<BitGene> genes = Array.newInstance(_length);
 		for (int i = 0; i < _length; ++i) {
 			genes.set(i, BitUtils.getBit(_genes, i) ? BitGene.TRUE : BitGene.FALSE);

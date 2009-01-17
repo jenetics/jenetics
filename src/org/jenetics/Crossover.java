@@ -35,7 +35,7 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.14 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.15 2009-01-17 21:34:26 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 
@@ -69,8 +69,8 @@ public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 		
 		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
 		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
-		final Array<G> genes1 = chromosomes1.get(chIndex1).getGenes().copy();
-		final Array<G> genes2 = chromosomes2.get(chIndex2).getGenes().copy();
+		final Array<G> genes1 = chromosomes1.get(chIndex1).toArray().copy();
+		final Array<G> genes2 = chromosomes2.get(chIndex2).toArray().copy();
 		
 		crossover(genes1, genes2);
 		

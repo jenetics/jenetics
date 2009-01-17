@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.10 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.11 2009-01-17 21:34:26 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Recombination<G> {
 
@@ -62,8 +62,8 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Recombination<G> {
 		final int chIndex = random.nextInt(gt1.chromosomes());
 		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
 		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
-		final Array<G> genes1 = chromosomes1.get(chIndex).getGenes().copy();
-		final Array<G> genes2 = chromosomes2.get(chIndex).getGenes().copy();
+		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
+		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
 		final int geneIndex = random.nextInt(genes1.length());
 		
