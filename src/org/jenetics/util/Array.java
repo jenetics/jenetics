@@ -37,7 +37,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.12 2009-01-10 12:09:02 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.13 2009-01-17 21:52:00 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -53,6 +53,11 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 */
 	Array(final int length) {
 		_array = new Object[length];
+	}
+	
+	Array(final Object[] array, final boolean sealed) {
+		_array = array;
+		_sealed = sealed;
 	}
 	
 	/**

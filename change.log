@@ -1,3 +1,4 @@
+- Adding ArrayUtils.sealedArray() method.
 - Rename Chromosome.getGenes() to Chromosome.toArray().
 - Making all method parameters final.
 

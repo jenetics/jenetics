@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.21 2009-01-09 22:12:57 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.22 2009-01-17 21:52:00 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -56,7 +56,32 @@ public final class ArrayUtils {
 		return new org.jenetics.util.ArrayList<T>(array._array);
 	}
 	
+	/**
+	 * Return a sealed version of the given {@code array}.
+	 * 
+	 * @param <T> the array type.
+	 * @param array the array.
+	 * @return the sealed array.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */
+	public static <T> Array<T> sealedArray(final Array<T> array) {
+		Validator.notNull(array, "Array");
+		return new Array<T>(array._array, true);
+	}
+	
+	/**
+	 * Swap two elements of an given array.
+	 * 
+	 * @param array the array
+	 * @param i index of the first array element.
+	 * @param j index of the second array element.
+     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+     *         <tt>j &gt; a.length</tt>
+     * @throws NullPointerException if the give array is {@code null}.
+	 */
 	public static void swap(final int[] array, final int i, final int j) {
+		Validator.notNull(array, "Array");
 		final int temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
