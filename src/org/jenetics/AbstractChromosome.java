@@ -39,7 +39,7 @@ import org.jenetics.util.Validator;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.12 2008-10-13 21:13:02 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.13 2009-01-17 21:34:26 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -102,7 +102,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	}
 
 	@Override
-	public Array<T> getGenes() {
+	public Array<T> toArray() {
 		return _genes.seal();
 	}
 	
