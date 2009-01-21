@@ -22,11 +22,9 @@
  */
 package org.jenetics.util;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.ListIterator;
 import java.util.RandomAccess;
-
 
 import javolution.context.ObjectFactory;
 
@@ -37,13 +35,55 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.13 2009-01-17 21:52:00 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.14 2009-01-21 21:48:21 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
+	int _start = 0;
+	int _end = 0;
 	boolean _sealed = false;
 	
 	Array() {
+	}
+	
+	/**
+	 * <i>Universal</i> array constructor.
+	 * 
+	 * @param array the array which holds the elements. The array will not be 
+	 *        copied.
+	 * @param start the start index of the given array (exclusively).
+	 * @param end the end index of the given array (exclusively)
+	 * @param sealed the seal status. If {@code true} calles to 
+	 *        {@link #set(int, Object)} will throw an 
+	 *        {@link UnsupportedOperationException}.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
+	 *         value ({@code start < 0 || end > array.lenght || start > end}).
+	 */
+	Array(final Object[] array, final int start, final int end, final boolean sealed) {
+		Validator.notNull(array, "Array");
+		if (start < 0 || end > array.length || start > end) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", start, end
+			));
+		}
+		
+		_array = array;
+		_start = start;
+		_end = end;
+		_sealed = sealed;
+	}
+	
+	/**
+	 * @param array the array which holds the elements. The array will not be 
+	 *        copied.
+	 * @param sealed the seal status. If {@code true} calles to 
+	 *        {@link #set(int, Object)} will throw an 
+	 *        {@link UnsupportedOperationException}.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */
+	Array(final Object[] array, final boolean sealed) {
+		this(array, 0, array.length, sealed);
 	}
 	
 	/**
@@ -52,29 +92,25 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
      *         is negative
 	 */
 	Array(final int length) {
-		_array = new Object[length];
+		this(new Object[length], false);
 	}
 	
-	Array(final Object[] array, final boolean sealed) {
-		_array = array;
-		_sealed = sealed;
-	}
+
 	
 	/**
 	 * Set the {@code value} at the given {@code index}.
 	 * 
 	 * @param index the index of the new value.
 	 * @param value the new value.
-	 * @throws IndexOutOfBoundsException if the index is out of range 
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
 	 *         {@code (index < 0 || index >= size())}.
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 *         ({@code isSealed() == true}).
 	 */
 	public void set(final int index, final T value) {
-		if (_sealed) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
-		_array[index] = value;
+		checkSeal();
+		checkIndex(index);
+		_array[index + _start] = value;
 	}
 	
 	/**
@@ -82,12 +118,13 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * 
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range 
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
 	 *         {@code (index < 0 || index >= size())}.
 	 */
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
-		return (T)_array[index];
+		checkIndex(index);
+		return (T)_array[index + _start];
 	}
 	
 	/**
@@ -99,7 +136,23 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 *         this array, or -1 if this array does not contain the element
 	 */
 	public int indexOf(final Object element) {
-		return ArrayUtils.indexOf(_array, element);
+		int index = -1;
+		
+		if (element != null) {
+			for (int i = _start; i < _end && index == -1; ++i) {
+				if (element.equals(_array[i])) {
+					index = i;
+				}
+			}
+		} else {
+			for (int i = _start; i < _end && index == -1; ++i) {
+				if (_array[i] == null) {
+					index = i;
+				}
+			}	
+		}
+		
+		return index != -1 ? index - _start : -1;
 	}
 	
 	/**
@@ -141,10 +194,8 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 *         ({@code isSealed() == true}).
 	 */
 	public void fill(final T value) {
-		if (_sealed) {
-			throw new UnsupportedOperationException("Array is sealed.");
-		}
-		for (int i = 0; i < _array.length; ++i) {
+		checkSeal();
+		for (int i = _start; i < _end; ++i) {
 			_array[i] = value;
 		}
 	}
@@ -156,12 +207,12 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * @return the length of this array.
 	 */
 	public int length() {
-		return _array.length;
+		return _end - _start;
 	}
 
 	@Override
 	public ListIterator<T> iterator() {
-		return new ArrayIterator<T>(_array, 0, _array.length, _sealed);
+		return new ArrayIterator<T>(_array, _start, _end, _sealed);
 	}
 	
 	/**
@@ -172,7 +223,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 */
 	public Array<T> copy() {
 		final Array<T> array = newInstance(length());
-		System.arraycopy(_array, 0, array._array, 0, length());
+		System.arraycopy(_array, _start, array._array, 0, length());
 		return array;
 	}
 	
@@ -197,23 +248,38 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * @param start low endpoint (inclusive) of the sub array.
 	 * @param end high endpoint (exclusive) of the sub array.
 	 * @return a view of the specified range within this array.
-	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 * @throws ArrayIndexOutOfBoundsException for an illegal endpoint index value 
 	 *         ({@code start < 0 || end > lenght() || start > end}).
 	 */
 	public Array<T> subArray(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
-			throw new IndexOutOfBoundsException(String.format(
+			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", start, end
 			));
 		}
 		
-		return new SubArray<T>(_array, start, end, _sealed);
+		return new Array<T>(_array, start + _start, end + _start, _sealed);
 	}
+	
+	private void checkSeal() {
+		if (_sealed) {
+			throw new UnsupportedOperationException("Array is sealed");
+		}
+	}
+	
+	private void checkIndex(final int index) {
+		if (index < 0 || index >= (_end - _start)) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Index %s is out of bounds [0, %s)", index, (_end - _start)
+			));
+		}
+	}
+	
 	
 	@Override
 	public int hashCode() {
 		int code = 17;
-		for (int i = 0; i < _array.length; ++i) {
+		for (int i = _start; i < _end; ++i) {
 			final Object element = _array[i];
 			if (element != null) {
 				code += 37*element.hashCode() + 17;
@@ -235,7 +301,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		
 		final Array<?> array = (Array<?>)obj;
 		boolean equals = (length() == array.length());
-		for (int i = 0; equals && i < length(); ++i) {
+		for (int i = _start; equals && i < _end; ++i) {
 			if (_array[i] != null) {
 				equals = _array[i].equals(array._array[i]);
 			} else {
@@ -247,7 +313,19 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	
 	@Override
 	public String toString() {
-		return Arrays.toString(_array);
+        final StringBuilder out = new StringBuilder();
+        
+        out.append("[");
+        if (length() > 0) {
+        	out.append(_array[_start]);
+        }
+        for (int i = _start + 1; i < _end; ++i) {
+        	out.append(",");
+        	out.append(_array[i]);
+        }
+        out.append("]");
+        
+        return out.toString();
 	}
 
 	
@@ -283,6 +361,8 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		a._sealed = false;
 		if (a._array.length != length) {
 			a._array = new Object[length];
+			a._start = 0;
+			a._end = length;
 		} else {
 			a.fill(null);
 //			a._array = new Object[length];

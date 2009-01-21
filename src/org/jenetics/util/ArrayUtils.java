@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.22 2009-01-17 21:52:00 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.23 2009-01-21 21:48:21 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -66,7 +66,7 @@ public final class ArrayUtils {
 	 */
 	public static <T> Array<T> sealedArray(final Array<T> array) {
 		Validator.notNull(array, "Array");
-		return new Array<T>(array._array, true);
+		return new Array<T>(array._array, array._start, array._end, true);
 	}
 	
 	/**
@@ -82,6 +82,7 @@ public final class ArrayUtils {
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		Validator.notNull(array, "Array");
+		
 		final int temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
@@ -123,10 +124,10 @@ public final class ArrayUtils {
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
 		Validator.notNull(array, "Array");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
-		swap(array._array, i, j);
+
+		final T temp = array.get(i);
+		array.set(i, array.get(j));
+		array.set(j, temp);
 	}
 	
 	/**
@@ -150,10 +151,15 @@ public final class ArrayUtils {
 		if (array.isSealed()) {
 			throw new UnsupportedOperationException("Array is sealed");
 		}
+		if (from < 0 || to > array.length() || from > to) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", from, to
+			));
+		}
 		
 		@SuppressWarnings("unchecked")
 		final Comparator<Object> c = (Comparator<Object>)comparator;
-		Arrays.sort(array._array, from, to, c);
+		Arrays.sort(array._array, from + array._start, to + array._start, c);
 	}
 	
 	/**
@@ -193,8 +199,13 @@ public final class ArrayUtils {
 		if (array.isSealed()) {
 			throw new UnsupportedOperationException("Array is sealed");
 		}
+		if (from < 0 || to > array.length() || from > to) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", from, to
+			));
+		}
 		
-		Arrays.sort(array._array, from, to);
+		Arrays.sort(array._array, from + array._start, to + array._start);
 	}
 	
 	/**
@@ -265,17 +276,17 @@ public final class ArrayUtils {
 			do i++; while(i < right && comparator.compare(array.get(i), pivot) < 0);
 			do j--; while(j > left && comparator.compare(array.get(j), pivot) > 0);
 			if(j <= i) break;
-			_swap(array._array, i, j);
+			_swap(array, i, j);
 		}
 		
-		_swap(array._array, left, j);
+		_swap(array, left, j);
 		_quicksort(array, left, j - 1, comparator);
 		_quicksort(array, j + 1, right, comparator);
 	}
-	private static <T> void _swap(final T[] array, final int i, final int j) {
-		final T temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
+	private static <T> void _swap(final Array<T> array, final int i, final int j) {
+		final Object temp = array._array[i + array._start];
+		array._array[i + array._start] = array._array[j + array._start];
+		array._array[j + array._start] = temp;
 	}
 	
 	
@@ -508,11 +519,10 @@ public final class ArrayUtils {
 	public static <T> void shuffle(final Array<T> array, final Random random) {
 		Validator.notNull(array, "Array");
 		Validator.notNull(random, "Random");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
 		
-		shuffle(array._array, random);
+		for (int j = array.length() - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
+		}
 	}
 	
 	/**
@@ -557,11 +567,16 @@ public final class ArrayUtils {
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
 		Validator.notNull(array, "Array");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
+		rangeCheck(array.length(), from, to);
 		
-		reverse(array._array, from, to);
+		int i = from;
+		int j = to;
+		
+		while (i < j) {
+			--j;
+			swap(array, i, j);
+			++i;
+		}
 	}
 	
 	/**
@@ -572,6 +587,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array) {
+		Validator.notNull(array, "Array");
 		reverse(array, 0, array.length);
 	}
 	
@@ -586,11 +602,7 @@ public final class ArrayUtils {
 	 */
 	public static <T> void reverse(final Array<T> array) {
 		Validator.notNull(array, "Array");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
-		
-		reverse(array._array);
+		reverse(array, 0, array.length());
 	}
 	
 	private static void rangeCheck(int length, int from, int to) {
@@ -938,8 +950,7 @@ public final class ArrayUtils {
 	 * @param array the array to search.
 	 * @param start the start index of the search.
 	 * @param element the element to search for.
-	 * 
-	 * @return the inde of the first occurrence of the specified element in the
+	 * @return the index of the first occurrence of the specified element in the
 	 *         given {@code array}, of -1 if the {@code array} does not contain
 	 *         the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
@@ -975,12 +986,60 @@ public final class ArrayUtils {
 		return index;
 	}
 	
-	public static int indexOf(final Object[] array, final int start, final Object element) {
-		return indexOf(array, start, array.length, element);
+	/**
+	 * Returns the index of the first occurrence of the specified element in 
+	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
+	 * @param array the array to search.
+	 * @param start the start index of the search.
+	 * @param element the element to search for.
+	 * @return the index of the first occurrence of the specified element in the
+	 *         given {@code array}, of -1 if the {@code array} does not contain
+	 *         the element.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 *        (start < 0 || end > length || start > end)
+	 */
+	public static <T> int indexOf(
+		final Array<T> array, final int start, final int end, 
+		final Object element
+	) {
+		Validator.notNull(array, "Array");
+		if (start < 0 || end > array.length() || start > end) {
+			throw new IndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", start, end
+			));
+		}
+		
+		int index = -1;
+		if (element != null) {
+			for (int i = start; i < end && index == -1; ++i) {
+				if (element.equals(array.get(i))) {
+					index = i;
+				}
+			}
+		} else {
+			for (int i = start; i < end && index == -1; ++i) {
+				if (array.get(i) == null) {
+					index = i;
+				}
+			}	
+		}
+		
+		return index;
 	}
 	
+	/**
+	 * Returns the index of the first occurrence of the specified element in 
+	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
+	 * @param array the array to search.
+	 * @param element the element to search for.
+	 * @return the index of the first occurrence of the specified element in the
+	 *         given {@code array}, of -1 if the {@code array} does not contain
+	 *         the element.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */
 	public static int indexOf(final Object[] array, final Object element) {
-		return indexOf(array, 0, element);
+		return indexOf(array, 0, array.length, element);
 	}
 	
 	/**
@@ -997,7 +1056,7 @@ public final class ArrayUtils {
 	public static <T> int indexOf(final Array<? extends T> array, final T element) {
 		Validator.notNull(array, "Array");
 		
-		return indexOf(array._array, element);
+		return indexOf(array, 0, array.length(), element);
 	}
 	
 	public static <T> int indexOf(final T[] array, final Predicate<? super T> predicate) {
@@ -1017,7 +1076,18 @@ public final class ArrayUtils {
 	
 	
 	public static <T> int indexOf(final Array<? extends T> array, final Predicate<? super T> predicate) {
-		return indexOf(array._array, predicate);
+		Validator.notNull(array, "Array");
+		Validator.notNull(predicate, "Predicate");
+		
+		int index = -1;
+		
+		for (int i = 0; i < array.length() && index == -1; ++i) {
+			if (predicate.evaluate(array.get(i))) {
+				index = i;
+			}
+		}
+		
+		return index;
 	}
 	
 }
