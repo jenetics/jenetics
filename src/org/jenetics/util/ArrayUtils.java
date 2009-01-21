@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.23 2009-01-21 21:48:21 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.24 2009-01-21 22:16:41 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -985,48 +985,7 @@ public final class ArrayUtils {
 		
 		return index;
 	}
-	
-	/**
-	 * Returns the index of the first occurrence of the specified element in 
-	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
-	 * @param array the array to search.
-	 * @param start the start index of the search.
-	 * @param element the element to search for.
-	 * @return the index of the first occurrence of the specified element in the
-	 *         given {@code array}, of -1 if the {@code array} does not contain
-	 *         the element.
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
-	 *        (start < 0 || end > length || start > end)
-	 */
-	public static <T> int indexOf(
-		final Array<T> array, final int start, final int end, 
-		final Object element
-	) {
-		Validator.notNull(array, "Array");
-		if (start < 0 || end > array.length() || start > end) {
-			throw new IndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", start, end
-			));
-		}
-		
-		int index = -1;
-		if (element != null) {
-			for (int i = start; i < end && index == -1; ++i) {
-				if (element.equals(array.get(i))) {
-					index = i;
-				}
-			}
-		} else {
-			for (int i = start; i < end && index == -1; ++i) {
-				if (array.get(i) == null) {
-					index = i;
-				}
-			}	
-		}
-		
-		return index;
-	}
+
 	
 	/**
 	 * Returns the index of the first occurrence of the specified element in 
@@ -1042,23 +1001,6 @@ public final class ArrayUtils {
 		return indexOf(array, 0, array.length, element);
 	}
 	
-	/**
-	 * Returns the index of the first occurrence of the specified element in 
-	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
-	 * 
-	 * @param array the array to search.
-	 * @param element the element to search for.
-	 * @return the inde of the first occurrence of the specified element in the
-	 *         given {@code array}, of -1 if the {@code array} does not contain
-	 *         the element.
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 */
-	public static <T> int indexOf(final Array<? extends T> array, final T element) {
-		Validator.notNull(array, "Array");
-		
-		return indexOf(array, 0, array.length(), element);
-	}
-	
 	public static <T> int indexOf(final T[] array, final Predicate<? super T> predicate) {
 		Validator.notNull(array, "Array");
 		Validator.notNull(predicate, "Predicate");
@@ -1067,22 +1009,6 @@ public final class ArrayUtils {
 		
 		for (int i = 0; i < array.length && index == -1; ++i) {
 			if (predicate.evaluate(array[i])) {
-				index = i;
-			}
-		}
-		
-		return index;
-	}
-	
-	
-	public static <T> int indexOf(final Array<? extends T> array, final Predicate<? super T> predicate) {
-		Validator.notNull(array, "Array");
-		Validator.notNull(predicate, "Predicate");
-		
-		int index = -1;
-		
-		for (int i = 0; i < array.length() && index == -1; ++i) {
-			if (predicate.evaluate(array.get(i))) {
 				index = i;
 			}
 		}

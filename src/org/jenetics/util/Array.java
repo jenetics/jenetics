@@ -35,12 +35,12 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.14 2009-01-21 21:48:21 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.15 2009-01-21 22:16:41 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
 	int _start = 0;
-	int _end = 0;
+	int _end = _array.length;
 	boolean _sealed = false;
 	
 	Array() {
@@ -138,21 +138,48 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	public int indexOf(final Object element) {
 		int index = -1;
 		
-		if (element != null) {
-			for (int i = _start; i < _end && index == -1; ++i) {
-				if (element.equals(_array[i])) {
-					index = i;
+		if (element == null) {
+			index = indexOf(new Predicate<T>() {
+				@Override public boolean evaluate(final T object) {
+					return object == null;
 				}
-			}
+			});
 		} else {
-			for (int i = _start; i < _end && index == -1; ++i) {
-				if (_array[i] == null) {
-					index = i;
+			index = indexOf(new Predicate<T>() {
+				@Override public boolean evaluate(final T object) {
+					return element.equals(object);
 				}
-			}	
+			});
 		}
 		
-		return index != -1 ? index - _start : -1;
+		return index;
+	}
+	
+	/**
+	 * Returns the index of the first element on which the given predicate 
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * array element.
+	 * 
+	 * @param predicate the search predicate.
+	 * @return the index of the first element on which the given predicate 
+	 *         returns {@code true}, or -1 if the predicate returns false for 
+	 *         every array element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 */
+	public int indexOf(final Predicate<T> predicate) {
+		Validator.notNull(predicate, "Predicate");
+		
+		int index = -1;
+		
+		for (int i = _start; i < _end && index == -1; ++i) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array[i];
+			if (predicate.evaluate(element)) {
+				index = i - _start;
+			}
+		}
+		
+		return index;
 	}
 	
 	/**
