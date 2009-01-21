@@ -1,3 +1,6 @@
+- The methods of the Array class throw an ArrayIndexOutOfBoundsException instead
+  of an IndexOutOfBoundsException.
+- Fixing again bugs in the Array(Utils) class concerning the sealed state.
 - Adding ArrayUtils.sealedArray() method.
 - Rename Chromosome.getGenes() to Chromosome.toArray().
 - Making all method parameters final.
