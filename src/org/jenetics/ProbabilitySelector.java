@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.9 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.10 2009-02-17 21:29:13 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -78,8 +78,9 @@ public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparabl
 	 * population, the subclass is responsible to sort the population.
 	 * 
 	 * @param population The <em>unsorted</em> population.
-	 * @param count 
-	 * @return Probability array.
+	 * @param count The number of phenotypes to select. 
+	 * @return Probability array. The returned probability array must have the 
+	 *         length {@code population.size()}.
 	 */
 	protected abstract double[] probabilities(
 		final Population<G, C> population, final int count

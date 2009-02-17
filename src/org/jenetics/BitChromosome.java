@@ -40,6 +40,7 @@ import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
@@ -47,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.13 2009-02-17 20:07:52 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.14 2009-02-17 21:29:13 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -435,13 +436,15 @@ public class BitChromosome extends Number<LargeInteger>
 		BitChromosome chromosome = newInstance(length, null);
 		int ones = 0;
 		for (int i = 0; i < length; ++i) {
-			if (chromosome.get(i)) {
+			if (bits.get(i)) {
 				++ones;
+				BitUtils.setBit(chromosome._genes, i, true);
+			} else {
+				BitUtils.setBit(chromosome._genes, i, false);
 			}
-			BitUtils.setBit(chromosome._genes, i, bits.get(i));
+			
 		}
 		chromosome._p = Probability.valueOf((double)ones/(double)length);
-		
 		return chromosome;
 	}
 	
@@ -452,6 +455,33 @@ public class BitChromosome extends Number<LargeInteger>
 	public static BitChromosome valueOf(final byte[] value) {
 		final BitChromosome chromosome = BitChromosome.valueOf(value.length*8);
 		System.arraycopy(value, 0, chromosome._genes, 0, value.length);
+		return chromosome;
+	}
+	
+	public static BitChromosome valueOf(final CharSequence value) {
+		Validator.notNull(value, "Input");
+		if (value.length() == 0) {
+			throw new IllegalArgumentException("Length must greater than zero.");
+		}
+		
+		final BitChromosome chromosome = BitChromosome.valueOf(value.length());
+		
+		int ones = 0;
+		for (int i = 0, n = value.length(); i < n; ++i) {
+			final char c = value.charAt(i);
+			if (c == '1') {
+				++ones;
+				BitUtils.setBit(chromosome._genes, i, true);
+			} else if (c == '0') {
+				BitUtils.setBit(chromosome._genes, i, false);
+			} else {
+				throw new IllegalArgumentException(String.format(
+					"Illegal character '%s' at position %d", c, i
+				));
+			}
+		}
+		
+		chromosome._p = Probability.valueOf((double)ones/(double)value.length());
 		return chromosome;
 	}
 	
