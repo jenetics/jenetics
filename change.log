@@ -1,3 +1,5 @@
+- Fixing mutation probability calculation in Mutation class.
+- Making mutation a little bit faster.
 - The methods of the Array class throw an ArrayIndexOutOfBoundsException instead
   of an IndexOutOfBoundsException.
 - Fixing again bugs in the Array(Utils) class concerning the sealed state.
