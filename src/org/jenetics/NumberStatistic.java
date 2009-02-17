@@ -25,7 +25,7 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.5 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: NumberStatistic.java,v 1.6 2009-02-17 20:07:52 fwilhelm Exp $
  */
 public class NumberStatistic<G extends Gene<?>, R extends Number & Comparable<R>>
 	extends Statistic<G, R> 
@@ -63,7 +63,21 @@ public class NumberStatistic<G extends Gene<?>, R extends Number & Comparable<R>
 		return _fitnessVariance;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder out = new StringBuilder();
+
+		out.append(super.toString() + "\n");
+		out.append("Mean:            " + _fitnessMean + "\n");
+		out.append("Variance:        " + _fitnessVariance);
+		
+		return out.toString();
+	}
 }
+
+
+
+
 
 
 
