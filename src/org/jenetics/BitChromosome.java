@@ -47,7 +47,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.12 2009-01-17 21:34:26 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.13 2009-02-17 20:07:52 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -162,55 +162,14 @@ public class BitChromosome extends Number<LargeInteger>
 		BitUtils.flip(chromosome._genes, index);
 		return chromosome;
 	}
-	
-	//TODO: This are fast but wrong conversion methods.
-//	/**
-//	 * Answer a binary integer constructed from a sequence of bits.
-//	 *
-//	 * @param first the index of the first bit
-//	 * @param last the index of the last bit
-//	 * @return the corresponding integer
-//	 */
-//	public int intValue(final int first, final int last) {
-//		int result = 0 & 0x0;
-//		for (int i = first; i <= last; ++i) {
-//			result <<= 1;
-//			if (_genes[i]) {
-//				result = result | 0x0001;
-//			}
-//		}
-//		return result;
-//	}
-//
-//	
-//	/**
-//	 * Return the integer value this BitChromosome represents. 
-//	 * 
-//	 * @param first First index of the BitChromosome.
-//	 * @param last Last index of the BitChromosome.
-//	 * @return Integer value of the defined part of the BitChromosome.
-//	 */
-//	public long longValue(final int first, final int last) {
-//		long result = 0 & 0x0;
-//		for (int i = first; i <= last; ++i) {
-//			result <<= 1;
-//			if (_genes[i]) {
-//				result = result | 0x0001;
-//			}
-//		}
-//		return result;
-//	}
 
 	/**
-	 * //TODO: this can be done faster.
-	 * 
 	 * Return the long value this BitChromosome represents. 
 	 * 
 	 * @return Long value this BitChromosome represents.
 	 */	 
 	@Override
 	public long longValue() {
-		//return longValue(0, _length - 1);
 		return toLargeInteger().longValue();
 	}
 
@@ -236,9 +195,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 * @return LargeInteger value this BitChromosome represents.
 	 */
 	public LargeInteger toLargeInteger() {
-		final byte[] data = new byte[(int)Math.ceil(length()/8.0)];
-		toByteArray(data);
-		return LargeInteger.valueOf(data, 0, data.length);
+		return LargeInteger.valueOf(_genes, 0, _genes.length);
 	}
 	
     /**
@@ -257,30 +214,23 @@ public class BitChromosome extends Number<LargeInteger>
      *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
      */
     public int toByteArray(final byte[] bytes) {
-    	final int bytesLength = (int)Math.ceil(length()/8.0);
-    	if (bytes.length < bytesLength) {
+    	if (bytes.length < _genes.length) {
     		throw new IndexOutOfBoundsException(); 
     	}
-
-    	Arrays.fill(bytes, 0, bytes.length, (byte)0);
-    	for (int i = 0; i < _length; ++i) {
-    		BitUtils.setBit(
-    			bytes, i, getGene(i).booleanValue()
-    		);
-    	}
     	
-    	return bytesLength;
+    	System.arraycopy(_genes, 0, bytes, 0, _genes.length);
+    	
+    	return _genes.length;
     }
     
     /**
-     * @return a byte array which represents this {@code BitChromosome}.
+     * @return a byte array which represents this {@code BitChromosome}. The 
+     *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
      * @see #toByteArray(byte[])
      */
     public byte[] toByteArray() {
-    	final int bytesLength = (int)Math.ceil(length()/8.0);
-    	final byte[] data = new byte[bytesLength];
-    	final int length = toByteArray(data);
-    	assert (length == data.length);
+    	final byte[] data = new byte[_genes.length];
+    	toByteArray(data);
     	return data;
     }
 	
@@ -303,17 +253,23 @@ public class BitChromosome extends Number<LargeInteger>
 	 */
 	@Override
 	public BitChromosome newChromosome(final Array<BitGene> genes) {
-		BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
+		final BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
+		
+		int ones = 0;
 		for (int i = 0; i < genes.length(); ++i) {
-			BitUtils.setBit(chromosome._genes, i, genes.get(i).booleanValue());
+			if (genes.get(i) == BitGene.TRUE) {
+				++ones;
+			}
+			BitUtils.setBit(chromosome._genes, i, genes.get(i) == BitGene.TRUE);
 		}
+		chromosome._p = Probability.valueOf((double)ones/(double)genes.length());
 		return chromosome;
 	}
 	
 	@Override
 	public BitChromosome newChromosome() {
 		final Random random = RandomRegistry.getRandom();
-		BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
+		final BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
 		for (int i = 0; i < _length; ++i) {
 			BitUtils.setBit(chromosome._genes, i, random.nextDouble() < _p.doubleValue());
 		}
@@ -421,7 +377,7 @@ public class BitChromosome extends Number<LargeInteger>
 	/**
 	 * Construct a new BitChromosome with the given _length. 
 	 * 
-	 * @param length Length of the BitChromosome.
+	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
 	 *         than one.
@@ -479,10 +435,10 @@ public class BitChromosome extends Number<LargeInteger>
 		BitChromosome chromosome = newInstance(length, null);
 		int ones = 0;
 		for (int i = 0; i < length; ++i) {
-			BitUtils.setBit(chromosome._genes, i, bits.get(i));
 			if (chromosome.get(i)) {
 				++ones;
 			}
+			BitUtils.setBit(chromosome._genes, i, bits.get(i));
 		}
 		chromosome._p = Probability.valueOf((double)ones/(double)length);
 		
@@ -494,11 +450,8 @@ public class BitChromosome extends Number<LargeInteger>
 	}
 	
 	public static BitChromosome valueOf(final byte[] value) {
-		final int bitLength = value.length*8;
-		BitChromosome chromosome = BitChromosome.valueOf(bitLength);
-    	for (int i = 0; i < value.length; ++i) {
-    		chromosome._genes[i] = value[i];
-    	}
+		final BitChromosome chromosome = BitChromosome.valueOf(value.length*8);
+		System.arraycopy(value, 0, chromosome._genes, 0, value.length);
 		return chromosome;
 	}
 	
