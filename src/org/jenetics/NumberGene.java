@@ -30,7 +30,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.4 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.5 2009-02-17 21:29:13 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>> 
 	extends Number<NumberGene<N>> implements Gene<N> 
@@ -165,8 +165,8 @@ public abstract class NumberGene<N extends Number<N>>
 		
 		final NumberGene<?> gene = (NumberGene<?>)obj;
 		return _value.equals(gene._value) && 
-			_min.equals(gene._min) && 
-			_max.equals(gene._max);
+				_min.equals(gene._min) && 
+				_max.equals(gene._max);
 	}
 	
 }

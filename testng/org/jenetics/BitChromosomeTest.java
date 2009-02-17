@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.6 2008-09-22 21:39:48 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.7 2009-02-17 21:29:13 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -187,6 +187,15 @@ public class BitChromosomeTest {
     	
     	Assert.assertEquals(bc.toByteArray(), data);
     	
+    }
+    
+    @Test
+    public void toCanonicalString() {
+    	BitChromosome c = BitChromosome.valueOf(LargeInteger.valueOf(234902));
+    	String value = c.toCanonicalString();
+    	BitChromosome sc = BitChromosome.valueOf(value);
+    	
+    	Assert.assertEquals(sc, c);
     }
     
     @Test
