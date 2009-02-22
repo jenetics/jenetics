@@ -1,3 +1,4 @@
+- Adding GaussianMutation class.
 - Fixing Mutation class. After an previous refactoring no mutation was performed.
 - Fixing mutation probability calculation in Mutation class.
 - Making mutation a little bit faster.
