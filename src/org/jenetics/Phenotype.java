@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.8 2008-10-14 21:10:04 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.9 2009-02-22 10:32:21 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -152,44 +152,55 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		
-		hash = 37*(_genotype != null ? _genotype.hashCode() : 1) + 17;
-		hash = 37*(_fitnessFunction != null ? _fitnessFunction.hashCode() : 1) + 17;
-		hash = 37*(_fitnessScaler != null ?_fitnessScaler.hashCode() : 1) + 17;
-		
-		return hash;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((_fitness == null) ? 0 : _fitness.hashCode());
+		result = prime * result + _generation;
+		result = prime * result
+				+ ((_genotype == null) ? 0 : _genotype.hashCode());
+		result = prime * result
+				+ ((_rawFitness == null) ? 0 : _rawFitness.hashCode());
+		return result;
 	}
-	
+
 	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!(obj instanceof Phenotype)) {
+		if (obj == null)
 			return false;
-		}
-		
-		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
-		return (_fitnessFunction != null) ? 
-					_fitnessFunction.equals(pt._fitnessFunction) : 
-					pt._fitnessFunction == null &&
-				(_fitnessScaler != null) ? 
-					_fitnessScaler.equals(pt._fitnessScaler) : 
-					pt._fitnessScaler == null &&
-				(_genotype != null) ? 
-					_genotype.equals(pt._genotype) : 
-					pt._genotype == null;
+		if (getClass() != obj.getClass())
+			return false;
+		Phenotype<?,?> other = (Phenotype<?,?>) obj;
+		if (_fitness == null) {
+			if (other._fitness != null)
+				return false;
+		} else if (!_fitness.equals(other._fitness))
+			return false;
+		if (_generation != other._generation)
+			return false;
+		if (_genotype == null) {
+			if (other._genotype != null)
+				return false;
+		} else if (!_genotype.equals(other._genotype))
+			return false;
+		if (_rawFitness == null) {
+			if (other._rawFitness != null)
+				return false;
+		} else if (!_rawFitness.equals(other._rawFitness))
+			return false;
+		return true;
 	}
 
 	@Override
 	public Text toText() {
 		return _genotype.toText();
 	}
-	
+
 	@Override
 	public String toString() {
-		return toText().toString() + " --> " + getFitness();
+		return toText().toString() + " --> " + _fitness;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -278,21 +289,21 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 		public Phenotype newInstance(final Class<Phenotype> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
-			final int generation = xml.getAttribute("generation", 0);
-			final Genotype gt = xml.getNext();
 			final Phenotype pt = (Phenotype)FACTORY.object();
-			pt._genotype = gt;
-			pt._generation = generation;
+			pt._generation = xml.getAttribute("generation", 0);
+			pt._genotype = xml.getNext();
+			pt._fitness = xml.get("fitness");
+			pt._rawFitness = xml.get("raw-fitness");
 			return pt;
 		}
 		@Override 
 		public void write(final Phenotype pt, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("fitness", Phenotype.toString(pt.getFitness()));
-			xml.setAttribute("raw-fitness", Phenotype.toString(pt.getRawFitness()));
 			xml.setAttribute("generation", pt._generation);
 			xml.add(pt._genotype);
+			xml.add(pt.getFitness(), "fitness");
+			xml.add(pt.getRawFitness(), "raw-fitness");
 		}
 		@Override
 		public void read(final InputElement xml, final Phenotype gt) {	

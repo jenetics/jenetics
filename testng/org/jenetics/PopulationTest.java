@@ -34,12 +34,13 @@ import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PopulationTest.java,v 1.1 2008-09-22 21:39:49 fwilhelm Exp $
+ * @version $Id: PopulationTest.java,v 1.2 2009-02-22 10:32:21 fwilhelm Exp $
  */
 public class PopulationTest {
 	
@@ -80,10 +81,11 @@ public class PopulationTest {
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
-		@SuppressWarnings("unused")
-		Population<?, ?> p = reader.read();
+		final Population<?, ?> p = reader.read();
 		
-//		Assert.assertEquals(p, population);
+		Assert.assertEquals(
+				p, 
+				population);
 	}
 	
 }
