@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.4 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.5 2009-02-22 23:29:58 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64> 
 	implements Mean<DoubleGene>, XMLSerializable 
@@ -95,8 +95,8 @@ public class DoubleGene extends NumberGene<Float64>
 	}
 
 	@Override
-	public DoubleGene newInstance(final Float64 number) {
-		return valueOf(number, _min, _max);
+	public DoubleGene newInstance(final java.lang.Number number) {
+		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 	
 	/**
