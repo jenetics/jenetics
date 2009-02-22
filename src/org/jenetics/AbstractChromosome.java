@@ -29,7 +29,6 @@ import javolution.lang.Realtime;
 import javolution.text.Text;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Validator;
 
 /**
@@ -40,7 +39,7 @@ import org.jenetics.util.Validator;
  * @param <T> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.14 2009-01-17 21:52:00 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.15 2009-02-22 23:04:57 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<T extends Gene<?>> 
 	implements Chromosome<T>, Realtime, RandomAccess
@@ -104,7 +103,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 
 	@Override
 	public Array<T> toArray() {
-		return ArrayUtils.sealedArray(_genes);
+		return _genes.seal();
 	}
 	
 	@Override

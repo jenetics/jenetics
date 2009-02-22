@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.24 2009-01-21 22:16:41 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.25 2009-02-22 23:04:57 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -54,19 +54,6 @@ public final class ArrayUtils {
 	public static <T> List<T> asList(final Array<T> array) {
 		Validator.notNull(array, "Array");
 		return new org.jenetics.util.ArrayList<T>(array._array);
-	}
-	
-	/**
-	 * Return a sealed version of the given {@code array}.
-	 * 
-	 * @param <T> the array type.
-	 * @param array the array.
-	 * @return the sealed array.
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 */
-	public static <T> Array<T> sealedArray(final Array<T> array) {
-		Validator.notNull(array, "Array");
-		return new Array<T>(array._array, array._start, array._end, true);
 	}
 	
 	/**
