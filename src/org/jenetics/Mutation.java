@@ -27,6 +27,7 @@ import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
 
+import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
@@ -61,7 +62,7 @@ import org.jenetics.util.RandomRegistry;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.10 2009-02-17 19:18:41 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.11 2009-02-22 23:04:57 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -112,17 +113,31 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 		final int[] elements = subset(population.size(), subsetSize, random);
 		
 		for (int i = 0; i < elements.length; ++i) {
-			final Phenotype<G, C> pt = population.get(elements[i]);
+			final Phenotype<G, C> phenotype = population.get(elements[i]);
+			final Genotype<G> genotype = phenotype.getGenotype(); 
 			
-			final Genotype<G> gt = pt.getGenotype(); 
-			final int chIndex = random.nextInt(gt.chromosomes());
-			final Chromosome<G> ch = gt.getChromosome(chIndex);
-			
-			final int geneIndex = random.nextInt(ch.length());
-			ch.mutate(geneIndex);
-			
-			population.set(elements[i], pt.newInstance(gt, generation));
+			population.set(
+				elements[i], 
+				phenotype.newInstance(mutate(genotype), generation)
+			);
 		}
+	}
+	
+	protected Genotype<G> mutate(final Genotype<G> genotype) {
+		final Random random = RandomRegistry.getRandom();
+		final int ci = random.nextInt(genotype.chromosomes());
+		
+		final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
+		final Chromosome<G> chromosome = mutate(chromosomes.get(ci));
+		chromosomes.set(ci, chromosome);
+		
+		return Genotype.valueOf(chromosomes);
+	}
+	
+	protected Chromosome<G> mutate(final Chromosome<G> chromosome) {
+		final Random random = RandomRegistry.getRandom();
+		final int gi = random.nextInt(chromosome.length());
+		return chromosome.mutate(gi);
 	}
 	
 
