@@ -25,23 +25,29 @@ package org.jenetics;
 import java.util.Random;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.1 2009-02-22 23:29:58 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.2 2009-02-22 23:39:55 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?>> extends Mutation<G> {
-	private final double _variance;
 	
+	public GaussianMutation(
+		final Probability probability, final Alterer<G> component
+	) {
+		super(probability, component);
+	}
+
+	public GaussianMutation(final Probability probability) {
+		super(probability);
+	}
+
 	public GaussianMutation() {
-		this(1);
 	}
-	
-	public GaussianMutation(final double variance) {
-		_variance = variance;
-	}
-	
+
+
 	//TODO: implement
 	@Override
 	public Chromosome<G> mutate(final Chromosome<G> chromosome) {
@@ -51,7 +57,7 @@ public class GaussianMutation<G extends NumberGene<?>> extends Mutation<G> {
 		final Array<G> genes = chromosome.toArray().copy();
 		final G oldGene = genes.get(index);
 		
-		double value = oldGene.doubleValue()*_variance;
+		double value = oldGene.doubleValue();
 		
 		@SuppressWarnings("unchecked")
 		final G newGene = (G) oldGene.newInstance(value);
