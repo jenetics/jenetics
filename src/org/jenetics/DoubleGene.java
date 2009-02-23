@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.7 2009-02-23 21:17:26 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64, DoubleGene> 
 	implements Mean<DoubleGene>, XMLSerializable 
@@ -54,21 +54,21 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 
 	@Override
 	public DoubleGene plus(final DoubleGene that) {
-		DoubleGene g = FACTORY.object();
+		final DoubleGene g = FACTORY.object();
 		g.set(_value.plus(that._value), _min, _max);
 		return g;
 	}
 
 	@Override
 	public DoubleGene opposite() {
-		DoubleGene g = FACTORY.object();
+		final DoubleGene g = FACTORY.object();
 		g.set(_value.opposite(), _min, _max);
 		return g;
 	}
 	
 	@Override
 	public DoubleGene times(final DoubleGene that) {
-		DoubleGene g = FACTORY.object();
+		final DoubleGene g = FACTORY.object();
 		g.set(_value.times(that._value), _min, _max);
 		return g;
 	}
