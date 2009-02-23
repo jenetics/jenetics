@@ -29,8 +29,14 @@ import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * The GaussianRealMutator class performs the mutation of a {@link NumberGene}. 
+ * This mutator picks a new value based on a Gaussian distribution (with 
+ * deviation 1.0)  around the current value of the gene. The new value won't be 
+ * out of the gene's boundaries.
+ *
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.4 2009-02-23 21:17:26 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.5 2009-02-23 21:30:55 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
