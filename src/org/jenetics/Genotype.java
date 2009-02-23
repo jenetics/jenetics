@@ -41,10 +41,8 @@ import org.jenetics.util.Verifiable;
 /**
  * This class is the encoded problem solution with one to many Chromosomes.
  * 
- * @see GenotypeFactory
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.14 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.15 2009-02-23 23:01:47 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?, T>> 
 	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
