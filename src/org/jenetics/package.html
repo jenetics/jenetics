@@ -30,10 +30,10 @@ Phenotypes are collected into a {@link org.jenetics.Population}.
 
 
 <h3>Settting up the {@link org.jenetics.GeneticAlgorithm}</h3>
-The minimum GA setup needs a {@link org.jenetics.GenotypeFactory} and an 
-{@link org.jenetics.FitnessFunction}. The 
+The minimum GA setup needs a genotype {@link org.jenetics.util.Factory} and an 
+{@link org.jenetics.FitnessFunction}. The genotype
 {@link org.jenetics.Genotype} implements the 
-{@link org.jenetics.GenotypeFactory} interface and can be used 
+{@link org.jenetics.util.Factory} interface and can be used 
 as prototype.
 [code]
 //Defining a Genotype prototype.
@@ -143,7 +143,7 @@ public class Knapsack {
     public static void main(String[] argv) throws Exception {
     	//Defining the fitness function and the genotype.
         final KnappsackFunction ff = newFitnessFuntion(15, 100);
-        final GenotypeFactory<BitGene> genotype = Genotype.valueOf(
+        final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
             BitChromosome.valueOf(15, Probability.valueOf(0.5))
         );
         
@@ -196,8 +196,8 @@ To narrow the search space a number range for the
 {@link org.jenetics.DoubleGene} must be definde. 
 In our example we restrict the values to the closed interval [0,2PI].
 [code]
-//The Genotype implements the GenotypeFactory interface.
-GenotypeFactory<DoubleGene> gtf = Genotype.newGenotype(
+//The Genotype implements the genotype Factory interface.
+Factory<Genotype<DoubleGene>> gtf = Genotype.newGenotype(
     DoubleChromosome.valueOf(0, 2*Math.PI)
 );
 
@@ -270,7 +270,7 @@ public class TravelingSalesman {
 		final int stops = 10;
 		
 		final FitnessFunction<IntegerGene, Integer> ff = new Function(adjacencyMatrix(stops));
-		final GenotypeFactory<IntegerGene> gtf = Genotype.valueOf(
+		final Factory<Genotype<IntegerGene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
