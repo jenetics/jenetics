@@ -47,6 +47,9 @@
 	</target>
 	
 	<target name="jar" depends="compile">
+		<tstamp>
+			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
+		</tstamp>		
 		<jar 
 			destfile="Jenetics-${version}.jar" 
 			filesetmanifest="mergewithoutmain" 
@@ -59,6 +62,9 @@
 				<attribute name="Version" value="${version}" />
 				<attribute name="Vendor" value="Franz Wilhelmstötter" />
 				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
+				<attribute name="Implementation-URL" value="http://jenetics.sourceforge.net" />
+				<attribute name="Implementation-Vendor" value="Jenetics" />
+				<attribute name="Implementation-Version" value="${JAR_TIMESTAMP}" />
 			</manifest>
 		</jar>
 		
