@@ -30,7 +30,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.3 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.4 2009-02-23 21:17:26 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
@@ -48,7 +48,6 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	}
 
 
-	//TODO: implement
 	@Override
 	public Chromosome<G> mutate(final Chromosome<G> chromosome) {
 		final Random random = RandomRegistry.getRandom();
@@ -56,8 +55,10 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 		
 		final Array<G> genes = chromosome.toArray().copy();
 		final G oldGene = genes.get(index);
-		
-		double value = oldGene.doubleValue();
+
+		double value = random.nextGaussian()*oldGene.doubleValue();
+		value = Math.min(value, oldGene.getMaxValue().doubleValue());
+		value = Math.max(value, oldGene.getMinValue().doubleValue());
 		
 		final G newGene = oldGene.newInstance(value);
 		genes.set(index, newGene);
