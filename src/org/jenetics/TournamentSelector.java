@@ -38,9 +38,9 @@ import org.jenetics.util.Validator;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.7 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>> 
+public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 
 {
 	private static final long serialVersionUID = -5342297228328820942L;
@@ -120,12 +120,12 @@ public class TournamentSelector<G extends Gene<?>, C extends Comparable<C>>
 		return pop;
 	}
 	
-	public static <SG extends Gene<?>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
 		return new TournamentSelector<SG, SC>(sampleSize);
 	}
 	
-	public static <SG extends Gene<?>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<SG, SC>();
 	}

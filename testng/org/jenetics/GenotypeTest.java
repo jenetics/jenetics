@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GenotypeTest.java,v 1.5 2008-09-23 19:18:26 fwilhelm Exp $
+ * @version $Id: GenotypeTest.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class GenotypeTest {
 
@@ -80,7 +80,7 @@ public class GenotypeTest {
         IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
         IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
         Genotype<IntegerGene> g1 = Genotype.valueOf(c1, c2);
-        Genotype<IntegerGene> g2 = g1.newGenotype();
+        Genotype<IntegerGene> g2 = g1.newInstance();
         
         assertFalse(g1 == g2);
         assertFalse(g1.equals(g2));

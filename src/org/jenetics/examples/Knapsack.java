@@ -30,16 +30,16 @@ import org.jenetics.Chromosome;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.6 2008-09-23 18:01:53 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;
@@ -98,7 +98,7 @@ public class Knapsack {
     public static void main(String[] argv) throws Exception {
     	//Defining the fitness function and the genotype.
         final KnappsackFunction ff = newFitnessFuntion(15, 100);
-        final GenotypeFactory<BitGene> genotype = Genotype.valueOf(
+        final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
             BitChromosome.valueOf(15, Probability.valueOf(0.5))
         );
         

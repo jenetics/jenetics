@@ -35,9 +35,9 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.15 2009-01-17 21:34:26 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.16 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
+public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 
 	public Crossover(final Alterer<G> component) {
 		super(component);
@@ -74,8 +74,8 @@ public abstract class Crossover<G extends Gene<?>> extends Recombination<G> {
 		
 		crossover(genes1, genes2);
 		
-		chromosomes1.set(chIndex1, chromosomes1.get(chIndex1).newChromosome(genes1));
-		chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newChromosome(genes2));
+		chromosomes1.set(chIndex1, chromosomes1.get(chIndex1).newInstance(genes1));
+		chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newInstance(genes2));
 		
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));

@@ -36,9 +36,9 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.7 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public abstract class Recombination<G extends Gene<?>> extends Alterer<G> {
+public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
 	/**
 	 * Create a <code>Alterer</code> concatenating the given 

@@ -34,15 +34,15 @@ import org.jenetics.DoubleGene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.FitnessScaler;
 import org.jenetics.Genotype;
-import org.jenetics.GenotypeFactory;
 import org.jenetics.IdentityScaler;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
+import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Performance.java,v 1.1 2008-09-24 20:20:11 fwilhelm Exp $
+ * @version $Id: Performance.java,v 1.2 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class Performance {
 	
@@ -58,14 +58,14 @@ public class Performance {
 	
 	public static void main(String[] args) {
 		final Function ff = new Function();
-		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final FitnessScaler<Float64> fs = IdentityScaler.valueOf();
 		
 		final int size = 1000000;
 		final Population<DoubleGene, Float64> population = new Population<DoubleGene, Float64>(size);
 		for (int i = 0; i < size; ++i) {
 			final Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(
-				gtf.newGenotype(), ff, fs, 0
+				gtf.newInstance(), ff, fs, 0
 			);
 			population.add(pt);
 		}

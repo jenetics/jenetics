@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.9 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -127,21 +127,21 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		return DoubleGene.class;
 	}
 	
-	@Override
-	public DoubleChromosome mutate(final int index) {
-		final DoubleChromosome chromosome = new DoubleChromosome(_genes);
-		
-		final DoubleGene gene = _genes.get(index);
-		final Random random = RandomRegistry.getRandom(); 
-		double value = random.nextDouble()*
-			(_max.doubleValue() - _min.doubleValue()) + _min.doubleValue();
-		chromosome._genes.set(index, gene.newInstance(value));
-		
-		return chromosome;
-	}
+//	@Override
+//	public DoubleChromosome mutate(final int index) {
+//		final DoubleChromosome chromosome = new DoubleChromosome(_genes);
+//		
+//		final DoubleGene gene = _genes.get(index);
+//		final Random random = RandomRegistry.getRandom(); 
+//		double value = random.nextDouble()*
+//			(_max.doubleValue() - _min.doubleValue()) + _min.doubleValue();
+//		chromosome._genes.set(index, gene.newInstance(value));
+//		
+//		return chromosome;
+//	}
 	
 	@Override
-	public DoubleChromosome newChromosome(final Array<DoubleGene> genes) {
+	public DoubleChromosome newInstance(final Array<DoubleGene> genes) {
 		final DoubleChromosome chromosome = new DoubleChromosome(genes);		
 		chromosome._min = genes.get(0)._min;
 		chromosome._max = genes.get(0)._max;
@@ -149,7 +149,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	}
 
 	@Override
-	public DoubleChromosome newChromosome() {
+	public DoubleChromosome newInstance() {
 		final Array<DoubleGene> genes = Array.newInstance(length());
 		final Random random = RandomRegistry.getRandom(); 
 		
@@ -229,6 +229,8 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		{
 		}
 	};
+
+
 }
 
 

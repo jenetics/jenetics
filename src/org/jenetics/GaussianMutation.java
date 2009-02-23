@@ -30,9 +30,9 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.2 2009-02-22 23:39:55 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.3 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class GaussianMutation<G extends NumberGene<?>> extends Mutation<G> {
+public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
 	public GaussianMutation(
 		final Probability probability, final Alterer<G> component
@@ -59,9 +59,7 @@ public class GaussianMutation<G extends NumberGene<?>> extends Mutation<G> {
 		
 		double value = oldGene.doubleValue();
 		
-		@SuppressWarnings("unchecked")
-		final G newGene = (G) oldGene.newInstance(value);
-		
+		final G newGene = oldGene.newInstance(value);
 		genes.set(index, newGene);
 		
 		return chromosome;

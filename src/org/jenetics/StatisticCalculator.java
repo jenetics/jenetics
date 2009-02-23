@@ -32,9 +32,9 @@ import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.10 2008-12-01 21:32:44 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class StatisticCalculator<G extends Gene<?>, C extends Comparable<C>> {
+public class StatisticCalculator<G extends Gene<?, G>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
 	protected long _stopEvaluationTime = 0;
 	

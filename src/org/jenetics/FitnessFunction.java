@@ -38,9 +38,9 @@ import java.io.Serializable;
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessFunction.java,v 1.5 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: FitnessFunction.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public interface FitnessFunction<G extends Gene<?>, C extends Comparable<C>> 
+public interface FitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends Serializable 
 {
 

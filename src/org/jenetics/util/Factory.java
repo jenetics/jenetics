@@ -20,25 +20,14 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 /**
- * This interface decouples the {@link Genotype} creation from the {@link Genotype}.
- * The GenotypeFactory creates a new (randomized) {@link Genotype} from a
- * specific type.
- * 
- * @see Genotype
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GenotypeFactory.java,v 1.1 2008-03-25 18:31:54 fwilhelm Exp $
+ * @version $Id: Factory.java,v 1.1 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public interface GenotypeFactory<T extends Gene<?>> {
+public interface Factory<T> {
 
-	/**
-	 * Create a random Genotype with the gene type T.
-	 * 
-	 * @return A randomly generated {@link Genotype}.
-	 */
-	public Genotype<T> newGenotype();
+	public T newInstance();
 	
 }

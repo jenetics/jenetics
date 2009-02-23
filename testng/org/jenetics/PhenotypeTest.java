@@ -33,13 +33,14 @@ import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PhenotypeTest.java,v 1.1 2008-09-22 21:39:47 fwilhelm Exp $
+ * @version $Id: PhenotypeTest.java,v 1.2 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class PhenotypeTest {
 
@@ -55,11 +56,11 @@ public class PhenotypeTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void serialize() throws XMLStreamException, IOException {
-		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final Function ff = new Function();
 		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
 		final Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(
-				gtf.newGenotype(), ff, scaler, 0
+				gtf.newInstance(), ff, scaler, 0
 			);
 		
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();

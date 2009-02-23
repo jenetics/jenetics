@@ -34,9 +34,9 @@ import org.jenetics.util.BitUtils;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistic.java,v 1.11 2008-09-23 18:01:49 fwilhelm Exp $
+ * @version $Id: Statistic.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class Statistic<G extends Gene<?>, C extends Comparable<C>> 
+public class Statistic<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
 {
 	private static final long serialVersionUID = -8980979460645713414L;

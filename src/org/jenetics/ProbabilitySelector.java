@@ -35,9 +35,9 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.10 2009-02-17 21:29:13 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public abstract class ProbabilitySelector<G extends Gene<?>, C extends Comparable<C>> 
+public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
 {
 	private static final long serialVersionUID = -2980541308499034709L;

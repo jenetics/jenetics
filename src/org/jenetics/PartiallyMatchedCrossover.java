@@ -73,9 +73,9 @@ import org.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.11 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class PartiallyMatchedCrossover<G extends Gene<?>> extends Crossover<G> {
+public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
 
 	public PartiallyMatchedCrossover(final Alterer<G> component) {

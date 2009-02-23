@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGeneTest.java,v 1.6 2008-09-23 19:18:29 fwilhelm Exp $
+ * @version $Id: DoubleGeneTest.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class DoubleGeneTest { 
     
@@ -73,7 +73,7 @@ public class DoubleGeneTest {
     public void testSub() {
         DoubleGene g1 = DoubleGene.valueOf(34.123, 10.123, 99.123);
         DoubleGene g2 = DoubleGene.valueOf(2.0, 1.0, 10.0);
-        NumberGene<Float64> g3 = g1.minus(g2);
+        NumberGene<Float64, ?> g3 = g1.minus(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 32.123);
         assertEquals(g3.getMinValue().doubleValue(), 10.123);

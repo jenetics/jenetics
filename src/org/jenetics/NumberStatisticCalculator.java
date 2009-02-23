@@ -24,9 +24,9 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatisticCalculator.java,v 1.5 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: NumberStatisticCalculator.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class NumberStatisticCalculator<G extends Gene<?>, R extends Number & Comparable<R>>
+public class NumberStatisticCalculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends StatisticCalculator<G, R>
 {
 

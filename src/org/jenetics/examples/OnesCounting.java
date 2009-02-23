@@ -27,17 +27,17 @@ import org.jenetics.BitGene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java,v 1.5 2008-09-23 18:01:53 fwilhelm Exp $
+ * @version $Id: OnesCounting.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class OnesCounting {
 
@@ -58,7 +58,7 @@ public class OnesCounting {
 	
 
 	public static void main(String[] args) throws Exception {
-		final GenotypeFactory<BitGene> gtf = Genotype.valueOf(
+		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 			BitChromosome.valueOf(20, Probability.valueOf(0.15))
 		);
 		final OneCounter ff = new OneCounter();

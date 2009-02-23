@@ -53,9 +53,9 @@ import java.io.Serializable;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.6 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public final class LinearRankSelector<G extends Gene<?>, C extends Comparable<C>> 
+public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable
 {
 	private static final long serialVersionUID = -7633503361447837511L;

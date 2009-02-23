@@ -1,3 +1,8 @@
+- Remove the mutation method from the Chromosomes interface. The mutation is
+  solely done by the Mutation class. This requires a new method in the Gene
+  interface, Gene.newInstance(). To not be forced to cast the newly generated
+  gene to its concrete type, an additional type parameter has been added to the
+  Gene interface. As side effect, no @SuppressWarnin annotation are needed.
 - Adding GaussianMutation class.
 - Fixing Mutation class. After an previous refactoring no mutation was performed.
 - Fixing mutation probability calculation in Mutation class.

@@ -31,9 +31,9 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.11 2009-01-17 21:34:26 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Recombination<G> {
+public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G> {
 
 	public MeanAlterer() {
 		this(Probability.valueOf(0.05));
@@ -69,8 +69,8 @@ public class MeanAlterer<G extends Gene<?> & Mean<G>> extends Recombination<G> {
 		
 		genes1.set(geneIndex, genes1.get(geneIndex).mean(genes2.get(geneIndex)));
 		genes2.set(geneIndex, genes1.get(geneIndex));
-		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newChromosome(genes1));
-		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newChromosome(genes2));
+		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1));
+		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2));
 		
 		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
 		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));

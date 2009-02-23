@@ -1,7 +1,7 @@
-/* 
+/*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *
+ *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -18,15 +18,23 @@
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
 package org.jenetics;
 
 /**
- * TODO: implement
+ * This interface defines the creation method of a new random gene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Objectives.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: GeneFactory.java,v 1.1 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public interface Objectives<G extends Gene<?, G>>  {
+public interface GeneFactory<G extends Gene<?, G>> {
 
+	/**
+	 * Create a new random gene from the given type.
+	 * 
+	 * @return the new generated gene of type G.
+	 */
+	public G newInstance();
+	
 }

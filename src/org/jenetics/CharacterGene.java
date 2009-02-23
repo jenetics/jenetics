@@ -43,10 +43,11 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.5 2008-11-13 20:37:40 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class CharacterGene 
-	implements Gene<Character>, Comparable<CharacterGene>, Realtime, XMLSerializable 
+	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
+				Realtime, XMLSerializable 
 {
 	private static final long serialVersionUID = 5091130159700639888L;
 	
@@ -122,6 +123,14 @@ public class CharacterGene
 	 */
 	public static Set<Character> getValidCharacters() {
 		return Collections.unmodifiableSet(CHARACTER_SET);
+	}
+	
+	@Override
+	public CharacterGene newInstance() {
+		final Random random = RandomRegistry.getRandom();
+		final int index = random.nextInt(VALID_CHARACTERS.length);
+		
+		return valueOf(VALID_CHARACTERS[index]);
 	}
 	
 	@Override
@@ -213,6 +222,7 @@ public class CharacterGene
 		public void read(final InputElement element, final CharacterGene gene) {
 		}
 	};
+
 	
 }
 

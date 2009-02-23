@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Factory;
 
 /**
  * This interface decouples the {@link Chromosome} creation from the {@link Chromosome}.
@@ -32,9 +33,11 @@ import org.jenetics.util.Array;
  * @see Chromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChromosomeFactory.java,v 1.3 2008-08-25 19:35:24 fwilhelm Exp $
+ * @version $Id: ChromosomeFactory.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public interface ChromosomeFactory<T extends Gene<?>> {
+public interface ChromosomeFactory<T extends Gene<?, T>> 
+	extends Factory<Chromosome<T>> 
+{
 
 	/**
 	 * A factory method which creates a new {@link Chromosome} of 
@@ -42,13 +45,7 @@ public interface ChromosomeFactory<T extends Gene<?>> {
 	 * 
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 */
-	public Chromosome<T> newChromosome(final Array<T> genes);
-	
-	/**
-	 * A factory method which creates a new random{@link Chromosome}.
-	 * 
-	 * @return A new randomly created {@link Chromosome} of the same type.
-	 */
-	public Chromosome<T> newChromosome();
+	public Chromosome<T> newInstance(final Array<T> genes);
+
 	
 }

@@ -36,13 +36,13 @@ import org.jenetics.util.Validator;
  * of this class must assure that the protected member <code>_genes</code> is not
  * <code>null</code> and the lenght of the <code>_genes</code> > 0.
  * 
- * @param <T> the gene type.
+ * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.15 2009-02-22 23:04:57 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.16 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public abstract class AbstractChromosome<T extends Gene<?>> 
-	implements Chromosome<T>, Realtime, RandomAccess
+public abstract class AbstractChromosome<G extends Gene<?, G>> 
+	implements Chromosome<G>, Realtime, RandomAccess
 {
 	private static final long serialVersionUID = 8283543816229993099L;
 
@@ -50,7 +50,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 * Array of genes which forms the chromosome. This array must
 	 * be initialized by the derived classes.
 	 */
-	protected Array<T> _genes = null;
+	protected Array<G> _genes = null;
 	
 	private Boolean _valid = null;
 
@@ -80,7 +80,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 * @throws new IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
 	 */
-	protected AbstractChromosome(final Array<T> genes) {
+	protected AbstractChromosome(final Array<G> genes) {
 		Validator.notNull(genes, "Gene array");
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -92,17 +92,17 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	}
 	
 	@Override
-	public T getGene(final int index) {
+	public G getGene(final int index) {
 		return _genes.get(index);
 	}
 	
 	@Override
-	public T getGene() {
+	public G getGene() {
 		return _genes.get(0);
 	}
 
 	@Override
-	public Array<T> toArray() {
+	public Array<G> toArray() {
 		return _genes.seal();
 	}
 	
@@ -121,7 +121,7 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	}
 	
 	@Override
-	public ListIterator<T> iterator() {
+	public ListIterator<G> iterator() {
 		return _genes.iterator();
 	}
 	
@@ -136,14 +136,14 @@ public abstract class AbstractChromosome<T extends Gene<?>>
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not found.
 	 */
-	protected int indexOf(final T gene) {
+	protected int indexOf(final G gene) {
 		return _genes.indexOf(gene);
 	}
 	
 	@Override
 	public int hashCode() {
 		int code = 17;
-		for (T gene : _genes) {
+		for (G gene : _genes) {
 			code += 37*gene.hashCode() + 17;
 		}
 		return code;

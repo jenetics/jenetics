@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
 import javolution.context.ObjectFactory;
@@ -32,10 +35,10 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.3 2008-09-22 21:38:31 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
-	implements Gene<E>, Mean<EnumGene<E>>, Realtime
+	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
 {
 	private static final long serialVersionUID = 3892516872458977205L;
 
@@ -72,6 +75,15 @@ public class EnumGene<E extends Enum<E>>
 	@Override
 	public EnumGene<E> copy() {
 		return valueOf(_value);
+	}
+	
+	@Override
+	public EnumGene<E> newInstance() {
+		final Random random = RandomRegistry.getRandom();
+		final E[] values = _value.getDeclaringClass().getEnumConstants();
+		final int index = random.nextInt(values.length);
+		
+		return valueOf(values[index]);
 	}
 	
 	@Override

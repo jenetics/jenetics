@@ -30,20 +30,20 @@ import org.jenetics.Chromosome;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.GenotypeFactory;
 import org.jenetics.IntegerGene;
 import org.jenetics.Mutation;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.EvaluatorRegistry;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.17 2008-11-13 20:37:41 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.18 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -74,7 +74,7 @@ public class TravelingSalesman {
 		final int stops = 300;
 		
 		final FitnessFunction<IntegerGene, Integer> ff = new Function(adjacencyMatrix(stops));
-		final GenotypeFactory<IntegerGene> gtf = Genotype.valueOf(
+		final Factory<Genotype<IntegerGene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);

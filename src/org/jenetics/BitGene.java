@@ -22,6 +22,10 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jenetics.util.RandomRegistry;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -30,9 +34,11 @@ import javolution.xml.stream.XMLStreamException;
  * Implementation of a BitGene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitGene.java,v 1.2 2008-04-24 18:19:40 fwilhelm Exp $
+ * @version $Id: BitGene.java,v 1.3 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class BitGene implements Gene<Boolean>, Comparable<BitGene>, XMLSerializable {
+public class BitGene 
+	implements Gene<Boolean, BitGene>, Comparable<BitGene>, XMLSerializable 
+{
 	private static final long serialVersionUID = 71303038065442905L;
 	
 	public static final BitGene TRUE = new BitGene(true);
@@ -72,6 +78,12 @@ public class BitGene implements Gene<Boolean>, Comparable<BitGene>, XMLSerializa
 	@Override
 	public BitGene copy() {
 		return _value ? TRUE : FALSE;
+	}
+	
+	@Override
+	public BitGene newInstance() {
+		final Random random = RandomRegistry.getRandom();
+		return random.nextBoolean() ? TRUE : FALSE;
 	}
 	
 	@Override
@@ -127,6 +139,7 @@ public class BitGene implements Gene<Boolean>, Comparable<BitGene>, XMLSerializa
 		public void read(final InputElement element, final BitGene gene) {
 		}
 	};
+
 }
 
 

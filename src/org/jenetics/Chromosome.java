@@ -37,10 +37,11 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.10 2009-01-17 21:34:26 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public interface Chromosome<T extends Gene<?>> 
-	extends Verifiable, Iterable<T>, Immutable, ChromosomeFactory<T>, Serializable
+public interface Chromosome<T extends Gene<?, T>> 
+	extends Verifiable, Iterable<T>, Immutable, 
+			ChromosomeFactory<T>, Serializable
 {
 	
 	/**
@@ -66,17 +67,6 @@ public interface Chromosome<T extends Gene<?>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public T getGene(final int index);
-		
-	/**
-	 * Create a new mutated copy of this {@link Chromosome}. The chromosome is mutated at
-	 * the given {@code index}.
-	 * 
-	 * @param index Gene index.
-	 * @return the newly created {@link Chromosome} with the mutated {@link Gene}.
-	 * @throws IndexOutOfBoundsException if the index is out of range 
-	 * 		    {@code (index < 0 || index >= length())}.
-	 */
-	public Chromosome<T> mutate(final int index);
 	 
 	
 	/**
