@@ -25,9 +25,9 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.6 2009-02-17 20:07:52 fwilhelm Exp $
+ * @version $Id: NumberStatistic.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class NumberStatistic<G extends Gene<?>, R extends Number & Comparable<R>>
+public class NumberStatistic<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistic<G, R> 
 {
 	private static final long serialVersionUID = -7468324436514041360L;

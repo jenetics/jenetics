@@ -28,9 +28,9 @@ import java.util.Collections;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java,v 1.8 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: RouletteWheelSelector.java,v 1.9 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class RouletteWheelSelector<G extends Gene<?>, N extends Number & Comparable<N>> 
+public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
 {
 	private static final long serialVersionUID = 6434924633105671176L;

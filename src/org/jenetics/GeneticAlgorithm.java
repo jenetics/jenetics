@@ -35,6 +35,7 @@ import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ConcurrentEvaluator;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jenetics.util.ThreadedEvaluator;
 import org.jenetics.util.Timer;
@@ -69,15 +70,15 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.25 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.26 2009-02-23 20:58:08 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia: Genetic algorithm</a>
  * 
  * <G> 
  */
-public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
+public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
-	private GenotypeFactory<G> _genotypeFactory = null;
+	private Factory<Genotype<G>> _genotypeFactory = null;
 	private FitnessFunction<G, C> _fitnessFunction = null;
 	private FitnessScaler<C> _fitnessScaler = null;
 	
@@ -116,7 +117,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final GenotypeFactory<G> genotypeFactory, 
+		final Factory<Genotype<G>> genotypeFactory, 
 		final FitnessFunction<G, C> fitnessFunction
 	) {	 
 		this(genotypeFactory, fitnessFunction, new IdentityScaler<C>());
@@ -131,7 +132,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final GenotypeFactory<G> genotypeFactory, 
+		final Factory<Genotype<G>> genotypeFactory, 
 		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
@@ -164,7 +165,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 		//Initializing/filling up the Population 
 		for (int i = _population.size(); i < _populationSize; ++i) {
 			final Phenotype<G, C> pt = Phenotype.valueOf(
-				_genotypeFactory.newGenotype(), _fitnessFunction, 
+				_genotypeFactory.newInstance(), _fitnessFunction, 
 				_fitnessScaler, _generation
 			);
 			_population.add(pt);
@@ -292,7 +293,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 			//Create new phenotypes for dead survivors.
 			} else {
 				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newGenotype(), _fitnessFunction, 
+					_genotypeFactory.newInstance(), _fitnessFunction, 
 					_fitnessScaler, _generation
 				);
 				population.add(pt);
@@ -322,7 +323,7 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * 
 	 * @return the currently used {@link GenotypeFactory} of the GA. 
 	 */
-	public GenotypeFactory<G> getGenotypeFactory() {
+	public Factory<Genotype<G>> getGenotypeFactory() {
 		return _genotypeFactory;
 	}
 	
@@ -681,9 +682,9 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <SG extends Gene<?>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	GeneticAlgorithm<SG, SC> valueOf(
-		final GenotypeFactory<SG> genotypeFactory, 
+		final Factory<Genotype<SG>> genotypeFactory, 
 		final FitnessFunction<SG, SC> fitnessFunction, 
 		final FitnessScaler<SC> fitnessScaler
 	)
@@ -700,9 +701,9 @@ public class GeneticAlgorithm<G extends Gene<?>, C extends Comparable<C>> {
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <SG extends Gene<?>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	GeneticAlgorithm<SG, SC> valueOf(
-		final GenotypeFactory<SG> genotypeFactory, 
+		final Factory<Genotype<SG>> genotypeFactory, 
 		final FitnessFunction<SG, SC> fitnessFunction
 	) 
 	{

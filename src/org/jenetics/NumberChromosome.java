@@ -32,9 +32,9 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.6 2008-09-23 19:18:57 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public abstract class NumberChromosome<N extends NumberGene<?>> 
+public abstract class NumberChromosome<N extends NumberGene<?, N>> 
 	extends AbstractChromosome<N> 
 {
 	private static final long serialVersionUID = 5563733927327762322L;

@@ -35,6 +35,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
 /**
@@ -43,10 +44,10 @@ import org.jenetics.util.Verifiable;
  * @see GenotypeFactory
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.13 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.14 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class Genotype<T extends Gene<?>> 
-	implements GenotypeFactory<T>, Iterable<Chromosome<T>>, Verifiable, 
+public class Genotype<T extends Gene<?, T>> 
+	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
 			XMLSerializable, Realtime, Immutable
 {
 	private static final long serialVersionUID = 868536407305322003L;
@@ -149,10 +150,10 @@ public class Genotype<T extends Gene<?>>
 	}
 	
 	@Override
-	public Genotype<T> newGenotype() {
+	public Genotype<T> newInstance() {
 		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length());
 		for (int i = 0; i < _chromosomes.length(); ++i) {
-			genotype._chromosomes.set(i, _chromosomes.get(i).newChromosome());
+			genotype._chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
 		return genotype;
 	}
@@ -216,7 +217,7 @@ public class Genotype<T extends Gene<?>>
 	 * 		   chromosome.
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
-	public static <G extends Gene<?>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Array<Chromosome<G>> chromosomes
 	) {
 		notNull(chromosomes, "Chromosomes");
@@ -239,7 +240,7 @@ public class Genotype<T extends Gene<?>>
 	 *        consists of.
 	 * @throws NullPointerException if <code>chromosome</code> is null.
 	 */
-	public static <G extends Gene<?>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> chromosome
 	) {
 		notNull(chromosome, "Chromosome");
@@ -249,7 +250,7 @@ public class Genotype<T extends Gene<?>>
 		return genotype;
 	}
 	
-	public static <G extends Gene<?>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> chrom1, 
 		final Chromosome<G> chrom2
 	) {
@@ -262,7 +263,7 @@ public class Genotype<T extends Gene<?>>
 		return genotype;
 	}
 	
-	public static <G extends Gene<?>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> chrom1, 
 		final Chromosome<G> chrom2, 
 		final Chromosome<G> chrom3
@@ -278,7 +279,7 @@ public class Genotype<T extends Gene<?>>
 		return genotype;
 	}
 	
-	public static <G extends Gene<?>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> chrom1, 
 		final Chromosome<G> chrom2, 
 		final Chromosome<G> chrom3,
@@ -297,7 +298,7 @@ public class Genotype<T extends Gene<?>>
 		return genotype;
 	}
 	
-	public static <G extends Gene<?>> Genotype<G> valueOf(
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Genotype<G> genotype
 	) {
 		notNull(genotype, "Genotype");

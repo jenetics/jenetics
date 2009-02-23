@@ -23,7 +23,6 @@
 package org.jenetics;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
@@ -31,26 +30,17 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosomeTest.java,v 1.5 2008-09-23 19:18:27 fwilhelm Exp $
+ * @version $Id: DoubleChromosomeTest.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class DoubleChromosomeTest {
 
 
     @Test
-    public void testMutate() {
-        DoubleChromosome c = new DoubleChromosome(0.0, 10.12, 20);
-        NumberGene<Float64> g = c.getGene(12);
-        assertTrue(g.equals(c.getGene(12)));
-        c.mutate(12);
-        assertEquals(g, c.getGene(12));
-    }
-
-    @Test
     public void testCreate() {
         DoubleChromosome c1 = new DoubleChromosome(-12.0, 230.123, 100);
-        DoubleChromosome c2 = c1.newChromosome();
+        DoubleChromosome c2 = c1.newInstance();
         
-        for (NumberGene<Float64> g : c2) {
+        for (NumberGene<Float64, ?> g : c2) {
             assertEquals(-12.0, g.getMinValue().doubleValue());
             assertEquals(230.123, g.getMaxValue().doubleValue());
         }

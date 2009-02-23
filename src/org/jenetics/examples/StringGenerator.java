@@ -30,16 +30,16 @@ import org.jenetics.CharacterGene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.GenotypeFactory;
 import org.jenetics.Mutation;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.EvaluatorRegistry;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.20 2008-11-13 20:37:41 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.21 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -67,7 +67,7 @@ public class StringGenerator {
 			"To be, or not to be: that is the question: " +
 			"Whether 'tis nobler in the mind to suffer...";
 		
-		final GenotypeFactory<CharacterGene> gtf = Genotype.valueOf(
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
 			new CharacterChromosome(value.length())
 		);
 		final Function ff = new Function(value);

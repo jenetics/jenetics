@@ -33,16 +33,16 @@ import org.jenetics.DoubleGene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.GenotypeFactory;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.9 2008-09-29 21:42:49 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
@@ -57,7 +57,7 @@ public class RealFunction {
 	
 	
 	public static void main(String[] args) {
-		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final Function ff = new Function();
 		final GeneticAlgorithm<DoubleGene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		

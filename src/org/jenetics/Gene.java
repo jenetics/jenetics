@@ -24,6 +24,7 @@ package org.jenetics;
 
 import java.io.Serializable;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
 import javolution.lang.ValueType;
@@ -36,9 +37,11 @@ import javolution.lang.ValueType;
  *            of this gene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Gene.java,v 1.3 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: Gene.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public interface Gene<A> extends Serializable, ValueType, Verifiable {
+public interface Gene<A, G extends Gene<A, G>> 
+	extends Factory<G>, Serializable, ValueType, Verifiable 
+{
 	
 	/**
 	 * Return the allel of this gene.

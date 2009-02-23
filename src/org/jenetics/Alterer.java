@@ -48,9 +48,9 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.9 2008-10-19 19:58:44 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public abstract class Alterer<G extends Gene<?>> {
+public abstract class Alterer<G extends Gene<?, G>> {
 
 
 	/**

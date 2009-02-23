@@ -37,9 +37,9 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.5 2009-02-22 23:29:58 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class DoubleGene extends NumberGene<Float64> 
+public class DoubleGene extends NumberGene<Float64, DoubleGene> 
 	implements Mean<DoubleGene>, XMLSerializable 
 {
 	private static final long serialVersionUID = 2531451920309748752L;	
@@ -48,12 +48,12 @@ public class DoubleGene extends NumberGene<Float64>
 	}
 	
 	@Override
-	public boolean isLargerThan(final NumberGene<Float64> that) {
+	public boolean isLargerThan(final DoubleGene that) {
 		return _value.isLargerThan(that._value);
 	}
 
 	@Override
-	public DoubleGene plus(final NumberGene<Float64> that) {
+	public DoubleGene plus(final DoubleGene that) {
 		DoubleGene g = FACTORY.object();
 		g.set(_value.plus(that._value), _min, _max);
 		return g;
@@ -67,13 +67,13 @@ public class DoubleGene extends NumberGene<Float64>
 	}
 	
 	@Override
-	public DoubleGene times(final NumberGene<Float64> that) {
+	public DoubleGene times(final DoubleGene that) {
 		DoubleGene g = FACTORY.object();
 		g.set(_value.times(that._value), _min, _max);
 		return g;
 	}
 	
-	public DoubleGene divide(final NumberGene<Float64> that) {
+	public DoubleGene divide(final DoubleGene that) {
 		return divide(that._value);
 	}
 
@@ -95,6 +95,15 @@ public class DoubleGene extends NumberGene<Float64>
 	}
 
 	@Override
+	public DoubleGene newInstance() {
+		final Random random = RandomRegistry.getRandom();
+		final double difference = _max.doubleValue() - _min.doubleValue();
+		final double value = random.nextDouble()*difference + _min.doubleValue();
+		
+		return newInstance(value);
+	}
+	
+	@Override
 	public DoubleGene newInstance(final java.lang.Number number) {
 		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
@@ -112,7 +121,7 @@ public class DoubleGene extends NumberGene<Float64>
 	}
 
 	@Override
-	public int compareTo(final NumberGene<Float64> that) {
+	public int compareTo(final DoubleGene that) {
 		return this.getAllele().compareTo(that.getAllele());
 	}
 

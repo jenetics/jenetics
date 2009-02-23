@@ -62,9 +62,9 @@ import org.jenetics.util.RandomRegistry;
  * where the <code>probability</code> is the given mutation probability.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.11 2009-02-22 23:04:57 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class Mutation<G extends Gene<?>> extends Alterer<G> {	
+public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
 
 	/**
@@ -137,7 +137,11 @@ public class Mutation<G extends Gene<?>> extends Alterer<G> {
 	protected Chromosome<G> mutate(final Chromosome<G> chromosome) {
 		final Random random = RandomRegistry.getRandom();
 		final int gi = random.nextInt(chromosome.length());
-		return chromosome.mutate(gi);
+		
+		final Array<G> genes = chromosome.toArray().copy();
+		genes.set(gi, genes.get(gi).newInstance());
+		
+		return chromosome.newInstance(genes);
 	}
 	
 

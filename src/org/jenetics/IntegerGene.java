@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.round;
+
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
@@ -37,9 +39,9 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.5 2009-02-22 23:29:58 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class IntegerGene extends NumberGene<Integer64> 
+public class IntegerGene extends NumberGene<Integer64, IntegerGene> 
 	implements Mean<IntegerGene>, XMLSerializable 
 {
 	private static final long serialVersionUID = 262677052481286632L;
@@ -48,12 +50,12 @@ public class IntegerGene extends NumberGene<Integer64>
 	}
 
 	@Override
-	public boolean isLargerThan(final NumberGene<Integer64> that) {
+	public boolean isLargerThan(final IntegerGene that) {
 		return _value.isLargerThan(that._value);
 	}
 
 	@Override
-	public IntegerGene plus(final NumberGene<Integer64> that) {
+	public IntegerGene plus(final IntegerGene that) {
 		final IntegerGene g = FACTORY.object();
 		g.set(_value.plus(that._value), _min, _max);
 		return g;
@@ -67,13 +69,13 @@ public class IntegerGene extends NumberGene<Integer64>
 	}
 
 	@Override
-	public IntegerGene times(final NumberGene<Integer64> that) {
+	public IntegerGene times(final IntegerGene that) {
 		final IntegerGene g = FACTORY.object();
 		g.set(_value.times(that._value), _min, _max);
 		return g;
 	}
 	
-	public IntegerGene divide(final NumberGene<Integer64> that) {
+	public IntegerGene divide(final IntegerGene that) {
 		return divide(that._value);
 	}
 
@@ -94,6 +96,15 @@ public class IntegerGene extends NumberGene<Integer64>
 	}
 
 	@Override
+	public IntegerGene newInstance() {
+		final Random random = RandomRegistry.getRandom();
+		final double rv = random.nextDouble();
+		final long value = round(rv*(_max.longValue() - _min.longValue())) + _min.longValue();
+		
+		return newInstance(value);
+	}
+	
+	@Override
 	public IntegerGene newInstance(final java.lang.Number number) {
 		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
 	}
@@ -111,7 +122,7 @@ public class IntegerGene extends NumberGene<Integer64>
 	}
 
 	@Override
-	public int compareTo(final NumberGene<Integer64> that) {
+	public int compareTo(final IntegerGene that) {
 		return this.getAllele().compareTo(that.getAllele());
 	}
 

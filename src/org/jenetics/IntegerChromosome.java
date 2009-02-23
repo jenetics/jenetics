@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.7 2009-01-16 23:16:35 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -100,20 +100,7 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	}
 	
 	@Override
-	public IntegerChromosome mutate(final int index) {
-		final IntegerChromosome chromosome = new IntegerChromosome(_genes);
-		
-		final IntegerGene gene = _genes.get(index);
-		final Random random = RandomRegistry.getRandom(); 
-		long value = ((long)random.nextDouble()*
-			(_max.longValue() - _min.longValue()) + _min.longValue());
-		chromosome._genes.set(index, gene.newInstance(value));
-		
-		return chromosome;
-	}
-	
-	@Override
-	public IntegerChromosome newChromosome(final Array<IntegerGene> genes) {
+	public IntegerChromosome newInstance(final Array<IntegerGene> genes) {
 		final IntegerChromosome chromosome = new IntegerChromosome(genes);		
 		chromosome._min = genes.get(0)._min;
 		chromosome._max = genes.get(0)._max;
@@ -121,7 +108,7 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	}
 
 	@Override
-	public IntegerChromosome newChromosome() {
+	public IntegerChromosome newInstance() {
 		final Array<IntegerGene> genes = Array.newInstance(length());
 		final Random random = RandomRegistry.getRandom(); 
 		

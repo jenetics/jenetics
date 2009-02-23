@@ -29,24 +29,14 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosomeTest.java,v 1.5 2008-09-23 19:18:26 fwilhelm Exp $
+ * @version $Id: CharacterChromosomeTest.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class CharacterChromosomeTest  {
 
     @Test
-    public void testMutate() {
-        CharacterChromosome c = new CharacterChromosome(23);
-        CharacterGene g1 = c.getGene(5);
-        c.mutate(5);
-        CharacterGene g2 = c.getGene(5);
-        
-        assertEquals(g1, g2);
-    }
-
-    @Test
     public void testCreate() {
         CharacterChromosome c1 = new CharacterChromosome(34);
-        CharacterChromosome c2 = c1.newChromosome();
+        CharacterChromosome c2 = c1.newInstance();
         
         assertEquals(c1.length(), c2.length());
     }

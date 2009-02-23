@@ -44,14 +44,14 @@ import java.io.Serializable;
  * 
  * f_j denotes the fitness value of the jth individium.
  * 
- * @param <T> the gene type.
+ * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.6 2009-01-09 20:42:53 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class BoltzmannSelector<T extends Gene<?>, N extends Number & Comparable<N>> 
-	extends ProbabilitySelector<T, N> implements Serializable
+public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
+	extends ProbabilitySelector<G, N> implements Serializable
 {
 	private static final long serialVersionUID = 4785987330242283796L;
 	
@@ -69,14 +69,14 @@ public class BoltzmannSelector<T extends Gene<?>, N extends Number & Comparable<
 	}
 
 	@Override
-	protected double[] probabilities(final Population<T, N> population, final int count) {
+	protected double[] probabilities(final Population<G, N> population, final int count) {
 		assert (population != null) : "Population must not be null. ";
 		assert (count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double[] props = new double[population.size()];
 		
 		double z = 0;
-		for (Phenotype<T, N> pt : population) {
+		for (Phenotype<G, N> pt : population) {
 			z += exp(_beta*pt.getFitness().doubleValue());
 		}
 		

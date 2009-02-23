@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.14 2009-02-17 21:29:13 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.15 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -141,11 +141,6 @@ public class BitChromosome extends Number<LargeInteger>
 				throw new UnsupportedOperationException();
 			}
 		};
-	}
-	
-	@Override
-	public BitChromosome mutate(final int index) {
-		return flip(index);
 	}
 	
 	/**
@@ -253,7 +248,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 * randomized.
 	 */
 	@Override
-	public BitChromosome newChromosome(final Array<BitGene> genes) {
+	public BitChromosome newInstance(final Array<BitGene> genes) {
 		final BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
 		
 		int ones = 0;
@@ -268,7 +263,7 @@ public class BitChromosome extends Number<LargeInteger>
 	}
 	
 	@Override
-	public BitChromosome newChromosome() {
+	public BitChromosome newInstance() {
 		final Random random = RandomRegistry.getRandom();
 		final BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
 		for (int i = 0; i < _length; ++i) {

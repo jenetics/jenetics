@@ -33,6 +33,7 @@ import javolution.xml.XMLObjectReader;
 import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -40,7 +41,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PopulationTest.java,v 1.2 2009-02-22 10:32:21 fwilhelm Exp $
+ * @version $Id: PopulationTest.java,v 1.3 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class PopulationTest {
 	
@@ -56,14 +57,14 @@ public class PopulationTest {
 	@Test
 	public void serialization() throws XMLStreamException, IOException {
 		final int size = 10;
-		final GenotypeFactory<DoubleGene> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
 		final Function ff = new Function();
 		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
 		final Population<DoubleGene, Float64> population = new Population<DoubleGene, Float64>();
 		
 		for (int i = 0; i < size; ++i) {
 			final Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(
-				gtf.newGenotype(), ff, scaler, 0
+				gtf.newInstance(), ff, scaler, 0
 			);
 			population.add(pt);
 		}

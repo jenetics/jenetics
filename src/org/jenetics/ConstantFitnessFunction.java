@@ -28,11 +28,11 @@ package org.jenetics;
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  *
- * @param <T> the gene type.
- * @version $Id: ConstantFitnessFunction.java,v 1.3 2008-09-22 21:38:31 fwilhelm Exp $
+ * @param <G> the gene type.
+ * @version $Id: ConstantFitnessFunction.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class ConstantFitnessFunction<T extends Gene<?>, C extends Comparable<C>> 
-	implements FitnessFunction<T, C> 
+public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
+	implements FitnessFunction<G, C> 
 {
 	private static final long serialVersionUID = 8766537513371578351L;
 	
@@ -43,7 +43,7 @@ public class ConstantFitnessFunction<T extends Gene<?>, C extends Comparable<C>>
 	}
 	
 	@Override
-	public C evaluate(final Genotype<T> genotype) {
+	public C evaluate(final Genotype<G> genotype) {
 		return _value;
 	}
 	

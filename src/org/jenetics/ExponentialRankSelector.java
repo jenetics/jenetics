@@ -39,10 +39,10 @@ import java.io.Serializable;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.7 2009-02-17 20:07:52 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>> 
-	extends ProbabilitySelector<T, C> implements Serializable
+public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
+	extends ProbabilitySelector<G, C> implements Serializable
 {
 	private static final long serialVersionUID = -5633748296591142197L;
 	
@@ -54,7 +54,7 @@ public class ExponentialRankSelector<T extends Gene<?>, C extends Comparable<C>>
 
 	@Override
 	protected double[] probabilities(
-		final Population<T, C> population, final int count
+		final Population<G, C> population, final int count
 	) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";

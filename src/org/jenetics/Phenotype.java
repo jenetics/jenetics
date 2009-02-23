@@ -47,9 +47,9 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.9 2009-02-22 10:32:21 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
  */
-public class Phenotype<G extends Gene<?>, C extends Comparable<C>> 
+public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
 				XMLSerializable, Realtime, Runnable
 {
@@ -236,7 +236,7 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static<SG extends Gene<?>, SC extends Comparable<SC>> 
+	public static<SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
 		final FitnessFunction<SG, SC> fitnessFunction,
@@ -256,7 +256,7 @@ public class Phenotype<G extends Gene<?>, C extends Comparable<C>>
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static <SG extends Gene<?>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
 		final FitnessFunction<SG, SC> fitnessFunction, 
