@@ -43,7 +43,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.19 2009-02-24 21:25:45 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.20 2009-02-24 21:32:09 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -80,7 +80,7 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(1000);
         ga.setAlterer(
-            new SwapMutation<IntegerGene>(Probability.valueOf(0.05), 
+            new SwapMutation<IntegerGene>(Probability.valueOf(0.08), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
         EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator(2));
