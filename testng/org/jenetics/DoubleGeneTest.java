@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGeneTest.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: DoubleGeneTest.java,v 1.8 2009-02-24 18:53:03 fwilhelm Exp $
  */
 public class DoubleGeneTest { 
     
@@ -40,8 +40,8 @@ public class DoubleGeneTest {
     public void testDoubleGeneIntegerIntegerInteger() {
         DoubleGene gene = DoubleGene.valueOf(1.234, 0.345, 2.123);
         assertEquals(gene.getAllele().doubleValue(), 1.234);
-        assertEquals(gene.getMinValue().doubleValue(), 0.345);
-        assertEquals(gene.getMaxValue().doubleValue(), 2.123);
+        assertEquals(gene.getMin().doubleValue(), 0.345);
+        assertEquals(gene.getMax().doubleValue(), 2.123);
         
         try {
             gene = DoubleGene.valueOf(0.1, 2.1, 4.1);
@@ -54,8 +54,8 @@ public class DoubleGeneTest {
 	@Test
     public void testDoubleGeneIntegerInteger() {
         DoubleGene gene = DoubleGene.valueOf(-10.567, 10.567);
-        assertEquals(gene.getMinValue().doubleValue(), -10.567);
-        assertEquals(gene.getMaxValue().doubleValue(), 10.567);
+        assertEquals(gene.getMin().doubleValue(), -10.567);
+        assertEquals(gene.getMax().doubleValue(), 10.567);
     }
 
 	@Test
@@ -65,8 +65,8 @@ public class DoubleGeneTest {
         DoubleGene g3 = g1.plus(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 36.456);
-        assertEquals(g3.getMinValue().doubleValue(), 0.456);
-        assertEquals(g3.getMaxValue().doubleValue(), 100.456);
+        assertEquals(g3.getMin().doubleValue(), 0.456);
+        assertEquals(g3.getMax().doubleValue(), 100.456);
     }
 
 	@Test
@@ -76,8 +76,8 @@ public class DoubleGeneTest {
         NumberGene<Float64, ?> g3 = g1.minus(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 32.123);
-        assertEquals(g3.getMinValue().doubleValue(), 10.123);
-        assertEquals(g3.getMaxValue().doubleValue(), 99.123);
+        assertEquals(g3.getMin().doubleValue(), 10.123);
+        assertEquals(g3.getMax().doubleValue(), 99.123);
     }
 
 	@Test
@@ -87,19 +87,8 @@ public class DoubleGeneTest {
         DoubleGene g3 = g1.times(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 68.690);
-        assertEquals(g3.getMinValue().doubleValue(), 10.345);
-        assertEquals(g3.getMaxValue().doubleValue(), 99.345);
-    }
-
-	@Test
-    public void testDiv() {
-        DoubleGene g1 = DoubleGene.valueOf(34.222, 10.222, 99.222);
-        DoubleGene g2 = DoubleGene.valueOf(2.0, 1.0, 10.0);
-        DoubleGene g3 = g1.divide(g2);
-        
-        assertEquals(g3.getAllele().doubleValue(), 17.111);
-        assertEquals(g3.getMinValue().doubleValue(), 10.222);
-        assertEquals(g3.getMaxValue().doubleValue(), 99.222);
+        assertEquals(g3.getMin().doubleValue(), 10.345);
+        assertEquals(g3.getMax().doubleValue(), 99.345);
     }
 	
 	@Test
@@ -117,8 +106,8 @@ public class DoubleGeneTest {
         DoubleGene g2 = gene.newInstance(5);
         
         assertEquals(g2.getAllele().intValue(), 5);
-        assertEquals(g2.getMinValue().doubleValue(), -1234.1234);
-        assertEquals(g2.getMaxValue().doubleValue(), 1234.1234);
+        assertEquals(g2.getMin().doubleValue(), -1234.1234);
+        assertEquals(g2.getMax().doubleValue(), 1234.1234);
     }
 
 	@Test
@@ -162,9 +151,9 @@ public class DoubleGeneTest {
         DoubleGene g2 = DoubleGene.valueOf(4.1, 1.1, 7.1);
         DoubleGene g3 = DoubleGene.valueOf(3.1, 0.1, 5.1);
         
-        assertEquals(g1.getMinValue().doubleValue(), 0.1);
-        assertEquals(g2.getMinValue().doubleValue(), 1.1);
-        assertEquals(g3.getMinValue().doubleValue(), 0.1);
+        assertEquals(g1.getMin().doubleValue(), 0.1);
+        assertEquals(g2.getMin().doubleValue(), 1.1);
+        assertEquals(g3.getMin().doubleValue(), 0.1);
     }
 
 	@Test
@@ -173,9 +162,9 @@ public class DoubleGeneTest {
         DoubleGene g2 = DoubleGene.valueOf(4.2, 1.2, 7.2);
         DoubleGene g3 = DoubleGene.valueOf(3.2, 0.2, 5.2);
         
-        assertEquals(g1.getMaxValue().doubleValue(), 5.2);
-        assertEquals(g2.getMaxValue().doubleValue(), 7.2);
-        assertEquals(g3.getMaxValue().doubleValue(), 5.2);
+        assertEquals(g1.getMax().doubleValue(), 5.2);
+        assertEquals(g2.getMax().doubleValue(), 7.2);
+        assertEquals(g3.getMax().doubleValue(), 5.2);
     }
 
 	@Test

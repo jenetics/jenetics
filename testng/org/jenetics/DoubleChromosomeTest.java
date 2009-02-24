@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosomeTest.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: DoubleChromosomeTest.java,v 1.7 2009-02-24 18:53:03 fwilhelm Exp $
  */
 public class DoubleChromosomeTest {
 
@@ -41,8 +41,8 @@ public class DoubleChromosomeTest {
         DoubleChromosome c2 = c1.newInstance();
         
         for (NumberGene<Float64, ?> g : c2) {
-            assertEquals(-12.0, g.getMinValue().doubleValue());
-            assertEquals(230.123, g.getMaxValue().doubleValue());
+            assertEquals(-12.0, g.getMin().doubleValue());
+            assertEquals(230.123, g.getMax().doubleValue());
         }
     }
     
