@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.9 2009-02-24 19:33:24 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -92,11 +92,6 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 		for (int i = 0; i < length; ++i) {
 			_genes.set(i, IntegerGene.valueOf(min, max));
 		}
-	}
-
-	@Override
-	public Class<IntegerGene> getType() {
-		return IntegerGene.class;
 	}
 	
 	@Override

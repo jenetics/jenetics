@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.8 2009-02-24 19:33:24 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -140,33 +140,6 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 	public PermutationChromosome(final int length) {
 		this(length, false);
 	}
-	
-	@Override
-	public Class<IntegerGene> getType() {
-		return IntegerGene.class;
-	}
-
-	/**
-	 * Mutates the given gene. To keep this chromosome in a valid state the mutation is
-	 * performed by a swap with a second, randomly choosen, gene of this chromosome. This
-	 * mutation method is equivalent to:
-	 * 
-	 * [code]
-	 *     final Random random = ...;
-	 *     this.swap(index, random.nextInt(this.length()));
-	 * [/code]
-	 */
-//	@Override
-//	public PermutationChromosome mutate(final int index) {
-//		final PermutationChromosome chromosome = new PermutationChromosome(_genes);
-//		final Random random = RandomRegistry.getRandom();
-//		final int otherIndex = random.nextInt(length());
-//		final IntegerGene temp = chromosome._genes.get(index);
-//		chromosome._genes.set(index, chromosome._genes.get(otherIndex));
-//		chromosome._genes.set(otherIndex, temp);
-//		
-//		return chromosome;
-//	}
 	
 	/**
 	 * Check if this chromosome represents still a valid permutation. 
