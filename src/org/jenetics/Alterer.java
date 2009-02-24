@@ -48,7 +48,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.11 2009-02-24 22:08:23 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
 
@@ -69,6 +69,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * 
 	 * @param component the <code>Alterer</code>S this <code>Alterer</code>
 	 *        consists.
+	 * @throws NullPointerException if the <code>component</code> is <code>null</code>.     
 	 */
 	public Alterer(final Alterer<G> component) {
 		this(Probability.ONE, component);
@@ -83,7 +84,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 */
 	public Alterer(final Probability probability) {
 		notNull(probability, "Probability");
-		this._probability = probability;
+		_probability = probability;
 	}
 	
 	/**
@@ -99,8 +100,8 @@ public abstract class Alterer<G extends Gene<?, G>> {
 		notNull(probability, "Probability");
 		notNull(component, "Alterer components");
 		
-		this._probability = probability;
-		this._component = component;
+		_probability = probability;
+		_component = component;
 	}
 	
 	/**

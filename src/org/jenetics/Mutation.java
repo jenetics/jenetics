@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.ceil;
 import static java.lang.Math.rint;
 import static org.jenetics.util.ArrayUtils.subset;
 
@@ -54,13 +55,13 @@ import org.jenetics.util.RandomRegistry;
  * </p>
  * The mutation probability is the probability that a specific gene over the 
  * whole population is mutated. The number of available genes of an population
- * is {@code genes = p*c*g} where {@code p} is the population size, {@code c} the number
- * of chromosomes of one genotype and {@code g} the number of genes in one
- * chromosome. So the number of genes mutatated by the mutation is 
- * {@code genes*probability}.
+ * is <pre>genes = p*c*g</pre> where {@code p} is the population size, {@code c} 
+ * the number of chromosomes of the genotypes and {@code g} the number of genes 
+ * in the chromosomes. So the number of genes mutated by the mutation is 
+ * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.13 2009-02-24 21:25:44 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.14 2009-02-24 22:08:23 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -78,8 +79,10 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 * Construct a Mutation object which a given mutation probability.
 	 * 
 	 * @param probability Mutation probability. The given probability is
-	 * 	  devided by the number of chromosomes of the genotype to form
-	 * 	  the concrete mutation probability.
+	 * 	      devided by the number of chromosomes of the genotype to form
+	 * 	      the concrete mutation probability.
+	 * @throws NullPointerException if the <code>probability</code> is 
+	 * 		<code>null</code>.
 	 */
 	public Mutation(final Probability probability) {
 		super(probability);
@@ -97,6 +100,11 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		super(probability, component);
 	}
 	
+	/**
+	 * Return the number of mutations performed by this mutation object.
+	 * 
+	 * @return the number of mutations performed so far.
+	 */
 	public int getMutations() {
 		return _mutations;
 	}
@@ -132,7 +140,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		final Random random = RandomRegistry.getRandom();
 		final int[] elements = subset(
 				genotype.length(), 
-				(int)Math.ceil(genotype.length()*_probability.doubleValue()), 
+				(int)ceil(genotype.length()*_probability.doubleValue()), 
 				random
 			);
 		
@@ -147,9 +155,31 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		return Genotype.valueOf(chromosomes);
 	}
 	
+	/**
+	 * Template method which gives an (re)implemention of the mutation class the
+	 * possibility to perform its own mutation operation, based on a writable
+	 * gene array. 
+	 * <p/>
+	 * The {@link SwapMutation} does it in this way:
+	 * [code]
+	 * protected void mutate(final Array<G> genes) {
+	 *     final Random random = RandomRegistry.getRandom();
+	 *     final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
+	 *     final int[] elements = subset(genes.length(), subsetSize, random);
+	 *
+	 *     for (int i = 0; i < elements.length; ++i) {
+	 *         ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
+	 *     }
+	 *
+	 *     _mutations += elements.length;
+	 * }
+	 * [/code]
+	 * 
+	 * @param genes the genes to mutate.
+	 */
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
+		final int subsetSize = (int)ceil(genes.length()*_probability.doubleValue());
 		final int[] elements = subset(genes.length(), subsetSize, random);
 		
 		for (int i = 0; i < elements.length; ++i) {
