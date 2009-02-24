@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.21 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.22 2009-02-24 21:32:09 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -82,7 +82,7 @@ public class StringGenerator {
 //		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(
-			new Mutation<CharacterGene>(Probability.valueOf(0.3)).append(
+			new Mutation<CharacterGene>(Probability.valueOf(0.005)).append(
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
 		EvaluatorRegistry.setEvaluator(new org.jenetics.util.ConcurrentEvaluator());
