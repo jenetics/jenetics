@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.8 2009-02-24 18:53:02 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.9 2009-02-24 21:43:30 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>
@@ -193,7 +193,7 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 		if (obj == this) {
 			return true;
 		}
-		if (obj == null || obj.getClass() == getClass()) {
+		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
 		
