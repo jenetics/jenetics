@@ -51,22 +51,22 @@ import org.jenetics.util.RandomRegistry;
  * of the mutation rate depends on the role mutation plays. If mutation is the 
  * only source of exploration (if there is no crossover) then the mutation rate 
  * should be set so that a reasonable neighbourhood of solutions is explored. 
- * Typically, this involves changing around one variable in the string, 
- * thus a mutation rate of 1/L is commonly used. Where L is the length of the
- * string, respectively the length of the 
- * {@link Chromosome#length()} or {@link Genotype}. 
- * That means, the probability that a given chromosome is mutate is
- * <pre>
- * 	probability/L,
- * </pre>
- * where the <code>probability</code> is the given mutation probability.
+ * </p>
+ * The mutation probability is the probability that a specific gene over the 
+ * whole population is mutated. The number of available genes of an population
+ * is {@code genes = p*c*g} where {@code p} is the population size, {@code c} the number
+ * of chromosomes of one genotype and {@code g} the number of genes in one
+ * chromosome. So the number of genes mutatated by the mutation is 
+ * {@code genes*probability}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.13 2009-02-24 21:25:44 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
 
+	protected int _mutations = 0;
+	
 	/**
 	 * Default constructor, with probability = 0.01.
 	 */
@@ -96,6 +96,10 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	public Mutation(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
+	
+	public int getMutations() {
+		return _mutations;
+	}
  
 	/**
 	 * Concrete implementation of the alter method.
@@ -106,12 +110,13 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
-		final double prop = _probability.doubleValue()/
-					population.get(0).getGenotype().getChromosome().length();
-		final int subsetSize = (int)rint(population.size()*prop);
 		final Random random = RandomRegistry.getRandom();
-		final int[] elements = subset(population.size(), subsetSize, random);
-		
+		final int[] elements = subset(
+				population.size(), 
+				(int)rint(population.size()*_probability.doubleValue()), 
+				random
+			);
+						
 		for (int i = 0; i < elements.length; ++i) {
 			final Phenotype<G, C> phenotype = population.get(elements[i]);
 			final Genotype<G> genotype = phenotype.getGenotype(); 
@@ -123,27 +128,36 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		}
 	}
 	
-	protected Genotype<G> mutate(final Genotype<G> genotype) {
+	private Genotype<G> mutate(final Genotype<G> genotype) {
 		final Random random = RandomRegistry.getRandom();
-		final int ci = random.nextInt(genotype.chromosomes());
+		final int[] elements = subset(
+				genotype.length(), 
+				(int)Math.ceil(genotype.length()*_probability.doubleValue()), 
+				random
+			);
 		
 		final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
-		final Chromosome<G> chromosome = mutate(chromosomes.get(ci));
-		chromosomes.set(ci, chromosome);
-		
+		for (int i = 0; i < elements.length; ++i) {
+			final Chromosome<G> chromosome = chromosomes.get(elements[i]);
+			final Array<G> genes = chromosome.toArray().copy();
+			mutate(genes);
+			chromosomes.set(elements[i], chromosome.newInstance(genes));
+		}
+				
 		return Genotype.valueOf(chromosomes);
 	}
 	
-	protected Chromosome<G> mutate(final Chromosome<G> chromosome) {
+	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int gi = random.nextInt(chromosome.length());
+		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
+		final int[] elements = subset(genes.length(), subsetSize, random);
 		
-		final Array<G> genes = chromosome.toArray().copy();
-		genes.set(gi, genes.get(gi).newInstance());
+		for (int i = 0; i < elements.length; ++i) {
+			genes.set(elements[i], genes.get(elements[i]).newInstance());
+		}
 		
-		return chromosome.newInstance(genes);
+		_mutations += elements.length;
 	}
-	
 
 }
 

@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.9 2009-02-24 21:25:44 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -97,10 +97,8 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 				}
 			});
 		}
+		
 		evaluate(tasks);
-//		for (int i = 0; i < changeSize; ++i) {
-//			recombinate(population, first[i], second[i], generation);
-//		}
 	}
 	
 	/**

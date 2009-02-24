@@ -32,30 +32,21 @@ import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * The GaussianRealMutator class performs the mutation of a {@link NumberGene}. 
- * This mutator picks a new value based on a Gaussian distribution (with 
- * deviation 1.0)  around the current value of the gene. The new value won't be 
- * out of the gene's boundaries.
- *
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.7 2009-02-24 21:25:44 fwilhelm Exp $
+ * @version $Id: SwapMutation.java,v 1.1 2009-02-24 21:25:44 fwilhelm Exp $
  */
-public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
-	
-	public GaussianMutation(
-		final Probability probability, final Alterer<G> component
-	) {
+public class SwapMutation<G extends Gene<?, G>> extends Mutation<G> {
+
+	public SwapMutation() {
+	}
+
+	public SwapMutation(final Probability probability, final Alterer<G> component) {
 		super(probability, component);
 	}
 
-	public GaussianMutation(final Probability probability) {
+	public SwapMutation(final Probability probability) {
 		super(probability);
 	}
-
-	public GaussianMutation() {
-	}
-
 
 	@Override
 	protected void mutate(final Array<G> genes) {
@@ -64,24 +55,12 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 		final int[] elements = subset(genes.length(), subsetSize, random);
 				
 		for (int i = 0; i < elements.length; ++i) {
-			final G oldGene = genes.get(elements[i]);
-			double value = random.nextGaussian()*oldGene.doubleValue();
-			value = Math.min(value, oldGene.getMax().doubleValue());
-			value = Math.max(value, oldGene.getMin().doubleValue());
-			
-			final G newGene = oldGene.newInstance(value);
-			genes.set(elements[i], newGene);
-			
-			
 			ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
 		}
 		
-		_mutations += elements.length;	
+		_mutations += elements.length;
 	}
+
+	
 	
 }
-
-
-
-
-
