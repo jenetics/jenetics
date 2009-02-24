@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.7 2009-02-24 18:53:02 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.8 2009-02-24 21:25:44 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64, IntegerGene> 
 	implements Mean<IntegerGene>, XMLSerializable 
@@ -52,7 +52,6 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 		final Random random = RandomRegistry.getRandom();
 		final double rv = random.nextDouble();
 		final long value = round(rv*(_max.longValue() - _min.longValue())) + _min.longValue();
-		
 		return newInstance(value);
 	}
 	

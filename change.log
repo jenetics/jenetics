@@ -1,4 +1,5 @@
 Jenetics-0.4.0.0
+- Adding SwapMutation class, needed for TSP (and other combinatorial) problem.
 - Rename NumberGene.getMinValue() to NumberGene.getMaxValue() to 
   NumberGene.getMin() and NumberGene.getMax().
 - Remove the mutation method from the Chromosomes interface. The mutation is

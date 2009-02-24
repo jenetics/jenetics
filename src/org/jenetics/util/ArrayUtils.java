@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.25 2009-02-22 23:04:57 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.26 2009-02-24 21:25:45 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -774,6 +774,13 @@ public final class ArrayUtils {
 				n, sub.length, product, Integer.MAX_VALUE
 					
 			));
+		}
+		
+		if (sub.length == n) {
+			for (int i = 0; i < sub.length; ++i) {
+				sub[i] = i;
+			}
+			return;
 		}
 		
 		for (int i = 0; i < k; ++i) {
