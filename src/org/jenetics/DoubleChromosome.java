@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.11 2009-02-24 19:33:24 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -121,24 +121,6 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 			_genes.set(i, DoubleGene.valueOf(min, max));
 		}
 	}
-
-	@Override
-	public Class<DoubleGene> getType() {
-		return DoubleGene.class;
-	}
-	
-//	@Override
-//	public DoubleChromosome mutate(final int index) {
-//		final DoubleChromosome chromosome = new DoubleChromosome(_genes);
-//		
-//		final DoubleGene gene = _genes.get(index);
-//		final Random random = RandomRegistry.getRandom(); 
-//		double value = random.nextDouble()*
-//			(_max.doubleValue() - _min.doubleValue()) + _min.doubleValue();
-//		chromosome._genes.set(index, gene.newInstance(value));
-//		
-//		return chromosome;
-//	}
 	
 	@Override
 	public DoubleChromosome newInstance(final Array<DoubleGene> genes) {

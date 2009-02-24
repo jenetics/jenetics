@@ -37,19 +37,12 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.12 2009-02-24 19:33:24 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?, T>> 
 	extends Verifiable, Iterable<T>, Immutable, 
 			ChromosomeFactory<T>, Serializable
 {
-	
-	/**
-	 * Return the gene type of this chromosome.
-	 * 
-	 * @return the gene type of this chromosome.
-	 */
-	public Class<T> getType();
 	
 	/**
 	 * Return the first gene of this chromosome.
