@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.5 2009-02-23 21:30:55 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.6 2009-02-24 18:53:02 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
@@ -63,8 +63,8 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 		final G oldGene = genes.get(index);
 
 		double value = random.nextGaussian()*oldGene.doubleValue();
-		value = Math.min(value, oldGene.getMaxValue().doubleValue());
-		value = Math.max(value, oldGene.getMinValue().doubleValue());
+		value = Math.min(value, oldGene.getMax().doubleValue());
+		value = Math.max(value, oldGene.getMin().doubleValue());
 		
 		final G newGene = oldGene.newInstance(value);
 		genes.set(index, newGene);

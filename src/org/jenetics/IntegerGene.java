@@ -27,8 +27,6 @@ import static java.lang.Math.round;
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
-import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -39,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.7 2009-02-24 18:53:02 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64, IntegerGene> 
 	implements Mean<IntegerGene>, XMLSerializable 
@@ -47,52 +45,6 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 	private static final long serialVersionUID = 262677052481286632L;
 	
 	protected IntegerGene() {
-	}
-
-	@Override
-	public boolean isLargerThan(final IntegerGene that) {
-		return _value.isLargerThan(that._value);
-	}
-
-	@Override
-	public IntegerGene plus(final IntegerGene that) {
-		final IntegerGene g = FACTORY.object();
-		g.set(_value.plus(that._value), _min, _max);
-		return g;
-	}
-	
-	@Override
-	public IntegerGene opposite() {
-		final IntegerGene g = FACTORY.object();
-		g.set(_value.opposite(), _min, _max);
-		return g;
-	}
-
-	@Override
-	public IntegerGene times(final IntegerGene that) {
-		final IntegerGene g = FACTORY.object();
-		g.set(_value.times(that._value), _min, _max);
-		return g;
-	}
-	
-	public IntegerGene divide(final IntegerGene that) {
-		return divide(that._value);
-	}
-
-	public IntegerGene divide(final Integer64 that) {
-		return newInstance(_value.divide(that));
-	}
-	
-	@Override
-	public IntegerGene mean(final IntegerGene that) {
-		Integer64 sum = _value;
-		sum = sum.plus(that._value);
-		return newInstance(sum.divide(Integer64.valueOf(2)));
-	}
-	
-	@Override
-	public IntegerGene copy() {
-		return valueOf(_value, _min, _max);
 	}
 
 	@Override
@@ -122,36 +74,12 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 	}
 
 	@Override
-	public int compareTo(final IntegerGene that) {
-		return this.getAllele().compareTo(that.getAllele());
-	}
-
-	@Override
-	public Text toText() {
-		TextBuilder out = TextBuilder.newInstance();
-		out.append("[").append(_value).append("]");
-		return out.toText();
+	public IntegerGene mean(final IntegerGene that) {
+		Integer64 sum = _value;
+		sum = sum.plus(that._value);
+		return newInstance(sum.divide(Integer64.valueOf(2)));
 	}
 	
-	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += super.hashCode()*37;
-		return hash;
-	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof IntegerGene)) {
-			return false;
-		}
-		
-		return super.equals(obj);
-	}
-
 	
 	private static final ObjectFactory<IntegerGene> FACTORY = 
 	new ObjectFactory<IntegerGene>() {
@@ -245,8 +173,8 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 		public void write(final IntegerGene gene, final OutputElement element) 
 			throws XMLStreamException 
 		{
-			element.setAttribute("min", gene.getMinValue().longValue());
-			element.setAttribute("max", gene.getMaxValue().longValue());
+			element.setAttribute("min", gene.getMin().longValue());
+			element.setAttribute("max", gene.getMax().longValue());
 			element.add(gene.getAllele().longValue());
 		}
 		@Override

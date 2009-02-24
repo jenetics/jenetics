@@ -25,8 +25,6 @@ package org.jenetics;
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
-import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -37,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.7 2009-02-23 21:17:26 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.8 2009-02-24 18:53:02 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64, DoubleGene> 
 	implements Mean<DoubleGene>, XMLSerializable 
@@ -45,53 +43,6 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 	private static final long serialVersionUID = 2531451920309748752L;	
 	
 	protected DoubleGene() {
-	}
-	
-	@Override
-	public boolean isLargerThan(final DoubleGene that) {
-		return _value.isLargerThan(that._value);
-	}
-
-	@Override
-	public DoubleGene plus(final DoubleGene that) {
-		final DoubleGene g = FACTORY.object();
-		g.set(_value.plus(that._value), _min, _max);
-		return g;
-	}
-
-	@Override
-	public DoubleGene opposite() {
-		final DoubleGene g = FACTORY.object();
-		g.set(_value.opposite(), _min, _max);
-		return g;
-	}
-	
-	@Override
-	public DoubleGene times(final DoubleGene that) {
-		final DoubleGene g = FACTORY.object();
-		g.set(_value.times(that._value), _min, _max);
-		return g;
-	}
-	
-	public DoubleGene divide(final DoubleGene that) {
-		return divide(that._value);
-	}
-
-	public DoubleGene divide(final Float64 that) {
-		return newInstance(_value.divide(that));
-	}
-	
-
-	@Override
-	public DoubleGene mean(final DoubleGene that) {
-		Float64 sum = _value;
-		sum = sum.plus(that._value);
-		return newInstance(sum.divide(Float64.valueOf(2)));
-	}
-	
-	@Override
-	public DoubleGene copy() {
-		return valueOf(_value, _min, _max);
 	}
 
 	@Override
@@ -108,6 +59,10 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 	
+	public DoubleGene newInstance(final Float64 number) {
+		return valueOf(number, _min, _max);
+	}
+	
 	/**
 	 * Create a new DoubleGene with the same limits and the given value.
 	 * 
@@ -119,36 +74,12 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 	public DoubleGene newInstance(final double number) {
 		return newInstance(Float64.valueOf(number));
 	}
-
-	@Override
-	public int compareTo(final DoubleGene that) {
-		return this.getAllele().compareTo(that.getAllele());
-	}
-
-	@Override
-	public Text toText() {
-		TextBuilder out = new TextBuilder();
-		out.append("[").append(_value).append("]");
-		return out.toText();
-	}
 	
 	@Override
-	public int hashCode() {
-		int hash = 15	;
-		hash += super.hashCode()*37;
-		return hash;
-	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof DoubleGene)) {
-			return false;
-		}
-		
-		return super.equals(obj);
+	public DoubleGene mean(final DoubleGene that) {
+		Float64 sum = _value;
+		sum = sum.plus(that._value);
+		return newInstance(sum.divide(Float64.valueOf(2)));
 	}
 	
 	private static final ObjectFactory<DoubleGene> 
@@ -243,8 +174,8 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 		public void write(final DoubleGene gene, final OutputElement element) 
 			throws XMLStreamException 
 		{
-			element.setAttribute("min", gene.getMinValue().doubleValue());
-			element.setAttribute("max", gene.getMaxValue().doubleValue());
+			element.setAttribute("min", gene.getMin().doubleValue());
+			element.setAttribute("max", gene.getMax().doubleValue());
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override

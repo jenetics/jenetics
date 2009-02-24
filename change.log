@@ -1,4 +1,6 @@
 Jenetics-0.4.0.0
+- Rename NumberGene.getMinValue() to NumberGene.getMaxValue() to 
+  NumberGene.getMin() and NumberGene.getMax().
 - Remove the mutation method from the Chromosomes interface. The mutation is
   solely done by the Mutation class. This requires a new method in the Gene
   interface, Gene.newInstance(). To not be forced to cast the newly generated
