@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatisticCalculator.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: NumberStatisticCalculator.java,v 1.7 2009-02-25 22:29:43 fwilhelm Exp $
  */
 public class NumberStatisticCalculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends StatisticCalculator<G, R>
@@ -37,7 +37,7 @@ public class NumberStatisticCalculator<G extends Gene<?, G>, R extends Number & 
 	public NumberStatistic<G, R> evaluate(
 		final List<? extends Phenotype<G, R>> population
 	) {
-		final Statistic<G, R> s = super.evaluate(population);
+		final Statistics<G, R> s = super.evaluate(population);
 		final int size = population.size();
 		
 		double fitnessSum = 0;

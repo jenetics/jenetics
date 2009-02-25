@@ -25,10 +25,10 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: NumberStatistic.java,v 1.8 2009-02-25 22:29:42 fwilhelm Exp $
  */
 public class NumberStatistic<G extends Gene<?, G>, R extends Number & Comparable<R>>
-	extends Statistic<G, R> 
+	extends Statistics<G, R> 
 {
 	private static final long serialVersionUID = -7468324436514041360L;
 	
@@ -47,7 +47,7 @@ public class NumberStatistic<G extends Gene<?, G>, R extends Number & Comparable
 	}
 	
 	protected NumberStatistic(
-		final Statistic<G, R> other, 
+		final Statistics<G, R> other, 
 		final double fitnessMean, final double fitnessVariance
 	) {
 		super(other);
