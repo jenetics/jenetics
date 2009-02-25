@@ -38,7 +38,7 @@ import org.jenetics.util.Validator;
  * participates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.9 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 
@@ -70,20 +70,26 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 
 	/**
-	 * @throws IllegalArgumentException if the sample size is bigger than the
-	 *         population size.
-	 * @throws NullPointerException if the <code>population</code> is 
-	 *         <code>null</code>.
+	 * @throws IllegalArgumentException if the sample size is greater than the
+	 *         population size or {@code count} is greater the the population 
+	 *         size or the _sampleSize is greater the the population size.
+	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
 	public Population<G, C> select(final Population<G, C> population, final int count) {
 		Validator.notNull(population, "Population");
 		if (count < 0) {
-			throw new IllegalArgumentException(
-				"Selection count must be greater or equal then zero, but was " + count
-			);
+			throw new IllegalArgumentException(String.format(
+				"Selection count must be greater or equal then zero, but was %s",
+				count
+			));
 		}
-		
+		if (count > population.size()) {
+			throw new IllegalArgumentException(String.format(
+				"Selection size greater than population size: %s > %s",
+				count, population.size()
+			));
+		}
 		if (_sampleSize > population.size()) {
 			throw new IllegalArgumentException(String.format(
 				"Tournament size is greater than the population size! %d > %d.",

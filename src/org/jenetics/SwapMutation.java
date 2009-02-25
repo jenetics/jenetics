@@ -32,8 +32,14 @@ import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * The {@code SwapMutation} changes the order of genes in a chromosome, with the 
+ * hope of bringing related genes closer together, thereby facilitating the 
+ * production of building blocks. This mutation operator can also be used for
+ * combinatorial problems, where no duplicated genes within a chromosome are
+ * allowed, e.g. for the TSP.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SwapMutation.java,v 1.1 2009-02-24 21:25:44 fwilhelm Exp $
+ * @version $Id: SwapMutation.java,v 1.2 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public class SwapMutation<G extends Gene<?, G>> extends Mutation<G> {
 
@@ -48,6 +54,10 @@ public class SwapMutation<G extends Gene<?, G>> extends Mutation<G> {
 		super(probability);
 	}
 
+	/**
+	 * Swaps the genes in the given array, with the mutation probability of this
+	 * mutation.
+	 */
 	@Override
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();

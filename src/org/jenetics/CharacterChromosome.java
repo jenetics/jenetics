@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.11 2009-02-24 19:33:24 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.12 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
@@ -68,6 +68,9 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		super(genes);
 	}
 
+	/**
+	 * @throws NullPointerException if the given gene array is {@code null}.
+	 */
 	@Override
 	public CharacterChromosome newInstance(final Array<CharacterGene> genes) {
 		return new CharacterChromosome(genes);
@@ -84,7 +87,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	
 	@Override
 	public Text toText() {
-		TextBuilder out = TextBuilder.newInstance();
+		final TextBuilder out = TextBuilder.newInstance();
 		out.append("[");
 		for (CharacterGene gene : this) {
 			out.append(gene.toText());

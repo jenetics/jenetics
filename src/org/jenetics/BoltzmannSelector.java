@@ -48,7 +48,7 @@ import java.io.Serializable;
  * @param <N> the BoltzmannSelector requires a number type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.8 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
@@ -64,8 +64,20 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 		this(0.2);
 	}
 	
+	/**
+	 * Create a new BolzmanSelectro whti the given beta value.
+	 * 
+	 * @param beta the beta value of this BolzmanSelector
+	 * @throws IllegalArgumentException if the given beta value is smaller than
+	 *         zero.
+	 */
 	public BoltzmannSelector(final double beta) {
-		this._beta = beta;
+		if (beta < 0) {
+			throw new IllegalArgumentException(String.format(
+					"Beta value is smaller than zero: %s", beta
+				));
+		}
+		_beta = beta;
 	}
 
 	@Override

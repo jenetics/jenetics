@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.16 2009-02-24 19:33:24 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.17 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -126,32 +126,16 @@ public class BitChromosome extends Number<LargeInteger>
 	public Iterator<BitGene> iterator() {
 		return new Iterator<BitGene>() {
 			private int _pos = 0;
-			public boolean hasNext() {
+			@Override public boolean hasNext() {
 				return _pos < _length;
 			}
-			public BitGene next()  {
+			@Override public BitGene next()  {
 				return get(_pos++) ? BitGene.TRUE : BitGene.FALSE;
 			}
-			public void remove() {
+			@Override public void remove() {
 				throw new UnsupportedOperationException();
 			}
 		};
-	}
-	
-	/**
-	 * Flips the bit at the given position.
-	 * 
-	 * @param index The position of the gene to flip.
-	 * @throws IndexOutOfBoundsException if the index is out of range 
-	 * 		(index < 0 || index >= _length()).
-	 */
-	public BitChromosome flip(final int index) {
-		rangeCheck(index);
-		
-		final BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
-		System.arraycopy(_genes, 0, chromosome._genes, 0, chromosome._genes.length);
-		BitUtils.flip(chromosome._genes, index);
-		return chromosome;
 	}
 
 	/**
@@ -203,6 +187,7 @@ public class BitChromosome extends Number<LargeInteger>
      * @return the number of bytes written.
      * @throws IndexOutOfBoundsException 
      *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
+     * @throws NullPointerException it the give array is {@code null}.
      */
     public int toByteArray(final byte[] bytes) {
     	if (bytes.length < _genes.length) {
@@ -231,7 +216,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 * @return The corresponding BitSet of this BitChromosome.
 	 */
 	public BitSet toBitSet() {
-		BitSet set = new BitSet(length());
+		final BitSet set = new BitSet(length());
 		for (int i = 0, n = length(); i < n; ++i) {
 			set.set(i, getGene(i).getBit());
 		}
@@ -241,9 +226,14 @@ public class BitChromosome extends Number<LargeInteger>
 	/**
 	 * Create a new BitChromosome with the same _length. The chromosome is
 	 * randomized.
+	 * 
+	 * @throws NullPointerException if the given {@code genes} array is 
+	 *         {@code null}.
 	 */
 	@Override
 	public BitChromosome newInstance(final Array<BitGene> genes) {
+		Validator.notNull(genes, "Genes");
+		
 		final BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
 		
 		int ones = 0;
@@ -275,7 +265,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 * 		BitChromosome.
 	 */
 	public String toCanonicalString() {
-		StringBuilder out = new StringBuilder(length());
+		final StringBuilder out = new StringBuilder(length());
 		for (int i = 0; i < _length; ++i) {
 			out.append(BitUtils.getBit(_genes, i) ? '1' : '0');
 		}
@@ -448,6 +438,16 @@ public class BitChromosome extends Number<LargeInteger>
 		return chromosome;
 	}
 	
+	/**
+	 * Create a new {@code BitChromosome} from the given character sequence
+	 * containung '0' and '1'.
+	 * 
+	 * @param value the input string.
+	 * @return the new created {@code BitChromosome}.
+	 * @throws NullPointerException if the {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if the length of the character sequence
+	 *         is zero or contains other characters than '0' or '1'.
+	 */
 	public static BitChromosome valueOf(final CharSequence value) {
 		Validator.notNull(value, "Input");
 		if (value.length() == 0) {

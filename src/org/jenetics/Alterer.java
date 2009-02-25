@@ -48,7 +48,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.11 2009-02-24 22:08:23 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.12 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
 
@@ -64,23 +64,21 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	protected final Probability _probability;
 	
 	/**
-	 * Create a <code>Alterer</code> concatenating the given 
-	 * <code>Alterer</code>S.
+	 * Create a {@code Alterer} concatenating the given {@code Alterer}S. The
+	 * default probability is set to 0.5.
 	 * 
-	 * @param component the <code>Alterer</code>S this <code>Alterer</code>
-	 *        consists.
-	 * @throws NullPointerException if the <code>component</code> is <code>null</code>.     
+	 * @param component the {@code Alterer}S this {@code Alterer} consists.
+	 * @throws NullPointerException if the {@code component} is {@code null}.     
 	 */
 	public Alterer(final Alterer<G> component) {
-		this(Probability.ONE, component);
+		this(Probability.valueOf(0.5), component);
 	}
 	
 	/**
 	 * Constucts an alterer with a given recombination probability.
 	 * 
 	 * @param probability The recombination probability.
-	 * @throws NullPointerException if the <code>probability</code> is 
-	 * 		<code>null</code>.
+	 * @throws NullPointerException if the {@code probability} is {@code null}. 
 	 */
 	public Alterer(final Probability probability) {
 		notNull(probability, "Probability");
@@ -93,8 +91,8 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * 
 	 * @param probability The recombination probability.
 	 * @param component The composit Alterer.
-	 * @throws NullPointerException if the <code>probability</code> or the
-	 * 		<code>component</code> is <code>null</code>. 
+	 * @throws NullPointerException if the {@code probability} or the
+	 *         {@code component} is {@code null}. 
 	 */
 	public Alterer(final Probability probability, final Alterer<G> component) {
 		notNull(probability, "Probability");
@@ -108,8 +106,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * Appends a additional Alterer at the end of the chain of Alterers.
 	 * 
 	 * @param alterer The Alterer to append.
-	 * @throws NullPointerException if the <code>alterer</code> is 
-	 *         <code>null</code>.
+	 * @throws NullPointerException if the {@code component} is {@code null}. 
 	 */
 	public Alterer<G> append(final Alterer<G> alterer) {
 		notNull(alterer, "Alterer");
@@ -163,7 +160,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	/**
 	 * Return the component alterer.
 	 * 
-	 * @return The component alterer, or <code>null</code> if this alterer has no
+	 * @return The component alterer, or {@code null} if this alterer has no
 	 *         component alterer.
 	 */
 	public Alterer<G> getComponentAlterer() {
