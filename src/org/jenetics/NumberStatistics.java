@@ -25,9 +25,9 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistic.java,v 1.8 2009-02-25 22:29:42 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.1 2009-02-25 22:31:56 fwilhelm Exp $
  */
-public class NumberStatistic<G extends Gene<?, G>, R extends Number & Comparable<R>>
+public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
 {
 	private static final long serialVersionUID = -7468324436514041360L;
@@ -35,7 +35,7 @@ public class NumberStatistic<G extends Gene<?, G>, R extends Number & Comparable
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
 	
-	protected NumberStatistic(
+	protected NumberStatistics(
 		final Phenotype<G, R> best, final Phenotype<G, R> worst, 
 		final double fitnessMean, final double fitnessVariance,
 		final int samples, final double ageMean, final double ageVariance
@@ -46,7 +46,7 @@ public class NumberStatistic<G extends Gene<?, G>, R extends Number & Comparable
 		_fitnessVariance = fitnessVariance;
 	}
 	
-	protected NumberStatistic(
+	protected NumberStatistics(
 		final Statistics<G, R> other, 
 		final double fitnessMean, final double fitnessVariance
 	) {

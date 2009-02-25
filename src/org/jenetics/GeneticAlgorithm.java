@@ -67,7 +67,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.29 2009-02-25 22:29:43 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.30 2009-02-25 22:31:56 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -100,7 +100,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Statistics<G, C> _bestStatistic = null;
 	
 	private Statistics<G, C> _statistics = null;
-	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
+	private StatisticsCalculator<G, C> _calculator = new StatisticsCalculator<G, C>();
 	
 	//Some performance measure.
 	private final Timer _executionTimer = new Timer("Execution time");
@@ -627,7 +627,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param calculator the new statistic calculator.
 	 * @throws NullPointerException if the given {@code calculator} is {@code null}.
 	 */
-	public void setStatisticCalculator(final StatisticCalculator<G, C> calculator) {
+	public void setStatisticCalculator(final StatisticsCalculator<G, C> calculator) {
 		notNull(calculator, "Statistic calculator");
 		_calculator = calculator;
 	}
@@ -637,7 +637,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @return the current statistic calculator.
 	 */
-	public StatisticCalculator<G, C> getStatisticCalculator() {
+	public StatisticsCalculator<G, C> getStatisticCalculator() {
 		return _calculator;
 	}
 	

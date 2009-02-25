@@ -32,13 +32,13 @@ import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.12 2009-02-25 22:29:43 fwilhelm Exp $
+ * @version $Id: StatisticsCalculator.java,v 1.1 2009-02-25 22:31:56 fwilhelm Exp $
  */
-public class StatisticCalculator<G extends Gene<?, G>, C extends Comparable<C>> {
+public class StatisticsCalculator<G extends Gene<?, G>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
 	protected long _stopEvaluationTime = 0;
 	
-	public StatisticCalculator() {
+	public StatisticsCalculator() {
 	}
 	
 	public Statistics<G, C> evaluate(final List<? extends Phenotype<G, C>> population) {

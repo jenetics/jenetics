@@ -23,10 +23,11 @@
 package org.jenetics.examples;
 
 import org.jenetics.GeneticAlgorithm;
+import org.jenetics.Statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.8 2008-10-04 14:42:53 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.9 2009-02-25 22:29:43 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -40,12 +41,15 @@ public class GAUtils {
 			ga.evolve();
 			System.out.println(ga);
 		}
+		
+		final Statistics.Time times = ga.getTimeStatistics();
+		
 		System.out.println();
-		System.out.println("Select time:              " + ga.getSelectTime());
-		System.out.println("Alter time:               " + ga.getAlterTime());
-		System.out.println("Fitness calculation time: " + ga.getEvaluateTime());
+		System.out.println("Select time:              " + times.getSelectionTime());
+		System.out.println("Alter time:               " + times.getAlterTime());
+		System.out.println("Fitness calculation time: " + times.getEvaluationTime());
 		System.out.println("--------------------------");
-		System.out.println("Overall execution time:   " + ga.getExecutionTime());
+		System.out.println("Overall execution time:   " + times.getExecutionTime());
 		System.out.println();
 		System.out.println(ga.getBestStatistic());
 	}
