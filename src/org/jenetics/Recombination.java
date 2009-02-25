@@ -35,8 +35,15 @@ import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * An EGA combine elements of existing solutions in order to create a new solution, 
+ * with some of the properties of each parent. Recombination creates a new 
+ * chromosome by combining parts of two (or more) parent chromosomes. This 
+ * combination of chromosomes can be made by selecting one or more crossover 
+ * points, splitting these chromosomes on the selected points, and merge those 
+ * portions of different chromosomes to form new ones.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.9 2009-02-24 21:25:44 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.10 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 

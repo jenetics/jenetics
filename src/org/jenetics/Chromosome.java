@@ -37,7 +37,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.12 2009-02-24 19:33:24 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.13 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?, T>> 
 	extends Verifiable, Iterable<T>, Immutable, 
@@ -45,7 +45,8 @@ public interface Chromosome<T extends Gene<?, T>>
 {
 	
 	/**
-	 * Return the first gene of this chromosome.
+	 * Return the first gene of this chromosome. Each chromosome must containe
+	 * at leas one gene.
 	 * 
 	 * @return the first gene of this chromosome.
 	 */

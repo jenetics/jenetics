@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.9 2009-02-25 21:13:30 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -103,16 +103,6 @@ public class BitChromosomeTest {
             ++index;
         }
         assertEquals(c.length(), index);
-    }
-
-    @Test
-    public void testFlip() {
-        BitChromosome c = BitChromosome.valueOf(10);
-        
-        BitGene g1 = c.getGene(3);
-        c.flip(3);
-        BitGene g2 = c.getGene(3);
-        assertEquals(g1.getBit(), g2.getBit());
     }
 
     @Test
