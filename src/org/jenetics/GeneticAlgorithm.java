@@ -28,9 +28,6 @@ import static org.jenetics.util.Validator.notNull;
 
 import java.util.List;
 
-import javax.measure.Measurable;
-import javax.measure.quantity.Duration;
-
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
@@ -70,7 +67,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.28 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.29 2009-02-25 22:29:43 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -100,9 +97,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private int _generation = 0;
 	
 	private Phenotype<G, C> _bestPhenotype = null;
-	private Statistic<G, C> _bestStatistic = null;
+	private Statistics<G, C> _bestStatistic = null;
 	
-	private Statistic<G, C> _statistic = null;
+	private Statistics<G, C> _statistics = null;
 	private StatisticCalculator<G, C> _calculator = new StatisticCalculator<G, C>();
 	
 	//Some performance measure.
@@ -174,14 +171,18 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		}
 		
 		//Evaluate the fitness.
-		evaluate(_population);
+		_evaluateTimer.start();
+		evaluate(_population);		
+		_evaluateTimer.stop();
 		
 		//First valuation of the initial population.
-		_statistic = _calculator.evaluate(_population);
-		_bestPhenotype = _statistic.getBestPhenotype();
-		_bestStatistic = _statistic;
+		_statistics = _calculator.evaluate(_population);
+		_bestPhenotype = _statistics.getBestPhenotype();
+		_bestStatistic = _statistics;
 		
 		_executionTimer.stop();
+		
+		setTimes(_statistics);
 	}
 	
 	/**
@@ -226,13 +227,22 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_evaluateTimer.stop();
 		
 		//Evaluate the statistic
-		_statistic = _calculator.evaluate(_population);
-		if (_bestPhenotype.getFitness().compareTo(_statistic.getBestFitness()) < 0) {
-			_bestPhenotype = _statistic.getBestPhenotype();
-			_bestStatistic = _statistic;
+		_statistics = _calculator.evaluate(_population);
+		if (_bestPhenotype.getFitness().compareTo(_statistics.getBestFitness()) < 0) {
+			_bestPhenotype = _statistics.getBestPhenotype();
+			_bestStatistic = _statistics;
 		}
 		
 		_executionTimer.stop();
+		
+		setTimes(_statistics);
+	}
+	
+	private void setTimes(final Statistics<?, ?> statistic) {
+		statistic.getTimes().setExecutionTime(_executionTimer.getInterimTime());
+		statistic.getTimes().setSelectionTime(_selectTimer.getInterimTime());
+		statistic.getTimes().setAlterTime(_alterTimer.getInterimTime());
+		statistic.getTimes().setEvaluationTime(_evaluateTimer.getInterimTime());
 	}
 	
 	/**
@@ -431,12 +441,12 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the current {@link Population} {@link Statistic}.
+	 * Return the current {@link Population} {@link Statistics}.
 	 * 
-	 * @return the current {@link Population} {@link Statistic}.
+	 * @return the current {@link Population} {@link Statistics}.
 	 */
-	public Statistic<G, C> getStatistic() {
-		return _statistic;
+	public Statistics<G, C> getStatistics() {
+		return _statistics;
 	}
 
 	/**
@@ -607,7 +617,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		return new Population<G, C>(_population);
 	}
 	
-	public Statistic<G, C> getBestStatistic() {
+	public Statistics<G, C> getBestStatistic() {
 		return _bestStatistic;
 	}
 	
@@ -632,46 +642,24 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the overall execution time.
+	 * Return the current time statistics of the GA.
 	 * 
-	 * @return the execution time.
+	 * @return the current time statistics.
 	 */
-	public Measurable<Duration> getExecutionTime() {
-		return _executionTimer.getTime();
-	}
-	
-	/**
-	 * Return the time needed for selecting the survivors and offsprings.
-	 * 
-	 * @return the selection time.
-	 */
-	public Measurable<Duration> getSelectTime() {
-		return _selectTimer.getTime();
-	}
-	
-	/**
-	 * Return the time needed for altering the population.
-	 * 
-	 * @return the alter time.
-	 */
-	public Measurable<Duration> getAlterTime() {
-		return _alterTimer.getTime();
-	}
-	
-	/**
-	 * Return the time needed for evaluating the fitness function.
-	 * 
-	 * @return the fitness function evaluation time.
-	 */
-	public Measurable<Duration> getEvaluateTime() {
-		return _evaluateTimer.getTime();
+	public Statistics.Time getTimeStatistics() {
+		final Statistics.Time times = new Statistics.Time();
+		times.setAlterTime(_alterTimer.getTime());
+		times.setEvaluationTime(_evaluateTimer.getTime());
+		times.setExecutionTime(_executionTimer.getTime());
+		times.setSelectionTime(_selectTimer.getTime());
+		return times;
 	}
 	
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 		out.append(String.format(
-			"%4d: (best) %s", _generation, getStatistic().getBestPhenotype()
+			"%4d: (best) %s", _generation, getStatistics().getBestPhenotype()
 		));
 		return out.toString();
 	}

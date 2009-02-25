@@ -32,7 +32,7 @@ import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticCalculator.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: StatisticCalculator.java,v 1.12 2009-02-25 22:29:43 fwilhelm Exp $
  */
 public class StatisticCalculator<G extends Gene<?, G>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
@@ -41,10 +41,10 @@ public class StatisticCalculator<G extends Gene<?, G>, C extends Comparable<C>> 
 	public StatisticCalculator() {
 	}
 	
-	public Statistic<G, C> evaluate(final List<? extends Phenotype<G, C>> population) {
+	public Statistics<G, C> evaluate(final List<? extends Phenotype<G, C>> population) {
 		_startEvaluationTime = System.currentTimeMillis();
 		
-		Statistic<G, C> statistic = new Statistic<G, C>(null, null, 0, 0.0, 0.0);
+		Statistics<G, C> statistic = new Statistics<G, C>(null, null, 0, 0.0, 0.0);
 		final int size = population.size();
 		
 		Phenotype<G, C> best = null;
@@ -104,7 +104,7 @@ public class StatisticCalculator<G extends Gene<?, G>, C extends Comparable<C>> 
 			final double meanAge = (double)ageSum/(double)size;
 			final double varianceAge = (double)ageSquareSum/(double)size - meanAge*meanAge;
 			
-			statistic = new Statistic<G, C>(best, worst, size, meanAge, varianceAge);
+			statistic = new Statistics<G, C>(best, worst, size, meanAge, varianceAge);
 		}
 		
 		_stopEvaluationTime = System.currentTimeMillis();

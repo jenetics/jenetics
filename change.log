@@ -1,4 +1,5 @@
 Jenetics-0.4.0.0
+- Refactoring GA statistic classes.
 - Adding TruncationSelector.
 - Adding SwapMutation class, needed for TSP (and other combinatorial) problem.
 - Rename NumberGene.getMinValue() to NumberGene.getMaxValue() to 
