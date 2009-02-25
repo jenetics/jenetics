@@ -31,32 +31,82 @@ import javax.measure.unit.SI;
  * Timer for measure the performance of the GA.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.3 2009-02-17 21:29:14 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.4 2009-02-25 22:29:43 fwilhelm Exp $
  */
 public class Timer {
 	private final String _label;
 	private long _start = 0;
+	private long _stop = 0;
 	private long _sum = 0;
 	
-	public Timer(final String lable) {
-		_label = lable;
+	/**
+	 * Create a new time with the given label. The label is use in the 
+	 * {@link #toString()} method.
+	 * 
+	 * @param label the timer label.
+	 * @throws NullPointerException if the {@code label} is {@code null}.
+	 */
+	public Timer(final String label) {
+		Validator.notNull(label, "Time label");
+		_label = label;
 	}
 	
+	/**
+	 * Create a new Timer object with label 'Timer'.
+	 */
+	public Timer() {
+		this("Timer");
+	}
+	
+	/**
+	 * Start the timer.
+	 */
 	public void start() {
 		_start = System.currentTimeMillis();
 	}
 	
+	/**
+	 * Stop the timer.
+	 */
 	public void stop() {
-		_sum += System.currentTimeMillis() - _start;
+		_stop = System.currentTimeMillis();
+		_sum += _stop - _start;
 	}
 	
+	/**
+	 * Reset the timer.
+	 */
 	public void reset() {
 		_sum = 0;
 		_start = 0;
 	}
 	
+	/**
+	 * Return the overall time of this timer. The following code snippet would
+	 * return a measured time of 10 s (theoretically).
+	 * [code]
+	 *     final Timer timer = new Timer();
+	 *     for (int i = 0; i < 10) {
+	 *         timer.start();
+	 *         Thread.sleep(1000);
+	 *         timer.stop();
+	 *     }
+	 * [/code]
+	 * 
+	 * @return the measured time so far.
+	 */
 	public Measurable<Duration> getTime() {
 		return Measure.valueOf(_sum, SI.MILLI(SI.SECOND));
+	}
+	
+	/**
+	 * Return the time between two successive calls of {@link #start()} and
+	 * {@link #stop()}.
+	 * 
+	 * @return the interim time measured.
+	 */
+	public Measurable<Duration> getInterimTime() {
+		return Measure.valueOf(_stop - _start, SI.MILLI(SI.SECOND));
 	}
 	
 	@Override
@@ -65,3 +115,6 @@ public class Timer {
 	}
 	
 }
+
+
+

@@ -24,17 +24,17 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatisticCalculator.java,v 1.7 2009-02-25 22:29:43 fwilhelm Exp $
+ * @version $Id: NumberStatisticsCalculator.java,v 1.1 2009-02-25 22:31:56 fwilhelm Exp $
  */
-public class NumberStatisticCalculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
-	extends StatisticCalculator<G, R>
+public class NumberStatisticsCalculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
+	extends StatisticsCalculator<G, R>
 {
 
-	public NumberStatisticCalculator() {
+	public NumberStatisticsCalculator() {
 	}
 	
 	@Override
-	public NumberStatistic<G, R> evaluate(
+	public NumberStatistics<G, R> evaluate(
 		final List<? extends Phenotype<G, R>> population
 	) {
 		final Statistics<G, R> s = super.evaluate(population);
@@ -54,7 +54,7 @@ public class NumberStatisticCalculator<G extends Gene<?, G>, R extends Number & 
 		final double mean = fitnessSum/population.size();
 		final double variance = fitnessSquareSum/size - mean*mean;
 		
-		return new NumberStatistic<G, R>(s, mean, variance);
+		return new NumberStatistics<G, R>(s, mean, variance);
 	}
 	
 //	static double torben(double m[]){

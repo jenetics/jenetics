@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticTest.java,v 1.2 2008-08-26 22:29:35 fwilhelm Exp $
+ * @version $Id: StatisticTest.java,v 1.3 2009-02-25 22:29:43 fwilhelm Exp $
  */
 public class StatisticTest {
 
@@ -37,30 +37,30 @@ public class StatisticTest {
 		double b = a;
 		
 		assert a == b;
-		assert Statistic.equals(a, b, 0);
+		assert Statistics.equals(a, b, 0);
 		
 		b = Math.nextUp(a);
 		assert a != b;
-		assert Statistic.equals(a, b, 1);
-		assert Statistic.equals(a, b, 2);
-		assert !Statistic.equals(a, b, 0);
+		assert Statistics.equals(a, b, 1);
+		assert Statistics.equals(a, b, 2);
+		assert !Statistics.equals(a, b, 0);
 		
 		b = Math.nextUp(a);
 		b = Math.nextUp(b);
 		assert a != b;
-		assert !Statistic.equals(a, b, 0);
-		assert !Statistic.equals(a, b, 1);
-		assert Statistic.equals(a, b, 2);
+		assert !Statistics.equals(a, b, 0);
+		assert !Statistics.equals(a, b, 1);
+		assert Statistics.equals(a, b, 2);
 		
 		a = Math.nextAfter(0.0, Double.POSITIVE_INFINITY);
 		b = Math.nextAfter(0.0, Double.NEGATIVE_INFINITY);
 		b = Math.nextAfter(b, Double.NEGATIVE_INFINITY);
 		b = Math.nextAfter(b, Double.NEGATIVE_INFINITY);
 		assert a != b;
-		assert !Statistic.equals(a, b, 0);
-		assert !Statistic.equals(a, b, 1);
-		assert !Statistic.equals(a, b, 3);
-		assert Statistic.equals(a, b, 4);
+		assert !Statistics.equals(a, b, 0);
+		assert !Statistics.equals(a, b, 1);
+		assert !Statistics.equals(a, b, 3);
+		assert Statistics.equals(a, b, 4);
 		
 		a = 0.0;
 		for (int i = 0; i < 10; ++i) {
