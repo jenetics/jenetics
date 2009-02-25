@@ -41,7 +41,7 @@ import org.jenetics.util.Validator;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.1 2009-02-25 22:29:43 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.2 2009-02-25 22:37:38 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -329,6 +329,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			Validator.notNull(time, "Evaluation time");
 			_evaluationTime.set(time);
 		}
+		
 		/**
 		 * Return the time needed for evaluating the fitness function.
 		 * 
