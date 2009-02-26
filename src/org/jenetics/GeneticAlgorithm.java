@@ -67,7 +67,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.30 2009-02-25 22:31:56 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.31 2009-02-26 22:36:37 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -106,6 +106,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final Timer _executionTimer = new Timer("Execution time");
 	private final Timer _selectTimer = new Timer("Select time");
 	private final Timer _alterTimer = new Timer("Alter time");
+	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 	
 	/**
@@ -176,9 +177,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_evaluateTimer.stop();
 		
 		//First valuation of the initial population.
+		_statisticTimer.start();
 		_statistics = _calculator.evaluate(_population);
 		_bestPhenotype = _statistics.getBestPhenotype();
 		_bestStatistic = _statistics;
+		_statisticTimer.stop();
 		
 		_executionTimer.stop();
 		
@@ -227,11 +230,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_evaluateTimer.stop();
 		
 		//Evaluate the statistic
+		_statisticTimer.start();
 		_statistics = _calculator.evaluate(_population);
 		if (_bestPhenotype.getFitness().compareTo(_statistics.getBestFitness()) < 0) {
 			_bestPhenotype = _statistics.getBestPhenotype();
 			_bestStatistic = _statistics;
 		}
+		_statisticTimer.stop();
 		
 		_executionTimer.stop();
 		
@@ -243,6 +248,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		statistic.getTimes().setSelectionTime(_selectTimer.getInterimTime());
 		statistic.getTimes().setAlterTime(_alterTimer.getInterimTime());
 		statistic.getTimes().setEvaluationTime(_evaluateTimer.getInterimTime());
+		statistic.getTimes().setStatisticTime(_statisticTimer.getInterimTime());
 	}
 	
 	/**
@@ -652,6 +658,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		times.setEvaluationTime(_evaluateTimer.getTime());
 		times.setExecutionTime(_executionTimer.getTime());
 		times.setSelectionTime(_selectTimer.getTime());
+		times.setStatisticTime(_statisticTimer.getTime());
 		return times;
 	}
 	
