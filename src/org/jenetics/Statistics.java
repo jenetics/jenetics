@@ -41,7 +41,7 @@ import org.jenetics.util.Validator;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.2 2009-02-25 22:37:38 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.3 2009-02-26 22:36:38 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -241,14 +241,24 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	
 	public static final class Time {
-		private final Final<Measurable<Duration>> _executionTime = 
-			new Final<Measurable<Duration>>(Measure.valueOf(0, SI.MILLI(SI.SECOND)));
-		private final Final<Measurable<Duration>> _selectionTime = 
-			new Final<Measurable<Duration>>(Measure.valueOf(0, SI.MILLI(SI.SECOND)));
-		private final Final<Measurable<Duration>> _alterTime =
-			new Final<Measurable<Duration>>(Measure.valueOf(0, SI.MILLI(SI.SECOND)));
-		private final Final<Measurable<Duration>> _evaluationTime = 
-			new Final<Measurable<Duration>>(Measure.valueOf(0, SI.MILLI(SI.SECOND)));
+		private static final Measurable<Duration> ZERO = Measure.valueOf(
+				0, SI.MILLI(SI.SECOND)
+			);
+		
+		private final Final<Measurable<Duration>> 
+		_executionTime = new Final<Measurable<Duration>>(ZERO);
+		
+		private final Final<Measurable<Duration>> 
+		_selectionTime = new Final<Measurable<Duration>>(ZERO);
+		
+		private final Final<Measurable<Duration>> 
+		_alterTime = new Final<Measurable<Duration>>(ZERO);
+		
+		private final Final<Measurable<Duration>> 
+		_evaluationTime = new Final<Measurable<Duration>>(ZERO);
+		
+		private final Final<Measurable<Duration>> 
+		_statisticTime = new Final<Measurable<Duration>>(ZERO);
 		
 		
 		/**
@@ -338,10 +348,31 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		public Measurable<Duration> getEvaluationTime() {
 			return _evaluationTime.get();
 		}
+		
+		/**
+		 * Set the time needed for evaluating the statistic.
+		 * 
+		 * @param time the statistic evaluation time.
+		 * @throws NullPointerException if the given {@code time} is {@code null}.
+		 * @throws IllegalStateException if you try to set the {@code time}
+		 *         twice.
+		 */
+		public void setStatisticTime(final Measurable<Duration> time) {
+			Validator.notNull(time, "Statistic time");
+			_statisticTime.set(time);
+		}
+		
+		/**
+		 * Return the time needed for evaluating the statisitc function.
+		 * 
+		 * @return the statisitc evaluation time.
+		 */
+		public Measurable<Duration> getStatisticTime() {
+			return _statisticTime.get();
+		}
 	}
 	
 	private static final class Final<T> {
-
 		private T _value = null;
 		private boolean _initialized = false;
 
