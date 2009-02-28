@@ -27,7 +27,7 @@ import org.jenetics.Statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.10 2009-02-26 22:36:38 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.11 2009-02-28 14:53:10 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -48,7 +48,7 @@ public class GAUtils {
 		System.out.println("               Select time: " + times.getSelectionTime());
 		System.out.println("                Alter time: " + times.getAlterTime());
 		System.out.println("  Fitness calculation time: " + times.getEvaluationTime());
-		System.out.println("Statistic calculation time: " + times.getStatisticTime());
+		System.out.println("Statistic calculation time: " + times.getStatisticsTime());
 		System.out.println("----------------------------");
 		System.out.println("    Overall execution time: " + times.getExecutionTime());
 		System.out.println();
