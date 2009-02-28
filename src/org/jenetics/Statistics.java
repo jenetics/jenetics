@@ -36,12 +36,13 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Validator;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.3 2009-02-26 22:36:38 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.4 2009-02-28 14:53:09 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -54,12 +55,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	protected final double _ageMean;
 	protected final double _ageVariance;
 		
-	private final Time _times = new Time();
+	private final Final<Time> _times = new Final<Time>(new Time());
 
 	/**
-	 * Evaluates statistic valus from a givem population
+	 * Evaluates statistic valus from a givem population. The given pheontypes
+	 * may be {@code null}
 	 * 
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */ 
 	protected Statistics(
 		final Phenotype<G, C> best, final Phenotype<G, C> worst,
@@ -86,7 +87,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @return the time statistic object.
 	 */
 	public Time getTimes() {
-		return _times;
+		return _times.get();
 	}
 	
 	/**
@@ -150,8 +151,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		int hash = 17;
 		hash += (int)doubleToLongBits(_ageMean)*37;
 		hash += (int)doubleToLongBits(_ageVariance)*37;
-		hash += (_best != null ? _best.hashCode() : 1)*37; 
-		hash += (_worst != null ? _worst.hashCode() : 1)*37; 
+		hash += _best.hashCode()*37; 
+		hash += _worst.hashCode()*37; 
 		return hash;
 	}
 	
@@ -167,10 +168,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		final Statistics<?, ?> statistic = (Statistics<?, ?>)obj;
 		
 		return 
-		doubleToLongBits(statistic._ageMean) == doubleToLongBits(_ageMean) &&
-		doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&
-		_best != null ? _best.equals(statistic._best) : statistic._best == null &&
-		_worst != null ? _worst.equals(statistic._worst) : statistic._worst == null;
+			doubleToLongBits(statistic._ageMean) == doubleToLongBits(_ageMean) &&
+			doubleToLongBits(statistic._ageVariance) == doubleToLongBits(_ageVariance) &&
+			 _best.equals(statistic._best) &&
+			_worst.equals(statistic._worst);
 	}
 	
 	public boolean equals(final Statistics<G, C> statistic, final int ulps) {
@@ -179,10 +180,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 		return 
-		equals(statistic._ageMean, _ageMean, ulps) &&
-		equals(statistic._ageVariance, _ageVariance, ulps) &&
-		_best != null ? _best.equals(statistic._best) : statistic._best == null &&
-		_worst != null ? _worst.equals(statistic._worst) : statistic._worst == null;
+			equals(statistic._ageMean, _ageMean, ulps) &&
+			equals(statistic._ageVariance, _ageVariance, ulps) &&
+			_best.equals(statistic._best) &&
+			_worst.equals(statistic._worst);
 	}
 	
 	static boolean equals(final double a, final double b, final int ulpDistance) {
@@ -209,28 +210,36 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	@SuppressWarnings("unchecked")
-	static final XMLFormat<Statistics> XML = new XMLFormat<Statistics>(Statistics.class) {
+	protected static final XMLFormat<Statistics> XML = new XMLFormat<Statistics>(Statistics.class) {
 		@Override
 		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
-			final double meanAge = xml.getAttribute("meanage", 1.0);
-			final double varianceAge = xml.getAttribute("varianceage", 1.0);
+			final Float64 meanAge = xml.get("meanage");
+			final Float64 varianceAge = xml.get("varianceage");
 			final int samples = xml.getAttribute("samples", 1);
-			final Phenotype best = xml.getNext();
-			final Phenotype worst = xml.getNext();
-			return new Statistics(best, worst, samples, meanAge, varianceAge);
+			final Phenotype best = xml.get("best-phenotype");
+			final Phenotype worst = xml.get("worst-phenotype");
+			
+			final Statistics statistics = new Statistics(
+					best, worst, samples, 
+					meanAge.doubleValue(), varianceAge.doubleValue()
+				);
+			statistics._times.set(xml.get("statistics-time"));
+			
+			return statistics;
 
 		}
 		@Override
 		public void write(final Statistics s, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("meanage", s._ageMean);
-			xml.setAttribute("varianceage", s._ageVariance);
 			xml.setAttribute("samples", s._samples);
-			xml.add(s._best, "best");
-			xml.add(s._worst, "worst");
+			xml.add(Float64.valueOf(s._ageMean), "age-mean");
+			xml.add(Float64.valueOf(s._ageVariance), "age-variance");
+			xml.add(s._best, "best-phenotype");
+			xml.add(s._worst, "worst-phenotype");
+			xml.add(s._times, "statisitcs-time");
 		}
 		@Override
 		public void read(final InputElement xml, final Statistics p) 
@@ -240,7 +249,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	};
 	
 	
-	public static final class Time {
+	public static final class Time implements XMLSerializable {
+		private static final long serialVersionUID = -4947801435156551911L;
+
 		private static final Measurable<Duration> ZERO = Measure.valueOf(
 				0, SI.MILLI(SI.SECOND)
 			);
@@ -367,9 +378,74 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		 * 
 		 * @return the statisitc evaluation time.
 		 */
-		public Measurable<Duration> getStatisticTime() {
+		public Measurable<Duration> getStatisticsTime() {
 			return _statisticTime.get();
 		}
+		
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			hash += getAlterTime().hashCode()*37;
+			hash += getEvaluationTime().hashCode()*37;
+			hash += getExecutionTime().hashCode()*37;
+			hash += getSelectionTime().hashCode()*37;
+			hash += getStatisticsTime().hashCode()*37;
+			return hash;
+		}
+		
+		@Override
+		public boolean equals(final Object object) {
+			if (object == this) {
+				return true;
+			}
+			if (object == null || object.getClass() != getClass()) {
+				return false;
+			}
+			
+			final Statistics.Time time = (Statistics.Time)object;
+			return 
+				getAlterTime().equals(time.getAlterTime()) &&
+				getEvaluationTime().equals(time.getEvaluationTime()) &&
+				getExecutionTime().equals(time.getExecutionTime()) &&
+				getSelectionTime().equals(time.getSelectionTime()) &&
+				getStatisticsTime().equals(time.getStatisticsTime());
+		}
+		
+		@SuppressWarnings("unchecked")
+		protected static final XMLFormat<Statistics.Time> XML = 
+			new XMLFormat<Statistics.Time>(Statistics.Time.class) 
+		{
+			@Override
+			public Statistics.Time newInstance(final Class<Statistics.Time> cls, final InputElement xml) 
+				throws XMLStreamException 
+			{
+				final Statistics.Time time = new Statistics.Time();
+
+				time.setAlterTime((Measurable<Duration>)xml.get("alter-time"));
+				time.setEvaluationTime((Measurable<Duration>)xml.get("evaluation-time"));
+				time.setExecutionTime((Measurable<Duration>)xml.get("execution-time"));
+				time.setSelectionTime((Measurable<Duration>)xml.get("selection-time"));
+				time.setStatisticTime((Measurable<Duration>)xml.get("statistics-time"));
+
+				return time;
+
+			}
+			@Override
+			public void write(final Statistics.Time s, final OutputElement xml) 
+				throws XMLStreamException 
+			{
+				xml.add(s.getAlterTime(), "alter-time");
+				xml.add(s.getEvaluationTime(), "evaluation-time");
+				xml.add(s.getExecutionTime(), "execution-time");
+				xml.add(s.getSelectionTime(), "selection-time");
+				xml.add(s.getStatisticsTime(), "statistics-time");
+			}
+			@Override
+			public void read(final InputElement xml, final Statistics.Time p) 
+				throws XMLStreamException 
+			{
+			}
+		};
 	}
 	
 	private static final class Final<T> {
