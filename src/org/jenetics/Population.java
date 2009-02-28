@@ -42,7 +42,7 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.12 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements List<Phenotype<G, C>>, RandomAccess, XMLSerializable
@@ -278,12 +278,17 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	@SuppressWarnings("unchecked")
 	static final XMLFormat<Population> 
-	XML = new XMLFormat<Population>(Population.class) {
+	XML = new XMLFormat<Population>(Population.class) 
+	{
+		private static final String SIZE = "size";
+		
 		@Override
-		public Population newInstance(final Class<Population> cls, final InputElement xml) 
+		public Population newInstance(
+			final Class<Population> cls, final InputElement xml
+		) 
 			throws XMLStreamException 
 		{
-			final int size = xml.getAttribute("size", 10);
+			final int size = xml.getAttribute(SIZE, 10);
 			final Population p = new Population(size);
 			for (int i = 0; i < size; ++i) {
 				final Phenotype pt = xml.getNext();
@@ -295,7 +300,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 		public void write(final Population p, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("size", p.size());
+			xml.setAttribute(SIZE, p.size());
 			for (Object phenotype : p) {
 				xml.add(phenotype);
 			}

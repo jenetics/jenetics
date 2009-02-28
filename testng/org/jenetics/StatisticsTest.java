@@ -22,14 +22,16 @@
  */
 package org.jenetics;
 
+import javolution.xml.stream.XMLStreamException;
+
 import org.jenetics.util.BitUtils;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticTest.java,v 1.3 2009-02-25 22:29:43 fwilhelm Exp $
+ * @version $Id: StatisticsTest.java,v 1.1 2009-02-28 23:08:45 fwilhelm Exp $
  */
-public class StatisticTest {
+public class StatisticsTest {
 
 	@Test
 	public void equals() {
@@ -76,5 +78,16 @@ public class StatisticTest {
 			);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void serialize() throws XMLStreamException {
+		SerializeUtils.testSerialization(new Statistics(null, null, 0, 0, 0));
+	}
 
 }
+
+
+
+
+

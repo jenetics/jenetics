@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.8 2009-02-24 18:53:02 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.9 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64, DoubleGene> 
 	implements Mean<DoubleGene>, XMLSerializable 
@@ -160,13 +160,20 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 		return valueOf(Float64.valueOf(min), Float64.valueOf(max));
 	}
 	
-	static final XMLFormat<DoubleGene> XML = new XMLFormat<DoubleGene>(DoubleGene.class) {
+	static final XMLFormat<DoubleGene> 
+	XML = new XMLFormat<DoubleGene>(DoubleGene.class) 
+	{
+		private static final String MIN = "min";
+		private static final String MAX = "max";
+		
 		@Override
-		public DoubleGene newInstance(final Class<DoubleGene> cls, final InputElement element)
+		public DoubleGene newInstance(
+			final Class<DoubleGene> cls, final InputElement element
+		)
 			throws XMLStreamException
 		{
-			final double min = element.getAttribute("min", 0.0);
-			final double max = element.getAttribute("max", 1.0);
+			final double min = element.getAttribute(MIN, 0.0);
+			final double max = element.getAttribute(MAX, 1.0);
 			final double value = element.<Double>getNext();
 			return DoubleGene.valueOf(value, min, max);
 		}
@@ -174,8 +181,8 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 		public void write(final DoubleGene gene, final OutputElement element) 
 			throws XMLStreamException 
 		{
-			element.setAttribute("min", gene.getMin().doubleValue());
-			element.setAttribute("max", gene.getMax().doubleValue());
+			element.setAttribute(MIN, gene.getMin().doubleValue());
+			element.setAttribute(MAX, gene.getMax().doubleValue());
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override

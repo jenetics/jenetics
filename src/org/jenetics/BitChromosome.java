@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.17 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.18 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -478,13 +478,19 @@ public class BitChromosome extends Number<LargeInteger>
 	
 	
 	static final XMLFormat<BitChromosome> 
-	XML = new XMLFormat<BitChromosome>(BitChromosome.class) {
+	XML = new XMLFormat<BitChromosome>(BitChromosome.class) 
+	{
+		private static final String LENGTH = "length";
+		private static final String PROBABILITY = "probability";
+		
 		@Override
-		public BitChromosome newInstance(final Class<BitChromosome> cls, final InputElement xml) 
+		public BitChromosome newInstance(
+			final Class<BitChromosome> cls, final InputElement xml
+		) 
 			throws XMLStreamException 
 		{
-			final int length = xml.getAttribute("length", 1);
-			final double probability = xml.getAttribute("probability", 0.5);
+			final int length = xml.getAttribute(LENGTH, 1);
+			final double probability = xml.getAttribute(PROBABILITY, 0.5);
 			final byte[] data = BitUtils.toByteArray(xml.getText().toString());
 			final BitChromosome chromosome = BitChromosome.valueOf(data);
 			chromosome._p = Probability.valueOf(probability);
@@ -495,8 +501,8 @@ public class BitChromosome extends Number<LargeInteger>
 		public void write(final BitChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", chromosome._length);
-			xml.setAttribute("probability", chromosome._p.doubleValue());
+			xml.setAttribute(LENGTH, chromosome._length);
+			xml.setAttribute(PROBABILITY, chromosome._p.doubleValue());
 			xml.addText(BitUtils.toString(chromosome.toByteArray()));
 		}
 		@Override

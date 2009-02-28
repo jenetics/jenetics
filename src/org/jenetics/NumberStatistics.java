@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.2 2009-02-28 14:53:09 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.3 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -105,8 +105,8 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected static final XMLFormat<NumberStatistics> XML = 
-		new XMLFormat<NumberStatistics>(NumberStatistics.class) 
+	static final XMLFormat<NumberStatistics> 
+	XML = new XMLFormat<NumberStatistics>(NumberStatistics.class) 
 	{
 		@Override
 		public NumberStatistics newInstance(final Class<NumberStatistics> cls, final InputElement xml) 

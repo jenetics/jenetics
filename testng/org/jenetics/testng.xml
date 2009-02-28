@@ -85,11 +85,16 @@
 			<class name="org.jenetics.ProbabilitySelectorTest" />
 		</classes>
 	</test>	
-	<test name="org.jenetics.Statistic">
+	<test name="org.jenetics.Statistics">
 		<classes>
-			<class name="org.jenetics.StatisticTest" />
+			<class name="org.jenetics.StatisticsTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.NumberStatistics">
+		<classes>
+			<class name="org.jenetics.NumberStatisticsTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArrayTest" />

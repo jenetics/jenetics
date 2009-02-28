@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.12 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.13 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
@@ -68,6 +68,16 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		super(genes);
 	}
 
+	@Override
+	public char charAt(final int index) {
+		return getGene(index).getAllele();
+	}
+
+	@Override
+	public CharacterChromosome subSequence(final int start, final int end) {
+		return new CharacterChromosome(_genes.subArray(start, end).copy());
+	}
+	
 	/**
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 */
@@ -115,14 +125,18 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		return super.equals(obj); 
 	}
 	
-	
 	static final XMLFormat<CharacterChromosome> 
-	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class) {
+	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class) 
+	{
+		private static final String LENGTH = "length";
+		
 		@Override
-		public CharacterChromosome newInstance(final Class<CharacterChromosome> cls, final InputElement xml) 
+		public CharacterChromosome newInstance(
+			final Class<CharacterChromosome> cls, final InputElement xml
+		) 
 			throws XMLStreamException 
 		{
-			final int length = xml.getAttribute("length", 0);
+			final int length = xml.getAttribute(LENGTH, 0);
 			final CharacterChromosome chromosome = new CharacterChromosome(length);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
@@ -134,7 +148,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		public void write(final CharacterChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", chromosome.length());
+			xml.setAttribute(LENGTH, chromosome.length());
 			final StringBuilder out = new StringBuilder(chromosome.length());
 			for (CharacterGene gene : chromosome) {
 				out.append(gene.getAllele().charValue());
@@ -146,16 +160,6 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		}
 		
 	};
-
-	@Override
-	public char charAt(final int index) {
-		return getGene(index).getAllele();
-	}
-
-	@Override
-	public CharacterChromosome subSequence(final int start, final int end) {
-		return new CharacterChromosome(_genes.subArray(start, end).copy());
-	}
 
 }
 
