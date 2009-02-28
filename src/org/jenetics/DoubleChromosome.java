@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.11 2009-02-24 19:33:24 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.12 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -174,13 +174,17 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	static final XMLFormat<DoubleChromosome> 
 	XML = new XMLFormat<DoubleChromosome>(DoubleChromosome.class) 
 	{
+		private static final String LENGTH = "length";
+		private static final String MIN = "min";
+		private static final String MAX = "max";
+		
 		@Override
 		public DoubleChromosome newInstance(
 			final Class<DoubleChromosome> cls, final InputElement xml
 		) throws XMLStreamException {
-			final int length = xml.getAttribute("length", 0);
-			final double min = xml.getAttribute("min", 0.0);
-			final double max = xml.getAttribute("max", 1.0);
+			final int length = xml.getAttribute(LENGTH, 0);
+			final double min = xml.getAttribute(MIN, 0.0);
+			final double max = xml.getAttribute(MAX, 1.0);
 			
 			final Array<DoubleGene> genes = Array.newInstance(length);
 			for (int i = 0; i < length; ++i) {
@@ -198,9 +202,9 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		public void write(final DoubleChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", chromosome.length());
-			xml.setAttribute("min", chromosome._min.doubleValue());
-			xml.setAttribute("max", chromosome._max.doubleValue());
+			xml.setAttribute(LENGTH, chromosome.length());
+			xml.setAttribute(MIN, chromosome._min.doubleValue());
+			xml.setAttribute(MAX, chromosome._max.doubleValue());
 			for (DoubleGene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}

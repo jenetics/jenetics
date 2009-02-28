@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.11 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -284,26 +284,33 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 
 	@SuppressWarnings("unchecked")
 	static final XMLFormat<Phenotype> 
-	XML = new XMLFormat<Phenotype>(Phenotype.class) {
+	XML = new XMLFormat<Phenotype>(Phenotype.class) 
+	{
+		private static final String GENERATION = "generation";
+		private static final String FITNESS = "fitness";
+		private static final String RAW_FITNESS = "raw-fitness";
+		
 		@Override
-		public Phenotype newInstance(final Class<Phenotype> cls, final InputElement xml) 
+		public Phenotype newInstance(
+			final Class<Phenotype> cls, final InputElement xml
+		) 
 			throws XMLStreamException 
 		{
 			final Phenotype pt = (Phenotype)FACTORY.object();
-			pt._generation = xml.getAttribute("generation", 0);
+			pt._generation = xml.getAttribute(GENERATION, 0);
 			pt._genotype = xml.getNext();
-			pt._fitness = xml.get("fitness");
-			pt._rawFitness = xml.get("raw-fitness");
+			pt._fitness = xml.get(FITNESS);
+			pt._rawFitness = xml.get(RAW_FITNESS);
 			return pt;
 		}
 		@Override 
 		public void write(final Phenotype pt, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("generation", pt._generation);
+			xml.setAttribute(GENERATION, pt._generation);
 			xml.add(pt._genotype);
-			xml.add(pt.getFitness(), "fitness");
-			xml.add(pt.getRawFitness(), "raw-fitness");
+			xml.add(pt.getFitness(), FITNESS);
+			xml.add(pt.getRawFitness(), RAW_FITNESS);
 		}
 		@Override
 		public void read(final InputElement xml, final Phenotype gt) {	

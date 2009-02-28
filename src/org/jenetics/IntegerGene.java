@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.8 2009-02-24 21:25:44 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.9 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64, IntegerGene> 
 	implements Mean<IntegerGene>, XMLSerializable 
@@ -158,13 +158,20 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
 	
-	static final XMLFormat<IntegerGene> XML = new XMLFormat<IntegerGene>(IntegerGene.class) {
+	static final XMLFormat<IntegerGene> 
+	XML = new XMLFormat<IntegerGene>(IntegerGene.class) 
+	{
+		private static final String MIN = "min";
+		private static final String MAX = "max";
+		
 		@Override
-		public IntegerGene newInstance(final Class<IntegerGene> cls, final InputElement element)
+		public IntegerGene newInstance(
+			final Class<IntegerGene> cls, final InputElement element
+		)
 			throws XMLStreamException
 		{
-			final long min = element.getAttribute("min", 0);
-			final long max = element.getAttribute("max", 100);
+			final long min = element.getAttribute(MIN, 0);
+			final long max = element.getAttribute(MAX, 100);
 			final long value = element.<Long>getNext();
 			return IntegerGene.valueOf(value, min, max);
 		}
@@ -172,8 +179,8 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 		public void write(final IntegerGene gene, final OutputElement element) 
 			throws XMLStreamException 
 		{
-			element.setAttribute("min", gene.getMin().longValue());
-			element.setAttribute("max", gene.getMax().longValue());
+			element.setAttribute(MIN, gene.getMin().longValue());
+			element.setAttribute(MAX, gene.getMax().longValue());
 			element.add(gene.getAllele().longValue());
 		}
 		@Override

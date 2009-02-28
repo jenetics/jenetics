@@ -42,7 +42,7 @@ import org.jenetics.util.Verifiable;
  * This class is the encoded problem solution with one to many Chromosomes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.15 2009-02-23 23:01:47 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.16 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?, T>> 
 	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
@@ -309,13 +309,18 @@ public class Genotype<T extends Gene<?, T>>
 	}
 	
 	@SuppressWarnings("unchecked")
-	static final XMLFormat<Genotype> 
-	XML = new XMLFormat<Genotype>(Genotype.class) {
+	protected static final XMLFormat<Genotype> 
+	XML = new XMLFormat<Genotype>(Genotype.class) 
+	{
+		private static final String LENGTH = "length";
+		
 		@Override
-		public Genotype newInstance(final Class<Genotype> cls, final InputElement xml) 
+		public Genotype newInstance(
+			final Class<Genotype> cls, final InputElement xml
+		) 
 			throws XMLStreamException 
 		{
-			final int length = xml.getAttribute("length", 0);
+			final int length = xml.getAttribute(LENGTH, 0);
 			final Genotype genotype = new Genotype(length);
 			for (int i = 0; i < length; ++i) {
 				final Chromosome<?> c = xml.getNext();
@@ -327,7 +332,7 @@ public class Genotype<T extends Gene<?, T>>
 		public void write(final Genotype gt, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", gt.length());
+			xml.setAttribute(LENGTH, gt.length());
 			for (int i = 0; i < gt.length(); ++i) {
 				xml.add(gt._chromosomes.get(i));
 			}

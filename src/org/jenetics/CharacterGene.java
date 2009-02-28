@@ -43,7 +43,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.7 2009-02-28 23:08:44 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
@@ -204,19 +204,25 @@ public class CharacterGene
 		return g;
 	}
 	
-	static final XMLFormat<CharacterGene> XML = new XMLFormat<CharacterGene>(CharacterGene.class) {
+	static final XMLFormat<CharacterGene> 
+	XML = new XMLFormat<CharacterGene>(CharacterGene.class) 
+	{
+		private static final String VALUE = "value";
+		
 		@Override
-		public CharacterGene newInstance(final Class<CharacterGene> cls, final InputElement xml) 
+		public CharacterGene newInstance(
+			final Class<CharacterGene> cls, final InputElement xml
+		) 
 			throws XMLStreamException 
 		{
-			final Character character = xml.getAttribute("value", 'a');
+			final Character character = xml.getAttribute(VALUE, 'a');
 			return CharacterGene.valueOf(character);
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("value", gene._character.charValue());
+			xml.setAttribute(VALUE, gene._character.charValue());
 		}
 		@Override
 		public void read(final InputElement element, final CharacterGene gene) {
