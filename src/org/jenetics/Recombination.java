@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.10 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.11 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -95,17 +95,20 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 		final int[] second = subset(population.size(), subsetSize, random);
 		shuffle(second, random);
 		
-		final List<Runnable> tasks = new ArrayList<Runnable>(subsetSize);
-		for (int i = 0; i < subsetSize; ++i) {
-			final int index = i;
-			tasks.add(new Runnable() {
-				@Override public void run() {
+		if (Runtime.getRuntime().availableProcessors() > 1) {
+			final List<Runnable> tasks = new ArrayList<Runnable>(subsetSize);
+			for (int i = 0; i < subsetSize; ++i) {
+				final int index = i;
+				tasks.add(new Runnable() { @Override public void run() {
 					recombinate(population, first[index], second[index], generation);
-				}
-			});
+				}});
+			}
+			evaluate(tasks);
+		} else {
+			for (int i = 0; i < subsetSize; ++i) {
+				recombinate(population, first[i], second[i], generation);
+			}
 		}
-		
-		evaluate(tasks);
 	}
 	
 	/**

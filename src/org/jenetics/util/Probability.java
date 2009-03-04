@@ -34,7 +34,7 @@ import org.jscience.mathematics.structure.Structure;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Probability.java,v 1.1 2008-08-25 19:36:07 fwilhelm Exp $
+ * @version $Id: Probability.java,v 1.2 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public final class Probability extends Number
 	implements Comparable<Probability>, XMLSerializable, 
@@ -56,6 +56,11 @@ public final class Probability extends Number
 		_probability = p;
 	}
 
+	@Override
+	public Probability copy() {
+		return valueOf(_probability);
+	}
+	
 	@Override
 	public double doubleValue() {
 		return _probability;
@@ -127,13 +132,13 @@ public final class Probability extends Number
 	}
 
 	@Override
+	public String toString() {
+		return toText().toString();
+	}
+	
+	@Override
 	public Text toText() {
 		return Text.valueOf(_probability);
-	}
-
-	@Override
-	public Probability copy() {
-		return valueOf(_probability);
 	}
 	
 	private static final ObjectFactory<Probability> 

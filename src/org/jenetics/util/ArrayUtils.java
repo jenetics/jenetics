@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.26 2009-02-24 21:25:45 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.27 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -689,6 +689,7 @@ public final class ArrayUtils {
 		return partition;
 	}	
 
+	
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
 	 * 
@@ -838,11 +839,11 @@ public final class ArrayUtils {
 			int i = l + 1;
 			while (i <= ir && ix >= sub[i - 1]) {
 				ix = ix + 1;
-				sub[i-2] = sub[i-1];
+				sub[ i- 2] = sub[i - 1];
 				i = i + 1;
 			}
 			
-			sub[i-2] = ix;
+			sub[i - 2] = ix;
 			m = m - 1;
 		}
 	}

@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.11 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.12 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -72,7 +72,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	}
 	
 	/**
-	 * Return a Probability array, which corresponds to the given 
+	 * Return an Probability array, which corresponds to the given 
 	 * Population. The probability array and the population must have the same
 	 * size. The population is not sorted. If a subclass needs a sorted 
 	 * population, the subclass is responsible to sort the population.
