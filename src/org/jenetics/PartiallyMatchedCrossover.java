@@ -73,7 +73,7 @@ import org.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.13 2009-03-04 21:41:46 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
@@ -134,17 +134,17 @@ public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G
 	) {
 		int index = -1;
 		for (int i = 0; index == -1 && i < idx1; ++i) {
-			if (genes.get(i).equals(gene)) {
+			if (genes.get(i) == gene) {
 				index = i;
 			}
 		}
 		for (int i = idx2; index == -1 && i < genes.length(); ++i) {
-			if (genes.get(i).equals(gene)) {
+			if (genes.get(i) == gene) {
 				index = i;
 			}
 		}
 		for (int i = idx1; index == -1 && i < idx2; ++i) {
-			if (genes.get(i).equals(gene)) {
+			if (genes.get(i) == gene) {
 				index = i;
 			}
 		}
