@@ -24,12 +24,19 @@ package org.jenetics.util;
 
 import java.util.Random;
 
+//import org.jenetics.FitnessFunction;
+//import org.jenetics.Genotype;
+//import org.jenetics.IntegerChromosome;
+//import org.jenetics.IntegerGene;
+//import org.jenetics.Phenotype;
+//import org.jenetics.Population;
+//import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtilsTest.java,v 1.1 2008-10-24 20:08:14 fwilhelm Exp $
+ * @version $Id: ArrayUtilsTest.java,v 1.2 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public class ArrayUtilsTest {
 
@@ -55,4 +62,46 @@ public class ArrayUtilsTest {
 	}
 	
 	
+//	@Test
+//	public void performance() {
+//		final int SIZE = 1000;
+//		final Population<IntegerGene, Integer64> pop = new Population<IntegerGene, Integer64>(SIZE);
+//		for (int i = 0; i < SIZE; ++i) {
+//			pop.add(Phenotype.valueOf(
+//					Genotype.valueOf(new IntegerChromosome(IntegerGene.valueOf(i, 0, SIZE))), 
+//					new FitnessFunction<IntegerGene, Integer64>() {
+//						private static final long serialVersionUID = 1L;
+//						@Override
+//						public Integer64 evaluate(Genotype<IntegerGene> genotype) {
+//							return null;
+//						}
+//					}, i));
+//		}
+//		
+//		final Timer timer = new Timer();
+//		timer.start();
+//		for (int j = 0; j < 10000; ++j) {
+//			for (int i = 0; i < pop.size(); ++i) {
+//				final Phenotype<?, ?> pt = pop.get(i);
+//			}
+//		}
+//		timer.stop();
+//		System.out.println(timer.toString());
+//		
+//		timer.reset();
+//		timer.start();
+//		for (int i = 0; i < 10000; ++i) {
+//			ArrayUtils.subset(1000, 400, RandomRegistry.getRandom());
+//		}
+//		timer.stop();
+//		System.out.println(timer);
+//		
+//	}
+	
 }
+
+
+
+
+
+

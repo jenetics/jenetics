@@ -45,7 +45,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.5 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.6 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -436,7 +436,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			
 			@Override
 			public Statistics.Time newInstance(
-					final Class<Statistics.Time> cls, final InputElement xml
+				final Class<Statistics.Time> cls, final InputElement xml
 			) 
 				throws XMLStreamException 
 			{

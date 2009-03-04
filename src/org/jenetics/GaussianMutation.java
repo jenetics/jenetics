@@ -27,7 +27,6 @@ import static org.jenetics.util.ArrayUtils.subset;
 import java.util.Random;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.7 2009-02-24 21:25:44 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.8 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
@@ -71,9 +70,7 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 			
 			final G newGene = oldGene.newInstance(value);
 			genes.set(elements[i], newGene);
-			
-			
-			ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
+						
 		}
 		
 		_mutations += elements.length;	

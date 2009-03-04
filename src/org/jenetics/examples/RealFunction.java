@@ -42,7 +42,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.10 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.11 2009-03-04 22:44:52 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
@@ -64,12 +64,12 @@ public class RealFunction {
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
 		ga.setAlterer(
-			new Mutation<DoubleGene>(Probability.valueOf(0.3)).append(
+			new Mutation<DoubleGene>(Probability.valueOf(0.03)).append(
 			new MeanAlterer<DoubleGene>(Probability.valueOf(0.6)))
 		);
 		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
 		
-		GAUtils.execute(ga, 10);
+		GAUtils.execute(ga, 50);
 	}
 	
 }
