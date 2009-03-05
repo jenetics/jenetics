@@ -26,8 +26,6 @@ import java.util.Collection;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
-import javolution.context.ObjectFactory;
-
 /** 
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array).
@@ -35,7 +33,7 @@ import javolution.context.ObjectFactory;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.15 2009-01-21 22:16:41 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.16 2009-03-05 19:39:01 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -87,15 +85,75 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	}
 	
 	/**
+	 * Create a new array with the given length.
+	 * 
 	 * @param length the array length.
      * @throws NegativeArraySizeException if the specified {@code length} 
      *         is negative
 	 */
-	Array(final int length) {
+	public Array(final int length) {
 		this(new Object[length], false);
 	}
 	
-
+	/**
+	 * Create a new array with length one. The array will be initialized with 
+	 * the given value.
+	 * 
+	 * @param first the only element of the array.
+	 */
+	public Array(final T first) {
+		this(1);
+		_array[0] = first;
+	}
+	
+	/**
+	 * Create a new array with length two. The array will be initialized with
+	 * the given values.
+	 * 
+	 * @param first the first value.
+	 * @param second the second value.
+	 */
+	public Array(final T first, final T second) {
+		this(2);
+		_array[0] = first;
+		_array[1] = second;
+	}
+	
+	/**
+	 * Create a new array with length three. The array will be initialized with
+	 * the given values.
+	 * 
+	 * @param first
+	 * @param second
+	 * @param third
+	 */
+	public Array(final T first, final T second, final T third) {
+		this(3);
+		_array[0] = first;
+		_array[1] = second;
+		_array[2] = third;
+	}
+	
+	/**
+	 * Create a new array from the given values.
+	 * 
+	 * @param values the values of the new array.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public Array(final T... values) {
+		this(values.length);
+		System.arraycopy(values, 0, _array, 0, values.length);
+	}
+	
+	public Array(final Collection<T> values) {
+		this(values.size());
+		
+		int index = 0;
+		for (T value : values) {
+			_array[index] = value;
+			++index;
+		}
+	}
 	
 	/**
 	 * Set the {@code value} at the given {@code index}.
@@ -249,7 +307,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * @return a shallow copy of this array.
 	 */
 	public Array<T> copy() {
-		final Array<T> array = newInstance(length());
+		final Array<T> array = new Array<T>(length());
 		System.arraycopy(_array, _start, array._array, 0, length());
 		return array;
 	}
@@ -353,75 +411,6 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
         out.append("]");
         
         return out.toString();
-	}
-
-	
-	/*
-	 * Array creation part.
-	 */
-
-	private static final ObjectFactory<Array<Object>> 
-	FACTORY = new ObjectFactory<Array<Object>>() {
-		@Override protected Array<Object> create() {
-			return new Array<Object>();
-		}
-	};
-	
-	/**
-	 * Create a new array instance with the given {@code length}.
-	 * 
-	 * @param <A> the element type.
-	 * @param length the length of the array.
-	 * @return the new created array with the given {@code length}.
-	 * @throws NegativeArraySizeException if the given {@code length} is smaller
-	 *         than zero.
-	 */
-	public static <A> Array<A> newInstance(final int length) {
-		if (length < 0) {
-			throw new NegativeArraySizeException(
-				"Negative array size given: " + length
-			);
-		}
-		
-		@SuppressWarnings("unchecked")
-		final Array<A> a = (Array<A>)FACTORY.object();
-		a._sealed = false;
-		if (a._array.length != length) {
-			a._array = new Object[length];
-			a._start = 0;
-			a._end = length;
-		} else {
-			a.fill(null);
-//			a._array = new Object[length];
-		}
-		return a;
-	}
-	
-	/**
-	 * Create a new Array from the given vararg of type T.
-	 * 
-	 * @param <A> the array type.
-	 * @param values the array values.
-	 * @return a new Array created from the given values.
-	 * @throws NullPointerException if the {@code values} are {@code null}.
-	 */
-	public static <A> Array<A> valueOf(final A... values) {
-		Validator.notNull(values, "Values");
-		
-		final Array<A> a = newInstance(values.length);
-		System.arraycopy(values, 0, a._array, 0, values.length);
-		return a;
-	}
-	
-	public static <A> Array<A> valueOf(final Collection<A> values) {
-		Validator.notNull(values, "Values");
-		
-		final Array<A> a = newInstance(values.size());
-		int index = 0;
-		for (A value : values) {
-			a.set(index++, value);
-		}
-		return a;
 	}
 	
 }

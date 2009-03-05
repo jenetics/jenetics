@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.27 2009-03-04 22:44:52 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.28 2009-03-05 19:39:01 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -335,9 +335,7 @@ public final class ArrayUtils {
 			}
 		}
 		 
-		@SuppressWarnings("unchecked")
-		Array<T> mm = Array.valueOf(min, max);
-		return mm;
+		return new Array<T>(min, max);
 	}
 	
 	/**

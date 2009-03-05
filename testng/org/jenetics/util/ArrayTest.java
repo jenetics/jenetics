@@ -27,13 +27,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.5 2009-01-09 21:29:40 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.6 2009-03-05 19:39:01 fwilhelm Exp $
  */
 public class ArrayTest {
 
 	@Test
 	public void copy() {
-		final Array<Integer> array = Array.newInstance(10);
+		final Array<Integer> array = new Array<Integer>(10);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -47,7 +47,7 @@ public class ArrayTest {
 	
 	@Test
 	public void subArray() {
-		final Array<Integer> array = Array.newInstance(10);
+		final Array<Integer> array = new Array<Integer>(10);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}

@@ -67,7 +67,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.31 2009-02-26 22:36:37 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.32 2009-03-05 19:39:01 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -263,7 +263,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	private Array<Population<G, C>> select() {
-		final Array<Population<G, C>> selection = Array.newInstance(2);
+		final Array<Population<G, C>> selection = new Array<Population<G, C>>(2);
 		
 		ConcurrentContext.enter();
 		try {
