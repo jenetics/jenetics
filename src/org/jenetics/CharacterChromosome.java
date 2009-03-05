@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Array;
-
 import javolution.text.CharArray;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
@@ -31,9 +29,11 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Array;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.13 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.14 2009-03-05 19:09:52 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
