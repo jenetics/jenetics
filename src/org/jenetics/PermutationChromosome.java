@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.8 2009-02-24 19:33:24 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.9 2009-03-05 19:39:01 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -213,7 +213,7 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			final int length = xml.getAttribute("length", 0);
 			final int min = xml.getAttribute("min", 0);
 			final int max = xml.getAttribute("max", length);
-			final Array<IntegerGene> genes = Array.newInstance(length);
+			final Array<IntegerGene> genes = new Array<IntegerGene>(length);
 			
 			for (int i = 0; i < length; ++i) {
 				final Integer64 value = xml.getNext();

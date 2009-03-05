@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.10 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.11 2009-03-05 19:39:01 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -104,7 +104,7 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 
 	@Override
 	public IntegerChromosome newInstance() {
-		final Array<IntegerGene> genes = Array.newInstance(length());
+		final Array<IntegerGene> genes = new Array<IntegerGene>(length());
 		final Random random = RandomRegistry.getRandom(); 
 		
 		for (int i = 0; i < length(); ++i) {
@@ -154,7 +154,7 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 			final int length = xml.getAttribute(LENGTH, 0);
 			final int min = xml.getAttribute(MIN, 0);
 			final int max = xml.getAttribute(MAX, 10);
-			final Array<IntegerGene> genes = Array.newInstance(length);
+			final Array<IntegerGene> genes = new Array<IntegerGene>(length);
 			
 			for (int i = 0; i < length; ++i) {
 				final Integer64 value = xml.getNext();
