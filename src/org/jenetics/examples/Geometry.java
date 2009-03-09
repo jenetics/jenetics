@@ -22,13 +22,17 @@
  */
 package org.jenetics.examples;
 
+import static java.awt.BasicStroke.CAP_BUTT;
+import static java.awt.BasicStroke.JOIN_MITER;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -66,7 +70,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.1 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.2 2009-03-09 22:31:16 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -78,44 +82,97 @@ public class Geometry extends javax.swing.JFrame {
 	}	
 	
 	void setStartAction(final Action action) {
-		startButton.setAction(action);
+		_startButton.setAction(action);
 	}
 	
 	void setStopAction(final Action action) {
-		stopButton.setAction(action);
+		_stopButton.setAction(action);
 	}
 	
 	void setInitAction(final Action action) {
-		initButton.setAction(action);
+		_initButton.setAction(action);
 	}
 	
 	void setPauseAction(final Action action) {
-		pauseButton.setAction(action);
+		_pauseButton.setAction(action);
 	}
 	
 	void setStepAction(final Action action) {
-		stepButton.setAction(action);
+		_stepButton.setAction(action);
 	}
 	
 	void setSourcePolygon(final Point2D[] polygon) {
-		((DrawPanel)drawPanel).setSourcePolygon(polygon);
+		((DrawPanel)_drawPanel).setSourcePolygon(polygon);
 	}
 	
 	void setTargetPolygon(final Point2D[] polygon) {
-		((DrawPanel)drawPanel).setTargetPolygon(polygon);
+		((DrawPanel)_drawPanel).setTargetPolygon(polygon);
 	}
 	
 	void setPopulationBestTransform(final AffineTransform transform) {
-		((DrawPanel)drawPanel).setPopulationBestTransform(transform);
+		((DrawPanel)_drawPanel).setPopulationBestTransform(transform);
 	}
 	
 	void setAlltimeBestTransform(final AffineTransform transform) {
-		((DrawPanel)drawPanel).setAlltimeBestTransform(transform);
+		((DrawPanel)_drawPanel).setAlltimeBestTransform(transform);
 	}
 	
+	void setGeneration(final int generation) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			_generationTextField.setValue(generation);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					_generationTextField.setValue(generation);
+				}
+			});
+		}
+	}
+	
+	void setBestTransformation(final AffineTransform transform) {
+//		if (SwingUtilities.isEventDispatchThread()) {
+//			_bestTransformLabel.setText(toHtml(transform));
+//		} else {
+//			SwingUtilities.invokeLater(new Runnable() {
+//				@Override public void run() {
+//					_bestTransformLabel.setText(toHtml(transform));
+//				}
+//			});
+//		}
+	}
+	
+//	private String toHtml(final AffineTransform transform) {
+//		final NumberFormat f = NumberFormat.getIntegerInstance();
+//		f.setMinimumFractionDigits(5);
+//		f.setMaximumFractionDigits(5);
+//		f.setMaximumIntegerDigits(4);
+//		f.setMinimumIntegerDigits(4);
+//		
+//		final double[] m = new double[6];
+//		transform.getMatrix(m);
+//		
+//		
+//		final StringBuilder out = new StringBuilder();
+//		out.append("<html><pre>\n");
+//		out.append(f.format(m[0]) + " , " + f.format(m[1]) + " , " + f.format(m[2]) + "\n");
+//		out.append(f.format(m[3]) + " , " + f.format(m[4]) + " , " + f.format(m[5]) + "\n");
+//		out.append("</pre></html>");
+//		return out.toString();
+//	}
+	
+	@Override
 	public void repaint() {
-		super.repaint();
-		drawPanel.repaint();
+		if (SwingUtilities.isEventDispatchThread()) {
+			super.repaint();
+			_drawPanel.repaint();
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					Geometry.super.repaint();
+					_drawPanel.repaint();
+				}
+			});
+		}
 	}
 
 	/**
@@ -127,53 +184,65 @@ public class Geometry extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        drawPanel = new DrawPanel();
-        startButton = new javax.swing.JButton();
-        stopButton = new javax.swing.JButton();
-        initButton = new javax.swing.JButton();
-        pauseButton = new javax.swing.JButton();
-        stepButton = new javax.swing.JButton();
+        _drawPanel = new DrawPanel();
+        _startButton = new javax.swing.JButton();
+        _stopButton = new javax.swing.JButton();
+        _initButton = new javax.swing.JButton();
+        _pauseButton = new javax.swing.JButton();
+        _stepButton = new javax.swing.JButton();
+        _generationLabel = new javax.swing.JLabel();
+        _generationTextField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        drawPanel.setBackground(java.awt.Color.white);
-        drawPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        _drawPanel.setBackground(java.awt.Color.white);
+        _drawPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        javax.swing.GroupLayout drawPanelLayout = new javax.swing.GroupLayout(drawPanel);
-        drawPanel.setLayout(drawPanelLayout);
-        drawPanelLayout.setHorizontalGroup(
-            drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout _drawPanelLayout = new javax.swing.GroupLayout(_drawPanel);
+        _drawPanel.setLayout(_drawPanelLayout);
+        _drawPanelLayout.setHorizontalGroup(
+            _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
+        );
+        _drawPanelLayout.setVerticalGroup(
+            _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 530, Short.MAX_VALUE)
         );
-        drawPanelLayout.setVerticalGroup(
-            drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 468, Short.MAX_VALUE)
-        );
 
-        startButton.setText("Start");
+        _startButton.setText("Start");
 
-        stopButton.setText("Stop");
+        _stopButton.setText("Stop");
 
-        initButton.setText("Init");
+        _initButton.setText("Init");
 
-        pauseButton.setText("Pause");
+        _pauseButton.setText("Pause");
 
-        stepButton.setText("Step");
+        _stepButton.setText("Step");
+
+        _generationLabel.setText("Generation:");
+
+        _generationTextField.setPreferredSize(new java.awt.Dimension(100, 24));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stepButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(initButton, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(_drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(_initButton, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(_startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(_pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(_stepButton, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(_stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(_generationLabel)
+                        .addGap(22, 22, 22)
+                        .addComponent(_generationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -181,17 +250,21 @@ public class Geometry extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(initButton)
-                        .addGap(32, 32, 32)
-                        .addComponent(startButton)
+                        .addComponent(_initButton)
+                        .addGap(35, 35, 35)
+                        .addComponent(_startButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stepButton)
+                        .addComponent(_pauseButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pauseButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stopButton)))
+                        .addComponent(_stepButton)
+                        .addGap(40, 40, 40)
+                        .addComponent(_stopButton))
+                    .addComponent(_drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(_generationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(_generationLabel))
                 .addContainerGap())
         );
 
@@ -205,7 +278,7 @@ public class Geometry extends javax.swing.JFrame {
 	 */
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			@Override public void run() {
 				final Geometry geometry = new Geometry();
 				geometry.setVisible(true);
 				new GeometryController(geometry);
@@ -214,12 +287,14 @@ public class Geometry extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel drawPanel;
-    private javax.swing.JButton initButton;
-    private javax.swing.JButton pauseButton;
-    private javax.swing.JButton startButton;
-    private javax.swing.JButton stepButton;
-    private javax.swing.JButton stopButton;
+    private javax.swing.JPanel _drawPanel;
+    private javax.swing.JLabel _generationLabel;
+    private javax.swing.JFormattedTextField _generationTextField;
+    private javax.swing.JButton _initButton;
+    private javax.swing.JButton _pauseButton;
+    private javax.swing.JButton _startButton;
+    private javax.swing.JButton _stepButton;
+    private javax.swing.JButton _stopButton;
     // End of variables declaration//GEN-END:variables
 
 }
@@ -257,14 +332,7 @@ class GeometryController implements StepListener {
 		_target = GA.getTargetPolygon();
 		_function = new GA.Function(_source, _target);
 		
-		_ga = new GeneticAlgorithm<DoubleGene, Float64>(
-				GA.getGenotypeFactory(), _function
-			);
-		_ga.addAlterer(new Mutation<DoubleGene>(Probability.valueOf(0.03)));
-		_ga.addAlterer(new MeanAlterer<DoubleGene>(Probability.valueOf(0.3)));
-		_ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
-		_ga.setPopulationSize(20);
-		_ga.setMaximalPhenotypeAge(35);
+		_ga = GA.getGA(_function);
 		
 		_geometry.setSourcePolygon(_source);
 		_geometry.setTargetPolygon(_target);
@@ -279,33 +347,64 @@ class GeometryController implements StepListener {
 				} else {
 					_ga.evolve();
 				}
-				_stepAction.setEnabled(true);
 			}
 		});
 		_stepable.addStepListener(this);
 		
+		if (_thread != null) {
+			_thread.interrupt();
+		}
 		_thread = new Thread(_stepable);
 		_thread.start();
 		
 		_geometry.repaint();
+		
+		_startAction.setEnabled(true);
+		_stopAction.setEnabled(false);
+		_pauseAction.setEnabled(false);
+		_stepAction.setEnabled(true);
+		_initAction.setEnabled(false);
 	}
 	
 	void start() {
-		_initAction.setEnabled(false);
 		_stepable.start();
+		
+		_startAction.setEnabled(false);
+		_stopAction.setEnabled(true);
+		_pauseAction.setEnabled(true);
+		_stepAction.setEnabled(false);
+		_initAction.setEnabled(false);
 	}
 	
 	void stop() {
+		_stepable.stop();
 		_thread.interrupt();
+		
+		_startAction.setEnabled(false);
+		_stopAction.setEnabled(false);
+		_pauseAction.setEnabled(false);
+		_stepAction.setEnabled(false);
+		_initAction.setEnabled(true);
 	}
 	
 	void pause() {
+		_stepable.stop();
 		
+		_startAction.setEnabled(true);
+		_stopAction.setEnabled(true);
+		_pauseAction.setEnabled(false);
+		_stepAction.setEnabled(true);
+		_initAction.setEnabled(false);
 	}
 	
 	void step() {
-		_stepAction.setEnabled(false);
 		_stepable.step();
+		
+		_startAction.setEnabled(true);
+		_stopAction.setEnabled(false);
+		_pauseAction.setEnabled(false);
+		_stepAction.setEnabled(true);
+		_initAction.setEnabled(false);
 	}
 
 	@Override
@@ -316,18 +415,15 @@ class GeometryController implements StepListener {
 		_geometry.setAlltimeBestTransform(_function.convert(
 				_ga.getBestPhenotype().getGenotype()
 			));
+		_geometry.repaint();
 		
-		_stepAction.setEnabled(true);
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override public void run() {
-				_geometry.repaint();
-			}
-		});
+		_geometry.setGeneration(_ga.getGeneration());
+		_geometry.setBestTransformation(_function.convert(_ga.getBestPhenotype().getGenotype()));
 	}
 
 	@Override
-	public void finished(EventObject event) {	
+	public void finished(EventObject event) {
+		System.out.println("GA finished");
 	}
 	
 }
@@ -422,10 +518,23 @@ class StepAction extends AbstractAction {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.1 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.2 2009-03-09 22:31:16 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Stroke THICK = new BasicStroke(
+			2.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER
+		);
+	private static final Stroke NORMAL = new BasicStroke(
+			1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER
+		);	
+	private static final Stroke THIN = new BasicStroke(
+			1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER
+		);	
+	private static final Stroke DASHED = new BasicStroke(
+		1.0f, CAP_BUTT, JOIN_MITER, 1f, new float[]{6, 3}, 0f
+	);	
 	
 	private Point2D[] _sourcePolygon;
 	private Point2D[] _targetPolygon;
@@ -457,24 +566,24 @@ class DrawPanel extends JPanel {
 		final AffineTransform transform = AffineTransform.getScaleInstance(1.0, 1.0);
 		
 		if (_sourcePolygon != null) {
-			paint(g2d, _sourcePolygon, Color.BLACK, transform);
+			paint(g2d, _sourcePolygon, Color.LIGHT_GRAY, THICK, transform);
 		}
 		
 		if (_targetPolygon != null) {
-			paint(g2d, _targetPolygon, Color.GREEN, transform);
+			paint(g2d, _targetPolygon, Color.GREEN, DASHED, transform);
 			
 			AffineTransform at = _populationBestTransform.get();
 			if (at != null) {
-				paint(g2d, _targetPolygon, Color.BLUE, at);
+				paint(g2d, _targetPolygon, Color.BLUE, THIN,  at);
 			} else {
-				paint(g2d, _targetPolygon, Color.BLUE, transform);
+				paint(g2d, _targetPolygon, Color.BLUE, THIN, transform);
 			}
 			
 			at = _alltimeBestTransform.get();
 			if (at != null) {
-				paint(g2d, _targetPolygon, Color.RED, at);
+				paint(g2d, _targetPolygon, Color.GREEN, NORMAL, at);
 			} else {
-				paint(g2d, _targetPolygon, Color.RED, transform);
+				paint(g2d, _targetPolygon, Color.GREEN, NORMAL, transform);
 			}
 		}
 	}
@@ -493,10 +602,14 @@ class DrawPanel extends JPanel {
 		final Graphics2D graphics, 
 		final Point2D[] polygon,
 		final Color color,
+		final Stroke stroke,
 		final AffineTransform transform
 	) {
 		final Color oldColor = graphics.getColor();
+		final Stroke oldStroke = graphics.getStroke();
+		
 		graphics.setColor(color);
+		graphics.setStroke(stroke);
 		
 		final Dimension size = getSize();
 		final int ox = size.width/2;
@@ -513,6 +626,7 @@ class DrawPanel extends JPanel {
 		}
 		
 		graphics.setColor(oldColor);
+		graphics.setStroke(oldStroke);
 	}
 	
 	public void setSourcePolygon(final Point2D[] polygon) {
@@ -533,10 +647,64 @@ class DrawPanel extends JPanel {
 	
 }
 
+class TransformPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
+	
+    private javax.swing.JFormattedTextField _m00;
+    private javax.swing.JFormattedTextField _m01;
+    private javax.swing.JFormattedTextField _m02;
+    private javax.swing.JFormattedTextField _m10;
+    private javax.swing.JFormattedTextField _m11;
+    private javax.swing.JFormattedTextField _m12;
+	
+	public TransformPanel(final String title) {
+        _m00 = new javax.swing.JFormattedTextField();
+        _m01 = new javax.swing.JFormattedTextField();
+        _m02 = new javax.swing.JFormattedTextField();
+        _m10 = new javax.swing.JFormattedTextField();
+        _m11 = new javax.swing.JFormattedTextField();
+        _m12 = new javax.swing.JFormattedTextField();
+        
+        setBorder(javax.swing.BorderFactory.createTitledBorder(title));
+        setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagConstraints gridBagConstraints;
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(_m00, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(_m01, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(_m02, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(_m10, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(_m11, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        add(_m12, gridBagConstraints);
+	}
+	
+}
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.1 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.2 2009-03-09 22:31:16 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -544,7 +712,7 @@ class Stepable implements Runnable {
 
 	private final List<StepListener> _listeners = new CopyOnWriteArrayList<StepListener>();
 	
-	private long _steps = 0;
+	private volatile int _steps = 0;
 	private final Runnable _stepTask;
 
 	public Stepable(final Runnable stepTask) {
@@ -554,7 +722,7 @@ class Stepable implements Runnable {
 	public void start() {
 		_lock.lock();
 		try {
-			_steps = Long.MAX_VALUE;
+			_steps = Integer.MAX_VALUE;
 			_run.signalAll();
 		} finally {
 			_lock.unlock();
@@ -596,12 +764,28 @@ class Stepable implements Runnable {
 		}
 	}
 
-	private boolean execute() {
+	private boolean canExecute() {
 		_lock.lock();
 		try {
-			return _steps-- > 0;
+			return _steps > 0;
 		} finally {
 			_lock.unlock();
+		}
+	}
+	
+	private void execute() {
+		_stepTask.run();
+		
+		_lock.lock();
+		try {
+			--_steps;
+		} finally {
+			_lock.unlock();
+		}
+		
+		final EventObject event = new EventObject(this);
+		for (StepListener listener : _listeners) {
+			listener.stepped(event);
 		}
 	}
 
@@ -611,13 +795,8 @@ class Stepable implements Runnable {
 			while (!Thread.currentThread().isInterrupted()) {
 				waiting();
 				
-				while (execute()) {
-					_stepTask.run();
-					
-					final EventObject event = new EventObject(this);
-					for (StepListener listener : _listeners) {
-						listener.stepped(event);
-					}
+				while (canExecute()) {
+					execute();
 				}
 			}
 		} catch (InterruptedException e) {
@@ -652,7 +831,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.1 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.2 2009-03-09 22:31:16 fwilhelm Exp $
  */
 class GA {
 	
@@ -766,14 +945,22 @@ class GA {
 		
 		return target;
 	}
+	
+	public static GeneticAlgorithm<DoubleGene, Float64> getGA(final Function function) {
+		final GeneticAlgorithm<DoubleGene, Float64> ga = 
+			new GeneticAlgorithm<DoubleGene, Float64>(
+				GA.getGenotypeFactory(), function
+			);
+		ga.addAlterer(new Mutation<DoubleGene>(Probability.valueOf(0.1)));
+		ga.addAlterer(new MeanAlterer<DoubleGene>(Probability.valueOf(0.5)));
+		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
+		ga.setPopulationSize(20);
+		ga.setMaximalPhenotypeAge(15);
+		
+		return ga;
+	}
 
 }
-
-
-
-
-
-
 
 
 

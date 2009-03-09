@@ -35,7 +35,7 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.17 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.18 2009-03-09 22:31:15 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 
@@ -64,18 +64,17 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
 		//Choosing two Chromosome for crossover randomly.
-		final int chIndex1 = random.nextInt(gt1.chromosomes());
-		final int chIndex2 = random.nextInt(gt2.chromosomes());
+		final int chIndex = random.nextInt(gt1.chromosomes());
 		
 		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
 		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
-		final Array<G> genes1 = chromosomes1.get(chIndex1).toArray().copy();
-		final Array<G> genes2 = chromosomes2.get(chIndex2).toArray().copy();
+		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
+		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
 		crossover(genes1, genes2);
 		
-		chromosomes1.set(chIndex1, chromosomes1.get(chIndex1).newInstance(genes1));
-		chromosomes2.set(chIndex2, chromosomes2.get(chIndex2).newInstance(genes2));
+		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1));
+		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2));
 		
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));

@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelectorTest.java,v 1.2 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: ProbabilitySelectorTest.java,v 1.3 2009-03-09 22:31:35 fwilhelm Exp $
  */
 public class ProbabilitySelectorTest {
 
@@ -50,9 +50,8 @@ public class ProbabilitySelectorTest {
 		double[] indices = new double[props.length];
 		Arrays.fill(indices, 0);
 		
-		ProbabilitySelector<?, ?> selector = new RouletteWheelSelector();
 		for (int i = 0; i < samples; ++i) {
-			indices[selector.nextIndex(props, random)] += 1;
+			indices[ProbabilitySelector.nextIndex(props, random)] += 1;
 		}
 		
 		for (int i = 0; i < props.length; ++i) {
