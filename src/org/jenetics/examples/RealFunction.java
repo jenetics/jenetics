@@ -36,22 +36,31 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
 import org.jenetics.RouletteWheelSelector;
+import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.11 2009-03-04 22:44:52 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.12 2009-03-09 18:48:21 fwilhelm Exp $
  */
 public class RealFunction {
-	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
+	private static final class Function 
+		implements FitnessFunction<DoubleGene, Float64>,
+					Converter<Genotype<DoubleGene>, Float64>
+	{
 		private static final long serialVersionUID = 2793605351118238308L;
 		
+		@Override
 		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
-			final DoubleGene gene = genotype.getChromosome().getGene(0);
-			final double radians = toRadians(gene.doubleValue());
+			final double radians = toRadians(convert(genotype).doubleValue());
 			return Float64.valueOf(acos(sin(radians)*cos(radians)));
+		}
+
+		@Override
+		public Float64 convert(final Genotype<DoubleGene> value) {
+			return value.getChromosome().getGene().getAllele();
 		}
 	}
 	

@@ -61,7 +61,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.14 2009-02-24 22:08:23 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.15 2009-03-09 18:48:21 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -121,7 +121,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		final Random random = RandomRegistry.getRandom();
 		final int[] elements = subset(
 				population.size(), 
-				(int)rint(population.size()*_probability.doubleValue()), 
+				(int)ceil(population.size()*_probability.doubleValue()), 
 				random
 			);
 						

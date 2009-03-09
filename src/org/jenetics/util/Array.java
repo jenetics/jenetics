@@ -33,7 +33,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.16 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.17 2009-03-09 18:48:21 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -62,7 +62,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		Validator.notNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", start, end
+				"Invalid index range: [%d, %s)", start, end
 			));
 		}
 		
@@ -339,7 +339,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	public Array<T> subArray(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", start, end
+				"Invalid index range: [%d, %s)", start, end
 			));
 		}
 		
