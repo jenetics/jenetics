@@ -22,20 +22,18 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.11 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.12 2009-03-09 18:48:21 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -105,15 +103,10 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	@Override
 	public IntegerChromosome newInstance() {
 		final Array<IntegerGene> genes = new Array<IntegerGene>(length());
-		final Random random = RandomRegistry.getRandom(); 
+		final Factory<IntegerGene> factory = _genes.get(0);
 		
 		for (int i = 0; i < length(); ++i) {
-			final long value = ((long)random.nextDouble()*
-				(_max.longValue() - _min.longValue()) + _min.longValue());
-			
-			genes.set(i, IntegerGene.valueOf(
-				value, _min.longValue(), _max.longValue()
-			));
+			genes.set(i, factory.newInstance());
 		}
 		
 		final IntegerChromosome chromosome = new IntegerChromosome(genes);

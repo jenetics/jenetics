@@ -22,20 +22,18 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.13 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.14 2009-03-09 18:48:21 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -133,15 +131,10 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	@Override
 	public DoubleChromosome newInstance() {
 		final Array<DoubleGene> genes = new Array<DoubleGene>(length());
-		final Random random = RandomRegistry.getRandom(); 
+		final Factory<DoubleGene> factory = _genes.get(0);
 		
 		for (int i = 0; i < length(); ++i) {
-			final double value = random.nextDouble()*
-				(_max.doubleValue() - _min.doubleValue()) + _min.doubleValue();
-			
-			genes.set(i, DoubleGene.valueOf(
-				value, _min.doubleValue(), _max.doubleValue()
-			));
+			genes.set(i, factory.newInstance());
 		}
 		
 		final DoubleChromosome chromosome = new DoubleChromosome(genes);
