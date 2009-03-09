@@ -23,7 +23,6 @@
 package org.jenetics;
 
 import static java.lang.Math.ceil;
-import static java.lang.Math.rint;
 import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
@@ -61,7 +60,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.15 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.16 2009-03-09 22:31:15 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
