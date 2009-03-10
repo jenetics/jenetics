@@ -27,6 +27,8 @@ import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.notNull;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javolution.context.ConcurrentContext;
 
@@ -67,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.32 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.33 2009-03-10 21:25:03 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -91,15 +93,20 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
-	private int _populationSize = 50;
-	private Population<G, C> _population = new Population<G, C>(_populationSize);
+	private final AtomicInteger _populationSize = new AtomicInteger(50);
+	private Population<G, C> _population = new Population<G, C>(_populationSize.get());
 	private int _maximalPhenotypeAge = 70;
 	private int _generation = 0;
 	
-	private Phenotype<G, C> _bestPhenotype = null;
-	private Statistics<G, C> _bestStatistic = null;
+	private final AtomicReference<Phenotype<G, C>> 
+	_bestPhenotype = new AtomicReference<Phenotype<G,C>>();
 	
-	private Statistics<G, C> _statistics = null;
+	private final AtomicReference<Statistics<G, C>> 
+	_bestStatistic = new AtomicReference<Statistics<G,C>>();
+	
+	private final AtomicReference<Statistics<G, C>>
+	_statistics = new AtomicReference<Statistics<G,C>>();
+	
 	private StatisticsCalculator<G, C> _calculator = new StatisticsCalculator<G, C>();
 	
 	//Some performance measure.
@@ -163,7 +170,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_executionTimer.start();
 		
 		//Initializing/filling up the Population 
-		for (int i = _population.size(); i < _populationSize; ++i) {
+		for (int i = _population.size(); i < _populationSize.get(); ++i) {
 			final Phenotype<G, C> pt = Phenotype.valueOf(
 				_genotypeFactory.newInstance(), _fitnessFunction, 
 				_fitnessScaler, _generation
@@ -178,14 +185,14 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		
 		//First valuation of the initial population.
 		_statisticTimer.start();
-		_statistics = _calculator.evaluate(_population);
-		_bestPhenotype = _statistics.getBestPhenotype();
-		_bestStatistic = _statistics;
+		_statistics.set(_calculator.evaluate(_population));
+		_bestPhenotype.set(_statistics.get().getBestPhenotype());
+		_bestStatistic.set(_statistics.get());
 		_statisticTimer.stop();
 		
 		_executionTimer.stop();
 		
-		setTimes(_statistics);
+		setTimes(_statistics.get());
 	}
 	
 	/**
@@ -231,16 +238,16 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		
 		//Evaluate the statistic
 		_statisticTimer.start();
-		_statistics = _calculator.evaluate(_population);
-		if (_bestPhenotype.getFitness().compareTo(_statistics.getBestFitness()) < 0) {
-			_bestPhenotype = _statistics.getBestPhenotype();
-			_bestStatistic = _statistics;
+		_statistics.set(_calculator.evaluate(_population));
+		if (_bestPhenotype.get().getFitness().compareTo(_statistics.get().getBestFitness()) < 0) {
+			_bestPhenotype.set(_statistics.get().getBestPhenotype());
+			_bestStatistic.set(_statistics.get());
 		}
 		_statisticTimer.stop();
 		
 		_executionTimer.stop();
 		
-		setTimes(_statistics);
+		setTimes(_statistics.get());
 	}
 	
 	private void setTimes(final Statistics<?, ?> statistic) {
@@ -297,7 +304,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final Population<G, C> survivors, 
 		final Population<G, C> offsprings
 	) {
-		final Population<G, C> population = new Population<G, C>(_populationSize);
+		final Population<G, C> population = new Population<G, C>(_populationSize.get());
 		
 		for (int i = 0, n = survivors.size(); i < n; ++i) {
 			final Phenotype<G, C> survivor = survivors.get(i);
@@ -324,14 +331,14 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private int getNumberOfSurvivors() {
 		return (int)round(
-			_survivorFraction.doubleValue()*_populationSize/*/
+			_survivorFraction.doubleValue()*_populationSize.get()/*/
 			(survivorFraction.doubleValue() + offspringFraction.doubleValue())*/
 		);
 	}
 	
 	private int getNumberOfOffsprings() {
 		return (int)round(
-			_offspringFraction.doubleValue()*_populationSize/*/
+			_offspringFraction.doubleValue()*_populationSize.get()/*/
 			(survivorFraction.doubleValue() + offspringFraction.doubleValue())*/
 		);
 	}
@@ -443,7 +450,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @return the best {@link Phenotype} so far.
 	 */
 	public Phenotype<G, C> getBestPhenotype() {
-		return _bestPhenotype;
+		return _bestPhenotype.get();
 	}
 	
 	/**
@@ -452,7 +459,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @return the current {@link Population} {@link Statistics}.
 	 */
 	public Statistics<G, C> getStatistics() {
-		return _statistics;
+		return _statistics.get();
 	}
 
 	/**
@@ -557,7 +564,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				"Population size must be greater than zero, but was " + size + ". "
 			);
 		}		 
-		_populationSize = size;
+		_populationSize.set(size);
 	}
 	
 	/**
@@ -584,7 +591,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				phenotype.getGenotype(), _fitnessFunction, _generation
 			));
 		}
-		_populationSize = population.size();
+		_populationSize.set(population.size());
 	}
 	
 	/**
@@ -611,7 +618,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				genotype, _fitnessFunction, _generation
 			));
 		}
-		_populationSize = genotypes.size();
+		_populationSize.set(genotypes.size());
 	}
 	
 	/**
@@ -624,7 +631,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	public Statistics<G, C> getBestStatistic() {
-		return _bestStatistic;
+		return _bestStatistic.get();
 	}
 	
 	/**
