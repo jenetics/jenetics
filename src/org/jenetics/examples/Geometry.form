@@ -22,24 +22,39 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="_drawPanel" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="_initButton" pref="66" max="32767" attributes="1"/>
-                          <Component id="_startButton" alignment="1" pref="66" max="32767" attributes="1"/>
-                          <Component id="_pauseButton" alignment="1" pref="66" max="32767" attributes="1"/>
-                          <Component id="_stepButton" alignment="1" pref="66" max="32767" attributes="1"/>
-                          <Component id="_stopButton" alignment="1" pref="66" max="32767" attributes="1"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <Component id="_generationLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Component id="_generationTextField" min="-2" max="-2" attributes="0"/>
+                      <Component id="_generationTextField" pref="384" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="_gaBestPanel" alignment="0" pref="473" max="32767" attributes="1"/>
+                  <Component id="_populationBestPanel" alignment="0" pref="473" max="32767" attributes="1"/>
+                  <Component id="_drawPanel" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="_offspringFractionSlider" min="0" pref="0" max="32767" attributes="1"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="_populationSizeLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="_maxPTAgeLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="_maxPTAgeSpinner" max="32767" attributes="1"/>
+                              <Component id="_pauseButton" max="32767" attributes="1"/>
+                              <Component id="_stepButton" alignment="1" max="32767" attributes="1"/>
+                              <Component id="_stopButton" alignment="1" max="32767" attributes="1"/>
+                              <Component id="_startButton" alignment="1" max="32767" attributes="1"/>
+                              <Component id="_initButton" alignment="1" max="32767" attributes="1"/>
+                              <Component id="_populationSizeSpinner" alignment="1" pref="77" max="32767" attributes="1"/>
+                          </Group>
+                      </Group>
+                      <Component id="_offspringFractionLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -48,21 +63,46 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="_initButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="_startButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="_populationSizeSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="_populationSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="_pauseButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="_stepButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Component id="_stopButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="_maxPTAgeSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="_maxPTAgeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="_offspringFractionLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <Component id="_offspringFractionSlider" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="_drawPanel" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="_populationBestPanel" alignment="0" min="-2" pref="96" max="-2" attributes="1"/>
+                  <Group type="102" alignment="0" attributes="1">
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="_initButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="_startButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="1">
+                      <Component id="_stopButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="_stepButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="_pauseButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="_gaBestPanel" alignment="1" min="-2" pref="95" max="-2" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -93,12 +133,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="640" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="471" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="530" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="368" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -138,6 +178,60 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 24]"/>
         </Property>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JPanel" name="_populationBestPanel">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Population best"/>
+          </Border>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new TransformPanel();"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+    </Container>
+    <Container class="javax.swing.JPanel" name="_gaBestPanel">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="GA best"/>
+          </Border>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new TransformPanel();"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+    </Container>
+    <Component class="javax.swing.JLabel" name="_populationSizeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Population size:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="_populationSizeSpinner">
+    </Component>
+    <Component class="javax.swing.JLabel" name="_maxPTAgeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Maximal PT age:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="_maxPTAgeSpinner">
+    </Component>
+    <Component class="javax.swing.JLabel" name="_offspringFractionLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Offspringfraction:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSlider" name="_offspringFractionSlider">
+      <Properties>
+        <Property name="maximum" type="int" value="90"/>
+        <Property name="minimum" type="int" value="10"/>
+        <Property name="value" type="int" value="30"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.rint;
 import static org.jenetics.util.ArrayUtils.shuffle;
 import static org.jenetics.util.ArrayUtils.subset;
 import static org.jenetics.util.EvaluatorRegistry.evaluate;
@@ -43,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.11 2009-03-04 22:44:52 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.12 2009-03-10 21:26:24 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -90,7 +89,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 	) {
 		final Random random = RandomRegistry.getRandom();
 		
-		final int subsetSize = (int)rint(population.size()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(population.size()*_probability.doubleValue());
 		final int[] first = subset(population.size(), subsetSize, random);
 		final int[] second = subset(population.size(), subsetSize, random);
 		shuffle(second, random);
