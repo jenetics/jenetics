@@ -33,7 +33,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.17 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.18 2009-03-11 21:45:31 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -110,8 +110,8 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * Create a new array with length two. The array will be initialized with
 	 * the given values.
 	 * 
-	 * @param first the first value.
-	 * @param second the second value.
+	 * @param first first array element.
+	 * @param second second array element.
 	 */
 	public Array(final T first, final T second) {
 		this(2);
@@ -123,9 +123,9 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * Create a new array with length three. The array will be initialized with
 	 * the given values.
 	 * 
-	 * @param first
-	 * @param second
-	 * @param third
+	 * @param first first array element.
+	 * @param second second array element.
+	 * @param third third array element.
 	 */
 	public Array(final T first, final T second, final T third) {
 		this(3);
@@ -214,6 +214,34 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	}
 	
 	/**
+	 * Returns the index of the last occurrence of the specified element
+	 * in this array, or -1 if this array does not contain the element.
+	 * 
+	 * @param element element to search for, can be {@code null}
+	 * @return the index of the last occurrence of the specified element in
+	 *         this array, or -1 if this array does not contain the element
+	 */
+	public int lastIndexOf(final Object element) {
+		int index = -1;
+		
+		if (element == null) {
+			index = lastIndexOf(new Predicate<T>() {
+				@Override public boolean evaluate(final T object) {
+					return object == null;
+				}
+			});
+		} else {
+			index = lastIndexOf(new Predicate<T>() {
+				@Override public boolean evaluate(final T object) {
+					return element.equals(object);
+				}
+			});
+		}
+		
+		return index;
+	}
+	
+	/**
 	 * Returns the index of the first element on which the given predicate 
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * array element.
@@ -230,6 +258,33 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		int index = -1;
 		
 		for (int i = _start; i < _end && index == -1; ++i) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array[i];
+			if (predicate.evaluate(element)) {
+				index = i - _start;
+			}
+		}
+		
+		return index;
+	}
+	
+	/**
+	 * Returns the index of the last element on which the given predicate 
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * array element.
+	 * 
+	 * @param predicate the search predicate.
+	 * @return the index of the last element on which the given predicate 
+	 *         returns {@code true}, or -1 if the predicate returns false for 
+	 *         every array element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 */
+	public int lastIndexOf(final Predicate<T> predicate) {
+		Validator.notNull(predicate, "Predicate");
+		
+		int index = -1;
+		
+		for (int i = _end - 1; i >= _start && index == -1; --i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array[i];
 			if (predicate.evaluate(element)) {
