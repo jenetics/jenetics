@@ -50,6 +50,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -64,6 +65,7 @@ import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
+import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
@@ -73,7 +75,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -105,6 +107,14 @@ public class Geometry extends javax.swing.JFrame {
 	
 	void setPopulationSpinnerModel(final SpinnerModel model) {
 		_populationSizeSpinner.setModel(model);
+	}
+	
+	void setMaximalPhenotypeAgeSpinnerModel(final SpinnerModel model) {
+		_maxPTAgeSpinner.setModel(model);
+	}
+	
+	void setOffspringFractionRangeModel(final OffspringFractionRangeModel model) {
+		_offspringFractionSlider.setModel(model);
 	}
 	
 	void setSourcePolygon(final Point2D[] polygon) {
@@ -193,7 +203,6 @@ public class Geometry extends javax.swing.JFrame {
         _populationSizeSpinner = new javax.swing.JSpinner();
         _maxPTAgeLabel = new javax.swing.JLabel();
         _maxPTAgeSpinner = new javax.swing.JSpinner();
-        _offspringFractionLabel = new javax.swing.JLabel();
         _offspringFractionSlider = new javax.swing.JSlider();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -205,11 +214,11 @@ public class Geometry extends javax.swing.JFrame {
         _drawPanel.setLayout(_drawPanelLayout);
         _drawPanelLayout.setHorizontalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 471, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
         _drawPanelLayout.setVerticalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 368, Short.MAX_VALUE)
+            .addGap(0, 354, Short.MAX_VALUE)
         );
 
         _startButton.setText("Start");
@@ -234,11 +243,15 @@ public class Geometry extends javax.swing.JFrame {
 
         _maxPTAgeLabel.setText("Maximal PT age:");
 
-        _offspringFractionLabel.setText("Offspringfraction:");
-
+        _offspringFractionSlider.setMajorTickSpacing(10);
         _offspringFractionSlider.setMaximum(90);
         _offspringFractionSlider.setMinimum(10);
+        _offspringFractionSlider.setMinorTickSpacing(5);
+        _offspringFractionSlider.setPaintLabels(true);
+        _offspringFractionSlider.setPaintTicks(true);
         _offspringFractionSlider.setValue(30);
+        _offspringFractionSlider.setBorder(javax.swing.BorderFactory.createTitledBorder("Offspring fraction"));
+        _offspringFractionSlider.setName(""); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -250,28 +263,26 @@ public class Geometry extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(_generationLabel)
                         .addGap(22, 22, 22)
-                        .addComponent(_generationTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
-                    .addComponent(_gaBestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
-                    .addComponent(_populationBestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                        .addComponent(_generationTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
+                    .addComponent(_gaBestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                    .addComponent(_populationBestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
                     .addComponent(_drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(_offspringFractionSlider, 0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(_populationSizeLabel)
-                                .addComponent(_maxPTAgeLabel))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(_maxPTAgeSpinner)
-                                .addComponent(_pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(_stepButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(_stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(_startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(_initButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(_populationSizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)))
-                        .addComponent(_offspringFractionLabel)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(_populationSizeLabel)
+                            .addComponent(_maxPTAgeLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(_maxPTAgeSpinner)
+                            .addComponent(_pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(_stepButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(_stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(_startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(_initButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(_populationSizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)))
+                    .addComponent(_offspringFractionSlider, 0, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -287,9 +298,7 @@ public class Geometry extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(_maxPTAgeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(_maxPTAgeLabel))
-                        .addGap(18, 18, 18)
-                        .addComponent(_offspringFractionLabel)
-                        .addGap(14, 14, 14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(_offspringFractionSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(_drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -342,7 +351,6 @@ public class Geometry extends javax.swing.JFrame {
     private javax.swing.JButton _initButton;
     private javax.swing.JLabel _maxPTAgeLabel;
     private javax.swing.JSpinner _maxPTAgeSpinner;
-    private javax.swing.JLabel _offspringFractionLabel;
     private javax.swing.JSlider _offspringFractionSlider;
     private javax.swing.JButton _pauseButton;
     private javax.swing.JPanel _populationBestPanel;
@@ -357,7 +365,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -370,6 +378,10 @@ class GeometryController implements StepListener {
 	
 	private final PopulationSpinnerModel 
 		_populationSizeSpinnerModel = new PopulationSpinnerModel(this);
+	private final MaximalPhenotypeAgeSpinnerModel
+		_maximalPhenotypeAgeSpinnerModel = new MaximalPhenotypeAgeSpinnerModel(this);
+	private final OffspringFractionRangeModel
+		_offspringFractionRangeModel = new OffspringFractionRangeModel(this);
 	
 	private GeneticAlgorithm<DoubleGene, Float64> _ga;
 	private GA.Function _function;
@@ -377,6 +389,12 @@ class GeometryController implements StepListener {
 	private Point2D[] _target;
 	private Stepable _stepable;
 	private Thread _thread;
+	
+	private static final long MIN_REPAINT_TIME = 50;
+	private long _lastRepaintTime = 0;
+	private Phenotype<DoubleGene, Float64> _populationBestPhenotype;
+	private Phenotype<DoubleGene, Float64> _gaBestPhenotype;
+	private int _generation = 0;
 	
 	GeometryController(final Geometry geometry) {
 		_geometry = geometry;
@@ -388,6 +406,8 @@ class GeometryController implements StepListener {
 		_geometry.setPauseAction(_pauseAction);
 		
 		_geometry.setPopulationSpinnerModel(_populationSizeSpinnerModel);
+		_geometry.setMaximalPhenotypeAgeSpinnerModel(_maximalPhenotypeAgeSpinnerModel);
+		_geometry.setOffspringFractionRangeModel(_offspringFractionRangeModel);
 		
 		init();
 	}
@@ -467,7 +487,7 @@ class GeometryController implements StepListener {
 		_stepable.step();
 		
 		_startAction.setEnabled(true);
-		_stopAction.setEnabled(false);
+		_stopAction.setEnabled(true);
 		_pauseAction.setEnabled(false);
 		_stepAction.setEnabled(true);
 		_initAction.setEnabled(false);
@@ -475,20 +495,59 @@ class GeometryController implements StepListener {
 	
 	void setPopulationSize(final int size) {
 		if (_ga != null) {
+			_ga.getLock().lock();
 			_ga.setPopulationSize(size);
+			_ga.getLock().unlock();
+		}
+	}
+	
+	void setMaximalPhenotypeAge(final int age) {
+		if (_ga != null) {
+			_ga.getLock().lock();
+			_ga.setMaximalPhenotypeAge(age);
+			_ga.getLock().unlock();
+		}
+	}
+	
+	void setOffspringFraction(final Probability fraction) {
+		if (_ga != null) {
+			_ga.getLock().lock();
+			_ga.setOffspringFraction(fraction);
+			_ga.getLock().unlock();
 		}
 	}
 
 	@Override
 	public void stepped(EventObject event) {
-		_geometry.setPopulationBestTransform(_function.convert(
-				_ga.getStatistics().getBestPhenotype().getGenotype()
-			));
-		_geometry.setGABestTransform(_function.convert(
-				_ga.getBestPhenotype().getGenotype()
-			));
-		_geometry.repaint();
-		_geometry.setGeneration(_ga.getGeneration());
+		Phenotype<DoubleGene, Float64> populationBest = _ga.getStatistics().getBestPhenotype();
+		Phenotype<DoubleGene, Float64> gaBest = _ga.getBestPhenotype();
+		int generation = _ga.getGeneration();
+		
+		if (_populationBestPhenotype == null || 
+			_populationBestPhenotype.compareTo(populationBest) < 0) 
+		{
+			_populationBestPhenotype = populationBest;
+			_gaBestPhenotype = gaBest;
+			_generation = generation;
+		}
+		
+		//Prevent from extensive repainting.
+		final long time = System.currentTimeMillis();
+		if (time - _lastRepaintTime > MIN_REPAINT_TIME) {
+			_geometry.setPopulationBestTransform(
+					_function.convert(_populationBestPhenotype.getGenotype())
+				);
+			_geometry.setGABestTransform(
+					_function.convert(_gaBestPhenotype.getGenotype())
+				);
+			_geometry.repaint();
+			_geometry.setGeneration(_generation);
+			
+			_lastRepaintTime = time;
+			_populationBestPhenotype = null;
+			_gaBestPhenotype = null;
+			_generation = 0;
+		}
 	}
 
 	@Override
@@ -500,7 +559,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -521,7 +580,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -542,7 +601,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -563,7 +622,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -584,7 +643,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -605,7 +664,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -630,7 +689,58 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ */
+class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
+	implements ChangeListener 
+{
+	private static final long serialVersionUID = 1L;
+	
+	private final GeometryController _controller;
+	
+	public MaximalPhenotypeAgeSpinnerModel(final GeometryController controller) {
+		setMinimum(1);
+		setMaximum(Integer.MAX_VALUE);
+		setValue(35);
+		_controller = controller;
+		
+		addChangeListener(this);
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		_controller.setMaximalPhenotypeAge(getNumber().intValue());
+	}
+	
+}
+
+class OffspringFractionRangeModel extends DefaultBoundedRangeModel 
+	implements ChangeListener 
+{
+
+	private static final long serialVersionUID = 1L;
+
+	private final GeometryController _controller;
+	
+	public OffspringFractionRangeModel(final GeometryController controller) {
+		setMinimum(10);
+		setMaximum(90);
+		setValue(30);
+		_controller = controller;
+		
+		addChangeListener(this);
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		_controller.setOffspringFraction(Probability.valueOf(getValue()/100.0));
+	}
+	
+}
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -736,7 +846,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -867,7 +977,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -981,7 +1091,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -995,7 +1105,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.3 2009-03-10 21:26:24 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
  */
 class GA {
 	

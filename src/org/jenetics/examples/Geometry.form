@@ -28,34 +28,31 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="_generationLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Component id="_generationTextField" pref="384" max="32767" attributes="0"/>
+                      <Component id="_generationTextField" pref="410" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="_gaBestPanel" alignment="0" pref="473" max="32767" attributes="1"/>
-                  <Component id="_populationBestPanel" alignment="0" pref="473" max="32767" attributes="1"/>
+                  <Component id="_gaBestPanel" alignment="0" pref="499" max="32767" attributes="1"/>
+                  <Component id="_populationBestPanel" alignment="0" pref="499" max="32767" attributes="1"/>
                   <Component id="_drawPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="_offspringFractionSlider" min="0" pref="0" max="32767" attributes="1"/>
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="_populationSizeLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="_maxPTAgeLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="_maxPTAgeSpinner" max="32767" attributes="1"/>
-                              <Component id="_pauseButton" max="32767" attributes="1"/>
-                              <Component id="_stepButton" alignment="1" max="32767" attributes="1"/>
-                              <Component id="_stopButton" alignment="1" max="32767" attributes="1"/>
-                              <Component id="_startButton" alignment="1" max="32767" attributes="1"/>
-                              <Component id="_initButton" alignment="1" max="32767" attributes="1"/>
-                              <Component id="_populationSizeSpinner" alignment="1" pref="77" max="32767" attributes="1"/>
-                          </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="_populationSizeLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="_maxPTAgeLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="_offspringFractionLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="_maxPTAgeSpinner" max="32767" attributes="1"/>
+                          <Component id="_pauseButton" max="32767" attributes="1"/>
+                          <Component id="_stepButton" alignment="1" max="32767" attributes="1"/>
+                          <Component id="_stopButton" alignment="1" max="32767" attributes="1"/>
+                          <Component id="_startButton" alignment="1" max="32767" attributes="1"/>
+                          <Component id="_initButton" alignment="1" max="32767" attributes="1"/>
+                          <Component id="_populationSizeSpinner" alignment="1" pref="77" max="32767" attributes="1"/>
+                      </Group>
                   </Group>
+                  <Component id="_offspringFractionSlider" min="0" pref="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -76,9 +73,7 @@
                           <Component id="_maxPTAgeSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="_maxPTAgeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="_offspringFractionLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="_offspringFractionSlider" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="_drawPanel" max="32767" attributes="0"/>
@@ -133,12 +128,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="471" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="497" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="368" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="354" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -222,16 +217,21 @@
     </Component>
     <Component class="javax.swing.JSpinner" name="_maxPTAgeSpinner">
     </Component>
-    <Component class="javax.swing.JLabel" name="_offspringFractionLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Offspringfraction:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JSlider" name="_offspringFractionSlider">
       <Properties>
+        <Property name="majorTickSpacing" type="int" value="10"/>
         <Property name="maximum" type="int" value="90"/>
         <Property name="minimum" type="int" value="10"/>
+        <Property name="minorTickSpacing" type="int" value="5"/>
+        <Property name="paintLabels" type="boolean" value="true"/>
+        <Property name="paintTicks" type="boolean" value="true"/>
         <Property name="value" type="int" value="30"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Offspring fraction"/>
+          </Border>
+        </Property>
+        <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
