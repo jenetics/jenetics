@@ -27,8 +27,8 @@ import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.notNull;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javolution.context.ConcurrentContext;
 
@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.33 2009-03-10 21:25:03 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.34 2009-03-11 20:53:18 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -78,10 +78,11 @@ import org.jenetics.util.Timer;
  * <G> 
  */
 public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
+	private final Lock _lock = new ReentrantLock();	
 	
-	private Factory<Genotype<G>> _genotypeFactory = null;
-	private FitnessFunction<G, C> _fitnessFunction = null;
-	private FitnessScaler<C> _fitnessScaler = null;
+	private final Factory<Genotype<G>> _genotypeFactory;
+	private final FitnessFunction<G, C> _fitnessFunction;
+	private FitnessScaler<C> _fitnessScaler;
 	
 	private Probability _survivorFraction = Probability.valueOf(0.4);
 	private Probability _offspringFraction = Probability.valueOf(0.6);
@@ -93,21 +94,16 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
-	private final AtomicInteger _populationSize = new AtomicInteger(50);
-	private Population<G, C> _population = new Population<G, C>(_populationSize.get());
+	private int _populationSize = 50;
+	private Population<G, C> _population = new Population<G, C>(_populationSize);
 	private int _maximalPhenotypeAge = 70;
 	private int _generation = 0;
 	
-	private final AtomicReference<Phenotype<G, C>> 
-	_bestPhenotype = new AtomicReference<Phenotype<G,C>>();
-	
-	private final AtomicReference<Statistics<G, C>> 
-	_bestStatistic = new AtomicReference<Statistics<G,C>>();
-	
-	private final AtomicReference<Statistics<G, C>>
-	_statistics = new AtomicReference<Statistics<G,C>>();
-	
 	private StatisticsCalculator<G, C> _calculator = new StatisticsCalculator<G, C>();
+	private Statistics<G, C> _bestStatistic;
+	private Statistics<G, C> _statistics;
+	private Phenotype<G, C> _bestPhenotype;
+	
 	
 	//Some performance measure.
 	private final Timer _executionTimer = new Timer("Execution time");
@@ -159,40 +155,45 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws IllegalStateException if called more than once.
 	 */
 	public void setup() {
-		if (_generation > 0) {
-			throw new IllegalStateException(
-				"The method GeneticAlgorithm.setup() must be called only once."
-			);
+		_lock.lock();
+		try {
+			if (_generation > 0) {
+				throw new IllegalStateException(
+					"The method GeneticAlgorithm.setup() must be called only once."
+				);
+			}
+			
+			++_generation;
+			
+			_executionTimer.start();
+			
+			//Initializing/filling up the Population 
+			for (int i = _population.size(); i < _populationSize; ++i) {
+				final Phenotype<G, C> pt = Phenotype.valueOf(
+					_genotypeFactory.newInstance(), _fitnessFunction, 
+					_fitnessScaler, _generation
+				);
+				_population.add(pt);
+			}
+			
+			//Evaluate the fitness.
+			_evaluateTimer.start();
+			evaluate(_population);		
+			_evaluateTimer.stop();
+			
+			//First valuation of the initial population.
+			_statisticTimer.start();
+			_statistics = _calculator.evaluate(_population);
+			_bestPhenotype =_statistics.getBestPhenotype();
+			_bestStatistic = _statistics;
+			_statisticTimer.stop();
+			
+			_executionTimer.stop();
+			
+			setTimes(_statistics);
+		} finally {
+			_lock.unlock();
 		}
-		
-		++_generation;
-		
-		_executionTimer.start();
-		
-		//Initializing/filling up the Population 
-		for (int i = _population.size(); i < _populationSize.get(); ++i) {
-			final Phenotype<G, C> pt = Phenotype.valueOf(
-				_genotypeFactory.newInstance(), _fitnessFunction, 
-				_fitnessScaler, _generation
-			);
-			_population.add(pt);
-		}
-		
-		//Evaluate the fitness.
-		_evaluateTimer.start();
-		evaluate(_population);		
-		_evaluateTimer.stop();
-		
-		//First valuation of the initial population.
-		_statisticTimer.start();
-		_statistics.set(_calculator.evaluate(_population));
-		_bestPhenotype.set(_statistics.get().getBestPhenotype());
-		_bestStatistic.set(_statistics.get());
-		_statisticTimer.stop();
-		
-		_executionTimer.stop();
-		
-		setTimes(_statistics.get());
 	}
 	
 	/**
@@ -202,52 +203,57 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 *         method was not called first.
 	 */
 	public void evolve() {
-		if (_generation == 0) {
-			throw new IllegalStateException(
-				"Call the GeneticAlgorithm.setup() method before " +
-				"calling GeneticAlgorithm.evolve()."
-			);
+		_lock.lock();
+		try {
+			if (_generation == 0) {
+				throw new IllegalStateException(
+					"Call the GeneticAlgorithm.setup() method before " +
+					"calling GeneticAlgorithm.evolve()."
+				);
+			}
+			
+			//Start the overall execution timer.s
+			_executionTimer.start();
+			
+			//Increment the generation and the generation.
+			++_generation;
+			
+			//Select the survivors and the offsprings.
+			_selectTimer.start();
+			final Array<Population<G, C>> selection = select();
+			final Population<G, C> survivors = selection.get(0);
+			final Population<G, C> offsprings = selection.get(1);
+			_selectTimer.stop();
+			
+			//Alter the offprings (Recombination, Mutation ...).
+			_alterTimer.start();
+			_alterer.alter(offsprings, _generation);
+			_alterTimer.stop();
+			
+			//Combining the new population (containing the survivors and the altered
+			//offsprings).
+			_population = combine(survivors, offsprings);
+			
+			//Evaluate the fitness
+			_evaluateTimer.start();
+			evaluate(_population);		
+			_evaluateTimer.stop();
+			
+			//Evaluate the statistic
+			_statisticTimer.start();
+			_statistics = _calculator.evaluate(_population);
+			if (_bestPhenotype.getFitness().compareTo(_statistics.getBestFitness()) < 0) {
+				_bestPhenotype = _statistics.getBestPhenotype();
+				_bestStatistic = _statistics;
+			}
+			_statisticTimer.stop();
+			
+			_executionTimer.stop();
+			
+			setTimes(_statistics);
+		} finally {
+			_lock.unlock();
 		}
-		
-		//Start the overall execution timer.s
-		_executionTimer.start();
-		
-		//Increment the generation and the generation.
-		++_generation;
-		
-		//Select the survivors and the offsprings.
-		_selectTimer.start();
-		final Array<Population<G, C>> selection = select();
-		final Population<G, C> survivors = selection.get(0);
-		final Population<G, C> offsprings = selection.get(1);
-		_selectTimer.stop();
-		
-		//Alter the offprings (Recombination, Mutation ...).
-		_alterTimer.start();
-		_alterer.alter(offsprings, _generation);
-		_alterTimer.stop();
-		
-		//Combining the new population (containing the survivors and the altered
-		//offsprings).
-		_population = combine(survivors, offsprings);
-		
-		//Evaluate the fitness
-		_evaluateTimer.start();
-		evaluate(_population);		
-		_evaluateTimer.stop();
-		
-		//Evaluate the statistic
-		_statisticTimer.start();
-		_statistics.set(_calculator.evaluate(_population));
-		if (_bestPhenotype.get().getFitness().compareTo(_statistics.get().getBestFitness()) < 0) {
-			_bestPhenotype.set(_statistics.get().getBestPhenotype());
-			_bestStatistic.set(_statistics.get());
-		}
-		_statisticTimer.stop();
-		
-		_executionTimer.stop();
-		
-		setTimes(_statistics.get());
 	}
 	
 	private void setTimes(final Statistics<?, ?> statistic) {
@@ -304,7 +310,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final Population<G, C> survivors, 
 		final Population<G, C> offsprings
 	) {
-		final Population<G, C> population = new Population<G, C>(_populationSize.get());
+		final Population<G, C> population = new Population<G, C>(_populationSize);
 		
 		for (int i = 0, n = survivors.size(); i < n; ++i) {
 			final Phenotype<G, C> survivor = survivors.get(i);
@@ -331,38 +337,101 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private int getNumberOfSurvivors() {
 		return (int)round(
-			_survivorFraction.doubleValue()*_populationSize.get()/*/
+			_survivorFraction.doubleValue()*_populationSize/*/
 			(survivorFraction.doubleValue() + offspringFraction.doubleValue())*/
 		);
 	}
 	
 	private int getNumberOfOffsprings() {
 		return (int)round(
-			_offspringFraction.doubleValue()*_populationSize.get()/*/
+			_offspringFraction.doubleValue()*_populationSize/*/
 			(survivorFraction.doubleValue() + offspringFraction.doubleValue())*/
 		);
 	}
 	
 	/**
-	 * Return the currently used genotype {@link Factory} of the GA. 
+	 * If you are using the {@code GeneticAlgorithm} in an threaded environment
+	 * and you want to change some of the GAs parameters you can use the returned
+	 * {@link Lock} to synchronize your parameter changes. The GA aquires the
+	 * lock at the begin of the {@link #setup()} and the {@link #evolve()}
+	 * methods and releases it at the end of these methods.
+	 * <p/>
+	 * To set one ore more GA parameter you will write code like this:
+	 * [code]
+	 *     final GeneticAlgorithm<DoubleGene, Float64> ga = ...
+	 *     final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
+	 *     
+	 *     //Starting the GA in separat thread.
+	 *     final Thread thread = new Thread(new Runnable() {
+	 *         public void run() {
+	 *             while (!Thread.currentThread().isInterrupted() && 
+	 *                    !stopCondition.evaluate(ga)) 
+	 *             {
+	 *                 if (ga.getGeneration() == 0) {
+	 *                     ga.setup();
+	 *                 } else {
+	 *                     ga.evolve();
+	 *                 }
+	 *             }
+	 *         }
+	 *     });
+	 *     thread.start();
+	 *     
+	 *     //Changing the GA parameters outside the evolving thread. All parameters
+	 *     //are changed before the next evolve step.
+	 *     ga.getLock().lock();
+	 *     try {
+	 *         ga.setAlterer(new Mutation(Probability.valueOf(0.02));
+	 *         ga.setPopulationSize(55);
+	 *         ga.setMaximalPhenotypeAge(30);
+	 *     } finally {
+	 *         ga.getLock().unlock();
+	 *     }
+	 * [/code]
 	 * 
-	 * @return the currently used genotype {@link Factory} of the GA. 
+	 * You can use the same lock if you want get a consistent state of the used
+	 * parameters, if they where changed within an other thread.
+	 * 
+	 * [code]
+	 *     ga.getLock().lock();
+	 *     try {
+	 *         final Statistics<?, ?> statistics = ga.getStatistic();
+	 *         final FitnessScaler<?> scaler = ga.getFitnessScaler();
+	 *     } finally {
+	 *         ga.getLock().unlock();
+	 *     }
+	 * [/code]
+	 * 
+	 * The code above ensures that the returned {@code statistics} and 
+	 * {@code scaler} were used together within {@link #evolve()} step.
+	 * 
+	 * @return the lock aquired in the {@link #setup()} and the {@link #evolve()}
+	 *         method.
+	 */
+	public Lock getLock() {
+		return _lock;
+	}
+	
+	/**
+	 * Return the used genotype {@link Factory} of the GA. 
+	 * 
+	 * @return the used genotype {@link Factory} of the GA. 
 	 */
 	public Factory<Genotype<G>> getGenotypeFactory() {
 		return _genotypeFactory;
 	}
 	
 	/**
-	 * Return the currently used {@link FitnessFunction} of the GA. 
+	 * Return the used {@link FitnessFunction} of the GA. 
 	 * 
-	 * @return the currently used {@link FitnessFunction} of the GA. 
+	 * @return the used {@link FitnessFunction} of the GA. 
 	 */
 	public FitnessFunction<G, C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 	
 	/**
-	 * Set the fitness scaler.
+	 * Set the currently used fitness scaler.
 	 * 
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
@@ -450,7 +519,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @return the best {@link Phenotype} so far.
 	 */
 	public Phenotype<G, C> getBestPhenotype() {
-		return _bestPhenotype.get();
+		return _bestPhenotype;
 	}
 	
 	/**
@@ -459,7 +528,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @return the current {@link Population} {@link Statistics}.
 	 */
 	public Statistics<G, C> getStatistics() {
-		return _statistics.get();
+		return _statistics;
 	}
 
 	/**
@@ -564,7 +633,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				"Population size must be greater than zero, but was " + size + ". "
 			);
 		}		 
-		_populationSize.set(size);
+		_populationSize = size;
 	}
 	
 	/**
@@ -591,7 +660,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				phenotype.getGenotype(), _fitnessFunction, _generation
 			));
 		}
-		_populationSize.set(population.size());
+		_populationSize = population.size();
 	}
 	
 	/**
@@ -618,7 +687,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				genotype, _fitnessFunction, _generation
 			));
 		}
-		_populationSize.set(genotypes.size());
+		_populationSize = genotypes.size();
 	}
 	
 	/**
@@ -631,7 +700,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	public Statistics<G, C> getBestStatistic() {
-		return _bestStatistic.get();
+		return _bestStatistic;
 	}
 	
 	/**
