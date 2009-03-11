@@ -27,10 +27,27 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.6 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.7 2009-03-11 21:46:12 fwilhelm Exp $
  */
 public class ArrayTest {
 
+	@Test
+	public void indexOf() {
+		final Array<Integer> array = new Array<Integer>(20);
+		for (int i = 0; i < 10; ++i) {
+			array.set(i, i);
+		}
+		for (int i = 10; i < 20; ++i) {
+			array.set(i, i - 10);
+		}
+		
+		int index = array.indexOf(5);
+		Assert.assertEquals(index, 5);
+		
+		index = array.lastIndexOf(5);
+		Assert.assertEquals(index, 15);
+	}
+	
 	@Test
 	public void copy() {
 		final Array<Integer> array = new Array<Integer>(10);
