@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.34 2009-03-11 20:53:18 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.35 2009-03-11 21:00:09 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -403,7 +403,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * [/code]
 	 * 
 	 * The code above ensures that the returned {@code statistics} and 
-	 * {@code scaler} were used together within {@link #evolve()} step.
+	 * {@code scaler} were used together within the same {@link #evolve()} step.
 	 * 
 	 * @return the lock aquired in the {@link #setup()} and the {@link #evolve()}
 	 *         method.
