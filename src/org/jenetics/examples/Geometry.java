@@ -63,7 +63,6 @@ import org.jenetics.DoubleGene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
@@ -75,7 +74,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -137,15 +136,27 @@ public class Geometry extends javax.swing.JFrame {
 		}
 	}
 	
+	void setTargetTransform(final AffineTransform transform) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			((TransformPanel)_targetTransformPanel).setAffineTransform(transform);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					((TransformPanel)_targetTransformPanel).setAffineTransform(transform);
+				}
+			});
+		}
+	}
+	
 	void setGABestTransform(final AffineTransform transform) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((DrawPanel)_drawPanel).setAlltimeBestTransform(transform);
-			((TransformPanel)_gaBestPanel).setAffineTransform(transform);
+			((TransformPanel)_gaBestTransformPanel).setAffineTransform(transform);
 		} else {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override public void run() {
 					((DrawPanel)_drawPanel).setAlltimeBestTransform(transform);
-					((TransformPanel)_gaBestPanel).setAffineTransform(transform);
+					((TransformPanel)_gaBestTransformPanel).setAffineTransform(transform);
 				}
 			});
 		}
@@ -154,12 +165,12 @@ public class Geometry extends javax.swing.JFrame {
 	void setPopulationBestTransform(final AffineTransform transform) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((DrawPanel)_drawPanel).setPopulationBestTransform(transform);
-			((TransformPanel)_populationBestPanel).setAffineTransform(transform);
+			((TransformPanel)_populationBestTransformPanel).setAffineTransform(transform);
 		} else {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override public void run() {
 					((DrawPanel)_drawPanel).setPopulationBestTransform(transform);
-					((TransformPanel)_populationBestPanel).setAffineTransform(transform);
+					((TransformPanel)_populationBestTransformPanel).setAffineTransform(transform);
 				}
 			});
 		}
@@ -188,8 +199,11 @@ public class Geometry extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed"
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        _drawPanel = new DrawPanel();
+        _drawToolSplitPane = new javax.swing.JSplitPane();
+        _toolBasePanel = new javax.swing.JPanel();
+        _toolPanel = new javax.swing.JPanel();
         _startButton = new javax.swing.JButton();
         _stopButton = new javax.swing.JButton();
         _initButton = new javax.swing.JButton();
@@ -197,51 +211,150 @@ public class Geometry extends javax.swing.JFrame {
         _stepButton = new javax.swing.JButton();
         _generationLabel = new javax.swing.JLabel();
         _generationTextField = new javax.swing.JFormattedTextField();
-        _populationBestPanel = new TransformPanel();
-        _gaBestPanel = new TransformPanel();
+        _populationBestTransformPanel = new TransformPanel();
+        _gaBestTransformPanel = new TransformPanel();
         _populationSizeLabel = new javax.swing.JLabel();
         _populationSizeSpinner = new javax.swing.JSpinner();
         _maxPTAgeLabel = new javax.swing.JLabel();
         _maxPTAgeSpinner = new javax.swing.JSpinner();
         _offspringFractionSlider = new javax.swing.JSlider();
+        _offspringFractionLabel = new javax.swing.JLabel();
+        _populationTransformBestLabel = new javax.swing.JLabel();
+        _gaBestTransformLabel = new javax.swing.JLabel();
+        _targetTransformPanel = new TransformPanel();
+        _targetTransformLabel = new javax.swing.JLabel();
+        _mutationProbabilityLabel = new javax.swing.JLabel();
+        _mutationProbabilitySlider = new javax.swing.JSlider();
+        _drawPanel = new DrawPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        _drawPanel.setBackground(java.awt.Color.white);
-        _drawPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        _drawToolSplitPane.setDividerLocation(500);
+        _drawToolSplitPane.setResizeWeight(0.5);
 
-        javax.swing.GroupLayout _drawPanelLayout = new javax.swing.GroupLayout(_drawPanel);
-        _drawPanel.setLayout(_drawPanelLayout);
-        _drawPanelLayout.setHorizontalGroup(
-            _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 497, Short.MAX_VALUE)
-        );
-        _drawPanelLayout.setVerticalGroup(
-            _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 354, Short.MAX_VALUE)
-        );
+        _toolBasePanel.setMinimumSize(new java.awt.Dimension(200, 200));
+        _toolBasePanel.setLayout(new java.awt.GridBagLayout());
+
+        _toolPanel.setLayout(new java.awt.GridBagLayout());
 
         _startButton.setText("Start");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
+        _toolPanel.add(_startButton, gridBagConstraints);
 
         _stopButton.setText("Stop");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
+        _toolPanel.add(_stopButton, gridBagConstraints);
 
         _initButton.setText("Init");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 5, 3, 0);
+        _toolPanel.add(_initButton, gridBagConstraints);
 
         _pauseButton.setText("Pause");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
+        _toolPanel.add(_pauseButton, gridBagConstraints);
 
         _stepButton.setText("Step");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
+        _toolPanel.add(_stepButton, gridBagConstraints);
 
         _generationLabel.setText("Generation:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 3, 0);
+        _toolPanel.add(_generationLabel, gridBagConstraints);
 
         _generationTextField.setPreferredSize(new java.awt.Dimension(100, 24));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 5, 3, 0);
+        _toolPanel.add(_generationTextField, gridBagConstraints);
 
-        _populationBestPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Population best"));
+        _populationBestTransformPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
+        _toolPanel.add(_populationBestTransformPanel, gridBagConstraints);
 
-        _gaBestPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("GA best"));
+        _gaBestTransformPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 5, 3, 0);
+        _toolPanel.add(_gaBestTransformPanel, gridBagConstraints);
 
         _populationSizeLabel.setText("Population size:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        _toolPanel.add(_populationSizeLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        _toolPanel.add(_populationSizeSpinner, gridBagConstraints);
 
         _maxPTAgeLabel.setText("Maximal PT age:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        _toolPanel.add(_maxPTAgeLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        _toolPanel.add(_maxPTAgeSpinner, gridBagConstraints);
 
         _offspringFractionSlider.setMajorTickSpacing(10);
         _offspringFractionSlider.setMaximum(90);
@@ -250,80 +363,117 @@ public class Geometry extends javax.swing.JFrame {
         _offspringFractionSlider.setPaintLabels(true);
         _offspringFractionSlider.setPaintTicks(true);
         _offspringFractionSlider.setValue(30);
-        _offspringFractionSlider.setBorder(javax.swing.BorderFactory.createTitledBorder("Offspring fraction"));
+        _offspringFractionSlider.setBorder(null);
         _offspringFractionSlider.setName(""); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        _toolPanel.add(_offspringFractionSlider, gridBagConstraints);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(_generationLabel)
-                        .addGap(22, 22, 22)
-                        .addComponent(_generationTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
-                    .addComponent(_gaBestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
-                    .addComponent(_populationBestPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
-                    .addComponent(_drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(_populationSizeLabel)
-                            .addComponent(_maxPTAgeLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(_maxPTAgeSpinner)
-                            .addComponent(_pauseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(_stepButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(_stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(_startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(_initButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(_populationSizeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)))
-                    .addComponent(_offspringFractionSlider, 0, 0, Short.MAX_VALUE))
-                .addContainerGap())
+        _offspringFractionLabel.setText("Offspring fraction:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        _toolPanel.add(_offspringFractionLabel, gridBagConstraints);
+
+        _populationTransformBestLabel.setText("Population best:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        _toolPanel.add(_populationTransformBestLabel, gridBagConstraints);
+
+        _gaBestTransformLabel.setText("GA best:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        _toolPanel.add(_gaBestTransformLabel, gridBagConstraints);
+
+        _targetTransformPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
+        _toolPanel.add(_targetTransformPanel, gridBagConstraints);
+
+        _targetTransformLabel.setText("Target transform:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 4);
+        _toolPanel.add(_targetTransformLabel, gridBagConstraints);
+
+        _mutationProbabilityLabel.setText("Mutation probability:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        _toolPanel.add(_mutationProbabilityLabel, gridBagConstraints);
+
+        _mutationProbabilitySlider.setMajorTickSpacing(100);
+        _mutationProbabilitySlider.setMaximum(500);
+        _mutationProbabilitySlider.setMinorTickSpacing(50);
+        _mutationProbabilitySlider.setPaintLabels(true);
+        _mutationProbabilitySlider.setPaintTicks(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        _toolPanel.add(_mutationProbabilitySlider, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        _toolBasePanel.add(_toolPanel, gridBagConstraints);
+
+        _drawToolSplitPane.setRightComponent(_toolBasePanel);
+
+        _drawPanel.setBackground(java.awt.Color.white);
+        _drawPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout _drawPanelLayout = new javax.swing.GroupLayout(_drawPanel);
+        _drawPanel.setLayout(_drawPanelLayout);
+        _drawPanelLayout.setHorizontalGroup(
+            _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 508, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(_populationSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(_populationSizeLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(_maxPTAgeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(_maxPTAgeLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(_offspringFractionSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(_drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(_populationBestPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(_initButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(_startButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(_stopButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(_stepButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(_pauseButton))
-                    .addComponent(_gaBestPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(_generationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(_generationLabel))
-                .addContainerGap())
+        _drawPanelLayout.setVerticalGroup(
+            _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
+
+        _drawToolSplitPane.setLeftComponent(_drawPanel);
+
+        getContentPane().add(_drawToolSplitPane, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -345,27 +495,37 @@ public class Geometry extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel _drawPanel;
-    private javax.swing.JPanel _gaBestPanel;
+    private javax.swing.JSplitPane _drawToolSplitPane;
+    private javax.swing.JLabel _gaBestTransformLabel;
+    private javax.swing.JPanel _gaBestTransformPanel;
     private javax.swing.JLabel _generationLabel;
     private javax.swing.JFormattedTextField _generationTextField;
     private javax.swing.JButton _initButton;
     private javax.swing.JLabel _maxPTAgeLabel;
     private javax.swing.JSpinner _maxPTAgeSpinner;
+    private javax.swing.JLabel _mutationProbabilityLabel;
+    private javax.swing.JSlider _mutationProbabilitySlider;
+    private javax.swing.JLabel _offspringFractionLabel;
     private javax.swing.JSlider _offspringFractionSlider;
     private javax.swing.JButton _pauseButton;
-    private javax.swing.JPanel _populationBestPanel;
+    private javax.swing.JPanel _populationBestTransformPanel;
     private javax.swing.JLabel _populationSizeLabel;
     private javax.swing.JSpinner _populationSizeSpinner;
+    private javax.swing.JLabel _populationTransformBestLabel;
     private javax.swing.JButton _startButton;
     private javax.swing.JButton _stepButton;
     private javax.swing.JButton _stopButton;
+    private javax.swing.JLabel _targetTransformLabel;
+    private javax.swing.JPanel _targetTransformPanel;
+    private javax.swing.JPanel _toolBasePanel;
+    private javax.swing.JPanel _toolPanel;
     // End of variables declaration//GEN-END:variables
 
 }
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -384,6 +544,7 @@ class GeometryController implements StepListener {
 		_offspringFractionRangeModel = new OffspringFractionRangeModel(this);
 	
 	private GeneticAlgorithm<DoubleGene, Float64> _ga;
+	private AffineTransform _transform;
 	private GA.Function _function;
 	private Point2D[] _source;
 	private Point2D[] _target;
@@ -414,7 +575,8 @@ class GeometryController implements StepListener {
 	
 	void init() {
 		_source = GA.getSourcePolygon();
-		_target = GA.getTargetPolygon();
+		_transform = GA.getTargetTransform();
+		_target = GA.getTargetPolygon(_transform);
 		_function = new GA.Function(_source, _target);
 		
 		_ga = GA.getGA(_function);
@@ -443,6 +605,10 @@ class GeometryController implements StepListener {
 		_thread = new Thread(_stepable);
 		_thread.start();
 		
+		_geometry.setTargetTransform(_transform);
+		_geometry.setPopulationBestTransform(new AffineTransform());
+		_geometry.setGABestTransform(new AffineTransform());
+		_geometry.setGeneration(0);
 		_geometry.repaint();
 		
 		_startAction.setEnabled(true);
@@ -559,7 +725,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -580,7 +746,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -601,7 +767,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -622,7 +788,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -643,7 +809,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -664,7 +830,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -689,7 +855,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -740,7 +906,7 @@ class OffspringFractionRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -846,7 +1012,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -977,7 +1143,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1091,7 +1257,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1105,7 +1271,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.4 2009-03-11 23:03:40 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
  */
 class GA {
 	
@@ -1192,7 +1358,7 @@ class GA {
 		return SOURCE_POLYGON;
 	}
 	
-	public static Point2D[] getTargetPolygon() {
+	public static AffineTransform getTargetTransform() {
 		final Random random = new Random(System.currentTimeMillis());
 		final double theta = random.nextDouble()*2*Math.PI - Math.PI;
 		final double tx = random.nextInt(600) - 300;
@@ -1209,10 +1375,14 @@ class GA {
 		transform.concatenate(rotate);
 		transform.concatenate(translate);
 		
+		return transform;
+	}
+	
+	public static Point2D[] getTargetPolygon(final AffineTransform transform) {	
 		final Point2D[] target = new Point2D[SOURCE_POLYGON.length];
 		try {
 			for (int i = 0; i < SOURCE_POLYGON.length; ++i) {
-				target[i]  = transform.transform(SOURCE_POLYGON[i], null);
+				target[i]  = transform.inverseTransform(SOURCE_POLYGON[i], null);
 			}
 		} catch (Exception ignore) {
 		}
@@ -1226,7 +1396,6 @@ class GA {
 				GA.getGenotypeFactory(), function
 			);
 		ga.addAlterer(new Mutation<DoubleGene>(Probability.valueOf(0.1)));
-		ga.addAlterer(new MeanAlterer<DoubleGene>(Probability.valueOf(0.5)));
 		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);
