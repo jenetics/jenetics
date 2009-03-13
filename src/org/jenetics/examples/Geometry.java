@@ -38,8 +38,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.util.Dictionary;
 import java.util.EventListener;
 import java.util.EventObject;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -50,7 +52,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -74,7 +79,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -112,8 +117,14 @@ public class Geometry extends javax.swing.JFrame {
 		_maxPTAgeSpinner.setModel(model);
 	}
 	
-	void setOffspringFractionRangeModel(final OffspringFractionRangeModel model) {
+	void setOffspringFractionRangeModel(final LabeledBoundedRangeModel model) {
 		_offspringFractionSlider.setModel(model);
+		_offspringFractionSlider.setLabelTable(model.getLables());
+	}
+	
+	void setMutationProbabilityRangeModel(final LabeledBoundedRangeModel model) {
+		_mutationProbabilitySlider.setModel(model);
+		_mutationProbabilitySlider.setLabelTable(model.getLables());
 	}
 	
 	void setSourcePolygon(final Point2D[] polygon) {
@@ -525,7 +536,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -542,6 +553,8 @@ class GeometryController implements StepListener {
 		_maximalPhenotypeAgeSpinnerModel = new MaximalPhenotypeAgeSpinnerModel(this);
 	private final OffspringFractionRangeModel
 		_offspringFractionRangeModel = new OffspringFractionRangeModel(this);
+	private final MutationProbabilityRangeModel
+		_mutationProbabilityRangeModel = new MutationProbabilityRangeModel(this);
 	
 	private GeneticAlgorithm<DoubleGene, Float64> _ga;
 	private AffineTransform _transform;
@@ -569,6 +582,7 @@ class GeometryController implements StepListener {
 		_geometry.setPopulationSpinnerModel(_populationSizeSpinnerModel);
 		_geometry.setMaximalPhenotypeAgeSpinnerModel(_maximalPhenotypeAgeSpinnerModel);
 		_geometry.setOffspringFractionRangeModel(_offspringFractionRangeModel);
+		_geometry.setMutationProbabilityRangeModel(_mutationProbabilityRangeModel);
 		
 		init();
 	}
@@ -682,6 +696,14 @@ class GeometryController implements StepListener {
 			_ga.getLock().unlock();
 		}
 	}
+	
+	void setMutationProbability(final Probability probability) {
+		if (_ga != null) {
+			_ga.getLock().lock();
+			_ga.setAlterer(new Mutation<DoubleGene>(probability));
+			_ga.getLock().unlock();
+		}
+	}
 
 	@Override
 	public void stepped(EventObject event) {
@@ -725,7 +747,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -746,7 +768,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -767,7 +789,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -788,7 +810,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -809,7 +831,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -830,7 +852,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -855,7 +877,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -880,21 +902,43 @@ class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel
 	
 }
 
+interface LabeledBoundedRangeModel extends BoundedRangeModel {
+	
+	public Dictionary<Integer, JComponent> getLables();
+	
+}
+
 class OffspringFractionRangeModel extends DefaultBoundedRangeModel 
-	implements ChangeListener 
+	implements ChangeListener, LabeledBoundedRangeModel 
 {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final int MIN = 10;
+	private static final int MAX = 90;
+	private static final int VALUE = 20;
 
 	private final GeometryController _controller;
 	
 	public OffspringFractionRangeModel(final GeometryController controller) {
-		setMinimum(10);
-		setMaximum(90);
-		setValue(30);
+		setMinimum(MIN);
+		setMaximum(MAX);
+		setValue(VALUE);
 		_controller = controller;
 		
 		addChangeListener(this);
+	}
+	
+	@Override
+	public Dictionary<Integer, JComponent> getLables() {
+		final Dictionary<Integer, JComponent> lables = new Hashtable<Integer, JComponent>();
+		
+		for (int i = MIN; i <= MAX; i += 10) {
+			final JLabel label = new JLabel("." + i/10);
+			lables.put(i, label);
+		}
+		
+		return lables;
 	}
 	
 	@Override
@@ -904,9 +948,49 @@ class OffspringFractionRangeModel extends DefaultBoundedRangeModel
 	
 }
 
+class MutationProbabilityRangeModel extends DefaultBoundedRangeModel 
+	implements ChangeListener, LabeledBoundedRangeModel 
+{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private static final int MIN = 0;
+	private static final int MAX = 800;
+	private static final int VALUE = 50;
+	
+	private final GeometryController _controller;
+	
+	public MutationProbabilityRangeModel(final GeometryController controller) {
+		setMinimum(MIN);
+		setMaximum(MAX);
+		setValue(VALUE);
+		_controller = controller;
+		
+		addChangeListener(this);
+	}
+	
+	@Override
+	public Dictionary<Integer, JComponent> getLables() {
+		final Dictionary<Integer, JComponent> lables = new Hashtable<Integer, JComponent>();
+		
+		for (int i = MIN; i <= MAX; i += 100) {
+			final JLabel label = new JLabel("." + i/100);
+			lables.put(i, label);
+		}
+		
+		return lables;
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		_controller.setMutationProbability(Probability.valueOf(getValue()/1000.0));
+	}
+
+}
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1012,7 +1096,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1143,7 +1227,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1257,7 +1341,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1271,7 +1355,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.5 2009-03-12 21:43:23 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
  */
 class GA {
 	

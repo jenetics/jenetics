@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
@@ -60,7 +59,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.17 2009-03-13 17:10:06 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.18 2009-03-13 19:02:22 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -118,7 +117,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)round(population.size()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(population.size()*_probability.doubleValue());
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(population.size(), subsetSize, random);
@@ -137,7 +136,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	
 	private Genotype<G> mutate(final Genotype<G> genotype) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)round(genotype.length()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(genotype.length()*_probability.doubleValue());
 		
 		Genotype<G> gt = genotype;
 		if (subsetSize > 0) {
@@ -181,7 +180,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 */
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)round(genes.length()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(genes.length(), subsetSize, random);
