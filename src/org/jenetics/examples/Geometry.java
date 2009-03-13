@@ -38,6 +38,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.text.NumberFormat;
 import java.util.Dictionary;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -68,7 +69,10 @@ import org.jenetics.DoubleGene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
+import org.jenetics.MeanAlterer;
 import org.jenetics.Mutation;
+import org.jenetics.NumberStatistics;
+import org.jenetics.NumberStatisticsCalculator;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
@@ -79,7 +83,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -128,11 +132,51 @@ public class Geometry extends javax.swing.JFrame {
 	}
 	
 	void setSourcePolygon(final Point2D[] polygon) {
-		((DrawPanel)_drawPanel).setSourcePolygon(polygon);
+		if (SwingUtilities.isEventDispatchThread()) {
+			((DrawPanel)_drawPanel).setSourcePolygon(polygon);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					((DrawPanel)_drawPanel).setSourcePolygon(polygon);
+				}
+			});
+		}
 	}
 	
 	void setTargetPolygon(final Point2D[] polygon) {
-		((DrawPanel)_drawPanel).setTargetPolygon(polygon);
+		if (SwingUtilities.isEventDispatchThread()) {
+			((DrawPanel)_drawPanel).setTargetPolygon(polygon);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					((DrawPanel)_drawPanel).setTargetPolygon(polygon);
+				}
+			});
+		}
+	}
+	
+	void setFitnessMean(final double mean) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			_fitnessMeanTextField.setValue(format(mean));
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					_fitnessMeanTextField.setValue(format(mean));
+				}
+			});
+		}
+	}
+	
+	void setFitnessVariance(final double variance) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			_fitnessVarianceTextField.setValue(format(variance));
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					_fitnessVarianceTextField.setValue(format(variance));
+				}
+			});
+		}
 	}
 	
 	void setGeneration(final int generation) {
@@ -187,6 +231,14 @@ public class Geometry extends javax.swing.JFrame {
 		}
 	}
 	
+	private static String format(final double value) {
+		final NumberFormat f = NumberFormat.getNumberInstance();
+		f.setMaximumFractionDigits(2);
+		f.setMinimumFractionDigits(2);
+		
+		return f.format(value);
+	}
+	
 	@Override
 	public void repaint() {
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -236,6 +288,10 @@ public class Geometry extends javax.swing.JFrame {
         _targetTransformLabel = new javax.swing.JLabel();
         _mutationProbabilityLabel = new javax.swing.JLabel();
         _mutationProbabilitySlider = new javax.swing.JSlider();
+        _fitenssMeanLabel = new javax.swing.JLabel();
+        _fitnessMeanTextField = new javax.swing.JFormattedTextField();
+        _fitnessVarianceLabel = new javax.swing.JLabel();
+        _fitnessVarianceTextField = new javax.swing.JFormattedTextField();
         _drawPanel = new DrawPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -296,27 +352,28 @@ public class Geometry extends javax.swing.JFrame {
         _generationLabel.setText("Generation:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 2.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 0, 3, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 0, 3, 0);
         _toolPanel.add(_generationLabel, gridBagConstraints);
 
+        _generationTextField.setEditable(false);
         _generationTextField.setPreferredSize(new java.awt.Dimension(100, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 5, 3, 0);
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
         _toolPanel.add(_generationTextField, gridBagConstraints);
 
         _populationBestTransformPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -326,7 +383,7 @@ public class Geometry extends javax.swing.JFrame {
         _gaBestTransformPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 14;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -397,7 +454,7 @@ public class Geometry extends javax.swing.JFrame {
         _populationTransformBestLabel.setText("Population best:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 13;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.weightx = 1.0;
@@ -407,7 +464,7 @@ public class Geometry extends javax.swing.JFrame {
         _gaBestTransformLabel.setText("GA best:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridy = 14;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.weightx = 1.0;
@@ -417,7 +474,7 @@ public class Geometry extends javax.swing.JFrame {
         _targetTransformPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -427,7 +484,7 @@ public class Geometry extends javax.swing.JFrame {
         _targetTransformLabel.setText("Target transform:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.weightx = 1.0;
@@ -457,6 +514,45 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         _toolPanel.add(_mutationProbabilitySlider, gridBagConstraints);
 
+        _fitenssMeanLabel.setText("Fitness mean:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 3, 0, 3);
+        _toolPanel.add(_fitenssMeanLabel, gridBagConstraints);
+
+        _fitnessMeanTextField.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 5, 3, 0);
+        _toolPanel.add(_fitnessMeanTextField, gridBagConstraints);
+
+        _fitnessVarianceLabel.setText("Fitness variance:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
+        _toolPanel.add(_fitnessVarianceLabel, gridBagConstraints);
+
+        _fitnessVarianceTextField.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
+        _toolPanel.add(_fitnessVarianceTextField, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -475,11 +571,11 @@ public class Geometry extends javax.swing.JFrame {
         _drawPanel.setLayout(_drawPanelLayout);
         _drawPanelLayout.setHorizontalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 508, Short.MAX_VALUE)
+            .addGap(0, 498, Short.MAX_VALUE)
         );
         _drawPanelLayout.setVerticalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 489, Short.MAX_VALUE)
+            .addGap(0, 542, Short.MAX_VALUE)
         );
 
         _drawToolSplitPane.setLeftComponent(_drawPanel);
@@ -507,6 +603,10 @@ public class Geometry extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel _drawPanel;
     private javax.swing.JSplitPane _drawToolSplitPane;
+    private javax.swing.JLabel _fitenssMeanLabel;
+    private javax.swing.JFormattedTextField _fitnessMeanTextField;
+    private javax.swing.JLabel _fitnessVarianceLabel;
+    private javax.swing.JFormattedTextField _fitnessVarianceTextField;
     private javax.swing.JLabel _gaBestTransformLabel;
     private javax.swing.JPanel _gaBestTransformPanel;
     private javax.swing.JLabel _generationLabel;
@@ -536,7 +636,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -676,40 +776,55 @@ class GeometryController implements StepListener {
 	void setPopulationSize(final int size) {
 		if (_ga != null) {
 			_ga.getLock().lock();
-			_ga.setPopulationSize(size);
-			_ga.getLock().unlock();
+			try {
+				_ga.setPopulationSize(size);
+			} finally {
+				_ga.getLock().unlock();
+			}
 		}
 	}
 	
 	void setMaximalPhenotypeAge(final int age) {
 		if (_ga != null) {
 			_ga.getLock().lock();
-			_ga.setMaximalPhenotypeAge(age);
-			_ga.getLock().unlock();
+			try {
+				_ga.setMaximalPhenotypeAge(age);
+			} finally {
+				_ga.getLock().unlock();
+			}
 		}
 	}
 	
 	void setOffspringFraction(final Probability fraction) {
 		if (_ga != null) {
 			_ga.getLock().lock();
-			_ga.setOffspringFraction(fraction);
-			_ga.getLock().unlock();
+			try {
+				_ga.setOffspringFraction(fraction);
+			} finally {
+				_ga.getLock().unlock();
+			}
 		}
 	}
 	
 	void setMutationProbability(final Probability probability) {
 		if (_ga != null) {
 			_ga.getLock().lock();
-			_ga.setAlterer(new Mutation<DoubleGene>(probability));
-			_ga.getLock().unlock();
+			try {
+				_ga.setAlterer(new Mutation<DoubleGene>(probability));
+				_ga.addAlterer(new MeanAlterer<DoubleGene>());
+			} finally {
+				_ga.getLock().unlock();
+			}
 		}
 	}
 
 	@Override
 	public void stepped(EventObject event) {
-		Phenotype<DoubleGene, Float64> populationBest = _ga.getStatistics().getBestPhenotype();
-		Phenotype<DoubleGene, Float64> gaBest = _ga.getBestPhenotype();
-		int generation = _ga.getGeneration();
+		final NumberStatistics<DoubleGene, Float64> statistics = 
+			(NumberStatistics<DoubleGene, Float64>)_ga.getStatistics();
+		final Phenotype<DoubleGene, Float64> populationBest = statistics.getBestPhenotype();
+		final Phenotype<DoubleGene, Float64> gaBest = _ga.getBestPhenotype();
+		final int generation = _ga.getGeneration();
 		
 		if (_populationBestPhenotype == null || 
 			_populationBestPhenotype.compareTo(populationBest) < 0) 
@@ -730,6 +845,8 @@ class GeometryController implements StepListener {
 				);
 			_geometry.repaint();
 			_geometry.setGeneration(_generation);
+			_geometry.setFitnessMean(statistics.getFitnessMean());
+			_geometry.setFitnessVariance(statistics.getFitnessVariance());
 			
 			_lastRepaintTime = time;
 			_populationBestPhenotype = null;
@@ -747,7 +864,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -768,7 +885,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -789,7 +906,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -810,7 +927,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -831,7 +948,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -852,7 +969,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -877,7 +994,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -990,7 +1107,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1096,7 +1213,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1227,7 +1344,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1341,7 +1458,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1355,7 +1472,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.6 2009-03-13 19:02:26 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
  */
 class GA {
 	
@@ -1389,7 +1506,7 @@ class GA {
 				error += _source[i].distance(point);
 			}
 	
-			return Float64.valueOf(100000 - error);
+			return Float64.valueOf(-error);
 		}
 	
 		@Override
@@ -1484,6 +1601,7 @@ class GA {
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setOffspringFraction(Probability.valueOf(0.3));
+		ga.setStatisticCalculator(new NumberStatisticsCalculator<DoubleGene, Float64>());
 		
 		return ga;
 	}
