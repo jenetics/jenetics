@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
@@ -38,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.8 2009-03-04 22:44:52 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.9 2009-03-13 17:10:06 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
@@ -59,21 +60,24 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	@Override
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
-		final int[] elements = subset(genes.length(), subsetSize, random);
-				
-		for (int i = 0; i < elements.length; ++i) {
-			final G oldGene = genes.get(elements[i]);
-			double value = random.nextGaussian()*oldGene.doubleValue();
-			value = Math.min(value, oldGene.getMax().doubleValue());
-			value = Math.max(value, oldGene.getMin().doubleValue());
-			
-			final G newGene = oldGene.newInstance(value);
-			genes.set(elements[i], newGene);
-						
-		}
+		final int subsetSize = (int)round(genes.length()*_probability.doubleValue());
 		
-		_mutations += elements.length;	
+		if (subsetSize > 0) {
+			final int[] elements = subset(genes.length(), subsetSize, random);
+					
+			for (int i = 0; i < elements.length; ++i) {
+				final G oldGene = genes.get(elements[i]);
+				double value = random.nextGaussian()*oldGene.doubleValue();
+				value = Math.min(value, oldGene.getMax().doubleValue());
+				value = Math.max(value, oldGene.getMin().doubleValue());
+				
+				final G newGene = oldGene.newInstance(value);
+				genes.set(elements[i], newGene);
+							
+			}
+			
+			_mutations += elements.length;
+		}
 	}
 	
 }

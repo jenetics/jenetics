@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
@@ -39,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  * allowed, e.g. for the TSP.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SwapMutation.java,v 1.2 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: SwapMutation.java,v 1.3 2009-03-13 17:10:06 fwilhelm Exp $
  */
 public class SwapMutation<G extends Gene<?, G>> extends Mutation<G> {
 
@@ -61,14 +62,17 @@ public class SwapMutation<G extends Gene<?, G>> extends Mutation<G> {
 	@Override
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
-		final int[] elements = subset(genes.length(), subsetSize, random);
-				
-		for (int i = 0; i < elements.length; ++i) {
-			ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
-		}
+		final int subsetSize = (int)round(genes.length()*_probability.doubleValue());
 		
-		_mutations += elements.length;
+		if (subsetSize > 0) {
+			final int[] elements = subset(genes.length(), subsetSize, random);
+					
+			for (int i = 0; i < elements.length; ++i) {
+				ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
+			}
+			
+			_mutations += elements.length;
+		}
 	}
 
 	
