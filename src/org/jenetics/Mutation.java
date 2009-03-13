@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.ceil;
+import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
@@ -60,7 +60,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.16 2009-03-09 22:31:15 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.17 2009-03-13 17:10:06 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -118,40 +118,43 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
-		final int[] elements = subset(
-				population.size(), 
-				(int)ceil(population.size()*_probability.doubleValue()), 
-				random
-			);
-						
-		for (int i = 0; i < elements.length; ++i) {
-			final Phenotype<G, C> phenotype = population.get(elements[i]);
-			final Genotype<G> genotype = phenotype.getGenotype(); 
-			
-			population.set(
-				elements[i], 
-				phenotype.newInstance(mutate(genotype), generation)
-			);
+		final int subsetSize = (int)round(population.size()*_probability.doubleValue());
+		
+		if (subsetSize > 0) {
+			final int[] elements = subset(population.size(), subsetSize, random);
+							
+			for (int i = 0; i < elements.length; ++i) {
+				final Phenotype<G, C> phenotype = population.get(elements[i]);
+				final Genotype<G> genotype = phenotype.getGenotype(); 
+				
+				population.set(
+					elements[i], 
+					phenotype.newInstance(mutate(genotype), generation)
+				);
+			}
 		}
 	}
 	
 	private Genotype<G> mutate(final Genotype<G> genotype) {
 		final Random random = RandomRegistry.getRandom();
-		final int[] elements = subset(
-				genotype.length(), 
-				(int)ceil(genotype.length()*_probability.doubleValue()), 
-				random
-			);
+		final int subsetSize = (int)round(genotype.length()*_probability.doubleValue());
 		
-		final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
-		for (int i = 0; i < elements.length; ++i) {
-			final Chromosome<G> chromosome = chromosomes.get(elements[i]);
-			final Array<G> genes = chromosome.toArray().copy();
-			mutate(genes);
-			chromosomes.set(elements[i], chromosome.newInstance(genes));
-		}
+		Genotype<G> gt = genotype;
+		if (subsetSize > 0) {
+			final int[] elements = subset(genotype.length(), subsetSize, random);
+			
+			final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
+			for (int i = 0; i < elements.length; ++i) {
+				final Chromosome<G> chromosome = chromosomes.get(elements[i]);
+				final Array<G> genes = chromosome.toArray().copy();
+				mutate(genes);
+				chromosomes.set(elements[i], chromosome.newInstance(genes));
+			}
 				
-		return Genotype.valueOf(chromosomes);
+			gt = Genotype.valueOf(chromosomes);
+		}
+		
+		return gt;
 	}
 	
 	/**
@@ -178,14 +181,17 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 */
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)ceil(genes.length()*_probability.doubleValue());
-		final int[] elements = subset(genes.length(), subsetSize, random);
+		final int subsetSize = (int)round(genes.length()*_probability.doubleValue());
 		
-		for (int i = 0; i < elements.length; ++i) {
-			genes.set(elements[i], genes.get(elements[i]).newInstance());
+		if (subsetSize > 0) {
+			final int[] elements = subset(genes.length(), subsetSize, random);
+			
+			for (int i = 0; i < elements.length; ++i) {
+				genes.set(elements[i], genes.get(elements[i]).newInstance());
+			}
+			
+			_mutations += elements.length;
 		}
-		
-		_mutations += elements.length;
 	}
 
 }
