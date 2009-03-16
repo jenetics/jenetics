@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelectorTest.java,v 1.3 2009-03-09 22:31:35 fwilhelm Exp $
+ * @version $Id: ProbabilitySelectorTest.java,v 1.4 2009-03-16 21:50:44 fwilhelm Exp $
  */
 public class ProbabilitySelectorTest {
 
@@ -65,7 +65,6 @@ public class ProbabilitySelectorTest {
 			Assert.assertEquals(indices[i], props[i], 0.005);
 		}
 	}
-	
 	
 	
 	private static String toString(final double[] array) {
