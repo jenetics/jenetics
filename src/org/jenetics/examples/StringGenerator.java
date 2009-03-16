@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.22 2009-02-24 21:32:09 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.23 2009-03-16 21:50:23 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -75,7 +75,6 @@ public class StringGenerator {
 		ga = new GeneticAlgorithm<CharacterGene, Integer64>(gtf, ff);
 		
 		ga.setPopulationSize(5000);
-		ga.setSurvivorFraction(Probability.valueOf(0.3));
 		ga.setOffspringFraction(Probability.valueOf(0.7));
 		ga.setMaximalPhenotypeAge(30);
 //		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());

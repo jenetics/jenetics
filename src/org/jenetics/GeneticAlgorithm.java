@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.35 2009-03-11 21:00:09 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.36 2009-03-16 21:49:29 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -84,7 +84,6 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final FitnessFunction<G, C> _fitnessFunction;
 	private FitnessScaler<C> _fitnessScaler;
 	
-	private Probability _survivorFraction = Probability.valueOf(0.4);
 	private Probability _offspringFraction = Probability.valueOf(0.6);
 	
 	private Alterer<G> _alterer = ( 
@@ -316,8 +315,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			final Phenotype<G, C> survivor = survivors.get(i);
 			
 			//Survivor is still alive and valid.
-			if ((_generation - survivor.getGeneration()) <=
-				_maximalPhenotypeAge && survivor.isValid()) 
+			if ((_generation - survivor.getGeneration()) <= _maximalPhenotypeAge && 
+				survivor.isValid()) 
 			{
 				population.add(survivor);
 				
@@ -336,16 +335,12 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	private int getNumberOfSurvivors() {
-		return (int)round(
-			_survivorFraction.doubleValue()*_populationSize/*/
-			(survivorFraction.doubleValue() + offspringFraction.doubleValue())*/
-		);
+		return _populationSize - getNumberOfOffsprings();
 	}
 	
 	private int getNumberOfOffsprings() {
 		return (int)round(
-			_offspringFraction.doubleValue()*_populationSize/*/
-			(survivorFraction.doubleValue() + offspringFraction.doubleValue())*/
+			_offspringFraction.doubleValue()*_populationSize
 		);
 	}
 	
@@ -451,15 +446,6 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the currently used survivor fraction of the GA. 
-	 * 
-	 * @return the currently used survivor fraction of the GA. 
-	 */
-	public Probability getSurvivorFraction() {
-		return _survivorFraction;
-	}
-	
-	/**
 	 * Return the currently used offspring fraction of the GA. 
 	 * 
 	 * @return the currently used offspring fraction of the GA. 
@@ -561,16 +547,6 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	public void setSelectors(final Selector<G, C> selector) {
 		setOffspringSelector(selector);
 		setSurvivorSelector(selector);
-	}
-	
-	/**
-	 * Set the survivor fraction.
-	 * @param survivorFraction The survivor fraction.
-	 * @throws NullPointerException if the survivor fraction is null.
-	 */
-	public void setSurvivorFraction(final Probability survivorFraction) {
-		notNull(survivorFraction, "Survivor fraction");
-		_survivorFraction = survivorFraction;
 	}
 	
 	/**

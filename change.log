@@ -1,4 +1,7 @@
 Jenetics-0.4.0.0
+- Remove the survivor fraction probability from the GA. This can lead to 
+  inconsistencies with the offspring fraction. The survivor fraction is deduced
+  from the offspring fraction (sf := 1 - of).
 - Adding additional example.
 - Removing the static factory methods from the Array class.
 - Refactoring GA statistic classes.
