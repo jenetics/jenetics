@@ -42,7 +42,7 @@ import org.jenetics.util.Verifiable;
  * This class is the encoded problem solution with one to many Chromosomes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.18 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.19 2009-03-31 18:45:45 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?, T>> 
 	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
@@ -172,7 +172,7 @@ public class Genotype<T extends Gene<?, T>>
 		if (o == this) {
 			return true;
 		}
-		if (!(o instanceof Genotype)) {
+		if (!(o instanceof Genotype<?>)) {
 			return false;
 		}
 		

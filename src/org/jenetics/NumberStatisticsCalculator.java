@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatisticsCalculator.java,v 1.1 2009-02-25 22:31:56 fwilhelm Exp $
+ * @version $Id: NumberStatisticsCalculator.java,v 1.2 2009-03-31 18:45:45 fwilhelm Exp $
  */
 public class NumberStatisticsCalculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends StatisticsCalculator<G, R>
@@ -53,8 +53,9 @@ public class NumberStatisticsCalculator<G extends Gene<?, G>, R extends Number &
 		
 		final double mean = fitnessSum/population.size();
 		final double variance = fitnessSquareSum/size - mean*mean;
+		final double errorOfMean = Math.sqrt(variance/(population.size()  - 1));
 		
-		return new NumberStatistics<G, R>(s, mean, variance);
+		return new NumberStatistics<G, R>(s, mean, variance, errorOfMean);
 	}
 	
 //	static double torben(double m[]){

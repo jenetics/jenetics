@@ -33,7 +33,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.18 2009-03-11 21:45:31 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.19 2009-03-31 18:45:46 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -435,7 +435,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Array)) {
+		if (!(obj instanceof Array<?>)) {
 			return false;
 		}
 		

@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.11 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.12 2009-03-31 18:45:45 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -88,9 +88,6 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		if (_rawFitness == null) {
 			_rawFitness = _fitnessFunction.evaluate(_genotype);
 			_fitness = _fitnessScaler.scale(_rawFitness);
-			
-			assert (_rawFitness != null);
-			assert (_fitness != null);
 		}
 	}
 	

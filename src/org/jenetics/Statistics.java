@@ -45,7 +45,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.6 2009-03-04 22:44:52 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.7 2009-03-31 18:45:45 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -164,7 +164,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Statistics)) {
+		if (!(obj instanceof Statistics<?, ?>)) {
 			return false;
 		}
 		
@@ -491,9 +491,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 
 		public Final(final T value) {
 			_value = value;
-		}
-		
-		public Final() {
 		}
 		
 		public void set(final T value) {
