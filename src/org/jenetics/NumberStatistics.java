@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.3 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.4 2009-03-31 18:45:45 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -40,25 +40,30 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
+	protected final double _errorOfMean;
 	
 	protected NumberStatistics(
 		final Phenotype<G, R> best, final Phenotype<G, R> worst, 
 		final double fitnessMean, final double fitnessVariance,
-		final int samples, final double ageMean, final double ageVariance
+		final int samples, final double ageMean, final double ageVariance,
+		final double errorOfMean
 	) {
 		super(best, worst, samples, ageMean, ageVariance);
 		
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
+		_errorOfMean = errorOfMean;
 	}
 	
 	protected NumberStatistics(
 		final Statistics<G, R> other, 
-		final double fitnessMean, final double fitnessVariance
+		final double fitnessMean, final double fitnessVariance,
+		final double errorOfMean
 	) {
 		super(other);
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
+		_errorOfMean = errorOfMean;
 	}
 
 	public double getFitnessMean() {
@@ -68,12 +73,17 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	public double getFitnessVariance() {
 		return _fitnessVariance;
 	}
+	
+	public double getErrorOfMean() {
+		return _errorOfMean;
+	}
 
 	@Override
 	public int hashCode() {
 		int hash = super.hashCode()*37;
 		hash += (int)doubleToLongBits(_fitnessMean)*37;
 		hash += (int)doubleToLongBits(_fitnessVariance)*37;
+		hash += (int)doubleToLongBits(_errorOfMean)*37;
 		return hash;
 	}
 	
@@ -82,7 +92,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof NumberStatistics)) {
+		if (!(obj instanceof NumberStatistics<?, ?>)) {
 			return false;
 		}
 		
@@ -90,7 +100,8 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		
 		return 
 			doubleToLongBits(statistics._fitnessMean) == doubleToLongBits(_fitnessMean) &&
-			doubleToLongBits(statistics._fitnessVariance) == doubleToLongBits(_fitnessVariance);
+			doubleToLongBits(statistics._fitnessVariance) == doubleToLongBits(_fitnessVariance) &&
+			doubleToLongBits(statistics._errorOfMean) == doubleToLongBits(_errorOfMean);
 	}
 	
 	@Override
@@ -99,7 +110,8 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 
 		out.append(super.toString() + "\n");
 		out.append("Mean:            " + _fitnessMean + "\n");
-		out.append("Variance:        " + _fitnessVariance);
+		out.append("Variance:        " + _fitnessVariance + "\n");
+		out.append("Error of mean:   " + _errorOfMean);
 		
 		return out.toString();
 	}
@@ -108,16 +120,23 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	static final XMLFormat<NumberStatistics> 
 	XML = new XMLFormat<NumberStatistics>(NumberStatistics.class) 
 	{
+		private static final String FITNESS_MEAN = "fitness-mean";
+		private static final String FITNESS_VARIANCE = "fitness-variance";
+		private static final String ERROR_OF_MEAN = "error-of-mean";
+		
 		@Override
 		public NumberStatistics newInstance(final Class<NumberStatistics> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
 			final Statistics stats = Statistics.XML.newInstance(Statistics.class, xml);
-			final Float64 fitnessMean = xml.get("fitness-mean");
-			final Float64 fitnessVariance = xml.get("fitness-variance");
+			final Float64 fitnessMean = xml.get(FITNESS_MEAN);
+			final Float64 fitnessVariance = xml.get(FITNESS_VARIANCE);
+			final Float64 errorOfMean = xml.get(ERROR_OF_MEAN);
 			
 			return new NumberStatistics(
-				stats, fitnessMean.doubleValue(), fitnessVariance.doubleValue()
+				stats, fitnessMean.doubleValue(), 
+				fitnessVariance.doubleValue(),
+				errorOfMean.doubleValue()				
 			);
 
 		}
@@ -126,8 +145,9 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			throws XMLStreamException 
 		{
 			Statistics.XML.write(s, xml);
-			xml.add(Float64.valueOf(s.getFitnessMean()), "fitness-mean");
-			xml.add(Float64.valueOf(s.getFitnessVariance()), "fitness-variance");
+			xml.add(Float64.valueOf(s.getFitnessMean()), FITNESS_MEAN);
+			xml.add(Float64.valueOf(s.getFitnessVariance()), FITNESS_VARIANCE);
+			xml.add(Float64.valueOf(s.getErrorOfMean()), ERROR_OF_MEAN);
 		}
 		@Override
 		public void read(final InputElement xml, final NumberStatistics p) 

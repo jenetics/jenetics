@@ -39,7 +39,7 @@ import org.jenetics.util.Validator;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.17 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.18 2009-03-31 18:45:45 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
@@ -88,7 +88,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 			));
 		}
 		
-		_genes = genes.copy();
+		_genes = genes.seal();
 	}
 	
 	@Override
@@ -154,7 +154,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof AbstractChromosome)) {
+		if (!(obj instanceof AbstractChromosome<?>)) {
 			return false;
 		}
 		
