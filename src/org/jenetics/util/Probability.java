@@ -34,7 +34,7 @@ import org.jscience.mathematics.structure.Structure;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Probability.java,v 1.2 2009-03-04 22:44:52 fwilhelm Exp $
+ * @version $Id: Probability.java,v 1.3 2009-04-08 20:20:47 fwilhelm Exp $
  */
 public final class Probability extends Number
 	implements Comparable<Probability>, XMLSerializable, 
@@ -170,18 +170,20 @@ public final class Probability extends Number
 	}
 	
 	static final XMLFormat<Probability> XML = new XMLFormat<Probability>(Probability.class) {
+		private static final String PROBABILITY = "probability";
+		
 		@Override
 		public Probability newInstance(final Class<Probability> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
-			final double probability = xml.getAttribute("probability", 0);
+			final double probability = xml.getAttribute(PROBABILITY, 0);
 			return Probability.valueOf(probability);
 		}
 		@Override
 		public void write(final Probability p, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("probability", p._probability);
+			xml.setAttribute(PROBABILITY, p._probability);
 		}
 		@Override
 		public void read(final InputElement xml, final Probability p) 

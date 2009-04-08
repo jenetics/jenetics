@@ -33,7 +33,7 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.14 2009-03-05 19:09:52 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.15 2009-04-08 20:20:47 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
@@ -61,7 +61,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	 * 
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
-	 * @throws new IllegalArgumentException if the length of the gene array is
+	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
 	 */
 	public CharacterChromosome(final Array<CharacterGene> genes) {

@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
@@ -33,7 +34,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.19 2009-03-31 18:45:46 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.20 2009-04-08 20:20:47 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -145,13 +146,19 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		System.arraycopy(values, 0, _array, 0, values.length);
 	}
 	
+	/**
+	 * Create a new Array from the values of the given Collection. The order of
+	 * the elements are determined by the iterator of the Collection.
+	 * 
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
 	public Array(final Collection<T> values) {
 		this(values.size());
 		
 		int index = 0;
-		for (T value : values) {
-			_array[index] = value;
-			++index;
+		for (Iterator<T> it = values.iterator(); it.hasNext(); ++index) {
+			_array[index] = it.next();
 		}
 	}
 	

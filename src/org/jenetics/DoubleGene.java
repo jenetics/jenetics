@@ -26,7 +26,6 @@ import java.util.Random;
 
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.RandomRegistry;
@@ -35,11 +34,9 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.9 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.10 2009-04-08 20:20:47 fwilhelm Exp $
  */
-public class DoubleGene extends NumberGene<Float64, DoubleGene> 
-	implements Mean<DoubleGene>, XMLSerializable 
-{
+public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	private static final long serialVersionUID = 2531451920309748752L;	
 	
 	protected DoubleGene() {
@@ -77,9 +74,9 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene>
 	
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		Float64 sum = _value;
-		sum = sum.plus(that._value);
-		return newInstance(sum.divide(Float64.valueOf(2)));
+		return newInstance(
+				(_value.doubleValue() + that._value.doubleValue())/2.0
+			);
 	}
 	
 	private static final ObjectFactory<DoubleGene> 

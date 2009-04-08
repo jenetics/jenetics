@@ -28,7 +28,6 @@ import java.util.Random;
 
 import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
-import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.RandomRegistry;
@@ -37,11 +36,9 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.9 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.10 2009-04-08 20:20:47 fwilhelm Exp $
  */
-public class IntegerGene extends NumberGene<Integer64, IntegerGene> 
-	implements Mean<IntegerGene>, XMLSerializable 
-{
+public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	private static final long serialVersionUID = 262677052481286632L;
 	
 	protected IntegerGene() {
@@ -51,7 +48,8 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 	public IntegerGene newInstance() {
 		final Random random = RandomRegistry.getRandom();
 		final double rv = random.nextDouble();
-		final long value = round(rv*(_max.longValue() - _min.longValue())) + _min.longValue();
+		final long value = round(rv*(_max.longValue() - _min.longValue())) + 
+										_min.longValue();
 		return newInstance(value);
 	}
 	
@@ -74,9 +72,7 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene>
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		Integer64 sum = _value;
-		sum = sum.plus(that._value);
-		return newInstance(sum.divide(Integer64.valueOf(2)));
+		return newInstance((_value.longValue() + that._value.longValue())/2);
 	}
 	
 	
