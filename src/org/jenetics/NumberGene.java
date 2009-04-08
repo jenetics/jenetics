@@ -25,6 +25,7 @@ package org.jenetics;
 import static org.jenetics.util.Validator.notNull;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
+import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Number;
 
@@ -32,10 +33,10 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.9 2009-02-24 21:43:30 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.10 2009-04-08 20:20:47 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
-	extends Number<G> implements Gene<N, G>, Mean<G>
+	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
 {
 	private static final long serialVersionUID = 9160065700657586640L;
 
