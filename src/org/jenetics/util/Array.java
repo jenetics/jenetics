@@ -34,7 +34,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.20 2009-04-08 20:20:47 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.21 2009-05-02 17:26:45 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -328,7 +328,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	/**
 	 * Return whether this array is sealed (immutable) or not.
 	 * 
-	 * @return {@code true} if this array can be changed, {@code false} otherwise.
+	 * @return {@code false} if this array can be changed, {@code true} otherwise.
 	 */
 	public boolean isSealed() {
 		return _sealed;
