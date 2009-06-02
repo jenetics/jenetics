@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.10 2009-04-08 20:20:47 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.11 2009-06-02 21:39:53 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	private static final long serialVersionUID = 2531451920309748752L;	
@@ -95,7 +95,6 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param min the minimal valid value of this DoubleGene.
 	 * @param max the maximal valid value of this DoubleGene.
 	 * @return the new created DoubleGene with the given {@code value}.
-	 * @throws IllegalArgumentException if min > max.
 	 */
 	public static DoubleGene valueOf(
 		final Float64 value, final Float64 min, final Float64 max
@@ -114,7 +113,6 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param min the minimal valid value of this DoubleGene.
 	 * @param max the maximal valid value of this DoubleGene.
 	 * @return the new created DoubleGene with the given {@code value}.
-	 * @throws IllegalArgumentException if min > max.
 	 */
 	public static DoubleGene valueOf(
 		final double value, final double min, final double max
@@ -132,8 +130,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * 
 	 * @param min the minimal value of the DoubleGene to create.
 	 * @param max the maximal value of the DoubleGene to create.
-	 * @return the new created Integer gene.
-	 * @throws IllegalArgumentException if min > max
+	 * @return the new created DoubleGene.
 	 */
 	public static DoubleGene valueOf(final Float64 min, final Float64 max) {
 		final Random random = RandomRegistry.getRandom();
@@ -150,8 +147,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * 
 	 * @param min the minimal value of the DoubleGene to create.
 	 * @param max the maximal value of the DoubleGene to create.
-	 * @return the new created Integer gene.
-	 * @throws IllegalArgumentException if min > max
+	 * @return the new created DoubleGene.
 	 */
 	public static DoubleGene valueOf(final double min, final double max) {
 		return valueOf(Float64.valueOf(min), Float64.valueOf(max));
