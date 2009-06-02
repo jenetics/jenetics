@@ -27,8 +27,6 @@ import static java.lang.Math.min;
 
 import java.util.Random;
 
-import javolution.context.StackContext;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
@@ -73,7 +71,7 @@ import org.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.14 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.15 2009-06-02 21:14:52 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
@@ -100,32 +98,27 @@ public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G
 		index1 = min(index1, index2);
 		index2 = max(index1, index2) + 1;
 		
-		StackContext.enter();
-		try {
-			final Array<G> thatGenes = new Array<G>(index2 - index1);
-			final Array<G> otherGenes = new Array<G>(index2 - index1);
+		final Array<G> thatGenes = new Array<G>(index2 - index1);
+		final Array<G> otherGenes = new Array<G>(index2 - index1);
+		
+		//Swap the gene range.
+		for (int i = index1; i < index2; ++i) {
+			final int index = i - index1;
 			
-			//Swap the gene range.
-			for (int i = index1; i < index2; ++i) {
-				final int index = i - index1;
-				
-				thatGenes.set(index, that.get(i));
-				otherGenes.set(index, other.get(i));
-				
-				that.set(i, otherGenes.get(index));
-				other.set(i, thatGenes.get(index));
-			}
+			thatGenes.set(index, that.get(i));
+			otherGenes.set(index, other.get(i));
 			
-			//Repare the chromosomes.
-			for (int i = 0; i < (index2 - index1); ++i) {
-				int thatIndex = indexOf(that, index1, index2, otherGenes.get(i));
-				int otherIndex = indexOf(other, index1, index2, thatGenes.get(i));
-				
-				that.set(thatIndex, thatGenes.get(i));
-				other.set(otherIndex, otherGenes.get(i));
-			}
-		} finally {
-			StackContext.exit();
+			that.set(i, otherGenes.get(index));
+			other.set(i, thatGenes.get(index));
+		}
+		
+		//Repare the chromosomes.
+		for (int i = 0; i < (index2 - index1); ++i) {
+			int thatIndex = indexOf(that, index1, index2, otherGenes.get(i));
+			int otherIndex = indexOf(other, index1, index2, thatGenes.get(i));
+			
+			that.set(thatIndex, thatGenes.get(i));
+			other.set(otherIndex, otherGenes.get(i));
 		}
 	}
 	
