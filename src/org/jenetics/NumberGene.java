@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.10 2009-04-08 20:20:47 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.11 2009-06-02 21:39:53 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
@@ -54,6 +54,8 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 * The value of this <code>NumberGene</code>.
 	 */
 	protected N _value;
+	
+	private boolean _valid = true;
 	
 	
 	protected NumberGene() {
@@ -82,22 +84,22 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 * @param min The allowed min value of the gene.
 	 * @param max The allows max value of the gene.
 	 * @throws NullPointerException if one of the given number is null.
-	 * @throws IllegalArgumentException if min > max.
 	 */
 	protected void set(final N value, final N min, final N max) {
 		notNull(value, "Gene value");
 		notNull(min, "Min value");
 		notNull(max, "Max value");
 		
-		if (min.isGreaterThan(max)) {
-			throw new IllegalArgumentException(String.format(
-				"Max value must be greater than min value. [%s, %s]", min, max
-			));
-		}
+//		if (min.isGreaterThan(max)) {
+//			throw new IllegalArgumentException(String.format(
+//				"Max value must be greater than min value. [%s, %s]", min, max
+//			));
+//		}
 
-		this._min = min;
-		this._max = max;
-		this._value = value;
+		_min = min;
+		_max = max;
+		_value = value;
+		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
 	
 	/**
@@ -109,7 +111,7 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 */
 	@Override
 	public boolean isValid() {
-		return _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
+		return _valid;
 	}
 	
 	/**

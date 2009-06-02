@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.10 2009-04-08 20:20:47 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.11 2009-06-02 21:39:53 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	private static final long serialVersionUID = 262677052481286632L;
@@ -92,7 +92,6 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	 * @param min the minimal valid value of this IntegerGene.
 	 * @param max the maximal valid value of this IntegerGene.
 	 * @return the new created IntegerGene with the given {@code value}.
-	 * @throws IllegalArgumentException if min > max.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static IntegerGene valueOf(
@@ -114,7 +113,6 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	 * @param min the minimal valid value of this IntegerGene.
 	 * @param max the maximal valid value of this IntegerGene.
 	 * @return the new created IntegerGene with the given {@code value}.
-	 * @throws IllegalArgumentException if min > max.
 	 */
 	public static IntegerGene valueOf(long value, long min, long max) {
 		return valueOf(
@@ -125,13 +123,12 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	}
 	
 	/**
-	 * Create a new random IntegerGene. It is guaranteed that the value of the IntegerGene
-	 * lies in the closed interval [min, max].
+	 * Create a new random IntegerGene. It is guaranteed that the value of the 
+	 * IntegerGene lies in the closed interval [min, max].
 	 * 
 	 * @param min the minimal value of the IntegerGene to create.
 	 * @param max the maximal value of the IntegerGene to create.
 	 * @return the new created Integer gene.
-	 * @throws IllegalArgumentException if min > max
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static IntegerGene valueOf(final Integer64 min, final Integer64 max) {
@@ -142,13 +139,12 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	}
 	
 	/**
-	 * Create a new random IntegerGene. It is guaranteed that the value of the IntegerGene
-	 * lies in the closed interval [min, max].
+	 * Create a new random IntegerGene. It is guaranteed that the value of the 
+	 * IntegerGene lies in the closed interval [min, max].
 	 * 
 	 * @param min the minimal value of the IntegerGene to create.
 	 * @param max the maximal value of the IntegerGene to create.
 	 * @return the new created Integer gene.
-	 * @throws IllegalArgumentException if min > max
 	 */
 	public static IntegerGene valueOf(final int min, final int max) {
 		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max));
