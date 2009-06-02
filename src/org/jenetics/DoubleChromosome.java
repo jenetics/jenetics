@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.14 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.15 2009-06-02 21:59:22 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -50,6 +50,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
+	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public DoubleChromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
@@ -60,6 +61,8 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public DoubleChromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);

@@ -33,29 +33,67 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.12 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.13 2009-06-02 21:59:22 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Create a new chromosome from the given genes array.
+	 * 
+	 * @param genes the genes of the new chromosome.
+	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller than 
+	 *         one.
+	 */
 	protected IntegerChromosome(final Array<IntegerGene> genes) {
 		super(genes);
 	}
 	
+	/**
+	 * Create a new random IntegerChromosome.
+	 * 
+	 * @param min the min value of the {@link DoubleGene}s.
+	 * @param max the max value of the {@link DoubleGene}s.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
 	public IntegerChromosome(final long min, final long max) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
 	
+	/**
+	 * Create a new random IntegerChromosome with length one.
+	 * 
+	 * @param min the min value of the {@link DoubleGene}s.
+	 * @param max the max value of the {@link DoubleGene}s.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
 	public IntegerChromosome(final Integer64 min, final Integer64 max) {
 		this(min, max, 1);
 	}
 	
+	/**
+	 * Create a new random IntegerChromosome.
+	 * 
+	 * @param min the min value of the {@link DoubleGene}s.
+	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param length the length of the chromosome.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
 	public IntegerChromosome(final long min, final long max, int length) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
 	}
 	
+	/**
+	 * Create a new chromosome from the given genes array.
+	 * 
+	 * @param genes the genes of the new chromosome.
+	 * @throws NullPointerException if the given genes array is {@code null}.
+	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
+	 *         one.
+	 */
 	public IntegerChromosome(final IntegerGene... genes) {
 		super(genes.length);
 		
@@ -67,11 +105,12 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	}
 	
 	/**
-	 * Create a new random DoubleChromosome.
+	 * Create a new random IntegerChromosome.
 	 * 
 	 * @param min the min value of the {@link DoubleGene}s.
 	 * @param max the max value of the {@link DoubleGene}s.
 	 * @param length the length of the chromosome.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public IntegerChromosome(
