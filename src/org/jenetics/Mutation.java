@@ -59,11 +59,14 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.18 2009-03-13 19:02:22 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.19 2009-06-02 21:25:03 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
 
+	/**
+	 * Holds the number of mutation performed by this mutation class.
+	 */
 	protected int _mutations = 0;
 	
 	/**
@@ -189,6 +192,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 				genes.set(elements[i], genes.get(elements[i]).newInstance());
 			}
 			
+			//Count the number of mutations.
 			_mutations += elements.length;
 		}
 	}

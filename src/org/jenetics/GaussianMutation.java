@@ -38,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.10 2009-03-13 19:02:22 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.11 2009-06-02 21:25:03 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
@@ -75,6 +75,7 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 							
 			}
 			
+			//Count the number of mutated genes.
 			_mutations += elements.length;
 		}
 	}
