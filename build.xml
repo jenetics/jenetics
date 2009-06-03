@@ -304,8 +304,9 @@
 		<copy todir="${export.dir}" file="change.log"/>
 		<copy todir="${export.dir}" file="LGPL.txt"/>
 		<copy todir="${export.dir}" file="README"/>
-		<copy todir="${export.dir}/build" file="Jenetics-all-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="Jenetics-${version}.jar"/>
+		<copy todir="${export.dir}/build" file="Jenetics-all-${version}.jar"/>
+		<copy todir="${export.dir}/build" file="Jenetics-examples-${version}.jar"/>
 		
 		<zip destfile="export/Jenetics-${version}.zip" level="9">
 			<fileset dir="${export.dir}"/>
