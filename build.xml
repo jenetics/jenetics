@@ -75,14 +75,20 @@
 	<target name="jar" depends="compile">
 		<tstamp>
 			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
-		</tstamp>		
+		</tstamp>
+		
+		<!--
+		 # Build without the library dependencies.
+		-->
 		<jar 
 			destfile="Jenetics-${version}.jar" 
 			filesetmanifest="mergewithoutmain" 
 			index="true" update="true" 
 			level="9" duplicate="preserve"
 		>
-			<fileset dir="${compile.dir}" />
+			<fileset dir="${compile.dir}" >
+				<exclude name="org/jenetics/examples/*" />
+			</fileset>
 			<manifest>
 				<attribute name="ProjectName" value="Jenetics" />
 				<attribute name="Version" value="${version}" />
@@ -94,6 +100,9 @@
 			</manifest>
 		</jar>
 		
+		<!--
+		 # Build with the library dependencies.
+		-->		
 		<jar 
 			destfile="Jenetics-all-${version}.jar" 
 			filesetmanifest="mergewithoutmain" 
@@ -101,9 +110,34 @@
 			level="9" duplicate="preserve"
 		>
 			<zipfileset src="${lib.dir}/jscience.jar" />
-			<fileset dir="${compile.dir}" />
+			<fileset dir="${compile.dir}" >
+				<exclude name="org/jenetics/examples/*" />
+			</fileset>
 			<manifest>
 				<attribute name="ProjectName" value="Jenetics" />
+				<attribute name="Version" value="${version}" />
+				<attribute name="Vendor" value="Franz Wilhelmstötter" />
+				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
+				<attribute name="Implementation-URL" value="http://jenetics.sourceforge.net" />
+				<attribute name="Implementation-Vendor" value="Jenetics" />
+				<attribute name="Implementation-Version" value="${JAR_TIMESTAMP}" />
+			</manifest>
+		</jar>	
+		
+		<!--
+		 # Build the examples
+		-->		
+		<jar 
+			destfile="Jenetics-examples-${version}.jar" 
+			filesetmanifest="mergewithoutmain" 
+			index="true" update="true" 
+			level="9" duplicate="preserve"
+		>
+			<fileset dir="${compile.dir}" >
+				<include name="org/jenetics/examples/*" />
+			</fileset>
+			<manifest>
+				<attribute name="ProjectName" value="Jenetics Examples" />
 				<attribute name="Version" value="${version}" />
 				<attribute name="Vendor" value="Franz Wilhelmstötter" />
 				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
