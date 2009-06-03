@@ -1,4 +1,5 @@
-- Fixing javadoc.
+- The examples are packed in separate jar file (Jenetics-examples-<version>.jar).
+- Some Fixing javadoc.
 
 Jenetics-0.4.0.0
 - Remove the survivor fraction probability from the GA. This can lead to 
