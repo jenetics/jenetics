@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.29 2009-03-11 21:27:36 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.30 2009-06-12 21:37:23 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -842,7 +842,7 @@ public final class ArrayUtils {
 			}
 			
 			sub[i - 2] = ix;
-			m = m - 1;
+			--m;
 		}
 	}
 	
@@ -903,7 +903,9 @@ public final class ArrayUtils {
 	public static void permutation(final int[] p, final long rank) {
 		Validator.notNull(p, "Permutation array");
 		if (rank < 1) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(String.format(
+					"Rank smaler than 1: %s", rank
+				));
 		}
 		
 		Arrays.fill(p, 0);

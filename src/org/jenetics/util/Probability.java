@@ -34,7 +34,7 @@ import org.jscience.mathematics.structure.Structure;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Probability.java,v 1.3 2009-04-08 20:20:47 fwilhelm Exp $
+ * @version $Id: Probability.java,v 1.4 2009-06-12 21:37:23 fwilhelm Exp $
  */
 public final class Probability extends Number
 	implements Comparable<Probability>, XMLSerializable, 
@@ -93,14 +93,16 @@ public final class Probability extends Number
 		return valueOf(1.0 - _probability);
 	}
 	
+	public Probability times(final Probability p) {
+		return valueOf(_probability*p._probability);
+	}
+	
 	/**
 	 * @throws NullPointerException if <code>p</code> is null.
 	 */
 	@Override
 	public int compareTo(final Probability p) {
-		if (p == null) {
-			throw new NullPointerException("Probability must not be null. ");
-		}
+		Validator.notNull(p, "Probability");
 		
 		int compare = 0;
 		if (_probability > p._probability) {
@@ -113,7 +115,7 @@ public final class Probability extends Number
 
 	@Override
 	public int hashCode() {
-		long bits = Double.doubleToLongBits(_probability);
+		final long bits = Double.doubleToLongBits(_probability);
 		return (int)(bits ^ (bits >>> 32));
 	}
 	
@@ -128,7 +130,7 @@ public final class Probability extends Number
 		
 		final Probability p = (Probability)obj;
 		return Double.doubleToLongBits(_probability) == 
-			Double.doubleToLongBits(p._probability);
+				Double.doubleToLongBits(p._probability);
 	}
 
 	@Override

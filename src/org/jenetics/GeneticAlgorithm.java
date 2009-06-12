@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.36 2009-03-16 21:49:29 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.37 2009-06-12 21:37:23 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -78,6 +78,9 @@ import org.jenetics.util.Timer;
  * <G> 
  */
 public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
+	private static final int POPULATION_SIZE = 50;
+	private static final int MAXIMAL_PHENOTYPE_AGE = 70;
+	
 	private final Lock _lock = new ReentrantLock();	
 	
 	private final Factory<Genotype<G>> _genotypeFactory;
@@ -93,9 +96,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
-	private int _populationSize = 50;
+	private int _populationSize = POPULATION_SIZE;
 	private Population<G, C> _population = new Population<G, C>(_populationSize);
-	private int _maximalPhenotypeAge = 70;
+	private int _maximalPhenotypeAge = MAXIMAL_PHENOTYPE_AGE;
 	private int _generation = 0;
 	
 	private StatisticsCalculator<G, C> _calculator = new StatisticsCalculator<G, C>();
