@@ -34,7 +34,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.21 2009-05-02 17:26:45 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.22 2009-06-12 21:37:23 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -153,11 +153,11 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public Array(final Collection<T> values) {
+	public Array(final Collection<? extends T> values) {
 		this(values.size());
 		
 		int index = 0;
-		for (Iterator<T> it = values.iterator(); it.hasNext(); ++index) {
+		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
 			_array[index] = it.next();
 		}
 	}
@@ -259,7 +259,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 *         every array element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int indexOf(final Predicate<T> predicate) {
+	public int indexOf(final Predicate<? super T> predicate) {
 		Validator.notNull(predicate, "Predicate");
 		
 		int index = -1;
@@ -286,7 +286,7 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	 *         every array element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int lastIndexOf(final Predicate<T> predicate) {
+	public int lastIndexOf(final Predicate<? super T> predicate) {
 		Validator.notNull(predicate, "Predicate");
 		
 		int index = -1;
