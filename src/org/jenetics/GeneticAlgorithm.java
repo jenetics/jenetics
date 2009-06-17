@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.37 2009-06-12 21:37:23 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.38 2009-06-17 21:27:12 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -90,9 +90,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Probability _offspringFraction = Probability.valueOf(0.6);
 	
 	private Alterer<G> _alterer = ( 
-		new SinglePointCrossover<G>(Probability.valueOf(0.1))).append(
-		new Mutation<G>(Probability.valueOf(0.05))
-	);
+			new SinglePointCrossover<G>(Probability.valueOf(0.1))).append(
+			new Mutation<G>(Probability.valueOf(0.05))
+		);
+	
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
@@ -708,22 +709,32 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @return the current time statistics.
 	 */
 	public Statistics.Time getTimeStatistics() {
-		final Statistics.Time times = new Statistics.Time();
-		times.setAlterTime(_alterTimer.getTime());
-		times.setEvaluationTime(_evaluateTimer.getTime());
-		times.setExecutionTime(_executionTimer.getTime());
-		times.setSelectionTime(_selectTimer.getTime());
-		times.setStatisticTime(_statisticTimer.getTime());
-		return times;
+		_lock.lock();
+		try {
+			final Statistics.Time times = new Statistics.Time();
+			times.setAlterTime(_alterTimer.getTime());
+			times.setEvaluationTime(_evaluateTimer.getTime());
+			times.setExecutionTime(_executionTimer.getTime());
+			times.setSelectionTime(_selectTimer.getTime());
+			times.setStatisticTime(_statisticTimer.getTime());
+			return times;
+		} finally {
+			_lock.unlock();
+		}
 	}
 	
 	@Override
 	public String toString() {
-		final StringBuilder out = new StringBuilder();
-		out.append(String.format(
-			"%4d: (best) %s", _generation, getStatistics().getBestPhenotype()
-		));
-		return out.toString();
+		_lock.lock();
+		try {
+			final StringBuilder out = new StringBuilder();
+			out.append(String.format(
+				"%4d: (best) %s", _generation, getStatistics().getBestPhenotype()
+			));
+			return out.toString();
+		} finally {
+			_lock.unlock();
+		}
 	}
 	
 	/**
