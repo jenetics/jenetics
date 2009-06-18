@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.15 2009-06-02 21:59:22 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.16 2009-06-18 20:45:17 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -92,7 +92,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	public DoubleChromosome(final DoubleGene... genes) {
 		super(genes.length);
 		
-		_min = genes[0]._max;
+		_min = genes[0]._min;
 		_max = genes[0]._max;
 		for (int i = 0; i < genes.length; ++i) {
 			_genes.set(i, genes[i]);
