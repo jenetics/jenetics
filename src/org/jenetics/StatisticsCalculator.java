@@ -32,7 +32,7 @@ import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticsCalculator.java,v 1.1 2009-02-25 22:31:56 fwilhelm Exp $
+ * @version $Id: StatisticsCalculator.java,v 1.2 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class StatisticsCalculator<G extends Gene<?, G>, C extends Comparable<C>> {
 	protected long _startEvaluationTime = 0;
@@ -95,6 +95,8 @@ public class StatisticsCalculator<G extends Gene<?, G>, C extends Comparable<C>>
 				}
 			}
 			
+			assert best != null;
+			assert worst != null;
 			ageSum += best.getGeneration() + worst.getGeneration();
 			ageSquareSum += best.getGeneration()*best.getGeneration();
 			ageSquareSum += worst.getGeneration()*worst.getGeneration();

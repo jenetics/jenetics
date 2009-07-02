@@ -21,7 +21,73 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="CodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS" />
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <ADDITIONAL_INDENT_OPTIONS fileType="groovy">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="gsp">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="java">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="js">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="sql">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="xml">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+      </value>
+    </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="false" />
   </component>
   <component name="CompilerConfiguration">
@@ -89,7 +155,17 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
+  <component name="EclipseCompilerSettings">
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="true" />
+    <option name="DEPRECATION" value="false" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="MAXIMUM_HEAP_SIZE" value="128" />
+  </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
   <component name="IdProvider" IDEtalkID="DA80C30EA6B33F3EB6E015DB154738BD" />
   <component name="InspectionProjectProfileManager">
     <option name="PROJECT_PROFILE" value="Project Default" />
@@ -102,6 +178,13 @@
       </profile>
     </profiles>
     <list size="0" />
+  </component>
+  <component name="JavacSettings">
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="false" />
+    <option name="DEPRECATION" value="true" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -119,6 +202,14 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
+  </component>
+  <component name="JikesSettings">
+    <option name="JIKES_PATH" value="" />
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="DEPRECATION" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="false" />
+    <option name="IS_EMACS_ERRORS_MODE" value="true" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="ModuleEditorState">
     <option name="LAST_EDITED_MODULE_NAME" />
@@ -250,7 +341,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="project:///home/fwilhelm/Workspace/Development/Projects/Jenetics/Jenetics.ipr" />
+    <option name="state" value="|Jenetics/Jenetics.ipr" />
   </component>
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="true" id="Add" />
@@ -279,6 +370,13 @@
         <list size="0" />
       </value>
     </option>
+  </component>
+  <component name="RmicSettings">
+    <option name="IS_EANABLED" value="false" />
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="false" />
+    <option name="GENERATE_IIOP_STUBS" value="false" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="Remote" factoryName="Remote">

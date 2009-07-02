@@ -33,7 +33,7 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.15 2009-04-08 20:20:47 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.16 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
@@ -118,11 +118,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof CharacterChromosome)) {
-			return false;
-		}
-		
-		return super.equals(obj); 
+		return obj instanceof CharacterChromosome && super.equals(obj);	
 	}
 	
 	static final XMLFormat<CharacterChromosome> 
