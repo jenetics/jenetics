@@ -39,7 +39,7 @@ import org.jenetics.util.Validator;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.19 2009-06-02 21:59:22 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.20 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
@@ -77,7 +77,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * 
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
-	 * @throws new IllegalArgumentException if the length of the gene array is
+	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
 	 */
 	protected AbstractChromosome(final Array<G> genes) {

@@ -24,11 +24,11 @@ package org.jenetics.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.RandomAccess;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 import javolution.context.ConcurrentContext;
-
 
 
 /**
@@ -37,7 +37,7 @@ import javolution.context.ConcurrentContext;
  * {@code java.util.concurrent} libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.3 2008-11-13 21:09:16 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.4 2009-07-02 17:47:57 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -120,8 +120,14 @@ public class ThreadedEvaluator implements Evaluator {
 		
 		@Override
 		public Void call() throws Exception {
-			for (int i = _fromIndex; i < _toIndex; ++i) {
-				_runnables.get(i).run();
+			if (_runnables instanceof RandomAccess) {
+				for (int i = _fromIndex; i < _toIndex; ++i) {
+					_runnables.get(i).run();
+				}
+			} else {
+				for (Runnable runnable : _runnables.subList(_fromIndex, _toIndex)) {
+					runnable.run();
+				}
 			}
 			return null;
 		}

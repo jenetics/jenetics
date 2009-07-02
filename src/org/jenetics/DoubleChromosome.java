@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.16 2009-06-18 20:45:17 fwilhelm Exp $
+ * @version $Id: DoubleChromosome.java,v 1.17 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class DoubleChromosome extends NumberChromosome<DoubleGene> 
 	implements ChromosomeFactory<DoubleGene>, XMLSerializable
@@ -158,10 +158,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof DoubleChromosome)) {
-			return false;
-		}
-		return super.equals(obj);
+		return obj instanceof DoubleChromosome && super.equals(obj);
 	}
 	
 	

@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticsTest.java,v 1.1 2009-02-28 23:08:45 fwilhelm Exp $
+ * @version $Id: StatisticsTest.java,v 1.2 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class StatisticsTest {
 
@@ -38,7 +38,6 @@ public class StatisticsTest {
 		double a = 123.0;
 		double b = a;
 		
-		assert a == b;
 		assert Statistics.equals(a, b, 0);
 		
 		b = Math.nextUp(a);

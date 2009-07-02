@@ -35,7 +35,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.6 2009-03-31 18:45:45 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.7 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
@@ -107,10 +107,8 @@ public class EnumGene<E extends Enum<E>>
 		EnumGene<?> gene = (EnumGene<?>)obj;
 		if (gene._value != null) {
 			return gene._value.equals(_value);
-		} else if (_value != null) {
-			return _value.equals(gene._value);
 		} else {
-			return false;
+			return _value != null && _value.equals(gene._value);
 		}
 	}
 	

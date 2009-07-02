@@ -83,7 +83,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -264,7 +264,7 @@ public class Geometry extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        _drawToolSplitPane = new javax.swing.JSplitPane();
+        javax.swing.JSplitPane drawToolSplitPane=new javax.swing.JSplitPane();
         _toolBasePanel = new javax.swing.JPanel();
         _toolPanel = new javax.swing.JPanel();
         _startButton = new javax.swing.JButton();
@@ -296,8 +296,8 @@ public class Geometry extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        _drawToolSplitPane.setDividerLocation(500);
-        _drawToolSplitPane.setResizeWeight(0.5);
+        drawToolSplitPane.setDividerLocation(500);
+        drawToolSplitPane.setResizeWeight(0.5);
 
         _toolBasePanel.setMinimumSize(new java.awt.Dimension(200, 200));
         _toolBasePanel.setLayout(new java.awt.GridBagLayout());
@@ -562,7 +562,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
         _toolBasePanel.add(_toolPanel, gridBagConstraints);
 
-        _drawToolSplitPane.setRightComponent(_toolBasePanel);
+        drawToolSplitPane.setRightComponent(_toolBasePanel);
 
         _drawPanel.setBackground(java.awt.Color.white);
         _drawPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -578,9 +578,9 @@ public class Geometry extends javax.swing.JFrame {
             .addGap(0, 542, Short.MAX_VALUE)
         );
 
-        _drawToolSplitPane.setLeftComponent(_drawPanel);
+        drawToolSplitPane.setLeftComponent(_drawPanel);
 
-        getContentPane().add(_drawToolSplitPane, java.awt.BorderLayout.CENTER);
+        getContentPane().add(drawToolSplitPane, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -602,7 +602,6 @@ public class Geometry extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel _drawPanel;
-    private javax.swing.JSplitPane _drawToolSplitPane;
     private javax.swing.JLabel _fitenssMeanLabel;
     private javax.swing.JFormattedTextField _fitnessMeanTextField;
     private javax.swing.JLabel _fitnessVarianceLabel;
@@ -636,7 +635,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -864,7 +863,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -885,7 +884,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -906,7 +905,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -927,7 +926,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -948,7 +947,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -969,7 +968,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -994,7 +993,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -1107,7 +1106,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1213,7 +1212,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1344,7 +1343,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1458,7 +1457,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1472,7 +1471,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.7 2009-03-13 20:14:12 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class GA {
 	

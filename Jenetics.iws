@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project relativePaths="false" version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+    <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
+  </component>
   <component name="CCaseConfig">
     <option name="checkoutReserved" value="false" />
     <option name="markExternalChangeAsUpToDate" value="true" />
@@ -16,13 +20,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/Chromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/Chromosome.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/examples/Geometry.java" afterPath="$PROJECT_DIR$/src/org/jenetics/examples/Geometry.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/util/Array.java" afterPath="$PROJECT_DIR$/src/org/jenetics/util/Array.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/examples/Knapsack.java" afterPath="$PROJECT_DIR$/src/org/jenetics/examples/Knapsack.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/util/ThreadedEvaluator.java" afterPath="$PROJECT_DIR$/src/org/jenetics/util/ThreadedEvaluator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/StochasticUniversalSelector.java" afterPath="$PROJECT_DIR$/src/org/jenetics/StochasticUniversalSelector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/EnumGene.java" afterPath="$PROJECT_DIR$/src/org/jenetics/EnumGene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/IntegerChromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/IntegerChromosome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/AbstractChromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/AbstractChromosome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/GaussianMutation.java" afterPath="$PROJECT_DIR$/src/org/jenetics/GaussianMutation.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/RouletteWheelSelector.java" afterPath="$PROJECT_DIR$/src/org/jenetics/RouletteWheelSelector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/NumberStatistics.java" afterPath="$PROJECT_DIR$/src/org/jenetics/NumberStatistics.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/Alterer.java" afterPath="$PROJECT_DIR$/src/org/jenetics/Alterer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testng/org/jenetics/BitChromosomeTest.java" afterPath="$PROJECT_DIR$/testng/org/jenetics/BitChromosomeTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/StochasticUniversalSelector.java" afterPath="$PROJECT_DIR$/src/org/jenetics/StochasticUniversalSelector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/CharacterChromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/CharacterChromosome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testng/org/jenetics/StatisticsTest.java" afterPath="$PROJECT_DIR$/testng/org/jenetics/StatisticsTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.ipr" afterPath="$PROJECT_DIR$/Jenetics.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.iws" afterPath="$PROJECT_DIR$/Jenetics.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/Population.java" afterPath="$PROJECT_DIR$/src/org/jenetics/Population.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/Chromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/Chromosome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/examples/Geometry.java" afterPath="$PROJECT_DIR$/src/org/jenetics/examples/Geometry.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/DoubleChromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/DoubleChromosome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/PermutationChromosome.java" afterPath="$PROJECT_DIR$/src/org/jenetics/PermutationChromosome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/Statistics.java" afterPath="$PROJECT_DIR$/src/org/jenetics/Statistics.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.iml" afterPath="$PROJECT_DIR$/Jenetics.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/jenetics/StatisticsCalculator.java" afterPath="$PROJECT_DIR$/src/org/jenetics/StatisticsCalculator.java" />
     </list>
     <ignored path="Jenetics.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -81,28 +103,91 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Chromosome.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/jenetics/Chromosome.java">
+      <file leaf-file-name="Statistics.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/Statistics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="38" selection-start="2059" selection-end="2059" vertical-scroll-proportion="0.0">
+            <state line="206" column="12" selection-start="5695" selection-end="5695" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Mean.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/jenetics/Mean.java">
+      <file leaf-file-name="Population.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/Population.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="237" column="35" selection-start="6310" selection-end="6310" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RouletteWheelSelector.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/jenetics/RouletteWheelSelector.java">
+      <file leaf-file-name="ArrayList.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/util/ArrayList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="82" selection-start="2273" selection-end="2273" vertical-scroll-proportion="0.73255813">
+            <state line="93" column="55" selection-start="2558" selection-end="2558" vertical-scroll-proportion="0.6359223">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StatisticsCalculator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/StatisticsCalculator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="99" column="12" selection-start="3046" selection-end="3046" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StatisticsTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testng/org/jenetics/StatisticsTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="8" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BitGeneTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testng/org/jenetics/BitGeneTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="55" column="33" selection-start="2015" selection-end="2015" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XMLSerializer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/util/XMLSerializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="98" column="23" selection-start="3211" selection-end="3211" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CharacterGene.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/CharacterGene.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="63" column="4" selection-start="2405" selection-end="2405" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BitChromosomeTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testng/org/jenetics/BitChromosomeTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="137" column="22" selection-start="4399" selection-end="4399" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NumberStatistics.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/jenetics/NumberStatistics.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="113" column="12" selection-start="3520" selection-end="3520" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -144,7 +229,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="org.jenetics" />
+          <option name="myItemId" value="org.jenetics.util" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -166,7 +251,7 @@
     <subPane />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="2" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
     <navigator currentView="PackagesPane" proportions="0.5" version="1" splitterProportion="0.5">
@@ -184,14 +269,18 @@
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.lastSelected" value="copyright.filetypes.JAVA" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -343,13 +432,13 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2254902" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22855392" sideWeight="0.52311164" order="7" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39950982" sideWeight="0.5" order="4" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25980392" sideWeight="0.5" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25980392" sideWeight="0.52311164" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4689966" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" />
@@ -423,23 +512,114 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/jenetics/Chromosome.java">
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/PermutationChromosome.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="38" selection-start="2059" selection-end="2059" vertical-scroll-proportion="0.0">
+        <state line="190" column="4" selection-start="6043" selection-end="6043" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/jenetics/Mean.java">
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/GaussianMutation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="66" column="12" selection-start="2214" selection-end="2214" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/jenetics/RouletteWheelSelector.java">
+    <entry file="file://$PROJECT_DIR$/testng/org/jenetics/ProbabilitySelectorTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="82" selection-start="2273" selection-end="2273" vertical-scroll-proportion="0.73255813">
+        <state line="87" column="8" selection-start="2586" selection-end="2586" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/SwapMutation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="12" selection-start="2396" selection-end="2396" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testng/org/jenetics/util/ArrayUtilsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="49" selection-start="1755" selection-end="1755" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/util/BitUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="143" column="16" selection-start="3648" selection-end="3648" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/NumberStatistics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="113" column="12" selection-start="3520" selection-end="3520" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/Statistics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="206" column="12" selection-start="5695" selection-end="5695" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/StatisticsCalculator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="12" selection-start="3046" selection-end="3046" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testng/org/jenetics/StatisticsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="8" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testng/org/jenetics/BitGeneTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="33" selection-start="2015" selection-end="2015" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/util/XMLSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="23" selection-start="3211" selection-end="3211" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/CharacterGene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="4" selection-start="2405" selection-end="2405" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testng/org/jenetics/BitChromosomeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="137" column="22" selection-start="4399" selection-end="4399" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/Population.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="237" column="35" selection-start="6310" selection-end="6310" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/jenetics/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="55" selection-start="2558" selection-end="2558" vertical-scroll-proportion="0.6359223">
           <folding />
         </state>
       </provider>
@@ -461,8 +641,15 @@
           <value>
             <UIState>
               <option name="proportions">
-                <SplitterProportionsDataImpl />
+                <SplitterProportionsDataImpl>
+                  <option name="proportions">
+                    <list>
+                      <option value="0.2" />
+                    </list>
+                  </option>
+                </SplitterProportionsDataImpl>
               </option>
+              <option name="lastEditedConfigurable" value="Default|IDE Profiles" />
             </UIState>
           </value>
         </entry>
@@ -486,7 +673,13 @@
           <value>
             <UIState>
               <option name="proportions">
-                <SplitterProportionsDataImpl />
+                <SplitterProportionsDataImpl>
+                  <option name="proportions">
+                    <list>
+                      <option value="0.2" />
+                    </list>
+                  </option>
+                </SplitterProportionsDataImpl>
               </option>
             </UIState>
           </value>
@@ -508,8 +701,15 @@
           <value>
             <UIState>
               <option name="proportions">
-                <SplitterProportionsDataImpl />
+                <SplitterProportionsDataImpl>
+                  <option name="proportions">
+                    <list>
+                      <option value="0.2" />
+                    </list>
+                  </option>
+                </SplitterProportionsDataImpl>
               </option>
+              <option name="lastEditedConfigurable" value="Default|IDE Profiles" />
             </UIState>
           </value>
         </entry>
@@ -533,7 +733,13 @@
           <value>
             <UIState>
               <option name="proportions">
-                <SplitterProportionsDataImpl />
+                <SplitterProportionsDataImpl>
+                  <option name="proportions">
+                    <list>
+                      <option value="0.2" />
+                    </list>
+                  </option>
+                </SplitterProportionsDataImpl>
               </option>
             </UIState>
           </value>

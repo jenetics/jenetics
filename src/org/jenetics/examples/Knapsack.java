@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.8 2009-07-02 17:47:58 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;
@@ -62,6 +62,7 @@ class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
     	return _items;
     }
     
+    @Override
     public Float64 evaluate(final Genotype<BitGene> genotype) {
         final Chromosome<BitGene> ch = genotype.getChromosome();
         

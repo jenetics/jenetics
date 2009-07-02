@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.9 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.10 2009-07-02 17:47:58 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -55,10 +55,8 @@ public class BitChromosomeTest {
         int value = c1.intValue();
         assertEquals((short)value, c1.shortValue());
         assertEquals(value, c1.longValue());
-        float f = value;
-        assertEquals(f, c1.floatValue());
-        double d = value;
-        assertEquals(d, c1.doubleValue());
+        assertEquals((float)value, c1.floatValue());
+        assertEquals((double)value, c1.doubleValue());
     }
 
     @Test
