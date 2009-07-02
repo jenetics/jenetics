@@ -34,7 +34,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.22 2009-06-12 21:37:23 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.23 2009-07-02 17:47:57 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -336,7 +336,8 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	
 	/**
 	 * Set all array elements to the given {@code value}.
-	 * 
+	 *
+	 * @param the {@code value} to fill this array with.
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 *         ({@code isSealed() == true}).
 	 */

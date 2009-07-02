@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.4 2009-03-31 18:45:45 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.5 2009-07-02 17:47:57 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -108,10 +108,10 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 
-		out.append(super.toString() + "\n");
-		out.append("Mean:            " + _fitnessMean + "\n");
-		out.append("Variance:        " + _fitnessVariance + "\n");
-		out.append("Error of mean:   " + _errorOfMean);
+		out.append(super.toString()).append("\n");
+		out.append("Mean:            ").append(_fitnessMean).append("\n");
+		out.append("Variance:        ").append(_fitnessVariance).append("\n");
+		out.append("Error of mean:   ").append(_errorOfMean);
 		
 		return out.toString();
 	}

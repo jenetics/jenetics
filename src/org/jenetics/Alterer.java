@@ -48,7 +48,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.12 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.13 2009-07-02 17:47:57 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
 
@@ -106,6 +106,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * Appends a additional Alterer at the end of the chain of Alterers.
 	 * 
 	 * @param alterer The Alterer to append.
+	 * @return this alterer for chaned append calls.
 	 * @throws NullPointerException if the {@code component} is {@code null}. 
 	 */
 	public Alterer<G> append(final Alterer<G> alterer) {
