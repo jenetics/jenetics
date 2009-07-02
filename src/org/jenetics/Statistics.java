@@ -45,7 +45,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.7 2009-03-31 18:45:45 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.8 2009-07-02 17:47:57 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -178,15 +178,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	public boolean equals(final Statistics<G, C> statistics, final int ulps) {
-		if (statistics == this) {
-			return true;
-		}
+		return statistics == this ||
+			   (equals(statistics._ageMean, _ageMean, ulps) &&
+				equals(statistics._ageVariance, _ageVariance, ulps) &&
+				_best != null ? _best.equals(statistics._best) : statistics._best == null &&
+				_worst != null ? _worst.equals(statistics._worst) : statistics._worst == null);
 		
-		return 
-			equals(statistics._ageMean, _ageMean, ulps) &&
-			equals(statistics._ageVariance, _ageVariance, ulps) &&
-			_best != null ? _best.equals(statistics._best) : statistics._best == null &&
-			_worst != null ?_worst.equals(statistics._worst) : statistics._worst == null;
 	}
 	
 	static boolean equals(final double a, final double b, final int ulpDistance) {
@@ -204,10 +201,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
-		
-		out.append("Samples:         " + _samples + "\n");
-		out.append("Best Phenotype:  " + getBestPhenotype() + "\n");
-		out.append("Worst Phenotype: " + getWorstPhenotype() + "\n");
+
+		out.append("Samples:         ").append(_samples).append("\n");
+		out.append("Best Phenotype:  ").append(getBestPhenotype()).append("\n");
+		out.append("Worst Phenotype: ").append(getWorstPhenotype()).append("\n");
 		
 		return out.toString();
 	}

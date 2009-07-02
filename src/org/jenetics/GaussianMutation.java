@@ -38,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.11 2009-06-02 21:25:03 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.12 2009-07-02 17:47:57 fwilhelm Exp $
  */
 public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 	
@@ -63,16 +63,16 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(genes.length(), subsetSize, random);
-					
+
 			for (int i = 0; i < elements.length; ++i) {
 				final G oldGene = genes.get(elements[i]);
 				double value = random.nextGaussian()*oldGene.doubleValue();
 				value = Math.min(value, oldGene.getMax().doubleValue());
 				value = Math.max(value, oldGene.getMin().doubleValue());
-				
+
 				final G newGene = oldGene.newInstance(value);
 				genes.set(elements[i], newGene);
-							
+
 			}
 			
 			//Count the number of mutated genes.
