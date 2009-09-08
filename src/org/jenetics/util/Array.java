@@ -34,7 +34,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.25 2009-07-02 17:51:55 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.26 2009-09-08 21:34:02 fwilhelm Exp $
  */
 public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	Object[] _array = {};
@@ -427,16 +427,16 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 	
 	@Override
 	public int hashCode() {
-		int code = 17;
+		int hash = 17;
 		for (int i = _start; i < _end; ++i) {
 			final Object element = _array[i];
 			if (element != null) {
-				code += 37*element.hashCode() + 17;
+				hash += 37*element.hashCode() + 17;
 			} else {
-				code += 3;
+				hash += 3;
 			}
 		}
-		return code;
+		return hash;
 	}
 	
 	@Override

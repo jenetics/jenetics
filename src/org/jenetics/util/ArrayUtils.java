@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.30 2009-06-12 21:37:23 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.31 2009-09-08 21:34:02 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -181,7 +181,8 @@ public final class ArrayUtils {
 	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
-	sort(final Array<T> array, final int from, final int to) {
+	sort(final Array<T> array, final int from, final int to) 
+	{
 		Validator.notNull(array, "Array");
 		if (array.isSealed()) {
 			throw new UnsupportedOperationException("Array is sealed");
