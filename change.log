@@ -1,3 +1,5 @@
+- Fix bug in the GeneticAlgoritm.setPopulation/setGenotypes function. The
+  fitness scaler was not set.
 - The examples are packed in separate jar file (Jenetics-examples-<version>.jar).
 - Some Fixing javadoc.
 
