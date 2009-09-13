@@ -28,12 +28,12 @@ import org.jenetics.util.Validator;
  * In truncation selection individuals are sorted according to their fitness. 
  * Only the best individuals are selected. 
  * 
- * @see <a href="http://en.wikipedia.org/wiki/Truncation_selectionm">
+ * @see <a href="http://en.wikipedia.org/wiki/Truncation_selection">
  * 			Wikipedia: Truncation selection
  *      </a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TruncationSelector.java,v 1.1 2009-02-25 21:07:38 fwilhelm Exp $
+ * @version $Id: TruncationSelector.java,v 1.2 2009-09-13 20:43:14 fwilhelm Exp $
  */
 public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	implements Selector<G, C>
