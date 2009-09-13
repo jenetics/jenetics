@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: XMLSerializer.java,v 1.3 2008-09-23 18:17:24 fwilhelm Exp $
+ * @version $Id: XMLSerializer.java,v 1.4 2009-09-13 21:14:21 fwilhelm Exp $
  */
 public class XMLSerializer {
 
@@ -55,12 +55,18 @@ public class XMLSerializer {
 		Validator.notNull(out, "Output stream");
 		Validator.notNull(object, "Object");
 		
-		final XMLObjectWriter writer = XMLObjectWriter.newInstance(
-			new NonClosableOutputStream(out)
-		);
-		writer.setIndentation("\t");
-		writer.write(object);
-		writer.close();
+		XMLObjectWriter writer = null;
+		try {
+			writer = XMLObjectWriter.newInstance(
+				new NonClosableOutputStream(out)
+			);
+			writer.setIndentation("\t");
+			writer.write(object);
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
 	}
 	
 	/**
