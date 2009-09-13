@@ -57,7 +57,7 @@ import org.jenetics.util.Timer;
  * [code]
  *     ga.setup();
  *     ga.evolve(100);
- *     System.out.println(ga.getStatistic());
+ *     System.out.println(ga.getStatistics());
  * [/code]
  * 
  * If you have a problem to solve which requires expensive fitness calculation
@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.38 2009-06-17 21:27:12 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.39 2009-09-13 20:44:56 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
