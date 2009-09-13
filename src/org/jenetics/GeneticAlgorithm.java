@@ -69,7 +69,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.39 2009-09-13 20:44:56 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.40 2009-09-13 21:22:33 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -617,7 +617,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Set the (initial) population in form of a list of phenootypes.
+	 * Set the (initial) population in form of a list of phenotypes. The fitness
+	 * function and fitness scaler will not be changed.
 	 * 
 	 * @param population The list of phenotypes to set. The population size is set to
 	 * 	  <code>phenotype.size()</code>.
@@ -637,14 +638,18 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_population.clear();
 		for (Phenotype<G, ?> phenotype : population) {
 			_population.add(Phenotype.valueOf(
-				phenotype.getGenotype(), _fitnessFunction, _generation
+				phenotype.getGenotype(), 
+				_fitnessFunction,
+				_fitnessScaler,
+				_generation
 			));
 		}
 		_populationSize = population.size();
 	}
 	
 	/**
-	 * Set the (initial) population in form of a list of genotypes.
+	 * Set the (initial) population in form of a list of genotypes. The fitness
+	 * function and fitness scaler will not be changed.
 	 * 
 	 * @param genotypes The list of genotypes to set. The population size is set 
 	 *        to <code>genotypes.size()</code>.
@@ -664,7 +669,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_population.clear();
 		for (Genotype<G> genotype : genotypes) {
 			_population.add(Phenotype.valueOf(
-				genotype, _fitnessFunction, _generation
+				genotype, 
+				_fitnessFunction,
+				_fitnessScaler,
+				_generation
 			));
 		}
 		_populationSize = genotypes.size();
