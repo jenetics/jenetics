@@ -60,6 +60,19 @@ import org.jenetics.util.Timer;
  *     System.out.println(ga.getStatistics());
  * [/code]
  * 
+ * It is possible to set an initial population instead an random one. The 
+ * fitness function and the fitness scaler is not initialized by the
+ * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
+ * [code]
+ *     Population population = 
+ *         (Population)XMLSerializer.read(new FileInputStream("population.xml");
+ *     ga.setPopulation(population);
+ *     //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
+ *     ga.setup();
+ *     ga.evolve(100);
+ *     System.out.println(ga.getStatistics());
+ * [/code]
+ * 
  * If you have a problem to solve which requires expensive fitness calculation
  * you can parallelize the fitness calculation by using the {@link ConcurrentEvaluator}
  * of {@link ThreadedEvaluator}.
@@ -69,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.40 2009-09-13 21:22:33 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.41 2009-09-13 21:40:12 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -153,7 +166,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	/**
 	 * Setting up the <code>GeneticAlgorithm</code>. Subsequent calls to this 
-	 * method throw IllegalStateException.
+	 * method throw IllegalStateException. If no initial popuplation has been 
+	 * set (with {@link #setPopulation(List)} or {@link #setGenotypes(List)}) a
+	 * random population is generated.
 	 * 
 	 * @throws IllegalStateException if called more than once.
 	 */
@@ -170,7 +185,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			
 			_executionTimer.start();
 			
-			//Initializing/filling up the Population 
+			//Initializing/filling up the Population.
 			for (int i = _population.size(); i < _populationSize; ++i) {
 				final Phenotype<G, C> pt = Phenotype.valueOf(
 					_genotypeFactory.newInstance(), _fitnessFunction, 
