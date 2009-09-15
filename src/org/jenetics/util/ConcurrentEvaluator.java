@@ -34,7 +34,7 @@ import javolution.context.ConcurrentContext;
  * <a href="http://javolution.org/api/index.html">Javolution</a> libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.3 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.4 2009-09-15 19:19:36 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -54,11 +54,7 @@ public class ConcurrentEvaluator implements Evaluator {
 	 * @param numberOfThreads the number of concurrent threads.
 	 */
 	public ConcurrentEvaluator(final int numberOfThreads) {
-		if (numberOfThreads <= 0) {
-			_numberOfThreads = 1;
-		} else {
-			_numberOfThreads = numberOfThreads;
-		}
+		_numberOfThreads = Math.max(numberOfThreads, 1);
 	}
 	
 	@Override

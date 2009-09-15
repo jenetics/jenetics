@@ -37,7 +37,7 @@ import javolution.context.ConcurrentContext;
  * {@code java.util.concurrent} libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.4 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.5 2009-09-15 19:19:36 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -66,11 +66,7 @@ public class ThreadedEvaluator implements Evaluator {
 	public ThreadedEvaluator(final ExecutorService pool, final int numberOfThreads) {
 		Validator.notNull(pool, "Thread pool");
 		
-		if (numberOfThreads <= 0) {
-			_numberOfThreads = 1;
-		} else {
-			_numberOfThreads = numberOfThreads;
-		}
+		_numberOfThreads = Math.max(numberOfThreads, 1);
 		_pool = pool;
 		
 		_tasks = new ArrayList<Evaluator>(_numberOfThreads);
