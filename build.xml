@@ -181,10 +181,10 @@
 					href="http://java.sun.com/javase/6/docs/api/"  
 			/>
 			<link offline="true" packagelistLoc="./resources/javadoc/jscience" 
-					href="http://www.javolution.org/target/site/apidocs/"  
+					href="http://jscience.org/api/"  
 			/>
 			<link offline="true" packagelistLoc="./resources/javadoc/javolution" 
-					href="http://javolution.org/api/"  
+					href="http://javolution.org/target/site/apidocs/"  
 			/>
 		</javadoc>
 		<taskdef 
