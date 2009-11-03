@@ -34,9 +34,11 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.26 2009-09-08 21:34:02 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.27 2009-11-03 21:06:27 fwilhelm Exp $
  */
-public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
+public class Array<T> implements 
+	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess 
+{
 	Object[] _array = {};
 	int _start = 0;
 	int _end = _array.length;
@@ -374,6 +376,16 @@ public class Array<T> implements Iterable<T>, Copyable<Array<T>>, RandomAccess {
 		final Array<T> array = new Array<T>(length());
 		System.arraycopy(_array, _start, array._array, 0, length());
 		return array;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Array<T> clone() {
+		try {
+			return (Array<T>) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 	}
 	
 	/**

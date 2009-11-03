@@ -48,7 +48,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.13 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.14 2009-11-03 21:07:04 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
 
@@ -155,8 +155,8 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 */
 	protected abstract <C extends Comparable<C>> void change(
-		Population<G, C> population, int generation
-	);
+			Population<G, C> population, int generation
+		);
 	
 	/**
 	 * Return the component alterer.
