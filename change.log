@@ -1,3 +1,6 @@
+- Making the Array class cloneable.
+- Fix external javadoc references in build script.
+
 Jenetics-0.4.0.1
 - Fix bug in the GeneticAlgoritm.setPopulation/setGenotypes function. The
   fitness scaler was not set.
