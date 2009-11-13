@@ -26,16 +26,14 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
-
-import java.util.Set;
-
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.CharSet;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGeneTest.java,v 1.5 2008-09-23 19:18:29 fwilhelm Exp $
+ * @version $Id: CharacterGeneTest.java,v 1.6 2009-11-13 23:25:50 fwilhelm Exp $
  */
 public class CharacterGeneTest {
 
@@ -83,14 +81,14 @@ public class CharacterGeneTest {
 
     @Test
     public void testIsValidCharacter() {
-        for (Character c : CharacterGene.getValidCharacters()) {
+        for (Character c : CharacterGene.getCharacters()) {
             assertTrue(CharacterGene.isValidCharacter(c));
         }
     }
 
     @Test
     public void testGetValidCharacters() {
-        Set<Character> cset = CharacterGene.getValidCharacters();
+        CharSet cset = CharacterGene.getCharacters();
         assertNotNull(cset);
         assertFalse(cset.isEmpty());
     }

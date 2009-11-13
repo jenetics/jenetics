@@ -24,15 +24,9 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.notNull;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
-import org.jenetics.util.RandomRegistry;
-
+import javolution.context.LocalContext;
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -40,10 +34,14 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.CharSet;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Validator;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.7 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.8 2009-11-13 23:25:50 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
@@ -51,31 +49,16 @@ public class CharacterGene
 {
 	private static final long serialVersionUID = 5091130159700639888L;
 	
-	private static final Character[] VALID_CHARACTERS = {
-		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-		'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ö', 'Ä',
-		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-		'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 
-		'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '!', '"', '$',
-		'%', '&', '/', '(', ')', '=', '?', '`', '{', '[', ']', '}', '\\', '+', '~',
-		'*', '#', '\'', ',', ';', '.', ':', '-', '_', '<', '>', '|', '@', '^'
-	};
-	private static final Map<Character,Integer> 
-	CHARACTER_POSITION = new Hashtable<Character,Integer>();
-	
-	private static final Set<Character> CHARACTER_SET = new HashSet<Character>();
-	static {
-		Collections.addAll(CHARACTER_SET, VALID_CHARACTERS);
-		for (int i = 0; i < VALID_CHARACTERS.length; ++i) {
-			CHARACTER_POSITION.put(VALID_CHARACTERS[i], i);
-		}
-	}
+	private static final LocalContext.Reference<CharSet>
+		CHARACTERS = new LocalContext.Reference<CharSet>(new CharSet(
+				CharSet.expand("0-9a-zA-Z") +  " !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
+			));
 	
 	private Character _character;
 	
 	protected CharacterGene() {
 	}
-	
+		
 	@Override
 	public boolean isValid() {
 		return true;
@@ -105,32 +88,14 @@ public class CharacterGene
 	public int compareTo(final CharacterGene that) {
 		return getAllele().compareTo(that.getAllele());
 	}
-
-	/**
-	 * Test, if the given character is valid.
-	 * 
-	 * @param c The character to test.
-	 * @return true if the character is valid, false otherwise.
-	 */
-	public static boolean isValidCharacter(final Character c) {
-		return CHARACTER_SET.contains(c);
-	}
-	
-	/**
-	 * Retunr a (unmodifiable) set of valid characters.
-	 * 
-	 * @return A set of valid characters.
-	 */
-	public static Set<Character> getValidCharacters() {
-		return Collections.unmodifiableSet(CHARACTER_SET);
-	}
 	
 	@Override
 	public CharacterGene newInstance() {
 		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(VALID_CHARACTERS.length);
+		final CharSet charset = CHARACTERS.get();
+		final int index = random.nextInt(charset.length());
 		
-		return valueOf(VALID_CHARACTERS[index]);
+		return valueOf(charset.charAt(index));
 	}
 	
 	@Override
@@ -160,6 +125,50 @@ public class CharacterGene
 		return Text.valueOf(_character);
 	}
 	
+	
+	/**
+	 * Test, if the given character is valid.
+	 * 
+	 * @param c The character to test.
+	 * @return true if the character is valid, false otherwise.
+	 */
+	public static boolean isValidCharacter(final Character c) {
+		return CHARACTERS.get().contains(c);
+	}
+	
+	/**
+	 * Retunr a (unmodifiable) set of valid characters.
+	 * 
+	 * @return the {@link CharSet} of valid characters.
+	 */
+	public static CharSet getCharacters() {
+		return CHARACTERS.get();
+	}
+	
+	/**
+	 * Set the characters to use.
+	 * 
+	 * @param characters to user.
+	 * @throws NullPointerException if the given {@code characters} are 
+	 *         {@code null}.
+	 */
+	public static void setCharacters(final CharSet characters) {
+		Validator.notNull(characters, "CharSet");
+		CHARACTERS.set(characters);
+	}
+	
+	/**
+	 * Set the characters to user.
+	 * 
+	 * @param characters the characters to user.
+	 * @throws NullPointerException if the given characters are null.
+	 */
+	public static void setCharacters(final CharSequence characters) {
+		Validator.notNull(characters, "Characters");
+		CHARACTERS.set(new CharSet(characters));
+	}
+
+	
 	private static final ObjectFactory<CharacterGene> 
 	FACTORY = new ObjectFactory<CharacterGene>() {
 		@Override
@@ -171,13 +180,11 @@ public class CharacterGene
 	/**
 	 * Create a new CharacterGene with a randomly choosen character from the
 	 * set of valid characters.
-	 * 
-	 * @see CharacterGene#getValidCharacters 
 	 */
 	public static CharacterGene valueOf() {
 		final Random random = RandomRegistry.getRandom();
-		int pos = random.nextInt(VALID_CHARACTERS.length);
-		return valueOf(VALID_CHARACTERS[pos]);
+		int pos = random.nextInt(CHARACTERS.get().length());
+		return valueOf(CHARACTERS.get().charAt(pos));
 	}
 	
 	/**
@@ -188,13 +195,13 @@ public class CharacterGene
 	 * @throws IllegalArgumentException if the <code>character</code> is not
 	 * 		a valid character. 
 	 * 		See {@link CharacterGene#isValidCharacter(Character)}
-	 * 		and {@link CharacterGene#getValidCharacters()}.
+	 * 		and {@link CharacterGene#getCharacters()}.
 	 */
 	public static CharacterGene valueOf(final Character character) {
 		notNull(character, "Character");
 		
 		CharacterGene g = FACTORY.object();
-		if (!CHARACTER_SET.contains(character)) {
+		if (!CHARACTERS.get().contains(character)) {
 			throw new IllegalArgumentException(
 				"Character '" + character + "' is not valid. "
 			);
