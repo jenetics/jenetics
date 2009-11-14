@@ -35,7 +35,7 @@ import javolution.lang.Immutable;
  * Helper class holding the valid characters.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSet.java,v 1.1 2009-11-13 23:25:50 fwilhelm Exp $
+ * @version $Id: CharSet.java,v 1.2 2009-11-14 12:55:12 fwilhelm Exp $
  */
 public class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 
@@ -91,6 +91,29 @@ public class CharSet
 	@Override
 	public Iterator<Character> iterator() {
 		return _characterSet.iterator();
+	}
+	
+	@Override
+	public int hashCode() {
+		return _characters.hashCode()*17 + 31;
+	}
+	
+	@Override
+	public boolean equals(final Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof CharSet)) {
+			return false;
+		}
+		
+		final CharSet ch = (CharSet)object;
+		return ch._characters.equals(_characters);
+	}
+	
+	@Override
+	public String toString() {
+		return _characters;
 	}
 	
 	/**
