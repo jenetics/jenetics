@@ -35,7 +35,7 @@ import javolution.lang.Immutable;
  * Helper class holding the valid characters.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSet.java,v 1.2 2009-11-14 12:55:12 fwilhelm Exp $
+ * @version $Id: CharSet.java,v 1.3 2009-11-17 20:14:28 fwilhelm Exp $
  */
 public class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 
@@ -130,23 +130,25 @@ public class CharSet
 		throws PatternSyntaxException 
 	{
 		Validator.notNull(pattern, "Pattern");
-		final StringBuilder out = new StringBuilder(pattern);
+		final StringBuilder out = new StringBuilder();
 	
-		for (int i = 0, n = out.length(); i < n; ++i) {
-			if (out.charAt(i) == '\\') {
+		for (int i = 0, n = pattern.length(); i < n; ++i) {
+			if (pattern.charAt(i) == '\\') {
 				++i;
-			} else if (out.charAt(i) == '-') {
-				if (i <= 0 || i >= (out.length() - 1)) {
+			} else if (pattern.charAt(i) == '-') {
+				if (i <= 0 || i >= (pattern.length() - 1)) {
 					throw new PatternSyntaxException(
 							"Dangling range operator '-'", pattern.toString(),
 							pattern.length() - 1
 						);
 				}
 	
-				final String range = expand(out.charAt(i - 1), out.charAt(i + 1));
-				out.replace(i - 1, i + 1, range);
+				final String range = expand(pattern.charAt(i - 1), pattern.charAt(i + 1));
+				out.append(range);
 	
-				i += range.length() - 2;
+				++i;
+			} else if (i + 1 == n || pattern.charAt(i + 1) != '-') {
+				out.append(pattern.charAt(i));
 			}
 		}
 	
@@ -165,13 +167,13 @@ public class CharSet
 	
 		if (a < b) {
 			char c = a;
-			while (c < b) {
+			while (c <= b) {
 				out.append(c);
 				c = (char) (c + 1);
 			}
 		} else if (a > b) {
 			char c = a;
-			while (c > b) {
+			while (c >= b) {
 				out.append(c);
 				c = (char) (c - 1);
 			}

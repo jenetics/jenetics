@@ -1,6 +1,7 @@
 - Making the Array class cloneable.
 - Fix external javadoc references in build script.
 - The characters which are used by the CharacterGene can now be changed.
+- Adding adapter class for jscience Function object.
 
 Jenetics-0.4.0.1
 - Fix bug in the GeneticAlgoritm.setPopulation/setGenotypes function. The
