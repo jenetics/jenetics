@@ -104,6 +104,11 @@
 		<classes>
 			<class name="org.jenetics.util.ArrayUtilsTest" />
 		</classes>
-	</test>		
+	</test>	
+	<test name="org.jenetics.util.CharSet">
+		<classes>
+			<class name="org.jenetics.util.CharSetTest" />
+		</classes>
+	</test>	
 </suite>
 
