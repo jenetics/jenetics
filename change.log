@@ -1,3 +1,4 @@
+Jenetics-0.5.0.0
 - Making the Array class cloneable.
 - Fix external javadoc references in build script.
 - The characters which are used by the CharacterGene can now be changed.

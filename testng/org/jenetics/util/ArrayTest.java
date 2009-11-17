@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.7 2009-03-11 21:46:12 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.8 2009-11-17 20:24:41 fwilhelm Exp $
  */
 public class ArrayTest {
 
@@ -97,4 +97,22 @@ public class ArrayTest {
 //		System.out.println(array);
 	}
 	
+	@Test
+	public void cloning() {
+		final Array<Integer> array = new Array<Integer>(10);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		
+		Array<Integer> clone = array.clone();
+		Assert.assertNotSame(clone, array);
+		Assert.assertEquals(clone, array);
+	}
+	
 }
+
+
+
+
+
+

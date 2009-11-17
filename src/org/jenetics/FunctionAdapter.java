@@ -27,11 +27,11 @@ import org.jscience.mathematics.function.Function;
 
 /**
  * Adapter class to allow the genetic algorithm to interact with the 
- * {@link Function} object of the <a href="http://jscience.org/">jscience</a> 
+ * {@link Function} object of the <a href="http://jscience.org/">JScience</a> 
  * library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FunctionAdapter.java,v 1.1 2009-11-17 20:14:29 fwilhelm Exp $
+ * @version $Id: FunctionAdapter.java,v 1.2 2009-11-17 20:24:41 fwilhelm Exp $
  */
 public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
@@ -42,9 +42,9 @@ public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	/**
 	 * Create a new {@link FitnessFunction} with the given 
-	 * <a href="http://jscience.org/">jscience</a> function object.
+	 * <a href="http://jscience.org/">JScience</a> {@link Function} object.
 	 * 
-	 * @param adoptee the <a href="http://jscience.org/">jscience</a>
+	 * @param adoptee the <a href="http://jscience.org/">JScience</a>
 	 *        {@link Function} object.
 	 * @throws NullPointerException if the function {@code adoptee} is 
 	 *        {@code null}.
