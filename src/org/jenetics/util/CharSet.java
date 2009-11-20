@@ -35,7 +35,7 @@ import javolution.lang.Immutable;
  * Helper class holding the valid characters.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSet.java,v 1.3 2009-11-17 20:14:28 fwilhelm Exp $
+ * @version $Id: CharSet.java,v 1.4 2009-11-20 19:42:45 fwilhelm Exp $
  */
 public class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 
@@ -135,6 +135,9 @@ public class CharSet
 		for (int i = 0, n = pattern.length(); i < n; ++i) {
 			if (pattern.charAt(i) == '\\') {
 				++i;
+				if (i < pattern.length()) {
+					out.append(pattern.charAt(i));
+				}
 			} else if (pattern.charAt(i) == '-') {
 				if (i <= 0 || i >= (pattern.length() - 1)) {
 					throw new PatternSyntaxException(
