@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSetTest.java,v 1.1 2009-11-17 20:14:28 fwilhelm Exp $
+ * @version $Id: CharSetTest.java,v 1.2 2009-11-20 19:42:42 fwilhelm Exp $
  */
 public class CharSetTest {
 
@@ -53,6 +53,14 @@ public class CharSetTest {
 		String value = CharSet.expand("a-z");
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz");
+		
+		value = CharSet.expand("a-z\\-");
+		Assert.assertEquals(value.length(), 27);
+		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz-");
+		
+		value = CharSet.expand("a-z\\\\xx");
+		Assert.assertEquals(value.length(), 29);
+		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz\\xx");
 		
 		value = CharSet.expand("A-Z");
 		Assert.assertEquals(value.length(), 26);
