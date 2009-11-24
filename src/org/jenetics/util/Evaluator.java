@@ -32,7 +32,7 @@ import java.util.List;
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Evaluator.java,v 1.2 2008-11-15 16:33:38 fwilhelm Exp $
+ * @version $Id: Evaluator.java,v 1.3 2009-11-24 22:45:35 fwilhelm Exp $
  */
 public interface Evaluator {
 
@@ -45,5 +45,13 @@ public interface Evaluator {
 	 *         is {@code null}.
 	 */
 	public void evaluate(final List<? extends Runnable> runnables);
+	
+	/**
+	 * Return the number of parallel tasks of this evaluator.
+	 * 
+	 * @return the number of parallel tasks this evaluator tries to execute the
+	 *         given {@link Runnable}s.
+	 */
+	public int getParallelTasks();
 	
 }

@@ -28,8 +28,6 @@ import java.util.RandomAccess;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
-import javolution.context.ConcurrentContext;
-
 
 /**
  * Evaluate the fitness function of an given list of {@link Runnable}s concurrently.
@@ -37,7 +35,7 @@ import javolution.context.ConcurrentContext;
  * {@code java.util.concurrent} libarary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.5 2009-09-15 19:19:36 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.6 2009-11-24 22:45:35 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -52,7 +50,7 @@ public class ThreadedEvaluator implements Evaluator {
 	 * @throws NullPointerException if the given thread pool is {@code null}.
 	 */
 	public ThreadedEvaluator(final ExecutorService pool) {
-		this(pool, ConcurrentContext.getConcurrency() + 1);
+		this(pool, Runtime.getRuntime().availableProcessors());
 	}
 	
 	/**
@@ -76,13 +74,19 @@ public class ThreadedEvaluator implements Evaluator {
 	}
 	
 	@Override
-	public synchronized void evaluate(final List<? extends Runnable> evaluables) {
-		Validator.notNull(evaluables, "Population");
+	public void evaluate(final List<? extends Runnable> runnables) {
+		Validator.notNull(runnables, "Population");
 		
+		if (!runnables.isEmpty()) {
+			eval(runnables);
+		}
+	}
+	
+	private synchronized void eval(final List<? extends Runnable> runnables) {
 		//Creating the tasks.
-		final int[] parts = ArrayUtils.partition(evaluables.size(), _numberOfThreads);
+		final int[] parts = ArrayUtils.partition(runnables.size(), _numberOfThreads);
 		for (int i = 0; i < parts.length - 1; ++i) {
-			_tasks.get(i).init(evaluables, parts[i], parts[i + 1]);
+			_tasks.get(i).init(runnables, parts[i], parts[i + 1]);
 		}
 		for (int i = parts.length - 1; i < _numberOfThreads; ++i) {
 			_tasks.get(i).init(null, 0, 0);
@@ -95,6 +99,11 @@ public class ThreadedEvaluator implements Evaluator {
 			_pool.shutdown();
 			Thread.currentThread().interrupt();
 		} 
+	}
+	
+	@Override
+	public int getParallelTasks() {
+		return _numberOfThreads;
 	}
 	
 	private static final class Evaluator implements Callable<Void> {
@@ -120,7 +129,7 @@ public class ThreadedEvaluator implements Evaluator {
 				for (int i = _fromIndex; i < _toIndex; ++i) {
 					_runnables.get(i).run();
 				}
-			} else {
+			} else if (_runnables != null) {
 				for (Runnable runnable : _runnables.subList(_fromIndex, _toIndex)) {
 					runnable.run();
 				}

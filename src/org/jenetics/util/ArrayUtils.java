@@ -35,7 +35,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.31 2009-09-08 21:34:02 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.32 2009-11-24 22:45:35 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -245,10 +245,12 @@ public final class ArrayUtils {
 	) {
 		Validator.notNull(array, "Array");
 		Validator.notNull(comparator, "Comparator");
+		array.checkSeal();
 			
 		_quicksort(array, from, to - 1, comparator);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static <T> void _quicksort(
 		final Array<T> array, final int left, final int right,
 		final Comparator<? super T> comparator
@@ -261,9 +263,22 @@ public final class ArrayUtils {
 		int i = left;
 		int j = right + 1;
 		while (true) {
-			do i++; while(i < right && comparator.compare(array.get(i), pivot) < 0);
-			do j--; while(j > left && comparator.compare(array.get(j), pivot) > 0);
-			if(j <= i) break;
+			do { 
+				++i; 
+			} while (
+					i < right && 
+					comparator.compare((T)array._array[i + array._start], pivot) < 0
+				);
+			
+			do {
+				--j;
+			} while (
+					j > left && 
+					comparator.compare((T)array._array[j + array._start], pivot) > 0
+				);
+			if (j <= i) {
+				break;
+			}
 			_swap(array, i, j);
 		}
 		

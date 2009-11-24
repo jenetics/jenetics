@@ -28,7 +28,7 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerialEvaluator.java,v 1.2 2008-10-14 20:07:40 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.3 2009-11-24 22:45:35 fwilhelm Exp $
  */
 public class SerialEvaluator implements Evaluator {
 
@@ -45,6 +45,11 @@ public class SerialEvaluator implements Evaluator {
 				runnable.run();
 			}
 		}
+	}
+	
+	@Override
+	public int getParallelTasks() {
+		return 1;
 	}
 	
 }

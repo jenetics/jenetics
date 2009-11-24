@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.13 2009-03-13 19:02:22 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.14 2009-11-24 22:45:36 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -100,7 +100,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		
 		int j = 0;
 		double sum = 0;
-		for (int i = 0; i < probabilities.length && sum < prop; ++i) {
+		for (int i = 0; sum < prop && i < probabilities.length; ++i) {
 			sum += probabilities[i];
 			j = i;
 		}

@@ -28,14 +28,25 @@ import javolution.context.LocalContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EvaluatorRegistry.java,v 1.2 2009-01-08 22:09:21 fwilhelm Exp $
+ * @version $Id: EvaluatorRegistry.java,v 1.3 2009-11-24 22:45:35 fwilhelm Exp $
  */
 public class EvaluatorRegistry {
+	
 	private static final LocalContext.Reference<Evaluator> EVALUATOR = 
 		new LocalContext.Reference<Evaluator>(new SerialEvaluator());
-
+	
 	
 	private EvaluatorRegistry() {
+	}
+	
+	/**
+	 * Return the number of parallel tasks of the current evaluator.
+	 * {@code getEvaluator().getParallelTasks()}.
+	 * 
+	 * @return the number of parallel tasks of the current evaluator.
+	 */
+	public static int getParallelTasks() {
+		return EVALUATOR.get().getParallelTasks();
 	}
 	
 	/**

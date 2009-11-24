@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
@@ -42,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.14 2009-03-13 19:02:22 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.15 2009-11-24 22:45:36 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -87,15 +88,15 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 	protected final <C extends Comparable<C>> void change(
 		final Population<G, C> population, final int generation
 	) {
-		final Random random = RandomRegistry.getRandom();
 		final int subsetSize = (int)Math.ceil(population.size()*_probability.doubleValue());
 		
 		if (subsetSize > 0) {
+			final Random random = RandomRegistry.getRandom();
 			final int[] first = subset(population.size(), subsetSize, random);
 			final int[] second = subset(population.size(), subsetSize, random);
 			shuffle(second, random);
 			
-			if (Runtime.getRuntime().availableProcessors() > 1) {
+			if (EvaluatorRegistry.getParallelTasks() > 1) {
 				final List<Runnable> tasks = new ArrayList<Runnable>(subsetSize);
 				for (int i = 0; i < subsetSize; ++i) {
 					final int index = i;
