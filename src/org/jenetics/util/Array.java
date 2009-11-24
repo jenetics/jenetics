@@ -34,18 +34,15 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.27 2009-11-03 21:06:27 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.28 2009-11-24 22:45:35 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess 
 {
-	Object[] _array = {};
-	int _start = 0;
-	int _end = _array.length;
+	final Object[] _array;
+	final int _start;
+	final int _end;
 	boolean _sealed = false;
-	
-	Array() {
-	}
 	
 	/**
 	 * <i>Universal</i> array constructor.
@@ -382,9 +379,9 @@ public class Array<T> implements
 	@Override
 	public Array<T> clone() {
 		try {
-			return (Array<T>) super.clone();
+			return (Array<T>)super.clone();
 		} catch (CloneNotSupportedException e) {
-			return null;
+			throw new AssertionError(e);
 		}
 	}
 	
@@ -422,7 +419,7 @@ public class Array<T> implements
 		return new Array<T>(_array, start + _start, end + _start, _sealed);
 	}
 	
-	private void checkSeal() {
+	void checkSeal() {
 		if (_sealed) {
 			throw new UnsupportedOperationException("Array is sealed");
 		}
