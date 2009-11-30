@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.34 2009-11-30 16:24:14 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.35 2009-11-30 16:27:35 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -137,11 +137,7 @@ public final class ArrayUtils {
 		notNull(array, "Array");
 		notNull(comparator, "Comparator");
 		array.checkSeal();
-		if (from < 0 || to > array.length() || from > to) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", from, to
-			));
-		}
+		array.checkIndex(from, to);
 		
 		@SuppressWarnings("unchecked")
 		final Comparator<Object> c = (Comparator<Object>)comparator;
@@ -182,11 +178,7 @@ public final class ArrayUtils {
 	{
 		notNull(array, "Array");
 		array.checkSeal();
-		if (from < 0 || to > array.length() || from > to) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", from, to
-			));
-		}
+		array.checkIndex(from, to);
 		
 		Arrays.sort(array._array, from + array._start, to + array._start);
 	}
