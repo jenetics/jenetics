@@ -34,7 +34,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.28 2009-11-24 22:45:35 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.29 2009-11-30 16:27:35 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess 
@@ -425,10 +425,18 @@ public class Array<T> implements
 		}
 	}
 	
-	private void checkIndex(final int index) {
+	void checkIndex(final int index) {
 		if (index < 0 || index >= (_end - _start)) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Index %s is out of bounds [0, %s)", index, (_end - _start)
+			));
+		}
+	}
+	
+	void checkIndex(final int from, final int to) {
+		if (from < 0 || to > length() || from > to) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s]", from, to
 			));
 		}
 	}
