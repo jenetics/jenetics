@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.33 2009-11-30 16:06:33 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.34 2009-11-30 16:24:14 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -136,9 +136,7 @@ public final class ArrayUtils {
 	) {
 		notNull(array, "Array");
 		notNull(comparator, "Comparator");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
+		array.checkSeal();
 		if (from < 0 || to > array.length() || from > to) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", from, to
@@ -164,9 +162,7 @@ public final class ArrayUtils {
 	) {
 		notNull(array, "Array");
 		notNull(comparator, "Comparator");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
+		array.checkSeal();
 		
 		sort(array, 0, array.length(), comparator);
 	}
@@ -185,9 +181,7 @@ public final class ArrayUtils {
 	sort(final Array<T> array, final int from, final int to) 
 	{
 		notNull(array, "Array");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
+		array.checkSeal();
 		if (from < 0 || to > array.length() || from > to) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", from, to
@@ -209,9 +203,7 @@ public final class ArrayUtils {
 	sort(final Array<T> array) 
 	{
 		notNull(array, "Array");
-		if (array.isSealed()) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
+		array.checkSeal();
 		
 		Arrays.sort(array._array, 0, array.length());
 	}
