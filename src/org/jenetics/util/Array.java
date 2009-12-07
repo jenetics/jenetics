@@ -22,6 +22,10 @@
  */
 package org.jenetics.util;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -35,15 +39,17 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.30 2009-12-07 15:00:50 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.31 2009-12-07 15:31:10 fwilhelm Exp $
  */
 public class Array<T> implements 
-	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess 
+	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
 {
-	final Object[] _array;
-	final int _start;
-	final int _end;
-	boolean _sealed = false;
+	private static final long serialVersionUID = -5271247554278598795L;
+	
+	transient Object[] _array;
+	transient int _start;
+	transient int _end;
+	transient boolean _sealed = false;
 	
 	/**
 	 * <i>Universal</i> array constructor.
@@ -507,6 +513,32 @@ public class Array<T> implements
         return out.toString();
 	}
 	
+	
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		for (int i = _start; i < _end; ++i) {
+			out.writeObject(_array[i]);
+		}		
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+
+		int length = in.readInt();
+		_array = new Object[length];
+		_start = 0;
+		_end = length;
+		_sealed = false;		
+		for (int i = 0; i < length; ++i) {
+			_array[i] = in.readObject();
+		}
+	}
 }
 
 

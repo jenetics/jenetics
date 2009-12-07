@@ -27,13 +27,11 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayList.java,v 1.2 2009-03-11 21:27:36 fwilhelm Exp $
+ * @version $Id: ArrayList.java,v 1.3 2009-12-07 15:31:10 fwilhelm Exp $
  */
 final class ArrayList<T> extends AbstractList<T> 
-	implements RandomAccess, java.io.Serializable 
+	implements RandomAccess 
 {
-	private static final long serialVersionUID = -3687635182118067928L;
-
 	private final Array<T> _array;
 	
 	public ArrayList(final Array<T> array) {

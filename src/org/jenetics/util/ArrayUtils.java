@@ -34,7 +34,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.36 2009-12-07 15:00:50 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.37 2009-12-07 15:31:10 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -54,7 +54,6 @@ public final class ArrayUtils {
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		notNull(array, "Array");
-		
 		final int temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;

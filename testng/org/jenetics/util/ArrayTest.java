@@ -22,12 +22,18 @@
  */
 package org.jenetics.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.8 2009-11-17 20:24:41 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.9 2009-12-07 15:31:09 fwilhelm Exp $
  */
 public class ArrayTest {
 
@@ -107,6 +113,26 @@ public class ArrayTest {
 		Array<Integer> clone = array.clone();
 		Assert.assertNotSame(clone, array);
 		Assert.assertEquals(clone, array);
+	}
+	
+	@Test
+	public void serialize() throws IOException, ClassNotFoundException {
+		final Array<Integer> array = new Array<Integer>(10);
+		for (int i = 1; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		ObjectOutputStream out = new ObjectOutputStream(bout);
+		out.writeObject(array);
+		out.flush();
+		out.close();
+		
+		ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
+		ObjectInputStream in = new ObjectInputStream(bin);
+		Object object = in.readObject();
+		
+		Assert.assertEquals(object, array);
 	}
 	
 }
