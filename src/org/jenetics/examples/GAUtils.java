@@ -27,7 +27,7 @@ import org.jenetics.Statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.11 2009-02-28 14:53:10 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.12 2009-12-07 16:42:20 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -40,6 +40,7 @@ public class GAUtils {
 		for (int i = 1; i < generations; ++i) {
 			ga.evolve();
 			System.out.println(ga);
+			System.out.flush();
 		}
 		
 		final Statistics.Time times = ga.getTimeStatistics();
@@ -53,6 +54,7 @@ public class GAUtils {
 		System.out.println("    Overall execution time: " + times.getExecutionTime());
 		System.out.println();
 		System.out.println(ga.getBestStatistic());
+		System.out.flush();
 	}
 	
 }
