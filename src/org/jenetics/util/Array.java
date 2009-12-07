@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
@@ -34,7 +35,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the arary.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.29 2009-11-30 16:27:35 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.30 2009-12-07 15:00:50 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess 
@@ -417,6 +418,18 @@ public class Array<T> implements
 		}
 		
 		return new Array<T>(_array, start + _start, end + _start, _sealed);
+	}
+	
+	/**
+	 * Returns a fixed-size list backed by the specified array. (Changes to
+	 * the returned list "write through" to the array.) The returned list is
+	 * fixed size, serializable and implements {@link RandomAccess}.
+	 *
+	 * @return a list view of this array
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
+	 */	
+	public List<T> asList() {
+		return new org.jenetics.util.ArrayList<T>(this);
 	}
 	
 	void checkSeal() {

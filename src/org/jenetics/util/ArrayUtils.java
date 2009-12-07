@@ -27,34 +27,18 @@ import static org.jenetics.util.Validator.notNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
-import java.util.RandomAccess;
 
 
 /**
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.35 2009-11-30 16:27:35 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.36 2009-12-07 15:00:50 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
 	private ArrayUtils() {
-	}
-	
-	/**
-	 * Returns a fixed-size list backed by the specified array. (Changes to
-	 * the returned list "write through" to the array.) The returned list is
-	 * fixed size, serializable and implements {@link RandomAccess}.
-	 *
-	 * @param array the array by which the list will be backed
-	 * @return a list view of the specified array
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 */	
-	public static <T> List<T> asList(final Array<T> array) {
-		notNull(array, "Array");
-		return new org.jenetics.util.ArrayList<T>(array);
 	}
 	
 	/**
