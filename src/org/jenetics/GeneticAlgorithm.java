@@ -26,14 +26,14 @@ import static java.lang.Math.round;
 import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.notNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javolution.context.ConcurrentContext;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.ConcurrentEvaluator;
+import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jenetics.util.ThreadedEvaluator;
@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.42 2009-12-07 12:40:44 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.43 2009-12-07 16:42:20 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -296,30 +296,24 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Array<Population<G, C>> select() {
 		final Array<Population<G, C>> selection = new Array<Population<G, C>>(2);
 		
-		ConcurrentContext.enter();
-		try {
-			//Select the survivors.
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					final Population<G, C> survivors = _survivorSelector.select(
-						_population, getNumberOfSurvivors()
-					);
-					selection.set(0, survivors);
-				}
-			});
-
-			//Generate the offsprings.
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					final Population<G, C> offsprings = _offspringSelector.select(
-						_population, getNumberOfOffsprings()
-					);	
-					selection.set(1, offsprings);
-				}
-			});
-		} finally {
-			ConcurrentContext.exit();
-		}
+		final List<Runnable> selectors = new ArrayList<Runnable>(2);
+		selectors.add(new Runnable() {
+			@Override public void run() {
+				final Population<G, C> survivors = _survivorSelector.select(
+					_population, getNumberOfSurvivors()
+				);
+				selection.set(0, survivors);
+			}
+		});
+		selectors.add(new Runnable() {
+			@Override public void run() {
+				final Population<G, C> offsprings = _offspringSelector.select(
+					_population, getNumberOfOffsprings()
+				);	
+				selection.set(1, offsprings);
+			}
+		});
+		EvaluatorRegistry.evaluate(selectors);
 	
 		return selection;
 	}
