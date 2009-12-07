@@ -7,6 +7,7 @@ Jenetics-0.5.0.0
 - The GeneticAlgorithm.getLock() method now returns a fair lock.
 - Make the static helper method ArrayUtils.asList() a member method of the Array 
   class.
+- Make the Array class Serializable.
 
 Jenetics-0.4.0.1
 - Fix bug in the GeneticAlgoritm.setPopulation/setGenotypes function. The
