@@ -36,30 +36,9 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtilsTest.java,v 1.3 2009-03-11 21:27:52 fwilhelm Exp $
+ * @version $Id: ArrayUtilsTest.java,v 1.4 2009-12-07 15:00:51 fwilhelm Exp $
  */
 public class ArrayUtilsTest {
-
-	@Test
-	public void asList() {
-		final Array<Integer> ia = new Array<Integer>(50);
-		for (int i = 0; i < ia.length(); ++i) {
-			ia.set(i, i);
-		}
-		
-		final Array<Integer> sia = ia.subArray(23, 46);
-		Integer[] array = ArrayUtils.asList(sia).toArray(new Integer[0]);
-		for (int i = 0; i < array.length; ++i) {
-			Assert.assertEquals(array[i], new Integer(i + 23));
-		}
-		
-		Integer[] object = new Integer[23];
-		array = ArrayUtils.asList(sia).toArray(object);
-		Assert.assertSame(array, object);
-		for (int i = 0; i < array.length; ++i) {
-			Assert.assertEquals(array[i], new Integer(i + 23));
-		}
-	}
 	
 	
 	@Test
@@ -119,6 +98,20 @@ public class ArrayUtilsTest {
 //		System.out.println(timer);
 //		
 //	}
+	
+	public static void main(String[] args) {
+		Array<Integer> array = new Array<Integer>(10000000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, (int)(Math.random()*1000));
+		}
+		
+		Timer timer = new Timer();
+		timer.start();
+		ArrayUtils.sort(array);
+		timer.stop();
+		System.out.println(timer);
+	}
+	
 	
 }
 
