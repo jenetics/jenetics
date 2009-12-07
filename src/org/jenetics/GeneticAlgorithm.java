@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.41 2009-09-13 21:40:12 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.42 2009-12-07 12:40:44 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -94,7 +94,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private static final int POPULATION_SIZE = 50;
 	private static final int MAXIMAL_PHENOTYPE_AGE = 70;
 	
-	private final Lock _lock = new ReentrantLock();	
+	private final Lock _lock = new ReentrantLock(true);	
 	
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final FitnessFunction<G, C> _fitnessFunction;
@@ -220,7 +220,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws IllegalStateException if the {@link GeneticAlgorithm#setup()} 
 	 *         method was not called first.
 	 */
-	public void evolve() {
+	public void evolve() {		
 		_lock.lock();
 		try {
 			if (_generation == 0) {
