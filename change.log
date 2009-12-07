@@ -4,6 +4,7 @@ Jenetics-0.5.0.0
 - The characters which are used by the CharacterGene can now be changed.
 - Adding adapter class for jscience Function object.
 - Adding method getParallelTasks to Evaluator interface.
+- The GeneticAlgorithm.getLock() method now returns a fair lock.
 
 Jenetics-0.4.0.1
 - Fix bug in the GeneticAlgoritm.setPopulation/setGenotypes function. The
