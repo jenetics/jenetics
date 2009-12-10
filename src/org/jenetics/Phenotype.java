@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.12 2009-03-31 18:45:45 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.13 2009-12-10 14:31:05 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -221,6 +221,42 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		return Phenotype.valueOf(
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
+	}
+	
+	/**
+	 * Return a new phenotype with the the genotype of this and with new
+	 * fitness function, fitness scaler and generation.
+	 * 
+	 * @param function the (new) fitness scaler of the created phenotype.
+	 * @param scaler the (new) fitness scaler of the created phenotype
+	 * @param generation the generation of the new pehneotype.
+	 * @return a new phenotyp with the given values.
+	 * @throws NullPointerException if one of the values is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 */
+	public Phenotype<G, C> newInstance(
+			final FitnessFunction<G, C> function, 
+			final FitnessScaler<C> scaler, 
+			final int generation
+	) {
+		return valueOf(_genotype, function, scaler, generation);
+	}
+	
+	/**
+	 * Return a new phenotype with the the genotype of this and with new
+	 * fitness function and generation.
+	 * 
+	 * @param function the (new) fitness scaler of the created phenotype.
+	 * @param generation the generation of the new phenotype.
+	 * @return a new phenotyp with the given values.
+	 * @throws NullPointerException if one of the values is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
+	 */
+	public Phenotype<G, C> newInstance(
+			final FitnessFunction<G, C> function, 
+			final int generation
+	) {
+		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
 	}
 	
 	/**

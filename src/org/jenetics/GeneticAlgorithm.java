@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.43 2009-12-07 16:42:20 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.44 2009-12-10 14:31:05 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -633,9 +633,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 	  <code>phenotype.size()</code>.
 	 * @throws NullPointerException if the population is null.
 	 * @throws IllegalArgumentException it the population size is smaller than
-	 * 		one.
+	 *         one.
 	 */
-	public void setPopulation(final List<Phenotype<G, ?>> population) {
+	public void setPopulation(final List<Phenotype<G, C>> population) {
 		notNull(population, "Population");
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(
@@ -645,13 +645,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		}
 		
 		_population.clear();
-		for (Phenotype<G, ?> phenotype : population) {
-			_population.add(Phenotype.valueOf(
-				phenotype.getGenotype(), 
-				_fitnessFunction,
-				_fitnessScaler,
-				_generation
-			));
+		for (Phenotype<G, C> phenotype : population) {
+			_population.add(phenotype.newInstance(
+					_fitnessFunction, _fitnessScaler, _generation
+				));
 		}
 		_populationSize = population.size();
 	}
