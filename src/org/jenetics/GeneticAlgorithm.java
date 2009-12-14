@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.45 2009-12-14 15:12:15 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.46 2009-12-14 15:12:55 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -166,7 +166,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	/**
 	 * Setting up the <code>GeneticAlgorithm</code>. Subsequent calls to this 
-	 * method throw IllegalStateException. If no initial popuplation has been 
+	 * method throw IllegalStateException. If no initial population has been 
 	 * set (with {@link #setPopulation(List)} or {@link #setGenotypes(List)}) a
 	 * random population is generated.
 	 * 
