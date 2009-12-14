@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.44 2009-12-10 14:31:05 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.45 2009-12-14 15:12:15 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -131,7 +131,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	/**
 	 * Create a new genetic algorithm.
 	 * 
-	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
@@ -145,7 +145,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	/**
 	 * Create a new genetic algorithm.
 	 * 
-	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
