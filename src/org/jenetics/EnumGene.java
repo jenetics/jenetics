@@ -35,7 +35,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.8 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.9 2009-12-16 13:32:29 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
@@ -151,9 +151,9 @@ public class EnumGene<E extends Enum<E>>
 		{
 			try {
 				final Class<Enum> type = (Class<Enum>)Class.forName(
-						xml.<String>getAttribute(TYPE, "null")
+						xml.getAttribute(TYPE, "null")
 					);
-				final String value = xml.<String>getAttribute(VALUE, "null");
+				final String value = xml.getAttribute(VALUE, "null");
 				
 				return EnumGene.valueOf(Enum.valueOf(type, value));
 			} catch (ClassNotFoundException e) {
