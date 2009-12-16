@@ -31,10 +31,10 @@ import javolution.context.ConcurrentContext;
 /**
  * Evaluate the fitness function of an given list of {@link Runnable}s concurrently.
  * This implementation uses the {@link ConcurrentContext} of the 
- * <a href="http://javolution.org/api/index.html">Javolution</a> libarary.
+ * <a href="http://javolution.org/api/index.html">Javolution</a> library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.5 2009-11-24 22:45:35 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.6 2009-12-16 10:46:31 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
 	private final int _numberOfThreads;
