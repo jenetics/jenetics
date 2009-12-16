@@ -42,13 +42,13 @@ import java.io.Serializable;
  *     Z = Sum[exp[beta*f_j], j = 1, n].
  * </pre>
  * 
- * f_j denotes the fitness value of the jth individium.
+ * f_j denotes the fitness value of the j<sup>th</sup> individual.
  * 
  * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.8 2009-02-25 21:13:30 fwilhelm Exp $
+ * @version $Id: BoltzmannSelector.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
@@ -65,7 +65,7 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 	}
 	
 	/**
-	 * Create a new BolzmanSelectro whti the given beta value.
+	 * Create a new BolzmanSelector with the given beta value.
 	 * 
 	 * @param beta the beta value of this BolzmanSelector
 	 * @throws IllegalArgumentException if the given beta value is smaller than

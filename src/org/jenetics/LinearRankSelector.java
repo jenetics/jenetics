@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 /**
  * In linear ranking selection, individuals (phenotypes) are sorted according
- * to their fitness values and the rank N is assigne to the best Phenotype 
+ * to their fitness values and the rank N is assignee to the best Phenotype 
  * individual and the rank 1 to the worst Phenotype. The selection probability 
  * is linearly assigned to the individuals according to their rank:<p/>
  * 
@@ -53,7 +53,7 @@ import java.io.Serializable;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.7 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.8 2009-12-16 10:32:27 fwilhelm Exp $
  */
 public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable
@@ -80,14 +80,14 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 		assert(population != null);
 		assert(count >= 0);
 		
-		//Sort the popoulation.
+		//Sort the population.
 		population.sort();
 		
 		final double N = population.size();
 		final double[] props = new double[population.size()];
 
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[n - i - 1] = (_nminus + ((_nplus - _nminus)*i)/(N - 1)) / N;
+			props[n - i - 1] = (_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
 		}
 		
 		return props;

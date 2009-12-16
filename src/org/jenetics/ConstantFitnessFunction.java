@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Validator;
+
 
 /**
  *  A {@link FitnessFunction} which always returns a given constant value.
@@ -29,7 +31,7 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  *
  * @param <G> the gene type.
- * @version $Id: ConstantFitnessFunction.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: ConstantFitnessFunction.java,v 1.5 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
@@ -38,10 +40,20 @@ public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<
 	
 	private final C _value;
 	
+	/**
+	 * Create a new <i>constant</i> fitness function with the given value. This
+	 * value is returned for every {@link #evaluate(Genotype)} call.
+	 * 
+	 * @param value the constant value.
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 */
 	public ConstantFitnessFunction(final C value) {
-		this._value = value;
+		_value = Validator.notNull(value, "Constant value");
 	}
 	
+	/**
+	 * Always return the given constant value.
+	 */
 	@Override
 	public C evaluate(final Genotype<G> genotype) {
 		return _value;

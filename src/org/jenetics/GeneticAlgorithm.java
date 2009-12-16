@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.46 2009-12-14 15:12:55 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.47 2009-12-16 10:32:30 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -360,7 +360,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	/**
 	 * If you are using the {@code GeneticAlgorithm} in an threaded environment
 	 * and you want to change some of the GAs parameters you can use the returned
-	 * {@link Lock} to synchronize your parameter changes. The GA aquires the
+	 * {@link Lock} to synchronize your parameter changes. The GA acquires the
 	 * lock at the begin of the {@link #setup()} and the {@link #evolve()}
 	 * methods and releases it at the end of these methods.
 	 * <p/>
@@ -369,7 +369,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 *     final GeneticAlgorithm<DoubleGene, Float64> ga = ...
 	 *     final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
 	 *     
-	 *     //Starting the GA in separat thread.
+	 *     //Starting the GA in separate thread.
 	 *     final Thread thread = new Thread(new Runnable() {
 	 *         public void run() {
 	 *             while (!Thread.currentThread().isInterrupted() && 
@@ -413,7 +413,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * The code above ensures that the returned {@code statistics} and 
 	 * {@code scaler} were used together within the same {@link #evolve()} step.
 	 * 
-	 * @return the lock aquired in the {@link #setup()} and the {@link #evolve()}
+	 * @return the lock acquired in the {@link #setup()} and the {@link #evolve()}
 	 *         method.
 	 */
 	public Lock getLock() {
@@ -629,8 +629,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * Set the (initial) population in form of a list of phenotypes. The fitness
 	 * function and fitness scaler will not be changed.
 	 * 
-	 * @param population The list of phenotypes to set. The population size is set to
-	 * 	  <code>phenotype.size()</code>.
+	 * @param population The list of phenotypes to set. The population size is 
+	 *        set to <code>phenotype.size()</code>.
 	 * @throws NullPointerException if the population is null.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
@@ -754,7 +754,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	/**
 	 * Create a new genetic algorithm.
 	 * 
-	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
@@ -774,7 +774,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	/**
 	 * Create a new genetic algorithm.
 	 * 
-	 * @param genotypeFactory the genotyp factory this GA is working with.
+	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */

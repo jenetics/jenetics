@@ -39,7 +39,7 @@ import org.jenetics.util.Validator;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.20 2009-07-02 17:47:58 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.21 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
@@ -130,7 +130,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 	
 	/**
-	 * Return the index of the first occurence of the given <code>gene</code>.
+	 * Return the index of the first occurrence of the given <code>gene</code>.
 	 * 
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not found.

@@ -32,7 +32,7 @@ import org.jenetics.util.Validator;
  * In tournament selection the best {@link Phenotype} from a random sample of 
  * <i>s</i> individuals is chosen for the next generation. The samples are drawn 
  * (in this class) without replacement. An individual will win a tournament 
- * onnly if its fitness is greater than the fitness of the other <i>s-1</i> 
+ * only if its fitness is greater than the fitness of the other <i>s-1</i> 
  * competitors. Note that the worst {@link Phenotype} individual never survives, 
  * and the best {@link Phenotype} individual wins in all the tournaments it 
  * participates.
@@ -40,7 +40,7 @@ import org.jenetics.util.Validator;
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.10 2009-04-07 09:50:52 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.11 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 
@@ -122,6 +122,7 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 				}
 			}
 			
+			assert (winner != null);
 			pop.add(winner);
 		}
 		

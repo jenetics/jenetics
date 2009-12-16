@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.15 2009-11-24 22:45:36 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.16 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -59,7 +59,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 	}
 	
 	/**
-	 * Constucts an alterer with a given recombination probability.
+	 * Constructs an alterer with a given recombination probability.
 	 * 
 	 * @param probability The recombination probability.
 	 * @throws NullPointerException if the <code>probability</code> is 
@@ -74,7 +74,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 	 * second Alterer can be specified for a composite Alterer.
 	 * 
 	 * @param probability The recombination probability.
-	 * @param component The composit Alterer.
+	 * @param component The composite Alterer.
 	 * @throws NullPointerException if the <code>probability</code> or the
 	 * 		<code>component</code> is <code>null</code>. 
 	 */
@@ -122,7 +122,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 	 * Recombination template method.
 	 * 
 	 * @param <C> the fitness result type
-	 * @param population the population to recombinate
+	 * @param population the population to recombine
 	 * @param first the source index array.
 	 * @param second the target index array.
 	 * @param generation the current generation.

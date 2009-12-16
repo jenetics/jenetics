@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.19 2009-03-05 19:39:01 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.20 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -178,7 +178,7 @@ public class BitChromosome extends Number<LargeInteger>
      * large integer. The output array is in <i>big-endian</i>
      * byte-order: the most significant byte is at the offset position.
      * 
-     * <p>Note: This representation is consitent with <code>java.lang.BigInteger
+     * <p>Note: This representation is consistent with <code>java.lang.BigInteger
      *          </code> byte array representation and can be used for conversion 
      *          between the two classes.</p>
      * 
@@ -440,7 +440,7 @@ public class BitChromosome extends Number<LargeInteger>
 	
 	/**
 	 * Create a new {@code BitChromosome} from the given character sequence
-	 * containung '0' and '1'.
+	 * containing '0' and '1'.
 	 * 
 	 * @param value the input string.
 	 * @return the new created {@code BitChromosome}.

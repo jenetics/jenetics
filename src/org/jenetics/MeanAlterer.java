@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.12 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.13 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G> {
 
@@ -50,7 +50,9 @@ public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G
 	@Override
 	protected <C extends Comparable<C>> void recombinate(
 		final Population<G, C> population, 
-		final int first, final int second, final int generation
+		final int first, 
+		final int second, 
+		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		

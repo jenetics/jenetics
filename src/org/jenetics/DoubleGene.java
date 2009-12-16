@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.11 2009-06-02 21:39:53 fwilhelm Exp $
+ * @version $Id: DoubleGene.java,v 1.12 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	private static final long serialVersionUID = 2531451920309748752L;	
@@ -56,6 +56,12 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 	
+	/**
+	 * Create a new gene from the given {@code number}.
+	 * 
+	 * @param number the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
 	public DoubleGene newInstance(final Float64 number) {
 		return valueOf(number, _min, _max);
 	}
@@ -65,8 +71,6 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * 
 	 * @param number The value of the new NumberGene.
 	 * @return The new NumberGene.
-	 * @throws IllegalArgumentException if the gene value is not in the range
-	 * 		(value < min || value > max).
 	 */
 	public DoubleGene newInstance(final double number) {
 		return newInstance(Float64.valueOf(number));
@@ -87,9 +91,10 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	};
 	
 	/**
-	 * Create a new random DoubleGene with the given value and the given range. If the
-	 * {@code value} isn't within the closed interval [min, max], no exception is thrown.
-	 * In this case the method {@link DoubleGene#isValid()} returns {@code false}.
+	 * Create a new random DoubleGene with the given value and the given range. 
+	 * If the {@code value} isn't within the closed interval [min, max], no 
+	 * exception is thrown. In this case the method {@link DoubleGene#isValid()} 
+	 * returns {@code false}.
 	 * 
 	 * @param value the value of the DoubleGene.
 	 * @param min the minimal valid value of this DoubleGene.
@@ -105,9 +110,10 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	}
 	
 	/**
-	 * Create a new random DoubleGene with the given value and the given range. If the
-	 * {@code value} isn't within the closed interval [min, max], no exception is thrown.
-	 * In this case the method {@link DoubleGene#isValid()} returns {@code false}.
+	 * Create a new random DoubleGene with the given value and the given range. 
+	 * If the {@code value} isn't within the closed interval [min, max], no 
+	 * exception is thrown. In this case the method {@link DoubleGene#isValid()} 
+	 * returns {@code false}.
 	 * 
 	 * @param value the value of the DoubleGene.
 	 * @param min the minimal valid value of this DoubleGene.
@@ -125,8 +131,8 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	}
 	
 	/**
-	 * Create a new random DoubleGene. It is guaranteed that the value of the DoubleGene
-	 * lies in the closed interval [min, max].
+	 * Create a new random DoubleGene. It is guaranteed that the value of the 
+	 * DoubleGene lies in the closed interval [min, max].
 	 * 
 	 * @param min the minimal value of the DoubleGene to create.
 	 * @param max the maximal value of the DoubleGene to create.
@@ -142,8 +148,8 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	}
 	
 	/**
-	 * Create a new random DoubleGene. It is guaranteed that the value of the DoubleGene
-	 * lies in the closed interval [min, max].
+	 * Create a new random DoubleGene. It is guaranteed that the value of the 
+	 * DoubleGene lies in the closed interval [min, max].
 	 * 
 	 * @param min the minimal value of the DoubleGene to create.
 	 * @param max the maximal value of the DoubleGene to create.

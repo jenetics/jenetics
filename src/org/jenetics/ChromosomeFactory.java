@@ -33,15 +33,15 @@ import org.jenetics.util.Factory;
  * @see Chromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChromosomeFactory.java,v 1.4 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: ChromosomeFactory.java,v 1.5 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public interface ChromosomeFactory<T extends Gene<?, T>> 
 	extends Factory<Chromosome<T>> 
 {
 
 	/**
-	 * A factory method which creates a new {@link Chromosome} of 
-	 * specific type and the given {@code genes}.
+	 * A factory method which creates a new {@link Chromosome} of specific type 
+	 * and the given {@code genes}.
 	 * 
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 */

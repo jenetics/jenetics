@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.10 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.11 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -107,7 +107,8 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 	 * @param randomize if true, the chromosome is randomized, otherwise the
 	 *        values of the chromosome are in ascending order from 0 to 
 	 *        {@code length - 1}
-	 * @throws IllegalArgumentException if the given {@code length} is smaller than 1.
+	 * @throws IllegalArgumentException if the given {@code length} is smaller 
+	 *         than 1.
 	 */
 	public PermutationChromosome(final int length, final boolean randomize) {
 		super(length);
@@ -118,7 +119,7 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 		final Random random = RandomRegistry.getRandom();
 		if (randomize) {
 			//Permutation algorithm from D. Knuth TAOCP, Seminumerical Algorithms, 
-			//Third edition, page 145, Algorith P (Shuffling).
+			//Third edition, page 145, Algorithm P (Shuffling).
 			for (int j = 0; j < length; ++j) {
 				final int i = random.nextInt(j + 1);
 				_genes.set(j, _genes.get(i));
