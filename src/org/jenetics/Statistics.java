@@ -25,6 +25,7 @@ package org.jenetics;
 import static java.lang.Double.doubleToLongBits;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.measure.Measurable;
 import javax.measure.Measure;
@@ -45,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.9 2009-12-16 10:32:29 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -258,6 +259,94 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 	};
 	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id: Statistics.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+	 */
+	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
+		protected long _startEvaluationTime = 0;
+		protected long _stopEvaluationTime = 0;
+		
+		public Calculator() {
+		}
+		
+		public Statistics<G, C> evaluate(final List<? extends Phenotype<G, C>> population) {
+			_startEvaluationTime = System.currentTimeMillis();
+			
+			Statistics<G, C> statistic = new Statistics<G, C>(null, null, 0, 0.0, 0.0);
+			final int size = population.size();
+			
+			Phenotype<G, C> best = null;
+			Phenotype<G, C> worst = null;
+			long ageSum = 0;
+			long ageSquareSum = 0;
+			int start = 0;
+			
+			if (size%2 == 0 && size > 0) {
+				start = 2;
+				if (population.get(0).compareTo(population.get(1)) < 0) {
+					worst = population.get(0);
+					best = population.get(1);
+				} else {
+					worst = population.get(1);
+					best = population.get(0);
+				}
+				
+				ageSum += best.getGeneration() + worst.getGeneration();
+				ageSquareSum += best.getGeneration()*best.getGeneration();
+				ageSquareSum += worst.getGeneration()*worst.getGeneration();
+			} else if (size%2 == 1) {
+				start = 1;
+				worst = population.get(0);
+				best = population.get(0);
+				
+				ageSum = best.getGeneration();
+				ageSquareSum = best.getGeneration()*best.getGeneration();
+			}
+			
+			for (int i = start; i < size; i += 2) {
+				final Phenotype<G, C> first = population.get(i);
+				final Phenotype<G, C> second = population.get(i + 1);
+				
+				if (first.compareTo(second) < 0) {
+					if (first.compareTo(worst) < 0) {
+						worst = first;
+					}
+					if (second.compareTo(best) > 0) {
+						best = second;
+					}
+				} else {
+					if (second.compareTo(worst) < 0) {
+						worst = second;
+					}
+					if (first.compareTo(best) > 0) {
+						best = first;
+					}
+				}
+				
+				assert best != null;
+				assert worst != null;
+				ageSum += best.getGeneration() + worst.getGeneration();
+				ageSquareSum += best.getGeneration()*best.getGeneration();
+				ageSquareSum += worst.getGeneration()*worst.getGeneration();
+			}
+			
+			if (size > 0) {		
+				final double meanAge = (double)ageSum/(double)size;
+				final double varianceAge = (double)ageSquareSum/(double)size - meanAge*meanAge;
+				
+				statistic = new Statistics<G, C>(best, worst, size, meanAge, varianceAge);
+			}
+			
+			_stopEvaluationTime = System.currentTimeMillis();
+			return statistic;
+		}
+		
+		public Measurable<Duration> getEvaluationTime() {
+			return Measure.valueOf(_stopEvaluationTime - _startEvaluationTime, SI.MILLI(SI.SECOND));
+		}
+
+	}
 	
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;

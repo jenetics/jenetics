@@ -23,6 +23,9 @@
 package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
+
+import java.util.List;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
@@ -31,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.5 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.6 2009-12-16 14:24:45 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -155,6 +158,44 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		{
 		}
 	};
+	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id: NumberStatistics.java,v 1.6 2009-12-16 14:24:45 fwilhelm Exp $
+	 */
+	public static class Calculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
+		extends Statistics.Calculator<G, R>
+	{
+
+		public Calculator() {
+		}
+		
+		@Override
+		public NumberStatistics<G, R> evaluate(
+			final List<? extends Phenotype<G, R>> population
+		) {
+			final Statistics<G, R> s = super.evaluate(population);
+			final int size = population.size();
+			
+			double fitnessSum = 0;
+			double fitnessSquareSum = 0;
+			
+			for (int i = 0; i < size; ++i) {
+				final Phenotype<G, R> phenotype = population.get(i); 
+
+				final double fitness = phenotype.getFitness().doubleValue();
+				fitnessSum += fitness;
+				fitnessSquareSum += fitness*fitness;
+			}
+			
+			final double mean = fitnessSum/population.size();
+			final double variance = fitnessSquareSum/size - mean*mean;
+			final double errorOfMean = Math.sqrt(variance/(population.size()  - 1));
+			
+			return new NumberStatistics<G, R>(s, mean, variance, errorOfMean);
+		}
+
+	}
 	
 }
 

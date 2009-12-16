@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.47 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.48 2009-12-16 14:24:45 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -115,7 +115,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private int _maximalPhenotypeAge = MAXIMAL_PHENOTYPE_AGE;
 	private int _generation = 0;
 	
-	private StatisticsCalculator<G, C> _calculator = new StatisticsCalculator<G, C>();
+	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
 	private Statistics<G, C> _bestStatistic;
 	private Statistics<G, C> _statistics;
 	private Phenotype<G, C> _bestPhenotype;
@@ -703,7 +703,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param calculator the new statistic calculator.
 	 * @throws NullPointerException if the given {@code calculator} is {@code null}.
 	 */
-	public void setStatisticCalculator(final StatisticsCalculator<G, C> calculator) {
+	public void setStatisticCalculator(final Statistics.Calculator<G, C> calculator) {
 		notNull(calculator, "Statistic calculator");
 		_calculator = calculator;
 	}
@@ -713,7 +713,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @return the current statistic calculator.
 	 */
-	public StatisticsCalculator<G, C> getStatisticCalculator() {
+	public Statistics.Calculator<G, C> getStatisticCalculator() {
 		return _calculator;
 	}
 	
