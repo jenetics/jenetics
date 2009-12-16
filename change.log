@@ -8,6 +8,7 @@ Jenetics-0.5.0.0
 - Make the static helper method ArrayUtils.asList() a member method of the Array 
   class.
 - Make the Array class Serializable.
+- Making the StatisticsCalculator a static inner class of the Statistics.
 
 Jenetics-0.4.0.1
 - Fix bug in the GeneticAlgoritm.setPopulation/setGenotypes function. The
