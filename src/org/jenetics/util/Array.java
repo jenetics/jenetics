@@ -39,7 +39,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.32 2009-12-16 10:46:31 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.33 2009-12-16 13:47:57 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -432,7 +432,6 @@ public class Array<T> implements
 	 * fixed size, serializable and implements {@link RandomAccess}.
 	 *
 	 * @return a list view of this array
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */	
 	public List<T> asList() {
 		return new org.jenetics.util.ArrayList<T>(this);
