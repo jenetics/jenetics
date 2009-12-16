@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.13 2009-12-10 14:31:05 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.14 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -104,7 +104,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	/**
 	 * Return the fitness value of this <code>Phenotype</code>.
 	 * 
-	 * @return The fitness value of this <code>Phenotyp</code>.
+	 * @return The fitness value of this <code>Phenotype</code>.
 	 */
 	public C getFitness() {
 		evaluate();
@@ -112,9 +112,9 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	/**
-	 * Return the raw fitness (befor scaling) of the phenotype.
+	 * Return the raw fitness (before scaling) of the phenotype.
 	 * 
-	 * @return The raw fitness (befor scaling) of the phenotype.
+	 * @return The raw fitness (before scaling) of the phenotype.
 	 */
 	public C getRawFitness() {
 		evaluate();
@@ -208,12 +208,12 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	};
 	
 	/**
-	 * Factorymethod for creating a new {@link Phenotype} whith the same 
+	 * Factory method for creating a new {@link Phenotype} with the same 
 	 * {@link FitnessFunction} and age as this {@link Phenotype}.
 	 * 
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.
-	 * @return New {@link Phenotype} whith the same {@link FitnessFunction}.
+	 * @return New {@link Phenotype} with the same {@link FitnessFunction}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
@@ -229,8 +229,8 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * 
 	 * @param function the (new) fitness scaler of the created phenotype.
 	 * @param scaler the (new) fitness scaler of the created phenotype
-	 * @param generation the generation of the new pehneotype.
-	 * @return a new phenotyp with the given values.
+	 * @param generation the generation of the new phenotype.
+	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
@@ -248,7 +248,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * 
 	 * @param function the (new) fitness scaler of the created phenotype.
 	 * @param generation the generation of the new phenotype.
-	 * @return a new phenotyp with the given values.
+	 * @return a new phenotype with the given values.
 	 * @throws NullPointerException if one of the values is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */

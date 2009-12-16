@@ -24,14 +24,13 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IdentityScaler.java,v 1.3 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: IdentityScaler.java,v 1.4 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class IdentityScaler<C extends Comparable<C>> implements FitnessScaler<C> {
 	private static final long serialVersionUID = -8781746035187241816L;
 
 	
 	public IdentityScaler() {
-		super();
 	}
 
 	/**

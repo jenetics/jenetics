@@ -45,7 +45,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.8 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.9 2009-12-16 10:32:29 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -61,7 +61,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	private final Final<Time> _times = new Final<Time>(new Time());
 
 	/**
-	 * Evaluates statistic valus from a givem population. The given pheontypes
+	 * Evaluates statistic values from a given population. The given phenotypes
 	 * may be {@code null}
 	 * 
 	 */ 
@@ -384,9 +384,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 		/**
-		 * Return the time needed for evaluating the statisitc function.
+		 * Return the time needed for evaluating the statistic function.
 		 * 
-		 * @return the statisitc evaluation time.
+		 * @return the statistic evaluation time.
 		 */
 		public Measurable<Duration> getStatisticsTime() {
 			return _statisticTime.get();

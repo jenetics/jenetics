@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *     <li>edge assembly crossover</li>
  * </ul>
  * </p>
- * The PMX is similar to the two-point crossover. A crossing region is choosen
+ * The PMX is similar to the two-point crossover. A crossing region is chosen
  * by selecting two crossing points.
  * <pre>
  *     C1 = 012|345|6789
@@ -71,7 +71,7 @@ import org.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.15 2009-06-02 21:14:52 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.16 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
@@ -112,10 +112,10 @@ public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G
 			other.set(i, thatGenes.get(index));
 		}
 		
-		//Repare the chromosomes.
-		for (int i = 0; i < (index2 - index1); ++i) {
-			int thatIndex = indexOf(that, index1, index2, otherGenes.get(i));
-			int otherIndex = indexOf(other, index1, index2, thatGenes.get(i));
+		//Repair the chromosomes.
+		for (int i = 0, n = index2 - index1; i < n; ++i) {
+			final int thatIndex = indexOf(that, index1, index2, otherGenes.get(i));
+			final int otherIndex = indexOf(other, index1, index2, thatGenes.get(i));
 			
 			that.set(thatIndex, thatGenes.get(i));
 			other.set(otherIndex, otherGenes.get(i));

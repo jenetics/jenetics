@@ -37,7 +37,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.15 2009-07-02 17:47:58 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.16 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?, T>> 
 	extends Verifiable, Iterable<T>, Immutable, 
@@ -45,8 +45,8 @@ public interface Chromosome<T extends Gene<?, T>>
 {
 	
 	/**
-	 * Return the first gene of this chromosome. Each chromosome must containe
-	 * at leas one gene.
+	 * Return the first gene of this chromosome. Each chromosome must contain
+	 * at least one gene.
 	 * 
 	 * @return the first gene of this chromosome.
 	 */
@@ -71,7 +71,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	public int length();
 	
 	/**
-	 * Return a unmodifyabble array of the genes of this chromosomes. A call of 
+	 * Return a unmodifiable array of the genes of this chromosomes. A call of 
 	 * the {@link Array#set(int, Object)} will throw an 
 	 * {@link UnsupportedOperationException}. To get a mutable version of the
 	 * genes array you have to call {@code toArray().copy()}

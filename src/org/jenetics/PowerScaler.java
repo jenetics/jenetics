@@ -28,7 +28,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PowerScaler.java,v 1.3 2008-09-22 21:38:30 fwilhelm Exp $
+ * @version $Id: PowerScaler.java,v 1.4 2009-12-16 10:32:29 fwilhelm Exp $
  */
 public class PowerScaler implements FitnessScaler<Float64>, Serializable {
 	private static final long serialVersionUID = -5895077899454677843L;
@@ -39,7 +39,7 @@ public class PowerScaler implements FitnessScaler<Float64>, Serializable {
 	private final double _exponent;
 	
 	public PowerScaler(final double exponent) {
-		this._exponent = exponent;
+		_exponent = exponent;
 	}
 
 	@Override

@@ -29,11 +29,11 @@ import java.io.Serializable;
  * Interface for scaling the 'raw' fitness of a given chromosome. 
  * 
  * @param <C> the result type of the fitness function to scale. The scaled value
- *            must (of coures) of the same type.
+ *            must (of course) of the same type.
  * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessScaler.java,v 1.5 2008-09-26 18:39:40 fwilhelm Exp $
+ * @version $Id: FitnessScaler.java,v 1.6 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public interface FitnessScaler<C extends Comparable<C>> extends Serializable {
 	
@@ -44,6 +44,7 @@ public interface FitnessScaler<C extends Comparable<C>> extends Serializable {
 	 * @param value the fitness value to scale.
 	 * @return The scaled fitness value. The returned value <em>must</em> not be 
 	 *        {@code null}.
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public C scale(final C value);
 	

@@ -41,7 +41,7 @@ import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.8 2009-11-13 23:25:50 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
@@ -82,7 +82,7 @@ public class CharacterGene
 	 *         the Character argument; and a value greater than 0 if this 
 	 *         Character is numerically greater than the Character argument 
 	 *         (unsigned comparison). Note that this is strictly a numerical 
-	 *         comparison; it is not locale-dependent. 
+	 *         comparison; it is not local-dependent. 
 	 */
 	@Override
 	public int compareTo(final CharacterGene that) {
@@ -178,7 +178,7 @@ public class CharacterGene
 	};
 	
 	/**
-	 * Create a new CharacterGene with a randomly choosen character from the
+	 * Create a new CharacterGene with a randomly chosen character from the
 	 * set of valid characters.
 	 */
 	public static CharacterGene valueOf() {
@@ -190,7 +190,7 @@ public class CharacterGene
 	/**
 	 * Create a new CharacterGene from the give character.
 	 * 
-	 * @param character The allel.
+	 * @param character The allele.
 	 * @throws NullPointerException if the <code>character</code> is null.
 	 * @throws IllegalArgumentException if the <code>character</code> is not
 	 * 		a valid character. 

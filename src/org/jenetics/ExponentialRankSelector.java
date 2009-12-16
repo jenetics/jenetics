@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 /**
  * An alternative to the "weak" <code>LinearRankSelector</code> is to assign
- * survivial probabilities to the sorted individuals using an exponential 
+ * survival probabilities to the sorted individuals using an exponential 
  * function:
  * <p/>
  * <pre>
@@ -39,7 +39,7 @@ import java.io.Serializable;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.8 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable

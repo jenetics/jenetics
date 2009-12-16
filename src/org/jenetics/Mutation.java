@@ -32,7 +32,7 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
- * This class is for mutating a chromosomoes of an given population. There are 
+ * This class is for mutating a chromosomes of an given population. There are 
  * two distinct roles mutation plays
  * <ul>
  * 	<li>Exploring the search space. By making small moves mutation allows a
@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  * The mutation rate is the parameter that must be optimized. The optimal value 
  * of the mutation rate depends on the role mutation plays. If mutation is the 
  * only source of exploration (if there is no crossover) then the mutation rate 
- * should be set so that a reasonable neighbourhood of solutions is explored. 
+ * should be set so that a reasonable neighborhood of solutions is explored. 
  * </p>
  * The mutation probability is the probability that a specific gene over the 
  * whole population is mutated. The number of available genes of an population
@@ -59,7 +59,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.19 2009-06-02 21:25:03 fwilhelm Exp $
+ * @version $Id: Mutation.java,v 1.20 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -80,7 +80,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 * Construct a Mutation object which a given mutation probability.
 	 * 
 	 * @param probability Mutation probability. The given probability is
-	 * 	      devided by the number of chromosomes of the genotype to form
+	 * 	      divided by the number of chromosomes of the genotype to form
 	 * 	      the concrete mutation probability.
 	 * @throws NullPointerException if the <code>probability</code> is 
 	 * 		<code>null</code>.
@@ -93,7 +93,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 * Construct a Mutation object which a given mutation probability
 	 * 
 	 * @param probability Mutation probability. The given probability is
-	 *        devided by the number of chromosomes of the genotype to form
+	 *        divided by the number of chromosomes of the genotype to form
 	 *        the concrete mutation probability.
 	 * @param component The next Alterers in Alterer-Chain.
 	 */
@@ -160,7 +160,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	}
 	
 	/**
-	 * Template method which gives an (re)implemention of the mutation class the
+	 * Template method which gives an (re)implementation of the mutation class the
 	 * possibility to perform its own mutation operation, based on a writable
 	 * gene array. 
 	 * <p/>

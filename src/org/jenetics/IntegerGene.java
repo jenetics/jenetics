@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.11 2009-06-02 21:39:53 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.12 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	private static final long serialVersionUID = 262677052481286632L;
@@ -84,9 +84,10 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	};
 	
 	/**
-	 * Create a new random IntegerGene with the given value and the given range. If the
-	 * {@code value} isn't within the closed interval [min, max], no exception is thrown.
-	 * In this case the method {@link IntegerGene#isValid()} returns {@code false}.
+	 * Create a new random IntegerGene with the given value and the given range. 
+	 * If the {@code value} isn't within the closed interval [min, max], no 
+	 * exception is thrown. In this case the method {@link IntegerGene#isValid()} 
+	 * returns {@code false}.
 	 * 
 	 * @param value the value of the IntegerGene.
 	 * @param min the minimal valid value of this IntegerGene.
@@ -105,9 +106,10 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	}
 	
 	/**
-	 * Create a new random IntegerGene with the given value and the given range. If the
-	 * {@code value} isn't within the closed interval [min, max], no exception is thrown.
-	 * In this case the method {@link IntegerGene#isValid()} returns {@code false}.
+	 * Create a new random IntegerGene with the given value and the given range. 
+	 * If the {@code value} isn't within the closed interval [min, max], no 
+	 * exception is thrown. In this case the method {@link IntegerGene#isValid()} 
+	 * returns {@code false}.
 	 * 
 	 * @param value the value of the IntegerGene.
 	 * @param min the minimal valid value of this IntegerGene.

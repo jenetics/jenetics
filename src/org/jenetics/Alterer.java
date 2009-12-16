@@ -35,7 +35,7 @@ import org.jenetics.util.Probability;
  * be chained by appending an new (component) alterers.
  * 
  * [code]
- *     GeneticAlgorithm<DoubleGene> ga = ...
+ *     GeneticAlgorithm<DoubleGene, Double> ga = ...
  *     ga.setAlterer(
  *         new Crossover<DoubleGene>(Probability.valueOf(0.1)).append(
  *         new Mutation<DoubleGene>(Probability.valueOf(0.05))).append(
@@ -48,7 +48,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.14 2009-11-03 21:07:04 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.15 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
 
@@ -75,7 +75,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	}
 	
 	/**
-	 * Constucts an alterer with a given recombination probability.
+	 * Constructs an alterer with a given recombination probability.
 	 * 
 	 * @param probability The recombination probability.
 	 * @throws NullPointerException if the {@code probability} is {@code null}. 
@@ -90,7 +90,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * second Alterer can be specified for a composite Alterer.
 	 * 
 	 * @param probability The recombination probability.
-	 * @param component The composit Alterer.
+	 * @param component The composite Alterer.
 	 * @throws NullPointerException if the {@code probability} or the
 	 *         {@code component} is {@code null}. 
 	 */
@@ -106,7 +106,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * Appends a additional Alterer at the end of the chain of Alterers.
 	 * 
 	 * @param alterer The Alterer to append.
-	 * @return this alterer for chaned append calls.
+	 * @return this alterer for chained append calls.
 	 * @throws NullPointerException if the {@code component} is {@code null}. 
 	 */
 	public Alterer<G> append(final Alterer<G> alterer) {
@@ -122,7 +122,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	}
 	
 	/**
-	 * Alters (recombinate) a given population. If the <code>population</code>
+	 * Alters (recombine) a given population. If the <code>population</code>
 	 * is <code>null</code> or empty, nothing is altered.
 	 * 
 	 * @param population The Population to be altered. If the 
@@ -148,7 +148,7 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	
 	/**
 	 * This template method performs the recombination in the implementing
-	 * class. It is garuanteed that the given population is neither null, nor
+	 * class. It is guaranteed that the given population is neither null, nor
 	 * empty.
 	 * 
 	 * @param population the Population to be altered.

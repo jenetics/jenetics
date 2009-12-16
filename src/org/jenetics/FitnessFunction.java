@@ -38,7 +38,7 @@ import java.io.Serializable;
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FitnessFunction.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: FitnessFunction.java,v 1.7 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public interface FitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends Serializable 
@@ -51,6 +51,7 @@ public interface FitnessFunction<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @param genotype The FitnessFunction argument.
 	 * @return The fitness value. The returned value <em>must</em> not be 
 	 *        {@code null}.
+	 * @throws NullPointerException if the given {@code genotype} is {@code null}.
 	 */
 	public C evaluate(final Genotype<G> genotype);
 	

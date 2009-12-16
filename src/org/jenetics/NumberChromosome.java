@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.8 2009-06-02 21:59:22 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public abstract class NumberChromosome<N extends NumberGene<?, N>> 
 	extends AbstractChromosome<N> 
@@ -64,8 +64,8 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * Create a new chromosome from the given genes array.
 	 * 
 	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller than 
-	 *         one.
+	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
+	 *         than one.
 	 */
 	protected NumberChromosome(final Array<N> genes) {
 		super(genes);
