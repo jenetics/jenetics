@@ -32,10 +32,10 @@ import java.util.concurrent.ExecutorService;
 /**
  * Evaluate the fitness function of an given list of {@link Runnable}s concurrently.
  * This implementation uses the {@link ExecutorService} of the 
- * {@code java.util.concurrent} libarary.
+ * {@code java.util.concurrent} library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.6 2009-11-24 22:45:35 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.7 2009-12-16 10:46:31 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
 	private final int _numberOfThreads;
@@ -55,7 +55,7 @@ public class ThreadedEvaluator implements Evaluator {
 	
 	/**
 	 * Create a concurrent evaluator object with the given number of concurrent
-	 * threas.
+	 * threads.
 	 * 
 	 * @param numberOfThreads the number of concurrent threads.
 	 * @param pool the executor service (thread pool).

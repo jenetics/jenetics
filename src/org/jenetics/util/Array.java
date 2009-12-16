@@ -36,10 +36,10 @@ import java.util.RandomAccess;
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array).
  * 
- * @param <T> the element type of the arary.
+ * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.31 2009-12-07 15:31:10 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.32 2009-12-16 10:46:31 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -58,7 +58,7 @@ public class Array<T> implements
 	 *        copied.
 	 * @param start the start index of the given array (exclusively).
 	 * @param end the end index of the given array (exclusively)
-	 * @param sealed the seal status. If {@code true} calles to 
+	 * @param sealed the seal status. If {@code true} calls to 
 	 *        {@link #set(int, Object)} will throw an 
 	 *        {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
@@ -82,7 +82,7 @@ public class Array<T> implements
 	/**
 	 * @param array the array which holds the elements. The array will not be 
 	 *        copied.
-	 * @param sealed the seal status. If {@code true} calles to 
+	 * @param sealed the seal status. If {@code true} calls to 
 	 *        {@link #set(int, Object)} will throw an 
 	 *        {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
@@ -322,7 +322,7 @@ public class Array<T> implements
 	/**
 	 * Making this array immutable. After sealing, calls to the 
 	 * {@link #set(int, Object)} will throw an {@link UnsupportedOperationException}.
-	 * Once an array is seald, it can't be made mutable again.
+	 * Once an array is sealed, it can't be made mutable again.
 	 * 
 	 * @return {@code this} array.
 	 */
@@ -410,10 +410,10 @@ public class Array<T> implements
 	 *     Array<?> copy = array.subArray(5, 7).copy();
 	 * [/code]
 	 * 
-	 * @param start low endpoint (inclusive) of the sub array.
-	 * @param end high endpoint (exclusive) of the sub array.
+	 * @param start low end point (inclusive) of the sub array.
+	 * @param end high end point (exclusive) of the sub array.
 	 * @return a view of the specified range within this array.
-	 * @throws ArrayIndexOutOfBoundsException for an illegal endpoint index value 
+	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 *         ({@code start < 0 || end > lenght() || start > end}).
 	 */
 	public Array<T> subArray(final int start, final int end) {

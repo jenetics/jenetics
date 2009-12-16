@@ -24,7 +24,7 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java,v 1.1 2008-08-25 19:36:06 fwilhelm Exp $
+ * @version $Id: Validator.java,v 1.2 2009-12-16 10:46:31 fwilhelm Exp $
  */
 public final class Validator {
 
@@ -32,10 +32,11 @@ public final class Validator {
 		super();
 	}
 
-	public static void notNull(final Object obj, final String message) {
+	public static <T> T notNull(final T obj, final String message) {
 		if (obj == null) {
 			throw new NullPointerException(message + " must not be null. ");
 		}
+		return obj;
 	}
 	
 	public static void checkChromosomeLength(final int length) {

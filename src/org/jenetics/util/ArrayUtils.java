@@ -34,7 +34,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.37 2009-12-07 15:31:10 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.38 2009-12-16 10:46:31 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -332,13 +332,13 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Returnthe <i>k</i>th smallest value of the {@code values} array. The input
-	 * array will not be rearranged.
+	 * Return the <i>k</i><sup>th</sup> smallest value of the {@code values} 
+	 * array. The input array will not be rearranged.
 	 * 
 	 * @param <T> the array element type.
 	 * @param array the array.
-	 * @param k searching the <i>k</i><sup>th</sup> samllest value.
-	 * @return the <i>k</i><sup>th</sup> samllest value.
+	 * @param k searching the <i>k</i><sup>th</sup> smallest value.
+	 * @return the <i>k</i><sup>th</sup> smallest value.
 	 * @throws NullPointerException if the {@code array} or one of it's element 
 	 *         is {@code null}.
 	 * @throws IllegalArgumentException if {@code k < 0} or 
@@ -482,7 +482,7 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Randomize the {@code array} usin the given {@link Random} object. The used
+	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
@@ -942,7 +942,7 @@ public final class ArrayUtils {
 	 *         given {@code array}, of -1 if the {@code array} does not contain
 	 *         the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 * @throws IndexOutOfBoundsException for an illegal endpoint index value 
+	 * @throws IndexOutOfBoundsException for an illegal end point index value 
 	 *        (start < 0 || end > length || start > end)
 	 */
 	public static int indexOf(
