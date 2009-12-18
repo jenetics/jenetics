@@ -23,11 +23,18 @@
 package org.jenetics.util;
 
 /**
+ * @param <T> the object type this factory creates.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Factory.java,v 1.1 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Factory.java,v 1.2 2009-12-18 13:26:19 fwilhelm Exp $
  */
 public interface Factory<T> {
 
+	/**
+	 * Create a new instance of type T.
+	 * 
+	 * @return a new instance of type T.
+	 */
 	public T newInstance();
 	
 }
