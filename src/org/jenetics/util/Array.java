@@ -39,7 +39,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.33 2009-12-16 13:47:57 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.34 2010-01-11 16:21:42 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -529,7 +529,7 @@ public class Array<T> implements
 	{
 		in.defaultReadObject();
 
-		int length = in.readInt();
+		final int length = in.readInt();
 		_array = new Object[length];
 		_start = 0;
 		_end = length;
