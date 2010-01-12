@@ -30,7 +30,7 @@ import jsr166y.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ForkJoinEvaluator.java,v 1.1 2010-01-12 14:56:14 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.2 2010-01-12 15:17:30 fwilhelm Exp $
  */
 public class ForkJoinEvaluator implements Evaluator {
 	private static final int DEFAULT_TASK_SIZE = 5;
@@ -103,18 +103,23 @@ public class ForkJoinEvaluator implements Evaluator {
 			_taskSize = taskSize;
 		}
 		
+		
+		private void exec(final int from, final int to) {
+			if (_runnables instanceof RandomAccess) {
+				for (int i = _from; i < _to; ++i) {
+					_runnables.get(i).run();
+				}
+			} else {
+				for (Runnable runnable : _runnables.subList(_from, _to)) {
+					runnable.run();
+				}
+			}
+		}
+		
 		@Override
 		protected void compute() {
-			if (_to - _from < _taskSize) {
-				if (_runnables instanceof RandomAccess) {
-					for (int i = _from; i < _to; ++i) {
-						_runnables.get(i).run();
-					}
-				} else {
-					for (Runnable runnable : _runnables.subList(_from, _to)) {
-						runnable.run();
-					}
-				}
+			if (_to - _from <= _taskSize) {
+				exec(_from, _to);
 			} else {
 				final int mid = (_from + _to) >>> 1;
 				invokeAll(
