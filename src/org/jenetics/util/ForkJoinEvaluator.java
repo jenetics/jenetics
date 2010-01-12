@@ -22,24 +22,22 @@
  */
 package org.jenetics.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.RandomAccess;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 
+import jsr166y.ForkJoinPool;
+import jsr166y.RecursiveAction;
 
 /**
- * Evaluate the fitness function of an given list of {@link Runnable}s concurrently.
- * This implementation uses the {@link ExecutorService} of the 
- * {@code java.util.concurrent} library.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.8 2010-01-12 14:56:14 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.1 2010-01-12 14:56:14 fwilhelm Exp $
  */
-public class ThreadedEvaluator implements Evaluator {
+public class ForkJoinEvaluator implements Evaluator {
+	private static final int DEFAULT_TASK_SIZE = 5;
+	
 	private final int _numberOfThreads;
-	private final ExecutorService _pool;
+	private final int _taskSize;
+	private final ForkJoinPool _pool;
 	
 	/**
 	 * Create a threaded evaluator object where the number of concurrent threads
@@ -48,7 +46,7 @@ public class ThreadedEvaluator implements Evaluator {
 	 * @param pool the executor service (thread pool).
 	 * @throws NullPointerException if the given thread pool is {@code null}.
 	 */
-	public ThreadedEvaluator(final ExecutorService pool) {
+	public ForkJoinEvaluator(final ForkJoinPool pool) {
 		this(pool, Runtime.getRuntime().availableProcessors());
 	}
 	
@@ -60,92 +58,72 @@ public class ThreadedEvaluator implements Evaluator {
 	 * @param pool the executor service (thread pool).
 	 * @throws NullPointerException if the given thread pool is {@code null}.
 	 */
-	public ThreadedEvaluator(final ExecutorService pool, final int numberOfThreads) {
+	public ForkJoinEvaluator(final ForkJoinPool pool, final int numberOfThreads) {
+		this(pool, numberOfThreads, DEFAULT_TASK_SIZE);
+	}
+	
+	public ForkJoinEvaluator(final ForkJoinPool pool, final int numberOfThreads, final int taskSize) {
 		Validator.notNull(pool, "Thread pool");
 		
 		_numberOfThreads = Math.max(numberOfThreads, 1);
 		_pool = pool;
+		_taskSize = taskSize;
 	}
 	
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
 		Validator.notNull(runnables, "Runnables");
-		
-		if (!runnables.isEmpty()) {
-			eval(runnables);
-		}
+		_pool.invoke(new EvaluatorTask(runnables, 0, runnables.size(), _taskSize));
 	}
-	
-	private synchronized void eval(final List<? extends Runnable> runnables) {
-		//Executing the tasks.
-		try {
-			_pool.invokeAll(partition(runnables, _numberOfThreads));
-		} catch (InterruptedException e) {
-			_pool.shutdown();
-			Thread.currentThread().interrupt();
-		} 
-	}
-	
+
 	@Override
 	public int getParallelTasks() {
 		return _numberOfThreads;
 	}
 	
-	private static final class EvaluatorCallable implements Callable<Void> {
-		private final List<? extends Runnable> _runnables;
-		private final int _fromIndex;
-		private final int _toIndex;
+	
+	private static class EvaluatorTask extends RecursiveAction {
+		private static final long serialVersionUID = -7886596400215187705L;
 		
-		EvaluatorCallable(
+		private final List<? extends Runnable> _runnables;
+		private final int _from;
+		private final int _to;
+		private final int _taskSize;
+		
+		EvaluatorTask(
 			final List<? extends Runnable> runnables, 
-			final int fromIndex, final int toIndex
+			final int from, 
+			final int to, 
+			final int taskSize
 		) {
 			assert (runnables != null);
 			_runnables = runnables;
-			_fromIndex = fromIndex;
-			_toIndex = toIndex;
+			_from = from;
+			_to = to;
+			_taskSize = taskSize;
 		}
-
 		
 		@Override
-		public Void call() throws Exception {
-			if (_runnables instanceof RandomAccess) {
-				for (int i = _fromIndex; i < _toIndex; ++i) {
-					_runnables.get(i).run();
+		protected void compute() {
+			if (_to - _from < _taskSize) {
+				if (_runnables instanceof RandomAccess) {
+					for (int i = _from; i < _to; ++i) {
+						_runnables.get(i).run();
+					}
+				} else {
+					for (Runnable runnable : _runnables.subList(_from, _to)) {
+						runnable.run();
+					}
 				}
 			} else {
-				for (Runnable runnable : _runnables.subList(_fromIndex, _toIndex)) {
-					runnable.run();
-				}
+				final int mid = (_from + _to) >>> 1;
+				invokeAll(
+						new EvaluatorTask(_runnables, _from, mid, _taskSize), 
+						new EvaluatorTask(_runnables, mid, _to, _taskSize)
+					);
 			}
-			
-			return null;
 		}
 		
 	}
-	
-	
-	private static List<? extends Callable<Void>> partition(
-		final List<? extends Runnable> runnables, 
-		final int parts
-	) {
-		final int[] indexes = ArrayUtils.partition(runnables.size(), parts);
-		final List<EvaluatorCallable> workers = new ArrayList<EvaluatorCallable>(indexes.length);
-		for (int i = 0; i < indexes.length - 1; ++i) {
-			workers.add(new EvaluatorCallable(runnables, indexes[i], indexes[i + 1]));
-		}
-		
-		return workers;
-	}
-	
-	
-	
-	
+
 }
-
-
-
-
-
-
-

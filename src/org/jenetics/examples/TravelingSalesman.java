@@ -25,9 +25,7 @@ package org.jenetics.examples;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import jsr166y.ForkJoinPool;
 
 import org.jenetics.Chromosome;
 import org.jenetics.FitnessFunction;
@@ -39,14 +37,14 @@ import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutation;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ForkJoinEvaluator;
 import org.jenetics.util.Probability;
-import org.jenetics.util.ThreadedEvaluator;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.21 2009-12-07 16:42:20 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.22 2010-01-12 14:56:14 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -81,15 +79,18 @@ public class TravelingSalesman {
 			new PermutationChromosome(stops)
 		);
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
-		ga.setPopulationSize(1000);
+		ga.setPopulationSize(5000);
         ga.setAlterer(
             new SwapMutation<IntegerGene>(Probability.valueOf(0.08), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
         
-        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
-        GAUtils.execute(ga, 20);
+        //ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        //EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
+        ForkJoinPool pool = new ForkJoinPool();
+        EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
+        
+        GAUtils.execute(ga, 100);
         pool.shutdown();
 	}
 	
