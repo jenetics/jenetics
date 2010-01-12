@@ -111,6 +111,7 @@
 			level="9" duplicate="preserve"
 		>
 			<zipfileset src="${lib.dir}/jscience.jar" />
+			<zipfileset src="${lib.dir}/jsr166y.jar" />
 			<fileset dir="${compile.dir}" >
 				<exclude name="org/jenetics/examples/*" />
 			</fileset>
