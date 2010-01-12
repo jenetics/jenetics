@@ -30,12 +30,11 @@ import jsr166y.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ForkJoinEvaluator.java,v 1.2 2010-01-12 15:17:30 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.3 2010-01-12 15:58:26 fwilhelm Exp $
  */
 public class ForkJoinEvaluator implements Evaluator {
 	private static final int DEFAULT_TASK_SIZE = 5;
 	
-	private final int _numberOfThreads;
 	private final int _taskSize;
 	private final ForkJoinPool _pool;
 	
@@ -47,25 +46,12 @@ public class ForkJoinEvaluator implements Evaluator {
 	 * @throws NullPointerException if the given thread pool is {@code null}.
 	 */
 	public ForkJoinEvaluator(final ForkJoinPool pool) {
-		this(pool, Runtime.getRuntime().availableProcessors());
+		this(pool, DEFAULT_TASK_SIZE);
 	}
 	
-	/**
-	 * Create a concurrent evaluator object with the given number of concurrent
-	 * threads.
-	 * 
-	 * @param numberOfThreads the number of concurrent threads.
-	 * @param pool the executor service (thread pool).
-	 * @throws NullPointerException if the given thread pool is {@code null}.
-	 */
-	public ForkJoinEvaluator(final ForkJoinPool pool, final int numberOfThreads) {
-		this(pool, numberOfThreads, DEFAULT_TASK_SIZE);
-	}
-	
-	public ForkJoinEvaluator(final ForkJoinPool pool, final int numberOfThreads, final int taskSize) {
+	public ForkJoinEvaluator(final ForkJoinPool pool, final int taskSize) {
 		Validator.notNull(pool, "Thread pool");
 		
-		_numberOfThreads = Math.max(numberOfThreads, 1);
 		_pool = pool;
 		_taskSize = taskSize;
 	}
@@ -78,7 +64,7 @@ public class ForkJoinEvaluator implements Evaluator {
 
 	@Override
 	public int getParallelTasks() {
-		return _numberOfThreads;
+		return _pool.getParallelism();
 	}
 	
 	
