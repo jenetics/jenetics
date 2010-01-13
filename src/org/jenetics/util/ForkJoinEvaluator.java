@@ -38,17 +38,17 @@ import jsr166y.RecursiveAction;
  * @see <a href="http://gee.cs.oswego.edu/dl/jsr166/dist/jsr166ydocs/">Fork-join framework javadoc</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ForkJoinEvaluator.java,v 1.5 2010-01-13 11:11:31 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.6 2010-01-13 11:12:29 fwilhelm Exp $
  */
 public class ForkJoinEvaluator implements Evaluator {
-	private static final int DEFAULT_TASK_SIZE = 4;
+	public static final int DEFAULT_TASK_SIZE = 4;
 	
 	private final int _taskSize;
 	private final ForkJoinPool _pool;
 	
 	/**
 	 * Create a new ForkJoinEvaluator with the given ForjJoinPool. The task size
-	 * is set to five.
+	 * is set to {@link ForkJoinEvaluator#DEFAULT_TASK_SIZE}.
 	 * 
 	 * @param pool the executor service (fork-join pool).
 	 * @throws NullPointerException if the given pool is {@code null}.
