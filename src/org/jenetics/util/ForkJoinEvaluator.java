@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.notNull;
+
 import java.util.List;
 import java.util.RandomAccess;
 
@@ -29,37 +31,62 @@ import jsr166y.ForkJoinPool;
 import jsr166y.RecursiveAction;
 
 /**
+ * This evaluator uses the (preliminar) version of the fork-join framework from
+ * Doug Lea. The fork-join framework will be included in the upcomming JDK 
+ * version 1.7.
+ * 
+ * @see <a href="http://gee.cs.oswego.edu/dl/jsr166/dist/jsr166ydocs/">Fork-join framework javadoc</a>
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ForkJoinEvaluator.java,v 1.4 2010-01-12 16:04:15 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.5 2010-01-13 11:11:31 fwilhelm Exp $
  */
 public class ForkJoinEvaluator implements Evaluator {
-	private static final int DEFAULT_TASK_SIZE = 5;
+	private static final int DEFAULT_TASK_SIZE = 4;
 	
 	private final int _taskSize;
 	private final ForkJoinPool _pool;
 	
 	/**
-	 * Create a threaded evaluator object where the number of concurrent threads
-	 * is equal to the number of available cores.
+	 * Create a new ForkJoinEvaluator with the given ForjJoinPool. The task size
+	 * is set to five.
 	 * 
-	 * @param pool the executor service (thread pool).
-	 * @throws NullPointerException if the given thread pool is {@code null}.
+	 * @param pool the executor service (fork-join pool).
+	 * @throws NullPointerException if the given pool is {@code null}.
 	 */
 	public ForkJoinEvaluator(final ForkJoinPool pool) {
 		this(pool, DEFAULT_TASK_SIZE);
 	}
 	
+	/**
+	 * Create a new ForkJoinEvaluator with the given ForjJoinPool. The task size
+	 * determines the maximal number of runnables that will be executed by one
+	 * {@link RecursiveAction}.
+	 * 
+	 * @param pool the executor service (fork-join pool).
+	 * @param taskSize the maximal number of runnables that will be executed by
+	 *        one {@link RecursiveAction}.
+	 * @throws NullPointerException if the given pool is {@code null}.
+	 */
 	public ForkJoinEvaluator(final ForkJoinPool pool, final int taskSize) {
-		Validator.notNull(pool, "Thread pool");
-		
-		_pool = pool;
+		if (taskSize < 1) {
+			throw new IllegalArgumentException(String.format(
+					"Task size is smaller than one: %s.", taskSize
+				));
+		}
+		_pool = notNull(pool, "Thread pool");
 		_taskSize = taskSize;
 	}
 	
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
-		Validator.notNull(runnables, "Runnables");
-		_pool.invoke(new EvaluatorTask(runnables, 0, runnables.size(), _taskSize));
+		notNull(runnables, "Runnables");
+		RecursiveAction action = null;
+		if (runnables instanceof RandomAccess) {
+			action = new EvaluatorTask(runnables, 0, runnables.size(), _taskSize);
+		} else {
+			action = new SequentialEvaluatorTask(runnables, 0, runnables.size(), _taskSize);
+		}
+		_pool.invoke(action);
 	}
 
 	@Override
@@ -71,10 +98,10 @@ public class ForkJoinEvaluator implements Evaluator {
 	private static class EvaluatorTask extends RecursiveAction {
 		private static final long serialVersionUID = -7886596400215187705L;
 		
-		private final List<? extends Runnable> _runnables;
-		private final int _from;
-		private final int _to;
-		private final int _taskSize;
+		protected final List<? extends Runnable> _runnables;
+		protected final int _from;
+		protected final int _to;
+		protected final int _taskSize;
 		
 		EvaluatorTask(
 			final List<? extends Runnable> runnables, 
@@ -89,19 +116,6 @@ public class ForkJoinEvaluator implements Evaluator {
 			_taskSize = taskSize;
 		}
 		
-		
-		private void eval() {
-			if (_runnables instanceof RandomAccess) {
-				for (int i = _from; i < _to; ++i) {
-					_runnables.get(i).run();
-				}
-			} else {
-				for (Runnable runnable : _runnables.subList(_from, _to)) {
-					runnable.run();
-				}
-			}
-		}
-		
 		@Override
 		protected void compute() {
 			if (_to - _from <= _taskSize) {
@@ -109,10 +123,55 @@ public class ForkJoinEvaluator implements Evaluator {
 			} else {
 				final int mid = (_from + _to) >>> 1;
 				invokeAll(
-						new EvaluatorTask(_runnables, _from, mid, _taskSize), 
-						new EvaluatorTask(_runnables, mid, _to, _taskSize)
+						newTask(_runnables, _from, mid, _taskSize), 
+						newTask(_runnables, mid, _to, _taskSize)
 					);
 			}
+		}
+		
+		protected void eval() {
+			for (int i = _from; i < _to; ++i) {
+				_runnables.get(i).run();
+			}
+		}
+		
+		protected RecursiveAction newTask(
+			final List<? extends Runnable> runnables, 
+			final int from, 
+			final int to, 
+			final int taskSize
+		) {
+			return new EvaluatorTask(runnables, from, to, taskSize);
+		}
+	}
+	
+	private static class SequentialEvaluatorTask extends EvaluatorTask {
+		private static final long serialVersionUID = 6588074688828349438L;
+
+		SequentialEvaluatorTask(
+			final List<? extends Runnable> runnables, 
+			final int from,
+			final int to, 
+			final int taskSize
+		) {
+				super(runnables, from, to, taskSize);
+		}
+		
+		@Override
+		protected void eval() {
+			for (Runnable runnable : _runnables.subList(_from, _to)) {
+				runnable.run();
+			}
+		}
+		
+		@Override
+		protected RecursiveAction newTask(
+			final List<? extends Runnable> runnables, 
+			final int from, 
+			final int to, 
+			final int taskSize
+		) {
+			return new SequentialEvaluatorTask(runnables, from, to, taskSize);
 		}
 		
 	}
