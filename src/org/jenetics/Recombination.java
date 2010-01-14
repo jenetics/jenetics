@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.jenetics.util.Evaluator;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
@@ -43,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.16 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.17 2010-01-14 16:12:48 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -84,6 +85,10 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 		super(probability, component);
 	}
 
+	/**
+	 * This method executes the recombination of in parallel if the current
+	 * {@link Evaluator} 
+	 */
 	@Override
 	protected final <C extends Comparable<C>> void change(
 		final Population<G, C> population, final int generation
