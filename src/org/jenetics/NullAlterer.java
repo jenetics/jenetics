@@ -28,11 +28,15 @@ import org.jenetics.util.Probability;
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: NullAlterer.java,v 1.7 2010-01-14 14:03:28 fwilhelm Exp $
  */
 public class NullAlterer<G extends Gene<?, G>> extends Alterer<G> {
 	private static final long serialVersionUID = 7892835302001002915L;
 
+	public NullAlterer() {
+		this((Alterer<G>)null);
+	}
+	
 	public NullAlterer(final Alterer<G> component) {
 		super(component);
 	}
