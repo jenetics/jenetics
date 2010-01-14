@@ -34,19 +34,19 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import javolution.lang.Immutable;
+import javolution.lang.Reference;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
-import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.11 2010-01-14 14:53:10 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -261,7 +261,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.11 2010-01-14 14:53:10 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;
@@ -355,140 +355,55 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				0, SI.MILLI(SI.SECOND)
 			);
 		
-		private final Final<Measurable<Duration>> 
-		_executionTime = new Final<Measurable<Duration>>(ZERO);
-		
-		private final Final<Measurable<Duration>> 
-		_selectionTime = new Final<Measurable<Duration>>(ZERO);
-		
-		private final Final<Measurable<Duration>> 
-		_alterTime = new Final<Measurable<Duration>>(ZERO);
-		
-		private final Final<Measurable<Duration>> 
-		_evaluationTime = new Final<Measurable<Duration>>(ZERO);
-		
-		private final Final<Measurable<Duration>> 
-		_statisticTime = new Final<Measurable<Duration>>(ZERO);
-		
+		/**
+		 * The overall execution time.
+		 * The time can be set only once, otherwise an IllegalArgumentException
+		 * is thrown.
+		 */
+		public final Reference<Measurable<Duration>> 
+			execution = new Final<Measurable<Duration>>(ZERO);
 		
 		/**
-		 * Set the overall execution time.
-		 * 
-		 * @param time the overall execution time.
-		 * @throws NullPointerException if the given {@code time} is {@code null}.
-		 * @throws IllegalStateException if you try to set the {@code time}
-		 *         twice.
+		 * The selection time.
+		 * The time can be set only once, otherwise an IllegalArgumentException
+		 * is thrown.
 		 */
-		public void setExecutionTime(final Measurable<Duration> time) {
-			Validator.notNull(time, "Execution time");
-			_executionTime.set(time);
-		}
+		public final Reference<Measurable<Duration>> 
+			selection = new Final<Measurable<Duration>>(ZERO);
 		
 		/**
-		 * Return the overall execution time.
-		 * 
-		 * @return the overall execution time.
+		 * The alter time.
+		 * The time can be set only once, otherwise an IllegalArgumentException
+		 * is thrown.
 		 */
-		public Measurable<Duration> getExecutionTime() {
-			return _executionTime.get();
-		}
+		public final Reference<Measurable<Duration>> 
+			alter = new Final<Measurable<Duration>>(ZERO);
 		
 		/**
-		 * Set the time needed for selecting the survivors and offsprings.
-		 * 
-		 * @param time the selection time.
-		 * @throws NullPointerException if the given {@code time} is {@code null}.
-		 * @throws IllegalStateException if you try to set the {@code time}
-		 *         twice.
+		 * The evaluation time.
+		 * The time can be set only once, otherwise an IllegalArgumentException
+		 * is thrown.
 		 */
-		public void setSelectionTime(final Measurable<Duration> time) {
-			Validator.notNull(time, "Selection time");
-			_selectionTime.set(time);
-		}
+		public final Reference<Measurable<Duration>> 
+			evaluation = new Final<Measurable<Duration>>(ZERO);
 		
 		/**
-		 * Return the time needed for selecting the survivors and offsprings.
-		 * 
-		 * @return the selection time.
+		 * The statistics time.
+		 * The time can be set only once, otherwise an IllegalArgumentException
+		 * is thrown.
 		 */
-		public Measurable<Duration> getSelectionTime() {
-			return _selectionTime.get();
-		}
+		public final Reference<Measurable<Duration>> 
+			statistics = new Final<Measurable<Duration>>(ZERO);
 		
-		/**
-		 * Set the time needed for altering the population.
-		 *
-		 * @param time the alter time.
-		 * @throws NullPointerException if the given {@code time} is {@code null}.
-		 * @throws IllegalStateException if you try to set the {@code time}
-		 *         twice.
-		 */
-		public void setAlterTime(final Measurable<Duration> time) {
-			Validator.notNull(time, "Alter time");
-			_alterTime.set(time);
-		}
-		
-		/**
-		 * Return the time needed for altering the population.
-		 * 
-		 * @return the alter time.
-		 */
-		public Measurable<Duration> getAlterTime() {
-			return _alterTime.get();
-		}
-		
-		/**
-		 * Set the time needed for evaluating the fitness function.
-		 * 
-		 * @param time the fitness function evaluation time.
-		 * @throws NullPointerException if the given {@code time} is {@code null}.
-		 * @throws IllegalStateException if you try to set the {@code time}
-		 *         twice.
-		 */
-		public void setEvaluationTime(final Measurable<Duration> time) {
-			Validator.notNull(time, "Evaluation time");
-			_evaluationTime.set(time);
-		}
-		
-		/**
-		 * Return the time needed for evaluating the fitness function.
-		 * 
-		 * @return the fitness function evaluation time.
-		 */
-		public Measurable<Duration> getEvaluationTime() {
-			return _evaluationTime.get();
-		}
-		
-		/**
-		 * Set the time needed for evaluating the statistic.
-		 * 
-		 * @param time the statistic evaluation time.
-		 * @throws NullPointerException if the given {@code time} is {@code null}.
-		 * @throws IllegalStateException if you try to set the {@code time}
-		 *         twice.
-		 */
-		public void setStatisticTime(final Measurable<Duration> time) {
-			Validator.notNull(time, "Statistic time");
-			_statisticTime.set(time);
-		}
-		
-		/**
-		 * Return the time needed for evaluating the statistic function.
-		 * 
-		 * @return the statistic evaluation time.
-		 */
-		public Measurable<Duration> getStatisticsTime() {
-			return _statisticTime.get();
-		}
 		
 		@Override
 		public int hashCode() {
 			int hash = 17;
-			hash += getAlterTime().hashCode()*37;
-			hash += getEvaluationTime().hashCode()*37;
-			hash += getExecutionTime().hashCode()*37;
-			hash += getSelectionTime().hashCode()*37;
-			hash += getStatisticsTime().hashCode()*37;
+			hash += alter.hashCode()*37;
+			hash += evaluation.hashCode()*37;
+			hash += execution.hashCode()*37;
+			hash += selection.hashCode()*37;
+			hash += statistics.hashCode()*37;
 			return hash;
 		}
 		
@@ -503,11 +418,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			
 			final Statistics.Time time = (Statistics.Time)object;
 			return 
-				getAlterTime().equals(time.getAlterTime()) &&
-				getEvaluationTime().equals(time.getEvaluationTime()) &&
-				getExecutionTime().equals(time.getExecutionTime()) &&
-				getSelectionTime().equals(time.getSelectionTime()) &&
-				getStatisticsTime().equals(time.getStatisticsTime());
+				alter.equals(time.alter) &&
+				evaluation.equals(time.evaluation) &&
+				execution.equals(time.execution) &&
+				selection.equals(time.selection) &&
+				statistics.equals(time.statistics);
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -530,19 +445,19 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				final Statistics.Time time = new Statistics.Time();
 
 				try {
-					time.setAlterTime((Measurable<Duration>)format.parseObject(
+					time.alter.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(ALTER_TIME)
 						));
-					time.setEvaluationTime((Measurable<Duration>)format.parseObject(
+					time.evaluation.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(EVALUATION_TIME)
 						));
-					time.setExecutionTime((Measurable<Duration>)format.parseObject(
+					time.execution.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(EXECUTION_TIME)
 						));
-					time.setSelectionTime((Measurable<Duration>)format.parseObject(
+					time.selection.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(SELECTION_TIME)
 						));
-					time.setStatisticTime((Measurable<Duration>)format.parseObject(
+					time.statistics.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(STATISTICS_TIME)
 						));
 				} catch (ParseException e) {
@@ -557,11 +472,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			{
 				final MeasureFormat format = MeasureFormat.getInstance();
 				
-				xml.add(format.format(s.getAlterTime()), ALTER_TIME);
-				xml.add(format.format(s.getEvaluationTime()), EVALUATION_TIME);
-				xml.add(format.format(s.getExecutionTime()), EXECUTION_TIME);
-				xml.add(format.format(s.getSelectionTime()), SELECTION_TIME);
-				xml.add(format.format(s.getStatisticsTime()), STATISTICS_TIME);
+				xml.add(format.format(s.alter.get()), ALTER_TIME);
+				xml.add(format.format(s.evaluation.get()), EVALUATION_TIME);
+				xml.add(format.format(s.execution.get()), EXECUTION_TIME);
+				xml.add(format.format(s.selection.get()), SELECTION_TIME);
+				xml.add(format.format(s.statistics.get()), STATISTICS_TIME);
 			}
 			@Override
 			public void read(final InputElement xml, final Statistics.Time p) 
@@ -571,7 +486,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		};
 	}
 	
-	private static final class Final<T> {
+	private static final class Final<T> implements Reference<T> {
 		private T _value = null;
 		private boolean _initialized = false;
 
@@ -579,6 +494,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			_value = value;
 		}
 		
+		@Override
 		public void set(final T value) {
 			if (_initialized) {
 				throw new IllegalStateException("Value is already initialized.");
@@ -587,8 +503,32 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			_initialized = true;
 		}
 		
+		@Override
 		public T get() {
 			return _value;
+		}
+		
+		@Override
+		public int hashCode() {
+			return _value != null ? _value.hashCode() : 0;
+		}
+		
+		@Override
+		public boolean equals(final Object object) {
+			if (object == this) {
+				return true;
+			}
+			if (!(object instanceof Final<?>)) {
+				return false;
+			}
+			
+			final Final<?> f = (Final<?>)object;
+			return f._value != null ? f._value.equals(_value) : _value == null;
+		}
+		
+		@Override
+		public String toString() {
+			return _value != null ? _value.toString() : "null";
 		}
 		
 	}

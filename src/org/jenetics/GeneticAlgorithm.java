@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.48 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.49 2010-01-14 14:53:10 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -275,11 +275,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	private void setTimes(final Statistics<?, ?> statistic) {
-		statistic.getTimes().setExecutionTime(_executionTimer.getInterimTime());
-		statistic.getTimes().setSelectionTime(_selectTimer.getInterimTime());
-		statistic.getTimes().setAlterTime(_alterTimer.getInterimTime());
-		statistic.getTimes().setEvaluationTime(_evaluateTimer.getInterimTime());
-		statistic.getTimes().setStatisticTime(_statisticTimer.getInterimTime());
+		statistic.getTimes().execution.set(_executionTimer.getInterimTime());
+		statistic.getTimes().selection.set(_selectTimer.getInterimTime());
+		statistic.getTimes().alter.set(_alterTimer.getInterimTime());
+		statistic.getTimes().evaluation.set(_evaluateTimer.getInterimTime());
+		statistic.getTimes().statistics.set(_statisticTimer.getInterimTime());
 	}
 	
 	/**
@@ -725,13 +725,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	public Statistics.Time getTimeStatistics() {
 		_lock.lock();
 		try {
-			final Statistics.Time times = new Statistics.Time();
-			times.setAlterTime(_alterTimer.getTime());
-			times.setEvaluationTime(_evaluateTimer.getTime());
-			times.setExecutionTime(_executionTimer.getTime());
-			times.setSelectionTime(_selectTimer.getTime());
-			times.setStatisticTime(_statisticTimer.getTime());
-			return times;
+			final Statistics.Time time = new Statistics.Time();
+			time.alter.set(_alterTimer.getTime());
+			time.evaluation.set(_evaluateTimer.getTime());
+			time.execution.set(_executionTimer.getTime());
+			time.selection.set(_selectTimer.getTime());
+			time.statistics.set(_statisticTimer.getTime());
+			return time;
 		} finally {
 			_lock.unlock();
 		}

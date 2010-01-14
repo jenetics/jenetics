@@ -1,4 +1,6 @@
 Jenetics-0.5.0.0
+- Replace the Statistics.Time properties with "final" javolution.lang.References.
+  Instead of statistics.getTimes().getAlterTime() you write statistics.getTimes().alter.get().
 - Adding fork-join library from Doug Lea and ForkJoinEvaluator.
 - Adding UmlGraph for javadoc generation.
 - Making the Array class cloneable.

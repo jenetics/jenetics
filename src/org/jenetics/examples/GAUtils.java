@@ -27,7 +27,7 @@ import org.jenetics.Statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.12 2009-12-07 16:42:20 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.13 2010-01-14 14:53:10 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -43,15 +43,15 @@ public class GAUtils {
 			System.out.flush();
 		}
 		
-		final Statistics.Time times = ga.getTimeStatistics();
+		final Statistics.Time time = ga.getTimeStatistics();
 		
 		System.out.println();
-		System.out.println("               Select time: " + times.getSelectionTime());
-		System.out.println("                Alter time: " + times.getAlterTime());
-		System.out.println("  Fitness calculation time: " + times.getEvaluationTime());
-		System.out.println("Statistic calculation time: " + times.getStatisticsTime());
+		System.out.println("               Select time: " + time.selection);
+		System.out.println("                Alter time: " + time.alter);
+		System.out.println("  Fitness calculation time: " + time.evaluation);
+		System.out.println("Statistic calculation time: " + time.statistics);
 		System.out.println("----------------------------");
-		System.out.println("    Overall execution time: " + times.getExecutionTime());
+		System.out.println("    Overall execution time: " + time.execution);
 		System.out.println();
 		System.out.println(ga.getBestStatistic());
 		System.out.flush();
