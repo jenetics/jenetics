@@ -48,10 +48,10 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.15 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.16 2010-01-14 13:52:47 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
-
+	public static final Probability DEFAULT_ALTER_PROBABILITY = Probability.valueOf(0.2);
 
 	/**
 	 * The Alterer which is executed after <code>this</code> alterer.
@@ -64,25 +64,24 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	protected final Probability _probability;
 	
 	/**
+	 * Constructs an alterer with a given recombination probability.
+	 * 
+	 * @param probability The recombination probability.
+	 * @throws NullPointerException if the {@code probability} is {@code null}. 
+	 */
+	protected Alterer(final Probability probability) {
+		_probability = notNull(probability, "Probability");
+	}
+	
+	/**
 	 * Create a {@code Alterer} concatenating the given {@code Alterer}S. The
 	 * default probability is set to 0.5.
 	 * 
 	 * @param component the {@code Alterer}S this {@code Alterer} consists.
 	 * @throws NullPointerException if the {@code component} is {@code null}.     
 	 */
-	public Alterer(final Alterer<G> component) {
-		this(Probability.valueOf(0.5), component);
-	}
-	
-	/**
-	 * Constructs an alterer with a given recombination probability.
-	 * 
-	 * @param probability The recombination probability.
-	 * @throws NullPointerException if the {@code probability} is {@code null}. 
-	 */
-	public Alterer(final Probability probability) {
-		notNull(probability, "Probability");
-		_probability = probability;
+	protected Alterer(final Alterer<G> component) {
+		this(DEFAULT_ALTER_PROBABILITY, component);
 	}
 	
 	/**
@@ -94,12 +93,9 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * @throws NullPointerException if the {@code probability} or the
 	 *         {@code component} is {@code null}. 
 	 */
-	public Alterer(final Probability probability, final Alterer<G> component) {
-		notNull(probability, "Probability");
-		notNull(component, "Alterer components");
-		
-		_probability = probability;
-		_component = component;
+	protected Alterer(final Probability probability, final Alterer<G> component) {
+		_probability = notNull(probability, "Probability");
+		_component = notNull(component, "Alterer components");
 	}
 	
 	/**
@@ -133,7 +129,8 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 *         {@code null}.
 	 */
 	public <C extends Comparable<C>> void alter(
-		final Population<G, C> population, final int generation
+		final Population<G, C> population, 
+		final int generation
 	) {
 		notNull(population, "Population");
 		
