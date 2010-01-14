@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.15 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: IntegerChromosome.java,v 1.16 2010-01-14 14:11:06 fwilhelm Exp $
  */
 public class IntegerChromosome extends NumberChromosome<IntegerGene> 
 	implements ChromosomeFactory<IntegerGene>, XMLSerializable
@@ -201,8 +201,8 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
-			xml.setAttribute(MIN, chromosome._min.intValue());
-			xml.setAttribute(MAX, chromosome._max.intValue());
+			xml.setAttribute(MIN, chromosome._min.longValue());
+			xml.setAttribute(MAX, chromosome._max.longValue());
 			for (IntegerGene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
