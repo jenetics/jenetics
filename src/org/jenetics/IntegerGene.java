@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGene.java,v 1.12 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: IntegerGene.java,v 1.13 2010-01-14 14:15:30 fwilhelm Exp $
  */
 public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 	private static final long serialVersionUID = 262677052481286632L;
@@ -72,7 +72,7 @@ public class IntegerGene extends NumberGene<Integer64, IntegerGene> {
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		return newInstance((_value.longValue() + that._value.longValue())/2);
+		return newInstance((_value.longValue() + that._value.longValue()) >>> 1);
 	}
 	
 	
