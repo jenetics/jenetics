@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.11 2010-01-14 14:53:10 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.12 2010-01-14 14:57:26 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -59,7 +59,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	protected final double _ageMean;
 	protected final double _ageVariance;
 		
-	private final Final<Time> _times = new Final<Time>(new Time());
+	private final Final<Time> _time = new Final<Time>(new Time());
 
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
@@ -90,8 +90,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * 
 	 * @return the time statistic object.
 	 */
-	public Time getTimes() {
-		return _times.get();
+	public Time getTime() {
+		return _time.get();
 	}
 	
 	/**
@@ -236,7 +236,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 					meanAge.doubleValue(), 
 					varianceAge.doubleValue()
 				);
-			statistics._times.set(xml.get(STATISITCS_TIME));
+			statistics._time.set(xml.get(STATISITCS_TIME));
 			
 			return statistics;
 
@@ -250,7 +250,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			xml.add(Float64.valueOf(s._ageVariance), AGE_VARIANCE);
 			xml.add(s._best, BEST_PHENOTYPE);
 			xml.add(s._worst, WORST_PHENOTYPE);
-			xml.add(s._times.get(), STATISITCS_TIME);
+			xml.add(s._time.get(), STATISITCS_TIME);
 		}
 		@Override
 		public void read(final InputElement xml, final Statistics p) 
@@ -261,7 +261,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.11 2010-01-14 14:53:10 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.12 2010-01-14 14:57:26 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;

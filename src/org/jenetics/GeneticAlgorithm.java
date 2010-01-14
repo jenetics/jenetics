@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.49 2010-01-14 14:53:10 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.50 2010-01-14 14:57:26 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -275,11 +275,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	private void setTimes(final Statistics<?, ?> statistic) {
-		statistic.getTimes().execution.set(_executionTimer.getInterimTime());
-		statistic.getTimes().selection.set(_selectTimer.getInterimTime());
-		statistic.getTimes().alter.set(_alterTimer.getInterimTime());
-		statistic.getTimes().evaluation.set(_evaluateTimer.getInterimTime());
-		statistic.getTimes().statistics.set(_statisticTimer.getInterimTime());
+		statistic.getTime().execution.set(_executionTimer.getInterimTime());
+		statistic.getTime().selection.set(_selectTimer.getInterimTime());
+		statistic.getTime().alter.set(_alterTimer.getInterimTime());
+		statistic.getTime().evaluation.set(_evaluateTimer.getInterimTime());
+		statistic.getTime().statistics.set(_statisticTimer.getInterimTime());
 	}
 	
 	/**
