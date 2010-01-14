@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/jscience.jar" sourcepath="/Plato/External/JScience/4.3.1/src/src.zip"/>
 	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
 	<classpathentry kind="lib" path="lib/jsr166y.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
