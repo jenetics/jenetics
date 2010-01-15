@@ -24,12 +24,16 @@ package org.jenetics.examples;
 
 import static java.lang.System.out;
 
+import javax.measure.Measurable;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
+
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.14 2010-01-14 15:00:10 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.15 2010-01-15 10:39:13 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -48,15 +52,20 @@ public class GAUtils {
 		final Statistics.Time time = ga.getTimeStatistics();
 		
 		out.println();
-		out.println("               Select time: " + time.selection);
-		out.println("                Alter time: " + time.alter);
-		out.println("  Fitness calculation time: " + time.evaluation);
-		out.println("Statistic calculation time: " + time.statistics);
-		out.println("----------------------------");
-		out.println("    Overall execution time: " + time.execution);
+		print("Select time", time.selection.get());
+		print("Alter time", time.alter.get());
+		print("Fitness calculation time", time.evaluation.get());
+		print("Statistic calculation time", time.statistics.get());
+		out.println("-----------------------------------------------");
+		print("Overall execution time", time.execution.get());
 		out.println();
 		out.println(ga.getBestStatistic());
 		out.flush();
+	}
+	
+	
+	private static void print(final String label, final Measurable<Duration> value) {
+		out.println(String.format("%30s: %11.11f %s", label, value.doubleValue(SI.SECOND), "s"));
 	}
 	
 }
