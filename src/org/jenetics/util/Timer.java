@@ -22,20 +22,30 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.notNull;
+
+import java.io.Serializable;
+
 import javax.measure.Measurable;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import javolution.lang.Reusable;
+
 /**
  * Timer for measure the performance of the GA. The timer uses nano second
- * precision (by using {@link System#nanoTime()}).
+ * precision (by using {@link System#nanoTime()}). This timer is not synchronized.
+ * It's up to the user to ensure thread safety.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.6 2010-01-15 10:38:22 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.7 2010-01-15 11:10:26 fwilhelm Exp $
  */
-public class Timer {
-	private final String _label;
+public class Timer implements Comparable<Timer>, Reusable, Serializable {
+	private static final long serialVersionUID = -4564917943200602352L;
+	private static final String DEFAULT_LABEL = "Timer";
+	
+	private String _label;
 	private long _start = 0;
 	private long _stop = 0;
 	private long _sum = 0;
@@ -48,15 +58,14 @@ public class Timer {
 	 * @throws NullPointerException if the {@code label} is {@code null}.
 	 */
 	public Timer(final String label) {
-		Validator.notNull(label, "Time label");
-		_label = label;
+		_label = notNull(label, "Time label");
 	}
 	
 	/**
-	 * Create a new Timer object with label 'Timer'.
+	 * Create a new Timer object with label '{@value Timer#DEFAULT_LABEL}'.
 	 */
 	public Timer() {
-		this("Timer");
+		this(DEFAULT_LABEL);
 	}
 	
 	/**
@@ -77,9 +86,12 @@ public class Timer {
 	/**
 	 * Reset the timer.
 	 */
+	@Override
 	public void reset() {
 		_sum = 0;
 		_start = 0;
+		_stop = 0;
+		_label = DEFAULT_LABEL;
 	}
 	
 	/**
@@ -108,6 +120,66 @@ public class Timer {
 	 */
 	public Measurable<Duration> getInterimTime() {
 		return Measure.valueOf(_stop - _start, SI.NANO(SI.SECOND));
+	}
+	
+	/**
+	 * Return the timer label.
+	 * 
+	 * @return the timer label.
+	 */
+	public String getLabel() {
+		return _label;
+	}
+	
+	/**
+	 * Set the timer label.
+	 * 
+	 * @param label the new timer label
+	 */
+	public void setLabel(final String label) {
+		_label = notNull(label, "Timer label");
+	}
+	
+	@Override
+	public int compareTo(final Timer timer) {
+		notNull(timer, "Timer");
+		
+		long diff = _sum - timer._sum;
+		int comp = 0;
+		if (diff < 0) {
+			comp = -1;
+		} else if (diff > 0) {
+			comp = 1;
+		}
+		return comp;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		
+		hash += 37*_label.hashCode() + 17;
+		hash += 37*_start + 17;
+		hash += 37*_stop + 17;
+		hash += 37*_sum + 17;
+		
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof Timer)) {
+			return false;
+		}
+		
+		final Timer timer = (Timer)object;
+		return _start == timer._start &&
+				_stop == timer._stop &&
+				_sum == timer._sum &&
+				_label.equals(timer._label);
 	}
 	
 	@Override
