@@ -44,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.17 2010-01-14 16:12:48 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.18 2010-01-15 09:23:57 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
@@ -87,7 +87,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 
 	/**
 	 * This method executes the recombination of in parallel if the current
-	 * {@link Evaluator} 
+	 * {@link Evaluator} provides more than one parallel tasks.
 	 */
 	@Override
 	protected final <C extends Comparable<C>> void change(
