@@ -39,9 +39,9 @@ import javolution.lang.Reusable;
  * It's up to the user to ensure thread safety.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.7 2010-01-15 11:10:26 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.8 2010-01-15 11:26:23 fwilhelm Exp $
  */
-public class Timer implements Comparable<Timer>, Reusable, Serializable {
+public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneable {
 	private static final long serialVersionUID = -4564917943200602352L;
 	private static final String DEFAULT_LABEL = "Timer";
 	
@@ -62,7 +62,7 @@ public class Timer implements Comparable<Timer>, Reusable, Serializable {
 	}
 	
 	/**
-	 * Create a new Timer object with label '{@value Timer#DEFAULT_LABEL}'.
+	 * Create a new Timer object.
 	 */
 	public Timer() {
 		this(DEFAULT_LABEL);
@@ -183,8 +183,17 @@ public class Timer implements Comparable<Timer>, Reusable, Serializable {
 	}
 	
 	@Override
+	public Timer clone() {
+		try {
+			return (Timer)super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError(e);
+		}
+	}
+	
+	@Override
 	public String toString() {
-		return String.format("%s: %11.11f", _label, getTime().doubleValue(SI.SECOND));
+		return String.format("%s: %11.11f s", _label, getTime().doubleValue(SI.SECOND));
 	}
 	
 }
