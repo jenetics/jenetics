@@ -28,6 +28,7 @@ import static java.lang.Math.sin;
 import jsr166y.ForkJoinPool;
 
 import org.jenetics.Chromosome;
+import org.jenetics.ExponentialRankSelector;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -44,7 +45,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.22 2010-01-12 14:56:14 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.23 2010-01-15 13:25:40 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -72,7 +73,7 @@ public class TravelingSalesman {
 	}
 	
 	public static void main(String[] args) {
-		final int stops = 300;
+		final int stops = 600;
 		
 		final FitnessFunction<IntegerGene, Integer> ff = new Function(adjacencyMatrix(stops));
 		final Factory<Genotype<IntegerGene>> gtf = Genotype.valueOf(
@@ -81,9 +82,10 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(5000);
         ga.setAlterer(
-            new SwapMutation<IntegerGene>(Probability.valueOf(0.08), 
+            new SwapMutation<IntegerGene>(Probability.valueOf(0.2), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
+        ga.setSelectors(new ExponentialRankSelector<IntegerGene, Integer>(2));
         
         //ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         //EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
@@ -92,6 +94,15 @@ public class TravelingSalesman {
         
         GAUtils.execute(ga, 100);
         pool.shutdown();
+        
+//        try {
+//			XMLSerializer.write(ga.getPopulation(), new FileOutputStream("/home/franzw/population.xml"));
+//			ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("/home/franzw/population.obj"));
+//			oout.writeObject(ga.getPopulation());
+//			oout.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} 
 	}
 	
 	/**

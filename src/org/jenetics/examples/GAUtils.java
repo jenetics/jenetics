@@ -22,18 +22,11 @@
  */
 package org.jenetics.examples;
 
-import static java.lang.System.out;
-
-import javax.measure.Measurable;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
 import org.jenetics.GeneticAlgorithm;
-import org.jenetics.Statistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.15 2010-01-15 10:39:13 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.16 2010-01-15 13:25:40 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -49,23 +42,11 @@ public class GAUtils {
 			System.out.flush();
 		}
 		
-		final Statistics.Time time = ga.getTimeStatistics();
+		ga.getStatistics().print(System.out);
 		
-		out.println();
-		print("Select time", time.selection.get());
-		print("Alter time", time.alter.get());
-		print("Fitness calculation time", time.evaluation.get());
-		print("Statistic calculation time", time.statistics.get());
-		out.println("-----------------------------------------------");
-		print("Overall execution time", time.execution.get());
-		out.println();
-		out.println(ga.getBestStatistic());
-		out.flush();
+		System.out.println(ga.getBestStatistic());
+		System.out.flush();
 	}
-	
-	
-	private static void print(final String label, final Measurable<Duration> value) {
-		out.println(String.format("%30s: %11.11f %s", label, value.doubleValue(SI.SECOND), "s"));
-	}
+
 	
 }
