@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
 
+import java.io.PrintStream;
 import java.text.ParseException;
 import java.util.List;
 
@@ -40,13 +41,14 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.12 2010-01-14 14:57:26 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.13 2010-01-15 13:25:38 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -199,11 +201,49 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		return equals;
 	}
 
+	/**
+	 * Prints out the statistics to the given print stream.
+	 * 
+	 * @param out the stream the statistics is printed.
+	 * @throws NullPointerException if the given print stream {@code out} is
+	 *         {@code null}.
+	 */
+	public void print(final PrintStream out) {
+		Validator.notNull(out, "PrintStream");
+				
+		out.println("+===============================+========================+");
+		print(out, "Select time", _time.get().selection.get());
+		print(out, "Alter time", _time.get().alter.get());
+		print(out, "Fitness calculation time", _time.get().evaluation.get());
+		print(out, "Statistic calculation time", _time.get().statistics.get());
+		print(out, "Overall execution time", _time.get().execution.get());
+		out.println("+-------------------------------+------------------------+");
+		print(out, "Age mean", _ageMean);
+		print(out, "Age variance", _ageVariance);
+		out.println("+-------------------------------+------------------------+");
+		print(out, "Samples", Integer.toString(_samples));
+		print(out, "Best fitness", getBestFitness().toString());
+		print(out, "Worst fitness", getWorstFitness().toString());
+		out.println("+===============================+========================+");
+		out.flush();
+	}
+	
+	static void print(final PrintStream out, final String label, final String value) {
+		out.println(String.format("|%30s | %20s   |", label, value));
+	}
+	
+	static void print(final PrintStream out, final String label, final double value) {
+		out.println(String.format("|%30s | %20.11f %s |", label, value, " "));
+	}
+	
+	static void print(final PrintStream out, final String label, final Measurable<Duration> value) {
+		out.println(String.format("|%30s | %20.11f %s |", label, value.doubleValue(SI.SECOND), "s"));
+	}
+	
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 
-		out.append("Samples:         ").append(_samples).append("\n");
 		out.append("Best Phenotype:  ").append(getBestPhenotype()).append("\n");
 		out.append("Worst Phenotype: ").append(getWorstPhenotype()).append("\n");
 		
@@ -261,7 +301,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.12 2010-01-14 14:57:26 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.13 2010-01-15 13:25:38 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;
@@ -270,8 +310,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		public Calculator() {
 		}
 		
-		public Statistics<G, C> evaluate(final List<? extends Phenotype<G, C>> population) {
-			_startEvaluationTime = System.currentTimeMillis();
+		public Statistics<G, C> evaluate(
+			final List<? extends Phenotype<G, C>> population,
+			final int generation
+		) {
+			_startEvaluationTime = System.nanoTime();
 			
 			Statistics<G, C> statistic = new Statistics<G, C>(null, null, 0, 0.0, 0.0);
 			final int size = population.size();
@@ -292,16 +335,22 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 					best = population.get(0);
 				}
 				
-				ageSum += best.getGeneration() + worst.getGeneration();
-				ageSquareSum += best.getGeneration()*best.getGeneration();
-				ageSquareSum += worst.getGeneration()*worst.getGeneration();
+				ageSum += 2*generation - best.getGeneration() - worst.getGeneration();
+				ageSquareSum += generation*generation - 
+								2*best.getGeneration()*generation + 
+								best.getGeneration()*best.getGeneration();
+				ageSquareSum += generation*generation - 
+								2*worst.getGeneration()*generation + 
+								worst.getGeneration()*worst.getGeneration();
 			} else if (size%2 == 1) {
 				start = 1;
 				worst = population.get(0);
 				best = population.get(0);
 				
-				ageSum = best.getGeneration();
-				ageSquareSum = best.getGeneration()*best.getGeneration();
+				ageSum += generation - best.getGeneration();
+				ageSquareSum += generation*generation - 
+								2*best.getGeneration()*generation + 
+								best.getGeneration()*best.getGeneration();
 			}
 			
 			for (int i = start; i < size; i += 2) {
@@ -326,9 +375,13 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				
 				assert best != null;
 				assert worst != null;
-				ageSum += best.getGeneration() + worst.getGeneration();
-				ageSquareSum += best.getGeneration()*best.getGeneration();
-				ageSquareSum += worst.getGeneration()*worst.getGeneration();
+				ageSum += 2*generation - best.getGeneration() - worst.getGeneration();
+				ageSquareSum += generation*generation - 
+								2*best.getGeneration()*generation + 
+								best.getGeneration()*best.getGeneration();
+				ageSquareSum += generation*generation - 
+								2*worst.getGeneration()*generation + 
+								worst.getGeneration()*worst.getGeneration();
 			}
 			
 			if (size > 0) {		
@@ -338,7 +391,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				statistic = new Statistics<G, C>(best, worst, size, meanAge, varianceAge);
 			}
 			
-			_stopEvaluationTime = System.currentTimeMillis();
+			_stopEvaluationTime = System.nanoTime();
 			return statistic;
 		}
 		

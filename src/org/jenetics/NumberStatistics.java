@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.6 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.7 2010-01-15 13:25:38 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -161,7 +161,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: NumberStatistics.java,v 1.6 2009-12-16 14:24:45 fwilhelm Exp $
+	 * @version $Id: NumberStatistics.java,v 1.7 2010-01-15 13:25:38 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
 		extends Statistics.Calculator<G, R>
@@ -172,9 +172,10 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		
 		@Override
 		public NumberStatistics<G, R> evaluate(
-			final List<? extends Phenotype<G, R>> population
+			final List<? extends Phenotype<G, R>> population,
+			final int generation
 		) {
-			final Statistics<G, R> s = super.evaluate(population);
+			final Statistics<G, R> s = super.evaluate(population, generation);
 			final int size = population.size();
 			
 			double fitnessSum = 0;
