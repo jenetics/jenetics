@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TimerTest.java,v 1.1 2010-01-15 11:10:26 fwilhelm Exp $
+ * @version $Id: TimerTest.java,v 1.2 2010-01-15 11:26:46 fwilhelm Exp $
  */
 public class TimerTest {
 
@@ -43,6 +43,25 @@ public class TimerTest {
 		Timer t2 = new Timer();
 		Assert.assertEquals(t1, t2);
 		Assert.assertNotSame(t1, t2);
+		Assert.assertEquals(t1.compareTo(t2), 0);
+	}
+	
+	@Test 
+	void timerClone() throws InterruptedException {
+		Timer timer = new Timer("ASDFASDF");
+		timer.start();
+		Thread.sleep(100);
+		timer.stop();
+				
+		Timer clone = timer.clone();
+		Assert.assertEquals(clone, timer);
+		Assert.assertNotSame(clone, timer);
+		Assert.assertEquals(clone.compareTo(timer), 0);
 	}
 	
 }
+
+
+
+
+
