@@ -28,10 +28,11 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 /**
- * Timer for measure the performance of the GA.
+ * Timer for measure the performance of the GA. The timer uses nano second
+ * precision (by using {@link System#nanoTime()}).
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.5 2010-01-15 10:24:22 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.6 2010-01-15 10:38:22 fwilhelm Exp $
  */
 public class Timer {
 	private final String _label;
@@ -111,7 +112,7 @@ public class Timer {
 	
 	@Override
 	public String toString() {
-		return String.format("%15s: %10f", _label, getTime().doubleValue(SI.SECOND));
+		return String.format("%s: %11.11f", _label, getTime().doubleValue(SI.SECOND));
 	}
 	
 }
