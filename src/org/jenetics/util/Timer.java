@@ -31,7 +31,7 @@ import javax.measure.unit.SI;
  * Timer for measure the performance of the GA.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.4 2009-02-25 22:29:43 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.5 2010-01-15 10:24:22 fwilhelm Exp $
  */
 public class Timer {
 	private final String _label;
@@ -62,14 +62,14 @@ public class Timer {
 	 * Start the timer.
 	 */
 	public void start() {
-		_start = System.currentTimeMillis();
+		_start = System.nanoTime();
 	}
 	
 	/**
 	 * Stop the timer.
 	 */
 	public void stop() {
-		_stop = System.currentTimeMillis();
+		_stop = System.nanoTime();
 		_sum += _stop - _start;
 	}
 	
@@ -96,7 +96,7 @@ public class Timer {
 	 * @return the measured time so far.
 	 */
 	public Measurable<Duration> getTime() {
-		return Measure.valueOf(_sum, SI.MILLI(SI.SECOND));
+		return Measure.valueOf(_sum, SI.NANO(SI.SECOND));
 	}
 	
 	/**
@@ -106,12 +106,12 @@ public class Timer {
 	 * @return the interim time measured.
 	 */
 	public Measurable<Duration> getInterimTime() {
-		return Measure.valueOf(_stop - _start, SI.MILLI(SI.SECOND));
+		return Measure.valueOf(_stop - _start, SI.NANO(SI.SECOND));
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("%15s: %10s", _label, getTime());
+		return String.format("%15s: %10f", _label, getTime().doubleValue(SI.SECOND));
 	}
 	
 }
