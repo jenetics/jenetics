@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.13 2010-01-15 13:25:38 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.14 2010-01-16 20:25:59 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -66,11 +66,13 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
 	 * may be {@code null}
-	 * 
 	 */ 
 	protected Statistics(
-		final Phenotype<G, C> best, final Phenotype<G, C> worst,
-		final int samples, final double ageMean, final double ageVariance
+		final Phenotype<G, C> best, 
+		final Phenotype<G, C> worst,
+		final int samples, 
+		final double ageMean, 
+		final double ageVariance
 	) {
 		_best = best;
 		_worst = worst;
@@ -140,14 +142,30 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		return fitness;
 	}
 	
+	/**
+	 * Return the number of samples this statistics aggregates.
+	 * 
+	 * @return the number of samples this statistics aggregates.
+	 */
 	public int getSamples() {
 		return _samples;
 	}
 	
+	/**
+	 * Return the average (mean) age of the individuals of the aggregated 
+	 * population.
+	 * 
+	 * @return the average population age.
+	 */
 	public double getAgeMean() {
 		return _ageMean;
 	}
 	
+	/**
+	 * Return the age variance of the individuals of the aggregated population.
+	 * 
+	 * @return the age variance of the individuals of the aggregated population.
+	 */
 	public double getAgeVariance() {
 		return _ageVariance;
 	}
@@ -211,20 +229,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	public void print(final PrintStream out) {
 		Validator.notNull(out, "PrintStream");
 				
-		out.println("+===============================+========================+");
-		print(out, "Select time", _time.get().selection.get());
-		print(out, "Alter time", _time.get().alter.get());
-		print(out, "Fitness calculation time", _time.get().evaluation.get());
-		print(out, "Statistic calculation time", _time.get().statistics.get());
-		print(out, "Overall execution time", _time.get().execution.get());
-		out.println("+-------------------------------+------------------------+");
+		printHLine(out);
+		_time.get().print(out);
+		printHLine(out);
 		print(out, "Age mean", _ageMean);
 		print(out, "Age variance", _ageVariance);
-		out.println("+-------------------------------+------------------------+");
+		printHLine(out);
 		print(out, "Samples", Integer.toString(_samples));
 		print(out, "Best fitness", getBestFitness().toString());
 		print(out, "Worst fitness", getWorstFitness().toString());
-		out.println("+===============================+========================+");
+		printHLine(out);
 		out.flush();
 	}
 	
@@ -238,6 +252,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	static void print(final PrintStream out, final String label, final Measurable<Duration> value) {
 		out.println(String.format("|%30s | %20.11f %s |", label, value.doubleValue(SI.SECOND), "s"));
+	}
+	
+	static void printHLine(final PrintStream out) {
+		out.println("+===============================+========================+");
 	}
 	
 	@Override
@@ -300,8 +318,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	};
 	
 	/**
+	 * Class for calculating the statistics.
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.13 2010-01-15 13:25:38 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.14 2010-01-16 20:25:59 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;
@@ -335,22 +355,20 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 					best = population.get(0);
 				}
 				
-				ageSum += 2*generation - best.getGeneration() - worst.getGeneration();
-				ageSquareSum += generation*generation - 
-								2*best.getGeneration()*generation + 
-								best.getGeneration()*best.getGeneration();
-				ageSquareSum += generation*generation - 
-								2*worst.getGeneration()*generation + 
-								worst.getGeneration()*worst.getGeneration();
+				ageSum += (generation - best.getGeneration()) + 
+							(generation - worst.getGeneration());
+				ageSquareSum += (generation - best.getGeneration())*
+								(generation - best.getGeneration());
+				ageSquareSum += (generation - worst.getGeneration())*
+								(generation - worst.getGeneration());
 			} else if (size%2 == 1) {
 				start = 1;
 				worst = population.get(0);
 				best = population.get(0);
 				
 				ageSum += generation - best.getGeneration();
-				ageSquareSum += generation*generation - 
-								2*best.getGeneration()*generation + 
-								best.getGeneration()*best.getGeneration();
+				ageSquareSum += (generation - best.getGeneration())*
+								(generation - best.getGeneration());
 			}
 			
 			for (int i = start; i < size; i += 2) {
@@ -375,13 +393,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				
 				assert best != null;
 				assert worst != null;
-				ageSum += 2*generation - best.getGeneration() - worst.getGeneration();
-				ageSquareSum += generation*generation - 
-								2*best.getGeneration()*generation + 
-								best.getGeneration()*best.getGeneration();
-				ageSquareSum += generation*generation - 
-								2*worst.getGeneration()*generation + 
-								worst.getGeneration()*worst.getGeneration();
+				ageSum += (generation - best.getGeneration()) + 
+							(generation - worst.getGeneration());
+				ageSquareSum += (generation - best.getGeneration())*
+								(generation - best.getGeneration());
+				ageSquareSum += (generation - worst.getGeneration())*
+								(generation - worst.getGeneration());
 			}
 			
 			if (size > 0) {		
@@ -401,6 +418,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 
 	}
 	
+	/**
+	 * Class which holds time statistic values.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id: Statistics.java,v 1.14 2010-01-16 20:25:59 fwilhelm Exp $
+	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
 
@@ -476,6 +499,21 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				execution.equals(time.execution) &&
 				selection.equals(time.selection) &&
 				statistics.equals(time.statistics);
+		}
+		
+		/**
+		 * Print the time information to the given print stream.
+		 * 
+		 * @param out the print stream.
+		 */
+		public void print(final PrintStream out) {
+			Statistics.printHLine(out);
+			Statistics.print(out, "Select time", selection.get());
+			Statistics.print(out, "Alter time", alter.get());
+			Statistics.print(out, "Fitness calculation time", evaluation.get());
+			Statistics.print(out, "Statistic calculation time", statistics.get());
+			Statistics.print(out, "Overall execution time", execution.get());
+			Statistics.printHLine(out);
 		}
 		
 		@SuppressWarnings("unchecked")
