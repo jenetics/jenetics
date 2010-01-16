@@ -34,10 +34,10 @@ import javolution.context.ConcurrentContext;
  * <a href="http://javolution.org/api/index.html">Javolution</a> library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.6 2009-12-16 10:46:31 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.7 2010-01-16 22:26:05 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
-	private final int _numberOfThreads;
+	private final int _parallelTasks;
 	
 	/**
 	 * Create a concurrent evaluator object where the number of concurrent threads
@@ -49,12 +49,12 @@ public class ConcurrentEvaluator implements Evaluator {
 	
 	/**
 	 * Create a concurrent evaluator object with the given number of concurrent
-	 * threas.
+	 * threads.
 	 * 
-	 * @param numberOfThreads the number of concurrent threads.
+	 * @param parallelTasks the number of concurrent threads.
 	 */
-	public ConcurrentEvaluator(final int numberOfThreads) {
-		_numberOfThreads = Math.max(numberOfThreads, 1);
+	public ConcurrentEvaluator(final int parallelTasks) {
+		_parallelTasks = Math.max(parallelTasks, 1);
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class ConcurrentEvaluator implements Evaluator {
 	private void eval(final List<? extends Runnable> runnables) {
 		ConcurrentContext.enter();
 		try {
-			final int[] parts = ArrayUtils.partition(runnables.size(), _numberOfThreads);
+			final int[] parts = ArrayUtils.partition(runnables.size(), _parallelTasks);
 			
 			if (runnables instanceof RandomAccess) {
 				for (int i = 0; i < parts.length - 1; ++i) {
@@ -101,7 +101,7 @@ public class ConcurrentEvaluator implements Evaluator {
 	
 	@Override
 	public int getParallelTasks() {
-		return _numberOfThreads;
+		return _parallelTasks;
 	}
 	
 }

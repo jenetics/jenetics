@@ -35,10 +35,10 @@ import java.util.concurrent.ExecutorService;
  * {@code java.util.concurrent} library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.8 2010-01-12 14:56:14 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.9 2010-01-16 22:26:05 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
-	private final int _numberOfThreads;
+	private final int _parallelTasks;
 	private final ExecutorService _pool;
 	
 	/**
@@ -56,14 +56,13 @@ public class ThreadedEvaluator implements Evaluator {
 	 * Create a concurrent evaluator object with the given number of concurrent
 	 * threads.
 	 * 
-	 * @param numberOfThreads the number of concurrent threads.
+	 * @param parallelTasks the number of concurrent threads.
 	 * @param pool the executor service (thread pool).
 	 * @throws NullPointerException if the given thread pool is {@code null}.
 	 */
-	public ThreadedEvaluator(final ExecutorService pool, final int numberOfThreads) {
+	public ThreadedEvaluator(final ExecutorService pool, final int parallelTasks) {
 		Validator.notNull(pool, "Thread pool");
-		
-		_numberOfThreads = Math.max(numberOfThreads, 1);
+		_parallelTasks = Math.max(parallelTasks, 1);
 		_pool = pool;
 	}
 	
@@ -79,7 +78,7 @@ public class ThreadedEvaluator implements Evaluator {
 	private synchronized void eval(final List<? extends Runnable> runnables) {
 		//Executing the tasks.
 		try {
-			_pool.invokeAll(partition(runnables, _numberOfThreads));
+			_pool.invokeAll(partition(runnables, _parallelTasks));
 		} catch (InterruptedException e) {
 			_pool.shutdown();
 			Thread.currentThread().interrupt();
@@ -88,7 +87,7 @@ public class ThreadedEvaluator implements Evaluator {
 	
 	@Override
 	public int getParallelTasks() {
-		return _numberOfThreads;
+		return _parallelTasks;
 	}
 	
 	private static final class EvaluatorCallable implements Callable<Void> {
