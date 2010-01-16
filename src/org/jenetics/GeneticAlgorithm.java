@@ -26,14 +26,14 @@ import static java.lang.Math.round;
 import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.notNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javolution.context.ConcurrentContext;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.ConcurrentEvaluator;
-import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
 import org.jenetics.util.ThreadedEvaluator;
@@ -82,7 +82,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.51 2010-01-15 13:25:38 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.52 2010-01-16 23:28:50 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -155,13 +155,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
-		notNull(genotypeFactory, "GenotypeFactory");
-		notNull(fitnessFunction, "FitnessFunction");
-		notNull(fitnessScaler, "FitnessScaler");
-		
-		_genotypeFactory = genotypeFactory;
-		_fitnessFunction = fitnessFunction;
-		_fitnessScaler = fitnessScaler;
+		_genotypeFactory = notNull(genotypeFactory, "GenotypeFactory");
+		_fitnessFunction = notNull(fitnessFunction, "FitnessFunction");
+		_fitnessScaler = notNull(fitnessScaler, "FitnessScaler");
 	}
 	
 	/**
@@ -243,7 +239,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			final Population<G, C> offsprings = selection.get(1);
 			_selectTimer.stop();
 			
-			//Alter the offprings (Recombination, Mutation ...).
+			//Alter the offsprings (Recombination, Mutation ...).
 			_alterTimer.start();
 			_alterer.alter(offsprings, _generation);
 			_alterTimer.stop();
@@ -296,24 +292,27 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Array<Population<G, C>> select() {
 		final Array<Population<G, C>> selection = new Array<Population<G, C>>(2);
 		
-		final List<Runnable> selectors = new ArrayList<Runnable>(2);
-		selectors.add(new Runnable() {
-			@Override public void run() {
-				final Population<G, C> survivors = _survivorSelector.select(
-					_population, getNumberOfSurvivors()
-				);
-				selection.set(0, survivors);
-			}
-		});
-		selectors.add(new Runnable() {
-			@Override public void run() {
-				final Population<G, C> offsprings = _offspringSelector.select(
-					_population, getNumberOfOffsprings()
-				);	
-				selection.set(1, offsprings);
-			}
-		});
-		EvaluatorRegistry.evaluate(selectors);
+		ConcurrentContext.enter();
+		try {
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					final Population<G, C> survivors = _survivorSelector.select(
+						_population, getNumberOfSurvivors()
+					);
+					selection.set(0, survivors);
+				}
+			});
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					final Population<G, C> offsprings = _offspringSelector.select(
+						_population, getNumberOfOffsprings()
+					);	
+					selection.set(1, offsprings);
+				}
+			});
+		} finally {
+			ConcurrentContext.exit();
+		}
 	
 		return selection;
 	}
@@ -322,27 +321,44 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final Population<G, C> survivors, 
 		final Population<G, C> offsprings
 	) {
+		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<G, C>(_populationSize);
 		
-		for (int i = 0, n = survivors.size(); i < n; ++i) {
-			final Phenotype<G, C> survivor = survivors.get(i);
+		ConcurrentContext.enter();
+		try {
+			// Kill survivors which are to old and replace it with new one.
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (int i = 0, n = survivors.size(); i < n; ++i) {
+						final Phenotype<G, C> survivor = survivors.get(i);
+						
+						// Sorry, to old or not valid.
+						if (survivor.getAge(_generation) > _maximalPhenotypeAge || 
+								!survivor.isValid()) 
+						{
+							final Phenotype<G, C> newpt = Phenotype.valueOf(
+									_genotypeFactory.newInstance(), 
+									_fitnessFunction, 
+									_fitnessScaler, 
+									_generation
+								);
+							survivors.set(i, newpt);
+						}
+					}
+				}
+			});
 			
-			//Survivor is still alive and valid.
-			if ((_generation - survivor.getGeneration()) <= _maximalPhenotypeAge && 
-				survivor.isValid()) 
-			{
-				population.add(survivor);
-				
-			//Create new phenotypes for dead survivors.
-			} else {
-				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newInstance(), _fitnessFunction, 
-					_fitnessScaler, _generation
-				);
-				population.add(pt);
-			}
+			// In the mean time we can add the offsprings.
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					population.addAll(offsprings);
+				}
+			});
+		} finally {
+			ConcurrentContext.exit();
 		}
-		population.addAll(offsprings);
+		
+		population.addAll(survivors);
 		
 		return population;
 	}

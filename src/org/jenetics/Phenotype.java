@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.14 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.15 2010-01-16 23:28:50 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -128,6 +128,17 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 */
 	public int getGeneration() {
 		return _generation;
+	}
+	
+	/**
+	 * Return the age of this phenotype depending on the given current generation. 
+	 * 
+	 * @param currentGeneration the current generation evaluated by the GA.
+	 * @return the age of this phenotype: 
+	 *         {@code currentGeneration - this.getGeneration()}.
+	 */
+	public int getAge(final int currentGeneration) {
+		return currentGeneration - _generation;
 	}
 	
 	/**

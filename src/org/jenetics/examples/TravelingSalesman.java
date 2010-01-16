@@ -45,7 +45,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.23 2010-01-15 13:25:40 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.24 2010-01-16 23:28:50 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -87,15 +87,18 @@ public class TravelingSalesman {
         );
         ga.setSelectors(new ExponentialRankSelector<IntegerGene, Integer>(2));
         
-        //ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        //EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
+//        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
+        
         ForkJoinPool pool = new ForkJoinPool();
         EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
+        try {
+        	GAUtils.execute(ga, 100);
+        } finally {
+        	pool.shutdown();
+        }
         
-        GAUtils.execute(ga, 100);
-        pool.shutdown();
-        
-//        try {
+//		try {
 //			XMLSerializer.write(ga.getPopulation(), new FileOutputStream("/home/franzw/population.xml"));
 //			ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("/home/franzw/population.obj"));
 //			oout.writeObject(ga.getPopulation());
