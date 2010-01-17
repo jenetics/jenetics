@@ -33,10 +33,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Probability;
-import org.jenetics.util.ThreadedEvaluator;
 import org.jenetics.util.Timer;
 
 /**
@@ -74,25 +72,26 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * If you have a problem to solve which requires expensive fitness calculation
- * you can parallelize the fitness calculation by using the {@link ConcurrentEvaluator}
- * of {@link ThreadedEvaluator}.
+ * you can parallelize the fitness calculation by using an {@link CEvaluator}.
  * [code]
  *     final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
  *     ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.52 2010-01-16 23:28:50 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.53 2010-01-17 18:31:41 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
  *      </a>
  * 
- * <G> 
+ * @param <G> The gene type this GA evaluates,
+ * @param <C> The result type (of the fitness function).
  */
 public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
-	private static final int POPULATION_SIZE = 50;
-	private static final int MAXIMAL_PHENOTYPE_AGE = 70;
+	public static final int DEFAULT_POPULATION_SIZE = 50;
+	public static final int DEFAULT_MAXIMAL_PHENOTYPE_AGE = 70;
+	public static final Probability DEFAULT_OFFSPRING_FRACTION = Probability.valueOf(0.6);
 	
 	private final Lock _lock = new ReentrantLock(true);	
 	
@@ -100,7 +99,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final FitnessFunction<G, C> _fitnessFunction;
 	private FitnessScaler<C> _fitnessScaler;
 	
-	private Probability _offspringFraction = Probability.valueOf(0.6);
+	private Probability _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 	
 	private Alterer<G> _alterer = ( 
 			new SinglePointCrossover<G>(Probability.valueOf(0.1))).append(
@@ -110,15 +109,15 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
-	private int _populationSize = POPULATION_SIZE;
+	private int _populationSize = DEFAULT_POPULATION_SIZE;
 	private Population<G, C> _population = new Population<G, C>(_populationSize);
-	private int _maximalPhenotypeAge = MAXIMAL_PHENOTYPE_AGE;
+	private int _maximalPhenotypeAge = DEFAULT_MAXIMAL_PHENOTYPE_AGE;
 	private int _generation = 0;
 	
 	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
-	private Statistics<G, C> _bestStatistic;
-	private Statistics<G, C> _statistics;
-	private Phenotype<G, C> _bestPhenotype;
+	private Statistics<G, C> _bestStatistic = null;
+	private Statistics<G, C> _statistics = null;
+	private Phenotype<G, C> _bestPhenotype = null;
 	
 	
 	//Some performance measure.
@@ -184,8 +183,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			//Initializing/filling up the Population.
 			for (int i = _population.size(); i < _populationSize; ++i) {
 				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newInstance(), _fitnessFunction, 
-					_fitnessScaler, _generation
+					_genotypeFactory.newInstance(), 
+					_fitnessFunction, 
+					_fitnessScaler, 
+					_generation
 				);
 				_population.add(pt);
 			}
@@ -244,8 +245,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			_alterer.alter(offsprings, _generation);
 			_alterTimer.stop();
 			
-			//Combining the new population (containing the survivors and the altered
-			//offsprings).
+			// Combining the new population (containing the survivors and the 
+			// altered offsprings).
 			_population = combine(survivors, offsprings);
 			
 			//Evaluate the fitness
@@ -461,8 +462,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
 	public void setFitnessScaler(final FitnessScaler<C> scaler) {
-		notNull(scaler, "FitnessScaler");
-		_fitnessScaler = scaler;
+		_fitnessScaler = notNull(scaler, "FitnessScaler");
 	}
 	
 	/**
@@ -553,8 +553,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<G, C> selector) {
-		notNull(selector, "Offspring selector");
-		_offspringSelector = selector;
+		_offspringSelector = notNull(selector, "Offspring selector");
 	}
 
 	/**
@@ -564,14 +563,14 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<G, C> selector) {
-		notNull(selector, "Survivor selector");
-		_survivorSelector = selector;
+		_survivorSelector = notNull(selector, "Survivor selector");
 	}
 	
 	/**
 	 * Set both, the offspring selector and the survivor selector.
 	 * 
 	 * @param selector The selector for the offsprings and the survivors.
+	 * @throws NullPointerException if the {@code selector} is {@code null}
 	 */
 	public void setSelectors(final Selector<G, C> selector) {
 		setOffspringSelector(selector);
@@ -585,8 +584,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException if the offspring fraction is null.
 	 */
 	public void setOffspringFraction(final Probability offspringFraction) {
-		notNull(offspringFraction, "Offspring fraction");
-		_offspringFraction = offspringFraction;
+		_offspringFraction = notNull(offspringFraction, "Offspring fraction");
 	}
 	
 	/**
@@ -596,8 +594,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException if the alterer is null.
 	 */
 	public void setAlterer(final Alterer<G> alterer) {
-		notNull(alterer, "Alterer");
-		_alterer = alterer;
+		_alterer = notNull(alterer, "Alterer");
 	}
 	
 	/**
@@ -606,8 +603,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param alterer the {@link Alterer} to add.
 	 */
 	public void addAlterer(final Alterer<G> alterer) {
-		notNull(alterer, "Alterer");
-		_alterer.append(alterer);
+		_alterer.append(notNull(alterer, "Alterer"));
 	}
 	
 	/**
@@ -677,7 +673,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 *        to <code>genotypes.size()</code>.
 	 * @throws NullPointerException if the population is null.
 	 * @throws IllegalArgumentException it the population size is smaller than
-	 * 		one.
+	 * 		   one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
 		notNull(genotypes, "Genotypes");
