@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.14 2009-11-24 22:45:36 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.15 2010-01-18 15:53:25 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -49,25 +49,26 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	public Population<G, C> select(final Population<G, C> population, final int count) {
 		Validator.notNull(population, "Population");
 		if (count < 0) {
-			throw new IllegalArgumentException(
-				"Selection count must be greater or equal then zero, but was " + count
-			);
+			throw new IllegalArgumentException(String.format(
+				"Selection count must be greater or equal then zero, but was %s.",
+				count
+			));
 		}
 		
 		final Population<G, C> selection = new Population<G, C>(count);
-		if (count == 0) {
-			return selection;
+		
+		if (count > 0) {
+			final double[] probabilities = probabilities(population, count);
+			assert (population.size() == probabilities.length);
+			final Random random = RandomRegistry.getRandom();
+			
+			for (int i = 0; i < count; ++i) {
+				selection.add(population.get(nextIndex(probabilities, random)));
+			}
+			
+			assert(count == selection.size());
 		}
 		
-		final double[] probabilities = probabilities(population, count);
-		assert (population.size() == probabilities.length);
-		final Random random = RandomRegistry.getRandom();
-		
-		for (int i = 0; i < count; ++i) {
-			selection.add(population.get(nextIndex(probabilities, random)));
-		}
-		
-		assert(count == selection.size());
 		return selection;
 	}
 	
