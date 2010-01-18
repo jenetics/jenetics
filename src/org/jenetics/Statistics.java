@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
 
-import java.io.PrintStream;
 import java.text.ParseException;
 import java.util.List;
 
@@ -41,14 +40,13 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
-import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.15 2010-01-18 12:29:07 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.16 2010-01-18 14:00:54 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -219,53 +217,38 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		return equals;
 	}
 
-	/**
-	 * Prints out the statistics to the given print stream.
-	 * 
-	 * @param out the stream the statistics is printed.
-	 * @throws NullPointerException if the given print stream {@code out} is
-	 *         {@code null}.
-	 */
-	public void print(final PrintStream out) {
-		Validator.notNull(out, "PrintStream");
-				
-		printHLine(out);
-		_time.get().print(out);
-		printHLine(out);
-		print(out, "Age mean", _ageMean);
-		print(out, "Age variance", _ageVariance);
-		printHLine(out);
-		print(out, "Samples", Integer.toString(_samples));
-		print(out, "Best fitness", getBestFitness().toString());
-		print(out, "Worst fitness", getWorstFitness().toString());
-		printHLine(out);
-		out.flush();
-	}
-	
-	static void print(final PrintStream out, final String label, final String value) {
-		out.println(String.format("|%30s | %20s   |", label, value));
-	}
-	
-	static void print(final PrintStream out, final String label, final double value) {
-		out.println(String.format("|%30s | %20.11f %s |", label, value, " "));
-	}
-	
-	static void print(final PrintStream out, final String label, final Measurable<Duration> value) {
-		out.println(String.format("|%30s | %20.11f %s |", label, value.doubleValue(SI.SECOND), "s"));
-	}
-	
-	static void printHLine(final PrintStream out) {
-		out.println("+===============================+========================+");
-	}
 	
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 
+		append(out, "Age mean", _ageMean, "");
+		append(out, "Age variance", _ageVariance, "");
+		append(out, "Samples", Integer.toString(_samples));
+		append(out, "Best fitness", getBestFitness().toString());
+		append(out, "Worst fitness", getWorstFitness().toString());
+		
 		out.append("Best Phenotype:  ").append(getBestPhenotype()).append("\n");
 		out.append("Worst Phenotype: ").append(getWorstPhenotype()).append("\n");
 		
 		return out.toString();
+	}
+	
+	static void append(
+		final StringBuilder out, 
+		final String name, 
+		final double value,
+		final String unit
+	) {
+		out.append(String.format("%30s: %20.11f %s \n", name, value, unit));
+	}
+	
+	static void append(
+		final StringBuilder out, 
+		final String name, 
+		final String value
+	) {
+		out.append(String.format("%30s: %20s   \n", name, value));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -321,7 +304,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class for calculating the statistics.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.15 2010-01-18 12:29:07 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.16 2010-01-18 14:00:54 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;
@@ -422,7 +405,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.15 2010-01-18 12:29:07 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.16 2010-01-18 14:00:54 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -511,20 +494,18 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				statistics.equals(time.statistics);
 		}
 		
-		/**
-		 * Print the time information to the given print stream.
-		 * 
-		 * @param out the print stream.
-		 */
-		public void print(final PrintStream out) {
-			Statistics.printHLine(out);
-			Statistics.print(out, "Select time", selection.get());
-			Statistics.print(out, "Alter time", alter.get());
-			Statistics.print(out, "Combine time", combine.get());
-			Statistics.print(out, "Fitness calculation time", evaluation.get());
-			Statistics.print(out, "Statistic calculation time", statistics.get());
-			Statistics.print(out, "Overall execution time", execution.get());
-			Statistics.printHLine(out);
+		@Override
+		public String toString() {
+			final StringBuilder out = new StringBuilder();
+			
+			append(out, "Select time", selection.get().doubleValue(SI.SECOND), " s");
+			append(out, "Alter time", alter.get().doubleValue(SI.SECOND), " s");
+			append(out, "Combine time", combine.get().doubleValue(SI.SECOND), " s");
+			append(out, "Fitness calculation time", evaluation.get().doubleValue(SI.SECOND), " s");
+			append(out, "Statistics calculation time", statistics.get().doubleValue(SI.SECOND), " s");
+			append(out, "Overall execution time", execution.get().doubleValue(SI.SECOND), " s");
+			
+			return out.toString();
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -639,6 +620,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 	}
+	
+	
 }
 
 

@@ -79,7 +79,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.54 2010-01-18 12:29:07 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.55 2010-01-18 14:00:54 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -297,22 +297,29 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private Array<Population<G, C>> select() {
 		final Array<Population<G, C>> selection = new Array<Population<G, C>>(2);
+		final int numberOfSurvivors = getNumberOfSurvivors();
+		final int numberOfOffspring = getNumberOfOffsprings();
+		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 		
 		ConcurrentContext.enter();
 		try {
 			ConcurrentContext.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> survivors = _survivorSelector.select(
-						_population, getNumberOfSurvivors()
+						_population, numberOfSurvivors
 					);
+					
+					assert (survivors.size() == numberOfSurvivors);
 					selection.set(0, survivors);
 				}
 			});
 			ConcurrentContext.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> offsprings = _offspringSelector.select(
-						_population, getNumberOfOffsprings()
+						_population, numberOfOffspring
 					);	
+					
+					assert (offsprings.size() == numberOfOffspring);
 					selection.set(1, offsprings);
 				}
 			});
@@ -619,9 +626,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 */
 	public void setMaximalPhenotypeAge(final int age) {
 		if (age < 1) {
-			throw new IllegalArgumentException(
-				"Phenotype age must be greater than one, but was " + age + ". "
-			);
+			throw new IllegalArgumentException(String.format(
+				"Phenotype age must be greater than one, but was %s.", age
+			));
 		}
 		_maximalPhenotypeAge = age;
 	}
@@ -635,9 +642,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 */
 	public void setPopulationSize(final int size) {
 		if (size < 1) {
-			throw new IllegalArgumentException(
-				"Population size must be greater than zero, but was " + size + ". "
-			);
+			throw new IllegalArgumentException(String.format(
+				"Population size must be greater than zero, but was %s.", size
+			));
 		}		 
 		_populationSize = size;
 	}
@@ -655,10 +662,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	public void setPopulation(final List<Phenotype<G, C>> population) {
 		notNull(population, "Population");
 		if (population.size() < 1) {
-			throw new IllegalArgumentException(
-				"Population size must be greater than zero, but was " +
-				population.size() + ". "
-			);
+			throw new IllegalArgumentException(String.format(
+				"Population size must be greater than zero, but was %s.",
+				population.size()
+			));
 		}
 		
 		_population.clear();
@@ -718,11 +725,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * Set the statistic calculator for this genetic algorithm instance.
 	 * 
 	 * @param calculator the new statistic calculator.
-	 * @throws NullPointerException if the given {@code calculator} is {@code null}.
+	 * @throws NullPointerException if the given {@code calculator} is 
+	 *         {@code null}.
 	 */
 	public void setStatisticCalculator(final Statistics.Calculator<G, C> calculator) {
-		notNull(calculator, "Statistic calculator");
-		_calculator = calculator;
+		_calculator = notNull(calculator, "Statistic calculator");
 	}
 	
 	/**
@@ -735,7 +742,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the current time statistics of the GA.
+	 * Return the current time statistics of the GA. This method aquires the
+	 * lock to ensure that the returned values are consistent.
 	 * 
 	 * @return the current time statistics.
 	 */
@@ -755,6 +763,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		}
 	}
 	
+	/**
+	 * This method aquires the lock to ensure that the returned value is consistent.
+	 */
 	@Override
 	public String toString() {
 		_lock.lock();
