@@ -9,7 +9,7 @@ public class NumberStatisticsTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void serialize() throws XMLStreamException {
-		final Statistics statistics = new Statistics(null, null, 0, 0, 0);
+		final Statistics statistics = new Statistics(234234, null, null, 0, 0, 0);
 		final NumberStatistics numberStatistics = new NumberStatistics(
 				statistics, 3.234, 42.234, 23
 			);

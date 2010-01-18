@@ -28,7 +28,6 @@ import static java.lang.Math.sin;
 import jsr166y.ForkJoinPool;
 
 import org.jenetics.Chromosome;
-import org.jenetics.ExponentialRankSelector;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -45,7 +44,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.24 2010-01-16 23:28:50 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.25 2010-01-18 15:31:53 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -82,10 +81,10 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(5000);
         ga.setAlterer(
-            new SwapMutation<IntegerGene>(Probability.valueOf(0.2), 
+            new SwapMutation<IntegerGene>(Probability.valueOf(0.5), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
-        ga.setSelectors(new ExponentialRankSelector<IntegerGene, Integer>(2));
+        ga.setSelectors(new org.jenetics.LinearRankSelector<IntegerGene, Integer>());
         
 //        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 //        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));

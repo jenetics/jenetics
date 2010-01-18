@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.7 2010-01-15 13:25:38 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.8 2010-01-18 15:31:53 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -46,12 +46,13 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	protected final double _errorOfMean;
 	
 	protected NumberStatistics(
+		final int generation,
 		final Phenotype<G, R> best, final Phenotype<G, R> worst, 
 		final double fitnessMean, final double fitnessVariance,
 		final int samples, final double ageMean, final double ageVariance,
 		final double errorOfMean
 	) {
-		super(best, worst, samples, ageMean, ageVariance);
+		super(generation, best, worst, samples, ageMean, ageVariance);
 		
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
@@ -161,7 +162,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: NumberStatistics.java,v 1.7 2010-01-15 13:25:38 fwilhelm Exp $
+	 * @version $Id: NumberStatistics.java,v 1.8 2010-01-18 15:31:53 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
 		extends Statistics.Calculator<G, R>

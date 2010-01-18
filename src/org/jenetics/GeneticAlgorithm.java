@@ -79,7 +79,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.56 2010-01-18 14:03:21 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.57 2010-01-18 15:31:53 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -265,6 +265,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				_bestPhenotype = _statistics.getBestPhenotype();
 				_bestStatistics = _statistics;
 			}
+			
 			_statisticTimer.stop();
 			
 			_executionTimer.stop();
