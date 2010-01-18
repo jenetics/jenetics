@@ -1,4 +1,6 @@
 Jenetics-0.5.0.0
+- Add new selector, MonteCarloSelector. This selector can be used to evaluate 
+  the performance of an other selector.
 - Rename GeneticAlgorithm.getBestStatistic() method to 
   GeneticAlgorithm.getBestStatistics()
 - Change org.jenetics.util.Timer to nano second resolution.
