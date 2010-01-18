@@ -72,14 +72,15 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * If you have a problem to solve which requires expensive fitness calculation
- * you can parallelize the fitness calculation by using an {@link CEvaluator}.
+ * you can parallelize the fitness calculation by using an 
+ * {@link org.jenetics.util.Evaluator}.
  * [code]
  *     final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
  *     ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.57 2010-01-18 15:31:53 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.58 2010-01-18 21:37:54 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -743,7 +744,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the current time statistics of the GA. This method aquires the
+	 * Return the current time statistics of the GA. This method acquires the
 	 * lock to ensure that the returned values are consistent.
 	 * 
 	 * @return the current time statistics.
@@ -765,7 +766,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * This method aquires the lock to ensure that the returned value is consistent.
+	 * This method acquires the lock to ensure that the returned value is 
+	 * consistent.
 	 */
 	@Override
 	public String toString() {
