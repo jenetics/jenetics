@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.19 2010-01-18 20:03:36 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.20 2010-01-18 20:57:20 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -317,7 +317,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.19 2010-01-18 20:03:36 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.20 2010-01-18 20:57:20 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -500,7 +500,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * for the Statistics class.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.19 2010-01-18 20:03:36 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.20 2010-01-18 20:57:20 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		
@@ -548,20 +548,19 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 					sum += pt.getAge(generation);
 				}
 				
-				final double agemean = sum/N;
+				final double mean = sum/N;
 	
 				sum = 0;
 				for (int i = 0; i < size; ++i) {
 					final Phenotype<G, C> pt = population.get(i);
-					
-					final double diff = pt.getAge(generation) - agemean;
+					final double diff = pt.getAge(generation) - mean;
 					 sum += diff*diff; 
 				}
 				
-				final double agevariance = N > 1 ? sum/(N - 1) : sum;
+				final double variance = N > 1 ? sum/(N - 1) : sum;
 			
 				
-				statistic = new Statistics<G, C>(generation, best, worst, size, agemean, agevariance);
+				statistic = new Statistics<G, C>(generation, best, worst, size, mean, variance);
 			} else {
 				assert (false);
 			}
