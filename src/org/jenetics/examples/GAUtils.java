@@ -26,7 +26,7 @@ import org.jenetics.GeneticAlgorithm;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.19 2010-01-18 14:00:54 fwilhelm Exp $
+ * @version $Id: GAUtils.java,v 1.20 2010-01-18 14:03:21 fwilhelm Exp $
  */
 public class GAUtils {
 
@@ -43,7 +43,7 @@ public class GAUtils {
 		}
 		
 		System.out.println(ga.getTimeStatistics());
-		System.out.println(ga.getBestStatistic());
+		System.out.println(ga.getBestStatistics());
 		System.out.flush();
 	}
 

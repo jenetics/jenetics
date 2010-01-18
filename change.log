@@ -1,4 +1,6 @@
 Jenetics-0.5.0.0
+- Rename GeneticAlgorithm.getBestStatistic() method to 
+  GeneticAlgorithm.getBestStatistics()
 - Change org.jenetics.util.Timer to nano second resolution.
 - Rename method Statistics.getTimes() to Statistics.getTime().
 - Replace the Statistics.Time properties with "final" javolution.lang.References.

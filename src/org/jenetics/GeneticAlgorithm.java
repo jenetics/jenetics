@@ -79,7 +79,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.55 2010-01-18 14:00:54 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.56 2010-01-18 14:03:21 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -115,7 +115,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private int _generation = 0;
 	
 	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
-	private Statistics<G, C> _bestStatistic = null;
+	private Statistics<G, C> _bestStatistics = null;
 	private Statistics<G, C> _statistics = null;
 	private Phenotype<G, C> _bestPhenotype = null;
 	
@@ -201,7 +201,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			_statisticTimer.start();
 			_statistics = _calculator.evaluate(_population, _generation);
 			_bestPhenotype =_statistics.getBestPhenotype();
-			_bestStatistic = _statistics;
+			_bestStatistics = _statistics;
 			_statisticTimer.stop();
 			
 			_executionTimer.stop();
@@ -263,7 +263,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			_statistics = _calculator.evaluate(_population, _generation);
 			if (_bestPhenotype.getFitness().compareTo(_statistics.getBestFitness()) < 0) {
 				_bestPhenotype = _statistics.getBestPhenotype();
-				_bestStatistic = _statistics;
+				_bestStatistics = _statistics;
 			}
 			_statisticTimer.stop();
 			
@@ -717,8 +717,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		return new Population<G, C>(_population);
 	}
 	
-	public Statistics<G, C> getBestStatistic() {
-		return _bestStatistic;
+	public Statistics<G, C> getBestStatistics() {
+		return _bestStatistics;
 	}
 	
 	/**
