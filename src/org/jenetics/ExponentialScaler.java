@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.Float64;
  * modified such that new fitness = (a * fitness + b) ^ exp.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialScaler.java,v 1.1 2010-01-18 21:47:13 fwilhelm Exp $
+ * @version $Id: ExponentialScaler.java,v 1.2 2010-01-18 22:09:05 fwilhelm Exp $
  */
 public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	private static final long serialVersionUID = -5895077899454677843L;
@@ -46,7 +46,7 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param exp fitness = (1 * fitness + 0) ^ <strong>exp</strong>
+	 * @param exp <pre>fitness = (1 * fitness + 0) ^ <strong>exp</strong></pre>
 	 */
 	public ExponentialScaler(final double exp) {
 		this(0.0, exp);
@@ -55,8 +55,8 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param b fitness = (1 * fitness + <strong>b</strong>) ^ exp
-	 * @param exp fitness = (1 * fitness + b) ^ <strong>exp</strong>
+	 * @param b <pre>fitness = (1 * fitness + <strong>b</strong>) ^ exp</pre>
+	 * @param exp <pre>fitness = (1 * fitness + b) ^ <strong>exp</strong></pre>
 	 */
 	public ExponentialScaler(final double b, final double exp) {
 		this(1.0, b, exp);
@@ -65,9 +65,9 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param a fitness = (<strong>a</strong> * fitness + b) ^ exp
-	 * @param b fitness = (a * fitness + <strong>b</strong>) ^ exp
-	 * @param exp fitness = (a * fitness + b) ^ <strong>exp</strong>
+	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ exp</pre>
+	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ exp</pre>
+	 * @param exp <pre>fitness = (a * fitness + b) ^ <strong>exp</strong></pre>
 	 */
 	public ExponentialScaler(final double a, final double b, final double exp) {
 		_a = a;
