@@ -46,13 +46,14 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.16 2010-01-18 14:00:54 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.17 2010-01-18 15:31:53 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
 {
 	private static final long serialVersionUID = -8980979460645713414L;
 	
+	protected final int _generation;
 	protected final Phenotype<G, C> _best;
 	protected final Phenotype<G, C> _worst;
 	protected final int _samples;
@@ -66,12 +67,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * may be {@code null}
 	 */ 
 	protected Statistics(
+		final int generation,
 		final Phenotype<G, C> best, 
 		final Phenotype<G, C> worst,
 		final int samples, 
 		final double ageMean, 
 		final double ageVariance
 	) {
+		_generation = generation;
 		_best = best;
 		_worst = worst;
 		_samples = samples;
@@ -81,9 +84,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	protected Statistics(final Statistics<G, C> other) {
 		this(
+			other.getGeneration(),
 			other.getBestPhenotype(), other.getWorstPhenotype(),
 			other.getSamples(), other.getAgeMean(), other.getAgeVariance()
 		);
+	}
+	
+	public int getGeneration() {
+		return _generation;
 	}
 	
 	/**
@@ -228,8 +236,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		append(out, "Best fitness", getBestFitness().toString());
 		append(out, "Worst fitness", getWorstFitness().toString());
 		
-		out.append("Best Phenotype:  ").append(getBestPhenotype()).append("\n");
-		out.append("Worst Phenotype: ").append(getWorstPhenotype()).append("\n");
+		out.append("Best Phenotype:  ").append("(Generation " + Integer.toString(_generation) + "):" + getBestPhenotype()).append("\n");
+		out.append("Worst Phenotype: ").append("(Generation " + Integer.toString(_generation) + "):" +getWorstPhenotype()).append("\n");
 		
 		return out.toString();
 	}
@@ -255,6 +263,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	protected static final XMLFormat<Statistics> XML = 
 		new XMLFormat<Statistics>(Statistics.class) 
 	{
+		private static final String GENERATION = "generation";
 		private static final String SAMPLES = "samples";
 		private static final String AGE_MEAN = "age-mean";
 		private static final String AGE_VARIANCE = "age-variance";
@@ -266,6 +275,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
+			final int generation = xml.getAttribute(GENERATION, 0);
 			final int samples = xml.getAttribute(SAMPLES, 1);
 			final Float64 meanAge = xml.get(AGE_MEAN);
 			final Float64 varianceAge = xml.get(AGE_VARIANCE);
@@ -273,6 +283,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			final Phenotype worst = xml.get(WORST_PHENOTYPE);
 			
 			final Statistics statistics = new Statistics(
+					generation,
 					best, worst, samples, 
 					meanAge.doubleValue(), 
 					varianceAge.doubleValue()
@@ -286,6 +297,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		public void write(final Statistics s, final OutputElement xml) 
 			throws XMLStreamException 
 		{
+			xml.setAttribute(GENERATION, s._generation);
 			xml.setAttribute(SAMPLES, s._samples);
 			xml.add(Float64.valueOf(s._ageMean), AGE_MEAN);
 			xml.add(Float64.valueOf(s._ageVariance), AGE_VARIANCE);
@@ -304,7 +316,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class for calculating the statistics.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.16 2010-01-18 14:00:54 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.17 2010-01-18 15:31:53 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;
@@ -319,76 +331,48 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		) {
 			_startEvaluationTime = System.nanoTime();
 			
-			Statistics<G, C> statistic = new Statistics<G, C>(null, null, 0, 0.0, 0.0);
-			final int size = population.size();
+			Statistics<G, C> statistic = new Statistics<G, C>(
+					generation, null, null, 0, 0.0, 0.0
+				);
 			
-			Phenotype<G, C> best = null;
-			Phenotype<G, C> worst = null;
-			long ageSum = 0;
-			long ageSquareSum = 0;
-			int start = 0;
-			
-			if (size%2 == 0 && size > 0) {
-				start = 2;
-				if (population.get(0).compareTo(population.get(1)) < 0) {
-					worst = population.get(0);
-					best = population.get(1);
-				} else {
-					worst = population.get(1);
-					best = population.get(0);
+			if (!population.isEmpty()) {	
+				final int size = population.size();
+				final double N = size;
+				
+				Phenotype<G, C> best = population.get(0);
+				Phenotype<G, C> worst = population.get(0);
+				
+				double sum = 0;
+				for (int i = 0; i < size; ++i) {
+					final Phenotype<G, C> pt = population.get(i);
+					
+					// Finding best/worst phenotype
+					if (pt.compareTo(worst) < 0) {
+						worst = pt;
+					}
+					if (pt.compareTo(best) > 0) {
+						best = pt;
+					}
+					
+					sum += pt.getAge(generation);
 				}
 				
-				ageSum += (generation - best.getGeneration()) + 
-							(generation - worst.getGeneration());
-				ageSquareSum += (generation - best.getGeneration())*
-								(generation - best.getGeneration());
-				ageSquareSum += (generation - worst.getGeneration())*
-								(generation - worst.getGeneration());
-			} else if (size%2 == 1) {
-				start = 1;
-				worst = population.get(0);
-				best = population.get(0);
-				
-				ageSum += generation - best.getGeneration();
-				ageSquareSum += (generation - best.getGeneration())*
-								(generation - best.getGeneration());
-			}
-			
-			for (int i = start; i < size; i += 2) {
-				final Phenotype<G, C> first = population.get(i);
-				final Phenotype<G, C> second = population.get(i + 1);
-				
-				if (first.compareTo(second) < 0) {
-					if (first.compareTo(worst) < 0) {
-						worst = first;
-					}
-					if (second.compareTo(best) > 0) {
-						best = second;
-					}
-				} else {
-					if (second.compareTo(worst) < 0) {
-						worst = second;
-					}
-					if (first.compareTo(best) > 0) {
-						best = first;
-					}
+				final double agemean = sum/N;
+	
+				sum = 0;
+				for (int i = 0; i < size; ++i) {
+					final Phenotype<G, C> pt = population.get(i);
+					
+					final double diff = pt.getAge(generation) - agemean;
+					 sum += diff*diff; 
 				}
 				
-				assert best != null;
-				assert worst != null;
-				ageSum += (generation - best.getGeneration()) + 
-							(generation - worst.getGeneration());
-				ageSquareSum += (generation - best.getGeneration())*
-								(generation - best.getGeneration());
-				ageSquareSum += (generation - worst.getGeneration())*
-								(generation - worst.getGeneration());
-			}
+				final double agevariance = N > 1 ? sum/(N - 1) : sum;
 			
-			if (size > 0) {		
-				final double meanAge = (double)ageSum/(double)size;
-				final double varianceAge = (double)ageSquareSum/(double)size - meanAge*meanAge;
 				
-				statistic = new Statistics<G, C>(best, worst, size, meanAge, varianceAge);
+				statistic = new Statistics<G, C>(generation, best, worst, size, agemean, agevariance);
+			} else {
+				assert (false);
 			}
 			
 			_stopEvaluationTime = System.nanoTime();
@@ -405,7 +389,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.16 2010-01-18 14:00:54 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.17 2010-01-18 15:31:53 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;

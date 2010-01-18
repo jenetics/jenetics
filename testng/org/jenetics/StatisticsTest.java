@@ -25,15 +25,17 @@ package org.jenetics;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
+import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticsTest.java,v 1.2 2009-07-02 17:47:58 fwilhelm Exp $
+ * @version $Id: StatisticsTest.java,v 1.3 2010-01-18 15:31:53 fwilhelm Exp $
  */
 public class StatisticsTest {
 
-	@Test
+	//@Test
 	public void equals() {
 		double a = 123.0;
 		double b = a;
@@ -78,10 +80,69 @@ public class StatisticsTest {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	private static Population<DoubleGene, Float64> newPopulation(final int size) {
+		Population<DoubleGene, Float64> population = new Population<DoubleGene, Float64>(size);
+		FitnessFunction<DoubleGene, Float64> ff = new FitnessFunction<DoubleGene, Float64>() {
+			private static final long serialVersionUID = -2089185336380721853L;
+
+			@Override
+			public Float64 evaluate(Genotype<DoubleGene> genotype) {
+				return genotype.getChromosome().getGene().getAllele();
+			}
+		};
+		
+		for (int i = 1; i <= size; ++i) {
+			DoubleGene gene = DoubleGene.valueOf(i, 0, Integer.MAX_VALUE);
+			DoubleChromosome chromosome = new DoubleChromosome(gene);
+			Genotype<DoubleGene> gt = Genotype.valueOf(chromosome);
+			Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(gt, ff, i);
+			
+			population.add(pt);
+		}
+		
+		return population;
+	}
+	
+	static final double EPSILON = 0.00000001;
+	
 	@Test
+	public void calculation() {
+		int size = 2;
+		Population<DoubleGene, Float64> population = newPopulation(size);
+		Statistics.Calculator<DoubleGene, Float64> calculator = new Statistics.Calculator<DoubleGene, Float64>();
+		
+		Statistics<DoubleGene, Float64> statistics = calculator.evaluate(population, size + 1);
+		Assert.assertEquals(statistics.getSamples(), 2);
+		Assert.assertEquals(statistics.getAgeMean(), 1.5, EPSILON);
+		Assert.assertEquals(statistics.getAgeVariance(), 0.5, EPSILON);
+		Assert.assertEquals(statistics.getBestFitness().doubleValue(), 2.0, EPSILON);
+		Assert.assertEquals(statistics.getWorstFitness().doubleValue(), 1.0, EPSILON);
+		Assert.assertEquals(statistics.getBestPhenotype().getFitness().doubleValue(), 2.0, EPSILON);
+		Assert.assertEquals(statistics.getWorstPhenotype().getFitness().doubleValue(), 1.0, EPSILON);		
+	}
+	
+	@Test
+	public void calculation2() {
+		int size = 10;
+		Population<DoubleGene, Float64> population = newPopulation(size);
+		Statistics.Calculator<DoubleGene, Float64> calculator = new Statistics.Calculator<DoubleGene, Float64>();
+		
+		Statistics<DoubleGene, Float64> statistics = calculator.evaluate(population, size + 1);
+		Assert.assertEquals(statistics.getSamples(), 10);
+		Assert.assertEquals(statistics.getAgeMean(), 5.5, EPSILON);
+		Assert.assertEquals(statistics.getAgeVariance(), 9.1666666666666, EPSILON);
+		Assert.assertEquals(statistics.getBestFitness().doubleValue(), 10.0, EPSILON);
+		Assert.assertEquals(statistics.getWorstFitness().doubleValue(), 1.0, EPSILON);
+		Assert.assertEquals(statistics.getBestPhenotype().getFitness().doubleValue(), 10.0, EPSILON);
+		Assert.assertEquals(statistics.getWorstPhenotype().getFitness().doubleValue(), 1.0, EPSILON);
+		
+		System.out.println(statistics);
+	}
+	
+	@SuppressWarnings("unchecked")
+	//@Test
 	public void serialize() throws XMLStreamException {
-		SerializeUtils.testSerialization(new Statistics(null, null, 0, 0, 0));
+		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0));
 	}
 
 }
