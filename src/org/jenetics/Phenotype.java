@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.15 2010-01-16 23:28:50 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.16 2010-01-18 17:44:23 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -160,45 +160,29 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((_fitness == null) ? 0 : _fitness.hashCode());
-		result = prime * result + _generation;
-		result = prime * result
-				+ ((_genotype == null) ? 0 : _genotype.hashCode());
-		result = prime * result
-				+ ((_rawFitness == null) ? 0 : _rawFitness.hashCode());
-		return result;
+		int hash = 31;
+		hash += (_fitness != null ? _fitness.hashCode() : 0)*17 + 31;
+		hash += (_rawFitness != null ? _rawFitness.hashCode() : 0)*17 + 31;
+		hash += (_genotype != null ? _genotype.hashCode() : 0)*17 + 31;
+		hash += _generation*17 + 31;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (!(obj instanceof Phenotype<?, ?>)) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Phenotype<?,?> other = (Phenotype<?,?>) obj;
-		if (_fitness == null) {
-			if (other._fitness != null)
-				return false;
-		} else if (!_fitness.equals(other._fitness))
-			return false;
-		if (_generation != other._generation)
-			return false;
-		if (_genotype == null) {
-			if (other._genotype != null)
-				return false;
-		} else if (!_genotype.equals(other._genotype))
-			return false;
-		if (_rawFitness == null) {
-			if (other._rawFitness != null)
-				return false;
-		} else if (!_rawFitness.equals(other._rawFitness))
-			return false;
-		return true;
+		}
+		
+		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
+		return
+			(_fitness != null ? _fitness.equals(pt._fitness) : pt._fitness == null) &&
+			(_rawFitness != null ? _rawFitness.equals(pt._rawFitness) : pt._rawFitness == null) &&
+			(_genotype != null ? _genotype.equals(pt._genotype) : pt._genotype == null) &&
+			_generation == pt._generation;
 	}
 
 	@Override
