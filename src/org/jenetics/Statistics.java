@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.14 2010-01-16 20:25:59 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.15 2010-01-18 12:29:07 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -321,7 +321,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class for calculating the statistics.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.14 2010-01-16 20:25:59 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.15 2010-01-18 12:29:07 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		protected long _startEvaluationTime = 0;
@@ -422,7 +422,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.14 2010-01-16 20:25:59 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.15 2010-01-18 12:29:07 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -456,6 +456,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			alter = new Final<Measurable<Duration>>(ZERO);
 		
 		/**
+		 * Combination time between offsprings and survivors.
+		 * The time can be set only once, otherwise an IllegalArgumentException
+		 * is thrown.
+		 */
+		public final Reference<Measurable<Duration>> 
+			combine = new Final<Measurable<Duration>>(ZERO);
+		
+		/**
 		 * The evaluation time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
@@ -476,6 +484,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		public int hashCode() {
 			int hash = 17;
 			hash += alter.hashCode()*37;
+			hash += combine.hashCode()*37;
 			hash += evaluation.hashCode()*37;
 			hash += execution.hashCode()*37;
 			hash += selection.hashCode()*37;
@@ -495,6 +504,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			final Statistics.Time time = (Statistics.Time)object;
 			return 
 				alter.equals(time.alter) &&
+				combine.equals(time.combine) &&
 				evaluation.equals(time.evaluation) &&
 				execution.equals(time.execution) &&
 				selection.equals(time.selection) &&
@@ -510,6 +520,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			Statistics.printHLine(out);
 			Statistics.print(out, "Select time", selection.get());
 			Statistics.print(out, "Alter time", alter.get());
+			Statistics.print(out, "Combine time", combine.get());
 			Statistics.print(out, "Fitness calculation time", evaluation.get());
 			Statistics.print(out, "Statistic calculation time", statistics.get());
 			Statistics.print(out, "Overall execution time", execution.get());
@@ -521,6 +532,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			new XMLFormat<Statistics.Time>(Statistics.Time.class) 
 		{
 			private static final String ALTER_TIME = "alter-time";
+			private static final String COMBINE_TIME = "combine-time";
 			private static final String EVALUATION_TIME = "evaluation-time";
 			private static final String EXECUTION_TIME = "execution-time";
 			private static final String SELECTION_TIME = "selection-time";
@@ -539,6 +551,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 					time.alter.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(ALTER_TIME)
 						));
+					time.combine.set((Measurable<Duration>)format.parseObject(
+							(String)xml.get(COMBINE_TIME)
+						));					
 					time.evaluation.set((Measurable<Duration>)format.parseObject(
 							(String)xml.get(EVALUATION_TIME)
 						));
@@ -564,6 +579,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				final MeasureFormat format = MeasureFormat.getInstance();
 				
 				xml.add(format.format(s.alter.get()), ALTER_TIME);
+				xml.add(format.format(s.combine.get()), COMBINE_TIME);
 				xml.add(format.format(s.evaluation.get()), EVALUATION_TIME);
 				xml.add(format.format(s.execution.get()), EXECUTION_TIME);
 				xml.add(format.format(s.selection.get()), SELECTION_TIME);

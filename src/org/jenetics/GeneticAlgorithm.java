@@ -79,7 +79,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.53 2010-01-17 18:31:41 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.54 2010-01-18 12:29:07 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -124,6 +124,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final Timer _executionTimer = new Timer("Execution time");
 	private final Timer _selectTimer = new Timer("Select time");
 	private final Timer _alterTimer = new Timer("Alter time");
+	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 	
@@ -217,9 +218,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws IllegalStateException if the {@link GeneticAlgorithm#setup()} 
 	 *         method was not called first.
 	 */
-	public void evolve() {		
+	public void evolve() {
 		_lock.lock();
-		try {
+		try {			
+			// Check the setup state.
 			if (_generation == 0) {
 				throw new IllegalStateException(
 					"Call the GeneticAlgorithm.setup() method before " +
@@ -247,7 +249,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			
 			// Combining the new population (containing the survivors and the 
 			// altered offsprings).
+			_combineTimer.start();
 			_population = combine(survivors, offsprings);
+			_combineTimer.stop();
 			
 			//Evaluate the fitness
 			_evaluateTimer.start();
@@ -275,6 +279,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		statistic.getTime().execution.set(_executionTimer.getInterimTime());
 		statistic.getTime().selection.set(_selectTimer.getInterimTime());
 		statistic.getTime().alter.set(_alterTimer.getInterimTime());
+		statistic.getTime().combine.set(_combineTimer.getInterimTime());
 		statistic.getTime().evaluation.set(_evaluateTimer.getInterimTime());
 		statistic.getTime().statistics.set(_statisticTimer.getInterimTime());
 	}
@@ -739,6 +744,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		try {
 			final Statistics.Time time = new Statistics.Time();
 			time.alter.set(_alterTimer.getTime());
+			time.combine.set(_combineTimer.getTime());
 			time.evaluation.set(_evaluateTimer.getTime());
 			time.execution.set(_executionTimer.getTime());
 			time.selection.set(_selectTimer.getTime());
