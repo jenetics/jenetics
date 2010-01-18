@@ -34,19 +34,19 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import javolution.lang.Immutable;
-import javolution.lang.Reference;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.FinalReference;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.18 2010-01-18 15:40:54 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.19 2010-01-18 20:03:36 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -60,7 +60,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	protected final double _ageMean;
 	protected final double _ageVariance;
 		
-	private final Final<Time> _time = new Final<Time>(new Time());
+	private final FinalReference<Time> _time = new FinalReference<Time>(new Time());
 
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
@@ -312,75 +312,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 	};
 	
-	/**
-	 * Class for calculating the statistics.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.18 2010-01-18 15:40:54 fwilhelm Exp $
-	 */
-	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
-		
-		public Calculator() {
-		}
-		
-		public Statistics<G, C> evaluate(
-			final List<? extends Phenotype<G, C>> population,
-			final int generation
-		) {	
-			Statistics<G, C> statistic = new Statistics<G, C>(
-					generation, null, null, 0, 0.0, 0.0
-				);
-			
-			if (!population.isEmpty()) {	
-				final int size = population.size();
-				final double N = size;
-				
-				Phenotype<G, C> best = population.get(0);
-				Phenotype<G, C> worst = population.get(0);
-				
-				double sum = 0;
-				for (int i = 0; i < size; ++i) {
-					final Phenotype<G, C> pt = population.get(i);
-					
-					// Finding best/worst phenotype
-					if (pt.compareTo(worst) < 0) {
-						worst = pt;
-					}
-					if (pt.compareTo(best) > 0) {
-						best = pt;
-					}
-					
-					sum += pt.getAge(generation);
-				}
-				
-				final double agemean = sum/N;
-	
-				sum = 0;
-				for (int i = 0; i < size; ++i) {
-					final Phenotype<G, C> pt = population.get(i);
-					
-					final double diff = pt.getAge(generation) - agemean;
-					 sum += diff*diff; 
-				}
-				
-				final double agevariance = N > 1 ? sum/(N - 1) : sum;
-			
-				
-				statistic = new Statistics<G, C>(generation, best, worst, size, agemean, agevariance);
-			} else {
-				assert (false);
-			}
-			
-			return statistic;
-		}
-
-	}
 	
 	/**
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.18 2010-01-18 15:40:54 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.19 2010-01-18 20:03:36 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -390,52 +327,60 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			);
 		
 		/**
+		 * Create a new time object with zero time values. The time references
+		 * can only be set once. If you try to set the values twice an
+		 * {@link IllegalStateException} is thrown.
+		 */
+		public Time() {
+		}
+		
+		/**
 		 * The overall execution time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final Reference<Measurable<Duration>> 
-			execution = new Final<Measurable<Duration>>(ZERO);
+		public final FinalReference<Measurable<Duration>> 
+			execution = new FinalReference<Measurable<Duration>>(ZERO);
 		
 		/**
 		 * The selection time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final Reference<Measurable<Duration>> 
-			selection = new Final<Measurable<Duration>>(ZERO);
+		public final FinalReference<Measurable<Duration>> 
+			selection = new FinalReference<Measurable<Duration>>(ZERO);
 		
 		/**
 		 * The alter time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final Reference<Measurable<Duration>> 
-			alter = new Final<Measurable<Duration>>(ZERO);
+		public final FinalReference<Measurable<Duration>> 
+			alter = new FinalReference<Measurable<Duration>>(ZERO);
 		
 		/**
 		 * Combination time between offsprings and survivors.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final Reference<Measurable<Duration>> 
-			combine = new Final<Measurable<Duration>>(ZERO);
+		public final FinalReference<Measurable<Duration>> 
+			combine = new FinalReference<Measurable<Duration>>(ZERO);
 		
 		/**
 		 * The evaluation time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final Reference<Measurable<Duration>> 
-			evaluation = new Final<Measurable<Duration>>(ZERO);
+		public final FinalReference<Measurable<Duration>> 
+			evaluation = new FinalReference<Measurable<Duration>>(ZERO);
 		
 		/**
 		 * The statistics time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final Reference<Measurable<Duration>> 
-			statistics = new Final<Measurable<Duration>>(ZERO);
+		public final FinalReference<Measurable<Duration>> 
+			statistics = new FinalReference<Measurable<Duration>>(ZERO);
 		
 		
 		@Override
@@ -549,51 +494,81 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		};
 	}
 	
-	private static final class Final<T> implements Reference<T> {
-		private T _value = null;
-		private boolean _initialized = false;
-
-		public Final(final T value) {
-			_value = value;
+	
+	/**
+	 * Class for calculating the statistics. This class serves also as factory
+	 * for the Statistics class.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id: Statistics.java,v 1.19 2010-01-18 20:03:36 fwilhelm Exp $
+	 */
+	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
+		
+		/**
+		 * Create a new calculator object.
+		 */
+		public Calculator() {
 		}
 		
-		@Override
-		public void set(final T value) {
-			if (_initialized) {
-				throw new IllegalStateException("Value is already initialized.");
-			}
-			_value = value;
-			_initialized = true;
-		}
-		
-		@Override
-		public T get() {
-			return _value;
-		}
-		
-		@Override
-		public int hashCode() {
-			return _value != null ? _value.hashCode() : 0;
-		}
-		
-		@Override
-		public boolean equals(final Object object) {
-			if (object == this) {
-				return true;
-			}
-			if (!(object instanceof Final<?>)) {
-				return false;
+		/**
+		 * Create a new statistics object from the given {@code population} at
+		 * the given {@code generation}.
+		 * 
+		 * @param population the population to aggregate.
+		 * @param generation the current GA generation.
+		 * @return a new statistics object generated from the given arguments.
+		 */
+		public Statistics<G, C> evaluate(
+			final List<? extends Phenotype<G, C>> population,
+			final int generation
+		) {	
+			Statistics<G, C> statistic = new Statistics<G, C>(
+					generation, null, null, 0, 0.0, 0.0
+				);
+			
+			if (!population.isEmpty()) {	
+				final int size = population.size();
+				final double N = size;
+				
+				Phenotype<G, C> best = population.get(0);
+				Phenotype<G, C> worst = population.get(0);
+				
+				double sum = 0;
+				for (int i = 0; i < size; ++i) {
+					final Phenotype<G, C> pt = population.get(i);
+					
+					// Finding best/worst phenotype
+					if (pt.compareTo(worst) < 0) {
+						worst = pt;
+					}
+					if (pt.compareTo(best) > 0) {
+						best = pt;
+					}
+					
+					sum += pt.getAge(generation);
+				}
+				
+				final double agemean = sum/N;
+	
+				sum = 0;
+				for (int i = 0; i < size; ++i) {
+					final Phenotype<G, C> pt = population.get(i);
+					
+					final double diff = pt.getAge(generation) - agemean;
+					 sum += diff*diff; 
+				}
+				
+				final double agevariance = N > 1 ? sum/(N - 1) : sum;
+			
+				
+				statistic = new Statistics<G, C>(generation, best, worst, size, agemean, agevariance);
+			} else {
+				assert (false);
 			}
 			
-			final Final<?> f = (Final<?>)object;
-			return f._value != null ? f._value.equals(_value) : _value == null;
+			return statistic;
 		}
-		
-		@Override
-		public String toString() {
-			return _value != null ? _value.toString() : "null";
-		}
-		
+
 	}
 	
 	
