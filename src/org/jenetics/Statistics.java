@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.17 2010-01-18 15:31:53 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.18 2010-01-18 15:40:54 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -316,11 +316,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class for calculating the statistics.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.17 2010-01-18 15:31:53 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.18 2010-01-18 15:40:54 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
-		protected long _startEvaluationTime = 0;
-		protected long _stopEvaluationTime = 0;
 		
 		public Calculator() {
 		}
@@ -328,9 +326,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		public Statistics<G, C> evaluate(
 			final List<? extends Phenotype<G, C>> population,
 			final int generation
-		) {
-			_startEvaluationTime = System.nanoTime();
-			
+		) {	
 			Statistics<G, C> statistic = new Statistics<G, C>(
 					generation, null, null, 0, 0.0, 0.0
 				);
@@ -375,12 +371,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				assert (false);
 			}
 			
-			_stopEvaluationTime = System.nanoTime();
 			return statistic;
-		}
-		
-		public Measurable<Duration> getEvaluationTime() {
-			return Measure.valueOf(_stopEvaluationTime - _startEvaluationTime, SI.MILLI(SI.SECOND));
 		}
 
 	}
@@ -389,7 +380,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.17 2010-01-18 15:31:53 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.18 2010-01-18 15:40:54 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
