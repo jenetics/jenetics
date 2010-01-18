@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.Math.sqrt;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.8 2010-01-18 15:31:53 fwilhelm Exp $
+ * @version $Id: NumberStatistics.java,v 1.9 2010-01-18 20:57:20 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
@@ -47,9 +48,13 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	protected NumberStatistics(
 		final int generation,
-		final Phenotype<G, R> best, final Phenotype<G, R> worst, 
-		final double fitnessMean, final double fitnessVariance,
-		final int samples, final double ageMean, final double ageVariance,
+		final Phenotype<G, R> best, 
+		final Phenotype<G, R> worst, 
+		final double fitnessMean, 
+		final double fitnessVariance,
+		final int samples, 
+		final double ageMean, 
+		final double ageVariance,
 		final double errorOfMean
 	) {
 		super(generation, best, worst, samples, ageMean, ageVariance);
@@ -61,7 +66,8 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	protected NumberStatistics(
 		final Statistics<G, R> other, 
-		final double fitnessMean, final double fitnessVariance,
+		final double fitnessMean, 
+		final double fitnessVariance,
 		final double errorOfMean
 	) {
 		super(other);
@@ -84,10 +90,10 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 
 	@Override
 	public int hashCode() {
-		int hash = super.hashCode()*37;
-		hash += (int)doubleToLongBits(_fitnessMean)*37;
-		hash += (int)doubleToLongBits(_fitnessVariance)*37;
-		hash += (int)doubleToLongBits(_errorOfMean)*37;
+		int hash = super.hashCode()*31 + 17;
+		hash += (int)doubleToLongBits(_fitnessMean)*31 + 17;
+		hash += (int)doubleToLongBits(_fitnessVariance)*31 + 17;
+		hash += (int)doubleToLongBits(_errorOfMean)*31 + 17;
 		return hash;
 	}
 	
@@ -162,7 +168,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: NumberStatistics.java,v 1.8 2010-01-18 15:31:53 fwilhelm Exp $
+	 * @version $Id: NumberStatistics.java,v 1.9 2010-01-18 20:57:20 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
 		extends Statistics.Calculator<G, R>
@@ -177,24 +183,37 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			final int generation
 		) {
 			final Statistics<G, R> s = super.evaluate(population, generation);
-			final int size = population.size();
+			NumberStatistics<G, R> statistics = new NumberStatistics<G, R>(s, 0, 0, 0);
 			
-			double fitnessSum = 0;
-			double fitnessSquareSum = 0;
-			
-			for (int i = 0; i < size; ++i) {
-				final Phenotype<G, R> phenotype = population.get(i); 
-
-				final double fitness = phenotype.getFitness().doubleValue();
-				fitnessSum += fitness;
-				fitnessSquareSum += fitness*fitness;
+			if (!population.isEmpty()) {
+				final int size = population.size();
+				final double N = population.size();
+				
+				double sum = 0;
+				for (int i = 0; i < size; ++i) {
+					final Phenotype<G, R> phenotype = population.get(i); 
+					final double fitness = phenotype.getFitness().doubleValue();
+					sum += fitness;
+				}
+				
+				final double mean = sum/N;
+				
+				sum = 0;
+				for (int i = 0; i < size; ++i) {
+					final Phenotype<G, R> phenotype = population.get(i); 
+					final double fitness = phenotype.getFitness().doubleValue();
+					final double diff = fitness - mean;
+					sum += diff*diff;
+				}
+				
+				final double n = N > 1 ? N - 1 : 1.0;
+				final double variance = sum/n;
+				final double error = sqrt(variance/n);
+				
+				statistics = new NumberStatistics<G, R>(s, mean, variance, error);
 			}
 			
-			final double mean = fitnessSum/population.size();
-			final double variance = fitnessSquareSum/size - mean*mean;
-			final double errorOfMean = Math.sqrt(variance/(population.size()  - 1));
-			
-			return new NumberStatistics<G, R>(s, mean, variance, errorOfMean);
+			return statistics;
 		}
 
 	}
