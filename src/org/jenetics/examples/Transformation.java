@@ -22,7 +22,7 @@
  */
 package org.jenetics.examples;
 
-import static org.jenetics.PowerScaler.SQR_SCALER;
+import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -43,7 +43,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Transformation.java,v 1.1 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: Transformation.java,v 1.2 2010-01-18 21:47:13 fwilhelm Exp $
  */
 public class Transformation {
 
