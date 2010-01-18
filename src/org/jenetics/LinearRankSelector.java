@@ -37,8 +37,8 @@ import java.io.Serializable;
  *        \                N - 1                /
  * </pre>
  * 
- * Here nminus/N is the probability of the worstPhenotype individual to be 
- * selected and nplus/N the probability of the bestPhenotype individual to be 
+ * Here nminus/N is the probability of the worst Phenotype individual to be 
+ * selected and nplus/N the probability of the best Phenotype individual to be 
  * selected. As the population size is held constant, the conditions 
  * <code>nplus = 2 - nminus</code> and <code>nminus >= 0</code> must be 
  * fulfilled. Note that all individuals get a different rank, i.e., a different 
@@ -53,7 +53,7 @@ import java.io.Serializable;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.8 2009-12-16 10:32:27 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.9 2010-01-18 22:25:41 fwilhelm Exp $
  */
 public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable
@@ -63,14 +63,29 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 	private final double _nminus;
 	private final double _nplus;
 
-
-	public LinearRankSelector(final double nminus, final double nplus) {
-		this._nminus = nminus;
-		this._nplus = nplus;
+	/**
+	 * Create a new LinearRankSelector with {@code nminus := 0.5}.
+	 */
+	public LinearRankSelector() {
+		this(0.5);
 	}
 	
-	public LinearRankSelector(){
-		this(0.5, 1.5);
+	/**
+	 * Create a new LinearRankSelector with the given values for {@code nminus}.
+	 * 
+	 * @param nminus {@code nminus/N} is the probability of the worst phenotype 
+	 *        to be selected.
+	 * @throws IllegalArgumentException if {@code nminus < 0).
+	 */
+	public LinearRankSelector(final double nminus) {
+		if (nminus < 0) {
+			throw new IllegalArgumentException(String.format(
+					"nminus is smaller than zero: %s", nminus
+				));
+		}
+		
+		_nminus = nminus;
+		_nplus = 2 - _nminus;
 	}
 
 	@Override
@@ -94,3 +109,5 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 	}
 
 }
+
+
