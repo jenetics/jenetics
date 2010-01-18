@@ -39,13 +39,12 @@ import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinEvaluator;
 import org.jenetics.util.Probability;
-import org.jscience.mathematics.number.Float64;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.26 2010-01-18 16:21:58 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.27 2010-01-18 20:03:36 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -88,6 +87,7 @@ public class TravelingSalesman {
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
         //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
+        //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());
         
 //        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 //        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
