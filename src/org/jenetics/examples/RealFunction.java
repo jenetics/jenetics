@@ -26,7 +26,7 @@ import static java.lang.Math.acos;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
-import static org.jenetics.PowerScaler.SQR_SCALER;
+import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -43,7 +43,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.12 2009-03-09 18:48:21 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.13 2010-01-18 21:47:13 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function 
