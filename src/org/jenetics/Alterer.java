@@ -48,7 +48,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.16 2010-01-14 13:52:47 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.17 2010-01-18 18:37:59 fwilhelm Exp $
  */
 public abstract class Alterer<G extends Gene<?, G>> {
 	public static final Probability DEFAULT_ALTER_PROBABILITY = Probability.valueOf(0.2);
@@ -90,12 +90,11 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 * 
 	 * @param probability The recombination probability.
 	 * @param component The composite Alterer.
-	 * @throws NullPointerException if the {@code probability} or the
-	 *         {@code component} is {@code null}. 
+	 * @throws NullPointerException if the {@code probability} is {@code null}. 
 	 */
 	protected Alterer(final Probability probability, final Alterer<G> component) {
 		_probability = notNull(probability, "Probability");
-		_component = notNull(component, "Alterer components");
+		_component = component;
 	}
 	
 	/**
