@@ -39,52 +39,55 @@ import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinEvaluator;
 import org.jenetics.util.Probability;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.25 2010-01-18 15:31:53 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.26 2010-01-18 16:21:58 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
-	private static class Function implements FitnessFunction<IntegerGene, Integer> {
+	private static class Function implements FitnessFunction<IntegerGene, Double> {
 		private static final long serialVersionUID = 8402072476064049463L;
 		
-		private final double[][] adjacence;
+		private final double[][] _adjacence;
+		private final double _perimeter;
 		
 		public Function(final double[][] adjacence) {
-			this.adjacence = adjacence;
+			_adjacence = adjacence;
+			_perimeter = _adjacence[0][1]*_adjacence.length;
 		}
 		
 		@Override
-		public Integer evaluate(final Genotype<IntegerGene> genotype) {
+		public Double evaluate(final Genotype<IntegerGene> genotype) {
 			final Chromosome<IntegerGene> path = genotype.getChromosome();
 			
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
 				final int from = path.getGene(i).intValue();
 				final int to = path.getGene((i + 1)%n).intValue();
-				length -= adjacence[from][to];
+				length += _adjacence[from][to];
 			}
-			return (int)length*100;
+			return _perimeter/length;
 		}
 	}
 	
 	public static void main(String[] args) {
-		final int stops = 600;
+		final int stops = 20;
 		
-		final FitnessFunction<IntegerGene, Integer> ff = new Function(adjacencyMatrix(stops));
+		final FitnessFunction<IntegerGene, Double> ff = new Function(adjacencyMatrix(stops));
 		final Factory<Genotype<IntegerGene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
-		ga.setPopulationSize(5000);
+		final GeneticAlgorithm<IntegerGene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff);
+		ga.setPopulationSize(200);
         ga.setAlterer(
-            new SwapMutation<IntegerGene>(Probability.valueOf(0.5), 
+            new SwapMutation<IntegerGene>(Probability.valueOf(0.2), 
             new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
         );
-        ga.setSelectors(new org.jenetics.LinearRankSelector<IntegerGene, Integer>());
+        //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
         
 //        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 //        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
@@ -92,7 +95,7 @@ public class TravelingSalesman {
         ForkJoinPool pool = new ForkJoinPool();
         EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
         try {
-        	GAUtils.execute(ga, 100);
+        	GAUtils.execute(ga, 1000);
         } finally {
         	pool.shutdown();
         }
