@@ -53,7 +53,7 @@ import java.io.Serializable;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java,v 1.9 2010-01-18 22:25:41 fwilhelm Exp $
+ * @version $Id: LinearRankSelector.java,v 1.10 2010-01-20 19:03:34 fwilhelm Exp $
  */
 public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable
@@ -75,7 +75,7 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 	 * 
 	 * @param nminus {@code nminus/N} is the probability of the worst phenotype 
 	 *        to be selected.
-	 * @throws IllegalArgumentException if {@code nminus < 0).
+	 * @throws IllegalArgumentException if {@code nminus < 0}.
 	 */
 	public LinearRankSelector(final double nminus) {
 		if (nminus < 0) {
