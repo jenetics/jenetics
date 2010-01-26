@@ -33,11 +33,11 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: XMLSerializer.java,v 1.4 2009-09-13 21:14:21 fwilhelm Exp $
+ * @version $Id: Serializer.java,v 1.1 2010-01-26 21:22:14 fwilhelm Exp $
  */
-public class XMLSerializer {
+public class Serializer {
 
-	private XMLSerializer() {
+	private Serializer() {
 	}
 	
 	/**
