@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Serializer.java,v 1.1 2010-01-26 21:22:14 fwilhelm Exp $
+ * @version $Id: Serializer.java,v 1.2 2010-01-26 21:31:26 fwilhelm Exp $
  */
 public class Serializer {
 
@@ -49,7 +49,10 @@ public class Serializer {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
 	 */
-	public static <T extends XMLSerializable> void write(final T object, final OutputStream out) 
+	public static <T extends XMLSerializable> void writeXML(
+		final T object, 
+		final OutputStream out
+	) 
 		throws XMLStreamException 
 	{
 		Validator.notNull(out, "Output stream");
@@ -71,7 +74,7 @@ public class Serializer {
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #write(XMLSerializable, OutputStream)} method) from the given
+	 * {@link #writeXML(XMLSerializable, OutputStream)} method) from the given
 	 * input stream. The input stream is not closed by this method.
 	 * 
 	 * @param in the input stream to read from.
@@ -79,7 +82,7 @@ public class Serializer {
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws XMLStreamException if the object could not be read.
 	 */
-	public static Object read(final InputStream in) throws XMLStreamException {
+	public static Object readXML(final InputStream in) throws XMLStreamException {
 		Validator.notNull(in, "Input stream");
 		
 		final XMLObjectReader reader = XMLObjectReader.newInstance(
