@@ -27,13 +27,14 @@ import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
 
+import org.jenetics.util.Mean;
 import org.jscience.mathematics.number.Number;
 
 /**
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.11 2009-06-02 21:39:53 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.12 2010-01-26 13:24:34 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable

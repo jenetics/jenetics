@@ -24,6 +24,7 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
@@ -35,7 +36,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.9 2009-12-16 13:32:29 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.10 2010-01-26 13:24:34 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
