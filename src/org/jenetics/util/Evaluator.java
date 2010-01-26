@@ -32,13 +32,14 @@ import java.util.List;
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Evaluator.java,v 1.3 2009-11-24 22:45:35 fwilhelm Exp $
+ * @version $Id: Evaluator.java,v 1.4 2010-01-26 15:53:36 fwilhelm Exp $
  */
 public interface Evaluator {
 
 	/**
 	 * Evaluates (calls the {@link Runnable#run()} of the given list of
-	 * {@link Runnable} objects.
+	 * {@link Runnable} objects. This method returns when all given runnables
+	 * has been executed.
 	 * 
 	 * @param runnables the runnables to evaluate.
 	 * @throws NullPointerException if the runnable list (or one of its element)
