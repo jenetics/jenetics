@@ -34,7 +34,7 @@ import javolution.xml.stream.XMLStreamException;
  * Implementation of a BitGene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitGene.java,v 1.4 2009-02-28 23:08:44 fwilhelm Exp $
+ * @version $Id: BitGene.java,v 1.5 2010-01-26 21:34:53 fwilhelm Exp $
  */
 public class BitGene 
 	implements Gene<Boolean, BitGene>, Comparable<BitGene>, XMLSerializable 
@@ -49,7 +49,7 @@ public class BitGene
 	private final boolean _value;
 	
 	protected BitGene(final boolean value) {
-		this._value = value;
+		_value = value;
 	}
 
 	/**
