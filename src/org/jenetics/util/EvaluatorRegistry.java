@@ -22,13 +22,15 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.notNull;
+
 import java.util.List;
 
 import javolution.context.LocalContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EvaluatorRegistry.java,v 1.3 2009-11-24 22:45:35 fwilhelm Exp $
+ * @version $Id: EvaluatorRegistry.java,v 1.4 2010-01-26 22:25:32 fwilhelm Exp $
  */
 public class EvaluatorRegistry {
 	
@@ -65,8 +67,8 @@ public class EvaluatorRegistry {
 	 * @throws NullPointerException if the given {@code evaluator} is {@code null}.
 	 */
 	public static void setEvaluator(final Evaluator evaluator) {
-		Validator.notNull(evaluator, "Evaluator");
-		EVALUATOR.set(evaluator);
+		notNull(evaluator, "Evaluator");
+		EVALUATOR.set(notNull(evaluator, "Evaluator"));
 	}
 	
 	/**
@@ -76,7 +78,7 @@ public class EvaluatorRegistry {
 	 * @throws NullPointerException if the given {@code tasks} list is {@code null}.
 	 */
 	public static void evaluate(final List<? extends Runnable> tasks) {
-		Validator.notNull(tasks, "Task list");
+		notNull(tasks, "Task list");
 		EVALUATOR.get().evaluate(tasks);
 	}
 	
