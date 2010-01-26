@@ -20,14 +20,17 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
+
+import org.jenetics.MeanAlterer;
+import org.jenetics.NumberGene;
 
 /**
  * A mixin interface for genes which can have a mean value. This mixin is 
  * required for the {@link MeanAlterer}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mean.java,v 1.3 2009-01-09 21:29:40 fwilhelm Exp $
+ * @version $Id: Mean.java,v 1.1 2010-01-26 13:24:33 fwilhelm Exp $
  * 
  * @see MeanAlterer
  */
