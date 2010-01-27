@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Probability;
 
 /**
  * Population based methods provide the possibility of incorporating a new set 
@@ -33,12 +32,12 @@ import org.jenetics.util.Probability;
  * be chained by appending an new (component) alterers.
  * 
  * [code]
- *     GeneticAlgorithm<DoubleGene, Double> ga = ...
- *     ga.setAlterer(
- *         new Crossover<DoubleGene>(Probability.valueOf(0.1)).append(
- *         new Mutation<DoubleGene>(Probability.valueOf(0.05))).append(
- *         new MeanAlterer<DoubleGene>(Probability.valueOf(0.2)))
- *     );
+ *     GeneticAlgorithm<Float64Gene, Double> ga = ...
+ *     ga.setAlterer(new CompositeAlterer<Float64Gene>(
+ *         new Crossover<Float64Gene>(Probability.valueOf(0.1)),
+ *         new Mutation<Float64Gene>(Probability.valueOf(0.05))),
+ *         new MeanAlterer<Float64eGene>(Probability.valueOf(0.2))
+ *     ));
  * [/code]
  * 
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
@@ -46,7 +45,7 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.18 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.19 2010-01-27 21:23:40 fwilhelm Exp $
  */
 public interface Alterer<G extends Gene<?, G>> {
 
@@ -65,12 +64,5 @@ public interface Alterer<G extends Gene<?, G>> {
 			final Population<G, C> population, 
 			final int generation
 		);
-	
-	/**
-	 * Return the recombination probability for this alterer.
-	 * 
-	 * @return The recombination probability.
-	 */
-	public Probability getProbability();
 	
 }

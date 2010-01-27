@@ -30,7 +30,7 @@ import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CompositeAlterer.java,v 1.1 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: CompositeAlterer.java,v 1.2 2010-01-27 21:23:40 fwilhelm Exp $
  */
 public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -40,7 +40,7 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a1, 
 		final Alterer<G> a2
 	) {
-		super(Probability.valueOf(Probability.MAX_VALUE));
+		super(Probability.ONE);
 		_alterers = new Array<Alterer<G>>(a1, a2);
 	}
 	
@@ -49,17 +49,17 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a2, 
 		final Alterer<G> a3
 	) {
-		super(Probability.valueOf(Probability.MAX_VALUE));
+		super(Probability.ONE);
 		_alterers = new Array<Alterer<G>>(a1, a2, a3);
 	}
 	
 	public CompositeAlterer(final Alterer<G>... alterers) {
-		super(Probability.valueOf(Probability.MAX_VALUE));
+		super(Probability.ONE);
 		_alterers = new Array<Alterer<G>>(notNull(alterers, "Alterers"));
 	}
 	
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
-		super(Probability.valueOf(Probability.MAX_VALUE));
+		super(Probability.ONE);
 		_alterers = notNull(alterers, "Alterers").copy();
 	}
 
