@@ -32,10 +32,10 @@ import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.10 2010-01-27 22:54:48 fwilhelm Exp $
  */
-public abstract class NumberChromosome<N extends NumberGene<?, N>> 
-	extends AbstractChromosome<N> 
+public abstract class NumberChromosome<G extends NumberGene<?, G>> 
+	extends AbstractChromosome<G> implements ChromosomeFactory<G>
 {
 	private static final long serialVersionUID = 5563733927327762322L;
 
@@ -67,7 +67,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
 	 *         than one.
 	 */
-	protected NumberChromosome(final Array<N> genes) {
+	protected NumberChromosome(final Array<G> genes) {
 		super(genes);
 	}
 	
@@ -81,7 +81,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public byte byteValue(final int index) {
-		return getGene(index).byteValue();
+		return getGene(index).getAllele().byteValue();
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public short shortValue(final int index) {
-		return getGene(index).shortValue();
+		return getGene(index).getAllele().shortValue();
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public int intValue(final int index) {
-		return getGene(index).intValue();
+		return getGene(index).getAllele().intValue();
 	}
 	
 	/**
@@ -150,7 +150,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public long longValue(final int index) {
-		return getGene(index).longValue();
+		return getGene(index).getAllele().longValue();
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public float floatValue(final int index) {
-		return getGene(index).floatValue();
+		return getGene(index).getAllele().floatValue();
 	}
 	
 	/**
@@ -196,7 +196,7 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 	 * 		(index < 0 || index >= length()).
 	 */
 	public double doubleValue(final int index) {
-		return getGene(index).doubleValue();
+		return getGene(index).getAllele().doubleValue();
 	}
 	
 	/**
@@ -237,11 +237,11 @@ public abstract class NumberChromosome<N extends NumberGene<?, N>>
 		
 		out.append("[");
 		if (length() > 0) {
-			out.append(getGene(0)._value);
+			out.append(getGene(0).getAllele());
 		}
 		for (int i = 1; i < length(); ++i) {
 			out.append(", ");
-			out.append(getGene(i)._value);
+			out.append(getGene(i).getAllele());
 		}
 		out.append("]");
 		
