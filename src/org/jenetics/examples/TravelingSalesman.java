@@ -31,7 +31,7 @@ import org.jenetics.Chromosome;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.IntegerGene;
+import org.jenetics.Integer64Gene;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutation;
@@ -44,11 +44,11 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.27 2010-01-18 20:03:36 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.28 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
-	private static class Function implements FitnessFunction<IntegerGene, Double> {
+	private static class Function implements FitnessFunction<Integer64Gene, Double> {
 		private static final long serialVersionUID = 8402072476064049463L;
 		
 		private final double[][] _adjacence;
@@ -60,8 +60,8 @@ public class TravelingSalesman {
 		}
 		
 		@Override
-		public Double evaluate(final Genotype<IntegerGene> genotype) {
-			final Chromosome<IntegerGene> path = genotype.getChromosome();
+		public Double evaluate(final Genotype<Integer64Gene> genotype) {
+			final Chromosome<Integer64Gene> path = genotype.getChromosome();
 			
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
@@ -76,15 +76,15 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 		
-		final FitnessFunction<IntegerGene, Double> ff = new Function(adjacencyMatrix(stops));
-		final Factory<Genotype<IntegerGene>> gtf = Genotype.valueOf(
+		final FitnessFunction<Integer64Gene, Double> ff = new Function(adjacencyMatrix(stops));
+		final Factory<Genotype<Integer64Gene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<IntegerGene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff);
+		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(200);
         ga.setAlterer(
-            new SwapMutation<IntegerGene>(Probability.valueOf(0.2), 
-            new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
+            new SwapMutation<Integer64Gene>(Probability.valueOf(0.2), 
+            new PartiallyMatchedCrossover<Integer64Gene>(Probability.valueOf(0.3)))
         );
         //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
         //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());

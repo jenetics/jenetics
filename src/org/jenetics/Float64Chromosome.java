@@ -30,18 +30,17 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosome.java,v 1.17 2009-07-02 17:47:58 fwilhelm Exp $
+ * @version $Id: Float64Chromosome.java,v 1.1 2010-01-27 19:02:03 fwilhelm Exp $
  */
-public class DoubleChromosome extends NumberChromosome<DoubleGene> 
-	implements ChromosomeFactory<DoubleGene>, XMLSerializable
+public class Float64Chromosome extends NumberChromosome<Float64Gene> 
+	implements ChromosomeFactory<Float64Gene>, XMLSerializable
 {	
 	private static final long serialVersionUID = 6018295796115102264L;
 	
 	
-	protected DoubleChromosome(final Array<DoubleGene> genes) {
+	protected Float64Chromosome(final Array<Float64Gene> genes) {
 		super(genes);
 	}
 	
@@ -52,7 +51,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 * @param max the maximal value of this chromosome.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public DoubleChromosome(final double min, final double max) {
+	public Float64Chromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
 	}
 	
@@ -64,7 +63,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public DoubleChromosome(final Float64 min, final Float64 max) {
+	public Float64Chromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);
 	}
 	
@@ -77,7 +76,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
 	 *         one.
 	 */
-	public DoubleChromosome(final double min, final double max, final int length) {
+	public Float64Chromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
 	}
 	
@@ -89,7 +88,7 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	 *        one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	public DoubleChromosome(final DoubleGene... genes) {
+	public Float64Chromosome(final Float64Gene... genes) {
 		super(genes.length);
 		
 		_min = genes[0]._min;
@@ -102,12 +101,12 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 	/**
 	 * Create a new random DoubleChromosome.
 	 * 
-	 * @param min the min value of the {@link DoubleGene}s.
-	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param min the min value of the {@link Float64Gene}s.
+	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public DoubleChromosome(final Float64 min, final Float64 max, final int length) {
+	public Float64Chromosome(final Float64 min, final Float64 max, final int length) {
 		super(length);
 		
 		if (!min.isLessThan(max)) {
@@ -119,28 +118,28 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		_max = max;
 		
 		for (int i = 0; i < length; ++i) {
-			_genes.set(i, DoubleGene.valueOf(min, max));
+			_genes.set(i, Float64Gene.valueOf(min, max));
 		}
 	}
 	
 	@Override
-	public DoubleChromosome newInstance(final Array<DoubleGene> genes) {
-		final DoubleChromosome chromosome = new DoubleChromosome(genes);		
+	public Float64Chromosome newInstance(final Array<Float64Gene> genes) {
+		final Float64Chromosome chromosome = new Float64Chromosome(genes);		
 		chromosome._min = genes.get(0)._min;
 		chromosome._max = genes.get(0)._max;
 		return chromosome;
 	}
 
 	@Override
-	public DoubleChromosome newInstance() {
-		final Array<DoubleGene> genes = new Array<DoubleGene>(length());
-		final Factory<DoubleGene> factory = _genes.get(0);
+	public Float64Chromosome newInstance() {
+		final Array<Float64Gene> genes = new Array<Float64Gene>(length());
+		final Factory<Float64Gene> factory = _genes.get(0);
 		
 		for (int i = 0; i < length(); ++i) {
 			genes.set(i, factory.newInstance());
 		}
 		
-		final DoubleChromosome chromosome = new DoubleChromosome(genes);
+		final Float64Chromosome chromosome = new Float64Chromosome(genes);
 		chromosome._min = _min;
 		chromosome._max = _max;
 		return chromosome;
@@ -158,52 +157,52 @@ public class DoubleChromosome extends NumberChromosome<DoubleGene>
 		if (obj == this) {
 			return true;
 		}
-		return obj instanceof DoubleChromosome && super.equals(obj);
+		return obj instanceof Float64Chromosome && super.equals(obj);
 	}
 	
 	
 
 	
-	static final XMLFormat<DoubleChromosome> 
-	XML = new XMLFormat<DoubleChromosome>(DoubleChromosome.class) 
+	static final XMLFormat<Float64Chromosome> 
+	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class) 
 	{
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
 		private static final String MAX = "max";
 		
 		@Override
-		public DoubleChromosome newInstance(
-			final Class<DoubleChromosome> cls, final InputElement xml
+		public Float64Chromosome newInstance(
+			final Class<Float64Chromosome> cls, final InputElement xml
 		) throws XMLStreamException {
 			final int length = xml.getAttribute(LENGTH, 0);
 			final double min = xml.getAttribute(MIN, 0.0);
 			final double max = xml.getAttribute(MAX, 1.0);
 			
-			final Array<DoubleGene> genes = new Array<DoubleGene>(length);
+			final Array<Float64Gene> genes = new Array<Float64Gene>(length);
 			for (int i = 0; i < length; ++i) {
 				final Float64 value = xml.getNext();
-				genes.set(i, DoubleGene.valueOf(value.doubleValue(), min, max));
+				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
 			}
 			
-			final DoubleChromosome chromosome = new DoubleChromosome(genes);
+			final Float64Chromosome chromosome = new Float64Chromosome(genes);
 			chromosome._min = Float64.valueOf(min);
 			chromosome._max = Float64.valueOf(max);
 			
 			return chromosome;
 		}
 		@Override
-		public void write(final DoubleChromosome chromosome, final OutputElement xml) 
+		public void write(final Float64Chromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(MIN, chromosome._min.doubleValue());
 			xml.setAttribute(MAX, chromosome._max.doubleValue());
-			for (DoubleGene gene : chromosome) {
+			for (Float64Gene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
 		}
 		@Override
-		public void read(final InputElement element, final DoubleChromosome chromosome) 
+		public void read(final InputElement element, final Float64Chromosome chromosome) 
 			throws XMLStreamException 
 		{
 		}

@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GenotypeTest.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: GenotypeTest.java,v 1.7 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class GenotypeTest {
 
@@ -66,21 +66,21 @@ public class GenotypeTest {
 
     @Test
     public void testSetGetChromosome() {
-        IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
-        IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
+        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
         @SuppressWarnings("unused")
-		IntegerChromosome c3 = new IntegerChromosome(0, 100, 10);
+		Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);
         @SuppressWarnings("unused")
-		Genotype<IntegerGene> g = Genotype.valueOf(c1, c2);
+		Genotype<Integer64Gene> g = Genotype.valueOf(c1, c2);
     }
 
 
     @Test
     public void testCreate() {
-        IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
-        IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
-        Genotype<IntegerGene> g1 = Genotype.valueOf(c1, c2);
-        Genotype<IntegerGene> g2 = g1.newInstance();
+        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
+        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2);
+        Genotype<Integer64Gene> g2 = g1.newInstance();
         
         assertFalse(g1 == g2);
         assertFalse(g1.equals(g2));
@@ -88,10 +88,10 @@ public class GenotypeTest {
 
     @Test
     public void serialize() throws XMLStreamException {
-        IntegerChromosome c1 = new IntegerChromosome(0, 100, 10);
-        IntegerChromosome c2 = new IntegerChromosome(0, 100, 10);
-        IntegerChromosome c3 = new IntegerChromosome(0, 100, 10);
-        Genotype<IntegerGene> g1 = Genotype.valueOf(c1, c2, c3);
+        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);
+        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2, c3);
         
     	SerializeUtils.testSerialization(g1);
     }

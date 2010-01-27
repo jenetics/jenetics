@@ -32,19 +32,19 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGeneTest.java,v 1.8 2009-02-24 18:53:03 fwilhelm Exp $
+ * @version $Id: Float64GeneTest.java,v 1.1 2010-01-27 19:02:02 fwilhelm Exp $
  */
-public class DoubleGeneTest { 
+public class Float64GeneTest { 
     
 	@Test
     public void testDoubleGeneIntegerIntegerInteger() {
-        DoubleGene gene = DoubleGene.valueOf(1.234, 0.345, 2.123);
+        Float64Gene gene = Float64Gene.valueOf(1.234, 0.345, 2.123);
         assertEquals(gene.getAllele().doubleValue(), 1.234);
         assertEquals(gene.getMin().doubleValue(), 0.345);
         assertEquals(gene.getMax().doubleValue(), 2.123);
         
         try {
-            gene = DoubleGene.valueOf(0.1, 2.1, 4.1);
+            gene = Float64Gene.valueOf(0.1, 2.1, 4.1);
             assertFalse(gene.isValid());
         } catch (IllegalArgumentException e) {
             assertTrue(true);
@@ -53,16 +53,16 @@ public class DoubleGeneTest {
 
 	@Test
     public void testDoubleGeneIntegerInteger() {
-        DoubleGene gene = DoubleGene.valueOf(-10.567, 10.567);
+        Float64Gene gene = Float64Gene.valueOf(-10.567, 10.567);
         assertEquals(gene.getMin().doubleValue(), -10.567);
         assertEquals(gene.getMax().doubleValue(), 10.567);
     }
 
 	@Test
     public void testAdd() {
-        DoubleGene g1 = DoubleGene.valueOf(34.456, 0.456, 100.456);
-        DoubleGene g2 = DoubleGene.valueOf(2.0, 1.0, 10.0);
-        DoubleGene g3 = g1.plus(g2);
+        Float64Gene g1 = Float64Gene.valueOf(34.456, 0.456, 100.456);
+        Float64Gene g2 = Float64Gene.valueOf(2.0, 1.0, 10.0);
+        Float64Gene g3 = g1.plus(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 36.456);
         assertEquals(g3.getMin().doubleValue(), 0.456);
@@ -71,8 +71,8 @@ public class DoubleGeneTest {
 
 	@Test
     public void testSub() {
-        DoubleGene g1 = DoubleGene.valueOf(34.123, 10.123, 99.123);
-        DoubleGene g2 = DoubleGene.valueOf(2.0, 1.0, 10.0);
+        Float64Gene g1 = Float64Gene.valueOf(34.123, 10.123, 99.123);
+        Float64Gene g2 = Float64Gene.valueOf(2.0, 1.0, 10.0);
         NumberGene<Float64, ?> g3 = g1.minus(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 32.123);
@@ -82,9 +82,9 @@ public class DoubleGeneTest {
 
 	@Test
     public void testMul() {
-        DoubleGene g1 = DoubleGene.valueOf(34.345, 10.345, 99.345);
-        DoubleGene g2 = DoubleGene.valueOf(2.0, 1.0, 10.0);
-        DoubleGene g3 = g1.times(g2);
+        Float64Gene g1 = Float64Gene.valueOf(34.345, 10.345, 99.345);
+        Float64Gene g2 = Float64Gene.valueOf(2.0, 1.0, 10.0);
+        Float64Gene g3 = g1.times(g2);
         
         assertEquals(g3.getAllele().doubleValue(), 68.690);
         assertEquals(g3.getMin().doubleValue(), 10.345);
@@ -93,17 +93,17 @@ public class DoubleGeneTest {
 	
 	@Test
 	public void testMean() {
-		DoubleGene g1 = DoubleGene.valueOf(1, 0, 20);
-		DoubleGene g5 = DoubleGene.valueOf(5, 0, 20);
+		Float64Gene g1 = Float64Gene.valueOf(1, 0, 20);
+		Float64Gene g5 = Float64Gene.valueOf(5, 0, 20);
 		
-		DoubleGene g = g5.mean(g1);
+		Float64Gene g = g5.mean(g1);
 		assertEquals(g.doubleValue(), 3.0);
 	}
 
 	@Test
     public void testCreateNumber() {
-        DoubleGene gene = DoubleGene.valueOf(1.2345, -1234.1234, 1234.1234);
-        DoubleGene g2 = gene.newInstance(5);
+        Float64Gene gene = Float64Gene.valueOf(1.2345, -1234.1234, 1234.1234);
+        Float64Gene g2 = gene.newInstance(5);
         
         assertEquals(g2.getAllele().intValue(), 5);
         assertEquals(g2.getMin().doubleValue(), -1234.1234);
@@ -112,9 +112,9 @@ public class DoubleGeneTest {
 
 	@Test
     public void testCompareTo() {
-        DoubleGene g1 = DoubleGene.valueOf(3.123, 0.123, 5.123);
-        DoubleGene g2 = DoubleGene.valueOf(4.123, 1.123, 7.123);
-        DoubleGene g3 = DoubleGene.valueOf(3.123, 0.123, 5.123);
+        Float64Gene g1 = Float64Gene.valueOf(3.123, 0.123, 5.123);
+        Float64Gene g2 = Float64Gene.valueOf(4.123, 1.123, 7.123);
+        Float64Gene g3 = Float64Gene.valueOf(3.123, 0.123, 5.123);
         
         assertTrue(g1.compareTo(g2) < 0);
         assertTrue(g2.compareTo(g1) > 0);
@@ -124,9 +124,9 @@ public class DoubleGeneTest {
 
 	@Test
     public void testHashCode() {
-        DoubleGene g1 = DoubleGene.valueOf(3.345, 0.345, 5.345);
-        DoubleGene g2 = DoubleGene.valueOf(4.345, 1.345, 7.345);
-        DoubleGene g3 = DoubleGene.valueOf(3.345, 0.345, 5.345);
+        Float64Gene g1 = Float64Gene.valueOf(3.345, 0.345, 5.345);
+        Float64Gene g2 = Float64Gene.valueOf(4.345, 1.345, 7.345);
+        Float64Gene g3 = Float64Gene.valueOf(3.345, 0.345, 5.345);
         
         assertTrue(g1.hashCode() == g3.hashCode());
         assertTrue(g1.hashCode() != g2.hashCode());
@@ -134,9 +134,9 @@ public class DoubleGeneTest {
 
 	@Test
     public void testEqualsObject() {
-        DoubleGene g1 = DoubleGene.valueOf(4.567, 2.567, 5.567);
-        DoubleGene g2 = DoubleGene.valueOf(4.567, 1.567, 7.567);
-        DoubleGene g3 = DoubleGene.valueOf(4.567, 2.567, 5.567);
+        Float64Gene g1 = Float64Gene.valueOf(4.567, 2.567, 5.567);
+        Float64Gene g2 = Float64Gene.valueOf(4.567, 1.567, 7.567);
+        Float64Gene g3 = Float64Gene.valueOf(4.567, 2.567, 5.567);
         
         assertTrue(g1.equals(g3));
         assertFalse(g1.equals(g2));
@@ -147,9 +147,9 @@ public class DoubleGeneTest {
 
 	@Test
     public void testGetMinValue() {
-        DoubleGene g1 = DoubleGene.valueOf(3.1, 0.1, 5.1);
-        DoubleGene g2 = DoubleGene.valueOf(4.1, 1.1, 7.1);
-        DoubleGene g3 = DoubleGene.valueOf(3.1, 0.1, 5.1);
+        Float64Gene g1 = Float64Gene.valueOf(3.1, 0.1, 5.1);
+        Float64Gene g2 = Float64Gene.valueOf(4.1, 1.1, 7.1);
+        Float64Gene g3 = Float64Gene.valueOf(3.1, 0.1, 5.1);
         
         assertEquals(g1.getMin().doubleValue(), 0.1);
         assertEquals(g2.getMin().doubleValue(), 1.1);
@@ -158,9 +158,9 @@ public class DoubleGeneTest {
 
 	@Test
     public void testGetMaxValue() {
-        DoubleGene g1 = DoubleGene.valueOf(3.2, 0.2, 5.2);
-        DoubleGene g2 = DoubleGene.valueOf(4.2, 1.2, 7.2);
-        DoubleGene g3 = DoubleGene.valueOf(3.2, 0.2, 5.2);
+        Float64Gene g1 = Float64Gene.valueOf(3.2, 0.2, 5.2);
+        Float64Gene g2 = Float64Gene.valueOf(4.2, 1.2, 7.2);
+        Float64Gene g3 = Float64Gene.valueOf(3.2, 0.2, 5.2);
         
         assertEquals(g1.getMax().doubleValue(), 5.2);
         assertEquals(g2.getMax().doubleValue(), 7.2);
@@ -169,7 +169,7 @@ public class DoubleGeneTest {
 
 	@Test
     public void testToString() {
-        DoubleGene g1 = DoubleGene.valueOf(3.5, 0.5, 5.5);
+        Float64Gene g1 = Float64Gene.valueOf(3.5, 0.5, 5.5);
         
         assertTrue(g1.toString() != null);
         assertTrue(g1.toString().length() > 0);
@@ -177,8 +177,8 @@ public class DoubleGeneTest {
 	
 	@Test
 	public void serialize() throws XMLStreamException {
-		SerializeUtils.testSerialization(DoubleGene.valueOf(3.5, 0.5, 5.5));
-		SerializeUtils.testSerialization(DoubleGene.valueOf(Math.PI, 0.5, 5.5));
+		SerializeUtils.testSerialization(Float64Gene.valueOf(3.5, 0.5, 5.5));
+		SerializeUtils.testSerialization(Float64Gene.valueOf(Math.PI, 0.5, 5.5));
 	}
 }
 

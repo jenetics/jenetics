@@ -40,14 +40,14 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.11 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.12 2010-01-27 19:02:03 fwilhelm Exp $
  */
-public class PermutationChromosome extends AbstractChromosome<IntegerGene> 
-	implements ChromosomeFactory<IntegerGene>, XMLSerializable
+public class PermutationChromosome extends AbstractChromosome<Integer64Gene> 
+	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
 {
 	private static final long serialVersionUID = 3504723054127043564L;
 
-	protected PermutationChromosome(final Array<IntegerGene> genes) {
+	protected PermutationChromosome(final Array<Integer64Gene> genes) {
 		super(genes);
 	}
 	
@@ -96,7 +96,7 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 		}
 		
 		for (int i = 0; i < values.length; ++i) {
-			_genes.set(i, IntegerGene.valueOf(values[i], 0, values.length - 1));
+			_genes.set(i, Integer64Gene.valueOf(values[i], 0, values.length - 1));
 		}
 	}
 	
@@ -123,11 +123,11 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			for (int j = 0; j < length; ++j) {
 				final int i = random.nextInt(j + 1);
 				_genes.set(j, _genes.get(i));
-				_genes.set(i, IntegerGene.valueOf(j, 0, length - 1));
+				_genes.set(i, Integer64Gene.valueOf(j, 0, length - 1));
 			}
 		} else {
 			for (int i = 0; i < length; ++i) {
-				_genes.set(i, IntegerGene.valueOf(i, 0, length - 1));
+				_genes.set(i, Integer64Gene.valueOf(i, 0, length - 1));
 			}
 		}
 	}
@@ -172,7 +172,7 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 	}
 	
 	@Override
-	public PermutationChromosome newInstance(final Array<IntegerGene> genes) {
+	public PermutationChromosome newInstance(final Array<Integer64Gene> genes) {
 		return new PermutationChromosome(genes);
 	}
 	
@@ -211,11 +211,11 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			final int length = xml.getAttribute("length", 0);
 			final int min = xml.getAttribute("min", 0);
 			final int max = xml.getAttribute("max", length);
-			final Array<IntegerGene> genes = new Array<IntegerGene>(length);
+			final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 			
 			for (int i = 0; i < length; ++i) {
 				final Integer64 value = xml.getNext();
-				genes.set(i, IntegerGene.valueOf(value.longValue(), min, max));
+				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
 			}
 			return new PermutationChromosome(genes);
 		}
@@ -226,7 +226,7 @@ public class PermutationChromosome extends AbstractChromosome<IntegerGene>
 			xml.setAttribute("length", chromosome.length());
 			xml.setAttribute("min", 0);
 			xml.setAttribute("max", chromosome.length() - 1);
-			for (IntegerGene gene : chromosome) {
+			for (Integer64Gene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
 		}

@@ -28,8 +28,8 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
+import org.jenetics.Float64Chromosome;
+import org.jenetics.Float64Gene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -43,40 +43,40 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.13 2010-01-18 21:47:13 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.14 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function 
-		implements FitnessFunction<DoubleGene, Float64>,
-					Converter<Genotype<DoubleGene>, Float64>
+		implements FitnessFunction<Float64Gene, Float64>,
+					Converter<Genotype<Float64Gene>, Float64>
 	{
 		private static final long serialVersionUID = 2793605351118238308L;
 		
 		@Override
-		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
+		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final double radians = toRadians(convert(genotype).doubleValue());
 			return Float64.valueOf(acos(sin(radians)*cos(radians)));
 		}
 
 		@Override
-		public Float64 convert(final Genotype<DoubleGene> value) {
+		public Float64 convert(final Genotype<Float64Gene> value) {
 			return value.getChromosome().getGene().getAllele();
 		}
 	}
 	
 	
 	public static void main(String[] args) {
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
-		final GeneticAlgorithm<DoubleGene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
+		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
 		ga.setAlterer(
-			new Mutation<DoubleGene>(Probability.valueOf(0.03)).append(
-			new MeanAlterer<DoubleGene>(Probability.valueOf(0.6)))
+			new Mutation<Float64Gene>(Probability.valueOf(0.03)).append(
+			new MeanAlterer<Float64Gene>(Probability.valueOf(0.6)))
 		);
-		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
+		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		
 		GAUtils.execute(ga, 50);
 	}

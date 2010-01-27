@@ -33,10 +33,10 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerChromosome.java,v 1.16 2010-01-14 14:11:06 fwilhelm Exp $
+ * @version $Id: Integer64Chromosome.java,v 1.1 2010-01-27 19:02:03 fwilhelm Exp $
  */
-public class IntegerChromosome extends NumberChromosome<IntegerGene> 
-	implements ChromosomeFactory<IntegerGene>, XMLSerializable
+public class Integer64Chromosome extends NumberChromosome<Integer64Gene> 
+	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -47,42 +47,42 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller than 
 	 *         one.
 	 */
-	protected IntegerChromosome(final Array<IntegerGene> genes) {
+	protected Integer64Chromosome(final Array<Integer64Gene> genes) {
 		super(genes);
 	}
 	
 	/**
 	 * Create a new random IntegerChromosome.
 	 * 
-	 * @param min the min value of the {@link DoubleGene}s.
-	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param min the min value of the {@link Float64Gene}s.
+	 * @param max the max value of the {@link Float64Gene}s.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public IntegerChromosome(final long min, final long max) {
+	public Integer64Chromosome(final long min, final long max) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
 	
 	/**
 	 * Create a new random IntegerChromosome with length one.
 	 * 
-	 * @param min the min value of the {@link DoubleGene}s.
-	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param min the min value of the {@link Float64Gene}s.
+	 * @param max the max value of the {@link Float64Gene}s.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public IntegerChromosome(final Integer64 min, final Integer64 max) {
+	public Integer64Chromosome(final Integer64 min, final Integer64 max) {
 		this(min, max, 1);
 	}
 	
 	/**
 	 * Create a new random IntegerChromosome.
 	 * 
-	 * @param min the min value of the {@link DoubleGene}s.
-	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param min the min value of the {@link Float64Gene}s.
+	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public IntegerChromosome(final long min, final long max, int length) {
+	public Integer64Chromosome(final long min, final long max, int length) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
 	}
 	
@@ -94,7 +94,7 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
 	 *         one.
 	 */
-	public IntegerChromosome(final IntegerGene... genes) {
+	public Integer64Chromosome(final Integer64Gene... genes) {
 		super(genes.length);
 		
 		_min = genes[0]._min;
@@ -107,13 +107,13 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 	/**
 	 * Create a new random IntegerChromosome.
 	 * 
-	 * @param min the min value of the {@link DoubleGene}s.
-	 * @param max the max value of the {@link DoubleGene}s.
+	 * @param min the min value of the {@link Float64Gene}s.
+	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if min is not less max.
 	 */
-	public IntegerChromosome(
+	public Integer64Chromosome(
 		final Integer64 min, final Integer64 max, final int length
 	) {
 		super(length);
@@ -127,28 +127,28 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 		_max = max;
 		
 		for (int i = 0; i < length; ++i) {
-			_genes.set(i, IntegerGene.valueOf(min, max));
+			_genes.set(i, Integer64Gene.valueOf(min, max));
 		}
 	}
 	
 	@Override
-	public IntegerChromosome newInstance(final Array<IntegerGene> genes) {
-		final IntegerChromosome chromosome = new IntegerChromosome(genes);		
+	public Integer64Chromosome newInstance(final Array<Integer64Gene> genes) {
+		final Integer64Chromosome chromosome = new Integer64Chromosome(genes);		
 		chromosome._min = genes.get(0)._min;
 		chromosome._max = genes.get(0)._max;
 		return chromosome;
 	}
 
 	@Override
-	public IntegerChromosome newInstance() {
-		final Array<IntegerGene> genes = new Array<IntegerGene>(length());
-		final Factory<IntegerGene> factory = _genes.get(0);
+	public Integer64Chromosome newInstance() {
+		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length());
+		final Factory<Integer64Gene> factory = _genes.get(0);
 		
 		for (int i = 0; i < length(); ++i) {
 			genes.set(i, factory.newInstance());
 		}
 		
-		final IntegerChromosome chromosome = new IntegerChromosome(genes);
+		final Integer64Chromosome chromosome = new Integer64Chromosome(genes);
 		chromosome._min = _min;
 		chromosome._max = _max;
 		return chromosome;
@@ -166,49 +166,49 @@ public class IntegerChromosome extends NumberChromosome<IntegerGene>
 		if (obj == this) {
 			return true;
 		}
-		return obj instanceof IntegerChromosome && super.equals(obj);
+		return obj instanceof Integer64Chromosome && super.equals(obj);
 	}
 	
-	static final XMLFormat<IntegerChromosome> 
-	XML = new XMLFormat<IntegerChromosome>(IntegerChromosome.class) {
+	static final XMLFormat<Integer64Chromosome> 
+	XML = new XMLFormat<Integer64Chromosome>(Integer64Chromosome.class) {
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
 		private static final String MAX = "max";
 		
 		@Override
-		public IntegerChromosome newInstance(
-			final Class<IntegerChromosome> cls, final InputElement xml
+		public Integer64Chromosome newInstance(
+			final Class<Integer64Chromosome> cls, final InputElement xml
 		) throws XMLStreamException 
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
 			final int min = xml.getAttribute(MIN, 0);
 			final int max = xml.getAttribute(MAX, 10);
-			final Array<IntegerGene> genes = new Array<IntegerGene>(length);
+			final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 			
 			for (int i = 0; i < length; ++i) {
 				final Integer64 value = xml.getNext();
-				genes.set(i, IntegerGene.valueOf(value.longValue(), min, max));
+				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
 			}
 			
-			final IntegerChromosome chromosome = new IntegerChromosome(genes);
+			final Integer64Chromosome chromosome = new Integer64Chromosome(genes);
 			chromosome._min = Integer64.valueOf(min);
 			chromosome._max = Integer64.valueOf(max);
 			
 			return chromosome;
 		}
 		@Override
-		public void write(final IntegerChromosome chromosome, final OutputElement xml) 
+		public void write(final Integer64Chromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(MIN, chromosome._min.longValue());
 			xml.setAttribute(MAX, chromosome._max.longValue());
-			for (IntegerGene gene : chromosome) {
+			for (Integer64Gene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
 		}
 		@Override
-		public void read(final InputElement element, final IntegerChromosome chromosome) 
+		public void read(final InputElement element, final Integer64Chromosome chromosome) 
 			throws XMLStreamException 
 		{
 		}
