@@ -24,10 +24,11 @@ package org.jenetics.examples;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
+import org.jenetics.CompositeAlterer;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.Mutation;
+import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
@@ -37,7 +38,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: OnesCounting.java,v 1.7 2010-01-27 20:35:45 fwilhelm Exp $
  */
 public class OnesCounting {
 
@@ -66,10 +67,10 @@ public class OnesCounting {
 		
 		ga.setPopulationSize(50);
 		ga.setSelectors(new RouletteWheelSelector<BitGene, Integer64>());
-		ga.setAlterer(
-			new Mutation<BitGene>(Probability.valueOf(0.55), 
-			new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
-		);
+		ga.setAlterer(new CompositeAlterer<BitGene>(
+			new Mutator<BitGene>(Probability.valueOf(0.55)), 
+			new SinglePointCrossover<BitGene>(Probability.valueOf(0.06))
+		));
 		
 		GAUtils.execute(ga, 100);
 	}

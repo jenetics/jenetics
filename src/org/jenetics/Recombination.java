@@ -44,20 +44,9 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.18 2010-01-15 09:23:57 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.19 2010-01-27 20:35:44 fwilhelm Exp $
  */
-public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
-
-	/**
-	 * Create a <code>Alterer</code> concatenating the given 
-	 * <code>Alterer</code>S.
-	 * 
-	 * @param component the <code>Alterer</code>S this <code>Alterer</code>
-	 *        consists.
-	 */
-	public Recombination(final Alterer<G> component) {
-		this(Probability.ONE, component);
-	}
+public abstract class Recombination<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -69,28 +58,13 @@ public abstract class Recombination<G extends Gene<?, G>> extends Alterer<G> {
 	public Recombination(final Probability probability) {
 		super(probability);
 	}
-	
-	/**
-	 * Constructs an alterer with a given recombination probability. A
-	 * second Alterer can be specified for a composite Alterer.
-	 * 
-	 * @param probability The recombination probability.
-	 * @param component The composite Alterer.
-	 * @throws NullPointerException if the <code>probability</code> or the
-	 * 		<code>component</code> is <code>null</code>. 
-	 */
-	public Recombination(
-		final Probability probability, final Alterer<G> component
-	) {
-		super(probability, component);
-	}
 
 	/**
 	 * This method executes the recombination of in parallel if the current
 	 * {@link Evaluator} provides more than one parallel tasks.
 	 */
 	@Override
-	protected final <C extends Comparable<C>> void change(
+	public final <C extends Comparable<C>> void alter(
 		final Population<G, C> population, final int generation
 	) {
 		final int subsetSize = (int)Math.ceil(population.size()*_probability.doubleValue());

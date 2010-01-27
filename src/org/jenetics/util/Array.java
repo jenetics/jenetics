@@ -39,7 +39,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.34 2010-01-11 16:21:42 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.35 2010-01-27 20:35:44 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -152,6 +152,18 @@ public class Array<T> implements
 		System.arraycopy(values, 0, _array, 0, values.length);
 	}
 	
+	public Array(final Array<T> a1, final Array<T> a2) {
+		this(a1.length() + a2.length());
+		
+		int index = 0;
+		for (int i = 0, n = a1.length(); i < n; ++i) {
+			_array[index++] = a1.get(i);
+		}
+		for (int i = 0, n = a2.length(); i < n; ++i) {
+			_array[index++] = a2.get(i);
+		}
+	}
+	
 	/**
 	 * Create a new Array from the values of the given Collection. The order of
 	 * the elements are determined by the iterator of the Collection.
@@ -196,6 +208,23 @@ public class Array<T> implements
 	public T get(final int index) {
 		checkIndex(index);
 		return (T)_array[index + _start];
+	}
+	
+	/**
+	 * Applies the given predicate to every element in the array.
+	 * 
+	 * @param predicate the predicate to apply.
+	 * @throws NullPointerException if the given {@code predicate} is 
+	 *         {@code null}.
+	 */
+	public void foreach(final Predicate<T> predicate) {
+		Validator.notNull(predicate, "Predicate");
+	
+		for (int i = _start; i < _end; ++i) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array[i];
+			predicate.evaluate(element);
+		}
 	}
 	
 	/**

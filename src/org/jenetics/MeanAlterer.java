@@ -32,7 +32,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.14 2010-01-26 13:24:34 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.15 2010-01-27 20:35:44 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G> {
 
@@ -42,10 +42,6 @@ public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G
 	
 	public MeanAlterer(final Probability probability) {
 		super(probability);
-	}
-
-	public MeanAlterer(final Probability probability, final Alterer<G> component) {
-		super(probability, component);
 	}
 
 	@Override

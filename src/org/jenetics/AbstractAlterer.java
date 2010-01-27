@@ -22,25 +22,38 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Validator.notNull;
+
 import org.jenetics.util.Probability;
 
 /**
- * This alterer does nothing.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.8 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: AbstractAlterer.java,v 1.1 2010-01-27 20:35:44 fwilhelm Exp $
  */
-public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
-	private static final long serialVersionUID = 7892835302001002915L;
-
-	public NullAlterer() {
-		super(Probability.valueOf(Probability.MIN_VALUE));
+public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G> {
+	public static final Probability DEFAULT_ALTER_PROBABILITY = Probability.valueOf(0.2);
+	
+	/**
+	 * The altering probability. 
+	 */
+	protected final Probability _probability;
+	
+	/**
+	 * Constructs an alterer with a given recombination probability.
+	 * 
+	 * @param probability The recombination probability.
+	 * @throws NullPointerException if the {@code probability} is {@code null}. 
+	 */
+	protected AbstractAlterer(final Probability probability) {
+		_probability = notNull(probability, "Probability");
 	}
-
-	@Override
-	public <C extends Comparable<C>> void alter(
-		final Population<G, C> population, final int generation
-	) {
+	
+	/**
+	 * Return the recombination probability for this alterer.
+	 * 
+	 * @return The recombination probability.
+	 */
+	public Probability getProbability() {
+		return _probability;
 	}
-
 }
