@@ -39,7 +39,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.36 2010-01-27 21:23:40 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.37 2010-01-27 22:21:51 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -159,16 +159,10 @@ public class Array<T> implements
 	 * @param a2 array two.
 	 * @throws NullPointerException if one of the arrays is {@code null}.
 	 */
-	public Array(final Array<T> a1, final Array<T> a2) {
+	public Array(final Array<? extends T> a1, final Array<? extends T> a2) {
 		this(a1.length() + a2.length());
-		
-		int index = 0;
-		for (int i = 0, n = a1.length(); i < n; ++i) {
-			_array[index++] = a1.get(i);
-		}
-		for (int i = 0, n = a2.length(); i < n; ++i) {
-			_array[index++] = a2.get(i);
-		}
+		System.arraycopy(a1._array, a1._start, _array, 0, a1.length());
+		System.arraycopy(a2._array, a2._start, _array, a1.length(), a2.length());
 	}
 	
 	/**
@@ -280,8 +274,8 @@ public class Array<T> implements
 	 * 
 	 * @param predicate the search predicate.
 	 * @return the index of the first element on which the given predicate 
-	 *         returns {@code true}, or -1 if the predicate returns false for 
-	 *         every array element.
+	 *         returns {@code true}, or -1 if the predicate returns {@code false}
+	 *         for every array element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int indexOf(final Predicate<? super T> predicate) {
@@ -292,6 +286,7 @@ public class Array<T> implements
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array[i];
+			
 			if (predicate.evaluate(element)) {
 				index = i - _start;
 			}
@@ -320,6 +315,9 @@ public class Array<T> implements
 	 * [/code]
 	 * 
 	 * @param predicate the predicate to apply.
+	 * @return the index of the first element on which the given predicate 
+	 *         returns {@code false}, or -1 if the predicate returns {@code true}
+	 *         for every array element.
 	 * @throws NullPointerException if the given {@code predicate} is 
 	 *         {@code null}.
 	 */
@@ -331,6 +329,7 @@ public class Array<T> implements
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array[i];
+			
 			if (!predicate.evaluate(element)) {
 				index = i - _start;
 			}
@@ -402,14 +401,16 @@ public class Array<T> implements
 	 * Set all array elements to the given {@code value}.
 	 *
 	 * @param value {@code value} to fill this array with.
+	 * @return {@code this} array.
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 *         ({@code isSealed() == true}).
 	 */
-	public void fill(final T value) {
+	public Array<T> fill(final T value) {
 		checkSeal();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = value;
 		}
+		return this;
 	}
 	
 	/**

@@ -27,16 +27,103 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.9 2009-12-07 15:31:09 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.10 2010-01-27 22:21:51 fwilhelm Exp $
  */
 public class ArrayTest {
 
+	@Test
+	public void create1() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a3 = new Array<Integer>(a1, a2);
+		
+		Assert.assertEquals(a3.length(), a1.length() + a2.length());
+		for (int i = 0; i < a1.length() + a2.length(); ++i) {
+			Assert.assertEquals(a3.get(i), new Integer(i + 1));
+		}
+	}
+	
+	@Test
+	public void create2() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
+		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a3 = new Array<Integer>(a1.subArray(0, 6), a2);
+
+		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
+		for (int i = 0; i < a1.length() + a2.length() - 2; ++i) {
+			Assert.assertEquals(a3.get(i), new Integer(i));
+		}
+	}
+	
+	@Test
+	public void create3() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
+		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a3 = new Array<Integer>(a1.subArray(1, 6), a2);
+		
+		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
+		for (int i = 1; i < a1.length() + a2.length() - 2; ++i) {
+			Assert.assertEquals(a3.get(i - 1), new Integer(i));
+		}
+	}
+	
+	@Test
+	public void create4() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
+		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a3 = new Array<Integer>(a1, a2.subArray(2, 7));
+		
+		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
+		for (int i = 0; i < a1.length() + a2.length() - 3; ++i) {
+			Assert.assertEquals(a3.get(i), new Integer(i));
+		}
+	}
+	
+	@Test
+	public void fill() {
+		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
+		Assert.assertEquals(array.length(), 10);
+		Assert.assertTrue(array.isSealed());
+		for (Integer i : array) {
+			Assert.assertEquals(i, new Integer(10));
+		}
+	}
+	
+	@Test
+	public void foreach() {
+		final Array<Integer> array = new Array<Integer>(10).fill(123).seal();
+		final AtomicInteger count = new AtomicInteger(0);
+		int value = array.foreach(new Predicate<Integer>() {
+			@Override public boolean evaluate(Integer object) {
+				Assert.assertEquals(object, new Integer(123));
+				count.addAndGet(1);
+				return true;
+			}
+		});
+		
+		Assert.assertEquals(value, -1);
+		Assert.assertEquals(count.get(), 10);
+		
+		count.set(0);
+		value = array.foreach(new Predicate<Integer>() {
+			@Override public boolean evaluate(Integer object) {
+				Assert.assertEquals(object, new Integer(123));
+				return count.addAndGet(1) != 5;
+			}
+		});
+		
+		Assert.assertEquals(count.get(), 5);
+		Assert.assertEquals(value, 4);
+	}
+	
 	@Test
 	public void indexOf() {
 		final Array<Integer> array = new Array<Integer>(20);
