@@ -27,28 +27,33 @@ import static org.jenetics.util.ArrayUtils.subset;
 import java.util.Random;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * The GaussianRealMutator class performs the mutation of a {@link NumberGene}. 
- * This mutator picks a new value based on a Gaussian distribution (with 
- * deviation 1.0)  around the current value of the gene. The new value won't be 
- * out of the gene's boundaries.
- *
+ * The {@code SwapMutation} changes the order of genes in a chromosome, with the 
+ * hope of bringing related genes closer together, thereby facilitating the 
+ * production of building blocks. This mutation operator can also be used for
+ * combinatorial problems, where no duplicated genes within a chromosome are
+ * allowed, e.g. for the TSP.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.13 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: SwapMutator.java,v 1.1 2010-01-27 21:29:03 fwilhelm Exp $
  */
-public class GaussianMutation<G extends NumberGene<?, G>> extends Mutator<G> {
-	
-	public GaussianMutation() {
+public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
+
+	public SwapMutator() {
 	}
 
-	public GaussianMutation(final Probability probability) {
+	public SwapMutator(final Probability probability) {
 		super(probability);
 	}
 
+	/**
+	 * Swaps the genes in the given array, with the mutation probability of this
+	 * mutation.
+	 */
 	@Override
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
@@ -56,26 +61,15 @@ public class GaussianMutation<G extends NumberGene<?, G>> extends Mutator<G> {
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(genes.length(), subsetSize, random);
-
+					
 			for (int i = 0; i < elements.length; ++i) {
-				final G oldGene = genes.get(elements[i]);
-				double value = random.nextGaussian()*oldGene.doubleValue();
-				value = Math.min(value, oldGene.getMax().doubleValue());
-				value = Math.max(value, oldGene.getMin().doubleValue());
-
-				final G newGene = oldGene.newInstance(value);
-				genes.set(elements[i], newGene);
-
+				ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
 			}
 			
-			//Count the number of mutated genes.
 			_mutations += elements.length;
 		}
 	}
+
+	
 	
 }
-
-
-
-
-

@@ -59,7 +59,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutator.java,v 1.1 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: Mutator.java,v 1.2 2010-01-27 21:29:03 fwilhelm Exp $
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -152,7 +152,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * possibility to perform its own mutation operation, based on a writable
 	 * gene array. 
 	 * <p/>
-	 * The {@link SwapMutation} does it in this way:
+	 * The {@link SwapMutator} does it in this way:
 	 * [code]
 	 * protected void mutate(final Array<G> genes) {
 	 *     final Random random = RandomRegistry.getRandom();
