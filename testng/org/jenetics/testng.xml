@@ -30,14 +30,14 @@
 			<class name="org.jenetics.ConcurrentStatisticCalculatorTest" />
 		</classes>
 	</test>	
-	<test name="org.jenetics.DoubleChromosome">
+	<test name="org.jenetics.Float64Chromosome">
 		<classes>
-			<class name="org.jenetics.DoubleChromosomeTest" />
+			<class name="org.jenetics.Float64ChromosomeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.DoubleGene">
+	<test name="org.jenetics.Float64Gene">
 		<classes>
-			<class name="org.jenetics.DoubleGeneTest" />
+			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.EnumGene">
@@ -50,14 +50,14 @@
 			<class name="org.jenetics.GenotypeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.IntegerChromosome">
+	<test name="org.jenetics.Integer64Chromosome">
 		<classes>
-			<class name="org.jenetics.IntegerChromosomeTest" />
+			<class name="org.jenetics.Integer64ChromosomeTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.IntegerGene">
+	<test name="org.jenetics.Integer64Gene">
 		<classes>
-			<class name="org.jenetics.IntegerGeneTest" />
+			<class name="org.jenetics.Integer64GeneTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.PartiallyMatchedCrossover">

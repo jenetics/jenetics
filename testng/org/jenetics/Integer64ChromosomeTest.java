@@ -22,33 +22,24 @@
  */
 package org.jenetics;
 
-import static org.testng.Assert.assertEquals;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleChromosomeTest.java,v 1.7 2009-02-24 18:53:03 fwilhelm Exp $
+ * @version $Id: Integer64ChromosomeTest.java,v 1.1 2010-01-27 19:02:02 fwilhelm Exp $
  */
-public class DoubleChromosomeTest {
+public class Integer64ChromosomeTest {
 
-
-    @Test
-    public void testCreate() {
-        DoubleChromosome c1 = new DoubleChromosome(-12.0, 230.123, 100);
-        DoubleChromosome c2 = c1.newInstance();
-        
-        for (NumberGene<Float64, ?> g : c2) {
-            assertEquals(-12.0, g.getMin().doubleValue());
-            assertEquals(230.123, g.getMax().doubleValue());
-        }
-    }
-    
-    @Test
-    public void serialize() throws XMLStreamException {
-    	SerializeUtils.testSerialization(new DoubleChromosome(-12.0, 230.123, 1));
-    }
-
+	
+	@Test
+	public void serialize() throws XMLStreamException {
+		SerializeUtils.testSerialization(new Integer64Chromosome(0, 100, 10));
+	}
+	
 }
+
+
+
+

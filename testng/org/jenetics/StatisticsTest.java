@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StatisticsTest.java,v 1.3 2010-01-18 15:31:53 fwilhelm Exp $
+ * @version $Id: StatisticsTest.java,v 1.4 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class StatisticsTest {
 
@@ -80,22 +80,22 @@ public class StatisticsTest {
 		}
 	}
 	
-	private static Population<DoubleGene, Float64> newPopulation(final int size) {
-		Population<DoubleGene, Float64> population = new Population<DoubleGene, Float64>(size);
-		FitnessFunction<DoubleGene, Float64> ff = new FitnessFunction<DoubleGene, Float64>() {
+	private static Population<Float64Gene, Float64> newPopulation(final int size) {
+		Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
+		FitnessFunction<Float64Gene, Float64> ff = new FitnessFunction<Float64Gene, Float64>() {
 			private static final long serialVersionUID = -2089185336380721853L;
 
 			@Override
-			public Float64 evaluate(Genotype<DoubleGene> genotype) {
+			public Float64 evaluate(Genotype<Float64Gene> genotype) {
 				return genotype.getChromosome().getGene().getAllele();
 			}
 		};
 		
 		for (int i = 1; i <= size; ++i) {
-			DoubleGene gene = DoubleGene.valueOf(i, 0, Integer.MAX_VALUE);
-			DoubleChromosome chromosome = new DoubleChromosome(gene);
-			Genotype<DoubleGene> gt = Genotype.valueOf(chromosome);
-			Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(gt, ff, i);
+			Float64Gene gene = Float64Gene.valueOf(i, 0, Integer.MAX_VALUE);
+			Float64Chromosome chromosome = new Float64Chromosome(gene);
+			Genotype<Float64Gene> gt = Genotype.valueOf(chromosome);
+			Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(gt, ff, i);
 			
 			population.add(pt);
 		}
@@ -108,10 +108,10 @@ public class StatisticsTest {
 	@Test
 	public void calculation() {
 		int size = 2;
-		Population<DoubleGene, Float64> population = newPopulation(size);
-		Statistics.Calculator<DoubleGene, Float64> calculator = new Statistics.Calculator<DoubleGene, Float64>();
+		Population<Float64Gene, Float64> population = newPopulation(size);
+		Statistics.Calculator<Float64Gene, Float64> calculator = new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<DoubleGene, Float64> statistics = calculator.evaluate(population, size + 1);
+		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1);
 		Assert.assertEquals(statistics.getSamples(), 2);
 		Assert.assertEquals(statistics.getAgeMean(), 1.5, EPSILON);
 		Assert.assertEquals(statistics.getAgeVariance(), 0.5, EPSILON);
@@ -124,10 +124,10 @@ public class StatisticsTest {
 	@Test
 	public void calculation2() {
 		int size = 10;
-		Population<DoubleGene, Float64> population = newPopulation(size);
-		Statistics.Calculator<DoubleGene, Float64> calculator = new Statistics.Calculator<DoubleGene, Float64>();
+		Population<Float64Gene, Float64> population = newPopulation(size);
+		Statistics.Calculator<Float64Gene, Float64> calculator = new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<DoubleGene, Float64> statistics = calculator.evaluate(population, size + 1);
+		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1);
 		Assert.assertEquals(statistics.getSamples(), 10);
 		Assert.assertEquals(statistics.getAgeMean(), 5.5, EPSILON);
 		Assert.assertEquals(statistics.getAgeVariance(), 9.1666666666666, EPSILON);

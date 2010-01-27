@@ -28,14 +28,14 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: IntegerGeneTest.java,v 1.2 2008-09-23 19:18:27 fwilhelm Exp $
+ * @version $Id: Integer64GeneTest.java,v 1.1 2010-01-27 19:02:02 fwilhelm Exp $
  */
-public class IntegerGeneTest {
+public class Integer64GeneTest {
 	
 	@Test
 	public void serialize() throws XMLStreamException {
-		SerializeUtils.testSerialization(IntegerGene.valueOf(5, 0, 10));
-		SerializeUtils.testSerialization(IntegerGene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));
+		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, 0, 10));
+		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));
 	}
 	
 }

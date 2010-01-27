@@ -66,8 +66,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
+import org.jenetics.Float64Chromosome;
+import org.jenetics.Float64Gene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -84,7 +84,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -636,7 +636,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -656,7 +656,7 @@ class GeometryController implements StepListener {
 	private final MutationProbabilityRangeModel
 		_mutationProbabilityRangeModel = new MutationProbabilityRangeModel(this);
 	
-	private GeneticAlgorithm<DoubleGene, Float64> _ga;
+	private GeneticAlgorithm<Float64Gene, Float64> _ga;
 	private AffineTransform _transform;
 	private GA.Function _function;
 	private Point2D[] _source;
@@ -667,8 +667,8 @@ class GeometryController implements StepListener {
 	
 	private static final long MIN_REPAINT_TIME = 50;
 	private long _lastRepaintTime = 0;
-	private Phenotype<DoubleGene, Float64> _populationBestPhenotype;
-	private Phenotype<DoubleGene, Float64> _gaBestPhenotype;
+	private Phenotype<Float64Gene, Float64> _populationBestPhenotype;
+	private Phenotype<Float64Gene, Float64> _gaBestPhenotype;
 	private int _generation = 0;
 	
 	GeometryController(final Geometry geometry) {
@@ -835,8 +835,8 @@ class GeometryController implements StepListener {
 				public void run() {
 					_ga.getLock().lock();
 					try {
-						_ga.setAlterer(new Mutation<DoubleGene>(probability));
-						_ga.addAlterer(new MeanAlterer<DoubleGene>());
+						_ga.setAlterer(new Mutation<Float64Gene>(probability));
+						_ga.addAlterer(new MeanAlterer<Float64Gene>());
 						System.out.println("Mutation probability: " + probability);
 					} finally {
 						_ga.getLock().unlock();
@@ -848,10 +848,10 @@ class GeometryController implements StepListener {
 
 	@Override
 	public void stepped(EventObject event) {
-		final NumberStatistics<DoubleGene, Float64> statistics = 
-			(NumberStatistics<DoubleGene, Float64>)_ga.getStatistics();
-		final Phenotype<DoubleGene, Float64> populationBest = statistics.getBestPhenotype();
-		final Phenotype<DoubleGene, Float64> gaBest = _ga.getBestPhenotype();
+		final NumberStatistics<Float64Gene, Float64> statistics = 
+			(NumberStatistics<Float64Gene, Float64>)_ga.getStatistics();
+		final Phenotype<Float64Gene, Float64> populationBest = statistics.getBestPhenotype();
+		final Phenotype<Float64Gene, Float64> gaBest = _ga.getBestPhenotype();
 		final int generation = _ga.getGeneration();
 		
 		if (_populationBestPhenotype == null || 
@@ -892,7 +892,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -913,7 +913,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -934,7 +934,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -955,7 +955,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -976,7 +976,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -997,7 +997,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -1022,7 +1022,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -1140,7 +1140,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1246,7 +1246,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1377,7 +1377,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1491,7 +1491,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1505,13 +1505,13 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.10 2009-12-16 14:24:45 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
  */
 class GA {
 	
 	static class Function 
-		implements FitnessFunction<DoubleGene, Float64>, 
-					Converter<Genotype<DoubleGene>, AffineTransform> 
+		implements FitnessFunction<Float64Gene, Float64>, 
+					Converter<Genotype<Float64Gene>, AffineTransform> 
 	{
 		private static final long serialVersionUID = 1L;
 	
@@ -1528,12 +1528,12 @@ class GA {
 		}
 	
 		@Override
-		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
+		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			//return distance(genotype);
 			return area(genotype);
 		}
 		
-		Float64 distance(final Genotype<DoubleGene> genotype) {
+		Float64 distance(final Genotype<Float64Gene> genotype) {
 			final AffineTransform transform = convert(genotype);
 	
 			double error = 0;
@@ -1547,7 +1547,7 @@ class GA {
 			return Float64.valueOf(-error);
 		}
 		
-		Float64 area(final Genotype<DoubleGene> genotype) {
+		Float64 area(final Genotype<Float64Gene> genotype) {
 			final AffineTransform transform = convert(genotype);
 						
 			final Point2D[] points = new Point2D.Double[_source.length];
@@ -1559,7 +1559,7 @@ class GA {
 		}
 	
 		@Override
-		public AffineTransform convert(final Genotype<DoubleGene> genotype) {
+		public AffineTransform convert(final Genotype<Float64Gene> genotype) {
 			final double theta = genotype.getChromosome(0).getGene().doubleValue();
 			final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
 			final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
@@ -1591,16 +1591,16 @@ class GA {
 	private GA() {
 	}
 	
-	public static Factory<Genotype<DoubleGene>> getGenotypeFactory() {
+	public static Factory<Genotype<Float64Gene>> getGenotypeFactory() {
 		return Genotype.valueOf(
 			//Rotation
-			new DoubleChromosome(DoubleGene.valueOf(-Math.PI, Math.PI)),
+			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
 			
 			//Translation
-			new DoubleChromosome(DoubleGene.valueOf(-300, 300), DoubleGene.valueOf(-300, 300)),
+			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
 			
 			//Shear
-			new DoubleChromosome(DoubleGene.valueOf(-0.5, 0.5), DoubleGene.valueOf(-0.5, 0.5))
+			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
 		);
 	}
 	
@@ -1640,17 +1640,17 @@ class GA {
 		return target;
 	}
 	
-	public static GeneticAlgorithm<DoubleGene, Float64> getGA(final Function function) {
-		final GeneticAlgorithm<DoubleGene, Float64> ga = 
-			new GeneticAlgorithm<DoubleGene, Float64>(
+	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final Function function) {
+		final GeneticAlgorithm<Float64Gene, Float64> ga = 
+			new GeneticAlgorithm<Float64Gene, Float64>(
 				GA.getGenotypeFactory(), function
 			);
-		ga.addAlterer(new Mutation<DoubleGene>(Probability.valueOf(0.1)));
-		ga.setSelectors(new RouletteWheelSelector<DoubleGene, Float64>());
+		ga.addAlterer(new Mutation<Float64Gene>(Probability.valueOf(0.1)));
+		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setOffspringFraction(Probability.valueOf(0.3));
-		ga.setStatisticCalculator(new NumberStatistics.Calculator<DoubleGene, Float64>());
+		ga.setStatisticCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());
 		
 		return ga;
 	}

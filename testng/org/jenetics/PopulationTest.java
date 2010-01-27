@@ -41,15 +41,15 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PopulationTest.java,v 1.3 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: PopulationTest.java,v 1.4 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class PopulationTest {
 	
-	final class Function implements FitnessFunction<DoubleGene, Float64> {
+	final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
 		
-		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
-			final DoubleGene gene = genotype.getChromosome().getGene(0);
+		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
 		}
 	}
@@ -57,13 +57,13 @@ public class PopulationTest {
 	@Test
 	public void serialization() throws XMLStreamException, IOException {
 		final int size = 10;
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
 		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
-		final Population<DoubleGene, Float64> population = new Population<DoubleGene, Float64>();
+		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
 		
 		for (int i = 0; i < size; ++i) {
-			final Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(
+			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
 				gtf.newInstance(), ff, scaler, 0
 			);
 			population.add(pt);

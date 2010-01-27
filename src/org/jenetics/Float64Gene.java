@@ -31,19 +31,18 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: DoubleGene.java,v 1.12 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: Float64Gene.java,v 1.1 2010-01-27 19:02:03 fwilhelm Exp $
  */
-public class DoubleGene extends NumberGene<Float64, DoubleGene> {
+public class Float64Gene extends NumberGene<Float64, Float64Gene> {
 	private static final long serialVersionUID = 2531451920309748752L;	
 	
-	protected DoubleGene() {
+	protected Float64Gene() {
 	}
 
 	@Override
-	public DoubleGene newInstance() {
+	public Float64Gene newInstance() {
 		final Random random = RandomRegistry.getRandom();
 		final double difference = _max.doubleValue() - _min.doubleValue();
 		final double value = random.nextDouble()*difference + _min.doubleValue();
@@ -52,7 +51,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	}
 	
 	@Override
-	public DoubleGene newInstance(final java.lang.Number number) {
+	public Float64Gene newInstance(final java.lang.Number number) {
 		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 	
@@ -62,7 +61,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param number the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public DoubleGene newInstance(final Float64 number) {
+	public Float64Gene newInstance(final Float64 number) {
 		return valueOf(number, _min, _max);
 	}
 	
@@ -72,28 +71,28 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param number The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 */
-	public DoubleGene newInstance(final double number) {
+	public Float64Gene newInstance(final double number) {
 		return newInstance(Float64.valueOf(number));
 	}
 	
 	@Override
-	public DoubleGene mean(final DoubleGene that) {
+	public Float64Gene mean(final Float64Gene that) {
 		return newInstance(
 				(_value.doubleValue() + that._value.doubleValue())/2.0
 			);
 	}
 	
-	private static final ObjectFactory<DoubleGene> 
-	FACTORY = new ObjectFactory<DoubleGene>() {
-		@Override protected DoubleGene create() {
-			return new DoubleGene();
+	private static final ObjectFactory<Float64Gene> 
+	FACTORY = new ObjectFactory<Float64Gene>() {
+		@Override protected Float64Gene create() {
+			return new Float64Gene();
 		}
 	};
 	
 	/**
 	 * Create a new random DoubleGene with the given value and the given range. 
 	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link DoubleGene#isValid()} 
+	 * exception is thrown. In this case the method {@link Float64Gene#isValid()} 
 	 * returns {@code false}.
 	 * 
 	 * @param value the value of the DoubleGene.
@@ -101,10 +100,10 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param max the maximal valid value of this DoubleGene.
 	 * @return the new created DoubleGene with the given {@code value}.
 	 */
-	public static DoubleGene valueOf(
+	public static Float64Gene valueOf(
 		final Float64 value, final Float64 min, final Float64 max
 	) {
-		DoubleGene gene = FACTORY.object();
+		Float64Gene gene = FACTORY.object();
 		gene.set(value, min, max);
 		return gene;
 	}
@@ -112,7 +111,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	/**
 	 * Create a new random DoubleGene with the given value and the given range. 
 	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link DoubleGene#isValid()} 
+	 * exception is thrown. In this case the method {@link Float64Gene#isValid()} 
 	 * returns {@code false}.
 	 * 
 	 * @param value the value of the DoubleGene.
@@ -120,7 +119,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param max the maximal valid value of this DoubleGene.
 	 * @return the new created DoubleGene with the given {@code value}.
 	 */
-	public static DoubleGene valueOf(
+	public static Float64Gene valueOf(
 		final double value, final double min, final double max
 	) {
 		return valueOf(
@@ -138,7 +137,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param max the maximal value of the DoubleGene to create.
 	 * @return the new created DoubleGene.
 	 */
-	public static DoubleGene valueOf(final Float64 min, final Float64 max) {
+	public static Float64Gene valueOf(final Float64 min, final Float64 max) {
 		final Random random = RandomRegistry.getRandom();
 		final double value = min.doubleValue() + 
 							random.nextDouble()*(max.doubleValue() - 
@@ -155,29 +154,29 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 	 * @param max the maximal value of the DoubleGene to create.
 	 * @return the new created DoubleGene.
 	 */
-	public static DoubleGene valueOf(final double min, final double max) {
+	public static Float64Gene valueOf(final double min, final double max) {
 		return valueOf(Float64.valueOf(min), Float64.valueOf(max));
 	}
 	
-	static final XMLFormat<DoubleGene> 
-	XML = new XMLFormat<DoubleGene>(DoubleGene.class) 
+	static final XMLFormat<Float64Gene> 
+	XML = new XMLFormat<Float64Gene>(Float64Gene.class) 
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
 		
 		@Override
-		public DoubleGene newInstance(
-			final Class<DoubleGene> cls, final InputElement element
+		public Float64Gene newInstance(
+			final Class<Float64Gene> cls, final InputElement element
 		)
 			throws XMLStreamException
 		{
 			final double min = element.getAttribute(MIN, 0.0);
 			final double max = element.getAttribute(MAX, 1.0);
 			final double value = element.<Double>getNext();
-			return DoubleGene.valueOf(value, min, max);
+			return Float64Gene.valueOf(value, min, max);
 		}
 		@Override
-		public void write(final DoubleGene gene, final OutputElement element) 
+		public void write(final Float64Gene gene, final OutputElement element) 
 			throws XMLStreamException 
 		{
 			element.setAttribute(MIN, gene.getMin().doubleValue());
@@ -185,7 +184,7 @@ public class DoubleGene extends NumberGene<Float64, DoubleGene> {
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override
-		public void read(InputElement element, DoubleGene gene) throws XMLStreamException {
+		public void read(InputElement element, Float64Gene gene) throws XMLStreamException {
 		}
 	};
 

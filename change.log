@@ -1,4 +1,6 @@
 Jenetics-0.5.0.0
+- Rename DoubleGene(Chromosome) to Float64Gene(Chromosome).
+- Rename IntegerGene(Chromosome) to Integer64Gene(Chromosome).
 - Rename org.jenetics.util.XMLSerializer to org.jenetics.util.Serializer.
 - Move Mean class from org.jenetics to org.jenetics.util package.
 - Rename PowerScaler to ExponentialScaler.

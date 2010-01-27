@@ -29,8 +29,8 @@ import static java.lang.Math.toRadians;
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
+import org.jenetics.Float64Chromosome;
+import org.jenetics.Float64Gene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.FitnessScaler;
 import org.jenetics.Genotype;
@@ -42,15 +42,15 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Performance.java,v 1.2 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: Performance.java,v 1.3 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class Performance {
 	
-	private static final class Function implements FitnessFunction<DoubleGene, Float64> {
+	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
 		
-		public Float64 evaluate(final Genotype<DoubleGene> genotype) {
-			final DoubleGene gene = genotype.getChromosome().getGene(0);
+		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			final double radians = toRadians(gene.doubleValue());
 			return Float64.valueOf(Math.log(sin(radians)*cos(radians)));
 		}
@@ -58,13 +58,13 @@ public class Performance {
 	
 	public static void main(String[] args) {
 		final Function ff = new Function();
-		final Factory<Genotype<DoubleGene>> gtf = Genotype.valueOf(new DoubleChromosome(0, 360));
+		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final FitnessScaler<Float64> fs = IdentityScaler.valueOf();
 		
 		final int size = 1000000;
-		final Population<DoubleGene, Float64> population = new Population<DoubleGene, Float64>(size);
+		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
 		for (int i = 0; i < size; ++i) {
-			final Phenotype<DoubleGene, Float64> pt = Phenotype.valueOf(
+			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
 				gtf.newInstance(), ff, fs, 0
 			);
 			population.add(pt);
