@@ -39,7 +39,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.35 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.36 2010-01-27 21:23:40 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -152,6 +152,13 @@ public class Array<T> implements
 		System.arraycopy(values, 0, _array, 0, values.length);
 	}
 	
+	/**
+	 * Create a new array from the given two arrays.
+	 * 
+	 * @param a1 array one.
+	 * @param a2 array two.
+	 * @throws NullPointerException if one of the arrays is {@code null}.
+	 */
 	public Array(final Array<T> a1, final Array<T> a2) {
 		this(a1.length() + a2.length());
 		
@@ -208,23 +215,6 @@ public class Array<T> implements
 	public T get(final int index) {
 		checkIndex(index);
 		return (T)_array[index + _start];
-	}
-	
-	/**
-	 * Applies the given predicate to every element in the array.
-	 * 
-	 * @param predicate the predicate to apply.
-	 * @throws NullPointerException if the given {@code predicate} is 
-	 *         {@code null}.
-	 */
-	public void foreach(final Predicate<T> predicate) {
-		Validator.notNull(predicate, "Predicate");
-	
-		for (int i = _start; i < _end; ++i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
-			predicate.evaluate(element);
-		}
 	}
 	
 	/**
@@ -303,6 +293,45 @@ public class Array<T> implements
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array[i];
 			if (predicate.evaluate(element)) {
+				index = i - _start;
+			}
+		}
+		
+		return index;
+	}
+	
+	/**
+	 * Iterates over this array as long as the given predicate returns 
+	 * {@code true}. This method is more or less an  <i>alias</i> of the 
+	 * {@link #indexOf(Predicate)} method. In some cases a call to a 
+	 * {@code array.foreach()} method can express your intention much better 
+	 * than a {@code array.indexOf()} call.
+	 * 
+	 * [code]
+	 *     final Array<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+	 *     final AtomicInteger sum = new AtomicInteger(0);
+	 *     values.foreach(new Predicate<Integer>() {
+	 *         public boolean evaluate(final Integer value) {
+	 *             sum.addAndGet(value);
+	 *             return true;
+	 *         }
+	 *     });
+	 *     System.out.println("Sum: " + sum);
+	 * [/code]
+	 * 
+	 * @param predicate the predicate to apply.
+	 * @throws NullPointerException if the given {@code predicate} is 
+	 *         {@code null}.
+	 */
+	public int foreach(final Predicate<? super T> predicate) {
+		Validator.notNull(predicate, "Predicate");
+		
+		int index = -1;
+		
+		for (int i = _start; i < _end && index == -1; ++i) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array[i];
+			if (!predicate.evaluate(element)) {
 				index = i - _start;
 			}
 		}

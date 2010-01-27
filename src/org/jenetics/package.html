@@ -185,29 +185,29 @@ class OneCounter implements FitnessFunction<BitGene, Float64> {
 The GA also works with NumberGenes. In the given example the FitnessFunction tries 
 to find the value where the sinus becomes a maximum.
 [code]
-class RealFunction implements FitnessFunction<DoubleGene, Float64> {
-    public Float64 evaluate(final Genotype<DoubleGene> genotype) {
+class RealFunction implements FitnessFunction<Float64Gene, Float64> {
+    public Float64 evaluate(final Genotype<Float64Gene> genotype) {
         return Float64.valueOf(Math.sin(genotype.getChromosome().getGene(0).doubleValue()));
     }
 }
 [/code]
 
 To narrow the search space a number range for the 
-{@link org.jenetics.DoubleGene} must be definde. 
+{@link org.jenetics.Float64Gene} must be definde. 
 In our example we restrict the values to the closed interval [0,2PI].
 [code]
 //The Genotype implements the genotype Factory interface.
-Factory<Genotype<DoubleGene>> gtf = Genotype.newGenotype(
+Factory<Genotype<Float64Gene>> gtf = Genotype.newGenotype(
     DoubleChromosome.valueOf(0, 2*Math.PI)
 );
 
-GeneticAlgorithm<DoubleGene, Float64> ga = new GeneticAlgorithm.valueOf(gtf, ff);
+GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm.valueOf(gtf, ff);
 ga.setFitnessScaler(new PowerScaler(2.0));
 ga.setPopulationSize(20);
 
 ga.setAlterer(
-    new Mutation<DoubleGene>(Probability.valueOf(0.05)).append(
-    new MeanAlterer<DoubleGene>(Probability.valueOf(0.5)))
+    new Mutation<Float64Gene>(Probability.valueOf(0.05)).append(
+    new MeanAlterer<Float64Gene>(Probability.valueOf(0.5)))
 );
 ga.setup();     
 for (int i = 0; i < 50; ++i) {

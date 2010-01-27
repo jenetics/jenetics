@@ -24,10 +24,10 @@ package org.jenetics.util;
 
 /**
  * A mixin interface for genes which can have a mean value. This mixin is 
- * required for the {@link MeanAlterer}.
+ * required for the {@link org.jenetics.MeanAlterer}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mean.java,v 1.2 2010-01-26 13:27:16 fwilhelm Exp $
+ * @version $Id: Mean.java,v 1.3 2010-01-27 21:23:40 fwilhelm Exp $
  * 
  * @see org.jenetics.MeanAlterer
  */
