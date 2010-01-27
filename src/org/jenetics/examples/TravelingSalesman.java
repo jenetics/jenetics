@@ -28,6 +28,7 @@ import static java.lang.Math.sin;
 import jsr166y.ForkJoinPool;
 
 import org.jenetics.Chromosome;
+import org.jenetics.CompositeAlterer;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -44,7 +45,7 @@ import org.jenetics.util.Probability;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.28 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.29 2010-01-27 20:35:45 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -82,10 +83,10 @@ public class TravelingSalesman {
 		);
 		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(200);
-        ga.setAlterer(
-            new SwapMutation<Integer64Gene>(Probability.valueOf(0.2), 
-            new PartiallyMatchedCrossover<Integer64Gene>(Probability.valueOf(0.3)))
-        );
+        ga.setAlterer(new CompositeAlterer<Integer64Gene>(
+            new SwapMutation<Integer64Gene>(Probability.valueOf(0.2)), 
+            new PartiallyMatchedCrossover<Integer64Gene>(Probability.valueOf(0.3))
+        ));
         //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
         //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());
         

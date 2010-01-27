@@ -38,23 +38,16 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutation.java,v 1.12 2009-07-02 17:47:57 fwilhelm Exp $
+ * @version $Id: GaussianMutation.java,v 1.13 2010-01-27 20:35:44 fwilhelm Exp $
  */
-public class GaussianMutation<G extends NumberGene<?, G>> extends Mutation<G> {
+public class GaussianMutation<G extends NumberGene<?, G>> extends Mutator<G> {
 	
-	public GaussianMutation(
-		final Probability probability, final Alterer<G> component
-	) {
-		super(probability, component);
+	public GaussianMutation() {
 	}
 
 	public GaussianMutation(final Probability probability) {
 		super(probability);
 	}
-
-	public GaussianMutation() {
-	}
-
 
 	@Override
 	protected void mutate(final Array<G> genes) {

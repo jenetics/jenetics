@@ -1,4 +1,8 @@
 Jenetics-0.5.0.0
+- Refactoring of the Alterer class. The Alterer is now an interface with one
+  "alter" method. To combine different alterers to one alterer you have to use
+  the CompositeAlterer class.
+- Rename Mutation to Mutator.
 - Rename DoubleGene(Chromosome) to Float64Gene(Chromosome).
 - Rename IntegerGene(Chromosome) to Integer64Gene(Chromosome).
 - Rename org.jenetics.util.XMLSerializer to org.jenetics.util.Serializer.

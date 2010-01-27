@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.59 2010-01-21 22:41:54 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.60 2010-01-27 20:35:44 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -102,9 +102,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private Probability _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 	
-	private Alterer<G> _alterer = ( 
-			new SinglePointCrossover<G>(Probability.valueOf(0.1))).append(
-			new Mutation<G>(Probability.valueOf(0.05))
+	private Alterer<G> _alterer = new CompositeAlterer<G>(
+			new SinglePointCrossover<G>(Probability.valueOf(0.1)),
+			new Mutator<G>(Probability.valueOf(0.05))
 		);
 	
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
@@ -617,7 +617,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param alterer the {@link Alterer} to add.
 	 */
 	public void addAlterer(final Alterer<G> alterer) {
-		_alterer.append(notNull(alterer, "Alterer"));
+		_alterer = CompositeAlterer.join(_alterer, notNull(alterer, "Alterer"));
 	}
 	
 	/**

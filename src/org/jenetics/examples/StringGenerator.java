@@ -27,10 +27,11 @@ import java.util.concurrent.Executors;
 
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
+import org.jenetics.CompositeAlterer;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.Mutation;
+import org.jenetics.Mutator;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
@@ -39,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java,v 1.23 2009-03-16 21:50:23 fwilhelm Exp $
+ * @version $Id: StringGenerator.java,v 1.24 2010-01-27 20:35:45 fwilhelm Exp $
  */
 public class StringGenerator {
 
@@ -80,8 +81,8 @@ public class StringGenerator {
 //		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
 //		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
-		ga.setAlterer(
-			new Mutation<CharacterGene>(Probability.valueOf(0.005)).append(
+		ga.setAlterer(new CompositeAlterer<CharacterGene>(
+			new Mutator<CharacterGene>(Probability.valueOf(0.005)),
 			new SinglePointCrossover<CharacterGene>(Probability.valueOf(0.1))
 		));
 		EvaluatorRegistry.setEvaluator(new org.jenetics.util.ConcurrentEvaluator());

@@ -72,7 +72,7 @@ import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
-import org.jenetics.Mutation;
+import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
@@ -84,7 +84,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -636,7 +636,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -835,7 +835,7 @@ class GeometryController implements StepListener {
 				public void run() {
 					_ga.getLock().lock();
 					try {
-						_ga.setAlterer(new Mutation<Float64Gene>(probability));
+						_ga.setAlterer(new Mutator<Float64Gene>(probability));
 						_ga.addAlterer(new MeanAlterer<Float64Gene>());
 						System.out.println("Mutation probability: " + probability);
 					} finally {
@@ -892,7 +892,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -913,7 +913,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -934,7 +934,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -955,7 +955,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -976,7 +976,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -997,7 +997,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -1022,7 +1022,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -1140,7 +1140,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1246,7 +1246,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1377,7 +1377,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1491,7 +1491,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1505,7 +1505,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.11 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.12 2010-01-27 20:35:45 fwilhelm Exp $
  */
 class GA {
 	
@@ -1645,7 +1645,7 @@ class GA {
 			new GeneticAlgorithm<Float64Gene, Float64>(
 				GA.getGenotypeFactory(), function
 			);
-		ga.addAlterer(new Mutation<Float64Gene>(Probability.valueOf(0.1)));
+		ga.addAlterer(new Mutator<Float64Gene>(Probability.valueOf(0.1)));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);

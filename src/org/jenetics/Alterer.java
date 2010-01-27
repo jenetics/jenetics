@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
-
 import org.jenetics.util.Probability;
 
 /**
@@ -48,74 +46,10 @@ import org.jenetics.util.Probability;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.17 2010-01-18 18:37:59 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.18 2010-01-27 20:35:44 fwilhelm Exp $
  */
-public abstract class Alterer<G extends Gene<?, G>> {
-	public static final Probability DEFAULT_ALTER_PROBABILITY = Probability.valueOf(0.2);
+public interface Alterer<G extends Gene<?, G>> {
 
-	/**
-	 * The Alterer which is executed after <code>this</code> alterer.
-	 */
-	protected Alterer<G> _component;
-	
-	/**
-	 * The altering probability. 
-	 */
-	protected final Probability _probability;
-	
-	/**
-	 * Constructs an alterer with a given recombination probability.
-	 * 
-	 * @param probability The recombination probability.
-	 * @throws NullPointerException if the {@code probability} is {@code null}. 
-	 */
-	protected Alterer(final Probability probability) {
-		_probability = notNull(probability, "Probability");
-	}
-	
-	/**
-	 * Create a {@code Alterer} concatenating the given {@code Alterer}S. The
-	 * default probability is set to 0.5.
-	 * 
-	 * @param component the {@code Alterer}S this {@code Alterer} consists.
-	 * @throws NullPointerException if the {@code component} is {@code null}.     
-	 */
-	protected Alterer(final Alterer<G> component) {
-		this(DEFAULT_ALTER_PROBABILITY, component);
-	}
-	
-	/**
-	 * Constructs an alterer with a given recombination probability. A
-	 * second Alterer can be specified for a composite Alterer.
-	 * 
-	 * @param probability The recombination probability.
-	 * @param component The composite Alterer.
-	 * @throws NullPointerException if the {@code probability} is {@code null}. 
-	 */
-	protected Alterer(final Probability probability, final Alterer<G> component) {
-		_probability = notNull(probability, "Probability");
-		_component = component;
-	}
-	
-	/**
-	 * Appends a additional Alterer at the end of the chain of Alterers.
-	 * 
-	 * @param alterer The Alterer to append.
-	 * @return this alterer for chained append calls.
-	 * @throws NullPointerException if the {@code component} is {@code null}. 
-	 */
-	public Alterer<G> append(final Alterer<G> alterer) {
-		notNull(alterer, "Alterer");
-
-		if (_component == null) {
-			_component = alterer;
-		} else {
-			_component.append(alterer);
-		}
-		
-		return this;
-	}
-	
 	/**
 	 * Alters (recombine) a given population. If the <code>population</code>
 	 * is <code>null</code> or empty, nothing is altered.
@@ -128,49 +62,15 @@ public abstract class Alterer<G extends Gene<?, G>> {
 	 *         {@code null}.
 	 */
 	public <C extends Comparable<C>> void alter(
-		final Population<G, C> population, 
-		final int generation
-	) {
-		notNull(population, "Population");
-		
-		if (!population.isEmpty()) {
-			change(population, generation);
-	
-			if (_component != null) {
-				_component.alter(population, generation);
-			}
-		}
-	}
-	
-	/**
-	 * This template method performs the recombination in the implementing
-	 * class. It is guaranteed that the given population is neither null, nor
-	 * empty.
-	 * 
-	 * @param population the Population to be altered.
-	 * @param generation the date of birth (generation) of the altered phenotypes.
-	 */
-	protected abstract <C extends Comparable<C>> void change(
-			Population<G, C> population, int generation
+			final Population<G, C> population, 
+			final int generation
 		);
-	
-	/**
-	 * Return the component alterer.
-	 * 
-	 * @return The component alterer, or {@code null} if this alterer has no
-	 *         component alterer.
-	 */
-	public Alterer<G> getComponentAlterer() {
-		return _component;
-	}
 	
 	/**
 	 * Return the recombination probability for this alterer.
 	 * 
 	 * @return The recombination probability.
 	 */
-	public Probability getProbability() {
-		return _probability;
-	}
+	public Probability getProbability();
 	
 }

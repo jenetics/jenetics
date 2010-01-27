@@ -28,13 +28,14 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
+import org.jenetics.CompositeAlterer;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
-import org.jenetics.Mutation;
+import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
@@ -43,7 +44,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.14 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: RealFunction.java,v 1.15 2010-01-27 20:35:45 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function 
@@ -72,10 +73,10 @@ public class RealFunction {
 		
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
-		ga.setAlterer(
-			new Mutation<Float64Gene>(Probability.valueOf(0.03)).append(
-			new MeanAlterer<Float64Gene>(Probability.valueOf(0.6)))
-		);
+		ga.setAlterer(new CompositeAlterer<Float64Gene>(
+			new Mutator<Float64Gene>(Probability.valueOf(0.03)),
+			new MeanAlterer<Float64Gene>(Probability.valueOf(0.6))
+		));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		
 		GAUtils.execute(ga, 50);

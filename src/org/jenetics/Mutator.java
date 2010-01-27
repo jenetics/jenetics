@@ -59,9 +59,9 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutation.java,v 1.20 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: Mutator.java,v 1.1 2010-01-27 20:35:44 fwilhelm Exp $
  */
-public class Mutation<G extends Gene<?, G>> extends Alterer<G> {	
+public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
 
 	/**
@@ -72,7 +72,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	/**
 	 * Default constructor, with probability = 0.01.
 	 */
-	public Mutation() {
+	public Mutator() {
 		this(Probability.valueOf(0.01));
 	}
 	
@@ -85,20 +85,8 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 * @throws NullPointerException if the <code>probability</code> is 
 	 * 		<code>null</code>.
 	 */
-	public Mutation(final Probability probability) {
+	public Mutator(final Probability probability) {
 		super(probability);
-	}
-
-	/**
-	 * Construct a Mutation object which a given mutation probability
-	 * 
-	 * @param probability Mutation probability. The given probability is
-	 *        divided by the number of chromosomes of the genotype to form
-	 *        the concrete mutation probability.
-	 * @param component The next Alterers in Alterer-Chain.
-	 */
-	public Mutation(final Probability probability, final Alterer<G> component) {
-		super(probability, component);
 	}
 	
 	/**
@@ -114,7 +102,7 @@ public class Mutation<G extends Gene<?, G>> extends Alterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	protected <C extends Comparable<C>> void change(
+	public <C extends Comparable<C>> void alter(
 		final Population<G, C> population, final int generation
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";

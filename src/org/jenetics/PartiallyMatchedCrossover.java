@@ -71,20 +71,10 @@ import org.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossover.java,v 1.16 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: PartiallyMatchedCrossover.java,v 1.17 2010-01-27 20:35:44 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;
-
-	public PartiallyMatchedCrossover(final Alterer<G> component) {
-		super(component);
-	}
-
-	public PartiallyMatchedCrossover(
-		final Probability probability, final Alterer<G> component
-	) {
-		super(probability, component);
-	}
 
 	public PartiallyMatchedCrossover(final Probability probability) {
 		super(probability);

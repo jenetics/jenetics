@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SinglePointCrossover.java,v 1.9 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: SinglePointCrossover.java,v 1.10 2010-01-27 20:35:44 fwilhelm Exp $
  */
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = -5901453762256113098L;
@@ -61,12 +61,6 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	
 	public SinglePointCrossover(final Probability probability) {
 		super(probability);
-	}
-
-	public SinglePointCrossover(
-		final Probability probability, final Alterer<G> component
-	) {
-		super(probability, component);
 	}
 	
 	@Override

@@ -39,7 +39,7 @@ import java.io.Serializable;
  * </pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: ExponentialRankSelector.java,v 1.10 2010-01-27 20:35:44 fwilhelm Exp $
  */
 public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable
@@ -49,7 +49,7 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 	private final double _c;
 	
 	public ExponentialRankSelector(final double c) {
-		this._c = c;
+		_c = c;
 	}
 
 	@Override
