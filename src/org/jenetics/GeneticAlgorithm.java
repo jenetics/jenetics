@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.63 2010-01-28 16:33:37 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.64 2010-01-28 16:36:05 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -721,6 +721,12 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		return new Population<G, C>(_population);
 	}
 	
+	/**
+	 * Return the statistics of the best phenotype. The returned statistics is 
+	 * {@code null} if the algorithms hasn't been initialized.
+	 * 
+	 * @return the statistics of the best phenotype.
+	 */
 	public Statistics<G, C> getBestStatistics() {
 		return _bestStatistics;
 	}
