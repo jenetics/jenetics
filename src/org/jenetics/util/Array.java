@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.notNull;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -39,7 +41,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.37 2010-01-27 22:21:51 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.38 2010-01-28 09:38:31 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -66,7 +68,7 @@ public class Array<T> implements
 	 *         value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	Array(final Object[] array, final int start, final int end, final boolean sealed) {
-		Validator.notNull(array, "Array");
+		notNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
@@ -89,6 +91,19 @@ public class Array<T> implements
 	 */
 	Array(final Object[] array, final boolean sealed) {
 		this(array, 0, array.length, sealed);
+	}
+	
+	/**
+	 * Create a new array from the given two arrays.
+	 * 
+	 * @param a1 array one.
+	 * @param a2 array two.
+	 * @throws NullPointerException if one of the arrays is {@code null}.
+	 */
+	Array(final Array<? extends T> a1, final Array<? extends T> a2) {
+		this(a1.length() + a2.length());
+		System.arraycopy(a1._array, a1._start, _array, 0, a1.length());
+		System.arraycopy(a2._array, a2._start, _array, a1.length(), a2.length());
 	}
 	
 	/**
@@ -150,19 +165,6 @@ public class Array<T> implements
 	public Array(final T... values) {
 		this(values.length);
 		System.arraycopy(values, 0, _array, 0, values.length);
-	}
-	
-	/**
-	 * Create a new array from the given two arrays.
-	 * 
-	 * @param a1 array one.
-	 * @param a2 array two.
-	 * @throws NullPointerException if one of the arrays is {@code null}.
-	 */
-	public Array(final Array<? extends T> a1, final Array<? extends T> a2) {
-		this(a1.length() + a2.length());
-		System.arraycopy(a1._array, a1._start, _array, 0, a1.length());
-		System.arraycopy(a2._array, a2._start, _array, a1.length(), a2.length());
 	}
 	
 	/**
@@ -279,7 +281,7 @@ public class Array<T> implements
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int indexOf(final Predicate<? super T> predicate) {
-		Validator.notNull(predicate, "Predicate");
+		notNull(predicate, "Predicate");
 		
 		int index = -1;
 		
@@ -322,7 +324,7 @@ public class Array<T> implements
 	 *         {@code null}.
 	 */
 	public int foreach(final Predicate<? super T> predicate) {
-		Validator.notNull(predicate, "Predicate");
+		notNull(predicate, "Predicate");
 		
 		int index = -1;
 		
@@ -350,7 +352,7 @@ public class Array<T> implements
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int lastIndexOf(final Predicate<? super T> predicate) {
-		Validator.notNull(predicate, "Predicate");
+		notNull(predicate, "Predicate");
 		
 		int index = -1;
 		
@@ -411,6 +413,43 @@ public class Array<T> implements
 			_array[i] = value;
 		}
 		return this;
+	}
+	
+	/**
+	 * Create a new array which contains the values of {@code this} and the
+	 * given {@code array}. The length of the new array is 
+	 * {@code this.length() + array.length()}.
+	 * 
+	 * @param array the array to append to this array.
+	 * @return a new array which contains the values of {@code this} and the
+	 *         given {@code array}
+	 * @throws NullPointerException if the {@code arrays} is {@code null}.
+	 */
+	public Array<T> append(final Array<? extends T> array) {
+		return new Array<T>(this, notNull(array, "Array"));
+	}
+	
+	/**
+	 * Create a new array which contains the values of {@code this} and the
+	 * given {@code values}. The length of the new array is 
+	 * {@code this.length() + values.size()}.
+	 * 
+	 * @param array the array to append to this array.
+	 * @return a new array which contains the values of {@code this} and the
+	 *         given {@code array}
+	 * @throws NullPointerException if the {@code values} is {@code null}.
+	 */
+	public Array<T> append(final Collection<? extends T> values) {
+		notNull(values, "Values");
+		final Array<T> array = new Array<T>(length() + values.size());
+		
+		System.arraycopy(_array, _start, array._array, 0, length());
+		int index = length();
+		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+			array._array[index] = it.next();
+		}
+		
+		return array;
 	}
 	
 	/**
