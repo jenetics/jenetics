@@ -36,12 +36,11 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.CharSet;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.10 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.11 2010-01-28 22:28:09 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
@@ -153,8 +152,7 @@ public class CharacterGene
 	 *         {@code null}.
 	 */
 	public static void setCharacters(final CharSet characters) {
-		Validator.nonNull(characters, "CharSet");
-		CHARACTERS.set(characters);
+		CHARACTERS.set(nonNull(characters, "CharSet"));
 	}
 	
 	/**
@@ -164,8 +162,7 @@ public class CharacterGene
 	 * @throws NullPointerException if the given characters are null.
 	 */
 	public static void setCharacters(final CharSequence characters) {
-		Validator.nonNull(characters, "Characters");
-		CHARACTERS.set(new CharSet(characters));
+		CHARACTERS.set(new CharSet(nonNull(characters, "Characters")));
 	}
 
 	
