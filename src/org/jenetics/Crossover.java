@@ -25,7 +25,6 @@ package org.jenetics;
 import java.util.Random;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -35,11 +34,11 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.21 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: Crossover.java,v 1.22 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 
-	public Crossover(final Probability probability) {
+	public Crossover(final double probability) {
 		super(probability);
 	}
 	

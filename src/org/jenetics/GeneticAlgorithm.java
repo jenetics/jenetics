@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static java.lang.Math.round;
 import static org.jenetics.util.EvaluatorRegistry.evaluate;
+import static org.jenetics.util.Validator.checkProbability;
 import static org.jenetics.util.Validator.notNull;
 
 import java.util.List;
@@ -34,7 +35,6 @@ import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Probability;
 import org.jenetics.util.Timer;
 
 /**
@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.60 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.61 2010-01-28 13:03:32 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -92,7 +92,7 @@ import org.jenetics.util.Timer;
 public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	public static final int DEFAULT_POPULATION_SIZE = 50;
 	public static final int DEFAULT_MAXIMAL_PHENOTYPE_AGE = 70;
-	public static final Probability DEFAULT_OFFSPRING_FRACTION = Probability.valueOf(0.6);
+	public static final double DEFAULT_OFFSPRING_FRACTION = 0.6;
 	
 	private final Lock _lock = new ReentrantLock(true);	
 	
@@ -100,11 +100,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final FitnessFunction<G, C> _fitnessFunction;
 	private FitnessScaler<C> _fitnessScaler;
 	
-	private Probability _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
+	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 	
 	private Alterer<G> _alterer = new CompositeAlterer<G>(
-			new SinglePointCrossover<G>(Probability.valueOf(0.1)),
-			new Mutator<G>(Probability.valueOf(0.05))
+			new SinglePointCrossover<G>(0.1),
+			new Mutator<G>(0.05)
 		);
 	
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
@@ -384,7 +384,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private int getNumberOfOffsprings() {
 		return (int)round(
-			_offspringFraction.doubleValue()*_populationSize
+			_offspringFraction*_populationSize
 		);
 	}
 	
@@ -493,7 +493,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @return the currently used offspring fraction of the GA. 
 	 */
-	public Probability getOffspringFraction() {
+	public double getOffspringFraction() {
 		return _offspringFraction;
 	}
 	
@@ -595,10 +595,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * Set the offspring fraction.
 	 * 
 	 * @param offspringFraction The offspring fraction.
-	 * @throws NullPointerException if the offspring fraction is null.
+	 * @throws IllegalArgumentException if the offspring fraction is out of range.
 	 */
-	public void setOffspringFraction(final Probability offspringFraction) {
-		_offspringFraction = notNull(offspringFraction, "Offspring fraction");
+	public void setOffspringFraction(final double offspringFraction) {
+		_offspringFraction = checkProbability(offspringFraction);
 	}
 	
 	/**
