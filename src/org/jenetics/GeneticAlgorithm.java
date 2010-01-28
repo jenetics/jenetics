@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.62 2010-01-28 13:06:14 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.63 2010-01-28 16:33:37 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -670,12 +670,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			));
 		}
 		
-		_population.clear();
+		final Population<G, C> pop = new Population<G, C>(population.size());
 		for (Phenotype<G, C> phenotype : population) {
-			_population.add(phenotype.newInstance(
+			pop.add(phenotype.newInstance(
 					_fitnessFunction, _fitnessScaler, _generation
 				));
 		}
+		_population = pop;
 		_populationSize = population.size();
 	}
 	
@@ -698,15 +699,16 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			);
 		}
 		
-		_population.clear();
+		final Population<G, C> pop = new Population<G, C>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
-			_population.add(Phenotype.valueOf(
+			pop.add(Phenotype.valueOf(
 				genotype, 
 				_fitnessFunction,
 				_fitnessScaler,
 				_generation
 			));
 		}
+		_population = pop;
 		_populationSize = genotypes.size();
 	}
 	
