@@ -38,7 +38,7 @@ as prototype.
 [code]
 //Defining a Genotype prototype.
 Genotype<BitGene> gt = Genotype.create(
-    BitChromosome.valueOf(10, Probability.valueOf(0.5));
+    BitChromosome.valueOf(10, 0.5);
 );
 FitnessFunction<BitGene, Float64> ff = ...//FitnessFunction implementation
 GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm.valueOf(gt, ff);
@@ -61,9 +61,10 @@ strategies.
 Selector<BitGene> selector = new StochasticUniversalSelector();
 ga.setOffspringSelector(selector);
 ga.setSurvivorSelector(selector);
-Alterer alterer = 
-	new SinglePointCrossover<BitGene>(Probability.valueOf(0.1)).append(
-    new Mutation<BitGene>(Probability.valueOf(0.001)));
+Alterer alterer = new CompositeAlterer(
+	new SinglePointCrossover<BitGene>(0.1),
+    new Mutation<BitGene>(0.001)
+    );
 ga.setAlterer(alterer);
 [/code]
 You can define selection strategies for survivors and offsprings independently.
@@ -144,17 +145,17 @@ public class Knapsack {
     	//Defining the fitness function and the genotype.
         final KnappsackFunction ff = newFitnessFuntion(15, 100);
         final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-            BitChromosome.valueOf(15, Probability.valueOf(0.5))
+            BitChromosome.valueOf(15, 0.5)
         );
         
         final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
         ga.setMaximalPhenotypeAge(10);
         ga.setPopulationSize(1000);
         ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
-        ga.setAlterer(
-            new Mutation<BitGene>(Probability.valueOf(0.115), 
-            new SinglePointCrossover<BitGene>(Probability.valueOf(0.06)))
-        );
+        ga.setAlterer(new CompositeAlterer(
+            new Mutation<BitGene>(0.115), 
+            new SinglePointCrossover<BitGene>(0.06)
+        ));
         
         ga.setup();
         ga.evolve(100);
@@ -205,10 +206,10 @@ GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm.valueOf(gtf, ff
 ga.setFitnessScaler(new PowerScaler(2.0));
 ga.setPopulationSize(20);
 
-ga.setAlterer(
-    new Mutation<Float64Gene>(Probability.valueOf(0.05)).append(
-    new MeanAlterer<Float64Gene>(Probability.valueOf(0.5)))
-);
+ga.setAlterer(new CompositeAlterer(
+    new Mutation<Float64Gene>(0.05),
+    new MeanAlterer<Float64Gene>(0.5)
+));
 ga.setup();     
 for (int i = 0; i < 50; ++i) {
     ga.evolve();
@@ -276,10 +277,10 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(100);
 
-		ga.setAlterer(
-			new Mutation<IntegerGene>(Probability.valueOf(0.5), 
-			new PartiallyMatchedCrossover<IntegerGene>(Probability.valueOf(0.3)))
-		);
+		ga.setAlterer(new CompositeAlterer(
+			new Mutation<IntegerGene>(0.5), 
+			new PartiallyMatchedCrossover<IntegerGene>(0.3)
+		));
         
 		ga.setup();
 		ga.evolve(10);
