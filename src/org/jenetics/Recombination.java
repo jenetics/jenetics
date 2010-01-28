@@ -32,7 +32,6 @@ import java.util.Random;
 
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.EvaluatorRegistry;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -44,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.19 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: Recombination.java,v 1.20 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
@@ -55,7 +54,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends AbstractAltere
 	 * @throws NullPointerException if the <code>probability</code> is 
 	 * 		<code>null</code>.
 	 */
-	public Recombination(final Probability probability) {
+	public Recombination(final double probability) {
 		super(probability);
 	}
 
@@ -67,7 +66,7 @@ public abstract class Recombination<G extends Gene<?, G>> extends AbstractAltere
 	public final <C extends Comparable<C>> void alter(
 		final Population<G, C> population, final int generation
 	) {
-		final int subsetSize = (int)Math.ceil(population.size()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(population.size()*_probability);
 		
 		if (subsetSize > 0) {
 			final Random random = RandomRegistry.getRandom();

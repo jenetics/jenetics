@@ -29,14 +29,13 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.BitSet;
 
-import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosomeTest.java,v 1.10 2009-07-02 17:47:58 fwilhelm Exp $
+ * @version $Id: BitChromosomeTest.java,v 1.11 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public class BitChromosomeTest {
 
@@ -61,12 +60,12 @@ public class BitChromosomeTest {
 
     @Test
     public void testBitChromosomeIntProbability() {
-        BitChromosome c = BitChromosome.valueOf(10, Probability.valueOf(0));
+        BitChromosome c = BitChromosome.valueOf(10, 0);
         for (BitGene g : c) {
             assertFalse(g.getBit());
         }
         
-        c = BitChromosome.valueOf(10, Probability.valueOf(1));
+        c = BitChromosome.valueOf(10, 1);
         for (BitGene g : c) {
             assertTrue(g.getBit());
         }

@@ -26,21 +26,20 @@ import java.util.Random;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Mean;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java,v 1.15 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: MeanAlterer.java,v 1.16 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G> {
 
 	public MeanAlterer() {
-		this(Probability.valueOf(0.05));
+		this(0.05);
 	}
 	
-	public MeanAlterer(final Probability probability) {
+	public MeanAlterer(final double probability) {
 		super(probability);
 	}
 

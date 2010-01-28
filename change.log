@@ -1,4 +1,5 @@
 Jenetics-0.5.0.0
+- Remove the org.jenetics.Propability class. It's not worth the effort.
 - Refactoring of the Alterer class. The Alterer is now an interface with one
   "alter" method. To combine different alterers to one alterer you have to use
   the CompositeAlterer class.

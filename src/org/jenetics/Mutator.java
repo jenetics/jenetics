@@ -27,7 +27,6 @@ import static org.jenetics.util.ArrayUtils.subset;
 import java.util.Random;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -59,7 +58,7 @@ import org.jenetics.util.RandomRegistry;
  * <pre>genes*mutation-probability.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mutator.java,v 1.2 2010-01-27 21:29:03 fwilhelm Exp $
+ * @version $Id: Mutator.java,v 1.3 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
 	private static final long serialVersionUID = -7012689808565856577L;
@@ -73,7 +72,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Default constructor, with probability = 0.01.
 	 */
 	public Mutator() {
-		this(Probability.valueOf(0.01));
+		this(0.01);
 	}
 	
 	/**
@@ -85,7 +84,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @throws NullPointerException if the <code>probability</code> is 
 	 * 		<code>null</code>.
 	 */
-	public Mutator(final Probability probability) {
+	public Mutator(final double probability) {
 		super(probability);
 	}
 	
@@ -108,7 +107,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(population.size()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(population.size()*_probability);
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(population.size(), subsetSize, random);
@@ -127,7 +126,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
 	private Genotype<G> mutate(final Genotype<G> genotype) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genotype.length()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(genotype.length()*_probability);
 		
 		Genotype<G> gt = genotype;
 		if (subsetSize > 0) {
@@ -171,7 +170,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(genes.length(), subsetSize, random);

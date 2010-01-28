@@ -35,12 +35,11 @@ import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Knapsack.java,v 1.9 2010-01-27 20:35:45 fwilhelm Exp $
+ * @version $Id: Knapsack.java,v 1.10 2010-01-28 13:03:33 fwilhelm Exp $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;
@@ -101,7 +100,7 @@ public class Knapsack {
     	//Defining the fitness function and the genotype.
         final KnappsackFunction ff = newFitnessFuntion(15, 100);
         final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-            BitChromosome.valueOf(15, Probability.valueOf(0.5))
+            BitChromosome.valueOf(15, 0.5)
         );
         
         final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
@@ -109,8 +108,8 @@ public class Knapsack {
         ga.setPopulationSize(1000);
         ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
         ga.setAlterer(new CompositeAlterer<BitGene>(
-        	new Mutator<BitGene>(Probability.valueOf(0.115)),
-        	new SinglePointCrossover<BitGene>(Probability.valueOf(0.06))
+        	new Mutator<BitGene>(0.115),
+        	new SinglePointCrossover<BitGene>(0.06)
         ));
         
         GAUtils.execute(ga, 100);
