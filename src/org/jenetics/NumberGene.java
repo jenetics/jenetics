@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.13 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.14 2010-01-28 20:11:10 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
@@ -72,8 +72,6 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 * 
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
-	 * @throws IllegalArgumentException if the gene value is not in the range
-	 * 		(value < min || value > max).
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public abstract G newInstance(final java.lang.Number value); 
@@ -87,19 +85,9 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 * @throws NullPointerException if one of the given number is null.
 	 */
 	protected void set(final N value, final N min, final N max) {
-		nonNull(value, "Gene value");
-		nonNull(min, "Min value");
-		nonNull(max, "Max value");
-		
-//		if (min.isGreaterThan(max)) {
-//			throw new IllegalArgumentException(String.format(
-//				"Max value must be greater than min value. [%s, %s]", min, max
-//			));
-//		}
-
-		_min = min;
-		_max = max;
-		_value = value;
+		_min = nonNull(min, "Min value");
+		_max = nonNull(min, "Min value");
+		_value = nonNull(value, "Gene value");
 		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
 	

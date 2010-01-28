@@ -26,7 +26,7 @@ package org.jenetics.util;
  * Some static helper methods for checking preconditions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java,v 1.4 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: Validator.java,v 1.5 2010-01-28 20:11:08 fwilhelm Exp $
  */
 public final class Validator {
 
@@ -71,7 +71,7 @@ public final class Validator {
 	 * Create a predicate which allows to check all array elements for 
 	 * {@code null}.
 	 * 
-	 * @see {@link #NonNull(String)}
+	 * @see #NonNull(String)
 	 * 
 	 * @return the null check predicate.
 	 */
@@ -106,6 +106,27 @@ public final class Validator {
 	}
 	
 	/**
+	 * Check if a given value is within a given closed range.
+	 * 
+	 * @param value the value to check.
+	 * @param min the min value (inclusively).
+	 * @param max the max value (inclusively).
+	 * @return {@code value} if within the range.
+	 * @throws IllegalArgumentException if the given {@code value} is out of
+	 *         range.
+	 */
+	public static <T extends Comparable<T>> T checkRange(
+		final T value, final T min, final T max
+	) {
+		if (value.compareTo(min) < 0 || value.compareTo(max) > 0) {
+			throw new IllegalArgumentException(String.format(
+				"Value %s is out of range [%s, %s].", value, min, max
+			));
+		}
+		return value;
+	}
+	
+	/**
 	 * Check if the given integer is negative.
 	 * 
 	 * @param length the value to check.
@@ -130,7 +151,7 @@ public final class Validator {
 	public static double checkProbability(final double p) {
 		if (p < 0.0 || p > 1.0) {
 			throw new IllegalArgumentException(String.format(
-					"The given probability is not in the range [0 .. 1]: %s", p
+					"The given probability is not in the range [0, 1]: %s", p
 				));
 		}
 		return p;
