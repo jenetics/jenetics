@@ -26,11 +26,10 @@ import static org.jenetics.util.Validator.notNull;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Predicate;
-import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CompositeAlterer.java,v 1.3 2010-01-28 09:38:31 fwilhelm Exp $
+ * @version $Id: CompositeAlterer.java,v 1.4 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -40,7 +39,7 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a1, 
 		final Alterer<G> a2
 	) {
-		super(Probability.ONE);
+		super(1.0);
 		_alterers = new Array<Alterer<G>>(a1, a2);
 	}
 	
@@ -49,17 +48,17 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a2, 
 		final Alterer<G> a3
 	) {
-		super(Probability.ONE);
+		super(1.0);
 		_alterers = new Array<Alterer<G>>(a1, a2, a3);
 	}
 	
 	public CompositeAlterer(final Alterer<G>... alterers) {
-		super(Probability.ONE);
+		super(1.0);
 		_alterers = new Array<Alterer<G>>(notNull(alterers, "Alterers"));
 	}
 	
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
-		super(Probability.ONE);
+		super(1.0);
 		_alterers = notNull(alterers, "Alterers").copy();
 	}
 

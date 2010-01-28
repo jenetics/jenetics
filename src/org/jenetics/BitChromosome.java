@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.checkChromosomeLength;
 import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.checkProbability;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -38,7 +39,6 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.LargeInteger;
@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.20 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.21 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -59,7 +59,7 @@ public class BitChromosome extends Number<LargeInteger>
 	/**
 	 * The one's probability of the randomly generated Chromosome.
 	 */
-	protected Probability _p;
+	protected double _p;
 	
 	/**
 	 * The length of the chromosomes (in bit).
@@ -243,7 +243,7 @@ public class BitChromosome extends Number<LargeInteger>
 			}
 			BitUtils.setBit(chromosome._genes, i, genes.get(i) == BitGene.TRUE);
 		}
-		chromosome._p = Probability.valueOf((double)ones/(double)genes.length());
+		chromosome._p = (double)ones/(double)genes.length();
 		return chromosome;
 	}
 	
@@ -252,7 +252,7 @@ public class BitChromosome extends Number<LargeInteger>
 		final Random random = RandomRegistry.getRandom();
 		final BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
 		for (int i = 0; i < _length; ++i) {
-			BitUtils.setBit(chromosome._genes, i, random.nextDouble() < _p.doubleValue());
+			BitUtils.setBit(chromosome._genes, i, random.nextDouble() < _p);
 		}
 		return chromosome;
 	}
@@ -342,7 +342,7 @@ public class BitChromosome extends Number<LargeInteger>
 		}
 	};
 	
-	static BitChromosome newInstance(final int length, final Probability p) {
+	static BitChromosome newInstance(final int length, final double p) {
 		final BitChromosome chromosome = FACTORY.object();
 		final int size = (int)Math.ceil(length/8.0);
 		
@@ -362,16 +362,16 @@ public class BitChromosome extends Number<LargeInteger>
 	 * @param p Probability of the TRUEs in the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
 	 *         than one.
-	 * @throws NullPointerException if <code>p</code> is <code>null</code>.
+	 * @throws IllegalArgumentException if <code>p</code> is out of range.
 	 */
-	public static BitChromosome valueOf(final int length, final Probability p) {
+	public static BitChromosome valueOf(final int length, final double p) {
 		checkChromosomeLength(length);
-		notNull(p, "Probability");
+		checkProbability(p);
 		
 		final Random random = RandomRegistry.getRandom();
 		final BitChromosome chromosome = newInstance(length, p);
 		for (int i = 0, n = chromosome.length(); i < n; ++i) {
-			chromosome.set(i, random.nextDouble() < p.doubleValue());
+			chromosome.set(i, random.nextDouble() < p);
 		}
 		return chromosome;
 	}
@@ -385,7 +385,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 *         than one.
 	 */
 	public static BitChromosome valueOf(final int length) {
-		return valueOf(length, Probability.valueOf(0.5));
+		return valueOf(length, 0.5);
 	}
 	
 	/**
@@ -413,7 +413,7 @@ public class BitChromosome extends Number<LargeInteger>
 	public static BitChromosome valueOf(final int length, final BitSet bits) {
 		notNull(bits, "BitSet");
 		
-		BitChromosome chromosome = newInstance(length, null);
+		BitChromosome chromosome = newInstance(length, 1);
 		int ones = 0;
 		for (int i = 0; i < length; ++i) {
 			if (bits.get(i)) {
@@ -424,7 +424,7 @@ public class BitChromosome extends Number<LargeInteger>
 			}
 			
 		}
-		chromosome._p = Probability.valueOf((double)ones/(double)length);
+		chromosome._p = (double)ones/(double)length;
 		return chromosome;
 	}
 	
@@ -471,7 +471,7 @@ public class BitChromosome extends Number<LargeInteger>
 			}
 		}
 		
-		chromosome._p = Probability.valueOf((double)ones/(double)value.length());
+		chromosome._p = (double)ones/(double)value.length();
 		return chromosome;
 	}
 	
@@ -493,7 +493,7 @@ public class BitChromosome extends Number<LargeInteger>
 			final double probability = xml.getAttribute(PROBABILITY, 0.5);
 			final byte[] data = BitUtils.toByteArray(xml.getText().toString());
 			final BitChromosome chromosome = BitChromosome.valueOf(data);
-			chromosome._p = Probability.valueOf(probability);
+			chromosome._p = probability;
 			chromosome._length = length;
 			return chromosome;
 		} 
@@ -502,7 +502,7 @@ public class BitChromosome extends Number<LargeInteger>
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
-			xml.setAttribute(PROBABILITY, chromosome._p.doubleValue());
+			xml.setAttribute(PROBABILITY, chromosome._p);
 			xml.addText(BitUtils.toString(chromosome.toByteArray()));
 		}
 		@Override

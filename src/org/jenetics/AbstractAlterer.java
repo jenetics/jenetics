@@ -22,30 +22,29 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
-
-import org.jenetics.util.Probability;
+import static org.jenetics.util.Validator.checkProbability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractAlterer.java,v 1.1 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: AbstractAlterer.java,v 1.2 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G> {
-	public static final Probability DEFAULT_ALTER_PROBABILITY = Probability.valueOf(0.2);
+	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 	
 	/**
 	 * The altering probability. 
 	 */
-	protected final Probability _probability;
+	protected final double _probability;
 	
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 * 
 	 * @param probability The recombination probability.
-	 * @throws NullPointerException if the {@code probability} is {@code null}. 
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range 
 	 */
-	protected AbstractAlterer(final Probability probability) {
-		_probability = notNull(probability, "Probability");
+	protected AbstractAlterer(final double probability) {
+		_probability = checkProbability(probability);
 	}
 	
 	/**
@@ -53,7 +52,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G
 	 * 
 	 * @return The recombination probability.
 	 */
-	public Probability getProbability() {
+	public double getProbability() {
 		return _probability;
 	}
 }
