@@ -25,7 +25,6 @@ package org.jenetics;
 import java.util.Random;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -50,16 +49,16 @@ import org.jenetics.util.RandomRegistry;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SinglePointCrossover.java,v 1.10 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: SinglePointCrossover.java,v 1.11 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = -5901453762256113098L;
 
 	public SinglePointCrossover() {
-		this(Probability.valueOf(0.05));
+		this(0.05);
 	}
 	
-	public SinglePointCrossover(final Probability probability) {
+	public SinglePointCrossover(final double probability) {
 		super(probability);
 	}
 	

@@ -45,7 +45,7 @@ import org.jenetics.util.Timer;
  * [code]
  *     //Defining a genotype factory.
  *     Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
- *         BitChromosome.valueOf(10, Probability.valueOf(0.5));
+ *         BitChromosome.valueOf(10, 0.5);
  *     );
  *     FitnessFunction<BitGene, Float64> ff = ...//FitnessFunction implementation
  *     GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm.valueOf(gt, ff);
@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.61 2010-01-28 13:03:32 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.62 2010-01-28 13:06:14 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm

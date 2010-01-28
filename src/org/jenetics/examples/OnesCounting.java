@@ -32,13 +32,12 @@ import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Integer64;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java,v 1.7 2010-01-27 20:35:45 fwilhelm Exp $
+ * @version $Id: OnesCounting.java,v 1.8 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public class OnesCounting {
 
@@ -60,7 +59,7 @@ public class OnesCounting {
 
 	public static void main(String[] args) throws Exception {
 		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-			BitChromosome.valueOf(20, Probability.valueOf(0.15))
+			BitChromosome.valueOf(20, 0.15)
 		);
 		final OneCounter ff = new OneCounter();
 		final GeneticAlgorithm<BitGene, Integer64> ga = new GeneticAlgorithm<BitGene, Integer64>(gtf, ff);
@@ -68,8 +67,8 @@ public class OnesCounting {
 		ga.setPopulationSize(50);
 		ga.setSelectors(new RouletteWheelSelector<BitGene, Integer64>());
 		ga.setAlterer(new CompositeAlterer<BitGene>(
-			new Mutator<BitGene>(Probability.valueOf(0.55)), 
-			new SinglePointCrossover<BitGene>(Probability.valueOf(0.06))
+			new Mutator<BitGene>(0.55), 
+			new SinglePointCrossover<BitGene>(0.06)
 		));
 		
 		GAUtils.execute(ga, 100);

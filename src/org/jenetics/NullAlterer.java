@@ -22,19 +22,17 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Probability;
-
 /**
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.8 2010-01-27 20:35:44 fwilhelm Exp $
+ * @version $Id: NullAlterer.java,v 1.9 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	private static final long serialVersionUID = 7892835302001002915L;
 
 	public NullAlterer() {
-		super(Probability.valueOf(Probability.MIN_VALUE));
+		super(0.0);
 	}
 
 	@Override

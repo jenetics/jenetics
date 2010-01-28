@@ -39,13 +39,12 @@ import org.jenetics.SwapMutator;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinEvaluator;
-import org.jenetics.util.Probability;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.30 2010-01-27 21:29:03 fwilhelm Exp $
+ * @version $Id: TravelingSalesman.java,v 1.31 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	
@@ -84,8 +83,8 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		ga.setPopulationSize(200);
         ga.setAlterer(new CompositeAlterer<Integer64Gene>(
-            new SwapMutator<Integer64Gene>(Probability.valueOf(0.2)), 
-            new PartiallyMatchedCrossover<Integer64Gene>(Probability.valueOf(0.3))
+            new SwapMutator<Integer64Gene>(0.2), 
+            new PartiallyMatchedCrossover<Integer64Gene>(0.3)
         ));
         //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
         //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());

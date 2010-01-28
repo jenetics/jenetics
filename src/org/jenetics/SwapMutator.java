@@ -28,7 +28,6 @@ import java.util.Random;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.Probability;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -39,14 +38,14 @@ import org.jenetics.util.RandomRegistry;
  * allowed, e.g. for the TSP.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SwapMutator.java,v 1.1 2010-01-27 21:29:03 fwilhelm Exp $
+ * @version $Id: SwapMutator.java,v 1.2 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 	public SwapMutator() {
 	}
 
-	public SwapMutator(final Probability probability) {
+	public SwapMutator(final double probability) {
 		super(probability);
 	}
 
@@ -57,7 +56,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	@Override
 	protected void mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
+		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
 		
 		if (subsetSize > 0) {
 			final int[] elements = subset(genes.length(), subsetSize, random);

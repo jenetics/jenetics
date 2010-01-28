@@ -39,12 +39,11 @@ import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Probability;
 import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Transformation.java,v 1.4 2010-01-27 20:35:45 fwilhelm Exp $
+ * @version $Id: Transformation.java,v 1.5 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public class Transformation {
 
@@ -130,8 +129,8 @@ public class Transformation {
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
 		ga.setAlterer(new CompositeAlterer<Float64Gene>(
-			new Mutator<Float64Gene>(Probability.valueOf(0.03)),
-			new MeanAlterer<Float64Gene>(Probability.valueOf(0.6))
+			new Mutator<Float64Gene>(0.03),
+			new MeanAlterer<Float64Gene>(0.6)
 		));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		

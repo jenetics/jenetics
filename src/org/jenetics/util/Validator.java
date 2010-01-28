@@ -24,7 +24,7 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java,v 1.2 2009-12-16 10:46:31 fwilhelm Exp $
+ * @version $Id: Validator.java,v 1.3 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public final class Validator {
 
@@ -45,6 +45,15 @@ public final class Validator {
 				"Length must be greater than zero, but was " + length + ". "
 			);
 		}
+	}
+	
+	public static double checkProbability(final double p) {
+		if (p < 0.0 || p > 1.0) {
+			throw new IllegalArgumentException(String.format(
+					"The given probability is not in the range [0 .. 1]: %s", p
+				));
+		}
+		return p;
 	}
 	
 }
