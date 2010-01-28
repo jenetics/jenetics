@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.64 2010-01-28 16:36:05 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.65 2010-01-28 16:37:32 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -738,7 +738,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException if the given {@code calculator} is 
 	 *         {@code null}.
 	 */
-	public void setStatisticCalculator(final Statistics.Calculator<G, C> calculator) {
+	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
 		_calculator = notNull(calculator, "Statistic calculator");
 	}
 	
@@ -747,7 +747,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @return the current statistic calculator.
 	 */
-	public Statistics.Calculator<G, C> getStatisticCalculator() {
+	public Statistics.Calculator<G, C> getStatisticsCalculator() {
 		return _calculator;
 	}
 	
