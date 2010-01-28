@@ -36,7 +36,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.10 2010-01-26 13:24:34 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.11 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
@@ -55,7 +55,7 @@ public class EnumGene<E extends Enum<E>>
 	
 	@Override
 	public EnumGene<E> mean(final EnumGene<E> that) {
-		Validator.notNull(that, "Enum value");
+		Validator.nonNull(that, "Enum value");
 		
 		if (that._value == _value) {
 			return that;
@@ -129,7 +129,7 @@ public class EnumGene<E extends Enum<E>>
 	}
 	
 	public static <T extends Enum<T>> EnumGene<T> valueOf(final T value) {
-		Validator.notNull(value, "Enum value");
+		Validator.nonNull(value, "Enum value");
 		return newInstance(value);
 	}
 

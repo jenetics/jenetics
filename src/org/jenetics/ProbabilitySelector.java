@@ -35,7 +35,7 @@ import org.jenetics.util.Validator;
  * The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelector.java,v 1.15 2010-01-18 15:53:25 fwilhelm Exp $
+ * @version $Id: ProbabilitySelector.java,v 1.16 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -47,7 +47,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 
 	@Override
 	public Population<G, C> select(final Population<G, C> population, final int count) {
-		Validator.notNull(population, "Population");
+		Validator.nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s.",

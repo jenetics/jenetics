@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,7 +41,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.39 2010-01-28 09:43:20 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.40 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -68,7 +68,7 @@ public class Array<T> implements
 	 *         value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	Array(final Object[] array, final int start, final int end, final boolean sealed) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
@@ -135,7 +135,10 @@ public class Array<T> implements
 	 * @param first first array element.
 	 * @param second second array element.
 	 */
-	public Array(final T first, final T second) {
+	public Array(
+		final T first, 
+		final T second
+	) {
 		this(2);
 		_array[0] = first;
 		_array[1] = second;
@@ -149,11 +152,62 @@ public class Array<T> implements
 	 * @param second second array element.
 	 * @param third third array element.
 	 */
-	public Array(final T first, final T second, final T third) {
+	public Array(
+		final T first, 
+		final T second, 
+		final T third
+	) {
 		this(3);
 		_array[0] = first;
 		_array[1] = second;
 		_array[2] = third;
+	}
+	
+	/**
+	 * Create a new array with length four. The array will be initialized with
+	 * the given values.
+	 * 
+	 * @param first first array element.
+	 * @param second second array element.
+	 * @param third third array element.
+	 * @param fourth fourth array element.
+	 */
+	public Array(
+		final T first, 
+		final T second, 
+		final T third, 
+		final T fourth
+	) {
+		this(4);
+		_array[0] = first;
+		_array[1] = second;
+		_array[2] = third;
+		_array[3] = fourth;
+	}
+	
+	/**
+	 * Create a new array with length five. The array will be initialized with
+	 * the given values.
+	 * 
+	 * @param first first array element.
+	 * @param second second array element.
+	 * @param third third array element.
+	 * @param fourth fourth array element.
+	 * @param fifth fifth array element.
+	 */
+	public Array(
+		final T first, 
+		final T second, 
+		final T third, 
+		final T fourth,
+		final T fifth
+	) {
+		this(5);
+		_array[0] = first;
+		_array[1] = second;
+		_array[2] = third;
+		_array[3] = fourth;
+		_array[4] = fifth;
 	}
 	
 	/**
@@ -281,7 +335,7 @@ public class Array<T> implements
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int indexOf(final Predicate<? super T> predicate) {
-		notNull(predicate, "Predicate");
+		nonNull(predicate, "Predicate");
 		
 		int index = -1;
 		
@@ -324,7 +378,7 @@ public class Array<T> implements
 	 *         {@code null}.
 	 */
 	public int foreach(final Predicate<? super T> predicate) {
-		notNull(predicate, "Predicate");
+		nonNull(predicate, "Predicate");
 		
 		int index = -1;
 		
@@ -352,7 +406,7 @@ public class Array<T> implements
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int lastIndexOf(final Predicate<? super T> predicate) {
-		notNull(predicate, "Predicate");
+		nonNull(predicate, "Predicate");
 		
 		int index = -1;
 		
@@ -426,7 +480,7 @@ public class Array<T> implements
 	 * @throws NullPointerException if the {@code arrays} is {@code null}.
 	 */
 	public Array<T> append(final Array<? extends T> array) {
-		return new Array<T>(this, notNull(array, "Array"));
+		return new Array<T>(this, nonNull(array, "Array"));
 	}
 	
 	/**
@@ -440,7 +494,7 @@ public class Array<T> implements
 	 * @throws NullPointerException if the {@code values} is {@code null}.
 	 */
 	public Array<T> append(final Collection<? extends T> values) {
-		notNull(values, "Values");
+		nonNull(values, "Values");
 		final Array<T> array = new Array<T>(length() + values.size());
 		
 		System.arraycopy(_array, _start, array._array, 0, length());

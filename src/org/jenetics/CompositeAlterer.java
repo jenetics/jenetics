@@ -22,19 +22,29 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Predicate;
+import org.jenetics.util.Validator;
 
 /**
+ * Combines several alterers to one.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CompositeAlterer.java,v 1.4 2010-01-28 13:03:32 fwilhelm Exp $
+ * @version $Id: CompositeAlterer.java,v 1.5 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	private final Array<Alterer<G>> _alterers;
 	
+	/**
+	 * Combine the given alterers.
+	 * 
+	 * @param a1 first alterer.
+	 * @param a2 second alterer.
+	 * @throws NullPointerException if one of the alterer is {@code null}.
+	 */
 	public CompositeAlterer(
 		final Alterer<G> a1, 
 		final Alterer<G> a2
@@ -43,6 +53,14 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		_alterers = new Array<Alterer<G>>(a1, a2);
 	}
 	
+	/**
+	 * Combine the given alterers.
+	 * 
+	 * @param a1 first alterer.
+	 * @param a2 second alterer.
+	 * @param a3 third alterer.
+	 * @throws NullPointerException if one of the alterer is {@code null}.
+	 */
 	public CompositeAlterer(
 		final Alterer<G> a1, 
 		final Alterer<G> a2, 
@@ -52,14 +70,62 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		_alterers = new Array<Alterer<G>>(a1, a2, a3);
 	}
 	
+	/**
+	 * Combine the given alterers.
+	 * 
+	 * @param a1 first alterer.
+	 * @param a2 second alterer.
+	 * @param a3 third alterer.
+	 * @param a4 fourth alterer.
+	 * @throws NullPointerException if one of the alterer is {@code null}.
+	 */
+	public CompositeAlterer(
+		final Alterer<G> a1, 
+		final Alterer<G> a2, 
+		final Alterer<G> a3,
+		final Alterer<G> a4
+	) {
+		super(1.0);
+		_alterers = new Array<Alterer<G>>(a1, a2, a3, a4);
+	}
+	
+	/**
+	 * Combine the given alterers.
+	 * 
+	 * @param a1 first alterer.
+	 * @param a2 second alterer.
+	 * @param a3 third alterer.
+	 * @param a4 fourth alterer.
+	 * @param a5 fifth alterer.
+	 * @throws NullPointerException if one of the alterer is {@code null}.
+	 */
+	public CompositeAlterer(
+		final Alterer<G> a1, 
+		final Alterer<G> a2, 
+		final Alterer<G> a3,
+		final Alterer<G> a4,
+		final Alterer<G> a5
+	) {
+		super(1.0);
+		_alterers = new Array<Alterer<G>>(a1, a2, a3, a4, a5);
+	}
+	
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		super(1.0);
-		_alterers = new Array<Alterer<G>>(notNull(alterers, "Alterers"));
+		nonNull(alterers, "Alterers array");
+		for (Alterer<?> a : alterers) {
+			nonNull(a, "Alterer");
+		}
+		
+		_alterers = new Array<Alterer<G>>(alterers);
 	}
 	
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
 		super(1.0);
-		_alterers = notNull(alterers, "Alterers").copy();
+		nonNull(alterers, "Alterers");
+		alterers.foreach(Validator.NonNull("Alterer"));
+		
+		_alterers = alterers.copy().seal();
 	}
 
 	@Override

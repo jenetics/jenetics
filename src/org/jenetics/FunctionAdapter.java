@@ -31,7 +31,7 @@ import org.jscience.mathematics.function.Function;
  * library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FunctionAdapter.java,v 1.3 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: FunctionAdapter.java,v 1.4 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
@@ -50,7 +50,7 @@ public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>>
 	 *        {@code null}.
 	 */
 	public FunctionAdapter(final Function<Genotype<G>, C> adoptee) {
-		_adoptee = Validator.notNull(adoptee, "Fitness function");
+		_adoptee = Validator.nonNull(adoptee, "Fitness function");
 	}
 	
 	@Override

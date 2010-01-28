@@ -40,7 +40,7 @@ import org.jenetics.util.Validator;
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.11 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.12 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 
@@ -79,7 +79,7 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	 */
 	@Override
 	public Population<G, C> select(final Population<G, C> population, final int count) {
-		Validator.notNull(population, "Population");
+		Validator.nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s",

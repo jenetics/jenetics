@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import org.jenetics.util.Verifiable;
 
@@ -47,7 +47,7 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.16 2010-01-18 17:44:23 fwilhelm Exp $
+ * @version $Id: Phenotype.java,v 1.17 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
@@ -154,7 +154,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	@Override
 	public int compareTo(final Phenotype<G, C> pt) {
-		notNull(pt, "Phenotype");
+		nonNull(pt, "Phenotype");
 		return getFitness().compareTo(pt.getFitness());
 	}	
 	
@@ -212,7 +212,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
-		notNull(genotype, "Genotype");
+		nonNull(genotype, "Genotype");
 		return Phenotype.valueOf(
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
@@ -291,9 +291,9 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		final FitnessScaler<SC> fitnessScaler,
 		final int generation
 	) {
-		notNull(genotype, "Genotype");
-		notNull(fitnessFunction, "Fitness function");
-		notNull(fitnessScaler, "Fitness scaler");
+		nonNull(genotype, "Genotype");
+		nonNull(fitnessFunction, "Fitness function");
+		nonNull(fitnessScaler, "Fitness scaler");
 		if (generation < 0) {
 			throw new IllegalArgumentException("Generation must not < 0: " + generation);
 		}

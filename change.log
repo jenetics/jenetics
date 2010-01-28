@@ -1,4 +1,6 @@
 Jenetics-0.5.0.0
+- Rename Validator.notNull() to Validator.nonNull(). It's the same name as in the
+  new Objects.nonNull() method in Java 1.7.
 - Remove the org.jenetics.Propability class. It's not worth the effort.
 - Refactoring of the Alterer class. The Alterer is now an interface with one
   "alter" method. To combine different alterers to one alterer you have to use

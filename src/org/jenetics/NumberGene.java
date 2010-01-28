@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.12 2010-01-26 13:24:34 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.13 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
@@ -87,9 +87,9 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 * @throws NullPointerException if one of the given number is null.
 	 */
 	protected void set(final N value, final N min, final N max) {
-		notNull(value, "Gene value");
-		notNull(min, "Min value");
-		notNull(max, "Max value");
+		nonNull(value, "Gene value");
+		nonNull(min, "Min value");
+		nonNull(max, "Max value");
 		
 //		if (min.isGreaterThan(max)) {
 //			throw new IllegalArgumentException(String.format(

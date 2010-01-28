@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: CharacterGene.java,v 1.10 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
@@ -153,7 +153,7 @@ public class CharacterGene
 	 *         {@code null}.
 	 */
 	public static void setCharacters(final CharSet characters) {
-		Validator.notNull(characters, "CharSet");
+		Validator.nonNull(characters, "CharSet");
 		CHARACTERS.set(characters);
 	}
 	
@@ -164,7 +164,7 @@ public class CharacterGene
 	 * @throws NullPointerException if the given characters are null.
 	 */
 	public static void setCharacters(final CharSequence characters) {
-		Validator.notNull(characters, "Characters");
+		Validator.nonNull(characters, "Characters");
 		CHARACTERS.set(new CharSet(characters));
 	}
 
@@ -198,7 +198,7 @@ public class CharacterGene
 	 * 		and {@link CharacterGene#getCharacters()}.
 	 */
 	public static CharacterGene valueOf(final Character character) {
-		notNull(character, "Character");
+		nonNull(character, "Character");
 		
 		CharacterGene g = FACTORY.object();
 		if (!CHARACTERS.get().contains(character)) {

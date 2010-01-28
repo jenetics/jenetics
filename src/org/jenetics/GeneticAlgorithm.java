@@ -25,7 +25,7 @@ package org.jenetics;
 import static java.lang.Math.round;
 import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.checkProbability;
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.65 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.66 2010-01-28 19:34:14 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -156,9 +156,9 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
-		_genotypeFactory = notNull(genotypeFactory, "GenotypeFactory");
-		_fitnessFunction = notNull(fitnessFunction, "FitnessFunction");
-		_fitnessScaler = notNull(fitnessScaler, "FitnessScaler");
+		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
+		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
+		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
 	}
 	
 	/**
@@ -476,7 +476,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
 	public void setFitnessScaler(final FitnessScaler<C> scaler) {
-		_fitnessScaler = notNull(scaler, "FitnessScaler");
+		_fitnessScaler = nonNull(scaler, "FitnessScaler");
 	}
 	
 	/**
@@ -567,7 +567,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<G, C> selector) {
-		_offspringSelector = notNull(selector, "Offspring selector");
+		_offspringSelector = nonNull(selector, "Offspring selector");
 	}
 
 	/**
@@ -577,7 +577,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<G, C> selector) {
-		_survivorSelector = notNull(selector, "Survivor selector");
+		_survivorSelector = nonNull(selector, "Survivor selector");
 	}
 	
 	/**
@@ -608,7 +608,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @throws NullPointerException if the alterer is null.
 	 */
 	public void setAlterer(final Alterer<G> alterer) {
-		_alterer = notNull(alterer, "Alterer");
+		_alterer = nonNull(alterer, "Alterer");
 	}
 	
 	/**
@@ -617,7 +617,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param alterer the {@link Alterer} to add.
 	 */
 	public void addAlterer(final Alterer<G> alterer) {
-		_alterer = CompositeAlterer.join(_alterer, notNull(alterer, "Alterer"));
+		_alterer = CompositeAlterer.join(_alterer, nonNull(alterer, "Alterer"));
 	}
 	
 	/**
@@ -662,7 +662,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 *         one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
-		notNull(population, "Population");
+		nonNull(population, "Population");
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.",
@@ -691,7 +691,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 		   one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
-		notNull(genotypes, "Genotypes");
+		nonNull(genotypes, "Genotypes");
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
@@ -739,13 +739,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 *         {@code null}.
 	 */
 	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
-		_calculator = notNull(calculator, "Statistic calculator");
+		_calculator = nonNull(calculator, "Statistic calculator");
 	}
 	
 	/**
-	 * Return the current statistic calculator.
+	 * Return the current statistics calculator.
 	 * 
-	 * @return the current statistic calculator.
+	 * @return the current statistics calculator.
 	 */
 	public Statistics.Calculator<G, C> getStatisticsCalculator() {
 		return _calculator;

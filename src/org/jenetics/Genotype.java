@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.ListIterator;
 
@@ -42,7 +42,7 @@ import org.jenetics.util.Verifiable;
  * This class is the encoded problem solution with one to many Chromosomes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.20 2009-06-02 21:59:22 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.21 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?, T>> 
 	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
@@ -220,14 +220,14 @@ public class Genotype<T extends Gene<?, T>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Array<Chromosome<G>> chromosomes
 	) {
-		notNull(chromosomes, "Chromosomes");
+		nonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 		
 		final Genotype<G> genotype = new Genotype<G>(chromosomes.length());
 		for (int i = 0; i < chromosomes.length(); ++i) {
-			notNull(chromosomes.get(i), "Chromosome[" + i + "]");
+			nonNull(chromosomes.get(i), "Chromosome[" + i + "]");
 			genotype._chromosomes.set(i, chromosomes.get(i));
 		}
 		return genotype;
@@ -243,7 +243,7 @@ public class Genotype<T extends Gene<?, T>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> chromosome
 	) {
-		notNull(chromosome, "Chromosome");
+		nonNull(chromosome, "Chromosome");
 		
 		final Genotype<G> genotype = new Genotype<G>(1);
 		genotype._chromosomes.set(0, chromosome);
@@ -254,8 +254,8 @@ public class Genotype<T extends Gene<?, T>>
 		final Chromosome<G> chrom1, 
 		final Chromosome<G> chrom2
 	) {
-		notNull(chrom1, "Chromosome 1");
-		notNull(chrom2, "Chromosome 2");
+		nonNull(chrom1, "Chromosome 1");
+		nonNull(chrom2, "Chromosome 2");
 		
 		final Genotype<G> genotype = new Genotype<G>(2);
 		genotype._chromosomes.set(0, chrom1);
@@ -268,9 +268,9 @@ public class Genotype<T extends Gene<?, T>>
 		final Chromosome<G> chrom2, 
 		final Chromosome<G> chrom3
 	) {
-		notNull(chrom1, "Chromosome 1");
-		notNull(chrom2, "Chromosome 2");
-		notNull(chrom3, "Chromosome 3");
+		nonNull(chrom1, "Chromosome 1");
+		nonNull(chrom2, "Chromosome 2");
+		nonNull(chrom3, "Chromosome 3");
 		
 		final Genotype<G> genotype = new Genotype<G>(3);
 		genotype._chromosomes.set(0, chrom1);
@@ -285,10 +285,10 @@ public class Genotype<T extends Gene<?, T>>
 		final Chromosome<G> chrom3,
 		final Chromosome<G> chrom4
 	) {
-		notNull(chrom1, "Chromosome 1");
-		notNull(chrom2, "Chromosome 2");
-		notNull(chrom3, "Chromosome 3");
-		notNull(chrom4, "Chromosome 4");
+		nonNull(chrom1, "Chromosome 1");
+		nonNull(chrom2, "Chromosome 2");
+		nonNull(chrom3, "Chromosome 3");
+		nonNull(chrom4, "Chromosome 4");
 		
 		final Genotype<G> genotype = new Genotype<G>(4);
 		genotype._chromosomes.set(0, chrom1);
@@ -301,7 +301,7 @@ public class Genotype<T extends Gene<?, T>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Genotype<G> genotype
 	) {
-		notNull(genotype, "Genotype");
+		nonNull(genotype, "Genotype");
 		
 		final Genotype<G> gtype = new Genotype<G>(genotype.length());
 		for (int i = 0; i < genotype.length(); ++i) {
