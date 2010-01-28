@@ -30,7 +30,7 @@ import org.jenetics.util.Probability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CompositeAlterer.java,v 1.2 2010-01-27 21:23:40 fwilhelm Exp $
+ * @version $Id: CompositeAlterer.java,v 1.3 2010-01-28 09:38:31 fwilhelm Exp $
  */
 public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -90,9 +90,7 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 			final CompositeAlterer<T> ca1 = (CompositeAlterer<T>)a1;
 			final CompositeAlterer<T> ca2 = (CompositeAlterer<T>)a2;
 			
-			alterer = new CompositeAlterer<T>(
-					new Array<Alterer<T>>(ca1._alterers, ca2._alterers)
-				);
+			alterer = new CompositeAlterer<T>(ca1._alterers.append(ca2._alterers));
 		} else if (a1 instanceof CompositeAlterer<?>) {
 			final CompositeAlterer<T> ca1 = (CompositeAlterer<T>)a1;
 			
