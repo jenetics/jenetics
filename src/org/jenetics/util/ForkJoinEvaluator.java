@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.List;
 import java.util.RandomAccess;
@@ -38,7 +38,7 @@ import jsr166y.RecursiveAction;
  * @see <a href="http://gee.cs.oswego.edu/dl/jsr166/dist/jsr166ydocs/">Fork-join framework javadoc</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ForkJoinEvaluator.java,v 1.7 2010-01-16 22:26:05 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.8 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class ForkJoinEvaluator implements Evaluator {
 	public static final int DEFAULT_TASK_SIZE = 4;
@@ -73,13 +73,13 @@ public class ForkJoinEvaluator implements Evaluator {
 					"Task size is smaller than one: %s.", taskSize
 				));
 		}
-		_pool = notNull(pool, "Thread pool");
+		_pool = nonNull(pool, "Thread pool");
 		_taskSize = taskSize;
 	}
 	
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
-		notNull(runnables, "Runnables");
+		nonNull(runnables, "Runnables");
 		RecursiveAction action = null;
 		if (runnables instanceof RandomAccess) {
 			action = new EvaluatorTask(runnables, 0, runnables.size(), _taskSize);

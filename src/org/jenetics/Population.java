@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +42,7 @@ import javolution.xml.stream.XMLStreamException;
  * A population is a collection of Phenotypes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Population.java,v 1.15 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: Population.java,v 1.16 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements List<Phenotype<G, C>>, RandomAccess, XMLSerializable
@@ -90,7 +90,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	 */
 	@Override
 	public boolean add(final Phenotype<G, C> phenotype) {
-		notNull(phenotype, "Phenotype");
+		nonNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
 	
@@ -103,7 +103,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	 */
 	@Override
 	public void add(final int index, final Phenotype<G, C> phenotype) {
-		notNull(phenotype, "Phenotype");
+		nonNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
 	
@@ -124,12 +124,12 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	@Override
 	public Phenotype<G, C> set(final int index, final Phenotype<G, C> phenotype) {
-		notNull(phenotype, "Phenotype");
+		nonNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
 	
 	public void remove(final Phenotype<G, C> phenotype) {
-		notNull(phenotype, "Phenotype");
+		nonNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
 	

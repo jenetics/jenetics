@@ -35,7 +35,7 @@ import javolution.lang.Immutable;
  * Helper class holding the valid characters.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSet.java,v 1.5 2009-12-16 10:46:31 fwilhelm Exp $
+ * @version $Id: CharSet.java,v 1.6 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 
@@ -52,7 +52,7 @@ public class CharSet
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSet(final CharSequence characters) {
-		Validator.notNull(characters, "Characters");
+		Validator.nonNull(characters, "Characters");
 		
 		for (int i = 0; i < characters.length(); ++i) {
 			_characterSet.add(characters.charAt(i));
@@ -129,7 +129,7 @@ public class CharSet
 	public static String expand(final CharSequence pattern)
 		throws PatternSyntaxException 
 	{
-		Validator.notNull(pattern, "Pattern");
+		Validator.nonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
 	
 		for (int i = 0, n = pattern.length(); i < n; ++i) {

@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Serializer.java,v 1.2 2010-01-26 21:31:26 fwilhelm Exp $
+ * @version $Id: Serializer.java,v 1.3 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Serializer {
 
@@ -55,8 +55,8 @@ public class Serializer {
 	) 
 		throws XMLStreamException 
 	{
-		Validator.notNull(out, "Output stream");
-		Validator.notNull(object, "Object");
+		Validator.nonNull(out, "Output stream");
+		Validator.nonNull(object, "Object");
 		
 		XMLObjectWriter writer = null;
 		try {
@@ -83,7 +83,7 @@ public class Serializer {
 	 * @throws XMLStreamException if the object could not be read.
 	 */
 	public static Object readXML(final InputStream in) throws XMLStreamException {
-		Validator.notNull(in, "Input stream");
+		Validator.nonNull(in, "Input stream");
 		
 		final XMLObjectReader reader = XMLObjectReader.newInstance(
 			new NonClosableInputStream(in)

@@ -28,13 +28,13 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerialEvaluator.java,v 1.3 2009-11-24 22:45:35 fwilhelm Exp $
+ * @version $Id: SerialEvaluator.java,v 1.4 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class SerialEvaluator implements Evaluator {
 
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
-		Validator.notNull(runnables, "Runnables");
+		Validator.nonNull(runnables, "Runnables");
 		
 		if (runnables instanceof RandomAccess) {
 			for (int i = runnables.size(); --i >= 0;) {

@@ -22,8 +22,8 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.checkChromosomeLength;
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNegative;
+import static org.jenetics.util.Validator.nonNull;
 import static org.jenetics.util.Validator.checkProbability;
 
 import java.util.Arrays;
@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.21 2010-01-28 13:03:32 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.22 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -232,7 +232,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 */
 	@Override
 	public BitChromosome newInstance(final Array<BitGene> genes) {
-		Validator.notNull(genes, "Genes");
+		Validator.nonNull(genes, "Genes");
 		
 		final BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
 		
@@ -365,7 +365,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 * @throws IllegalArgumentException if <code>p</code> is out of range.
 	 */
 	public static BitChromosome valueOf(final int length, final double p) {
-		checkChromosomeLength(length);
+		nonNegative(length);
 		checkProbability(p);
 		
 		final Random random = RandomRegistry.getRandom();
@@ -411,7 +411,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 *         <code>null</code>.
 	 */
 	public static BitChromosome valueOf(final int length, final BitSet bits) {
-		notNull(bits, "BitSet");
+		nonNull(bits, "BitSet");
 		
 		BitChromosome chromosome = newInstance(length, 1);
 		int ones = 0;
@@ -449,7 +449,7 @@ public class BitChromosome extends Number<LargeInteger>
 	 *         is zero or contains other characters than '0' or '1'.
 	 */
 	public static BitChromosome valueOf(final CharSequence value) {
-		Validator.notNull(value, "Input");
+		Validator.nonNull(value, "Input");
 		if (value.length() == 0) {
 			throw new IllegalArgumentException("Length must greater than zero.");
 		}

@@ -34,7 +34,7 @@ import javolution.context.ConcurrentContext;
  * <a href="http://javolution.org/api/index.html">Javolution</a> library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.7 2010-01-16 22:26:05 fwilhelm Exp $
+ * @version $Id: ConcurrentEvaluator.java,v 1.8 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
 	private final int _parallelTasks;
@@ -59,7 +59,7 @@ public class ConcurrentEvaluator implements Evaluator {
 	
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
-		Validator.notNull(runnables, "Runnables");
+		Validator.nonNull(runnables, "Runnables");
 		
 		if (!runnables.isEmpty()) {
 			eval(runnables);

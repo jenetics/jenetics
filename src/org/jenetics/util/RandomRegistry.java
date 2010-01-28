@@ -34,7 +34,7 @@ import javolution.context.LocalContext;
  * seed value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RandomRegistry.java,v 1.1 2008-11-13 20:37:41 fwilhelm Exp $
+ * @version $Id: RandomRegistry.java,v 1.2 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public final class RandomRegistry {
 	private static final LocalContext.Reference<Random> RANDOM = 
@@ -59,7 +59,7 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		Validator.notNull(random, "Random object");
+		Validator.nonNull(random, "Random object");
 		RANDOM.set(random);
 	}
 

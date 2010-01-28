@@ -23,7 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -34,7 +34,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.38 2009-12-16 10:46:31 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.39 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -53,7 +53,7 @@ public final class ArrayUtils {
      * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		final int temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
@@ -72,7 +72,7 @@ public final class ArrayUtils {
      * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		
 		final T temp = array[i];
 		array[i] = array[j];
@@ -94,7 +94,7 @@ public final class ArrayUtils {
 	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 
 		final T temp = array.get(i);
 		array.set(i, array.get(j));
@@ -117,8 +117,8 @@ public final class ArrayUtils {
 		final Array<T> array, final int from, final int to,
 		final Comparator<? super T> comparator
 	) {
-		notNull(array, "Array");
-		notNull(comparator, "Comparator");
+		nonNull(array, "Array");
+		nonNull(comparator, "Comparator");
 		array.checkSeal();
 		array.checkIndex(from, to);
 		
@@ -139,8 +139,8 @@ public final class ArrayUtils {
 	public static <T> void sort(
 		final Array<T> array, final Comparator<? super T> comparator
 	) {
-		notNull(array, "Array");
-		notNull(comparator, "Comparator");
+		nonNull(array, "Array");
+		nonNull(comparator, "Comparator");
 		array.checkSeal();
 		
 		sort(array, 0, array.length(), comparator);
@@ -159,7 +159,7 @@ public final class ArrayUtils {
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array, final int from, final int to) 
 	{
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		array.checkSeal();
 		array.checkIndex(from, to);
 		
@@ -177,7 +177,7 @@ public final class ArrayUtils {
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array) 
 	{
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		array.checkSeal();
 		
 		Arrays.sort(array._array, 0, array.length());
@@ -211,8 +211,8 @@ public final class ArrayUtils {
 		final Array<T> array, final int from, final int to,
 		final Comparator<? super T> comparator
 	) {
-		notNull(array, "Array");
-		notNull(comparator, "Comparator");
+		nonNull(array, "Array");
+		nonNull(comparator, "Comparator");
 		array.checkSeal();
 			
 		_quicksort(array, from, to - 1, comparator);
@@ -284,7 +284,7 @@ public final class ArrayUtils {
 	public static <T extends Object & Comparable<? super T>> Array<T> 
 	minmax(final Array<T> array) 
 	{
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		
 		final int size = array.length();
 		
@@ -347,7 +347,7 @@ public final class ArrayUtils {
 	public static <T extends Object & Comparable<? super T>> T 
 	select(final Array<T> array, final int k) 
 	{
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		if (k < 0) {
 			throw new IllegalArgumentException("k is smaller than zero: " + k);
 		}
@@ -428,7 +428,7 @@ public final class ArrayUtils {
 	public static <T extends Object & Comparable<? super T>> T 
 	median(final Array<T> array) 
 	{
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		if (array.length() == 0) {
 			throw new IllegalArgumentException("Array length is zero.");
 		}
@@ -458,7 +458,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void shuffle(final int[] array, final Random random) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -475,7 +475,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array, final Random random) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -495,8 +495,8 @@ public final class ArrayUtils {
 	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void shuffle(final Array<T> array, final Random random) {
-		notNull(array, "Array");
-		notNull(random, "Random");
+		nonNull(array, "Array");
+		nonNull(random, "Random");
 		
 		for (int j = array.length() - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
@@ -516,7 +516,7 @@ public final class ArrayUtils {
      * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		rangeCheck(array.length, from, to);
 		
 		int i = from;
@@ -544,7 +544,7 @@ public final class ArrayUtils {
 	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		rangeCheck(array.length(), from, to);
 		
 		int i = from;
@@ -565,7 +565,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		reverse(array, 0, array.length);
 	}
 	
@@ -579,7 +579,7 @@ public final class ArrayUtils {
 	 *         ({@code array.isSealed() == true}).
 	 */
 	public static <T> void reverse(final Array<T> array) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		reverse(array, 0, array.length());
 	}
 	
@@ -696,7 +696,7 @@ public final class ArrayUtils {
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k, final Random random) {
-		notNull(random, "Random");
+		nonNull(random, "Random");
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
 				"Subset size smaller or equal zero: %s", k
@@ -745,8 +745,8 @@ public final class ArrayUtils {
 	 *         integer overflow.
 	 */
 	public static void subset(final int n, final int sub[], final Random random) {
-		notNull(random, "Random");
-		notNull(sub, "Sub set array");
+		nonNull(random, "Random");
+		nonNull(sub, "Sub set array");
 		
 		final int k = sub.length;
 		if (k <= 0) {
@@ -860,8 +860,8 @@ public final class ArrayUtils {
 	 *         generator is {@code null}.
 	 */
 	public static void permutation(final int[] p, final Random random) {
-		notNull(p, "Permutation array");
-		notNull(random, "Random");
+		nonNull(p, "Permutation array");
+		nonNull(random, "Random");
 		
 		for (int i = 0; i < p.length; ++i) {
 			p[i] = i;
@@ -894,7 +894,7 @@ public final class ArrayUtils {
 	 * @throws IllegalArgumentException if {@code rank < 1}.
 	 */
 	public static void permutation(final int[] p, final long rank) {
-		notNull(p, "Permutation array");
+		nonNull(p, "Permutation array");
 		if (rank < 1) {
 			throw new IllegalArgumentException(String.format(
 					"Rank smaler than 1: %s", rank
@@ -949,7 +949,7 @@ public final class ArrayUtils {
 		final Object[] array, final int start, final int end, 
 		final Object element
 	) {
-		notNull(array, "Array");
+		nonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new IndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", start, end
@@ -990,8 +990,8 @@ public final class ArrayUtils {
 	}
 	
 	public static <T> int indexOf(final T[] array, final Predicate<? super T> predicate) {
-		notNull(array, "Array");
-		notNull(predicate, "Predicate");
+		nonNull(array, "Array");
+		nonNull(predicate, "Predicate");
 		
 		int index = -1;
 		

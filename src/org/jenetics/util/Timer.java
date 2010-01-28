@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.Validator.notNull;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.io.Serializable;
 
@@ -39,7 +39,7 @@ import javolution.lang.Reusable;
  * It's up to the user to ensure thread safety.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Timer.java,v 1.8 2010-01-15 11:26:23 fwilhelm Exp $
+ * @version $Id: Timer.java,v 1.9 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneable {
 	private static final long serialVersionUID = -4564917943200602352L;
@@ -58,7 +58,7 @@ public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneab
 	 * @throws NullPointerException if the {@code label} is {@code null}.
 	 */
 	public Timer(final String label) {
-		_label = notNull(label, "Time label");
+		_label = nonNull(label, "Time label");
 	}
 	
 	/**
@@ -137,12 +137,12 @@ public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneab
 	 * @param label the new timer label
 	 */
 	public void setLabel(final String label) {
-		_label = notNull(label, "Timer label");
+		_label = nonNull(label, "Timer label");
 	}
 	
 	@Override
 	public int compareTo(final Timer timer) {
-		notNull(timer, "Timer");
+		nonNull(timer, "Timer");
 		
 		long diff = _sum - timer._sum;
 		int comp = 0;

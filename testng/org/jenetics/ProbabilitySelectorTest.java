@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelectorTest.java,v 1.4 2009-03-16 21:50:44 fwilhelm Exp $
+ * @version $Id: ProbabilitySelectorTest.java,v 1.5 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class ProbabilitySelectorTest {
 
@@ -92,7 +92,7 @@ public class ProbabilitySelectorTest {
 	}
 	
 	private static void randomize(final double[] array, final Random random) {
-		Validator.notNull(array, "Array");
+		Validator.nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

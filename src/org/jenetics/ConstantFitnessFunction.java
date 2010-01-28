@@ -31,7 +31,7 @@ import org.jenetics.util.Validator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  *
  * @param <G> the gene type.
- * @version $Id: ConstantFitnessFunction.java,v 1.5 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: ConstantFitnessFunction.java,v 1.6 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
@@ -48,7 +48,7 @@ public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public ConstantFitnessFunction(final C value) {
-		_value = Validator.notNull(value, "Constant value");
+		_value = Validator.nonNull(value, "Constant value");
 	}
 	
 	/**

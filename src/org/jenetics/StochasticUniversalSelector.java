@@ -38,7 +38,7 @@ import org.jenetics.util.Validator;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.9 2009-02-23 20:58:08 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.10 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends RouletteWheelSelector<G, N> implements Serializable 
@@ -50,7 +50,7 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 
 	@Override
 	public Population<G, N> select(final Population<G, N> population, final int count) {
-		Validator.notNull(population, "Population");
+		Validator.nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
 				"Selection count must be greater or equal then zero, but was " + count

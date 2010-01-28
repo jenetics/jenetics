@@ -26,7 +26,7 @@ import static org.jenetics.util.Validator.checkProbability;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractAlterer.java,v 1.2 2010-01-28 13:03:32 fwilhelm Exp $
+ * @version $Id: AbstractAlterer.java,v 1.3 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G> {
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
@@ -41,7 +41,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G
 	 * 
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range 
+	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
 		_probability = checkProbability(probability);
