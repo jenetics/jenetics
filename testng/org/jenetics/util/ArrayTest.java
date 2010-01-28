@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayTest.java,v 1.10 2010-01-27 22:21:51 fwilhelm Exp $
+ * @version $Id: ArrayTest.java,v 1.11 2010-01-28 09:38:31 fwilhelm Exp $
  */
 public class ArrayTest {
 
@@ -122,6 +122,29 @@ public class ArrayTest {
 		
 		Assert.assertEquals(count.get(), 5);
 		Assert.assertEquals(value, 4);
+	}
+	
+	@Test
+	public void append1() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5));
+		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10));
+		final Array<Integer> a3 = a1.append(a2);
+		
+		Assert.assertEquals(a3.length(), 11);
+		Assert.assertEquals(a3, 
+				new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+			);
+	}
+	
+	@Test
+	public void append2() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5));
+		final Array<Integer> a3 = a1.append(Arrays.asList(6, 7, 8, 9, 10));
+		
+		Assert.assertEquals(a3.length(), 11);
+		Assert.assertEquals(a3, 
+				new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+			);
 	}
 	
 	@Test
