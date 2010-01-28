@@ -41,7 +41,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.38 2010-01-28 09:38:31 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.39 2010-01-28 09:43:20 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -418,7 +418,7 @@ public class Array<T> implements
 	/**
 	 * Create a new array which contains the values of {@code this} and the
 	 * given {@code array}. The length of the new array is 
-	 * {@code this.length() + array.length()}.
+	 * {@code this.length() + array.length()}. The returned array is not sealed.
 	 * 
 	 * @param array the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
@@ -432,9 +432,9 @@ public class Array<T> implements
 	/**
 	 * Create a new array which contains the values of {@code this} and the
 	 * given {@code values}. The length of the new array is 
-	 * {@code this.length() + values.size()}.
+	 * {@code this.length() + values.size()}. The returned array is not sealed.
 	 * 
-	 * @param array the array to append to this array.
+	 * @param values the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
 	 *         given {@code array}
 	 * @throws NullPointerException if the {@code values} is {@code null}.
