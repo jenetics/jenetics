@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.21 2010-01-26 16:05:03 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.22 2010-01-29 11:28:22 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -149,9 +149,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	/**
-	 * Return the number of samples this statistics aggregates.
+	 * Return the number of samples this statistics has aggregated.
 	 * 
-	 * @return the number of samples this statistics aggregates.
+	 * @return the number of samples this statistics has aggregated.
 	 */
 	public int getSamples() {
 		return _samples;
@@ -317,7 +317,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.21 2010-01-26 16:05:03 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.22 2010-01-29 11:28:22 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -500,7 +500,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * for the Statistics class.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.21 2010-01-26 16:05:03 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.22 2010-01-29 11:28:22 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		
