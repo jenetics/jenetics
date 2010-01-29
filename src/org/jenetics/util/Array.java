@@ -41,7 +41,7 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.40 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: Array.java,v 1.41 2010-01-29 11:22:42 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
@@ -589,13 +589,13 @@ public class Array<T> implements
 		return new org.jenetics.util.ArrayList<T>(this);
 	}
 	
-	void checkSeal() {
+	final void checkSeal() {
 		if (_sealed) {
 			throw new UnsupportedOperationException("Array is sealed");
 		}
 	}
 	
-	void checkIndex(final int index) {
+	final void checkIndex(final int index) {
 		if (index < 0 || index >= (_end - _start)) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Index %s is out of bounds [0, %s)", index, (_end - _start)
@@ -603,10 +603,10 @@ public class Array<T> implements
 		}
 	}
 	
-	void checkIndex(final int from, final int to) {
+	final void checkIndex(final int from, final int to) {
 		if (from < 0 || to > length() || from > to) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s]", from, to
+				"Invalid index range: [%d, %s)", from, to
 			));
 		}
 	}

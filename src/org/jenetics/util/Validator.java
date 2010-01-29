@@ -22,11 +22,12 @@
  */
 package org.jenetics.util;
 
+
 /**
  * Some static helper methods for checking preconditions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java,v 1.5 2010-01-28 20:11:08 fwilhelm Exp $
+ * @version $Id: Validator.java,v 1.6 2010-01-29 11:22:42 fwilhelm Exp $
  */
 public final class Validator {
 
@@ -34,7 +35,7 @@ public final class Validator {
 		super();
 	}
 
-	private static class NonNull implements Predicate<Object> {
+	private static final class NonNull implements Predicate<Object> {
 		private final String _message;
 		
 		public NonNull(final String message) {
@@ -44,6 +45,31 @@ public final class Validator {
 		@Override
 		public boolean evaluate(final Object object) {
 			nonNull(object, _message);
+			return true;
+		}
+		
+	}
+	
+	private static final class CheckRange<C extends Comparable<C>> 
+		implements Predicate<C> 
+	{
+		private final C _min;
+		private final C _max;
+		
+		public CheckRange(final C min, final C max) {
+			_min = nonNull(min);
+			_max = nonNull(max);
+		}
+		
+		@Override
+		public boolean evaluate(final C value) {
+			nonNull(value);
+			if (value.compareTo(_min) < 0 || value.compareTo(_max) >= 0) {
+				throw new IllegalArgumentException(String.format(
+						"Given value %s is out of range [%s, %s)", 
+						value, _min, _max
+					));
+			}
 			return true;
 		}
 		
@@ -79,6 +105,12 @@ public final class Validator {
 		return new NonNull("Object");
 	}
 	
+	public static <C extends Comparable<C>> Predicate<C> CheckRange(
+		final C min, final C max
+	) {
+		return new CheckRange<C>(min, max);
+	}
+	
 	/**
 	 * Checks that the specified object reference is not {@code null}.
 	 * 
@@ -110,7 +142,7 @@ public final class Validator {
 	 * 
 	 * @param value the value to check.
 	 * @param min the min value (inclusively).
-	 * @param max the max value (inclusively).
+	 * @param max the max value (exclusively).
 	 * @return {@code value} if within the range.
 	 * @throws IllegalArgumentException if the given {@code value} is out of
 	 *         range.
@@ -120,7 +152,7 @@ public final class Validator {
 	) {
 		if (value.compareTo(min) < 0 || value.compareTo(max) > 0) {
 			throw new IllegalArgumentException(String.format(
-				"Value %s is out of range [%s, %s].", value, min, max
+				"Value %s is out of range [%s, %s).", value, min, max
 			));
 		}
 		return value;
