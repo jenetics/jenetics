@@ -22,17 +22,18 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ArrayUtils.foreach;
+import static org.jenetics.util.Validator.NonNull;
 import static org.jenetics.util.Validator.nonNull;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Predicate;
-import org.jenetics.util.Validator;
 
 /**
  * Combines several alterers to one.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CompositeAlterer.java,v 1.5 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: CompositeAlterer.java,v 1.6 2010-01-29 10:04:12 fwilhelm Exp $
  */
 public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -50,7 +51,7 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a2
 	) {
 		super(1.0);
-		_alterers = new Array<Alterer<G>>(a1, a2);
+		_alterers = new Array<Alterer<G>>(nonNull(a1), nonNull(a2)).seal();
 	}
 	
 	/**
@@ -67,7 +68,9 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a3
 	) {
 		super(1.0);
-		_alterers = new Array<Alterer<G>>(a1, a2, a3);
+		_alterers = new Array<Alterer<G>>(
+				nonNull(a1), nonNull(a2), nonNull(a3)
+			).seal();
 	}
 	
 	/**
@@ -86,7 +89,9 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a4
 	) {
 		super(1.0);
-		_alterers = new Array<Alterer<G>>(a1, a2, a3, a4);
+		_alterers = new Array<Alterer<G>>(
+				nonNull(a1), nonNull(a2), nonNull(a3), nonNull(a4)
+			).seal();
 	}
 	
 	/**
@@ -107,23 +112,21 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<G> a5
 	) {
 		super(1.0);
-		_alterers = new Array<Alterer<G>>(a1, a2, a3, a4, a5);
+		_alterers = new Array<Alterer<G>>(
+				nonNull(a1), nonNull(a2), nonNull(a3), nonNull(a4), nonNull(a5)
+			).seal();
 	}
 	
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		super(1.0);
-		nonNull(alterers, "Alterers array");
-		for (Alterer<?> a : alterers) {
-			nonNull(a, "Alterer");
-		}
+		foreach(alterers, NonNull("Alterer"));
 		
-		_alterers = new Array<Alterer<G>>(alterers);
+		_alterers = new Array<Alterer<G>>(alterers).seal();
 	}
 	
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
 		super(1.0);
-		nonNull(alterers, "Alterers");
-		alterers.foreach(Validator.NonNull("Alterer"));
+		alterers.foreach(NonNull("Alterer"));
 		
 		_alterers = alterers.copy().seal();
 	}
@@ -149,6 +152,9 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
+		nonNull(a1, "Alterer");
+		nonNull(a2, "Alterer");
+		
 		CompositeAlterer<T> alterer = null;
 		
 		if (a1 instanceof CompositeAlterer<?> && a2 instanceof CompositeAlterer<?>) {

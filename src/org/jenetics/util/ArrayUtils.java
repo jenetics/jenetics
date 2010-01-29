@@ -26,7 +26,9 @@ import static java.lang.Math.min;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Random;
 
 
@@ -34,7 +36,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.39 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.40 2010-01-29 10:04:12 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -989,6 +991,9 @@ public final class ArrayUtils {
 		return indexOf(array, 0, array.length, element);
 	}
 	
+	/**
+	 * @see #indexOf(Object[], Object)
+	 */
 	public static <T> int indexOf(final T[] array, final Predicate<? super T> predicate) {
 		nonNull(array, "Array");
 		nonNull(predicate, "Predicate");
@@ -997,6 +1002,90 @@ public final class ArrayUtils {
 		
 		for (int i = 0; i < array.length && index == -1; ++i) {
 			if (predicate.evaluate(array[i])) {
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+	
+	/**
+	 * @see #indexOf(Object[], Object)
+	 */
+	public static <T> int indexOf(
+		final Collection<? extends T> values, 
+		final Predicate<? super T> predicate
+	) {
+		nonNull(values, "Array");
+		nonNull(predicate, "Predicate");
+		
+		int index = -1;
+		int i = 0;
+		for (Iterator<? extends T> 
+			it = values.iterator(); it.hasNext() && index == -1; ++i) 
+		{
+			if (predicate.evaluate(it.next())) {
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+	
+	/**
+	 * Iterates over all elements of the given {@code array} as long as the
+	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
+	 * returns the index the iteration has been interrupted. -1 is returned if
+	 * all elements were visited.
+	 * 
+	 * @param array the array to iterate.
+	 * @param predicate the applied predicate.
+	 * @return the index of the last visited element, or -1 if all elements has
+	 *         been visited.
+	 * @throws NullPointerException if one of the elements are {@code null}.
+	 */
+	public static <T> int foreach(
+		final T[] array, 
+		final Predicate<? super T> predicate
+	) {
+		nonNull(array, "Array");
+		nonNull(predicate, "Predicate");
+		
+		int index = -1;
+		for (int i = 0; i < array.length && index == -1; ++i) {			
+			if (!predicate.evaluate(array[i])) {
+				index = i;
+			}
+		}
+		
+		return index;
+	}
+	
+	/**
+	 * Iterates over all elements of the given {@code values} as long as the
+	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
+	 * returns the index the iteration has been interrupted. -1 is returned if
+	 * all elements were visited.
+	 * 
+	 * @param values the values to iterate.
+	 * @param predicate the applied predicate.
+	 * @return the index of the last visited element, or -1 if all elements has
+	 *         been visited.
+	 * @throws NullPointerException if one of the elements are {@code null}.
+	 */
+	public static <T> int foreach(
+		final Collection<? extends T> values, 
+		final Predicate<? super T> predicate
+	) {
+		nonNull(values, "Array");
+		nonNull(predicate, "Predicate");
+		
+		int index = -1;
+		int i = 0;
+		for (Iterator<? extends T> 
+			it = values.iterator(); it.hasNext() && index == -1; ++i) 
+		{
+			if (!predicate.evaluate(it.next())) {
 				index = i;
 			}
 		}
