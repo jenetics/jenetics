@@ -36,7 +36,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.40 2010-01-29 10:04:12 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.41 2010-01-29 10:16:59 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -1037,6 +1037,15 @@ public final class ArrayUtils {
 	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
 	 * returns the index the iteration has been interrupted. -1 is returned if
 	 * all elements were visited.
+	 * <p/>
+	 * Can be used to check all array elements for nullness.
+	 * 
+	 * [code]
+	 *     public void foo(final Integer[] values) {
+	 *         ArrayUtils.foreach(values, Validator.NonNull());
+	 *         ...
+	 *     }
+	 * [/code]
 	 * 
 	 * @param array the array to iterate.
 	 * @param predicate the applied predicate.
