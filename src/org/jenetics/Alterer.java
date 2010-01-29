@@ -35,7 +35,7 @@ package org.jenetics;
  *     GeneticAlgorithm<Float64Gene, Double> ga = ...
  *     ga.setAlterer(new CompositeAlterer<Float64Gene>(
  *         new Crossover<Float64Gene>(0.1),
- *         new Mutation<Float64Gene>(0.05),
+ *         new Mutator<Float64Gene>(0.05),
  *         new MeanAlterer<Float64eGene>(0.2)
  *     ));
  * [/code]
@@ -45,7 +45,7 @@ package org.jenetics;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Alterer.java,v 1.21 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: Alterer.java,v 1.22 2010-01-29 11:48:01 fwilhelm Exp $
  */
 public interface Alterer<G extends Gene<?, G>> {
 
