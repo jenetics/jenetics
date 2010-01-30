@@ -22,10 +22,11 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Validator.nonNull;
+
 import java.io.Serializable;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 
 /**
@@ -38,7 +39,7 @@ import org.jenetics.util.Validator;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.10 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: StochasticUniversalSelector.java,v 1.11 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends RouletteWheelSelector<G, N> implements Serializable 
@@ -50,14 +51,14 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 
 	@Override
 	public Population<G, N> select(final Population<G, N> population, final int count) {
-		Validator.nonNull(population, "Population");
+		nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
 				"Selection count must be greater or equal then zero, but was " + count
 			);
 		}
 		
-		Population<G, N> selection = new Population<G, N>(count);
+		final Population<G, N> selection = new Population<G, N>(count);
 		if (count == 0) {
 			return selection;
 		}
@@ -69,7 +70,7 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 		
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;
-		double[] points = new double[count];
+		final double[] points = new double[count];
 		points[0] = RandomRegistry.getRandom().nextDouble()*delta;
 		for (int i = 1; i < count; ++i) {
 			points[i] = delta*i;

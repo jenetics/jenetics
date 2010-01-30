@@ -27,7 +27,7 @@ package org.jenetics.util;
  * Some static helper methods for checking preconditions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java,v 1.6 2010-01-29 11:22:42 fwilhelm Exp $
+ * @version $Id: Validator.java,v 1.7 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public final class Validator {
 
@@ -71,8 +71,14 @@ public final class Validator {
 					));
 			}
 			return true;
+		}	
+	}
+	
+	private static final class Verify<T extends Verifiable> implements Predicate<T> {
+		@Override
+		public boolean evaluate(T object) {
+			return object.isValid();
 		}
-		
 	}
 	
 	/**
@@ -109,6 +115,10 @@ public final class Validator {
 		final C min, final C max
 	) {
 		return new CheckRange<C>(min, max);
+	}
+	
+	public static <T extends Verifiable> Predicate<T> Verify() {
+		return new Verify<T>();
 	}
 	
 	/**

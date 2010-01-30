@@ -22,17 +22,18 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Validator.nonNull;
+
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 /**
  * Selects the phenotypes from a given population randomly. This class can be
  * used to measure the performance of an other given selector.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MonteCarloSelector.java,v 1.2 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: MonteCarloSelector.java,v 1.3 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
@@ -41,7 +42,7 @@ public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>>
 
 	@Override
 	public Population<G, C> select(final Population<G, C> population, final int count) {
-		Validator.nonNull(population, "Population");
+		nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s.",

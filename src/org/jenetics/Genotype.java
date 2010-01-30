@@ -42,7 +42,7 @@ import org.jenetics.util.Verifiable;
  * This class is the encoded problem solution with one to many Chromosomes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Genotype.java,v 1.21 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: Genotype.java,v 1.22 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class Genotype<T extends Gene<?, T>> 
 	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
@@ -60,7 +60,7 @@ public class Genotype<T extends Gene<?, T>>
 	}
 	
 	/**
-	 * Return the chromosome at the given index. It is garantued, that the 
+	 * Return the chromosome at the given index. It is guaranteed, that the 
 	 * returned chromosome is not null.
 	 * 
 	 * @param index Chromosome index.
@@ -111,9 +111,9 @@ public class Genotype<T extends Gene<?, T>>
 	}
 	
 	/**
-	 * Getting the number of _chromosomes of this genotype.
+	 * Getting the number of chromosomes of this genotype.
 	 * 
-	 * @return number of _chromosomes.
+	 * @return number of chromosomes.
 	 */
 	public int chromosomes() {
 		return _chromosomes.length();

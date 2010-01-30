@@ -31,8 +31,10 @@ import org.jscience.mathematics.number.Number;
 
 
 /**
+ * Abstract number chromosome.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberChromosome.java,v 1.10 2010-01-27 22:54:48 fwilhelm Exp $
+ * @version $Id: NumberChromosome.java,v 1.11 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public abstract class NumberChromosome<G extends NumberGene<?, G>> 
 	extends AbstractChromosome<G> implements ChromosomeFactory<G>
@@ -66,6 +68,7 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 	 * @param genes the genes of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
 	 *         than one.
+	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	protected NumberChromosome(final Array<G> genes) {
 		super(genes);
@@ -78,7 +81,7 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the byte value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range 
-	 * 		(index < 0 || index >= length()).
+	 * 		   (index < 0 || index >= length()).
 	 */
 	public byte byteValue(final int index) {
 		return getGene(index).getAllele().byteValue();
