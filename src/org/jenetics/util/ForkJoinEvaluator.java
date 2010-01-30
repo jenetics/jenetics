@@ -31,14 +31,14 @@ import jsr166y.ForkJoinPool;
 import jsr166y.RecursiveAction;
 
 /**
- * This evaluator uses the (preliminar) version of the fork-join framework from
- * Doug Lea. The fork-join framework will be included in the upcomming JDK 
+ * This evaluator uses the (preliminary) version of the fork-join framework from
+ * Doug Lea. The fork-join framework will be included in the upcoming JDK 
  * version 1.7.
  * 
  * @see <a href="http://gee.cs.oswego.edu/dl/jsr166/dist/jsr166ydocs/">Fork-join framework javadoc</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ForkJoinEvaluator.java,v 1.8 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: ForkJoinEvaluator.java,v 1.9 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class ForkJoinEvaluator implements Evaluator {
 	public static final int DEFAULT_TASK_SIZE = 4;

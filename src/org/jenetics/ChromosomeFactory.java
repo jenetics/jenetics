@@ -33,7 +33,7 @@ import org.jenetics.util.Factory;
  * @see Chromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChromosomeFactory.java,v 1.5 2009-12-16 10:32:30 fwilhelm Exp $
+ * @version $Id: ChromosomeFactory.java,v 1.6 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public interface ChromosomeFactory<T extends Gene<?, T>> 
 	extends Factory<Chromosome<T>> 
@@ -44,6 +44,7 @@ public interface ChromosomeFactory<T extends Gene<?, T>>
 	 * and the given {@code genes}.
 	 * 
 	 * @return A new {@link Chromosome} of the same type with the given genes.
+	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
 	public Chromosome<T> newInstance(final Array<T> genes);
 

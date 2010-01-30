@@ -22,7 +22,8 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Validator;
+import static org.jenetics.util.Validator.nonNull;
+
 import org.jscience.mathematics.function.Function;
 
 /**
@@ -31,7 +32,7 @@ import org.jscience.mathematics.function.Function;
  * library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FunctionAdapter.java,v 1.4 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: FunctionAdapter.java,v 1.5 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
@@ -50,7 +51,7 @@ public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>>
 	 *        {@code null}.
 	 */
 	public FunctionAdapter(final Function<Genotype<G>, C> adoptee) {
-		_adoptee = Validator.nonNull(adoptee, "Fitness function");
+		_adoptee = nonNull(adoptee, "Fitness function");
 	}
 	
 	@Override

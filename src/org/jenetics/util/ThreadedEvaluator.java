@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.RandomAccess;
@@ -35,7 +37,7 @@ import java.util.concurrent.ExecutorService;
  * {@code java.util.concurrent} library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ThreadedEvaluator.java,v 1.10 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: ThreadedEvaluator.java,v 1.11 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class ThreadedEvaluator implements Evaluator {
 	private final int _parallelTasks;
@@ -61,14 +63,14 @@ public class ThreadedEvaluator implements Evaluator {
 	 * @throws NullPointerException if the given thread pool is {@code null}.
 	 */
 	public ThreadedEvaluator(final ExecutorService pool, final int parallelTasks) {
-		Validator.nonNull(pool, "Thread pool");
+		nonNull(pool, "Thread pool");
 		_parallelTasks = Math.max(parallelTasks, 1);
 		_pool = pool;
 	}
 	
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
-		Validator.nonNull(runnables, "Runnables");
+		nonNull(runnables, "Runnables");
 		
 		if (!runnables.isEmpty()) {
 			eval(runnables);

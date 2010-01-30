@@ -26,7 +26,7 @@ package org.jenetics;
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NullAlterer.java,v 1.9 2010-01-28 13:03:32 fwilhelm Exp $
+ * @version $Id: NullAlterer.java,v 1.10 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	private static final long serialVersionUID = 7892835302001002915L;
@@ -35,6 +35,9 @@ public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		super(0.0);
 	}
 
+	/**
+	 * This alter method does nothing.
+	 */
 	@Override
 	public <C extends Comparable<C>> void alter(
 		final Population<G, C> population, final int generation

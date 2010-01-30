@@ -83,7 +83,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -635,7 +635,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -891,7 +891,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -912,7 +912,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -933,7 +933,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -954,7 +954,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -975,7 +975,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -996,7 +996,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -1021,7 +1021,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -1139,7 +1139,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1245,7 +1245,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1376,7 +1376,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1490,7 +1490,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 interface StepListener extends EventListener {
 	
@@ -1504,7 +1504,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.14 2010-01-28 16:37:32 fwilhelm Exp $
+ * @version $Id: Geometry.java,v 1.15 2010-01-30 14:41:07 fwilhelm Exp $
  */
 class GA {
 	
@@ -1528,8 +1528,8 @@ class GA {
 	
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			//return distance(genotype);
-			return area(genotype);
+			return distance(genotype);
+			//return area(genotype);
 		}
 		
 		Float64 distance(final Genotype<Float64Gene> genotype) {
@@ -1543,7 +1543,7 @@ class GA {
 				error += _source[i].distance(point);
 			}
 	
-			return Float64.valueOf(-error);
+			return Float64.valueOf(error);
 		}
 		
 		Float64 area(final Genotype<Float64Gene> genotype) {
@@ -1644,7 +1644,7 @@ class GA {
 			new GeneticAlgorithm<Float64Gene, Float64>(
 				GA.getGenotypeFactory(), function
 			);
-		ga.addAlterer(new Mutator<Float64Gene>(0.1));
+		//ga.addAlterer(new Mutator<Float64Gene>(0.1));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);

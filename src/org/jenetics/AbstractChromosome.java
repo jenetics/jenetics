@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Validator.Verify;
+import static org.jenetics.util.Validator.nonNull;
+
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
@@ -29,7 +32,6 @@ import javolution.lang.Realtime;
 import javolution.text.Text;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Validator;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
@@ -39,7 +41,7 @@ import org.jenetics.util.Validator;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.22 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.23 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
@@ -81,7 +83,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 *         smaller than one.
 	 */
 	protected AbstractChromosome(final Array<G> genes) {
-		Validator.nonNull(genes, "Gene array");
+		nonNull(genes, "Gene array");
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Chromosome length < 1: %d", genes.length()
@@ -109,11 +111,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			boolean valid = true;
-			for (int i = 0; i < _genes.length() && valid; ++i) {
-				valid = _genes.get(i).isValid();
-			}
-			_valid = valid;
+			_valid = _genes.foreach(Verify()) == -1;
 		}
 		
 		return _valid;
@@ -133,7 +131,8 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Return the index of the first occurrence of the given <code>gene</code>.
 	 * 
 	 * @param gene the {@link Gene} to search for.
-	 * @return the index of the searched gene, or -1 if the given gene was not found.
+	 * @return the index of the searched gene, or -1 if the given gene was not 
+	 *         found.
 	 */
 	protected int indexOf(final G gene) {
 		return _genes.indexOf(gene);
