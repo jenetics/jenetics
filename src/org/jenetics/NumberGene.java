@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.14 2010-01-28 20:11:10 fwilhelm Exp $
+ * @version $Id: NumberGene.java,v 1.15 2010-02-01 21:41:40 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
@@ -86,7 +86,7 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 */
 	protected void set(final N value, final N min, final N max) {
 		_min = nonNull(min, "Min value");
-		_max = nonNull(min, "Min value");
+		_max = nonNull(max, "Max value");
 		_value = nonNull(value, "Gene value");
 		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
