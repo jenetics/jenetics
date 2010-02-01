@@ -22,21 +22,23 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
 import java.util.Random;
+
+import javolution.context.ObjectFactory;
+import javolution.lang.Realtime;
+import javolution.text.Text;
+import javolution.text.TextFormat;
+import javolution.xml.XMLFormat;
+import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
-import javolution.context.ObjectFactory;
-import javolution.lang.Realtime;
-import javolution.text.Text;
-import javolution.xml.XMLFormat;
-import javolution.xml.stream.XMLStreamException;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.12 2010-01-30 14:41:07 fwilhelm Exp $
+ * @version $Id: EnumGene.java,v 1.13 2010-02-01 21:41:40 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
@@ -137,12 +139,27 @@ public class EnumGene<E extends Enum<E>>
 		return Text.valueOf(_value.toString());
 	}
 	
+	
+	static final TextFormat<String> STRING_FORMAT = new TextFormat<String>() {
+		@Override
+		public Appendable format(final String value, final Appendable appendable) 
+			throws IOException 
+		{
+			return appendable.append(value);
+		}
+
+		@Override
+		public String parse(final CharSequence seq, final TextFormat.Cursor curs) {
+			return seq.toString();
+		}
+		
+	};
+	
 	@SuppressWarnings("unchecked")
 	static final XMLFormat<EnumGene> 
 	XML = new XMLFormat<EnumGene>(EnumGene.class) 
 	{
 		private static final String TYPE = "type";
-		private static final String VALUE = "value";
 		
 		@Override
 		public EnumGene newInstance(
@@ -151,10 +168,9 @@ public class EnumGene<E extends Enum<E>>
 			throws XMLStreamException 
 		{
 			try {
-				final Class<Enum> type = (Class<Enum>)Class.forName(
-						xml.<String>getAttribute(TYPE, "null")
-					);
-				final String value = xml.<String>getAttribute(VALUE, "null");
+				final String typeName = xml.getAttribute(TYPE, "");
+				final String value = xml.getText().toString();
+				final Class<Enum> type = (Class<Enum>)Class.forName(typeName);
 				
 				return EnumGene.valueOf(Enum.valueOf(type, value));
 			} catch (ClassNotFoundException e) {
@@ -166,7 +182,7 @@ public class EnumGene<E extends Enum<E>>
 			throws XMLStreamException 
 		{
 			xml.setAttribute(TYPE, gene._value.getClass().getName());
-			xml.setAttribute(VALUE, gene._value.name());
+			xml.addText(gene._value.name());
 		}
 		@Override
 		public void read(final InputElement element, final EnumGene gene) {

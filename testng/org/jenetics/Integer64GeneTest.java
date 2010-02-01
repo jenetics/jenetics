@@ -24,11 +24,13 @@ package org.jenetics;
 
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Integer64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Integer64GeneTest.java,v 1.1 2010-01-27 19:02:02 fwilhelm Exp $
+ * @version $Id: Integer64GeneTest.java,v 1.2 2010-02-01 21:41:40 fwilhelm Exp $
  */
 public class Integer64GeneTest {
 	
@@ -36,6 +38,14 @@ public class Integer64GeneTest {
 	public void serialize() throws XMLStreamException {
 		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, 0, 10));
 		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));
+	}
+	
+	@Test
+	public void set() {
+		Integer64Gene gene = Integer64Gene.valueOf(5, 0, 10);
+		Assert.assertEquals(gene.getAllele(), Integer64.valueOf(5));
+		Assert.assertEquals(gene.getMin(), Integer64.valueOf(0));
+		Assert.assertEquals(gene.getMax(), Integer64.valueOf(10));
 	}
 	
 }
