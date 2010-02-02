@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Float64Chromosome.java,v 1.1 2010-01-27 19:02:03 fwilhelm Exp $
+ * @version $Id: Float64Chromosome.java,v 1.2 2010-02-02 19:29:05 fwilhelm Exp $
  */
 public class Float64Chromosome extends NumberChromosome<Float64Gene> 
 	implements ChromosomeFactory<Float64Gene>, XMLSerializable
@@ -130,6 +130,9 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		return chromosome;
 	}
 
+	/**
+	 * Create a new, <em>random</em> chromosome.
+	 */
 	@Override
 	public Float64Chromosome newInstance() {
 		final Array<Float64Gene> genes = new Array<Float64Gene>(length());

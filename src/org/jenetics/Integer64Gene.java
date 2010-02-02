@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Integer64Gene.java,v 1.1 2010-01-27 19:02:03 fwilhelm Exp $
+ * @version $Id: Integer64Gene.java,v 1.2 2010-02-02 19:29:05 fwilhelm Exp $
  */
 public class Integer64Gene extends NumberGene<Integer64, Integer64Gene> {
 	private static final long serialVersionUID = 262677052481286632L;
@@ -43,6 +43,9 @@ public class Integer64Gene extends NumberGene<Integer64, Integer64Gene> {
 	protected Integer64Gene() {
 	}
 
+	/**
+	 * Create a new, <em>random</em> chromosome.
+	 */
 	@Override
 	public Integer64Gene newInstance() {
 		final Random random = RandomRegistry.getRandom();
