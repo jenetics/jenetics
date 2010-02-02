@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java,v 1.23 2010-02-02 19:29:05 fwilhelm Exp $
+ * @version $Id: BitChromosome.java,v 1.24 2010-02-02 20:12:39 fwilhelm Exp $
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
@@ -62,7 +62,7 @@ public class BitChromosome extends Number<LargeInteger>
 	protected double _p;
 	
 	/**
-	 * The length of the chromosomes (in bit).
+	 * The length of the chromosomes (number of bits).
 	 */
 	protected int _length;
 	
