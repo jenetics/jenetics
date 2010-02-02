@@ -34,7 +34,7 @@ import javolution.xml.stream.XMLStreamException;
  * Implementation of a BitGene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitGene.java,v 1.5 2010-01-26 21:34:53 fwilhelm Exp $
+ * @version $Id: BitGene.java,v 1.6 2010-02-02 19:35:12 fwilhelm Exp $
  */
 public class BitGene 
 	implements Gene<Boolean, BitGene>, Comparable<BitGene>, XMLSerializable 
@@ -80,6 +80,9 @@ public class BitGene
 		return _value ? TRUE : FALSE;
 	}
 	
+	/**
+	 * Create a new, <em>random</em> gene.
+	 */
 	@Override
 	public BitGene newInstance() {
 		final Random random = RandomRegistry.getRandom();
