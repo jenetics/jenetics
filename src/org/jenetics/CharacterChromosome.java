@@ -33,7 +33,7 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java,v 1.16 2009-07-02 17:47:58 fwilhelm Exp $
+ * @version $Id: CharacterChromosome.java,v 1.17 2010-02-02 19:29:05 fwilhelm Exp $
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
@@ -86,6 +86,9 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		return new CharacterChromosome(genes);
 	}
 	
+	/**
+	 * Create a new, <em>random</em> chromosome.
+	 */
 	@Override
 	public CharacterChromosome newInstance() {
 		final CharacterChromosome chromosome = new CharacterChromosome(length());

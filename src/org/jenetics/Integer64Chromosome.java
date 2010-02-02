@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Integer64Chromosome.java,v 1.1 2010-01-27 19:02:03 fwilhelm Exp $
+ * @version $Id: Integer64Chromosome.java,v 1.2 2010-02-02 19:29:05 fwilhelm Exp $
  */
 public class Integer64Chromosome extends NumberChromosome<Integer64Gene> 
 	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
@@ -139,6 +139,9 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 		return chromosome;
 	}
 
+	/**
+	 * Create a new, <em>random</em> chromosome.
+	 */
 	@Override
 	public Integer64Chromosome newInstance() {
 		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length());

@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.13 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.14 2010-02-02 19:29:05 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<Integer64Gene> 
 	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
@@ -166,6 +166,9 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 		return valid;
 	}
 
+	/**
+	 * Create a new, <em>random</em> chromosome.
+	 */
 	@Override
 	public PermutationChromosome newInstance() {
 		return new PermutationChromosome(length(), true);
