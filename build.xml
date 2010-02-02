@@ -161,7 +161,7 @@
 			linksource="yes" source="1.6" 
 			useexternalfile="true" access="protected" 
 			breakiterator="yes" 
-			windowtitle="Jenetics API" failonerror="false" 
+			windowtitle="Jenetics API ${version}" failonerror="false" 
 			includenosourcepackages="true" docencoding="UTF-8" 
 			Encoding="UTF-8"
 		>
