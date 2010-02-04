@@ -36,7 +36,7 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.41 2010-01-29 10:16:59 fwilhelm Exp $
+ * @version $Id: ArrayUtils.java,v 1.42 2010-02-04 22:12:59 fwilhelm Exp $
  */
 public final class ArrayUtils {
 
@@ -761,12 +761,10 @@ public final class ArrayUtils {
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
-		final long product = (long)n*(long)k;
-		if (product > Integer.MAX_VALUE) {
+		if (!MathUtils.isMultiplicationSave(n, k)) {
 			throw new IllegalArgumentException(String.format(
 				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)", 
-				n, sub.length, product, Integer.MAX_VALUE
-					
+				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
 			));
 		}
 		
