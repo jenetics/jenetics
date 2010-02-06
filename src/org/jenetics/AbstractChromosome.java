@@ -41,7 +41,7 @@ import org.jenetics.util.Array;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.24 2010-02-06 21:32:21 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.25 2010-02-06 22:20:39 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
@@ -54,7 +54,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected Array<G> _genes = null;
 	
-	private Boolean _valid = null;
+	protected Boolean _valid = null;
 
 	/**
 	 * Create a new chromosome
@@ -90,6 +90,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 				"Chromosome length < 1: %d", genes.length()
 			));
 		}
+		
 		_genes = genes.seal();
 	}
 	
