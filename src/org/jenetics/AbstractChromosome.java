@@ -41,7 +41,7 @@ import org.jenetics.util.Array;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.23 2010-01-30 14:41:07 fwilhelm Exp $
+ * @version $Id: AbstractChromosome.java,v 1.24 2010-02-06 21:32:21 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
@@ -69,13 +69,14 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 				"Chromosome length < 1: %d", length
 			));
 		}
+		
 		_genes = new Array<G>(length);
 	}
 	
 	/**
 	 * Create a new {@code AbstractChromosome} from the given {@code genes}
-	 * array. The genes array is copied, so changes to the given genes array
-	 * doesn't effect the genes of this chromosome.
+	 * array. The genes array is not copied, but sealed, so changes to the given 
+	 * genes array doesn't effect the genes of this chromosome.
 	 * 
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
@@ -89,7 +90,6 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 				"Chromosome length < 1: %d", genes.length()
 			));
 		}
-		
 		_genes = genes.seal();
 	}
 	

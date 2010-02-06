@@ -37,7 +37,7 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.17 2010-01-30 14:41:07 fwilhelm Exp $
+ * @version $Id: Chromosome.java,v 1.18 2010-02-06 21:29:07 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?, T>> 
 	extends Verifiable, Iterable<T>, Immutable, 
@@ -58,7 +58,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @param index The gene index.
 	 * @return the wanted gene.
 	 * @throws IndexOutOfBoundsException if the index is out of range 
-	 * 		(index < 0 || index >= length()).
+	 * 		(index < 1 || index >= length()).
 	 */
 	public T getGene(final int index);
 
