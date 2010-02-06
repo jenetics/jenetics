@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.14 2010-02-02 19:29:05 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.15 2010-02-06 22:20:39 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<Integer64Gene> 
 	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
@@ -147,23 +147,28 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 	 */
 	@Override
 	public boolean isValid() {
-		byte[] check = new byte[length()/8 + 1];
-		Arrays.fill(check, (byte)0);
-		
-		boolean valid = true;
-		for (int i = 0; i < length() && valid; ++i) {
-			final int value = _genes.get(i).intValue();
-			if (value >= 0 && value < length()) {
-				if (BitUtils.getBit(check, value)) {
-					valid = false;
+		if (_valid == null) {
+			byte[] check = new byte[length()/8 + 1];
+			Arrays.fill(check, (byte)0);
+			
+			boolean valid = super.isValid();
+			for (int i = 0; i < length() && valid; ++i) {
+				final int value = _genes.get(i).intValue();
+				if (value >= 0 && value < length()) {
+					if (BitUtils.getBit(check, value)) {
+						valid = false;
+					} else {
+						BitUtils.setBit(check, value, true);
+					}
 				} else {
-					BitUtils.setBit(check, value, true);
+					valid = false;
 				}
-			} else {
-				valid = false;
 			}
+			
+			_valid = valid;
 		}
-		return valid;
+		
+		return _valid;
 	}
 
 	/**
