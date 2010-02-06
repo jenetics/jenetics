@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * that no invalid permutation will be created.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PermutationChromosome.java,v 1.15 2010-02-06 22:20:39 fwilhelm Exp $
+ * @version $Id: PermutationChromosome.java,v 1.16 2010-02-06 22:27:19 fwilhelm Exp $
  */
 public class PermutationChromosome extends AbstractChromosome<Integer64Gene> 
 	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
@@ -211,14 +211,19 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 	
 	static final XMLFormat<PermutationChromosome> 
 	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
+		
+		private static final String LENGTH = "length";
+		private static final String MIN = "min";
+		private static final String MAX = "max";
+		
 		@Override
 		public PermutationChromosome newInstance(
 			final Class<PermutationChromosome> cls, final InputElement xml
 		) throws XMLStreamException 
 		{
-			final int length = xml.getAttribute("length", 0);
-			final int min = xml.getAttribute("min", 0);
-			final int max = xml.getAttribute("max", length);
+			final int length = xml.getAttribute(LENGTH, 0);
+			final int min = xml.getAttribute(MIN, 0);
+			final int max = xml.getAttribute(MAX, length);
 			final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 			
 			for (int i = 0; i < length; ++i) {
@@ -231,9 +236,9 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 		public void write(final PermutationChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute("length", chromosome.length());
-			xml.setAttribute("min", 0);
-			xml.setAttribute("max", chromosome.length() - 1);
+			xml.setAttribute(LENGTH, chromosome.length());
+			xml.setAttribute(MIN, 0);
+			xml.setAttribute(MAX, chromosome.length() - 1);
 			for (Integer64Gene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
