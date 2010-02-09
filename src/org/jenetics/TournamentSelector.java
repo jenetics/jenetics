@@ -40,7 +40,7 @@ import org.jenetics.util.Validator;
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TournamentSelector.java,v 1.12 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: TournamentSelector.java,v 1.13 2010-02-09 22:24:30 fwilhelm Exp $
  */
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 
@@ -105,19 +105,16 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 		Phenotype<G, C> winner = null;
-		C bestFitness = null;
 		
 		final int N = population.size();
 		final Random random = RandomRegistry.getRandom();
 		
 		for (int i = 0; i < count; ++i) {
 			winner = population.get(random.nextInt(N));
-			bestFitness = winner.getFitness();
 			
 			for (int j = 0; j < _sampleSize; ++j) {
 				final Phenotype<G, C> selection = population.get(random.nextInt(N));
-				if (selection.getFitness().compareTo(bestFitness) > 0) {
-					bestFitness = selection.getFitness();
+				if (selection.compareTo(winner) > 0) {
 					winner = selection;
 				}
 			}

@@ -80,7 +80,7 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.66 2010-01-28 19:34:14 fwilhelm Exp $
+ * @version $Id: GeneticAlgorithm.java,v 1.67 2010-02-09 22:24:30 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm
@@ -262,7 +262,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			//Evaluate the statistic
 			_statisticTimer.start();
 			_statistics = _calculator.evaluate(_population, _generation);
-			if (_bestPhenotype.getFitness().compareTo(_statistics.getBestFitness()) < 0) {
+			if (_bestPhenotype.compareTo(_statistics.getBestPhenotype()) < 0) {
 				_bestPhenotype = _statistics.getBestPhenotype();
 				_bestStatistics = _statistics;
 			}
