@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Statistics.java,v 1.23 2010-01-30 14:41:07 fwilhelm Exp $
+ * @version $Id: Statistics.java,v 1.24 2010-02-09 22:24:30 fwilhelm Exp $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -85,8 +85,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	protected Statistics(final Statistics<G, C> other) {
 		this(
 			other.getGeneration(),
-			other.getBestPhenotype(), other.getWorstPhenotype(),
-			other.getSamples(), other.getAgeMean(), other.getAgeVariance()
+			other.getBestPhenotype(), 
+			other.getWorstPhenotype(),
+			other.getSamples(), 
+			other.getAgeMean(), 
+			other.getAgeVariance()
 		);
 	}
 	
@@ -128,11 +131,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @return The best population fitness.
 	 */
 	public C getBestFitness() {
-		C fitness = null;
-		if (_best != null) {
-			fitness = _best.getFitness();
-		}
-		return fitness; 
+		return _best != null ? _best.getFitness() : null;
 	}
 	
 	/**
@@ -141,11 +140,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @return The worst population fitness.
 	 */
 	public C getWorstFitness() {
-		C fitness = null;
-		if (_worst != null) {
-			fitness = _worst.getFitness();
-		}
-		return fitness;
+		return _worst != null ? _worst.getFitness() : null;
 	}
 	
 	/**
@@ -319,7 +314,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.23 2010-01-30 14:41:07 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.24 2010-02-09 22:24:30 fwilhelm Exp $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -502,7 +497,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * for the Statistics class.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Statistics.java,v 1.23 2010-01-30 14:41:07 fwilhelm Exp $
+	 * @version $Id: Statistics.java,v 1.24 2010-02-09 22:24:30 fwilhelm Exp $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		
