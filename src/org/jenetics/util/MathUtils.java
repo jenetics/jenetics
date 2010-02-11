@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MathUtils.java,v 1.1 2010-02-04 22:12:59 fwilhelm Exp $
  */
 final class MathUtils {
 

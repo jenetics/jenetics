@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Predicate.java,v 1.1 2008-10-14 21:10:04 fwilhelm Exp $
  */
 public interface Predicate<T> {
 

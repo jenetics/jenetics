@@ -40,7 +40,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGene.java,v 1.11 2010-01-28 22:28:09 fwilhelm Exp $
  */
 public class CharacterGene 
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 

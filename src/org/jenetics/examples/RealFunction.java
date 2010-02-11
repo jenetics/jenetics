@@ -43,7 +43,6 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RealFunction.java,v 1.16 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public class RealFunction {
 	private static final class Function 

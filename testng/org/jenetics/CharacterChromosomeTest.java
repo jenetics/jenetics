@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosomeTest.java,v 1.6 2009-02-23 20:58:08 fwilhelm Exp $
  */
 public class CharacterChromosomeTest  {
 

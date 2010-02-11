@@ -41,7 +41,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PopulationTest.java,v 1.4 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class PopulationTest {
 	

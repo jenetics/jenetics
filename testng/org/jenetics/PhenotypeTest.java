@@ -40,7 +40,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PhenotypeTest.java,v 1.3 2010-01-27 19:02:02 fwilhelm Exp $
  */
 public class PhenotypeTest {
 

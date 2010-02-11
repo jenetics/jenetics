@@ -83,7 +83,6 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Geometry.java,v 1.17 2010-02-01 21:45:34 fwilhelm Exp $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;

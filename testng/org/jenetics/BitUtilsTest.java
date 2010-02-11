@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtilsTest.java,v 1.4 2008-08-26 22:29:35 fwilhelm Exp $
  */
 public class BitUtilsTest {
 

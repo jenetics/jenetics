@@ -28,7 +28,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGeneTest.java,v 1.2 2008-09-23 19:18:28 fwilhelm Exp $
  */
 public class EnumGeneTest {
 

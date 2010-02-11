@@ -27,7 +27,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TimerTest.java,v 1.2 2010-01-15 11:26:46 fwilhelm Exp $
  */
 public class TimerTest {
 

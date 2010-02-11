@@ -28,7 +28,6 @@ import static org.jenetics.util.Validator.checkProbability;
  * Abstract implementation of the alterer interface.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractAlterer.java,v 1.4 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G> {
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;

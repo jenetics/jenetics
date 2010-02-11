@@ -36,7 +36,6 @@ import java.util.Random;
  * Utility class concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayUtils.java,v 1.42 2010-02-04 22:12:59 fwilhelm Exp $
  */
 public final class ArrayUtils {
 

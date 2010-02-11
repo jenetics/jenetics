@@ -34,7 +34,6 @@ import org.jscience.mathematics.number.Number;
  * Abstract base class for implementing concrete NumberGenes.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberGene.java,v 1.15 2010-02-01 21:41:40 fwilhelm Exp $
  */
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable

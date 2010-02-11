@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitGeneTest.java,v 1.4 2008-09-23 19:18:28 fwilhelm Exp $
  */
 public class BitGeneTest {
 

@@ -35,7 +35,6 @@ import javolution.lang.Immutable;
  * Helper class holding the valid characters.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSet.java,v 1.6 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 

@@ -31,7 +31,6 @@ import org.jscience.mathematics.number.Float64;
  * modified such that new fitness = (a * fitness + b) ^ exp.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialScaler.java,v 1.2 2010-01-18 22:09:05 fwilhelm Exp $
  */
 public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	private static final long serialVersionUID = -5895077899454677843L;

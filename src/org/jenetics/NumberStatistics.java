@@ -35,7 +35,6 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: NumberStatistics.java,v 1.9 2010-01-18 20:57:20 fwilhelm Exp $
  */
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 

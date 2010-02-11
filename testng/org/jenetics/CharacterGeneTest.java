@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterGeneTest.java,v 1.6 2009-11-13 23:25:50 fwilhelm Exp $
  */
 public class CharacterGeneTest {
 

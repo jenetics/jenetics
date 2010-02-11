@@ -29,7 +29,6 @@ import org.jscience.mathematics.number.LargeInteger;
  * Some bit utils.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitUtils.java,v 1.3 2008-09-22 21:39:02 fwilhelm Exp $
  */
 public final class BitUtils {
 

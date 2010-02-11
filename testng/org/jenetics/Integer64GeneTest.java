@@ -30,7 +30,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Integer64GeneTest.java,v 1.2 2010-02-01 21:41:40 fwilhelm Exp $
  */
 public class Integer64GeneTest {
 	

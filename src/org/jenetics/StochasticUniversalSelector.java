@@ -39,7 +39,6 @@ import org.jenetics.util.RandomRegistry;
  * </div>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StochasticUniversalSelector.java,v 1.11 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends RouletteWheelSelector<G, N> implements Serializable 

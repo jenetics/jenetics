@@ -41,7 +41,6 @@ import org.jenetics.util.Array;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java,v 1.25 2010-02-06 22:20:39 fwilhelm Exp $
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess

@@ -33,7 +33,6 @@ import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SerializeUtils.java,v 1.2 2008-09-23 19:18:27 fwilhelm Exp $
  */
 class SerializeUtils {
 

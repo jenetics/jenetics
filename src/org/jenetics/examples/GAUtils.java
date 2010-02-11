@@ -26,7 +26,6 @@ import org.jenetics.GeneticAlgorithm;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GAUtils.java,v 1.20 2010-01-18 14:03:21 fwilhelm Exp $
  */
 public class GAUtils {
 

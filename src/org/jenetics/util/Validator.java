@@ -27,7 +27,6 @@ package org.jenetics.util;
  * Some static helper methods for checking preconditions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java,v 1.7 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public final class Validator {
 

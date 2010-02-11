@@ -43,7 +43,6 @@ import org.jenetics.util.RandomRegistry;
  * portions of different chromosomes to form new ones.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Recombination.java,v 1.20 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public abstract class Recombination<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	

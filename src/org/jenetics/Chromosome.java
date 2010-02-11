@@ -37,7 +37,6 @@ import javolution.lang.Immutable;
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Chromosome.java,v 1.18 2010-02-06 21:29:07 fwilhelm Exp $
  */
 public interface Chromosome<T extends Gene<?, T>> 
 	extends Verifiable, Iterable<T>, Immutable, 

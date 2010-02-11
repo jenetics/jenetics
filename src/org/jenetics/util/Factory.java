@@ -26,7 +26,6 @@ package org.jenetics.util;
  * @param <T> the object type this factory creates.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Factory.java,v 1.2 2009-12-18 13:26:19 fwilhelm Exp $
  */
 public interface Factory<T> {
 
