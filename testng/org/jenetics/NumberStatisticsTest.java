@@ -4,6 +4,9 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ */
 public class NumberStatisticsTest {
 
 	@SuppressWarnings("unchecked")

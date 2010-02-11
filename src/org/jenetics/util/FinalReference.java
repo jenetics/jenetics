@@ -32,7 +32,6 @@ import javolution.lang.Reference;
  * value twice an {@link IllegalStateException} is thrown.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FinalReference.java,v 1.1 2010-01-18 20:03:36 fwilhelm Exp $
  */
 public final class FinalReference<T> implements Reference<T>, Serializable {
 	private static final long serialVersionUID = -7316538710472411065L;

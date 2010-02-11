@@ -33,7 +33,6 @@ import org.jenetics.util.Validator;
  *      </a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TruncationSelector.java,v 1.3 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	implements Selector<G, C>

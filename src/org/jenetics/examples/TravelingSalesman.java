@@ -44,7 +44,6 @@ import org.jenetics.util.ForkJoinEvaluator;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TravelingSalesman.java,v 1.31 2010-01-28 13:03:33 fwilhelm Exp $
  */
 public class TravelingSalesman {
 	

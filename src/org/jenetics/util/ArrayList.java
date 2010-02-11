@@ -27,7 +27,6 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ArrayList.java,v 1.4 2010-01-28 19:34:14 fwilhelm Exp $
  */
 final class ArrayList<T> extends AbstractList<T> 
 	implements RandomAccess 

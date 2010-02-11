@@ -37,7 +37,6 @@ import org.jenetics.util.RandomRegistry;
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GaussianMutator.java,v 1.2 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 	

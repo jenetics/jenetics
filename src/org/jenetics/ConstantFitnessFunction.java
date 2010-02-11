@@ -30,7 +30,6 @@ import static org.jenetics.util.Validator.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  *
  * @param <G> the gene type.
- * @version $Id: ConstantFitnessFunction.java,v 1.7 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 

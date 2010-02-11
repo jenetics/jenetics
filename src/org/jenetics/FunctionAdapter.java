@@ -32,7 +32,6 @@ import org.jscience.mathematics.function.Function;
  * library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: FunctionAdapter.java,v 1.5 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 

@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharSetTest.java,v 1.2 2009-11-20 19:42:42 fwilhelm Exp $
  */
 public class CharSetTest {
 

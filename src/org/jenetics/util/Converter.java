@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Converter.java,v 1.1 2009-03-09 18:48:21 fwilhelm Exp $
  */
 public interface Converter<A, B> {
 

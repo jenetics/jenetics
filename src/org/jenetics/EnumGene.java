@@ -38,7 +38,6 @@ import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EnumGene.java,v 1.13 2010-02-01 21:41:40 fwilhelm Exp $
  */
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime

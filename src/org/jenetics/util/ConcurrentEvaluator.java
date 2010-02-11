@@ -36,7 +36,6 @@ import javolution.context.ConcurrentContext;
  * <a href="http://javolution.org/api/index.html">Javolution</a> library.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ConcurrentEvaluator.java,v 1.9 2010-01-30 14:41:07 fwilhelm Exp $
  */
 public class ConcurrentEvaluator implements Evaluator {
 	private final int _parallelTasks;

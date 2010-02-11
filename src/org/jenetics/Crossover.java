@@ -34,7 +34,6 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Crossover.java,v 1.22 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 

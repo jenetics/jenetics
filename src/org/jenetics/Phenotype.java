@@ -47,7 +47,6 @@ import javolution.xml.stream.XMLStreamException;
  * creation.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Phenotype.java,v 1.17 2010-01-28 19:34:14 fwilhelm Exp $
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 

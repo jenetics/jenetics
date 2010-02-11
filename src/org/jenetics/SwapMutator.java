@@ -38,7 +38,6 @@ import org.jenetics.util.RandomRegistry;
  * allowed, e.g. for the TSP.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: SwapMutator.java,v 1.2 2010-01-28 13:03:32 fwilhelm Exp $
  */
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 

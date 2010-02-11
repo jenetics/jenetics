@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Copyable.java,v 1.1 2008-09-01 21:03:31 fwilhelm Exp $
  */
 public interface Copyable<T> {
 

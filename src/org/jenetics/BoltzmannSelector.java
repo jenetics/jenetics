@@ -48,7 +48,6 @@ import java.io.Serializable;
  * @param <N> the BoltzmannSelector requires a number type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelector.java,v 1.9 2009-12-16 10:32:30 fwilhelm Exp $
  */
 public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable

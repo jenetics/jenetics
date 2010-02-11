@@ -80,7 +80,6 @@ import org.jenetics.util.Timer;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: GeneticAlgorithm.java,v 1.67 2010-02-09 22:24:30 fwilhelm Exp $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm

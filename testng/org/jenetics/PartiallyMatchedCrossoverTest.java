@@ -25,7 +25,6 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: PartiallyMatchedCrossoverTest.java,v 1.2 2008-07-08 17:02:24 fwilhelm Exp $
  */
 public class PartiallyMatchedCrossoverTest {
 

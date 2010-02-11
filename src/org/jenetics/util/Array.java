@@ -41,7 +41,6 @@ import java.util.RandomAccess;
  * @param <T> the element type of the array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Array.java,v 1.41 2010-01-29 11:22:42 fwilhelm Exp $
  */
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 

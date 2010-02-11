@@ -32,7 +32,6 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Float64Chromosome.java,v 1.2 2010-02-02 19:29:05 fwilhelm Exp $
  */
 public class Float64Chromosome extends NumberChromosome<Float64Gene> 
 	implements ChromosomeFactory<Float64Gene>, XMLSerializable
