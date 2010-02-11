@@ -164,6 +164,7 @@
 			windowtitle="Jenetics API ${version}" failonerror="false" 
 			includenosourcepackages="true" docencoding="UTF-8" 
 			Encoding="UTF-8"
+			stylesheetfile="./resources/javadoc/stylesheet.css"
 		>
 			<arg line="-charset UTF-8" />
 			<classpath refid="classpath" />
@@ -408,6 +409,10 @@
 		<zip destfile="export/Jenetics-${version}.zip" level="9">
 			<fileset dir="${export.dir}"/>
 		</zip>
+	</target>
+	
+	<target name="set-since-tag">
+		<replace dir="${source.dir}" token="@!since!@" value="${version}" />
 	</target>
 	
 </project>
