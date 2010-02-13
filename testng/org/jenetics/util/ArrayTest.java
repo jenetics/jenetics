@@ -213,6 +213,37 @@ public class ArrayTest {
 	}
 	
 	@Test
+	public void toArray1() {
+		final Array<Integer> array = new Array<Integer>(10);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		
+		Object[] oa = array.toArray();
+		Assert.assertEquals(oa.length, array.length());
+		Assert.assertEquals(oa.getClass(), Object[].class);
+		for (int i = 0; i < oa.length; ++i) {
+			Assert.assertEquals(oa[i], array.get(i));
+		}
+	}
+	
+	@Test
+	public void toArray2() {
+		final Array<Integer> array = new Array<Integer>(10);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		
+		Integer[] oa = array.toArray(new Integer[0]);
+		Assert.assertEquals(oa.length, array.length());
+		Assert.assertEquals(oa.getClass(), Integer[].class);
+		for (int i = 0; i < oa.length; ++i) {
+			Assert.assertEquals(oa[i], array.get(i));
+		}
+		Assert.assertEquals(new Array<Integer>(oa), array);
+	}
+	
+	@Test
 	public void cloning() {
 		final Array<Integer> array = new Array<Integer>(10);
 		for (int i = 0; i < array.length(); ++i) {
