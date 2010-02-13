@@ -30,16 +30,29 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.structure.GroupMultiplicative;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class Float64Gene extends NumberGene<Float64, Float64Gene> {
+public class Float64Gene 
+	extends NumberGene<Float64, Float64Gene> 
+	implements GroupMultiplicative<Float64Gene> 
+{
 	private static final long serialVersionUID = 2531451920309748752L;	
 	
 	protected Float64Gene() {
 	}
 
+	public Float64Gene divide(final Float64Gene gene) {
+		return newInstance(_value.divide(gene._value));
+	}
+	
+	@Override
+	public Float64Gene inverse() {
+		return newInstance(_value.inverse());
+	}
+	
 	/**
 	 * Create a new, <em>random</em> gene.
 	 */

@@ -36,12 +36,18 @@ import org.jscience.mathematics.number.Integer64;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class Integer64Gene extends NumberGene<Integer64, Integer64Gene> {
+public class Integer64Gene 
+	extends NumberGene<Integer64, Integer64Gene> 
+{
 	private static final long serialVersionUID = 262677052481286632L;
 	
 	protected Integer64Gene() {
 	}
 
+	public Integer64Gene divide(final Integer64Gene gene) {
+		return newInstance(_value.divide(gene._value));
+	}
+	
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
