@@ -44,11 +44,11 @@ import org.jenetics.util.Timer;
  * A simple GeneticAlgorithm setup.
  * [code]
  *     //Defining a genotype factory.
- *     Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
- *         BitChromosome.valueOf(10, 0.5);
- *     );
- *     FitnessFunction<BitGene, Float64> ff = ...//FitnessFunction implementation
- *     GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm.valueOf(gt, ff);
+ *     final Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
+ *             BitChromosome.valueOf(10, 0.5);
+ *         );
+ *     final FitnessFunction<BitGene, Float64> ff = ...//FitnessFunction implementation
+ *     final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
@@ -62,7 +62,7 @@ import org.jenetics.util.Timer;
  * fitness function and the fitness scaler is not initialized by the
  * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
  * [code]
- *     Population population = 
+ *     final Population population = 
  *         (Population)XMLSerializer.read(new FileInputStream("population.xml");
  *     ga.setPopulation(population);
  *     //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
