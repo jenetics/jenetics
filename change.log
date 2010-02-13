@@ -1,4 +1,5 @@
 Jenetics-???
+- Add Array.toArray() and Array.toArray(Object[]) methods.
 - Add 'divide' method to Float64Gene and Integer64Gene.
 
 Jenetics-0.5.0.0

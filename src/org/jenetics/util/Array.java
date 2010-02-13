@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -576,6 +577,63 @@ public class Array<T> implements
 		
 		return new Array<T>(_array, start + _start, end + _start, _sealed);
 	}
+	
+	/**
+	 * Return an array containing all of the elements in this array in right 
+	 * order. The returned array will be "safe" in that no references to it 
+	 * are maintained by this array. (In other words, this method must allocate 
+	 * a new array.) The caller is thus free to modify the returned array. 
+	 * 
+	 * @see java.util.Collection#toArray()
+	 * 
+	 * @return an array containing all of the elements in this list in right 
+	 *         order
+	 */
+	public Object[] toArray() {
+		final Object[] array = new Object[length()];
+		System.arraycopy(_array, _start, array, 0, length());
+		return array;
+	}
+	
+	/**
+	 * Return an array containing all of the elements in this array in right
+	 * order; the runtime type of the returned array is that of the specified 
+	 * array. If this array fits in the specified array, it is returned therein. 
+	 * Otherwise, a new array is allocated with the runtime type of the specified 
+	 * array and the length of this array.
+	 * <p/>
+	 * If this array fits in the specified array with room to spare (i.e., the 
+	 * array has more elements than this array), the element in the array 
+	 * immediately following the end of this array is set to null. (This is 
+	 * useful in determining the length of the array only if the caller knows 
+	 * that the list does not contain any null elements.) 
+	 * 
+	 * @see java.util.Collection#toArray(Object[])
+	 * 
+	 * @param array the array into which the elements of this array are to be 
+	 *        stored, if it is big enough; otherwise, a new array of the same 
+	 *        runtime type is allocated for this purpose. 
+	 * @return an array containing the elements of this array
+	 * @throws ArrayStoreException if the runtime type of the specified array is 
+	 *         not a super type of the runtime type of every element in this array
+	 * @throws NullPointerException if the given array is {@code null}.  
+	 */
+	@SuppressWarnings("unchecked")
+	public T[] toArray(final T[] array) {
+		T[] result = null;
+		if (array.length < length()) {
+			result = (T[])Arrays.copyOfRange(_array, _start, _end, array.getClass());
+		} else {
+			System.arraycopy(_array, _start, array, 0, length());
+			if (array.length > length()) {
+				array[length()] = null;
+			}
+			result = array;
+		}
+
+		return result;
+	}
+	
 	
 	/**
 	 * Returns a fixed-size list backed by the specified array. (Changes to
