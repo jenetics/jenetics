@@ -26,7 +26,6 @@ import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
 
-import javolution.context.LocalContext;
 import javolution.context.ObjectFactory;
 import javolution.lang.Realtime;
 import javolution.text.Text;
@@ -47,11 +46,11 @@ public class CharacterGene
 {
 	private static final long serialVersionUID = 5091130159700639888L;
 	
-	private static final LocalContext.Reference<CharSet>
-		CHARACTERS = new LocalContext.Reference<CharSet>(new CharSet(
+	public static final CharSet DEFAULT_CHARACTERS = new CharSet(
 				CharSet.expand("0-9a-zA-Z") +  " !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
-			));
+			);
 	
+	private CharSet _validCharacters;
 	private Character _character;
 	
 	protected CharacterGene() {
@@ -69,7 +68,7 @@ public class CharacterGene
 
 	@Override
 	public CharacterGene copy() {
-		return valueOf(_character);
+		return valueOf(_character, _validCharacters);
 	}
 	
 	/**
@@ -90,10 +89,9 @@ public class CharacterGene
 	@Override
 	public CharacterGene newInstance() {
 		final Random random = RandomRegistry.getRandom();
-		final CharSet charset = CHARACTERS.get();
-		final int index = random.nextInt(charset.length());
+		final int index = random.nextInt(_validCharacters.length());
 		
-		return valueOf(charset.charAt(index));
+		return valueOf(_validCharacters.charAt(index), _validCharacters);
 	}
 	
 	@Override
@@ -130,8 +128,8 @@ public class CharacterGene
 	 * @param c The character to test.
 	 * @return true if the character is valid, false otherwise.
 	 */
-	public static boolean isValidCharacter(final Character c) {
-		return CHARACTERS.get().contains(c);
+	public boolean isValidCharacter(final Character c) {
+		return _validCharacters.contains(c);
 	}
 	
 	/**
@@ -139,31 +137,9 @@ public class CharacterGene
 	 * 
 	 * @return the {@link CharSet} of valid characters.
 	 */
-	public static CharSet getCharacters() {
-		return CHARACTERS.get();
+	public CharSet getValidCharacters() {
+		return _validCharacters;
 	}
-	
-	/**
-	 * Set the characters to use.
-	 * 
-	 * @param characters to user.
-	 * @throws NullPointerException if the given {@code characters} are 
-	 *         {@code null}.
-	 */
-	public static void setCharacters(final CharSet characters) {
-		CHARACTERS.set(nonNull(characters, "CharSet"));
-	}
-	
-	/**
-	 * Set the characters to user.
-	 * 
-	 * @param characters the characters to user.
-	 * @throws NullPointerException if the given characters are null.
-	 */
-	public static void setCharacters(final CharSequence characters) {
-		CHARACTERS.set(new CharSet(nonNull(characters, "Characters")));
-	}
-
 	
 	private static final ObjectFactory<CharacterGene> 
 	FACTORY = new ObjectFactory<CharacterGene>() {
@@ -177,10 +153,10 @@ public class CharacterGene
 	 * Create a new CharacterGene with a randomly chosen character from the
 	 * set of valid characters.
 	 */
-	public static CharacterGene valueOf() {
+	public static CharacterGene valueOf(final CharSet validCharacters) {
 		final Random random = RandomRegistry.getRandom();
-		int pos = random.nextInt(CHARACTERS.get().length());
-		return valueOf(CHARACTERS.get().charAt(pos));
+		int pos = random.nextInt(validCharacters.length());
+		return valueOf(validCharacters.charAt(pos), validCharacters);
 	}
 	
 	/**
@@ -193,24 +169,39 @@ public class CharacterGene
 	 * 		See {@link CharacterGene#isValidCharacter(Character)}
 	 * 		and {@link CharacterGene#getCharacters()}.
 	 */
-	public static CharacterGene valueOf(final Character character) {
+	public static CharacterGene valueOf(
+		final Character character, 
+		final CharSet validCharacters
+	) {
 		nonNull(character, "Character");
+		nonNull(validCharacters, "Valid characters");
 		
 		CharacterGene g = FACTORY.object();
-		if (!CHARACTERS.get().contains(character)) {
+		if (!validCharacters.contains(character)) {
 			throw new IllegalArgumentException(
 				"Character '" + character + "' is not valid. "
 			);
 		}
 		g._character = character;
+		g._validCharacters = validCharacters;
 		
 		return g;
+	}
+	
+	public static CharacterGene valueOf(final Character character) {
+		return valueOf(character, DEFAULT_CHARACTERS);
+	}
+	
+	public static CharacterGene valueOf() {
+		final Random random = RandomRegistry.getRandom();
+		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
+		return valueOf(DEFAULT_CHARACTERS.charAt(index));
 	}
 	
 	static final XMLFormat<CharacterGene> 
 	XML = new XMLFormat<CharacterGene>(CharacterGene.class) 
 	{
-		private static final String VALUE = "value";
+		private static final String VALID_CHARS = "valid-characters";
 		
 		@Override
 		public CharacterGene newInstance(
@@ -218,14 +209,20 @@ public class CharacterGene
 		) 
 			throws XMLStreamException 
 		{
-			final Character character = xml.getAttribute(VALUE, 'a');
-			return CharacterGene.valueOf(character);
+			final String validCharacters = xml.getAttribute(
+					VALID_CHARS, 
+					DEFAULT_CHARACTERS.toString()
+				);
+			final String character = xml.getText().toString();
+			
+			return CharacterGene.valueOf(character.charAt(0), new CharSet(validCharacters));
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml) 
 			throws XMLStreamException 
 		{
-			xml.setAttribute(VALUE, gene._character.charValue());
+			xml.setAttribute(VALID_CHARS, gene.getValidCharacters().toString());
+			xml.addText(gene._character.toString());
 		}
 		@Override
 		public void read(final InputElement element, final CharacterGene gene) {

@@ -75,21 +75,21 @@ public class StringGenerator {
 		
 		ga.setPopulationSize(5000);
 		ga.setOffspringFraction(0.7);
-		ga.setMaximalPhenotypeAge(30);
-//		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
-//		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
-//		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
+		ga.setMaximalPhenotypeAge(50);
+		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
+		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
+		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
 		ga.setAlterer(new CompositeAlterer<CharacterGene>(
-			new Mutator<CharacterGene>(0.005),
+			new Mutator<CharacterGene>(0.05),
 			new SinglePointCrossover<CharacterGene>(0.1)
 		));
 		EvaluatorRegistry.setEvaluator(new org.jenetics.util.ConcurrentEvaluator());
 
-		GAUtils.execute(ga, 25);
+		GAUtils.execute(ga, 550);
 		
-//		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/fwilhelm/population.xml");
-//		org.jenetics.util.XMLSerializer.write(ga.getPopulation(), out);
-//		out.close();
+		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/fwilhelm/population.xml");
+		org.jenetics.util.Serializer.writeXML(ga.getPopulation(), out);
+		out.close();
 		
 		pool.shutdown();
 	}
