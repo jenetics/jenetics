@@ -49,7 +49,7 @@ public class CharacterGeneTest {
     @Test
     public void testCharacterGene() {
         CharacterGene gene = CharacterGene.valueOf();
-        assertTrue(CharacterGene.isValidCharacter(gene.getAllele()));
+        assertTrue(gene.isValidCharacter(gene.getAllele()));
     }
 
     @Test
@@ -80,14 +80,14 @@ public class CharacterGeneTest {
 
     @Test
     public void testIsValidCharacter() {
-        for (Character c : CharacterGene.getCharacters()) {
-            assertTrue(CharacterGene.isValidCharacter(c));
+        for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
+            assertTrue(CharacterGene.valueOf(c).isValidCharacter(c));
         }
     }
 
     @Test
     public void testGetValidCharacters() {
-        CharSet cset = CharacterGene.getCharacters();
+        CharSet cset = CharacterGene.DEFAULT_CHARACTERS;
         assertNotNull(cset);
         assertFalse(cset.isEmpty());
     }

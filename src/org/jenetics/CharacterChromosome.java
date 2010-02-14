@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Validator.nonNull;
 import javolution.text.CharArray;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
@@ -30,6 +31,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.CharSet;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,6 +41,8 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 {	
 	private static final long serialVersionUID = 8213347401351340289L;
 
+	private final CharSet _validCharacters;
+	
 	/**
 	 * Create a new chromosome
 	 * 
@@ -48,8 +52,17 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	 */
 	public CharacterChromosome(final int length) {
 		super(length);
+		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
 		for (int i = 0; i < length(); ++i) {
-			_genes.set(i, CharacterGene.valueOf());
+			_genes.set(i, CharacterGene.valueOf(_validCharacters));
+		}
+	}
+	
+	public CharacterChromosome(final CharSet validCharacters, final int length) {
+		super(length);
+		_validCharacters = nonNull(validCharacters, "Valid characters");
+		for (int i = 0; i < length(); ++i) {
+			_genes.set(i, CharacterGene.valueOf(_validCharacters));
 		}
 	}
 	
@@ -65,6 +78,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	 */
 	public CharacterChromosome(final Array<CharacterGene> genes) {
 		super(genes);
+		_validCharacters = genes.get(0).getValidCharacters();
 	}
 
 	@Override
@@ -90,9 +104,12 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	 */
 	@Override
 	public CharacterChromosome newInstance() {
-		final CharacterChromosome chromosome = new CharacterChromosome(length());
+		final CharacterChromosome chromosome = new CharacterChromosome(
+				_validCharacters, 
+				length()
+			);
 		for (int i = 0; i < length(); ++i) {
-			chromosome._genes.set(i, CharacterGene.valueOf());
+			chromosome._genes.set(i, CharacterGene.valueOf(_validCharacters));
 		}
 		return chromosome;
 	}
@@ -127,6 +144,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class) 
 	{
 		private static final String LENGTH = "length";
+		private static final String VALID_CHARS = "valid-characters";
 		
 		@Override
 		public CharacterChromosome newInstance(
@@ -135,7 +153,13 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 			throws XMLStreamException 
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
-			final CharacterChromosome chromosome = new CharacterChromosome(length);
+			final String validCharacters = xml.getAttribute(
+					VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
+				);
+			
+			final CharacterChromosome chromosome = new CharacterChromosome(
+					new CharSet(validCharacters), length
+				);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
 				chromosome._genes.set(i, CharacterGene.valueOf(values.charAt(i)));
@@ -147,6 +171,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
+			xml.setAttribute(VALID_CHARS, chromosome._validCharacters.toString());
 			final StringBuilder out = new StringBuilder(chromosome.length());
 			for (CharacterGene gene : chromosome) {
 				out.append(gene.getAllele().charValue());
