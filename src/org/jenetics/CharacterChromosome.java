@@ -44,7 +44,8 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	private final CharSet _validCharacters;
 	
 	/**
-	 * Create a new chromosome
+	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
+	 * char set as valid characters.
 	 * 
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
@@ -58,6 +59,17 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		}
 	}
 	
+	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as 
+	 * valid characters.
+	 * 
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param length the length of the new chromosome.
+	 * @throws NullPointerException if the {@code validCharacters} is 
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 *         one.
+	 */
 	public CharacterChromosome(final CharSet validCharacters, final int length) {
 		super(length);
 		_validCharacters = nonNull(validCharacters, "Valid characters");
