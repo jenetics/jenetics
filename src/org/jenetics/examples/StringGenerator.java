@@ -33,6 +33,7 @@ import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.util.CharSet;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Integer64;
@@ -66,8 +67,9 @@ public class StringGenerator {
 			"To be, or not to be: that is the question: " +
 			"Whether 'tis nobler in the mind to suffer...";
 		
+		final CharSet chars = new CharSet(CharSet.expand("a-zA-Z.,:' "));
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
-			new CharacterChromosome(value.length())
+			new CharacterChromosome(chars, value.length())
 		);
 		final Function ff = new Function(value);
 		final GeneticAlgorithm<CharacterGene, Integer64> 
@@ -85,9 +87,9 @@ public class StringGenerator {
 		));
 		EvaluatorRegistry.setEvaluator(new org.jenetics.util.ConcurrentEvaluator());
 
-		GAUtils.execute(ga, 550);
+		GAUtils.execute(ga, 50);
 		
-		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/fwilhelm/population.xml");
+		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/franzw/population.xml");
 		org.jenetics.util.Serializer.writeXML(ga.getPopulation(), out);
 		out.close();
 		

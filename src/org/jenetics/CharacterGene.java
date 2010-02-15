@@ -58,7 +58,7 @@ public class CharacterGene
 		
 	@Override
 	public boolean isValid() {
-		return true;
+		return _validCharacters.contains(_character);
 	}
 	
 	@Override
@@ -163,11 +163,7 @@ public class CharacterGene
 	 * Create a new CharacterGene from the give character.
 	 * 
 	 * @param character The allele.
-	 * @throws NullPointerException if the <code>character</code> is null.
-	 * @throws IllegalArgumentException if the <code>character</code> is not
-	 * 		a valid character. 
-	 * 		See {@link CharacterGene#isValidCharacter(Character)}
-	 * 		and {@link CharacterGene#getCharacters()}.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static CharacterGene valueOf(
 		final Character character, 
@@ -177,11 +173,6 @@ public class CharacterGene
 		nonNull(validCharacters, "Valid characters");
 		
 		CharacterGene g = FACTORY.object();
-		if (!validCharacters.contains(character)) {
-			throw new IllegalArgumentException(
-				"Character '" + character + "' is not valid. "
-			);
-		}
 		g._character = character;
 		g._validCharacters = validCharacters;
 		
