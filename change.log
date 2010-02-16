@@ -1,4 +1,6 @@
 Jenetics-???
+- Change method signature from ArrayUtils.foreach(Collection) to 
+  ArrayUtils.foreach(Iterable).
 - Add Array.toArray() and Array.toArray(Object[]) methods.
 - Add 'divide' method to Float64Gene and Integer64Gene.
 

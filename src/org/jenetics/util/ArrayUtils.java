@@ -26,7 +26,6 @@ import static java.lang.Math.min;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Random;
@@ -1010,7 +1009,7 @@ public final class ArrayUtils {
 	 * @see #indexOf(Object[], Object)
 	 */
 	public static <T> int indexOf(
-		final Collection<? extends T> values, 
+		final Iterable<? extends T> values, 
 		final Predicate<? super T> predicate
 	) {
 		nonNull(values, "Array");
@@ -1080,7 +1079,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(
-		final Collection<? extends T> values, 
+		final Iterable<? extends T> values, 
 		final Predicate<? super T> predicate
 	) {
 		nonNull(values, "Array");
