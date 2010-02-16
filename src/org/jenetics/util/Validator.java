@@ -44,7 +44,7 @@ public final class Validator {
 		
 		@Override
 		public boolean evaluate(final Object object) {
-			nonNull(object, _message);
+			nonNull(object, _message );
 			return true;
 		}
 		
