@@ -28,6 +28,7 @@ import static org.jenetics.util.Validator.nonNull;
  *  A {@link FitnessFunction} which always returns a given constant value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  *
  * @param <G> the gene type.
  */

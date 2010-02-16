@@ -40,6 +40,7 @@ import org.jenetics.util.Validator;
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 

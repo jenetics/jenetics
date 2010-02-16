@@ -34,6 +34,7 @@ import org.jscience.mathematics.number.Number;
  * Abstract number chromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public abstract class NumberChromosome<G extends NumberGene<?, G>> 
 	extends AbstractChromosome<G> implements ChromosomeFactory<G>
