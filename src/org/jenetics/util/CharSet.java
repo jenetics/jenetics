@@ -23,9 +23,9 @@
 package org.jenetics.util;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.NoSuchElementException;
 import java.util.regex.PatternSyntaxException;
 
 import javolution.lang.Immutable;
@@ -41,8 +41,7 @@ public class CharSet
 {
 	private static final long serialVersionUID = -1170134682688418212L;
 	
-	private final String _characters;
-	private final Set<Character> _characterSet = new LinkedHashSet<Character>();
+	private final char[] _characters;
 	
 	/**
 	 * Create a new CharSet from the given {@code characters}.
@@ -53,48 +52,73 @@ public class CharSet
 	public CharSet(final CharSequence characters) {
 		Validator.nonNull(characters, "Characters");
 		
+		_characters = new char[characters.length()];
 		for (int i = 0; i < characters.length(); ++i) {
-			_characterSet.add(characters.charAt(i));
+			_characters[i] = characters.charAt(i);
 		}
-		
-		final StringBuilder builder = new StringBuilder();
-		for (Character c : _characterSet) {
-			builder.append(c);
-		}
-		_characters = builder.toString();
+		Arrays.sort(_characters);
+	}
+	
+	/**
+	 * Create a new CharSet from the given {@code characters}.
+	 * 
+	 * @param characters the characters.
+	 * @throws NullPointerException if the {@code characters} are {@code null}.
+	 */
+	public CharSet(final char[] characters) {
+		Validator.nonNull(characters, "Characters");
+		_characters = characters.clone();
+		Arrays.sort(_characters);
 	}
 	
 	public boolean contains(final Character c) {
-		return _characterSet.contains(c);
+		return Arrays.binarySearch(_characters, c.charValue()) != -1;
 	}
 
 	@Override
 	public char charAt(int index) {
-		return _characters.charAt(index);
+		return _characters[index];
 	}
 
 	@Override
 	public int length() {
-		return _characters.length();
+		return _characters.length;
 	}
 
 	@Override
 	public CharSet subSequence(int start, int end) {
-		return new CharSet(_characters.substring(start, end));
+		return new CharSet(new String(_characters, start, end - start));
 	}
 	
 	public boolean isEmpty() {
-		return _characterSet.isEmpty();
+		return _characters.length == 0;
 	}
 	
 	@Override
 	public Iterator<Character> iterator() {
-		return _characterSet.iterator();
+		return new Iterator<Character>() {
+			private int _pos = 0;
+			@Override public boolean hasNext() {
+				return _pos < _characters.length;
+			}
+			@Override public Character next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException(String.format(
+							"Index %s is out of range [0, %s)", 
+							_pos, _characters.length
+						));
+				}
+				return _characters[_pos++];
+			}
+			@Override public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 	
 	@Override
 	public int hashCode() {
-		return _characters.hashCode()*17 + 31;
+		return Arrays.hashCode(_characters)*17 + 31;
 	}
 	
 	@Override
@@ -107,12 +131,12 @@ public class CharSet
 		}
 		
 		final CharSet ch = (CharSet)object;
-		return ch._characters.equals(_characters);
+		return Arrays.equals(_characters, ch._characters);
 	}
 	
 	@Override
 	public String toString() {
-		return _characters;
+		return new String(_characters);
 	}
 	
 	/**

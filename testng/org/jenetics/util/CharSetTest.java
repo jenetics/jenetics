@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import java.util.Iterator;
 import java.util.regex.PatternSyntaxException;
 
 import org.testng.Assert;
@@ -87,5 +88,41 @@ public class CharSetTest {
 	public void expand4() {
 		CharSet.expand("-az");
 	}
+
+	@Test
+	public void contains() {
+		final CharSet set = new CharSet(CharSet.expand("a-z"));
+		Assert.assertTrue(set.contains('t'));
+		Assert.assertTrue(set.contains('a'));
+		Assert.assertTrue(set.contains('z'));
+		Assert.assertFalse(set.contains('T'));
+		Assert.assertFalse(set.contains('1'));
+		Assert.assertFalse(set.contains('Z'));
+	}
+	
+	@Test
+	public void iterate() {
+		final CharSet set = new CharSet(CharSet.expand("a-z"));
+		final String values = CharSet.expand("a-z");
+		final Iterator<Character> it = set.iterator();
+		for (int i = 0; i < values.length(); ++i) {
+			Assert.assertTrue(it.hasNext());
+			Assert.assertEquals(it.next(), new Character(values.charAt(i)));
+		}
+		Assert.assertFalse(it.hasNext());
+	}
+	
+	@Test
+	public void subSequence() {
+		final CharSet set = new CharSet(CharSet.expand("a-z"));
+		final CharSet sub = set.subSequence(3, 10);
+		Assert.assertEquals(sub.length(), 7);
+		Assert.assertEquals(sub.toString(), "defghij");
+	}
 	
 }
+
+
+
+
+
