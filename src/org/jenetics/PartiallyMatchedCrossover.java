@@ -70,6 +70,7 @@ import org.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = 4100745364870900673L;

@@ -39,6 +39,7 @@ import javolution.lang.Reusable;
  * It's up to the user to ensure thread safety.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneable {
 	private static final long serialVersionUID = -4564917943200602352L;

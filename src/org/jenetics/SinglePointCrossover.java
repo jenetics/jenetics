@@ -49,6 +49,7 @@ import org.jenetics.util.RandomRegistry;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = -5901453762256113098L;

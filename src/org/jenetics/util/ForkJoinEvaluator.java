@@ -38,6 +38,7 @@ import jsr166y.RecursiveAction;
  * @see <a href="http://gee.cs.oswego.edu/dl/jsr166/dist/jsr166ydocs/">Fork-join framework javadoc</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public class ForkJoinEvaluator implements Evaluator {
 	public static final int DEFAULT_TASK_SIZE = 4;

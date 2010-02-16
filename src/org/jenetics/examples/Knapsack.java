@@ -39,6 +39,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;

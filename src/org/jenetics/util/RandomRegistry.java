@@ -36,6 +36,7 @@ import javolution.context.LocalContext;
  * seed value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 public final class RandomRegistry {
 	private static final LocalContext.Reference<Random> RANDOM = 

@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
  * Helper class which iterates over an given array.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 final class ArrayIterator<T> implements ListIterator<T> {
 	private final Object[] _array;
