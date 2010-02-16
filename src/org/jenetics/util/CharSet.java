@@ -71,8 +71,28 @@ public class CharSet
 		Arrays.sort(_characters);
 	}
 	
+	/**
+	 * Test whether this character set contains the given character {@code c}.
+	 * 
+	 * @param c the character to test.
+	 * @return {@code true} if this character set contains the given character,
+	 *         {@code false} otherwise.
+	 * @throws NullPointerException if the given character {@code c} is 
+	 *         {@code null}.
+	 */
 	public boolean contains(final Character c) {
-		return Arrays.binarySearch(_characters, c.charValue()) != -1;
+		return contains(c.charValue());
+	}
+	
+	/**
+	 * Test whether this character set contains the given character {@code c}.
+	 * 
+	 * @param c the character to test.
+	 * @return {@code true} if this character set contains the given character,
+	 *         {@code false} otherwise.
+	 */
+	public boolean contains(final char c) {
+		return Arrays.binarySearch(_characters, c) != -1;
 	}
 
 	@Override
