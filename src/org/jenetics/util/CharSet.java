@@ -110,6 +110,12 @@ public class CharSet
 		return new CharSet(new String(_characters, start, end - start));
 	}
 	
+	/**
+	 * Test whether this character set is empty.
+	 * 
+	 * @return {@code true} if this character set is empty, {@code false} 
+	 *         otherwise.
+	 */
 	public boolean isEmpty() {
 		return _characters.length == 0;
 	}
