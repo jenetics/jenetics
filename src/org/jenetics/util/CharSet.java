@@ -67,7 +67,6 @@ public class CharSet
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSet(final char[] characters) {
-		Validator.nonNull(characters, "Characters");
 		_characters = characters.clone();
 		Arrays.sort(_characters);
 	}
