@@ -3,6 +3,7 @@ Jenetics-???
   ArrayUtils.foreach(Iterable).
 - Add Array.toArray() and Array.toArray(Object[]) methods.
 - Add 'divide' method to Float64Gene and Integer64Gene.
+- Add factory methods CharSet.valueOf(CharSequence) and CharSet.valueOf(char, char).
 
 Jenetics-0.5.0.0
 - Rename Validator.notNull() to Validator.nonNull(). It's the same name as in the

@@ -175,9 +175,7 @@ public class CharSet
 	 * @throws PatternSyntaxException if the pattern could not be expanded.
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
-	public static String expand(final CharSequence pattern)
-		throws PatternSyntaxException 
-	{
+	public static String expand(final CharSequence pattern) {
 		Validator.nonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
 	
@@ -233,5 +231,38 @@ public class CharSet
 	
 		return out.toString();
 	}
+	
+	/**
+	 * Expands the character range for the given {@code pattern}. E.g 
+	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
+	 * case characters (from a to z) and all digits form 0 to 9.
+	 * 
+	 * @see #expand(CharSequence)
+	 * 
+	 * @param pattern the {@code pattern} to expand.
+	 * @return the expanded pattern.
+	 * @throws PatternSyntaxException if the pattern could not be expanded.
+	 * @throws NullPointerException if the pattern is {@code null}.
+	 */
+	public static CharSet valueOf(final CharSequence pattern) {
+		return new CharSet(expand(pattern));
+	}
+	
+	/**
+	 * Expands the characters between {@code a} and {@code b}.
+	 * 
+	 * @see #expand(char, char)
+	 * 
+	 * @param a the start character.
+	 * @param b the stop character.
+	 * @return the expanded characters.
+	 */
+	public static CharSet valueOf(final char a, final char b) {
+		return new CharSet(expand(a, b));
+	}
 
 }
+
+
+
+
