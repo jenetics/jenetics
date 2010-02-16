@@ -1,4 +1,5 @@
 Jenetics-???
+- Rename org.jenetics.utils.Serializer to org.jenetics.utils.IOUtils.
 - Change method signature from ArrayUtils.foreach(Collection) to 
   ArrayUtils.foreach(Iterable).
 - Add Array.toArray() and Array.toArray(Object[]) methods.
