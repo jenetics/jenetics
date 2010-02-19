@@ -26,9 +26,9 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class DescriptiveStatistics {
+public class Accumulators {
 
-	private DescriptiveStatistics() {
+	private Accumulators() {
 	}
 	
 	/**
@@ -155,8 +155,26 @@ public class DescriptiveStatistics {
 	public static <C extends Comparable<C>> MinMax<C> MinMax() {
 		return new MinMax<C>();
 	}
+
+	
+	public static <T> void accumulate(
+		final Iterable<? extends T> values, 
+		final Array<Accumulator<T>> accumulators
+	) {
+		for (final T value : values) {
+			accumulators.foreach(new Predicate<Accumulator<T>>() {
+				@Override public boolean evaluate(final Accumulator<T> accumulator) {
+					accumulator.accumulate(value);
+					return true;
+				}
+			});
+		}
+	}
 	
 }
+
+
+
 
 
 

@@ -24,9 +24,10 @@ package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
 import static org.jenetics.util.AccumulatorAdapter.AccumulatorAdapter;
+import static org.jenetics.util.Accumulators.MinMax;
+import static org.jenetics.util.Accumulators.Variance;
+import static org.jenetics.util.Accumulators.accumulate;
 import static org.jenetics.util.Array.Array;
-import static org.jenetics.util.DescriptiveStatistics.MinMax;
-import static org.jenetics.util.DescriptiveStatistics.Variance;
 
 import java.text.ParseException;
 import java.util.List;
@@ -44,12 +45,11 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Accumulator;
 import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.DescriptiveStatistics.MinMax;
-import org.jenetics.util.DescriptiveStatistics.Variance;
+import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -546,7 +546,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 						AccumulatorAdapter(agevariance, age)
 					);
 				
-				ArrayUtils.accumulate(population, accumulators);
+				accumulate(population, accumulators);
 				
 				statistics = new Statistics<G, C>(
 						generation, 
