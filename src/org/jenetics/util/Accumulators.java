@@ -35,7 +35,7 @@ public class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Mean<N extends Number> implements Accumulator<N> {
+	public static class FirstMoment<N extends Number> implements Accumulator<N> {
 		
 		/**
 		 * Number of values accumulated so far.
@@ -45,7 +45,7 @@ public class Accumulators {
 		/**
 		 * Mean value of the values that have been added.
 		 */
-		protected double _mean = Double.NaN;
+		protected double _moment1 = Double.NaN;
 		
 		/**
 		 * Deviation of last added value from previous mean. This is used by
@@ -55,11 +55,11 @@ public class Accumulators {
 		
 		protected double _ndeviation = Double.NaN;
 		
-		public Mean() {
+		public FirstMoment() {
 		}
 		
-		public double getMean() {
-			return _mean;
+		public double getFirstMoment() {
+			return _moment1;
 		}
 		
 		public long getSamples() {
@@ -68,50 +68,43 @@ public class Accumulators {
 		
 		public void accumulate(final N value) {
 			if (_samples == 0) {
-				_mean = 0;
+				_moment1 = 0;
 			}
 			++_samples;
 			
-			_deviation = value.doubleValue() - _mean;
+			_deviation = value.doubleValue() - _moment1;
 			_ndeviation = _deviation/(double)_samples;
-			_mean += _ndeviation;
+			_moment1 += _ndeviation;
 		}
 	}
 
-	public static <N extends Number> Mean<N> Mean() {
-		return new Mean<N>();
+	public static <N extends Number> FirstMoment<N> FirstMoment() {
+		return new FirstMoment<N>();
 	}
 	
-	public static class Variance<N extends Number> extends Mean<N> {
-		protected double _variance = Double.NaN;
+	public static class SecondMoment<N extends Number> extends FirstMoment<N> {
+		protected double _moment2 = Double.NaN;
 		
-		public Variance() {
+		public SecondMoment() {
 		}
 		
-		public double getVariance() {
-			double variance = Double.NaN;
-			if (_samples == 1) {
-				variance = 0.0;
-			} else if (_samples > 1) {
-				variance = _variance/(_samples - 1.0);
-			}
-			
-			return variance;
+		public double getSecondMoment() {
+			return _moment2;
 		}
 		
 		@Override
 		public void accumulate(final N value) {
 			if (_samples < 1) {
-				_mean = 0;
-				_variance = 0;
+				_moment1 = 0;
+				_moment2 = 0;
 			}
 			super.accumulate(value);
-			_variance += ((double)_samples - 1.0)*_deviation*_ndeviation;
+			_moment2 += ((double)_samples - 1.0)*_deviation*_ndeviation;
 		}
 	}
 	
-	public static <N extends Number> Variance<N> Variance() {
-		return new Variance<N>();
+	public static <N extends Number> SecondMoment<N> SecondMoment() {
+		return new SecondMoment<N>();
 	}
 	
 	/**
@@ -161,14 +154,23 @@ public class Accumulators {
 		final Iterable<? extends T> values, 
 		final Array<Accumulator<T>> accumulators
 	) {
+		final AP<T> ap = new AP<T>();
+		
 		for (final T value : values) {
-			accumulators.foreach(new Predicate<Accumulator<T>>() {
-				@Override public boolean evaluate(final Accumulator<T> accumulator) {
-					accumulator.accumulate(value);
-					return true;
-				}
-			});
+			ap._value = value;
+			accumulators.foreach(ap);
 		}
+	}
+	
+	private static class AP<T> implements Predicate<Accumulator<T>> {
+		T _value;
+		
+		@Override
+		public boolean evaluate(final Accumulator<T> accumulator) {
+			accumulator.accumulate(_value);
+			return true;
+		}
+		
 	}
 	
 }

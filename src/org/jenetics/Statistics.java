@@ -25,7 +25,7 @@ package org.jenetics;
 import static java.lang.Double.doubleToLongBits;
 import static org.jenetics.util.AccumulatorAdapter.AccumulatorAdapter;
 import static org.jenetics.util.Accumulators.MinMax;
-import static org.jenetics.util.Accumulators.Variance;
+import static org.jenetics.util.Accumulators.SecondMoment;
 import static org.jenetics.util.Accumulators.accumulate;
 import static org.jenetics.util.Array.Array;
 
@@ -49,7 +49,7 @@ import org.jenetics.util.BitUtils;
 import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Accumulators.Variance;
+import org.jenetics.util.Accumulators.SecondMoment;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -539,7 +539,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				
 				// The statistics accumulators.
 				final MinMax<Phenotype<G, C>> minmax = MinMax();
-				final Variance<Integer> agevariance = Variance();
+				final SecondMoment<Integer> agevariance = SecondMoment();
 				
 				final Array<Accumulator<Phenotype<G, C>>> accumulators = Array(
 						minmax,
@@ -553,8 +553,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 						minmax.getMax(),
 						minmax.getMin(),
 						population.size(),
-						agevariance.getMean(),
-						agevariance.getVariance()
+						agevariance.getFirstMoment(),
+						agevariance.getSecondMoment()
 					);
 			}
 			
