@@ -51,7 +51,7 @@ public class AccumulatorAdapter<A, B> implements Accumulator<B> {
 		_adoptee.accumulate(_converter.convert(value));
 	}
 	
-	public static <A, B> AccumulatorAdapter<A, B> Accumulator(
+	public static <A, B> AccumulatorAdapter<A, B> AccumulatorAdapter(
 			final Accumulator<? super A> adoptee, 
 			final Converter<? super B, ? extends A> converter
 	) {

@@ -32,6 +32,89 @@ public class DescriptiveStatistics {
 	}
 	
 	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Mean<N extends Number> implements Accumulator<N> {
+		
+		/**
+		 * Number of values accumulated so far.
+		 */
+		protected long _samples = 0;
+		
+		/**
+		 * Mean value of the values that have been added.
+		 */
+		protected double _mean = Double.NaN;
+		
+		/**
+		 * Deviation of last added value from previous mean. This is used by
+		 * higher order moments.
+		 */
+		protected double _deviation = Double.NaN;
+		
+		protected double _ndeviation = Double.NaN;
+		
+		public Mean() {
+		}
+		
+		public double getMean() {
+			return _mean;
+		}
+		
+		public long getSamples() {
+			return _samples;
+		}
+		
+		public void accumulate(final N value) {
+			if (_samples == 0) {
+				_mean = 0;
+			}
+			++_samples;
+			
+			_deviation = value.doubleValue() - _mean;
+			_ndeviation = _deviation/(double)_samples;
+			_mean += _ndeviation;
+		}
+	}
+
+	public static <N extends Number> Mean<N> Mean() {
+		return new Mean<N>();
+	}
+	
+	public static class Variance<N extends Number> extends Mean<N> {
+		protected double _variance = Double.NaN;
+		
+		public Variance() {
+		}
+		
+		public double getVariance() {
+			double variance = Double.NaN;
+			if (_samples == 1) {
+				variance = 0.0;
+			} else if (_samples > 1) {
+				variance = _variance/(_samples - 1.0);
+			}
+			
+			return variance;
+		}
+		
+		@Override
+		public void accumulate(final N value) {
+			if (_samples < 1) {
+				_mean = 0;
+				_variance = 0;
+			}
+			super.accumulate(value);
+			_variance += ((double)_samples - 1.0)*_deviation*_ndeviation;
+		}
+	}
+	
+	public static <N extends Number> Variance<N> Variance() {
+		return new Variance<N>();
+	}
+	
+	/**
 	 * Calculates min and max values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -73,38 +156,6 @@ public class DescriptiveStatistics {
 		return new MinMax<C>();
 	}
 	
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static class Mean<N extends Number> implements Accumulator<N> {
-		private double _moment = Double.NaN;
-		private long _samples = 0;
-		
-		public Mean() {
-		}
-		
-		public double getValue() {
-			return _moment;
-		}
-		
-		public long getSamples() {
-			return _samples;
-		}
-		
-		public void accumulate(final N value) {
-			if (_samples == 0) {
-				_moment = 0;
-			}
-			++_samples;
-			
-			_moment += (value.doubleValue() - _moment)/(double)_samples;
-		}
-	}
-
-	public static <N extends Number> Mean<N> Mean() {
-		return new Mean<N>();
-	}
 }
 
 
