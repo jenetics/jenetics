@@ -77,10 +77,6 @@ public class Accumulators {
 			_moment1 += _ndeviation;
 		}
 	}
-
-	public static <N extends Number> FirstMoment<N> FirstMoment() {
-		return new FirstMoment<N>();
-	}
 	
 	public static class SecondMoment<N extends Number> extends FirstMoment<N> {
 		protected double _moment2 = Double.NaN;
@@ -101,10 +97,6 @@ public class Accumulators {
 			super.accumulate(value);
 			_moment2 += ((double)_samples - 1.0)*_deviation*_ndeviation;
 		}
-	}
-	
-	public static <N extends Number> SecondMoment<N> SecondMoment() {
-		return new SecondMoment<N>();
 	}
 	
 	/**
@@ -144,12 +136,8 @@ public class Accumulators {
 			}
 		}
 	}
-	
-	public static <C extends Comparable<C>> MinMax<C> MinMax() {
-		return new MinMax<C>();
-	}
 
-	
+
 	public static <T> void accumulate(
 		final Iterable<? extends T> values, 
 		final Array<Accumulator<T>> accumulators

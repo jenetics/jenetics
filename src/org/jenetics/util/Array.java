@@ -749,49 +749,6 @@ public class Array<T> implements
 		}
 	}
 	
-	public static <T> Array<T> Array(final int length) {
-		return new Array<T>(length);
-	}
-	
-	public static <T> Array<T> Array(final T first) {
-		return new Array<T>(first);
-	}
-	
-	public static <T> Array<T> Array(final T first, final T second) {
-		return new Array<T>(first, second);
-	}
-	
-	public static <T> Array<T> Array(
-		final T first,
-		final T second,
-		final T third
-	) {
-		return new Array<T>(first, second, third);
-	}
-	
-	public static <T> Array<T> Array(
-		final T first,
-		final T second,
-		final T third,
-		final T fourth
-	) {
-		return new Array<T>(first, second, third, fourth);
-	}
-	
-	public static <T> Array<T> Array(
-		final T first,
-		final T second,
-		final T third,
-		final T fourth,
-		final T fifth
-	) {
-		return new Array<T>(first, second, third, fourth, fifth);
-	}	
-	
-	public static <T> Array<T> Array(final T... values) {
-		return new Array<T>(values);
-	}
-	
 }
 
 
