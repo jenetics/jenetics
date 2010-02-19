@@ -23,11 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
-import static org.jenetics.util.AccumulatorAdapter.AccumulatorAdapter;
-import static org.jenetics.util.Accumulators.MinMax;
-import static org.jenetics.util.Accumulators.SecondMoment;
-import static org.jenetics.util.Accumulators.accumulate;
-import static org.jenetics.util.Array.Array;
+
 
 import java.text.ParseException;
 import java.util.List;
@@ -44,12 +40,12 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Accumulator;
+import org.jenetics.util.AccumulatorAdapter;
+import org.jenetics.util.Accumulators;
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Accumulators.SecondMoment;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -538,15 +534,17 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				final Converter<Phenotype<G, C>, Integer> age = Phenotype.Age(generation);
 				
 				// The statistics accumulators.
-				final MinMax<Phenotype<G, C>> minmax = MinMax();
-				final SecondMoment<Integer> agevariance = SecondMoment();
+				final Accumulators.MinMax<Phenotype<G, C>> minmax = new Accumulators.MinMax<Phenotype<G, C>>();
+				final Accumulators.SecondMoment<Integer> agevariance = new Accumulators.SecondMoment<Integer>();
 				
-				final Array<Accumulator<Phenotype<G, C>>> accumulators = Array(
+				final Accumulator<Phenotype<G, C>> adapter = new AccumulatorAdapter<Integer, Phenotype<G, C>>(agevariance, age);
+				
+				final Array<Accumulator<Phenotype<G, C>>> accumulators = new Array<Accumulator<Phenotype<G, C>>>(
 						minmax,
-						AccumulatorAdapter(agevariance, age)
+						adapter
 					);
 				
-				accumulate(population, accumulators);
+				Accumulators.accumulate(population, accumulators);
 				
 				statistics = new Statistics<G, C>(
 						generation, 

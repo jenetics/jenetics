@@ -53,7 +53,7 @@ public class AccumulatorsTest {
 			lines.add(line);
 		}
 		
-		_values = new Double[lines.size()][5];
+		_values = new Double[lines.size()][10];
 		
 		for (int i = 0; i < lines.size(); ++i) {
 			final String[] parts = lines.get(i).split("\\s");
@@ -66,7 +66,7 @@ public class AccumulatorsTest {
 	
 	@Test
 	public void firstMoment() {
-		final FirstMoment<Double> moment = FirstMoment();
+		final FirstMoment<Double> moment = new FirstMoment<Double>();
 		
 		for (int i = 0; i < _values.length; ++i) {
 			moment.accumulate(_values[i][0]);
@@ -76,7 +76,7 @@ public class AccumulatorsTest {
 	
 	@Test
 	public void secondMoment() {
-		final SecondMoment<Double> moment = SecondMoment();
+		final SecondMoment<Double> moment = new SecondMoment<Double>();
 		
 		for (int i = 0; i < _values.length; ++i) {
 			moment.accumulate(_values[i][0]);
