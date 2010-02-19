@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
 
+import org.jenetics.util.Converter;
 import org.jenetics.util.Verifiable;
 
 import javolution.context.ObjectFactory;
@@ -254,6 +255,61 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
 	}
 	
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	Converter<Phenotype<SG, SC>, Integer> 
+	age(final int currentGeneration) 
+	{
+		return new Converter<Phenotype<SG, SC>, Integer>() {
+			@Override public Integer convert(final Phenotype<SG, SC> value) {
+				return value.getAge(currentGeneration);
+			}
+		};
+	}
+	
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	Converter<Phenotype<SG, SC>, Integer> 
+	generation(final int currentGeneration) 
+	{
+		return new Converter<Phenotype<SG, SC>, Integer>() {
+			@Override public Integer convert(final Phenotype<SG, SC> value) {
+				return value.getGeneration();
+			}
+		};
+	}
+	
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	Converter<Phenotype<SG, SC>, SC> 
+	fitnees(final int currentGeneration) 
+	{
+		return new Converter<Phenotype<SG, SC>, SC>() {
+			@Override public SC convert(final Phenotype<SG, SC> value) {
+				return value.getFitness();
+			}
+		};
+	}
+	
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	Converter<Phenotype<SG, SC>, SC> 
+	rawFitnees(final int currentGeneration) 
+	{
+		return new Converter<Phenotype<SG, SC>, SC>() {
+			@Override public SC convert(final Phenotype<SG, SC> value) {
+				return value.getRawFitness();
+			}
+		};
+	}
+	
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	Converter<Phenotype<SG, SC>, Genotype<SG>> 
+	genotype(final int currentGeneration) 
+	{
+		return new Converter<Phenotype<SG, SC>, Genotype<SG>>() {
+			@Override public Genotype<SG> convert(final Phenotype<SG, SC> value) {
+				return value.getGenotype();
+			}
+		};
+	}
+	
 	/**
 	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only 
 	 * the age of the <code>Phenotype</code> can be incremented.
@@ -264,7 +320,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static<SG extends Gene<?, SG>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
 		final FitnessFunction<SG, SC> fitnessFunction,
