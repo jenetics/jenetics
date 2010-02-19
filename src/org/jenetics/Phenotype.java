@@ -257,7 +257,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	Converter<Phenotype<SG, SC>, Integer> 
-	age(final int currentGeneration) 
+	Age(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -268,7 +268,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	Converter<Phenotype<SG, SC>, Integer> 
-	generation(final int currentGeneration) 
+	Generation(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -279,7 +279,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	Converter<Phenotype<SG, SC>, SC> 
-	fitnees(final int currentGeneration) 
+	Fitnees(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -290,7 +290,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	Converter<Phenotype<SG, SC>, SC> 
-	rawFitnees(final int currentGeneration) 
+	RawFitnees(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -301,7 +301,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	Converter<Phenotype<SG, SC>, Genotype<SG>> 
-	genotype(final int currentGeneration) 
+	Genotype(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Genotype<SG>>() {
 			@Override public Genotype<SG> convert(final Phenotype<SG, SC> value) {
