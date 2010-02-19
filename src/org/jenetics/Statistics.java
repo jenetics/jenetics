@@ -23,6 +23,9 @@
 package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
+import static org.jenetics.util.AccumulatorAdapter.Accumulator;
+import static org.jenetics.util.DescriptiveStatistics.Mean;
+import static org.jenetics.util.DescriptiveStatistics.MinMax;
 
 import java.text.ParseException;
 import java.util.List;
@@ -38,10 +41,14 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.FirstMoment;
-import org.jenetics.util.MinMax;
+import org.jenetics.util.DescriptiveStatistics.Mean;
+import org.jenetics.util.DescriptiveStatistics.MinMax;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -521,50 +528,76 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			final List<? extends Phenotype<G, C>> population,
 			final int generation
 		) {	
-			Statistics<G, C> statistic = new Statistics<G, C>(
+			Statistics<G, C> statistics = new Statistics<G, C>(
 					generation, null, null, 0, 0.0, 0.0
 				);
 			
-			final MinMax<Phenotype<G, C>> minmax = new MinMax<Phenotype<G, C>>();
-			final FirstMoment agemean = new FirstMoment();
-			
-			if (!population.isEmpty()) {	
-				final int size = population.size();
-				final double N = size;
-								
-				double sum = 0;
-				for (int i = 0; i < size; ++i) {
-					final Phenotype<G, C> pt = population.get(i);
-					
-					minmax.accumulate(pt);
-					agemean.accumulate(pt.getAge(generation));
-					
-					sum += pt.getAge(generation);
-				}
+			if (!population.isEmpty()) {
+				// The properties we accumulate.
+				final Converter<Phenotype<G, C>, Integer> age = Phenotype.age(generation);
 				
-				final double mean = sum/N;
-	
-				sum = 0;
-				for (int i = 0; i < size; ++i) {
-					final Phenotype<G, C> pt = population.get(i);
-					final double diff = pt.getAge(generation) - mean;
-					 sum += diff*diff; 
-				}
+				// The statistics accumulators.
+				final MinMax<Phenotype<G, C>> minmax = MinMax();
+				final Mean<Integer> agemean = Mean();
+				final Mean<Integer> agevariance = Mean();
 				
-				final double variance = N > 1 ? sum/(N - 1) : sum;
-			
+				final Array<Accumulator<Phenotype<G, C>>> accumulators = new Array<Accumulator<Phenotype<G, C>>>(
+						minmax,
+						Accumulator(agemean, age),
+						Accumulator(agevariance, age)
+					);
 				
-				statistic = new Statistics<G, C>(
+				ArrayUtils.accumulate(population, accumulators);
+				
+				statistics = new Statistics<G, C>(
 						generation, 
-						minmax.getMax(), 
-						minmax.getMin(), 
-						size, 
-						agemean.getValue(), 
-						variance
+						minmax.getMax(),
+						minmax.getMin(),
+						population.size(),
+						agemean.getValue(),
+						agevariance.getValue()
 					);
 			}
 			
-			return statistic;
+			return statistics;
+//			
+//			if (!population.isEmpty()) {	
+//				final int size = population.size();
+//				final double N = size;
+//								
+//				double sum = 0;
+//				for (int i = 0; i < size; ++i) {
+//					final Phenotype<G, C> pt = population.get(i);
+//					
+//					minmax.accumulate(pt);
+//					agemean.accumulate(pt.getAge(generation));
+//					
+//					sum += pt.getAge(generation);
+//				}
+//				
+//				final double mean = sum/N;
+//	
+//				sum = 0;
+//				for (int i = 0; i < size; ++i) {
+//					final Phenotype<G, C> pt = population.get(i);
+//					final double diff = pt.getAge(generation) - mean;
+//					 sum += diff*diff; 
+//				}
+//				
+//				final double variance = N > 1 ? sum/(N - 1) : sum;
+//			
+//				
+//				statistic = new Statistics<G, C>(
+//						generation, 
+//						minmax.getMax(), 
+//						minmax.getMin(), 
+//						size, 
+//						agemean.getValue(), 
+//						variance
+//					);
+//			}
+//			
+//			return statistic;
 		}
 
 	}

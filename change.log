@@ -1,4 +1,5 @@
 Jenetics-???
+- Add Accumulator classes for statistics calculation.
 - Rename org.jenetics.utils.Serializer to org.jenetics.utils.IOUtils.
 - Change method signature from ArrayUtils.foreach(Collection) to 
   ArrayUtils.foreach(Iterable).

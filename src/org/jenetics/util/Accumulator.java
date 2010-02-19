@@ -26,15 +26,8 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Variance {
-	private double _variance = Double.NaN;
-	
-	public double getValue() {
-		return _variance;
-	}
-	
-	public void accumulate(final double value) {
-		
-	}
+public interface Accumulator<T> {
+
+	public void accumulate(final T value);
 	
 }

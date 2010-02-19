@@ -42,6 +42,21 @@ public final class ArrayUtils {
 	private ArrayUtils() {
 	}
 	
+	
+	public static <T> void accumulate(
+		final Iterable<? extends T> values, 
+		final Array<Accumulator<T>> accumulators
+	) {
+		for (final T value : values) {
+			accumulators.foreach(new Predicate<Accumulator<T>>() {
+				@Override public boolean evaluate(final Accumulator<T> accumulator) {
+					accumulator.accumulate(value);
+					return true;
+				}
+			});
+		}
+	}
+	
 	/**
 	 * Swap two elements of an given array.
 	 * 

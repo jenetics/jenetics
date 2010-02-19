@@ -26,28 +26,36 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class FirstMoment {
-	private double _moment = Double.NaN;
-	private long _samples = 0;
+public class AccumulatorAdapter<A, B> implements Accumulator<B> {
+	private final Accumulator<? super A> _adoptee;
+	private final Converter<? super B, ? extends A> _converter;
 	
-	public FirstMoment() {
+	public AccumulatorAdapter(
+		final Accumulator<? super A> adoptee, 
+		final Converter<? super B, ? extends A> converter
+	) {
+		_adoptee = Validator.nonNull(adoptee);
+		_converter = Validator.nonNull(converter);
 	}
 	
-	public double getValue() {
-		return _moment;
+	public Accumulator<? super A> getAccumulator() {
+		return _adoptee;
 	}
 	
-	public long getSamples() {
-		return _samples;
+	public Converter<? super B, ? extends A> getConverter() {
+		return _converter;
 	}
 	
-	public void accumulate(final double value) {
-		if (_samples == 0) {
-			_moment = 0;
-		}
-		++_samples;
-		
-		_moment += (value - _moment)/(double)_samples;
+	@Override
+	public void accumulate(final B value) {
+		_adoptee.accumulate(_converter.convert(value));
 	}
 	
+	public static <A, B> AccumulatorAdapter<A, B> Accumulator(
+			final Accumulator<? super A> adoptee, 
+			final Converter<? super B, ? extends A> converter
+	) {
+		return new AccumulatorAdapter<A, B>(adoptee, converter);
+	}
+
 }
