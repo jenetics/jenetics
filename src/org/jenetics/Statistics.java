@@ -40,6 +40,8 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
+import org.jenetics.util.FirstMoment;
+import org.jenetics.util.MinMax;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -523,24 +525,19 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 					generation, null, null, 0, 0.0, 0.0
 				);
 			
+			final MinMax<Phenotype<G, C>> minmax = new MinMax<Phenotype<G, C>>();
+			final FirstMoment agemean = new FirstMoment();
+			
 			if (!population.isEmpty()) {	
 				final int size = population.size();
 				final double N = size;
-				
-				Phenotype<G, C> best = population.get(0);
-				Phenotype<G, C> worst = population.get(0);
-				
+								
 				double sum = 0;
 				for (int i = 0; i < size; ++i) {
 					final Phenotype<G, C> pt = population.get(i);
 					
-					// Finding best/worst phenotype
-					if (pt.compareTo(worst) < 0) {
-						worst = pt;
-					}
-					if (pt.compareTo(best) > 0) {
-						best = pt;
-					}
+					minmax.accumulate(pt);
+					agemean.accumulate(pt.getAge(generation));
 					
 					sum += pt.getAge(generation);
 				}
@@ -557,7 +554,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				final double variance = N > 1 ? sum/(N - 1) : sum;
 			
 				
-				statistic = new Statistics<G, C>(generation, best, worst, size, mean, variance);
+				statistic = new Statistics<G, C>(
+						generation, 
+						minmax.getMax(), 
+						minmax.getMin(), 
+						size, 
+						agemean.getValue(), 
+						variance
+					);
 			}
 			
 			return statistic;
