@@ -81,7 +81,7 @@ public class AccumulatorsTest {
 		for (int i = 0; i < _values.length; ++i) {
 			moment.accumulate(_values[i][0]);
 			Assert.assertEquals(moment.getMean(), _values[i][1]);
-			Assert.assertEquals(moment.getVariance(), _values[i][2]);
+			Assert.assertEquals(moment.getVariance(), _values[i][6], 0.0000001);
 		}
 	}
 	

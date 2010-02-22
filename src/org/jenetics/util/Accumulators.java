@@ -85,7 +85,7 @@ public class Accumulators {
 			}
 			++_samples;
 			
-			_mean = (value.doubleValue() - _mean)/(double)_samples;
+			_mean += (value.doubleValue() - _mean)/(double)_samples;
 		}
 	}
 	

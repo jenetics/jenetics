@@ -121,7 +121,7 @@ public class StatisticsTest {
 		Assert.assertEquals(statistics.getWorstPhenotype().getFitness().doubleValue(), 1.0, EPSILON);		
 	}
 	
-	//@Test
+	@Test
 	public void calculation2() {
 		int size = 10;
 		Population<Float64Gene, Float64> population = newPopulation(size);
@@ -140,7 +140,7 @@ public class StatisticsTest {
 	}
 	
 	@SuppressWarnings("unchecked")
-	//@Test
+	@Test
 	public void serialize() throws XMLStreamException {
 		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0));
 	}
