@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import javolution.context.ConcurrentContext;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -32,14 +34,8 @@ public class Accumulators {
 	}
 	
 	/**
-	 * <p>Calculate the first moment&mdash;arithmetic mean:</p>
-	 * 
-	 * <p><i><a href="http://mathworld.wolfram.com/ArithmeticMean.html">Artithmetic Mean</a>:</i>
-	 * The arithmetic mean (first moment) of a set of values is the quantity 
-	 * commonly called "the" mean or the average. Given a set of samples 
-	 * <img src="doc-files/sample-xi.gif" class="inlineformula" alt="{x_i}" />,
-	 * the arithmetic mean is 
-	 * <p><img src="doc-files/arithmetic-mean.gif" alt="Arithmentic Mean" /></p></p> 
+	 * <p>Calculate the Arithmetic mean:</p>
+	 * <p><img src="doc-files/arithmetic-mean.gif" alt="Arithmentic Mean" /></p>
 	 * 
 	 * @see <a href="http://mathworld.wolfram.com/ArithmeticMean.html">Wolfram MathWorld: Artithmetic Mean</a>
 	 * @see <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">Wikipedia: Arithmetic Mean</a>
@@ -58,14 +54,6 @@ public class Accumulators {
 		 * Mean value of the values that have been added.
 		 */
 		private double _mean = Double.NaN;
-		
-		
-		/**
-	     * Deviation of most recently added value from previous first moment,
-	     * normalized by previous sample size.  Retained to prevent repeated
-	     * computation in higher order moments
-	     */
-		double _ndeviation = Double.NaN;
 		
 		public Mean() {
 		}
@@ -95,6 +83,8 @@ public class Accumulators {
 	 * 
 	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" >
 	 *         Wikipedia: Algorithms for calculating variance</a>
+	 * @see <a href="http://mathworld.wolfram.com/Variance.html">
+	 *         Wolfram MathWorld: Variance</a>
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
@@ -177,28 +167,293 @@ public class Accumulators {
 	}
 
 
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
+	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * accumulation is done in paralell.
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accumulators the accumulators to apply.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values, 
-		final Array<Accumulator<T>> accumulators
+		final Array<Accumulator<? super T>> accumulators
 	) {
-		final AP<T> ap = new AP<T>();
-		
-		for (final T value : values) {
-			ap._value = value;
-			accumulators.foreach(ap);
+		switch (accumulators.length()) {
+		case 1:
+			accumulate(
+					values, 
+					accumulators.get(0)
+				); break;
+		case 2:
+			accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1)
+				); break;
+		case 3:
+			accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1),
+					accumulators.get(2)
+				); break;
+		case 4:
+			accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1),
+					accumulators.get(2),
+					accumulators.get(3)
+				); break;
+		case 5:
+			accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1),
+					accumulators.get(2),
+					accumulators.get(3),
+					accumulators.get(4)
+				); break;
+		default:
+			ConcurrentContext.enter();
+			try {
+				for (final Accumulator<? super T> accumulator : accumulators) {
+					ConcurrentContext.execute(new Runnable() {
+						@Override public void run() {
+							for (final T value : values) {
+								accumulator.accumulate(value);
+							}					
+						}
+					});
+				}
+			} finally {
+				ConcurrentContext.exit();
+			}
 		}
 	}
 	
-	private static class AP<T> implements Predicate<Accumulator<T>> {
-		T _value;
-		
-		@Override
-		public boolean evaluate(final Accumulator<T> accumulator) {
-			accumulator.accumulate(_value);
-			return true;
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
+	 * {@code accumulator} with each value of the given {@code values}. 
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accumulator the accumulator.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	public static <T> void accumulate(
+		final Iterable<? extends T> values,
+		final Accumulator<? super T> accumulator
+	) {
+		for (final T value : values) {
+			accumulator.accumulate(value);
 		}
-		
 	}
+	
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
+	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * accumulation is done in paralell.
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accumulator1 the first accumulator.
+	 * @param accumulator2 the second accumulator.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	public static <T> void accumulate(
+		final Iterable<? extends T> values,
+		final Accumulator<? super T> accumulator1,
+		final Accumulator<? super T> accumulator2
+	) {
+		ConcurrentContext.enter();
+		try {
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator1.accumulate(value);
+					}
+				}
+			});
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator2.accumulate(value);
+					}
+				}
+			});			
+		} finally {
+			ConcurrentContext.exit();
+		}
+	}
+	
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
+	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * accumulation is done in paralell.
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accumulator1 the first accumulator.
+	 * @param accumulator2 the second accumulator.
+	 * @param accumulator3 the third accumulator
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	public static <T> void accumulate(
+		final Iterable<? extends T> values,
+		final Accumulator<? super T> accumulator1,
+		final Accumulator<? super T> accumulator2,
+		final Accumulator<? super T> accumulator3
+	) {
+		ConcurrentContext.enter();
+		try {
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator1.accumulate(value);
+					}
+				}
+			});
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator2.accumulate(value);
+					}
+				}
+			});		
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator3.accumulate(value);
+					}
+				}
+			});			
+		} finally {
+			ConcurrentContext.exit();
+		}
+	}
+	
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
+	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * accumulation is done in paralell.
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accumulator1 the first accumulator.
+	 * @param accumulator2 the second accumulator.
+	 * @param accumulator3 the third accumulator.
+	 * @param accumulator4 the fourth accumulator.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	public static <T> void accumulate(
+		final Iterable<? extends T> values,
+		final Accumulator<? super T> accumulator1,
+		final Accumulator<? super T> accumulator2,
+		final Accumulator<? super T> accumulator3,
+		final Accumulator<? super T> accumulator4
+	) {
+		ConcurrentContext.enter();
+		try {
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator1.accumulate(value);
+					}
+				}
+			});
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator2.accumulate(value);
+					}
+				}
+			});		
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator3.accumulate(value);
+					}
+				}
+			});	
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator4.accumulate(value);
+					}
+				}
+			});	
+		} finally {
+			ConcurrentContext.exit();
+		}
+	}
+	
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
+	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * accumulation is done in paralell.
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accumulator1 the first accumulator.
+	 * @param accumulator2 the second accumulator.
+	 * @param accumulator3 the third accumulator.
+	 * @param accumulator4 the fourth accumulator.
+	 * @param accumulator5 the fifth accumulator.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	public static <T> void accumulate(
+		final Iterable<? extends T> values,
+		final Accumulator<? super T> accumulator1,
+		final Accumulator<? super T> accumulator2,
+		final Accumulator<? super T> accumulator3,
+		final Accumulator<? super T> accumulator4,
+		final Accumulator<? super T> accumulator5
+	) {
+		ConcurrentContext.enter();
+		try {
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator1.accumulate(value);
+					}
+				}
+			});
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator2.accumulate(value);
+					}
+				}
+			});		
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator3.accumulate(value);
+					}
+				}
+			});	
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator4.accumulate(value);
+					}
+				}
+			});	
+			ConcurrentContext.execute(new Runnable() {
+				@Override public void run() {
+					for (final T value : values) {
+						accumulator5.accumulate(value);
+					}
+				}
+			});			
+		} finally {
+			ConcurrentContext.exit();
+		}
+	}	
 	
 }
 
