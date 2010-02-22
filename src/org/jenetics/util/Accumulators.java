@@ -40,20 +40,20 @@ public class Accumulators {
 		/**
 		 * Number of values accumulated so far.
 		 */
-		protected long _samples = 0;
+		long _samples = 0;
 		
 		/**
 		 * Mean value of the values that have been added.
 		 */
-		protected double _moment1 = Double.NaN;
+		double _moment1 = Double.NaN;
 		
 		/**
 		 * Deviation of last added value from previous mean. This is used by
 		 * higher order moments.
 		 */
-		protected double _deviation = Double.NaN;
+		double _deviation = Double.NaN;
 		
-		protected double _ndeviation = Double.NaN;
+		double _ndeviation = Double.NaN;
 		
 		public FirstMoment() {
 		}
@@ -79,7 +79,7 @@ public class Accumulators {
 	}
 	
 	public static class SecondMoment<N extends Number> extends FirstMoment<N> {
-		protected double _moment2 = Double.NaN;
+		double _moment2 = Double.NaN;
 		
 		public SecondMoment() {
 		}
