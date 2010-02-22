@@ -47,67 +47,94 @@ public class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class FirstMoment<N extends Number> implements Accumulator<N> {
+	public static class Mean<N extends Number> implements Accumulator<N> {
 		
 		/**
 		 * Number of values accumulated so far.
 		 */
-		long _samples = 0;
+		private long _samples = 0;
 		
 		/**
 		 * Mean value of the values that have been added.
 		 */
-		double _moment1 = Double.NaN;
+		private double _mean = Double.NaN;
+		
 		
 		/**
-		 * Deviation of last added value from previous mean. This is used by
-		 * higher order moments.
-		 */
-		double _deviation = Double.NaN;
-		
+	     * Deviation of most recently added value from previous first moment,
+	     * normalized by previous sample size.  Retained to prevent repeated
+	     * computation in higher order moments
+	     */
 		double _ndeviation = Double.NaN;
 		
-		public FirstMoment() {
+		public Mean() {
 		}
 		
-		public double getFirstMoment() {
-			return _moment1;
+		public double getMean() {
+			return _mean;
 		}
 		
 		public long getSamples() {
 			return _samples;
 		}
 		
+		@Override
 		public void accumulate(final N value) {
 			if (_samples == 0) {
-				_moment1 = 0;
+				_mean = 0;
 			}
 			++_samples;
 			
-			_deviation = value.doubleValue() - _moment1;
-			_ndeviation = _deviation/(double)_samples;
-			_moment1 += _ndeviation;
+			_mean = (value.doubleValue() - _mean)/(double)_samples;
 		}
 	}
 	
-	public static class SecondMoment<N extends Number> extends FirstMoment<N> {
-		double _moment2 = Double.NaN;
+	/**
+	 * <p>Calculate the variance from a finite sample of <i>n</i> observations:</p>
+	 * <p><img src="doc-files/variance.gif" alt="Variance" /></p>
+	 * 
+	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" >
+	 *         Wikipedia: Algorithms for calculating variance</a>
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Variance<N extends Number> implements Accumulator<N> {
+		private long _samples = 0;
+		private double _mean = Double.NaN;
+		private double _m2 = Double.NaN;
 		
-		public SecondMoment() {
+		public Variance() {
 		}
 		
-		public double getSecondMoment() {
-			return _moment2;
+		public double getMean() {
+			return _mean;
+		}
+		
+		public double getVariance() {
+			double variance = Double.NaN;
+			
+			if (_samples == 1) {
+				variance = _m2;
+			} else if (_samples > 1) {
+				variance = _m2/(double)(_samples - 1);
+			}
+			
+			return variance;
 		}
 		
 		@Override
 		public void accumulate(final N value) {
-			if (_samples < 1) {
-				_moment1 = 0;
-				_moment2 = 0;
+			if (_samples == 0) {
+				_mean = 0;
+				_m2 = 0;
 			}
-			super.accumulate(value);
-			_moment2 += ((double)_samples - 1.0)*_deviation*_ndeviation;
+			++_samples;
+			
+			final double data = value.doubleValue();
+			final double delta = data - _mean;
+			_mean += delta/(double)_samples;
+			_m2 += delta*(data - _mean);
 		}
 	}
 	
