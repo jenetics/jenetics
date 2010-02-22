@@ -32,6 +32,18 @@ public class Accumulators {
 	}
 	
 	/**
+	 * <p>Calculate the first moment&mdash;arithmetic mean:</p>
+	 * 
+	 * <p><i><a href="http://mathworld.wolfram.com/ArithmeticMean.html">Artithmetic Mean</a>:</i>
+	 * The arithmetic mean (first moment) of a set of values is the quantity 
+	 * commonly called "the" mean or the average. Given a set of samples 
+	 * <img src="doc-files/sample-xi.gif" class="inlineformula" alt="{x_i}" />,
+	 * the arithmetic mean is 
+	 * <p><img src="doc-files/arithmetic-mean.gif" alt="Arithmentic Mean" /></p></p> 
+	 * 
+	 * @see <a href="http://mathworld.wolfram.com/ArithmeticMean.html">Wolfram MathWorld: Artithmetic Mean</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">Wikipedia: Arithmetic Mean</a>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */

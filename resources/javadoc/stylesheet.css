@@ -28,6 +28,11 @@ a:hover {
 	text-decoration: underline;
 }
 
+img.inlineformula {
+	vertical-align: middle;
+}
+
+
 /* Headings */
 h1 { font-size: 145% }
 
