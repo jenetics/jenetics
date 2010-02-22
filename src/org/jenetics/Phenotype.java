@@ -255,8 +255,17 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
 	}
 	
+	/**
+	 * Create a {@link Converter} which return the phenotype age when calling
+	 * {@code converter.convert(phenotype)}.
+	 * 
+	 * @param <SG> the gene type.
+	 * @param <SC> the fitness value type.
+	 * @param currentGeneration the current generation.
+	 * @return an age {@link Converter}.
+	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, Integer> Age(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, Integer> age(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -265,8 +274,16 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		};
 	}
 	
+	/**
+	 * Create a {@link Converter} which return the phenotype generation when 
+	 * calling {@code converter.convert(phenotype)}.
+	 * 
+	 * @param <SG> the gene type.
+	 * @param <SC> the fitness value type.
+	 * @return a generation {@link Converter}.
+	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, Integer> Generation() 
+	Converter<Phenotype<SG, SC>, Integer> generation() 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -275,8 +292,16 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		};
 	}
 	
+	/**
+	 * Create a {@link Converter} which return the phenotype fitness when 
+	 * calling {@code converter.convert(phenotype)}.
+	 * 
+	 * @param <SG> the gene type.
+	 * @param <SC> the fitness value type.
+	 * @return a fitness {@link Converter}.
+	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, SC> Fitness() 
+	Converter<Phenotype<SG, SC>, SC> fitness() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -285,8 +310,16 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		};
 	}
 	
+	/**
+	 * Create a {@link Converter} which return the phenotype raw fitness when 
+	 * calling {@code converter.convert(phenotype)}.
+	 * 
+	 * @param <SG> the gene type.
+	 * @param <SC> the fitness value type.
+	 * @return a raw fitness {@link Converter}.
+	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, SC> RawFitnees() 
+	Converter<Phenotype<SG, SC>, SC> rawFitnees() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -295,8 +328,16 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		};
 	}
 	
+	/**
+	 * Create a {@link Converter} which return the phenotype genotype when 
+	 * calling {@code converter.convert(phenotype)}.
+	 * 
+	 * @param <SG> the gene type.
+	 * @param <SC> the fitness value type.
+	 * @return a genotype {@link Converter}.
+	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, Genotype<SG>> Genotype() 
+	Converter<Phenotype<SG, SC>, Genotype<SG>> genotype() 
 	{
 		return new Converter<Phenotype<SG, SC>, Genotype<SG>>() {
 			@Override public Genotype<SG> convert(final Phenotype<SG, SC> value) {

@@ -33,6 +33,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.AccumulatorAdapter;
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 
 
@@ -193,22 +195,19 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			
 			if (!population.isEmpty()) {
 				// The properties we accumulate.
-				final Converter<Phenotype<G, R>, Integer> age = Phenotype.Age(generation);
-				final Converter<Phenotype<G, R>, R> fitness = Phenotype.Fitness();
+				final Converter<Phenotype<G, R>, Integer> age = Phenotype.age(generation);
+				final Converter<Phenotype<G, R>, R> fitness = Phenotype.fitness();
 				
 				// The statistics accumulators.
-				final Accumulators.MinMax<Phenotype<G, R>> minMax = 
-					new Accumulators.MinMax<Phenotype<G, R>>();
-				final Accumulators.Variance<Integer> ageVariance = 
-					new Accumulators.Variance<Integer>();
-				final Accumulators.Variance<Number> fitnessVariance =
-					new Accumulators.Variance<Number>();
+				final MinMax<Phenotype<G, R>> minMax = new MinMax<Phenotype<G, R>>();
+				final Variance<Integer> ageVariance = new Variance<Integer>();
+				final Variance<R> fitnessVariance = new Variance<R>();
 								
 				Accumulators.accumulate(
 						population, 
 						minMax, 
-						new AccumulatorAdapter<Integer, Phenotype<G, R>>(ageVariance, age),
-						new AccumulatorAdapter<Number, Phenotype<G, R>>(fitnessVariance, fitness)
+						AccumulatorAdapter.valueOf(ageVariance, age),
+						AccumulatorAdapter.valueOf(fitnessVariance, fitness)
 					);
 
 				

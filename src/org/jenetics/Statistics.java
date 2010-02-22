@@ -44,6 +44,8 @@ import org.jenetics.util.Accumulators;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
+import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -531,18 +533,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			
 			if (!population.isEmpty()) {
 				// The properties we accumulate.
-				final Converter<Phenotype<G, C>, Integer> age = Phenotype.Age(generation);
+				final Converter<Phenotype<G, C>, Integer> age = Phenotype.age(generation);
 				
 				// The statistics accumulators.
-				final Accumulators.MinMax<Phenotype<G, C>> minMax = 
-					new Accumulators.MinMax<Phenotype<G, C>>();
-				final Accumulators.Variance<Integer> ageVariance = 
-					new Accumulators.Variance<Integer>();
+				final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
+				final Variance<Integer> ageVariance = new Variance<Integer>();
 								
 				Accumulators.accumulate(
 						population, 
 						minMax, 
-						new AccumulatorAdapter<Integer, Phenotype<G, C>>(ageVariance, age)
+						AccumulatorAdapter.valueOf(ageVariance, age)
 					);
 				
 				statistics = new Statistics<G, C>(
