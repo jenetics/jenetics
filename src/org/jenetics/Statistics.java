@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static java.lang.Double.doubleToLongBits;
 
-
 import java.text.ParseException;
 import java.util.List;
 
@@ -39,10 +38,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Accumulator;
 import org.jenetics.util.AccumulatorAdapter;
 import org.jenetics.util.Accumulators;
-import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
@@ -534,17 +531,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				final Converter<Phenotype<G, C>, Integer> age = Phenotype.Age(generation);
 				
 				// The statistics accumulators.
-				final Accumulators.MinMax<Phenotype<G, C>> minmax = new Accumulators.MinMax<Phenotype<G, C>>();
-				final Accumulators.Variance<Integer> agevariance = new Accumulators.Variance<Integer>();
-				
-				final Accumulator<Phenotype<G, C>> adapter = new AccumulatorAdapter<Integer, Phenotype<G, C>>(agevariance, age);
-				
-				final Array<Accumulator<Phenotype<G, C>>> accumulators = new Array<Accumulator<Phenotype<G, C>>>(
-						minmax,
-						adapter
+				final Accumulators.MinMax<Phenotype<G, C>> minmax = 
+					new Accumulators.MinMax<Phenotype<G, C>>();
+				final Accumulators.Variance<Integer> agevariance = 
+					new Accumulators.Variance<Integer>();
+								
+				Accumulators.accumulate(
+						population, 
+						minmax, 
+						new AccumulatorAdapter<Integer, Phenotype<G, C>>(agevariance, age)
 					);
-				
-				Accumulators.accumulate(population, accumulators);
 				
 				statistics = new Statistics<G, C>(
 						generation, 
