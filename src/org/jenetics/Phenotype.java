@@ -256,8 +256,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, Integer> 
-	Age(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, Integer> Age(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -267,8 +266,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, Integer> 
-	Generation(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, Integer> Generation() 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -278,8 +276,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, SC> 
-	Fitnees(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, SC> Fitness() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -289,8 +286,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, SC> 
-	RawFitnees(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, SC> RawFitnees() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -300,8 +296,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
-	Converter<Phenotype<SG, SC>, Genotype<SG>> 
-	Genotype(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, Genotype<SG>> Genotype() 
 	{
 		return new Converter<Phenotype<SG, SC>, Genotype<SG>>() {
 			@Override public Genotype<SG> convert(final Phenotype<SG, SC> value) {
