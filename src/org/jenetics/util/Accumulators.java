@@ -226,7 +226,7 @@ public class Accumulators {
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The 
-	 * accumulation is done in paralell.
+	 * accumulation is done in parallel.
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
@@ -312,7 +312,7 @@ public class Accumulators {
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The 
-	 * accumulation is done in paralell.
+	 * accumulation is done in parallel.
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
@@ -349,7 +349,7 @@ public class Accumulators {
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The 
-	 * accumulation is done in paralell.
+	 * accumulation is done in parallel.
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
@@ -395,7 +395,7 @@ public class Accumulators {
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The 
-	 * accumulation is done in paralell.
+	 * accumulation is done in parallel.
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
@@ -450,7 +450,7 @@ public class Accumulators {
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The 
-	 * accumulation is done in paralell.
+	 * accumulation is done in parallel.
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
