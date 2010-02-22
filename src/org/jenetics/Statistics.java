@@ -535,7 +535,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				
 				// The statistics accumulators.
 				final Accumulators.MinMax<Phenotype<G, C>> minmax = new Accumulators.MinMax<Phenotype<G, C>>();
-				final Accumulators.SecondMoment<Integer> agevariance = new Accumulators.SecondMoment<Integer>();
+				final Accumulators.Variance<Integer> agevariance = new Accumulators.Variance<Integer>();
 				
 				final Accumulator<Phenotype<G, C>> adapter = new AccumulatorAdapter<Integer, Phenotype<G, C>>(agevariance, age);
 				
@@ -551,8 +551,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 						minmax.getMax(),
 						minmax.getMin(),
 						population.size(),
-						agevariance.getFirstMoment(),
-						agevariance.getSecondMoment()
+						agevariance.getMean(),
+						agevariance.getVariance()
 					);
 			}
 			

@@ -22,15 +22,15 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.Accumulators.FirstMoment;
-import static org.jenetics.util.Accumulators.SecondMoment;
+import static org.jenetics.util.Accumulators.Mean;
+import static org.jenetics.util.Accumulators.Variance;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import org.jenetics.util.Accumulators.FirstMoment;
-import org.jenetics.util.Accumulators.SecondMoment;
+import org.jenetics.util.Accumulators.Mean;
+import org.jenetics.util.Accumulators.Variance;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -66,22 +66,22 @@ public class AccumulatorsTest {
 	
 	@Test
 	public void firstMoment() {
-		final FirstMoment<Double> moment = new FirstMoment<Double>();
+		final Mean<Double> moment = new Mean<Double>();
 		
 		for (int i = 0; i < _values.length; ++i) {
 			moment.accumulate(_values[i][0]);
-			Assert.assertEquals(moment.getFirstMoment(), _values[i][1]);
+			Assert.assertEquals(moment.getMean(), _values[i][1]);
 		}
 	}
 	
 	@Test
 	public void secondMoment() {
-		final SecondMoment<Double> moment = new SecondMoment<Double>();
+		final Variance<Double> moment = new Variance<Double>();
 		
 		for (int i = 0; i < _values.length; ++i) {
 			moment.accumulate(_values[i][0]);
-			Assert.assertEquals(moment.getFirstMoment(), _values[i][1]);
-			Assert.assertEquals(moment.getSecondMoment(), _values[i][2]);
+			Assert.assertEquals(moment.getMean(), _values[i][1]);
+			Assert.assertEquals(moment.getVariance(), _values[i][2]);
 		}
 	}
 	
