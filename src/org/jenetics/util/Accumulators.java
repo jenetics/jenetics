@@ -80,6 +80,9 @@ public class Accumulators {
 			return sem;
 		}
 		
+		/**
+		 * @throws NullPointerException if the given {@code value} is {@code null}.
+		 */
 		@Override
 		public void accumulate(final N value) {
 			if (_samples == 0) {
@@ -160,6 +163,9 @@ public class Accumulators {
 			return sem;
 		}
 		
+		/**
+		 * @throws NullPointerException if the given {@code value} is {@code null}.
+		 */
 		@Override
 		public void accumulate(final N value) {
 			if (_samples == 0) {
@@ -196,6 +202,9 @@ public class Accumulators {
 			return _max;
 		}
 		
+		/**
+		 * @throws NullPointerException if the given {@code value} is {@code null}.
+		 */
 		@Override
 		public void accumulate(final C value) {
 			if (value != null) {

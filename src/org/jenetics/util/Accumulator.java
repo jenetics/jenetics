@@ -23,11 +23,20 @@
 package org.jenetics.util;
 
 /**
+ * Interface for accumulating values of a given type.
+ * 
+ * @see Accumulators
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public interface Accumulator<T> {
 
+	/**
+	 * Accumulate the given value.
+	 * 
+	 * @param value the value to accumulate.
+	 */
 	public void accumulate(final T value);
 	
 }

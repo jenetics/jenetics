@@ -25,7 +25,7 @@
  ############################################################################### 
 -->
 <project default="all">
-	<property name="version" value="0.5.0.0" />
+	<property name="version" value="0.5.1.0" />
 	<property name="identifier" value="Jentics-${version}" />
 	<property name="year" value="2007-2010" />
 	<property name="source.dir" value="./src" />
