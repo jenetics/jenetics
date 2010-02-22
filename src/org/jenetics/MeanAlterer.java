@@ -57,7 +57,7 @@ public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
-		final int chIndex = random.nextInt(gt1.chromosomes());
+		final int chIndex = random.nextInt(gt1.length());
 		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
 		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
 		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();

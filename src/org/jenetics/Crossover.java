@@ -55,7 +55,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
 		//Choosing the Chromosome for crossover.
-		final int chIndex = random.nextInt(gt1.chromosomes());
+		final int chIndex = random.nextInt(gt1.length());
 		
 		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
 		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();

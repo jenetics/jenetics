@@ -35,6 +35,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
@@ -111,15 +112,6 @@ public class Genotype<T extends Gene<?, T>>
 	}
 	
 	/**
-	 * Getting the number of chromosomes of this genotype.
-	 * 
-	 * @return number of chromosomes.
-	 */
-	public int chromosomes() {
-		return _chromosomes.length();
-	}
-	
-	/**
 	 * Getting the number of _chromosomes of this genotype.
 	 * 
 	 * @return number of _chromosomes.
@@ -157,10 +149,11 @@ public class Genotype<T extends Gene<?, T>>
 		
 		return genotype;
 	}
+	
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		for (int i = 0, n = chromosomes(); i < n; ++i) {
+		for (int i = 0, n = length(); i < n; ++i) {
 			hash += getChromosome(i).hashCode()*37;
 		}		 
 		return hash;
@@ -176,8 +169,8 @@ public class Genotype<T extends Gene<?, T>>
 		}
 		
 		final Genotype<?> gt = (Genotype<?>)o;
-		boolean equals = chromosomes() == gt.chromosomes();
-		for (int i = 0, n = chromosomes(); i < n && equals; ++i) {
+		boolean equals = length() == gt.length();
+		for (int i = 0, n = length(); i < n && equals; ++i) {
 			equals = getChromosome(i).equals(gt.getChromosome(i));
 		}
 		return equals;
@@ -205,6 +198,16 @@ public class Genotype<T extends Gene<?, T>>
 	@Override
 	public String toString() {
 		return toText().toString();
+	}
+	
+	public static <T extends Gene<?, T>> 
+	Converter<Genotype<T>, Array<Chromosome<T>>> chromosomes()
+	{
+		return new Converter<Genotype<T>, Array<Chromosome<T>>>() {
+			@Override public Array<Chromosome<T>> convert(final Genotype<T> value) {
+				return value.getChromosomes();
+			}
+		};
 	}
 	
 	/**
