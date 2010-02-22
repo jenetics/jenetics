@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
 import java.text.ParseException;
@@ -65,6 +66,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		
 	private final FinalReference<Time> _time = new FinalReference<Time>(new Time());
 
+	protected Statistics(final int generation) {
+		this(generation, null, null, 0, NaN, NaN);
+	}
+	
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
 	 * may be {@code null}
@@ -522,33 +527,31 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 			final List<? extends Phenotype<G, C>> population,
 			final int generation
 		) {	
-			Statistics<G, C> statistics = new Statistics<G, C>(
-					generation, null, null, 0, 0.0, 0.0
-				);
+			Statistics<G, C> statistics = new Statistics<G, C>(generation);
 			
 			if (!population.isEmpty()) {
 				// The properties we accumulate.
 				final Converter<Phenotype<G, C>, Integer> age = Phenotype.Age(generation);
 				
 				// The statistics accumulators.
-				final Accumulators.MinMax<Phenotype<G, C>> minmax = 
+				final Accumulators.MinMax<Phenotype<G, C>> minMax = 
 					new Accumulators.MinMax<Phenotype<G, C>>();
-				final Accumulators.Variance<Integer> agevariance = 
+				final Accumulators.Variance<Integer> ageVariance = 
 					new Accumulators.Variance<Integer>();
 								
 				Accumulators.accumulate(
 						population, 
-						minmax, 
-						new AccumulatorAdapter<Integer, Phenotype<G, C>>(agevariance, age)
+						minMax, 
+						new AccumulatorAdapter<Integer, Phenotype<G, C>>(ageVariance, age)
 					);
 				
 				statistics = new Statistics<G, C>(
 						generation, 
-						minmax.getMax(),
-						minmax.getMin(),
+						minMax.getMax(),
+						minMax.getMin(),
 						population.size(),
-						agevariance.getMean(),
-						agevariance.getVariance()
+						ageVariance.getMean(),
+						ageVariance.getVariance()
 					);
 			}
 			

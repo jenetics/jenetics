@@ -22,14 +22,17 @@
  */
 package org.jenetics;
 
+import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
-import static java.lang.Math.sqrt;
 
 import java.util.List;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.AccumulatorAdapter;
+import org.jenetics.util.Accumulators;
+import org.jenetics.util.Converter;
 import org.jscience.mathematics.number.Float64;
 
 
@@ -45,6 +48,10 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
 	protected final double _errorOfMean;
+	
+	protected NumberStatistics(final int generation) {
+		this(generation, null, null, NaN, NaN, 0, NaN, NaN, NaN);
+	}
 	
 	protected NumberStatistics(
 		final int generation,
@@ -182,35 +189,40 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			final List<? extends Phenotype<G, R>> population,
 			final int generation
 		) {
-			final Statistics<G, R> s = super.evaluate(population, generation);
-			NumberStatistics<G, R> statistics = new NumberStatistics<G, R>(s, 0, 0, 0);
+			NumberStatistics<G, R> statistics = new NumberStatistics<G, R>(generation);
 			
 			if (!population.isEmpty()) {
-				final int size = population.size();
-				final double N = population.size();
+				// The properties we accumulate.
+				final Converter<Phenotype<G, R>, Integer> age = Phenotype.Age(generation);
+				final Converter<Phenotype<G, R>, R> fitness = Phenotype.Fitness();
 				
-				double sum = 0;
-				for (int i = 0; i < size; ++i) {
-					final Phenotype<G, R> phenotype = population.get(i); 
-					final double fitness = phenotype.getFitness().doubleValue();
-					sum += fitness;
-				}
+				// The statistics accumulators.
+				final Accumulators.MinMax<Phenotype<G, R>> minMax = 
+					new Accumulators.MinMax<Phenotype<G, R>>();
+				final Accumulators.Variance<Integer> ageVariance = 
+					new Accumulators.Variance<Integer>();
+				final Accumulators.Variance<Number> fitnessVariance =
+					new Accumulators.Variance<Number>();
+								
+				Accumulators.accumulate(
+						population, 
+						minMax, 
+						new AccumulatorAdapter<Integer, Phenotype<G, R>>(ageVariance, age),
+						new AccumulatorAdapter<Number, Phenotype<G, R>>(fitnessVariance, fitness)
+					);
+
 				
-				final double mean = sum/N;
-				
-				sum = 0;
-				for (int i = 0; i < size; ++i) {
-					final Phenotype<G, R> phenotype = population.get(i); 
-					final double fitness = phenotype.getFitness().doubleValue();
-					final double diff = fitness - mean;
-					sum += diff*diff;
-				}
-				
-				final double n = N > 1 ? N - 1 : 1.0;
-				final double variance = sum/n;
-				final double error = sqrt(variance/n);
-				
-				statistics = new NumberStatistics<G, R>(s, mean, variance, error);
+				statistics = new NumberStatistics<G, R>(
+					generation,
+					minMax.getMax(),
+					minMax.getMin(),
+					fitnessVariance.getMean(),
+					fitnessVariance.getVariance(),
+					population.size(),
+					ageVariance.getMean(),
+					ageVariance.getVariance(),
+					fitnessVariance.getStandardError()
+				);
 			}
 			
 			return statistics;
