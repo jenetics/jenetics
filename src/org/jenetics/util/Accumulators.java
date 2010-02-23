@@ -45,8 +45,8 @@ public class Accumulators {
 	 */
 	public static class Mean<N extends Number> implements Accumulator<N> {
 		
-		private long _samples = 0;
-		private double _mean = Double.NaN;
+		protected long _samples = 0;
+		protected double _mean = Double.NaN;
 		
 		public Mean() {
 		}
@@ -106,32 +106,11 @@ public class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Variance<N extends Number> implements Accumulator<N> {
+	public static class Variance<N extends Number> extends Mean<N> {
 		
-		private long _samples = 0;
-		private double _mean = Double.NaN;
 		private double _m2 = Double.NaN;
 		
 		public Variance() {
-		}
-		
-		/**
-		 * Return the number of samples accumulated so far.
-		 * 
-		 * @return the number of samples accumulated so far.
-		 */
-		public long getSamples() {
-			return _samples;
-		}
-		
-		/**
-		 * Return the mean value of the accumulated values.
-		 * 
-		 * @return the mean value of the accumulated values, or {@link java.lang.Double#NaN}
-		 *         if {@code getSamples() == 0}.
-		 */
-		public double getMean() {
-			return _mean;
 		}
 		
 		/**
@@ -151,16 +130,6 @@ public class Accumulators {
 			}
 			
 			return variance;
-		}
-		
-		public double getStandardError() {
-			double sem = Double.NaN;
-
-			if (_samples < 0) {
-				sem = Math.sqrt(getVariance()/_samples);
-			}
-			
-			return sem;
 		}
 		
 		/**
