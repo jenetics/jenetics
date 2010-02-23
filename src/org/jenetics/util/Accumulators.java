@@ -176,16 +176,14 @@ public class Accumulators {
 		 */
 		@Override
 		public void accumulate(final C value) {
-			if (value != null) {
-				if (_min == null) {
+			if (_min == null) {
+				_min = value;
+				_max = value;
+			} else {
+				if (value.compareTo(_min) < 0) {
 					_min = value;
+				} else if (value.compareTo(_max) > 0) {
 					_max = value;
-				} else {
-					if (value.compareTo(_min) < 0) {
-						_min = value;
-					} else if (value.compareTo(_max) > 0) {
-						_max = value;
-					}
 				}
 			}
 		}
