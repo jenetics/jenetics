@@ -277,13 +277,7 @@ public class Accumulators {
 			ConcurrentContext.enter();
 			try {
 				for (final Accumulator<? super T> accumulator : accumulators) {
-					ConcurrentContext.execute(new Runnable() {
-						@Override public void run() {
-							for (final T value : values) {
-								accumulator.accumulate(value);
-							}					
-						}
-					});
+					ConcurrentContext.execute(new Acc<T>(values, accumulator));
 				}
 			} finally {
 				ConcurrentContext.exit();
@@ -327,20 +321,8 @@ public class Accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator1.accumulate(value);
-					}
-				}
-			});
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator2.accumulate(value);
-					}
-				}
-			});			
+			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator2));;			
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -366,27 +348,9 @@ public class Accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator1.accumulate(value);
-					}
-				}
-			});
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator2.accumulate(value);
-					}
-				}
-			});		
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator3.accumulate(value);
-					}
-				}
-			});			
+			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator2));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator3));			
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -414,34 +378,10 @@ public class Accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator1.accumulate(value);
-					}
-				}
-			});
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator2.accumulate(value);
-					}
-				}
-			});		
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator3.accumulate(value);
-					}
-				}
-			});	
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator4.accumulate(value);
-					}
-				}
-			});	
+			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator2));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator3));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator4));	
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -470,46 +410,36 @@ public class Accumulators {
 		final Accumulator<? super T> accumulator5
 	) {
 		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator1.accumulate(value);
-					}
-				}
-			});
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator2.accumulate(value);
-					}
-				}
-			});		
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator3.accumulate(value);
-					}
-				}
-			});	
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator4.accumulate(value);
-					}
-				}
-			});	
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-					for (final T value : values) {
-						accumulator5.accumulate(value);
-					}
-				}
-			});			
+		try {	
+			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator2));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator3));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator4));
+			ConcurrentContext.execute(new Acc<T>(values, accumulator5));
 		} finally {
 			ConcurrentContext.exit();
 		}
 	}	
+	
+	private static class Acc<T> implements Runnable {
+		private final Iterable<? extends T> _values;
+		private final Accumulator<? super T> _accumulator;
+		
+		public Acc(
+			final Iterable<? extends T> values,
+			final Accumulator<? super T> accumulator
+		) {
+			_values = values;
+			_accumulator = accumulator;
+		}
+		
+		@Override
+		public void run() {
+			for (final T value : _values) {
+				_accumulator.accumulate(value);
+			}
+		}
+	}
 	
 }
 
