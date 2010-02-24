@@ -70,7 +70,7 @@ public class AccumulatorsTest {
 	
 	@Test
 	public void quantil() {
-		final Quantil<Integer> quantil = new Quantil<Integer>(0.5);
+		final Quantile<Integer> quantil = new Quantile<Integer>(0.5);
 		for (int i = 0; i < 1000; ++i) {
 			quantil.accumulate(i);
 		}
