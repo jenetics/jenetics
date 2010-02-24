@@ -28,13 +28,13 @@ import javolution.context.ConcurrentContext;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Accumulators {
+public final class Accumulators {
 
 	private Accumulators() {
 	}
 	
 	/**
-	 * <p>Calculate the Arithmetic mean:</p>
+	 * <p>Calculate  the Arithmetic mean:</p>
 	 * <p><img src="doc-files/arithmetic-mean.gif" alt="Arithmentic Mean" /></p>
 	 * 
 	 * @see <a href="http://mathworld.wolfram.com/ArithmeticMean.html">Wolfram MathWorld: Artithmetic Mean</a>
@@ -57,7 +57,7 @@ public class Accumulators {
 		 * @return the number of samples accumulated so far.
 		 */
 		public long getSamples() {
-			return _samples;
+			return _samples ;
 		}
 		
 		/**
