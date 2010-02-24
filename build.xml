@@ -322,6 +322,9 @@
 	<target name="all" depends="jar, javadoc, testng" />
 
 	<target name="compile-tests" depends="compile">
+		<copy todir="${compile.dir}/org/jenetics/util" >
+			<fileset file="${testng.source.dir}/org/jenetics/util/*.txt" />
+		</copy>		
 		<javac destdir="${compile.dir}" 
 			srcdir="${testng.source.dir}" 
 			debug="true"

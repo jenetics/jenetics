@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import org.jscience.mathematics.structure.GroupAdditive;
+
 import javolution.context.ConcurrentContext;
 
 /**
@@ -151,6 +153,68 @@ public final class Accumulators {
 	}
 	
 	/**
+	 * Calculates min value.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Min<C extends Comparable<C>> implements Accumulator<C> {
+		private C _min;
+		
+		public Min() {
+		}
+		
+		public C getMin() {
+			return _min;
+		}
+		
+		/**
+		 * @throws NullPointerException if the given {@code value} is {@code null}.
+		 */
+		@Override
+		public void accumulate(final C value) {
+			if (_min == null) {
+				_min = value;
+			} else {
+				if (value.compareTo(_min) < 0) {
+					_min = value;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Calculates max value.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Max<C extends Comparable<C>> implements Accumulator<C> {
+		private C _max;
+		
+		public Max() {
+		}
+		
+		public C getMax() {
+			return _max;
+		}
+		
+		/**
+		 * @throws NullPointerException if the given {@code value} is {@code null}.
+		 */
+		@Override
+		public void accumulate(final C value) {
+			if (_max == null) {
+				_max = value;
+			} else {
+				if (value.compareTo(_max) > 0) {
+					_max = value;
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Calculates min and max values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -188,6 +252,30 @@ public final class Accumulators {
 			}
 		}
 	}
+	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Sum<N extends GroupAdditive<N>> implements Accumulator<N> {
+		public N _sum;
+		
+		public Sum() {
+		}
+		
+		public N getSum() {
+			return _sum;
+		}
+		
+		@Override
+		public void accumulate(final N value) {
+			if (_sum == null) {
+				_sum = value;
+			} else {
+				_sum = _sum.plus(value);
+			}
+		}
+	}
 
 
 	/**
@@ -210,36 +298,36 @@ public final class Accumulators {
 					values, 
 					accumulators.get(0)
 				); break;
-		case 2:
-			accumulate(
-					values, 
-					accumulators.get(0), 
-					accumulators.get(1)
-				); break;
-		case 3:
-			accumulate(
-					values, 
-					accumulators.get(0), 
-					accumulators.get(1),
-					accumulators.get(2)
-				); break;
-		case 4:
-			accumulate(
-					values, 
-					accumulators.get(0), 
-					accumulators.get(1),
-					accumulators.get(2),
-					accumulators.get(3)
-				); break;
-		case 5:
-			accumulate(
-					values, 
-					accumulators.get(0), 
-					accumulators.get(1),
-					accumulators.get(2),
-					accumulators.get(3),
-					accumulators.get(4)
-				); break;
+//		case 2:
+//			accumulate(
+//					values, 
+//					accumulators.get(0), 
+//					accumulators.get(1)
+//				); break;
+//		case 3:
+//			accumulate(
+//					values, 
+//					accumulators.get(0), 
+//					accumulators.get(1),
+//					accumulators.get(2)
+//				); break;
+//		case 4:
+//			accumulate(
+//					values, 
+//					accumulators.get(0), 
+//					accumulators.get(1),
+//					accumulators.get(2),
+//					accumulators.get(3)
+//				); break;
+//		case 5:
+//			accumulate(
+//					values, 
+//					accumulators.get(0), 
+//					accumulators.get(1),
+//					accumulators.get(2),
+//					accumulators.get(3),
+//					accumulators.get(4)
+//				); break;
 		default:
 			ConcurrentContext.enter();
 			try {

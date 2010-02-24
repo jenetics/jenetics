@@ -1,4 +1,5 @@
 Jenetics-0.5.1.0
+- Add incremental Quantile class.
 - Add ConverterAdapter class.
 - Removed Genotype.chromosomes() method. Use Genotype.length() instead.
 - Add Accumulator classes for statistics calculation.
