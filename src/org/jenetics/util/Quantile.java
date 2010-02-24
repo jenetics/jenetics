@@ -34,7 +34,7 @@ import java.util.Arrays;
  * </em>
  * <br/>
  * &nbsp;&nbsp;&nbsp;&nbsp;Comm. ACM, v. 28, n. 10 
- * (<a href="www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">pdf</a>)
+ * (<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">pdf</a>)
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
