@@ -294,40 +294,40 @@ public final class Accumulators {
 	) {
 		switch (accumulators.length()) {
 		case 1:
-			accumulate(
+			Accumulators.<T>accumulate(
 					values, 
 					accumulators.get(0)
 				); break;
-//		case 2:
-//			accumulate(
-//					values, 
-//					accumulators.get(0), 
-//					accumulators.get(1)
-//				); break;
-//		case 3:
-//			accumulate(
-//					values, 
-//					accumulators.get(0), 
-//					accumulators.get(1),
-//					accumulators.get(2)
-//				); break;
-//		case 4:
-//			accumulate(
-//					values, 
-//					accumulators.get(0), 
-//					accumulators.get(1),
-//					accumulators.get(2),
-//					accumulators.get(3)
-//				); break;
-//		case 5:
-//			accumulate(
-//					values, 
-//					accumulators.get(0), 
-//					accumulators.get(1),
-//					accumulators.get(2),
-//					accumulators.get(3),
-//					accumulators.get(4)
-//				); break;
+		case 2:
+			Accumulators.<T>accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1)
+				); break;
+		case 3:
+			Accumulators.<T>accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1),
+					accumulators.get(2)
+				); break;
+		case 4:
+			Accumulators.<T>accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1),
+					accumulators.get(2),
+					accumulators.get(3)
+				); break;
+		case 5:
+			Accumulators.<T>accumulate(
+					values, 
+					accumulators.get(0), 
+					accumulators.get(1),
+					accumulators.get(2),
+					accumulators.get(3),
+					accumulators.get(4)
+				); break;
 		default:
 			ConcurrentContext.enter();
 			try {
