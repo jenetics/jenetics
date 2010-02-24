@@ -65,7 +65,7 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 		_initialized = _quantile == 0.0 || _quantile == 1.0;
 	}
 
-	public double getQuantil() {
+	public double getQuantile() {
 		return _q[2];
 	}
 
