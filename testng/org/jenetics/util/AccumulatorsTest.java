@@ -26,6 +26,7 @@ import static org.jenetics.util.Accumulators.Mean;
 import static org.jenetics.util.Accumulators.Variance;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -44,8 +45,11 @@ public class AccumulatorsTest {
 
 	@BeforeTest
 	public void setup() throws Exception {
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(
-				getClass().getResourceAsStream("statistic-moments.txt")));
+		final InputStream in = getClass().getResourceAsStream("statistic-moments.txt");
+		
+		System.out.println("Input: " + in);
+		
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		
 		final List<String> lines = new java.util.ArrayList<String>(1000);
 		String line = null;
@@ -61,6 +65,14 @@ public class AccumulatorsTest {
 			for (int j = 0; j < parts.length; ++j) {
 				_values[i][j] = Double.valueOf(parts[j]);
 			}
+		}
+	}
+	
+	@Test
+	public void quantil() {
+		final Quantil<Integer> quantil = new Quantil<Integer>(0.5);
+		for (int i = 0; i < 1000; ++i) {
+			quantil.accumulate(i);
 		}
 	}
 	

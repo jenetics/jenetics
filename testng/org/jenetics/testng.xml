@@ -95,11 +95,16 @@
 			<class name="org.jenetics.NumberStatisticsTest" />
 		</classes>
 	</test>		
+	<test name="org.jenetics.util.AccumulatorsTest">
+		<classes>
+			<class name="org.jenetics.util.AccumulatorsTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArrayTest" />
 		</classes>
-	</test>	
+	</test>		
 	<test name="org.jenetics.util.ArrayUtils">
 		<classes>
 			<class name="org.jenetics.util.ArrayUtilsTest" />
