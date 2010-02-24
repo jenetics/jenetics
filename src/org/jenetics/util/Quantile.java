@@ -39,7 +39,7 @@ import java.util.Arrays;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Quantil<N extends Number> implements Accumulator<N> {
+public class Quantile<N extends Number> implements Accumulator<N> {
 	
 	// The desired quantile.
 	private double _quantile;
@@ -58,7 +58,7 @@ public class Quantil<N extends Number> implements Accumulator<N> {
 	
 	private boolean _initialized;
 	
-	public Quantil(double quantile) {
+	public Quantile(double quantile) {
 		_quantile = quantile;
 		_n[0] = -1.0;
 		_q[2] = 0.0f;
