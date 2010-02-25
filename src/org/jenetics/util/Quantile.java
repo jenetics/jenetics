@@ -25,16 +25,14 @@ package org.jenetics.util;
 import java.util.Arrays;
 
 /**
- * Implementation of the quantile algorithm published by <strong>Raj JAIN and Imrich 
- * CHLAMTAC</strong>:
- * <br/>
+ * Implementation of the quantile algorithm published by
+ * <strong>Raj JAIN and Imrich CHLAMTAC</strong>:
  * <em>
  *     The P<sup>2</sup> Algorithm for Dynamic Calculation of Quantiles and 
  *     Histograms Without Storing Observations
  * </em>
- * <br/>
- * &nbsp;&nbsp;&nbsp;&nbsp;Comm. ACM, v. 28, n. 10 
- * (<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">pdf</a>)
+ * (<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">
+ *     Communications of the ACM; October 1985, Volume 28, Number 10</a>)
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -58,7 +56,19 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 	
 	private boolean _initialized;
 	
+	/**
+	 * Create a new quantile accumulator with the given value.
+	 * 
+	 * @param quantile the wished quantile value.
+	 * @throws IllegalArgumentException if the {@code quantile} is not in the
+	 *         range {@code [0, 1]}.
+	 */
 	public Quantile(double quantile) {
+		if (quantile < 0.0 || quantile > 1) {
+			throw new IllegalArgumentException(String.format(
+					"Quantile (%s) not in the valid range of [0, 1]", quantile
+				));
+		}
 		_quantile = quantile;
 		_n[0] = -1.0;
 		_q[2] = 0.0;
@@ -146,9 +156,8 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 			_nn[2] += _dn[2];
 
 			// Adjust heights of markers 0 to 2 if necessary
-			double mm, mp;
-			mm = _n[1] - 1.0;
-			mp = _n[1] + 1.0;
+			double mm = _n[1] - 1.0;
+			double mp = _n[1] + 1.0;
 			if (_nn[0] >= mp && _n[2] > mp) {
 				_q[1] = qPlus(mp, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
 				_n[1] = mp;
@@ -156,6 +165,7 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 				_q[1] = qMinus(mm, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
 				_n[1] = mm;
 			}
+			
 			mm = _n[2] - 1.0;
 			mp = _n[2] + 1.0;
 			if (_nn[1] >= mp && _n[3] > mp) {
@@ -165,6 +175,7 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 				_q[2] = qMinus(mm, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
 				_n[2] = mm;
 			}
+			
 			mm = _n[3] - 1.0;
 			mp = _n[3] + 1.0;
 			if (_nn[2] >= mp && _n[4] > mp) {
@@ -187,7 +198,6 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 		final double q2
 	) {
 		double qt = q1 + ((mp - m0)*(q2 - q1)/(m2 - m1) + (m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
-		
 		return (qt <= q2) ? qt : q1 + (q2 - q1)/(m2 - m1);
 	}
 
