@@ -120,5 +120,10 @@
 			<class name="org.jenetics.util.TimerTest" />
 		</classes>
 	</test>		
+	<test name="org.jenetics.util.Validator">
+		<classes>
+			<class name="org.jenetics.util.ValidatorTest" />
+		</classes>
+	</test>	
 </suite>
 
