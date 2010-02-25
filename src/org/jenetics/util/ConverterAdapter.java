@@ -45,19 +45,21 @@ public class ConverterAdapter<A, B, C> implements Converter<A, C> {
 		return _second.convert(_first.convert(value));
 	}
 	
-	public static <A, B, C> Converter<A, C> adapt(
+	public static <A, B, C> Converter<A, C> valueOf(
 		final Converter<A, B> first,
 		final Converter<B, C> second
 	) {
 		return new ConverterAdapter<A, B, C>(first, second);
 	}
 
-	public static <A, B, C, D> Converter<A, D> adapt(
+	public static <A, B, C, D> Converter<A, D> valueOf(
 		final Converter<A, B> first,
 		final Converter<B, C> second,
 		final Converter<C, D> third
 	) {
-		return new ConverterAdapter<A, C, D>(new ConverterAdapter<A, B, C>(first, second), third);
+		return new ConverterAdapter<A, C, D>(
+				new ConverterAdapter<A, B, C>(first, second), third
+			);
 	}
 	
 }
