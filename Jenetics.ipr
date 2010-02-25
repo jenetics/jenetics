@@ -34,6 +34,7 @@
   <component name="CopyrightManager" default="">
     <module2copyright />
   </component>
+  <component name="CppTools.Loader" reportImplicitCastToBool="false" reportNameReferencedOnce="false" version="3" compilerSelect="AUTO" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -184,14 +185,38 @@
       <module fileurl="file://$PROJECT_DIR$/Jenetics.iml" filepath="$PROJECT_DIR$/Jenetics.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6 (1)" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="RMI Configuration">
+    <Server />
+    <Port>0</Port>
+    <ProjectOutput>false</ProjectOutput>
+    <CODEBASE />
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
+  </component>
+  <component name="VcsRevisionGraphProjectComponent">
+    <option name="_useTwoTagConvention" value="true" />
+    <option name="_showTags" value="true" />
+    <option name="_tagNaming" value="TAG_$T_MERGE_$S_TO_$D" />
+    <option name="_tagFilter" value="" />
+    <option name="_branchFilter" />
+    <option name="_showRevisionFilter" value="false" />
+    <option name="_afterDateTimeFilter" value="false" />
+    <option name="_beforeDateTimeFilter" value="false" />
+    <option name="_afterDateTime" value="" />
+    <option name="_beforeDateTime" value="" />
+    <option name="_projectRoot" value="&lt;Use repository root&gt;" />
+    <option name="_trunk" value="trunk" />
+    <option name="_branches" value="branches" />
+    <option name="_tags" value="tags" />
+    <option name="_showTagFilter" value="false" />
+    <option name="_showBranchFilter" value="false" />
   </component>
   <component name="libraryTable">
     <library name="build">
