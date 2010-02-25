@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import org.testng.annotations.Test;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -29,7 +31,9 @@ package org.jenetics;
  */
 public class PartiallyMatchedCrossoverTest {
 
-
+	@Test
+	public void foo() {
+	}
 	
 }
 

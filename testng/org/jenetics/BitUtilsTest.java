@@ -27,6 +27,7 @@ import java.util.Arrays;
 import org.jenetics.util.BitUtils;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -112,7 +113,7 @@ public class BitUtilsTest {
 		}
 		
 		final String dataString = BitUtils.toString(data);
-		System.out.println(dataString);
+		Reporter.log(dataString);
 		
 		final byte[] sdata = BitUtils.toByteArray(dataString);
 		Assert.assertEquals(sdata, data);

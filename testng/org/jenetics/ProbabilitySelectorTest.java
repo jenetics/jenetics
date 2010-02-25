@@ -27,6 +27,7 @@ import java.util.Random;
 
 import org.jenetics.util.Validator;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -58,8 +59,8 @@ public class ProbabilitySelectorTest {
 			indices[i] /= samples;
 		}
 		
-		System.out.println(toString(props) + String.format(": %6f", sum(props)));
-		System.out.println(toString(indices) + String.format(": %6f", sum(indices)));
+		Reporter.log(toString(props) + String.format(": %6f", sum(props)));
+		Reporter.log(toString(indices) + String.format(": %6f", sum(indices)));
 		
 		for (int i = 0; i < props.length; ++i) {
 			Assert.assertEquals(indices[i], props[i], 0.005);

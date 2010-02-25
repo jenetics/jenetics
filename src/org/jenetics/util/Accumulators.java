@@ -157,14 +157,16 @@ public final class Accumulators {
 	
 	
 	/**
-	 * Implementation of the quantile algorithm published by
+	 * Implementation of the quantile estimation algorithm published by
+	 * <p/>
 	 * <strong>Raj JAIN and Imrich CHLAMTAC</strong>:
 	 * <em>
 	 *     The P<sup>2</sup> Algorithm for Dynamic Calculation of Quantiles and 
 	 *     Histograms Without Storing Observations
 	 * </em>
-	 * (<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">
-	 *     Communications of the ACM; October 1985, Volume 28, Number 10</a>)
+	 * <br/>
+	 * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications 
+	 * of the ACM; October 1985, Volume 28, Number 10</a>]
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$

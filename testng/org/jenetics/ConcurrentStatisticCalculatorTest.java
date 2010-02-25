@@ -25,6 +25,7 @@ import java.util.Arrays;
 //import java.util.concurrent.Executors;
 
 import org.jenetics.util.ArrayUtils;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -36,13 +37,13 @@ public class ConcurrentStatisticCalculatorTest {
 	@Test
 	public void partition() {
 		int[] parts = ArrayUtils.partition(10, 3);
-		System.out.println(Arrays.toString(ArrayUtils.partition(10, 3)));
-		System.out.println(Arrays.toString(ArrayUtils.partition(15, 6)));
-		System.out.println(Arrays.toString(ArrayUtils.partition(5, 10)));
+		Reporter.log(Arrays.toString(ArrayUtils.partition(10, 3)));
+		Reporter.log(Arrays.toString(ArrayUtils.partition(15, 6)));
+		Reporter.log(Arrays.toString(ArrayUtils.partition(5, 10)));
 		
 		parts = ArrayUtils.partition(15, 6);
 		for (int i = 0; i < parts.length - 1; ++i) {
-			System.out.println(parts[i] + "\t" + parts[i + 1]); 
+			Reporter.log(parts[i] + "\t" + parts[i + 1]); 
 		}		
 	}
 	

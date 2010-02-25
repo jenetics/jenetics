@@ -36,6 +36,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 
@@ -78,7 +79,7 @@ public class PopulationTest {
 		out.flush();
 		
 		byte[] data = out.toByteArray();
-		System.out.println(new String(data));
+		Reporter.log(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
