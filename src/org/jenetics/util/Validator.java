@@ -117,16 +117,16 @@ public final class Validator {
 	 * Verifys {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
-	 *     array.foreach(new Verify<MyVerifiable>()) == -1
+	 *     array.foreach(new Verify()) == -1
 	 * [/code]
 	 * is true.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static final class Verify<T extends Verifiable> implements Predicate<T> {
+	public static final class Verify implements Predicate<Verifiable> {
 		@Override
-		public boolean evaluate(T object) {
+		public boolean evaluate(final Verifiable object) {
 			return object.isValid();
 		}
 	}
