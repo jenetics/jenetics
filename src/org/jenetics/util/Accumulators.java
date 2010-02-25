@@ -168,6 +168,8 @@ public final class Accumulators {
 	 * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications 
 	 * of the ACM; October 1985, Volume 28, Number 10</a>]
 	 * 
+	 * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
