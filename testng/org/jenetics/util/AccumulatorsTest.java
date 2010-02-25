@@ -25,11 +25,13 @@ package org.jenetics.util;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jenetics.util.Accumulators.Mean;
 import org.jenetics.util.Accumulators.Quantile;
 import org.jenetics.util.Accumulators.Variance;
+import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -72,7 +74,7 @@ public class AccumulatorsTest {
 	}
 	
 	@Test
-	public void firstMoment() {
+	public void mean() {
 		final Mean<Double> moment = new Mean<Double>();
 		
 		for (int i = 0; i < _values.length; ++i) {
@@ -82,7 +84,7 @@ public class AccumulatorsTest {
 	}
 	
 	@Test
-	public void secondMoment() {
+	public void variance() {
 		final Variance<Double> moment = new Variance<Double>();
 		
 		for (int i = 0; i < _values.length; ++i) {
@@ -90,6 +92,55 @@ public class AccumulatorsTest {
 			Assert.assertEquals(moment.getMean(), _values[i][1]);
 			Assert.assertEquals(moment.getVariance(), _values[i][6], 0.0000001);
 		}
+	}
+	
+	@Test
+	public void min() {
+		final Integer[] array = new Integer[20];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = i;
+		}
+		
+		final Accumulators.Min<Integer> min = new Accumulators.Min<Integer>();
+		Accumulators.accumulate(Arrays.asList(array), min);
+		Assert.assertEquals(min.getMin(), new Integer(0));
+	}
+	
+	@Test
+	public void max() {
+		final Integer[] array = new Integer[20];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = i;
+		}
+		
+		final Accumulators.Max<Integer> max = new Accumulators.Max<Integer>();
+		Accumulators.accumulate(Arrays.asList(array), max);
+		Assert.assertEquals(max.getMax(), new Integer(19));
+	}
+	
+	@Test
+	public void minMax() {
+		final Integer[] array = new Integer[20];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = i;
+		}
+		
+		final Accumulators.MinMax<Integer> minMax = new Accumulators.MinMax<Integer>();
+		Accumulators.accumulate(Arrays.asList(array), minMax);
+		Assert.assertEquals(minMax.getMin(), new Integer(0));
+		Assert.assertEquals(minMax.getMax(), new Integer(19));
+	}
+	
+	@Test
+	public void sum() {
+		final Integer64[] array = new Integer64[20];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = Integer64.valueOf(i);
+		}
+		
+		final Accumulators.Sum<Integer64> sum = new Accumulators.Sum<Integer64>();
+		Accumulators.accumulate(Arrays.asList(array), sum);
+		Assert.assertEquals(sum.getSum(), Integer64.valueOf((20*19/2)));
 	}
 	
 }
