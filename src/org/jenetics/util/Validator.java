@@ -35,8 +35,28 @@ public final class Validator {
 		super();
 	}
 
-	private static final class NonNull implements Predicate<Object> {
+	/**
+	 * A {@code null} checking predicate which can be used to check an array
+	 * for null values. The following code will throw an 
+	 * {@link NullPointerException} if one of the array elements is {@code null}.
+	 * 
+	 * [code]
+	 *     final Array<String> array = ...
+	 *     array.foreach(new NonNull());
+	 *     ...
+	 *     final String[] array = ...
+	 *     ArrayUtils.foreach(array, new NonNull());
+	 * [/code]
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static final class NonNull implements Predicate<Object> {
 		private final String _message;
+		
+		public NonNull() {
+			this("Object");
+		}
 		
 		public NonNull(final String message) {
 			_message = message;
@@ -50,7 +70,25 @@ public final class Validator {
 		
 	}
 	
-	private static final class CheckRange<C extends Comparable<C>> 
+	
+	/**
+	 * A range checking predicate which can be used to check whether the elements
+	 * of an array are within an given range. If not, an 
+	 * {@link IllegalArgumentException} is thrown. If one value is {@code null},
+	 * an {@link NullPointerException} is thrown.
+	 * <p/>
+	 * 
+	 * The following code will throw an {@link IllegalArgumentException} if the
+	 * integers in the array are smaller than zero and greater than 9.
+	 * [code]
+	 *     final Array<Integer> array = ...
+	 *     array.foreach(new CheckRange<Integer>(0, 10));
+	 * [/code]
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static final class CheckRange<C extends Comparable<C>> 
 		implements Predicate<C> 
 	{
 		private final C _min;
@@ -74,52 +112,25 @@ public final class Validator {
 		}	
 	}
 	
-	private static final class Verify<T extends Verifiable> implements Predicate<T> {
+	
+	/**
+	 * Verifys {@link Verifiable} array elements. All elements are valid if the
+	 * condition
+	 * [code]
+	 *     array.foreach(new Verify<MyVerifiable>()) == -1
+	 * [/code]
+	 * is true.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static final class Verify<T extends Verifiable> implements Predicate<T> {
 		@Override
 		public boolean evaluate(T object) {
 			return object.isValid();
 		}
 	}
 	
-	/**
-	 * Create a predicate which allows to check all array elements for 
-	 * {@code null}.
-	 * 
-	 * [code]
-	 *     public void foo(final Array<Integer> array) {
-	 *         // Will throw an NullPointerException if one of the array values is null.
-	 *         array.foreach(Validator.NonNull("Value"));
-	 *     }
-	 * [/code]
-	 * 
-	 * @param message the message to print.
-	 * @return the null check predicate.
-	 */
-	public static Predicate<Object> NonNull(final String message) {
-		return new NonNull(message);
-	}
-	
-	/**
-	 * Create a predicate which allows to check all array elements for 
-	 * {@code null}.
-	 * 
-	 * @see #NonNull(String)
-	 * 
-	 * @return the null check predicate.
-	 */
-	public static Predicate<Object> NonNull() {
-		return new NonNull("Object");
-	}
-	
-	public static <C extends Comparable<C>> Predicate<C> CheckRange(
-		final C min, final C max
-	) {
-		return new CheckRange<C>(min, max);
-	}
-	
-	public static <T extends Verifiable> Predicate<T> Verify() {
-		return new Verify<T>();
-	}
 	
 	/**
 	 * Checks that the specified object reference is not {@code null}.
@@ -158,7 +169,9 @@ public final class Validator {
 	 *         range.
 	 */
 	public static <T extends Comparable<T>> T checkRange(
-		final T value, final T min, final T max
+		final T value, 
+		final T min, 
+		final T max
 	) {
 		if (value.compareTo(min) < 0 || value.compareTo(max) > 0) {
 			throw new IllegalArgumentException(String.format(

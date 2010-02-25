@@ -119,14 +119,14 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 	
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		super(1.0);
-		foreach(alterers, NonNull("Alterer"));
+		foreach(alterers, new NonNull("Alterer"));
 		
 		_alterers = new Array<Alterer<G>>(alterers).seal();
 	}
 	
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
 		super(1.0);
-		alterers.foreach(NonNull("Alterer"));
+		alterers.foreach(new NonNull("Alterer"));
 		
 		_alterers = alterers.copy().seal();
 	}
