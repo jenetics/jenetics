@@ -30,6 +30,7 @@ import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.Assert;
+import org.testng.Reporter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -47,7 +48,7 @@ class SerializeUtils {
 		writer.close();
 		
 		final byte[] data = out.toByteArray();
-		System.out.println(new String(data));
+		Reporter.log(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final XMLObjectReader reader = XMLObjectReader.newInstance(in);

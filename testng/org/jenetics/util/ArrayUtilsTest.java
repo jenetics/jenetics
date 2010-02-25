@@ -32,6 +32,7 @@ import java.util.Random;
 //import org.jenetics.Population;
 //import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -109,7 +110,7 @@ public class ArrayUtilsTest {
 		timer.start();
 		ArrayUtils.sort(array);
 		timer.stop();
-		System.out.println(timer);
+		Reporter.log(timer.toString());
 	}
 	
 	

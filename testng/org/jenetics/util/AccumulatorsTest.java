@@ -22,16 +22,13 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.Accumulators.Mean;
-import static org.jenetics.util.Accumulators.Variance;
-import static org.jenetics.util.Accumulators.Quantile;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
 import org.jenetics.util.Accumulators.Mean;
+import org.jenetics.util.Accumulators.Quantile;
 import org.jenetics.util.Accumulators.Variance;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -46,10 +43,7 @@ public class AccumulatorsTest {
 
 	@BeforeTest
 	public void setup() throws Exception {
-		final InputStream in = getClass().getResourceAsStream("statistic-moments.txt");
-		
-		System.out.println("Input: " + in);
-		
+		final InputStream in = getClass().getResourceAsStream("statistic-moments.txt");		
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		
 		final List<String> lines = new java.util.ArrayList<String>(1000);
@@ -71,9 +65,9 @@ public class AccumulatorsTest {
 	
 	@Test
 	public void quantil() {
-		final Quantile<Integer> quantil = new Quantile<Integer>(0.5);
+		final Quantile<Integer> quantile = new Quantile<Integer>(0.5);
 		for (int i = 0; i < 1000; ++i) {
-			quantil.accumulate(i);
+			quantile.accumulate(i);
 		}
 	}
 	

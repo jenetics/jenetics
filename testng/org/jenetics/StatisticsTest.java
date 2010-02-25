@@ -27,6 +27,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.BitUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -72,7 +73,7 @@ public class StatisticsTest {
 		
 		for (int i = 0; i < 19; ++i) {
 			a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
-			System.out.println(
+			Reporter.log(
 				a + "\t" + 
 				BitUtils.ulpPosition(a) + "\t" + 
 				BitUtils.ulpDistance(0.0, a)
@@ -136,7 +137,7 @@ public class StatisticsTest {
 		Assert.assertEquals(statistics.getBestPhenotype().getFitness().doubleValue(), 10.0, EPSILON);
 		Assert.assertEquals(statistics.getWorstPhenotype().getFitness().doubleValue(), 1.0, EPSILON);
 		
-		System.out.println(statistics);
+		Reporter.log(statistics.toString());
 	}
 	
 	@SuppressWarnings("unchecked")
