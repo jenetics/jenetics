@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import static org.jenetics.util.Accumulators.Mean;
 import static org.jenetics.util.Accumulators.Variance;
+import static org.jenetics.util.Accumulators.Quantile;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
