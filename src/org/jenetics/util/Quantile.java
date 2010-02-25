@@ -29,8 +29,8 @@ import java.util.Arrays;
  * CHLAMTAC</strong>:
  * <br/>
  * <em>
- * The P<sup>2</sup> Algorithm for Dynamic Calculation of Quantiles and Histograms
- * Without Storing Observations
+ *     The P<sup>2</sup> Algorithm for Dynamic Calculation of Quantiles and 
+ *     Histograms Without Storing Observations
  * </em>
  * <br/>
  * &nbsp;&nbsp;&nbsp;&nbsp;Comm. ACM, v. 28, n. 10 
@@ -61,7 +61,7 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 	public Quantile(double quantile) {
 		_quantile = quantile;
 		_n[0] = -1.0;
-		_q[2] = 0.0f;
+		_q[2] = 0.0;
 		_initialized = _quantile == 0.0 || _quantile == 1.0;
 	}
 
@@ -102,7 +102,7 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 
 			_nn[0] = 2.0*_quantile;
 			_nn[1] = 4.0*_quantile;
-			_nn[2] = 2.0 + 2.0*_quantile;
+			_nn[2] = 2.0*_quantile + 2.0;
 	
 			_dn[0] = _quantile/2.0;
 			_dn[1] = _quantile;
@@ -150,34 +150,34 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 			mm = _n[1] - 1.0;
 			mp = _n[1] + 1.0;
 			if (_nn[0] >= mp && _n[2] > mp) {
-				_q[1] = qplus(mp, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
+				_q[1] = qPlus(mp, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
 				_n[1] = mp;
 			} else if (_nn[0] <= mm && _n[0] < mm) {
-				_q[1] = qminus(mm, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
+				_q[1] = qMinus(mm, _n[0], _n[1], _n[2], _q[0], _q[1], _q[2]);
 				_n[1] = mm;
 			}
 			mm = _n[2] - 1.0;
 			mp = _n[2] + 1.0;
 			if (_nn[1] >= mp && _n[3] > mp) {
-				_q[2] = qplus(mp, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
+				_q[2] = qPlus(mp, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
 				_n[2] = mp;
 			} else if (_nn[1] <= mm && _n[1] < mm) {
-				_q[2] = qminus(mm, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
+				_q[2] = qMinus(mm, _n[1], _n[2], _n[3], _q[1], _q[2], _q[3]);
 				_n[2] = mm;
 			}
 			mm = _n[3] - 1.0;
 			mp = _n[3] + 1.0;
 			if (_nn[2] >= mp && _n[4] > mp) {
-				_q[3] = qplus(mp, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
+				_q[3] = qPlus(mp, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
 				_n[3] = mp;
 			} else if (_nn[2] <= mm && _n[2] < mm) {
-				_q[3] = qminus(mm, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
+				_q[3] = qMinus(mm, _n[2], _n[3], _n[4], _q[2], _q[3], _q[4]);
 				_n[3] = mm;
 			}
 		}
 	}
 
-	private static double qplus(
+	private static double qPlus(
 		final double mp, 
 		final double m0, 
 		final double m1, 
@@ -191,7 +191,7 @@ public class Quantile<N extends Number> implements Accumulator<N> {
 		return (qt <= q2) ? qt : q1 + (q2 - q1)/(m2 - m1);
 	}
 
-	private static double qminus(
+	private static double qMinus(
 		final double mm, 
 		final double m0, 
 		final double m1, 
