@@ -497,20 +497,23 @@ public final class Accumulators {
 			Accumulators.<T>accumulate(
 					values, 
 					accumulators.get(0)
-				); break;
+				); 
+			break;
 		case 2:
 			Accumulators.<T>accumulate(
 					values, 
 					accumulators.get(0), 
 					accumulators.get(1)
-				); break;
+				); 
+			break;
 		case 3:
 			Accumulators.<T>accumulate(
 					values, 
 					accumulators.get(0), 
 					accumulators.get(1),
 					accumulators.get(2)
-				); break;
+				); 
+			break;
 		case 4:
 			Accumulators.<T>accumulate(
 					values, 
@@ -518,7 +521,8 @@ public final class Accumulators {
 					accumulators.get(1),
 					accumulators.get(2),
 					accumulators.get(3)
-				); break;
+				);
+			break;
 		case 5:
 			Accumulators.<T>accumulate(
 					values, 
@@ -527,7 +531,8 @@ public final class Accumulators {
 					accumulators.get(2),
 					accumulators.get(3),
 					accumulators.get(4)
-				); break;
+				); 
+			break;
 		default:
 			ConcurrentContext.enter();
 			try {
