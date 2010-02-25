@@ -1039,7 +1039,7 @@ public final class ArrayUtils {
 	 * 
 	 * [code]
 	 *     public void foo(final Integer[] values) {
-	 *         ArrayUtils.foreach(values, Validator.NonNull());
+	 *         ArrayUtils.foreach(values, new Validator.NonNull());
 	 *         ...
 	 *     }
 	 * [/code]
