@@ -31,6 +31,7 @@ import java.io.Serializable;
  * survival probabilities to the sorted individuals using an exponential 
  * function:
  * <p/>
+ * //TODO: Add formular gif.
  * <pre>
  *          N-i
  *         c

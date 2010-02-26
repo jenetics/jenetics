@@ -29,6 +29,7 @@ import org.jscience.mathematics.number.Float64;
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are 
  * modified such that new fitness = (a * fitness + b) ^ exp.
+ *  //TODO: Add formular gif.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
