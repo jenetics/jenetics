@@ -28,21 +28,11 @@ import java.io.Serializable;
 
 /**
  * In this <code>Selector</code>, the probability for selection is defined as:
- * <p/>
+ * <p/><img src="doc-files/boltzmann-formula1.gif" alt="Arithmentic Mean" /></p> 
+ * where <i>b</i> controls the selection intensity, and
+ * <p/><img src="doc-files/boltzmann-formula2.gif" alt="Arithmentic Mean" />.</p> 
  * 
- * <pre>
- *         exp[beta*f_i]
- *  p_i = ---------------,
- *              Z
- * </pre>
- * 
- * where <pre>beta</pre> controls the selection intensity, and<p/>
- * 
- * <pre>
- *     Z = Sum[exp[beta*f_j], j = 1, n].
- * </pre>
- * 
- * f_j denotes the fitness value of the j<sup>th</sup> individual.
+ * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the j<sup>th</sup> individual.
  * 
  * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.
