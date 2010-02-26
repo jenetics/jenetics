@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.jenetics.util.Validator;
@@ -84,7 +85,7 @@ public class ProbabilitySelectorTest {
 		return out.toString();
 	}
 	
-	private double sum(final double[] array) {
+	protected static double sum(final double[] array) {
 		double sum = 0;
 		for (int i = 0; i < array.length; ++i) {
 			sum += array[i];
@@ -103,6 +104,18 @@ public class ProbabilitySelectorTest {
 		double temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
+	}
+	
+	protected static void assertSortedDescending(final double[] values) {
+		for (int i = 1; i < values.length; ++i) {
+			Assert.assertTrue(values[i - 1] >= values[i]);
+		}
+	}
+	
+	protected static <T extends Comparable<T>> void assertSortedDescending(final List<? extends T> values) {
+		for (int i = 1; i < values.size(); ++i) {
+			Assert.assertTrue(values.get(i - 1).compareTo(values.get(i)) >= 0);
+		}
 	}
 	
 }

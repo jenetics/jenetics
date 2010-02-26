@@ -60,6 +60,11 @@
 			<class name="org.jenetics.Integer64GeneTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.LinearRankSelector">
+		<classes>
+			<class name="org.jenetics.LinearRankSelectorTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.PartiallyMatchedCrossover">
 		<classes>
 			<class name="org.jenetics.PartiallyMatchedCrossoverTest" />

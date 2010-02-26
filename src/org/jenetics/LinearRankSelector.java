@@ -90,10 +90,10 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 
 	@Override
 	protected double[] probabilities(
-		final Population<G, C> population, final int count
+		final Population<G, C> population, 
+		final int count // not needed here
 	) {
 		assert(population != null);
-		assert(count >= 0);
 		
 		//Sort the population.
 		population.sort();
