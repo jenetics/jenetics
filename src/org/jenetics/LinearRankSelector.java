@@ -30,23 +30,19 @@ import java.io.Serializable;
  * to their fitness values and the rank N is assignee to the best Phenotype 
  * individual and the rank 1 to the worst Phenotype. The selection probability 
  * is linearly assigned to the individuals according to their rank:<p/>
+ * <p/><img src="doc-files/linear-rank-selector.gif" alt="Linear Rank Selection" /></p> 
  * 
- * <pre>
- *        /             nplus - nminus          \
- *  p_i = | nminus + ------------------- (i - 1)| / N.
- *        \                N - 1                /
- * </pre>
- * 
- * Here nminus/N is the probability of the worst Phenotype individual to be 
- * selected and nplus/N the probability of the best Phenotype individual to be 
- * selected. As the population size is held constant, the conditions 
- * <code>nplus = 2 - nminus</code> and <code>nminus >= 0</code> must be 
- * fulfilled. Note that all individuals get a different rank, i.e., a different 
- * selection probability, even if the have the same fitness value. <p/>
+ * Here <i>n</i><sub><i>m</i></sub>/<i>N</i> is the probability of the worst Phenotype 
+ * individual to be  selected and <i>n</i><sub><i>p</i></sub>/<i>N</i> the probability 
+ * of the best Phenotype individual to be selected. As the population size is 
+ * held constant, the conditions <i>n</i><sub><i>p</i></sub> = 2 - <i>n</i><sub><i>m</i></sub>
+ * and <i>n</i><sub><i>m</i></sub> >= 0 must be fulfilled. Note that all individuals 
+ * get a different rank, i.e., a different selection probability, even if the 
+ * have the same fitness value. <p/>
  * 
  * <i>
  * T. Blickle, L. Thiele, A comparison of selection schemes used 
- * in evolutionary algorithms, Technical Report, ETH Zurich, 1997.
+ * in evolutionary algorithms, Technical Report, ETH Zurich, 1997, page 37.
  * <a href="http://citeseer.ist.psu.edu/blickle97comparison.html">
  * 	http://citeseer.ist.psu.edu/blickle97comparison.html
  * </a>

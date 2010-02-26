@@ -28,9 +28,9 @@ import java.io.Serializable;
 
 /**
  * In this <code>Selector</code>, the probability for selection is defined as:
- * <p/><img src="doc-files/boltzmann-formula1.gif" alt="Arithmentic Mean" /></p> 
+ * <p/><img src="doc-files/boltzmann-formula1.gif" alt="Boltzman" /></p> 
  * where <i>b</i> controls the selection intensity, and
- * <p/><img src="doc-files/boltzmann-formula2.gif" alt="Arithmentic Mean" />.</p> 
+ * <p/><img src="doc-files/boltzmann-formula2.gif" alt="Boltzmann" />.</p> 
  * 
  * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the j<sup>th</sup> individual.
  * 
