@@ -65,7 +65,7 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 		final double N = population.size();
 		final double[] props = new double[population.size()];
 		
-		for (int i = 0, n = population.size(); i < N; ++i) {
+		for (int i = 0, n = population.size(); i < n; ++i) {
 			props[n - i - 1] = ((_c - 1)*pow(_c, N - i - 1))/(pow(_c, N) - 1);
 		}
 	
