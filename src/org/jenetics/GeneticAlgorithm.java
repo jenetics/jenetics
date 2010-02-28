@@ -34,8 +34,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Timer;
+import org.jenetics.util.Validator;
 
 /**
  * Main class. 
@@ -118,7 +120,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
 	private Statistics<G, C> _bestStatistics = null;
 	private Statistics<G, C> _statistics = null;
-	private Phenotype<G, C> _bestPhenotype = null;
+	//private Phenotype<G, C> _bestPhenotype = null;
 	
 	
 	//Some performance measure.
@@ -201,7 +203,6 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			//First valuation of the initial population.
 			_statisticTimer.start();
 			_statistics = _calculator.evaluate(_population, _generation);
-			_bestPhenotype =_statistics.getBestPhenotype();
 			_bestStatistics = _statistics;
 			_statisticTimer.stop();
 			
@@ -262,8 +263,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			//Evaluate the statistic
 			_statisticTimer.start();
 			_statistics = _calculator.evaluate(_population, _generation);
-			if (_bestPhenotype.compareTo(_statistics.getBestPhenotype()) < 0) {
-				_bestPhenotype = _statistics.getBestPhenotype();
+			if (_bestStatistics.getBestPhenotype().compareTo(_statistics.getBestPhenotype()) < 0) {
 				_bestStatistics = _statistics;
 			}
 			
@@ -543,18 +543,22 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Return the best {@link Phenotype} so far.
+	 * Return the best {@link Phenotype} so far or {@code null} if the GA hasn't
+	 * been initialized yet.
 	 * 
-	 * @return the best {@link Phenotype} so far.
+	 * @return the best {@link Phenotype} so far or {@code null} if the GA hasn't
+	 *         been initialized yet.
 	 */
 	public Phenotype<G, C> getBestPhenotype() {
-		return _bestPhenotype;
+		return _bestStatistics != null ? _bestStatistics.getBestPhenotype() : null;
 	}
 	
 	/**
-	 * Return the current {@link Population} {@link Statistics}.
+	 * Return the current {@link Population} {@link Statistics} or {@code null} 
+	 * if the GA hasn't been initialized yet.
 	 * 
-	 * @return the current {@link Population} {@link Statistics}.
+	 * @return the current {@link Population} {@link Statistics} or {@code null} 
+	 *         if the GA hasn't been initialized yet.
 	 */
 	public Statistics<G, C> getStatistics() {
 		return _statistics;
@@ -657,12 +661,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @param population The list of phenotypes to set. The population size is 
 	 *        set to <code>phenotype.size()</code>.
-	 * @throws NullPointerException if the population is null.
+	 * @throws NullPointerException if the population, or one of its element, is 
+	 *         {@code null}.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
-		nonNull(population, "Population");
+		ArrayUtils.foreach(population, new Validator.NonNull());
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.",
@@ -686,12 +691,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @param genotypes The list of genotypes to set. The population size is set 
 	 *        to <code>genotypes.size()</code>.
-	 * @throws NullPointerException if the population is null.
+	 * @throws NullPointerException if the population, or one of its elements, 
+	 *         is {@code null}s.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 * 		   one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
-		nonNull(genotypes, "Genotypes");
+		ArrayUtils.foreach(genotypes, new Validator.NonNull());
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
@@ -725,7 +731,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * Return the statistics of the best phenotype. The returned statistics is 
 	 * {@code null} if the algorithms hasn't been initialized.
 	 * 
-	 * @return the statistics of the best phenotype.
+	 * @return the statistics of the best phenotype, or {@code null} if the GA
+	 *         hashn't been initialized yet.
 	 */
 	public Statistics<G, C> getBestStatistics() {
 		return _bestStatistics;
