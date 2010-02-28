@@ -64,8 +64,8 @@ import org.jenetics.util.Validator;
  * fitness function and the fitness scaler is not initialized by the
  * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
  * [code]
- *     final Population population = 
- *         (Population)XMLSerializer.read(new FileInputStream("population.xml");
+ *     final Population<BitGene, Float64> population = (Population<Bitgene, Float64)
+ *         IOUtils.readXML(Population.class, new FileInputStream("population.xml");
  *     ga.setPopulation(population);
  *     //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
  *     ga.setup();
