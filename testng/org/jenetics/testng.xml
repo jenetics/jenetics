@@ -95,6 +95,11 @@
 			<class name="org.jenetics.ProbabilitySelectorTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.RouletteWheelSelector">
+		<classes>
+			<class name="org.jenetics.RouletteWheelSelectorTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.Statistics">
 		<classes>
 			<class name="org.jenetics.StatisticsTest" />
