@@ -45,6 +45,11 @@
 			<class name="org.jenetics.EnumGeneTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.ExponentialRankSelector">
+		<classes>
+			<class name="org.jenetics.ExponentialRankSelectorTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.Genotype">
 		<classes>
 			<class name="org.jenetics.GenotypeTest" />
