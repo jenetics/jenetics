@@ -333,8 +333,15 @@ public final class Accumulators {
 			final double q1, 
 			final double q2
 		) {
-			double qt = q1 + ((mp - m0)*(q2 - q1)/(m2 - m1) + (m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
-			return (qt <= q2) ? qt : q1 + (q2 - q1)/(m2 - m1);
+			double result = q1 + 
+						((mp - m0)*(q2 - q1)/(m2 - m1) + 
+						(m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
+			
+			if (result > q2) {
+				result = q1 + (q2 - q1)/(m2 - m1);
+			}
+			
+			return result;
 		}
 
 		private static double qMinus(
@@ -346,8 +353,15 @@ public final class Accumulators {
 			final double q1, 
 			final double q2
 		) {
-			double qt = q1 - ((mm - m0)*(q2 - q1)/(m2 - m1) + (m2 - mm)*(q1 - q0)/(m1 - m0))/(m2 - m0);
-			return (q0 <= qt) ? qt : q1 + (q0 - q1)/(m0 - m1);
+			double result = q1 - 
+						((mm - m0)*(q2 - q1)/(m2 - m1) + 
+						(m2 - mm)*(q1 - q0)/(m1 - m0))/(m2 - m0);
+			
+			if (q0 > result) {
+				result = q1 + (q0 - q1)/(m0 - m1);
+			}
+			
+			return result;
 		}
 	}
 	
