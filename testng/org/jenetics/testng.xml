@@ -10,11 +10,6 @@
 			<class name="org.jenetics.BitGeneTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.BitUtils">
-		<classes>
-			<class name="org.jenetics.BitUtilsTest" />
-		</classes>
-	</test>
 	<test name="org.jenetics.CharacterChromosome">
 		<classes>
 			<class name="org.jenetics.CharacterChromosomeTest" />
@@ -113,6 +108,11 @@
 	<test name="org.jenetics.util.ArrayUtils">
 		<classes>
 			<class name="org.jenetics.util.ArrayUtilsTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.BitUtils">
+		<classes>
+			<class name="org.jenetics.util.BitUtilsTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.CharSet">
