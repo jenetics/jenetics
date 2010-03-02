@@ -49,6 +49,7 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 	
 	private final double _c;
 	
+	// TODO: check precondition.
 	public ExponentialRankSelector(final double c) {
 		_c = c;
 	}

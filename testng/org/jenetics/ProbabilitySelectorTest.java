@@ -93,6 +93,12 @@ public class ProbabilitySelectorTest {
 		return sum;
 	}
 	
+	protected static void assertPositive(final double[] array) {
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertTrue(array[i] >= 0.0, "All values must be positive: " + array[i]);
+		}
+	}
+	
 	private static void randomize(final double[] array, final Random random) {
 		Validator.nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {

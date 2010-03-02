@@ -56,16 +56,17 @@ public class LinearRankSelectorTest extends ProbabilitySelectorTest {
 		}
 		
 		final LinearRankSelector<Float64Gene, Float64> selector = new LinearRankSelector<Float64Gene, Float64>();
-		final double[] props = selector.probabilities(population, 23);
-		Assert.assertEquals(props.length, population.size());
+		final double[] probs = selector.probabilities(population, 23);
+		Assert.assertEquals(probs.length, population.size());
 		
 		assertSortedDescending(population);
-		assertSortedDescending(props);
-		Assert.assertEquals(sum(props), 1.0, 0.000001);
+		assertSortedDescending(probs);
+		assertPositive(probs);
+		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 		
-		double diff = props[0] - props[1];
-		for (int i = 2; i < props.length; ++i) {
-			Assert.assertEquals(props[i - 1] - props[i], diff, 0.000001);
+		double diff = probs[0] - probs[1];
+		for (int i = 2; i < probs.length; ++i) {
+			Assert.assertEquals(probs[i - 1] - probs[i], diff, 0.000001);
 		}
 	}
 

@@ -62,6 +62,7 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 	 * @throws IllegalArgumentException if the given beta value is smaller than
 	 *         zero.
 	 */
+	//TODO: check precondition.
 	public BoltzmannSelector(final double beta) {
 		if (beta < 0) {
 			throw new IllegalArgumentException(String.format(

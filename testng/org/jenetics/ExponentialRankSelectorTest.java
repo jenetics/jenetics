@@ -30,8 +30,8 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
-
+public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
+	
 	private static class FF implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = -5717330505575904303L;
 
@@ -55,23 +55,22 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 				));
 		}
 		
-		BoltzmannSelector<Float64Gene, Float64> selector = new BoltzmannSelector<Float64Gene, Float64>();
-		double[] probs = selector.probabilities(population, 23);
-		Assert.assertEquals(probs.length, population.size());
-		Assert.assertEquals(sum(probs), 1.0, 0.000001);
-		assertPositive(probs);
+		ExponentialRankSelector<Float64Gene, Float64> selector = new ExponentialRankSelector<Float64Gene, Float64>(0.234234);
+		double[] props = selector.probabilities(population, 23);
+		Assert.assertEquals(props.length, population.size());
 		
-		selector = new BoltzmannSelector<Float64Gene, Float64>(0.234234);
-		probs = selector.probabilities(population, 23);
-		Assert.assertEquals(probs.length, population.size());
-		Assert.assertEquals(sum(probs), 1.0, 0.000001);
-		assertPositive(probs);
+		assertSortedDescending(population);
+		assertSortedDescending(props);
+		Assert.assertEquals(sum(props), 1.0, 0.000001);
+		assertPositive(props);
 		
-		selector = new BoltzmannSelector<Float64Gene, Float64>(1.234234);
-		probs = selector.probabilities(population, 23);
-		Assert.assertEquals(probs.length, population.size());
-		Assert.assertEquals(sum(probs), 1.0, 0.000001);
-		assertPositive(probs);
+		selector = new ExponentialRankSelector<Float64Gene, Float64>(0.9234234);
+		props = selector.probabilities(population, 23);
+		Assert.assertEquals(props.length, population.size());
+		
+		assertSortedDescending(population);
+		assertPositive(props);
+		assertSortedDescending(props);
+		Assert.assertEquals(sum(props), 1.0, 0.000001);
 	}
-	
 }
