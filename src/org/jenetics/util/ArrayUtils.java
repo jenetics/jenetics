@@ -28,6 +28,7 @@ import static org.jenetics.util.Validator.nonNull;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 
@@ -78,6 +79,26 @@ public final class ArrayUtils {
 		final T temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
+	}
+	
+	/**
+	 * Swap two elements of an given list.
+	 * 
+	 * @param <T> the list type.
+	 * @param list the array
+	 * @param i index of the first list element.
+	 * @param j index of the second list element.
+     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+     *         <tt>j &gt; a.length</tt>
+     * @throws NullPointerException if the give list is {@code null}.
+	 */
+	public static <T> void swap(final List<T> list, final int i, final int j) {
+		nonNull(list, "Array");
+		
+		final T temp = list.get(i);
+		list.set(i, list.get(j));
+		list.set(j, temp);
 	}
 	
 	/**
@@ -456,7 +477,8 @@ public final class ArrayUtils {
 	 * 
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
-	 * @throws NullPointerException if the give array is {@code null}.
+	 * @throws NullPointerException if the give array or the random object is 
+	 *         {@code null}.
 	 */
 	public static void shuffle(final int[] array, final Random random) {
 		nonNull(array, "Array");
@@ -473,7 +495,8 @@ public final class ArrayUtils {
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give array is {@code null}.
+	 * @throws NullPointerException if the give array or the random object is 
+	 *         {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array, final Random random) {
 		nonNull(array, "Array");
@@ -501,6 +524,26 @@ public final class ArrayUtils {
 		
 		for (int j = array.length() - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
+		}
+	}
+	
+	/**
+	 * Randomize the {@code list} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param array the {@code array} to randomize.
+	 * @param random the {@link Random} object to use for randomize.
+	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give list or the random object is 
+	 *         {@code null}.
+	 */
+	public static <T> void shuffle(final List<T> list, final Random random) {
+		nonNull(list, "List");
+		nonNull(random, "Random");
+		
+		for (int j = list.size() - 1; j > 0; --j) {
+			swap(list, j, random.nextInt(j + 1));
 		}
 	}
 	
