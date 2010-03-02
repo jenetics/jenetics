@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -54,6 +57,7 @@ public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
 					12
 				));
 		}
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		
 		ExponentialRankSelector<Float64Gene, Float64> selector = new ExponentialRankSelector<Float64Gene, Float64>(0.234234);
 		double[] props = selector.probabilities(population, 23);
@@ -64,6 +68,7 @@ public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
 		Assert.assertEquals(sum(props), 1.0, 0.000001);
 		assertPositive(props);
 		
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		selector = new ExponentialRankSelector<Float64Gene, Float64>(0.9234234);
 		props = selector.probabilities(population, 23);
 		Assert.assertEquals(props.length, population.size());

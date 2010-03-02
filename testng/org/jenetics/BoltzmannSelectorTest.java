@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -54,6 +57,7 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 					12
 				));
 		}
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		
 		BoltzmannSelector<Float64Gene, Float64> selector = new BoltzmannSelector<Float64Gene, Float64>();
 		double[] probs = selector.probabilities(population, 23);
@@ -61,12 +65,14 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 		assertPositive(probs);
 		
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		selector = new BoltzmannSelector<Float64Gene, Float64>(0.234234);
 		probs = selector.probabilities(population, 23);
 		Assert.assertEquals(probs.length, population.size());
 		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 		assertPositive(probs);
 		
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		selector = new BoltzmannSelector<Float64Gene, Float64>(1.234234);
 		probs = selector.probabilities(population, 23);
 		Assert.assertEquals(probs.length, population.size());

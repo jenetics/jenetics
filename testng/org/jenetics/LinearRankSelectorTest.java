@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -54,6 +57,7 @@ public class LinearRankSelectorTest extends ProbabilitySelectorTest {
 					12
 				));
 		}
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		
 		final LinearRankSelector<Float64Gene, Float64> selector = new LinearRankSelector<Float64Gene, Float64>();
 		final double[] probs = selector.probabilities(population, 23);
