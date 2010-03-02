@@ -32,7 +32,8 @@ import java.io.Serializable;
  * where <i>b</i> controls the selection intensity, and
  * <p/><img src="doc-files/boltzmann-formula2.gif" alt="Boltzmann" />.</p> 
  * 
- * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the j<sup>th</sup> individual.
+ * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the 
+ * <i>j<sup>th</sup></i> individual.
  * 
  * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.

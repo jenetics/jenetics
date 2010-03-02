@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class LinearRankSelectorTest extends ProbabilitySelectorTest {
+public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 
 	private static class FF implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = -5717330505575904303L;
@@ -55,24 +55,20 @@ public class LinearRankSelectorTest extends ProbabilitySelectorTest {
 				));
 		}
 		
-		final LinearRankSelector<Float64Gene, Float64> selector = new LinearRankSelector<Float64Gene, Float64>();
-		final double[] props = selector.probabilities(population, 23);
+		BoltzmannSelector<Float64Gene, Float64> selector = new BoltzmannSelector<Float64Gene, Float64>();
+		double[] props = selector.probabilities(population, 23);
 		Assert.assertEquals(props.length, population.size());
-		
-		assertSortedDescending(population);
-		assertSortedDescending(props);
 		Assert.assertEquals(sum(props), 1.0, 0.000001);
 		
-		double diff = props[0] - props[1];
-		for (int i = 2; i < props.length; ++i) {
-			Assert.assertEquals(props[i - 1] - props[i], diff, 0.000001);
-		}
+		selector = new BoltzmannSelector<Float64Gene, Float64>(0.234234);
+		props = selector.probabilities(population, 23);
+		Assert.assertEquals(props.length, population.size());
+		Assert.assertEquals(sum(props), 1.0, 0.000001);
+		
+		selector = new BoltzmannSelector<Float64Gene, Float64>(1.234234);
+		props = selector.probabilities(population, 23);
+		Assert.assertEquals(props.length, population.size());
+		Assert.assertEquals(sum(props), 1.0, 0.000001);
 	}
-
-
 	
 }
-
-
-
-
