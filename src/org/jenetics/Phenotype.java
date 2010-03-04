@@ -402,7 +402,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		return pt;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	static final XMLFormat<Phenotype> 
 	XML = new XMLFormat<Phenotype>(Phenotype.class) 
 	{
