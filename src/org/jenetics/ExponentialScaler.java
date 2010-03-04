@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.Float64;
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are 
  * modified such that 
- *  <p/><img src="doc-files/exponential-scaler.gif" alt="Exponential Scaler" />.</p>
+ * <p/><img src="doc-files/exponential-scaler.gif" alt="Exponential Scaler" />.</p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -47,7 +47,7 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>exp</strong></pre>
+	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
 	 */
 	public ExponentialScaler(final double c) {
 		this(0.0, c);

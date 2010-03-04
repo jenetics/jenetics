@@ -30,14 +30,13 @@ import java.io.Serializable;
  * An alternative to the "weak" <code>LinearRankSelector</code> is to assign
  * survival probabilities to the sorted individuals using an exponential 
  * function:
- * <p/>
- * //TODO: Add formular gif.
- * <pre>
- *          N-i
- *         c
- *  p_i = -------,
- *           N
- * </pre>
+ * <p/><img src="doc-files/exponential-rank-selector.gif" alt="Exponential Rank Selector" />,</p>
+ * where <i>c</i> must within the range {@code [0..1)}.
+ * <br/>
+ * A small value of <i>c</i> increases the probability of the best phenotypes to
+ * be selected. If <i>c</i> is set to zero, the selection probability of the best
+ * phenotype is set to one. The selection probability of all other phenotypes is
+ * zero. A value near one equalizes the selection probabilities. 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -49,8 +48,19 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 	
 	private final double _c;
 	
-	// TODO: check precondition.
+	/**
+	 * Create a new exponential rank selector.
+	 * 
+	 * @param c the <i>c</i> value.
+	 * @throws IllegalArgumentException if {@code c} is not within the range
+	 *         {@code [0..1)}.
+	 */
 	public ExponentialRankSelector(final double c) {
+		if (c < 0.0 || c >= 1.0) {
+			throw new IllegalArgumentException(String.format(
+					"Value is out of range [0..1): ", c
+				));
+		}
 		_c = c;
 	}
 
@@ -67,8 +77,9 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 		final double N = population.size();
 		final double[] props = new double[population.size()];
 		
+		final double b = pow(_c, N) - 1;
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[n - i - 1] = ((_c - 1)*pow(_c, N - i - 1))/(pow(_c, N) - 1);
+			props[i] = ((_c - 1)*pow(_c, i))/b;
 		}
 	
 		return props;
