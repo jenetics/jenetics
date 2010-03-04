@@ -59,7 +59,8 @@ public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
 		}
 		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		
-		ExponentialRankSelector<Float64Gene, Float64> selector = new ExponentialRankSelector<Float64Gene, Float64>(0.234234);
+		ExponentialRankSelector<Float64Gene, Float64> selector = 
+			new ExponentialRankSelector<Float64Gene, Float64>(0.234234);
 		double[] props = selector.probabilities(population, 23);
 		Assert.assertEquals(props.length, population.size());
 		
@@ -69,7 +70,7 @@ public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
 		assertPositive(props);
 		
 		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		selector = new ExponentialRankSelector<Float64Gene, Float64>(0.9234234);
+		selector = new ExponentialRankSelector<Float64Gene, Float64>(1.0 - Math.ulp(1.0));
 		props = selector.probabilities(population, 23);
 		Assert.assertEquals(props.length, population.size());
 		
@@ -77,5 +78,14 @@ public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
 		assertPositive(props);
 		assertSortedDescending(props);
 		Assert.assertEquals(sum(props), 1.0, 0.000001);
+		
+		
+//		for (int i = 0; i < 10; ++i) {
+//			selector = new ExponentialRankSelector<Float64Gene, Float64>((double)i/11.0);
+//			System.out.println(Arrays.toString(selector.probabilities(population, 10)));
+//		}
+//		selector = new ExponentialRankSelector<Float64Gene, Float64>(1.0 - Math.ulp(1.0));
+//		System.out.println(Arrays.toString(selector.probabilities(population, 10)));
+		
 	}
 }
