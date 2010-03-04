@@ -532,7 +532,7 @@ public final class ArrayUtils {
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
-	 * @param array the {@code array} to randomize.
+	 * @param list the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is 
