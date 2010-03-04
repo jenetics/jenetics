@@ -278,7 +278,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	static final XMLFormat<Population> 
 	XML = new XMLFormat<Population>(Population.class) 
 	{

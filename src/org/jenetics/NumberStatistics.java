@@ -135,7 +135,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		return out.toString();
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	static final XMLFormat<NumberStatistics> 
 	XML = new XMLFormat<NumberStatistics>(NumberStatistics.class) 
 	{

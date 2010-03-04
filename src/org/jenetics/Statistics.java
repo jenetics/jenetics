@@ -266,7 +266,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		out.append(String.format("%30s: %20s   \n", name, value));
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	protected static final XMLFormat<Statistics> XML = 
 		new XMLFormat<Statistics>(Statistics.class) 
 	{

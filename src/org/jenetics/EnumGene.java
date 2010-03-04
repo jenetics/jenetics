@@ -116,7 +116,7 @@ public class EnumGene<E extends Enum<E>>
 	}
 	
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked" })
 	private static final ObjectFactory<EnumGene> FACTORY = new ObjectFactory<EnumGene>() {
 		@Override protected EnumGene<?> create() {
 			return new EnumGene();
@@ -155,7 +155,7 @@ public class EnumGene<E extends Enum<E>>
 		
 	};
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked"})
 	static final XMLFormat<EnumGene> 
 	XML = new XMLFormat<EnumGene>(EnumGene.class) 
 	{
