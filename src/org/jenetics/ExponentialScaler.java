@@ -28,8 +28,8 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are 
- * modified such that new fitness = (a * fitness + b) ^ exp.
- *  //TODO: Add formular gif.
+ * modified such that 
+ *  <p/><img src="doc-files/exponential-scaler.gif" alt="Exponential Scaler" />.</p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -42,42 +42,42 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 
 	private final double _a;
 	private final double _b;
-	private final double _exp;
+	private final double _c;
 	
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param exp <pre>fitness = (1 * fitness + 0) ^ <strong>exp</strong></pre>
+	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>exp</strong></pre>
 	 */
-	public ExponentialScaler(final double exp) {
-		this(0.0, exp);
+	public ExponentialScaler(final double c) {
+		this(0.0, c);
 	}
 	
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param b <pre>fitness = (1 * fitness + <strong>b</strong>) ^ exp</pre>
-	 * @param exp <pre>fitness = (1 * fitness + b) ^ <strong>exp</strong></pre>
+	 * @param b <pre>fitness = (1 * fitness + <strong>b</strong>) ^ c</pre>
+	 * @param c <pre>fitness = (1 * fitness + b) ^ <strong>c</strong></pre>
 	 */
-	public ExponentialScaler(final double b, final double exp) {
-		this(1.0, b, exp);
+	public ExponentialScaler(final double b, final double c) {
+		this(1.0, b, c);
 	}
 	
 	/**
 	 * Create a new FitnessScaler.
 	 * 
-	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ exp</pre>
-	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ exp</pre>
-	 * @param exp <pre>fitness = (a * fitness + b) ^ <strong>exp</strong></pre>
+	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ c</pre>
+	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ c</pre>
+	 * @param c <pre>fitness = (a * fitness + b) ^ <strong>c</strong></pre>
 	 */
-	public ExponentialScaler(final double a, final double b, final double exp) {
+	public ExponentialScaler(final double a, final double b, final double c) {
 		_a = a;
 		_b = b;
-		_exp = exp;
+		_c = c;
 	}
 
 	@Override
 	public Float64 scale(final Float64 value) {
-		return Float64.valueOf(Math.pow((_a*value.doubleValue() + _b), _exp));
+		return Float64.valueOf(Math.pow((_a*value.doubleValue() + _b), _c));
 	}
 }
