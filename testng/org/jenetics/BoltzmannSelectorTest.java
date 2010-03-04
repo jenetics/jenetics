@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.util.ArrayUtils;
@@ -50,7 +51,7 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		final FF ff = new FF();
 		
 		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(100);
-		for (int i = 0; i < 100; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			population.add(Phenotype.valueOf(
 					Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(i, 0, 1000))),
 					ff, 
@@ -73,11 +74,17 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		assertPositive(probs);
 		
 		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		selector = new BoltzmannSelector<Float64Gene, Float64>(1.234234);
+		selector = new BoltzmannSelector<Float64Gene, Float64>(1.878);
 		probs = selector.probabilities(population, 23);
 		Assert.assertEquals(probs.length, population.size());
 		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 		assertPositive(probs);
+		
+		for (int i = -10; i < 10; ++i) {
+			selector = new BoltzmannSelector<Float64Gene, Float64>((double)i/11.0);
+			System.out.println(Arrays.toString(selector.probabilities(population, 10)));
+		}
+
 	}
 	
 }

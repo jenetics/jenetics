@@ -34,6 +34,11 @@ import java.io.Serializable;
  * 
  * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the 
  * <i>j<sup>th</sup></i> individual.
+ * <br/>
+ * Positive values of <i>b</i> increases the selection probability of the phenotype
+ * with high fitness values. Negative values of <i>b</i> increases the selection
+ * probability of phenotypes with low fitness values. If <i>b</i> is zero the
+ * selection probability of all phenotypes is set to 1/N.
  * 
  * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.
@@ -46,7 +51,7 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 {
 	private static final long serialVersionUID = 4785987330242283796L;
 	
-	private final double _beta;
+	private final double _b;
 
 	/**
 	 * Create a new BolzmanSelecter with a default beta of 0.2.
@@ -56,20 +61,14 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 	}
 	
 	/**
-	 * Create a new BolzmanSelector with the given beta value.
+	 * Create a new BolzmanSelector with the given <i>b</i> value. High absolute
+	 * values of <i>b</i> can create overflows while calculating the selection
+	 * probabilities.
 	 * 
-	 * @param beta the beta value of this BolzmanSelector
-	 * @throws IllegalArgumentException if the given beta value is smaller than
-	 *         zero.
+	 * @param b the <i>b</i> value of this BolzmanSelector
 	 */
-	//TODO: check precondition.
-	public BoltzmannSelector(final double beta) {
-		if (beta < 0) {
-			throw new IllegalArgumentException(String.format(
-					"Beta value is smaller than zero: %s", beta
-				));
-		}
-		_beta = beta;
+	public BoltzmannSelector(final double b) {
+		_b = b;
 	}
 
 	@Override
@@ -81,11 +80,11 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 		
 		double z = 0;
 		for (Phenotype<G, N> pt : population) {
-			z += exp(_beta*pt.getFitness().doubleValue());
+			z += exp(_b*pt.getFitness().doubleValue());
 		}
 		
 		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[i] = exp(_beta*population.get(i).getFitness().doubleValue())/z;
+			props[i] = exp(_b*population.get(i).getFitness().doubleValue())/z;
 		}
 	
 		return props;
