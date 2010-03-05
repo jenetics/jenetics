@@ -23,6 +23,9 @@
 package org.jenetics.util;
 
 /**
+ * This class contains some short general purpose predicates, like {@code Nil},
+ * {@code Not}, {@code And} and {@code Or}.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -31,8 +34,20 @@ public final class Predicates {
 	private Predicates() {
 	}
 	
+	/**
+	 * This predicate return {@code true} if the given value is {@code null}.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	public static class Nil implements Predicate<Object> {
 
+		/**
+		 * Return {@code true} if the given value is {@code null}.
+		 * 
+		 * @return {@code true} if the given value is {@code null}, {@code false}
+		 *         otherwise..
+		 */
 		@Override
 		public boolean evaluate(final Object object) {
 			return object == null;
@@ -40,13 +55,28 @@ public final class Predicates {
 		
 	}
 	
+	/**
+	 * This predicate negates the value of its given, adapted predicate.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	public static class Not<T> implements Predicate<T> {
 		private final Predicate<? super T> _a;
 		
+		/**
+		 * The predicate which will be negated.
+		 * 
+		 * @param a the predicate which will be negated.
+		 * @throws NullPointerException if the given predicate is {@code null}.
+		 */
 		public Not(final Predicate<? super T> a) {
 			_a = Validator.nonNull(a);
 		}
 		
+		/**
+		 * Negate the result of the adopted predicate.
+		 */
 		@Override
 		public boolean evaluate(final T object) {
 			return !_a.equals(object);
@@ -54,10 +84,23 @@ public final class Predicates {
 		
 	}
 	
+	/**
+	 * A logical {@code and} combination of two predicates.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	public static class And<T> implements Predicate<T> {
 		private final Predicate<? super T> _a;
 		private final Predicate<? super T> _b;
 		
+		/**
+		 * Create a new {@code and} combination of the two given predicates.
+		 * 
+		 * @param a the first predicate
+		 * @param b the second predicate
+		 * @throws NullPointerException if one of the predicates is {@code null}.
+		 */
 		public And(final Predicate<? super T> a, final Predicate<? super T> b) {
 			_a = Validator.nonNull(a);
 			_b = Validator.nonNull(b);
@@ -69,10 +112,23 @@ public final class Predicates {
 		}
 	}
 	
+	/**
+	 * A logical {@code or} combination of two predicates.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	public static class Or<T> implements Predicate<T> {
 		private final Predicate<? super T> _a;
 		private final Predicate<? super T> _b;
 		
+		/**
+		 * Create a new {@code or} combination of the two given predicates.
+		 * 
+		 * @param a the first predicate
+		 * @param b the second predicate
+		 * @throws NullPointerException if one of the predicates is {@code null}.
+		 */
 		public Or(final Predicate<? super T> a, final Predicate<? super T> b) {
 			_a = Validator.nonNull(a);
 			_b = Validator.nonNull(b);
@@ -84,14 +140,39 @@ public final class Predicates {
 		}
 	}
 	
+	/**
+	 * Return a predicate which return {@code true} if an given value is 
+	 * {@code null}.
+	 * 
+	 * @return a predicate which return {@code true} if an given value is 
+	 *         {@code null}.
+	 */
 	public static Predicate<Object> nil() {
 		return new Nil();
 	}
 	
+	/**
+	 * Return a predicate which negates the return value of the given predicate.
+	 * 
+	 * @param <T> the value type to check.
+	 * @param a the predicate to negate.
+	 * @return a predicate which negates the return value of the given predicate.
+	 * @throws NullPointerException if the given predicate is {@code null}.
+	 */
 	public static <T> Predicate<T> not(final Predicate<? super T> a) {
 		return new Not<T>(a);
 	}
 	
+	/**
+	 * Return a {@code and} combination of the given predicates.
+	 * 
+	 * @param <T> the value type to check.
+	 * @param a the first predicate
+	 * @param b the second predicate
+	 * @return a {@code and} combination of the given predicates.
+	 * @throws NullPointerException if one of the given predicates is 
+	 *         {@code null}.
+	 */
 	public static <T> Predicate<T> and(
 		final Predicate<? super T> a, 
 		final Predicate<? super T> b
@@ -99,6 +180,16 @@ public final class Predicates {
 		return new And<T>(a, b);
 	}
 	
+	/**
+	 * Return a {@code or} combination of the given predicates.
+	 * 
+	 * @param <T> the value type to check.
+	 * @param a the first predicate
+	 * @param b the second predicate
+	 * @return a {@code and} combination of the given predicates.
+	 * @throws NullPointerException if one of the given predicates is 
+	 *         {@code null}.
+	 */
 	public static <T> Predicate<T> or(
 		final Predicate<? super T> a, 
 		final Predicate<? super T> b
