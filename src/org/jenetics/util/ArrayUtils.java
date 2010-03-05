@@ -369,6 +369,25 @@ public final class ArrayUtils {
 	public static <T extends Object & Comparable<? super T>> T 
 	select(final Array<T> array, final int k) 
 	{
+		return array.get(iselect(array, k));
+	}
+	
+	/**
+	 * Return the <i>k</i><sup>th</sup> smallest value index of the {@code values} 
+	 * array. The input array will not be rearranged.
+	 * 
+	 * @param <T> the array element type.
+	 * @param array the array.
+	 * @param k searching the <i>k</i><sup>th</sup> smallest value index.
+	 * @return the <i>k</i><sup>th</sup> smallest value.
+	 * @throws NullPointerException if the {@code array} or one of it's element 
+	 *         is {@code null}.
+	 * @throws IllegalArgumentException if {@code k < 0} or 
+	 *         {@code k > values.length() - 1}.
+	 */
+	public static <T extends Object & Comparable<? super T>> int
+	iselect(final Array<T> array, final int k) 
+	{
 		nonNull(array, "Array");
 		if (k < 0) {
 			throw new IllegalArgumentException("k is smaller than zero: " + k);
@@ -388,13 +407,13 @@ public final class ArrayUtils {
 		
 		int l = 0;
 		int ir = array.length() - 1;
-		T value = null;
-		while (value == null) {
+		int index = -1;
+		while (index == -1) {
 			if (ir <= l + 1) {
 				if (ir == l + 1 && array.get(pivot[ir]).compareTo(array.get(pivot[l])) < 0) {
 					swap(pivot, l, ir);
 				}
-				value = array.get(pivot[k]);
+				index = pivot[k];
 			} else {
 				final int mid = (l + ir) >> 1;
 				swap(pivot, mid, l + 1);
@@ -435,7 +454,7 @@ public final class ArrayUtils {
 			}
 		}
 		
-		return value;
+		return index;
 	}
 	
 	/**
