@@ -32,6 +32,13 @@ public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 	private final Converter<A, B> _first;
 	private final Converter<B, C> _second;
 	
+	/**
+	 * Create a new transitive converter with the given converters.
+	 * 
+	 * @param first first converter
+	 * @param second second converter
+	 * @throws NullPointerException if one of the converters is {@code null}.
+	 */
 	public TransitiveConverter(
 		final Converter<A, B> first, 
 		final Converter<B, C> second
