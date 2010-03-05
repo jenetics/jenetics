@@ -325,9 +325,18 @@ public class Array<T> implements
 	}
 	
 	/**
+	 * <p>
 	 * Returns the index of the first element on which the given predicate 
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * array element.
+	 * </p>
+	 * [code]
+	 *     // Finding index of first null value.
+	 *     final int index = array.indexOf(new Predicates.Nil());
+	 *     
+	 *     // Assert of no null values.
+	 *     assert (array.indexOf(new Predicates.Nil()) == -1);
+	 * [/code]
 	 * 
 	 * @param predicate the search predicate.
 	 * @return the index of the first element on which the given predicate 
