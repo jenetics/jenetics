@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.Validator.Verify;
+import static org.jenetics.util.Predicates.nil;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.ListIterator;
@@ -32,6 +32,7 @@ import javolution.lang.Realtime;
 import javolution.text.Text;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Validator.Verify;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
@@ -85,6 +86,8 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final Array<G> genes) {
 		nonNull(genes, "Gene array");
+		assert (genes.indexOf(nil()) == -1);
+		
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Chromosome length < 1: %d", genes.length()
