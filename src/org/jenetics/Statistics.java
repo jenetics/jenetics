@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.String.format;
 
 import java.text.ParseException;
 import java.util.List;
@@ -230,40 +231,24 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		return equals;
 	}
 
-	// TODO: better toString method
 	@Override
 	public String toString() {
-		final StringBuilder out = new StringBuilder();
-
-		append(out, "Age mean", _ageMean, "");
-		append(out, "Age variance", _ageVariance, "");
-		append(out, "Samples", Integer.toString(_samples));
-		append(out, "Best fitness", getBestFitness().toString());
-		append(out, "Worst fitness", getWorstFitness().toString());
+		final String spattern = "| %28s: %-26s|\n";
+		final String fpattern = "| %28s: %-26.11f|\n";
+		final String ipattern = "| %28s: %-26d|\n";
 		
-		out.append("Best Phenotype:  ").append("(Generation " + Integer.toString(_generation) + "):" + 
-				getBestPhenotype()).append("\n");
-		out.append("Worst Phenotype: ").append("(Generation " + Integer.toString(_generation) + "):" +
-				getWorstPhenotype());
+		final StringBuilder out = new StringBuilder();
+		out.append("+---------------------------------------------------------+\n");
+		out.append("|  Population Statistics                                  |\n");
+		out.append("+---------------------------------------------------------+\n");
+		out.append(format(fpattern, "Age mean", _ageMean));
+		out.append(format(fpattern, "Age variance", _ageVariance));
+		out.append(format(ipattern, "Samples", _samples));
+		out.append(format(spattern, "Best fitness", getBestFitness().toString()));
+		out.append(format(spattern, "Worst fitness", getWorstFitness().toString()));
+		out.append("+---------------------------------------------------------+");
 		
 		return out.toString();
-	}
-	
-	static void append(
-		final StringBuilder out, 
-		final String name, 
-		final double value,
-		final String unit
-	) {
-		out.append(String.format("%30s: %20.11f %s \n", name, value, unit));
-	}
-	
-	static void append(
-		final StringBuilder out, 
-		final String name, 
-		final String value
-	) {
-		out.append(String.format("%30s: %20s   \n", name, value));
 	}
 	
 	@SuppressWarnings({ "unchecked" })
@@ -423,14 +408,19 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		
 		@Override
 		public String toString() {
-			final StringBuilder out = new StringBuilder();
+			final String pattern = "| %28s: %-26.11f|\n";
 			
-			append(out, "Select time", selection.get().doubleValue(SI.SECOND), " s");
-			append(out, "Alter time", alter.get().doubleValue(SI.SECOND), " s");
-			append(out, "Combine time", combine.get().doubleValue(SI.SECOND), " s");
-			append(out, "Fitness calculation time", evaluation.get().doubleValue(SI.SECOND), " s");
-			append(out, "Statistics calculation time", statistics.get().doubleValue(SI.SECOND), " s");
-			append(out, "Overall execution time", execution.get().doubleValue(SI.SECOND), " s");
+			final StringBuilder out = new StringBuilder();
+			out.append("+---------------------------------------------------------+\n");
+			out.append("|  Time Statistics                                        |\n");
+			out.append("+---------------------------------------------------------+\n");
+			out.append(format(pattern, "Select time", selection.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Alter time", alter.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Combine time", combine.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Fitness calculation time", evaluation.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Statistics calculation time", statistics.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Overall execution time", execution.get().doubleValue(SI.SECOND)));
+			out.append("+---------------------------------------------------------+");
 			
 			return out.toString();
 		}
@@ -560,6 +550,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 
 	}
 	
+//	public static <G extends Gene<?, G>, C extends Comparable<C>> 
+//	Calculator<G, C> calculator() {
+//		return new Calculator<G, C>();
+//	}
 	
 }
 

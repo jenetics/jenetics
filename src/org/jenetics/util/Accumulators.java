@@ -77,7 +77,7 @@ public final class Accumulators {
 		public double getStandardError() {
 			double sem = Double.NaN;
 
-			if (_samples < 0) {
+			if (_samples > 0) {
 				sem = _mean/Math.sqrt(_samples);
 			}
 			
