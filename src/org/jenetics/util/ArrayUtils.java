@@ -357,6 +357,8 @@ public final class ArrayUtils {
 	 * Return the <i>k</i><sup>th</sup> smallest value of the {@code values} 
 	 * array. The input array will not be rearranged.
 	 * 
+	 * @see #iselect(Array, int)
+	 * 
 	 * @param <T> the array element type.
 	 * @param array the array.
 	 * @param k searching the <i>k</i><sup>th</sup> smallest value.
@@ -373,13 +375,15 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Return the <i>k</i><sup>th</sup> smallest value index of the {@code values} 
-	 * array. The input array will not be rearranged.
+	 * Return the index of the <i>k</i><sup>th</sup> smallest value of the 
+	 * {@code values} array. The input array will not be rearranged.
+	 * 
+	 * @see #select(Array, int)
 	 * 
 	 * @param <T> the array element type.
 	 * @param array the array.
-	 * @param k searching the <i>k</i><sup>th</sup> smallest value index.
-	 * @return the <i>k</i><sup>th</sup> smallest value.
+	 * @param k searching the index of the <i>k</i><sup>th</sup> smallest value.
+	 * @return the index of the <i>k</i><sup>th</sup> smallest value.
 	 * @throws NullPointerException if the {@code array} or one of it's element 
 	 *         is {@code null}.
 	 * @throws IllegalArgumentException if {@code k < 0} or 
