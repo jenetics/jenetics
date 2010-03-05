@@ -36,6 +36,7 @@ import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
+import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
@@ -70,6 +71,7 @@ public class RealFunction {
 		final Function ff = new Function();
 		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		
+		ga.setStatisticsCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
 		ga.setAlterer(new CompositeAlterer<Float64Gene>(

@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.String.format;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 	
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
-	protected final double _errorOfMean;
+	protected final double _standardError;
 	
 	protected NumberStatistics(final int generation) {
 		this(generation, null, null, NaN, NaN, 0, NaN, NaN, NaN);
@@ -70,7 +71,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
-		_errorOfMean = errorOfMean;
+		_standardError = errorOfMean;
 	}
 	
 	protected NumberStatistics(
@@ -82,7 +83,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		super(other);
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
-		_errorOfMean = errorOfMean;
+		_standardError = errorOfMean;
 	}
 
 	public double getFitnessMean() {
@@ -93,8 +94,8 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		return _fitnessVariance;
 	}
 	
-	public double getErrorOfMean() {
-		return _errorOfMean;
+	public double getStandardError() {
+		return _standardError;
 	}
 
 	@Override
@@ -102,7 +103,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		int hash = super.hashCode()*31 + 17;
 		hash += (int)doubleToLongBits(_fitnessMean)*31 + 17;
 		hash += (int)doubleToLongBits(_fitnessVariance)*31 + 17;
-		hash += (int)doubleToLongBits(_errorOfMean)*31 + 17;
+		hash += (int)doubleToLongBits(_standardError)*31 + 17;
 		return hash;
 	}
 	
@@ -120,18 +121,22 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		return 
 			doubleToLongBits(statistics._fitnessMean) == doubleToLongBits(_fitnessMean) &&
 			doubleToLongBits(statistics._fitnessVariance) == doubleToLongBits(_fitnessVariance) &&
-			doubleToLongBits(statistics._errorOfMean) == doubleToLongBits(_errorOfMean);
+			doubleToLongBits(statistics._standardError) == doubleToLongBits(_standardError);
 	}
 	
-	// TODO: Make a better toString method
 	@Override
 	public String toString() {
+		final String fpattern = "| %28s: %-26.11f|\n";
+		
 		final StringBuilder out = new StringBuilder();
-
 		out.append(super.toString()).append("\n");
-		out.append("Mean:            ").append(_fitnessMean).append("\n");
-		out.append("Variance:        ").append(_fitnessVariance).append("\n");
-		out.append("Error of mean:   ").append(_errorOfMean);
+		out.append("+---------------------------------------------------------+\n");
+		out.append("|  Fitness Statistics                                     |\n");
+		out.append("+---------------------------------------------------------+\n");
+		out.append(format(fpattern, "Fitness mean", _fitnessMean));
+		out.append(format(fpattern, "Fitness variance", _fitnessVariance));
+		out.append(format(fpattern, "Fitness error of mean", _standardError));
+		out.append("+---------------------------------------------------------+");
 		
 		return out.toString();
 	}
@@ -167,7 +172,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			Statistics.XML.write(s, xml);
 			xml.add(Float64.valueOf(s.getFitnessMean()), FITNESS_MEAN);
 			xml.add(Float64.valueOf(s.getFitnessVariance()), FITNESS_VARIANCE);
-			xml.add(Float64.valueOf(s.getErrorOfMean()), ERROR_OF_MEAN);
+			xml.add(Float64.valueOf(s.getStandardError()), ERROR_OF_MEAN);
 		}
 		@Override
 		public void read(final InputElement xml, final NumberStatistics p) 
@@ -227,8 +232,12 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			
 			return statistics;
 		}
-
 	}
+	
+//	public static <G extends Gene<?, G>, R extends Number & Comparable<R>> 
+//	Calculator<G, R> calculator() {
+//		return new Calculator<G, R>();
+//	}
 	
 }
 
