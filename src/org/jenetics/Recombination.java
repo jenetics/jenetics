@@ -51,8 +51,8 @@ public abstract class Recombination<G extends Gene<?, G>> extends AbstractAltere
 	 * Constructs an alterer with a given recombination probability.
 	 * 
 	 * @param probability The recombination probability.
-	 * @throws NullPointerException if the <code>probability</code> is 
-	 * 		<code>null</code>.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
 	 */
 	public Recombination(final double probability) {
 		super(probability);

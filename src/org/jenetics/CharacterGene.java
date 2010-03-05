@@ -48,7 +48,8 @@ public class CharacterGene
 	private static final long serialVersionUID = 5091130159700639888L;
 	
 	public static final CharSet DEFAULT_CHARACTERS = new CharSet(
-				CharSet.expand("0-9a-zA-Z") +  " !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
+				CharSet.expand("0-9a-zA-Z") +  
+				" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 			);
 	
 	private CharSet _validCharacters;

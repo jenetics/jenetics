@@ -62,8 +62,8 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 	
 	/**
 	 * Create a new BolzmanSelector with the given <i>b</i> value. High absolute
-	 * values of <i>b</i> can create overflows while calculating the selection
-	 * probabilities.
+	 * values of <i>b</i> can create numerical overflows while calculating the 
+	 * selection probabilities.
 	 * 
 	 * @param b the <i>b</i> value of this BolzmanSelector
 	 */

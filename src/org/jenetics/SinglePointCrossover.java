@@ -54,10 +54,21 @@ import org.jenetics.util.RandomRegistry;
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private static final long serialVersionUID = -5901453762256113098L;
 
+	/**
+	 * Create a new single point crossover object with crossover probability of
+	 * {@code 0.05}.
+	 */
 	public SinglePointCrossover() {
 		this(0.05);
 	}
 	
+	/**
+	 * Constructs an alterer with a given recombination probability.
+	 * 
+	 * @param probability the crossover probability.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
+	 */
 	public SinglePointCrossover(final double probability) {
 		super(probability);
 	}

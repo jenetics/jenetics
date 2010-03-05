@@ -81,8 +81,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param probability Mutation probability. The given probability is
 	 * 	      divided by the number of chromosomes of the genotype to form
 	 * 	      the concrete mutation probability.
-	 * @throws NullPointerException if the <code>probability</code> is 
-	 * 		<code>null</code>.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}..
 	 */
 	public Mutator(final double probability) {
 		super(probability);

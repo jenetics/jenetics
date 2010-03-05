@@ -44,6 +44,10 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	/**
+	 * This method sorts the population in descending order while calculating the
+	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * by this method.)
+	 * 
 	 * @throws IllegalArgumentException if the sample size is greater than the
 	 *         population size or {@code count} is greater the the population 
 	 *         size.

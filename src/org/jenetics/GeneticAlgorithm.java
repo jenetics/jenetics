@@ -119,9 +119,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
 	private Statistics<G, C> _bestStatistics = null;
-	private Statistics<G, C> _statistics = null;
-	//private Phenotype<G, C> _bestPhenotype = null;
-	
+	private Statistics<G, C> _statistics = null;	
 	
 	//Some performance measure.
 	private final Timer _executionTimer = new Timer("Execution time");

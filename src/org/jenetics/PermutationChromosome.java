@@ -70,26 +70,31 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 		//Check the input.
 		Validator.nonNull(values, "Values");
 		if (values.length < 1) {
-			throw new IllegalArgumentException("Array must contain at least one value.");
+			throw new IllegalArgumentException(
+					"Array must contain at least one value."
+				);
 		}
 		
 		byte[] check = new byte[values.length/8 + 1];
 		Arrays.fill(check, (byte)0);
 		for (int i = 0; i < values.length; ++i) {
 			if (values[i] < 0) {
-				throw new IllegalArgumentException(
-					"Value at position " + i + " is smaller than zero: " + values[i]
-				);
+				throw new IllegalArgumentException(String.format(
+					"Value %s at position %s is smaller than zero.",
+					values[i], i
+				));
 			}
 			if (values[i] > values.length - 1) {
-				throw new IllegalArgumentException(
-					"Value at position " + i + " is greater than " + 
-					(values.length - 1) + ": "  + values[i]
-				);
+				throw new IllegalArgumentException(String.format(
+					"Value %s at position %s is greater or equal than array length %s.",
+					values[i], i, values.length
+				));
 			}
 			
 			if (BitUtils.getBit(check, values[i])) {
-				throw new IllegalArgumentException("Value " + values[i] + " is duplicate.");
+				throw new IllegalArgumentException(String.format(
+						"Value %s is duplicate.", values[i]
+					));
 			} else {
 				BitUtils.setBit(check, values[i], true);
 			}

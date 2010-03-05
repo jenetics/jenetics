@@ -44,8 +44,8 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 * Create a new chromosome from the given genes array.
 	 * 
 	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller than 
-	 *         one.
+	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
+	 *         than one.
 	 */
 	protected Integer64Chromosome(final Array<Integer64Gene> genes) {
 		super(genes);

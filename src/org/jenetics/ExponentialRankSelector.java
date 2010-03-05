@@ -32,11 +32,17 @@ import java.io.Serializable;
  * function:
  * <p/><img src="doc-files/exponential-rank-selector.gif" alt="Exponential Rank Selector" />,</p>
  * where <i>c</i> must within the range {@code [0..1)}.
- * <br/>
+ * 
+ * <p>
  * A small value of <i>c</i> increases the probability of the best phenotypes to
  * be selected. If <i>c</i> is set to zero, the selection probability of the best
  * phenotype is set to one. The selection probability of all other phenotypes is
  * zero. A value near one equalizes the selection probabilities. 
+ * </p>
+ * <p>
+ * This selector sorts the population in descending order while calculating the
+ * selection probabilities.
+ * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -64,6 +70,11 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 		_c = c;
 	}
 
+	/**
+	 * This method sorts the population in descending order while calculating the
+	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * by this method.)
+	 */
 	@Override
 	protected double[] probabilities(
 		final Population<G, C> population, final int count

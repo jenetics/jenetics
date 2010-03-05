@@ -82,7 +82,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	 * @param count The number of phenotypes to select. 
 	 * @return Probability array. The returned probability array must have the 
 	 *         length {@code population.size()} and <strong>must</strong> sum to
-	 *         ones.
+	 *         one.
 	 */
 	protected abstract double[] probabilities(
 		final Population<G, C> population, final int count
