@@ -28,11 +28,11 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ConverterAdapter<A, B, C> implements Converter<A, C> {
+public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 	private final Converter<A, B> _first;
 	private final Converter<B, C> _second;
 	
-	public ConverterAdapter(
+	public TransitiveConverter(
 		final Converter<A, B> first, 
 		final Converter<B, C> second
 	) {
@@ -49,7 +49,7 @@ public class ConverterAdapter<A, B, C> implements Converter<A, C> {
 		final Converter<A, B> first,
 		final Converter<B, C> second
 	) {
-		return new ConverterAdapter<A, B, C>(first, second);
+		return new TransitiveConverter<A, B, C>(first, second);
 	}
 
 	public static <A, B, C, D> Converter<A, D> valueOf(
@@ -57,8 +57,8 @@ public class ConverterAdapter<A, B, C> implements Converter<A, C> {
 		final Converter<B, C> second,
 		final Converter<C, D> third
 	) {
-		return new ConverterAdapter<A, C, D>(
-				new ConverterAdapter<A, B, C>(first, second), third
+		return new TransitiveConverter<A, C, D>(
+				new TransitiveConverter<A, B, C>(first, second), third
 			);
 	}
 	
