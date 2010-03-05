@@ -42,9 +42,21 @@ import org.jenetics.util.RandomRegistry;
  */
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
+	/**
+	 * Default constructor, with default mutation probability 
+	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
+	 */
 	public SwapMutator() {
+		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
+	/**
+	 * Constructs an alterer with a given recombination probability.
+	 * 
+	 * @param probability the crossover probability.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
+	 */
 	public SwapMutator(final double probability) {
 		super(probability);
 	}

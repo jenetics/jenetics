@@ -230,7 +230,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		return equals;
 	}
 
-	
+	// TODO: better toString method
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();

@@ -38,6 +38,13 @@ import org.jenetics.util.RandomRegistry;
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 
+	/**
+	 * Constructs an alterer with a given recombination probability.
+	 * 
+	 * @param probability The recombination probability.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
+	 */
 	public Crossover(final double probability) {
 		super(probability);
 	}

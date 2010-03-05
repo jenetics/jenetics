@@ -84,6 +84,11 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 		_nplus = 2 - _nminus;
 	}
 
+	/**
+	 * This method sorts the population in descending order while calculating the
+	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * by this method.)
+	 */
 	@Override
 	protected double[] probabilities(
 		final Population<G, C> population, 

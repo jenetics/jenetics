@@ -49,6 +49,11 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 	public StochasticUniversalSelector() {
 	}
 
+	/**
+	 * This method sorts the population in descending order while calculating the
+	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * by this method.)
+	 */
 	@Override
 	public Population<G, N> select(final Population<G, N> population, final int count) {
 		nonNull(population, "Population");

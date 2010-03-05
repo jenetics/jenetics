@@ -123,6 +123,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 			doubleToLongBits(statistics._errorOfMean) == doubleToLongBits(_errorOfMean);
 	}
 	
+	// TODO: Make a better toString method
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
