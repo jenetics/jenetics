@@ -747,7 +747,12 @@ class GeometryController implements StepListener {
 	
 	void stop() {
 		_stepable.stop();
-		_thread.interrupt();
+		_ga.getLock().lock();
+		try {
+			_thread.interrupt();
+		} finally {
+			_ga.getLock().unlock();
+		}
 		
 		_startAction.setEnabled(false);
 		_stopAction.setEnabled(false);
