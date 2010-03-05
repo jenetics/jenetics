@@ -1,4 +1,6 @@
 Jenetics-0.5.1.0
+- Add org.jenetics.util.Predicates which contains some general purpose predicates
+  like Not, And, Or, Nil.
 - Add incremental Quantile class.
 - Add ConverterAdapter class.
 - Removed Genotype.chromosomes() method. Use Genotype.length() instead.
