@@ -41,15 +41,15 @@ public final class Predicates {
 	}
 	
 	public static class Not<T> implements Predicate<T> {
-		private final Predicate<? super T> _predicate;
+		private final Predicate<? super T> _a;
 		
-		public Not(final Predicate<? super T> predicate) {
-			_predicate = Validator.nonNull(predicate);
+		public Not(final Predicate<? super T> a) {
+			_a = Validator.nonNull(a);
 		}
 		
 		@Override
 		public boolean evaluate(final T object) {
-			return !_predicate.equals(object);
+			return !_a.equals(object);
 		}
 		
 	}
@@ -88,8 +88,8 @@ public final class Predicates {
 		return new Nil();
 	}
 	
-	public static <T> Predicate<T> not(final Predicate<? super T> predicate) {
-		return new Not<T>(predicate);
+	public static <T> Predicate<T> not(final Predicate<? super T> a) {
+		return new Not<T>(a);
 	}
 	
 	public static <T> Predicate<T> and(
