@@ -31,7 +31,6 @@ import java.util.List;
 import org.jenetics.util.Accumulators.Mean;
 import org.jenetics.util.Accumulators.Quantile;
 import org.jenetics.util.Accumulators.Variance;
-import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -133,17 +132,17 @@ public class AccumulatorsTest {
 		Assert.assertEquals(minMax.getMax(), new Integer(19));
 	}
 	
-	@Test
-	public void sum() {
-		final Integer64[] array = new Integer64[20];
-		for (int i = 0; i < array.length; ++i) {
-			array[i] = Integer64.valueOf(i);
-		}
-		
-		final Accumulators.Sum<Integer64> sum = new Accumulators.Sum<Integer64>();
-		Accumulators.accumulate(Arrays.asList(array), sum);
-		Assert.assertEquals(sum.getSum(), Integer64.valueOf((20*19/2)));
-	}
+//	@Test
+//	public void sum() {
+//		final Integer64[] array = new Integer64[20];
+//		for (int i = 0; i < array.length; ++i) {
+//			array[i] = Integer64.valueOf(i);
+//		}
+//		
+//		final Accumulators.Sum<Integer64> sum = new Accumulators.Sum<Integer64>();
+//		Accumulators.accumulate(Arrays.asList(array), sum);
+//		Assert.assertEquals(sum.getSum(), Integer64.valueOf((20*19/2)));
+//	}
 	
 }
 

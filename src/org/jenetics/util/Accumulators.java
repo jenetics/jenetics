@@ -24,8 +24,6 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 
-import org.jscience.mathematics.structure.GroupAdditive;
-
 import javolution.context.ConcurrentContext;
 
 /**
@@ -208,7 +206,8 @@ public final class Accumulators {
 			_quantile = quantile;
 			_n[0] = -1.0;
 			_q[2] = 0.0;
-			_initialized = _quantile == 0.0 || _quantile == 1.0;
+			_initialized = Double.compare(_quantile, 0.0) == 0 || 
+							Double.compare(_quantile, 1.0) == 0;
 		}
 
 		public double getQuantile() {
@@ -469,31 +468,31 @@ public final class Accumulators {
 	}
 	
 	
-	/**
-	 * Calculates the sum of the accumulated values.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static class Sum<N extends GroupAdditive<N>> implements Accumulator<N> {
-		public N _sum;
-		
-		public Sum() {
-		}
-		
-		public N getSum() {
-			return _sum;
-		}
-		
-		@Override
-		public void accumulate(final N value) {
-			if (_sum == null) {
-				_sum = value;
-			} else {
-				_sum = _sum.plus(value);
-			}
-		}
-	}
+//	/**
+//	 * Calculates the sum of the accumulated values.
+//	 * 
+//	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+//	 * @version $Id$
+//	 */
+//	public static class Sum<N extends GroupAdditive<N>> implements Accumulator<N> {
+//		public N _sum;
+//		
+//		public Sum() {
+//		}
+//		
+//		public N getSum() {
+//			return _sum;
+//		}
+//		
+//		@Override
+//		public void accumulate(final N value) {
+//			if (_sum == null) {
+//				_sum = value;
+//			} else {
+//				_sum = _sum.plus(value);
+//			}
+//		}
+//	}
 
 
 	/**
