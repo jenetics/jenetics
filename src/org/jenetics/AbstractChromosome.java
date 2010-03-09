@@ -86,7 +86,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final Array<G> genes) {
 		nonNull(genes, "Gene array");
-		assert (genes.indexOf(nil()) == -1);
+		assert (genes.indexOf(nil()) == -1) : "Found at least on null gene.";
 		
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -156,7 +156,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof AbstractChromosome<?>)) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		

@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.util.ArrayUtils;
@@ -80,10 +79,10 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 		assertPositive(probs);
 		
-		for (int i = -10; i < 10; ++i) {
-			selector = new BoltzmannSelector<Float64Gene, Float64>((double)i/11.0);
-			System.out.println(Arrays.toString(selector.probabilities(population, 10)));
-		}
+//		for (int i = -10; i < 10; ++i) {
+//			selector = new BoltzmannSelector<Float64Gene, Float64>((double)i/11.0);
+//			System.out.println(java.util.Arrays.toString(selector.probabilities(population, 10)));
+//		}
 
 	}
 	

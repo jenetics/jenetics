@@ -314,7 +314,7 @@ public class BitChromosome extends Number<LargeInteger>
 		if (o == this) {
 			return true;
 		}
-		if (!(o instanceof BitChromosome)) {
+		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
 		
