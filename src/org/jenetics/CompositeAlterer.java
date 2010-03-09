@@ -117,6 +117,12 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 			).seal();
 	}
 	
+	/**
+	 * Combine the given alterers.
+	 * 
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		super(1.0);
 		foreach(alterers, new NonNull("Alterer"));
@@ -124,6 +130,12 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		_alterers = new Array<Alterer<G>>(alterers).seal();
 	}
 	
+	/**
+	 * Combine the given alterers.
+	 * 
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
 		super(1.0);
 		alterers.foreach(new NonNull("Alterer"));
@@ -144,10 +156,27 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		});
 	}
 
+	/**
+	 * Return the alterers this alterer consists of. The returned array is sealed
+	 * and cannot be changed.
+	 * 
+	 * @return the alterers this alterer consists of.
+	 */
 	public Array<Alterer<G>> getAlterers() {
 		return _alterers.seal();
 	}
 	
+	/**
+	 * Joins the given alterer and returns a new CompositeAlterer object. If one
+	 * of the given alterers is a CompositeAlterer the sub alterers of it are
+	 * unpacked and appended to the newly created CompositeAlterer.
+	 * 
+	 * @param <T> the gene type of the alterers.
+	 * @param a1 the first alterer.
+	 * @param a2 the second alterer.
+	 * @return a new CompositeAlterer object.
+	 * @throws NullPointerException if one of the given alterer is {@code null}.
+	 */
 	public static <T extends Gene<?, T>> CompositeAlterer<T> join(
 		final Alterer<T> a1,
 		final Alterer<T> a2

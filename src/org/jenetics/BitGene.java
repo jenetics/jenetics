@@ -99,7 +99,7 @@ public class BitGene
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof BitGene)) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		final BitGene gene = (BitGene)obj;
