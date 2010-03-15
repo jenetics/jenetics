@@ -91,7 +91,6 @@ public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneab
 		_sum = 0;
 		_start = 0;
 		_stop = 0;
-		_label = DEFAULT_LABEL;
 	}
 	
 	/**
