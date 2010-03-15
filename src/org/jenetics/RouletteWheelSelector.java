@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.abs;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,11 +55,13 @@ public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comp
 		for (int i = population.size(); --i >= 0;) {
 			sum += population.get(i).getFitness().doubleValue();
 		}
+		sum = abs(sum);
 		
 		if (sum > 0.0) {
 			for (int i = population.size(); --i >= 0;) {
-				probabilities[i] = 
-					(population.get(i).getFitness().doubleValue() - worst)/sum;
+				probabilities[i] = abs(
+						(population.get(i).getFitness().doubleValue() - worst)/sum
+					);
 			}
 		} else {
 			Arrays.fill(probabilities, 1.0/population.size());
