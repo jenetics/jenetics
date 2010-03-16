@@ -41,6 +41,8 @@ import java.util.RandomAccess;
  * <strong>This array is not synchronized.</strong> If multiple threads access
  * an {@code Array} concurrently, and at least one of the threads modifies the
  * array, it <strong>must</strong> be synchronized externally.
+ * <br/>
+ * Use the {@link #asList()} to work together with other libraries.
  * 
  * @param <T> the element type of the array.
  * 
@@ -480,6 +482,22 @@ public class Array<T> implements
 			_array[i] = value;
 		}
 		return this;
+	}
+	
+	/**
+	 * Create a new array which contains the values of {@code this} and the
+	 * given {@code value}. The length of the new array is 
+	 * {@code this.length() + 1}. The returned array is not sealed.
+	 * 
+	 * @param value the value to append to this array.
+	 * @return a new array which contains the values of {@code this} and the
+	 *         given {@code value}
+	 */
+	public Array<T> append(final T value) {
+		final Array<T> array = new Array<T>(length() + 1);
+		System.arraycopy(_array, _start, array._array, 0, length());
+		array._array[array.length() - 1] = value;
+		return array;
 	}
 	
 	/**

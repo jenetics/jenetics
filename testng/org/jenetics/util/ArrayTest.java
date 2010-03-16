@@ -148,6 +148,18 @@ public class ArrayTest {
 	}
 	
 	@Test
+	public void append3() {
+		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5));
+		final Array<Integer> a2 = a1.append(6);
+		final Array<Integer> a3 = a1.append(6);
+		
+		Assert.assertEquals(a2.length(), a1.length() + 1);
+		Assert.assertEquals(a3.length(), a1.length() + 1);
+		Assert.assertNotSame(a2, a3);
+		Assert.assertEquals(a2, a3);
+	}
+	
+	@Test
 	public void indexOf() {
 		final Array<Integer> array = new Array<Integer>(20);
 		for (int i = 0; i < 10; ++i) {
