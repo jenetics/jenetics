@@ -1,3 +1,5 @@
+- Change structure to Maven standard directory layout.
+
 Jenetics-0.5.1.0
 - Add org.jenetics.util.Predicates which contains some general purpose predicates
   like Not, And, Or, Nil.
