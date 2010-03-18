@@ -30,7 +30,7 @@ import javolution.context.LocalContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: EvaluatorRegistry.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class EvaluatorRegistry {
 	

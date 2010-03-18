@@ -34,7 +34,7 @@ import org.jscience.mathematics.structure.GroupMultiplicative;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Float64Gene.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class Float64Gene 
 	extends NumberGene<Float64, Float64Gene> 

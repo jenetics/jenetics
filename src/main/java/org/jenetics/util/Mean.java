@@ -27,7 +27,7 @@ package org.jenetics.util;
  * required for the {@link org.jenetics.MeanAlterer}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Mean.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  * 
  * @see org.jenetics.MeanAlterer
  */

@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BoltzmannSelectorTest.java 407 2010-03-09 14:28:09Z fwilhelm $
+ * @version $Id$
  */
 public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 

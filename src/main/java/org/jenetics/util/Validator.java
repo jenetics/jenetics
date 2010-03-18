@@ -27,7 +27,7 @@ package org.jenetics.util;
  * Some static helper methods for checking preconditions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Validator.java 373 2010-02-25 20:44:36Z fwilhelm $
+ * @version $Id$
  */
 public final class Validator {
 
@@ -49,7 +49,7 @@ public final class Validator {
 	 * [/code]
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Validator.java 373 2010-02-25 20:44:36Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static final class NonNull implements Predicate<Object> {
 		private final String _message;
@@ -86,7 +86,7 @@ public final class Validator {
 	 * [/code]
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Validator.java 373 2010-02-25 20:44:36Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static final class CheckRange<C extends Comparable<C>> 
 		implements Predicate<C> 
@@ -122,7 +122,7 @@ public final class Validator {
 	 * is true.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Validator.java 373 2010-02-25 20:44:36Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static final class Verify implements Predicate<Verifiable> {
 		@Override

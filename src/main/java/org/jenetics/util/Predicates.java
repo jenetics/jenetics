@@ -27,7 +27,7 @@ package org.jenetics.util;
  * {@code Not}, {@code And} and {@code Or}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Predicates.java 401 2010-03-05 14:28:48Z fwilhelm $
+ * @version $Id$
  */
 public final class Predicates {
 
@@ -38,7 +38,7 @@ public final class Predicates {
 	 * This predicate return {@code true} if the given value is {@code null}.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Predicates.java 401 2010-03-05 14:28:48Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Nil implements Predicate<Object> {
 
@@ -59,7 +59,7 @@ public final class Predicates {
 	 * This predicate negates the value of its given, adapted predicate.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Predicates.java 401 2010-03-05 14:28:48Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Not<T> implements Predicate<T> {
 		private final Predicate<? super T> _a;
@@ -88,7 +88,7 @@ public final class Predicates {
 	 * A logical {@code and} combination of two predicates.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Predicates.java 401 2010-03-05 14:28:48Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class And<T> implements Predicate<T> {
 		private final Predicate<? super T> _a;
@@ -116,7 +116,7 @@ public final class Predicates {
 	 * A logical {@code or} combination of two predicates.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Predicates.java 401 2010-03-05 14:28:48Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Or<T> implements Predicate<T> {
 		private final Predicate<? super T> _a;

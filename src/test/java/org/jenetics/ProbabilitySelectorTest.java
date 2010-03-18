@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ProbabilitySelectorTest.java 388 2010-03-02 15:15:39Z fwilhelm $
+ * @version $Id$
  */
 public class ProbabilitySelectorTest {
 

@@ -33,7 +33,7 @@ import org.jenetics.util.Factory;
  * @see Chromosome
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChromosomeFactory.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public interface ChromosomeFactory<T extends Gene<?, T>> 
 	extends Factory<Chromosome<T>> 

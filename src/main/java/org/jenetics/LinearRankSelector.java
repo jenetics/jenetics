@@ -49,7 +49,7 @@ import java.io.Serializable;
  * </i>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: LinearRankSelector.java 396 2010-03-05 08:46:27Z fwilhelm $
+ * @version $Id$
  */
 public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable

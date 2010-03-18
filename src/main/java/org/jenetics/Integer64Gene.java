@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Integer64Gene.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class Integer64Gene 
 	extends NumberGene<Integer64, Integer64Gene> 

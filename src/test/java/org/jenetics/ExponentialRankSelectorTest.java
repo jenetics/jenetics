@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelectorTest.java 394 2010-03-04 21:36:50Z fwilhelm $
+ * @version $Id$
  */
 public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
 	

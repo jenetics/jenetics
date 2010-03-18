@@ -32,7 +32,7 @@ import java.util.List;
  * 
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Evaluator.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public interface Evaluator {
 
