@@ -1,0 +1,211 @@
+/*  created using www.csswizard.net  */
+/* This stylesheet controls the webpage areas positions and size */
+/* eg margin convention clockwise 12 3 6 9 Oclock */
+
+  @page {    size: auto; margin: 5%;}
+  .spacer { clear: both; }
+
+body {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	}
+
+code {
+	white-space: pre;
+	margin-left: 25px;
+	font-size: 0.95em;
+	border:3px;
+	/*border-width: thin;
+	border-style: solid;*/
+}
+
+div.code {
+	padding: 5px 5px 0px 5px;
+}
+
+#pageframe {
+	width: 48em;
+	margin: 10px auto 10px auto;
+	padding: 0px 0px 0px 0px;
+	}
+	
+#titlearea {
+    	height: 5.5em;
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0px 0px 0px;
+	}
+
+#custom1 {
+    	position: absolute;
+    	top: 0px;
+    	right: 0px;
+	}
+
+#custom2 {
+	}
+
+#custom3 {
+	}
+
+/*   XXXXXXXXXXXX  This controls the TOP menu area and butts  */
+
+#topmenuback {
+	height: 22px;
+	margin: 0px 0px 0px 0px;
+	padding: 2px 0px 2px 10em;
+	}
+	
+.menutopbox {
+	width: 1000px;
+	height: 18px;
+	margin: 0px 2px 0px 2px;
+    	padding: 0px 0px 0px 0px;
+    	float: left;
+	}
+
+/*  XXXXXXXXXXXX This controls the SIDE menu area and butts  */
+
+#leftarea {
+	width: 10em;
+	margin: 0px 0px auto 0px;
+	padding: 0px 0px 0px 0px;
+	float: left;
+	}
+
+#searchform {
+	margin: 10px 0px 20px 0px;
+	}
+
+.menubox {
+	width: 9em;
+	margin: 0.35em 0px 0px 0.3em; 
+	}
+
+.submenubox {
+	margin: 0.0em 0em 0px 0.6em;
+	}
+
+/*   XXXXXXXXXXXX  This controls the Right area and buttons  */
+
+#column3 {
+	width: 10em;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	float: right;
+	}	
+/*   XXXXXXXXXXXX  This controls the MIDDLE menu area and butts  */
+	
+#centerarea {
+	width: 37em;
+	margin: 0px 0em 0px 0em;
+	padding: 0px 0px 0px 0px;
+	float: right;
+	min-height: 24em;
+	}
+
+#authorarea {
+	position: relative;
+	width: 80%;
+	margin: 0px auto 0px auto;
+	padding: 10px 0px 0px 0px;
+	}
+
+.headingarea {
+	margin: 1.2em 3em 0px 3em;
+	padding: 0px 0px 5px 0px;
+	}
+
+.articlearea {
+	margin: 1em 3em 20px 3em;
+	padding: 0px 0px 0px 0px;
+	}
+
+img	{
+	border: 0px;
+	}
+
+.ie6hack {
+	width: 100%;
+	}
+	
+/*   XXXXXXXXXXXX  Pict and surround XXXXXXXXXXXX */
+
+.articlepicture, .articlepicture0, .articlepicture1 {
+	margin: 10px 0px 1.8em 1.8em;
+	padding: 10px 10px 10px 10px;
+	position: relative;
+	float: right;
+	}
+
+.articlepicture1 {
+	float: left;
+	margin: 10px 1.8em 1.8em 0px;
+	}
+
+.frametopleft {
+	width: 130px;
+	height: 60px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	}
+
+.frametopright {
+	width: 130px;
+	height: 60px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	}
+
+.framebottomleft {
+	width: 130px;
+	height: 60px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	}
+
+.framebottomright {
+	width: 130px;
+	height: 60px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	}
+
+/* columns in text areas */
+
+.clmn1 { position: relative; width: 90%; margin: 6px 2% 4px 8%; padding: 4px 0px 4px 0px; clear: both;}
+.clmn2 { position: relative; float: left; width: 40%; margin: 4px 4% 4px 4%; padding: 4px 0px 4px 0px; clear: both;}
+.clmn3 { position: relative; float: left; width: 28%; margin: 4px 2% 4px 2%; padding: 4px 0px 4px 0px; clear: both;}
+.clmn4 { position: relative; float: left; width: 20%; margin: 4px 2% 4px 2%; padding: 4px 0px 4px 0px; clear: both;}
+	
+/*   XXXXXXXXXXXX  Bottom bar controls  XXXXXXXXXXX */ 
+
+#bottombar {
+	width: 100%;
+	height: 3em;
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0px 0px 0px;
+	clear: both;
+	}
+
+/*   XXXXXXXXXXXX  This controls the tables created using our table code generator  */
+/*   XXXXXXXXXXXX  Modify the class name layout in the str2web/default/tablestyles directory to add more  */
+
+.subtable {
+	width: 98%;
+	margin: 0px 0px 0px 0px;
+    	padding: 0px 0px 0px 0px;
+	}
+
+.toprow {
+	margin: 0px 0px 0px 0px;
+    	padding: 0px 0px 0px 0px;
+	}
+
+.lastrow {
+	margin: 0px 0px 0px 0px;
+    	padding: 0px 0px 0px 0px;
+	}

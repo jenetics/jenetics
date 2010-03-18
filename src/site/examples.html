@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0 Transitional//EN">
+<html>
+<head>
+	<meta HTTP-EQUIV="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title>Jenetics: Java Genetic Algorithm library</title>
+	<meta name="AUTHOR" content="Franz Wilhelmstötter">
+	<meta name="CREATED" content="0;0">
+	<meta name="CHANGED" content="20080923;20455500">
+	<meta name="KEYWORDS" content="Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
+	<meta name="copyright" content="Franz Wilhelmstötter">
+	<meta name="robots" content="all">
+	<meta name="robots" content="index">
+
+  <link rel="stylesheet" href="styletext.css" type="text/css">
+  <link rel="stylesheet" href="stylelayout.css" type="text/css">
+  <link rel="stylesheet" href="stylecolor.css" type="text/css">
+</head>
+	
+<body>
+<div id="bodywrap-top"><div id="bodywrap-btm"><div id="bodywrap-r"><div id="bodywrap-l"><div id="bodywrap-tl"><div id="bodywrap-tr"><div id="bodywrap-br"><div id="bodywrap-bl"><div id="bodywrap-in">
+
+  <div id="pageframe">
+
+    <div id="titlearea">
+	<h1>Jenetics: Java Genetic Algorithm</h1>
+    </div><!-- titlearea close -->
+
+    <div id="topmenuback">
+	<!--@topmenu.content-->
+    </div><!-- topmenuback close -->
+
+    <!--XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX-->
+
+    <div id="leftarea">      <div class="menubox">
+        <a class="sidemenutextlive" title="Side menu access to Home"
+        tabindex="1" href="index.html">Home</a>
+      </div>
+
+      <div class="submenubox">
+        <a class="sidesubmenutext" 
+			title="Examples" tabindex="3" 
+			href="examples.html"
+		>Examples</a>
+      </div>
+
+      <div class="submenubox">
+        <a class="sidesubmenutext" 
+			title="Javadoc" tabindex="4" 
+			href="javadoc/index.html"
+		>Javadoc</a>
+      </div>
+
+      <div class="submenubox">
+        <a class="sidesubmenutext" 
+			title="download" tabindex="5" 
+			href="https://sourceforge.net/project/showfiles.php?group_id=206158"
+		>Download</a>
+      </div>
+    </div><!-- sidearea close -->
+
+    <!--XXXXXXXXXXXXXXXXThe main center region starts hereXXXXXXXXXXXXXXXXXXX-->
+
+<div id="column3"><!--@column3.content--></div><!-- column3 close -->
+
+    <div id="centerarea">
+
+<h2>Examples</h2>
+
+<h3>0/1 Knapsack Problem</h3>
+
+<p>
+In the knapsack problem a set of items, together
+with their size and value, is given. The task is to select a disjoint
+subset so that the total size does not exeed the knapsacks size.
+(<A href="http://en.wikipedia.org/wiki/Knapsack_problem">Wikipedia:
+Knapsack problem</A>) For the 0/1 knapsack problem we define a BitChromosome,
+one bit for each item. If the i<SUP>th</SUP> BitGene
+is set to one the i<SUP>th</SUP> item is selected. 
+</p>
+
+<pre class="code">
+class Item implements Serializable {
+    private static final long serialVersionUID = -2129262369196749572L;
+    public double _size;
+    public double _value;
+}
+
+class KnappsackFunction implements FitnessFunction&lt;BitGene, Float64&gt; {
+    private static final long serialVersionUID = -924756568100918419L;
+        
+    private final Item[] _items;
+    private final double _knapsackSize;
+    
+    public KnappsackFunction(final Item[] items, double knapsackSize) {
+        _items = items;
+        _knapsackSize = knapsackSize;
+    }
+    
+    public Item[] getItems() {
+        return _items;
+    }
+    
+    public Float64 evaluate(final Genotype&lt;BitGene&gt; genotype) {
+        final Chromosome&lt;BitGene&gt; ch = genotype.getChromosome();
+        
+        double size = 0;
+        double value = 0;
+        for (int i = 0, n = ch.length(); i < n; ++i) {
+            if (ch.getGene(i).getBit()) {
+                size += _items[i]._size;
+                value += _items[i]._value;
+            }
+        }
+        
+        if (size > _knapsackSize) {
+            return Float64.ZERO;
+        } else {
+            return Float64.valueOf(value);
+        }
+    }
+}
+
+
+public class Knapsack {
+        
+    private static KnappsackFunction newFitnessFuntion(
+        final int n, 
+        final double knapsackSize
+    ) {
+        Item[] items = new Item[n];
+        for (int i = 0; i < items.length; ++i) {
+            items[i] = new Item();
+            items[i]._size = (Math.random() + 1)*10;
+            items[i]._value = (Math.random() + 1)*15;
+        }
+        
+        return new KnappsackFunction(items, knapsackSize);
+    }
+        
+    public static void main(String[] argv) {
+        //Defining the fitness function and the genotype.
+
+        final KnappsackFunction ff = newFitnessFuntion(15, 100);
+        final GenotypeFactory&lt;BitGene&gt; genotype = Genotype.valueOf(
+            BitChromosome.valueOf(15, 0.5)
+        );
+        
+        final GeneticAlgorithm&lt;BitGene, Float64&gt; ga = 
+                GeneticAlgorithm.valueOf(genotype, ff);
+
+        ga.setMaximalPhenotypeAge(10);
+        ga.setPopulationSize(1000);
+        ga.setSelectors(new RouletteWheelSelector&lt;BitGene, Float64&gt());
+        ga.setAlterer(new CompositeAlterer&lt;BitGene&gt;(
+                new Mutation&lt;BitGene&gt;(0.115), 
+                new SinglePointCrossover&lt;BitGene&gt;(0.06)
+            ));
+        
+        ga.setup();
+        ga.evolve(100);
+        System.out.println(ga);
+    }
+}
+</pre>
+
+<h3>Ones Counting</h3>
+
+<p>
+Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a Genotype is proportional to the number of ones. The FitnessFunction looks like this:
+</p>
+
+<pre class="code">
+class OneCounter implements FitnessFunction&lt;BitGene, Float64&gt; {
+    public Float64 eval(final Genotype&lt;BitGene, Float64&gt; genotype) {
+        int count = 0;
+        for (BitGene gene : genotype.getChromosome()) {
+            if (gene.getBit()) {
+                ++count;
+            }
+        }
+        return Float64.valueOf(count);
+    }
+}
+</pre>
+
+<h4>Real Function</h4>
+
+<p>
+The GA also works with NumberGenes. In the given example the FitnessFunction tries to find the value where the sinus becomes a maximum.
+</p>
+
+<pre class="code">
+class RealFunction implements FitnessFunction&lt;Float64Gene, Float64&gt; {
+    public Float64 evaluate(final Genotype&lt;Float64Gene&gt; genotype) {
+        return Float64.valueOf(Math.sin(
+                genotype.getChromosome().getGene(0).doubleValue()
+            ));
+    }
+}
+</pre>
+
+<p>
+To narrow the search space a number range for the DoubleGene must be definde. In our example we restrict the values to the closed interval [0,2PI].
+</p>
+
+<pre class="code">
+//The Genotype implements the GenotypeFactory interface.
+GenotypeFactory&lt;Float64Gene&gt; gtf = Genotype.newGenotype(
+        Float64Chromosome.valueOf(0, 2*Math.PI)
+    );
+
+GeneticAlgorithm&lt;Float64Gene, Float64&gt; ga = 
+        new GeneticAlgorithm.valueOf(gtf, ff);
+
+ga.setFitnessScaler(new ExponentialScaler(2.0));
+ga.setPopulationSize(20);
+ga.setAlterer(new CompositeAlterer&lt;Float64Gene&gt;(
+        new Mutation&lt;Float64Gene&lt;(0.05),
+        new MeanAlterer&lt;Float64Gene&gt;(0.5)
+    ));
+
+ga.setup();     
+
+for (int i = 0; i < 50; ++i) {
+    ga.evolve();
+    System.out.println(ga);
+}
+System.out.println(ga.getBestStatistic());
+</pre>
+
+<p>
+Here a sample of the generated output:
+</p>
+
+<pre class="code">
+   1: (best): [[230.824557520235]] --> 0.23980732495842583
+   2: (best): [[230.824557520235]] --> 0.23980732495842583
+   3: (best): [[230.824557520235]] --> 0.23980732495842583
+   4: (best): [[230.824557520235]] --> 0.23980732495842583
+   5: (best): [[232.9335430984407]] --> 0.23131219448799875
+   6: (best): [[232.9335430984407]] --> 0.23131219448799875
+   7: (best): [[232.9335430984407]] --> 0.23131219448799875
+   8: (best): [[232.9335430984407]] --> 0.23131219448799875
+   9: (best): [[232.9335430984407]] --> 0.23131219448799875
+  10: (best): [[232.9335430984407]] --> 0.23131219448799875
+  11: (best): [[232.9335430984407]] --> 0.23131219448799875
+
+Execution time: 45 ms
+Samples:         10
+Best Phenotype:  [[230.824557520235]] --> 0.23980732495842583
+Worst Phenotype: [[177.3496273696343]] --> 0.0021336795733455406
+</pre>
+
+<h3>Traveling Salesman Problem (TSP)</h3>
+
+<p>
+Implemenentaion of the classical TSP problem.
+</p>
+
+<pre class="code">
+public class TravelingSalesman {
+        
+    private static class Function 
+        implements FitnessFunction&lt;Integer64Gene, Integer&gt; 
+    {
+        private static final long serialVersionUID = 8402072476064049463L;
+                
+        private final double[][] _adjacence;
+                
+        public Function(final double[][] adjacence) {
+            _adjacence = adjacence;
+        }
+                
+        public Integer evaluate(final Genotype&lt;Integer64Gene&gt; genotype) {
+            final Chromosome&lt;Integer64Gene&gt; path = genotype.getChromosome();
+                        
+            double length = 0.0;
+            for (int i = 0, n = path.length(); i < n; ++i) {
+                final int from = path.getGene(i).intValue();
+                final int to = path.getGene((i + 1)%n).intValue();
+                length -= _adjacence[from][to];
+            }
+            return (int)length*100;
+        }
+    }
+        
+    public static void main(String[] args) {
+        final int stops = 10;
+                
+        final FitnessFunction&lt;Integer64Gene, Integer&gt; ff = 
+                new Function(adjacencyMatrix(stops));
+
+        final GenotypeFactory&lt;IntegerGene&gt; gtf = Genotype.valueOf(
+                new PermutationChromosome(stops)
+            );
+
+        final GeneticAlgorithm&lt;Integer64Gene, Integer&gt; ga = 
+                GeneticAlgorithm.valueOf(gtf, ff);
+
+        ga.setPopulationSize(100);
+        ga.setAlterer(new CompositeAlterer&lt;Integer64Gene&gt;(
+                new Mutation&lt;Integer64Gene&gt;(0.5), 
+                new PartiallyMatchedCrossover&lt;Integer64Gene&gt;(0.3)
+            ));
+        ga.setup();
+        ga.evolve(10);
+    }
+        
+    /**
+     * All points in the created adjacency matrix lie on a circle. So it is easy 
+     * to check the quality of the solution found by the GA.
+     */
+     private static double[][] adjacencyMatrix(int stops) {
+         double[][] matrix = new double[stops][stops];
+         for (int i = 0; i < stops; ++i) {
+             for (int j = 0; j < stops; ++j) {
+                 matrix[i][j] = chord(stops, abs(i - j), RADIUS);
+             }
+         }
+         return matrix;
+     }
+     private static double chord(int stops, int i, double r) {
+         return 2.0*r*abs(sin((PI*i)/stops));
+     }
+     private static double RADIUS = 10.0;
+}
+</pre>
+
+	<br />
+  </div><!-- centerarea close -->
+
+   <div id="bottombar">
+	<h6>&copy; Copyright Franz Wilhelmstötter</h6>
+    </div><!-- bottombar close -->
+
+<div class="spacer"></div>
+
+  </div><!-- frame close -->
+  </div></div></div></div></div></div></div></div></div><!-- bodywrap close -->
+
+</body>
+</html>

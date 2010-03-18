@@ -28,13 +28,15 @@
 	<property name="version" value="0.5.1.0" />
 	<property name="identifier" value="Jentics-${version}" />
 	<property name="year" value="2007-2010" />
-	<property name="source.dir" value="./src" />
-	<property name="testng.source.dir" value="./testng" />
+	<property name="src.dir" value="./src" />
+	<property name="source.dir" value="./src/main/java" />
+	<property name="testng.source.dir" value="./src/test/java" />
+	<property name="testng.resource.dir" value="./src/test/resources" />
 	<property name="testng.report.dir" value="./testng-report" />
-	<property name="compile.dir" value="./bin" />
+	<property name="compile.dir" value="./build" />
 	<property name="lib.dir" value="./lib" />
-	<property name="export.dir" value="./export/Jenetics-${version}" />
-	<property name="javadoc.dir" value="./javadoc" />
+	<property name="export.dir" value="${compile.dir}/export/Jenetics-${version}" />
+	<property name="javadoc.dir" value="${compile.dir}/javadoc" />
 	<property name="resources.dir" value="./resources" />
 	<property name="colapi.classpath" value="./lib/build/colapi.jar" />
 	<property name="umlgraph.classpath" value="./lib/build/UmlGraph-5.2.jar" />
@@ -164,7 +166,7 @@
 			windowtitle="Jenetics API ${version}" failonerror="false" 
 			includenosourcepackages="true" docencoding="UTF-8" 
 			Encoding="UTF-8"
-			stylesheetfile="./resources/javadoc/stylesheet.css"
+			stylesheetfile="./src/site/stylesheet.css"
 		>
 			<arg line="-charset UTF-8" />
 			<classpath refid="classpath" />
@@ -180,15 +182,9 @@
 			</fileset>
 			<doctitle>&lt;h1&gt;Jenetics API (Version ${version})&lt;/h1&gt;</doctitle>
 			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
-			<link offline="true" packagelistLoc="./resources/javadoc/jdk" 
-					href="http://java.sun.com/javase/6/docs/api/"  
-			/>
-			<link offline="true" packagelistLoc="./resources/javadoc/jscience" 
-					href="http://jscience.org/api/"  
-			/>
-			<link offline="true" packagelistLoc="./resources/javadoc/javolution" 
-					href="http://javolution.org/target/site/apidocs/"  
-			/>
+			<link offline="false" href="http://java.sun.com/javase/6/docs/api/" />
+			<link offline="false" href="http://jscience.org/api/" />
+			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
 		</javadoc>
 		<taskdef 
 			name="java2html" classname="de.java2html.anttasks.Java2HtmlTask"
@@ -319,7 +315,7 @@
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
 
-	<target name="all" depends="jar, javadoc, testng" />
+	<target name="all" depends="jar, javadoc, test" />
 
 	<target name="compile-tests" depends="compile">
 		<copy todir="${compile.dir}/org/jenetics/util" >
@@ -345,7 +341,7 @@
 		</javac>			
 	</target>
 
-	<target name="testng" depends="compile-tests">
+	<target name="test" depends="compile-tests">
 		<mkdir dir="${testng.report.dir}" />
 		<testng 
 			outputdir="${testng.report.dir}"
@@ -356,6 +352,7 @@
 			<classpath refid="classpath" />
 			<classpath refid="build.classpath" />
 			<classpath path="${compile.dir}" />
+			<classpath path="${testng.resource.dir}" />
 			<xmlfileset dir="${testng.source.dir}/org/jenetics" includes="testng.xml" />
 		</testng>
 	</target>
@@ -373,20 +370,13 @@
 		</delete>
 	</target>
 	
-	<target name="export" depends="clean, jar, javadoc, testng">
+	<target name="export" depends="clean, jar, javadoc, test">
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
-			<fileset dir="${source.dir}" />
+			<fileset dir="${src.dir}" />
 		</copy>
 		<replace dir="${export.dir}/src" token="@!identifier!@" value="${identifier}" />
 		<replace dir="${export.dir}/src" token="@!year!@" value="${year}" />
-		
-		<mkdir dir="${export.dir}/testng"/>
-		<copy todir="${export.dir}/testng" >
-			<fileset dir="${testng.source.dir}" />
-		</copy>
-		<replace dir="${export.dir}/testng" token="@!identifier!@" value="${identifier}" />
-		<replace dir="${export.dir}/testng" token="@!year!@" value="${year}" />
 		
 		<mkdir dir="${export.dir}/lib"/>
 		<copy todir="${export.dir}/lib" >
@@ -396,12 +386,7 @@
 		<mkdir dir="${export.dir}/javadoc"/>
 		<copy todir="${export.dir}/javadoc" >
 			<fileset dir="${javadoc.dir}" />
-		</copy>
-		
-		<mkdir dir="${export.dir}/resources"/>
-		<copy todir="${export.dir}/resources" >
-			<fileset dir="${resources.dir}" />
-		</copy>		
+		</copy>	
 		
 		<copy todir="${export.dir}" file="BUILD.txt"/>
 		<copy todir="${export.dir}" file="build.xml"/>
@@ -412,7 +397,7 @@
 		<copy todir="${export.dir}/build" file="Jenetics-all-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="Jenetics-examples-${version}.jar"/>
 		
-		<zip destfile="export/Jenetics-${version}.zip" level="9">
+		<zip destfile="${compile.dir}/export/Jenetics-${version}.zip" level="9">
 			<fileset dir="${export.dir}"/>
 		</zip>
 	</target>
