@@ -42,10 +42,10 @@ import javolution.lang.Immutable;
 public interface Chromosome<T extends Gene<?, T>> 
 	extends Verifiable, Iterable<T>, Immutable, 
 			ChromosomeFactory<T>, Serializable
-{
+{ 
 	
 	/**
-	 * Return the first gene of this chromosome. Each chromosome must contain
+	 * Return the first gene of this chromosome.  Each chromosome must contain
 	 * at least one gene.
 	 * 
 	 * @return the first gene of this chromosome.
