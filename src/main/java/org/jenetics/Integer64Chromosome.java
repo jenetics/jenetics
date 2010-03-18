@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Integer64Chromosome.java 396 2010-03-05 08:46:27Z fwilhelm $
  */
 public class Integer64Chromosome extends NumberChromosome<Integer64Gene> 
 	implements ChromosomeFactory<Integer64Gene>, XMLSerializable

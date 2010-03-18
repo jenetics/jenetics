@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Float64ChromosomeTest.java 331 2010-02-16 12:53:16Z fwilhelm $
  */
 public class Float64ChromosomeTest {
 

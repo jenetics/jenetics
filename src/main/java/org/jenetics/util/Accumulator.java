@@ -28,7 +28,7 @@ package org.jenetics.util;
  * @see Accumulators
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Accumulator.java 349 2010-02-22 16:21:45Z fwilhelm $
  */
 public interface Accumulator<T> {
 

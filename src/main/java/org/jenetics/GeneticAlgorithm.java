@@ -82,7 +82,7 @@ import org.jenetics.util.Validator;
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: GeneticAlgorithm.java 415 2010-03-17 20:18:59Z fwilhelm $
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *         Wikipedia: Genetic algorithm

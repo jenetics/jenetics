@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: ArrayTest.java 414 2010-03-16 12:23:06Z fwilhelm $
  */
 public class ArrayTest {
 

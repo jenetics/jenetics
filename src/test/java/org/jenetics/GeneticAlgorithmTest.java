@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: GeneticAlgorithmTest.java 408 2010-03-09 14:41:18Z fwilhelm $
  */
 public class GeneticAlgorithmTest {
 

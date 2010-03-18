@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: FitnessScaler.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 public interface FitnessScaler<C extends Comparable<C>> extends Serializable {
 	

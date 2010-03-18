@@ -28,7 +28,7 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: SerialEvaluator.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 public class SerialEvaluator implements Evaluator {
 

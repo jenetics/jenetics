@@ -37,7 +37,7 @@ import javolution.lang.ValueType;
  *            of this gene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Gene.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 public interface Gene<A, G extends Gene<A, G>> 
 	extends Factory<G>, Serializable, ValueType, Verifiable 
