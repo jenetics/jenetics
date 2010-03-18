@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Knapsack.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 class Item implements Serializable {
 	private static final long serialVersionUID = -2129262369196749572L;

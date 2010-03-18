@@ -53,7 +53,7 @@ import org.jscience.mathematics.number.Float64;
  * Data object which holds performance indicators of a given {@link Population}.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Statistics.java 405 2010-03-05 20:17:15Z fwilhelm $
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
@@ -309,7 +309,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * Class which holds time statistic values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @version $Id: Statistics.java 405 2010-03-05 20:17:15Z fwilhelm $
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = -4947801435156551911L;
@@ -497,7 +497,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * for the Statistics class.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @version $Id: Statistics.java 405 2010-03-05 20:17:15Z fwilhelm $
 	 */
 	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
 		

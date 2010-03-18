@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: LinearRankSelectorTest.java 390 2010-03-02 15:27:16Z fwilhelm $
  */
 public class LinearRankSelectorTest extends ProbabilitySelectorTest {
 

@@ -83,7 +83,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -635,7 +635,7 @@ public class Geometry extends javax.swing.JFrame {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
@@ -897,7 +897,7 @@ class GeometryController implements StepListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -918,7 +918,7 @@ class InitAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -939,7 +939,7 @@ class StartAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -960,7 +960,7 @@ class StopAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -981,7 +981,7 @@ class PauseAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
@@ -1002,7 +1002,7 @@ class StepAction extends AbstractAction {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -1027,7 +1027,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
 	implements ChangeListener 
@@ -1145,7 +1145,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1251,7 +1251,7 @@ class TransformPanel extends javax.swing.JPanel {
  * The panel which draws the polygons.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -1382,7 +1382,7 @@ class DrawPanel extends JPanel {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
@@ -1496,7 +1496,7 @@ class Stepable implements Runnable {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 interface StepListener extends EventListener {
 	
@@ -1510,7 +1510,7 @@ interface StepListener extends EventListener {
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Geometry.java 402 2010-03-05 18:18:32Z fwilhelm $
  */
 class GA {
 	

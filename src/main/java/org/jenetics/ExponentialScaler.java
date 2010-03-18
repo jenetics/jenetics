@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Float64;
  * <p/><img src="doc-files/exponential-scaler.gif" alt="Exponential Scaler" />.</p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: ExponentialScaler.java 394 2010-03-04 21:36:50Z fwilhelm $
  */
 public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	private static final long serialVersionUID = -5895077899454677843L;

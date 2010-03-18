@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: BitChromosomeTest.java 331 2010-02-16 12:53:16Z fwilhelm $
  */
 public class BitChromosomeTest {
 

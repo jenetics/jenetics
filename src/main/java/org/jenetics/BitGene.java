@@ -34,7 +34,7 @@ import javolution.xml.stream.XMLStreamException;
  * Implementation of a BitGene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: BitGene.java 407 2010-03-09 14:28:09Z fwilhelm $
  */
 public class BitGene 
 	implements Gene<Boolean, BitGene>, Comparable<BitGene>, XMLSerializable 

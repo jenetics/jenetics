@@ -24,7 +24,7 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: IdentityScaler.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 public class IdentityScaler<C extends Comparable<C>> implements FitnessScaler<C> {
 	private static final long serialVersionUID = -8781746035187241816L;

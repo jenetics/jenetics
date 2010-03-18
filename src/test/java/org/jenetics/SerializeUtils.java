@@ -34,7 +34,7 @@ import org.testng.Reporter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: SerializeUtils.java 369 2010-02-25 15:07:42Z fwilhelm $
  */
 class SerializeUtils {
 

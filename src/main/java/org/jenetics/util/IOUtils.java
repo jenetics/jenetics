@@ -40,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: IOUtils.java 335 2010-02-16 21:30:55Z fwilhelm $
  */
 public class IOUtils {
 

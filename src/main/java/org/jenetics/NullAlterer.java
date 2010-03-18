@@ -26,7 +26,7 @@ package org.jenetics;
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: NullAlterer.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	private static final long serialVersionUID = 7892835302001002915L;

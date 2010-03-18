@@ -28,7 +28,7 @@ import java.io.Serializable;
  * A Selector selects a given number of Chromosomes from the Population.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: Selector.java 330 2010-02-16 12:48:21Z fwilhelm $
  */
 public interface Selector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends Serializable 

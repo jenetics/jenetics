@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: AccumulatorsTest.java 409 2010-03-09 18:34:42Z fwilhelm $
  */
 public class AccumulatorsTest {
 	private Double[][] _values = null;
