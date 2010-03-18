@@ -42,7 +42,7 @@ import org.jenetics.util.Validator.Verify;
  * @param <G> the gene type.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: AbstractChromosome.java 407 2010-03-09 14:28:09Z fwilhelm $
+ * @version $Id$
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ValidatorTest.java 374 2010-02-25 21:03:14Z fwilhelm $
+ * @version $Id$
  */
 public class ValidatorTest {
 

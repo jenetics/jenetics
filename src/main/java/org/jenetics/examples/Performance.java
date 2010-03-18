@@ -42,7 +42,7 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Performance.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class Performance {
 	

@@ -45,7 +45,7 @@ import java.io.Serializable;
  * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ExponentialRankSelector.java 396 2010-03-05 08:46:27Z fwilhelm $
+ * @version $Id$
  */
 public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable

@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: OnesCounting.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class OnesCounting {
 

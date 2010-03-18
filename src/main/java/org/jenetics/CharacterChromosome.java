@@ -35,7 +35,7 @@ import org.jenetics.util.CharSet;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: CharacterChromosome.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable

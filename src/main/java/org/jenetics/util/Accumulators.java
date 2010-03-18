@@ -28,7 +28,7 @@ import javolution.context.ConcurrentContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+ * @version $Id$
  */
 public final class Accumulators {
 
@@ -43,7 +43,7 @@ public final class Accumulators {
 	 * @see <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">Wikipedia: Arithmetic Mean</a>
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Mean<N extends Number> implements Accumulator<N> {
 		
@@ -107,7 +107,7 @@ public final class Accumulators {
 	 *         Wolfram MathWorld: Variance</a>
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Variance<N extends Number> extends Mean<N> {
 		
@@ -169,7 +169,7 @@ public final class Accumulators {
 	 * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Quantile<N extends Number> implements Accumulator<N> {
 		
@@ -368,7 +368,7 @@ public final class Accumulators {
 	 * Calculates min value.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Min<C extends Comparable<C>> implements Accumulator<C> {
 		private C _min;
@@ -400,7 +400,7 @@ public final class Accumulators {
 	 * Calculates max value.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class Max<C extends Comparable<C>> implements Accumulator<C> {
 		private C _max;
@@ -432,7 +432,7 @@ public final class Accumulators {
 	 * Calculates min and max values.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+	 * @version $Id$
 	 */
 	public static class MinMax<C extends Comparable<C>> implements Accumulator<C> {
 		private C _min;
@@ -472,7 +472,7 @@ public final class Accumulators {
 //	 * Calculates the sum of the accumulated values.
 //	 * 
 //	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-//	 * @version $Id: Accumulators.java 409 2010-03-09 18:34:42Z fwilhelm $
+//	 * @version $Id$
 //	 */
 //	public static class Sum<N extends GroupAdditive<N>> implements Accumulator<N> {
 //		public N _sum;

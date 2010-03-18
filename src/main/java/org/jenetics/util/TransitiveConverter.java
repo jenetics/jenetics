@@ -26,7 +26,7 @@ package org.jenetics.util;
  * This class allows to build transitive converters.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: TransitiveConverter.java 404 2010-03-05 18:40:51Z fwilhelm $
+ * @version $Id$
  */
 public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 	private final Converter<A, B> _first;

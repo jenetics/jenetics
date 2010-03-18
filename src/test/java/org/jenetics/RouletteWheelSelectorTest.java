@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelectorTest.java 391 2010-03-02 15:49:46Z fwilhelm $
+ * @version $Id$
  */
 public class RouletteWheelSelectorTest extends ProbabilitySelectorTest {
 

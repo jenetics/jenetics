@@ -48,7 +48,7 @@ import org.jscience.mathematics.number.Number;
  * BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: BitChromosome.java 407 2010-03-09 14:28:09Z fwilhelm $
+ * @version $Id$
  */
 public class BitChromosome extends Number<LargeInteger> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 

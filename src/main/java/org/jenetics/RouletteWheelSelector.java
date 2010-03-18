@@ -33,7 +33,7 @@ import java.util.Collections;
  *          Roulette Wheel Selection
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: RouletteWheelSelector.java 413 2010-03-15 21:43:19Z fwilhelm $
+ * @version $Id$
  */
 public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable

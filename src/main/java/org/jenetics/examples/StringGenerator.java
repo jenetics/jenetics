@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: StringGenerator.java 334 2010-02-16 21:11:02Z fwilhelm $
+ * @version $Id$
  */
 public class StringGenerator {
 

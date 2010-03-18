@@ -33,7 +33,7 @@ import org.jenetics.util.RandomRegistry;
  * used to measure the performance of an other given selector.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MonteCarloSelector.java 330 2010-02-16 12:48:21Z fwilhelm $
+ * @version $Id$
  */
 public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>> 
 	implements Selector<G, C> 

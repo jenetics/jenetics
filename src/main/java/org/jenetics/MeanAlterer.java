@@ -31,7 +31,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: MeanAlterer.java 396 2010-03-05 08:46:27Z fwilhelm $
+ * @version $Id$
  */
 public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G> {
 
