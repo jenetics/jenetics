@@ -138,6 +138,11 @@ public class Genotype<T extends Gene<?, T>>
 		return _valid;
 	}
 	
+	/**
+	 * Return a new, random genotype by creating new, random chromosomes (calling
+	 * the {@link Chromosome#newInstance()} method) from the chromosomes of this
+	 * genotype.
+	 */
 	@Override
 	public Genotype<T> newInstance() {
 		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length());
