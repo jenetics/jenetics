@@ -109,7 +109,7 @@ public class ThreadedEvaluator implements Evaluator {
 
 		
 		@Override
-		public Void call() throws Exception {
+		public Void call() {
 			if (_runnables instanceof RandomAccess) {
 				for (int i = _fromIndex; i < _toIndex; ++i) {
 					_runnables.get(i).run();
