@@ -337,7 +337,7 @@ public class BitChromosome extends Number<BitChromosome>
 		final BitChromosome c = (BitChromosome)o;
 		boolean equals = length() == c.length();
 		for (int i = 0, n = length(); equals && i < n; ++i) {
-			equals = getGene(i).getBit() == c.getGene(i).getBit();
+			equals = getGene(i) == c.getGene(i);
 		}
 		return equals;
 	}
