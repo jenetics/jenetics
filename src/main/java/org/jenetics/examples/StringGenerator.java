@@ -91,7 +91,7 @@ public class StringGenerator {
 		GAUtils.execute(ga, 50);
 		
 		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/franzw/population.xml");
-		org.jenetics.util.IOUtils.writeXML(out, ga.getPopulation());
+		org.jenetics.util.IOUtils.writeXMLAndClose(out, ga.getPopulation());
 		out.close();
 		
 		pool.shutdown();
