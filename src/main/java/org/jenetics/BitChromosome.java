@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
+import javolution.context.StackContext;
 import javolution.text.Text;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -50,7 +51,7 @@ import org.jscience.mathematics.number.Number;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitChromosome extends Number<LargeInteger> 
+public class BitChromosome extends Number<BitChromosome> 
 	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
 {
 	private static final long serialVersionUID = 1347736183659208046L;
@@ -276,13 +277,13 @@ public class BitChromosome extends Number<LargeInteger>
 	}
 	
 	@Override
-	public int compareTo(final LargeInteger that) {
-		return toLargeInteger().compareTo(that);
+	public int compareTo(final BitChromosome that) {
+		return toLargeInteger().compareTo(that.toLargeInteger());
 	}
 
 	@Override
-	public boolean isLargerThan(final LargeInteger that) {
-		return toLargeInteger().isLargerThan(that);
+	public boolean isLargerThan(final BitChromosome that) {
+		return toLargeInteger().isLargerThan(that.toLargeInteger());
 	}
 
 	public LargeInteger sqrt() {
@@ -290,18 +291,33 @@ public class BitChromosome extends Number<LargeInteger>
 	}
 	
 	@Override
-	public LargeInteger plus(final LargeInteger that) {
-		return toLargeInteger().plus(that);
+	public BitChromosome plus(final BitChromosome that) {
+		StackContext.enter();
+		try {
+			return valueOf(toLargeInteger().plus(that.toLargeInteger()));
+		} finally {
+			StackContext.exit();
+		}
 	}
 
 	@Override
-	public LargeInteger opposite() {
-		return toLargeInteger().opposite();
+	public BitChromosome opposite() {
+		StackContext.enter();
+		try {
+			return valueOf(toLargeInteger().opposite());
+		} finally {
+			StackContext.exit();
+		}
 	}
 
 	@Override
-	public LargeInteger times(final LargeInteger that) {
-		return toLargeInteger().times(that);
+	public BitChromosome times(final BitChromosome that) {
+		StackContext.enter();
+		try {
+			return valueOf(toLargeInteger().times(that.toLargeInteger()));
+		} finally {
+			StackContext.exit();
+		}
 	}
 	
 	@Override
