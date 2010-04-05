@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -78,6 +79,21 @@ public class IOUtils {
 	}
 	
 	/**
+	 * Closes the given {@code reader}. {@code null} values are allowed. 
+	 * XMLStreamException are swallowed
+	 * 
+	 * @param reader the reader to close.
+	 */
+	public static void closeQuitely(final XMLObjectReader reader) {
+		try {
+			if (reader != null) {
+				reader.close();
+			}
+		} catch (XMLStreamException ignore) {
+		}
+	}
+	
+	/**
 	 * Write the XML serializable object to the given output stream. The output
 	 * stream is not closed by this method.
 	 * @param out the output stream.
@@ -92,14 +108,30 @@ public class IOUtils {
 	) 
 		throws XMLStreamException 
 	{
+		writeXMLAndClose(new NonClosableOutputStream(out), object);
+	}
+	
+	/**
+	 * Write the XML serializable object to the given output stream. The output
+	 * stream is closed by this method.
+	 * @param out the output stream.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws XMLStreamException if the object could not be serialized.
+	 */
+	public static <T extends XMLSerializable> void writeXMLAndClose(
+		final OutputStream out, 
+		final T object
+	) 
+		throws XMLStreamException 
+	{
 		Validator.nonNull(out, "Output stream");
 		Validator.nonNull(object, "Object");
 		
 		XMLObjectWriter writer = null;
 		try {
-			writer = XMLObjectWriter.newInstance(
-				new NonClosableOutputStream(out)
-			);
+			writer = XMLObjectWriter.newInstance(out);
 			writer.setIndentation("\t");
 			writer.write(object);
 		} finally {
@@ -107,13 +139,38 @@ public class IOUtils {
 		}
 	}
 	
+	/**
+	 * Write the XML serializable object to the given path.
+	 * @param path the output path.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws XMLStreamException if the object could not be serialized.
+	 */
+	public static <T extends XMLSerializable> void writeXML(
+		final File path, 
+		final T object
+	) 
+		throws XMLStreamException, FileNotFoundException 
+	{
+		writeXMLAndClose(new FileOutputStream(path), object);
+	}
+	
+	/**
+	 * Write the XML serializable object to the given path.
+	 * @param path the output path.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws XMLStreamException if the object could not be serialized.
+	 */
 	public static <T extends XMLSerializable> void writeXML(
 		final String path, 
 		final T object
 	) 
 		throws XMLStreamException, FileNotFoundException 
 	{
-		writeXML(new FileOutputStream(path), object);
+		writeXML(new File(path), object);
 	}
 	
 	/**
@@ -122,7 +179,7 @@ public class IOUtils {
 	 * input stream. The input stream is not closed by this method.
 	 * 
 	 * @param in the input stream to read from.
-	 * @return the deserialized object.
+	 * @return the de-serialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws XMLStreamException if the object could not be read.
 	 */
@@ -135,15 +192,76 @@ public class IOUtils {
 		final XMLObjectReader reader = XMLObjectReader.newInstance(
 			new NonClosableInputStream(in)
 		);
-		return type.cast(reader.read());
+		try {
+			return type.cast(reader.read());
+		} finally {
+			closeQuitely(reader);
+		}
 	}
 	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeXML(OutputStream, XMLSerializable)} method) from the given
+	 * input stream. The input stream is closed by this method.
+	 * 
+	 * @param in the input stream to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws XMLStreamException if the object could not be read.
+	 */
+	public static <T> T readXMLAndClose(final Class<T> type, final InputStream in) 
+		throws XMLStreamException 
+	{
+		Validator.nonNull(type, "Object type");
+		Validator.nonNull(in, "Input stream");
+		
+		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
+		try {
+			return type.cast(reader.read());
+		} finally {
+			closeQuitely(reader);
+		}
+	}
+	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeXML(File, XMLSerializable)} method) from the given path.
+	 * 
+	 * @param path the path to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws XMLStreamException if the object could not be read.
+	 */
+	public static <T> T readXML(final Class<T> type, final File path) 
+		throws FileNotFoundException, XMLStreamException 
+	{
+		return readXMLAndClose(type, new FileInputStream(path));
+	}
+	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeXML(File, XMLSerializable)} method) from the given path.
+	 * 
+	 * @param path the path to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws XMLStreamException if the object could not be read.
+	 */
 	public static <T> T readXML(final Class<T> type, final String path) 
 		throws FileNotFoundException, XMLStreamException 
 	{
-		return readXML(type, new FileInputStream(path));
+		return readXML(type, new File(path));
 	}
 	
+	/**
+	 * Write the serializable object to the given output stream. The output
+	 * stream is not closed by this method.
+	 * @param out the output stream.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
 	public static void writeObject(
 		final OutputStream out, 
 		final Serializable object
@@ -153,25 +271,83 @@ public class IOUtils {
 		Validator.nonNull(out, "Output");
 		Validator.nonNull(object, "Object");
 		
-		ObjectOutputStream oout = null;
+		final ObjectOutputStream oout = new ObjectOutputStream(
+				new NonClosableOutputStream(out)
+			);
 		try {
-			oout = new ObjectOutputStream(out);
 			oout.writeObject(object);
 		} finally {
 			closeQuitely(oout);
 		}
 	}
 	
+	/**
+	 * Write the serializable object to the given output stream. The output
+	 * stream is closed by this method.
+	 * @param out the output stream.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
+	public static void writeObjectAndClose(
+		final OutputStream out, 
+		final Serializable object
+	) 
+		throws IOException 
+	{
+		try {
+			writeObject(out, object);
+		} finally {
+			closeQuitely(out);
+		}
+	}
+	
+	/**
+	 * Write the serializable object to the given output stream.
+	 * @param path the output paths.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
+	public static void writeObject(
+		final File path, 
+		final Serializable object
+	) 
+		throws IOException 
+	{
+		Validator.nonNull(path, "Path");
+		writeObjectAndClose(new FileOutputStream(path), object);
+	}
+	
+	/**
+	 * Write the serializable object to the given output stream.
+	 * @param path the output paths.
+	 * @param object the object to serialize.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
 	public static void writeObject(
 		final String path, 
 		final Serializable object
 	) 
 		throws IOException 
 	{
-		Validator.nonNull(path, "Path");
-		writeObject(new FileOutputStream(path), object);
+		writeObject(new File(path), object);
 	}
 	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeObject(OutputStream, Serializable)} method) from the given
+	 * input stream. The input stream is not closed by this method.
+	 * 
+	 * @param in the input stream to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
 	public static <T extends Serializable> T readObject(
 		final Class<T> type, 
 		final InputStream in
@@ -183,9 +359,10 @@ public class IOUtils {
 		
 		T object = null;
 		
-		ObjectInputStream oin = null;
+		final ObjectInputStream oin = new ObjectInputStream(
+				new NonClosableInputStream(in)
+			);
 		try {
-			oin = new ObjectInputStream(in);
 			object = type.cast(oin.readObject());
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e);
@@ -196,6 +373,59 @@ public class IOUtils {
 		return object;
 	}
 	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeObject(OutputStream, Serializable)} method) from the given
+	 * input stream. The input stream is closed by this method.
+	 * 
+	 * @param in the input stream to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
+	public static <T extends Serializable> T readObjectAndClose(
+		final Class<T> type, 
+		final InputStream in
+	) 
+		throws IOException 
+	{
+		try {
+			return readObject(type, in);
+		} finally {
+			closeQuitely(in);
+		}
+	}
+	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeObject(File, Serializable)} method) from the given
+	 * input path.
+	 * 
+	 * @param path the input path to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
+	public static <T extends Serializable> T readObject(
+		final Class<T> type, 
+		final File path
+	) 
+		throws IOException 
+	{
+		Validator.nonNull(path, "Path");
+		return readObjectAndClose(type, new FileInputStream(path));
+	}
+	
+	/**
+	 * Reads an object (which was serialized by the 
+	 * {@link #writeObject(String, Serializable)} method) from the given
+	 * input path.
+	 * 
+	 * @param path the input path to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
 	public static <T extends Serializable> T readObject(
 		final Class<T> type, 
 		final String path
@@ -203,7 +433,7 @@ public class IOUtils {
 		throws IOException 
 	{
 		Validator.nonNull(path, "Path");
-		return readObject(type, new FileInputStream(path));
+		return readObjectAndClose(type, new FileInputStream(path));
 	}
 	
 	private static final class NonClosableOutputStream extends OutputStream {
