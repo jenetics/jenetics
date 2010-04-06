@@ -84,7 +84,7 @@ public final class IOUtils {
 	 *     final InputStream in = ...
 	 *     final XMLSerializable object = ...
 	 *     try {
-	 *         Object obj = readXML(nonClose(out));
+	 *         Object obj = readXML(Object.class, nonClose(out));
 	 *         // input stream is not closed and can still be used.
 	 *     } finally {
 	 *         closeQuietly(in);
