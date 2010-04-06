@@ -56,9 +56,9 @@ public final class ArrayUtils {
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		nonNull(array, "Array");
-		final int temp = array[i];
+		final int old = array[i];
 		array[i] = array[j];
-		array[j] = temp;
+		array[j] = old;
 	}
 	
 	/**
@@ -76,9 +76,9 @@ public final class ArrayUtils {
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		nonNull(array, "Array");
 		
-		final T temp = array[i];
+		final T old = array[i];
 		array[i] = array[j];
-		array[j] = temp;
+		array[j] = old;
 	}
 	
 	/**
@@ -96,9 +96,9 @@ public final class ArrayUtils {
 	public static <T> void swap(final List<T> list, final int i, final int j) {
 		nonNull(list, "Array");
 		
-		final T temp = list.get(i);
+		final T old = list.get(i);
 		list.set(i, list.get(j));
-		list.set(j, temp);
+		list.set(j, old);
 	}
 	
 	/**
@@ -118,9 +118,9 @@ public final class ArrayUtils {
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
 		nonNull(array, "Array");
 
-		final T temp = array.get(i);
+		final T old = array.get(i);
 		array.set(i, array.get(j));
-		array.set(j, temp);
+		array.set(j, old);
 	}
 	
 	/**
