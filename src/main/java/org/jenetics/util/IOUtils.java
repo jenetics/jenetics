@@ -45,7 +45,7 @@ import javolution.xml.stream.XMLStreamException;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class IOUtils {
+public final class IOUtils {
 
 	private IOUtils() {
 	}
@@ -60,7 +60,7 @@ public class IOUtils {
 	 *     final XMLSerializable object = ...
 	 *     try {
 	 *         writeXML(nonClose(out), object);
-	 *         // output stream is not closed
+	 *         // output stream is not closed and can still be used.
 	 *     } finally {
 	 *         closeQuietly(out);
 	 *     }
@@ -69,6 +69,7 @@ public class IOUtils {
 	 * @param out the output stream to wrap.
 	 * @return the wrapped output stream. Calls to the {@link OutputStream#close()}
 	 *         will flush the stream and leave the stream open.
+	 * @throws NullPointerException if the given stream is {@code null}.
 	 */
 	public static OutputStream nonClose(final OutputStream out) {
 		return new NonClosableOutputStream(nonNull(out, "Output stream"));
@@ -84,15 +85,16 @@ public class IOUtils {
 	 *     final XMLSerializable object = ...
 	 *     try {
 	 *         Object obj = readXML(nonClose(out));
-	 *         // input stream is not closed
+	 *         // input stream is not closed and can still be used.
 	 *     } finally {
 	 *         closeQuietly(in);
 	 *     }
 	 * [/code]
 	 * 
 	 * @param out the output stream to wrap.
-	 * @return the wrapped output stream. Calls to the {@link OutputStream#close()}
-	 *         will flush the stream and leave the stream open.
+	 * @return the wrapped output stream. Calls to the {@link InputStream#close()}
+	 *         will leave the stream open.
+	 * @throws NullPointerException if the given stream is {@code null}.
 	 */
 	public static InputStream nonClose(final InputStream out) {
 		return new NonClosableInputStream(nonNull(out, "Input stream"));
