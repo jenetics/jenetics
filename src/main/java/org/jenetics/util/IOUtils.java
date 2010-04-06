@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.nonNull;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,8 +50,52 @@ public class IOUtils {
 	private IOUtils() {
 	}
 	
-	public static OutputStream notClose(final OutputStream out) {
-		return new NonClosableOutputStream(out);
+	/**
+	 * By default all {@code read/writeXXX(Input/OutputStream)} methods closes
+	 * the given input/output stream. To prevent these methods to close the
+	 * streams you can wrap it in an non closable stream. 
+	 * 
+	 * [code]
+	 *     final OutputStream out = ...
+	 *     final XMLSerializable object = ...
+	 *     try {
+	 *         writeXML(nonClose(out), object);
+	 *         // output stream is not closed
+	 *     } finally {
+	 *         closeQuietly(out);
+	 *     }
+	 * [/code]
+	 * 
+	 * @param out the output stream to wrap.
+	 * @return the wrapped output stream. Calls to the {@link OutputStream#close()}
+	 *         will flush the stream and leave the stream open.
+	 */
+	public static OutputStream nonClose(final OutputStream out) {
+		return new NonClosableOutputStream(nonNull(out, "Output stream"));
+	}
+	
+	/**
+	 * By default all {@code read/writeXXX(Input/OutputStream)} methods closes
+	 * the given input/output stream. To prevent these methods to close the
+	 * streams you can wrap it in an non closable stream. 
+	 * 
+	 * [code]
+	 *     final InputStream in = ...
+	 *     final XMLSerializable object = ...
+	 *     try {
+	 *         Object obj = readXML(nonClose(out));
+	 *         // input stream is not closed
+	 *     } finally {
+	 *         closeQuietly(in);
+	 *     }
+	 * [/code]
+	 * 
+	 * @param out the output stream to wrap.
+	 * @return the wrapped output stream. Calls to the {@link OutputStream#close()}
+	 *         will flush the stream and leave the stream open.
+	 */
+	public static InputStream nonClose(final InputStream out) {
+		return new NonClosableInputStream(nonNull(out, "Input stream"));
 	}
 	
 	/**
@@ -99,46 +145,16 @@ public class IOUtils {
 	
 	/**
 	 * Write the XML serializable object to the given output stream. The output
-	 * stream is closed by this method. If you don't want to close the given
-	 * output stream you can wrap your stream with the {@link #nonClose(OutputStream)}
-	 * method.
+	 * stream is closed by this method. 
 	 * 
-	 * [code]
-	 *     final OutputStream out = ...
-	 *     final XMLSerializable object = ...
-	 *     try {
-	 *         writeXML(nonClose(out), object);
-	 *         // output stream is not closed
-	 *     } finally {
-	 *         closeQuietly(out);
-	 *     }
-	 * [/code]
+	 * @see #nonClose(OutputStream)
 	 * 
 	 * @param out the output stream.
 	 * @param object the object to serialize.
-	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
 	 */
 	public static <T extends XMLSerializable> void writeXML(
-		final OutputStream out, 
-		final T object
-	) 
-		throws XMLStreamException 
-	{
-		writeXMLAndClose(new NonClosableOutputStream(out), object);
-	}
-	
-	/**
-	 * Write the XML serializable object to the given output stream. The output
-	 * stream is closed by this method.
-	 * @param out the output stream.
-	 * @param object the object to serialize.
-	 * 
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws XMLStreamException if the object could not be serialized.
-	 */
-	public static <T extends XMLSerializable> void writeXMLAndClose(
 		final OutputStream out, 
 		final T object
 	) 
@@ -156,12 +172,12 @@ public class IOUtils {
 			closeQuietly(writer);
 		}
 	}
-	
+
 	/**
 	 * Write the XML serializable object to the given path.
+	 * 
 	 * @param path the output path.
 	 * @param object the object to serialize.
-	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
 	 */
@@ -171,14 +187,14 @@ public class IOUtils {
 	) 
 		throws XMLStreamException, FileNotFoundException 
 	{
-		writeXMLAndClose(new FileOutputStream(path), object);
+		writeXML(new FileOutputStream(path), object);
 	}
 	
 	/**
 	 * Write the XML serializable object to the given path.
+	 * 
 	 * @param path the output path.
 	 * @param object the object to serialize.
-	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
 	 */
@@ -194,32 +210,6 @@ public class IOUtils {
 	/**
 	 * Reads an object (which was serialized by the 
 	 * {@link #writeXML(OutputStream, XMLSerializable)} method) from the given
-	 * input stream. The input stream is not closed by this method.
-	 * 
-	 * @param in the input stream to read from.
-	 * @return the de-serialized object.
-	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
-	 * @throws XMLStreamException if the object could not be read.
-	 */
-	public static <T> T readXML(final Class<T> type, final InputStream in) 
-		throws XMLStreamException 
-	{
-		Validator.nonNull(type, "Object type");
-		Validator.nonNull(in, "Input stream");
-		
-		final XMLObjectReader reader = XMLObjectReader.newInstance(
-			new NonClosableInputStream(in)
-		);
-		try {
-			return type.cast(reader.read());
-		} finally {
-			closeQuietly(reader);
-		}
-	}
-	
-	/**
-	 * Reads an object (which was serialized by the 
-	 * {@link #writeXML(OutputStream, XMLSerializable)} method) from the given
 	 * input stream. The input stream is closed by this method.
 	 * 
 	 * @param in the input stream to read from.
@@ -227,7 +217,7 @@ public class IOUtils {
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws XMLStreamException if the object could not be read.
 	 */
-	public static <T> T readXMLAndClose(final Class<T> type, final InputStream in) 
+	public static <T> T readXML(final Class<T> type, final InputStream in) 
 		throws XMLStreamException 
 	{
 		Validator.nonNull(type, "Object type");
@@ -253,7 +243,7 @@ public class IOUtils {
 	public static <T> T readXML(final Class<T> type, final File path) 
 		throws FileNotFoundException, XMLStreamException 
 	{
-		return readXMLAndClose(type, new FileInputStream(path));
+		return readXML(type, new FileInputStream(path));
 	}
 	
 	/**
@@ -273,7 +263,7 @@ public class IOUtils {
 	
 	/**
 	 * Write the serializable object to the given output stream. The output
-	 * stream is not closed by this method.
+	 * stream is closed by this method.
 	 * @param out the output stream.
 	 * @param object the object to serialize.
 	 * 
@@ -289,35 +279,11 @@ public class IOUtils {
 		Validator.nonNull(out, "Output");
 		Validator.nonNull(object, "Object");
 		
-		final ObjectOutputStream oout = new ObjectOutputStream(
-				new NonClosableOutputStream(out)
-			);
+		final ObjectOutputStream oout = new ObjectOutputStream(out);
 		try {
 			oout.writeObject(object);
 		} finally {
 			closeQuietly(oout);
-		}
-	}
-	
-	/**
-	 * Write the serializable object to the given output stream. The output
-	 * stream is closed by this method.
-	 * @param out the output stream.
-	 * @param object the object to serialize.
-	 * 
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IOException if the object could not be serialized.
-	 */
-	public static void writeObjectAndClose(
-		final OutputStream out, 
-		final Serializable object
-	) 
-		throws IOException 
-	{
-		try {
-			writeObject(out, object);
-		} finally {
-			closeQuietly(out);
 		}
 	}
 	
@@ -336,7 +302,7 @@ public class IOUtils {
 		throws IOException 
 	{
 		Validator.nonNull(path, "Path");
-		writeObjectAndClose(new FileOutputStream(path), object);
+		writeObject(new FileOutputStream(path), object);
 	}
 	
 	/**
@@ -377,9 +343,7 @@ public class IOUtils {
 		
 		T object = null;
 		
-		final ObjectInputStream oin = new ObjectInputStream(
-				new NonClosableInputStream(in)
-			);
+		final ObjectInputStream oin = new ObjectInputStream(in);
 		try {
 			object = type.cast(oin.readObject());
 		} catch (ClassNotFoundException e) {
@@ -389,29 +353,6 @@ public class IOUtils {
 		}
 		
 		return object;
-	}
-	
-	/**
-	 * Reads an object (which was serialized by the 
-	 * {@link #writeObject(OutputStream, Serializable)} method) from the given
-	 * input stream. The input stream is closed by this method.
-	 * 
-	 * @param in the input stream to read from.
-	 * @return the de-serialized object.
-	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
-	 * @throws IOException if the object could not be read.
-	 */
-	public static <T extends Serializable> T readObjectAndClose(
-		final Class<T> type, 
-		final InputStream in
-	) 
-		throws IOException 
-	{
-		try {
-			return readObject(type, in);
-		} finally {
-			closeQuietly(in);
-		}
 	}
 	
 	/**
@@ -431,7 +372,7 @@ public class IOUtils {
 		throws IOException 
 	{
 		Validator.nonNull(path, "Path");
-		return readObjectAndClose(type, new FileInputStream(path));
+		return readObject(type, new FileInputStream(path));
 	}
 	
 	/**
@@ -451,7 +392,7 @@ public class IOUtils {
 		throws IOException 
 	{
 		Validator.nonNull(path, "Path");
-		return readObjectAndClose(type, new FileInputStream(path));
+		return readObject(type, new FileInputStream(path));
 	}
 	
 	private static final class NonClosableOutputStream extends OutputStream {
