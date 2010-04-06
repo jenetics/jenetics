@@ -48,13 +48,17 @@ public class IOUtils {
 	private IOUtils() {
 	}
 	
+	public static OutputStream notClose(final OutputStream out) {
+		return new NonClosableOutputStream(out);
+	}
+	
 	/**
 	 * Closes the given {@code closeable}. {@code null} values are allowed. 
 	 * IOExceptions are swallowed
 	 * 
 	 * @param closeable the closeable to close.
 	 */
-	public static void closeQuitely(final Closeable closeable) {
+	public static void closeQuietly(final Closeable closeable) {
 		try {
 			if (closeable != null) {
 				closeable.close();
@@ -69,7 +73,7 @@ public class IOUtils {
 	 * 
 	 * @param writer the writer to close.
 	 */
-	public static void closeQuitely(final XMLObjectWriter writer) {
+	public static void closeQuietly(final XMLObjectWriter writer) {
 		try {
 			if (writer != null) {
 				writer.close();
@@ -84,7 +88,7 @@ public class IOUtils {
 	 * 
 	 * @param reader the reader to close.
 	 */
-	public static void closeQuitely(final XMLObjectReader reader) {
+	public static void closeQuietly(final XMLObjectReader reader) {
 		try {
 			if (reader != null) {
 				reader.close();
@@ -95,7 +99,21 @@ public class IOUtils {
 	
 	/**
 	 * Write the XML serializable object to the given output stream. The output
-	 * stream is not closed by this method.
+	 * stream is closed by this method. If you don't want to close the given
+	 * output stream you can wrap your stream with the {@link #nonClose(OutputStream)}
+	 * method.
+	 * 
+	 * [code]
+	 *     final OutputStream out = ...
+	 *     final XMLSerializable object = ...
+	 *     try {
+	 *         writeXML(nonClose(out), object);
+	 *         // output stream is not closed
+	 *     } finally {
+	 *         closeQuietly(out);
+	 *     }
+	 * [/code]
+	 * 
 	 * @param out the output stream.
 	 * @param object the object to serialize.
 	 * 
@@ -135,7 +153,7 @@ public class IOUtils {
 			writer.setIndentation("\t");
 			writer.write(object);
 		} finally {
-			closeQuitely(writer);
+			closeQuietly(writer);
 		}
 	}
 	
@@ -195,7 +213,7 @@ public class IOUtils {
 		try {
 			return type.cast(reader.read());
 		} finally {
-			closeQuitely(reader);
+			closeQuietly(reader);
 		}
 	}
 	
@@ -219,7 +237,7 @@ public class IOUtils {
 		try {
 			return type.cast(reader.read());
 		} finally {
-			closeQuitely(reader);
+			closeQuietly(reader);
 		}
 	}
 	
@@ -277,7 +295,7 @@ public class IOUtils {
 		try {
 			oout.writeObject(object);
 		} finally {
-			closeQuitely(oout);
+			closeQuietly(oout);
 		}
 	}
 	
@@ -299,7 +317,7 @@ public class IOUtils {
 		try {
 			writeObject(out, object);
 		} finally {
-			closeQuitely(out);
+			closeQuietly(out);
 		}
 	}
 	
@@ -367,7 +385,7 @@ public class IOUtils {
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e);
 		} finally {
-			closeQuitely(oin);
+			closeQuietly(oin);
 		}
 		
 		return object;
@@ -392,7 +410,7 @@ public class IOUtils {
 		try {
 			return readObject(type, in);
 		} finally {
-			closeQuitely(in);
+			closeQuietly(in);
 		}
 	}
 	
