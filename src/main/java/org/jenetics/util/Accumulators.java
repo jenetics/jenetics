@@ -568,15 +568,15 @@ public final class Accumulators {
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
-	 * @param accumulator the accumulator.
+	 * @param a the accumulator.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values,
-		final Accumulator<? super T> accumulator
+		final Accumulator<? super T> a
 	) {
 		for (final T value : values) {
-			accumulator.accumulate(value);
+			a.accumulate(value);
 		}
 	}
 	
@@ -587,19 +587,19 @@ public final class Accumulators {
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
-	 * @param accumulator1 the first accumulator.
-	 * @param accumulator2 the second accumulator.
+	 * @param a1 the first accumulator.
+	 * @param a2 the second accumulator.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values,
-		final Accumulator<? super T> accumulator1,
-		final Accumulator<? super T> accumulator2
+		final Accumulator<? super T> a1,
+		final Accumulator<? super T> a2
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator2));;			
+			ConcurrentContext.execute(new Acc<T>(values, a1));
+			ConcurrentContext.execute(new Acc<T>(values, a2));;			
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -612,22 +612,22 @@ public final class Accumulators {
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
-	 * @param accumulator1 the first accumulator.
-	 * @param accumulator2 the second accumulator.
-	 * @param accumulator3 the third accumulator
+	 * @param a1 the first accumulator.
+	 * @param a2 the second accumulator.
+	 * @param a3 the third accumulator
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values,
-		final Accumulator<? super T> accumulator1,
-		final Accumulator<? super T> accumulator2,
-		final Accumulator<? super T> accumulator3
+		final Accumulator<? super T> a1,
+		final Accumulator<? super T> a2,
+		final Accumulator<? super T> a3
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator2));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator3));			
+			ConcurrentContext.execute(new Acc<T>(values, a1));
+			ConcurrentContext.execute(new Acc<T>(values, a2));
+			ConcurrentContext.execute(new Acc<T>(values, a3));			
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -640,25 +640,25 @@ public final class Accumulators {
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
-	 * @param accumulator1 the first accumulator.
-	 * @param accumulator2 the second accumulator.
-	 * @param accumulator3 the third accumulator.
-	 * @param accumulator4 the fourth accumulator.
+	 * @param a1 the first accumulator.
+	 * @param a2 the second accumulator.
+	 * @param a3 the third accumulator.
+	 * @param a4 the fourth accumulator.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values,
-		final Accumulator<? super T> accumulator1,
-		final Accumulator<? super T> accumulator2,
-		final Accumulator<? super T> accumulator3,
-		final Accumulator<? super T> accumulator4
+		final Accumulator<? super T> a1,
+		final Accumulator<? super T> a2,
+		final Accumulator<? super T> a3,
+		final Accumulator<? super T> a4
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator2));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator3));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator4));	
+			ConcurrentContext.execute(new Acc<T>(values, a1));
+			ConcurrentContext.execute(new Acc<T>(values, a2));
+			ConcurrentContext.execute(new Acc<T>(values, a3));
+			ConcurrentContext.execute(new Acc<T>(values, a4));	
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -671,28 +671,28 @@ public final class Accumulators {
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
-	 * @param accumulator1 the first accumulator.
-	 * @param accumulator2 the second accumulator.
-	 * @param accumulator3 the third accumulator.
-	 * @param accumulator4 the fourth accumulator.
-	 * @param accumulator5 the fifth accumulator.
+	 * @param a1 the first accumulator.
+	 * @param a2 the second accumulator.
+	 * @param a3 the third accumulator.
+	 * @param a4 the fourth accumulator.
+	 * @param a5 the fifth accumulator.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values,
-		final Accumulator<? super T> accumulator1,
-		final Accumulator<? super T> accumulator2,
-		final Accumulator<? super T> accumulator3,
-		final Accumulator<? super T> accumulator4,
-		final Accumulator<? super T> accumulator5
+		final Accumulator<? super T> a1,
+		final Accumulator<? super T> a2,
+		final Accumulator<? super T> a3,
+		final Accumulator<? super T> a4,
+		final Accumulator<? super T> a5
 	) {
 		ConcurrentContext.enter();
 		try {	
-			ConcurrentContext.execute(new Acc<T>(values, accumulator1));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator2));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator3));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator4));
-			ConcurrentContext.execute(new Acc<T>(values, accumulator5));
+			ConcurrentContext.execute(new Acc<T>(values, a1));
+			ConcurrentContext.execute(new Acc<T>(values, a2));
+			ConcurrentContext.execute(new Acc<T>(values, a3));
+			ConcurrentContext.execute(new Acc<T>(values, a4));
+			ConcurrentContext.execute(new Acc<T>(values, a5));
 		} finally {
 			ConcurrentContext.exit();
 		}
