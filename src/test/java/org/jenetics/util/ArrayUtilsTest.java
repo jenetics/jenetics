@@ -22,15 +22,9 @@
  */
 package org.jenetics.util;
 
+import java.io.IOException;
 import java.util.Random;
 
-//import org.jenetics.FitnessFunction;
-//import org.jenetics.Genotype;
-//import org.jenetics.IntegerChromosome;
-//import org.jenetics.IntegerGene;
-//import org.jenetics.Phenotype;
-//import org.jenetics.Population;
-//import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
@@ -61,6 +55,29 @@ public class ArrayUtilsTest {
 			sorted = array[i] < array[i + 1];
 		}
 		return sorted;
+	}
+	
+	@Test
+	public void sum() throws IOException {
+		final double[] values = new double[150000];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = 1.0/values.length;
+		}
+		
+		Assert.assertEquals(ArrayUtils.sum(values), 1.0);
+		
+		
+//		StringBuilder builder = new StringBuilder();
+//		TypeFormat.format(ArrayUtils.sum(values), 19, false, false, builder);
+//		System.out.println(builder);
+//		
+//		double sum = 0;
+//		for (int i = 0; i < values.length; ++i) {
+//			sum += values[i];
+//		}
+//		builder.setLength(0);
+//		TypeFormat.format(sum, 18, false, false, builder);
+//		System.out.println(builder);
 	}
 	
 	
