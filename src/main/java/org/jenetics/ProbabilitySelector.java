@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.abs;
+import static org.jenetics.util.ArrayUtils.sum;
+
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
@@ -30,9 +33,9 @@ import org.jenetics.util.Validator;
 
 /**
  * The ProbabilitySelector selects the new population according the 
- * Probability array the method getProbabilties returns. The size of
- * the Probability array and the size of the population must be the same.
- * The order of the population and the probabilities has to be the same too.
+ * Probability array the method {@link #probabilities(Population, int)} returns. 
+ * The size of the Probability array and the size of the population must be the 
+ * same. The order of the population and the probabilities has to be the same too.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -60,6 +63,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count);
 			assert (population.size() == probabilities.length);
+			assert (abs(sum(probabilities) - 1.0) < 0.0001);
 			final Random random = RandomRegistry.getRandom();
 			
 			for (int i = 0; i < count; ++i) {

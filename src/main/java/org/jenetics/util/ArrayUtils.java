@@ -1165,6 +1165,37 @@ public final class ArrayUtils {
 		return index;
 	}
 	
+	/**
+	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+	 * Kahan summation algorithm</a>.
+	 * 
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double sum(final double[] values) {
+		double sum = 0.0;
+		double c = 0.0;
+		double y = 0.0;
+		double t = 0.0;
+		
+		for (int i = 0; i < values.length; ++i) {
+			y = values[i] - c;
+			t = sum + y;
+			c = t - sum - y;
+			sum = t;
+		}
+		
+		return sum;
+	}
+	
+
+
+	
 }
+
+
+
+
 
 
