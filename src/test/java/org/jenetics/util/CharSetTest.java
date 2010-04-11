@@ -75,7 +75,7 @@ public class CharSetTest {
 		set = new CharSet("11");
 		Assert.assertEquals(set.toString(), "1");
 		
-		set = new CharSet("123456789");
+		set = new CharSet("1223345667899");
 		Assert.assertEquals(set.toString(), "123456789");
 		
 		set = new CharSet("0000000000000000000000000");
