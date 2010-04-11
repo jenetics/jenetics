@@ -42,6 +42,9 @@ public class CharSetTest {
 		set = new CharSet("1".toCharArray());
 		Assert.assertEquals(set.toString(), "1");
 		
+		set = new CharSet("11".toCharArray());
+		Assert.assertEquals(set.toString(), "1");
+		
 		set = new CharSet("123456789".toCharArray());
 		Assert.assertEquals(set.toString(), "123456789");
 		
@@ -67,6 +70,9 @@ public class CharSetTest {
 		Assert.assertEquals(set.toString(), "");
 		
 		set = new CharSet("1");
+		Assert.assertEquals(set.toString(), "1");
+		
+		set = new CharSet("11");
 		Assert.assertEquals(set.toString(), "1");
 		
 		set = new CharSet("123456789");
