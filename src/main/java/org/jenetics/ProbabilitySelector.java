@@ -62,10 +62,11 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count);
+			
 			assert (population.size() == probabilities.length);
 			assert (abs(sum(probabilities) - 1.0) < 0.0001);
-			final Random random = RandomRegistry.getRandom();
 			
+			final Random random = RandomRegistry.getRandom();
 			for (int i = 0; i < count; ++i) {
 				selection.add(population.get(nextIndex(probabilities, random)));
 			}
