@@ -39,6 +39,22 @@ import org.testng.annotations.Test;
  */
 public class BitChromosomeTest {
 
+	@Test
+	public void invert() {
+		BitChromosome c1 = BitChromosome.valueOf(100, 0.3);
+		BitChromosome c2 = c1.copy();
+		Assert.assertNotSame(c2, c1);
+		Assert.assertEquals(c2, c1);
+		
+		BitChromosome c3 = c1.invert();
+		for (int i = 0; i < c1.length(); ++i) {
+			Assert.assertTrue(c1.getGene(i).getBit() != c3.getGene(i).getBit());
+		}
+		
+		BitChromosome c4 = c3.invert();
+		Assert.assertEquals(c4, c1);
+	}
+	
     @Test
     public void testHashCode() {
         BitChromosome c1 = BitChromosome.valueOf(10);
