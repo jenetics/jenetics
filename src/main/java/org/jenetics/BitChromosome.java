@@ -309,6 +309,17 @@ public class BitChromosome extends Number<BitChromosome>
 			StackContext.exit();
 		}
 	}
+	
+	/**
+	 * Invert the ones and zeros of this bit chromosome.
+	 * 
+	 * @return a new BitChromosome with inverted ones and zeros.
+	 */
+	public BitChromosome invert() {
+		final BitChromosome copy = copy();
+		BitUtils.invert(copy._genes);
+		return copy;
+	}
 
 	@Override
 	public BitChromosome times(final BitChromosome that) {
