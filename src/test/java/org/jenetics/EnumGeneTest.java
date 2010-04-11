@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import javolution.xml.stream.XMLStreamException;
+import java.io.IOException;
 
 import org.testng.annotations.Test;
 
@@ -37,7 +37,7 @@ public class EnumGeneTest {
 	}
 	
 	@Test
-	public void serialize() throws XMLStreamException {
+	public void serialize() throws IOException {
 		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
 	}
 }
