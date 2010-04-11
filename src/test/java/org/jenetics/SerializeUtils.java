@@ -24,11 +24,13 @@ package org.jenetics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 
-import javolution.xml.XMLObjectReader;
-import javolution.xml.XMLObjectWriter;
+import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.IOUtils;
 import org.testng.Assert;
 import org.testng.Reporter;
 
@@ -38,23 +40,33 @@ import org.testng.Reporter;
  */
 class SerializeUtils {
 
-	public static void testSerialization(final Object object) 
+	public static void testSerialization(final XMLSerializable object) 
 		throws XMLStreamException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		final XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
-		writer.setIndentation("\t");
-		writer.write(object);
-		writer.close();
+		IOUtils.writeXML(out, object);
 		
 		final byte[] data = out.toByteArray();
 		Reporter.log(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
-		final Object p = reader.read();
+		final Object copy = IOUtils.readXML(XMLSerializable.class, in);
 		
-		Assert.assertEquals(p, object);
+		Assert.assertEquals(copy, object);
+	}
+	
+	public static void testSerialization(final Serializable object) 
+		throws IOException 
+	{
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IOUtils.writeObject(out, object);
+		
+		final byte[] data = out.toByteArray();
+		
+		final ByteArrayInputStream in = new ByteArrayInputStream(data);
+		final Object copy = IOUtils.readObject(Serializable.class, in);
+		
+		Assert.assertEquals(copy, object);
 	}
 	
 }
