@@ -45,7 +45,7 @@ public class CharSet
 	private final char[] _characters;
 	
 	/**
-	 * Create a new CharSet from the given {@code characters}.
+	 * Create a new (distinct) CharSet from the given {@code characters}.
 	 * 
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
@@ -53,22 +53,51 @@ public class CharSet
 	public CharSet(final CharSequence characters) {
 		Validator.nonNull(characters, "Characters");
 		
-		_characters = new char[characters.length()];
+		final char[] chars = new char[characters.length()];
 		for (int i = 0; i < characters.length(); ++i) {
-			_characters[i] = characters.charAt(i);
+			chars[i] = characters.charAt(i);
 		}
-		Arrays.sort(_characters);
+		
+		_characters = distinct(chars);
 	}
 	
 	/**
-	 * Create a new CharSet from the given {@code characters}.
+	 * Create a new (distinct) CharSet from the given {@code characters}.
 	 * 
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSet(final char[] characters) {
-		_characters = characters.clone();
-		Arrays.sort(_characters);
+		_characters = distinct(characters.clone());
+	}
+	
+	private static char[] distinct(final char[] chars) {
+		char[] result = chars;
+		
+		if (chars.length > 0) {
+			Arrays.sort(result);
+			
+			int nextIndex = 0;
+			int count = 1;
+			char last = result[0];
+			
+			for (int i = 1; i < result.length; ++i) {
+				while (nextIndex < result.length && result[nextIndex] == last) {
+					++nextIndex;
+				}
+				if (nextIndex < result.length) {
+					last = result[nextIndex];
+					result[i] = last;
+					++count;
+				}
+			}
+			
+			char[] array = new char[count];
+			System.arraycopy(result, 0, array, 0, count);
+			result = array;
+		}
+		
+		return result;
 	}
 	
 	/**

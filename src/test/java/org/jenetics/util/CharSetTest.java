@@ -33,7 +33,61 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class CharSetTest {
+	
+	@Test
+	public void distinct1() {
+		CharSet set = new CharSet("".toCharArray());
+		Assert.assertEquals(set.toString(), "");
+		
+		set = new CharSet("1".toCharArray());
+		Assert.assertEquals(set.toString(), "1");
+		
+		set = new CharSet("123456789".toCharArray());
+		Assert.assertEquals(set.toString(), "123456789");
+		
+		set = new CharSet("0000000000000000000000000".toCharArray());
+		Assert.assertEquals(set.toString(), "0");
+		
+		set = new CharSet("0111111111111111111111111112".toCharArray());
+		Assert.assertEquals(set.toString(), "012");
+		
+		set = new CharSet("111111111111111112".toCharArray());
+		Assert.assertEquals(set.toString(), "12");
+		
+		set = new CharSet("1222222222222222222".toCharArray());
+		Assert.assertEquals(set.toString(), "12");
+		
+		set = new CharSet("000000987654321111111111".toCharArray());
+		Assert.assertEquals(set.toString(), "0123456789");
+	}
 
+	@Test
+	public void distinct2() {
+		CharSet set = new CharSet("");
+		Assert.assertEquals(set.toString(), "");
+		
+		set = new CharSet("1");
+		Assert.assertEquals(set.toString(), "1");
+		
+		set = new CharSet("123456789");
+		Assert.assertEquals(set.toString(), "123456789");
+		
+		set = new CharSet("0000000000000000000000000");
+		Assert.assertEquals(set.toString(), "0");
+		
+		set = new CharSet("0111111111111111111111111112");
+		Assert.assertEquals(set.toString(), "012");
+		
+		set = new CharSet("111111111111111112");
+		Assert.assertEquals(set.toString(), "12");
+		
+		set = new CharSet("1222222222222222222");
+		Assert.assertEquals(set.toString(), "12");
+		
+		set = new CharSet("000000987654321111111111");
+		Assert.assertEquals(set.toString(), "0123456789");
+	}
+	
 	@Test
 	public void expand1() {
 		String value = CharSet.expand('a', 'z');

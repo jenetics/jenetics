@@ -2,6 +2,8 @@
 - BitChromosome implements now org.jscience.mathematics.number.Number<BitChromosome>
   instead of org.jscience.mathematics.number.Number<LargeInteger>.
 - Add BitChromosome.invert() method.
+- Fixing bug in CharSet class. The constructor CharSet(String) now creates 
+  a distinct CharSet.
 
 Jenetics-0.5.1.0
 - Add org.jenetics.util.Predicates which contains some general purpose predicates
