@@ -92,7 +92,7 @@ public class CharSet
 	 *         {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(_characters, c) != -1;
+		return Arrays.binarySearch(_characters, c) >= 0;
 	}
 
 	@Override
