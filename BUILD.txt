@@ -7,9 +7,9 @@ REQUIREMENTS
   
 - Apache ANT 1.7
   The ANT_HOME variable must be set to your
-  Ant instalation directory.
+  Ant installation directory.
   
-- Dependecy to the Jscience library (http:://jscience.org).
+- Dependency to the JScience library (http:://jscience.org).
   This library is included and lies in the lib directory.
 
 BUILD Jenetics
@@ -29,6 +29,6 @@ TEST
 For running the tests execute
     ant testng
 
-Additional tests must be stored in the testng subdirectory.
+Additional tests must be stored in the testng sub-directory.
 You must also add the testng.xml file in the testng/org/jenetics
 directory.
