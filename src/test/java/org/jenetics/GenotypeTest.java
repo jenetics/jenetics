@@ -27,6 +27,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import javolution.xml.stream.XMLStreamException;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -94,6 +95,27 @@ public class GenotypeTest {
         Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2, c3);
         
     	SerializeUtils.testSerialization(g1);
+    }
+    
+    @Test
+    public void isValid() {
+        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
+        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2);
+        Assert.assertTrue(g1.isValid());
+        
+        c1 = new Integer64Chromosome(
+        		Integer64Gene.valueOf(0, 1, 10),
+        		Integer64Gene.valueOf(2, 1, 10),
+        		Integer64Gene.valueOf(2, 1, 10)
+        	);
+        c2 = new Integer64Chromosome(
+        		Integer64Gene.valueOf(2, 1, 10),
+        		Integer64Gene.valueOf(2, 1, 10),
+        		Integer64Gene.valueOf(2, 1, 10)
+        	);
+        g1 = Genotype.valueOf(c1, c2);
+        Assert.assertFalse(g1.isValid());
     }
 
 }
