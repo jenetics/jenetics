@@ -37,6 +37,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Validator;
 import org.jenetics.util.Verifiable;
 
 /**
@@ -129,11 +130,7 @@ public class Genotype<T extends Gene<?, T>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			boolean valid = true;
-			for (int i = 0; i < _chromosomes.length() && valid; ++i) {
-				valid = _chromosomes.get(i).isValid();
-			}
-			_valid = valid;
+			_valid = _chromosomes.foreach(new Validator.Verify()) == -1;
 		}
 		return _valid;
 	}
