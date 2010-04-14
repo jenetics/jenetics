@@ -70,7 +70,6 @@ public class Genotype<T extends Gene<?, T>>
 	 * @throws IndexOutOfBoundsException if (index < 0 || index >= _length).
 	 */
 	public Chromosome<T> getChromosome(final int index) {
-		checkIndex(index);
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(index) != null);
 		
@@ -143,21 +142,15 @@ public class Genotype<T extends Gene<?, T>>
 	@Override
 	public Genotype<T> newInstance() {
 		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length());
-		
-		for (int i = 0; i < _chromosomes.length(); ++i) {
-			final Factory<Chromosome<T>> factory = _chromosomes.get(i); 
-			genotype._chromosomes.set(i, factory.newInstance());
-		}
-		
+		final Factory<Chromosome<T>> factory = _chromosomes.get(0); 
+		genotype._chromosomes.fill(factory);
 		return genotype;
 	}
 	
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		for (int i = 0, n = length(); i < n; ++i) {
-			hash += getChromosome(i).hashCode()*37;
-		}		 
+		hash += 37*_chromosomes.hashCode();
 		return hash;
 	}
 	
@@ -171,19 +164,7 @@ public class Genotype<T extends Gene<?, T>>
 		}
 		
 		final Genotype<?> gt = (Genotype<?>)o;
-		boolean equals = length() == gt.length();
-		for (int i = 0, n = length(); i < n && equals; ++i) {
-			equals = getChromosome(i).equals(gt.getChromosome(i));
-		}
-		return equals;
-	}
-	
-	private void checkIndex(final int index) {
-		if (index < 0 || index >= length()) {
-			throw new IndexOutOfBoundsException(
-				"Invalid index: " + index + ", _length: " + length()
-			);
-		}
+		return _chromosomes.equals(gt._chromosomes);
 	}
 
 	@Override

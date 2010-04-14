@@ -146,10 +146,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	public Integer64Chromosome newInstance() {
 		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length());
 		final Factory<Integer64Gene> factory = _genes.get(0);
-		
-		for (int i = 0; i < length(); ++i) {
-			genes.set(i, factory.newInstance());
-		}
+		genes.fill(factory);
 		
 		final Integer64Chromosome chromosome = new Integer64Chromosome(genes);
 		chromosome._min = _min;
