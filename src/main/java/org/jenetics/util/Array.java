@@ -494,6 +494,7 @@ public class Array<T> implements
 	 *         ({@code isSealed() == true}).
 	 */
 	public Array<T> fill(final Factory<? extends T> factory) {
+		Validator.nonNull(factory);
 		checkSeal();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = factory.newInstance();
