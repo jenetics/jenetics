@@ -114,7 +114,7 @@ public final class Validator {
 	
 	
 	/**
-	 * Verifys {@link Verifiable} array elements. All elements are valid if the
+	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
 	 *     array.foreach(new Verify()) == -1
