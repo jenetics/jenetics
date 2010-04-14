@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
@@ -99,6 +100,7 @@ public class ArrayTest {
 		}
 		
 		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(10, 15));
+		Assert.assertFalse(a1.equals(a2));
 	}
 	
 	@Test
@@ -109,6 +111,31 @@ public class ArrayTest {
 		for (Integer i : array) {
 			Assert.assertEquals(i, new Integer(10));
 		}
+	}
+	
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void seal1() {
+		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
+		array.set(0, 10);
+	}
+	
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void seal2() {
+		new Array<Integer>(10).seal().fill(1);
+	}
+	
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void seal3() {
+		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
+		for (ListIterator<Integer> it = array.iterator(); it.hasNext();) {
+			it.next();
+			it.set(4);
+		}
+	}
+	
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void seal4() {
+		new Array<Integer>(10).seal().subArray(0, 4).set(0, 1);
 	}
 	
 	@Test
