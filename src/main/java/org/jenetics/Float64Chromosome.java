@@ -137,10 +137,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	public Float64Chromosome newInstance() {
 		final Array<Float64Gene> genes = new Array<Float64Gene>(length());
 		final Factory<Float64Gene> factory = _genes.get(0);
-		
-		for (int i = 0; i < length(); ++i) {
-			genes.set(i, factory.newInstance());
-		}
+		genes.fill(factory);
 		
 		final Float64Chromosome chromosome = new Float64Chromosome(genes);
 		chromosome._min = _min;
