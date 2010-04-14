@@ -88,6 +88,20 @@ public class ArrayTest {
 	}
 	
 	@Test
+	public void equals() {
+		final Array<Integer> a1 = new Array<Integer>(20);
+		final Array<Integer> a2 = new Array<Integer>(20);
+		for (int i = 0; i < 10; ++i) {
+			a1.set(i, i);
+		}
+		for (int i = 0; i < 10; ++i) {
+			a2.set(i + 10, i);
+		}
+		
+		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(10, 15));
+	}
+	
+	@Test
 	public void fill() {
 		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
 		Assert.assertEquals(array.length(), 10);

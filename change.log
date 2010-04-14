@@ -4,6 +4,7 @@
 - Add BitChromosome.invert() method.
 - Fixing bug in CharSet class. The constructor CharSet(String) now creates 
   a distinct CharSet.
+- Fixing bug in Array.equals(Object) method.
 
 Jenetics-0.5.1.0
 - Add org.jenetics.util.Predicates which contains some general purpose predicates

@@ -725,9 +725,10 @@ public class Array<T> implements
 		
 		final Array<?> array = (Array<?>)obj;
 		boolean equals = (length() == array.length());
+		final int difference = _start - array._start;
 		for (int i = _start; equals && i < _end; ++i) {
 			if (_array[i] != null) {
-				equals = _array[i].equals(array._array[i]);
+				equals = _array[i].equals(array._array[i - difference]);
 			} else {
 				equals = array._array[i] == null;
 			}
