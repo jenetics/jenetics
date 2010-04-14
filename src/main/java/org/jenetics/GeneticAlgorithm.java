@@ -92,9 +92,22 @@ import org.jenetics.util.Validator;
  * @param <C> The result type (of the fitness function).
  */
 public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
+	
+	/**
+	 * The default population size used by this GA.
+	 */
 	public static final int DEFAULT_POPULATION_SIZE = 50;
+	
+	/**
+	 * The default maximal phenotype age of this GA:
+	 */
 	public static final int DEFAULT_MAXIMAL_PHENOTYPE_AGE = 70;
+	
+	/**
+	 * The default offspring fraction used by this GA.
+	 */
 	public static final double DEFAULT_OFFSPRING_FRACTION = 0.6;
+	
 	
 	private final Lock _lock = new ReentrantLock(true);	
 	
