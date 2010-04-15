@@ -25,6 +25,7 @@ package org.jenetics.util;
 import static java.lang.Math.min;
 import static org.jenetics.util.Validator.nonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -39,8 +40,26 @@ import java.util.Random;
  * @version $Id$
  */
 public final class ArrayUtils {
+	
+	/**
+	 * The empty, immutable array. This array is {@link Serializable}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static final Array EMPTY_ARRAY = new Array(0);
 
 	private ArrayUtils() {
+	}
+	
+	/**
+	 * Return the empty, immutable array. This array is {@link Serializable}.
+	 * 
+	 * @see #EMPTY_ARRAY
+	 * @param <T> the element type.
+	 * @return the empty, immutable array.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Array<T> emptyArray() {
+		return (Array<T>)EMPTY_ARRAY;
 	}
 	
 	/**
