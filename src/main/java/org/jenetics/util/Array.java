@@ -572,8 +572,11 @@ public class Array<T> implements
 	
 	/**
 	 * Return a shallow copy of this array. The array elements are not cloned.
-	 * The copied array is not sealed.
+	 * The copied array is not sealed. If the array is a sub-array (created
+	 * with the {@link #subArray(int, int)} method, only the sub-array-part is
+	 * copied. The {@link #clone()} method <i>copies</i> the whole array.
 	 * 
+	 * @see #clone()
 	 * @return a shallow copy of this array.
 	 */
 	@Override
@@ -583,6 +586,9 @@ public class Array<T> implements
 		return array;
 	}
 	
+	/**
+	 * @see #copy()
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Array<T> clone() {

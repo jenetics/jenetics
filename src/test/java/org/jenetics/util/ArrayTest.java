@@ -100,16 +100,37 @@ public class ArrayTest {
 		}
 		
 		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(10, 15));
+		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(6, 15).subArray(4, 9));
+		Assert.assertEquals(a1.subArray(0, 5).copy(), a2.subArray(6, 15).subArray(4, 9).copy());
 		Assert.assertFalse(a1.equals(a2));
 	}
 	
 	@Test
-	public void fill() {
+	public void fill1() {
 		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
 		Assert.assertEquals(array.length(), 10);
 		Assert.assertTrue(array.isSealed());
 		for (Integer i : array) {
 			Assert.assertEquals(i, new Integer(10));
+		}
+	}
+	
+	@Test
+	public void fill2() {
+		final Array<Integer> array = new Array<Integer>(10).fill(0);
+		Assert.assertEquals(array.length(), 10);
+		Assert.assertFalse(array.isSealed());
+		
+		final AtomicInteger integer = new AtomicInteger(0);
+		array.fill(new Factory<Integer>() {
+			@Override
+			public Integer newInstance() {
+				return integer.getAndIncrement();
+			}
+		});
+		
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(array.get(i), new Integer(i));
 		}
 	}
 	
@@ -215,6 +236,18 @@ public class ArrayTest {
 		
 		index = array.lastIndexOf(5);
 		Assert.assertEquals(index, 15);
+		
+		index = array.lastIndexOf(25);
+		Assert.assertEquals(index, -1);
+		
+		index = array.indexOf(-1);
+		Assert.assertEquals(index, -1);
+		
+		index = array.indexOf(Integer.MIN_VALUE);
+		Assert.assertEquals(index, -1);
+		
+		index = array.indexOf(Integer.MAX_VALUE);
+		Assert.assertEquals(index, -1);
 	}
 	
 	@Test
