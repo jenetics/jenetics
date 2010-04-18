@@ -733,34 +733,34 @@ public final class ArrayUtils {
 	 * [/code]
 	 * 
 	 * @param size the size of the array to partition.
-	 * @param prts the number of parts the (virtual) array should be partitioned.
-	 * @return the partition array with the length of {@code min(size, prts) + 1}.
+	 * @param parts the number of parts the (virtual) array should be partitioned.
+	 * @return the partition array with the length of {@code min(size, parts) + 1}.
 	 * @throws IllegalArgumentException if {@code size} or {@code p} is less than one.
 	 */
-	public static int[] partition(final int size, final int prts) {
+	public static int[] partition(final int size, final int parts) {
 		if (size < 1) {
 			throw new IllegalArgumentException(
 				"Size must greater than zero: " + size
 			);
 		}
-		if (prts < 1) {
+		if (parts < 1) {
 			throw new IllegalArgumentException(
-				"Number of partitions must greater than zero: " + prts
+				"Number of partitions must greater than zero: " + parts
 			);
 		}
 		
-		final int parts = min(size, prts);
-		final int[] partition = new int[parts + 1];
+		final int pts = min(size, parts);
+		final int[] partition = new int[pts + 1];
 		
-		final int bulk = size != 0 ? size/parts : 0;
-		final int rest = size != 0 ? size%parts : 0;
-		assert ((bulk*parts + rest) == size);
+		final int bulk = size/pts;
+		final int rest = size%pts;
+		assert ((bulk*pts + rest) == size);
 		
-		for (int i = 0, n = parts - rest; i < n; ++i) {
+		for (int i = 0, n = pts - rest; i < n; ++i) {
 			partition[i] = i*bulk;
 		}
 		for (int i = 0, n = rest + 1; i < n; ++i) {
-			partition[parts - rest + i] = (parts - rest)*bulk + i*(bulk + 1);
+			partition[pts - rest + i] = (pts - rest)*bulk + i*(bulk + 1);
 		}
 		
 		return partition;
