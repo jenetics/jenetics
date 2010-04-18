@@ -38,7 +38,7 @@ import java.io.Serializable;
  * Positive values of <i>b</i> increases the selection probability of the phenotype
  * with high fitness values. Negative values of <i>b</i> increases the selection
  * probability of phenotypes with low fitness values. If <i>b</i> is zero the
- * selection probability of all phenotypes is set to 1/N.
+ * selection probability of all phenotypes is set to <sup>1</sup>/<sub>N</sub>.
  * 
  * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.
