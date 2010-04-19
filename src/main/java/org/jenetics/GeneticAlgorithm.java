@@ -111,7 +111,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private final Lock _lock = new ReentrantLock(true);	
 	
-	private final Optimization _optimiization;
+	private final Optimization _optimization;
 	
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final FitnessFunction<G, C> _fitnessFunction;
@@ -199,7 +199,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
 		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
 		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
-		_optimiization = nonNull(optimization, "Optimization");
+		_optimization = nonNull(optimization, "Optimization");
 	}
 	
 	/**
@@ -347,7 +347,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			ConcurrentContext.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> survivors = _survivorSelector.select(
-						_population, numberOfSurvivors, _optimiization
+						_population, numberOfSurvivors, _optimization
 					);
 					
 					assert (survivors.size() == numberOfSurvivors);
@@ -357,7 +357,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			ConcurrentContext.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> offsprings = _offspringSelector.select(
-						_population, numberOfOffspring, _optimiization
+						_population, numberOfOffspring, _optimization
 					);	
 					
 					assert (offsprings.size() == numberOfOffspring);

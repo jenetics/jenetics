@@ -65,10 +65,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		final Population<G, C> selection = new Population<G, C>(count);
 		
 		if (count > 0) {
-			final double[] probabilities = probabilities(population, count);
-			if (opt == Optimization.MINIMIZE) {
-				inverse(probabilities);
-			}
+			final double[] probabilities = probabilities(population, count, opt);
 			
 			assert (population.size() == probabilities.length);
 			assert (abs(sum(probabilities) - 1.0) < 0.0001);
@@ -84,7 +81,19 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		return selection;
 	}
 	
-	protected void inverse(final double[] probabilities) {
+	protected final double[] probabilities(
+		final Population<G, C> population, 
+		final int count,
+		final Optimization opt
+	) {
+		final double[] probabilities = probabilities(population, count);
+		if (opt == Optimization.MINIMIZE) {
+			inverse(probabilities);
+		}
+		return probabilities;
+	}
+	
+	private static void inverse(final double[] probabilities) {
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = 1.0 - probabilities[i];
 		}
@@ -103,8 +112,9 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	 *         one.
 	 */
 	protected abstract double[] probabilities(
-		final Population<G, C> population, final int count
-	);
+			final Population<G, C> population, 
+			final int count
+		);
 	
 	/**
 	 * Return the next random index. The index probability is given by the 
