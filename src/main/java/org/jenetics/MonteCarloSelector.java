@@ -41,7 +41,11 @@ public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>>
 	private static final long serialVersionUID = -6012139083329541651L;
 
 	@Override
-	public Population<G, C> select(final Population<G, C> population, final int count) {
+	public Population<G, C> select(
+		final Population<G, C> population, 
+		final int count,
+		final Optimization opt
+	) {
 		nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(

@@ -49,7 +49,11 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	}
 
 	@Override
-	public Population<G, C> select(final Population<G, C> population, final int count) {
+	public Population<G, C> select(
+		final Population<G, C> population, 
+		final int count,
+		final Optimization opt
+	) {
 		Validator.nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
@@ -62,6 +66,9 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count);
+			if (opt == Optimization.MINIMIZE) {
+				inverse(probabilities);
+			}
 			
 			assert (population.size() == probabilities.length);
 			assert (abs(sum(probabilities) - 1.0) < 0.0001);
@@ -75,6 +82,12 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		}
 		
 		return selection;
+	}
+	
+	protected void inverse(final double[] probabilities) {
+		for (int i = 0; i < probabilities.length; ++i) {
+			probabilities[i] = 1.0 - probabilities[i];
+		}
 	}
 	
 	/**
