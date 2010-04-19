@@ -6,6 +6,7 @@
   a distinct CharSet.
 - Fixing bug in Array.equals(Object) method.
 - Add Array.fill(Factory) method.
+- GA allows minimization.
 
 Jenetics-0.5.1.0
 - Add org.jenetics.util.Predicates which contains some general purpose predicates

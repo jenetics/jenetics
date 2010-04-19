@@ -78,7 +78,11 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
-	public Population<G, C> select(final Population<G, C> population, final int count) {
+	public Population<G, C> select(
+		final Population<G, C> population, 
+		final int count,
+		final Optimization opt
+	) {
 		Validator.nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
@@ -114,7 +118,7 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 			
 			for (int j = 0; j < _sampleSize; ++j) {
 				final Phenotype<G, C> selection = population.get(random.nextInt(N));
-				if (selection.compareTo(winner) > 0) {
+				if (opt.compareTo(selection, winner) > 0) {
 					winner = selection;
 				}
 			}

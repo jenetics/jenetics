@@ -22,31 +22,21 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
-
 /**
- * A Selector selects a given number of Chromosomes from the Population.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface Selector<G extends Gene<?, G>, C extends Comparable<C>> 
-	extends Serializable 
-{
+public enum Optimization {
 
-	/**
-	 * Select phenotypes from the Population.
-	 * 
-	 * @param population The population to select from.
-	 * @param count The number of phenotypes to select.
-	 * @return The selected phenotypes (a new Population).
-	 * @throws NullPointerException if the population is <code>null</code>.
-	 * @throws IllegalArgumentException if the select count is smaller than zero.
-	 */
-	public Population<G, C> select(
-			final Population<G, C> population, 
-			final int count, 
-			final Optimization opt
-		);
-
+	MINIMIZE,
+	MAXIMIZE;
+	
+	public <T extends Comparable<T>> int compareTo(final T o1, final T o2) {
+		int comp = o1.compareTo(o2);
+		if (this == MINIMIZE) {
+			comp = -comp;
+		}
+		return comp;
+	}
+	
 }

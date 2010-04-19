@@ -111,6 +111,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private final Lock _lock = new ReentrantLock(true);	
 	
+	private final Optimization _optimiization;
+	
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final FitnessFunction<G, C> _fitnessFunction;
 	private FitnessScaler<C> _fitnessScaler;
@@ -142,6 +144,13 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 	
+	public GeneticAlgorithm(
+			final Factory<Genotype<G>> genotypeFactory, 
+			final FitnessFunction<G, C> fitnessFunction
+		) {	 
+			this(genotypeFactory, fitnessFunction, new IdentityScaler<C>(), Optimization.MAXIMIZE);
+		}
+	
 	/**
 	 * Create a new genetic algorithm.
 	 * 
@@ -151,9 +160,10 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
-		final FitnessFunction<G, C> fitnessFunction
+		final FitnessFunction<G, C> fitnessFunction,
+		final Optimization optimization
 	) {	 
-		this(genotypeFactory, fitnessFunction, new IdentityScaler<C>());
+		this(genotypeFactory, fitnessFunction, new IdentityScaler<C>(), optimization);
 	}
 	
 	/**
@@ -169,9 +179,27 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
+		this(genotypeFactory, fitnessFunction, fitnessScaler, Optimization.MAXIMIZE);
+	}
+	
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory, 
+		final FitnessFunction<G, C> fitnessFunction, 
+		final FitnessScaler<C> fitnessScaler,
+		final Optimization optimization
+	) {	 
 		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
 		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
 		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
+		_optimiization = nonNull(optimization, "Optimization");
 	}
 	
 	/**
@@ -319,7 +347,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			ConcurrentContext.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> survivors = _survivorSelector.select(
-						_population, numberOfSurvivors
+						_population, numberOfSurvivors, _optimiization
 					);
 					
 					assert (survivors.size() == numberOfSurvivors);
@@ -329,7 +357,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			ConcurrentContext.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> offsprings = _offspringSelector.select(
-						_population, numberOfOffspring
+						_population, numberOfOffspring, _optimiization
 					);	
 					
 					assert (offsprings.size() == numberOfOffspring);

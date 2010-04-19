@@ -55,7 +55,9 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	 */
 	@Override
 	public Population<G, C> select(
-		final Population<G, C> population, final int count
+		final Population<G, C> population, 
+		final int count,
+		final Optimization opt
 	) {		
 		Validator.nonNull(population, "Population");
 		if (count < 0) {
@@ -72,6 +74,9 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 		population.sort();
+		if (opt == Optimization.MINIMIZE) {
+			population.reverse();
+		}
 		
 		final Population<G, C> selected = new Population<G, C>(count);
 		for (int i = 0; i < count; ++i) {

@@ -55,7 +55,11 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 	 * by this method.)
 	 */
 	@Override
-	public Population<G, N> select(final Population<G, N> population, final int count) {
+	public Population<G, N> select(
+		final Population<G, N> population, 
+		final int count,
+		final Optimization opt
+	) {
 		nonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
@@ -70,6 +74,9 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 		
 		population.sort();
 		final double[] probabilities = probabilities(population, count);
+		if (opt == Optimization.MINIMIZE) {
+			inverse(probabilities);
+		}
 		assert (population.size() == probabilities.length) :
 			"Population size and propability length must be equal.";
 		
