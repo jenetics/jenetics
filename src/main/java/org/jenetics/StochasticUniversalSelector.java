@@ -73,10 +73,7 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 		}
 		
 		population.sort();
-		final double[] probabilities = probabilities(population, count);
-		if (opt == Optimization.MINIMIZE) {
-			inverse(probabilities);
-		}
+		final double[] probabilities = probabilities(population, count, opt);
 		assert (population.size() == probabilities.length) :
 			"Population size and propability length must be equal.";
 		

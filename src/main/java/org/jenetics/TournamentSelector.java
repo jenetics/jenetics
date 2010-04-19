@@ -118,7 +118,7 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 			
 			for (int j = 0; j < _sampleSize; ++j) {
 				final Phenotype<G, C> selection = population.get(random.nextInt(N));
-				if (opt.compareTo(selection, winner) > 0) {
+				if (opt.compare(selection, winner) > 0) {
 					winner = selection;
 				}
 			}

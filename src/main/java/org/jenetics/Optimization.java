@@ -27,16 +27,36 @@ package org.jenetics;
  * @version $Id$
  */
 public enum Optimization {
-
-	MINIMIZE,
-	MAXIMIZE;
+	MINIMIZE(new Min()),
+	MAXIMIZE(new Max());
 	
-	public <T extends Comparable<T>> int compareTo(final T o1, final T o2) {
-		int comp = o1.compareTo(o2);
-		if (this == MINIMIZE) {
-			comp = -comp;
+	private final Comp _comparator;
+	
+	private Optimization(final Comp comparator) {
+		_comparator = comparator;
+	}
+	
+	public <T extends Comparable<T>> int compare(final T o1, final T o2) {
+		return _comparator.compare(o1, o2);
+	}
+	
+	
+	private static interface Comp {
+		public <T extends Comparable<T>> int compare(final T o1, final T o2);
+	}
+	
+	private static final class Min implements Comp {
+		@Override
+		public <T extends Comparable<T>> int compare(final T o1, final T o2) {
+			return -o1.compareTo(o2);
 		}
-		return comp;
+	}
+	
+	private static final class Max implements Comp {
+		@Override
+		public <T extends Comparable<T>> int compare(final T o1, final T o2) {
+			return o1.compareTo(o2);
+		}
 	}
 	
 }
