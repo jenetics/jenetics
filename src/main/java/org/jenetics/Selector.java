@@ -49,7 +49,7 @@ public interface Selector<G extends Gene<?, G>, C extends Comparable<C>>
 	public Population<G, C> select(
 			final Population<G, C> population, 
 			final int count, 
-			final Optimization opt
+			final Optimize opt
 		);
 
 }

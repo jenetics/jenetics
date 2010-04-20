@@ -75,7 +75,7 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
-import org.jenetics.Optimization;
+import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
@@ -1651,7 +1651,7 @@ class GA {
 	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final Function function) {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 
 			new GeneticAlgorithm<Float64Gene, Float64>(
-				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimization.MINIMIZE
+				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM
 			);
 		ga.addAlterer(new Mutator<Float64Gene>(0.1));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());

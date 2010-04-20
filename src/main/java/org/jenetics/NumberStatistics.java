@@ -196,7 +196,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		public NumberStatistics<G, R> evaluate(
 			final List<? extends Phenotype<G, R>> population,
 			final int generation,
-			final Optimization opt
+			final Optimize opt
 		) {
 			NumberStatistics<G, R> statistics = new NumberStatistics<G, R>(generation);
 			
@@ -217,31 +217,17 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 						AccumulatorAdapter.valueOf(fitnessVariance, fitness)
 					);
 
-				if (opt == Optimization.MAXIMIZE) {
-					statistics = new NumberStatistics<G, R>(
-							generation,
-							minMax.getMax(),
-							minMax.getMin(),
-							fitnessVariance.getMean(),
-							fitnessVariance.getVariance(),
-							population.size(),
-							ageVariance.getMean(),
-							ageVariance.getVariance(),
-							fitnessVariance.getStandardError()
-						);
-				} else {
-					statistics = new NumberStatistics<G, R>(
-							generation,
-							minMax.getMin(),
-							minMax.getMax(),
-							fitnessVariance.getMean(),
-							fitnessVariance.getVariance(),
-							population.size(),
-							ageVariance.getMean(),
-							ageVariance.getVariance(),
-							fitnessVariance.getStandardError()
-						);
-				}
+				statistics = new NumberStatistics<G, R>(
+						generation,
+						(opt == Optimize.MAXIMUM) ? minMax.getMax() : minMax.getMin(),
+						(opt == Optimize.MAXIMUM) ? minMax.getMin() : minMax.getMax(),
+						fitnessVariance.getMean(),
+						fitnessVariance.getVariance(),
+						population.size(),
+						ageVariance.getMean(),
+						ageVariance.getVariance(),
+						fitnessVariance.getStandardError()
+					);
 			}
 			
 			return statistics;

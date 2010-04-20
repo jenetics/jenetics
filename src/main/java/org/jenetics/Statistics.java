@@ -513,12 +513,13 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		 * 
 		 * @param population the population to aggregate.
 		 * @param generation the current GA generation.
+		 * @param opt the optimization <i>direction</i>.
 		 * @return a new statistics object generated from the given arguments.
 		 */
 		public Statistics<G, C> evaluate(
 			final List<? extends Phenotype<G, C>> population,
 			final int generation,
-			final Optimization opt
+			final Optimize opt
 		) {	
 			Statistics<G, C> statistics = new Statistics<G, C>(generation);
 			
@@ -536,25 +537,15 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 						AccumulatorAdapter.valueOf(ageVariance, age)
 					);
 				
-				if (opt == Optimization.MAXIMIZE) {
-					statistics = new Statistics<G, C>(
-							generation, 
-							minMax.getMax(),
-							minMax.getMin(),
-							population.size(),
-							ageVariance.getMean(),
-							ageVariance.getVariance()
-						);
-				} else {
-					statistics = new Statistics<G, C>(
-							generation, 
-							minMax.getMin(),
-							minMax.getMax(),
-							population.size(),
-							ageVariance.getMean(),
-							ageVariance.getVariance()
-						);
-				}
+				statistics = new Statistics<G, C>(
+						generation, 
+						(opt == Optimize.MAXIMUM) ? minMax.getMax() : minMax.getMin(),
+						(opt == Optimize.MAXIMUM) ? minMax.getMin() : minMax.getMax(),
+						population.size(),
+						ageVariance.getMean(),
+						ageVariance.getVariance()
+					);
+
 			}
 			
 			return statistics;

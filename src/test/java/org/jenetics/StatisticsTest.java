@@ -112,7 +112,7 @@ public class StatisticsTest {
 		Population<Float64Gene, Float64> population = newPopulation(size);
 		Statistics.Calculator<Float64Gene, Float64> calculator = new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1, Optimization.MAXIMIZE);
+		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1, Optimize.MAXIMUM);
 		Assert.assertEquals(statistics.getSamples(), 2);
 		Assert.assertEquals(statistics.getAgeMean(), 1.5, EPSILON);
 		Assert.assertEquals(statistics.getAgeVariance(), 0.5, EPSILON);
@@ -128,7 +128,7 @@ public class StatisticsTest {
 		Population<Float64Gene, Float64> population = newPopulation(size);
 		Statistics.Calculator<Float64Gene, Float64> calculator = new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1, Optimization.MAXIMIZE);
+		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1, Optimize.MAXIMUM);
 		Assert.assertEquals(statistics.getSamples(), 10);
 		Assert.assertEquals(statistics.getAgeMean(), 5.5, EPSILON);
 		Assert.assertEquals(statistics.getAgeVariance(), 9.1666666666666, EPSILON);
