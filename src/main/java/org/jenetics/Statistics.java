@@ -517,7 +517,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		 */
 		public Statistics<G, C> evaluate(
 			final List<? extends Phenotype<G, C>> population,
-			final int generation
+			final int generation,
+			final Optimization opt
 		) {	
 			Statistics<G, C> statistics = new Statistics<G, C>(generation);
 			
@@ -535,14 +536,25 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 						AccumulatorAdapter.valueOf(ageVariance, age)
 					);
 				
-				statistics = new Statistics<G, C>(
-						generation, 
-						minMax.getMax(),
-						minMax.getMin(),
-						population.size(),
-						ageVariance.getMean(),
-						ageVariance.getVariance()
-					);
+				if (opt == Optimization.MAXIMIZE) {
+					statistics = new Statistics<G, C>(
+							generation, 
+							minMax.getMax(),
+							minMax.getMin(),
+							population.size(),
+							ageVariance.getMean(),
+							ageVariance.getVariance()
+						);
+				} else {
+					statistics = new Statistics<G, C>(
+							generation, 
+							minMax.getMin(),
+							minMax.getMax(),
+							population.size(),
+							ageVariance.getMean(),
+							ageVariance.getVariance()
+						);
+				}
 			}
 			
 			return statistics;

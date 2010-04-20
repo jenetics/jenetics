@@ -142,8 +142,9 @@ public class Genotype<T extends Gene<?, T>>
 	@Override
 	public Genotype<T> newInstance() {
 		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length());
-		final Factory<Chromosome<T>> factory = _chromosomes.get(0); 
-		genotype._chromosomes.fill(factory);
+		for (int i = 0; i < genotype.length(); ++i) {
+			genotype._chromosomes.set(i, _chromosomes.get(i).newInstance());
+		}
 		return genotype;
 	}
 	

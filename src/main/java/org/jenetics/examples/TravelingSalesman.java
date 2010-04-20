@@ -33,6 +33,7 @@ import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Integer64Gene;
+import org.jenetics.Optimization;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
@@ -52,11 +53,9 @@ public class TravelingSalesman {
 		private static final long serialVersionUID = 8402072476064049463L;
 		
 		private final double[][] _adjacence;
-		private final double _perimeter;
 		
 		public Function(final double[][] adjacence) {
 			_adjacence = adjacence;
-			_perimeter = _adjacence[0][1]*_adjacence.length;
 		}
 		
 		@Override
@@ -69,7 +68,7 @@ public class TravelingSalesman {
 				final int to = path.getGene((i + 1)%n).intValue();
 				length += _adjacence[from][to];
 			}
-			return _perimeter/length;
+			return length;
 		}
 	}
 	
@@ -80,7 +79,7 @@ public class TravelingSalesman {
 		final Factory<Genotype<Integer64Gene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff);
+		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff, Optimization.MINIMIZE);
 		ga.setPopulationSize(200);
         ga.setAlterer(new CompositeAlterer<Integer64Gene>(
             new SwapMutator<Integer64Gene>(0.2), 
@@ -95,7 +94,7 @@ public class TravelingSalesman {
         ForkJoinPool pool = new ForkJoinPool();
         EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
         try {
-        	GAUtils.execute(ga, 1000);
+        	GAUtils.execute(ga, 100);
         } finally {
         	pool.shutdown();
         }
