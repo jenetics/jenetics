@@ -29,21 +29,21 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public enum Optimization {
+public enum Optimize {
 	
 	/**
 	 * GA minimization
 	 */
-	MINIMIZE(new Min()),
+	MINIMUM(new Min()),
 	
 	/**
 	 * GA maximization
 	 */
-	MAXIMIZE(new Max());
+	MAXIMUM(new Max());
 	
 	private final Comp _comparator;
 	
-	private Optimization(final Comp comparator) {
+	private Optimize(final Comp comparator) {
 		_comparator = comparator;
 	}
 	
@@ -57,6 +57,7 @@ public enum Optimization {
 	 * @param o2 the second object to be compared.
 	 * @return a negative integer, zero, or a positive integer as the first 
 	 *         argument is better than, equal to, or worse than the second.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public <T extends Comparable<T>> int compare(final T o1, final T o2) {
 		return _comparator.compare(o1, o2);

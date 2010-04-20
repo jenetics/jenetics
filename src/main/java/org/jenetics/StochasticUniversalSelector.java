@@ -58,7 +58,7 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 	public Population<G, N> select(
 		final Population<G, N> population, 
 		final int count,
-		final Optimization opt
+		final Optimize opt
 	) {
 		nonNull(population, "Population");
 		if (count < 0) {

@@ -111,7 +111,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	
 	private final Lock _lock = new ReentrantLock(true);	
 	
-	private final Optimization _optimization;
+	private final Optimize _optimization;
 	
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final FitnessFunction<G, C> _fitnessFunction;
@@ -145,7 +145,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 	
 	/**
-	 * Create a new genetic algorithm.
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
 	 * 
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
@@ -159,7 +160,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				genotypeFactory, 
 				fitnessFunction, 
 				new IdentityScaler<C>(), 
-				Optimization.MAXIMIZE
+				Optimize.MAXIMUM
 			);
 	}
 	
@@ -175,7 +176,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
 		final FitnessFunction<G, C> fitnessFunction,
-		final Optimization optimization
+		final Optimize optimization
 	) {	 
 		this(
 				genotypeFactory, 
@@ -186,7 +187,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Create a new genetic algorithm.
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
 	 * 
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
@@ -202,7 +204,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 				genotypeFactory, 
 				fitnessFunction, 
 				fitnessScaler, 
-				Optimization.MAXIMIZE
+				Optimize.MAXIMUM
 			);
 	}
 	
@@ -220,7 +222,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final Factory<Genotype<G>> genotypeFactory, 
 		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler,
-		final Optimization optimization
+		final Optimize optimization
 	) {	 
 		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
 		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
@@ -878,7 +880,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final Factory<Genotype<SG>> genotypeFactory, 
 		final FitnessFunction<SG, SC> fitnessFunction, 
 		final FitnessScaler<SC> fitnessScaler,
-		final Optimization optimization
+		final Optimize optimization
 	)
 	{
 		return new GeneticAlgorithm<SG, SC>(
@@ -887,7 +889,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Create a new genetic algorithm.
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
 	 * 
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
@@ -919,7 +922,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	GeneticAlgorithm<SG, SC> valueOf(
 		final Factory<Genotype<SG>> genotypeFactory, 
 		final FitnessFunction<SG, SC> fitnessFunction,
-		final Optimization optimization
+		final Optimize optimization
 	) 
 	{
 		return new GeneticAlgorithm<SG, SC>(
@@ -928,7 +931,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	}
 	
 	/**
-	 * Create a new genetic algorithm.
+	 * Create a new genetic algorithm. By default the GA tries to maximize the
+	 * fitness function.
 	 * 
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.

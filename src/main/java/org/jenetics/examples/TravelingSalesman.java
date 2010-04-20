@@ -33,7 +33,7 @@ import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Integer64Gene;
-import org.jenetics.Optimization;
+import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
@@ -79,7 +79,7 @@ public class TravelingSalesman {
 		final Factory<Genotype<Integer64Gene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff, Optimization.MINIMIZE);
+		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(200);
         ga.setAlterer(new CompositeAlterer<Integer64Gene>(
             new SwapMutator<Integer64Gene>(0.2), 

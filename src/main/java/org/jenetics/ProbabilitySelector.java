@@ -52,7 +52,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	public Population<G, C> select(
 		final Population<G, C> population, 
 		final int count,
-		final Optimization opt
+		final Optimize opt
 	) {
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
@@ -96,10 +96,10 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	protected final double[] probabilities(
 		final Population<G, C> population, 
 		final int count,
-		final Optimization opt
+		final Optimize opt
 	) {
 		final double[] probabilities = probabilities(population, count);
-		if (opt == Optimization.MINIMIZE) {
+		if (opt == Optimize.MINIMUM) {
 			invert(probabilities);
 		}
 		return probabilities;

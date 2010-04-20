@@ -57,7 +57,7 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	public Population<G, C> select(
 		final Population<G, C> population, 
 		final int count,
-		final Optimization opt
+		final Optimize opt
 	) {		
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
@@ -78,12 +78,12 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		
 		final Population<G, C> selected = new Population<G, C>(count);
 		switch (opt) {
-			case MAXIMIZE:
+			case MAXIMUM:
 				for (int i = 0; i < count; ++i) {
 					selected.add(population.get(i));
 				}
 				break;
-			case MINIMIZE:
+			case MINIMUM:
 				final int n = population.size() - count;
 				for (int i = population.size() - 1; i >= n; --i) {
 					selected.add(population.get(i));
