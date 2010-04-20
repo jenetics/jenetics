@@ -117,6 +117,29 @@ public class GenotypeTest {
         g1 = Genotype.valueOf(c1, c2);
         Assert.assertFalse(g1.isValid());
     }
+    
+    @Test
+    public void newInstance() {
+    	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
+    			//Rotation
+    			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
+    			
+    			//Translation
+    			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
+    			
+    			//Shear
+    			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
+    		);
+    	
+    	final Genotype<Float64Gene> gt2 = gt1.newInstance();
+    	
+    	Assert.assertEquals(gt1.length(), gt2.length());
+    	for (int i = 0; i < gt1.length(); ++i) {
+    		Chromosome<Float64Gene> ch1 = gt1.getChromosome(i);
+    		Chromosome<Float64Gene> ch2 = gt2.getChromosome(i);
+    		Assert.assertEquals(ch1.length(), ch2.length());
+    	}
+    }
 
 }
 

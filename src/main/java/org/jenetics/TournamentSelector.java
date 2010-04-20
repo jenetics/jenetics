@@ -22,11 +22,12 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Validator.nonNull;
+
 import java.io.Serializable;
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 /**
  * In tournament selection the best {@link Phenotype} from a random sample of 
@@ -83,7 +84,8 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		final int count,
 		final Optimization opt
 	) {
-		Validator.nonNull(population, "Population");
+		nonNull(population, "Population");
+		nonNull(opt, "Optimization");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s",

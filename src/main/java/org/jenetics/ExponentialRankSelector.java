@@ -77,7 +77,8 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 	 */
 	@Override
 	protected double[] probabilities(
-		final Population<G, C> population, final int count
+		final Population<G, C> population, 
+		final int count
 	) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";

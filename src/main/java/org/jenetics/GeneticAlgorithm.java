@@ -144,13 +144,6 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 	
-	public GeneticAlgorithm(
-			final Factory<Genotype<G>> genotypeFactory, 
-			final FitnessFunction<G, C> fitnessFunction
-		) {	 
-			this(genotypeFactory, fitnessFunction, new IdentityScaler<C>(), Optimization.MAXIMIZE);
-		}
-	
 	/**
 	 * Create a new genetic algorithm.
 	 * 
@@ -160,10 +153,36 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
+		final FitnessFunction<G, C> fitnessFunction
+	) {	 
+		this(
+				genotypeFactory, 
+				fitnessFunction, 
+				new IdentityScaler<C>(), 
+				Optimization.MAXIMIZE
+			);
+	}
+	
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory, 
 		final FitnessFunction<G, C> fitnessFunction,
 		final Optimization optimization
 	) {	 
-		this(genotypeFactory, fitnessFunction, new IdentityScaler<C>(), optimization);
+		this(
+				genotypeFactory, 
+				fitnessFunction, 
+				new IdentityScaler<C>(), 
+				optimization
+			);
 	}
 	
 	/**
@@ -179,7 +198,12 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		final FitnessFunction<G, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
-		this(genotypeFactory, fitnessFunction, fitnessScaler, Optimization.MAXIMIZE);
+		this(
+				genotypeFactory, 
+				fitnessFunction, 
+				fitnessScaler, 
+				Optimization.MAXIMIZE
+			);
 	}
 	
 	/**
@@ -188,6 +212,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
@@ -241,7 +267,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			
 			//First valuation of the initial population.
 			_statisticTimer.start();
-			_statistics = _calculator.evaluate(_population, _generation);
+			_statistics = _calculator.evaluate(_population, _generation, _optimization);
 			_bestStatistics = _statistics;
 			_statisticTimer.stop();
 			
@@ -301,8 +327,8 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			
 			//Evaluate the statistic
 			_statisticTimer.start();
-			_statistics = _calculator.evaluate(_population, _generation);
-			if (_bestStatistics.getBestPhenotype().compareTo(_statistics.getBestPhenotype()) < 0) {
+			_statistics = _calculator.evaluate(_population, _generation, _optimization);
+			if (_optimization.compare(_bestStatistics.getBestPhenotype(), _statistics.getBestPhenotype()) < 0) {
 				_bestStatistics = _statistics;
 			}
 			
@@ -843,6 +869,29 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	GeneticAlgorithm<SG, SC> valueOf(
+		final Factory<Genotype<SG>> genotypeFactory, 
+		final FitnessFunction<SG, SC> fitnessFunction, 
+		final FitnessScaler<SC> fitnessScaler,
+		final Optimization optimization
+	)
+	{
+		return new GeneticAlgorithm<SG, SC>(
+			genotypeFactory, fitnessFunction, fitnessScaler, optimization
+		);
+	}
+	
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
@@ -857,6 +906,27 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 		);
 	}
 
+	/**
+	 * Create a new genetic algorithm.
+	 * 
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	GeneticAlgorithm<SG, SC> valueOf(
+		final Factory<Genotype<SG>> genotypeFactory, 
+		final FitnessFunction<SG, SC> fitnessFunction,
+		final Optimization optimization
+	) 
+	{
+		return new GeneticAlgorithm<SG, SC>(
+				genotypeFactory, fitnessFunction, optimization
+			);
+	}
+	
 	/**
 	 * Create a new genetic algorithm.
 	 * 

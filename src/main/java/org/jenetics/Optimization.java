@@ -23,11 +23,22 @@
 package org.jenetics;
 
 /**
+ * This {@code enum} determines whether the GA should maximize or minimize the 
+ * fitness function.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public enum Optimization {
+	
+	/**
+	 * GA minimization
+	 */
 	MINIMIZE(new Min()),
+	
+	/**
+	 * GA maximization
+	 */
 	MAXIMIZE(new Max());
 	
 	private final Comp _comparator;
@@ -36,15 +47,33 @@ public enum Optimization {
 		_comparator = comparator;
 	}
 	
+	/**
+	 * Compares two comparable objects. Returns a negative integer, zero, or a 
+	 * positive integer as the first argument is better than, equal to, or worse 
+	 * than the second.
+	 * 
+	 * @param <T> the comparable type
+	 * @param o1 the first object to be compared.
+	 * @param o2 the second object to be compared.
+	 * @return a negative integer, zero, or a positive integer as the first 
+	 *         argument is better than, equal to, or worse than the second.
+	 */
 	public <T extends Comparable<T>> int compare(final T o1, final T o2) {
 		return _comparator.compare(o1, o2);
 	}
 	
-	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	private static interface Comp {
 		public <T extends Comparable<T>> int compare(final T o1, final T o2);
 	}
 	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	private static final class Min implements Comp {
 		@Override
 		public <T extends Comparable<T>> int compare(final T o1, final T o2) {
@@ -52,6 +81,10 @@ public enum Optimization {
 		}
 	}
 	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	private static final class Max implements Comp {
 		@Override
 		public <T extends Comparable<T>> int compare(final T o1, final T o2) {

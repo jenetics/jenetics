@@ -44,7 +44,10 @@ public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comp
 	}
 
 	@Override
-	protected double[] probabilities(final Population<G, N> population, final int count) {
+	protected double[] probabilities(
+		final Population<G, N> population, 
+		final int count
+	) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		

@@ -26,6 +26,7 @@ import static org.testng.Assert.assertEquals;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -44,6 +45,18 @@ public class Float64ChromosomeTest {
             assertEquals(-12.0, g.getMin().doubleValue());
             assertEquals(230.123, g.getMax().doubleValue());
         }
+    }
+    
+    @Test
+    public void newInstance() {
+    	final Float64Chromosome ch1 = new Float64Chromosome(
+    			Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5)
+    		);
+    	final Float64Chromosome ch2 = ch1.newInstance();
+    	
+    	Assert.assertEquals(ch2.length(), ch1.length());
+    	Assert.assertTrue(ch2.getGene(0).doubleValue() < 0.5 && ch2.getGene(0).doubleValue() > -0.5);
+    	Assert.assertTrue(ch2.getGene(1).doubleValue() < 0.5 && ch2.getGene(1).doubleValue() > -0.5);
     }
     
     @Test

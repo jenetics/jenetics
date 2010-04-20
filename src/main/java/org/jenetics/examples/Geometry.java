@@ -66,6 +66,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jenetics.ExponentialScaler;
 import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
@@ -74,6 +75,7 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
+import org.jenetics.Optimization;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
@@ -1534,8 +1536,8 @@ class GA {
 	
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			//return distance(genotype);
-			return area(genotype);
+			return distance(genotype);
+			//return area(genotype);
 		}
 		
 		Float64 distance(final Genotype<Float64Gene> genotype) {
@@ -1549,7 +1551,7 @@ class GA {
 				error += _source[i].distance(point);
 			}
 	
-			return Float64.valueOf(-error);
+			return Float64.valueOf(error);
 		}
 		
 		Float64 area(final Genotype<Float64Gene> genotype) {
@@ -1565,6 +1567,7 @@ class GA {
 	
 		@Override
 		public AffineTransform convert(final Genotype<Float64Gene> genotype) {
+			System.out.println(genotype);
 			final double theta = genotype.getChromosome(0).getGene().doubleValue();
 			final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
 			final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
@@ -1599,13 +1602,13 @@ class GA {
 	public static Factory<Genotype<Float64Gene>> getGenotypeFactory() {
 		return Genotype.valueOf(
 			//Rotation
-			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
+			new Float64Chromosome(-Math.PI, Math.PI),
 			
 			//Translation
-			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
+			new Float64Chromosome(-300.0, 300.0, 2),
 			
 			//Shear
-			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
+			new Float64Chromosome(-0.5, 0.5, 2)
 		);
 	}
 	
@@ -1648,7 +1651,7 @@ class GA {
 	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final Function function) {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 
 			new GeneticAlgorithm<Float64Gene, Float64>(
-				GA.getGenotypeFactory(), function
+				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimization.MINIMIZE
 			);
 		ga.addAlterer(new Mutator<Float64Gene>(0.1));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());

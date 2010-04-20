@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Validator;
+import static org.jenetics.util.Validator.nonNull;
 
 /**
  * In truncation selection individuals are sorted according to their fitness. 
@@ -59,7 +59,8 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		final int count,
 		final Optimization opt
 	) {		
-		Validator.nonNull(population, "Population");
+		nonNull(population, "Population");
+		nonNull(opt, "Optimization");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s",
@@ -74,13 +75,20 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 		population.sort();
-		if (opt == Optimization.MINIMIZE) {
-			population.reverse();
-		}
 		
 		final Population<G, C> selected = new Population<G, C>(count);
-		for (int i = 0; i < count; ++i) {
-			selected.add(population.get(i));
+		switch (opt) {
+			case MAXIMIZE:
+				for (int i = 0; i < count; ++i) {
+					selected.add(population.get(i));
+				}
+				break;
+			case MINIMIZE:
+				final int n = population.size() - count;
+				for (int i = population.size() - 1; i >= n; --i) {
+					selected.add(population.get(i));
+				}
+				break;
 		}
 		
 		return selected;

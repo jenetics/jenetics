@@ -24,11 +24,11 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 
 /**
@@ -54,7 +54,8 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		final int count,
 		final Optimization opt
 	) {
-		Validator.nonNull(population, "Population");
+		nonNull(population, "Population");
+		nonNull(opt, "Optimization");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s.",
@@ -81,6 +82,17 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		return selection;
 	}
 	
+	/**
+	 * This method takes the probabilities from the 
+	 * {@link #probabilities(Population, int)} method and inverts it if needed.
+	 * 
+	 * @param population The population.
+	 * @param count The number of phenotypes to select.
+	 * @param opt Determines whether the individuals with higher fitness values
+	 *        or lower fitness values must be selected. This parameter determines
+	 *        whether the GA maximizes or minimizes the fitness function. 
+	 * @return Probability array.
+	 */
 	protected final double[] probabilities(
 		final Population<G, C> population, 
 		final int count,
@@ -88,28 +100,35 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	) {
 		final double[] probabilities = probabilities(population, count);
 		if (opt == Optimization.MINIMIZE) {
-			inverse(probabilities);
+			invert(probabilities);
 		}
 		return probabilities;
 	}
 	
-	private static void inverse(final double[] probabilities) {
+	private static void invert(final double[] probabilities) {
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = 1.0 - probabilities[i];
 		}
 	}
 	
 	/**
-	 * Return an Probability array, which corresponds to the given 
-	 * Population. The probability array and the population must have the same
-	 * size. The population is not sorted. If a subclass needs a sorted 
-	 * population, the subclass is responsible to sort the population.
+	 * Return an Probability array, which corresponds to the given Population. 
+	 * The probability array and the population must have the same size. The 
+	 * population is not sorted. If a subclass needs a sorted population, the 
+	 * subclass is responsible to sort the population.
+	 * <p/>
+	 * The implementor always assumes that higher fitness values are better. The
+	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
+	 * supposed to minimize the fitness function. 
 	 * 
 	 * @param population The <em>unsorted</em> population.
-	 * @param count The number of phenotypes to select. 
+	 * @param count The number of phenotypes to select. <i>This parameter is not
+	 *        needed for most implementations.</i>
 	 * @return Probability array. The returned probability array must have the 
 	 *         length {@code population.size()} and <strong>must</strong> sum to
-	 *         one.
+	 *         one. The returned value is checked with 
+	 *         {@code assert(Math.abs(ArrayUtils.sum(probabilities) - 1.0) < 0.0001)}
+	 *         in the base class.
 	 */
 	protected abstract double[] probabilities(
 			final Population<G, C> population, 

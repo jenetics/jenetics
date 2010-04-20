@@ -47,6 +47,7 @@ public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>>
 		final Optimization opt
 	) {
 		nonNull(population, "Population");
+		nonNull(opt, "Optimization");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
 				"Selection count must be greater or equal then zero, but was %s.",
