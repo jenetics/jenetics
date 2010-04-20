@@ -49,8 +49,16 @@ import org.jenetics.util.Validator;
  *     final Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
  *             BitChromosome.valueOf(10, 0.5);
  *         );
- *     final FitnessFunction<BitGene, Float64> ff = ...//FitnessFunction implementation
- *     final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff);
+ *         
+ *     // Defining the fitness function.
+ *     final FitnessFunction<BitGene, Float64> ff = ...;
+ *     
+ *     // The given fitness function will be maximized. By default 
+ *     // the GA tries to maximize the fitness function.
+ *     final Optimize opt = Optimize.MINIMUM;
+ *     
+ *     // Create the GA.
+ *     final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
@@ -329,8 +337,16 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 			
 			//Evaluate the statistic
 			_statisticTimer.start();
-			_statistics = _calculator.evaluate(_population, _generation, _optimization);
-			if (_optimization.compare(_bestStatistics.getBestPhenotype(), _statistics.getBestPhenotype()) < 0) {
+			_statistics = _calculator.evaluate(
+					_population, _generation, _optimization
+				);
+			
+			final int comp = _optimization.compare(
+					_bestStatistics.getBestPhenotype(), 
+					_statistics.getBestPhenotype()
+				);
+			
+			if (comp < 0) {
 				_bestStatistics = _statistics;
 			}
 			
