@@ -224,13 +224,6 @@ public class BitChromosome extends Number<BitChromosome>
 		return set;
 	}
 	
-	/**
-	 * Create a new BitChromosome with the same _length. The chromosome is
-	 * randomized.
-	 * 
-	 * @throws NullPointerException if the given {@code genes} array is 
-	 *         {@code null}.
-	 */
 	@Override
 	public BitChromosome newInstance(final Array<BitGene> genes) {
 		Validator.nonNull(genes, "Genes");
@@ -248,9 +241,6 @@ public class BitChromosome extends Number<BitChromosome>
 		return chromosome;
 	}
 	
-	/**
-	 * Create a new, <em>random</em> chromosome.
-	 */
 	@Override
 	public BitChromosome newInstance() {
 		final Random random = RandomRegistry.getRandom();
