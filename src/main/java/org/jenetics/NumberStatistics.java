@@ -219,8 +219,8 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 
 				statistics = new NumberStatistics<G, R>(
 						generation,
-						(opt == Optimize.MAXIMUM) ? minMax.getMax() : minMax.getMin(),
-						(opt == Optimize.MAXIMUM) ? minMax.getMin() : minMax.getMax(),
+						opt.best(minMax.getMax(), minMax.getMin()),
+						opt.worst(minMax.getMax(), minMax.getMin()),
 						fitnessVariance.getMean(),
 						fitnessVariance.getVariance(),
 						population.size(),

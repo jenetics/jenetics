@@ -539,8 +539,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				
 				statistics = new Statistics<G, C>(
 						generation, 
-						(opt == Optimize.MAXIMUM) ? minMax.getMax() : minMax.getMin(),
-						(opt == Optimize.MAXIMUM) ? minMax.getMin() : minMax.getMax(),
+						opt.best(minMax.getMax(), minMax.getMin()),
+						opt.worst(minMax.getMax(), minMax.getMin()),
 						population.size(),
 						ageVariance.getMean(),
 						ageVariance.getVariance()

@@ -80,7 +80,7 @@ public class TravelingSalesman {
 			new PermutationChromosome(stops)
 		);
 		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff, Optimize.MINIMUM);
-		ga.setPopulationSize(200);
+		ga.setPopulationSize(300);
         ga.setAlterer(new CompositeAlterer<Integer64Gene>(
             new SwapMutator<Integer64Gene>(0.2), 
             new PartiallyMatchedCrossover<Integer64Gene>(0.3)
