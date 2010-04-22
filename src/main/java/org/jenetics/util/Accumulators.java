@@ -550,6 +550,8 @@ public final class Accumulators {
 					accumulators.get(4)
 				); 
 			break;
+		case 0:
+			break;
 		default:
 			ConcurrentContext.enter();
 			try {
