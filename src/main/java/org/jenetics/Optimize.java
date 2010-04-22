@@ -64,38 +64,32 @@ public enum Optimize {
 	}
 	
 	/**
-	 * Return the best phenotype, according to this optimization direction.
+	 * Return the best value, according to this optimization direction.
 	 * 
-	 * @param <G> the gene type.
 	 * @param <C> the fitness value type.
-	 * @param a the first phenotype.
-	 * @param b the second phenotype.
-	 * @return the best phenotype. If both phenotype are equal the first one is
-	 *         returned.
+	 * @param a the first value.
+	 * @param b the second value.
+	 * @return the best value. If both values are equal the first one is returned.
 	 */
-	public <G extends Gene<?, G>, C extends Comparable<C>>
-	Phenotype<G, C> best(final Phenotype<G, C> a, final Phenotype<G, C> b) {
-		Phenotype<G, C> best = a;
-		if (compare(b.getFitness(), best.getFitness()) > 0) {
+	public <C extends Comparable<C>> C best(final C a, final C b) {
+		C best = a;
+		if (compare(b, best) > 0) {
 			best = b;
 		}
 		return best;
 	}
 	
 	/**
-	 * Return the worst phenotype, according to this optimization direction.
+	 * Return the worst value, according to this optimization direction.
 	 * 
-	 * @param <G> the gene type.
 	 * @param <C> the fitness value type.
-	 * @param a the first phenotype.
-	 * @param b the second phenotype.
-	 * @return the best phenotype. If both phenotype are equal the first one is
-	 *         returned.
+	 * @param a the first value.
+	 * @param b the second value.
+	 * @return the worst value. If both values are equal the first one is returned.
 	 */
-	public <G extends Gene<?, G>, C extends Comparable<C>>
-	Phenotype<G, C> worst(final Phenotype<G, C> a, final Phenotype<G, C> b) {
-		Phenotype<G, C> worst = a;
-		if (compare(b.getFitness(), worst.getFitness()) < 0) {
+	public <C extends Comparable<C>> C worst(final C a, final C b) {
+		C worst = a;
+		if (compare(b, worst) < 0) {
 			worst = b;
 		}
 		return worst;
