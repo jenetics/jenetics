@@ -115,6 +115,11 @@
 			<class name="org.jenetics.NumberStatisticsTest" />
 		</classes>
 	</test>		
+	<test name="org.jenetics.Optimize">
+		<classes>
+			<class name="org.jenetics.OptimizeTest" />
+		</classes>
+	</test>			
 	<test name="org.jenetics.util.AccumulatorsTest">
 		<classes>
 			<class name="org.jenetics.util.AccumulatorsTest" />
