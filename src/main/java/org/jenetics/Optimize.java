@@ -73,7 +73,7 @@ public enum Optimize {
 	 */
 	public <C extends Comparable<C>> C best(final C a, final C b) {
 		C best = a;
-		if (compare(b, best) > 0) {
+		if (_comparator.compare(b, best) > 0) {
 			best = b;
 		}
 		return best;
@@ -89,7 +89,7 @@ public enum Optimize {
 	 */
 	public <C extends Comparable<C>> C worst(final C a, final C b) {
 		C worst = a;
-		if (compare(b, worst) < 0) {
+		if (_comparator.compare(b, worst) < 0) {
 			worst = b;
 		}
 		return worst;
