@@ -63,8 +63,10 @@
 		<javac destdir="${build.dir}" 
 			srcdir="${source.dir}" 
 			debug="false" 
-			source="1.6" target="1.6" 
-			encoding="UTF-8" listfiles="yes"
+			source="1.6" 
+			target="1.6" 
+			encoding="UTF-8" 
+			listfiles="yes"
 		>
 			<compilerarg value="-Xlint:unchecked" />
 			<compilerarg value="-Xlint:deprecation" />
@@ -320,8 +322,10 @@
 			srcdir="${testng.source.dir}" 
 			debug="true"
 			debuglevel="lines,vars,source"
-			source="1.6" target="1.6" 
-			encoding="UTF-8" listfiles="yes"
+			source="1.6" 
+			target="1.6" 
+			encoding="UTF-8" 
+			listfiles="yes"
 		>
 			<compilerarg value="-Xlint:unchecked" />
 			<compilerarg value="-Xlint:deprecation" />
@@ -343,12 +347,15 @@
 			sourcedir="${testng.source.dir}"
 			haltonfailure="false" 
 			dumpCommand="false"
+			suitename="Jenetics Tests"
+			verbose="2"
 		>
 			<classpath refid="classpath" />
 			<classpath refid="build.classpath" />
 			<classpath path="${build.dir}" />
 			<classpath path="${testng.resource.dir}" />
 			<xmlfileset dir="${testng.source.dir}/org/jenetics" includes="testng.xml" />
+			<!--<classfileset dir="${build.dir}" includes="**/*Test.class" />-->
 		</testng>
 	</target>
 	
