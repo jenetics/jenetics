@@ -22,6 +22,10 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,12 +40,12 @@ public class GeneticAlgorithmTest {
 		private static final long serialVersionUID = 618089611921083000L;
 
 		@Override
-		public Float64 evaluate(Genotype<Float64Gene> genotype) {
+		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			return genotype.getGene().getAllele();
 		}
 	}
 	
-	@Test
+	//@Test
 	public void setGetAlterer() {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 
 			new GeneticAlgorithm<Float64Gene, Float64>(
@@ -63,4 +67,28 @@ public class GeneticAlgorithmTest {
 		Assert.assertEquals(((CompositeAlterer<?>)ga.getAlterer()).getAlterers().length(), 3);
 	}
 	
+	@Test
+	public void optimize() {
+		RandomRegistry.setRandom(new Random(12345));
+		
+		final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
+		final FitnessFunction<Float64Gene, Float64> ff = new FF();
+		
+		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
+		ga.setPopulationSize(200);
+		ga.setAlterer(new MeanAlterer<Float64Gene>());
+		ga.setOffspringFraction(0.3);
+		ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
+		ga.setSurvivorSelector(new TournamentSelector<Float64Gene, Float64>());
+		
+		ga.setup();
+		for (int i = 0; i < 10; ++i) {
+			ga.evolve();
+		}
+	}
+	
 }
+
+
+
+
