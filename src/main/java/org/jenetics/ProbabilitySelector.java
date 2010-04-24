@@ -27,7 +27,6 @@ import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.BitUtils.ulpDistance;
 import static org.jenetics.util.Validator.nonNull;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
@@ -47,7 +46,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 {
 	private static final long serialVersionUID = -2980541308499034709L;
 	
-	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 9);
+	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 10);
 
 	protected ProbabilitySelector() {
 	}
@@ -81,7 +80,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 				selection.add(population.get(nextIndex(probabilities, random)));
 			}
 			
-			assert(count == selection.size());
+			assert (count == selection.size());
 		}
 		
 		return selection;
@@ -144,10 +143,10 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		final double sum = sum(probabilities);
 		boolean check = abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 		
-		if (!check) {
-			System.out.println("Sum: " + sum + "     " + probabilities.length);
-			System.out.println(Arrays.toString(probabilities));
-		}
+//		if (!check) {
+//			System.out.println("Sum: " + sum + "     " + probabilities.length);
+//			System.out.println(Arrays.toString(probabilities));
+//		}
 		
 		return check;
 	}
