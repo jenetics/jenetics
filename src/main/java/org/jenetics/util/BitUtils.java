@@ -354,6 +354,14 @@ public final class BitUtils {
 		return t;
 	}	
 	
+	public static double plus(final double a, final long ulpDistance) {
+		long t = Double.doubleToLongBits(a) + ulpDistance;
+		if (t < 0) {
+			t = Long.MIN_VALUE - t;
+		}
+		return Double.longBitsToDouble(t);
+	}
+	
 	public static String toString(final long n) {
 		final StringBuilder out = new StringBuilder();
 		for (int i = 63; i >= 0; --i) {

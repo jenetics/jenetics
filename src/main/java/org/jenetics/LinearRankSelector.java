@@ -101,13 +101,15 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 		population.sort();
 		
 		final double N = population.size();
-		final double[] props = new double[population.size()];
+		final double[] probabilities = new double[population.size()];
 
-		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[n - i - 1] = (_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
+		for (int i = probabilities.length; --i >= 0;) {
+			probabilities[probabilities.length - i - 1] = 
+				(_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
 		}
 		
-		return props;
+		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+		return probabilities;
 	}
 
 }

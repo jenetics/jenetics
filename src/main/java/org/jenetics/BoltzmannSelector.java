@@ -26,6 +26,8 @@ import static java.lang.Math.exp;
 
 import java.io.Serializable;
 
+import org.jenetics.util.ArrayUtils;
+
 /**
  * In this <code>Selector</code>, the probability for selection is defined as:
  * <p/><img src="doc-files/boltzmann-formula1.gif" alt="Boltzman" /></p> 
@@ -76,19 +78,34 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 		assert (population != null) : "Population must not be null. ";
 		assert (count >= 0) : "Population to select must be greater than zero. ";
 		
-		final double[] props = new double[population.size()];
+		final double[] probabilities = new double[population.size()];
+		for (int i = population.size(); --i >= 0;) {
+			probabilities[i] = population.get(i).getFitness().doubleValue();
+		}
+		final double sum = ArrayUtils.sum(probabilities); 
+		for (int i = probabilities.length; --i >= 0;) {
+			probabilities[i] = probabilities[i]/sum;
+		}
 		
 		double z = 0;
-		for (Phenotype<G, N> pt : population) {
-			z += exp(_b*pt.getFitness().doubleValue());
+		for (int i = probabilities.length; --i >= 0;) {
+			z += exp(_b*probabilities[i]);
 		}
 		
-		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[i] = exp(_b*population.get(i).getFitness().doubleValue())/z;
+		for (int i = probabilities.length; --i >= 0;) {
+			probabilities[i] = exp(_b*probabilities[i])/z;
 		}
-	
-		return props;
+		
+		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+		return probabilities;
 	}
+	
+//	private static void fix(final double[] probabilities) {
+//		final double sum = 1.0/ArrayUtils.sum(probabilities);
+//		for (int i = 0; i < probabilities.length; ++i) {
+//			probabilities[i] = probabilities[i]*sum;
+//		}
+//	}
 
 }
 

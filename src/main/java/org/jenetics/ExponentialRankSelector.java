@@ -87,14 +87,15 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 		population.sort();
 		
 		final double N = population.size();
-		final double[] props = new double[population.size()];
+		final double[] probabilities = new double[population.size()];
 		
 		final double b = pow(_c, N) - 1;
-		for (int i = 0, n = population.size(); i < n; ++i) {
-			props[i] = ((_c - 1)*pow(_c, i))/b;
+		for (int i = probabilities.length; --i >= 0;) {
+			probabilities[i] = ((_c - 1)*pow(_c, i))/b;
 		}
 	
-		return props;
+		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+		return probabilities;
 	}
 
 }
