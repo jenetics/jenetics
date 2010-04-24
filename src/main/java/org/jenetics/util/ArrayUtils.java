@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import static java.lang.Math.min;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.Serializable;
@@ -749,7 +748,7 @@ public final class ArrayUtils {
 			);
 		}
 		
-		final int pts = min(size, parts);
+		final int pts = Math.min(size, parts);
 		final int[] partition = new int[pts + 1];
 		
 		final int bulk = size/pts;
@@ -1208,7 +1207,22 @@ public final class ArrayUtils {
 		return sum;
 	}
 	
-
+	public static double min(final double[] values) {
+		nonNull(values);
+		if (values.length == 0) {
+			throw new IllegalArgumentException("Given array is empty.");
+		}
+		
+		double min = values[0];
+		
+		for (int i = values.length; --i >= 1;) {
+			if (values[i] < min) {
+				min = values[i];
+			}
+		}
+		
+		return min;
+	}
 
 	
 }

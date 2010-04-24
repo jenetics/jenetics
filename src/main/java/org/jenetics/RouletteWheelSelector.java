@@ -23,11 +23,12 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.BitUtils.ulpDistance;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
+
+import org.jenetics.util.ArrayUtils;
 
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
@@ -40,6 +41,8 @@ public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comp
 	extends ProbabilitySelector<G, N> implements Serializable
 {
 	private static final long serialVersionUID = 6434924633105671176L;
+	
+	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 9);
 
 	public RouletteWheelSelector() {
 	}
@@ -53,26 +56,22 @@ public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comp
 		assert(count >= 0) : "Population to select must be greater than zero. ";
 		
 		final double[] probabilities = new double[population.size()];
-		final double worst = Collections.min(population).getFitness().doubleValue();
-		
-		boolean zero = true;
-		double sum = -worst*population.size();
 		for (int i = population.size(); --i >= 0;) {
-			final double fitness = population.get(i).getFitness().doubleValue();
-			zero = zero && Double.compare(fitness, worst) == 0;
-			sum += fitness;
+			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
 		
-		if (abs(sum) > 0.0 && !zero) {
+		final double worst = ArrayUtils.min(probabilities);
+		double sum = ArrayUtils.sum(probabilities) - worst*population.size();
+		
+		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {
-				final double diff = population.get(i).getFitness().doubleValue() - worst;
-				probabilities[i] = diff/sum;
+				probabilities[i] = (probabilities[i] - worst)/sum;
 			}
 		} else {
 			Arrays.fill(probabilities, 1.0/population.size());
 		}
 		
-		assert (abs(sum(probabilities) - 1.0) < 0.0001);
+		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 }

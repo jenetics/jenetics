@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.abs;
+import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.Serializable;
@@ -73,9 +75,10 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 		}
 		
 		population.sort();
+		
 		final double[] probabilities = probabilities(population, count, opt);
-		assert (population.size() == probabilities.length) :
-			"Population size and propability length must be equal.";
+		assert (population.size() == probabilities.length);
+		assert (abs(sum(probabilities) - 1.0) < 0.0001);
 		
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;

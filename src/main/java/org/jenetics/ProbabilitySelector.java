@@ -24,8 +24,10 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.BitUtils.ulpDistance;
 import static org.jenetics.util.Validator.nonNull;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
@@ -44,6 +46,8 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	implements Selector<G, C> 
 {
 	private static final long serialVersionUID = -2980541308499034709L;
+	
+	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 9);
 
 	protected ProbabilitySelector() {
 	}
@@ -68,8 +72,9 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count, opt);
 			
-			assert (population.size() == probabilities.length);
-			assert (abs(sum(probabilities) - 1.0) < 0.0001);
+			assert (population.size() == probabilities.length) : 
+				"Population size and probability length are not equal.";
+			assert (check(probabilities)) : "Probabilities doesn't sum to one.";
 			
 			final Random random = RandomRegistry.getRandom();
 			for (int i = 0; i < count; ++i) {
@@ -134,6 +139,18 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 			final Population<G, C> population, 
 			final int count
 		);
+	
+	protected static boolean check(final double[] probabilities) {
+		final double sum = sum(probabilities);
+		boolean check = abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
+		
+		if (!check) {
+			System.out.println("Sum: " + sum + "     " + probabilities.length);
+			System.out.println(Arrays.toString(probabilities));
+		}
+		
+		return check;
+	}
 	
 	/**
 	 * Return the next random index. The index probability is given by the 

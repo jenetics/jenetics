@@ -50,7 +50,7 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		final FF ff = new FF();
 		
 		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(100);
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 1000; ++i) {
 			population.add(Phenotype.valueOf(
 					Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(i, 0, 1000))),
 					ff, 
