@@ -1197,7 +1197,7 @@ public final class ArrayUtils {
 		double y = 0.0;
 		double t = 0.0;
 		
-		for (int i = 0; i < values.length; ++i) {
+		for (int i = values.length; --i >= 0;) {
 			y = values[i] - c;
 			t = sum + y;
 			c = t - sum - y;
@@ -1207,17 +1207,37 @@ public final class ArrayUtils {
 		return sum;
 	}
 	
+	/**
+	 * Normalize the given double array, so that it sum to one.
+	 * 
+	 * @param values the values to normalize.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static void normalize(final double[] values) {
+		final double sum = 1.0/sum(values);
+		for (int i = values.length; --i >= 0;) {
+			values[i] = values[i]*sum;
+		}
+	}
+	
+	/**
+	 * Return the minimum value of the given double array.
+	 * 
+	 * @param values the double array.
+	 * @return the minimum value or {@link Double#NaN} if the given array is empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
 	public static double min(final double[] values) {
 		nonNull(values);
-		if (values.length == 0) {
-			throw new IllegalArgumentException("Given array is empty.");
-		}
 		
-		double min = values[0];
-		
-		for (int i = values.length; --i >= 1;) {
-			if (values[i] < min) {
-				min = values[i];
+		double min = Double.NaN;
+		if (values.length > 0) {
+			min = values[0];
+			
+			for (int i = values.length; --i >= 1;) {
+				if (values[i] < min) {
+					min = values[i];
+				}
 			}
 		}
 		

@@ -139,6 +139,13 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 			final int count
 		);
 	
+	/**
+	 * Check if the given probabilities sum to one.
+	 * 
+	 * @param probabilities the probabilities to check.
+	 * @return {@code true} if the sum of the probabilities are within the error
+	 *         range, {@code false} otherwise.
+	 */
 	protected static boolean check(final double[] probabilities) {
 		final double sum = sum(probabilities);
 		boolean check = abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
@@ -150,7 +157,7 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 		
 		return check;
 	}
-	
+		
 	/**
 	 * Return the next random index. The index probability is given by the 
 	 * {@code probabilities} array. The values of the {@code probabilities} array
