@@ -84,7 +84,8 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
 		
-		ArrayUtils.normalize(probabilities);
+		// Scale the fitness values to avoid overflows.
+		ArrayUtils.divide(probabilities, ArrayUtils.max(probabilities));
 		
 		for (int i = probabilities.length; --i >= 0;) {
 			probabilities[i] = exp(_b*probabilities[i]);
