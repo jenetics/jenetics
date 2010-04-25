@@ -1244,6 +1244,55 @@ public final class ArrayUtils {
 		return min;
 	}
 
+	/**
+	 * Return the maximum value of the given double array.
+	 * 
+	 * @param values the double array.
+	 * @return the maximum value or {@link Double#NaN} if the given array is empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double max(final double[] values) {
+		nonNull(values);
+		
+		double max = Double.NaN;
+		if (values.length > 0) {
+			max = values[0];
+			
+			for (int i = values.length; --i >= 1;) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+		
+		return max;
+	}
+	
+	/**
+	 * Component wise multiplication of the given double array. 
+	 * 
+	 * @param values the double values to multiply.
+	 * @param multiplier the multiplier.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static void times(final double[] values, final double multiplier) {
+		for (int i = values.length; --i >= 1;) {
+			values[i] *= multiplier;
+		}
+	}
+	
+	/**
+	 * Component wise division of the given double array. 
+	 * 
+	 * @param values the double values to divide.
+	 * @param divisor the divisor.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static void divide(final double[] values, final double divisor) {
+		for (int i = values.length; --i >= 1;) {
+			values[i] /= divisor;
+		}
+	}
 	
 }
 
