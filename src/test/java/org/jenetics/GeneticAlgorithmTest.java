@@ -130,7 +130,7 @@ public class GeneticAlgorithmTest {
 		EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
 		
 		try {
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
+			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
@@ -157,7 +157,7 @@ public class GeneticAlgorithmTest {
 		EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
 		
 		try {
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
+			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
@@ -183,7 +183,7 @@ public class GeneticAlgorithmTest {
 		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator(10));
 		
 		try {
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
+			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);

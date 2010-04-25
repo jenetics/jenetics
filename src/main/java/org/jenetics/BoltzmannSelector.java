@@ -78,35 +78,24 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 		assert (population != null) : "Population must not be null. ";
 		assert (count >= 0) : "Population to select must be greater than zero. ";
 		
+		// Copy the fitness values to probabilities arrays.
 		final double[] probabilities = new double[population.size()];
 		for (int i = population.size(); --i >= 0;) {
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
-		final double sum = ArrayUtils.sum(probabilities); 
-		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[i] = probabilities[i]/sum;
-		}
 		
-		double z = 0;
-		for (int i = probabilities.length; --i >= 0;) {
-			z += exp(_b*probabilities[i]);
-		}
+		ArrayUtils.normalize(probabilities);
 		
 		for (int i = probabilities.length; --i >= 0;) {
-			probabilities[i] = exp(_b*probabilities[i])/z;
+			probabilities[i] = exp(_b*probabilities[i]);
 		}
+		
+		ArrayUtils.normalize(probabilities);
 		
 		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 	
-//	private static void fix(final double[] probabilities) {
-//		final double sum = 1.0/ArrayUtils.sum(probabilities);
-//		for (int i = 0; i < probabilities.length; ++i) {
-//			probabilities[i] = probabilities[i]*sum;
-//		}
-//	}
-
 }
 
 
