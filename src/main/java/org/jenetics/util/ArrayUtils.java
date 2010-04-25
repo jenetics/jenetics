@@ -1276,7 +1276,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static void times(final double[] values, final double multiplier) {
-		for (int i = values.length; --i >= 1;) {
+		for (int i = values.length; --i >= 0;) {
 			values[i] *= multiplier;
 		}
 	}
@@ -1289,7 +1289,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static void divide(final double[] values, final double divisor) {
-		for (int i = values.length; --i >= 1;) {
+		for (int i = values.length; --i >= 0;) {
 			values[i] /= divisor;
 		}
 	}
