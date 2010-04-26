@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.nonNull;
+
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
@@ -35,8 +37,7 @@ final class ArrayList<T> extends AbstractList<T>
 	private final Array<T> _array;
 	
 	public ArrayList(final Array<T> array) {
-		Validator.nonNull(array, "Array");
-		_array = array;
+		_array = nonNull(array, "Array");
 	}
 	
 	@Override
