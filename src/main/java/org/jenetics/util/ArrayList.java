@@ -45,7 +45,7 @@ final class ArrayList<T> extends AbstractList<T>
 	}
 	
 	@Override
-	public T set(int index, T element) {
+	public T set(final int index, final T element) {
 		final T old = _array.get(index);
 		_array.set(index, element);
 		return old;
