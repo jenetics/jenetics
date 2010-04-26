@@ -162,12 +162,11 @@ public final class IOUtils {
 	) 
 		throws XMLStreamException 
 	{
-		Validator.nonNull(out, "Output stream");
-		Validator.nonNull(object, "Object");
+		nonNull(out, "Output stream");
+		nonNull(object, "Object");
 		
-		XMLObjectWriter writer = null;
+		final XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
 		try {
-			writer = XMLObjectWriter.newInstance(out);
 			writer.setIndentation("\t");
 			writer.write(object);
 		} finally {
@@ -222,8 +221,8 @@ public final class IOUtils {
 	public static <T> T readXML(final Class<T> type, final InputStream in) 
 		throws XMLStreamException 
 	{
-		Validator.nonNull(type, "Object type");
-		Validator.nonNull(in, "Input stream");
+		nonNull(type, "Object type");
+		nonNull(in, "Input stream");
 		
 		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
 		try {
@@ -278,8 +277,8 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
-		Validator.nonNull(out, "Output");
-		Validator.nonNull(object, "Object");
+		nonNull(out, "Output");
+		nonNull(object, "Object");
 		
 		final ObjectOutputStream oout = new ObjectOutputStream(out);
 		try {
@@ -303,7 +302,7 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
-		Validator.nonNull(path, "Path");
+		nonNull(path, "Path");
 		writeObject(new FileOutputStream(path), object);
 	}
 	
@@ -340,8 +339,8 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
-		Validator.nonNull(type, "Object type");
-		Validator.nonNull(in, "Input stream");
+		nonNull(type, "Object type");
+		nonNull(in, "Input stream");
 		
 		T object = null;
 		
@@ -373,7 +372,7 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
-		Validator.nonNull(path, "Path");
+		nonNull(path, "Path");
 		return readObject(type, new FileInputStream(path));
 	}
 	
@@ -393,7 +392,7 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
-		Validator.nonNull(path, "Path");
+		nonNull(path, "Path");
 		return readObject(type, new FileInputStream(path));
 	}
 	
