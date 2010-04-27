@@ -42,7 +42,9 @@ import java.util.RandomAccess;
  * an {@code Array} concurrently, and at least one of the threads modifies the
  * array, it <strong>must</strong> be synchronized externally.
  * <br/>
- * Use the {@link #asList()} to work together with other libraries.
+ * Use the {@link #asList()} method to work together with the 
+ * <a href="http://java.sun.com/javase/6/docs/technotes/guides/collections/index.html">
+ * Java Collection Framework</a>.
  * 
  * @param <T> the element type of the array.
  * 
