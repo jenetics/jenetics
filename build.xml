@@ -26,7 +26,7 @@
 -->
 <project default="all">
 	<property name="version" value="0.6.0.0" />
-	<property name="identifier" value="jentics-${version}" />
+	<property name="identifier" value="jenetics-${version}" />
 	<property name="year" value="2007-2010" />
 	
 	<property name="source.basedir" value="./src" />
@@ -38,7 +38,7 @@
 	<property name="testng.resource.dir" value="${source.basedir}/test/resources" />
 	<property name="testng.report.dir" value="${build.dir}/testng-report" />
 	<property name="lib.build.dir" value="${lib.dir}/build" />
-	<property name="export.dir" value="${build.dir}/export/Jenetics-${version}" />
+	<property name="export.dir" value="${build.dir}/export/${identifier}" />
 	<property name="javadoc.dir" value="${build.dir}/javadoc" />
 	<property name="colapi.classpath" value="${lib.dir}/build/colapi.jar" />
 	<property name="umlgraph.classpath" value="${lib.dir}/build/UmlGraph-5.2.jar" />
@@ -88,16 +88,18 @@
 		 # Build without the library dependencies.
 		-->
 		<jar 
-			destfile="Jenetics-${version}.jar" 
+			destfile="${identifier}.jar" 
 			filesetmanifest="mergewithoutmain" 
-			index="true" update="true" 
-			level="9" duplicate="preserve"
+			index="true" 
+			update="true" 
+			level="9" 
+			duplicate="preserve"
 		>
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
 			</fileset>
 			<manifest>
-				<attribute name="ProjectName" value="Jenetics" />
+				<attribute name="ProjectName" value="jenetics" />
 				<attribute name="Version" value="${version}" />
 				<attribute name="Vendor" value="Franz Wilhelmstötter" />
 				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
@@ -111,10 +113,12 @@
 		 # Build with the library dependencies.
 		-->		
 		<jar 
-			destfile="Jenetics-all-${version}.jar" 
+			destfile="${identifier}-all.jar" 
 			filesetmanifest="mergewithoutmain" 
-			index="true" update="true" 
-			level="9" duplicate="preserve"
+			index="true" 
+			update="true" 
+			level="9" 
+			duplicate="preserve"
 		>
 			<zipfileset src="${lib.dir}/jscience.jar" />
 			<zipfileset src="${lib.dir}/jsr166y.jar" />
@@ -122,7 +126,7 @@
 				<exclude name="org/jenetics/examples/*" />
 			</fileset>
 			<manifest>
-				<attribute name="ProjectName" value="Jenetics" />
+				<attribute name="ProjectName" value="jenetics" />
 				<attribute name="Version" value="${version}" />
 				<attribute name="Vendor" value="Franz Wilhelmstötter" />
 				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
@@ -136,16 +140,18 @@
 		 # Build the examples
 		-->		
 		<jar 
-			destfile="Jenetics-examples-${version}.jar" 
+			destfile="${identifier}-examples.jar" 
 			filesetmanifest="mergewithoutmain" 
-			index="true" update="true" 
-			level="9" duplicate="preserve"
+			index="true" 
+			update="true" 
+			level="9" 
+			duplicate="preserve"
 		>
 			<fileset dir="${build.dir}" >
 				<include name="org/jenetics/examples/*" />
 			</fileset>
 			<manifest>
-				<attribute name="ProjectName" value="Jenetics Examples" />
+				<attribute name="ProjectName" value="jenetics examples" />
 				<attribute name="Version" value="${version}" />
 				<attribute name="Vendor" value="Franz Wilhelmstötter" />
 				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
@@ -175,7 +181,7 @@
 			<arg line="-charset UTF-8" />
 			<classpath refid="classpath" />
 			<fileset dir="${source.dir}">
-				<include name="org/jenetics/*/.gif" />
+				<include name="org/jenetics/**/*.gif" />
 				<include name="org/jenetics/*.html" />
 				<include name="org/jenetics/*.java" />
 				<include name="org/jenetics/util/*.java" />
@@ -206,7 +212,7 @@
 			tabs="4" showTableBorder="true" outputFormat="html"
 			useShortFileName="true" overwrite="true"
 		>
-			<include name="org/jenetics/**/.gif" />
+			<include name="org/jenetics/**/*.gif" />
 			<include name="org/jenetics/*.html" />
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
@@ -367,7 +373,7 @@
 		<delete dir="bin" />
 		<delete dir="${testng.report.dir}" />
 		<delete>
-			<fileset dir="." includes="Jenetics-*.jar"/>
+			<fileset dir="." includes="${identifier}*.jar"/>
 			<fileset dir="." includes="temp-testng-*"/>
 		</delete>
 	</target>
@@ -395,11 +401,11 @@
 		<copy todir="${export.dir}" file="change.log"/>
 		<copy todir="${export.dir}" file="LGPL.txt"/>
 		<copy todir="${export.dir}" file="README"/>
-		<copy todir="${export.dir}/build" file="Jenetics-${version}.jar"/>
-		<copy todir="${export.dir}/build" file="Jenetics-all-${version}.jar"/>
-		<copy todir="${export.dir}/build" file="Jenetics-examples-${version}.jar"/>
+		<copy todir="${export.dir}/build" file="${identifier}.jar"/>
+		<copy todir="${export.dir}/build" file="${identifier}-all.jar"/>
+		<copy todir="${export.dir}/build" file="${identifier}-examples.jar"/>
 		
-		<zip destfile="${build.dir}/export/Jenetics-${version}.zip" level="9">
+		<zip destfile="${build.dir}/export/${identifier}.zip" level="9">
 			<fileset dir="${export.dir}"/>
 		</zip>
 	</target>
