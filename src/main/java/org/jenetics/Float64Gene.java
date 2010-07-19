@@ -40,7 +40,7 @@ public class Float64Gene
 	extends NumberGene<Float64, Float64Gene> 
 	implements GroupMultiplicative<Float64Gene> 
 {
-	private static final long serialVersionUID = 2531451920309748752L;	
+	private static final long serialVersionUID = 1L;	
 	
 	protected Float64Gene() {
 	}

@@ -54,7 +54,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
 				XMLSerializable, Realtime, Runnable
 {
-	private static final long serialVersionUID = 1614815678599076552L;
+	private static final long serialVersionUID = 1L;
 	
 	private Genotype<G> _genotype;
 	private FitnessFunction<G, C> _fitnessFunction;

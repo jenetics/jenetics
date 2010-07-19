@@ -39,7 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 public class BitGene 
 	implements Gene<Boolean, BitGene>, Comparable<BitGene>, XMLSerializable 
 {
-	private static final long serialVersionUID = 71303038065442905L;
+	private static final long serialVersionUID = 1L;
 	
 	public static final BitGene TRUE = new BitGene(true);
 	public static final BitGene FALSE = new BitGene(false);

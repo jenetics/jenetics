@@ -38,7 +38,7 @@ import static org.jenetics.util.Validator.nonNull;
 public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	implements Selector<G, C>
 {
-	private static final long serialVersionUID = -238059226601411086L;
+	private static final long serialVersionUID = 1L;
 
 	public TruncationSelector() {
 	}

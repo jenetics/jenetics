@@ -27,7 +27,7 @@ package org.jenetics;
  * @version $Id$
  */
 public class IdentityScaler<C extends Comparable<C>> implements FitnessScaler<C> {
-	private static final long serialVersionUID = -8781746035187241816L;
+	private static final long serialVersionUID = 1L;
 
 	
 	public IdentityScaler() {

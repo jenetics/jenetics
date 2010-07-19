@@ -35,7 +35,7 @@ import static org.jenetics.util.Validator.nonNull;
 public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
 {
-	private static final long serialVersionUID = 8766537513371578351L;
+	private static final long serialVersionUID = 1L;
 	
 	private final C _value;
 	

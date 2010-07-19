@@ -46,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C>, Serializable 
 {
-	private static final long serialVersionUID = -5342297228328820942L;
+	private static final long serialVersionUID = 1L;
 	
 	private final int _sampleSize;
 

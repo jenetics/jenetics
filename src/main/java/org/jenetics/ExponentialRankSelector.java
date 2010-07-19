@@ -50,7 +50,7 @@ import java.io.Serializable;
 public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	extends ProbabilitySelector<G, C> implements Serializable
 {
-	private static final long serialVersionUID = -5633748296591142197L;
+	private static final long serialVersionUID = 1L;
 	
 	private final double _c;
 	

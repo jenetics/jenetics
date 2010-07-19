@@ -40,7 +40,7 @@ import javolution.lang.Immutable;
 public class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 
 {
-	private static final long serialVersionUID = -1170134682688418212L;
+	private static final long serialVersionUID = 1L;
 	
 	private final char[] _characters;
 	

@@ -42,7 +42,7 @@ import org.jenetics.util.Factory;
 public class OnesCounting {
 
 	private static class OneCounter implements FitnessFunction<BitGene, Integer> {
-		private static final long serialVersionUID = 5457381926611887312L;
+		private static final long serialVersionUID = 1L;
 
 		public Integer evaluate(Genotype<BitGene> genotype) {
 			int count = 0;

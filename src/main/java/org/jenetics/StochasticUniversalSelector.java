@@ -46,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
 public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends RouletteWheelSelector<G, N> implements Serializable 
 {
-	private static final long serialVersionUID = 3673324276572086631L;
+	private static final long serialVersionUID = 1L;
 
 	public StochasticUniversalSelector() {
 	}

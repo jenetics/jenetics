@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Float64;
 public class Float64Chromosome extends NumberChromosome<Float64Gene> 
 	implements ChromosomeFactory<Float64Gene>, XMLSerializable
 {	
-	private static final long serialVersionUID = 6018295796115102264L;
+	private static final long serialVersionUID = 1L;
 	
 	
 	protected Float64Chromosome(final Array<Float64Gene> genes) {

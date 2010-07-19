@@ -50,7 +50,7 @@ import org.jenetics.util.ForkJoinEvaluator;
 public class TravelingSalesman {
 	
 	private static class Function implements FitnessFunction<Integer64Gene, Double> {
-		private static final long serialVersionUID = 8402072476064049463L;
+		private static final long serialVersionUID = 1L;
 		
 		private final double[][] _adjacence;
 		

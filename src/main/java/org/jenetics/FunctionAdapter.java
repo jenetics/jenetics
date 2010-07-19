@@ -37,7 +37,7 @@ import org.jscience.mathematics.function.Function;
 public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
 {
-	private static final long serialVersionUID = 8415208410215704341L;
+	private static final long serialVersionUID = 1L;
 
 	private final Function<Genotype<G>, C> _adoptee;
 	

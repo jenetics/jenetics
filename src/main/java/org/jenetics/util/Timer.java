@@ -42,7 +42,7 @@ import javolution.lang.Reusable;
  * @version $Id$
  */
 public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneable {
-	private static final long serialVersionUID = -4564917943200602352L;
+	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_LABEL = "Timer";
 	
 	private String _label;

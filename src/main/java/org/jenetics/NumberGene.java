@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Number;
 public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
 	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
 {
-	private static final long serialVersionUID = 9160065700657586640L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The minimum value of this <code>NumberGene</code>.

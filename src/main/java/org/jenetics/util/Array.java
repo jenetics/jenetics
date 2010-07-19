@@ -54,7 +54,7 @@ import java.util.RandomAccess;
 public class Array<T> implements 
 	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
 {
-	private static final long serialVersionUID = -5271247554278598795L;
+	private static final long serialVersionUID = 1L;
 	
 	transient Object[] _array;
 	transient int _start;

@@ -43,7 +43,7 @@ import org.jenetics.util.Validator;
 public class EnumGene<E extends Enum<E>> 
 	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime
 {
-	private static final long serialVersionUID = 3892516872458977205L;
+	private static final long serialVersionUID = 1L;
 
 	private E _value;
 	

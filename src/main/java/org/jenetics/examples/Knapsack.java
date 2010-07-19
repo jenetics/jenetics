@@ -42,7 +42,7 @@ import org.jscience.mathematics.number.Float64;
  * @version $Id$
  */
 class Item implements Serializable {
-	private static final long serialVersionUID = -2129262369196749572L;
+	private static final long serialVersionUID = 1L;
 	public double size;
     public double value;
 }

@@ -61,7 +61,7 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
-	private static final long serialVersionUID = -7012689808565856577L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Holds the number of mutation performed by this mutation class.

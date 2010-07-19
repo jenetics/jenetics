@@ -73,7 +73,7 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
-	private static final long serialVersionUID = 4100745364870900673L;
+	private static final long serialVersionUID = 1L;
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);

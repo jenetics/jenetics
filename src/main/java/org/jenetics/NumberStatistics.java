@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Float64;
 public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparable<R>>
 	extends Statistics<G, R> 
 {
-	private static final long serialVersionUID = -7468324436514041360L;
+	private static final long serialVersionUID = 1L;
 	
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;

@@ -52,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
-	private static final long serialVersionUID = -5901453762256113098L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a new single point crossover object with crossover probability of
