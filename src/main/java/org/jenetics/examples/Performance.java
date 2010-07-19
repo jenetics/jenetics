@@ -47,7 +47,7 @@ import org.jscience.mathematics.number.Float64;
 public class Performance {
 	
 	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
-		private static final long serialVersionUID = 2793605351118238308L;
+		private static final long serialVersionUID = 1L;
 		
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);

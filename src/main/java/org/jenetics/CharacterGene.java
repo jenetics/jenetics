@@ -45,7 +45,7 @@ public class CharacterGene
 	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
 				Realtime, XMLSerializable 
 {
-	private static final long serialVersionUID = 5091130159700639888L;
+	private static final long serialVersionUID = 1L;
 	
 	public static final CharSet DEFAULT_CHARACTERS = new CharSet(
 				CharSet.expand("0-9a-zA-Z") +  

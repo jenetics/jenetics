@@ -45,7 +45,7 @@ import org.jscience.mathematics.number.Integer64;
 public class StringGenerator {
 
 	private static class Function implements FitnessFunction<CharacterGene, Integer64> {
-		private static final long serialVersionUID = 644284481730863472L;
+		private static final long serialVersionUID = 1L;
 		
 		private final String value;
 		

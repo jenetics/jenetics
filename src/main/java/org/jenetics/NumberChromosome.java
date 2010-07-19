@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Number;
 public abstract class NumberChromosome<G extends NumberGene<?, G>> 
 	extends AbstractChromosome<G> implements ChromosomeFactory<G>
 {
-	private static final long serialVersionUID = 5563733927327762322L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The minimum value of this <code>NumberChromosome</code>.

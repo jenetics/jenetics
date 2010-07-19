@@ -51,7 +51,7 @@ import org.jenetics.util.ArrayUtils;
 public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
 {
-	private static final long serialVersionUID = 4785987330242283796L;
+	private static final long serialVersionUID = 1L;
 	
 	private final double _b;
 

@@ -58,7 +58,7 @@ import org.jscience.mathematics.number.Float64;
 public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Immutable, XMLSerializable 
 {
-	private static final long serialVersionUID = -8980979460645713414L;
+	private static final long serialVersionUID = 1L;
 	
 	protected final int _generation;
 	protected final Phenotype<G, C> _best;
@@ -312,7 +312,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @version $Id$
 	 */
 	public static final class Time implements XMLSerializable {
-		private static final long serialVersionUID = -4947801435156551911L;
+		private static final long serialVersionUID = 1L;
 
 		private static final Measurable<Duration> ZERO = Measure.valueOf(
 				0, SI.MILLI(SI.SECOND)

@@ -44,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
 public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
 {
-	private static final long serialVersionUID = -2980541308499034709L;
+	private static final long serialVersionUID = 1L;
 	
 	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 10);
 

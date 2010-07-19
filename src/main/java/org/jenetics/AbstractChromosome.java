@@ -47,7 +47,7 @@ import org.jenetics.util.Validator.Verify;
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements Chromosome<G>, Realtime, RandomAccess
 {
-	private static final long serialVersionUID = 8283543816229993099L;
+	private static final long serialVersionUID = 1;
 
 	/**
 	 * Array of genes which forms the chromosome. This array must

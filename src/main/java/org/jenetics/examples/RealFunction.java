@@ -51,7 +51,7 @@ public class RealFunction {
 		implements FitnessFunction<Float64Gene, Float64>,
 					Converter<Genotype<Float64Gene>, Float64>
 	{
-		private static final long serialVersionUID = 2793605351118238308L;
+		private static final long serialVersionUID = 1L;
 		
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {

@@ -40,7 +40,7 @@ import org.jenetics.util.ArrayUtils;
 public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
 	extends ProbabilitySelector<G, N> implements Serializable
 {
-	private static final long serialVersionUID = 6434924633105671176L;
+	private static final long serialVersionUID = 1L;
 	
 	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 9);
 

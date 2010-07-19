@@ -50,7 +50,7 @@ public class Genotype<T extends Gene<?, T>>
 	implements Factory<Genotype<T>>, Iterable<Chromosome<T>>, Verifiable, 
 			XMLSerializable, Realtime, Immutable
 {
-	private static final long serialVersionUID = 868536407305322003L;
+	private static final long serialVersionUID = 1L;
 	
 	private final Array<Chromosome<T>> _chromosomes; 
 	

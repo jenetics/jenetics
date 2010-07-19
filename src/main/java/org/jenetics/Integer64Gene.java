@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
 public class Integer64Gene 
 	extends NumberGene<Integer64, Integer64Gene> 
 {
-	private static final long serialVersionUID = 262677052481286632L;
+	private static final long serialVersionUID = 1L;
 	
 	protected Integer64Gene() {
 	}

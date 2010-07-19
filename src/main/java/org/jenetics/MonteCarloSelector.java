@@ -38,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
 public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>> 
 	implements Selector<G, C> 
 {
-	private static final long serialVersionUID = -6012139083329541651L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Population<G, C> select(

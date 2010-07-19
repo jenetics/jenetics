@@ -35,7 +35,7 @@ import javolution.lang.Reference;
  * @version $Id$
  */
 public final class FinalReference<T> implements Reference<T>, Serializable {
-	private static final long serialVersionUID = -7316538710472411065L;
+	private static final long serialVersionUID = 1L;
 	
 	private T _value = null;
 	private boolean _initialized = false;

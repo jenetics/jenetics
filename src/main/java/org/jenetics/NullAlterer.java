@@ -29,7 +29,7 @@ package org.jenetics;
  * @version $Id$
  */
 public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
-	private static final long serialVersionUID = 7892835302001002915L;
+	private static final long serialVersionUID = 1L;
 
 	public NullAlterer() {
 		super(0.0);
