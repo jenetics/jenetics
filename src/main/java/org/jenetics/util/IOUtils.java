@@ -155,10 +155,31 @@ public final class IOUtils {
 	 * @param object the object to serialize.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
+	 * @deprecated Use {@link #writeXML(XMLSerializable,OutputStream)} instead
 	 */
 	public static <T extends XMLSerializable> void writeXML(
 		final OutputStream out, 
 		final T object
+	) 
+		throws XMLStreamException 
+	{
+		writeXML(object, out);
+	}
+
+	/**
+	 * Write the XML serializable object to the given output stream. The output
+	 * stream is closed by this method. 
+	 * @param object the object to serialize.
+	 * @param out the output stream.
+	 * 
+	 * @see #nonClose(OutputStream)
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws XMLStreamException if the object could not be serialized.
+	 */
+	public static <T extends XMLSerializable> void writeXML(
+		final T object, 
+		final OutputStream out
 	) 
 		throws XMLStreamException 
 	{
@@ -181,6 +202,7 @@ public final class IOUtils {
 	 * @param object the object to serialize.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
+	 * @deprecated Use {@link #writeXML(XMLSerializable, File)} instead 
 	 */
 	public static <T extends XMLSerializable> void writeXML(
 		final File path, 
@@ -188,7 +210,24 @@ public final class IOUtils {
 	) 
 		throws XMLStreamException, FileNotFoundException 
 	{
-		writeXML(new FileOutputStream(path), object);
+		writeXML(object, path);
+	}
+
+	/**
+	 * Write the XML serializable object to the given path.
+	 * @param object the object to serialize.
+	 * @param path the output path.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws XMLStreamException if the object could not be serialized.
+	 */
+	public static <T extends XMLSerializable> void writeXML(
+		final T object, 
+		final File path
+	) 
+		throws XMLStreamException, FileNotFoundException 
+	{
+		writeXML(object, new FileOutputStream(path));
 	}
 	
 	/**
@@ -198,6 +237,7 @@ public final class IOUtils {
 	 * @param object the object to serialize.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws XMLStreamException if the object could not be serialized.
+	 * @deprecated Use {@link #writeXML(XMLSerializable,String)} instead
 	 */
 	public static <T extends XMLSerializable> void writeXML(
 		final String path, 
@@ -205,12 +245,29 @@ public final class IOUtils {
 	) 
 		throws XMLStreamException, FileNotFoundException 
 	{
-		writeXML(new File(path), object);
+		writeXML(object, path);
+	}
+
+	/**
+	 * Write the XML serializable object to the given path.
+	 * @param object the object to serialize.
+	 * @param path the output path.
+	 * 
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws XMLStreamException if the object could not be serialized.
+	 */
+	public static <T extends XMLSerializable> void writeXML(
+		final T object, 
+		final String path
+	) 
+		throws XMLStreamException, FileNotFoundException 
+	{
+		writeXML(object, new File(path));
 	}
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #writeXML(OutputStream, XMLSerializable)} method) from the given
+	 * {@link #writeXML(XMLSerializable, OutputStream)} method) from the given
 	 * input stream. The input stream is closed by this method.
 	 * 
 	 * @param in the input stream to read from.
@@ -234,7 +291,7 @@ public final class IOUtils {
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #writeXML(File, XMLSerializable)} method) from the given path.
+	 * {@link #writeXML(XMLSerializable, File)} method) from the given path.
 	 * 
 	 * @param path the path to read from.
 	 * @return the de-serialized object.
@@ -249,7 +306,7 @@ public final class IOUtils {
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #writeXML(File, XMLSerializable)} method) from the given path.
+	 * {@link #writeXML(XMLSerializable, File)} method) from the given path.
 	 * 
 	 * @param path the path to read from.
 	 * @return the de-serialized object.
@@ -270,10 +327,28 @@ public final class IOUtils {
 	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IOException if the object could not be serialized.
+	 * @deprecated Use {@link #writeObject(Serializable,OutputStream)} instead
 	 */
 	public static void writeObject(
 		final OutputStream out, 
 		final Serializable object
+	) 
+		throws IOException 
+	{
+		writeObject(object, out);
+	}
+
+	/**
+	 * Write the serializable object to the given output stream. The output
+	 * stream is closed by this method.
+	 * @param object the object to serialize.
+	 * @param out the output stream.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
+	public static void writeObject(
+		final Serializable object, 
+		final OutputStream out
 	) 
 		throws IOException 
 	{
@@ -295,6 +370,7 @@ public final class IOUtils {
 	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IOException if the object could not be serialized.
+	 * @deprecated Use {@link #writeObject(Serializable,File)} instead
 	 */
 	public static void writeObject(
 		final File path, 
@@ -302,8 +378,24 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
+		writeObject(object, path);
+	}
+
+	/**
+	 * Write the serializable object to the given output stream.
+	 * @param object the object to serialize.
+	 * @param path the output paths.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
+	public static void writeObject(
+		final Serializable object, 
+		final File path
+	) 
+		throws IOException 
+	{
 		nonNull(path, "Path");
-		writeObject(new FileOutputStream(path), object);
+		writeObject(object, new FileOutputStream(path));
 	}
 	
 	/**
@@ -313,6 +405,7 @@ public final class IOUtils {
 	 * 
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IOException if the object could not be serialized.
+	 * @deprecated Use {@link #writeObject(Serializable,String)} instead
 	 */
 	public static void writeObject(
 		final String path, 
@@ -320,12 +413,28 @@ public final class IOUtils {
 	) 
 		throws IOException 
 	{
-		writeObject(new File(path), object);
+		writeObject(object, path);
+	}
+
+	/**
+	 * Write the serializable object to the given output stream.
+	 * @param object the object to serialize.
+	 * @param path the output paths.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
+	public static void writeObject(
+		final Serializable object, 
+		final String path
+	) 
+		throws IOException 
+	{
+		writeObject(object, new File(path));
 	}
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #writeObject(OutputStream, Serializable)} method) from the given
+	 * {@link #writeObject(Serializable, OutputStream)} method) from the given
 	 * input stream. The input stream is not closed by this method.
 	 * 
 	 * @param in the input stream to read from.
@@ -358,7 +467,7 @@ public final class IOUtils {
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #writeObject(File, Serializable)} method) from the given
+	 * {@link #writeObject(Serializable, File)} method) from the given
 	 * input path.
 	 * 
 	 * @param path the input path to read from.
@@ -378,7 +487,7 @@ public final class IOUtils {
 	
 	/**
 	 * Reads an object (which was serialized by the 
-	 * {@link #writeObject(String, Serializable)} method) from the given
+	 * {@link #writeObject(Serializable, String)} method) from the given
 	 * input path.
 	 * 
 	 * @param path the input path to read from.
