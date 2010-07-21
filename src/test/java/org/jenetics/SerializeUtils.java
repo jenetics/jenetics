@@ -44,7 +44,7 @@ class SerializeUtils {
 		throws XMLStreamException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IOUtils.writeXML(out, object);
+		IOUtils.writeXML(object, out);
 		
 		final byte[] data = out.toByteArray();
 		Reporter.log(new String(data));
@@ -59,7 +59,7 @@ class SerializeUtils {
 		throws IOException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IOUtils.writeObject(out, object);
+		IOUtils.writeObject(object, out);
 		
 		final byte[] data = out.toByteArray();
 		

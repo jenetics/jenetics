@@ -1,3 +1,6 @@
+- Change the method signature of the org.jenetics.IOUtils.writeXXX methods. Now 
+  the parameter order is <object>, <target>.
+
 Jenetics-0.6.0.0
 - Change structure to Maven standard directory layout.
 - BitChromosome implements now org.jscience.mathematics.number.Number<BitChromosome>
