@@ -762,21 +762,37 @@ public class Array<T> implements
 		return equals;
 	}
 	
-	@Override
-	public String toString() {
+	/**
+	 * Create a string representation of the given array.
+	 * 
+	 * @param prefix the prefix of the string representation; e.g {@code '['}.
+	 * @param separator the separator of the array elements; e.g. {@code ','}.
+	 * @param suffix the suffix of the string representation; e.g. {@code ']'}.
+	 * @return the string representation of this array.
+	 */
+	public String toString(
+		final String prefix, 
+		final String separator,
+		final String suffix
+	) {
         final StringBuilder out = new StringBuilder();
         
-        out.append("[");
+        out.append(prefix);
         if (length() > 0) {
         	out.append(_array[_start]);
         }
         for (int i = _start + 1; i < _end; ++i) {
-        	out.append(",");
+        	out.append(separator);
         	out.append(_array[i]);
         }
-        out.append("]");
+        out.append(suffix);
         
-        return out.toString();
+        return out.toString();		
+	}
+	
+	@Override
+	public String toString() {
+        return toString("[", ",", "]");
 	}
 	
 	
