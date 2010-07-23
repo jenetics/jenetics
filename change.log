@@ -1,5 +1,6 @@
-- Change the method signature of the org.jenetics.IOUtils.writeXXX methods. Now 
-  the parameter order is <object>, <target>.
+- Change the method signature of the org.jenetics.utils.IOUtils.writeXXX methods. 
+  Now the parameter order is <object>, <target>.
+- Add org.jenetics.utils.Array.toString(String, String, String) method.
 
 Jenetics-0.6.0.0
 - Change structure to Maven standard directory layout.
