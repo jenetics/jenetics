@@ -43,7 +43,7 @@ public final class ArrayUtils {
 	/**
 	 * The empty, immutable array. This array is {@link Serializable}.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static final Array EMPTY_ARRAY = new Array(0);
 
 	private ArrayUtils() {
