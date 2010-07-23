@@ -297,7 +297,7 @@ public class Genotype<T extends Gene<?, T>>
 		return gtype;
 	}
 	
-	@SuppressWarnings({ "unchecked"})
+	@SuppressWarnings({ "unchecked", "rawtypes"})
 	protected static final XMLFormat<Genotype> 
 	XML = new XMLFormat<Genotype>(Genotype.class) 
 	{
