@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -141,7 +141,7 @@ public class NumberStatistics<G extends Gene<?, G>, R extends Number & Comparabl
 		return out.toString();
 	}
 	
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<NumberStatistics> 
 	XML = new XMLFormat<NumberStatistics>(NumberStatistics.class) 
 	{

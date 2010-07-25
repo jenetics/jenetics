@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -56,19 +56,19 @@ public final class IOUtils {
 	 * streams you can wrap it in an non closable stream. 
 	 * 
 	 * [code]
-	 *     final OutputStream out = ...
-	 *     final XMLSerializable object = ...
-	 *     try {
-	 *         writeXML(nonClose(out), object);
-	 *         // output stream is not closed and can still be used.
-	 *     } finally {
-	 *         closeQuietly(out);
-	 *     }
+	 * 	 final OutputStream out = ...
+	 * 	 final XMLSerializable object = ...
+	 * 	 try {
+	 * 		  writeXML(nonClose(out), object);
+	 * 		  // output stream is not closed and can still be used.
+	 * 	 } finally {
+	 * 		  closeQuietly(out);
+	 * 	 }
 	 * [/code]
 	 * 
 	 * @param out the output stream to wrap.
 	 * @return the wrapped output stream. Calls to the {@link OutputStream#close()}
-	 *         will flush the stream and leave the stream open.
+	 * 		  will flush the stream and leave the stream open.
 	 * @throws NullPointerException if the given stream is {@code null}.
 	 */
 	public static OutputStream nonClose(final OutputStream out) {
@@ -81,19 +81,19 @@ public final class IOUtils {
 	 * streams you can wrap it in an non closable stream. 
 	 * 
 	 * [code]
-	 *     final InputStream in = ...
-	 *     final XMLSerializable object = ...
-	 *     try {
-	 *         Object obj = readXML(Object.class, nonClose(out));
-	 *         // input stream is not closed and can still be used.
-	 *     } finally {
-	 *         closeQuietly(in);
-	 *     }
+	 * 	 final InputStream in = ...
+	 * 	 final XMLSerializable object = ...
+	 * 	 try {
+	 * 		  Object obj = readXML(Object.class, nonClose(out));
+	 * 		  // input stream is not closed and can still be used.
+	 * 	 } finally {
+	 * 		  closeQuietly(in);
+	 * 	 }
 	 * [/code]
 	 * 
 	 * @param out the output stream to wrap.
 	 * @return the wrapped output stream. Calls to the {@link InputStream#close()}
-	 *         will leave the stream open.
+	 * 		  will leave the stream open.
 	 * @throws NullPointerException if the given stream is {@code null}.
 	 */
 	public static InputStream nonClose(final InputStream out) {

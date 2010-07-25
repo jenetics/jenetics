@@ -140,7 +140,7 @@ public class StatisticsTest {
 		Reporter.log(statistics.toString());
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void serialize() throws XMLStreamException {
 		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0));

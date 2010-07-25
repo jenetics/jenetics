@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -45,7 +45,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 * 
 	 * @param genes the genes of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
-	 *         than one.
+	 * 		  than one.
 	 */
 	protected Integer64Chromosome(final Array<Integer64Gene> genes) {
 		super(genes);
@@ -92,7 +92,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 * @param genes the genes of the new chromosome.
 	 * @throws NullPointerException if the given genes array is {@code null}.
 	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
-	 *         one.
+	 * 		  one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
 		super(genes.length);

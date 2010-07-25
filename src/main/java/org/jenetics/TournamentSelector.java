@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -74,8 +74,8 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 
 	/**
 	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *         population size or {@code count} is greater the the population 
-	 *         size or the _sampleSize is greater the the population size.
+	 * 		  population size or {@code count} is greater the the population 
+	 * 		  size or the _sampleSize is greater the the population size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override

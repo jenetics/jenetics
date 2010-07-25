@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -93,8 +93,8 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 *        or lower fitness values must be selected. This parameter determines
-	 *        whether the GA maximizes or minimizes the fitness function. 
+	 * 		 or lower fitness values must be selected. This parameter determines
+	 * 		 whether the GA maximizes or minimizes the fitness function. 
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
@@ -127,12 +127,12 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	 * 
 	 * @param population The <em>unsorted</em> population.
 	 * @param count The number of phenotypes to select. <i>This parameter is not
-	 *        needed for most implementations.</i>
+	 * 		 needed for most implementations.</i>
 	 * @return Probability array. The returned probability array must have the 
-	 *         length {@code population.size()} and <strong>must</strong> sum to
-	 *         one. The returned value is checked with 
-	 *         {@code assert(Math.abs(ArrayUtils.sum(probabilities) - 1.0) < 0.0001)}
-	 *         in the base class.
+	 * 		  length {@code population.size()} and <strong>must</strong> sum to
+	 * 		  one. The returned value is checked with 
+	 * 		  {@code assert(Math.abs(ArrayUtils.sum(probabilities) - 1.0) < 0.0001)}
+	 * 		  in the base class.
 	 */
 	protected abstract double[] probabilities(
 			final Population<G, C> population, 
@@ -144,14 +144,14 @@ public abstract class ProbabilitySelector<G extends Gene<?, G>, C extends Compar
 	 * 
 	 * @param probabilities the probabilities to check.
 	 * @return {@code true} if the sum of the probabilities are within the error
-	 *         range, {@code false} otherwise.
+	 * 		  range, {@code false} otherwise.
 	 */
 	protected static boolean check(final double[] probabilities) {
 		final double sum = sum(probabilities);
 		boolean check = abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 		
 //		if (!check) {
-//			System.out.println("Sum: " + sum + "     " + probabilities.length);
+//			System.out.println("Sum: " + sum + "	  " + probabilities.length);
 //			System.out.println(Arrays.toString(probabilities));
 //		}
 		

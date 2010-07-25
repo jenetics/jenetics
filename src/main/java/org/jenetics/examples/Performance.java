@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.examples;
 
@@ -49,6 +49,7 @@ public class Performance {
 	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 1L;
 		
+		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			final double radians = toRadians(gene.doubleValue());

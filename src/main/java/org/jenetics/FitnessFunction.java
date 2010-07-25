@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -34,7 +34,7 @@ import java.io.Serializable;
  * 
  * @param <G> the gene type.
  * @param <C> the result type of the fitness function. The result type must be
- *            at least comparable to define a fitness order on the genotype.
+ * 			  at least comparable to define a fitness order on the genotype.
  * @see FitnessScaler
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,7 +50,7 @@ public interface FitnessFunction<G extends Gene<?, G>, C extends Comparable<C>>
 	 * 
 	 * @param genotype The FitnessFunction argument.
 	 * @return The fitness value. The returned value <em>must</em> not be 
-	 *        {@code null}.
+	 * 		 {@code null}.
 	 * @throws NullPointerException if the given {@code genotype} is {@code null}.
 	 */
 	public C evaluate(final Genotype<G> genotype);

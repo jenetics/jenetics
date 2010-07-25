@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -66,7 +66,7 @@ public final class Accumulators {
 		 * Return the mean value of the accumulated values.
 		 * 
 		 * @return the mean value of the accumulated values, or {@link java.lang.Double#NaN}
-		 *         if {@code getSamples() == 0}.
+		 * 		  if {@code getSamples() == 0}.
 		 */
 		public double getMean() {
 			return _mean;
@@ -102,9 +102,9 @@ public final class Accumulators {
 	 * <p><img src="doc-files/variance.gif" alt="Variance" /></p>
 	 * 
 	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" >
-	 *         Wikipedia: Algorithms for calculating variance</a>
+	 * 		  Wikipedia: Algorithms for calculating variance</a>
 	 * @see <a href="http://mathworld.wolfram.com/Variance.html">
-	 *         Wolfram MathWorld: Variance</a>
+	 * 		  Wolfram MathWorld: Variance</a>
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
@@ -195,7 +195,7 @@ public final class Accumulators {
 		 * 
 		 * @param quantile the wished quantile value.
 		 * @throws IllegalArgumentException if the {@code quantile} is not in the
-		 *         range {@code [0, 1]}.
+		 * 		  range {@code [0, 1]}.
 		 */
 		public Quantile(double quantile) {
 			if (quantile < 0.0 || quantile > 1) {

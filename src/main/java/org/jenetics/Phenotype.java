@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -38,7 +38,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * The <code>Phenotype</code> consists of a {@link Genotype} plus a 
- * {@link FitnessFunction}, where the  {@link FitnessFunction} represents the
+ * {@link FitnessFunction}, where the	{@link FitnessFunction} represents the
  * environment where the {@link Genotype} lives. 
  * This class implements the {@link Comparable} interface, to define a natural 
  * order between two <code>Phenotype</code>s. The natural order of the 
@@ -196,7 +196,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		return toText().toString() + " --> " + _fitness;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static final ObjectFactory FACTORY = new ObjectFactory() {
 		@Override protected Object create() {
 			return new Phenotype();
@@ -402,7 +402,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		return pt;
 	}
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<Phenotype> 
 	XML = new XMLFormat<Phenotype>(Phenotype.class) 
 	{

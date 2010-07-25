@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.examples;
 
@@ -120,7 +120,7 @@ public class Transformation {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
 			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)), //Rotation
 			new Float64Chromosome(Float64Gene.valueOf(-400, 400), Float64Gene.valueOf(-400, 400)), //Translation
-			new Float64Chromosome(Float64Gene.valueOf(-400, 400), Float64Gene.valueOf(-400, 400))  //Shear
+			new Float64Chromosome(Float64Gene.valueOf(-400, 400), Float64Gene.valueOf(-400, 400))	//Shear
 		);
 		
 		final Function ff = new Function(source, target);

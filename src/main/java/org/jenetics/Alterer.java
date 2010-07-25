@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -32,12 +32,12 @@ package org.jenetics;
  * be chained by appending an new (component) alterers.
  * 
  * [code]
- *     GeneticAlgorithm<Float64Gene, Double> ga = ...
- *     ga.setAlterer(new CompositeAlterer<Float64Gene>(
- *         new Crossover<Float64Gene>(0.1),
- *         new Mutator<Float64Gene>(0.05),
- *         new MeanAlterer<Float64eGene>(0.2)
- *     ));
+ * 	 GeneticAlgorithm<Float64Gene, Double> ga = ...
+ * 	 ga.setAlterer(new CompositeAlterer<Float64Gene>(
+ * 		  new Crossover<Float64Gene>(0.1),
+ * 		  new Mutator<Float64Gene>(0.05),
+ * 		  new MeanAlterer<Float64eGene>(0.2)
+ * 	 ));
  * [/code]
  * 
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
@@ -54,11 +54,11 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * is <code>null</code> or empty, nothing is altered.
 	 * 
 	 * @param population The Population to be altered. If the 
-	 *        <code>population</code> is <code>null</code> or empty, nothing is 
-	 *        altered.
+	 * 		 <code>population</code> is <code>null</code> or empty, nothing is 
+	 * 		 altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @throws NullPointerException if the given {@code population} is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public <C extends Comparable<C>> void alter(
 			final Population<G, C> population, 

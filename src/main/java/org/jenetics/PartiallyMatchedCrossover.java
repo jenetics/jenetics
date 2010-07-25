@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -40,22 +40,22 @@ import org.jenetics.util.RandomRegistry;
  * is the case in many combinatorial optimization problems. Other crossover
  * operators for combinatorial optimization are:
  * <ul type="square">
- *     <li>order crossover</li>
- *     <li>cycle crossover</li>
- *     <li>edge recombination crossover</li>
- *     <li>edge assembly crossover</li>
+ * 	 <li>order crossover</li>
+ * 	 <li>cycle crossover</li>
+ * 	 <li>edge recombination crossover</li>
+ * 	 <li>edge assembly crossover</li>
  * </ul>
  * </p>
  * The PMX is similar to the two-point crossover. A crossing region is chosen
  * by selecting two crossing points.
  * <pre>
- *     C1 = 012|345|6789
- *     C2 = 987|654|3210
+ * 	 C1 = 012|345|6789
+ * 	 C2 = 987|654|3210
  * </pre>
  * After performing the crossover we normally got two invalid chromosomes.
  * <pre>
- *     C1 = 012|654|6789
- *     C2 = 987|345|3210
+ * 	 C1 = 012|654|6789
+ * 	 C2 = 987|345|3210
  * </pre>
  * Chromosome {@code C1} contains the value 6  twice and misses the value
  * 3. On  the other side chromosome {@code C2} contains the value 3 twice and 
@@ -63,8 +63,8 @@ import org.jenetics.util.RandomRegistry;
  * to the exchange of the values 3 -> 6, 4 -> 5 and 5 -> 4. To repair the two 
  * chromosomes we have to apply this exchange outside the crossing region.
  * <pre>
- *     C1 = 012|654|3789
- *     C2 = 987|345|6210
+ * 	 C1 = 012|654|3789
+ * 	 C2 = 987|345|6210
  * </pre>
  * 
  * @see PermutationChromosome

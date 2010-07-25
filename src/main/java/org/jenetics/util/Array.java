@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -65,15 +65,15 @@ public class Array<T> implements
 	 * <i>Universal</i> array constructor.
 	 * 
 	 * @param array the array which holds the elements. The array will not be 
-	 *        copied.
+	 * 		 copied.
 	 * @param start the start index of the given array (exclusively).
 	 * @param end the end index of the given array (exclusively)
 	 * @param sealed the seal status. If {@code true} calls to 
-	 *        {@link #set(int, Object)} will throw an 
-	 *        {@link UnsupportedOperationException}.
+	 * 		 {@link #set(int, Object)} will throw an 
+	 * 		 {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
-	 *         value ({@code start < 0 || end > array.lenght || start > end}).
+	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	Array(final Object[] array, final int start, final int end, final boolean sealed) {
 		nonNull(array, "Array");
@@ -91,10 +91,10 @@ public class Array<T> implements
 	
 	/**
 	 * @param array the array which holds the elements. The array will not be 
-	 *        copied.
+	 * 		 copied.
 	 * @param sealed the seal status. If {@code true} calls to 
-	 *        {@link #set(int, Object)} will throw an 
-	 *        {@link UnsupportedOperationException}.
+	 * 		 {@link #set(int, Object)} will throw an 
+	 * 		 {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
 	Array(final Object[] array, final boolean sealed) {
@@ -118,8 +118,8 @@ public class Array<T> implements
 	 * Create a new array with the given length.
 	 * 
 	 * @param length the array length.
-     * @throws NegativeArraySizeException if the specified {@code length} 
-     *         is negative
+	  * @throws NegativeArraySizeException if the specified {@code length} 
+	  *			is negative
 	 */
 	public Array(final int length) {
 		this(new Object[length], false);
@@ -251,9 +251,9 @@ public class Array<T> implements
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-	 *         {@code (index < 0 || index >= size())}.
+	 * 		  {@code (index < 0 || index >= size())}.
 	 * @throws UnsupportedOperationException if this array is sealed 
-	 *         ({@code isSealed() == true}).
+	 * 		  ({@code isSealed() == true}).
 	 */
 	public void set(final int index, final T value) {
 		checkSeal();
@@ -267,7 +267,7 @@ public class Array<T> implements
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
 	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-	 *         {@code (index < 0 || index >= size())}.
+	 * 		  {@code (index < 0 || index >= size())}.
 	 */
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
@@ -281,7 +281,7 @@ public class Array<T> implements
 	 * 
 	 * @param element element to search for, can be {@code null}
 	 * @return the index of the first occurrence of the specified element in
-	 *         this array, or -1 if this array does not contain the element
+	 * 		  this array, or -1 if this array does not contain the element
 	 */
 	public int indexOf(final Object element) {
 		int index = -1;
@@ -309,7 +309,7 @@ public class Array<T> implements
 	 * 
 	 * @param element element to search for, can be {@code null}
 	 * @return the index of the last occurrence of the specified element in
-	 *         this array, or -1 if this array does not contain the element
+	 * 		  this array, or -1 if this array does not contain the element
 	 */
 	public int lastIndexOf(final Object element) {
 		int index = -1;
@@ -338,17 +338,17 @@ public class Array<T> implements
 	 * array element.
 	 * </p>
 	 * [code]
-	 *     // Finding index of first null value.
-	 *     final int index = array.indexOf(new Predicates.Nil());
-	 *     
-	 *     // Assert of no null values.
-	 *     assert (array.indexOf(new Predicates.Nil()) == -1);
+	 * 	 // Finding index of first null value.
+	 * 	 final int index = array.indexOf(new Predicates.Nil());
+	 * 	 
+	 * 	 // Assert of no null values.
+	 * 	 assert (array.indexOf(new Predicates.Nil()) == -1);
 	 * [/code]
 	 * 
 	 * @param predicate the search predicate.
 	 * @return the index of the first element on which the given predicate 
-	 *         returns {@code true}, or -1 if the predicate returns {@code false}
-	 *         for every array element.
+	 * 		  returns {@code true}, or -1 if the predicate returns {@code false}
+	 * 		  for every array element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int indexOf(final Predicate<? super T> predicate) {
@@ -376,23 +376,23 @@ public class Array<T> implements
 	 * than a {@code array.indexOf()} call.
 	 * 
 	 * [code]
-	 *     final Array<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
-	 *     final AtomicInteger sum = new AtomicInteger(0);
-	 *     values.foreach(new Predicate<Integer>() {
-	 *         public boolean evaluate(final Integer value) {
-	 *             sum.addAndGet(value);
-	 *             return true;
-	 *         }
-	 *     });
-	 *     System.out.println("Sum: " + sum);
+	 * 	 final Array<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+	 * 	 final AtomicInteger sum = new AtomicInteger(0);
+	 * 	 values.foreach(new Predicate<Integer>() {
+	 * 		  public boolean evaluate(final Integer value) {
+	 * 				sum.addAndGet(value);
+	 * 				return true;
+	 * 		  }
+	 * 	 });
+	 * 	 System.out.println("Sum: " + sum);
 	 * [/code]
 	 * 
 	 * @param predicate the predicate to apply.
 	 * @return the index of the first element on which the given predicate 
-	 *         returns {@code false}, or -1 if the predicate returns {@code true}
-	 *         for every array element.
+	 * 		  returns {@code false}, or -1 if the predicate returns {@code true}
+	 * 		  for every array element.
 	 * @throws NullPointerException if the given {@code predicate} is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public int foreach(final Predicate<? super T> predicate) {
 		nonNull(predicate, "Predicate");
@@ -418,8 +418,8 @@ public class Array<T> implements
 	 * 
 	 * @param predicate the search predicate.
 	 * @return the index of the last element on which the given predicate 
-	 *         returns {@code true}, or -1 if the predicate returns false for 
-	 *         every array element.
+	 * 		  returns {@code true}, or -1 if the predicate returns false for 
+	 * 		  every array element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int lastIndexOf(final Predicate<? super T> predicate) {
@@ -442,7 +442,7 @@ public class Array<T> implements
 	 * Returns {@code true} if this array contains the specified element.
 	 *
 	 * @param element element whose presence in this array is to be tested. The
-	 *        tested element can be {@code null}.
+	 * 		 tested element can be {@code null}.
 	 * @return {@code true} if this array contains the specified element
 	 */
 	public boolean contains(final Object element) {
@@ -476,7 +476,7 @@ public class Array<T> implements
 	 * @param value {@code value} to fill this array with.
 	 * @return {@code this} array.
 	 * @throws UnsupportedOperationException if this array is sealed 
-	 *         ({@code isSealed() == true}).
+	 * 		  ({@code isSealed() == true}).
 	 */
 	public Array<T> fill(final T value) {
 		checkSeal();
@@ -493,7 +493,7 @@ public class Array<T> implements
 	 * @return {@code this} array.
 	 * @throws NullPointerException if the given {@code factory} is {@code null}.
 	 * @throws UnsupportedOperationException if this array is sealed 
-	 *         ({@code isSealed() == true}).
+	 * 		  ({@code isSealed() == true}).
 	 */
 	public Array<T> fill(final Factory<? extends T> factory) {
 		Validator.nonNull(factory);
@@ -511,7 +511,7 @@ public class Array<T> implements
 	 * 
 	 * @param value the value to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
-	 *         given {@code value}
+	 * 		  given {@code value}
 	 */
 	public Array<T> append(final T value) {
 		final Array<T> array = new Array<T>(length() + 1);
@@ -527,7 +527,7 @@ public class Array<T> implements
 	 * 
 	 * @param array the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
-	 *         given {@code array}
+	 * 		  given {@code array}
 	 * @throws NullPointerException if the {@code arrays} is {@code null}.
 	 */
 	public Array<T> append(final Array<? extends T> array) {
@@ -541,7 +541,7 @@ public class Array<T> implements
 	 * 
 	 * @param values the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
-	 *         given {@code array}
+	 * 		  given {@code array}
 	 * @throws NullPointerException if the {@code values} is {@code null}.
 	 */
 	public Array<T> append(final Collection<? extends T> values) {
@@ -615,15 +615,15 @@ public class Array<T> implements
 	 * can be used as a range operation by passing an sub array view instead of 
 	 * an whole array. E.g.:
 	 * [code]
-	 *     array.subArray(4, 10).clear();
-	 *     Array<?> copy = array.subArray(5, 7).copy();
+	 * 	 array.subArray(4, 10).clear();
+	 * 	 Array<?> copy = array.subArray(5, 7).copy();
 	 * [/code]
 	 * 
 	 * @param start low end point (inclusive) of the sub array.
 	 * @param end high end point (exclusive) of the sub array.
 	 * @return a view of the specified range within this array.
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
-	 *         ({@code start < 0 || end > lenght() || start > end}).
+	 * 		  ({@code start < 0 || end > lenght() || start > end}).
 	 */
 	public Array<T> subArray(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
@@ -644,7 +644,7 @@ public class Array<T> implements
 	 * @see java.util.Collection#toArray()
 	 * 
 	 * @return an array containing all of the elements in this list in right 
-	 *         order
+	 * 		  order
 	 */
 	public Object[] toArray() {
 		final Object[] array = new Object[length()];
@@ -668,12 +668,12 @@ public class Array<T> implements
 	 * @see java.util.Collection#toArray(Object[])
 	 * 
 	 * @param array the array into which the elements of this array are to be 
-	 *        stored, if it is big enough; otherwise, a new array of the same 
-	 *        runtime type is allocated for this purpose. 
+	 * 		 stored, if it is big enough; otherwise, a new array of the same 
+	 * 		 runtime type is allocated for this purpose. 
 	 * @return an array containing the elements of this array
 	 * @throws ArrayStoreException if the runtime type of the specified array is 
-	 *         not a super type of the runtime type of every element in this array
-	 * @throws NullPointerException if the given array is {@code null}.  
+	 * 		  not a super type of the runtime type of every element in this array
+	 * @throws NullPointerException if the given array is {@code null}.	
 	 */
 	@SuppressWarnings("unchecked")
 	public T[] toArray(final T[] array) {
@@ -775,24 +775,24 @@ public class Array<T> implements
 		final String separator,
 		final String suffix
 	) {
-        final StringBuilder out = new StringBuilder();
-        
-        out.append(prefix);
-        if (length() > 0) {
-        	out.append(_array[_start]);
-        }
-        for (int i = _start + 1; i < _end; ++i) {
-        	out.append(separator);
-        	out.append(_array[i]);
-        }
-        out.append(suffix);
-        
-        return out.toString();		
+		  final StringBuilder out = new StringBuilder();
+		  
+		  out.append(prefix);
+		  if (length() > 0) {
+			out.append(_array[_start]);
+		  }
+		  for (int i = _start + 1; i < _end; ++i) {
+			out.append(separator);
+			out.append(_array[i]);
+		  }
+		  out.append(suffix);
+		  
+		  return out.toString();		
 	}
 	
 	@Override
 	public String toString() {
-        return toString("[", ",", "]");
+		  return toString("[", ",", "]");
 	}
 	
 	

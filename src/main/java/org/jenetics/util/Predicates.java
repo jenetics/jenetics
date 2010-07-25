@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -46,7 +46,7 @@ public final class Predicates {
 		 * Return {@code true} if the given value is {@code null}.
 		 * 
 		 * @return {@code true} if the given value is {@code null}, {@code false}
-		 *         otherwise..
+		 * 		  otherwise..
 		 */
 		@Override
 		public boolean evaluate(final Object object) {
@@ -145,7 +145,7 @@ public final class Predicates {
 	 * {@code null}.
 	 * 
 	 * @return a predicate which return {@code true} if an given value is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public static Predicate<Object> nil() {
 		return new Nil();
@@ -171,7 +171,7 @@ public final class Predicates {
 	 * @param b the second predicate
 	 * @return a {@code and} combination of the given predicates.
 	 * @throws NullPointerException if one of the given predicates is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public static <T> Predicate<T> and(
 		final Predicate<? super T> a, 
@@ -188,7 +188,7 @@ public final class Predicates {
 	 * @param b the second predicate
 	 * @return a {@code and} combination of the given predicates.
 	 * @throws NullPointerException if one of the given predicates is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public static <T> Predicate<T> or(
 		final Predicate<? super T> a, 
