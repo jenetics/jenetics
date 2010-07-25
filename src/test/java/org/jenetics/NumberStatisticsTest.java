@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
  */
 public class NumberStatisticsTest {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void serialize() throws XMLStreamException {
 		final Statistics statistics = new Statistics(234234, null, null, 0, 0, 0);

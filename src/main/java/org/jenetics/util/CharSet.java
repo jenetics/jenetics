@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -105,9 +105,9 @@ public class CharSet
 	 * 
 	 * @param c the character to test.
 	 * @return {@code true} if this character set contains the given character,
-	 *         {@code false} otherwise.
+	 * 		  {@code false} otherwise.
 	 * @throws NullPointerException if the given character {@code c} is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public boolean contains(final Character c) {
 		return contains(c.charValue());
@@ -118,7 +118,7 @@ public class CharSet
 	 * 
 	 * @param c the character to test.
 	 * @return {@code true} if this character set contains the given character,
-	 *         {@code false} otherwise.
+	 * 		  {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
 		return Arrays.binarySearch(_characters, c) >= 0;
@@ -143,7 +143,7 @@ public class CharSet
 	 * Test whether this character set is empty.
 	 * 
 	 * @return {@code true} if this character set is empty, {@code false} 
-	 *         otherwise.
+	 * 		  otherwise.
 	 */
 	public boolean isEmpty() {
 		return _characters.length == 0;

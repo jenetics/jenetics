@@ -414,6 +414,18 @@
 		<replace dir="${source.dir}" token="@!since!@" value="${version}" />
 	</target>
 	
+	<target name="space2tab">
+		<fixcrlf 
+			srcdir="${source.dir}" 
+			encoding="UTF-8" 
+			tab="add" 
+			tablength="3"
+			javafiles="yes"
+		>
+			<include name="org/jenetics/**/*.java" />
+		</fixcrlf>
+	</target>
+	
 </project>
 
 

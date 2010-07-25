@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -43,7 +43,7 @@ public interface Evaluator {
 	 * 
 	 * @param runnables the runnables to evaluate.
 	 * @throws NullPointerException if the runnable list (or one of its element)
-	 *         is {@code null}.
+	 * 		  is {@code null}.
 	 */
 	public void evaluate(final List<? extends Runnable> runnables);
 	
@@ -51,7 +51,7 @@ public interface Evaluator {
 	 * Return the number of parallel tasks of this evaluator.
 	 * 
 	 * @return the number of parallel tasks this evaluator tries to execute the
-	 *         given {@link Runnable}s.
+	 * 		  given {@link Runnable}s.
 	 */
 	public int getParallelTasks();
 	

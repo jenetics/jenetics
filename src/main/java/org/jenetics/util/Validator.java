@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -41,11 +41,11 @@ public final class Validator {
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
 	 * 
 	 * [code]
-	 *     final Array<String> array = ...
-	 *     array.foreach(new NonNull());
-	 *     ...
-	 *     final String[] array = ...
-	 *     ArrayUtils.foreach(array, new NonNull());
+	 * 	 final Array<String> array = ...
+	 * 	 array.foreach(new NonNull());
+	 * 	 ...
+	 * 	 final String[] array = ...
+	 * 	 ArrayUtils.foreach(array, new NonNull());
 	 * [/code]
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -81,8 +81,8 @@ public final class Validator {
 	 * The following code will throw an {@link IllegalArgumentException} if the
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
-	 *     final Array<Integer> array = ...
-	 *     array.foreach(new CheckRange<Integer>(0, 10));
+	 * 	 final Array<Integer> array = ...
+	 * 	 array.foreach(new CheckRange<Integer>(0, 10));
 	 * [/code]
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -117,7 +117,7 @@ public final class Validator {
 	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
-	 *     array.foreach(new Verify()) == -1
+	 * 	 array.foreach(new Verify()) == -1
 	 * [/code]
 	 * is true.
 	 * 
@@ -166,7 +166,7 @@ public final class Validator {
 	 * @param max the max value (exclusively).
 	 * @return {@code value} if within the range.
 	 * @throws IllegalArgumentException if the given {@code value} is out of
-	 *         range.
+	 * 		  range.
 	 */
 	public static <T extends Comparable<T>> T checkRange(
 		final T value, 
@@ -186,7 +186,7 @@ public final class Validator {
 	 * 
 	 * @param length the value to check.
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
-	 *         than zero.
+	 * 		  than zero.
 	 */
 	public static void nonNegative(final int length) {
 		if (length < 0) {

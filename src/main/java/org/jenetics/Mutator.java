@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -34,15 +34,15 @@ import org.jenetics.util.RandomRegistry;
  * This class is for mutating a chromosomes of an given population. There are 
  * two distinct roles mutation plays
  * <ul>
- * 	<li>Exploring the search space. By making small moves mutation allows a
- * 	population to explore the search space. This exploration is often slow
- * 	compared to crossover, but in problems where crossover is disruptive this
- * 	can be an important way to explore the landscape.
- * 	</li>
- * 	<li>Maintaining diversity. Mutation prevents a population from
- * 	correlating. Even if most of the search is being performed by crossover,
- * 	mutation can be vital to provide the diversity which crossover needs.
- * 	</li>
+ *	<li>Exploring the search space. By making small moves mutation allows a
+ *	population to explore the search space. This exploration is often slow
+ *	compared to crossover, but in problems where crossover is disruptive this
+ *	can be an important way to explore the landscape.
+ *	</li>
+ *	<li>Maintaining diversity. Mutation prevents a population from
+ *	correlating. Even if most of the search is being performed by crossover,
+ *	mutation can be vital to provide the diversity which crossover needs.
+ *	</li>
  * </ul>
  * 
  * The mutation rate is the parameter that must be optimized. The optimal value 
@@ -79,10 +79,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Construct a Mutation object which a given mutation probability.
 	 * 
 	 * @param probability Mutation probability. The given probability is
-	 * 	      divided by the number of chromosomes of the genotype to form
-	 * 	      the concrete mutation probability.
+	 *			divided by the number of chromosomes of the genotype to form
+	 *			the concrete mutation probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]}..
+	 * 		  valid range of {@code [0, 1]}..
 	 */
 	public Mutator(final double probability) {
 		super(probability);
@@ -154,15 +154,15 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * The {@link SwapMutator} does it in this way:
 	 * [code]
 	 * protected void mutate(final Array<G> genes) {
-	 *     final Random random = RandomRegistry.getRandom();
-	 *     final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
-	 *     final int[] elements = subset(genes.length(), subsetSize, random);
+	 * 	 final Random random = RandomRegistry.getRandom();
+	 * 	 final int subsetSize = (int)Math.ceil(genes.length()*_probability.doubleValue());
+	 * 	 final int[] elements = subset(genes.length(), subsetSize, random);
 	 *
-	 *     for (int i = 0; i < elements.length; ++i) {
-	 *         ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
-	 *     }
+	 * 	 for (int i = 0; i < elements.length; ++i) {
+	 * 		  ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
+	 * 	 }
 	 *
-	 *     _mutations += elements.length;
+	 * 	 _mutations += elements.length;
 	 * }
 	 * [/code]
 	 * 

@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -116,7 +116,7 @@ public class EnumGene<E extends Enum<E>>
 	}
 	
 
-	@SuppressWarnings({"unchecked" })
+	@SuppressWarnings({"rawtypes" })
 	private static final ObjectFactory<EnumGene> FACTORY = new ObjectFactory<EnumGene>() {
 		@Override protected EnumGene<?> create() {
 			return new EnumGene();
@@ -135,6 +135,7 @@ public class EnumGene<E extends Enum<E>>
 		return newInstance(value);
 	}
 
+	@Override
 	public Text toText() {
 		return Text.valueOf(_value.toString());
 	}
@@ -155,7 +156,7 @@ public class EnumGene<E extends Enum<E>>
 		
 	};
 	
-	@SuppressWarnings({ "unchecked"})
+	@SuppressWarnings({ "unchecked", "rawtypes"})
 	static final XMLFormat<EnumGene> 
 	XML = new XMLFormat<EnumGene>(EnumGene.class) 
 	{

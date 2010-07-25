@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  * them at some randomly chosen site. E.g.
  * </p>
  * <div align="center">
- * 	<img src="doc-files/SinglePointCrossover.gif" >
+ *	<img src="doc-files/SinglePointCrossover.gif" >
  * </div>
  * <p>
  * If we create a child and its complement we preserving the total number of 
@@ -67,7 +67,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * 
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]}.
+	 * 		  valid range of {@code [0, 1]}.
 	 */
 	public SinglePointCrossover(final double probability) {
 		super(probability);

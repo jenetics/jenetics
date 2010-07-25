@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -181,7 +181,7 @@ public final class BitUtils {
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 */
-	public static byte[] invert(final byte[] data)  {
+	public static byte[] invert(final byte[] data)	{
 		int d = 0;
 		for (int i = 0; i < data.length; ++i) {
 			d = data[i] & 0xFF;
@@ -307,40 +307,40 @@ public final class BitUtils {
 	 * position of a double number.
 	 * 
 	 * [code]
-	 *    double a = 0.0;
-	 *    for (int i = 0; i < 10; ++i) {
-	 *        a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
-	 *    }
+	 * 	double a = 0.0;
+	 * 	for (int i = 0; i < 10; ++i) {
+	 * 		 a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
+	 * 	}
 	 *
-	 *    for (int i = 0; i < 19; ++i) {
-	 *        a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
-	 *        System.out.println(
-	 *            a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
-	 *        );
-	 *     }
+	 * 	for (int i = 0; i < 19; ++i) {
+	 * 		 a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
+	 * 		 System.out.println(
+	 * 			  a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
+	 * 		 );
+	 * 	 }
 	 * [/code]
 	 * 
 	 * The code fragment above will create the following output:
 	 * <pre>
-	 *     4.4E-323    9    9
-	 *     4.0E-323    8    8
-	 *     3.5E-323    7    7
-	 *     3.0E-323    6    6
-	 *     2.5E-323    5    5
-	 *     2.0E-323    4    4
-	 *     1.5E-323    3    3
-	 *     1.0E-323    2    2
-	 *     4.9E-324    1    1
-	 *     0.0         0    0
-	 *    -4.9E-324   -1    1
-	 *    -1.0E-323   -2    2
-	 *    -1.5E-323   -3    3
-	 *    -2.0E-323   -4    4
-	 *    -2.5E-323   -5    5
-	 *    -3.0E-323   -6    6
-	 *    -3.5E-323   -7    7
-	 *    -4.0E-323   -8    8
-	 *    -4.4E-323   -9    9
+	 * 	 4.4E-323	 9 	9
+	 * 	 4.0E-323	 8 	8
+	 * 	 3.5E-323	 7 	7
+	 * 	 3.0E-323	 6 	6
+	 * 	 2.5E-323	 5 	5
+	 * 	 2.0E-323	 4 	4
+	 * 	 1.5E-323	 3 	3
+	 * 	 1.0E-323	 2 	2
+	 * 	 4.9E-324	 1 	1
+	 * 	 0.0			 0 	0
+	 * 	-4.9E-324	-1 	1
+	 * 	-1.0E-323	-2 	2
+	 * 	-1.5E-323	-3 	3
+	 * 	-2.0E-323	-4 	4
+	 * 	-2.5E-323	-5 	5
+	 * 	-3.0E-323	-6 	6
+	 * 	-3.5E-323	-7 	7
+	 * 	-4.0E-323	-8 	8
+	 * 	-4.4E-323	-9 	9
 	 * </pre>
 	 * 
 	 * @param a the double number.
@@ -395,7 +395,7 @@ public final class BitUtils {
 	 * @param data the string to convert.
 	 * @return the byte array.
 	 * @throws IllegalArgumentException if the given data string could not be
-	 *         converted.
+	 * 		  converted.
 	 */
 	public static byte[] toByteArray(final String data) {
 		final String[] parts = data.split("\\|");
@@ -428,13 +428,13 @@ public final class BitUtils {
 	 * *************************************************************************
 	 * 
 	 * Licensed to the Apache Software Foundation (ASF) under one or more
-	 * contributor license agreements.  See the NOTICE file distributed with
+	 * contributor license agreements.	See the NOTICE file distributed with
 	 * this work for additional information regarding copyright ownership.
 	 * The ASF licenses this file to You under the Apache License, Version 2.0
 	 * (the "License"); you may not use this file except in compliance with
 	 * the License.  You may obtain a copy of the License at
 	 *
-	 *      http://www.apache.org/licenses/LICENSE-2.0
+	 * 	  http://www.apache.org/licenses/LICENSE-2.0
 	 *
 	 * Unless required by applicable law or agreed to in writing, software
 	 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -490,7 +490,7 @@ public final class BitUtils {
 			ret = add(a, -b);
 		}
 		return ret;
-	}    
+	}	  
 	
 }
 

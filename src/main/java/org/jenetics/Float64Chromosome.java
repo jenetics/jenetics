@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -74,7 +74,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	 * @param max the maximal value of this chromosome.
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 *         one.
+	 * 		  one.
 	 */
 	public Float64Chromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
@@ -85,7 +85,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	 * 
 	 * @param genes the genes this chromosome consists.
 	 * @throws IllegalArgumentException if the number of genes is smaller than 
-	 *        one.
+	 * 		 one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {

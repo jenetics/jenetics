@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -67,10 +67,10 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-     *         <tt>j &gt; a.length</tt>
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	  *			<tt>j &gt; a.length</tt>
+	  * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		nonNull(array, "Array");
@@ -86,10 +86,10 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-     *         <tt>j &gt; a.length</tt>
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	  *			<tt>j &gt; a.length</tt>
+	  * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		nonNull(array, "Array");
@@ -106,10 +106,10 @@ public final class ArrayUtils {
 	 * @param list the array
 	 * @param i index of the first list element.
 	 * @param j index of the second list element.
-     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-     *         <tt>j &gt; a.length</tt>
-     * @throws NullPointerException if the give list is {@code null}.
+	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	  *			<tt>j &gt; a.length</tt>
+	  * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void swap(final List<T> list, final int i, final int j) {
 		nonNull(list, "Array");
@@ -126,12 +126,12 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-     * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-     *         <tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-     *         <tt>j &gt; a.length</tt>
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	  *			<tt>j &gt; a.length</tt>
+	  * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void swap(final Array<T> array, final int i, final int j) {
 		nonNull(array, "Array");
@@ -145,13 +145,13 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
 	 * @see Arrays#sort(Object[], int, int, Comparator)
-     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-     *         <tt>to &gt; a.length</tt>
-     * @throws NullPointerException if the give array or comparator is 
-     *         {@code null}.
+	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	  *			<tt>to &gt; a.length</tt>
+	  * @throws NullPointerException if the give array or comparator is 
+	  *			{@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void sort(
 		final Array<T> array, final int from, final int to,
@@ -171,10 +171,10 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * @see Arrays#sort(Object[], Comparator)
 	 * 
-     * @throws NullPointerException if the give array or comparator is 
-     *         {@code null}.
+	  * @throws NullPointerException if the give array or comparator is 
+	  *			{@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void sort(
 		final Array<T> array, final Comparator<? super T> comparator
@@ -189,12 +189,12 @@ public final class ArrayUtils {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * @see Arrays#sort(Object[], int, int)
-     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-     *         <tt>to &gt; a.length</tt>
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	  *			<tt>to &gt; a.length</tt>
+	  * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array, final int from, final int to) 
@@ -210,9 +210,9 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
 	 * @see Arrays#sort(Object[])
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array) 
@@ -316,10 +316,10 @@ public final class ArrayUtils {
 	 * @param <T> the comparable type.
 	 * @param array the array to search.
 	 * @return an array of size two. The first element contains the minimum and
-	 *         the second element contains the maximum value. If the given array
-	 *         has size zero, the min and max values of the returned array are 
-	 *         {@code null}.
-     * @throws NullPointerException if the give array is {@code null}.
+	 * 		  the second element contains the maximum value. If the given array
+	 * 		  has size zero, the min and max values of the returned array are 
+	 * 		  {@code null}.
+	  * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T extends Object & Comparable<? super T>> Array<T> 
 	minmax(final Array<T> array) 
@@ -403,9 +403,9 @@ public final class ArrayUtils {
 	 * @param k searching the index of the <i>k</i><sup>th</sup> smallest value.
 	 * @return the index of the <i>k</i><sup>th</sup> smallest value.
 	 * @throws NullPointerException if the {@code array} or one of it's element 
-	 *         is {@code null}.
+	 * 		  is {@code null}.
 	 * @throws IllegalArgumentException if {@code k < 0} or 
-	 *         {@code k > values.length() - 1}.
+	 * 		  {@code k > values.length() - 1}.
 	 */
 	public static <T extends Object & Comparable<? super T>> int
 	iselect(final Array<T> array, final int k) 
@@ -519,7 +519,7 @@ public final class ArrayUtils {
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @throws NullPointerException if the give array or the random object is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public static void shuffle(final int[] array, final Random random) {
 		nonNull(array, "Array");
@@ -537,7 +537,7 @@ public final class ArrayUtils {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array, final Random random) {
 		nonNull(array, "Array");
@@ -555,9 +555,9 @@ public final class ArrayUtils {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void shuffle(final Array<T> array, final Random random) {
 		nonNull(array, "Array");
@@ -577,7 +577,7 @@ public final class ArrayUtils {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list, final Random random) {
 		nonNull(list, "List");
@@ -595,10 +595,10 @@ public final class ArrayUtils {
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
-     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-     *         <tt>to &gt; a.length</tt>
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	  *			<tt>to &gt; a.length</tt>
+	  * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
 		nonNull(array, "Array");
@@ -621,12 +621,12 @@ public final class ArrayUtils {
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
-     * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-     *         <tt>to &gt; a.length</tt>
-     * @throws NullPointerException if the give array is {@code null}.
+	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	  *			<tt>to &gt; a.length</tt>
+	  * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void reverse(final Array<T> array, final int from, final int to) {
 		nonNull(array, "Array");
@@ -661,7 +661,7 @@ public final class ArrayUtils {
 	 * @param array the array to reverse.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 *         ({@code array.isSealed() == true}).
+	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void reverse(final Array<T> array) {
 		nonNull(array, "Array");
@@ -688,47 +688,47 @@ public final class ArrayUtils {
 	 * <p/>
 	 * Some examples:
 	 * <pre>
-	 *     partition(10, 3): [0, 3, 6, 10]
-	 *     partition(15, 6): [0, 2, 4, 6, 9, 12, 15]
-	 *     partition(5, 10): [0, 1, 2, 3, 4, 5]
+	 * 	 partition(10, 3): [0, 3, 6, 10]
+	 * 	 partition(15, 6): [0, 2, 4, 6, 9, 12, 15]
+	 * 	 partition(5, 10): [0, 1, 2, 3, 4, 5]
 	 * </pre>
 	 * 
 	 * The following examples prints the start index (inclusive) and the end
 	 * index (exclusive) of the {@code partition(15, 6)}.
 	 * [code]
-	 *     int[] parts = partition(15, 6);
-	 *     for (int i = 0; i < parts.length - 1; ++i) {
-	 *         System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]); 
-	 *     }
+	 * 	 int[] parts = partition(15, 6);
+	 * 	 for (int i = 0; i < parts.length - 1; ++i) {
+	 * 		  System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]); 
+	 * 	 }
 	 * [/code]
 	 * <pre>
-	 *     0: 0    2
-	 *     1: 2    4
-	 *     2: 4    6
-	 *     3: 6    9
-	 *     4: 9    12
-	 *     5: 12   15	
+	 * 	 0: 0 	2
+	 * 	 1: 2 	4
+	 * 	 2: 4 	6
+	 * 	 3: 6 	9
+	 * 	 4: 9 	12
+	 * 	 5: 12	15	
 	 * </pre>
 	 * 
 	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
-	 *     ConcurrentContext.enter();
-	 *     try {
-	 *        final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
+	 * 	 ConcurrentContext.enter();
+	 * 	 try {
+	 * 		 final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
 	 *		
-	 *        for (int i = 0; i < parts.length - 1; ++i) {
-	 *            final int part = i;
-	 *            ConcurrentContext.execute(new Runnable() {
-	 *                public void run() {
-	 *                    for (int j = parts[part + 1]; --j >= parts[part];) {
-	 *                        population.get(j).evaluate();
-	 *                    }
-	 *                }
-	 *            });
-	 *        }
-	 *     } finally {
-	 *         ConcurrentContext.exit();
-	 *     }
+	 * 		 for (int i = 0; i < parts.length - 1; ++i) {
+	 * 			  final int part = i;
+	 * 			  ConcurrentContext.execute(new Runnable() {
+	 *  					 public void run() {
+	 * 						 for (int j = parts[part + 1]; --j >= parts[part];) {
+	 * 							  population.get(j).evaluate();
+	 * 						 }
+	 * 					}
+	 * 			  });
+	 * 		 }
+	 * 	 } finally {
+	 * 		  ConcurrentContext.exit();
+	 * 	 }
 	 * [/code]
 	 * 
 	 * @param size the size of the array to partition.
@@ -775,9 +775,9 @@ public final class ArrayUtils {
 	 * @param k the size of the subset.
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code random} or {@code sub} is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if 
-	 *         {@code n*k} will cause an integer overflow.
+	 * 		  {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k, final Random random) {
@@ -806,28 +806,28 @@ public final class ArrayUtils {
 	 * 
 	 * <p>
 	 * <em>Authors:</em>
-	 *     FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
-	 *     version based on the  C++ version by John Burkardt.
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 * 	 version based on the  C++ version by John Burkardt.
 	 * </p>
 	 * 
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
-	 *     Albert Nijenhuis, Herbert Wilf,
-	 *     Combinatorial Algorithms for Computers and Calculators,
-	 *     Second Edition,
-	 *     Academic Press, 1978,
-	 *     ISBN: 0-12-519260-6,
-	 *     LC: QA164.N54.
+	 * 	 Albert Nijenhuis, Herbert Wilf,
+	 * 	 Combinatorial Algorithms for Computers and Calculators,
+	 * 	 Second Edition,
+	 * 	 Academic Press, 1978,
+	 * 	 ISBN: 0-12-519260-6,
+	 * 	 LC: QA164.N54.
 	 * </p>
 	 * 
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code random} or {@code sub} is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length}, 
-	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an 
-	 *         integer overflow.
+	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an 
+	 * 		  integer overflow.
 	 */
 	public static void subset(final int n, final int sub[], final Random random) {
 		nonNull(random, "Random");
@@ -940,7 +940,7 @@ public final class ArrayUtils {
 	 * @param p the permutation array.
 	 * @param random the random number generator.
 	 * @throws NullPointerException if the permutation array or the random number
-	 *         generator is {@code null}.
+	 * 		  generator is {@code null}.
 	 */
 	public static void permutation(final int[] p, final Random random) {
 		nonNull(p, "Permutation array");
@@ -957,18 +957,18 @@ public final class ArrayUtils {
 	 * 
 	 * <p>
 	 * <em>Authors:</em>
-	 *     FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
-	 *     version based on the  C++ version by John Burkardt.
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 * 	 version based on the  C++ version by John Burkardt.
 	 * </p>
 	 * 
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
-	 *     Albert Nijenhuis, Herbert Wilf,
-	 *     Combinatorial Algorithms for Computers and Calculators,
-	 *     Second Edition,
-	 *     Academic Press, 1978,
-	 *     ISBN: 0-12-519260-6,
-	 *     LC: QA164.N54.
+	 * 	 Albert Nijenhuis, Herbert Wilf,
+	 * 	 Combinatorial Algorithms for Computers and Calculators,
+	 * 	 Second Edition,
+	 * 	 Academic Press, 1978,
+	 * 	 ISBN: 0-12-519260-6,
+	 * 	 LC: QA164.N54.
 	 * </p>
 	 * 
 	 * @param p the permutation array.
@@ -1022,11 +1022,11 @@ public final class ArrayUtils {
 	 * @param start the start index of the search.
 	 * @param element the element to search for.
 	 * @return the index of the first occurrence of the specified element in the
-	 *         given {@code array}, of -1 if the {@code array} does not contain
-	 *         the element.
+	 * 		  given {@code array}, of -1 if the {@code array} does not contain
+	 * 		  the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value 
-	 *        (start < 0 || end > length || start > end)
+	 * 		 (start < 0 || end > length || start > end)
 	 */
 	public static int indexOf(
 		final Object[] array, final int start, final int end, 
@@ -1064,8 +1064,8 @@ public final class ArrayUtils {
 	 * @param array the array to search.
 	 * @param element the element to search for.
 	 * @return the index of the first occurrence of the specified element in the
-	 *         given {@code array}, of -1 if the {@code array} does not contain
-	 *         the element.
+	 * 		  given {@code array}, of -1 if the {@code array} does not contain
+	 * 		  the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
 	public static int indexOf(final Object[] array, final Object element) {
@@ -1122,16 +1122,16 @@ public final class ArrayUtils {
 	 * Can be used to check all array elements for nullness.
 	 * 
 	 * [code]
-	 *     public void foo(final Integer[] values) {
-	 *         ArrayUtils.foreach(values, new Validator.NonNull());
-	 *         ...
-	 *     }
+	 * 	 public void foo(final Integer[] values) {
+	 * 		  ArrayUtils.foreach(values, new Validator.NonNull());
+	 * 		  ...
+	 * 	 }
 	 * [/code]
 	 * 
 	 * @param array the array to iterate.
 	 * @param predicate the applied predicate.
 	 * @return the index of the last visited element, or -1 if all elements has
-	 *         been visited.
+	 * 		  been visited.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(
@@ -1160,7 +1160,7 @@ public final class ArrayUtils {
 	 * @param values the values to iterate.
 	 * @param predicate the applied predicate.
 	 * @return the index of the last visited element, or -1 if all elements has
-	 *         been visited.
+	 * 		  been visited.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(

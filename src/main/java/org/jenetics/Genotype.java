@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -93,7 +93,7 @@ public class Genotype<T extends Gene<?, T>>
 	 * {@code Genotype}.
 	 * 
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
-	 *         {@code Genotype}.
+	 * 		  {@code Genotype}.
 	 */
 	public T getGene() {
 		assert(_chromosomes != null);
@@ -199,9 +199,9 @@ public class Genotype<T extends Gene<?, T>>
 	 * The <code>Chromosome</code> array <code>c</code> is cloned.
 	 * 
 	 * @param chromosomes The <code>Chromosome</code> array the <code>Genotype</code>
-	 *        consists of.
+	 * 		 consists of.
 	 * @throws NullPointerException if <code>c</code> is null or one of the
-	 * 		   chromosome.
+	 *			chromosome.
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
@@ -224,7 +224,7 @@ public class Genotype<T extends Gene<?, T>>
 	 * Create a new Genotype from a given {@link Chromosome}
 	 * 
 	 * @param chromosome The <code>Chromosome</code> array the <code>Genotype</code>
-	 *        consists of.
+	 * 		 consists of.
 	 * @throws NullPointerException if <code>chromosome</code> is null.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(

@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -46,9 +46,9 @@ public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>>
 	 * <a href="http://jscience.org/">JScience</a> {@link Function} object.
 	 * 
 	 * @param adoptee the <a href="http://jscience.org/">JScience</a>
-	 *        {@link Function} object.
+	 * 		 {@link Function} object.
 	 * @throws NullPointerException if the function {@code adoptee} is 
-	 *        {@code null}.
+	 * 		 {@code null}.
 	 */
 	public FunctionAdapter(final Function<Genotype<G>, C> adoptee) {
 		_adoptee = nonNull(adoptee, "Fitness function");

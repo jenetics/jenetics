@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -72,7 +72,7 @@ public class Integer64Gene
 	 * @param number The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 * @throws IllegalArgumentException if the gene value is not in the range
-	 * 		(value < min || value > max).
+	 *		(value < min || value > max).
 	 */
 	public Integer64Gene newInstance(final long number) {
 		return newInstance(Integer64.valueOf(number));

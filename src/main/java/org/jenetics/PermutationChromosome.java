@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -57,12 +57,12 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 	 * @param values the values of the newly created PermutationChromosome.
 	 * @throws NullPointerException it the given {@code values} are {@code null}.
 	 * @throws IllegalArgumentException if
-	 *          <ul>
-	 *             <li>the {@code values} array contains duplicate values or</li>
-	 *             <li>one of the array value is smaller than zero or</li>
-	 *             <li>one of the array value is greater than {@code values.length - 1} or</li>
-	 *             <li>the array length is smaller than 1</li>
-	 *          </ul>
+	 * 			<ul>
+	 * 				<li>the {@code values} array contains duplicate values or</li>
+	 * 				<li>one of the array value is smaller than zero or</li>
+	 * 				<li>one of the array value is greater than {@code values.length - 1} or</li>
+	 * 				<li>the array length is smaller than 1</li>
+	 * 			</ul>
 	 */
 	public PermutationChromosome(final int[] values) {
 		super(values.length);
@@ -110,10 +110,10 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 	 * 
 	 * @param length the length of the chromosome.
 	 * @param randomize if true, the chromosome is randomized, otherwise the
-	 *        values of the chromosome are in ascending order from 0 to 
-	 *        {@code length - 1}
+	 * 		 values of the chromosome are in ascending order from 0 to 
+	 * 		 {@code length - 1}
 	 * @throws IllegalArgumentException if the given {@code length} is smaller 
-	 *         than 1.
+	 * 		  than 1.
 	 */
 	public PermutationChromosome(final int length, final boolean randomize) {
 		super(length);

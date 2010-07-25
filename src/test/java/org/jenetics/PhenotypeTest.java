@@ -48,13 +48,13 @@ public class PhenotypeTest {
 	final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
 		
+		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void serialize() throws XMLStreamException, IOException {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
@@ -76,6 +76,7 @@ public class PhenotypeTest {
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
+		@SuppressWarnings("rawtypes")
 		final Phenotype p = (Phenotype)reader.read();
 		
 		Assert.assertEquals(p.getGenotype(), pt.getGenotype());

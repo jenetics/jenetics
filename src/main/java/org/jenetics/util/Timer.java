@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics.util;
 
@@ -97,12 +97,12 @@ public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneab
 	 * Return the overall time of this timer. The following code snippet would
 	 * return a measured time of 10 s (theoretically).
 	 * [code]
-	 *     final Timer timer = new Timer();
-	 *     for (int i = 0; i < 10) {
-	 *         timer.start();
-	 *         Thread.sleep(1000);
-	 *         timer.stop();
-	 *     }
+	 * 	 final Timer timer = new Timer();
+	 * 	 for (int i = 0; i < 10) {
+	 * 		  timer.start();
+	 * 		  Thread.sleep(1000);
+	 * 		  timer.stop();
+	 * 	 }
 	 * [/code]
 	 * 
 	 * @return the measured time so far.

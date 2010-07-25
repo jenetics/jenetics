@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -56,7 +56,7 @@ public enum Optimize {
 	 * @param o1 the first object to be compared.
 	 * @param o2 the second object to be compared.
 	 * @return a negative integer, zero, or a positive integer as the first 
-	 *         argument is better than, equal to, or worse than the second.
+	 * 		  argument is better than, equal to, or worse than the second.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public <T extends Comparable<T>> int compare(final T o1, final T o2) {

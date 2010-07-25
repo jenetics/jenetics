@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -33,7 +33,7 @@ import java.io.Serializable;
  * <p/><img src="doc-files/linear-rank-selector.gif" alt="Linear Rank Selection" /></p> 
  * 
  * Here <i>n</i><sub><i>m</i></sub>/<i>N</i> is the probability of the worst Phenotype 
- * individual to be  selected and <i>n</i><sub><i>p</i></sub>/<i>N</i> the probability 
+ * individual to be	selected and <i>n</i><sub><i>p</i></sub>/<i>N</i> the probability 
  * of the best Phenotype individual to be selected. As the population size is 
  * held constant, the conditions <i>n</i><sub><i>p</i></sub> = 2 - <i>n</i><sub><i>m</i></sub>
  * and <i>n</i><sub><i>m</i></sub> >= 0 must be fulfilled. Note that all individuals 
@@ -44,7 +44,7 @@ import java.io.Serializable;
  * T. Blickle, L. Thiele, A comparison of selection schemes used 
  * in evolutionary algorithms, Technical Report, ETH Zurich, 1997, page 37.
  * <a href="http://citeseer.ist.psu.edu/blickle97comparison.html">
- * 	http://citeseer.ist.psu.edu/blickle97comparison.html
+ *	http://citeseer.ist.psu.edu/blickle97comparison.html
  * </a>
  * </i>
  * 
@@ -70,7 +70,7 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 	 * Create a new LinearRankSelector with the given values for {@code nminus}.
 	 * 
 	 * @param nminus {@code nminus/N} is the probability of the worst phenotype 
-	 *        to be selected.
+	 * 		 to be selected.
 	 * @throws IllegalArgumentException if {@code nminus < 0}.
 	 */
 	public LinearRankSelector(final double nminus) {

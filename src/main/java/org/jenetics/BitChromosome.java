@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -130,7 +130,7 @@ public class BitChromosome extends Number<BitChromosome>
 			@Override public boolean hasNext() {
 				return _pos < _length;
 			}
-			@Override public BitGene next()  {
+			@Override public BitGene next()	{
 				return get(_pos++) ? BitGene.TRUE : BitGene.FALSE;
 			}
 			@Override public void remove() {
@@ -174,17 +174,17 @@ public class BitChromosome extends Number<BitChromosome>
 		return LargeInteger.valueOf(_genes, 0, _genes.length);
 	}
 	
-    /**
-     * Returns the two's-complement binary representation of this 
-     * large integer. The output array is in <i>big-endian</i>
-     * byte-order: the most significant byte is at the offset position.
-     * 
-     * <p>Note: This representation is consistent with <code>java.lang.BigInteger
-     *          </code> byte array representation and can be used for conversion 
-     *          between the two classes.</p>
-     * 
-     * @param  bytes the bytes to hold the binary representation 
-     *         (two's-complement) of this large integer.
+	 /**
+	  * Returns the two's-complement binary representation of this 
+	  * large integer. The output array is in <i>big-endian</i>
+	  * byte-order: the most significant byte is at the offset position.
+	  * 
+	  * <p>Note: This representation is consistent with <code>java.lang.BigInteger
+	  *			 </code> byte array representation and can be used for conversion 
+	  *			 between the two classes.</p>
+	  * 
+	  * @param	bytes the bytes to hold the binary representation 
+	  *			(two's-complement) of this large integer.
      * @return the number of bytes written.
      * @throws IndexOutOfBoundsException 
      *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  

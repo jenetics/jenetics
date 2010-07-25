@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -56,7 +56,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	 * in the order they are returned by the collection's iterator.  
 	 *
 	 * @param population the collection whose elements are to be placed into 
-	 *        this list.
+	 * 		 this list.
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
 	public Population(final Collection<? extends Phenotype<G, C>> population) {
@@ -69,7 +69,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	 * 
 	 * @param size Preallocated population size.
 	 * @throws IllegalArgumentException if the specified initial capacity is 
-	 *         negative
+	 * 		  negative
 	 */
 	public Population(final int size) {
 		_population = new ArrayList<Phenotype<G, C>>(size);
@@ -278,7 +278,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	}
 	
 	
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<Population> 
 	XML = new XMLFormat<Population>(Population.class) 
 	{

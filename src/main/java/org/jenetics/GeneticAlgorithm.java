@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -45,56 +45,56 @@ import org.jenetics.util.Validator;
  * 
  * A simple GeneticAlgorithm setup.
  * [code]
- *     //Defining a genotype factory.
- *     final Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
- *             BitChromosome.valueOf(10, 0.5);
- *         );
- *         
- *     // Defining the fitness function.
- *     final FitnessFunction<BitGene, Float64> ff = ...;
- *     
- *     // The given fitness function will be maximized. By default 
- *     // the GA tries to maximize the fitness function.
- *     final Optimize opt = Optimize.MINIMUM;
- *     
- *     // Create the GA.
- *     final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
+ * 	 //Defining a genotype factory.
+ * 	 final Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
+ * 				BitChromosome.valueOf(10, 0.5);
+ * 		  );
+ * 		  
+ * 	 // Defining the fitness function.
+ * 	 final FitnessFunction<BitGene, Float64> ff = ...;
+ * 	 
+ * 	 // The given fitness function will be maximized. By default 
+ * 	 // the GA tries to maximize the fitness function.
+ * 	 final Optimize opt = Optimize.MINIMUM;
+ * 	 
+ * 	 // Create the GA.
+ * 	 final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
  * [code]
- *     ga.setup();
- *     ga.evolve(100);
- *     System.out.println(ga.getStatistics());
+ * 	 ga.setup();
+ * 	 ga.evolve(100);
+ * 	 System.out.println(ga.getStatistics());
  * [/code]
  * 
  * It is possible to set an initial population instead an random one. The 
  * fitness function and the fitness scaler is not initialized by the
  * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
  * [code]
- *     final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
- *         IOUtils.readXML(Population.class, new FileInputStream("population.xml");
- *     ga.setPopulation(population);
- *     //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
- *     ga.setup();
- *     ga.evolve(100);
- *     System.out.println(ga.getStatistics());
+ * 	 final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
+ * 		  IOUtils.readXML(Population.class, new FileInputStream("population.xml");
+ * 	 ga.setPopulation(population);
+ * 	 //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
+ * 	 ga.setup();
+ * 	 ga.evolve(100);
+ * 	 System.out.println(ga.getStatistics());
  * [/code]
  * 
  * If you have a problem to solve which requires expensive fitness calculation
  * you can parallelize the fitness calculation by using an 
  * {@link org.jenetics.util.Evaluator}.
  * [code]
- *     final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
- *     ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
+ * 	 final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
+ * 	 ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
- *         Wikipedia: Genetic algorithm
- *      </a>
+ * 		  Wikipedia: Genetic algorithm
+ * 	  </a>
  * 
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).
@@ -178,7 +178,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
+	 * 		 fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
@@ -223,7 +223,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
+	 * 		 fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
@@ -293,7 +293,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * Evolve one generation.
 	 * 
 	 * @throws IllegalStateException if the {@link GeneticAlgorithm#setup()} 
-	 *         method was not called first.
+	 * 		  method was not called first.
 	 */
 	public void evolve() {
 		_lock.lock();
@@ -480,55 +480,55 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * <p/>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 *     final GeneticAlgorithm<DoubleGene, Float64> ga = ...
-	 *     final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
-	 *     
-	 *     //Starting the GA in separate thread.
-	 *     final Thread thread = new Thread(new Runnable() {
-	 *         public void run() {
-	 *             while (!Thread.currentThread().isInterrupted() && 
-	 *                    !stopCondition.evaluate(ga)) 
-	 *             {
-	 *                 if (ga.getGeneration() == 0) {
-	 *                     ga.setup();
-	 *                 } else {
-	 *                     ga.evolve();
-	 *                 }
-	 *             }
-	 *         }
-	 *     });
-	 *     thread.start();
-	 *     
-	 *     //Changing the GA parameters outside the evolving thread. All parameters
-	 *     //are changed before the next evolve step.
-	 *     ga.getLock().lock();
-	 *     try {
-	 *         ga.setAlterer(new Mutation(Probability.valueOf(0.02));
-	 *         ga.setPopulationSize(55);
-	 *         ga.setMaximalPhenotypeAge(30);
-	 *     } finally {
-	 *         ga.getLock().unlock();
-	 *     }
+	 * 	 final GeneticAlgorithm<DoubleGene, Float64> ga = ...
+	 * 	 final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
+	 * 	 
+	 * 	 //Starting the GA in separate thread.
+	 * 	 final Thread thread = new Thread(new Runnable() {
+	 * 		  public void run() {
+	 * 				while (!Thread.currentThread().isInterrupted() && 
+	 * 	   				  !stopCondition.evaluate(ga)) 
+	 * 				{
+	 * 					 if (ga.getGeneration() == 0) {
+	 * 						  ga.setup();
+	 * 					 } else {
+	 * 						  ga.evolve();
+	 * 					 }
+	 * 				}
+	 * 		  }
+	 * 	 });
+	 * 	 thread.start();
+	 * 	 
+	 * 	 //Changing the GA parameters outside the evolving thread. All parameters
+	 * 	 //are changed before the next evolve step.
+	 * 	 ga.getLock().lock();
+	 * 	 try {
+	 * 		  ga.setAlterer(new Mutation(Probability.valueOf(0.02));
+	 * 		  ga.setPopulationSize(55);
+	 * 		  ga.setMaximalPhenotypeAge(30);
+	 * 	 } finally {
+	 * 		  ga.getLock().unlock();
+	 * 	 }
 	 * [/code]
 	 * 
 	 * You can use the same lock if you want get a consistent state of the used
 	 * parameters, if they where changed within an other thread.
 	 * 
 	 * [code]
-	 *     ga.getLock().lock();
-	 *     try {
-	 *         final Statistics<?, ?> statistics = ga.getStatistic();
-	 *         final FitnessScaler<?> scaler = ga.getFitnessScaler();
-	 *     } finally {
-	 *         ga.getLock().unlock();
-	 *     }
+	 * 	 ga.getLock().lock();
+	 * 	 try {
+	 * 		  final Statistics<?, ?> statistics = ga.getStatistic();
+	 * 		  final FitnessScaler<?> scaler = ga.getFitnessScaler();
+	 * 	 } finally {
+	 * 		  ga.getLock().unlock();
+	 * 	 }
 	 * [/code]
 	 * 
 	 * The code above ensures that the returned {@code statistics} and 
 	 * {@code scaler} were used together within the same {@link #evolve()} step.
 	 * 
 	 * @return the lock acquired in the {@link #setup()} and the {@link #evolve()}
-	 *         method.
+	 * 		  method.
 	 */
 	public Lock getLock() {
 		return _lock;
@@ -630,7 +630,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * been initialized yet.
 	 * 
 	 * @return the best {@link Phenotype} so far or {@code null} if the GA hasn't
-	 *         been initialized yet.
+	 * 		  been initialized yet.
 	 */
 	public Phenotype<G, C> getBestPhenotype() {
 		return _bestStatistics != null ? _bestStatistics.getBestPhenotype() : null;
@@ -641,7 +641,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * if the GA hasn't been initialized yet.
 	 * 
 	 * @return the current {@link Population} {@link Statistics} or {@code null} 
-	 *         if the GA hasn't been initialized yet.
+	 * 		  if the GA hasn't been initialized yet.
 	 */
 	public Statistics<G, C> getStatistics() {
 		return _statistics;
@@ -727,7 +727,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @param size The population size.
 	 * @throws IllegalArgumentException if the population size is smaller than
-	 * 		one.
+	 *		one.
 	 */
 	public void setPopulationSize(final int size) {
 		if (size < 1) {
@@ -743,11 +743,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * function and fitness scaler will not be changed.
 	 * 
 	 * @param population The list of phenotypes to set. The population size is 
-	 *        set to <code>phenotype.size()</code>.
+	 * 		 set to <code>phenotype.size()</code>.
 	 * @throws NullPointerException if the population, or one of its element, is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 * @throws IllegalArgumentException it the population size is smaller than
-	 *         one.
+	 * 		  one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
 		ArrayUtils.foreach(population, new Validator.NonNull());
@@ -773,11 +773,11 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * function and fitness scaler will not be changed.
 	 * 
 	 * @param genotypes The list of genotypes to set. The population size is set 
-	 *        to <code>genotypes.size()</code>.
+	 * 		 to <code>genotypes.size()</code>.
 	 * @throws NullPointerException if the population, or one of its elements, 
-	 *         is {@code null}s.
+	 * 		  is {@code null}s.
 	 * @throws IllegalArgumentException it the population size is smaller than
-	 * 		   one.
+	 *			one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
 		ArrayUtils.foreach(genotypes, new Validator.NonNull());
@@ -815,7 +815,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * {@code null} if the algorithms hasn't been initialized.
 	 * 
 	 * @return the statistics of the best phenotype, or {@code null} if the GA
-	 *         hashn't been initialized yet.
+	 * 		  hashn't been initialized yet.
 	 */
 	public Statistics<G, C> getBestStatistics() {
 		return _bestStatistics;
@@ -826,7 +826,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 
 	 * @param calculator the new statistic calculator.
 	 * @throws NullPointerException if the given {@code calculator} is 
-	 *         {@code null}.
+	 * 		  {@code null}.
 	 */
 	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
 		_calculator = nonNull(calculator, "Statistic calculator");
@@ -888,7 +888,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
+	 * 		 fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
@@ -931,7 +931,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
+	 * 		 fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>

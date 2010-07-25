@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -96,7 +96,7 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	 * interval closed interval [min, max].
 	 * 
 	 * @return if this gene is valid, which means the gene value is within the
-	 *         closed interval [min, max].
+	 * 		  closed interval [min, max].
 	 */
 	@Override
 	public boolean isValid() {
@@ -135,16 +135,16 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 		return _max;
 	}
 	
-    @Override
+	 @Override
 	public double doubleValue() {
-    	return _value.doubleValue();
-    }
-    
-    @Override
+		return _value.doubleValue();
+	 }
+	 
+	 @Override
 	public long longValue() {
-    	return _value.longValue();
-    }
-    
+		return _value.longValue();
+	 }
+	 
 	@Override
 	public boolean isLargerThan(final G that) {
 		return _value.isLargerThan(that._value);
@@ -164,7 +164,7 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	public G times(final G that) {
 		return newInstance(_value.times(that._value));
 	}
-    
+	 
 	@Override
 	public int compareTo(final G that) {
 		return _value.compareTo(that._value);

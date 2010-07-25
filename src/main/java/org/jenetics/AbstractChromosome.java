@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -62,7 +62,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * 
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 *         one.
+	 * 		  one.
 	 */
 	protected AbstractChromosome(final int length) {
 		if (length < 1) {
@@ -82,7 +82,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 *         smaller than one.
+	 * 		  smaller than one.
 	 */
 	protected AbstractChromosome(final Array<G> genes) {
 		nonNull(genes, "Gene array");
@@ -136,7 +136,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * 
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not 
-	 *         found.
+	 * 		  found.
 	 */
 	protected int indexOf(final G gene) {
 		return _genes.indexOf(gene);

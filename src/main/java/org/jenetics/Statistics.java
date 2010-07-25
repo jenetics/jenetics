@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 	 
  */
 package org.jenetics;
 
@@ -212,7 +212,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	
 	public boolean equals(final Statistics<G, C> statistics, final int ulps) {
 		return statistics == this ||
-			   (equals(statistics._ageMean, _ageMean, ulps) &&
+				(equals(statistics._ageMean, _ageMean, ulps) &&
 				equals(statistics._ageVariance, _ageVariance, ulps) &&
 				_best != null ? _best.equals(statistics._best) : statistics._best == null &&
 				_worst != null ? _worst.equals(statistics._worst) : statistics._worst == null);
@@ -251,7 +251,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 		return out.toString();
 	}
 	
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected static final XMLFormat<Statistics> XML = 
 		new XMLFormat<Statistics>(Statistics.class) 
 	{
