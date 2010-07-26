@@ -719,7 +719,7 @@ public final class ArrayUtils {
 	 * 		 for (int i = 0; i < parts.length - 1; ++i) {
 	 * 			  final int part = i;
 	 * 			  ConcurrentContext.execute(new Runnable() {
-	 *  					 public void run() {
+	 * �					 public void run() {
 	 * 						 for (int j = parts[part + 1]; --j >= parts[part];) {
 	 * 							  population.get(j).evaluate();
 	 * 						 }
@@ -1295,6 +1295,7 @@ public final class ArrayUtils {
 	}
 	
 }
+
 
 
 
