@@ -67,10 +67,10 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	  *			<tt>j &gt; a.length</tt>
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	 *			<tt>j &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		nonNull(array, "Array");
@@ -86,10 +86,10 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	  *			<tt>j &gt; a.length</tt>
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	 *			<tt>j &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		nonNull(array, "Array");
@@ -106,10 +106,10 @@ public final class ArrayUtils {
 	 * @param list the array
 	 * @param i index of the first list element.
 	 * @param j index of the second list element.
-	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	  *			<tt>j &gt; a.length</tt>
-	  * @throws NullPointerException if the give list is {@code null}.
+	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	 *			<tt>j &gt; a.length</tt>
+	 * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void swap(final List<T> list, final int i, final int j) {
 		nonNull(list, "Array");
@@ -126,10 +126,10 @@ public final class ArrayUtils {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	  * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	  *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	  *			<tt>j &gt; a.length</tt>
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	 *			<tt>j &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
@@ -145,11 +145,11 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
 	 * @see Arrays#sort(Object[], int, int, Comparator)
-	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	  *			<tt>to &gt; a.length</tt>
-	  * @throws NullPointerException if the give array or comparator is 
-	  *			{@code null}.
+	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 *			<tt>to &gt; a.length</tt>
+	 * @throws NullPointerException if the give array or comparator is 
+	 *			{@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
@@ -171,10 +171,10 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * @see Arrays#sort(Object[], Comparator)
 	 * 
-	  * @throws NullPointerException if the give array or comparator is 
-	  *			{@code null}.
+	 * @throws NullPointerException if the give array or comparator is 
+	 *			{@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
+	 * 		({@code array.isSealed() == true}).
 	 */
 	public static <T> void sort(
 		final Array<T> array, final Comparator<? super T> comparator
@@ -189,10 +189,10 @@ public final class ArrayUtils {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * @see Arrays#sort(Object[], int, int)
-	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	  *			<tt>to &gt; a.length</tt>
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 *			<tt>to &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
@@ -210,7 +210,7 @@ public final class ArrayUtils {
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
 	 * @see Arrays#sort(Object[])
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
@@ -595,10 +595,10 @@ public final class ArrayUtils {
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
-	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	  *			<tt>to &gt; a.length</tt>
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 *			<tt>to &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
 		nonNull(array, "Array");
@@ -621,10 +621,10 @@ public final class ArrayUtils {
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
-	  * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	  * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	  *			<tt>to &gt; a.length</tt>
-	  * @throws NullPointerException if the give array is {@code null}.
+	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 *			<tt>to &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
@@ -719,7 +719,7 @@ public final class ArrayUtils {
 	 * 		 for (int i = 0; i < parts.length - 1; ++i) {
 	 * 			  final int part = i;
 	 * 			  ConcurrentContext.execute(new Runnable() {
-	 * �					 public void run() {
+	 * 					 public void run() {
 	 * 						 for (int j = parts[part + 1]; --j >= parts[part];) {
 	 * 							  population.get(j).evaluate();
 	 * 						 }
