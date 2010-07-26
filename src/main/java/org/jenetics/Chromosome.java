@@ -62,7 +62,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 */
 	public T getGene(final int index);
 
-    /**
+	/**
 	 * Returns the length of the Chromosome. The minimal length of a
 	 * chromosome is one.
 	 * 
