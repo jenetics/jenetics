@@ -1,12 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0 Transitional//EN">
 <html>
 <head>
-<meta HTTP-EQUIV="CONTENT-TYPE" content="text/html; charset=utf-8">
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 <title>Jenetics: Java Genetic Algorithm library</title>
 <meta name="AUTHOR" content="Franz Wilhelmstötter">
-<meta name="CREATED" content="0;0">
-<meta name="CHANGED" content="20080923;20455500">
-<meta name="KEYWORDS" content="Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
+<meta name="KEYWORDS"
+	content="Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
 <meta name="copyright" content="Franz Wilhelmstötter">
 <meta name="robots" content="all">
 <meta name="robots" content="index">
@@ -14,6 +13,9 @@
 <link rel="stylesheet" href="styletext.css" type="text/css">
 <link rel="stylesheet" href="stylelayout.css" type="text/css">
 <link rel="stylesheet" href="stylecolor.css" type="text/css">
+<link href="shCore.css" rel="stylesheet" type="text/css" />
+
+<link href="shThemeEclipse.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -21,8 +23,7 @@
 <script type="text/javascript" src="shCore.js"></script>
 <script type="text/javascript" src="shBrushJava.js"></script>
 <script type="text/javascript" src="shBrushPlain.js"></script>
-<link href="shCore.css" rel="stylesheet" type="text/css" />
-<link href="shThemeEclipse.css" rel="stylesheet" type="text/css" />
+
 
 <div id="bodywrap-top">
 <div id="bodywrap-btm">
@@ -73,13 +74,14 @@
 
 <p>In the knapsack problem a set of items, together with their size
 and value, is given. The task is to select a disjoint subset so that the
-total size does not exeed the knapsacks size. (<A
+total size does not exeed the knapsacks size. (<a
 	href="http://en.wikipedia.org/wiki/Knapsack_problem">Wikipedia:
-Knapsack problem</A>) For the 0/1 knapsack problem we define a
-BitChromosome, one bit for each item. If the i<SUP>th</SUP> BitGene is
-set to one the i<SUP>th</SUP> item is selected.</p>
+Knapsack problem</a>) For the 0/1 knapsack problem we define a
+BitChromosome, one bit for each item. If the i<sup>th</sup> BitGene is
+set to one the i<sup>th</sup> item is selected.</p>
 
-<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
+<div style="font-size: .75em"><pre
+	class="brush: java; toolbar: false;">
 class Item implements Serializable {
     private static final long serialVersionUID = -2129262369196749572L;
     public double _size;
@@ -235,7 +237,8 @@ System.out.println(ga.getBestStatistic());
 
 <p>Here a sample of the generated output:</p>
 
-<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
+<div style="font-size: .75em"><pre
+	class="brush: java; toolbar: false;">
    1: (best): [[230.824557520235]] --> 0.23980732495842583
    2: (best): [[230.824557520235]] --> 0.23980732495842583
    3: (best): [[230.824557520235]] --> 0.23980732495842583
@@ -252,14 +255,14 @@ Execution time: 45 ms
 Samples:         10
 Best Phenotype:  [[230.824557520235]] --> 0.23980732495842583
 Worst Phenotype: [[177.3496273696343]] --> 0.0021336795733455406
-</pre>
-</div>
+</pre></div>
 
 <h3>Traveling Salesman Problem (TSP)</h3>
 
 <p>Implemenentaion of the classical TSP problem.</p>
 
-<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
+<div style="font-size: .75em"><pre
+	class="brush: java; toolbar: false;">
 public class TravelingSalesman {
         
     private static class Function 
@@ -327,8 +330,6 @@ public class TravelingSalesman {
      private static double RADIUS = 10.0;
 }
 </pre></div>
-
-<br />
 </div>
 <!-- centerarea close -->
 
