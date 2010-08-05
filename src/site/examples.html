@@ -1,89 +1,85 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0 Transitional//EN">
 <html>
 <head>
-	<meta HTTP-EQUIV="CONTENT-TYPE" content="text/html; charset=utf-8">
-	<title>Jenetics: Java Genetic Algorithm library</title>
-	<meta name="AUTHOR" content="Franz Wilhelmstötter">
-	<meta name="CREATED" content="0;0">
-	<meta name="CHANGED" content="20080923;20455500">
-	<meta name="KEYWORDS" content="Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
-	<meta name="copyright" content="Franz Wilhelmstötter">
-	<meta name="robots" content="all">
-	<meta name="robots" content="index">
+<meta HTTP-EQUIV="CONTENT-TYPE" content="text/html; charset=utf-8">
+<title>Jenetics: Java Genetic Algorithm library</title>
+<meta name="AUTHOR" content="Franz Wilhelmstötter">
+<meta name="CREATED" content="0;0">
+<meta name="CHANGED" content="20080923;20455500">
+<meta name="KEYWORDS" content="Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
+<meta name="copyright" content="Franz Wilhelmstötter">
+<meta name="robots" content="all">
+<meta name="robots" content="index">
 
-  <link rel="stylesheet" href="styletext.css" type="text/css">
-  <link rel="stylesheet" href="stylelayout.css" type="text/css">
-  <link rel="stylesheet" href="stylecolor.css" type="text/css">
+<link rel="stylesheet" href="styletext.css" type="text/css">
+<link rel="stylesheet" href="stylelayout.css" type="text/css">
+<link rel="stylesheet" href="stylecolor.css" type="text/css">
 </head>
-	
+
 <body>
+<!-- Scripts for syntax highlighter -->
 <script type="text/javascript" src="shCore.js"></script>
 <script type="text/javascript" src="shBrushJava.js"></script>
+<script type="text/javascript" src="shBrushPlain.js"></script>
 <link href="shCore.css" rel="stylesheet" type="text/css" />
-<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="shThemeEclipse.css" rel="stylesheet" type="text/css" />
 
-<div id="bodywrap-top"><div id="bodywrap-btm"><div id="bodywrap-r"><div id="bodywrap-l"><div id="bodywrap-tl"><div id="bodywrap-tr"><div id="bodywrap-br"><div id="bodywrap-bl"><div id="bodywrap-in">
+<div id="bodywrap-top">
+<div id="bodywrap-btm">
+<div id="bodywrap-r">
+<div id="bodywrap-l">
+<div id="bodywrap-tl">
+<div id="bodywrap-tr">
+<div id="bodywrap-br">
+<div id="bodywrap-bl">
+<div id="bodywrap-in">
 
-  <div id="pageframe">
+<div id="pageframe">
 
-    <div id="titlearea">
-	<h1>Jenetics: Java Genetic Algorithm</h1>
-    </div><!-- titlearea close -->
+<div id="titlearea">
+<h1>Jenetics: Java Genetic Algorithm</h1>
+</div>
+<!-- titlearea close -->
 
-    <div id="topmenuback">
-	<!--@topmenu.content-->
-    </div><!-- topmenuback close -->
+<div id="topmenuback"><!--@topmenu.content--></div>
+<!-- topmenuback close --> <!--XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX-->
 
-    <!--XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX-->
+<div id="leftarea">
+<div class="menubox"><a class="sidemenutextlive"
+	title="Side menu access to Home" tabindex="1" href="index.html">Home</a>
+</div>
 
-    <div id="leftarea">      <div class="menubox">
-        <a class="sidemenutextlive" title="Side menu access to Home"
-        tabindex="1" href="index.html">Home</a>
-      </div>
+<div class="submenubox"><a class="sidesubmenutext"
+	title="Examples" tabindex="3" href="examples.html">Examples</a></div>
 
-      <div class="submenubox">
-        <a class="sidesubmenutext" 
-			title="Examples" tabindex="3" 
-			href="examples.html"
-		>Examples</a>
-      </div>
+<div class="submenubox"><a class="sidesubmenutext" title="Javadoc"
+	tabindex="4" href="javadoc/index.html">Javadoc</a></div>
 
-      <div class="submenubox">
-        <a class="sidesubmenutext" 
-			title="Javadoc" tabindex="4" 
-			href="javadoc/index.html"
-		>Javadoc</a>
-      </div>
+<div class="submenubox"><a class="sidesubmenutext"
+	title="download" tabindex="5"
+	href="https://sourceforge.net/project/showfiles.php?group_id=206158">Download</a>
+</div>
+</div>
+<!-- sidearea close --> <!--XXXXXXXXXXXXXXXXThe main center region starts hereXXXXXXXXXXXXXXXXXXX-->
 
-      <div class="submenubox">
-        <a class="sidesubmenutext" 
-			title="download" tabindex="5" 
-			href="https://sourceforge.net/project/showfiles.php?group_id=206158"
-		>Download</a>
-      </div>
-    </div><!-- sidearea close -->
+<div id="column3"><!--@column3.content--></div>
+<!-- column3 close -->
 
-    <!--XXXXXXXXXXXXXXXXThe main center region starts hereXXXXXXXXXXXXXXXXXXX-->
-
-<div id="column3"><!--@column3.content--></div><!-- column3 close -->
-
-    <div id="centerarea">
+<div id="centerarea">
 
 <h2>Examples</h2>
 
 <h3>0/1 Knapsack Problem</h3>
 
-<p>
-In the knapsack problem a set of items, together
-with their size and value, is given. The task is to select a disjoint
-subset so that the total size does not exeed the knapsacks size.
-(<A href="http://en.wikipedia.org/wiki/Knapsack_problem">Wikipedia:
-Knapsack problem</A>) For the 0/1 knapsack problem we define a BitChromosome,
-one bit for each item. If the i<SUP>th</SUP> BitGene
-is set to one the i<SUP>th</SUP> item is selected. 
-</p>
+<p>In the knapsack problem a set of items, together with their size
+and value, is given. The task is to select a disjoint subset so that the
+total size does not exeed the knapsacks size. (<A
+	href="http://en.wikipedia.org/wiki/Knapsack_problem">Wikipedia:
+Knapsack problem</A>) For the 0/1 knapsack problem we define a
+BitChromosome, one bit for each item. If the i<SUP>th</SUP> BitGene is
+set to one the i<SUP>th</SUP> item is selected.</p>
 
-<pre class="brush: java">
+<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
 class Item implements Serializable {
     private static final long serialVersionUID = -2129262369196749572L;
     public double _size;
@@ -166,15 +162,17 @@ public class Knapsack {
         System.out.println(ga);
     }
 }
-</pre>
+</pre></div>
+
 
 <h3>Ones Counting</h3>
 
-<p>
-Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a Genotype is proportional to the number of ones. The FitnessFunction looks like this:
-</p>
+<p>Ones counting is one of the simplest model-problem and consists
+of a binary chromosome. The fitness of a Genotype is proportional to the
+number of ones. The FitnessFunction looks like this:</p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre
+	class="brush: java; toolbar: false;">
 class OneCounter implements FitnessFunction&lt;BitGene, Float64&gt; {
     public Float64 eval(final Genotype&lt;BitGene, Float64&gt; genotype) {
         int count = 0;
@@ -186,15 +184,16 @@ class OneCounter implements FitnessFunction&lt;BitGene, Float64&gt; {
         return Float64.valueOf(count);
     }
 }
-</pre>
+</pre></div>
 
 <h4>Real Function</h4>
 
-<p>
-The GA also works with NumberGenes. In the given example the FitnessFunction tries to find the value where the sinus becomes a maximum.
-</p>
+<p>The GA also works with NumberGenes. In the given example the
+FitnessFunction tries to find the value where the sinus becomes a
+maximum.</p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre
+	class="brush: java; toolbar: false;">
 class RealFunction implements FitnessFunction&lt;Float64Gene, Float64&gt; {
     public Float64 evaluate(final Genotype&lt;Float64Gene&gt; genotype) {
         return Float64.valueOf(Math.sin(
@@ -202,13 +201,14 @@ class RealFunction implements FitnessFunction&lt;Float64Gene, Float64&gt; {
             ));
     }
 }
-</pre>
+</pre></div>
 
-<p>
-To narrow the search space a number range for the DoubleGene must be definde. In our example we restrict the values to the closed interval [0,2PI].
-</p>
+<p>To narrow the search space a number range for the DoubleGene must
+be definde. In our example we restrict the values to the closed interval
+[0,2PI].</p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre
+	class="brush: java; toolbar: false;">
 //The Genotype implements the GenotypeFactory interface.
 GenotypeFactory&lt;Float64Gene&gt; gtf = Genotype.newGenotype(
         Float64Chromosome.valueOf(0, 2*Math.PI)
@@ -231,13 +231,11 @@ for (int i = 0; i < 50; ++i) {
     System.out.println(ga);
 }
 System.out.println(ga.getBestStatistic());
-</pre>
+</pre></div>
 
-<p>
-Here a sample of the generated output:
-</p>
+<p>Here a sample of the generated output:</p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
    1: (best): [[230.824557520235]] --> 0.23980732495842583
    2: (best): [[230.824557520235]] --> 0.23980732495842583
    3: (best): [[230.824557520235]] --> 0.23980732495842583
@@ -255,14 +253,13 @@ Samples:         10
 Best Phenotype:  [[230.824557520235]] --> 0.23980732495842583
 Worst Phenotype: [[177.3496273696343]] --> 0.0021336795733455406
 </pre>
+</div>
 
 <h3>Traveling Salesman Problem (TSP)</h3>
 
-<p>
-Implemenentaion of the classical TSP problem.
-</p>
+<p>Implemenentaion of the classical TSP problem.</p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
 public class TravelingSalesman {
         
     private static class Function 
@@ -312,8 +309,8 @@ public class TravelingSalesman {
     }
         
     /**
-     * All points in the created adjacency matrix lie on a circle. So it is easy 
-     * to check the quality of the solution found by the GA.
+     * All points in the created adjacency matrix lie on a circle. 
+     * So it is easy to check the quality of the solution found by the GA.
      */
      private static double[][] adjacencyMatrix(int stops) {
          double[][] matrix = new double[stops][stops];
@@ -329,19 +326,30 @@ public class TravelingSalesman {
      }
      private static double RADIUS = 10.0;
 }
-</pre>
+</pre></div>
 
-	<br />
-  </div><!-- centerarea close -->
+<br />
+</div>
+<!-- centerarea close -->
 
-   <div id="bottombar">
-	<h6>&copy; Copyright Franz Wilhelmstötter</h6>
-    </div><!-- bottombar close -->
+<div id="bottombar">
+<h6>&copy; Copyright Franz Wilhelmstötter</h6>
+</div>
+<!-- bottombar close -->
 
 <div class="spacer"></div>
 
-  </div><!-- frame close -->
-  </div></div></div></div></div></div></div></div></div><!-- bodywrap close -->
+</div>
+<!-- frame close --></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- bodywrap close -->
 <script type="text/javascript">
      SyntaxHighlighter.all()
 </script>

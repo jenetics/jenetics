@@ -18,6 +18,14 @@
 </head>
 	
 <body>
+
+<!-- Scripts for syntax highlighter -->
+<script type="text/javascript" src="shCore.js"></script>
+<script type="text/javascript" src="shBrushJava.js"></script>
+<script type="text/javascript" src="shBrushPlain.js"></script>
+<link href="shCore.css" rel="stylesheet" type="text/css" />
+<link href="shThemeEclipse.css" rel="stylesheet" type="text/css" />
+
 <div id="bodywrap-top"><div id="bodywrap-btm"><div id="bodywrap-r"><div id="bodywrap-l"><div id="bodywrap-tl"><div id="bodywrap-tr"><div id="bodywrap-br"><div id="bodywrap-bl"><div id="bodywrap-in">
 
   <div id="pageframe">
@@ -76,7 +84,7 @@ proposed and analyzed by <a HREF="http://en.wikipedia.org/wiki/John_Henry_Hollan
 Holland</a> in 1975. The GA consists of the following steps: 
 </p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
 Initialize population;
 Measure fitness of populaton;
 while (!stopCondition) {
@@ -88,6 +96,7 @@ while (!stopCondition) {
     measure fitness of new population;
 } 
 </pre>
+</div>
 
 <h3>Data structures</h3>
 <p><img src="doc-files/structure.gif" alt="Structure Diagram" align="bottom" width="473" height="417" border="0" />
@@ -100,34 +109,38 @@ The diagram above shows the main data structures of the GA implementation. The G
 <p>
 The minimum GA setup needs a <em>GenotypeFactory</em> and an <em>FitnessFunction</em>. The <em>Genotype</em> implements the <em>GenotypeFactory</em> interface and can be used as prototype.
 </p>
-<pre class="code">
+<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
 //Defining a Genotype prototype.
 final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.valueOf(
         BitChromosome.valueOf(10, 0.5);
     );
-final FitnessFunction&lt;BitGene, Float64&gt; ff = ...//FitnessFunction implementation
+final FitnessFunction&lt;BitGene, Float64&gt; ff = ...
 
-final GeneticAlgorithm&lt;BitGene, Float64&gt; ga = GeneticAlgorithm.valueOf(gtf, ff);
+final GeneticAlgorithm&lt;BitGene, Float64&gt; ga = 
+	GeneticAlgorithm.valueOf(gtf, ff);
 </pre>
+</div>
 
 <p>
 All other needed GA parameters are initialized with default values.
 Therefore the GA is ready for use now. 
 </p>
 
-<pre class="code">
+<div style="font-size: .75em"><preclass="brush: java; toolbar: false;">
 ga.setup();
 ga.evolve(100);
 System.out.println(ga);
 </pre>
+</div>
 
 <p>
 The GeneticAlgorithm.setup() call creates the initial population and calculates its fitness. Then the GA evolves 100 generations and prints the (last) populations statistic. In a more advanced setup you want to define mutation and/or selection strategies.
 </p>
 
-<pre class="code">
+<div style="font-size: .75em"><pre class="brush: java; toolbar: false;">
 ...
-final Selector&lt;BitGene&gt; selector = new StochasticUniversalSelector&lt;BitGene&gt;();
+final Selector&lt;BitGene&gt; selector = 
+	new StochasticUniversalSelector&lt;BitGene&gt;();
 ga.setOffspringSelector(selector);
 ga.setSurvivorSelector(selector);
 final Alterer alterer = new CompositeAlterer&lt;BitGene&gt;(
@@ -136,6 +149,7 @@ final Alterer alterer = new CompositeAlterer&lt;BitGene&gt;(
     );
 ga.setAlterer(alterer);
 </pre>
+</div>
 
 <p>
 You can define selection strategies for survivors and offsprings independently. The Alterers are concatenated, first the crossover (with crossover probability 0.1) is performed and than the chromosomes are mutated (with a probability 0.01).
@@ -153,6 +167,8 @@ You can define selection strategies for survivors and offsprings independently. 
 
   </div><!-- frame close -->
   </div></div></div></div></div></div></div></div></div><!-- bodywrap close -->
-
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>
 </body>
 </html>
