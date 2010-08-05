@@ -487,7 +487,7 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 * 	 final Thread thread = new Thread(new Runnable() {
 	 * 		  public void run() {
 	 * 				while (!Thread.currentThread().isInterrupted() && 
-	 * 	 � 				  !stopCondition.evaluate(ga)) 
+	 * 	  				  !stopCondition.evaluate(ga)) 
 	 * 				{
 	 * 					 if (ga.getGeneration() == 0) {
 	 * 						  ga.setup();
