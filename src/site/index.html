@@ -45,7 +45,7 @@
 <!-- titlearea close -->
 
 <div id="topmenuback"><!--@topmenu.content--></div>
-<!-- topmenuback close --> <!--XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX-->
+<!-- topmenuback close --> <!-- XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX -->
 
 <div id="leftarea">
 <div class="menubox"><a class="sidemenutextlive"
@@ -70,8 +70,8 @@
 
 <div id="centerarea">
 <h2>Description</h2>
-<p><i> Jenetics is an Genetic Algorithm Library written in Java.
-Clear separation of the several concepts of the algorithm, e.g. Gene,
+<p><i> Jenetics is an Genetic Algorithm Library written in Java. It is designed
+with a clear separation of the several concepts of the algorithm, e.g. Gene,
 Chromosome, Genotype, Phenotype, Population and FitnessFunction. </i></p>
 
 <h2>Design</h2>
@@ -79,21 +79,7 @@ Chromosome, Genotype, Phenotype, Population and FitnessFunction. </i></p>
 	HREF="http://en.wikipedia.org/wiki/Genetic_algorithm">Genetic
 Algorithm</a> (GA) implementation. Genetic Algorithms was first proposed and
 analyzed by <a HREF="http://en.wikipedia.org/wiki/John_Henry_Holland">John
-Holland</a> in 1975. The GA consists of the following steps:</p>
-
-<div style="font-size: .75em"><pre
-	class="brush: java; toolbar: false;">
-Initialize population;
-Measure fitness of populaton;
-while (!stopCondition) {
-    select offsprings;
-    select survivors;
-    increase survirvor age;
-    alter offsprings;
-    add survivors and offsprings to new population;
-    measure fitness of new population;
-} 
-</pre></div>
+Holland</a> in 1975. 
 
 <h3>Data structures</h3>
 <p><img src="doc-files/structure.gif" alt="Structure Diagram"
@@ -105,49 +91,50 @@ Genotypes. A <em>Genptype</em> and a <em>FitnessFunction</em> form the <em>Pheno
 <em><Phenotypes></em> are collected into a <em>Population</em>.
 </p>
 
-<h3>Setting up the Genetic Algorithm</h3>
+<h3>Simple GA Setup</h3>
 <p>The minimum GA setup needs a <em>GenotypeFactory</em> and an <em>FitnessFunction</em>.
-The <em>Genotype</em> implements the <em>GenotypeFactory</em> interface
-and can be used as prototype.</p>
+The <em>Genotype</em> implements the <em>GenotypeFactory</em> interface 
+and can be used as <em>prototype.</em></p>
 <div style="font-size: .75em"><pre
 	class="brush: java; toolbar: false;">
-//Defining a Genotype prototype.
 final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.valueOf(
         BitChromosome.valueOf(10, 0.5);
     );
+    
 final FitnessFunction&lt;BitGene, Float64&gt; ff = ...
 
 final GeneticAlgorithm&lt;BitGene, Float64&gt; ga = 
 	GeneticAlgorithm.valueOf(gtf, ff);
 </pre></div>
-
-<p>All other needed GA parameters are initialized with default
-values. Therefore the GA is ready for use now.</p>
+<p>The genotype-factory <em>gtf</em> in the example will create genotypes which 
+consits of a bit-chromosome of length 10. The one to zero probability of the
+newly created genotypes are set to 0.5. The fitness-function is parameterized
+with <em>BitGene</em> and <em>Float64</em>. Than means that the function is
+calculating the fitness value, which is a <em>Float64</em>, from a bit-chromosome.
+The calculated fitness value must be at least a <em>Comparable</em>. And now we
+are done! A new GA instance can be created with the genotype-factory and the
+fitness-function. For starting the <em>evolution</em> just call <em>ga.setup()</em>
+and <em>ga.evolve(100)</em>.</p>
 
 <div style="font-size: .75em"><pre class ="brush: java; toolbar:false;">
-ga.setup(); ga.evolve(100); System.out.println(ga); </pre></div>
+ga.setup(); 
+ga.evolve(100); 
+System.out.println(ga); </pre></div>
 
-<p>The GeneticAlgorithm.setup() call creates the initial population
+<p>The <em>GeneticAlgorithm.setup()</em> call creates the initial population
 and calculates its fitness. Then the GA evolves 100 generations and
-prints the (last) populations statistic. In a more advanced setup you
+prints the (last) populations statistics.</p> 
+<p>In a more advanced setup you
 want to define mutation and/or selection strategies.</p>
 
 <div style="font-size: .75em"><pre
 	class="brush: java; toolbar: false;">
-...
-final Selector&lt;BitGene&gt; selector = 
-	new StochasticUniversalSelector&lt;BitGene&gt;();
-ga.setOffspringSelector(selector);
-ga.setSurvivorSelector(selector);
-final Alterer alterer = new CompositeAlterer&lt;BitGene&gt;(
-        new SinglePointCrossover&lt;BitGene&gt;(0.1),
-        new Mutation&lt;BitGene&gt;(0.01)
-    );
-ga.setAlterer(alterer);
+ga.setSelectors(new TournamentSelector&lt;BitGene&gt;(5));
+ga.setAlterer(new SinglePointCrossover&lt;BitGene&gt;(0.1));
+ga.addAlterer(new Mutation&lt;BitGene&gt;(0.01))
 </pre></div>
 
-<p>You can define selection strategies for survivors and offsprings
-independently. The Alterers are concatenated, first the crossover (with
+<p>The Alterers are concatenated, first the crossover (with
 crossover probability 0.1) is performed and than the chromosomes are
 mutated (with a probability 0.01).</p>
 
