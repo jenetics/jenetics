@@ -83,15 +83,15 @@ set to one the i<sup>th</sup> item is selected.</p>
 <div style="font-size: .75em"><pre
 	class="brush: java; toolbar: false;">
 class Item implements Serializable {
-	private static final long serialVersionUID = 1L;
-	public double size;
+	 private static final long serialVersionUID = 1L;
+	 public double size;
 	 public double value;
 }
 
 class KnappsackFunction implements FitnessFunction&lt;BitGene, Float64&gt; {
-	private static final long serialVersionUID = -924756568100918419L;
+	 private static final long serialVersionUID = -924756568100918419L;
 	
-	private final Item[] _items;
+	 private final Item[] _items;
 	 private final double _knapsackSize;
 	 
 	 public KnappsackFunction(final Item[] items, double knapsackSize) {
@@ -328,6 +328,7 @@ public class TravelingSalesman {
 
 <div id="bottombar">
 <h6>&copy; Copyright Franz Wilhelmstötter</h6>
+<h6><script type="text/javascript" src="http://www.ohloh.net/p/89791/widgets/project_thin_badge.js"></script></h6>
 </div>
 <!-- bottombar close -->
 
