@@ -157,6 +157,7 @@ public final class IOUtils {
 	 * @throws XMLStreamException if the object could not be serialized.
 	 * @deprecated Use {@link #writeXML(XMLSerializable,OutputStream)} instead
 	 */
+	@Deprecated
 	public static <T extends XMLSerializable> void writeXML(
 		final OutputStream out, 
 		final T object
@@ -204,6 +205,7 @@ public final class IOUtils {
 	 * @throws XMLStreamException if the object could not be serialized.
 	 * @deprecated Use {@link #writeXML(XMLSerializable, File)} instead 
 	 */
+	@Deprecated
 	public static <T extends XMLSerializable> void writeXML(
 		final File path, 
 		final T object
@@ -239,6 +241,7 @@ public final class IOUtils {
 	 * @throws XMLStreamException if the object could not be serialized.
 	 * @deprecated Use {@link #writeXML(XMLSerializable,String)} instead
 	 */
+	@Deprecated
 	public static <T extends XMLSerializable> void writeXML(
 		final String path, 
 		final T object
@@ -329,6 +332,7 @@ public final class IOUtils {
 	 * @throws IOException if the object could not be serialized.
 	 * @deprecated Use {@link #writeObject(Serializable,OutputStream)} instead
 	 */
+	@Deprecated
 	public static void writeObject(
 		final OutputStream out, 
 		final Serializable object
@@ -372,6 +376,7 @@ public final class IOUtils {
 	 * @throws IOException if the object could not be serialized.
 	 * @deprecated Use {@link #writeObject(Serializable,File)} instead
 	 */
+	@Deprecated
 	public static void writeObject(
 		final File path, 
 		final Serializable object
@@ -407,6 +412,7 @@ public final class IOUtils {
 	 * @throws IOException if the object could not be serialized.
 	 * @deprecated Use {@link #writeObject(Serializable,String)} instead
 	 */
+	@Deprecated
 	public static void writeObject(
 		final String path, 
 		final Serializable object
