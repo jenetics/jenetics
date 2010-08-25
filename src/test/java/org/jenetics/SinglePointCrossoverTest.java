@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.util.Random;
 
+import javolution.context.LocalContext;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.RandomRegistry;
@@ -63,7 +65,7 @@ public class SinglePointCrossoverTest {
 		final Array<CharacterGene> g1 = new CharacterChromosome(chars, 20).toArray();
 		final Array<CharacterGene> g2 = new CharacterChromosome(chars, 20).toArray();
 		
-		final Random random = RandomRegistry.getRandom();
+		LocalContext.enter();
 		try {
 			final SinglePointCrossover<CharacterGene> 
 			crossover = new SinglePointCrossover<CharacterGene>();
@@ -104,7 +106,7 @@ public class SinglePointCrossoverTest {
 			Assert.assertEquals(g1c.subArray(0, rv), g2.subArray(0, rv));
 			Assert.assertEquals(g1c.subArray(rv), g2.subArray(rv));
 		} finally {
-			RandomRegistry.setRandom(random);
+			LocalContext.exit();
 		}
 	}
 	
