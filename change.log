@@ -1,3 +1,4 @@
+- Add org.jenetics.util.Array.subArray(int) method.
 - Add org.jenetics.util.Array.map(Converter) method.
 - Change the method signature of the org.jenetics.utils.IOUtils.writeXXX methods. 
   Now the parameter order is <object>, <target>.

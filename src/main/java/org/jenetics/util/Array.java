@@ -664,6 +664,32 @@ public class Array<T> implements
 	}
 	
 	/**
+	 * Returns a view of the portion of this array between the specified 
+	 * {@code start}, inclusive, till the end of the array. The 
+	 * returned array is backed by this array, so non-structural changes in the 
+	 * returned array are reflected in this array, and vice-versa. The sealing
+	 * state is copied from this array 
+	 * ({@code this.isSealed() == this.subArray(start).isSealed()}).
+	 * <p/>
+	 * This method eliminates the need for explicit range operations (of the 
+	 * sort that commonly exist for arrays). Any operation that expects an array 
+	 * can be used as a range operation by passing an sub array view instead of 
+	 * an whole array. E.g.:
+	 * [code]
+	 * 	 array.subArray(4).clear();
+	 * 	 Array<?> copy = array.subArray(5).copy();
+	 * [/code]
+	 * 
+	 * @param start low end point (inclusive) of the sub array.
+	 * @return a view of the specified range within this array.
+	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
+	 * 		  ({@code start < 0 || start > lenght()}).
+	 */	
+	public Array<T> subArray(final int start) {
+		return subArray(start, length());
+	}
+	
+	/**
 	 * Return an array containing all of the elements in this array in right 
 	 * order. The returned array will be "safe" in that no references to it 
 	 * are maintained by this array. (In other words, this method must allocate 
