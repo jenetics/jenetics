@@ -34,6 +34,22 @@ import javolution.context.LocalContext;
  * is thread safe. The default value for the random engine is an instance of
  * the Java {@link Random} engine with the {@link System#currentTimeMillis()} as
  * seed value.
+ * <p/>
+ * You can temporarily (and locally) change the implementation of the random engine 
+ * by using the {@link LocalContext} from the 
+ * <a href="http://javolution.org/">javolution</a> project.
+ * 
+ * [code]
+ *     LocalContext.enter();
+ *     try {
+ *         RandomRegistry.setRandom(new MyRandom());
+ *         ...
+ *     } finally {
+ *         LocalContext.exit(); // Restore the previous random engine.
+ *     }
+ * [/code]
+ * 
+ * @see LocalContext
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
