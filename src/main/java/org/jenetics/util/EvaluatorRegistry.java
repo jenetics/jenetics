@@ -29,6 +29,22 @@ import java.util.List;
 import javolution.context.LocalContext;
 
 /**
+ * You can temporarily (and locally) change the evaluator by using the 
+ * {@link LocalContext} from the <a href="http://javolution.org/">javolution</a> 
+ * project.
+ * 
+ * [code]
+ *     LocalContext.enter();
+ *     try {
+ *         EvaluatorRegistry.setEvaluator(new MyEvaluator());
+ *         ...
+ *     } finally {
+ *         LocalContext.exit(); // Restore the previous evaluator.
+ *     }
+ * [/code]
+ * 
+ * @see LocalContext
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
