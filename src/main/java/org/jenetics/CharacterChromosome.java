@@ -32,6 +32,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -45,6 +46,22 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	private final CharSet _validCharacters;
 	
 	/**
+	 * Factory for creating character genes. 
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	private static final class CharGeneFactory implements Factory<CharacterGene> {
+		private final CharSet _chars;
+		public CharGeneFactory(final CharSet chars) {
+			_chars = chars;
+		}
+		@Override public CharacterGene newInstance() {
+			return CharacterGene.valueOf(_chars);
+		}
+	}
+	
+	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
 	 * char set as valid characters.
 	 * 
@@ -55,9 +72,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	public CharacterChromosome(final int length) {
 		super(length);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
-		for (int i = 0; i < length(); ++i) {
-			_genes.set(i, CharacterGene.valueOf(_validCharacters));
-		}
+		_genes.fill(new CharGeneFactory(_validCharacters));
 	}
 	
 	/**
@@ -74,9 +89,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	public CharacterChromosome(final CharSet validCharacters, final int length) {
 		super(length);
 		_validCharacters = nonNull(validCharacters, "Valid characters");
-		for (int i = 0; i < length(); ++i) {
-			_genes.set(i, CharacterGene.valueOf(_validCharacters));
-		}
+		_genes.fill(new CharGeneFactory(_validCharacters));
 	}
 	
 	/**
@@ -121,9 +134,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 				_validCharacters, 
 				length()
 			);
-		for (int i = 0; i < length(); ++i) {
-			chromosome._genes.set(i, CharacterGene.valueOf(_validCharacters));
-		}
+		chromosome._genes.fill(new CharGeneFactory(_validCharacters));
 		return chromosome;
 	}
 	
