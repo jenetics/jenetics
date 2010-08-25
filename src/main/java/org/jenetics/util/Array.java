@@ -558,6 +558,30 @@ public class Array<T> implements
 	}
 	
 	/**
+	 * Create a new array with element type {@code B}.
+	 * 
+	 * @param <B> the element type of the new array.
+	 * @param converter the array element converter.
+	 * @return a new array with element type {@code B}.
+	 * @throws NullPointerException if the element {@code converter} is 
+	 *         {@code null}.
+	 */
+	public <B> Array<B> map(final Converter<? super T, ? extends B> converter) {
+		nonNull(converter, "Converter");
+		
+		final int length = length();
+		final Array<B> result = new Array<B>(length);
+		assert (result._array.length == length);
+		
+		for (int i = 0; i < length; ++i) {
+			@SuppressWarnings("unchecked")
+			final T value = (T)_array[i + _start];
+			result._array[i] = converter.convert(value);
+		}
+		return result;
+	}
+	
+	/**
 	 * Return the length of this array. Once the array is created, the length
 	 * can't be changed.
 	 * 
