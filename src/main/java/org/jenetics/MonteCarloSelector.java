@@ -29,7 +29,7 @@ import java.util.Random;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * Selects the phenotypes from a given population randomly. This class can be
+ * Select the phenotypes from a given population randomly. This class can be
  * used to measure the performance of an other given selector.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
