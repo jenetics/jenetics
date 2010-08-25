@@ -573,7 +573,7 @@ public class Array<T> implements
 		final Array<B> result = new Array<B>(length);
 		assert (result._array.length == length);
 		
-		for (int i = 0; i < length; ++i) {
+		for (int i = length; --i <= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array[i + _start];
 			result._array[i] = converter.convert(value);
@@ -613,6 +613,10 @@ public class Array<T> implements
 	}
 	
 	/**
+	 * Create a one to one copy of the given array. If this array is a sub array,
+	 * created with {@link #subArray(int, int)}, the whole underlying data array
+	 * with its {@code start} and {@code stop} information is cloned.
+	 * 
 	 * @see #copy()
 	 */
 	@SuppressWarnings("unchecked")
