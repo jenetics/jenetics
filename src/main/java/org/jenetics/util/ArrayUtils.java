@@ -47,6 +47,7 @@ public final class ArrayUtils {
 	public static final Array EMPTY_ARRAY = new Array(0);
 
 	private ArrayUtils() {
+		throw new AssertionError("Don't create an 'ArrayUtils' instance.");
 	}
 	
 	/**
