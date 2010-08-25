@@ -105,11 +105,16 @@
 			<class name="org.jenetics.RouletteWheelSelectorTest" />
 		</classes>
 	</test>		
+	<test name="org.jenetics.SinglePointCrossover">
+		<classes>
+			<class name="org.jenetics.SinglePointCrossoverTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.Statistics">
 		<classes>
 			<class name="org.jenetics.StatisticsTest" />
 		</classes>
-	</test>	
+	</test>		
 	<test name="org.jenetics.NumberStatistics">
 		<classes>
 			<class name="org.jenetics.NumberStatisticsTest" />
