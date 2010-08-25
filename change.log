@@ -1,3 +1,5 @@
+- Fixing bug in SinglePointCrossover class. It was only a 'half' crossover
+  performed.
 - Add org.jenetics.util.Array.subArray(int) method.
 - Add org.jenetics.util.Array.map(Converter) method.
 - Change the method signature of the org.jenetics.utils.IOUtils.writeXXX methods. 

@@ -81,7 +81,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 
 	/**
 	 * Template method which performs the crossover. The arguments given are 
-	 * mutable non null arrays.
+	 * mutable non null arrays. The two arrays have the same length.
 	 */
 	protected abstract void crossover(final Array<G> that, final Array<G> other);
 
