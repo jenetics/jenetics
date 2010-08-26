@@ -23,11 +23,19 @@
 package org.jenetics.util;
 
 /**
+ * Convert a type {@code A} to type {@code B}.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public interface Converter<A, B> {
 
+	/**
+	 * Convert a type {@code A} to type {@code B}.
+	 * 
+	 * @param value the value to convert.
+	 * @return the converted value.
+	 */
 	public B convert(A value);
 	
 }
