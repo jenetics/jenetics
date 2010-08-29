@@ -23,9 +23,6 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
-
-import java.io.InvalidObjectException;
-
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
@@ -212,11 +209,6 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 		TextBuilder out = new TextBuilder();
 		out.append("[").append(_value).append("]");
 		return out.toText();
-	}
-	
-	@SuppressWarnings("unused")
-	private void readObjectNoData() throws InvalidObjectException {
-	    throw new InvalidObjectException("Stream data required");
 	}
 	
 }
