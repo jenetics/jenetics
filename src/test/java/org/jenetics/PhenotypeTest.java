@@ -25,18 +25,12 @@ package org.jenetics;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import javolution.xml.XMLObjectReader;
-import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -45,7 +39,7 @@ import org.testng.annotations.Test;
  */
 public class PhenotypeTest {
 
-	final class Function implements FitnessFunction<Float64Gene, Float64> {
+	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
 		
 		@Override
@@ -56,7 +50,7 @@ public class PhenotypeTest {
 	}
 	
 	@Test
-	public void serialize() throws XMLStreamException, IOException {
+	public void xmlSerialize() throws XMLStreamException {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
 		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
@@ -64,22 +58,19 @@ public class PhenotypeTest {
 				gtf.newInstance(), ff, scaler, 0
 			);
 		
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		final XMLObjectWriter writer = XMLObjectWriter.newInstance(out);
-		writer.setIndentation("\t");
-		writer.write(pt);
-		writer.close();
-		out.close();
-		
-		final byte[] data = out.toByteArray();
-		Reporter.log(new String(data));
-		
-		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final XMLObjectReader reader = XMLObjectReader.newInstance(in);
-		@SuppressWarnings("rawtypes")
-		final Phenotype p = (Phenotype)reader.read();
-		
-		Assert.assertEquals(p.getGenotype(), pt.getGenotype());
+		SerializeUtils.testXMLSerialization(pt);
+	}
+	
+	@Test
+	public void objectSerialize() throws IOException {
+		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
+		final Function ff = new Function();
+		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
+		final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
+				gtf.newInstance(), ff, scaler, 0
+			);
+
+		SerializeUtils.testSerialization(pt);
 	}
 	
 }
