@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -65,19 +66,79 @@ public class ArrayUtilsTest {
 		}
 		
 		Assert.assertEquals(ArrayUtils.sum(values), 1.0);
+	}
+	
+	@Test
+	public void isSorted() {
+		final Array<Integer> array = new Array<Integer>(100);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		Assert.assertTrue(ArrayUtils.isSorted(array));
 		
+		array.set(10, 5);
+		Assert.assertFalse(ArrayUtils.isSorted(array));
 		
-//		StringBuilder builder = new StringBuilder();
-//		TypeFormat.format(ArrayUtils.sum(values), 19, false, false, builder);
-//		System.out.println(builder);
-//		
-//		double sum = 0;
-//		for (int i = 0; i < values.length; ++i) {
-//			sum += values[i];
-//		}
-//		builder.setLength(0);
-//		TypeFormat.format(sum, 18, false, false, builder);
-//		System.out.println(builder);
+		array.fill(-234);
+		Assert.assertTrue(ArrayUtils.isSorted(array));
+		
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, array.length() - i);
+		}
+		Assert.assertFalse(ArrayUtils.isSorted(array));
+	}
+	
+	@Test
+	public void isSorted2() {
+		final Array<Integer> array = new Array<Integer>(100);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		Assert.assertFalse(ArrayUtils.isSorted(array, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return -o1.compareTo(o2);
+			}
+		}));
+	}
+	
+	@Test
+	public void sort() {
+		final Random random = new Random();
+		final Factory<Integer> factory = new Factory<Integer>() {
+			@Override public Integer newInstance() {
+				return random.nextInt(10000);
+			}
+		};
+		
+		final Array<Integer> array = new Array<Integer>(100);
+		array.fill(factory);
+		Assert.assertFalse(ArrayUtils.isSorted(array));
+		
+		final Array<Integer> clonedArray = array.copy();
+		ArrayUtils.sort(array.subArray(30, 40));
+		Assert.assertTrue(ArrayUtils.isSorted(array.subArray(30, 40)));
+		Assert.assertEquals(array.subArray(0, 30), clonedArray.subArray(0, 30));
+		Assert.assertEquals(array.subArray(40), clonedArray.subArray(40));
+	}
+	
+	@Test
+	public void sort2() {
+		final Random random = new Random();
+		final Factory<Integer> factory = new Factory<Integer>() {
+			@Override public Integer newInstance() {
+				return random.nextInt(10000);
+			}
+		};
+		
+		final Array<Integer> array = new Array<Integer>(100);
+		array.fill(factory);
+		Assert.assertFalse(ArrayUtils.isSorted(array));
+		
+		final Array<Integer> clonedArray = array.copy();
+		ArrayUtils.sort(clonedArray, 30, 40);
+		ArrayUtils.sort(array.subArray(30, 40));
+		Assert.assertEquals(array, clonedArray);
 	}
 	
 	

@@ -221,7 +221,56 @@ public final class ArrayUtils {
 		nonNull(array, "Array");
 		array.checkSeal();
 		
-		Arrays.sort(array._array, 0, array.length());
+		Arrays.sort(array._array, array._start, array._end);
+	}
+	
+	/**
+	 * Test whether the given array is sorted in ascending order.
+	 * 
+	 * @param array the array to test.
+	 * @return {@code true} if the given {@code array} is sorted in ascending
+	 *         order, {@code false} otherwise.
+	 * @throws NullPointerException if the given array or one of it's element is
+	 *         {@code null}.
+	 */
+	public static <T extends Object & Comparable<? super T>> boolean 
+	isSorted(final Array<T> array)
+	{
+		nonNull(array, "Array");
+		
+		boolean sorted = true;
+		
+		for (int i = 0, n = array.length() - 1; i < n && sorted; ++i) {
+			sorted = array.get(i).compareTo(array.get(i + 1)) <= 0;
+		}
+		
+		return sorted;
+	}
+	
+	/**
+	 * Test whether the given array is sorted in ascending order. The order of
+	 * the array elements is defined by the given comparator.
+	 * 
+	 * @param array the array to test.
+	 * @param comparator the comparator which defines the order.
+	 * @return {@code true} if the given {@code array} is sorted in ascending
+	 *         order, {@code false} otherwise.
+	 * @throws NullPointerException if the given array or one of it's element or
+	 *         the comparator is {@code null}.
+	 */
+	public static <T> boolean isSorted(
+		final Array<T> array, final Comparator<? super T> comparator
+	) {
+		nonNull(array, "Array");
+		nonNull(comparator, "Comparator");
+		
+		boolean sorted = true;
+		
+		for (int i = 0, n = array.length() - 1; i < n && sorted; ++i) {
+			sorted = comparator.compare(array.get(i), array.get(i + 1)) <= 0;
+		}
+		
+		return sorted;
 	}
 	
 	
@@ -1193,6 +1242,8 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double sum(final double[] values) {
+		nonNull(values);
+
 		double sum = 0.0;
 		double c = 0.0;
 		double y = 0.0;
@@ -1215,6 +1266,8 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static void normalize(final double[] values) {
+		nonNull(values);
+		
 		final double sum = 1.0/sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;

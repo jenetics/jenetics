@@ -23,11 +23,20 @@
 package org.jenetics.util;
 
 /**
+ * Interface for evaluating a predicate for an given object.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public interface Predicate<T> {
 
+	/**
+	 * Evaluate the predicate of the given object.
+	 * 
+	 * @param object the object to evaluate.
+	 * @return {@code true} if the given object fulfills this predicate, 
+	 *         {@code false} otherwise.
+	 */
 	public boolean evaluate(T object);
 	
 }

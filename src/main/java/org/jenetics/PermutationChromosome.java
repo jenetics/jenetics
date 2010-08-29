@@ -201,7 +201,10 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 		if (obj == this) {
 			return true;
 		}
-		return obj instanceof PermutationChromosome && super.equals(obj);
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		return super.equals(obj);
 	}
 	
 	@Override

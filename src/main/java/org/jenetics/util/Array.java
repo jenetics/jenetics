@@ -221,10 +221,38 @@ public class Array<T> implements
 	/**
 	 * Create a new array from the given values.
 	 * 
-	 * @param values the values of the new array.
+	 * @param first first array element.
+	 * @param second second array element.
+	 * @param third third array element.
+	 * @param fourth fourth array element.
+	 * @param fifth fifth array element.
+	 * @param rest the rest of the array element.
+	 * @throws NullPointerException if the {@code rest} array is {@code null}.
+	 */
+	public Array(
+		final T first,
+		final T second,
+		final T third,
+		final T fourth,
+		final T fifth,
+		final T... rest
+	) {
+		this(5 + rest.length);
+		_array[0] = first;
+		_array[1] = second;
+		_array[2] = third;
+		_array[3] = fourth;
+		_array[4] = fifth;
+		System.arraycopy(rest, 0, _array, 5, rest.length);
+	}
+	
+	/**
+	 * Create a new array from the given values.
+	 * 
+	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public Array(final T... values) {
+	public Array(final T[] values) {
 		this(values.length);
 		System.arraycopy(values, 0, _array, 0, values.length);
 	}
@@ -482,6 +510,23 @@ public class Array<T> implements
 		checkSeal();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = value;
+		}
+		return this;
+	}
+	
+	/**
+	 * Fills the array with values of the given iterator.
+	 * 
+	 * @param it the iterator of the values to fill this array.
+	 * @return {@code this} array.
+	 * @throws UnsupportedOperationException if this array is sealed 
+	 * 		  ({@code isSealed() == true}).
+	 */
+	public Array<T> fill(final Iterator<? extends T> it) {
+		checkSeal();
+		
+		for (int i = _start; i < _end && it.hasNext(); ++i) {
+			_array[i] = it.next();
 		}
 		return this;
 	}

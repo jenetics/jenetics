@@ -58,7 +58,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	protected Boolean _valid = null;
 
 	/**
-	 * Create a new chromosome
+	 * Create a new chromosome with the given length.
 	 * 
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
