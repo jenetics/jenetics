@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
@@ -203,6 +206,28 @@ public class Float64Gene
 		public void read(InputElement element, Float64Gene gene) throws XMLStreamException {
 		}
 	};
+	
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+	
+		out.writeDouble(_value.doubleValue());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+	}
+	
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+	
+		set(
+				Float64.valueOf(in.readDouble()), 
+				Float64.valueOf(in.readDouble()),
+				Float64.valueOf(in.readDouble())
+			);	
+	}
 
 }
 

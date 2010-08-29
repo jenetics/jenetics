@@ -23,6 +23,9 @@
 package org.jenetics;
 
 import static org.testng.Assert.assertEquals;
+
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
@@ -60,7 +63,12 @@ public class Float64ChromosomeTest {
     }
     
     @Test
-    public void serialize() throws XMLStreamException {
+    public void xmlSerialize() throws XMLStreamException {
+    	SerializeUtils.testXMLSerialization(new Float64Chromosome(-12.0, 230.123, 1));
+    }
+    
+    @Test
+    public void objectSerialize() throws IOException {
     	SerializeUtils.testSerialization(new Float64Chromosome(-12.0, 230.123, 1));
     }
 

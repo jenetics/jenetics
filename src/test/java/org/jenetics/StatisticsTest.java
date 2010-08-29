@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.BitUtils;
@@ -142,7 +144,13 @@ public class StatisticsTest {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
-	public void serialize() throws XMLStreamException {
+	public void xmlSerialize() throws XMLStreamException {
+		SerializeUtils.testXMLSerialization(new Statistics(123, null, null, 0, 0, 0));
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test
+	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0));
 	}
 

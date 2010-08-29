@@ -25,6 +25,9 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.Assert;
@@ -88,7 +91,17 @@ public class GenotypeTest {
     }
 
     @Test
-    public void serialize() throws XMLStreamException {
+    public void xmlSerialize() throws XMLStreamException {
+        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
+        Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);
+        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2, c3);
+        
+    	SerializeUtils.testXMLSerialization(g1);
+    }
+    
+    @Test
+    public void objectSerialize() throws IOException {
         Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
         Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
         Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);

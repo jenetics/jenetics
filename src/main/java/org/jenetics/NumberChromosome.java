@@ -44,12 +44,12 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 	/**
 	 * The minimum value of this <code>NumberChromosome</code>.
 	 */
-	protected Number<?> _min;
+	protected transient Number<?> _min;
 	
 	/**
 	 * The maximum value of this <code>NumberChromosome</code>.
 	 */
-	protected Number<?> _max;
+	protected transient Number<?> _max;
 	
 	/**
 	 * Create a new chromosome

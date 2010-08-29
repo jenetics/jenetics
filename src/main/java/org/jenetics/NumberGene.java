@@ -23,6 +23,9 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
+
+import java.io.InvalidObjectException;
+
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
@@ -42,21 +45,30 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * The minimum value of this <code>NumberGene</code>.
+	 * The minimum value of this <code>NumberGene</code>. This field is marked 
+	 * as transient and must serialized manually by sub classes. 
+	 * 
+	 * @serial
 	 */
-	protected N _min;
+	protected transient N _min;
 	
 	/**
-	 * The maximum value of this <code>NumberGene</code>.
+	 * The maximum value of this <code>NumberGene</code>. This field is marked 
+	 * as transient and must serialized manually by sub classes. 
+	 * 
+	 * @serial
 	 */
-	protected N _max;
+	protected transient N _max;
 	
 	/**
-	 * The value of this <code>NumberGene</code>.
+	 * The value of this <code>NumberGene</code>. This field is marked 
+	 * as transient and must serialized manually by sub classes. 
+	 * 
+	 * @serial
 	 */
-	protected N _value;
+	protected transient N _value;
 	
-	private boolean _valid = true;
+	private transient boolean _valid = true;
 	
 	
 	protected NumberGene() {
@@ -200,6 +212,11 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 		TextBuilder out = new TextBuilder();
 		out.append("[").append(_value).append("]");
 		return out.toText();
+	}
+	
+	@SuppressWarnings("unused")
+	private void readObjectNoData() throws InvalidObjectException {
+	    throw new InvalidObjectException("Stream data required");
 	}
 	
 }

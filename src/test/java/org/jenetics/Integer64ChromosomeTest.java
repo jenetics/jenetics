@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
@@ -34,7 +36,12 @@ public class Integer64ChromosomeTest {
 
 	
 	@Test
-	public void serialize() throws XMLStreamException {
+	public void xmlSerialize() throws XMLStreamException {
+		SerializeUtils.testXMLSerialization(new Integer64Chromosome(0, 100, 10));
+	}
+	
+	@Test
+	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(new Integer64Chromosome(0, 100, 10));
 	}
 	

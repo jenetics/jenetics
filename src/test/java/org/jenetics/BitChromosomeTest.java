@@ -192,8 +192,13 @@ public class BitChromosomeTest {
     }
     
     @Test
-    public void serialize() throws Exception {
-    	SerializeUtils.testSerialization(BitChromosome.valueOf(10));
+    public void xmlSerialize() throws Exception {
+    	SerializeUtils.testXMLSerialization(BitChromosome.valueOf(50));
+    }
+    
+    @Test
+    public void objectSerialize() throws Exception {
+    	SerializeUtils.testSerialization(BitChromosome.valueOf(50));
     }
 
 

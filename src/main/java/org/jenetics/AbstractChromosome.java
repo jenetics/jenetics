@@ -53,9 +53,9 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Array of genes which forms the chromosome. This array must
 	 * be initialized by the derived classes.
 	 */
-	protected Array<G> _genes = null;
+	protected transient Array<G> _genes = null;
 	
-	protected Boolean _valid = null;
+	protected transient Boolean _valid = null;
 
 	/**
 	 * Create a new chromosome with the given length.

@@ -22,6 +22,10 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -208,6 +212,37 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		}
 	};
 
+	
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+	
+		out.writeInt(length());
+		out.writeDouble(_min.doubleValue());
+		out.writeDouble(_max.doubleValue());
+		
+		for (Float64Gene gene : _genes) {
+			out.writeDouble(gene.doubleValue());
+		}
+	}
+	
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+	
+		final int length = in.readInt();
+		Float64 min = Float64.valueOf(in.readDouble());
+		Float64 max = Float64.valueOf(in.readDouble());
+		
+		_min = min;
+		_max = max;
+		_genes = new Array<Float64Gene>(length);
+		for (int i = 0; i < length; ++i) {
+			_genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
+		}
+	}
 
 }
 

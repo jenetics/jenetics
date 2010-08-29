@@ -26,6 +26,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.CharSet;
@@ -117,7 +120,12 @@ public class CharacterGeneTest {
     }
     
     @Test
-    public void serialize() throws XMLStreamException {
+    public void xmlSerialize() throws XMLStreamException {
+    	SerializeUtils.testXMLSerialization(CharacterGene.valueOf());
+    }
+    
+    @Test
+    public void objectSerialize() throws IOException {
     	SerializeUtils.testSerialization(CharacterGene.valueOf());
     }
 

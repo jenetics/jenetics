@@ -1,3 +1,5 @@
+- Implement readObject and writeObject methods in gene and chromosome 
+  implementations.
 - Making CharSet class final.
 - Fixing bug in the ArrayUtils.sort(Array) method. This method doesn't sort
   Arrays created with Array.subArray not the right way.
