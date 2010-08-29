@@ -24,6 +24,8 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
 
+import java.io.Serializable;
+
 import org.jenetics.util.Converter;
 import org.jenetics.util.Verifiable;
 
@@ -52,7 +54,7 @@ import javolution.xml.stream.XMLStreamException;
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
-				XMLSerializable, Realtime, Runnable
+				XMLSerializable, Serializable, Realtime, Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
