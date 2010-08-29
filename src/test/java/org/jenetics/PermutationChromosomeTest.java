@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
@@ -33,7 +35,12 @@ import org.testng.annotations.Test;
 public class PermutationChromosomeTest {
 
 	@Test
-	public void serialize() throws XMLStreamException {
+	public void xmlSerialize() throws XMLStreamException {
+		SerializeUtils.testXMLSerialization(new PermutationChromosome(10));
+	}
+	
+	@Test
+	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(new PermutationChromosome(10));
 	}
 	

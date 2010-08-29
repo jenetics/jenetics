@@ -24,6 +24,9 @@ package org.jenetics;
 
 import static java.lang.Math.round;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import javolution.context.ObjectFactory;
@@ -191,6 +194,28 @@ public class Integer64Gene
 		{
 		}
 	};
+	
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+	
+		out.writeLong(_value.longValue());
+		out.writeLong(_min.longValue());
+		out.writeLong(_max.longValue());
+	}
+	
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+	
+		set(
+				Integer64.valueOf(in.readLong()), 
+				Integer64.valueOf(in.readLong()),
+				Integer64.valueOf(in.readLong())
+			);	
+	}
 	
 }
 

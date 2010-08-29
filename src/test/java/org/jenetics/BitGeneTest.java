@@ -25,6 +25,9 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
+
 import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
@@ -70,7 +73,13 @@ public class BitGeneTest {
     }
     
     @Test
-    public void serialize() throws XMLStreamException {
+    public void xmlSerialize() throws XMLStreamException {
+    	SerializeUtils.testXMLSerialization(BitGene.TRUE);
+    	SerializeUtils.testXMLSerialization(BitGene.FALSE);
+    }
+    
+    @Test
+    public void objectSerialize() throws IOException {
     	SerializeUtils.testSerialization(BitGene.TRUE);
     	SerializeUtils.testSerialization(BitGene.FALSE);
     }

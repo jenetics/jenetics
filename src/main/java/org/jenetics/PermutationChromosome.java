@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -259,6 +262,32 @@ public class PermutationChromosome extends AbstractChromosome<Integer64Gene>
 		{
 		}
 	};
+	
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+	
+		out.writeInt(length());		
+		for (Integer64Gene gene : _genes) {
+			out.writeLong(gene.longValue());
+		}
+	}
+	
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+	
+		final int length = in.readInt();
+		Integer64 min = Integer64.valueOf(0);
+		Integer64 max = Integer64.valueOf(length - 1);
+		
+		_genes = new Array<Integer64Gene>(length);
+		for (int i = 0; i < length; ++i) {
+			_genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
+		}
+	}
 	
 }
 

@@ -23,6 +23,11 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javolution.text.CharArray;
 import javolution.text.Text;
 import javolution.text.TextBuilder;
@@ -42,7 +47,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 {	
 	private static final long serialVersionUID = 1L;
 
-	private final CharSet _validCharacters;
+	private transient CharSet _validCharacters;
 	
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
@@ -191,6 +196,33 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 		
 	};
 
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+	
+		out.writeInt(length());
+		out.writeObject(_validCharacters);
+		
+		for (CharacterGene gene : _genes) {
+			out.writeChar(gene.getAllele().charValue());
+		}
+	}
+	
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+	
+		final int length = in.readInt();
+		_validCharacters = (CharSet)in.readObject();
+		
+		_genes = new Array<CharacterGene>(length);
+		for (int i = 0; i < length; ++i) {
+			_genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
+		}
+	}
+	
 }
 
 

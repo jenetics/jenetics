@@ -40,7 +40,7 @@ import org.testng.Reporter;
  */
 class SerializeUtils {
 
-	public static void testSerialization(final XMLSerializable object) 
+	public static void testXMLSerialization(final XMLSerializable object) 
 		throws XMLStreamException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -62,6 +62,7 @@ class SerializeUtils {
 		IOUtils.writeObject(object, out);
 		
 		final byte[] data = out.toByteArray();
+		System.out.println("Length:" + data.length);
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = IOUtils.readObject(Serializable.class, in);
