@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.nonNull;
+
 /**
  * This class contains some short general purpose predicates, like {@code Nil},
  * {@code Not}, {@code And} and {@code Or}.
@@ -46,7 +48,7 @@ public final class Predicates {
 		 * Return {@code true} if the given value is {@code null}.
 		 * 
 		 * @return {@code true} if the given value is {@code null}, {@code false}
-		 * 		  otherwise..
+		 * 		  otherwise.
 		 */
 		@Override
 		public boolean evaluate(final Object object) {
@@ -71,7 +73,7 @@ public final class Predicates {
 		 * @throws NullPointerException if the given predicate is {@code null}.
 		 */
 		public Not(final Predicate<? super T> a) {
-			_a = Validator.nonNull(a);
+			_a = nonNull(a);
 		}
 		
 		/**
@@ -102,8 +104,8 @@ public final class Predicates {
 		 * @throws NullPointerException if one of the predicates is {@code null}.
 		 */
 		public And(final Predicate<? super T> a, final Predicate<? super T> b) {
-			_a = Validator.nonNull(a);
-			_b = Validator.nonNull(b);
+			_a = nonNull(a);
+			_b = nonNull(b);
 		}
 		
 		@Override
@@ -130,8 +132,8 @@ public final class Predicates {
 		 * @throws NullPointerException if one of the predicates is {@code null}.
 		 */
 		public Or(final Predicate<? super T> a, final Predicate<? super T> b) {
-			_a = Validator.nonNull(a);
-			_b = Validator.nonNull(b);
+			_a = nonNull(a);
+			_b = nonNull(b);
 		}
 		
 		@Override

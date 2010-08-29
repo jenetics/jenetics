@@ -37,7 +37,7 @@ import javolution.lang.Immutable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharSet 
+public final class CharSet 
 	implements CharSequence, Iterable<Character>, Immutable, Serializable 
 {
 	private static final long serialVersionUID = 1L;

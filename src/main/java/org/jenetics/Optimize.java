@@ -34,18 +34,26 @@ public enum Optimize {
 	/**
 	 * GA minimization
 	 */
-	MINIMUM(new Min()),
+	MINIMUM {
+		@Override
+		public <T extends Comparable<? super T>> 
+		int compare(final T o1, final T o2) 
+		{
+			return -o1.compareTo(o2);
+		}
+	},
 	
 	/**
 	 * GA maximization
 	 */
-	MAXIMUM(new Max());
-	
-	private final Comp _comparator;
-	
-	private Optimize(final Comp comparator) {
-		_comparator = comparator;
-	}
+	MAXIMUM {
+		@Override
+		public <T extends Comparable<? super T>> 
+		int compare(final T o1, final T o2) 
+		{
+			return o1.compareTo(o2);
+		}
+	};
 	
 	/**
 	 * Compares two comparable objects. Returns a negative integer, zero, or a 
@@ -59,9 +67,8 @@ public enum Optimize {
 	 * 		  argument is better than, equal to, or worse than the second.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public <T extends Comparable<T>> int compare(final T o1, final T o2) {
-		return _comparator.compare(o1, o2);
-	}
+	public abstract <T extends Comparable<? super T>> 
+	int compare(final T o1, final T o2);
 	
 	/**
 	 * Return the best value, according to this optimization direction.
@@ -71,9 +78,9 @@ public enum Optimize {
 	 * @param b the second value.
 	 * @return the best value. If both values are equal the first one is returned.
 	 */
-	public <C extends Comparable<C>> C best(final C a, final C b) {
+	public <C extends Comparable<? super C>> C best(final C a, final C b) {
 		C best = a;
-		if (_comparator.compare(b, best) > 0) {
+		if (compare(b, best) > 0) {
 			best = b;
 		}
 		return best;
@@ -87,42 +94,12 @@ public enum Optimize {
 	 * @param b the second value.
 	 * @return the worst value. If both values are equal the first one is returned.
 	 */
-	public <C extends Comparable<C>> C worst(final C a, final C b) {
+	public <C extends Comparable<? super C>> C worst(final C a, final C b) {
 		C worst = a;
-		if (_comparator.compare(b, worst) < 0) {
+		if (compare(b, worst) < 0) {
 			worst = b;
 		}
 		return worst;
-	}
-	
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	private static interface Comp {
-		public <T extends Comparable<T>> int compare(final T o1, final T o2);
-	}
-	
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	private static final class Min implements Comp {
-		@Override
-		public <T extends Comparable<T>> int compare(final T o1, final T o2) {
-			return -o1.compareTo(o2);
-		}
-	}
-	
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	private static final class Max implements Comp {
-		@Override
-		public <T extends Comparable<T>> int compare(final T o1, final T o2) {
-			return o1.compareTo(o2);
-		}
 	}
 	
 }
