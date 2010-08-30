@@ -24,33 +24,17 @@ package org.jenetics;
 
 import java.io.IOException;
 
-import javolution.xml.stream.XMLStreamException;
-
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class EnumGeneTest {
+public class ExponentialScalerTest {
 
-	public static enum TestEnum {
-		ONE, TWO, THREE, FOUR, FIVE, SIX
+	@Test
+	public void serialize() throws IOException {
+		SerializeUtils.testSerialization(new ExponentialScaler(234, 345, 122));
 	}
 	
-	@Test
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
-	}
-	
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(EnumGene.valueOf(TestEnum.SIX));
-	}
 }
-
-
-
-
-
-

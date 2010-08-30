@@ -26,8 +26,6 @@ import static java.lang.Math.abs;
 import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.Validator.nonNull;
 
-import java.io.Serializable;
-
 import org.jenetics.util.RandomRegistry;
 
 
@@ -44,9 +42,8 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
-	extends RouletteWheelSelector<G, N> implements Serializable 
+	extends RouletteWheelSelector<G, N> 
 {
-	private static final long serialVersionUID = 1L;
 
 	public StochasticUniversalSelector() {
 	}

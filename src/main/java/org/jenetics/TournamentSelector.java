@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
 
-import java.io.Serializable;
 import java.util.Random;
 
 import org.jenetics.util.RandomRegistry;
@@ -44,9 +43,8 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
-	implements Selector<G, C>, Serializable 
+	implements Selector<G, C>
 {
-	private static final long serialVersionUID = 1L;
 	
 	private final int _sampleSize;
 

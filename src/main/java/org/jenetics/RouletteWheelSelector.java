@@ -25,7 +25,6 @@ package org.jenetics;
 import static java.lang.Math.abs;
 import static org.jenetics.util.BitUtils.ulpDistance;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 import org.jenetics.util.ArrayUtils;
@@ -38,9 +37,8 @@ import org.jenetics.util.ArrayUtils;
  * @version $Id$
  */
 public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
-	extends ProbabilitySelector<G, N> implements Serializable
+	extends ProbabilitySelector<G, N>
 {
-	private static final long serialVersionUID = 1L;
 	
 	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 9);
 
