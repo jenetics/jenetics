@@ -94,6 +94,28 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 17*super.hashCode() + 37;
+		hash += 17*Double.doubleToLongBits(_c) + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
+		return super.equals(selector) && 
+				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
+	}
 
 }
 
