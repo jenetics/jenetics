@@ -94,6 +94,28 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 		return probabilities;
 	}
 	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 37*super.hashCode() + 17;
+		hash += 37*Double.doubleToLongBits(_b) + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		final BoltzmannSelector<?, ?> selector = (BoltzmannSelector<?, ?>)obj;
+		return super.equals(obj) &&
+			Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b);
+	}
+	
 }
 
 

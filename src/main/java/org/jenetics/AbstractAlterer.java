@@ -57,4 +57,29 @@ public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G
 	public double getProbability() {
 		return _probability;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 37*Double.doubleToLongBits(_probability) + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof AbstractAlterer<?>)) {
+			return false;
+		}
+		
+		final AbstractAlterer<?> alterer = (AbstractAlterer<?>)obj;
+		return Double.doubleToLongBits(_probability) == 
+				Double.doubleToLongBits(alterer._probability);
+	}
 }
+
+
+
+

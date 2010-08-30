@@ -166,6 +166,26 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		return _alterers.seal();
 	}
 	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 37*_alterers.hashCode() + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		final CompositeAlterer<?> alterer = (CompositeAlterer<?>)obj;
+		return _alterers.equals(alterer._alterers);
+	}
+	
 	/**
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are
