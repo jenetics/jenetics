@@ -227,27 +227,17 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 		if (!(object instanceof NumberChromosome<?>)) {
 			return false;
 		}
-		
+				
 		final NumberChromosome<?> nc = (NumberChromosome<?>)object;
-		return (_min != null ? _min.equals(nc._min) : nc._min == null) &&
-				(_max != null ? _max.equals(nc._max) : nc._max == null) &&
-				super.equals(nc);
+		return _min.equals(nc._min) &&
+				_max.equals(nc._max) &&
+				super.equals(object);
 	}
 	
 	@Override
 	public Text toText() {
 		final TextBuilder out = TextBuilder.newInstance();
-		
-		out.append("[");
-		if (length() > 0) {
-			out.append(getGene(0).getAllele());
-		}
-		for (int i = 1; i < length(); ++i) {
-			out.append(", ");
-			out.append(getGene(i).getAllele());
-		}
-		out.append("]");
-		
+		out.append(_genes.toString("[", ",", "]"));		
 		return out.toText();
 	}
 	

@@ -46,10 +46,14 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	
 	protected Float64Chromosome(final Array<Float64Gene> genes) {
 		super(genes);
+		
+		assert (genes.length() >= 1);
+		_min = genes.get(0)._min;
+		_max = genes.get(0)._max;
 	}
 	
 	/**
-	 * Create a new chromosome
+	 * Create a new random chromosome.
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
@@ -60,7 +64,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	}
 	
 	/**
-	 * Create a new chromosome
+	 * Create a new random chromosome.
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
@@ -100,6 +104,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		for (int i = 0; i < genes.length; ++i) {
 			_genes.set(i, genes[i]);
 		}
+		_genes.seal();
 	}
 	
 	/**
@@ -120,10 +125,9 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		}
 		_min = min;
 		_max = max;
-		
-		for (int i = 0; i < length; ++i) {
-			_genes.set(i, Float64Gene.valueOf(min, max));
-		}
+		final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
+		_genes.fill(factory);
+		_genes.seal();
 	}
 	
 	@Override
@@ -161,11 +165,10 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		if (obj == this) {
 			return true;
 		}
-		return obj instanceof Float64Chromosome && super.equals(obj);
+		return obj instanceof Float64Chromosome && 
+					super.equals(obj);
 	}
 	
-	
-
 	
 	static final XMLFormat<Float64Chromosome> 
 	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class) 

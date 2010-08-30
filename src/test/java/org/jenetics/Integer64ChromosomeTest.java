@@ -25,6 +25,7 @@ package org.jenetics;
 import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
+import junit.framework.Assert;
 
 import org.testng.annotations.Test;
 
@@ -34,6 +35,20 @@ import org.testng.annotations.Test;
  */
 public class Integer64ChromosomeTest {
 
+	@Test
+	public void equals() {
+		Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
+		Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
+		Assert.assertFalse(c1.equals(c2));
+		
+		c2 = new Integer64Chromosome(c1.toArray());
+		Assert.assertEquals(c2, c1);
+		Assert.assertNotSame(c1, c2);
+		
+		c2 = new Integer64Chromosome(c1.toArray().copy());
+		Assert.assertEquals(c2, c1);
+		Assert.assertNotSame(c1, c2);
+	}
 	
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
