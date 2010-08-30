@@ -51,6 +51,23 @@ public class Float64ChromosomeTest {
     }
     
     @Test
+    public void equals() {
+    	Float64Chromosome c1 = new Float64Chromosome(-12.0, 230.123, 3);
+    	Float64Chromosome c2 = new Float64Chromosome(-12.0, 230.123, 3);
+    	Assert.assertFalse(c1.equals(c2));
+    	
+    	
+    	
+    	c2 = new Float64Chromosome(c1.toArray());
+    	Assert.assertNotSame(c2, c1);
+    	Assert.assertEquals(c2, c1);
+    	
+    	c2 = new Float64Chromosome(c1.toArray().copy());
+    	Assert.assertNotSame(c2, c1);
+    	Assert.assertEquals(c2, c1);
+    }
+    
+    @Test
     public void newInstance() {
     	final Float64Chromosome ch1 = new Float64Chromosome(
     			Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5)

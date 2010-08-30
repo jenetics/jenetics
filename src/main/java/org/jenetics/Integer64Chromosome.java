@@ -53,6 +53,10 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 */
 	protected Integer64Chromosome(final Array<Integer64Gene> genes) {
 		super(genes);
+		
+		assert (genes.length() >= 1);
+		_min = genes.get(0)._min;
+		_max = genes.get(0)._max;
 	}
 	
 	/**
