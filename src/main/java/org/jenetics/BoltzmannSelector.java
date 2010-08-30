@@ -24,8 +24,6 @@ package org.jenetics;
 
 import static java.lang.Math.exp;
 
-import java.io.Serializable;
-
 import org.jenetics.util.ArrayUtils;
 
 /**
@@ -49,9 +47,8 @@ import org.jenetics.util.ArrayUtils;
  * @version $Id$
  */
 public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
-	extends ProbabilitySelector<G, N> implements Serializable
+	extends ProbabilitySelector<G, N>
 {
-	private static final long serialVersionUID = 1L;
 	
 	private final double _b;
 

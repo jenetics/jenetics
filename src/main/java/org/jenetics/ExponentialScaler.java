@@ -80,4 +80,28 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 	public Float64 scale(final Float64 value) {
 		return Float64.valueOf(Math.pow((_a*value.doubleValue() + _b), _c));
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 37;
+		hash += 17*Double.doubleToLongBits(_a) + 37;
+		hash += 17*Double.doubleToLongBits(_b) + 37;
+		hash += 17*Double.doubleToLongBits(_c) + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		final ExponentialScaler selector = (ExponentialScaler)obj;
+		return Double.doubleToLongBits(_a) == Double.doubleToLongBits(selector._a) &&
+		Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b) &&
+				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
+	}
 }

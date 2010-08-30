@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
 
 
 /**
@@ -52,10 +51,8 @@ import java.io.Serializable;
  * @version $Id$
  */
 public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
-	extends ProbabilitySelector<G, C> implements Serializable
+	extends ProbabilitySelector<G, C>
 {
-	private static final long serialVersionUID = 1L;
-	
 	private final double _nminus;
 	private final double _nplus;
 
@@ -110,6 +107,28 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 		
 		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 37;
+		hash += 17*Double.doubleToLongBits(_nminus) + 37;
+		hash += 17*Double.doubleToLongBits(_nplus) + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof LinearRankSelector<?, ?>)) {
+			return false;
+		}
+		
+		final LinearRankSelector<?, ?> selector = (LinearRankSelector<?, ?>)obj;
+		return Double.doubleToLongBits(_nminus) == Double.doubleToLongBits(selector._nminus) &&
+			Double.doubleToLongBits(_nminus) == Double.doubleToLongBits(selector._nminus);
 	}
 
 }

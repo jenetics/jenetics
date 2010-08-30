@@ -24,8 +24,6 @@ package org.jenetics;
 
 import static java.lang.Math.pow;
 
-import java.io.Serializable;
-
 /**
  * An alternative to the "weak" <code>LinearRankSelector</code> is to assign
  * survival probabilities to the sorted individuals using an exponential 
@@ -48,9 +46,8 @@ import java.io.Serializable;
  * @version $Id$
  */
 public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
-	extends ProbabilitySelector<G, C> implements Serializable
+	extends ProbabilitySelector<G, C>
 {
-	private static final long serialVersionUID = 1L;
 	
 	private final double _c;
 	

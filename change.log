@@ -1,3 +1,4 @@
+- Selectors and Alterers are no longer Serializable.
 - Implement readObject and writeObject methods in gene and chromosome 
   implementations.
 - Making CharSet class final.

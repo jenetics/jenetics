@@ -32,7 +32,7 @@ import static org.jenetics.util.Validator.nonNull;
  *
  * @param <G> the gene type.
  */
-public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
+public final class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
 {
 	private static final long serialVersionUID = 1L;
@@ -56,6 +56,24 @@ public class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<
 	@Override
 	public C evaluate(final Genotype<G> genotype) {
 		return _value;
+	}
+	
+	@Override
+	public int hashCode() {
+		return _value.hashCode();
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof ConstantFitnessFunction<?, ?>)) {
+			return false;
+		}
+		
+		final ConstantFitnessFunction<?, ?> f = (ConstantFitnessFunction<?, ?>)obj;
+		return _value.equals(f._value);
 	}
 	
 }

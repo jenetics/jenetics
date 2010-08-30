@@ -24,33 +24,20 @@ package org.jenetics;
 
 import java.io.IOException;
 
-import javolution.xml.stream.XMLStreamException;
-
+import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class EnumGeneTest {
+public class ConstantFitnessFunctionTest {
 
-	public static enum TestEnum {
-		ONE, TWO, THREE, FOUR, FIVE, SIX
+	@Test
+	public void serialize() throws IOException {
+		ConstantFitnessFunction<Float64Gene, Float64> f = 
+			new ConstantFitnessFunction<Float64Gene, Float64>(Float64.valueOf(2234.234));
+		SerializeUtils.testSerialization(f);
 	}
 	
-	@Test
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
-	}
-	
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(EnumGene.valueOf(TestEnum.SIX));
-	}
 }
-
-
-
-
-
-
