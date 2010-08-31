@@ -61,7 +61,6 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Holds the number of mutation performed by this mutation class.
@@ -182,6 +181,21 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 			//Count the number of mutations.
 			_mutations += elements.length;
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 461;
+		hash += 61*super.hashCode() + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		return obj instanceof Mutator<?>;
 	}
 
 }

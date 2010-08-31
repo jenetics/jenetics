@@ -34,7 +34,7 @@ import org.jscience.mathematics.function.Function;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
+public final class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
 	implements FitnessFunction<G, C> 
 {
 	private static final long serialVersionUID = 1L;
@@ -57,6 +57,26 @@ public class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>>
 	@Override
 	public C evaluate(final Genotype<G> genotype) {
 		return _adoptee.evaluate(genotype);
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 17*_adoptee.hashCode() + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof FunctionAdapter<?, ?>)) {
+			return false;
+		}
+		
+		final FunctionAdapter<?, ?> function = (FunctionAdapter<?, ?>)obj;
+		return _adoptee.equals(function._adoptee);
 	}
 
 }

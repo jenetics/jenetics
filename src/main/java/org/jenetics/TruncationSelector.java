@@ -35,10 +35,9 @@ import static org.jenetics.util.Validator.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
+public final class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	implements Selector<G, C>
 {
-	private static final long serialVersionUID = 1L;
 
 	public TruncationSelector() {
 	}
@@ -92,6 +91,19 @@ public class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		}
 		
 		return selected;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 2837; //Prime
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		return obj instanceof TruncationSelector<?, ?>;
 	}
 
 }

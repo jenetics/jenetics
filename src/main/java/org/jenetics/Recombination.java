@@ -45,7 +45,9 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class Recombination<G extends Gene<?, G>> extends AbstractAlterer<G> {
+public abstract class Recombination<G extends Gene<?, G>> 
+	extends AbstractAlterer<G> 
+{
 	
 	/**
 	 * Constructs an alterer with a given recombination probability.

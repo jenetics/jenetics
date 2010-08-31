@@ -81,6 +81,23 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 37*super.hashCode() + 61;
+		return hash;
+	}
 	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		return super.equals(obj);
+	}
 	
 }

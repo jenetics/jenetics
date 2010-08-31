@@ -97,6 +97,25 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 
 		return selection;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 61;
+		hash += 17*super.hashCode() + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		return super.equals(obj);
+	}
 
 }
 

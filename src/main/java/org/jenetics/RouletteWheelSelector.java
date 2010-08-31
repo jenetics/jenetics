@@ -73,6 +73,26 @@ public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comp
 		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 67;
+		hash += 17*super.hashCode() + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		return super.equals(obj);
+	}
+	
 }
 
 
