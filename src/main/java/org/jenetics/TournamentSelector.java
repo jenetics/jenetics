@@ -130,6 +130,26 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 		return pop;
 	}
 	
+	@Override
+	public int hashCode() {
+		int hash = 61;
+		hash += 37*_sampleSize + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		final TournamentSelector<?, ?> selector = (TournamentSelector<?, ?>)obj;
+		return _sampleSize == selector._sampleSize;
+	}
+	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
 		return new TournamentSelector<SG, SC>(sampleSize);

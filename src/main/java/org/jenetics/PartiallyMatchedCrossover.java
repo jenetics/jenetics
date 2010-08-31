@@ -73,7 +73,6 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G> {
-	private static final long serialVersionUID = 1L;
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);
@@ -131,6 +130,25 @@ public class PartiallyMatchedCrossover<G extends Gene<?, G>> extends Crossover<G
 			}
 		}
 		return index;
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 67;
+		hash += 37*super.hashCode() + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		return super.equals(obj);
 	}
 
 }

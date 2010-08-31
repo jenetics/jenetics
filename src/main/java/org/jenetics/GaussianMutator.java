@@ -72,6 +72,25 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 		}
 	}
 	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 17*super.hashCode() + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		return super.equals(obj);		
+	}
+	
 }
 
 

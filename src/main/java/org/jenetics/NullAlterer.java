@@ -28,8 +28,7 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
-	private static final long serialVersionUID = 1L;
+public final class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	public NullAlterer() {
 		super(0.0);
@@ -44,4 +43,13 @@ public class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 	}
 
+	@Override
+	public int hashCode() {
+		return 3;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof NullAlterer<?>;
+	}
 }

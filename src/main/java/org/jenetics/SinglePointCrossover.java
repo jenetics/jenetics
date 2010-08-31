@@ -52,7 +52,6 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a new single point crossover object with crossover probability of
@@ -91,6 +90,25 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			other.set(j, that.get(j));
 			that.set(j, temp);
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 4339;
+		hash += 61*super.hashCode() + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		return super.equals(obj);
 	}
 	
 }

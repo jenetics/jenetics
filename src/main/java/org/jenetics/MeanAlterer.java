@@ -33,7 +33,9 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G> {
+public final class MeanAlterer<G extends Gene<?, G> & Mean<G>> 
+	extends Recombination<G> 
+{
 
 	public MeanAlterer() {
 		this(0.05);
@@ -79,6 +81,25 @@ public class MeanAlterer<G extends Gene<?, G> & Mean<G>> extends Recombination<G
 		
 		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
 		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 17*super.hashCode() + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof MeanAlterer<?>)) {
+			return false;
+		}
+		
+		return super.equals(obj);
 	}
 
 }

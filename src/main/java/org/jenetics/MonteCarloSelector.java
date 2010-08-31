@@ -35,11 +35,14 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>> 
+public final class MonteCarloSelector<G extends Gene<?,G>, C 
+	extends Comparable<C>> 
 	implements Selector<G, C> 
 {
-	private static final long serialVersionUID = 1L;
 
+	public MonteCarloSelector() {	
+	}
+	
 	@Override
 	public Population<G, C> select(
 		final Population<G, C> population, 
@@ -67,6 +70,19 @@ public class MonteCarloSelector<G extends Gene<?,G>, C extends Comparable<C>>
 		}
 		
 		return selection;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 59; // Prime
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		return obj instanceof MonteCarloSelector<?, ?>;
 	}
 
 }
