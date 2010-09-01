@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.jenetics.util.Accumulators.Mean;
 import org.jenetics.util.Accumulators.Quantile;
@@ -101,6 +102,7 @@ public class AccumulatorsTest {
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;
 		}
+		ArrayUtils.shuffle(array, new Random());
 		
 		final Accumulators.Min<Integer> min = new Accumulators.Min<Integer>();
 		Accumulators.accumulate(Arrays.asList(array), min);
@@ -113,6 +115,7 @@ public class AccumulatorsTest {
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;
 		}
+		ArrayUtils.shuffle(array, new Random());
 		
 		final Accumulators.Max<Integer> max = new Accumulators.Max<Integer>();
 		Accumulators.accumulate(Arrays.asList(array), max);
@@ -125,6 +128,7 @@ public class AccumulatorsTest {
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;
 		}
+		ArrayUtils.shuffle(array, new Random());
 		
 		final Accumulators.MinMax<Integer> minMax = new Accumulators.MinMax<Integer>();
 		Accumulators.accumulate(Arrays.asList(array), minMax);
