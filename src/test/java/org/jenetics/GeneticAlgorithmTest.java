@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javolution.context.ConcurrentContext;
+import javolution.context.LocalContext;
 import jsr166y.ForkJoinPool;
 
 import org.jenetics.util.ConcurrentEvaluator;
@@ -81,12 +82,13 @@ public class GeneticAlgorithmTest {
 	
 	@Test
 	public void optimize() {
-		RandomRegistry.setRandom(new Random(12345));
-		EvaluatorRegistry.setEvaluator(new SerialEvaluator());
-		
 		final int concurrency = ConcurrentContext.getConcurrency();
 		ConcurrentContext.setConcurrency(0);
+		LocalContext.enter();
 		try {
+			RandomRegistry.setRandom(new Random(12345));
+			EvaluatorRegistry.setEvaluator(new SerialEvaluator());
+			
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
@@ -98,9 +100,7 @@ public class GeneticAlgorithmTest {
 			ga.setSurvivorSelector(new TournamentSelector<Float64Gene, Float64>());
 			
 			ga.setup();
-			for (int i = 0; i < 100; ++i) {
-				ga.evolve();
-			}
+			ga.evolve(100);
 			
 			Statistics<?, ?> s = ga.getBestStatistics();
 			Reporter.log(s.toString());
@@ -112,13 +112,14 @@ public class GeneticAlgorithmTest {
 			
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 21.35000000000, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 207.90703517588, 0.000001);
+			Assert.assertEquals(s.getAgeMean(), 16.070000000000004, 0.000001);
+			Assert.assertEquals(s.getAgeVariance(), 241.40211055276382, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
 			Assert.assertEquals(((Float64)s.getBestFitness()).doubleValue(), 0.99577149482586247, 0.00000001);
-			Assert.assertEquals(((Float64)s.getWorstFitness()).doubleValue(), 0.13094479012932092, 0.00000001);
+			Assert.assertEquals(((Float64)s.getWorstFitness()).doubleValue(), 0.2861803193531154, 0.00000001);
 		} finally {
 			ConcurrentContext.setConcurrency(concurrency);
+			LocalContext.exit();
 		}
 		
 	}
