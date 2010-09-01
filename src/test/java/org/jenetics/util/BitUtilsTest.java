@@ -36,6 +36,20 @@ import org.testng.annotations.Test;
  */
 public class BitUtilsTest {
 
+	static long add(long a, long b) {
+		long c = a + b;
+		if (((c ^ a) & (c ^ b) >> 63) != 0) {
+			throw new ArithmeticException();
+		}
+
+		return c;
+	}
+	
+	@Test
+	public void add() {
+		add(Long.MAX_VALUE, 0);
+	}
+	
 	@Test
 	public void convertByteArrayLargeInteger() {
 		LargeInteger i = LargeInteger.valueOf(23443L);

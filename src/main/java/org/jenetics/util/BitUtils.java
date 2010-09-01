@@ -442,7 +442,7 @@ public final class BitUtils {
 	 * See the License for the specific language governing permissions and
 	 * limitations under the License.
 	 */	
-	private static long add(final long a, final long b) {
+	static long add(final long a, final long b) {
 		long sum = 0;
 		if (a > b) {
 			// use symmetry to reduce boundry cases
@@ -477,7 +477,7 @@ public final class BitUtils {
 		return sum;
 	}	
 	
-	private static long sub(final long a, final long b) {
+	static long sub(final long a, final long b) {
 		long ret = 0;
 		if (b == Long.MIN_VALUE) {
 			if (a < 0) {

@@ -31,6 +31,31 @@ final class MathUtils {
 	private MathUtils() {
 	}
 	
+	static long add(final long a, final long b) {
+		final long c = a + b;
+		if (((c ^ a) & (c ^ b) >> 63) != 0) {
+			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+		}
+
+		return c;
+	}
+	
+	static long sub(final long a, final long b) {
+		if (a >= 0 && b >= 0) {
+			final long c = a - b;
+			if (((a ^ b) & (a ^ c) >> 63) != 0) {
+				throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+			}
+	
+			return c;
+		} else if (a >= 0 && b < 0) {
+			return add(a, b);
+		} else if (a < 0 && b >= 0) {
+			
+		}
+		return 0;
+	}
+	
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return m >= Integer.MIN_VALUE && m <= Integer.MAX_VALUE;
