@@ -880,6 +880,22 @@ public final class ArrayUtils {
 		return partition;
 	}	
 
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 * 
+	 * @see #subset(int, int[])
+	 * 
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @throws NullPointerException if {@code random} or {@code sub} is 
+	 * 		  {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if 
+	 * 		  {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k) {
+		return subset(n, k, RANDOM.get());
+	}
 	
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
@@ -911,6 +927,40 @@ public final class ArrayUtils {
 		final int[] sub = new int[k];
 		subset(n, sub,random);
 		return sub;
+	}
+	
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size 
+	 * {@code n}.
+	 * </p>
+	 * 
+	 * <p>
+	 * <em>Authors:</em>
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 * 	 version based on the  C++ version by John Burkardt.
+	 * </p>
+	 * 
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 * 	 Albert Nijenhuis, Herbert Wilf,
+	 * 	 Combinatorial Algorithms for Computers and Calculators,
+	 * 	 Second Edition,
+	 * 	 Academic Press, 1978,
+	 * 	 ISBN: 0-12-519260-6,
+	 * 	 LC: QA164.N54.
+	 * </p>
+	 * 
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @throws NullPointerException if {@code random} or {@code sub} is 
+	 * 		  {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length}, 
+	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an 
+	 * 		  integer overflow.
+	 */
+	public static void subset(final int n, final int sub[]) {
+		subset(n, sub, RANDOM.get());
 	}
 	
 	/**
