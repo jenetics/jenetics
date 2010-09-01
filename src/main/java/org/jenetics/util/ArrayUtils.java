@@ -46,6 +46,16 @@ public final class ArrayUtils {
 	@SuppressWarnings("rawtypes")
 	public static final Array EMPTY_ARRAY = new Array(0);
 
+	/**
+	 * Thread local random engine. Used as default random object in some methods.
+	 */
+	private static final ThreadLocal<Random> RANDOM = new ThreadLocal<Random>() {
+		@Override
+		protected Random initialValue() {
+			return new Random();
+		}
+	};
+	
 	private ArrayUtils() {
 		throw new AssertionError("Don't create an 'ArrayUtils' instance.");
 	}
@@ -567,6 +577,19 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
 	 * @param array the {@code array} to randomize.
+	 * @throws NullPointerException if the give array or the random object is 
+	 * 		  {@code null}.
+	 */
+	public static void shuffle(final int[] array) {
+		shuffle(array, RANDOM.get());
+	}
+	
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @throws NullPointerException if the give array or the random object is 
 	 * 		  {@code null}.
@@ -576,6 +599,19 @@ public final class ArrayUtils {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
+	}
+	
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param array the {@code array} to randomize.
+	 * @throws NullPointerException if the give array or the random object is 
+	 * 		  {@code null}.
+	 */
+	public static <T> void shuffle(final T[] array) {
+		shuffle(array, RANDOM.get());
 	}
 	
 	/**
@@ -602,6 +638,21 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
 	 * @param array the {@code array} to randomize.
+	 * @throws NullPointerException if the give array or the random object is 
+	 * 		  {@code null}.
+	 * @throws UnsupportedOperationException if the array is sealed 
+	 * 		  ({@code array.isSealed() == true}).
+	 */
+	public static <T> void shuffle(final Array<T> array) {
+		shuffle(array, RANDOM.get());
+	}
+	
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is 
@@ -616,6 +667,20 @@ public final class ArrayUtils {
 		for (int j = array.length() - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
+	}
+	
+	/**
+	 * Randomize the {@code list} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 * 
+	 * @param list the {@code array} to randomize.
+	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give list or the random object is 
+	 * 		  {@code null}.
+	 */
+	public static <T> void shuffle(final List<T> list) {
+		shuffle(list, RANDOM.get());
 	}
 	
 	/**
