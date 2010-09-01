@@ -577,8 +577,7 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
 	 * @param array the {@code array} to randomize.
-	 * @throws NullPointerException if the give array or the random object is 
-	 * 		  {@code null}.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void shuffle(final int[] array) {
 		shuffle(array, RANDOM.get());
@@ -607,8 +606,7 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
 	 * @param array the {@code array} to randomize.
-	 * @throws NullPointerException if the give array or the random object is 
-	 * 		  {@code null}.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array) {
 		shuffle(array, RANDOM.get());
@@ -638,8 +636,7 @@ public final class ArrayUtils {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 * 
 	 * @param array the {@code array} to randomize.
-	 * @throws NullPointerException if the give array or the random object is 
-	 * 		  {@code null}.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
@@ -676,8 +673,7 @@ public final class ArrayUtils {
 	 * 
 	 * @param list the {@code array} to randomize.
 	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give list or the random object is 
-	 * 		  {@code null}.
+	 * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list) {
 		shuffle(list, RANDOM.get());
@@ -887,8 +883,7 @@ public final class ArrayUtils {
 	 * 
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
-	 * @throws NullPointerException if {@code random} or {@code sub} is 
-	 * 		  {@code null}.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if 
 	 * 		  {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
@@ -988,8 +983,7 @@ public final class ArrayUtils {
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} or {@code sub} is 
-	 * 		  {@code null}.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length}, 
 	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an 
 	 * 		  integer overflow.
@@ -1097,6 +1091,16 @@ public final class ArrayUtils {
 		}
 		
 		return value;
+	}
+	
+	/**
+	 * Calculates a random permutation.
+	 * 
+	 * @param p the permutation array.
+	 * @throws NullPointerException if the permutation array is {@code null}.
+	 */
+	public static void permutation(final int[] p) {
+		permutation(p, RANDOM.get());
 	}
 	
 	/**
