@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Number;
  * @version $Id$
  */
 public abstract class NumberChromosome<G extends NumberGene<?, G>> 
-	extends AbstractChromosome<G> implements ChromosomeFactory<G>
+	extends AbstractChromosome<G>
 {
 	private static final long serialVersionUID = 1L;
 

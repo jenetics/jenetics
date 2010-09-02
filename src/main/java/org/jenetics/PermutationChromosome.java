@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.Integer64;
  * @version $Id$
  */
 public class PermutationChromosome extends AbstractChromosome<Integer64Gene> 
-	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
+	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 

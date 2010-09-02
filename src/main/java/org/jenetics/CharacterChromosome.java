@@ -43,7 +43,8 @@ import org.jenetics.util.CharSet;
  * @version $Id$
  */
 public class CharacterChromosome extends AbstractChromosome<CharacterGene>
-	implements ChromosomeFactory<CharacterGene>, CharSequence, XMLSerializable
+	implements CharSequence, 
+				XMLSerializable
 {	
 	private static final long serialVersionUID = 1L;
 

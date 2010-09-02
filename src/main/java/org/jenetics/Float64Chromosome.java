@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Float64;
  * @version $Id$
  */
 public class Float64Chromosome extends NumberChromosome<Float64Gene> 
-	implements ChromosomeFactory<Float64Gene>, XMLSerializable
+	implements XMLSerializable
 {	
 	private static final long serialVersionUID = 1L;
 	

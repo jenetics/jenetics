@@ -52,7 +52,8 @@ import org.jscience.mathematics.number.Number;
  * @version $Id$
  */
 public class BitChromosome extends Number<BitChromosome> 
-	implements Chromosome<BitGene>, ChromosomeFactory<BitGene>, XMLSerializable 
+	implements Chromosome<BitGene>, 
+				XMLSerializable 
 {
 	private static final long serialVersionUID = 1L;
 	
