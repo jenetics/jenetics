@@ -51,6 +51,8 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * A factory method which creates a new {@link Chromosome} of specific type 
 	 * and the given {@code genes}.
 	 * 
+	 * @param genes the genes of the new chromosome. The given genes array is
+	 *        not copied, it is sealed instead.
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
