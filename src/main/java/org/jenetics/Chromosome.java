@@ -25,6 +25,7 @@ package org.jenetics;
 import java.io.Serializable;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
 import javolution.lang.Immutable;
@@ -33,16 +34,27 @@ import javolution.lang.Immutable;
 /**                                                              
  * A chromosome is an array of genes.
  * 
- * @see ChromosomeFactory
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public interface Chromosome<T extends Gene<?, T>> 
-	extends Verifiable, Iterable<T>, Immutable, 
-			ChromosomeFactory<T>, Serializable
+	extends Verifiable, 
+			Iterable<T>, 
+			Immutable, 
+			Factory<Chromosome<T>>, 
+			Serializable
 { 
+	
+	/**
+	 * A factory method which creates a new {@link Chromosome} of specific type 
+	 * and the given {@code genes}.
+	 * 
+	 * @return A new {@link Chromosome} of the same type with the given genes.
+	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
+	 */
+	public Chromosome<T> newInstance(final Array<T> genes);
 	
 	/**
 	 * Return the first gene of this chromosome.  Each chromosome must contain

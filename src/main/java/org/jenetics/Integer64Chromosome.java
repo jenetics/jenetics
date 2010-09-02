@@ -40,7 +40,7 @@ import org.jscience.mathematics.number.Integer64;
  * @version $Id$
  */
 public class Integer64Chromosome extends NumberChromosome<Integer64Gene> 
-	implements ChromosomeFactory<Integer64Gene>, XMLSerializable
+	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
