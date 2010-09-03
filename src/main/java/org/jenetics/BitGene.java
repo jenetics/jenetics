@@ -22,13 +22,12 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
-import org.jenetics.util.RandomRegistry;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
+import org.jenetics.util.RandomRegistry;
+
+import java.util.Random;
 
 /**
  * Implementation of a BitGene.
