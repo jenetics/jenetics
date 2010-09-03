@@ -11,6 +11,39 @@
       <properties />
     </buildFile>
   </component>
+  <component name="CodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <ADDITIONAL_INDENT_OPTIONS fileType="groovy">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="java">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="xml">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+      </value>
+    </option>
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
@@ -32,6 +65,13 @@
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
+    <copyright>
+      <option name="notice" value="/*&#10; * Java Genetic Algorithm Library (@!identifier!@).&#10; * Copyright (c) @!year!@ Franz Wilhelmstötter&#10; *  &#10; * This library is free software; you can redistribute it and/or&#10; * modify it under the terms of the GNU Lesser General Public&#10; * License as published by the Free Software Foundation; either&#10; * version 2.1 of the License, or (at your option) any later version.&#10; * &#10; * This library is distributed in the hope that it will be useful,&#10; * but WITHOUT ANY WARRANTY; without even the implied warranty of&#10; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&#10; * Lesser General Public License for more details.&#10; * &#10; * You should have received a copy of the GNU Lesser General Public&#10; * License along with this library; if not, write to the Free Software&#10; * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA&#10; *&#10; * Author:&#10; * &#9; Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)&#10; * &#9; &#10; */" />
+      <option name="keyword" value="Copyright" />
+      <option name="allowReplaceKeyword" value="" />
+      <option name="myName" value="Jenetics-LGPL" />
+      <option name="myLocal" value="true" />
+    </copyright>
     <module2copyright />
   </component>
   <component name="CppTools.Loader" reportImplicitCastToBool="false" reportNameReferencedOnce="false" version="3" compilerSelect="AUTO" />
@@ -185,8 +225,8 @@
       <module fileurl="file://$PROJECT_DIR$/Jenetics.iml" filepath="$PROJECT_DIR$/Jenetics.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6 (1)" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build" />
   </component>
   <component name="RMI Configuration">
     <Server />
@@ -195,6 +235,37 @@
     <CODEBASE />
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://jenetics.svn.sourceforge.net/svnroot/jenetics/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://jenetics.svn.sourceforge.net/svnroot/jenetics/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://jenetics.svn.sourceforge.net/svnroot/jenetics/branches" />
+                  <option value="https://jenetics.svn.sourceforge.net/svnroot/jenetics/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://jenetics.svn.sourceforge.net/svnroot/jenetics/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
@@ -221,10 +292,7 @@
   <component name="libraryTable">
     <library name="build">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/build/ant-java2html.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/build/testng-5.6-jdk15.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/build/UmlGraph-5.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/build/colapi.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/build/testng-5.13.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
