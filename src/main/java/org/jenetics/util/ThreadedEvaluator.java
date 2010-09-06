@@ -92,6 +92,14 @@ public class ThreadedEvaluator implements Evaluator {
 		return _parallelTasks;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[tasks=%d]", 
+				getClass().getSimpleName(), getParallelTasks()
+			);
+	}
+	
 	private static final class EvaluatorCallable implements Callable<Void> {
 		private final List<? extends Runnable> _runnables;
 		private final int _fromIndex;

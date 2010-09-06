@@ -55,6 +55,7 @@ public class EvaluatorRegistry {
 	
 	
 	private EvaluatorRegistry() {
+		throw new AssertionError("Don't create an 'EvaluatorRegistry' instance.");
 	}
 	
 	/**

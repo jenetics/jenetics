@@ -33,6 +33,7 @@ import javolution.context.ConcurrentContext;
 public final class Accumulators {
 
 	private Accumulators() {
+		throw new AssertionError("Don't create an 'Accumulators' instance.");
 	}
 	
 	/**
@@ -94,6 +95,14 @@ public final class Accumulators {
 			
 			_mean += (value.doubleValue() - _mean)/(double)_samples;
 		}
+		
+		@Override
+		public String toString() {
+			return String.format(
+					"%s[samples=%d, mean=%f]", 
+					getClass().getSimpleName(), _samples, _mean
+				);
+		}
 	}
 	
 	
@@ -151,6 +160,14 @@ public final class Accumulators {
 			_mean += delta/(double)_samples;
 			_m2 += delta*(data - _mean);
 		}
+		
+		@Override
+		public String toString() {
+			return String.format(
+					"%s[samples=%d, mean=%f, m2=%f]", 
+					getClass().getSimpleName(), _samples, _mean, _m2
+				);
+		}
 	}
 	
 	
@@ -172,6 +189,8 @@ public final class Accumulators {
 	 * @version $Id$
 	 */
 	public static class Quantile<N extends Number> implements Accumulator<N> {
+		
+		private long _samples = 0;
 		
 		// The desired quantile.
 		private double _quantile;
@@ -213,6 +232,10 @@ public final class Accumulators {
 		public double getQuantile() {
 			return _q[2];
 		}
+		
+		public long getSamples() {
+			return _samples;
+		}
 
 		@Override
 		public void accumulate(final N value) {
@@ -221,6 +244,8 @@ public final class Accumulators {
 			} else {
 				update(value.doubleValue());
 			}
+			
+			++_samples;
 		}
 
 
@@ -362,6 +387,14 @@ public final class Accumulators {
 			
 			return result;
 		}
+		
+		@Override
+		public String toString() {
+			return String.format(
+					"%s[samples=%d, qantile=%f]", 
+					getClass().getSimpleName(), _samples, _quantile
+				);
+		}
 	}
 	
 	/**
@@ -371,9 +404,14 @@ public final class Accumulators {
 	 * @version $Id$
 	 */
 	public static class Min<C extends Comparable<C>> implements Accumulator<C> {
+		private long _samples = 0;
 		private C _min;
 		
 		public Min() {
+		}
+		
+		public long getSamples() {
+			return _samples;
 		}
 		
 		public C getMin() {
@@ -392,6 +430,16 @@ public final class Accumulators {
 					_min = value;
 				}
 			}
+			
+			++_samples;
+		}
+		
+		@Override
+		public String toString() {
+			return String.format(
+					"%s[samples=%d, min=%s]", 
+					getClass().getSimpleName(), _samples, _min
+				);
 		}
 	}
 	
@@ -403,9 +451,14 @@ public final class Accumulators {
 	 * @version $Id$
 	 */
 	public static class Max<C extends Comparable<C>> implements Accumulator<C> {
+		private long _samples = 0;
 		private C _max;
 		
 		public Max() {
+		}
+		
+		public long getSamples() {
+			return _samples;
 		}
 		
 		public C getMax() {
@@ -424,6 +477,16 @@ public final class Accumulators {
 					_max = value;
 				}
 			}
+			
+			++_samples;
+		}
+		
+		@Override
+		public String toString() {
+			return String.format(
+					"%s[samples=%d, max=%s]", 
+					getClass().getSimpleName(), _samples, _max
+				);
 		}
 	}
 	
@@ -435,10 +498,15 @@ public final class Accumulators {
 	 * @version $Id$
 	 */
 	public static class MinMax<C extends Comparable<C>> implements Accumulator<C> {
+		private long _samples = 0;
 		private C _min;
 		private C _max;
 		
 		public MinMax() {
+		}
+		
+		public long getSamples() {
+			return _samples;
 		}
 		
 		public C getMin() {
@@ -464,6 +532,16 @@ public final class Accumulators {
 					_max = value;
 				}
 			}
+			
+			++_samples;
+		}
+		
+		@Override
+		public String toString() {
+			return String.format(
+					"%s[samples=%d, min=%s, max=%s]", 
+					getClass().getSimpleName(), _samples, _min, _max
+				);
 		}
 	}
 	

@@ -51,5 +51,13 @@ public class SerialEvaluator implements Evaluator {
 	public int getParallelTasks() {
 		return 1;
 	}
+
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[tasks=%d]", 
+				getClass().getSimpleName(), getParallelTasks()
+			);
+	}
 	
 }

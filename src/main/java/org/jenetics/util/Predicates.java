@@ -34,6 +34,7 @@ import static org.jenetics.util.Validator.nonNull;
 public final class Predicates {
 
 	private Predicates() {
+		throw new AssertionError("Don't create an 'Predicates' instance.");
 	}
 	
 	/**
@@ -53,6 +54,11 @@ public final class Predicates {
 		@Override
 		public boolean evaluate(final Object object) {
 			return object == null;
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("%s", getClass().getSimpleName());
 		}
 		
 	}
@@ -84,6 +90,11 @@ public final class Predicates {
 			return !_a.equals(object);
 		}
 		
+		@Override
+		public String toString() {
+			return String.format("%s[%s]", getClass().getSimpleName(), _a);
+		}
+		
 	}
 	
 	/**
@@ -112,6 +123,11 @@ public final class Predicates {
 		public boolean evaluate(final T object) {
 			return _a.equals(object) && _b.evaluate(object);
 		}
+		
+		@Override
+		public String toString() {
+			return String.format("%s[%s, %s]", getClass().getSimpleName(), _a, _b);
+		}
 	}
 	
 	/**
@@ -139,6 +155,11 @@ public final class Predicates {
 		@Override
 		public boolean evaluate(final T object) {
 			return _a.equals(object) || _b.evaluate(object);
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("%s[%s, %s]", getClass().getSimpleName(), _a, _b);
 		}
 	}
 	

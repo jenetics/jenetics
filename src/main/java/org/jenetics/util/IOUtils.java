@@ -48,6 +48,7 @@ import javolution.xml.stream.XMLStreamException;
 public final class IOUtils {
 
 	private IOUtils() {
+		throw new AssertionError("Don't create an 'IOUtils' instance.");
 	}
 	
 	/**

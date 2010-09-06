@@ -52,6 +52,14 @@ public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 		return _second.convert(_first.convert(value));
 	}
 	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[%s, %s]", 
+				getClass().getSimpleName(), _first, _second
+			);
+	}
+	
 	public static <A, B, C> Converter<A, C> valueOf(
 		final Converter<A, B> first,
 		final Converter<B, C> second
