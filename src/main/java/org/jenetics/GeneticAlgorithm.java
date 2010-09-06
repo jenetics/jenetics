@@ -869,16 +869,18 @@ public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
 	 */
 	@Override
 	public String toString() {
+		Phenotype<G, C> phenotype = null;
+		int generation = 0;
+		
 		_lock.lock();
 		try {
-			final StringBuilder out = new StringBuilder();
-			out.append(String.format(
-				"%4d: (best) %s", _generation, getStatistics().getBestPhenotype()
-			));
-			return out.toString();
+			generation = _generation;
+			phenotype = getStatistics().getBestPhenotype(); 
 		} finally {
 			_lock.unlock();
 		}
+		
+		return String.format("%4d: (best) %s", generation, phenotype);
 	}
 	
 	/**
