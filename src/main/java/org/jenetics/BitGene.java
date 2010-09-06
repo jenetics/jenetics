@@ -120,7 +120,7 @@ public class BitGene
 
 	@Override
 	public String toString() {
-		return getClass().getName() + ": " + _value;
+		return Boolean.toString(_value);
 	}
 	
 	static final XMLFormat<BitGene> 
