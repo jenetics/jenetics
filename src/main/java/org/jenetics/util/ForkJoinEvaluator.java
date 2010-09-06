@@ -94,6 +94,13 @@ public class ForkJoinEvaluator implements Evaluator {
 		return _pool.getParallelism();
 	}
 	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[tasks=%d]", 
+				getClass().getSimpleName(), getParallelTasks()
+			);
+	}
 	
 	private static class EvaluatorTask extends RecursiveAction {
 		private static final long serialVersionUID = -7886596400215187705L;

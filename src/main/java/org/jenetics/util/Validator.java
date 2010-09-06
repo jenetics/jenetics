@@ -32,7 +32,7 @@ package org.jenetics.util;
 public final class Validator {
 
 	private Validator() {
-		super();
+		throw new AssertionError("Don't create an 'Validator' instance.");
 	}
 
 	/**

@@ -59,6 +59,7 @@ public final class RandomRegistry {
 		new LocalContext.Reference<Random>(new Random(System.currentTimeMillis()));
 	
 	private RandomRegistry() {
+		throw new AssertionError("Don't create an 'RandomRegistry' instance.");
 	}
 	
 	/**

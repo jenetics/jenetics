@@ -57,5 +57,13 @@ public class AccumulatorAdapter<A, B> implements Accumulator<B> {
 	) {
 		return new AccumulatorAdapter<A, B>(adoptee, converter);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[a=%s, c=%s]", 
+				getClass().getSimpleName(), _adoptee, _converter
+			);
+	}
 
 }

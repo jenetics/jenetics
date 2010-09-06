@@ -29,6 +29,7 @@ package org.jenetics.util;
 final class MathUtils {
 
 	private MathUtils() {
+		throw new AssertionError("Don't create an 'MathUtils' instance.");
 	}
 	
 	static long add(final long a, final long b) {

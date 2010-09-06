@@ -106,6 +106,14 @@ public class ConcurrentEvaluator implements Evaluator {
 		return _parallelTasks;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[tasks=%d]", 
+				getClass().getSimpleName(), _parallelTasks
+			);
+	}
+	
 }
 
 

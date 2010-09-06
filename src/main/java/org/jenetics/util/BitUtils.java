@@ -34,6 +34,7 @@ import org.jscience.mathematics.number.LargeInteger;
 public final class BitUtils {
 
 	private BitUtils() {
+		throw new AssertionError("Don't create an 'BitUtils' instance.");
 	}
 	
 	public static byte[] toByteArray(final LargeInteger value) {
