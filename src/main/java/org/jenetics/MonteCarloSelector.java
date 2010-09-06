@@ -84,5 +84,10 @@ public final class MonteCarloSelector<G extends Gene<?,G>, C
 		}
 		return obj instanceof MonteCarloSelector<?, ?>;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s", getClass().getSimpleName());
+	}
 
 }

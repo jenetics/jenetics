@@ -100,4 +100,9 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 		return super.equals(obj);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
+	
 }

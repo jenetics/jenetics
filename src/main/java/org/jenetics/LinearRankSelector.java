@@ -130,6 +130,14 @@ public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable
 		return Double.doubleToLongBits(_nminus) == Double.doubleToLongBits(selector._nminus) &&
 			Double.doubleToLongBits(_nminus) == Double.doubleToLongBits(selector._nminus);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[n-=%f, n+=%f]", 
+				getClass().getSimpleName(), _nminus, _nplus
+			);
+	}
 
 }
 

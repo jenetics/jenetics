@@ -116,6 +116,11 @@ public class BoltzmannSelector<G extends Gene<?, G>, N extends Number & Comparab
 			Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("BoltzmannSelector[b=%f]", _b);
+	}
+	
 }
 
 

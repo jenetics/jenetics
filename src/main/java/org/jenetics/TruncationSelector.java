@@ -105,6 +105,11 @@ public final class TruncationSelector<G extends Gene<?, G>, C extends Comparable
 		}
 		return obj instanceof TruncationSelector<?, ?>;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s", getClass().getSimpleName());
+	}
 
 }
 

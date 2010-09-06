@@ -78,5 +78,10 @@ public final class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>
 		final FunctionAdapter<?, ?> function = (FunctionAdapter<?, ?>)obj;
 		return _adoptee.equals(function._adoptee);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[%s]", getClass().getSimpleName(), _adoptee);
+	}
 
 }

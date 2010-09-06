@@ -104,4 +104,12 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 		Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b) &&
 				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[a=%f, b=%f, c=%f]", 
+				getClass().getSimpleName(), _a, _b, _c
+			);
+	}
 }

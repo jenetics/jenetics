@@ -116,6 +116,11 @@ public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<
 		return super.equals(selector) && 
 				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[c=%f]", getClass().getSimpleName(), _c);
+	}
 
 }
 
