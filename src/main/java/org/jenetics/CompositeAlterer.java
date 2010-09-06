@@ -186,6 +186,11 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 		return _alterers.equals(alterer._alterers);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%s[%s]", getClass().getSimpleName(), _alterers);
+	}
+	
 	/**
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are

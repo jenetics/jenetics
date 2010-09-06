@@ -159,6 +159,11 @@ public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>>
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<SG, SC>();
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[s=%f]", getClass().getSimpleName(), _sampleSize);
+	}
 
 }
 

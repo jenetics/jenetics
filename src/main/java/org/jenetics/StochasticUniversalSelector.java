@@ -116,6 +116,11 @@ public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number 
 		
 		return super.equals(obj);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s", getClass().getSimpleName());
+	}
 
 }
 

@@ -93,6 +93,11 @@ public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comp
 		return super.equals(obj);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%s", getClass().getSimpleName());
+	}
+	
 }
 
 

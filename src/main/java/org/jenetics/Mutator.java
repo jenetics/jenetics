@@ -197,6 +197,11 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		}
 		return obj instanceof Mutator<?>;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
 
 }
 

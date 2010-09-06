@@ -52,4 +52,9 @@ public final class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> 
 	public boolean equals(final Object obj) {
 		return obj instanceof NullAlterer<?>;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s", getClass().getSimpleName());
+	}
 }

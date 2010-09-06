@@ -101,6 +101,11 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		
 		return super.equals(obj);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+	}
 
 }
 

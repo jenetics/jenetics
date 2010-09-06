@@ -57,4 +57,9 @@ public final class IdentityScaler<C extends Comparable<C>> implements FitnessSca
 		return obj instanceof IdentityScaler<?>;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%s", getClass().getSimpleName());
+	}
+	
 }

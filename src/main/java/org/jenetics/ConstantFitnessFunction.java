@@ -76,4 +76,9 @@ public final class ConstantFitnessFunction<G extends Gene<?, G>, C extends Compa
 		return _value.equals(f._value);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%s[%s]", getClass().getSimpleName(), _value);
+	}
+	
 }
