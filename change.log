@@ -1,4 +1,5 @@
 - Remove ChromosomeFactory interface.
+- Add 'toString' method for all classes.
 
 Jenetics-0.6.1.0
 - Selectors and Alterers are no longer Serializable.
