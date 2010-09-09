@@ -39,7 +39,7 @@ public enum Optimize {
 		public <T extends Comparable<? super T>> 
 		int compare(final T o1, final T o2) 
 		{
-			return -o1.compareTo(o2);
+			return o2.compareTo(o1);
 		}
 	},
 	
