@@ -285,18 +285,6 @@ public class Genotype<T extends Gene<?, T>>
 		return genotype;
 	}
 	
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Genotype<G> genotype
-	) {
-		nonNull(genotype, "Genotype");
-		
-		final Genotype<G> gtype = new Genotype<G>(genotype.length());
-		for (int i = 0; i < genotype.length(); ++i) {
-			gtype._chromosomes.set(i, genotype._chromosomes.get(i));
-		}
-		return gtype;
-	}
-	
 	@SuppressWarnings({ "unchecked", "rawtypes"})
 	protected static final XMLFormat<Genotype> 
 	XML = new XMLFormat<Genotype>(Genotype.class) 

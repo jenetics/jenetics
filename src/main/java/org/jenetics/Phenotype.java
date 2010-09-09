@@ -394,7 +394,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 		
 		@SuppressWarnings("unchecked")
 		Phenotype<SG, SC> pt = (Phenotype<SG, SC>)FACTORY.object();
-		pt._genotype = Genotype.valueOf(genotype);
+		pt._genotype = genotype;
 		pt._fitnessFunction = fitnessFunction;
 		pt._fitnessScaler = fitnessScaler;
 		pt._generation = generation;
