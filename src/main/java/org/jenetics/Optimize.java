@@ -111,7 +111,7 @@ public enum Optimize {
 	 * [/code]
 	 * 
 	 * The code example above will sort the population according it's fitness 
-	 * values in ascending order, since lower values are <i>better</i> in this 
+	 * values in descending order, since lower values are <i>better</i> in this 
 	 * case.
 	 * 
 	 * @param <T> the type of the objects to compare.
