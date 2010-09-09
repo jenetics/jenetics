@@ -28,7 +28,9 @@ import static java.lang.Math.toRadians;
 import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
+import junit.framework.Assert;
 
+import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
@@ -42,11 +44,54 @@ public class PopulationTest {
 	
 	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
-		
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
+		}
+	}
+	
+	private static final class Continous implements FitnessFunction<Float64Gene, Float64> {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public Float64 evaluate(Genotype<Float64Gene> genotype) {
+			return genotype.getChromosome().getGene().getAllele();
+		}
+	}
+	
+	private static final FitnessFunction<Float64Gene, Float64> _cf = new Continous();
+	private static Phenotype<Float64Gene, Float64> pt(double value) {
+		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _cf, 0);
+	}
+	
+	@Test
+	public void sort() {
+		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
+		for (int i = 0; i < 100; ++i) {
+			population.add(pt(Math.random()*9.0));
+		}
+		
+		population.sort();
+		for (int i = 0; i < population.size() - 1; ++i) {
+			Float64 first = _cf.evaluate(population.get(i).getGenotype());
+			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
+			Assert.assertTrue(first.compareTo(second) >= 0);
+		}
+		
+		ArrayUtils.shuffle(population);
+		population.sort(Optimize.MAXIMUM.<Float64>desc());
+		for (int i = 0; i < population.size() - 1; ++i) {
+			Float64 first = _cf.evaluate(population.get(i).getGenotype());
+			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
+			Assert.assertTrue(first + "<" + second, first.compareTo(second) >= 0);
+		}
+		
+		ArrayUtils.shuffle(population);
+		population.sort(Optimize.MINIMUM.<Float64>desc());
+		for (int i = 0; i < population.size() - 1; ++i) {
+			Float64 first = _cf.evaluate(population.get(i).getGenotype());
+			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
+			Assert.assertTrue(first + ">" + second, first.compareTo(second) <= 0);
 		}
 	}
 	

@@ -73,12 +73,51 @@ public enum Optimize {
 	int compare(final T o1, final T o2);
 	
 	/**
-	 * Create a approbate comparator of the given optimization strategy.
+	 * Create an appropriate comparator of the given optimization strategy. A 
+	 * collection of comparable objects with the returned comparator will be
+	 * sorted in <b>descending</b> order, according to the given definition
+	 * of <i>better</i> and <i>worse</i>.
+	 * 
+	 * [code]
+	 *     Population<Float64Gene, Float64> population = ...
+	 *     population.sort(Optimize.MINIMUM.<Float64>desc());
+	 * [/code]
+	 * 
+	 * The code example above will sort the population according it's fitness 
+	 * values in ascending order, since lower values are <i>better</i> in this 
+	 * case.
 	 * 
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
-	public <T extends Comparable<? super T>> Comparator<T> comparator() {
+	public <T extends Comparable<? super T>> Comparator<T> desc() {
+		return new Comparator<T>() {
+			@Override
+			public int compare(final T o1, final T o2) {
+				return Optimize.this.compare(o2, o1);
+			}
+		};
+	}
+	
+	/**
+	 * Create an appropriate comparator of the given optimization strategy. A 
+	 * collection of comparable objects with the returned comparator will be
+	 * sorted in <b>ascending</b> order, according to the given definition
+	 * of <i>better</i> and <i>worse</i>.
+	 * 
+	 * [code]
+	 *     Population<Float64Gene, Float64> population = ...
+	 *     population.sort(Optimize.MINIMUM.<Float64>asc());
+	 * [/code]
+	 * 
+	 * The code example above will sort the population according it's fitness 
+	 * values in descending order, since lower values are <i>better</i> in this 
+	 * case.
+	 * 
+	 * @param <T> the type of the objects to compare.
+	 * @return a new {@link Comparator} for the type {@code T}.
+	 */
+	public <T extends Comparable<? super T>> Comparator<T> asc() {
 		return new Comparator<T>() {
 			@Override
 			public int compare(final T o1, final T o2) {

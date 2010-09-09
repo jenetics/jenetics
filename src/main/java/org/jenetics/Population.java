@@ -158,12 +158,17 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	 * value in descending order.
 	 */
 	public void sort() {
+		sort(Optimize.MAXIMUM.<C>desc());
+	}
+	
+	public void sort(final Comparator<C> comparator) {
 		Collections.sort(_population, new Comparator<Phenotype<G, C>>() {
-			@Override 
+			@Override
 			public int compare(
-				final Phenotype<G, C> that, final Phenotype<G, C> other
+					final Phenotype<G, C> pt1, 
+					final Phenotype<G, C> pt2
 			) {
-				return other.compareTo(that);
+				return comparator.compare(pt1.getFitness(), pt2.getFitness());
 			}
 		});
 	}
