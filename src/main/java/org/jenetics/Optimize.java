@@ -80,7 +80,7 @@ public enum Optimize {
 	 * 
 	 * [code]
 	 *     Population<Float64Gene, Float64> population = ...
-	 *     population.sort(Optimize.MINIMUM.<Float64>desc());
+	 *     population.sort(Optimize.MINIMUM.<Float64>descending());
 	 * [/code]
 	 * 
 	 * The code example above will sort the population according it's fitness 
@@ -90,7 +90,7 @@ public enum Optimize {
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
-	public <T extends Comparable<? super T>> Comparator<T> desc() {
+	public <T extends Comparable<? super T>> Comparator<T> descending() {
 		return new Comparator<T>() {
 			@Override
 			public int compare(final T o1, final T o2) {
@@ -107,7 +107,7 @@ public enum Optimize {
 	 * 
 	 * [code]
 	 *     Population<Float64Gene, Float64> population = ...
-	 *     population.sort(Optimize.MINIMUM.<Float64>asc());
+	 *     population.sort(Optimize.MINIMUM.<Float64>ascending());
 	 * [/code]
 	 * 
 	 * The code example above will sort the population according it's fitness 
@@ -117,7 +117,7 @@ public enum Optimize {
 	 * @param <T> the type of the objects to compare.
 	 * @return a new {@link Comparator} for the type {@code T}.
 	 */
-	public <T extends Comparable<? super T>> Comparator<T> asc() {
+	public <T extends Comparable<? super T>> Comparator<T> ascending() {
 		return new Comparator<T>() {
 			@Override
 			public int compare(final T o1, final T o2) {

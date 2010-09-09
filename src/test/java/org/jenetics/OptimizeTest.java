@@ -51,12 +51,12 @@ public class OptimizeTest {
 	@Test
 	public void comparator() {
 		Comparator<Phenotype<Float64Gene, Double>> comp =
-			Optimize.MAXIMUM.<Phenotype<Float64Gene, Double>>desc();
+			Optimize.MAXIMUM.<Phenotype<Float64Gene, Double>>descending();
 		Assert.assertTrue(comp.compare(pt(2), pt(3)) > 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
 		Assert.assertTrue(comp.compare(pt(5), pt(3)) < 0);
 		
-		comp = Optimize.MINIMUM.<Phenotype<Float64Gene, Double>>desc();
+		comp = Optimize.MINIMUM.<Phenotype<Float64Gene, Double>>descending();
 		Assert.assertTrue(comp.compare(pt(4), pt(3)) > 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(3)) < 0);

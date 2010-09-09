@@ -73,7 +73,7 @@ public final class TruncationSelector<G extends Gene<?, G>, C extends Comparable
 			));
 		}
 		
-		population.sort(opt.<C>desc());
+		population.sort(opt.<C>descending());
 		return new Population<G, C>(population.subList(0, count));
 	}
 	

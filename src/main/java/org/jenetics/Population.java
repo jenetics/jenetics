@@ -158,7 +158,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<C>>
 	 * value in descending order.
 	 */
 	public void sort() {
-		sort(Optimize.MAXIMUM.<C>desc());
+		sort(Optimize.MAXIMUM.<C>descending());
 	}
 	
 	public void sort(final Comparator<C> comparator) {

@@ -79,7 +79,7 @@ public class PopulationTest {
 		}
 		
 		ArrayUtils.shuffle(population);
-		population.sort(Optimize.MAXIMUM.<Float64>desc());
+		population.sort(Optimize.MAXIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.evaluate(population.get(i).getGenotype());
 			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
@@ -87,7 +87,7 @@ public class PopulationTest {
 		}
 		
 		ArrayUtils.shuffle(population);
-		population.sort(Optimize.MINIMUM.<Float64>desc());
+		population.sort(Optimize.MINIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.evaluate(population.get(i).getGenotype());
 			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
