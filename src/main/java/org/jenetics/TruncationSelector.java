@@ -73,24 +73,8 @@ public final class TruncationSelector<G extends Gene<?, G>, C extends Comparable
 			));
 		}
 		
-		population.sort();
-		
-		final Population<G, C> selected = new Population<G, C>(count);
-		switch (opt) {
-			case MAXIMUM:
-				for (int i = 0; i < count; ++i) {
-					selected.add(population.get(i));
-				}
-				break;
-			case MINIMUM:
-				final int n = population.size() - count;
-				for (int i = population.size() - 1; i >= n; --i) {
-					selected.add(population.get(i));
-				}
-				break;
-		}
-		
-		return selected;
+		population.sort(opt.<C>desc());
+		return new Population<G, C>(population.subList(0, count));
 	}
 	
 	@Override
