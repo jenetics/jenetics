@@ -62,7 +62,7 @@ public class GenotypeTest {
         BitChromosome c2 = BitChromosome.valueOf(12);
         BitChromosome c3 = c2.copy();
         Genotype<BitGene> g2 = Genotype.valueOf(c1, c2, c3);
-        Genotype<BitGene> g4 = Genotype.valueOf(g2);
+        Genotype<BitGene> g4 = g2;
         
         assertEquals(g2, g4);
         assertEquals(g2.hashCode(), g4.hashCode());

@@ -1,3 +1,5 @@
+- Remove Genotype.valueOf(Genotype) method since the Genotype class is is
+  immutable and no copy factory method is needed.
 - Remove ChromosomeFactory interface.
 - Add 'toString' method for all classes.
 - Remove deprecated methods in IOUtils class.
