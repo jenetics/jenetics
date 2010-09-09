@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import java.util.Comparator;
+
 /**
  * This {@code enum} determines whether the GA should maximize or minimize the 
  * fitness function.
@@ -69,6 +71,21 @@ public enum Optimize {
 	 */
 	public abstract <T extends Comparable<? super T>> 
 	int compare(final T o1, final T o2);
+	
+	/**
+	 * Create a approbate comparator of the given optimization strategy.
+	 * 
+	 * @param <T> the type of the objects to compare.
+	 * @return a new {@link Comparator} for the type {@code T}.
+	 */
+	public <T extends Comparable<? super T>> Comparator<T> comparator() {
+		return new Comparator<T>() {
+			@Override
+			public int compare(final T o1, final T o2) {
+				return Optimize.this.compare(o1, o2);
+			}
+		};
+	}
 	
 	/**
 	 * Return the best value, according to this optimization direction.
