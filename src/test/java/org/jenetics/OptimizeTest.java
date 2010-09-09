@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import java.util.Comparator;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -38,6 +40,25 @@ public class OptimizeTest {
 		public Double evaluate(Genotype<Float64Gene> genotype) {
 			return genotype.getGene().doubleValue();
 		}
+	}
+	
+	private static final FF _ff = new FF();
+	
+	private static Phenotype<Float64Gene, Double> pt(double value) {
+		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _ff, 0);
+	}
+	
+	@Test
+	public void comparator() {
+		Comparator<Phenotype<Float64Gene, Double>> comp = Optimize.MAXIMUM.comparator();
+		Assert.assertTrue(comp.compare(pt(2), pt(3)) < 0);
+		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
+		Assert.assertTrue(comp.compare(pt(5), pt(3)) > 0);
+		
+		comp = Optimize.MINIMUM.comparator();
+		Assert.assertTrue(comp.compare(pt(4), pt(3)) < 0);
+		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
+		Assert.assertTrue(comp.compare(pt(2), pt(3)) > 0);
 	}
 	
 	@Test
