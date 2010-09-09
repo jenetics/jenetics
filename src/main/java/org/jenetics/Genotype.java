@@ -29,7 +29,6 @@ import java.util.ListIterator;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
 import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -170,18 +169,12 @@ public class Genotype<T extends Gene<?, T>>
 
 	@Override
 	public Text toText() {
-		final TextBuilder out = TextBuilder.newInstance();
-		out.append("[");
-		for (Object c : _chromosomes) {
-			out.append(c);
-		}
-		out.append("]");
-		return out.toText();
+		return new Text(_chromosomes.toString());
 	}
 	
 	@Override
 	public String toString() {
-		return toText().toString();
+		return _chromosomes.toString();
 	}
 	
 	public static <T extends Gene<?, T>> 
