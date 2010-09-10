@@ -128,7 +128,6 @@ public class Knapsack {
 
 		ga.setup();
 		ga.evolve(999);
-//		System.out.println(ga);
 		System.out.println(ga.getTimeStatistics());
 		System.out.println(ga.getBestStatistics());
 	 }
