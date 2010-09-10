@@ -32,8 +32,11 @@ import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
+import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.util.ConcurrentEvaluator;
+import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 
@@ -47,6 +50,10 @@ class Item implements Serializable {
 	 public double value;
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
+ */
 class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
 	private static final long serialVersionUID = -924756568100918419L;
 	
@@ -83,46 +90,49 @@ class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
 	 }
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
+ */
 public class Knapsack {
 	
 	private static KnappsackFunction newFitnessFuntion(int n, double knapsackSize) {
 		Item[] items = new Item[n];
-		  for (int i = 0; i < items.length; ++i) {
+		for (int i = 0; i < items.length; ++i) {
 				items[i] = new Item();
 				items[i].size = (Math.random() + 1)*10;
 				items[i].value = (Math.random() + 1)*15;
-		  }
+		}
 		  
-		  return new KnappsackFunction(items, knapsackSize);
+		return new KnappsackFunction(items, knapsackSize);
 	}
 	
-	 public static void main(String[] argv) throws Exception {
+	public static void main(String[] argv) throws Exception {
+		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
+		
 		//Defining the fitness function and the genotype.
-		  final KnappsackFunction ff = newFitnessFuntion(15, 100);
-		  final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
+		final KnappsackFunction ff = newFitnessFuntion(15, 100);
+		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
 				BitChromosome.valueOf(15, 0.5)
-		  );
-		  
-		  final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
-		  ga.setMaximalPhenotypeAge(10);
-		  ga.setPopulationSize(1000);
-		  ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
-		  ga.setAlterer(new CompositeAlterer<BitGene>(
-			new Mutator<BitGene>(0.115),
-			new SinglePointCrossover<BitGene>(0.06)
-		  ));
-		  
-		  GAUtils.execute(ga, 100);
+			);
+		 
+		final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
+		ga.setMaximalPhenotypeAge(30);
+		ga.setPopulationSize(1000);
+		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Float64>());
+		ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
+		ga.setAlterer(new CompositeAlterer<BitGene>(
+				 new Mutator<BitGene>(0.115),
+				 new SinglePointCrossover<BitGene>(0.16)
+		 	));
+
+		ga.setup();
+		ga.evolve(999);
+//		System.out.println(ga);
+		System.out.println(ga.getTimeStatistics());
+		System.out.println(ga.getBestStatistics());
 	 }
 }
-
-
-
-
-
-
-
-
 
 
 
