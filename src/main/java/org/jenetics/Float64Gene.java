@@ -31,6 +31,7 @@ import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.structure.GroupMultiplicative;
@@ -99,6 +100,15 @@ public class Float64Gene
 		return newInstance(
 				(_value.doubleValue() + that._value.doubleValue())/2.0
 			);
+	}
+	
+	/**
+	 * Return the {@link Factory} view of this gene.
+	 * 
+	 * @return the {@link Factory} view of this gene.
+	 */
+	public Factory<Float64Gene> asFactory() {
+		return this;
 	}
 	
 	private static final ObjectFactory<Float64Gene> 
