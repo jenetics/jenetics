@@ -119,14 +119,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	 */
 	@Override
 	public CharacterChromosome newInstance() {
-		final CharacterChromosome chromosome = new CharacterChromosome(
-				_validCharacters, 
-				length()
-			);
-		chromosome._genes.fill(
-				CharacterGene.valueOf(_validCharacters).asFactory()
-			).seal();
-		return chromosome;
+		return new CharacterChromosome(_validCharacters, length());
 	}
 	
 	@Override
@@ -168,18 +161,16 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 			throws XMLStreamException 
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
-			final String validCharacters = xml.getAttribute(
+			final CharSet validCharacters = new CharSet(xml.getAttribute(
 					VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
-				);
+				));
 			
-			final CharacterChromosome chromosome = new CharacterChromosome(
-					new CharSet(validCharacters), length
-				);
+			final Array<CharacterGene> array = new Array<CharacterGene>(length);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
-				chromosome._genes.set(i, CharacterGene.valueOf(values.charAt(i)));
+				array.set(i, CharacterGene.valueOf(values.charAt(i), validCharacters));
 			}
-			return chromosome;
+			return new CharacterChromosome( array);
 		}
 		@Override
 		public void write(final CharacterChromosome chromosome, final OutputElement xml) 
