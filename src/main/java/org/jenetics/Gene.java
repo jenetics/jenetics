@@ -50,4 +50,12 @@ public interface Gene<A, G extends Gene<A, G>>
 	 */
 	public A getAllele();
 	
+	/**
+	 * Return a new, random gene of the same type than this gene. For all genes
+	 * returned by this method holds {@code gene.getClass() == 
+	 * gene.newInstance().getClass()}.
+	 */
+	@Override
+	public G newInstance();
+	
 }
