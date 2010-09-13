@@ -61,7 +61,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	public CharacterChromosome(final int length) {
 		super(length);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
-		_genes.fill(CharacterGene.valueOf(_validCharacters));
+		_genes.fill(CharacterGene.valueOf(_validCharacters).asFactory()).seal();
 	}
 	
 	/**
@@ -123,7 +123,9 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 				_validCharacters, 
 				length()
 			);
-		chromosome._genes.fill(CharacterGene.valueOf(_validCharacters));
+		chromosome._genes.fill(
+				CharacterGene.valueOf(_validCharacters).asFactory()
+			).seal();
 		return chromosome;
 	}
 	

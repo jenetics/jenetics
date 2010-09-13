@@ -31,7 +31,6 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Integer64;
 
 
@@ -107,9 +106,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 		
 		_min = genes[0]._min;
 		_max = genes[0]._max;
-		for (int i = 0; i < genes.length; ++i) {
-			_genes.set(i, genes[i]);
-		}
+		_genes.fill(genes).seal();
 	}
 	
 	/**
@@ -149,11 +146,9 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 */
 	@Override
 	public Integer64Chromosome newInstance() {
-		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length());
-		final Factory<Integer64Gene> factory = _genes.get(0);
-		genes.fill(factory);
-		
-		final Integer64Chromosome chromosome = new Integer64Chromosome(genes);
+		final Integer64Chromosome chromosome = new Integer64Chromosome(
+				new Array<Integer64Gene>(length()).fill(_genes.get(0).asFactory())
+			);
 		chromosome._min = _min;
 		chromosome._max = _max;
 		return chromosome;
