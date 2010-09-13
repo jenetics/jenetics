@@ -26,6 +26,9 @@ import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -33,7 +36,38 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class PermutationChromosomeTest {
-
+	
+	@Test
+	public void create() {
+		PermutationChromosome c = new PermutationChromosome(50, true);
+		final Array<Integer64Gene> array = c.toArray().copy();
+		Assert.assertFalse(isSorted(array));
+		
+		ArrayUtils.sort(array);
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(array.get(i).intValue(), i);
+		}
+	}
+	
+	@Test
+	public void create2() {
+		PermutationChromosome c = new PermutationChromosome(50, false);
+		final Array<Integer64Gene> array = c.toArray().copy();
+		Assert.assertTrue(isSorted(array));
+		
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(array.get(i).intValue(), i);
+		}
+	}
+	
+	private boolean isSorted(final Array<Integer64Gene> array) {
+		boolean sorted = true;
+		for (int i = 0; i < array.length() - 1 && sorted; ++i) {
+			sorted = array.get(i).compareTo(array.get(i + 1)) <= 0;
+		}
+		return sorted;
+	}
+	
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
 		SerializeUtils.testXMLSerialization(new PermutationChromosome(10));
