@@ -78,7 +78,7 @@ public class CharacterChromosome extends AbstractChromosome<CharacterGene>
 	public CharacterChromosome(final CharSet validCharacters, final int length) {
 		super(length);
 		_validCharacters = nonNull(validCharacters, "Valid characters");
-		_genes.fill(CharacterGene.valueOf(_validCharacters));
+		_genes.fill(CharacterGene.valueOf(_validCharacters).asFactory()).seal();
 	}
 	
 	/**
