@@ -133,10 +133,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 		}
 		_min = min;
 		_max = max;
-		
-		for (int i = 0; i < length; ++i) {
-			_genes.set(i, Integer64Gene.valueOf(min, max));
-		}
+		_genes.fill(Integer64Gene.valueOf(min, max).asFactory()).seal();
 	}
 	
 	@Override

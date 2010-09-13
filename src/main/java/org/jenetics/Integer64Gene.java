@@ -33,6 +33,7 @@ import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
 
@@ -67,6 +68,15 @@ public class Integer64Gene
 	@Override
 	public Integer64Gene newInstance(final java.lang.Number number) {
 		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
+	}
+	
+	/**
+	 * Return the {@link Factory} view of this gene.
+	 * 
+	 * @return the {@link Factory} view of this gene.
+	 */
+	Factory<Integer64Gene> asFactory() {
+		return this;
 	}
 	
 	/**
