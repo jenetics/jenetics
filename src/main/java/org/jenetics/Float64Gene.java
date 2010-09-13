@@ -107,7 +107,7 @@ public class Float64Gene
 	 * 
 	 * @return the {@link Factory} view of this gene.
 	 */
-	public Factory<Float64Gene> asFactory() {
+	Factory<Float64Gene> asFactory() {
 		return this;
 	}
 	
