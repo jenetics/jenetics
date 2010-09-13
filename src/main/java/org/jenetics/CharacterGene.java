@@ -34,6 +34,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.CharSet;
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -94,6 +95,15 @@ public class CharacterGene
 		final int index = random.nextInt(_validCharacters.length());
 		
 		return valueOf(_validCharacters.charAt(index), _validCharacters);
+	}
+	
+	/**
+	 * Return the {@link Factory} view of this gene.
+	 * 
+	 * @return the {@link Factory} view of this gene.
+	 */
+	Factory<CharacterGene> asFactory() {
+		return this;
 	}
 	
 	@Override
