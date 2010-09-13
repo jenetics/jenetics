@@ -125,8 +125,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		}
 		_min = min;
 		_max = max;
-		final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
-		_genes.fill(factory);
+		_genes.fill(Float64Gene.valueOf(min, max).asFactory());
 		_genes.seal();
 	}
 	
