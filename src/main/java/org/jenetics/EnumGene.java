@@ -33,6 +33,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
@@ -42,7 +43,10 @@ import org.jenetics.util.Validator;
  * @version $Id$
  */
 public class EnumGene<E extends Enum<E>> 
-	implements Gene<E, EnumGene<E>>, Mean<EnumGene<E>>, Realtime, XMLSerializable
+	implements Gene<E, EnumGene<E>>, 
+				Mean<EnumGene<E>>, 
+				Realtime, 
+				XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -88,6 +92,15 @@ public class EnumGene<E extends Enum<E>>
 		final int index = random.nextInt(values.length);
 		
 		return valueOf(values[index]);
+	}
+	
+	/**
+	 * Return the {@link Factory} view of this gene.
+	 * 
+	 * @return the {@link Factory} view of this gene.
+	 */
+	Factory<EnumGene<E>> asFactory() {
+		return this;
 	}
 	
 	@Override
