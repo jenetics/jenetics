@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.min;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
@@ -528,6 +529,20 @@ public class Array<T> implements
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
 			_array[i] = it.next();
 		}
+		return this;
+	}
+	
+	/**
+	 * Fill the array with the given values.
+	 * 
+	 * @param values the first initial values of this array
+	 * @return {@code this} array.
+	 * @throws UnsupportedOperationException if this array is sealed 
+	 * 		  ({@code isSealed() == true}).
+	 */
+	public Array<T> fill(final T[] values) {
+		checkSeal();
+		System.arraycopy(values, 0, _array, _start, min(length(), values.length));
 		return this;
 	}
 	
