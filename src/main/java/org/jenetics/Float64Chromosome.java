@@ -45,10 +45,37 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	
 	protected Float64Chromosome(final Array<Float64Gene> genes) {
 		super(genes);
-		
-		assert (genes.length() >= 1);
-		_min = genes.get(0)._min;
-		_max = genes.get(0)._max;
+	}
+	
+	/**
+	 * Create a new chromosome.
+	 * 
+	 * @param genes the genes this chromosome consists.
+	 * @throws IllegalArgumentException if the number of genes is smaller than 
+	 * 		 one.
+	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 */
+	public Float64Chromosome(final Float64Gene... genes) {
+		super(new Array<Float64Gene>(genes));
+	}
+	
+	/**
+	 * Create a new random DoubleChromosome.
+	 * 
+	 * @param min the min value of the {@link Float64Gene}s.
+	 * @param max the max value of the {@link Float64Gene}s.
+	 * @param length the length of the chromosome.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
+	public Float64Chromosome(
+		final Float64 min, 
+		final Float64 max, 
+		final int length
+	) {
+		super(
+				new Array<Float64Gene>(length)
+				.fill(Float64Gene.valueOf(min, max).asFactory())
+			);
 	}
 	
 	/**
@@ -87,49 +114,9 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
 	}
 	
-	/**
-	 * Create a new chromosome.
-	 * 
-	 * @param genes the genes this chromosome consists.
-	 * @throws IllegalArgumentException if the number of genes is smaller than 
-	 * 		 one.
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
-	 */
-	public Float64Chromosome(final Float64Gene... genes) {
-		super(genes.length);
-		
-		_min = genes[0]._min;
-		_max = genes[0]._max;
-		_genes.fill(genes).seal();
-	}
-	
-	/**
-	 * Create a new random DoubleChromosome.
-	 * 
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
-	 * @param length the length of the chromosome.
-	 * @throws IllegalArgumentException if min is not less max.
-	 */
-	public Float64Chromosome(final Float64 min, final Float64 max, final int length) {
-		super(length);
-		
-		if (!min.isLessThan(max)) {
-			throw new IllegalArgumentException(
-				"Minumum must be less than maximim: " + min + " not less " + max
-			);
-		}
-		_min = min;
-		_max = max;
-		_genes.fill(Float64Gene.valueOf(min, max).asFactory()).seal();
-	}
-	
 	@Override
 	public Float64Chromosome newInstance(final Array<Float64Gene> genes) {
-		final Float64Chromosome chromosome = new Float64Chromosome(genes);		
-		chromosome._min = genes.get(0)._min;
-		chromosome._max = genes.get(0)._max;
-		return chromosome;
+		return new Float64Chromosome(genes);		
 	}
 
 	/**
@@ -137,12 +124,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	 */
 	@Override
 	public Float64Chromosome newInstance() {
-		final Float64Chromosome chromosome = new Float64Chromosome(
-				new Array<Float64Gene>(length()).fill(_genes.get(0).asFactory())
-			);
-		chromosome._min = _min;
-		chromosome._max = _max;
-		return chromosome;
+		return new Float64Chromosome(_min.doubleValue(), _max.doubleValue(), length());
 	}
 	
 	@Override

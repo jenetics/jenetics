@@ -52,10 +52,38 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 */
 	protected Integer64Chromosome(final Array<Integer64Gene> genes) {
 		super(genes);
-		
-		assert (genes.length() >= 1);
-		_min = genes.get(0)._min;
-		_max = genes.get(0)._max;
+	}
+	
+	/**
+	 * Create a new chromosome from the given genes array.
+	 * 
+	 * @param genes the genes of the new chromosome.
+	 * @throws NullPointerException if the given genes array is {@code null}.
+	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
+	 * 		  one.
+	 */
+	public Integer64Chromosome(final Integer64Gene... genes) {
+		super(new Array<Integer64Gene>(genes));
+	}
+	
+	/**
+	 * Create a new random IntegerChromosome.
+	 * 
+	 * @param min the minimum value of the {@link Float64Gene}s.
+	 * @param max the maximum value of the {@link Float64Gene}s.
+	 * @param length the length of the chromosome.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if min is not less max.
+	 */
+	public Integer64Chromosome(
+		final Integer64 min, 
+		final Integer64 max, 
+		final int length
+	) {
+		super(
+				new Array<Integer64Gene>(length)
+				.fill(Integer64Gene.valueOf(min, max).asFactory())
+			);
 	}
 	
 	/**
@@ -93,46 +121,6 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
 	}
 	
-	/**
-	 * Create a new chromosome from the given genes array.
-	 * 
-	 * @param genes the genes of the new chromosome.
-	 * @throws NullPointerException if the given genes array is {@code null}.
-	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
-	 * 		  one.
-	 */
-	public Integer64Chromosome(final Integer64Gene... genes) {
-		super(genes.length);
-		
-		_min = genes[0]._min;
-		_max = genes[0]._max;
-		_genes.fill(genes).seal();
-	}
-	
-	/**
-	 * Create a new random IntegerChromosome.
-	 * 
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
-	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if min is not less max.
-	 */
-	public Integer64Chromosome(
-		final Integer64 min, final Integer64 max, final int length
-	) {
-		super(length);
-		
-		if (!min.isLessThan(max)) {
-			throw new IllegalArgumentException(
-				"Minumum must be less than maximim: " + min + " not less " + max
-			);
-		}
-		_min = min;
-		_max = max;
-		_genes.fill(Integer64Gene.valueOf(min, max).asFactory()).seal();
-	}
-	
 	@Override
 	public Integer64Chromosome newInstance(final Array<Integer64Gene> genes) {
 		return new Integer64Chromosome(genes);
@@ -143,10 +131,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 */
 	@Override
 	public Integer64Chromosome newInstance() {
-		return newInstance(
-				new Array<Integer64Gene>(length())
-					.fill(_genes.get(0).asFactory())
-			);
+		return new Integer64Chromosome(_min.longValue(), _max.longValue(), length());
 	}
 	
 	@Override
