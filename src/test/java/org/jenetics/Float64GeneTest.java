@@ -27,12 +27,15 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Random;
 
+import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 import junit.framework.Assert;
 
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
@@ -44,31 +47,38 @@ public class Float64GeneTest {
     
 	@Test
 	public void newInstance() {
-		final Float64 min = Float64.ZERO;
-		final Float64 max = Float64.valueOf(100);
-		final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
-		
-		final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
-		
-		final int samples = 10000;
-		for (int i = 0; i < samples; ++i) {
-			final Float64Gene g1 = factory.newInstance();
-			final Float64Gene g2 = factory.newInstance();
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(new Random());
 			
-			Assert.assertTrue(g1.getAllele().compareTo(min) >= 0);
-			Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
-			Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
-			Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
-			Assert.assertFalse(g1.equals(g2));
-			Assert.assertNotSame(g1, g2);
+			final Float64 min = Float64.ZERO;
+			final Float64 max = Float64.valueOf(100);
+			final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
 			
-			variance.accumulate(g1.getAllele());
-			variance.accumulate(g2.getAllele());
+			final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
+			
+			final int samples = 10000;
+			for (int i = 0; i < samples; ++i) {
+				final Float64Gene g1 = factory.newInstance();
+				final Float64Gene g2 = factory.newInstance();
+				
+				Assert.assertTrue(g1.getAllele().compareTo(min) >= 0);
+				Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
+				Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
+				Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
+				Assert.assertFalse(g1.equals(g2));
+				Assert.assertNotSame(g1, g2);
+				
+				variance.accumulate(g1.getAllele());
+				variance.accumulate(g2.getAllele());
+			}
+			
+			Assert.assertEquals(variance.getSamples(), 2*samples);
+			Assert.assertEquals(variance.getMean(), 50.0, 3);
+			Assert.assertEquals(variance.getVariance(), 837, 10);
+		} finally {
+			LocalContext.exit();
 		}
-		
-		Assert.assertEquals(2*samples, variance.getSamples());
-		Assert.assertEquals(50.0, variance.getMean(), 3);
-		Assert.assertEquals(837, variance.getVariance(), 10);
 	}
 	
 	@Test
