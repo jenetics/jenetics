@@ -135,10 +135,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	
 	@Override
 	public Integer64Chromosome newInstance(final Array<Integer64Gene> genes) {
-		final Integer64Chromosome chromosome = new Integer64Chromosome(genes);		
-		chromosome._min = genes.get(0)._min;
-		chromosome._max = genes.get(0)._max;
-		return chromosome;
+		return new Integer64Chromosome(genes);
 	}
 
 	/**
@@ -146,12 +143,10 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 */
 	@Override
 	public Integer64Chromosome newInstance() {
-		final Integer64Chromosome chromosome = new Integer64Chromosome(
-				new Array<Integer64Gene>(length()).fill(_genes.get(0).asFactory())
+		return newInstance(
+				new Array<Integer64Gene>(length())
+					.fill(_genes.get(0).asFactory())
 			);
-		chromosome._min = _min;
-		chromosome._max = _max;
-		return chromosome;
 	}
 	
 	@Override
