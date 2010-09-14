@@ -23,9 +23,14 @@
 package org.jenetics;
 
 import java.io.IOException;
+import java.util.Random;
 
+import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Accumulators;
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -35,6 +40,43 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class Integer64GeneTest {
+	
+	@Test
+	public void newInstance() {
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(new Random());
+			
+			final Integer64 min = Integer64.ZERO;
+			final Integer64 max = Integer64.valueOf(Integer.MAX_VALUE - 1);
+			final Factory<Integer64Gene> factory = Integer64Gene.valueOf(min, max);
+			
+			final Accumulators.Variance<Integer64> variance = new Accumulators.Variance<Integer64>();
+			
+			final int samples = 50000;
+			for (int i = 0; i < samples; ++i) {
+				final Integer64Gene g1 = factory.newInstance();
+				final Integer64Gene g2 = factory.newInstance();
+				
+				Assert.assertTrue(g1.getAllele().compareTo(min) >= 0);
+				Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
+				Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
+				Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
+				Assert.assertFalse(g1.equals(g2));
+				Assert.assertNotSame(g1, g2);
+				
+				variance.accumulate(g1.getAllele());
+				variance.accumulate(g2.getAllele());
+			}
+			
+			System.out.println(variance);
+			Assert.assertEquals(2*samples, variance.getSamples());
+			Assert.assertEquals(variance.getMean(), Integer.MAX_VALUE/2, 100000000);
+			Assert.assertEquals(variance.getVariance(), 3.88E17, 1.0E16);
+		} finally {
+			LocalContext.exit();
+		}
+	}
 	
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
