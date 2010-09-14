@@ -164,8 +164,9 @@ public final class Accumulators {
 		@Override
 		public String toString() {
 			return String.format(
-					"%s[samples=%d, mean=%f, m2=%f]", 
-					getClass().getSimpleName(), _samples, _mean, _m2
+					"%s[samples=%d, mean=%f, stderr=%f, var=%f]", 
+					getClass().getSimpleName(), 
+					_samples, getMean(), getStandardError(), getVariance()
 				);
 		}
 	}
