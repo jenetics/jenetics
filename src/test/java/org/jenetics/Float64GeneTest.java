@@ -29,7 +29,10 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
+import junit.framework.Assert;
 
+import org.jenetics.util.Accumulators;
+import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
 
@@ -39,6 +42,35 @@ import org.testng.annotations.Test;
  */
 public class Float64GeneTest { 
     
+	@Test
+	public void newInstance() {
+		final Float64 min = Float64.ZERO;
+		final Float64 max = Float64.valueOf(100);
+		final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
+		
+		final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
+		
+		final int samples = 10000;
+		for (int i = 0; i < samples; ++i) {
+			final Float64Gene g1 = factory.newInstance();
+			final Float64Gene g2 = factory.newInstance();
+			
+			Assert.assertTrue(g1.getAllele().compareTo(min) >= 0);
+			Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
+			Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
+			Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
+			Assert.assertFalse(g1.equals(g2));
+			Assert.assertNotSame(g1, g2);
+			
+			variance.accumulate(g1.getAllele());
+			variance.accumulate(g2.getAllele());
+		}
+		
+		Assert.assertEquals(2*samples, variance.getSamples());
+		Assert.assertEquals(50.0, variance.getMean(), 3);
+		Assert.assertEquals(837, variance.getVariance(), 10);
+	}
+	
 	@Test
     public void testDoubleGeneIntegerIntegerInteger() {
         Float64Gene gene = Float64Gene.valueOf(1.234, 0.345, 2.123);
