@@ -22,7 +22,11 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.round;
 import static org.jenetics.util.Validator.nonNull;
+
+import java.util.Random;
+
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
@@ -66,7 +70,6 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 	protected transient N _value;
 	
 	private transient boolean _valid = true;
-	
 	
 	protected NumberGene() {
 	}
@@ -209,6 +212,22 @@ public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>
 		TextBuilder out = new TextBuilder();
 		out.append("[").append(_value).append("]");
 		return out.toText();
+	}
+	
+	static long nextLong(
+		final Random random, 
+		final long min, 
+		final long max
+	) {
+		return round(random.nextDouble()*(max - min)) + min;
+	}
+	
+	static double nextDouble(
+		final Random random, 
+		final double min, 
+		final double max
+	) {
+		return random.nextDouble()*(max - min) + min;
 	}
 	
 }
