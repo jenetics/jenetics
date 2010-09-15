@@ -99,9 +99,12 @@ public final class Accumulators {
 		@Override
 		public String toString() {
 			return String.format(
-					"%s[samples=%d, mean=%f]", 
-					getClass().getSimpleName(), _samples, _mean
-				);
+						"%s[samples=%d, mean=%f, stderr=%f]", 
+						getClass().getSimpleName(), 
+						getSamples(), 
+						getMean(), 
+						getStandardError()
+					);
 		}
 	}
 	
@@ -164,10 +167,13 @@ public final class Accumulators {
 		@Override
 		public String toString() {
 			return String.format(
-					"%s[samples=%d, mean=%f, stderr=%f, var=%f]", 
-					getClass().getSimpleName(), 
-					_samples, getMean(), getStandardError(), getVariance()
-				);
+						"%s[samples=%d, mean=%f, stderr=%f, var=%f]", 
+						getClass().getSimpleName(), 
+						getSamples(), 
+						getMean(), 
+						getStandardError(), 
+						getVariance()
+					);
 		}
 	}
 	
@@ -393,7 +399,7 @@ public final class Accumulators {
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, qantile=%f]", 
-					getClass().getSimpleName(), _samples, _quantile
+					getClass().getSimpleName(), getSamples(), getQuantile()
 				);
 		}
 	}
@@ -439,7 +445,7 @@ public final class Accumulators {
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, min=%s]", 
-					getClass().getSimpleName(), _samples, _min
+					getClass().getSimpleName(), getSamples(), getMin()
 				);
 		}
 	}
@@ -486,7 +492,7 @@ public final class Accumulators {
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, max=%s]", 
-					getClass().getSimpleName(), _samples, _max
+					getClass().getSimpleName(), getSamples(), getMax()
 				);
 		}
 	}
@@ -541,7 +547,7 @@ public final class Accumulators {
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, min=%s, max=%s]", 
-					getClass().getSimpleName(), _samples, _min, _max
+					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);
 		}
 	}
