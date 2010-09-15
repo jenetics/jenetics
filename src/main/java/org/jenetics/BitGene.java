@@ -131,7 +131,7 @@ public class BitGene
 	 * ************************************************************************/
 	
 	/**
-	 * Converter for accessing the value from a given number gene.
+	 * Converter for accessing the allele from a given gene.
 	 */
 	public static final Converter<BitGene, Boolean> ALLELE =
 		new Converter<BitGene, Boolean>() {
