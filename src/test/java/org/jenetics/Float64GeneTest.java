@@ -57,7 +57,7 @@ public class Float64GeneTest {
 			
 			final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
 			
-			final int samples = 10000;
+			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
 				final Float64Gene g1 = factory.newInstance();
 				final Float64Gene g2 = factory.newInstance();
@@ -73,9 +73,20 @@ public class Float64GeneTest {
 				variance.accumulate(g2.getAllele());
 			}
 			
+			
+			/*
+			 * Test some statistic properties of the generated genes.
+			 * @see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm
+			 */
+			
+			// (min + max)/d
+			final Float64 m = min.plus(max).divide(2);
+			// ((max - min)^2)/12
+			final Float64 v = max.minus(min).pow(2).divide(12);
+			
 			Assert.assertEquals(variance.getSamples(), 2*samples);
-			Assert.assertEquals(variance.getMean(), 50.0, 3);
-			Assert.assertEquals(variance.getVariance(), 837, 10);
+			Assert.assertEquals(m.doubleValue(), variance.getMean(), 3);
+			Assert.assertEquals(v.doubleValue(), variance.getVariance(), 10);
 		} finally {
 			LocalContext.exit();
 		}
