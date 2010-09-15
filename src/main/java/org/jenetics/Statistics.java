@@ -25,6 +25,7 @@ package org.jenetics;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
+import static org.jenetics.util.Accumulators.accumulate;
 
 import java.text.ParseException;
 import java.util.List;
@@ -40,13 +41,11 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.AccumulatorAdapter;
-import org.jenetics.util.Accumulators;
+import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -531,10 +530,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 				final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
 				final Variance<Integer> ageVariance = new Variance<Integer>();
 								
-				Accumulators.accumulate(
+				accumulate(
 						population, 
 						minMax, 
-						AccumulatorAdapter.valueOf(ageVariance, age)
+						ageVariance.adapt(age)
 					);
 				
 				statistics = new Statistics<G, C>(
