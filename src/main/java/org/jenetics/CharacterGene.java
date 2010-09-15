@@ -34,6 +34,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.CharSet;
+import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -43,8 +44,10 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class CharacterGene 
-	implements Gene<Character, CharacterGene>, Comparable<CharacterGene>, 
-				Realtime, XMLSerializable 
+	implements Gene<Character, CharacterGene>, 
+				Comparable<CharacterGene>, 
+				Realtime, 
+				XMLSerializable 
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -55,7 +58,7 @@ public class CharacterGene
 	
 	private CharSet _validCharacters;
 	private Character _character;
-	
+		
 	protected CharacterGene() {
 	}
 		
@@ -69,6 +72,25 @@ public class CharacterGene
 		return _character;
 	}
 
+	/**
+	 * Test, if the given character is valid.
+	 * 
+	 * @param c The character to test.
+	 * @return true if the character is valid, false otherwise.
+	 */
+	public boolean isValidCharacter(final Character c) {
+		return _validCharacters.contains(c);
+	}
+	
+	/**
+	 * Retunr a (unmodifiable) set of valid characters.
+	 * 
+	 * @return the {@link CharSet} of valid characters.
+	 */
+	public CharSet getValidCharacters() {
+		return _validCharacters;
+	}
+	
 	@Override
 	public CharacterGene copy() {
 		return valueOf(_character, _validCharacters);
@@ -87,14 +109,6 @@ public class CharacterGene
 	@Override
 	public int compareTo(final CharacterGene that) {
 		return getAllele().compareTo(that.getAllele());
-	}
-	
-	@Override
-	public CharacterGene newInstance() {
-		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(_validCharacters.length());
-		
-		return valueOf(_validCharacters.charAt(index), _validCharacters);
 	}
 	
 	/**
@@ -134,24 +148,58 @@ public class CharacterGene
 	}
 	
 	
+	/* *************************************************************************
+	 *  Property access methods methods
+	 * ************************************************************************/
+	
 	/**
-	 * Test, if the given character is valid.
-	 * 
-	 * @param c The character to test.
-	 * @return true if the character is valid, false otherwise.
+	 * Converter for accessing the allele from a given gene.
 	 */
-	public boolean isValidCharacter(final Character c) {
-		return _validCharacters.contains(c);
+	public static final Converter<CharacterGene, Character> ALLELE =
+		new Converter<CharacterGene, Character>() {
+				@Override public Character convert(final CharacterGene value) {
+					return value._character;
+				}
+			};
+			
+	/**
+	 * Converter for accessing the valid characters from a given gene.
+	 */
+	public static final Converter<CharacterGene, CharSet> VALID_CHARACTERS =
+		new Converter<CharacterGene, CharSet>() {
+				@Override public CharSet convert(final CharacterGene value) {
+					return value._validCharacters;
+				}
+			};
+			
+	
+	/* *************************************************************************
+	 *  Factory methods
+	 * ************************************************************************/
+	
+	@Override
+	public CharacterGene newInstance() {
+		return valueOf(_validCharacters);
 	}
 	
 	/**
-	 * Retunr a (unmodifiable) set of valid characters.
+	 * Create a new character gene from the given character. If the character
+	 * is not within the {@link #getValidCharacters()}, an invalid gene will be
+	 * created.
 	 * 
-	 * @return the {@link CharSet} of valid characters.
+	 * @param character the character value of the created gene.
+	 * @return a new character gene.
+	 * @throws NullPointerException if the given {@code character} is 
+	 *         {@code null}.
 	 */
-	public CharSet getValidCharacters() {
-		return _validCharacters;
+	public CharacterGene newInstance(final Character character) {
+		return valueOf(character, _validCharacters);
 	}
+	
+	
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/
 	
 	private static final ObjectFactory<CharacterGene> 
 	FACTORY = new ObjectFactory<CharacterGene>() {
@@ -164,11 +212,36 @@ public class CharacterGene
 	/**
 	 * Create a new CharacterGene with a randomly chosen character from the
 	 * set of valid characters.
+	 * 
+	 * @param validCharacters the valid characters for this gene.
+	 * @return a new valid, <em>random</em> gene,
+	 * @throws NullPointerException if the {@code validCharacters} are 
+	 *         {@code null}.
 	 */
 	public static CharacterGene valueOf(final CharSet validCharacters) {
 		final Random random = RandomRegistry.getRandom();
 		int pos = random.nextInt(validCharacters.length());
 		return valueOf(validCharacters.charAt(pos), validCharacters);
+	}
+		
+	/**
+	 * Create a new character gene from the given character. If the character
+	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
+	 * created.
+	 * 
+	 * @param character the character value of the created gene.
+	 * @return a new character gene.
+	 * @throws NullPointerException if the given {@code character} is 
+	 *         {@code null}.
+	 */
+	public static CharacterGene valueOf(final Character character) {
+		return valueOf(character, DEFAULT_CHARACTERS);
+	}
+	
+	public static CharacterGene valueOf() {
+		final Random random = RandomRegistry.getRandom();
+		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
+		return valueOf(DEFAULT_CHARACTERS.charAt(index));
 	}
 	
 	/**
@@ -176,6 +249,7 @@ public class CharacterGene
 	 * 
 	 * @param character The allele.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */
 	public static CharacterGene valueOf(
 		final Character character, 
@@ -191,15 +265,10 @@ public class CharacterGene
 		return g;
 	}
 	
-	public static CharacterGene valueOf(final Character character) {
-		return valueOf(character, DEFAULT_CHARACTERS);
-	}
 	
-	public static CharacterGene valueOf() {
-		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
-		return valueOf(DEFAULT_CHARACTERS.charAt(index));
-	}
+	/* *************************************************************************
+	 *  Factory methods
+	 * ************************************************************************/
 	
 	static final XMLFormat<CharacterGene> 
 	XML = new XMLFormat<CharacterGene>(CharacterGene.class) 
