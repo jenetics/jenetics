@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.round;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,6 +31,7 @@ import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
@@ -53,21 +52,9 @@ public class Integer64Gene
 		return newInstance(_value.divide(gene._value));
 	}
 	
-	/**
-	 * Create a new, <em>random</em> chromosome.
-	 */
 	@Override
-	public Integer64Gene newInstance() {
-		final Random random = RandomRegistry.getRandom();
-		final double rv = random.nextDouble();
-		final long value = round(rv*(_max.longValue() - _min.longValue())) + 
-										_min.longValue();
-		return newInstance(value);
-	}
-	
-	@Override
-	public Integer64Gene newInstance(final java.lang.Number number) {
-		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
+	public Integer64Gene mean(final Integer64Gene that) {
+		return newInstance((_value.longValue() + that._value.longValue()) >>> 1);
 	}
 	
 	/**
@@ -79,30 +66,117 @@ public class Integer64Gene
 		return this;
 	}
 	
+	/* *************************************************************************
+	 *  Property access methods methods
+	 * ************************************************************************/
+	
+	/**
+	 * Converter for accessing the value from a given number gene.
+	 */
+	public static final Converter<Integer64Gene, Integer64> ALLELE =
+		new Converter<Integer64Gene, Integer64>() {
+				@Override public Integer64 convert(final Integer64Gene value) {
+					return value._value;
+				}
+			};
+			
+	/**
+	 * Converter for accessing the allele from a given number gene.
+	 */			
+	public static final Converter<Integer64Gene, Integer64> VALUE = ALLELE;
+	
+	/**
+	 * Converter for accessing the allowed minimum from a given number gene.
+	 */
+	public static final Converter<Integer64Gene, Integer64> MIN =
+		new Converter<Integer64Gene, Integer64>() {
+				@Override public Integer64 convert(final Integer64Gene value) {
+					return value._min;
+				}
+			};
+	
+	/**
+	 * Converter for accessing the allowed minimum from a given number gene.
+	 */
+	public static final Converter<Integer64Gene, Integer64> MAX =
+		new Converter<Integer64Gene, Integer64>() {
+				@Override public Integer64 convert(final Integer64Gene value) {
+					return value._value;
+				}
+			};
+	
+	/* *************************************************************************
+	 *  Factory methods
+	 * ************************************************************************/	
+	
+	/**
+	 * Create a new valid, <em>random</em> gene.
+	 */
+	@Override
+	public Integer64Gene newInstance() {
+		return valueOf(_min, _max);
+	}
+	
 	/**
 	 * Create a new IntegerGene with the same limits and the given value.
 	 * 
-	 * @param number The value of the new NumberGene.
+	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 * @throws IllegalArgumentException if the gene value is not in the range
 	 *		(value < min || value > max).
 	 */
-	public Integer64Gene newInstance(final long number) {
-		return newInstance(Integer64.valueOf(number));
-	}
-
-	@Override
-	public Integer64Gene mean(final Integer64Gene that) {
-		return newInstance((_value.longValue() + that._value.longValue()) >>> 1);
+	public Integer64Gene newInstance(final long value) {
+		return valueOf(Integer64.valueOf(value), _min, _max);
 	}
 	
+	@Override
+	public Integer64Gene newInstance(final java.lang.Number number) {
+		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
+	}
+	
+	/**
+	 * Create a new gene from the given {@code value}.
+	 * 
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public Integer64Gene newInstance(final Integer64 value) {
+		return valueOf(value, _min, _max);
+	}
+	
+	/* *************************************************************************
+	 *  Static object creation methods
+	 * ************************************************************************/	
 	
 	private static final ObjectFactory<Integer64Gene> FACTORY = 
-	new ObjectFactory<Integer64Gene>() {
-		@Override protected Integer64Gene create() {
-			return new Integer64Gene();
-		}
-	};
+		new ObjectFactory<Integer64Gene>() {
+				@Override protected Integer64Gene create() {
+					return new Integer64Gene();
+				}
+			};
+	
+	/**
+	 * Create a new random Integer64Gene with the given value and the given range. 
+	 * If the {@code value} isn't within the closed interval [min, max], no 
+	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()} 
+	 * returns {@code false}.
+	 * 
+	 * @param value the value of the gene.
+	 * @param min the minimal valid value of this gene.
+	 * @param max the maximal valid value of this gene.
+	 * @return the new created gene with the given {@code value}.
+	 */
+	public static Integer64Gene valueOf(
+		final long value, 
+		final long min, 
+		final long max
+	) {
+		return valueOf(
+			Integer64.valueOf(value), 
+			Integer64.valueOf(min), 
+			Integer64.valueOf(max)
+		);
+	}
 	
 	/**
 	 * Create a new random IntegerGene with the given value and the given range. 
@@ -110,10 +184,10 @@ public class Integer64Gene
 	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()} 
 	 * returns {@code false}.
 	 * 
-	 * @param value the value of the IntegerGene.
-	 * @param min the minimal valid value of this IntegerGene.
-	 * @param max the maximal valid value of this IntegerGene.
-	 * @return the new created IntegerGene with the given {@code value}.
+	 * @param value the value of the gene.
+	 * @param min the minimal valid value of this gene.
+	 * @param max the maximal valid value of this gene.
+	 * @return the new created gene with the given {@code value}.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static Integer64Gene valueOf(
@@ -127,51 +201,42 @@ public class Integer64Gene
 	}
 	
 	/**
-	 * Create a new random IntegerGene with the given value and the given range. 
-	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()} 
-	 * returns {@code false}.
-	 * 
-	 * @param value the value of the IntegerGene.
-	 * @param min the minimal valid value of this IntegerGene.
-	 * @param max the maximal valid value of this IntegerGene.
-	 * @return the new created IntegerGene with the given {@code value}.
-	 */
-	public static Integer64Gene valueOf(long value, long min, long max) {
-		return valueOf(
-			Integer64.valueOf(value), 
-			Integer64.valueOf(min), 
-			Integer64.valueOf(max)
-		);
-	}
-	
-	/**
 	 * Create a new random IntegerGene. It is guaranteed that the value of the 
 	 * IntegerGene lies in the closed interval [min, max].
 	 * 
-	 * @param min the minimal value of the IntegerGene to create.
-	 * @param max the maximal value of the IntegerGene to create.
-	 * @return the new created Integer gene.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @param min the minimal value of the Integer64Gene to create.
+	 * @param max the maximal value of the Integer64Gene to create.
+	 * @return the new created gene.
 	 */
-	public static Integer64Gene valueOf(final Integer64 min, final Integer64 max) {
-		final Random random = RandomRegistry.getRandom();
-		final int value = min.intValue() + 
-						random.nextInt(max.intValue() - min.intValue() + 1);
-		return valueOf(Integer64.valueOf(value), min, max);
-	}
-	
-	/**
-	 * Create a new random IntegerGene. It is guaranteed that the value of the 
-	 * IntegerGene lies in the closed interval [min, max].
-	 * 
-	 * @param min the minimal value of the IntegerGene to create.
-	 * @param max the maximal value of the IntegerGene to create.
-	 * @return the new created Integer gene.
-	 */
-	public static Integer64Gene valueOf(final int min, final int max) {
+	public static Integer64Gene valueOf(final long min, final long max) {
 		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
+	
+	/**
+	 * Create a new random Integer64Gene. It is guaranteed that the value of the 
+	 * Integer64Gene lies in the closed interval [min, max].
+	 * 
+	 * @param min the minimal value of the Integer64Gene to create.
+	 * @param max the maximal value of the Integer64Gene to create.
+	 * @return the new created gene.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public static Integer64Gene valueOf(
+		final Integer64 min, 
+		final Integer64 max
+	) {
+		final Random random = RandomRegistry.getRandom();
+		final Integer64 value = Integer64.valueOf(
+					nextLong(random, min.longValue(), max.longValue())
+				);
+		
+		return valueOf(value, min, max);
+	}
+	
+	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/	
 	
 	static final XMLFormat<Integer64Gene> 
 	XML = new XMLFormat<Integer64Gene>(Integer64Gene.class) 
@@ -204,6 +269,11 @@ public class Integer64Gene
 		{
 		}
 	};
+	
+	
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/	
 	
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException 

@@ -22,12 +22,14 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.Accumulators.accumulate;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Accumulators;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,6 +40,26 @@ import org.testng.annotations.Test;
  */
 public class Float64ChromosomeTest {
 
+    @Test
+    public void newInstance() {
+    	final Float64Chromosome ch1 = new Float64Chromosome(
+    			Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5)
+    		);
+    	final Float64Chromosome ch2 = ch1.newInstance();
+    	
+    	Assert.assertEquals(ch2.length(), ch1.length());
+    	Assert.assertTrue(ch2.getGene(0).doubleValue() < 0.5 && ch2.getGene(0).doubleValue() > -0.5);
+    	Assert.assertTrue(ch2.getGene(1).doubleValue() < 0.5 && ch2.getGene(1).doubleValue() > -0.5);
+    }
+	
+	@Test
+	public void newInstance2() {
+		final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 1000);
+		final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
+				
+		accumulate(chromosome, variance.adapt(Float64Gene.VALUE));
+		
+	}
 
     @Test
     public void testCreate() {
@@ -65,18 +87,6 @@ public class Float64ChromosomeTest {
     	c2 = new Float64Chromosome(c1.toArray().copy());
     	Assert.assertNotSame(c2, c1);
     	Assert.assertEquals(c2, c1);
-    }
-    
-    @Test
-    public void newInstance() {
-    	final Float64Chromosome ch1 = new Float64Chromosome(
-    			Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5)
-    		);
-    	final Float64Chromosome ch2 = ch1.newInstance();
-    	
-    	Assert.assertEquals(ch2.length(), ch1.length());
-    	Assert.assertTrue(ch2.getGene(0).doubleValue() < 0.5 && ch2.getGene(0).doubleValue() > -0.5);
-    	Assert.assertTrue(ch2.getGene(1).doubleValue() < 0.5 && ch2.getGene(1).doubleValue() > -0.5);
     }
     
     @Test

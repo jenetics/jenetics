@@ -48,7 +48,7 @@ public class Integer64GeneTest {
 			RandomRegistry.setRandom(new Random());
 			
 			final Integer64 min = Integer64.ZERO;
-			final Integer64 max = Integer64.valueOf(Integer.MAX_VALUE - 1);
+			final Integer64 max = Integer64.valueOf(1000000);
 			final Factory<Integer64Gene> factory = Integer64Gene.valueOf(min, max);
 			
 			final Accumulators.Variance<Integer64> variance = new Accumulators.Variance<Integer64>();
@@ -62,17 +62,25 @@ public class Integer64GeneTest {
 				Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
 				Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
 				Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
-				Assert.assertFalse(g1.equals(g2));
 				Assert.assertNotSame(g1, g2);
 				
 				variance.accumulate(g1.getAllele());
 				variance.accumulate(g2.getAllele());
 			}
 			
-			System.out.println(variance);
+			/*
+			 * Test some statistic properties of the generated genes.
+			 * @see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm
+			 */
+			
+			// (min + max)/d
+			final Integer64 m = min.plus(max).divide(2);
+			// ((max - min)^2)/12
+			final Integer64 v = max.minus(min).pow(2).divide(12);
+			
 			Assert.assertEquals(2*samples, variance.getSamples());
-			Assert.assertEquals(variance.getMean(), Integer.MAX_VALUE/2, 100000000);
-			Assert.assertEquals(variance.getVariance(), 3.88E17, 1.0E16);
+			Assert.assertEquals(variance.getMean(), m.longValue(), 2*variance.getStandardError());
+			Assert.assertEquals(variance.getVariance(), v.longValue(), 1.0E10);
 		} finally {
 			LocalContext.exit();
 		}
