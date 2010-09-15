@@ -1379,18 +1379,22 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Normalize the given double array, so that it sum to one.
+	 * Normalize the given double array, so that it sum to one. The normalization
+	 * is performed in place and the same {@code values} are returned.
 	 * 
 	 * @param values the values to normalize.
+	 * @return the {@code values} array.
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
-	public static void normalize(final double[] values) {
+	public static double[] normalize(final double[] values) {
 		nonNull(values);
 		
 		final double sum = 1.0/sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}
+		
+		return values;
 	}
 	
 	/**
