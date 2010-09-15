@@ -46,7 +46,7 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Mean<N extends Number> implements Accumulator<N> {
+	public static class Mean<N extends Number> extends AdaptableAccumulator<N> {
 		
 		protected long _samples = 0;
 		protected double _mean = Double.NaN;
@@ -189,7 +189,7 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Quantile<N extends Number> implements Accumulator<N> {
+	public static class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 		
 		private long _samples = 0;
 		
@@ -404,7 +404,7 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Min<C extends Comparable<C>> implements Accumulator<C> {
+	public static class Min<C extends Comparable<C>> extends AdaptableAccumulator<C> {
 		private long _samples = 0;
 		private C _min;
 		
@@ -451,7 +451,7 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Max<C extends Comparable<C>> implements Accumulator<C> {
+	public static class Max<C extends Comparable<C>> extends AdaptableAccumulator<C> {
 		private long _samples = 0;
 		private C _max;
 		
@@ -498,7 +498,7 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class MinMax<C extends Comparable<C>> implements Accumulator<C> {
+	public static class MinMax<C extends Comparable<C>> extends AdaptableAccumulator<C> {
 		private long _samples = 0;
 		private C _min;
 		private C _max;

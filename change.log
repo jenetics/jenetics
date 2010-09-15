@@ -1,3 +1,4 @@
+- Add the 'mixin' org.util.AdaptableAccumulator class.
 - Remove Genotype.valueOf(Genotype) method since the Genotype class is is
   immutable and no copy factory method is needed.
 - Remove ChromosomeFactory interface.
