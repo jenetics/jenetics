@@ -22,12 +22,14 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
-import org.jenetics.util.RandomRegistry;
 
-import java.util.Random;
+import org.jenetics.util.Converter;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * Implementation of a BitGene.
@@ -122,6 +124,26 @@ public class BitGene
 	public String toString() {
 		return Boolean.toString(_value);
 	}
+	
+	
+	/* *************************************************************************
+	 *  Property access methods methods
+	 * ************************************************************************/
+	
+	/**
+	 * Converter for accessing the value from a given number gene.
+	 */
+	public static final Converter<BitGene, Boolean> ALLELE =
+		new Converter<BitGene, Boolean>() {
+				@Override public Boolean convert(final BitGene value) {
+					return value._value;
+				}
+			};
+	
+			
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
 	
 	static final XMLFormat<BitGene> 
 	XML = new XMLFormat<BitGene>(BitGene.class) 
