@@ -22,11 +22,20 @@
  */
 package org.jenetics;
 
-import java.io.IOException;
+import static org.jenetics.util.Accumulators.accumulate;
 
+import java.io.IOException;
+import java.util.Random;
+
+import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 import junit.framework.Assert;
 
+import org.jenetics.Distribution.Uniform;
+import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Accumulators.Variance;
+import org.jenetics.util.RandomRegistry;
+import org.jscience.mathematics.number.Integer64;
 import org.testng.annotations.Test;
 
 /**
@@ -35,6 +44,38 @@ import org.testng.annotations.Test;
  */
 public class Integer64ChromosomeTest {
 
+    @Test
+    public void newInstance() {
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(new Random());
+			
+			final Integer64Chromosome chromosome = new Integer64Chromosome(0, 100, 1000);
+			
+			final MinMax<Integer64> mm = new MinMax<Integer64>();
+			accumulate(chromosome, mm.adapt(Integer64Gene.VALUE));
+			
+			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
+			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
+			
+			final Variance<Integer64> variance = new Variance<Integer64>();
+			accumulate(chromosome, variance.adapt(Integer64Gene.VALUE));
+			
+			Assert.assertEquals(
+					variance.getMean(), 
+					Uniform.mean(0, 100), 
+					2*variance.getStandardError()
+				);
+			Assert.assertEquals(
+					variance.getVariance(), 
+					Uniform.variance(0, 100), 
+					30
+				);
+		} finally {
+			LocalContext.exit();
+		}
+    }
+	
 	@Test
 	public void equals() {
 		Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);

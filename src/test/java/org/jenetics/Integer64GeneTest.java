@@ -28,6 +28,7 @@ import java.util.Random;
 import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.Distribution.Uniform;
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -73,14 +74,16 @@ public class Integer64GeneTest {
 			 * @see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm
 			 */
 			
-			// (min + max)/d
-			final Integer64 m = min.plus(max).divide(2);
-			// ((max - min)^2)/12
-			final Integer64 v = max.minus(min).pow(2).divide(12);
-			
-			Assert.assertEquals(2*samples, variance.getSamples());
-			Assert.assertEquals(variance.getMean(), m.longValue(), 2*variance.getStandardError());
-			Assert.assertEquals(variance.getVariance(), v.longValue(), 1.0E10);
+			Assert.assertEquals(variance.getSamples(), 2*samples);
+			Assert.assertEquals(
+					variance.getMean(), 
+					Uniform.mean(min.doubleValue(), max.doubleValue()), 
+					2*variance.getStandardError()
+				);
+			Assert.assertEquals(
+					variance.getVariance(), 
+					Uniform.variance(min.doubleValue(), max.doubleValue()), 1.0E10
+				);
 		} finally {
 			LocalContext.exit();
 		}
