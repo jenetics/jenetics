@@ -45,7 +45,7 @@ import org.testng.annotations.Test;
  */
 public class Float64ChromosomeTest {
 
-    @Test
+	@Test(invocationCount = 10)
     public void newInstance() {
 		LocalContext.enter();
 		try {
