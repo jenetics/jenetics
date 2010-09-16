@@ -1379,6 +1379,21 @@ public final class ArrayUtils {
 	}
 	
 	/**
+	 * Add the values of the given array.
+	 * 
+	 * @param values the values to add.
+	 * @return the values sum.
+	 * @throws NullPointerException if the values are null;
+	 */
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (int i = 0; i < values.length; ++i) {
+			sum += values[i];
+		}
+		return sum;
+	}
+	
+	/**
 	 * Normalize the given double array, so that it sum to one. The normalization
 	 * is performed in place and the same {@code values} are returned.
 	 * 

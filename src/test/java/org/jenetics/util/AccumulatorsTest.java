@@ -27,7 +27,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
+import org.jenetics.util.Accumulators.Histogram;
 import org.jenetics.util.Accumulators.Mean;
 import org.jenetics.util.Accumulators.Quantile;
 import org.jenetics.util.Accumulators.Variance;
@@ -61,6 +63,22 @@ public class AccumulatorsTest {
 			for (int j = 0; j < parts.length; ++j) {
 				_values[i][j] = Double.valueOf(parts[j]);
 			}
+		}
+	}
+	
+	@Test
+	public void histogram() {
+		final Random random = new Random();
+		final Histogram<Double> histogram = Histogram.valueOfDouble(1, 2, 3, 4, 5);
+		
+		for (int i = 0; i < 600000; ++i) {
+			histogram.accumulate(random.nextDouble()*6);
+		}
+		Assert.assertEquals(histogram.getSamples(), 600000);
+		
+		final long[] hist = histogram.getHistogram();
+		for (int i = 0; i < hist.length; ++i) {
+			Assert.assertEquals((double)hist[i], 100000.0, 1000.0);
 		}
 	}
 	
