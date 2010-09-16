@@ -29,7 +29,7 @@ import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Accumulators;
+import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -55,7 +55,7 @@ public class Float64ChromosomeTest {
 	@Test
 	public void newInstance2() {
 		final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 1000);
-		final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
+		final Variance<Float64> variance = new Variance<Float64>();
 				
 		accumulate(chromosome, variance.adapt(Float64Gene.VALUE));
 		
