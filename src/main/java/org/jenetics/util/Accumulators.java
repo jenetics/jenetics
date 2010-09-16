@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import org.jenetics.util.Validator.NonNull;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
@@ -556,6 +557,24 @@ public final class Accumulators {
 	}
 	
 	/**
+	 * To create an <i>Histogram Accumulator</i> you have to define the <i>class
+	 * border</i> which define the histogram classes. A value is part of the 
+	 * <i>i</i><sup>th</sup> histogram array element if 
+	 * <pre>
+	 *     classes[i] > value <= classes[i - 1]  when <i>i</i> &isin; [1 .. classes.length - 1], 
+	 *     0                                     when value < classes[0] and
+	 *     classes.length                        when value >= classes[classes.length - 1]. 
+	 * </pre>
+	 * 
+	 * Example:
+	 * <pre>
+	 * Class border values:    0    1    2    3    4    5    6    7    8    9
+	 *                  -------+----+----+----+----+----+----+----+----+----+------
+	 * Frequencies:        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |  18 
+	 *                  -------+----+----+----+----+----+----+----+----+----+------
+	 * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
+	 * </pre>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
@@ -566,9 +585,24 @@ public final class Accumulators {
 		private final C[] _classes;
 		private final long[] _histogram;
 		
+		/**
+		 * Create a new Histogram with the given class separators.
+		 * 
+		 * @param classes the class separators.
+		 * @throws NullPointerException if the classes of one of its elements
+		 *         is {@code null}.
+		 * @throws IllegalArgumentException if the given classes array is empty.
+		 */
 		public Histogram(final C... classes) {
+			ArrayUtils.foreach(classes, new NonNull());
+			if (classes.length == 0) {
+				throw new IllegalArgumentException("Given classes array is empty.");
+			}
+			
 			_classes = classes.clone();
 			_histogram = new long[classes.length + 1];
+			
+			Arrays.sort(_classes);
 			Arrays.fill(_histogram, 0L);
 		}
 		
@@ -578,15 +612,48 @@ public final class Accumulators {
 			++_samples;
 		}
 		
-		private int index(final C value) {
-			int index = _classes.length;
+		/**
+		 * Do binary search for the index to use.
+		 * 
+		 * @param value the value to search.
+		 * @return the histogram index.
+		 */
+		int index(final C value) {
+			int low = 0;
+			int high = _classes.length - 1;
 			
+			while (low <= high) {
+				if (value.compareTo(_classes[low]) < 0) {
+					return low;
+				} else if (value.compareTo(_classes[high]) >= 0) {
+					return high + 1;
+				} else {
+					final int mid = (low + high) >>> 1;
+	
+					if (value.compareTo(_classes[mid]) < 0) {
+						high = mid;
+					} else if (value.compareTo(_classes[mid]) >= 0) {
+						low = mid + 1;
+					}
+				}
+			}
+			
+			return -1; 
+		}
+		
+		/**
+		 * Do linear search for the index to use.
+		 * 
+		 * @param value
+		 * @return
+		 */
+		int linearindex(final C value) {
+			int index = _classes.length;
 			for (int i = 0; i < _classes.length && index == _classes.length; ++i) {
 				if (value.compareTo(_classes[i]) < 0) {
 					index = i;
 				}
 			}
-			
 			return index;
 		}
 		
@@ -594,14 +661,51 @@ public final class Accumulators {
 			return _samples;
 		}
 		
+		/**
+		 * Return a copy of the class separators.
+		 * 
+		 * @return the class separators.
+		 */
 		public C[] getClasses() {
 			return _classes.clone();
 		}
 		
-		public long[] getHistogram() {
-			return _histogram;
+		/**
+		 * Copy the histogram into the given array. If the array is big enough
+		 * the same array is returned, otherwise a new array is created and 
+		 * returned.
+		 * 
+		 * @param histogram array to copy the histogram.
+		 * @return the histogram.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public long[] getHistogram(final long[] histogram) {
+			Validator.nonNull(histogram);
+			
+			long[] hist = histogram;
+			if (histogram != null && histogram.length >= _histogram.length) {
+				System.arraycopy(_histogram, 0, hist, 0, _histogram.length);
+			} else {
+				hist = _histogram.clone();
+			}
+			
+			return hist;
 		}
 		
+		/**
+		 * Return a copy of the current histogram.
+		 * 
+		 * @return a copy of the current histogram.
+		 */
+		public long[] getHistogram() {
+			return getHistogram(new long[_histogram.length]);
+		}
+		
+		/**
+		 * Return the class probabilities.
+		 * 
+		 * @return the class probabilities.
+		 */
 		public double[] getProbabilities() {
 			final double[] probabilities = new double[_histogram.length];
 			
@@ -613,6 +717,14 @@ public final class Accumulators {
 			return probabilities;
 		}
 		
+		/**
+		 * Create a new Histogram with the given double class separators.
+		 * 
+		 * @param classes the class separators.
+		 * @return a new Float64 Histogram.
+		 * @throws NullPointerException if the given classes are {@code null}.
+		 * @throws IllegalArgumentException if the classes array is empty.
+		 */
 		public static Histogram<Float64> valueOfFloat64(final double... classes) {
 			final Float64[] cls = new Float64[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
@@ -621,6 +733,14 @@ public final class Accumulators {
 			return new Histogram<Float64>(cls);
 		}
 		
+		/**
+		 * Create a new Histogram with the given double class separators.
+		 * 
+		 * @param classes the class separators.
+		 * @return a new Double Histogram.
+		 * @throws NullPointerException if the given classes are {@code null}.
+		 * @throws IllegalArgumentException if the classes array is empty.
+		 */
 		public static Histogram<Double> valueOfDouble(final double... classes) {
 			final Double[] cls = new Double[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
@@ -629,6 +749,14 @@ public final class Accumulators {
 			return new Histogram<Double>(cls);
 		}
 		
+		/**
+		 * Create a new Histogram with the given double class separators.
+		 * 
+		 * @param classes the class separators.
+		 * @return a new Integer64 Histogram.
+		 * @throws NullPointerException if the given classes are {@code null}.
+		 * @throws IllegalArgumentException if the classes array is empty.
+		 */
 		public static Histogram<Integer64> valueOfInteger64(final long... classes) {
 			final Integer64[] cls = new Integer64[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
@@ -637,6 +765,14 @@ public final class Accumulators {
 			return new Histogram<Integer64>(cls);
 		}
 		
+		/**
+		 * Create a new Histogram with the given double class separators.
+		 * 
+		 * @param classes the class separators.
+		 * @return a new Long Histogram.
+		 * @throws NullPointerException if the given classes are {@code null}.
+		 * @throws IllegalArgumentException if the classes array is empty.
+		 */
 		public static Histogram<Long> valueOfLong(final long... classes) {
 			final Long[] cls = new Long[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
@@ -899,9 +1035,5 @@ public final class Accumulators {
 	}
 	
 }
-
-
-
-
 
 

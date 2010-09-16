@@ -67,6 +67,39 @@ public class AccumulatorsTest {
 	}
 	
 	@Test
+	public void histogramIndex() {
+		final Random random = new Random();
+		final double[] parts = new double[10000];
+		for (int i = 0; i < parts.length; ++i) {
+			parts[i] = i;
+		}
+		final Histogram<Double> histogram = Histogram.valueOfDouble(parts);
+		
+		for (int i = 0; i < 1000; ++i) {
+			final Double value = random.nextDouble()*(parts.length + 1);
+			Assert.assertEquals(histogram.index(value), histogram.linearindex(value));
+		}
+		
+		
+//		final int runs = 10000000;
+//		long start = System.nanoTime();
+//		for (int i = 0; i < runs; ++i) {
+//			final Double value = random.nextDouble()*(parts.length + 1);
+//			histogram.index(value);
+//		}
+//		long end = System.nanoTime();
+//		System.out.println("Index time: " + (end - start)/1000000000.0);
+//		
+//		start = System.nanoTime();
+//		for (int i = 0; i < runs; ++i) {
+//			final Double value = random.nextDouble()*(parts.length + 1);
+//			histogram.bindex(value);
+//		}
+//		end = System.nanoTime();
+//		System.out.println("BIndex time: " + (end - start)/1000000000.0);
+	}
+	
+	@Test
 	public void histogram() {
 		final Random random = new Random();
 		final Histogram<Double> histogram = Histogram.valueOfDouble(1, 2, 3, 4, 5);
