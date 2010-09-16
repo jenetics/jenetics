@@ -44,7 +44,7 @@ import org.testng.annotations.Test;
  */
 public class Integer64ChromosomeTest {
 
-    @Test
+	@Test(invocationCount = 10)
     public void newInstance() {
 		LocalContext.enter();
 		try {
