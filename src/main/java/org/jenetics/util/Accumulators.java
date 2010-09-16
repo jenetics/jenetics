@@ -24,6 +24,9 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
+
 import javolution.context.ConcurrentContext;
 
 /**
@@ -550,6 +553,98 @@ public final class Accumulators {
 					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);
 		}
+	}
+	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Histogram<C extends Comparable<C>> 
+		extends AdaptableAccumulator<C> 
+	{
+		private long _samples = 0;
+		private final C[] _classes;
+		private final long[] _histogram;
+		
+		public Histogram(final C... classes) {
+			_classes = classes.clone();
+			_histogram = new long[classes.length + 1];
+			Arrays.fill(_histogram, 0L);
+		}
+		
+		@Override
+		public void accumulate(final C value) {
+			++_histogram[index(value)];
+			++_samples;
+		}
+		
+		private int index(final C value) {
+			int index = _classes.length;
+			
+			for (int i = 0; i < _classes.length && index == _classes.length; ++i) {
+				if (value.compareTo(_classes[i]) < 0) {
+					index = i;
+				}
+			}
+			
+			return index;
+		}
+		
+		public long getSamples() {
+			return _samples;
+		}
+		
+		public C[] getClasses() {
+			return _classes.clone();
+		}
+		
+		public long[] getHistogram() {
+			return _histogram;
+		}
+		
+		public double[] getProbabilities() {
+			final double[] probabilities = new double[_histogram.length];
+			
+			assert (ArrayUtils.sum(_histogram) == _samples);
+			for (int i = 0; i < probabilities.length; ++i) {
+				probabilities[i] = (double)_histogram[i]/(double)_samples;
+			}
+			
+			return probabilities;
+		}
+		
+		public static Histogram<Float64> valueOfFloat64(final double... classes) {
+			final Float64[] cls = new Float64[classes.length];
+			for (int i = 0; i < classes.length; ++i) {
+				cls[i] = Float64.valueOf(classes[i]);
+			}
+			return new Histogram<Float64>(cls);
+		}
+		
+		public static Histogram<Double> valueOfDouble(final double... classes) {
+			final Double[] cls = new Double[classes.length];
+			for (int i = 0; i < classes.length; ++i) {
+				cls[i] = Double.valueOf(classes[i]);
+			}
+			return new Histogram<Double>(cls);
+		}
+		
+		public static Histogram<Integer64> valueOfInteger64(final long... classes) {
+			final Integer64[] cls = new Integer64[classes.length];
+			for (int i = 0; i < classes.length; ++i) {
+				cls[i] = Integer64.valueOf(classes[i]);
+			}
+			return new Histogram<Integer64>(cls);
+		}
+		
+		public static Histogram<Long> valueOfLong(final long... classes) {
+			final Long[] cls = new Long[classes.length];
+			for (int i = 0; i < classes.length; ++i) {
+				cls[i] = Long.valueOf(classes[i]);
+			}
+			return new Histogram<Long>(cls);
+		}
+		
 	}
 	
 	
