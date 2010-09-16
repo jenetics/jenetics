@@ -107,16 +107,16 @@ public class GeneticAlgorithmTest {
 			Assert.assertEquals(s.getAgeMean(), 0.0);
 			Assert.assertEquals(s.getAgeVariance(), 0.0);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(((Float64)s.getBestFitness()).doubleValue(), 0.99577149482586247, 0.00000001);
+			Assert.assertEquals(((Float64)s.getBestFitness()).doubleValue(), 0.9846666139422408, 0.00000001);
 			Assert.assertEquals(((Float64)s.getWorstFitness()).doubleValue(), 0.0014983949586988565, 0.00000001);
 			
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 16.070000000000004, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 241.40211055276382, 0.000001);
+			Assert.assertEquals(s.getAgeMean(), 9.600000000000009, 0.000001);
+			Assert.assertEquals(s.getAgeVariance(), 19.65829145728642, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(((Float64)s.getBestFitness()).doubleValue(), 0.99577149482586247, 0.00000001);
-			Assert.assertEquals(((Float64)s.getWorstFitness()).doubleValue(), 0.2861803193531154, 0.00000001);
+			Assert.assertEquals(((Float64)s.getBestFitness()).doubleValue(), 0.9807764890123456, 0.00000001);
+			Assert.assertEquals(((Float64)s.getWorstFitness()).doubleValue(), 0.9807764890123456, 0.00000001);
 		} finally {
 			ConcurrentContext.setConcurrency(concurrency);
 			LocalContext.exit();
