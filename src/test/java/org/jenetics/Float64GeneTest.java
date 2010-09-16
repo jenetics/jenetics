@@ -33,6 +33,7 @@ import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 import junit.framework.Assert;
 
+import org.jenetics.Distribution.Uniform;
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -79,14 +80,15 @@ public class Float64GeneTest {
 			 * @see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm
 			 */
 			
-			// (min + max)/d
-			final Float64 m = min.plus(max).divide(2);
-			// ((max - min)^2)/12
-			final Float64 v = max.minus(min).pow(2).divide(12);
-			
 			Assert.assertEquals(variance.getSamples(), 2*samples);
-			Assert.assertEquals(m.doubleValue(), variance.getMean(), 3);
-			Assert.assertEquals(v.doubleValue(), variance.getVariance(), 10);
+			Assert.assertEquals(
+					variance.getMean(), 
+					Uniform.mean(min.doubleValue(), max.doubleValue()), 3
+				);
+			Assert.assertEquals(
+					variance.getVariance(), 
+					Uniform.variance(min.doubleValue(), max.doubleValue()), 10
+				);
 		} finally {
 			LocalContext.exit();
 		}

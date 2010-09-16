@@ -26,9 +26,14 @@ import static org.jenetics.util.Accumulators.accumulate;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.Random;
 
+import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.Distribution.Uniform;
+import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -42,24 +47,35 @@ public class Float64ChromosomeTest {
 
     @Test
     public void newInstance() {
-    	final Float64Chromosome ch1 = new Float64Chromosome(
-    			Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5)
-    		);
-    	final Float64Chromosome ch2 = ch1.newInstance();
-    	
-    	Assert.assertEquals(ch2.length(), ch1.length());
-    	Assert.assertTrue(ch2.getGene(0).doubleValue() < 0.5 && ch2.getGene(0).doubleValue() > -0.5);
-    	Assert.assertTrue(ch2.getGene(1).doubleValue() < 0.5 && ch2.getGene(1).doubleValue() > -0.5);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(new Random());
+			
+			final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 1000);
+			
+			final MinMax<Float64> mm = new MinMax<Float64>();
+			accumulate(chromosome, mm.adapt(Float64Gene.VALUE));
+			
+			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
+			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
+			
+			final Variance<Float64> variance = new Variance<Float64>();
+			accumulate(chromosome, variance.adapt(Float64Gene.VALUE));
+			
+			Assert.assertEquals(
+					variance.getMean(), 
+					Uniform.mean(0, 100), 
+					2*variance.getStandardError()
+				);
+			Assert.assertEquals(
+					variance.getVariance(), 
+					Uniform.variance(0, 100), 
+					30
+				);
+		} finally {
+			LocalContext.exit();
+		}
     }
-	
-	@Test
-	public void newInstance2() {
-		final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 1000);
-		final Variance<Float64> variance = new Variance<Float64>();
-				
-		accumulate(chromosome, variance.adapt(Float64Gene.VALUE));
-		
-	}
 
     @Test
     public void testCreate() {
