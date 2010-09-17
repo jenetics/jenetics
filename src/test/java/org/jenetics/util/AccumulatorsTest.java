@@ -69,18 +69,20 @@ public class AccumulatorsTest {
 	@Test
 	public void histogramIndex() {
 		final Random random = new Random();
-		final double[] parts = new double[10000];
+		double[] parts = new double[10000];
 		for (int i = 0; i < parts.length; ++i) {
 			parts[i] = i;
 		}
-		final Histogram<Double> histogram = Histogram.valueOfDouble(parts);
+		Histogram<Double> histogram = Histogram.valueOfDouble(parts);
+		Double[] classes = histogram.getClasses();
 		
 		for (int i = 0; i < 1000; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
-			Assert.assertEquals(histogram.index(value), histogram.linearindex(value));
+			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
 		}
 		
 		
+		// Performance tests.
 //		final int runs = 10000000;
 //		long start = System.nanoTime();
 //		for (int i = 0; i < runs; ++i) {
@@ -88,15 +90,55 @@ public class AccumulatorsTest {
 //			histogram.index(value);
 //		}
 //		long end = System.nanoTime();
-//		System.out.println("Index time: " + (end - start)/1000000000.0);
+//		System.out.println("Index Time: " + (end - start)/1000000000.0);
 //		
 //		start = System.nanoTime();
 //		for (int i = 0; i < runs; ++i) {
 //			final Double value = random.nextDouble()*(parts.length + 1);
-//			histogram.bindex(value);
+//			linearindex(classes, value);
 //		}
 //		end = System.nanoTime();
-//		System.out.println("BIndex time: " + (end - start)/1000000000.0);
+//		System.out.println("Linear Index Time: " + (end - start)/1000000000.0);
+		
+		parts = new double[]{1};
+		histogram = Histogram.valueOfDouble(parts);
+		classes = histogram.getClasses();
+		for (int i = 0; i < 10; ++i) {
+			final Double value = random.nextDouble()*(parts.length + 1);
+			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
+		}
+		
+		parts = new double[]{1, 2};
+		histogram = Histogram.valueOfDouble(parts);
+		classes = histogram.getClasses();
+		for (int i = 0; i < 10; ++i) {
+			final Double value = random.nextDouble()*(parts.length + 1);
+			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
+		}
+		
+		parts = new double[]{1, 2, 3};
+		histogram = Histogram.valueOfDouble(parts); 
+		classes = histogram.getClasses();
+		for (int i = 0; i < 10; ++i) {
+			final Double value = random.nextDouble()*(parts.length + 1);
+			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
+		}
+	}
+	
+	// The 'brute force' variante to test the binsearch one.
+	private static <C extends Comparable<C>> int linearindex(final C[] classes, final C value) {
+		int index = classes.length;
+		for (int i = 0; i < classes.length && index == classes.length; ++i) {
+			if (value.compareTo(classes[i]) < 0) {
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void histogramEmptyClasses() {
+		Histogram.valueOfDouble(new double[0]);
 	}
 	
 	@Test
