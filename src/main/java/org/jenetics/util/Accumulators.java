@@ -618,7 +618,7 @@ public final class Accumulators {
 		 * @param value the value to search.
 		 * @return the histogram index.
 		 */
-		int index(final C value) {
+		int index(final C value) { 
 			int low = 0;
 			int high = _classes.length - 1;
 			
@@ -639,22 +639,6 @@ public final class Accumulators {
 			}
 			
 			return -1; 
-		}
-		
-		/**
-		 * Do linear search for the index to use.
-		 * 
-		 * @param value
-		 * @return
-		 */
-		int linearindex(final C value) {
-			int index = _classes.length;
-			for (int i = 0; i < _classes.length && index == _classes.length; ++i) {
-				if (value.compareTo(_classes[i]) < 0) {
-					index = i;
-				}
-			}
-			return index;
 		}
 		
 		public long getSamples() {
