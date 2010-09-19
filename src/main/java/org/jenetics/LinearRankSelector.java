@@ -50,7 +50,10 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class LinearRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
+public final class LinearRankSelector<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	extends ProbabilitySelector<G, C>
 {
 	private final double _nminus;

@@ -40,7 +40,10 @@ import java.io.Serializable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface FitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
+public interface FitnessFunction<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	extends Serializable 
 {
 

@@ -42,7 +42,10 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class TournamentSelector<G extends Gene<?, G>, C extends Comparable<C>> 
+public class TournamentSelector<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	implements Selector<G, C>
 {
 	

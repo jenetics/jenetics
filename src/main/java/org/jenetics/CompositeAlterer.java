@@ -35,7 +35,9 @@ import org.jenetics.util.Predicate;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
+public final class CompositeAlterer<G extends Gene<?, G>> 
+	extends AbstractAlterer<G> 
+{
 
 	private final Array<Alterer<G>> _alterers;
 	
@@ -144,7 +146,7 @@ public final class CompositeAlterer<G extends Gene<?, G>> extends AbstractAltere
 	}
 
 	@Override
-	public <C extends Comparable<C>> void alter(
+	public <C extends Comparable<? super C>> void alter(
 		final Population<G, C> population, 
 		final int generation
 	) {

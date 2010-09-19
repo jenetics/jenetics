@@ -100,7 +100,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	public <C extends Comparable<C>> void alter(
+	public <C extends Comparable<? super C>> void alter(
 		final Population<G, C> population, final int generation
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";

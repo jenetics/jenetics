@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,37 +17,34 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
-package org.jenetics;
-
-import java.io.Serializable;
-
+package org.jenetics.util;
 
 /**
- * Interface for scaling the 'raw' fitness of a given chromosome. 
- * 
- * @param <C> the result type of the fitness function to scale. The scaled value
- * 			  must (of course) of the same type.
- * @see FitnessFunction
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface FitnessScaler<C extends Comparable<? super C>> 
-	extends Serializable 
-{
+public abstract class AbstractAccumulator<T> implements Accumulator<T> {
+
+	protected long _samples = 0;
+	
+	protected AbstractAccumulator() {
+	}
 	
 	/**
-	 * Return the scaled fitness value. The returned value <em>must</em> not be 
-	 * {@code null}.
+	 * Return the number of samples accumulated so far.
 	 * 
-	 * @param value the fitness value to scale.
-	 * @return The scaled fitness value. The returned value <em>must</em> not be 
-	 * 		 {@code null}.
-	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 * @return the number of samples accumulated so far.
 	 */
-	public C scale(final C value);
+	public long getSamples() {
+		return _samples;
+	}
+	
+	@Override
+	public void accumulate(final T value) {
+		++_samples;
+	}
 	
 }

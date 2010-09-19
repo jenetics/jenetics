@@ -51,20 +51,10 @@ public final class Accumulators {
 	 * @version $Id$
 	 */
 	public static class Mean<N extends Number> extends AdaptableAccumulator<N> {
-		
-		protected long _samples = 0;
+
 		protected double _mean = Double.NaN;
 		
 		public Mean() {
-		}
-		
-		/**
-		 * Return the number of samples accumulated so far.
-		 * 
-		 * @return the number of samples accumulated so far.
-		 */
-		public long getSamples() {
-			return _samples ;
 		}
 		
 		/**
@@ -200,9 +190,7 @@ public final class Accumulators {
 	 * @version $Id$
 	 */
 	public static class Quantile<N extends Number> extends AdaptableAccumulator<N> {
-		
-		private long _samples = 0;
-		
+				
 		// The desired quantile.
 		private double _quantile;
 		
@@ -242,10 +230,6 @@ public final class Accumulators {
 
 		public double getQuantile() {
 			return _q[2];
-		}
-		
-		public long getSamples() {
-			return _samples;
 		}
 
 		@Override
@@ -414,15 +398,12 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Min<C extends Comparable<C>> extends AdaptableAccumulator<C> {
-		private long _samples = 0;
+	public static class Min<C extends Comparable<? super C>> 
+		extends AdaptableAccumulator<C> 
+	{
 		private C _min;
 		
 		public Min() {
-		}
-		
-		public long getSamples() {
-			return _samples;
 		}
 		
 		public C getMin() {
@@ -461,15 +442,12 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Max<C extends Comparable<C>> extends AdaptableAccumulator<C> {
-		private long _samples = 0;
+	public static class Max<C extends Comparable<? super C>> 
+		extends AdaptableAccumulator<C> 
+	{
 		private C _max;
 		
 		public Max() {
-		}
-		
-		public long getSamples() {
-			return _samples;
 		}
 		
 		public C getMax() {
@@ -508,16 +486,13 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class MinMax<C extends Comparable<C>> extends AdaptableAccumulator<C> {
-		private long _samples = 0;
+	public static class MinMax<C extends Comparable<? super C>> 
+		extends AdaptableAccumulator<C> 
+	{
 		private C _min;
 		private C _max;
 		
 		public MinMax() {
-		}
-		
-		public long getSamples() {
-			return _samples;
 		}
 		
 		public C getMin() {
@@ -578,10 +553,9 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Histogram<C extends Comparable<C>> 
+	public static class Histogram<C extends Comparable<? super C>> 
 		extends AdaptableAccumulator<C> 
 	{
-		private long _samples = 0;
 		private final C[] _classes;
 		private final long[] _histogram;
 		
@@ -594,16 +568,20 @@ public final class Accumulators {
 		 * @throws IllegalArgumentException if the given classes array is empty.
 		 */
 		public Histogram(final C... classes) {
+			_classes = check(classes);
+			_histogram = new long[classes.length + 1];
+			
+			Arrays.sort(_classes);
+			Arrays.fill(_histogram, 0L);
+		}
+		
+		private C[] check(final C... classes) {
 			ArrayUtils.foreach(classes, new NonNull());
 			if (classes.length == 0) {
 				throw new IllegalArgumentException("Given classes array is empty.");
 			}
 			
-			_classes = classes.clone();
-			_histogram = new long[classes.length + 1];
-			
-			Arrays.sort(_classes);
-			Arrays.fill(_histogram, 0L);
+			return classes;
 		}
 		
 		@Override
@@ -625,24 +603,20 @@ public final class Accumulators {
 			while (low <= high) {
 				if (value.compareTo(_classes[low]) < 0) {
 					return low;
-				} else if (value.compareTo(_classes[high]) >= 0) {
+				} 
+				if (value.compareTo(_classes[high]) >= 0) {
 					return high + 1;
-				} else {
-					final int mid = (low + high) >>> 1;
-	
-					if (value.compareTo(_classes[mid]) < 0) {
-						high = mid;
-					} else if (value.compareTo(_classes[mid]) >= 0) {
-						low = mid + 1;
-					}
+				} 
+				
+				final int mid = (low + high) >>> 1;
+				if (value.compareTo(_classes[mid]) < 0) {
+					high = mid;
+				} else if (value.compareTo(_classes[mid]) >= 0) {
+					low = mid + 1;
 				}
 			}
 			
 			return -1; 
-		}
-		
-		public long getSamples() {
-			return _samples;
 		}
 		
 		/**
@@ -709,7 +683,9 @@ public final class Accumulators {
 		 * @throws NullPointerException if the given classes are {@code null}.
 		 * @throws IllegalArgumentException if the classes array is empty.
 		 */
-		public static Histogram<Float64> valueOfFloat64(final double... classes) {
+		public static Histogram<Float64> ofFloat64(
+			final double... classes
+		) {
 			final Float64[] cls = new Float64[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
 				cls[i] = Float64.valueOf(classes[i]);
@@ -725,7 +701,9 @@ public final class Accumulators {
 		 * @throws NullPointerException if the given classes are {@code null}.
 		 * @throws IllegalArgumentException if the classes array is empty.
 		 */
-		public static Histogram<Double> valueOfDouble(final double... classes) {
+		public static Histogram<Double> ofDouble(
+			final double... classes
+		) {
 			final Double[] cls = new Double[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
 				cls[i] = Double.valueOf(classes[i]);
@@ -741,12 +719,38 @@ public final class Accumulators {
 		 * @throws NullPointerException if the given classes are {@code null}.
 		 * @throws IllegalArgumentException if the classes array is empty.
 		 */
-		public static Histogram<Integer64> valueOfInteger64(final long... classes) {
+		public static Histogram<Integer64> ofInteger64(
+			final long... classes
+		) {
 			final Integer64[] cls = new Integer64[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
 				cls[i] = Integer64.valueOf(classes[i]);
 			}
 			return new Histogram<Integer64>(cls);
+		}
+		
+		public static Histogram<Integer64> ofInteger64Range(
+				final long start, 
+				final long stride, 
+				final int nclasses
+		) {
+			if (stride <= 0) {
+				throw new IllegalArgumentException(String.format(
+						"stride must be greater than zero, but was %d.", stride
+					));
+			}
+			if (nclasses <= 0) {
+				throw new IllegalArgumentException(String.format(
+						"nclasses must be greater than zero, but was %d.", stride
+					));
+			}
+			
+			final Integer64[] classes = new Integer64[nclasses];
+			for (int i = 0; i < nclasses; ++i) {
+				classes[i] = Integer64.valueOf(start + stride*i);
+			}
+			
+			return new Histogram<Integer64>(classes);
 		}
 		
 		/**
@@ -757,7 +761,7 @@ public final class Accumulators {
 		 * @throws NullPointerException if the given classes are {@code null}.
 		 * @throws IllegalArgumentException if the classes array is empty.
 		 */
-		public static Histogram<Long> valueOfLong(final long... classes) {
+		public static Histogram<Long> ofLong(final long... classes) {
 			final Long[] cls = new Long[classes.length];
 			for (int i = 0; i < classes.length; ++i) {
 				cls[i] = Long.valueOf(classes[i]);
@@ -765,6 +769,29 @@ public final class Accumulators {
 			return new Histogram<Long>(cls);
 		}
 		
+		public static Histogram<Long> ofLongRange(
+			final long start, 
+			final long stride, 
+			final int nclasses
+		) {
+			if (stride <= 0) {
+				throw new IllegalArgumentException(String.format(
+						"stride must be greater than zero, but was %d.", stride
+					));
+			}
+			if (nclasses <= 0) {
+				throw new IllegalArgumentException(String.format(
+						"nclasses must be greater than zero, but was %d.", stride
+					));
+			}
+			
+			final Long[] classes = new Long[nclasses];
+			for (int i = 0; i < nclasses; ++i) {
+				classes[i] = Long.valueOf(start + stride*i);
+			}
+			
+			return new Histogram<Long>(classes);
+		}
 	}
 	
 	

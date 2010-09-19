@@ -41,7 +41,10 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class StochasticUniversalSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
+public class StochasticUniversalSelector<
+	G extends Gene<?, G>, 
+	N extends Number & Comparable<? super N>
+> 
 	extends RouletteWheelSelector<G, N> 
 {
 

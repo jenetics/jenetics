@@ -54,7 +54,7 @@ import org.jscience.mathematics.number.Float64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Statistics<G extends Gene<?, G>, C extends Comparable<C>> 
+public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> 
 	implements Immutable, XMLSerializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -498,7 +498,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Calculator<G extends Gene<?, G>, C extends Comparable<C>> {
+	public static class Calculator<
+		G extends Gene<?, G>, 
+		C extends Comparable<? super C>
+	>
+	{
 		
 		/**
 		 * Create a new calculator object.

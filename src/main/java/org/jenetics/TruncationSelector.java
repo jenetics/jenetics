@@ -35,7 +35,10 @@ import static org.jenetics.util.Validator.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class TruncationSelector<G extends Gene<?, G>, C extends Comparable<C>>
+public final class TruncationSelector<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+>
 	implements Selector<G, C>
 {
 
