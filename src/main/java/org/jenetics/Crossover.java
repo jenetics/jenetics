@@ -50,7 +50,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 	}
 	
 	@Override
-	protected final <C extends Comparable<C>> void recombinate(
+	protected final <C extends Comparable<? super C>> void recombinate(
 		final Population<G, C> population, 
 		final int first, final int second, final int generation
 	) {

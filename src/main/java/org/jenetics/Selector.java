@@ -28,7 +28,11 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface Selector<G extends Gene<?, G>, C extends Comparable<C>> {
+public interface Selector<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
+{
 
 	/**
 	 * Select phenotypes from the Population.

@@ -41,8 +41,10 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class ProbabilitySelector<G extends Gene<?, G>, C 
-	extends Comparable<C>> 
+public abstract class ProbabilitySelector<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	implements Selector<G, C> 
 {	
 	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 10);

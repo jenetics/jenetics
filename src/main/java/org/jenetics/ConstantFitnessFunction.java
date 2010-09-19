@@ -32,7 +32,10 @@ import static org.jenetics.util.Validator.nonNull;
  *
  * @param <G> the gene type.
  */
-public final class ConstantFitnessFunction<G extends Gene<?, G>, C extends Comparable<C>> 
+public final class ConstantFitnessFunction<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	implements FitnessFunction<G, C> 
 {
 	private static final long serialVersionUID = 1L;

@@ -30,7 +30,9 @@ import static org.jenetics.util.Validator.checkProbability;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class AbstractAlterer<G extends Gene<?, G>> implements Alterer<G> {
+public abstract class AbstractAlterer<G extends Gene<?, G>> 
+	implements Alterer<G> 
+{
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 	
 	/**

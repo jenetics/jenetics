@@ -99,7 +99,11 @@ import org.jenetics.util.Validator;
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).
  */
-public class GeneticAlgorithm<G extends Gene<?, G>, C extends Comparable<C>> {
+public class GeneticAlgorithm<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
+{
 	
 	/**
 	 * The default population size used by this GA.

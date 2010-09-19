@@ -60,7 +60,7 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * @throws NullPointerException if the given {@code population} is 
 	 * 		  {@code null}.
 	 */
-	public <C extends Comparable<C>> void alter(
+	public <C extends Comparable<? super C>> void alter(
 			final Population<G, C> population, 
 			final int generation
 		);

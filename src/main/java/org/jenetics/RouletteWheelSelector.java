@@ -36,7 +36,10 @@ import org.jenetics.util.ArrayUtils;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class RouletteWheelSelector<G extends Gene<?, G>, N extends Number & Comparable<N>> 
+public class RouletteWheelSelector<
+	G extends Gene<?, G>, 
+	N extends Number & Comparable<? super N>
+> 
 	extends ProbabilitySelector<G, N>
 {
 	

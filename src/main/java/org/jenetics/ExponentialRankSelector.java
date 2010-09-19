@@ -45,7 +45,10 @@ import static java.lang.Math.pow;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ExponentialRankSelector<G extends Gene<?, G>, C extends Comparable<C>> 
+public class ExponentialRankSelector<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	extends ProbabilitySelector<G, C>
 {
 	

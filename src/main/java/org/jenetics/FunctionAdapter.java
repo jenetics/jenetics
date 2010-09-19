@@ -34,7 +34,10 @@ import org.jscience.mathematics.function.Function;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class FunctionAdapter<G extends Gene<?, G>, C extends Comparable<C>> 
+public final class FunctionAdapter<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	implements FitnessFunction<G, C> 
 {
 	private static final long serialVersionUID = 1L;

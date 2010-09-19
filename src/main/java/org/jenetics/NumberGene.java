@@ -40,8 +40,14 @@ import org.jscience.mathematics.number.Number;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class NumberGene<N extends Number<N>, G extends NumberGene<N, G>> 
-	extends Number<G> implements Gene<N, G>, Mean<G>, XMLSerializable
+public abstract class NumberGene<
+	N extends Number<N>, 
+	G extends NumberGene<N, G>
+> 
+	extends Number<G> 
+	implements Gene<N, G>, 
+				Mean<G>, 
+				XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 

@@ -26,7 +26,9 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class IdentityScaler<C extends Comparable<C>> implements FitnessScaler<C> {
+public final class IdentityScaler<C extends Comparable<? super C>> 
+	implements FitnessScaler<C> 
+{
 	private static final long serialVersionUID = 1L;
 
 	
@@ -43,7 +45,7 @@ public final class IdentityScaler<C extends Comparable<C>> implements FitnessSca
 		return value;
 	}
 
-	public static <SC extends Comparable<SC>> IdentityScaler<SC> valueOf() {
+	public static <SC extends Comparable<? super SC>> IdentityScaler<SC> valueOf() {
 		return new IdentityScaler<SC>();
 	}
 	

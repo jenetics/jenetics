@@ -65,7 +65,7 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * {@link Evaluator} provides more than one parallel tasks.
 	 */
 	@Override
-	public final <C extends Comparable<C>> void alter(
+	public final <C extends Comparable<? super C>> void alter(
 		final Population<G, C> population, final int generation
 	) {
 		final int subsetSize = (int)Math.ceil(population.size()*_probability);
@@ -107,7 +107,7 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * @param second the target index array.
 	 * @param generation the current generation.
 	 */
-	protected abstract <C extends Comparable<C>> void recombinate(
+	protected abstract <C extends Comparable<? super C>> void recombinate(
 			Population<G, C> population, int first, int second, int generation
 		);
 	

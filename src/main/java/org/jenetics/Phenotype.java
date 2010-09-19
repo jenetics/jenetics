@@ -23,12 +23,6 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
-
-import java.io.Serializable;
-
-import org.jenetics.util.Converter;
-import org.jenetics.util.Verifiable;
-
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -36,6 +30,9 @@ import javolution.text.Text;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.util.Converter;
+import org.jenetics.util.Verifiable;
 
 
 /**
@@ -52,9 +49,13 @@ import javolution.xml.stream.XMLStreamException;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>> 
-	implements Comparable<Phenotype<G, C>>, Immutable, Verifiable, 
-				XMLSerializable, Serializable, Realtime, Runnable
+public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>> 
+	implements Comparable<Phenotype<G, C>>, 
+				Immutable, 
+				Verifiable, 
+				XMLSerializable, 
+				Realtime, 
+				Runnable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -266,7 +267,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @param currentGeneration the current generation.
 	 * @return an age {@link Converter}.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
 	Converter<Phenotype<SG, SC>, Integer> age(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
@@ -284,7 +285,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @param <SC> the fitness value type.
 	 * @return a generation {@link Converter}.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
 	Converter<Phenotype<SG, SC>, Integer> generation() 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
@@ -302,7 +303,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @param <SC> the fitness value type.
 	 * @return a fitness {@link Converter}.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
 	Converter<Phenotype<SG, SC>, SC> fitness() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
@@ -320,7 +321,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @param <SC> the fitness value type.
 	 * @return a raw fitness {@link Converter}.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
 	Converter<Phenotype<SG, SC>, SC> rawFitnees() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
@@ -338,7 +339,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @param <SC> the fitness value type.
 	 * @return a genotype {@link Converter}.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
 	Converter<Phenotype<SG, SC>, Genotype<SG>> genotype() 
 	{
 		return new Converter<Phenotype<SG, SC>, Genotype<SG>>() {
@@ -358,7 +359,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
 		final FitnessFunction<SG, SC> fitnessFunction,
@@ -378,7 +379,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<C>>
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
 		final FitnessFunction<SG, SC> fitnessFunction, 
