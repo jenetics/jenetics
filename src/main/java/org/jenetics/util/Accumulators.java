@@ -616,13 +616,14 @@ public final class Accumulators {
 				}
 			}
 			
+			assert (false): "This line will be never reached.";
 			return -1; 
 		}
 		
 		/**
-		 * Return a copy of the class separators.
+		 * Return a copy of the class borders.
 		 * 
-		 * @return the class separators.
+		 * @return the class borders.
 		 */
 		public C[] getClasses() {
 			return _classes.clone();
