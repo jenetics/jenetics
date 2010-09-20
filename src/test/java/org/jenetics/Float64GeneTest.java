@@ -33,8 +33,8 @@ import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 import junit.framework.Assert;
 
-import org.jenetics.Distribution.Uniform;
-import org.jenetics.util.Accumulators;
+import org.jenetics.util.Accumulators.Histogram;
+import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
@@ -46,7 +46,7 @@ import org.testng.annotations.Test;
  */
 public class Float64GeneTest { 
     
-	@Test(invocationCount = 10)
+	@Test(invocationCount = 1)
 	public void newInstance() {
 		LocalContext.enter();
 		try {
@@ -56,7 +56,9 @@ public class Float64GeneTest {
 			final Float64 max = Float64.valueOf(100);
 			final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
 			
-			final Accumulators.Variance<Float64> variance = new Accumulators.Variance<Float64>();
+			final Variance<Float64> variance = new Variance<Float64>();
+			 
+			final Histogram<Float64> histogram = Histogram.valueOf(0, 100, 10);
 			
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
@@ -72,23 +74,33 @@ public class Float64GeneTest {
 				
 				variance.accumulate(g1.getAllele());
 				variance.accumulate(g2.getAllele());
+				histogram.accumulate(g1.getAllele());
+				histogram.accumulate(g2.getAllele());
 			}
 			
+//			System.out.println(histogram.χ2(Distribution.Uniform.cdf(min, max)));
+//			System.out.println(Arrays.toString(histogram.expection(Distribution.Uniform.cdf(min, max))));
+//			System.out.println(Arrays.toString(histogram.getHistogram()));
+			
+			// Chi-Square teset for gene distribution.
+			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
+			final double χ2 = histogram.χ2(Distribution.Uniform.cdf(min, max));
+			Assert.assertTrue(χ2 < 25); // 
 			
 			/*
 			 * Test some statistic properties of the generated genes.
 			 * @see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm
 			 */
 			
-			Assert.assertEquals(variance.getSamples(), 2*samples);
-			Assert.assertEquals(
-					variance.getMean(), 
-					Uniform.mean(min.doubleValue(), max.doubleValue()), 3
-				);
-			Assert.assertEquals(
-					variance.getVariance(), 
-					Uniform.variance(min.doubleValue(), max.doubleValue()), 10
-				);
+//			Assert.assertEquals(variance.getSamples(), 2*samples);
+//			Assert.assertEquals(
+//					variance.getMean(), 
+//					Uniform.mean(min.doubleValue(), max.doubleValue()), 3
+//				);
+//			Assert.assertEquals(
+//					variance.getVariance(), 
+//					Uniform.variance(min.doubleValue(), max.doubleValue()), 10
+//				);
 		} finally {
 			LocalContext.exit();
 		}
