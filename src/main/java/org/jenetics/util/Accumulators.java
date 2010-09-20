@@ -27,6 +27,8 @@ import java.util.Arrays;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Validator.NonNull;
+import org.jscience.mathematics.function.Function;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -675,6 +677,56 @@ public final class Accumulators {
 		}
 		
 		/**
+		 * @see #χ2(Function)
+		 */
+		public double chiSquare(final Function<C, Float64> cdf) {
+			return χ2(cdf);
+		}
+		
+		/**
+		 * Calculate the Chi-Square value of the current histogram for the
+		 * assumed <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">
+		 * Culmulative density function</a> {@code pdf}.
+		 * 
+		 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_test">χ2-test</a>
+		 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_distribution">χ2-distribution</a>
+		 * 
+		 * @param cdf the assumed Probability density function-
+		 * @return the Chi-Square value of the current histogram.
+		 * @throws NullPointerException if {@code cdf} is {@code null}.
+		 */
+		public double χ2(final Function<C, Float64> cdf) {
+			double χ2 = 0;
+			for (int j = 0; j < _histogram.length; ++j) {
+				final long n0j = n0(j, cdf);
+				χ2 += (double)((_histogram[j] - n0j)*(_histogram[j] - n0j))/(double)n0j;
+			}
+			return χ2; 
+		}
+		
+		public long[] expection(final Function<C, Float64> cdf) {
+			final long[] e = new long[_histogram.length];
+			
+			for (int j = 0; j < _histogram.length; ++j) {
+				e[j] = n0(j, cdf);
+			}
+			return e;
+		}
+		
+		private long n0(final int j, final Function<C, Float64> cdf) {
+			Float64 p0j = Float64.ZERO;
+			if (j == 0) {
+				p0j = cdf.evaluate(_classes[0]);
+			} else if (j == _histogram.length - 1) {
+				p0j = Float64.ONE.minus(cdf.evaluate(_classes[_classes.length - 1]));
+			} else {
+				p0j = cdf.evaluate(_classes[j]).minus(cdf.evaluate(_classes[j - 1]));
+			}
+			
+			return Math.max(Math.round(p0j.doubleValue()*_samples), 1L);
+		}
+		
+		/**
 		 * Create a new Histogram with the given class separators.
 		 * 
 		 * @param classes the class separators.
@@ -685,6 +737,13 @@ public final class Accumulators {
 		public static <C extends Comparable<? super C>> 
 		Histogram<C> valueOf(final C... classes) {
 			return new Histogram<C>(classes);
+		}
+		
+		public static 
+		Histogram<Float64> valueOf(final double min, final double max, final int size) {
+			final double stride = (max - min)/size;
+			final Float64[] classes = ArrayUtils.toFloat64Array(min + stride, stride, size - 1);
+			return new Histogram<Float64>(classes);
 		}
 		
 	}
