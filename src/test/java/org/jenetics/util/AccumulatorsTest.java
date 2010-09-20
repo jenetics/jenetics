@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ArrayUtils.toDouble;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,7 +76,7 @@ public class AccumulatorsTest {
 			parts[i] = i;
 		}
 		
-		Histogram<Double> histogram = Histogram.ofDouble(parts);
+		Histogram<Double> histogram = Histogram.valueOf(toDouble(parts));
 		Double[] classes = histogram.getClasses();
 		for (int i = 0; i < 1000; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -101,7 +103,7 @@ public class AccumulatorsTest {
 //		System.out.println("Linear Index Time: " + (end - start)/1000000000.0);
 		
 		parts = new double[]{1};
-		histogram = Histogram.ofDouble(parts);
+		histogram = Histogram.valueOf(toDouble(parts));
 		classes = histogram.getClasses();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -109,7 +111,7 @@ public class AccumulatorsTest {
 		}
 		
 		parts = new double[]{1, 2};
-		histogram = Histogram.ofDouble(parts);
+		histogram = Histogram.valueOf(toDouble(parts));
 		classes = histogram.getClasses();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -117,7 +119,7 @@ public class AccumulatorsTest {
 		}
 		
 		parts = new double[]{1, 2, 3};
-		histogram = Histogram.ofDouble(parts); 
+		histogram = Histogram.valueOf(toDouble(parts));
 		classes = histogram.getClasses();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -138,13 +140,13 @@ public class AccumulatorsTest {
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.ofDouble(new double[0]);
+		Histogram.valueOf(toDouble());
 	}
 	
 	@Test
 	public void histogram() {
 		final Random random = new Random();
-		final Histogram<Double> histogram = Histogram.ofDouble(1, 2, 3, 4, 5);
+		final Histogram<Double> histogram = Histogram.valueOf(toDouble(1, 2, 3, 4, 5));
 		
 		for (int i = 0; i < 600000; ++i) {
 			histogram.accumulate(random.nextDouble()*6);
