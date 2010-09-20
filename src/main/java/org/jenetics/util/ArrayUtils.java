@@ -1352,6 +1352,14 @@ public final class ArrayUtils {
 		return index;
 	}
 	
+	public static Double[] toDoubleArray(final double... values) {
+		final Double[] result = new Double[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = Double.valueOf(values[i]);
+		}
+		return result;
+	}
+	
 	/**
 	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
 	 * Kahan summation algorithm</a>.
