@@ -23,12 +23,10 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
-import org.jenetics.util.Validator.NonNull;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 import javolution.context.ConcurrentContext;
+
+import org.jenetics.util.Validator.NonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -677,122 +675,18 @@ public final class Accumulators {
 		}
 		
 		/**
-		 * Create a new Histogram with the given double class separators.
+		 * Create a new Histogram with the given class separators.
 		 * 
 		 * @param classes the class separators.
-		 * @return a new Float64 Histogram.
+		 * @return a new Histogram.
 		 * @throws NullPointerException if the given classes are {@code null}.
 		 * @throws IllegalArgumentException if the classes array is empty.
 		 */
-		public static Histogram<Float64> ofFloat64(
-			final double... classes
-		) {
-			final Float64[] cls = new Float64[classes.length];
-			for (int i = 0; i < classes.length; ++i) {
-				cls[i] = Float64.valueOf(classes[i]);
-			}
-			return new Histogram<Float64>(cls);
+		public static <C extends Comparable<? super C>> 
+		Histogram<C> valueOf(final C... classes) {
+			return new Histogram<C>(classes);
 		}
 		
-		/**
-		 * Create a new Histogram with the given double class separators.
-		 * 
-		 * @param classes the class separators.
-		 * @return a new Double Histogram.
-		 * @throws NullPointerException if the given classes are {@code null}.
-		 * @throws IllegalArgumentException if the classes array is empty.
-		 */
-		public static Histogram<Double> ofDouble(
-			final double... classes
-		) {
-			final Double[] cls = new Double[classes.length];
-			for (int i = 0; i < classes.length; ++i) {
-				cls[i] = Double.valueOf(classes[i]);
-			}
-			return new Histogram<Double>(cls);
-		}
-		
-		/**
-		 * Create a new Histogram with the given double class separators.
-		 * 
-		 * @param classes the class separators.
-		 * @return a new Integer64 Histogram.
-		 * @throws NullPointerException if the given classes are {@code null}.
-		 * @throws IllegalArgumentException if the classes array is empty.
-		 */
-		public static Histogram<Integer64> ofInteger64(
-			final long... classes
-		) {
-			final Integer64[] cls = new Integer64[classes.length];
-			for (int i = 0; i < classes.length; ++i) {
-				cls[i] = Integer64.valueOf(classes[i]);
-			}
-			return new Histogram<Integer64>(cls);
-		}
-		
-		public static Histogram<Integer64> ofInteger64Range(
-				final long start, 
-				final long stride, 
-				final int nclasses
-		) {
-			if (stride <= 0) {
-				throw new IllegalArgumentException(String.format(
-						"stride must be greater than zero, but was %d.", stride
-					));
-			}
-			if (nclasses <= 0) {
-				throw new IllegalArgumentException(String.format(
-						"nclasses must be greater than zero, but was %d.", stride
-					));
-			}
-			
-			final Integer64[] classes = new Integer64[nclasses];
-			for (int i = 0; i < nclasses; ++i) {
-				classes[i] = Integer64.valueOf(start + stride*i);
-			}
-			
-			return new Histogram<Integer64>(classes);
-		}
-		
-		/**
-		 * Create a new Histogram with the given double class separators.
-		 * 
-		 * @param classes the class separators.
-		 * @return a new Long Histogram.
-		 * @throws NullPointerException if the given classes are {@code null}.
-		 * @throws IllegalArgumentException if the classes array is empty.
-		 */
-		public static Histogram<Long> ofLong(final long... classes) {
-			final Long[] cls = new Long[classes.length];
-			for (int i = 0; i < classes.length; ++i) {
-				cls[i] = Long.valueOf(classes[i]);
-			}
-			return new Histogram<Long>(cls);
-		}
-		
-		public static Histogram<Long> ofLongRange(
-			final long start, 
-			final long stride, 
-			final int nclasses
-		) {
-			if (stride <= 0) {
-				throw new IllegalArgumentException(String.format(
-						"stride must be greater than zero, but was %d.", stride
-					));
-			}
-			if (nclasses <= 0) {
-				throw new IllegalArgumentException(String.format(
-						"nclasses must be greater than zero, but was %d.", stride
-					));
-			}
-			
-			final Long[] classes = new Long[nclasses];
-			for (int i = 0; i < nclasses; ++i) {
-				classes[i] = Long.valueOf(start + stride*i);
-			}
-			
-			return new Histogram<Long>(classes);
-		}
 	}
 	
 	

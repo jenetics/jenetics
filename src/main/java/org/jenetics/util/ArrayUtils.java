@@ -31,6 +31,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
+
 
 /**
  * Utility class concerning arrays.
@@ -1352,12 +1355,182 @@ public final class ArrayUtils {
 		return index;
 	}
 	
-	public static Double[] toDoubleArray(final double... values) {
+	/**
+	 * Convert the given primitive array to a {@link Double} object array.
+	 * 
+	 * @param values the values to convert.
+	 * @return a {@link Double} object array.
+	 * @throws NullPointerException if the given {@code values} array is 
+	 *         {@code null}.
+	 */
+	public static Double[] toDouble(final double... values) {
 		final Double[] result = new Double[values.length];
 		for (int i = 0; i < result.length; ++i) {
 			result[i] = Double.valueOf(values[i]);
 		}
 		return result;
+	}
+	
+	
+	/**
+	 * Convert the given primitive array to a {@link Float64} object array.
+	 * 
+	 * @param values the values to convert.
+	 * @return a {@link Float64} object array.
+	 * @throws NullPointerException if the given {@code values} array is 
+	 *         {@code null}.
+	 */
+	public static Float64[] toFloat64(final double... values) {
+		final Float64[] result = new Float64[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = Float64.valueOf(values[i]);
+		}
+		return result;
+	}
+	
+	/**
+	 * Convert the given primitive array to a {@link Long} object array.
+	 * 
+	 * @param values the values to convert.
+	 * @return a {@link Long} object array.
+	 * @throws NullPointerException if the given {@code values} array is 
+	 *         {@code null}.
+	 */
+	public static Long[] toLong(final long... values) {
+		final Long[] result = new Long[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = Long.valueOf(values[i]);
+		}
+		return result;
+	}
+	
+	/**
+	 * Convert the given primitive array to a {@link Integer64} object array.
+	 * 
+	 * @param values the values to convert.
+	 * @return a {@link Integer64} object array.
+	 * @throws NullPointerException if the given {@code values} array is 
+	 *         {@code null}.
+	 */
+	public static Integer64[] toInteger64(final long... values) {
+		final Integer64[] result = new Integer64[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = Integer64.valueOf(values[i]);
+		}
+		return result;
+	}
+	
+	/**
+	 * Return a {@link Double} array from {@code start}, {@code stride} and 
+	 * {@code elements}.
+	 * [code]
+	 *     final double start = 1.0;
+	 *     final double stride = 1.0;
+	 *     final int elements = 5;
+	 *     
+	 *     // {1.0, 2.0, 3.0, 4.0, 5.0}
+	 *     Double[] array = toDoubleArray(start, stride, elements); 
+	 * [/code]
+	 * 
+	 * If you want to create an array from {@code start}, {@code stop} and 
+	 * {@code elements} value.
+	 * [code]
+	 *     final double start = 1.0;
+	 *     final double end = 5.0;
+	 *     final int elements = 5;
+	 *     
+	 *     // {1.0, 2.0, 3.0, 4.0, 5.0}
+	 *     Double[] array = toDoubleArray(start, (stop - start)/(elements - 1), elements); 
+	 * [/code]
+	 * 
+	 * @param start the value of the first element of the returned array.
+	 * @param stride the space between two consecutive array elements.
+	 * @param elements the number of elements of the returned array.
+	 * @return a new {@link Double} array.
+	 * @throws NegativeArraySizeException if {@code elements} is smaller than 0.
+	 */
+	public static Double[] toDoubleArray(
+		final double start, 
+		final double stride, 
+		final int elements
+	) {
+		final Double[] array = new Double[elements];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = (stride*i + start);
+		}
+		return array;
+	}
+	
+	/**
+	 * Return a {@link Float64} array from {@code start}, {@code stride} and 
+	 * {@code elements}:
+	 * 
+	 * @see #toDoubleArray(double, double, int)
+	 * 
+	 * @param start the value of the first element of the returned array.
+	 * @param stride the space between two consecutive array elements.
+	 * @param elements the number of elements of the returned array.
+	 * @return a new {@link Float64} array.
+	 * @throws NegativeArraySizeException if {@code elements} is smaller than 0.
+	 */
+	public static Float64[] toFloat64Array(
+		final double start, 
+		final double stride, 
+		final int elements
+	) {
+		final Float64[] array = new Float64[elements];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = Float64.valueOf(stride*i + start);
+		}
+		return array;
+	}
+	
+	/**
+	 * Return a {@link Long} array from {@code start}, {@code stride} and 
+	 * {@code elements}:
+	 * 
+	 * @see #toDoubleArray(double, double, int)
+	 * 
+	 * @param start the value of the first element of the returned array.
+	 * @param stride the space between two consecutive array elements.
+	 * @param elements the number of elements of the returned array.
+	 * @return a new {@link Long} array.
+	 * @throws NegativeArraySizeException if {@code elements} is smaller than 0.
+	 */
+	public static Long[] toLongArray(
+		final long start, 
+		final long stride, 
+		final int elements
+	) {
+		final Long[] array = new Long[elements];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = Long.valueOf(stride*i + start);
+		}
+		return array;
+	}
+	
+	/**
+	 * Return a {@link Integer64} array from {@code start}, {@code stride} and 
+	 * {@code elements}:
+	 * 
+	 * @see #toDoubleArray(double, double, int)
+	 * 
+	 * @param start the value of the first element of the returned array.
+	 * @param stride the space between two consecutive array elements.
+	 * @param elements the number of elements of the returned array.
+	 * @return a new {@link Integer64} array.
+	 * @throws NegativeArraySizeException if {@code elements} is smaller than 0.
+	 */
+	public static Integer64[] toInteger64Array(
+		final long start, 
+		final long stride, 
+		final int elements
+	) {
+		final Integer64[] array = new Integer64[elements];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = Integer64.valueOf(stride*i + start);
+		}
+		return array;
 	}
 	
 	/**
