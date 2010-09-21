@@ -134,7 +134,12 @@
 		<classes>
 			<class name="org.jenetics.OptimizeTest" />
 		</classes>
-	</test>			
+	</test>		
+	<test name="org.jenetics.stat.HistogramTest">
+		<classes>
+			<class name="org.jenetics.stat.HistogramTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.AccumulatorsTest">
 		<classes>
 			<class name="org.jenetics.util.AccumulatorsTest" />

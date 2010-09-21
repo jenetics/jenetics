@@ -33,7 +33,7 @@ import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 import junit.framework.Assert;
 
-import org.jenetics.util.Accumulators.Histogram;
+import org.jenetics.stat.Histogram;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
