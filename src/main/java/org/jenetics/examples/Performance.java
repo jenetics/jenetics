@@ -60,7 +60,7 @@ public class Performance {
 	public static void main(String[] args) {
 		final Function ff = new Function();
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final FitnessScaler<Float64> fs = IdentityScaler.valueOf();
+		final FitnessScaler<Float64> fs = IdentityScaler.<Float64>valueOf();
 		
 		final int size = 1000000;
 		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
