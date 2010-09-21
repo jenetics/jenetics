@@ -76,6 +76,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
+			<include name="org/jenetics/stat/*.java" />
 		</javac>		
 	</target>
 	
@@ -191,6 +192,7 @@
 				<include name="org/jenetics/*.html" />
 				<include name="org/jenetics/*.java" />
 				<include name="org/jenetics/util/*.java" />
+				<include name="org/jenetics/stat/*.java" />
 				<and>
 					<filename name="**/*.java" />
 				</and>
@@ -287,6 +289,7 @@
 				<include name="org/jenetics/*.java" />
 				<include name="org/jenetics/examples/*.java" />
 				<include name="org/jenetics/util/*.java" />
+				<include name="org/jenetics/stat/*.java" />
 				<and>
 					<filename name="**/*.java" />
 				</and>
@@ -357,6 +360,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
+			<include name="org/jenetics/stat/*.java" />
 		</javac>			
 	</target>
 

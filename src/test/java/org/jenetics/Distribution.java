@@ -92,7 +92,7 @@ final class Distribution {
 
 			@Override
 			public Text toText() {
-				return Text.valueOf("CDF-Uniform[" + _min + ", " + _max + "]");
+				return Text.valueOf("CDF-NumberUniform[" + _min + ", " + _max + "]");
 			}
 		}
 		
@@ -113,7 +113,7 @@ final class Distribution {
 	}
 	
 //	public static void main(String[] args) {
-//		Function<Float64, Float64> cdf = Uniform.cdf(1, 11);
+//		Function<Float64, Float64> cdf = NumberUniform.cdf(1, 11);
 //		System.out.println(cdf.evaluate(Float64.valueOf(1)));
 //		System.out.println(cdf.evaluate(Float64.valueOf(6)));
 //		System.out.println(cdf.evaluate(Float64.valueOf(11)));
