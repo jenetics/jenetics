@@ -1,3 +1,7 @@
+- Create org.jenetics.stat package.
+- Change type signature from 'C extends Comparable<C>' to 
+  'C extends Comparable<? super C>' for all classes.
+- Add histogram accumulator (org.jenetics.util.Accumulators.Histogram).
 - Add the 'mixin' org.util.AdaptableAccumulator class.
 - Remove Genotype.valueOf(Genotype) method since the Genotype class is is
   immutable and no copy factory method is needed.
