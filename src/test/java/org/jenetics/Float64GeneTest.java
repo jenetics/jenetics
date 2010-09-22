@@ -78,8 +78,8 @@ public class Float64GeneTest {
 				histogram.accumulate(g2.getAllele());
 			}
 			
-//			System.out.println(histogram.χ2(Distribution.NumberUniform.cdf(min, max)));
-//			System.out.println(Arrays.toString(histogram.expection(Distribution.NumberUniform.cdf(min, max))));
+//			System.out.println(histogram.χ2(Distribution.UniformNumberDistribution.cdf(min, max)));
+//			System.out.println(Arrays.toString(histogram.expection(Distribution.UniformNumberDistribution.cdf(min, max))));
 //			System.out.println(Arrays.toString(histogram.getHistogram()));
 			
 			// Chi-Square teset for gene distribution.
@@ -95,11 +95,11 @@ public class Float64GeneTest {
 //			Assert.assertEquals(variance.getSamples(), 2*samples);
 //			Assert.assertEquals(
 //					variance.getMean(), 
-//					NumberUniform.mean(min.doubleValue(), max.doubleValue()), 3
+//					UniformNumberDistribution.mean(min.doubleValue(), max.doubleValue()), 3
 //				);
 //			Assert.assertEquals(
 //					variance.getVariance(), 
-//					NumberUniform.variance(min.doubleValue(), max.doubleValue()), 10
+//					UniformNumberDistribution.variance(min.doubleValue(), max.doubleValue()), 10
 //				);
 		} finally {
 			LocalContext.exit();

@@ -30,18 +30,19 @@ import javolution.util.FastList;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class NumberUniform<
-	N extends Number & Comparable<? super N>
+public class UniformNumberDistribution<
+	N extends Number<N>
 >
 	implements Distribution<N> 
 {
 
-	static final class CDF<N extends Number> extends Function<N, Float64> {
+	static final class CDF<N extends Number<N>> extends Function<N, Float64> {
 		private static final long serialVersionUID = 1L;
 		
 		private final List<Variable<N>> 
@@ -81,7 +82,7 @@ public class NumberUniform<
 	private final N _min;
 	private final N _max;
 
-	public NumberUniform(final N min, final N max) {
+	public UniformNumberDistribution(final N min, final N max) {
 		_min = min;
 		_max = max;
 	}
