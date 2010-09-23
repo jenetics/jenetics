@@ -58,7 +58,7 @@ public class Float64GeneTest {
 			
 			final Variance<Float64> variance = new Variance<Float64>();
 			 
-			final Histogram<Float64> histogram = Histogram.valueOf(0, 100, 10);
+			final Histogram<Float64> histogram =null; Histogram.valueOf(0, 100, 10);
 			
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
