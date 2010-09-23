@@ -26,6 +26,8 @@ import static org.jenetics.util.ArrayUtils.toDouble;
 
 import java.util.Random;
 
+import org.jenetics.util.ArrayUtils;
+import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -35,6 +37,15 @@ import org.testng.annotations.Test;
  */
 public class HistogramTest {
 
+	@Test
+	public void create() {
+		final double begin = 12;
+		final double end = 123;
+		final int elements = 10;
+		
+		//Histogram<Float64> histogram = Histogram.valueOf(ArrayUtils.toFloat64Array(start, stride, elements));
+	}
+	
 	@Test
 	public void histogramIndex() {
 		final Random random = new Random();
