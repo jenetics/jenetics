@@ -823,23 +823,23 @@ public final class ArrayUtils {
 	 * 
 	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
-	 * 	 ConcurrentContext.enter();
-	 * 	 try {
-	 * 		 final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
+	 *   ConcurrentContext.enter();
+	 *   try {
+	 *       final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
 	 *		
-	 * 		 for (int i = 0; i < parts.length - 1; ++i) {
-	 * 			  final int part = i;
-	 * 			  ConcurrentContext.execute(new Runnable() {
-	 * 					 public void run() {
-	 * 						 for (int j = parts[part + 1]; --j >= parts[part];) {
-	 * 							  population.get(j).evaluate();
-	 * 						 }
-	 * 					}
-	 * 			  });
-	 * 		 }
-	 * 	 } finally {
-	 * 		  ConcurrentContext.exit();
-	 * 	 }
+	 *       for (int i = 0; i < parts.length - 1; ++i) {
+	 *           final int part = i;
+	 *           ConcurrentContext.execute(new Runnable() {
+	 *               public void run() {
+	 *                   for (int j = parts[part + 1]; --j >= parts[part];) {
+	 *                       population.get(j).evaluate();
+	 *                   }
+	 *               }
+	 *           });
+	 *       }
+	 *    } finally {
+	 *        ConcurrentContext.exit();
+	 *    }
 	 * [/code]
 	 * 
 	 * @param size the size of the array to partition.
