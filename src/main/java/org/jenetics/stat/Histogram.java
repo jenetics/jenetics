@@ -327,14 +327,14 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	 * {@code min = 13} and {@code max = 99} will generate the following class 
 	 * separators for the given number of classes:
 	 * <pre>
-	 *     nclasses = 2: [56]
-	 *     nclasses = 3: [41, 70]
-	 *     nclasses = 4: [34, 55, 77]
-	 *     nclasses = 5: [30, 47, 64, 81]
-	 *     nclasses = 6: [27, 41, 55, 69, 84]
-	 *     nclasses = 7: [25, 37, 49, 61, 73, 86]
-	 *     nclasses = 8: [23, 33, 44, 55, 66, 77, 88]
-	 *     nclasses = 9: [22, 31, 40, 49, 59, 69, 79, 89]
+	 *  nclasses = 2: [56]
+	 *  nclasses = 3: [41, 70]
+	 *  nclasses = 4: [34, 55, 77]
+	 *  nclasses = 5: [30, 47, 64, 81]
+	 *  nclasses = 6: [27, 41, 55, 69, 84]
+	 *  nclasses = 7: [25, 37, 49, 61, 73, 86]
+	 *  nclasses = 8: [23, 33, 44, 55, 66, 77, 88]
+	 *  nclasses = 9: [22, 31, 40, 49, 59, 69, 79, 89]
 	 * </pre>
 	 * 
 	 * @param min the minimum range value of the returned histogram.
