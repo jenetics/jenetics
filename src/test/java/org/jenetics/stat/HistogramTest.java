@@ -55,7 +55,7 @@ public class HistogramTest {
 		}
 		
 		Histogram<Double> histogram = Histogram.valueOf(toDouble(parts));
-		Double[] classes = histogram.getClasses();
+		Double[] classes = histogram.getSeparators();
 		for (int i = 0; i < 1000; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
@@ -82,7 +82,7 @@ public class HistogramTest {
 		
 		parts = new double[]{1};
 		histogram = Histogram.valueOf(toDouble(parts));
-		classes = histogram.getClasses();
+		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
@@ -90,7 +90,7 @@ public class HistogramTest {
 		
 		parts = new double[]{1, 2};
 		histogram = Histogram.valueOf(toDouble(parts));
-		classes = histogram.getClasses();
+		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
@@ -98,7 +98,7 @@ public class HistogramTest {
 		
 		parts = new double[]{1, 2, 3};
 		histogram = Histogram.valueOf(toDouble(parts));
-		classes = histogram.getClasses();
+		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
