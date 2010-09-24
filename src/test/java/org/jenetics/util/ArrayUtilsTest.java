@@ -141,23 +141,6 @@ public class ArrayUtilsTest {
 		Assert.assertEquals(array, clonedArray);
 	}
 	
-	@Test
-	public void toDoubleArray() {
-		for (int i = 10; i < 30; ++i) {
-			final int elements = 10;
-			final double start = i;
-			final double stop = i + elements;
-	
-			final Double[] array = ArrayUtils.toDoubleArray(
-					start, (stop - start)/(elements - 1), elements
-				);
-			
-			Assert.assertEquals(array.length, elements);
-			Assert.assertEquals(array[0], start);
-			Assert.assertEquals(array[array.length - 1], stop);
-		}
-	}
-	
 //	@Test
 //	public void performance() {
 //		final int SIZE = 1000;

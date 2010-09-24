@@ -22,7 +22,6 @@
  */
 package org.jenetics.stat;
 
-import static org.jenetics.util.ArrayUtils.toDouble;
 
 import java.util.Random;
 
@@ -49,12 +48,12 @@ public class HistogramTest {
 	@Test
 	public void histogramIndex() {
 		final Random random = new Random();
-		double[] parts = new double[10000];
+		Double[] parts = new Double[10000];
 		for (int i = 0; i < parts.length; ++i) {
-			parts[i] = i;
+			parts[i] = Double.valueOf(i);
 		}
 		
-		Histogram<Double> histogram = Histogram.valueOf(toDouble(parts));
+		Histogram<Double> histogram = Histogram.valueOf(parts);
 		Double[] classes = histogram.getSeparators();
 		for (int i = 0; i < 1000; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -80,24 +79,24 @@ public class HistogramTest {
 //		end = System.nanoTime();
 //		System.out.println("Linear Index Time: " + (end - start)/1000000000.0);
 		
-		parts = new double[]{1};
-		histogram = Histogram.valueOf(toDouble(parts));
+		parts = new Double[]{1.0};
+		histogram = Histogram.valueOf(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
 		}
 		
-		parts = new double[]{1, 2};
-		histogram = Histogram.valueOf(toDouble(parts));
+		parts = new Double[]{1.0, 2.0};
+		histogram = Histogram.valueOf(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
 		}
 		
-		parts = new double[]{1, 2, 3};
-		histogram = Histogram.valueOf(toDouble(parts));
+		parts = new Double[]{1.0, 2.0, 3.0};
+		histogram = Histogram.valueOf(parts);
 		classes = histogram.getSeparators();
 		for (int i = 0; i < 10; ++i) {
 			final Double value = random.nextDouble()*(parts.length + 1);
@@ -118,13 +117,13 @@ public class HistogramTest {
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void histogramEmptyClasses() {
-		Histogram.valueOf(toDouble());
+		Histogram.valueOf(new Double[0]);
 	}
 	
 	@Test
 	public void histogram() {
 		final Random random = new Random();
-		final Histogram<Double> histogram = Histogram.valueOf(toDouble(1, 2, 3, 4, 5));
+		final Histogram<Double> histogram = Histogram.valueOf(new Double[]{1d, 2d, 3d, 4d, 5d});
 		
 		for (int i = 0; i < 600000; ++i) {
 			histogram.accumulate(random.nextDouble()*6);
