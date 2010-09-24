@@ -1,6 +1,6 @@
 package org.jenetics.stat;
 
-import static java.lang.Math.min;
+import static org.jenetics.util.ArrayUtils.map;
 import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -9,6 +9,7 @@ import java.util.Comparator;
 
 import org.jenetics.util.AdaptableAccumulator;
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.Converters;
 import org.jenetics.util.Validator;
 import org.jenetics.util.Validator.NonNull;
 import org.jscience.mathematics.function.Function;
@@ -20,9 +21,9 @@ import org.jscience.mathematics.number.Integer64;
  * border</i> which define the histogram classes. A value is part of the 
  * <i>i</i><sup>th</sup> histogram array element if 
  * <pre>
- *     classes[i] > value <= classes[i - 1]  when <i>i</i> &isin; [1 .. classes.length - 1], 
- *     0                                     when value < classes[0] and
- *     classes.length                        when value >= classes[classes.length - 1]. 
+ *     cls[i] > value <= cls[i - 1]  when <i>i</i> &isin; [1 .. cls.length - 1], 
+ *     0                             when value < cls[0] and
+ *     cls.length                    when value >= cls[cls.length - 1]. 
  * </pre>
  * 
  * Example:
@@ -250,7 +251,8 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	}
 	
 	/**
-	 * The <i>histogram</i> array of the returned histogram will look like this:
+	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i> 
+	 * array of the returned {@link Histogram} will look like this:
 	 * 
 	 * <pre>
 	 *    min                            max
@@ -265,7 +267,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	 * @param max the maximum range value of the returned histogram.
 	 * @param nclasses the number of classes of the returned histogram. The 
 	 *        number of separators will be {@code nclasses - 1}.
-	 * @return a new histogram for Float64 values.
+	 * @return a new <i>histogram</i> for {@link Float64} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
 	 *         {@code nclasses < 2}.
@@ -275,84 +277,143 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		final Float64 max, 
 		final int nclasses
 	) {
-	    nonNull(min, "Minimum");
-	    nonNull(max, "Maximum");
-	    if (nclasses < 2) {
-	        throw new IllegalArgumentException(String.format(
-	                "nclasses should be < 2, but was %s.", nclasses
-	            ));
-	    }
-		
-		final Float64 stride = max.minus(min).divide(nclasses); 
-		final Float64[] separators = new Float64[nclasses - 1];
-		for (int i = 0; i < separators.length; ++i) {
-		    separators[i] = min.plus(stride.times(i + 1));
-		}
-		
-		return valueOf(separators);
+		return valueOf(map(
+				toSeparators(min.doubleValue(), max.doubleValue(), nclasses), 
+				new Float64[nclasses],
+				Converters.DoubleToFloat64
+			));
 	}
 	
+	/**
+	 * @see #valueOf(Float64, Float64, int)
+	 */
 	public static Histogram<Double> valueOf(
 		final Double min, 
 		final Double max, 
 		final int nclasses
 	) {
-		return null;
+		return valueOf(toSeparators(min, max, nclasses));
 	}
 	
-	public static Histogram<Integer> valueOf(
-		final Integer min, 
-		final Integer max, 
+	private static Double[] toSeparators(
+		final Double min, 
+		final Double max, 
 		final int nclasses
 	) {
-		return null;
+		check(min, max, nclasses);
+		
+		final double stride = (max - min)/nclasses;
+		final Double[] separators = new Double[nclasses - 1];
+		for (int i = 0; i < separators.length; ++i) {
+		    separators[i] = min + stride*(i + 1);
+		}
+		
+		return separators;
 	}
 	
+	/**
+	 * Return a <i>histogram</i> for {@link Integer64} values. The <i>histogram</i> 
+	 * array of the returned {@link Histogram} will look like this:
+	 * 
+	 * <pre>
+	 *    min                            max
+	 *     +----+----+----+----+  ~  +----+
+	 *     | 1  | 2  | 3  | 4  |     | nc | 
+	 *     +----+----+----+----+  ~  +----+
+	 * </pre>
+	 * 
+	 * The range of all classes are more or less the same. But this is not 
+	 * always possible due to integer rounding issues. Calling this method with
+	 * {@code min = 13} and {@code max = 99} will generate the following class 
+	 * separators for the given number of classes:
+	 * <pre>
+	 *     nclasses = 2: [56]
+	 *     nclasses = 3: [41, 70]
+	 *     nclasses = 4: [34, 55, 77]
+	 *     nclasses = 5: [30, 47, 64, 81]
+	 *     nclasses = 6: [27, 41, 55, 69, 84]
+	 *     nclasses = 7: [25, 37, 49, 61, 73, 86]
+	 *     nclasses = 8: [23, 33, 44, 55, 66, 77, 88]
+	 *     nclasses = 9: [22, 31, 40, 49, 59, 69, 79, 89]
+	 * </pre>
+	 * 
+	 * @param min the minimum range value of the returned histogram.
+	 * @param max the maximum range value of the returned histogram.
+	 * @param nclasses the number of classes of the returned histogram. The 
+	 *        number of separators will be {@code nclasses - 1}.
+	 * @return a new <i>histogram</i> for {@link Integer64} values.
+	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws IllegalArgumentException if {@code min.compareTo(max) >= 0} or
+	 *         {@code nclasses < 2}.
+	 */
 	public static Histogram<Integer64> valueOf(
 		final Integer64 min, 
 		final Integer64 max, 
 		final int nclasses
 	) {
-		final long interval = max.longValue() - min.longValue();
-		final int ncls = (int)min(interval, nclasses);
-		
-		final long bulk = interval/(ncls - 1);
-				
-		final Integer64[] classes = new Integer64[ncls];
-		for (int i = 0; i < ncls - 1; ++i) {
-			classes[i] = Integer64.valueOf(i*bulk + min.longValue());
-		}
-		classes[classes.length - 1] = max;
-		
-		System.out.println(Arrays.toString(classes));
-		
-		return valueOf(classes);
+		return valueOf(map(
+				toSeparators(min.longValue(), max.longValue(), nclasses), 
+				new Integer64[0],
+				Converters.LongToInteger64
+			));
 	}
 	
-	
-	public static void main(String[] args) {
-		valueOf(Float64.valueOf(0), Float64.valueOf(60), 5);
-		//valueOf(Integer64.valueOf(34), Integer64.valueOf(77), 2);
+	/**
+	 * @see #valueOf(Integer64, Integer64, int)
+	 */
+	public static Histogram<Long> valueOf(
+		final Long min, 
+		final Long max, 
+		final int nclasses
+	) {
+		return valueOf(toSeparators(min, max, nclasses));
 	}
 	
-	
-	public static int[] partition(final int size, final int parts) {
-		final int pts = Math.min(size, parts);
-		final int[] partition = new int[pts + 1];
-		
+	private static Long[] toSeparators(
+		final Long min, 
+		final Long max, 
+		final int nclasses
+	) {
+		check(min, max, nclasses);
+
+		final int size = (int)(max - min);
+		final int pts = Math.min(size, nclasses);
 		final int bulk = size/pts;
 		final int rest = size%pts;
 		assert ((bulk*pts + rest) == size);
 		
-		for (int i = 0, n = pts - rest; i < n; ++i) {
-			partition[i] = i*bulk;
+		final Long[] separators = new Long[pts - 1];
+		for (int i = 1, n = pts - rest; i < n; ++i) {
+			separators[i - 1] = i*bulk + min;
 		}
-		for (int i = 0, n = rest + 1; i < n; ++i) {
-			partition[pts - rest + i] = (pts - rest)*bulk + i*(bulk + 1);
+		for (int i = 0, n = rest; i < n; ++i) {
+			separators[separators.length - rest + i] = 
+					(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
 		
-		return partition;
+		return separators;
 	}
+	
+	/*
+	 * Check the input values of the valueOf methods.
+	 */
+	private static <C extends Comparable<? super C>> void 
+	check(final C min, final C max, final int nclasses) 
+	{
+	    nonNull(min, "Minimum");
+	    nonNull(max, "Maximum");
+	    if (min.compareTo(max) >= 0) {
+	    	throw new IllegalArgumentException(String.format(
+	    			"Min must be smaller than max: %s < %s failed.", min, max
+	    		));
+	    }
+	    if (nclasses < 2) {
+	        throw new IllegalArgumentException(String.format(
+	                "nclasses should be < 2, but was %s.", nclasses
+	            ));
+	    }
+	}
+
 	
 }
 
