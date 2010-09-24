@@ -198,18 +198,18 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		return χ2; 
 	}
 
-    private long n0(final int j, final Function<C, Float64> cdf) {
-        Float64 p0j = Float64.ZERO;
-        if (j == 0) {
-            p0j = cdf.evaluate(_separators[0]);
-        } else if (j == _histogram.length - 1) {
-            p0j = Float64.ONE.minus(cdf.evaluate(_separators[_separators.length - 1]));
-        } else {
-            p0j = cdf.evaluate(_separators[j]).minus(cdf.evaluate(_separators[j - 1]));
-        }
-        
-        return Math.max(Math.round(p0j.doubleValue()*_samples), 1L);
-    }
+	private long n0(final int j, final Function<C, Float64> cdf) {
+		Float64 p0j = Float64.ZERO;
+		if (j == 0) {
+			p0j = cdf.evaluate(_separators[0]);
+		} else if (j == _histogram.length - 1) {
+			p0j = Float64.ONE.minus(cdf.evaluate(_separators[_separators.length - 1]));
+		} else {
+			p0j = cdf.evaluate(_separators[j]).minus(cdf.evaluate(_separators[j - 1]));
+		}
+		
+		return Math.max(Math.round(p0j.doubleValue()*_samples), 1L);
+	}
 	
 //	long[] expection(final Function<C, Float64> cdf) {
 //		final long[] e = new long[_histogram.length];
@@ -220,12 +220,12 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 //		return e;
 //	}
     
-    /**
-     * @see #χ2(Function)
-     */
-    public double chisqr(final Function<C, Float64> cdf) {
-        return χ2(cdf);
-    }
+	/**
+	 * @see #χ2(Function)
+	 */
+	public double chisqr(final Function<C, Float64> cdf) {
+		return χ2(cdf);
+	}
 
 	
 	/**
