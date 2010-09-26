@@ -1,5 +1,7 @@
 package org.jenetics.stat;
 
+import static java.lang.Math.max;
+import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.map;
 import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.Validator.nonNull;
@@ -162,6 +164,15 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	}
 	
 	/**
+	 * Return the number of classes of this histogram.
+	 * 
+	 * @return the number of classes of this histogram.
+	 */
+	public int length() {
+		return _histogram.length;
+	}
+	
+	/**
 	 * Return the <i>histogram</i> as probability array.
 	 * 
 	 * @return the class probabilities.
@@ -208,7 +219,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 			p0j = cdf.evaluate(_separators[j]).minus(cdf.evaluate(_separators[j - 1]));
 		}
 		
-		return Math.max(Math.round(p0j.doubleValue()*_samples), 1L);
+		return max(round(p0j.doubleValue()*_samples), 1L);
 	}
 	
 //	long[] expection(final Function<C, Float64> cdf) {
