@@ -29,13 +29,13 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
-import junit.framework.Assert;
 
 import org.jenetics.Distribution.Uniform;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
