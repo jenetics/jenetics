@@ -28,11 +28,11 @@ import static java.lang.Math.toRadians;
 import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
-import junit.framework.Assert;
 
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
@@ -83,7 +83,7 @@ public class PopulationTest {
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.evaluate(population.get(i).getGenotype());
 			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
-			Assert.assertTrue(first + "<" + second, first.compareTo(second) >= 0);
+			Assert.assertTrue(first.compareTo(second) >= 0, first + "<" + second);
 		}
 		
 		ArrayUtils.shuffle(population);
@@ -91,7 +91,7 @@ public class PopulationTest {
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.evaluate(population.get(i).getGenotype());
 			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
-			Assert.assertTrue(first + ">" + second, first.compareTo(second) <= 0);
+			Assert.assertTrue(first.compareTo(second) <= 0, first + ">" + second);
 		}
 	}
 	

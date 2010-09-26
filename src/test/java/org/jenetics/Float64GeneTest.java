@@ -31,13 +31,13 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
-import junit.framework.Assert;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -58,18 +58,18 @@ public class Float64GeneTest {
 			
 			final Variance<Float64> variance = new Variance<Float64>();
 			 
-			final Histogram<Float64> histogram =null; Histogram.valueOf(0, 100, 10);
+			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
 			
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
 				final Float64Gene g1 = factory.newInstance();
 				final Float64Gene g2 = factory.newInstance();
 				
-				Assert.assertTrue(g1.getAllele().compareTo(min) >= 0);
-				Assert.assertTrue(g1.getAllele().compareTo(max) <= 0);
-				Assert.assertTrue(g2.getAllele().compareTo(min) >= 0);
-				Assert.assertTrue(g2.getAllele().compareTo(max) <= 0);
-				Assert.assertFalse(g1.equals(g2));
+				assertTrue(g1.getAllele().compareTo(min) >= 0);
+				assertTrue(g1.getAllele().compareTo(max) <= 0);
+				assertTrue(g2.getAllele().compareTo(min) >= 0);
+				assertTrue(g2.getAllele().compareTo(max) <= 0);
+				assertFalse(g1.equals(g2));
 				Assert.assertNotSame(g1, g2);
 				
 				variance.accumulate(g1.getAllele());
