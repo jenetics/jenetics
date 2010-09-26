@@ -268,7 +268,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @return an age {@link Converter}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Converter<Phenotype<SG, SC>, Integer> age(final int currentGeneration) 
+	Converter<Phenotype<SG, SC>, Integer> Age(final int currentGeneration) 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {

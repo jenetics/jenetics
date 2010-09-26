@@ -192,7 +192,7 @@ public class NumberStatistics<
 			if (!population.isEmpty()) {
 				// The properties we accumulate.
 				final Converter<Phenotype<G, R>, Integer> age = Phenotype
-						.age(generation);
+						.Age(generation);
 				final Converter<Phenotype<G, R>, R> fitness = Phenotype
 						.fitness();
 

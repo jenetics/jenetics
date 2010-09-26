@@ -155,7 +155,7 @@ public class CharacterGene
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
-	public static final Converter<CharacterGene, Character> ALLELE =
+	public static final Converter<CharacterGene, Character> Allele =
 		new Converter<CharacterGene, Character>() {
 				@Override public Character convert(final CharacterGene value) {
 					return value._character;
@@ -165,7 +165,7 @@ public class CharacterGene
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
-	public static final Converter<CharacterGene, CharSet> VALID_CHARACTERS =
+	public static final Converter<CharacterGene, CharSet> ValidCharacters =
 		new Converter<CharacterGene, CharSet>() {
 				@Override public CharSet convert(final CharacterGene value) {
 					return value._validCharacters;

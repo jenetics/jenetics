@@ -73,7 +73,7 @@ public class Integer64Gene
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
-	public static final Converter<Integer64Gene, Integer64> ALLELE =
+	public static final Converter<Integer64Gene, Integer64> Allele =
 		new Converter<Integer64Gene, Integer64>() {
 				@Override public Integer64 convert(final Integer64Gene value) {
 					return value._value;
@@ -83,12 +83,12 @@ public class Integer64Gene
 	/**
 	 * Converter for accessing the allele from a given number gene.
 	 */			
-	public static final Converter<Integer64Gene, Integer64> VALUE = ALLELE;
+	public static final Converter<Integer64Gene, Integer64> Value = Allele;
 	
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Integer64Gene, Integer64> MIN =
+	public static final Converter<Integer64Gene, Integer64> Min =
 		new Converter<Integer64Gene, Integer64>() {
 				@Override public Integer64 convert(final Integer64Gene value) {
 					return value._min;
@@ -98,7 +98,7 @@ public class Integer64Gene
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Integer64Gene, Integer64> MAX =
+	public static final Converter<Integer64Gene, Integer64> Max =
 		new Converter<Integer64Gene, Integer64>() {
 				@Override public Integer64 convert(final Integer64Gene value) {
 					return value._value;

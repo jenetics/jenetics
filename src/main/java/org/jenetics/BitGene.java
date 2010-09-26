@@ -135,7 +135,7 @@ public class BitGene
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
-	public static final Converter<BitGene, Boolean> ALLELE =
+	public static final Converter<BitGene, Boolean> Allele =
 		new Converter<BitGene, Boolean>() {
 				@Override public Boolean convert(final BitGene value) {
 					return value._value;

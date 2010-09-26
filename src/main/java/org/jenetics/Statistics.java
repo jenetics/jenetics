@@ -528,7 +528,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			
 			if (!population.isEmpty()) {
 				// The properties we accumulate.
-				final Converter<Phenotype<G, C>, Integer> age = Phenotype.age(generation);
+				final Converter<Phenotype<G, C>, Integer> age = Phenotype.Age(generation);
 				
 				// The statistics accumulators.
 				final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();

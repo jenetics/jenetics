@@ -82,7 +82,7 @@ public class Float64Gene
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
-	public static final Converter<Float64Gene, Float64> ALLELE =
+	public static final Converter<Float64Gene, Float64> Allele =
 		new Converter<Float64Gene, Float64>() {
 				@Override public Float64 convert(final Float64Gene value) {
 					return value._value;
@@ -92,12 +92,12 @@ public class Float64Gene
 	/**
 	 * Converter for accessing the allele from a given number gene.
 	 */			
-	public static final Converter<Float64Gene, Float64> VALUE = ALLELE;
+	public static final Converter<Float64Gene, Float64> Value = Allele;
 	
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Float64Gene, Float64> MIN =
+	public static final Converter<Float64Gene, Float64> Min =
 		new Converter<Float64Gene, Float64>() {
 				@Override public Float64 convert(final Float64Gene value) {
 					return value._min;
@@ -107,7 +107,7 @@ public class Float64Gene
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Float64Gene, Float64> MAX =
+	public static final Converter<Float64Gene, Float64> Max =
 		new Converter<Float64Gene, Float64>() {
 				@Override public Float64 convert(final Float64Gene value) {
 					return value._max;
