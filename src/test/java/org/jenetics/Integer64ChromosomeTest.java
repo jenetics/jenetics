@@ -53,13 +53,13 @@ public class Integer64ChromosomeTest {
 			final Integer64Chromosome chromosome = new Integer64Chromosome(0, 100, 1000);
 			
 			final MinMax<Integer64> mm = new MinMax<Integer64>();
-			accumulate(chromosome, mm.adapt(Integer64Gene.VALUE));
+			accumulate(chromosome, mm.adapt(Integer64Gene.Value));
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			
 			final Variance<Integer64> variance = new Variance<Integer64>();
-			accumulate(chromosome, variance.adapt(Integer64Gene.VALUE));
+			accumulate(chromosome, variance.adapt(Integer64Gene.Value));
 			
 			Assert.assertEquals(
 					variance.getMean(), 
