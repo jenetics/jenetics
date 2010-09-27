@@ -31,9 +31,7 @@ import java.util.List;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.AccumulatorAdapter;
 import org.jenetics.util.Accumulators;
-import org.jenetics.util.Converter;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
@@ -60,11 +58,17 @@ public class NumberStatistics<
 		this(generation, null, null, NaN, NaN, 0, NaN, NaN, NaN);
 	}
 
-	protected NumberStatistics(final int generation,
-			final Phenotype<G, R> best, final Phenotype<G, R> worst,
-			final double fitnessMean, final double fitnessVariance,
-			final int samples, final double ageMean, final double ageVariance,
-			final double errorOfMean) {
+	protected NumberStatistics(
+		final int generation,
+		final Phenotype<G, R> best, 
+		final Phenotype<G, R> worst,
+		final double fitnessMean, 
+		final double fitnessVariance,
+		final int samples, 
+		final double ageMean, 
+		final double ageVariance,
+		final double errorOfMean
+	) {
 		super(generation, best, worst, samples, ageMean, ageVariance);
 
 		_fitnessMean = fitnessMean;
@@ -72,9 +76,12 @@ public class NumberStatistics<
 		_standardError = errorOfMean;
 	}
 
-	protected NumberStatistics(final Statistics<G, R> other,
-			final double fitnessMean, final double fitnessVariance,
-			final double errorOfMean) {
+	protected NumberStatistics(
+		final Statistics<G, R> other,
+		final double fitnessMean, 
+		final double fitnessVariance,
+		final double errorOfMean
+	) {
 		super(other);
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
@@ -136,29 +143,40 @@ public class NumberStatistics<
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<NumberStatistics> XML = new XMLFormat<NumberStatistics>(
-			NumberStatistics.class) {
+	static final XMLFormat<NumberStatistics> XML = 
+		new XMLFormat<NumberStatistics>(NumberStatistics.class) 
+	{
 		private static final String FITNESS_MEAN = "fitness-mean";
 		private static final String FITNESS_VARIANCE = "fitness-variance";
 		private static final String ERROR_OF_MEAN = "error-of-mean";
 
 		@Override
-		public NumberStatistics newInstance(final Class<NumberStatistics> cls,
-				final InputElement xml) throws XMLStreamException {
+		public NumberStatistics newInstance(
+			final Class<NumberStatistics> cls,
+			final InputElement xml
+		) 
+			throws XMLStreamException 
+		{
 			final Statistics stats = Statistics.XML.newInstance(
-					Statistics.class, xml);
+					Statistics.class, xml
+				);
 			final Float64 fitnessMean = xml.get(FITNESS_MEAN);
 			final Float64 fitnessVariance = xml.get(FITNESS_VARIANCE);
 			final Float64 errorOfMean = xml.get(ERROR_OF_MEAN);
 
-			return new NumberStatistics(stats, fitnessMean.doubleValue(),
-					fitnessVariance.doubleValue(), errorOfMean.doubleValue());
+			return new NumberStatistics(
+					stats, 
+					fitnessMean.doubleValue(),
+					fitnessVariance.doubleValue(), 
+					errorOfMean.doubleValue()
+				);
 
 		}
 
 		@Override
 		public void write(final NumberStatistics s, final OutputElement xml)
-				throws XMLStreamException {
+			throws XMLStreamException 
+		{
 			Statistics.XML.write(s, xml);
 			xml.add(Float64.valueOf(s.getFitnessMean()), FITNESS_MEAN);
 			xml.add(Float64.valueOf(s.getFitnessVariance()), FITNESS_VARIANCE);
@@ -167,7 +185,8 @@ public class NumberStatistics<
 
 		@Override
 		public void read(final InputElement xml, final NumberStatistics p)
-				throws XMLStreamException {
+			throws XMLStreamException 
+		{
 		}
 	};
 
@@ -176,42 +195,48 @@ public class NumberStatistics<
 	 *         Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Calculator<G extends Gene<?, G>, R extends Number & Comparable<R>>
-			extends Statistics.Calculator<G, R> {
+	public static class Calculator<
+		G extends Gene<?, G>, 
+		R extends Number & Comparable<R>
+	>
+		extends Statistics.Calculator<G, R> 
+	{
 
 		public Calculator() {
 		}
 
 		@Override
 		public NumberStatistics<G, R> evaluate(
-				final List<? extends Phenotype<G, R>> population,
-				final int generation, final Optimize opt) {
-			NumberStatistics<G, R> statistics = new NumberStatistics<G, R>(
-					generation);
+			final List<? extends Phenotype<G, R>> population,
+			final int generation, 
+			final Optimize opt
+		) {
+			NumberStatistics<G, R> statistics = 
+				new NumberStatistics<G, R>(generation);
 
 			if (!population.isEmpty()) {
-				// The properties we accumulate.
-				final Converter<Phenotype<G, R>, Integer> age = Phenotype
-						.Age(generation);
-				final Converter<Phenotype<G, R>, R> fitness = Phenotype
-						.fitness();
-
 				// The statistics accumulators.
 				final MinMax<Phenotype<G, R>> minMax = new MinMax<Phenotype<G, R>>();
 				final Variance<Integer> ageVariance = new Variance<Integer>();
 				final Variance<R> fitnessVariance = new Variance<R>();
 
-				Accumulators.accumulate(population, minMax,
-						AccumulatorAdapter.valueOf(ageVariance, age),
-						AccumulatorAdapter.valueOf(fitnessVariance, fitness));
+				Accumulators.<Phenotype<G, R>>accumulate(
+						population, 
+						minMax,
+						ageVariance.adapt(Phenotype.<G, R>Age(generation)),
+						fitnessVariance.adapt(Phenotype.<G, R>Fitness())
+					);
 
-				statistics = new NumberStatistics<G, R>(generation, opt.best(
-						minMax.getMax(), minMax.getMin()), opt.worst(
-						minMax.getMax(), minMax.getMin()),
+				statistics = new NumberStatistics<G, R>(
+						generation, opt.best(minMax.getMax(), minMax.getMin()), 
+						opt.worst(minMax.getMax(), minMax.getMin()),
 						fitnessVariance.getMean(),
-						fitnessVariance.getVariance(), population.size(),
-						ageVariance.getMean(), ageVariance.getVariance(),
-						fitnessVariance.getStandardError());
+						fitnessVariance.getVariance(), 
+						population.size(),
+						ageVariance.getMean(), 
+						ageVariance.getVariance(),
+						fitnessVariance.getStandardError()
+					);
 			}
 
 			return statistics;

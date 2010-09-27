@@ -44,7 +44,6 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.BitUtils;
-import org.jenetics.util.Converter;
 import org.jenetics.util.FinalReference;
 import org.jscience.mathematics.number.Float64;
 
@@ -527,9 +526,6 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			Statistics<G, C> statistics = new Statistics<G, C>(generation);
 			
 			if (!population.isEmpty()) {
-				// The properties we accumulate.
-				final Converter<Phenotype<G, C>, Integer> age = Phenotype.Age(generation);
-				
 				// The statistics accumulators.
 				final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
 				final Variance<Integer> ageVariance = new Variance<Integer>();
@@ -537,7 +533,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				accumulate(
 						population, 
 						minMax, 
-						ageVariance.adapt(age)
+						ageVariance.adapt(Phenotype.<G, C>Age(generation))
 					);
 				
 				statistics = new Statistics<G, C>(

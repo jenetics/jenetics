@@ -181,8 +181,16 @@ public class Genotype<T extends Gene<?, T>>
 		return _chromosomes.toString();
 	}
 	
+	
+	/* *************************************************************************
+	 *  Property access methods
+	 * ************************************************************************/
+	
+	/**
+	 * Return a converter which access the chromosome array of this genotype.
+	 */
 	public static <T extends Gene<?, T>> 
-	Converter<Genotype<T>, Array<Chromosome<T>>> chromosomes()
+	Converter<Genotype<T>, Array<Chromosome<T>>> Chromosomes()
 	{
 		return new Converter<Genotype<T>, Array<Chromosome<T>>>() {
 			@Override public Array<Chromosome<T>> convert(final Genotype<T> value) {
@@ -190,6 +198,34 @@ public class Genotype<T extends Gene<?, T>>
 			}
 		};
 	}
+	
+	/**
+	 * Return a converter which access the chromosome with the given index of
+	 * this genotype.
+	 */
+	public static <T extends Gene<?, T>> 
+	Converter<Genotype<T>, Chromosome<T>> Chromosome(final int index)
+	{
+		return new Converter<Genotype<T>, Chromosome<T>>() {
+			@Override public Chromosome<T> convert(final Genotype<T> value) {
+				return value.getChromosome(index);
+			}
+		};
+	}
+	
+	/**
+	 * Return a converter which access the first chromosome of this genotype.
+	 */
+	public static <T extends Gene<?, T>> 
+	Converter<Genotype<T>, Chromosome<T>> Chromosome()
+	{
+		return new Converter<Genotype<T>, Chromosome<T>>() {
+			@Override public Chromosome<T> convert(final Genotype<T> value) {
+				return value.getChromosome();
+			}
+		};
+	}
+	
 	
 	/**
 	 * Create a new Genotype from a given array of <code>Chromosomes</code>.

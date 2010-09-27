@@ -258,6 +258,10 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
 	}
 	
+	/* *************************************************************************
+	 *  Property access methods
+	 * ************************************************************************/
+	
 	/**
 	 * Create a {@link Converter} which return the phenotype age when calling
 	 * {@code converter.convert(phenotype)}.
@@ -286,7 +290,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @return a generation {@link Converter}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Converter<Phenotype<SG, SC>, Integer> generation() 
+	Converter<Phenotype<SG, SC>, Integer> Generation() 
 	{
 		return new Converter<Phenotype<SG, SC>, Integer>() {
 			@Override public Integer convert(final Phenotype<SG, SC> value) {
@@ -304,7 +308,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @return a fitness {@link Converter}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Converter<Phenotype<SG, SC>, SC> fitness() 
+	Converter<Phenotype<SG, SC>, SC> Fitness() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -322,7 +326,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @return a raw fitness {@link Converter}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Converter<Phenotype<SG, SC>, SC> rawFitnees() 
+	Converter<Phenotype<SG, SC>, SC> RawFitnees() 
 	{
 		return new Converter<Phenotype<SG, SC>, SC>() {
 			@Override public SC convert(final Phenotype<SG, SC> value) {
@@ -340,7 +344,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @return a genotype {@link Converter}.
 	 */
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Converter<Phenotype<SG, SC>, Genotype<SG>> genotype() 
+	Converter<Phenotype<SG, SC>, Genotype<SG>> Genotype() 
 	{
 		return new Converter<Phenotype<SG, SC>, Genotype<SG>>() {
 			@Override public Genotype<SG> convert(final Phenotype<SG, SC> value) {

@@ -31,6 +31,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Converter;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -141,6 +142,34 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		}
 		return obj instanceof Float64Chromosome && 
 					super.equals(obj);
+	}
+	
+	/* *************************************************************************
+	 *  Property access methods
+	 * ************************************************************************/
+	
+	/**
+	 * Return a {@link Converter} which returns the gene array from this
+	 * {@link Chromosome}.
+	 */
+	public static final Converter<Float64Chromosome, Array<Float64Gene>> 
+		Genes = AbstractChromosome.genes();
+	
+	/**
+	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * {@link Chromosome}.
+	 */
+	public static final Converter<Float64Chromosome, Float64Gene> 
+		Gene = AbstractChromosome.gene();
+	
+	/**
+	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * {@code index} from this {@link Chromosome}.
+	 */
+	public static final Converter<Float64Chromosome, Float64Gene> 
+	Gene(final int index) 
+	{
+		return AbstractChromosome.gene(index);
 	}
 	
 	

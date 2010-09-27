@@ -37,6 +37,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
+import org.jenetics.util.Converter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -147,6 +148,34 @@ public class CharacterChromosome
 			return true;
 		}
 		return obj instanceof CharacterChromosome && super.equals(obj);	
+	}
+	
+	/* *************************************************************************
+	 *  Property access methods
+	 * ************************************************************************/
+	
+	/**
+	 * Return a {@link Converter} which returns the gene array from this
+	 * {@link Chromosome}.
+	 */
+	public static final Converter<CharacterChromosome, Array<CharacterGene>> 
+		Genes = AbstractChromosome.genes();
+	
+	/**
+	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * {@link Chromosome}.
+	 */
+	public static final Converter<CharacterChromosome, CharacterGene> 
+		Gene = AbstractChromosome.gene();
+	
+	/**
+	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * {@code index} from this {@link Chromosome}.
+	 */
+	public static final Converter<CharacterChromosome, CharacterGene> 
+	Gene(final int index) 
+	{
+		return AbstractChromosome.gene(index);
 	}
 	
 	static final XMLFormat<CharacterChromosome> 
