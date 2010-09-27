@@ -30,19 +30,20 @@ import javolution.util.FastList;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Number;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class UniformNumberDistribution<
-	N extends Number<N>
+	N extends Number & Comparable<? super N>
 >
 	implements Distribution<N> 
 {
 
-	static final class CDF<N extends Number<N>> extends Function<N, Float64> {
+	static final class CDF<N extends Number & Comparable<? super N>> 
+		extends Function<N, Float64> 
+	{
 		private static final long serialVersionUID = 1L;
 		
 		private final List<Variable<N>> 

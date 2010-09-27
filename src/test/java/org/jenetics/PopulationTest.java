@@ -100,7 +100,7 @@ public class PopulationTest {
 		final int size = 10;
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
+		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
 		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
 		
 		for (int i = 0; i < size; ++i) {
@@ -118,7 +118,7 @@ public class PopulationTest {
 		final int size = 10;
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
+		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
 		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
 		
 		for (int i = 0; i < size; ++i) {

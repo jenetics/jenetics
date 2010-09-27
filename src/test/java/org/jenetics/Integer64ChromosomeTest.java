@@ -30,7 +30,8 @@ import java.util.Random;
 import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.Distribution.Uniform;
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.UniformNumberDistribution;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.RandomRegistry;
@@ -50,27 +51,31 @@ public class Integer64ChromosomeTest {
 		try {
 			RandomRegistry.setRandom(new Random());
 			
-			final Integer64Chromosome chromosome = new Integer64Chromosome(0, 100, 1000);
+			final Integer64 min = Integer64.ZERO;
+			final Integer64 max = Integer64.valueOf(100);
+			final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 1000);
 			
-			final MinMax<Integer64> mm = new MinMax<Integer64>();
-			accumulate(chromosome, mm.adapt(Integer64Gene.Value));
+			final MinMax<Integer64> mm = new MinMax<Integer64>();			
+			final Variance<Integer64> variance = new Variance<Integer64>();
+			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
+			
+			accumulate(
+					chromosome, 
+					mm.adapt(Integer64Gene.Value),
+					variance.adapt(Integer64Gene.Value),
+					histogram.adapt(Integer64Gene.Value)
+				);
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			
-			final Variance<Integer64> variance = new Variance<Integer64>();
-			accumulate(chromosome, variance.adapt(Integer64Gene.Value));
+			// Chi-Square teset for gene distribution.
+			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
+			final UniformNumberDistribution<Integer64> dist = 
+				new UniformNumberDistribution<Integer64>(min, max);
 			
-			Assert.assertEquals(
-					variance.getMean(), 
-					Uniform.mean(0, 100), 
-					2*variance.getStandardError()
-				);
-			Assert.assertEquals(
-					variance.getVariance(), 
-					Uniform.variance(0, 100), 
-					30
-				);
+			final double χ2 = histogram.χ2(dist.getCDF());
+			Assert.assertTrue(χ2 < 25); // 
 		} finally {
 			LocalContext.exit();
 		}
