@@ -53,7 +53,7 @@ public class PhenotypeTest {
 	public void xmlSerialize() throws XMLStreamException {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
+		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
 		final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
 				gtf.newInstance(), ff, scaler, 0
 			);
@@ -65,7 +65,7 @@ public class PhenotypeTest {
 	public void objectSerialize() throws IOException {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.valueOf();
+		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
 		final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
 				gtf.newInstance(), ff, scaler, 0
 			);

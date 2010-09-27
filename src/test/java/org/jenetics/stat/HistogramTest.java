@@ -22,11 +22,11 @@
  */
 package org.jenetics.stat;
 
-
+import java.util.Arrays;
 import java.util.Random;
 
-import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,12 +37,63 @@ import org.testng.annotations.Test;
 public class HistogramTest {
 
 	@Test
-	public void create() {
+	public void createDouble() {
 		final double begin = 12;
 		final double end = 123;
 		final int elements = 10;
 		
-		//Histogram<Float64> histogram = Histogram.valueOf(ArrayUtils.toFloat64Array(start, stride, elements));
+		Histogram<Double> histogram = Histogram.valueOf(begin, end, elements);
+		Assert.assertEquals(histogram.length(), elements);
+		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
+	}
+	
+	@Test
+	public void createFloat64() {
+		final Float64 begin = Float64.valueOf(12);
+		final Float64 end = Float64.valueOf(123);
+		final int elements = 10;
+		
+		Histogram<Float64> histogram = Histogram.valueOf(begin, end, elements);
+		Assert.assertEquals(histogram.length(), elements);
+		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
+	}
+	
+	@Test
+	public void createLong() {
+		final long begin = 0;
+		final long end = 1000;
+		final int elements = 9;
+		
+		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
+		Assert.assertEquals(histogram.length(), elements);
+		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
+	}
+	
+	@Test
+	public void createInteger64() {
+		final Integer64 begin = Integer64.ZERO;
+		final Integer64 end = Integer64.valueOf(1000);
+		final int elements = 9;
+		
+		Histogram<Integer64> histogram = Histogram.valueOf(begin, end, elements);
+		Assert.assertEquals(histogram.length(), elements);
+		Assert.assertEquals(histogram.getHistogram(), new long[elements]);
+	}
+	
+	@Test
+	public void accumulate() {
+		final long begin = 0;
+		final long end = 10;
+		final int elements = 9;
+		
+		Histogram<Long> histogram = Histogram.valueOf(begin, end, elements);
+		for (int i = 0; i < elements*1000; ++i) {
+			histogram.accumulate(Long.valueOf(i%elements));
+		}
+		
+		final long[] expected = new long[9];
+		Arrays.fill(expected, 1000);
+		Assert.assertEquals(histogram.getHistogram(), expected);
 	}
 	
 	@Test
@@ -59,25 +110,6 @@ public class HistogramTest {
 			final Double value = random.nextDouble()*(parts.length + 1);
 			Assert.assertEquals(histogram.index(value), linearindex(classes, value));
 		}
-		
-		
-		// Performance tests.
-//		final int runs = 10000000;
-//		long start = System.nanoTime();
-//		for (int i = 0; i < runs; ++i) {
-//			final Double value = random.nextDouble()*(parts.length + 1);
-//			histogram.index(value);
-//		}
-//		long end = System.nanoTime();
-//		System.out.println("Index Time: " + (end - start)/1000000000.0);
-//		
-//		start = System.nanoTime();
-//		for (int i = 0; i < runs; ++i) {
-//			final Double value = random.nextDouble()*(parts.length + 1);
-//			linearindex(classes, value);
-//		}
-//		end = System.nanoTime();
-//		System.out.println("Linear Index Time: " + (end - start)/1000000000.0);
 		
 		parts = new Double[]{1.0};
 		histogram = Histogram.valueOf(parts);

@@ -33,6 +33,7 @@ import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.stat.Histogram;
+import org.jenetics.stat.UniformNumberDistribution;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -46,7 +47,7 @@ import org.testng.annotations.Test;
  */
 public class Float64GeneTest { 
     
-	@Test(invocationCount = 1)
+	@Test(invocationCount = 10)
 	public void newInstance() {
 		LocalContext.enter();
 		try {
@@ -78,29 +79,13 @@ public class Float64GeneTest {
 				histogram.accumulate(g2.getAllele());
 			}
 			
-//			System.out.println(histogram.χ2(Distribution.UniformNumberDistribution.cdf(min, max)));
-//			System.out.println(Arrays.toString(histogram.expection(Distribution.UniformNumberDistribution.cdf(min, max))));
-//			System.out.println(Arrays.toString(histogram.getHistogram()));
-			
 			// Chi-Square teset for gene distribution.
 			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
-			final double χ2 = histogram.χ2(Distribution.Uniform.cdf(min, max));
+			final UniformNumberDistribution<Float64> dist = 
+				new UniformNumberDistribution<Float64>(min, max);
+			
+			final double χ2 = histogram.χ2(dist.getCDF());
 			Assert.assertTrue(χ2 < 25); // 
-			
-			/*
-			 * Test some statistic properties of the generated genes.
-			 * @see http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm
-			 */
-			
-//			Assert.assertEquals(variance.getSamples(), 2*samples);
-//			Assert.assertEquals(
-//					variance.getMean(), 
-//					UniformNumberDistribution.mean(min.doubleValue(), max.doubleValue()), 3
-//				);
-//			Assert.assertEquals(
-//					variance.getVariance(), 
-//					UniformNumberDistribution.variance(min.doubleValue(), max.doubleValue()), 10
-//				);
 		} finally {
 			LocalContext.exit();
 		}

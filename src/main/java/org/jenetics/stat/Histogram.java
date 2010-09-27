@@ -259,6 +259,11 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	public double chisqr(final Function<C, Float64> cdf) {
 		return χ2(cdf);
 	}
+	
+	@Override
+	public String toString() {
+		return Arrays.toString(getHistogram());
+	}
 
 	
 	/**
@@ -312,7 +317,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	) {
 		return valueOf(map(
 				toSeparators(min.doubleValue(), max.doubleValue(), nclasses), 
-				new Float64[nclasses],
+				new Float64[nclasses - 1],
 				Converters.DoubleToFloat64
 			));
 	}
