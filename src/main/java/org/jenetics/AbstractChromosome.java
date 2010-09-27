@@ -32,6 +32,7 @@ import javolution.lang.Realtime;
 import javolution.text.Text;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Converter;
 import org.jenetics.util.Validator.Verify;
 
 /**
@@ -172,6 +173,50 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public String toString() {
 		return _genes.toString();
+	}
+	
+	
+	/* *************************************************************************
+	 *  Property access methods
+	 * ************************************************************************/
+	
+	/**
+	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * {@link Chromosome}.
+	 */
+	static <G extends Gene<?, G>, C extends Chromosome<G>> 
+	Converter<C, G> gene() {
+		return new Converter<C, G>() {
+			@Override public G convert(final C value) {
+				return value.getGene();
+			}
+		};
+	}
+	
+	/**
+	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * {@code index} from this {@link Chromosome}.
+	 */
+	static <G extends Gene<?, G>, C extends Chromosome<G>> 
+	Converter<C, G> gene(final int index) {
+		return new Converter<C, G>() {
+			@Override public G convert(final C value) {
+				return value.getGene(index);
+			}
+		};
+	}
+
+	/**
+	 * Return a {@link Converter} which returns the gene array from this
+	 * {@link Chromosome}.
+	 */
+	static <G extends Gene<?, G>, C extends AbstractChromosome<G>> 
+	Converter<C, Array<G>> genes() {
+		return new Converter<C, Array<G>>() {
+			@Override public Array<G> convert(final C value) {
+				return value.toArray();
+			}
+		};
 	}
 	
 }

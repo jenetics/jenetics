@@ -31,6 +31,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Converter;
 import org.jscience.mathematics.number.Integer64;
 
 
@@ -147,6 +148,34 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 			return true;
 		}
 		return obj instanceof Integer64Chromosome && super.equals(obj);
+	}
+	
+	/* *************************************************************************
+	 *  Property access methods
+	 * ************************************************************************/
+	
+	/**
+	 * Return a {@link Converter} which returns the gene array from this
+	 * {@link Chromosome}.
+	 */
+	public static final Converter<Integer64Chromosome, Array<Integer64Gene>> 
+		Genes = AbstractChromosome.genes();
+	
+	/**
+	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * {@link Chromosome}.
+	 */
+	public static final Converter<Integer64Chromosome, Integer64Gene> 
+		Gene = AbstractChromosome.gene();
+	
+	/**
+	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * {@code index} from this {@link Chromosome}.
+	 */
+	public static final Converter<Integer64Chromosome, Integer64Gene> 
+	Gene(final int index) 
+	{
+		return AbstractChromosome.gene(index);
 	}
 	
 	static final XMLFormat<Integer64Chromosome> 
