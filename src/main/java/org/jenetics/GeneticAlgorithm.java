@@ -46,7 +46,7 @@ import org.jenetics.util.Validator;
  * A simple GeneticAlgorithm setup.
  * [code]
  * 	 //Defining a genotype factory.
- * 	 final Factory<Genotype<BitGene>> gt = Genotype.newGenotype(
+ * 	 final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
  * 				BitChromosome.valueOf(10, 0.5);
  * 		  );
  * 		  
