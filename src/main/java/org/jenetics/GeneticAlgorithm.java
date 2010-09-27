@@ -45,48 +45,48 @@ import org.jenetics.util.Validator;
  * 
  * A simple GeneticAlgorithm setup.
  * [code]
- * 	 //Defining a genotype factory.
- * 	 final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
- * 				BitChromosome.valueOf(10, 0.5);
- * 		  );
- * 		  
- * 	 // Defining the fitness function.
- * 	 final FitnessFunction<BitGene, Float64> ff = ...;
- * 	 
- * 	 // The given fitness function will be maximized. By default 
- * 	 // the GA tries to maximize the fitness function.
- * 	 final Optimize opt = Optimize.MINIMUM;
- * 	 
- * 	 // Create the GA.
- * 	 final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
+ *  //Defining a genotype factory.
+ *  final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
+ *                    BitChromosome.valueOf(10, 0.5);
+ *              );
+ *   
+ *  // Defining the fitness function.
+ *   final FitnessFunction<BitGene, Float64> ff = ...;
+ *   
+ *   // The given fitness function will be maximized. By default 
+ *   // the GA tries to maximize the fitness function.
+ *   final Optimize opt = Optimize.MINIMUM;
+ *   
+ *   // Create the GA.
+ *   final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
  * [code]
- * 	 ga.setup();
- * 	 ga.evolve(100);
- * 	 System.out.println(ga.getStatistics());
+ *   ga.setup();
+ *   ga.evolve(100);
+ *   System.out.println(ga.getStatistics());
  * [/code]
  * 
  * It is possible to set an initial population instead an random one. The 
  * fitness function and the fitness scaler is not initialized by the
  * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
  * [code]
- * 	 final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
- * 		  IOUtils.readXML(Population.class, new FileInputStream("population.xml");
- * 	 ga.setPopulation(population);
- * 	 //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
- * 	 ga.setup();
- * 	 ga.evolve(100);
- * 	 System.out.println(ga.getStatistics());
+ *   final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
+ *   IOUtils.readXML(Population.class, new FileInputStream("population.xml");
+ *   ga.setPopulation(population);
+ *   //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
+ *   ga.setup();
+ *   ga.evolve(100);
+ *   System.out.println(ga.getStatistics());
  * [/code]
  * 
  * If you have a problem to solve which requires expensive fitness calculation
  * you can parallelize the fitness calculation by using an 
  * {@link org.jenetics.util.Evaluator}.
  * [code]
- * 	 final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
- * 	 ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
+ *   final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
+ *   ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
