@@ -48,6 +48,7 @@ public class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 	
 	@Override
 	public void accumulate(final B value) {
+		++_samples;
 		_adoptee.accumulate(_converter.convert(value));
 	}
 	
