@@ -152,21 +152,21 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<Float64Chromosome, Array<Float64Gene>> 
+	public static final Converter<AbstractChromosome<Float64Gene>, Array<Float64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
 	 * Return a {@link Converter} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<Float64Chromosome, Float64Gene> 
+	public static final Converter<Chromosome<Float64Gene>, Float64Gene> 
 		Gene = AbstractChromosome.gene();
 	
 	/**
 	 * Return a {@link Converter} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Converter<Float64Chromosome, Float64Gene> 
+	public static final Converter<Chromosome<Float64Gene>, Float64Gene> 
 	Gene(final int index) 
 	{
 		return AbstractChromosome.gene(index);

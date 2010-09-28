@@ -26,7 +26,7 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class AccumulatorAdapter<A, B> implements Accumulator<B> {
+public class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 	private final Accumulator<? super A> _adoptee;
 	private final Converter<? super B, ? extends A> _converter;
 	

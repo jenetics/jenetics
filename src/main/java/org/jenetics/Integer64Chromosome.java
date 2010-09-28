@@ -158,21 +158,21 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<Integer64Chromosome, Array<Integer64Gene>> 
+	public static final Converter<AbstractChromosome<Integer64Gene>, Array<Integer64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
 	 * Return a {@link Converter} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<Integer64Chromosome, Integer64Gene> 
+	public static final Converter<Chromosome<Integer64Gene>, Integer64Gene> 
 		Gene = AbstractChromosome.gene();
 	
 	/**
 	 * Return a {@link Converter} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Converter<Integer64Chromosome, Integer64Gene> 
+	public static final Converter<Chromosome<Integer64Gene>, Integer64Gene> 
 	Gene(final int index) 
 	{
 		return AbstractChromosome.gene(index);
