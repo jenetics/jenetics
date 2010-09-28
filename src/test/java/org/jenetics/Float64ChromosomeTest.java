@@ -76,7 +76,7 @@ public class Float64ChromosomeTest {
 				new UniformNumberDistribution<Float64>(min, max);
 			
 			final double χ2 = histogram.χ2(dist.getCDF());
-			Assert.assertTrue(χ2 < 25); // 
+			Assert.assertTrue(χ2 < 25); // TODO: remove magic number
 		} finally {
 			LocalContext.exit();
 		}

@@ -61,20 +61,37 @@ public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 	}
 	
 	public static <A, B, C> Converter<A, C> valueOf(
-		final Converter<A, B> first,
-		final Converter<B, C> second
+		final Converter<A, B> c1,
+		final Converter<B, C> c2
 	) {
-		return new TransitiveConverter<A, B, C>(first, second);
+		return new TransitiveConverter<A, B, C>(c1, c2);
 	}
 
 	public static <A, B, C, D> Converter<A, D> valueOf(
-		final Converter<A, B> first,
-		final Converter<B, C> second,
-		final Converter<C, D> third
+		final Converter<A, B> c1,
+		final Converter<B, C> c2,
+		final Converter<C, D> c3
 	) {
-		return new TransitiveConverter<A, C, D>(
-				new TransitiveConverter<A, B, C>(first, second), third
-			);
+		return valueOf(valueOf(c1, c2), c3);
+	}
+	
+	public static <A, B, C, D, E> Converter<A, E> valueOf(
+		final Converter<A, B> c1,
+		final Converter<B, C> c2,
+		final Converter<C, D> c3,
+		final Converter<D, E> c4
+	) {
+		return valueOf(valueOf(valueOf(c1, c2), c3), c4);
+	}
+	
+	public static <A, B, C, D, E, F> Converter<A, F> valueOf(
+		final Converter<A, B> c1,
+		final Converter<B, C> c2,
+		final Converter<C, D> c3,
+		final Converter<D, E> c4,
+		final Converter<E, F> c5
+	) {
+		return valueOf(valueOf(valueOf(valueOf(c1, c2), c3), c4), c5);
 	}
 	
 }

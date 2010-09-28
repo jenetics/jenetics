@@ -158,21 +158,21 @@ public class CharacterChromosome
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<CharacterChromosome, Array<CharacterGene>> 
+	public static final Converter<AbstractChromosome<CharacterGene>, Array<CharacterGene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
 	 * Return a {@link Converter} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<CharacterChromosome, CharacterGene> 
+	public static final Converter<Chromosome<CharacterGene>, CharacterGene> 
 		Gene = AbstractChromosome.gene();
 	
 	/**
 	 * Return a {@link Converter} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Converter<CharacterChromosome, CharacterGene> 
+	public static final Converter<Chromosome<CharacterGene>, CharacterGene> 
 	Gene(final int index) 
 	{
 		return AbstractChromosome.gene(index);
