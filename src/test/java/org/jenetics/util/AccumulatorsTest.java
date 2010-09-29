@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jenetics.util.Accumulators.Mean;
-import org.jenetics.util.Accumulators.Quantile;
 import org.jenetics.util.Accumulators.Variance;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -61,16 +60,6 @@ public class AccumulatorsTest {
 			for (int j = 0; j < parts.length; ++j) {
 				_values[i][j] = Double.valueOf(parts[j]);
 			}
-		}
-	}
-	
-	@Test
-	public void quantil() {
-		final Quantile<Integer> quantile = new Quantile<Integer>(0.5);
-		for (int i = 0; i < 1000; ++i) {
-			quantile.accumulate(i);
-//			System.out.println(quantile.getQuantile() + "--" + Math.floor(i/2.0));
-			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
 		}
 	}
 	
