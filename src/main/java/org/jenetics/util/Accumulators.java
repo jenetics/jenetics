@@ -22,8 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.Arrays;
-
 import javolution.context.ConcurrentContext;
 
 
