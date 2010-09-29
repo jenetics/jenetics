@@ -82,7 +82,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	/**
 	 * Return the <i>Cumulative Distribution Function</i> (CDF).
 	 *
-	 * @see <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">
+	 * @see <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">CDF</a>
 	 *
 	 * @return the <i>Cumulative Distribution Function</i>.
 	 */
@@ -91,7 +91,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	/**
 	 * Return the <i>Probability Density Function</i> (PDF).
 	 *
-	 * @see <a href="http://en.wikipedia.org/wiki/Probability_density_function">
+	 * @see <a href="http://en.wikipedia.org/wiki/Probability_density_function">PDF</a>
 	 *
 	 * @return the <i>Probability Density Function</i>.
 	 */
