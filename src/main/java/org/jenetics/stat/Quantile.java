@@ -41,12 +41,12 @@ import java.util.Arrays;
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Accumulators.java 600 2010-09-21 16:06:51Z fwilhelm $
+ * @version $Id$
  */
 public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 
 	// The desired quantile.
-	private double _quantile;
+	private double _quantile;             
 
 	// Marker heights.
 	private final double[] _q = {0, 0, 0, 0, 0};
