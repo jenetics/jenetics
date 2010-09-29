@@ -22,21 +22,79 @@
  */
 package org.jenetics.stat;
 
+import org.jenetics.util.Validator;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
 
 /**
+ * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
+ * distribution.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public interface Distribution<C extends Comparable<? super C>> {
 
-	public C getMin();
-	
-	public C getMax();
-	
-	public Function<C, Float64> getCDF();
-	
-	public Function<C, Float64> getPDF();
+	/**
+	 * The domain of the distriibution.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	public static class Domain<C extends Comparable<? super C>> {
+		private final C _min;
+		private final C _max;
+
+		/**
+		 * Create a new domain object.
+		 *
+		 * @param min the minimum value of the domain.
+		 * @param max the maximum value of the domain.
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 * @throws NullPointerException if one of the arguments is {@code null}.
+		 */
+		public Domain(final C min, final C max) {
+			if (min.compareTo(max) >= 0) {
+				throw new IllegalArgumentException(String.format(
+						"Min value must be smaller the max value: [%s, %s]", min, max
+					));
+			}
+			_min = Validator.nonNull(min, "Minimum");
+			_max = Validator.nonNull(max, "Maximum");
+		}
+
+		public C getMin() {
+			return _min;
+		}
+
+		public C getMax() {
+			return _max;
+		}
+	}
+
+	/**
+	 * Return the domain of this probability distribution.
+	 *
+	 * @return the domain of this probability distribution.
+	 */
+	public Domain<C> getDomain();
+
+	/**
+	 * Return the <i>Cumulative Distribution Function</i> (CDF).
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">
+	 *
+	 * @return the <i>Cumulative Distribution Function</i>.
+	 */
+	public Function<C, Float64> cdf();
+
+	/**
+	 * Return the <i>Probability Density Function</i> (PDF).
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Probability_density_function">
+	 *
+	 * @return the <i>Probability Density Function</i>.
+	 */
+	public Function<C, Float64> pdf();
 	
 }

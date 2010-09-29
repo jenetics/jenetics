@@ -74,7 +74,7 @@ public class Integer64ChromosomeTest {
 			final UniformNumberDistribution<Integer64> dist = 
 				new UniformNumberDistribution<Integer64>(min, max);
 			
-			final double χ2 = histogram.χ2(dist.getCDF());
+			final double χ2 = histogram.χ2(dist.cdf());
 			Assert.assertTrue(χ2 < 25); // TODO: Remove magic number.
 		} finally {
 			LocalContext.exit();
