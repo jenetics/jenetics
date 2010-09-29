@@ -230,6 +230,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
+            <include name="org/jenetics/stat/*.java" />
 		</java2html>
 			
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
@@ -327,6 +328,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
+            <include name="org/jenetics/stat/*.java" />
 		</java2html>
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/doc-files" />
