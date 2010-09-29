@@ -27,6 +27,7 @@ import java.util.List;
 import javolution.text.Text;
 import javolution.util.FastList;
 
+import org.jenetics.util.Validator;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
@@ -53,9 +54,9 @@ public class UniformNumberDistribution<
 		private final double _max;
 		private final double _divisor;
 		
-		public CDF(final N min, final N max) {
-			_min = min.doubleValue();
-			_max = max.doubleValue();
+		public CDF(final Domain<N> domain) {
+			_min = domain.getMin().doubleValue();
+			_max = domain.getMax().doubleValue();
 			_divisor = _max - _min;
 			
 			_variables.add(new Variable.Local<N>("x"));
@@ -80,31 +81,42 @@ public class UniformNumberDistribution<
 	}
 
 
-	private final N _min;
-	private final N _max;
+	private final Domain<N> _domain;
 
+	/**
+	 * Create a new uniform distribution with the given {@code domain}.
+	 *
+	 * @param domain the domain of the distribution.
+	 * @throws NullPointerException if the {@code domain} is {@code null}.
+	 */
+	public UniformNumberDistribution(final Domain<N> domain) {
+		_domain = Validator.nonNull(domain, "Domain");
+	}
+
+	/**
+	 * Create a new uniform distribution with the given min and max values.
+	 *
+	 * @param min the minimum value of the domain.
+	 * @param max the maximum value of the domain.
+	 * @throws IllegalArgumentException if {@code min >= max}
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
 	public UniformNumberDistribution(final N min, final N max) {
-		_min = min;
-		_max = max;
+		this(new Domain(min, max));
 	}
 
 	@Override
-	public N getMin() {
-		return _min;
+	public Domain<N> getDomain() {
+		return _domain;
 	}
 
 	@Override
-	public N getMax() {
-		return _max;
+	public Function<N, Float64> cdf() {
+		return new CDF<N>(_domain);
 	}
 
 	@Override
-	public Function<N, Float64> getCDF() {
-		return new CDF<N>(_min, _max);
-	}
-
-	@Override
-	public Function<N, Float64> getPDF() {
+	public Function<N, Float64> pdf() {
 		return null;
 	}
 
