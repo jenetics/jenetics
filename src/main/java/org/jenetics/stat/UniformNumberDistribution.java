@@ -102,7 +102,7 @@ public class UniformNumberDistribution<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public UniformNumberDistribution(final N min, final N max) {
-		this(new Domain(min, max));
+		this(new Domain<N>(min, max));
 	}
 
 	@Override
