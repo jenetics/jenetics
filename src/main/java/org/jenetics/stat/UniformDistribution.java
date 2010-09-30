@@ -45,6 +45,58 @@ public class UniformDistribution<
 	implements Distribution<N> 
 {
 
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	static final class PDF<N extends Number & Comparable<? super N>> 
+		extends Function<N, Float64> 
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private final List<Variable<N>> 
+			_variables = new FastList<Variable<N>>(1);
+		
+		private final double _min;
+		private final double _max;
+		private final Float64 _probability;
+		
+		public PDF(final Domain<N> domain) {
+			_min = domain.getMin().doubleValue();
+			_max = domain.getMax().doubleValue();
+			_probability = Float64.valueOf(1.0/(_max - _min));
+			
+			_variables.add(new Variable.Local<N>("x"));
+		}
+		
+		@Override
+		public Float64 evaluate() {
+			final double x = _variables.get(0).get().doubleValue();
+			
+			Float64 result = Float64.ZERO;
+			if (x >= _min && x <= _max) {
+				result = _probability;
+			}
+			
+			return result;
+		}
+	
+		@Override
+		public List<Variable<N>> getVariables() {
+			return _variables;
+		}
+	
+		@Override
+		public Text toText() {
+			return null;
+		}
+		
+	}	
+	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	static final class CDF<N extends Number & Comparable<? super N>> 
 		extends Function<N, Float64> 
 	{
@@ -120,6 +172,25 @@ public class UniformDistribution<
 	}
 
 	/**
+	 * Return the pdf.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/uniform-pdf.gif"
+	 *     alt="f(x)=\left\{\begin{matrix}
+	 *          \frac{1}{max-min} & for & x \in [min, max] \\ 
+	 *          0 & & otherwise \\
+	 *          \end{matrix}\right."
+	 * />
+	 * </p>
+	 *  
+	 */
+	@Override
+	public Function<N, Float64> pdf() {
+		return new PDF<N>(_domain);
+	}
+	
+	/**
 	 * Return the cdf.
 	 * 
 	 * <p>
@@ -139,32 +210,7 @@ public class UniformDistribution<
 		return new CDF<N>(_domain);
 	}
 
-	/**
-	 * Return the pdf.
-	 * 
-	 * <p>
-	 * <img 
-	 *     src="doc-files/uniform-pdf.gif"
-	 *     alt="f(x)=\left\{\begin{matrix}
-	 *          \frac{1}{max-min} & for & x \in [min, max] \\ 
-	 *          0 & & otherwise \\
-	 *          \end{matrix}\right."
-	 * />
-	 * </p>
-	 *  
-	 */
-	@Override
-	public Function<N, Float64> pdf() {
-		return null;
-	}
-
 }
-
-
-
-
-
-
 
 
 
