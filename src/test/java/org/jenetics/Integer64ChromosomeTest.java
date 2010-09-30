@@ -31,7 +31,7 @@ import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.UniformNumberDistribution;
+import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.RandomRegistry;
@@ -71,8 +71,8 @@ public class Integer64ChromosomeTest {
 			
 			// Chi-Square teset for gene distribution.
 			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
-			final UniformNumberDistribution<Integer64> dist = 
-				new UniformNumberDistribution<Integer64>(min, max);
+			final UniformDistribution<Integer64> dist =
+				new UniformDistribution<Integer64>(min, max);
 			
 			final double χ2 = histogram.χ2(dist.cdf());
 			Assert.assertTrue(χ2 < 25); // TODO: Remove magic number.
