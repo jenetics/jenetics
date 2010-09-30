@@ -44,11 +44,12 @@ import org.jscience.mathematics.number.Integer64;
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
  * border</i> which define the histogram classes. A value is part of the 
  * <i>i</i><sup>th</sup> histogram array element if 
- * <pre>
- *     cls[i] > value <= cls[i - 1]  when <i>i</i> &isin; [1 .. cls.length - 1], 
- *     0                             when value < cls[0] and
- *     cls.length                    when value >= cls[cls.length - 1]. 
- * </pre>
+ * <p>
+ * <img 
+ *     src="doc-files/histogram-class.gif" 
+ *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\ len(c) & when & v \geq c_{len(c)-1} \\ j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right." 
+ * />
+ * </p>
  * 
  * Example:
  * <pre>
