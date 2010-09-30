@@ -33,10 +33,13 @@ import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
 /**
+ * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
+ * Uniform distribution</a> class.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class UniformNumberDistribution<
+public class UniformDistribution<
 	N extends Number & Comparable<? super N>
 >
 	implements Distribution<N> 
@@ -64,8 +67,14 @@ public class UniformNumberDistribution<
 		
 		@Override
 		public Float64 evaluate() {
-			final double x = getVariables().get(0).get().doubleValue();
-			return Float64.valueOf((x - _min)/_divisor);
+			final double x = _variables.get(0).get().doubleValue();
+			
+			Float64 result = Float64.ZERO;
+			if (x >= _min && x <= _max) {
+				result = Float64.valueOf((x - _min)/_divisor);
+			}
+			
+			return result;
 		}
 
 		@Override
@@ -89,7 +98,7 @@ public class UniformNumberDistribution<
 	 * @param domain the domain of the distribution.
 	 * @throws NullPointerException if the {@code domain} is {@code null}.
 	 */
-	public UniformNumberDistribution(final Domain<N> domain) {
+	public UniformDistribution(final Domain<N> domain) {
 		_domain = Validator.nonNull(domain, "Domain");
 	}
 
@@ -101,7 +110,7 @@ public class UniformNumberDistribution<
 	 * @throws IllegalArgumentException if {@code min >= max}
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public UniformNumberDistribution(final N min, final N max) {
+	public UniformDistribution(final N min, final N max) {
 		this(new Domain<N>(min, max));
 	}
 
@@ -110,11 +119,40 @@ public class UniformNumberDistribution<
 		return _domain;
 	}
 
+	/**
+	 * Return the cdf.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/uniform-cdf.gif"
+	 *     alt="f(x)=\left\{\begin{matrix}
+	 *         0 & for & x \leq min \\ 
+	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
+	 *         1 & for & x \ge max  \\ 
+	 *         \end{matrix}\right."
+	 * />
+	 * </p>
+	 *  
+	 */
 	@Override
 	public Function<N, Float64> cdf() {
 		return new CDF<N>(_domain);
 	}
 
+	/**
+	 * Return the pdf.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/uniform-pdf.gif"
+	 *     alt="f(x)=\left\{\begin{matrix}
+	 *          \frac{1}{max-min} & for & x \in [min, max] \\ 
+	 *          0 & & otherwise \\
+	 *          \end{matrix}\right."
+	 * />
+	 * </p>
+	 *  
+	 */
 	@Override
 	public Function<N, Float64> pdf() {
 		return null;

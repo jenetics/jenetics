@@ -47,7 +47,9 @@ import org.jscience.mathematics.number.Integer64;
  * <p>
  * <img 
  *     src="doc-files/histogram-class.gif" 
- *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\ len(c) & when & v \geq c_{len(c)-1} \\ j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right." 
+ *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\ 
+ *         len(c) & when & v \geq c_{len(c)-1} \\ 
+ *         j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right." 
  * />
  * </p>
  * 

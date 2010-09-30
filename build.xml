@@ -236,9 +236,12 @@
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/doc-files" />
 		</copy>
+		<copy todir="${javadoc.dir}/org/jenetics/stat/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/stat/doc-files" />
+		</copy>		
 		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
-		</copy>		
+		</copy>				
 		<replace dir="${javadoc.dir}" token="@!identifier!@" value="${identifier}" />
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
@@ -333,6 +336,12 @@
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/doc-files" />
 		</copy>
+		<copy todir="${javadoc.dir}/org/jenetics/stat/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/stat/doc-files" />
+		</copy>		
+		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
+		</copy>	
 		<replace dir="${javadoc.dir}" token="@!identifier!@" value="${identifier}" />
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>

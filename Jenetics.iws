@@ -41,13 +41,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="d6e7ad44-4de0-41bc-9afc-26c692e5f74d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/stat/QuantileTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/util/Accumulators.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/util/Accumulators.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Quantile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/util/AccumulatorsTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/util/AccumulatorsTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/testng.xml" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/testng.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Distribution.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Distribution.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64ChromosomeTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64ChromosomeTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64GeneTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64GeneTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64ChromosomeTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64ChromosomeTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Histogram.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Histogram.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformDistribution.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.iws" afterPath="$PROJECT_DIR$/Jenetics.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64GeneTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64GeneTest.java" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="Jenetics.iws" />
@@ -120,50 +122,10 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UniformNumberDistribution.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java">
+      <file leaf-file-name="UniformDistribution.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformDistribution.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="25" selection-start="3119" selection-end="3119" vertical-scroll-proportion="-45.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AccumulatorsTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/util/AccumulatorsTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="43" selection-start="1144" selection-end="1144" vertical-scroll-proportion="-66.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QuantileTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/stat/QuantileTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="76" selection-start="1198" selection-end="1198" vertical-scroll-proportion="-165.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Accumulators.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Accumulators.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="0" selection-start="1027" selection-end="1187" vertical-scroll-proportion="-217.5">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Quantile.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/Quantile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="111" selection-start="993" selection-end="993" vertical-scroll-proportion="-3.734177">
+            <state line="41" column="20" selection-start="1541" selection-end="1541" vertical-scroll-proportion="0.2020202">
               <folding />
             </state>
           </provider>
@@ -191,11 +153,13 @@
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/NumberUniform.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Distribution.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/util/Accumulators.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Quantile.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/jenetics/stat/QuantileTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/jenetics/util/AccumulatorsTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/jenetics/testng.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Quantile.java" />
+        <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformDistribution.java" />
       </list>
     </option>
   </component>
@@ -254,9 +218,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Problems" />
-      </pane>
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -476,6 +437,9 @@
         </subPane>
       </pane>
       <pane id="Favorites" />
+      <pane id="Scope">
+        <subPane subId="Problems" />
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -494,9 +458,9 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -699,18 +663,17 @@
     <frame x="-3" y="0" width="1926" height="1055" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18804348" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18804348" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826087" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.24986595" sideWeight="0.66415095" order="1" side_tool="false" content_ui="tabs" x="727" y="70" width="466" height="1060" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826087" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33005464" sideWeight="0.9989293" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20735608" sideWeight="0.8043478" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20735608" sideWeight="0.66413045" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.49622643" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21757771" sideWeight="0.65471697" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24626866" sideWeight="0.8043478" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2457356" sideWeight="0.66413045" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41847825" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924527" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Code explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -718,9 +681,10 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="RMI Explorer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896176" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826087" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33005464" sideWeight="0.9989293" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Formatter" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -739,7 +703,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename methods in Distribution class. Add javadoc." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix javadoc build." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -756,6 +720,8 @@
     <MESSAGE value="Rename methods in Optimize class." />
     <MESSAGE value="Rename methods in Uniform class." />
     <MESSAGE value="Rename methods in Distribution class. Add javadoc." />
+    <MESSAGE value="Extract org.jenetics.util.Accumulators.Quantile to top level class in org.jenetics.stat package." />
+    <MESSAGE value="Fix javadoc build." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -795,88 +761,64 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/Distribution.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="12" selection-start="1365" selection-end="1365" vertical-scroll-proportion="0.016835017">
-          <folding />
-        </state>
+        <state line="37" column="12" selection-start="1365" selection-end="1365" vertical-scroll-proportion="0.016835017" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/Float64ChromosomeTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="42" selection-start="952" selection-end="952" vertical-scroll-proportion="0.014590348">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/Histogram.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="7" selection-start="6563" selection-end="6635" vertical-scroll-proportion="-210.0">
-          <folding />
-        </state>
+        <state line="22" column="42" selection-start="952" selection-end="952" vertical-scroll-proportion="0.014590348" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/AbstractAccumulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="90" selection-start="1441" selection-end="1441" vertical-scroll-proportion="-150.0">
-          <folding />
-        </state>
+        <state line="41" column="90" selection-start="1441" selection-end="1441" vertical-scroll-proportion="-150.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/Distribution.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="58" selection-start="1456" selection-end="1456" vertical-scroll-proportion="-90.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="25" selection-start="3119" selection-end="3119" vertical-scroll-proportion="-45.0">
-          <folding />
-        </state>
+        <state line="38" column="58" selection-start="1456" selection-end="1456" vertical-scroll-proportion="-90.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Accumulators.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="0" selection-start="1027" selection-end="1187" vertical-scroll-proportion="-217.5">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
+        <state line="29" column="0" selection-start="1027" selection-end="1149" vertical-scroll-proportion="-217.5" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/stat/QuantileTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="76" selection-start="1198" selection-end="1198" vertical-scroll-proportion="-165.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="31" column="76" selection-start="1198" selection-end="1198" vertical-scroll-proportion="-165.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/testng.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="51" selection-start="3907" selection-end="3907" vertical-scroll-proportion="3.0379746">
-          <folding />
-        </state>
+        <state line="144" column="51" selection-start="3907" selection-end="3907" vertical-scroll-proportion="3.0379746" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/util/AccumulatorsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="43" selection-start="1144" selection-end="1144" vertical-scroll-proportion="-66.0">
-          <folding />
-        </state>
+        <state line="30" column="43" selection-start="1144" selection-end="1144" vertical-scroll-proportion="-66.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/Histogram.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="72" selection-start="3130" selection-end="3130" vertical-scroll-proportion="0.5016835" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/Quantile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="111" selection-start="993" selection-end="993" vertical-scroll-proportion="-3.734177">
+        <state line="48" column="42" selection-start="1814" selection-end="1814" vertical-scroll-proportion="0.45454547" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="330" column="44" selection-start="11334" selection-end="11334" vertical-scroll-proportion="0.017281106">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformDistribution.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="20" selection-start="1541" selection-end="1541" vertical-scroll-proportion="0.2020202">
           <folding />
         </state>
       </provider>
