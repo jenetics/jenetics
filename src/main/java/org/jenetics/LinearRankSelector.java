@@ -23,13 +23,18 @@
 package org.jenetics;
 
 
-
 /**
+ * <p>
  * In linear ranking selection, individuals (phenotypes) are sorted according
  * to their fitness values and the rank N is assignee to the best Phenotype 
  * individual and the rank 1 to the worst Phenotype. The selection probability 
- * is linearly assigned to the individuals according to their rank:<p/>
- * <p/><img src="doc-files/linear-rank-selector.gif" alt="Linear Rank Selection" /></p> 
+ * is linearly assigned to the individuals according to their rank.
+ * </p>
+ * <p/><img 
+ *        src="doc-files/linear-rank-selector.gif" 
+ *        alt="p_i=\frac{1}{N}(n_m+(n_p-n_m)\frac{i-1}{N-1})" 
+ *     />
+ * </p> 
  * 
  * Here <i>n</i><sub><i>m</i></sub>/<i>N</i> is the probability of the worst Phenotype 
  * individual to be	selected and <i>n</i><sub><i>p</i></sub>/<i>N</i> the probability 

@@ -27,10 +27,20 @@ import static java.lang.Math.exp;
 import org.jenetics.util.ArrayUtils;
 
 /**
- * In this <code>Selector</code>, the probability for selection is defined as:
- * <p/><img src="doc-files/boltzmann-formula1.gif" alt="Boltzman" /></p> 
+ * <p>
+ * In this <code>Selector</code>, the probability for selection is defined as.
+ * </p>
+ * <p/><img 
+ *        src="doc-files/boltzmann-formula1.gif" 
+ *        alt="p_i=\frac{\textup{e}^{b\cdot f_i}}{Z}" 
+ *     />
+ * </p> 
  * where <i>b</i> controls the selection intensity, and
- * <p/><img src="doc-files/boltzmann-formula2.gif" alt="Boltzmann" />.</p> 
+ * <p/><img 
+ *        src="doc-files/boltzmann-formula2.gif" 
+ *        alt="Z=\sum_{j=1}^{n}\textrm{e}^{f_j}" 
+ *     />.
+ * </p> 
  * 
  * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the 
  * <i>j<sup>th</sup></i> individual.
