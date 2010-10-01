@@ -113,6 +113,7 @@ public class UniformDistribution<
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_divisor = _max - _min;
+			assert (_divisor > 0);
 			
 			_variables.add(new Variable.Local<N>("x"));
 		}
@@ -172,7 +173,7 @@ public class UniformDistribution<
 	}
 
 	/**
-	 * Return the pdf.
+	 * Return a new PDF object.
 	 * 
 	 * <p>
 	 * <img 
@@ -191,7 +192,7 @@ public class UniformDistribution<
 	}
 	
 	/**
-	 * Return the cdf.
+	 * Return a new CDF object.
 	 * 
 	 * <p>
 	 * <img 
