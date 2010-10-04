@@ -88,7 +88,7 @@ public final class Validator {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static final class CheckRange<C extends Comparable<C>> 
+	public static final class CheckRange<C extends Comparable<? super C>> 
 		implements Predicate<C> 
 	{
 		private final C _min;
@@ -168,7 +168,7 @@ public final class Validator {
 	 * @throws IllegalArgumentException if the given {@code value} is out of
 	 * 		  range.
 	 */
-	public static <T extends Comparable<T>> T checkRange(
+	public static <T extends Comparable<? super T>> T checkRange(
 		final T value, 
 		final T min, 
 		final T max
