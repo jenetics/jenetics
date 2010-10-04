@@ -38,7 +38,11 @@ import javolution.lang.Immutable;
  * @version $Id$
  */
 public final class CharSet 
-	implements CharSequence, Iterable<Character>, Immutable, Serializable 
+	implements CharSequence, 
+				Iterable<Character>,
+				Comparable<CharSet>,
+				Immutable, 
+				Serializable 
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -187,6 +191,21 @@ public final class CharSet
 		
 		final CharSet ch = (CharSet)object;
 		return Arrays.equals(_characters, ch._characters);
+	}
+	
+	@Override
+	public int compareTo(final CharSet set) {
+		int result = 0;
+		
+		final int n = Math.min(_characters.length, set._characters.length);
+		for (int i = 0; i < n && result == 0; ++i) {
+			result = _characters[i] - set._characters[i];
+		}
+		if (result == 0) {
+			result = _characters.length - set._characters.length;
+		}
+		
+		return result;
 	}
 	
 	@Override
