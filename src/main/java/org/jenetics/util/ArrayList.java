@@ -69,11 +69,7 @@ final class ArrayList<T> extends AbstractList<T>
 	
 	@Override
 	public Object[] toArray() {
-		final Object[] array = new Object[_array.length()];
-		for (int i = 0; i < array.length; ++i) {
-			array[i] = _array.get(i);
-		}
-		return array;
+		return _array.toArray();
 	}
 	
 	@SuppressWarnings("unchecked")
