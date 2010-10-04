@@ -32,7 +32,6 @@ import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Converter;
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
 
@@ -55,15 +54,6 @@ public class Integer64Gene
 	@Override
 	public Integer64Gene mean(final Integer64Gene that) {
 		return newInstance((_value.longValue() + that._value.longValue()) >>> 1);
-	}
-	
-	/**
-	 * Return the {@link Factory} view of this gene.
-	 * 
-	 * @return the {@link Factory} view of this gene.
-	 */
-	Factory<Integer64Gene> asFactory() {
-		return this;
 	}
 	
 	/* *************************************************************************

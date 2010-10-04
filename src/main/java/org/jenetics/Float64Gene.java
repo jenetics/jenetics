@@ -32,7 +32,6 @@ import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Converter;
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.structure.GroupMultiplicative;
@@ -66,14 +65,6 @@ public class Float64Gene
 			);
 	}
 	
-	/**
-	 * Return the {@link Factory} view of this gene.
-	 * 
-	 * @return the {@link Factory} view of this gene.
-	 */
-	Factory<Float64Gene> asFactory() {
-		return this;
-	}
 	
 	/* *************************************************************************
 	 *  Property access methods
