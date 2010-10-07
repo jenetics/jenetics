@@ -26,6 +26,28 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
 
 /**
+ * 
+ * <img src="doc-files/linear-kxd1.gif"
+ *      alt="y = k \cdot x + d"
+ * />
+ * 
+ * <img src="doc-files/linear-kxd2.gif"
+ *      alt="y = 
+ *      \\underset{k} {\\underbrace {\frac{y_2-y_1}{x_2-x_1}}} \cdot x + 
+ *               \\underset{d}{\\underbrace {y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1}}"
+ * />
+ * 
+ * <img src="doc-files/linear-precondition.gif"
+ *      alt="\int_{x_1}^{x_2}\left( 
+ *           \frac{y_2-y_1}{x_2-x_1}\cdot x + y_1-
+ *           \frac{y_2-y_1}{x_2-x_1}\cdot x_1
+ *           \right)\mathrm{d}x = 1"
+ *  />
+ *  
+ *  <img src="doc-files/linear-precondition-y2.gif"
+ *       alt="y_2 = \frac{(x_2-x_1)\cdot y_1 - 2}{x_2-x_1}"
+ *  />
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
