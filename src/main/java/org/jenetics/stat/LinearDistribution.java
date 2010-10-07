@@ -22,10 +22,32 @@
  */
 package org.jenetics.stat;
 
+import org.jscience.mathematics.function.Function;
+import org.jscience.mathematics.number.Float64;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class χ2 {
+public class LinearDistribution<
+	N extends Number & Comparable<? super N>
+>
+	implements Distribution<N> 
+{
+
+	@Override
+	public Domain<N> getDomain() {
+		return null;
+	}
+
+	@Override
+	public Function<N, Float64> cdf() {
+		return null;
+	}
+
+	@Override
+	public Function<N, Float64> pdf() {
+		return null;
+	}
 
 }
