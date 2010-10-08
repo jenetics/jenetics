@@ -27,6 +27,8 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * 
+ * <embed src="doc-files/linear-distribution.svg" type="image/svg+xml"/>
+ * 
  * <img src="doc-files/linear-kxd1.gif"
  *      alt="y = k \cdot x + d"
  * />
