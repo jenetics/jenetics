@@ -335,6 +335,8 @@ public class GeneticAlgorithm<
 			// Combining the new population (containing the survivors and the 
 			// altered offsprings).
 			_combineTimer.start();
+			final int killed = _killed.get();
+			final int invalid = _invalid.get();
 			_population = combine(survivors, offsprings);
 			_combineTimer.stop();
 			
@@ -348,8 +350,8 @@ public class GeneticAlgorithm<
 			_statistics = _calculator.evaluate(
 					_population, _generation, _optimization
 				);
-			_statistics.killed.set(_killed.get());
-			_statistics.invalid.set(_invalid.get());
+			_statistics.killed.set(_killed.get() - killed);
+			_statistics.invalid.set(_invalid.get() - invalid);
 			
 			final int comp = _optimization.compare(
 					_bestStatistics.getBestPhenotype(), 
