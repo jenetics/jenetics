@@ -64,9 +64,20 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	protected final int _samples;
 	protected final double _ageMean;
 	protected final double _ageVariance;
-		
-	private final FinalReference<Time> _time = new FinalReference<Time>(new Time());
+			
+	private final FinalReference<Time> 
+		_time = new FinalReference<Time>(new Time());
 
+	/**
+	 * The number of killed phenotypes. Can be set only once.
+	 */
+	public final FinalReference<Integer> killed = new FinalReference<Integer>(0);
+	
+	/**
+	 * The number of invalid phenotypes. Can be set only onve.
+	 */
+	public final FinalReference<Integer> invalid = new FinalReference<Integer>(0);
+	
 	protected Statistics(final int generation) {
 		this(generation, null, null, 0, NaN, NaN);
 	}

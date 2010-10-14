@@ -28,6 +28,7 @@ import static org.jenetics.util.Validator.checkProbability;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -155,6 +156,9 @@ public class GeneticAlgorithm<
 	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
+	
+	private final AtomicInteger _killed = new AtomicInteger(0);
+	private final AtomicInteger _invalid = new AtomicInteger(0);
 	
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
@@ -344,6 +348,8 @@ public class GeneticAlgorithm<
 			_statistics = _calculator.evaluate(
 					_population, _generation, _optimization
 				);
+			_statistics.killed.set(_killed.get());
+			_statistics.invalid.set(_invalid.get());
 			
 			final int comp = _optimization.compare(
 					_bestStatistics.getBestPhenotype(), 
@@ -434,10 +440,13 @@ public class GeneticAlgorithm<
 					for (int i = 0, n = survivors.size(); i < n; ++i) {
 						final Phenotype<G, C> survivor = survivors.get(i);
 						
-						// Sorry, to old or not valid.
-						if (survivor.getAge(_generation) > _maximalPhenotypeAge || 
-								!survivor.isValid()) 
-						{
+						final boolean isTooOld = 
+							survivor.getAge(_generation) > _maximalPhenotypeAge;
+							
+						final boolean isInvalid = isTooOld || !survivor.isValid();
+						
+						// Sorry, too old or not valid.
+						if (isInvalid) {
 							final Phenotype<G, C> newpt = Phenotype.valueOf(
 									_genotypeFactory.newInstance(), 
 									_fitnessFunction, 
@@ -445,6 +454,12 @@ public class GeneticAlgorithm<
 									_generation
 								);
 							survivors.set(i, newpt);
+						}
+						
+						if (isTooOld) {
+							_killed.incrementAndGet();
+						} else if (isInvalid) {
+							_invalid.incrementAndGet();
 						}
 					}
 				}
@@ -823,6 +838,24 @@ public class GeneticAlgorithm<
 	 */
 	public Statistics<G, C> getBestStatistics() {
 		return _bestStatistics;
+	}
+	
+	/**
+	 * Return the number of killed phenotypes, so far.
+	 * 
+	 * @return the number of killed phenotypes
+	 */
+	public int getNumberOfKilledPhenotypes() {
+		return _killed.get();
+	}
+	
+	/**
+	 * Return the number of invalid phenotypes, so far.
+	 * 
+	 * @return the number of invalid phenotypes
+	 */
+	public int getNumberOfInvalidPhenotypes() {
+		return _invalid.get();
 	}
 	
 	/**
