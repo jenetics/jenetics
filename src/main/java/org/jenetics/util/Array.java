@@ -657,6 +657,33 @@ public class Array<T> implements
 	}
 	
 	/**
+	 * Return an iterator with the new type {@code B}.
+	 * 
+	 * @param <B> the component type of the returned type.
+	 * @param converter the converter for converting from {@code T} to {@code B}.
+	 * @return the iterator of the converted type.
+	 * @throws NullPointerException if the given {@code converter} is {@code null}.
+	 */
+	public <B> Iterator<B> iterator(
+		final Converter<? super T, ? extends B> converter
+	) {
+		nonNull(converter, "Converter");
+		
+		return new Iterator<B>() {
+			private final Iterator<T> _iterator = iterator();
+			@Override public boolean hasNext() {
+				return _iterator.hasNext();
+			}
+			@Override public B next() {
+				return converter.convert(_iterator.next());
+			}
+			@Override public void remove() {
+				_iterator.remove();
+			}
+		};
+	}
+	
+	/**
 	 * Return a shallow copy of this array. The array elements are not cloned.
 	 * The copied array is not sealed. If the array is a sub-array (created
 	 * with the {@link #subArray(int, int)} method, only the sub-array-part is
