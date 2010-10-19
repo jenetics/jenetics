@@ -88,7 +88,7 @@ public class UniformDistribution<
 	
 		@Override
 		public Text toText() {
-			return null;
+			return Text.valueOf("p(x) = " + _probability);
 		}
 		
 	}	
@@ -198,9 +198,9 @@ public class UniformDistribution<
 	 * <img 
 	 *     src="doc-files/uniform-cdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
-	 *         0 & for & x \leq min \\ 
+	 *         0 & for & x < min \\ 
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
-	 *         1 & for & x \ge max  \\ 
+	 *         1 & for & x > max  \\ 
 	 *         \end{matrix}\right."
 	 * />
 	 * </p>

@@ -43,7 +43,7 @@ import org.jscience.mathematics.number.Integer64;
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
  * border</i> which define the histogram classes. A value is part of the 
- * <i>i</i><sup>th</sup> histogram array element if 
+ * <i>i</i><sup>th</sup> histogram array element:
  * <p>
  * <img 
  *     src="doc-files/histogram-class.gif" 
