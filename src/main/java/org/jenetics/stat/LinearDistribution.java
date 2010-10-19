@@ -56,6 +56,12 @@ import org.jscience.mathematics.number.Float64;
  *  
  *  for fixed values for <i>x<sub>1</sub></i>, <i>x<sub>2</sub></i> and 
  *  <i>y<sub>1</sub></i>.
+ *  <p>
+ *  If the value of <i>y<sub>2</sub></i> < 0, the value of <i>x<sub>2</sub></i>
+ *  is decreased so that the resulting triangle (<i>x<sub>1</sub></i>,0), 
+ *  (<i>x<sub>1</sub></i>,<i>y<sub>1</sub></i>), (<i>x<sub>2</sub></i>,0) has 
+ *  an area of <i>one</i>.
+ *  </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
