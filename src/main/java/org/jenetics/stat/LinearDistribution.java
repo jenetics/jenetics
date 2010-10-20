@@ -154,11 +154,37 @@ public class LinearDistribution<
 		return _domain;
 	}
 
+	/**
+	 * Return a new CDF object.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/linear-cdf.gif"
+	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
+	 *      {2(x_2 - x_1)}"
+	 * />
+	 * </p>
+	 *  
+	 */
 	@Override
 	public Function<N, Float64> cdf() {
 		return null;
 	}
 
+	/**
+	 * Return a new PDF object.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/linear-pdf.gif"
+	 *     alt="f(x) = \left( 
+	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x + 
+	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
+	 *                 \right)"
+	 * />
+	 * </p>
+	 *  
+	 */
 	@Override
 	public Function<N, Float64> pdf() {
 		return new PDF<N>(_x1, _y1, _x2, _y2);
