@@ -50,7 +50,7 @@ import org.jscience.mathematics.number.Float64;
  *  Solving this integral leads to
  *  <p>
  *  <img src="doc-files/linear-precondition-y2.gif"
- *       alt="y_2 = \frac{(x_2-x_1)\cdot y_1 - 2}{x_2-x_1}"
+ *       alt="y_2 = -\frac{(x_2-x_1)\cdot y_1 - 2}{x_2-x_1}"
  *  />
  *  </p>
  *  
@@ -86,12 +86,17 @@ public class LinearDistribution<
 		
 		private final double _min;
 		private final double _max;
-		private final Float64 _probability;
+		private final double _k;
+		private final double _d;
 		
-		public PDF(final Domain<N> domain) {
-			_min = domain.getMin().doubleValue();
-			_max = domain.getMax().doubleValue();
-			_probability = Float64.valueOf(1.0/(_max - _min));
+		public PDF(
+			final double x1, final double y1, 
+			final double x2, final double y2
+		) {
+			_min = x1;
+			_max = x2;
+			_k = (y2 - y1)/(x2 - x1);
+			_d = y1 - _k*x1;
 			
 			_variables.add(new Variable.Local<N>("x"));
 		}
@@ -102,7 +107,7 @@ public class LinearDistribution<
 			
 			Float64 result = Float64.ZERO;
 			if (x >= _min && x <= _max) {
-				result = _probability;
+				result = Float64.valueOf(_k*x + _d);
 			}
 			
 			return result;
@@ -122,9 +127,26 @@ public class LinearDistribution<
 	
 	
 	private final Domain<N> _domain;
+	private final double _x1;
+	private final double _x2;
+	private final double _y1;
+	private final double _y2;
 	
-	public LinearDistribution(final Domain<N> domain) {
+	public LinearDistribution(final Domain<N> domain, final double y1) {
 		_domain = Validator.nonNull(domain);
+		
+		_y1 = Math.max(y1, 0.0);
+		_x1 = domain.getMin().doubleValue();
+		_y2 = Math.max(y2(_x1, domain.getMax().doubleValue(), y1), 0.0);
+		if (_y2 == 0) {
+			_x2 = 2.0/_y1 + _x1;
+		} else {
+			_x2 = domain.getMax().doubleValue();
+		}
+	}
+	
+	private static double y2(final double x1, final double x2, final double y1) {
+		return -((x2 - x1)*y1 - 2)/(x2 - x1);
 	}
 	
 	@Override
@@ -139,7 +161,26 @@ public class LinearDistribution<
 
 	@Override
 	public Function<N, Float64> pdf() {
-		return new PDF<N>(_domain);
+		return new PDF<N>(_x1, _y1, _x2, _y2);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"LinearDistribution[(%f, %f), (%f, %f)]", 
+				_x1, _y1, _x2, _y2
+			) ;
+	}
+	
+	public static void main(String[] args) {
+		Domain<Double> domain = new Domain<Double>(0.0, 5.0);
+		LinearDistribution<Double> dist = new LinearDistribution<Double>(domain, 0.2);
+		System.out.println(dist);
 	}
 
 }
+
+
+
+
+
