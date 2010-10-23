@@ -76,6 +76,66 @@ public class LinearDistribution<
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
+	static final class CDF<N extends Number & Comparable<? super N>> 
+		extends Function<N, Float64> 
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private final List<Variable<N>> 
+			_variables = new FastList<Variable<N>>(1);
+		
+		private final double _x1;
+		private final double _y1;
+		private final double _x2;
+		private final double _y2;
+		
+		public CDF(
+			final double x1, final double y1, 
+			final double x2, final double y2
+		) {
+			_x1 = x1;
+			_y1 = y1;
+			_x2 = x2;
+			_y2 = y2;
+			
+			_variables.add(new Variable.Local<N>("x"));
+		}
+		
+		@Override
+		public Float64 evaluate() {
+			final double x = _variables.get(0).get().doubleValue();
+			
+			Float64 result = null;
+			if (x < _x1) {
+				result = Float64.ZERO;
+			} else if (x > _x2) {
+				result = Float64.ONE; 
+			} else {
+				result = Float64.valueOf(
+						((x*x - 2*x*_x2)*_y1 - (x*x - 2*x*_x1)*_y2)/
+						(2*(_x2 - _x1))
+					);
+			}
+			
+			return result;
+		}
+	
+		@Override
+		public List<Variable<N>> getVariables() {
+			return _variables;
+		}
+	
+		@Override
+		public Text toText() {
+			return null;
+		}
+		
+	}
+	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	static final class PDF<N extends Number & Comparable<? super N>> 
 		extends Function<N, Float64> 
 	{
