@@ -22,6 +22,9 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Predicates.nil;
+import static org.jenetics.util.Predicates.not;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -103,6 +106,17 @@ public class ArrayTest {
 		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(6, 15).subArray(4, 9));
 		Assert.assertEquals(a1.subArray(0, 5).copy(), a2.subArray(6, 15).subArray(4, 9).copy());
 		Assert.assertFalse(a1.equals(a2));
+	}
+	
+	@Test
+	public void filter() {
+		final Array<Integer> array = new Array<Integer>(20);
+		array.fill(100);
+		array.set(18, null);
+		array.set(19, null);
+		
+		final Array<Integer> filtered = array.filter(not(nil()));
+		Assert.assertEquals(filtered.length(), array.length() - 2);
 	}
 	
 	@Test

@@ -87,7 +87,7 @@ public final class Predicates {
 		 */
 		@Override
 		public boolean evaluate(final T object) {
-			return !_a.equals(object);
+			return !_a.evaluate(object);
 		}
 		
 		@Override
@@ -121,7 +121,7 @@ public final class Predicates {
 		
 		@Override
 		public boolean evaluate(final T object) {
-			return _a.equals(object) && _b.evaluate(object);
+			return _a.evaluate(object) && _b.evaluate(object);
 		}
 		
 		@Override
@@ -154,7 +154,7 @@ public final class Predicates {
 		
 		@Override
 		public boolean evaluate(final T object) {
-			return _a.equals(object) || _b.evaluate(object);
+			return _a.evaluate(object) || _b.evaluate(object);
 		}
 		
 		@Override
