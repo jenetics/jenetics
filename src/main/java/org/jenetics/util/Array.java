@@ -441,6 +441,30 @@ public class Array<T> implements
 	}
 	
 	/**
+	 * Selects all elements of this list which satisfy a predicate. 
+	 * 
+	 * @param predicate the predicate used to test elements.
+	 * @return a new array consisting of all elements of this list that satisfy 
+	 *         the given {@code predicate}. The order of the elements is 
+	 *         preserved.
+	 * @throws NullPointerException if the given {@code predicate} is 
+	 *         {@code null}. 
+	 */
+	public Array<T> filter(final Predicate<? super T> predicate) {
+		final Array<T> copy = new Array<T>(length());
+		
+		int index = 0;
+		for (int i = 0, n = length(); i < n; ++i) {
+			final T value = get(i);
+			if (predicate.evaluate(value)) {
+				copy.set(index++, value);
+			}
+		}
+		
+		return copy.subArray(0, index);
+	}
+	
+	/**
 	 * Returns the index of the last element on which the given predicate 
 	 * returns {@code true}, or -1 if the predicate returns false for every
 	 * array element.
@@ -964,16 +988,4 @@ public class Array<T> implements
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
