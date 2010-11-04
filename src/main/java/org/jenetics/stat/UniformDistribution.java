@@ -36,6 +36,8 @@ import org.jscience.mathematics.number.Float64;
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
  * Uniform distribution</a> class.
  * 
+ * @see LinearDistribution
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -46,6 +48,16 @@ public class UniformDistribution<
 {
 
 	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/uniform-pdf.gif"
+	 *     alt="f(x)=\left\{\begin{matrix}
+	 *          \frac{1}{max-min} & for & x \in [min, max] \\ 
+	 *          0 & & otherwise \\
+	 *          \end{matrix}\right."
+	 * />
+	 * </p>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
@@ -54,8 +66,10 @@ public class UniformDistribution<
 	{
 		private static final long serialVersionUID = 1L;
 		
-		private final List<Variable<N>> 
-			_variables = new FastList<Variable<N>>(1);
+		// Create and initialize the used variable 'x'.
+		private final Variable<N> _variable = new Variable.Local<N>("x");
+		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		{ _variables.add(_variable); }
 		
 		private final double _min;
 		private final double _max;
@@ -65,13 +79,11 @@ public class UniformDistribution<
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_probability = Float64.valueOf(1.0/(_max - _min));
-			
-			_variables.add(new Variable.Local<N>("x"));
 		}
 		
 		@Override
 		public Float64 evaluate() {
-			final double x = _variables.get(0).get().doubleValue();
+			final double x = _variable.get().doubleValue();
 			
 			Float64 result = Float64.ZERO;
 			if (x >= _min && x <= _max) {
@@ -88,12 +100,23 @@ public class UniformDistribution<
 	
 		@Override
 		public Text toText() {
-			return Text.valueOf("p(x) = " + _probability);
+			return Text.valueOf(String.format("p(x) = %s", _probability));
 		}
 		
 	}	
 	
 	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/uniform-cdf.gif"
+	 *     alt="f(x)=\left\{\begin{matrix}
+	 *         0 & for & x < min \\ 
+	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
+	 *         1 & for & x > max  \\ 
+	 *         \end{matrix}\right."
+	 * />
+	 * </p>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
@@ -102,8 +125,10 @@ public class UniformDistribution<
 	{
 		private static final long serialVersionUID = 1L;
 		
-		private final List<Variable<N>> 
-			_variables = new FastList<Variable<N>>(1);
+		// Create and initialize the used variable 'x'.
+		private final Variable<N> _variable = new Variable.Local<N>("x");
+		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		{ _variables.add(_variable); }
 		
 		private final double _min;
 		private final double _max;
@@ -113,9 +138,7 @@ public class UniformDistribution<
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_divisor = _max - _min;
-			assert (_divisor > 0);
-			
-			_variables.add(new Variable.Local<N>("x"));
+			assert (_divisor > 0);			
 		}
 		
 		@Override
@@ -123,7 +146,11 @@ public class UniformDistribution<
 			final double x = _variables.get(0).get().doubleValue();
 			
 			Float64 result = Float64.ZERO;
-			if (x >= _min && x <= _max) {
+			if (x < _min) {
+				result = Float64.ZERO;
+			} else if (x > _max) {
+				result = Float64.ONE; 
+			} else {
 				result = Float64.valueOf((x - _min)/_divisor);
 			}
 			
@@ -137,7 +164,9 @@ public class UniformDistribution<
 
 		@Override
 		public Text toText() {
-			return null;
+			return Text.valueOf(String.format(
+						"P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max
+					));
 		}
 		
 	}
