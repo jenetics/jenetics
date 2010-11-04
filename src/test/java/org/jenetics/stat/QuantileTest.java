@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: Accumulators.java 600 2010-09-21 16:06:51Z fwilhelm $
+ * @version $Id$
  */
 public class QuantileTest {
 
@@ -36,7 +36,7 @@ public class QuantileTest {
 	public void quantile() {
 		final Quantile<Integer> quantile = new Quantile<Integer>(0.5);
 		for (int i = 0; i < 1000; ++i) {
-			quantile.accumulate(i);
+			quantile.accumulate(i); 
 //			System.out.println(quantile.getQuantile() + "--" + Math.floor(i/2.0));
 			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
 		}
