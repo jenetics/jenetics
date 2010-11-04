@@ -143,7 +143,7 @@ public class GeneticAlgorithm<
 	private int _populationSize = DEFAULT_POPULATION_SIZE;
 	private Population<G, C> _population = new Population<G, C>(_populationSize);
 	private int _maximalPhenotypeAge = DEFAULT_MAXIMAL_PHENOTYPE_AGE;
-	private int _generation = 0;
+	private volatile int _generation = 0;
 	
 	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
 	private Statistics<G, C> _bestStatistics = null;
@@ -490,6 +490,22 @@ public class GeneticAlgorithm<
 		return (int)round(
 			_offspringFraction*_populationSize
 		);
+	}
+	
+	/**
+	 * Return {@code true} if the {@link #setup()} method has already been called,
+	 * {@code false} otherwise.
+	 * 
+	 * @return {@code true} if the {@link #setup()} method has already been called,
+	 *         {@code false} otherwise.
+	 */
+	public boolean isInitialized() {
+		_lock.lock();
+		try {
+			return _generation > 0;
+		} finally {
+			_lock.unlock();
+		}
 	}
 	
 	/**
