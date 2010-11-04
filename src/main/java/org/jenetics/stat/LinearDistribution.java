@@ -73,6 +73,14 @@ public class LinearDistribution<
 {
 	
 	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/linear-cdf.gif"
+	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
+	 *      {2(x_2 - x_1)}"
+	 * />
+	 * </p>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
@@ -81,8 +89,10 @@ public class LinearDistribution<
 	{
 		private static final long serialVersionUID = 1L;
 		
-		private final List<Variable<N>> 
-			_variables = new FastList<Variable<N>>(1);
+		// Create and initialize the used variable 'x'.
+		private final Variable<N> _variable = new Variable.Local<N>("x");
+		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		{ _variables.add(_variable); }
 		
 		private final double _x1;
 		private final double _y1;
@@ -97,8 +107,6 @@ public class LinearDistribution<
 			_y1 = y1;
 			_x2 = x2;
 			_y2 = y2;
-			
-			_variables.add(new Variable.Local<N>("x"));
 		}
 		
 		@Override
@@ -127,12 +135,22 @@ public class LinearDistribution<
 	
 		@Override
 		public Text toText() {
-			return null;
+			return Text.valueOf("");
 		}
 		
 	}
 	
 	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/linear-pdf.gif"
+	 *     alt="f(x) = \left( 
+	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x + 
+	 *                      y_1-\frac{y_2-y_1}{x_2-x_1}\cdot x_1
+	 *                 \right)"
+	 * />
+	 * </p>
+	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
@@ -141,8 +159,10 @@ public class LinearDistribution<
 	{
 		private static final long serialVersionUID = 1L;
 		
-		private final List<Variable<N>> 
-			_variables = new FastList<Variable<N>>(1);
+		// Create and initialize the used variable 'x'.
+		private final Variable<N> _variable = new Variable.Local<N>("x");
+		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		{ _variables.add(_variable); }
 		
 		private final double _min;
 		private final double _max;
@@ -157,8 +177,6 @@ public class LinearDistribution<
 			_max = x2;
 			_k = (y2 - y1)/(x2 - x1);
 			_d = y1 - _k*x1;
-			
-			_variables.add(new Variable.Local<N>("x"));
 		}
 		
 		@Override
@@ -180,7 +198,7 @@ public class LinearDistribution<
 	
 		@Override
 		public Text toText() {
-			return null;
+			return Text.valueOf("");
 		}
 		
 	}
