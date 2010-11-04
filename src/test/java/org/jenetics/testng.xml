@@ -145,6 +145,11 @@
 			<class name="org.jenetics.stat.QuantileTest" />
 		</classes>
 	</test>
+    <test name="org.jenetics.stat.UniformDistribution">
+        <classes>
+            <class name="org.jenetics.stat.UniformDistributionTest" />
+        </classes>
+    </test>	
 	<test name="org.jenetics.util.AccumulatorsTest">
 		<classes>
 			<class name="org.jenetics.util.AccumulatorsTest" />
