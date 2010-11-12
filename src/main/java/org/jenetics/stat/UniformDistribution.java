@@ -239,6 +239,29 @@ public class UniformDistribution<
 	public Function<N, Float64> cdf() {
 		return new CDF<N>(_domain);
 	}
+	
+	@Override
+	public int hashCode() {
+		return 17*_domain.hashCode() + 37;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final UniformDistribution<?> dist = (UniformDistribution<?>)obj;
+		return _domain.equals(dist._domain);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("UniformDistribution[%s]", _domain);
+	}
 
 }
 

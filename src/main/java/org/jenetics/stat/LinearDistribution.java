@@ -75,74 +75,6 @@ public class LinearDistribution<
 	/**
 	 * <p>
 	 * <img 
-	 *     src="doc-files/linear-cdf.gif"
-	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
-	 *      {2(x_2 - x_1)}"
-	 * />
-	 * </p>
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	static final class CDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
-	{
-		private static final long serialVersionUID = 1L;
-		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
-		{ _variables.add(_variable); }
-		
-		private final double _x1;
-		private final double _y1;
-		private final double _x2;
-		private final double _y2;
-		
-		public CDF(
-			final double x1, final double y1, 
-			final double x2, final double y2
-		) {
-			_x1 = x1;
-			_y1 = y1;
-			_x2 = x2;
-			_y2 = y2;
-		}
-		
-		@Override
-		public Float64 evaluate() {
-			final double x = _variables.get(0).get().doubleValue();
-			
-			Float64 result = null;
-			if (x < _x1) {
-				result = Float64.ZERO;
-			} else if (x > _x2) {
-				result = Float64.ONE; 
-			} else {
-				result = Float64.valueOf(
-						((x*x - 2*x*_x2)*_y1 - (x*x - 2*x*_x1)*_y2)/
-						(2*(_x2 - _x1))
-					);
-			}
-			
-			return result;
-		}
-	
-		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
-	
-		@Override
-		public Text toText() {
-			return Text.valueOf("");
-		}
-		
-	}
-	
-	/**
-	 * <p>
-	 * <img 
 	 *     src="doc-files/linear-pdf.gif"
 	 *     alt="f(x) = \left( 
 	 *                      \frac{y_2-y_1}{x_2-x_1} \cdot x + 
@@ -198,11 +130,81 @@ public class LinearDistribution<
 	
 		@Override
 		public Text toText() {
-			return Text.valueOf("");
+			return Text.valueOf(String.format("p(x) = %f·x + %f", _k, _d));
 		}
 		
 	}
 	
+	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/linear-cdf.gif"
+	 *     alt="f(x)=-\frac{(x^2-2x_2x)y_1 - (x^2 - 2x_1x)y_2}
+	 *      {2(x_2 - x_1)}"
+	 * />
+	 * </p>
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	static final class CDF<N extends Number & Comparable<? super N>> 
+		extends Function<N, Float64> 
+	{
+		private static final long serialVersionUID = 1L;
+		
+		// Create and initialize the used variable 'x'.
+		private final Variable<N> _variable = new Variable.Local<N>("x");
+		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		{ _variables.add(_variable); }
+		
+		private final double _x1;
+		private final double _x2;
+		
+		private final double _k;
+		private final double _d;
+		
+		public CDF(
+			final double x1, final double y1, 
+			final double x2, final double y2
+		) {
+			_x1 = x1;
+			_x2 = x2;
+			_k = (y2 - y1)/(x2 - x1);
+			_d = y1 - _k*x1;
+		}
+		
+		@Override
+		public Float64 evaluate() {
+			final double x = _variables.get(0).get().doubleValue();
+			
+			Float64 result = null;
+			if (x < _x1) {
+				result = Float64.ZERO;
+			} else if (x > _x2) {
+				result = Float64.ONE; 
+			} else {
+//				result = Float64.valueOf(
+//						-((x*x - 2*x*_x2)*_y1 - (x*x - 2*x*_x1)*_y2)/
+//						(2*(_x2 - _x1))
+//					);
+				result = Float64.valueOf( _k*x*x/2.0 + _d*x);
+			}
+			
+			return result;
+		}
+	
+		@Override
+		public List<Variable<N>> getVariables() {
+			return _variables;
+		}
+	
+		@Override
+		public Text toText() {
+			return Text.valueOf(String.format("P(x) = %f·x² - %f·x", _k/2.0, _d));
+		}
+		
+	}
+		
 	
 	private final Domain<N> _domain;
 	private final double _x1;
@@ -246,7 +248,7 @@ public class LinearDistribution<
 	 */
 	@Override
 	public Function<N, Float64> cdf() {
-		return null;
+		return new CDF<N>(_x1, _y1, _x2, _y2);
 	}
 
 	/**
@@ -269,17 +271,39 @@ public class LinearDistribution<
 	}
 	
 	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 17*_domain.hashCode() + 37;
+		hash += 17*Double.doubleToLongBits(_x1) + 37;		
+		hash += 17*Double.doubleToLongBits(_x2) + 37;
+		hash += 17*Double.doubleToLongBits(_y1) + 37;
+		hash += 17*Double.doubleToLongBits(_y2) + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final LinearDistribution<?> dist = (LinearDistribution<?>)obj;
+		return _domain.equals(dist._domain) &&
+				Double.doubleToLongBits(_x1) == Double.doubleToLongBits(dist._x1) &&
+				Double.doubleToLongBits(_x2) == Double.doubleToLongBits(dist._x2) &&
+				Double.doubleToLongBits(_y1) == Double.doubleToLongBits(dist._y1) &&
+				Double.doubleToLongBits(_y2) == Double.doubleToLongBits(dist._y2);
+	}
+	
+	@Override
 	public String toString() {
 		return String.format(
 				"LinearDistribution[(%f, %f), (%f, %f)]", 
 				_x1, _y1, _x2, _y2
 			) ;
-	}
-	
-	public static void main(String[] args) {
-		Domain<Double> domain = new Domain<Double>(0.0, 5.0);
-		LinearDistribution<Double> dist = new LinearDistribution<Double>(domain, 0.2);
-		System.out.println(dist);
 	}
 
 }

@@ -70,6 +70,29 @@ public interface Distribution<C extends Comparable<? super C>> {
 		public C getMax() {
 			return _max;
 		}
+		
+		@Override
+		public int hashCode() {
+			return _min.hashCode() + 37*_max.hashCode() + 17;
+		}
+		
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if (obj == null || obj.getClass() != getClass()) {
+				return false;
+			}
+			
+			final Domain<?> domain = (Domain<?>)obj;
+			return _min.equals(domain._min) && _max.equals(domain._max);
+		}
+		
+		@Override
+		public String toString() {
+			return "[" + _min + ", " + _max + "]";
+		}
 	}
 
 	/**
@@ -80,7 +103,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	public Domain<C> getDomain();
 
 	/**
-	 * Return the <i>Cumulative Distribution Function</i> (CDF).
+	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).
 	 *
 	 * @see <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">CDF</a>
 	 *
@@ -89,7 +112,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	public Function<C, Float64> cdf();
 
 	/**
-	 * Return the <i>Probability Density Function</i> (PDF).
+	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
 	 *
 	 * @see <a href="http://en.wikipedia.org/wiki/Probability_density_function">PDF</a>
 	 *
