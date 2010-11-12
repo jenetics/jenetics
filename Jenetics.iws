@@ -40,17 +40,7 @@
     </TreeState>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="d6e7ad44-4de0-41bc-9afc-26c692e5f74d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Distribution.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Distribution.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64ChromosomeTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64ChromosomeTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64GeneTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Integer64GeneTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64ChromosomeTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64ChromosomeTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Histogram.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Histogram.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformDistribution.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.iws" afterPath="$PROJECT_DIR$/Jenetics.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64GeneTest.java" afterPath="$PROJECT_DIR$/src/test/java/org/jenetics/Float64GeneTest.java" />
-    </list>
+    <list default="true" readonly="true" id="d6e7ad44-4de0-41bc-9afc-26c692e5f74d" name="Default" comment="" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="Jenetics.iws" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -669,6 +659,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826087" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33005464" sideWeight="0.9989293" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20735608" sideWeight="0.66413045" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.49622643" order="6" side_tool="false" content_ui="tabs" />
@@ -684,7 +675,6 @@
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826087" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33005464" sideWeight="0.9989293" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Formatter" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -703,7 +693,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix javadoc build." />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename UniformNumberDistribution to UniformDistribution." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -722,6 +712,7 @@
     <MESSAGE value="Rename methods in Distribution class. Add javadoc." />
     <MESSAGE value="Extract org.jenetics.util.Accumulators.Quantile to top level class in org.jenetics.stat package." />
     <MESSAGE value="Fix javadoc build." />
+    <MESSAGE value="Rename UniformNumberDistribution to UniformDistribution." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

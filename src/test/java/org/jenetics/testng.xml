@@ -140,6 +140,11 @@
 			<class name="org.jenetics.stat.HistogramTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.stat.LinearDistribution">
+		<classes>
+			<class name="org.jenetics.stat.LinearDistributionTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.stat.Quantile">
 		<classes>
 			<class name="org.jenetics.stat.QuantileTest" />
