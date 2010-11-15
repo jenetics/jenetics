@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
  */
 public class Integer64GeneTest {
 	
-	@Test(invocationCount = 10)
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstance() {
 		LocalContext.enter();
 		try {
@@ -57,7 +57,7 @@ public class Integer64GeneTest {
 			
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
 			
-			final int samples = 50000;
+			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
 				final Integer64Gene g1 = factory.newInstance();
 				final Integer64Gene g2 = factory.newInstance();

@@ -46,7 +46,7 @@ import org.testng.annotations.Test;
  */
 public class Float64ChromosomeTest {
 
-	@Test(invocationCount = 10)
+	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstance() {
 		LocalContext.enter();
 		try {
@@ -54,7 +54,7 @@ public class Float64ChromosomeTest {
 			
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
-			final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 1000);
+			final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 5000);
 			
 			final MinMax<Float64> mm = new MinMax<Float64>();
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);

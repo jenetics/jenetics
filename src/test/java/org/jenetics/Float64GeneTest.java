@@ -47,7 +47,7 @@ import org.testng.annotations.Test;
  */
 public class Float64GeneTest { 
     
-	@Test(invocationCount = 10)
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstance() {
 		LocalContext.enter();
 		try {

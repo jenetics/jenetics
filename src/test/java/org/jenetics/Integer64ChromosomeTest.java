@@ -45,7 +45,7 @@ import org.testng.annotations.Test;
  */
 public class Integer64ChromosomeTest {
 
-	@Test(invocationCount = 10)
+	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstance() {
 		LocalContext.enter();
 		try {
@@ -53,7 +53,7 @@ public class Integer64ChromosomeTest {
 			
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(100);
-			final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 1000);
+			final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 5000);
 			
 			final MinMax<Integer64> mm = new MinMax<Integer64>();			
 			final Variance<Integer64> variance = new Variance<Integer64>();

@@ -25,9 +25,16 @@ package org.jenetics;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.Random;
 
+import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.UniformDistribution;
+import org.jenetics.util.CharSet;
+import org.jenetics.util.RandomRegistry;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -36,6 +43,35 @@ import org.testng.annotations.Test;
  */
 public class CharacterChromosomeTest  {
 
+	
+	@Test(invocationCount = 20, successPercentage = 95)
+    public void newInstance() {
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(new Random());
+			
+			final CharSet characters = new CharSet("0123456789");
+			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
+			
+			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
+			
+			for (CharacterGene gene : chromosome) {
+				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
+			}
+			
+			
+			// Chi-Square teset for gene distribution.
+			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
+			final UniformDistribution<Long> dist =
+				new UniformDistribution<Long>(0L, 10L);
+			
+			final double χ2 = histogram.χ2(dist.cdf());
+			Assert.assertTrue(χ2 < 25); // TODO: remove magic number
+		} finally {
+			LocalContext.exit();
+		}
+    }
+	
     @Test
     public void testCreate() {
         CharacterChromosome c1 = new CharacterChromosome(34);
