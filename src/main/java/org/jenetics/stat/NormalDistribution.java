@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.Float64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class NormalDistribution<
+class NormalDistribution<
 	N extends Number & Comparable<? super N>
 	>
 	implements Distribution<N> 
