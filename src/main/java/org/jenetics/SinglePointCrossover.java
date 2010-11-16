@@ -73,7 +73,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	}
 	
 	@Override
-	protected void crossover(final Array<G> that, final Array<G> other) {
+	protected int crossover(final Array<G> that, final Array<G> other) {
 		assert (that.length() == other.length());
 		
 		final Random random = RandomRegistry.getRandom();
@@ -90,6 +90,8 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			other.set(j, that.get(j));
 			that.set(j, temp);
 		}
+		
+		return 1;
 	}
 	
 	@Override

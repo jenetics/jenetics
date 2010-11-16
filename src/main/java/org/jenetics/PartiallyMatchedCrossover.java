@@ -81,7 +81,7 @@ public class PartiallyMatchedCrossover<G extends Gene<?, G>>
 	}
 	
 	@Override 
-	protected void crossover(final Array<G> that, final Array<G> other) {
+	protected int crossover(final Array<G> that, final Array<G> other) {
 		final Random random = RandomRegistry.getRandom();
 		int index1 = random.nextInt(that.length());
 		int index2 = random.nextInt(other.length());
@@ -110,6 +110,8 @@ public class PartiallyMatchedCrossover<G extends Gene<?, G>>
 			that.set(thatIndex, thatGenes.get(i));
 			other.set(otherIndex, otherGenes.get(i));
 		}
+		
+		return 1;
 	}
 	
 	private static <A> int indexOf(

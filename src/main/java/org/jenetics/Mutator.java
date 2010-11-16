@@ -25,6 +25,7 @@ package org.jenetics;
 import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.RandomRegistry;
@@ -91,7 +92,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Return the number of mutations performed by this mutation object.
 	 * 
 	 * @return the number of mutations performed so far.
+	 * 
+	 * @deprecated will be removed in next version.
 	 */
+	@Deprecated
 	public int getMutations() {
 		return _mutations;
 	}
@@ -100,7 +104,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	public <C extends Comparable<? super C>> void alter(
+	public <C extends Comparable<? super C>> int alter(
 		final Population<G, C> population, final int generation
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
@@ -108,6 +112,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final Random random = RandomRegistry.getRandom();
 		final int subsetSize = (int)Math.ceil(population.size()*_probability);
 		
+		final AtomicInteger alterations = new AtomicInteger(0);
 		if (subsetSize > 0) {
 			final int[] elements = subset(population.size(), subsetSize, random);
 							
@@ -117,13 +122,18 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 				
 				population.set(
 					elements[i], 
-					phenotype.newInstance(mutate(genotype), generation)
+					phenotype.newInstance(mutate(genotype, alterations), generation)
 				);
 			}
 		}
+		
+		return alterations.get();
 	}
 	
-	private Genotype<G> mutate(final Genotype<G> genotype) {
+	private Genotype<G> mutate(
+		final Genotype<G> genotype, 
+		final AtomicInteger alterations
+	) {
 		final Random random = RandomRegistry.getRandom();
 		final int subsetSize = (int)Math.ceil(genotype.length()*_probability);
 		
@@ -135,7 +145,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 			for (int i = 0; i < elements.length; ++i) {
 				final Chromosome<G> chromosome = chromosomes.get(elements[i]);
 				final Array<G> genes = chromosome.toArray().copy();
-				mutate(genes);
+				
+				alterations.addAndGet(mutate(genes));
 				chromosomes.set(elements[i], chromosome.newInstance(genes));
 			}
 				
@@ -167,10 +178,11 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * 
 	 * @param genes the genes to mutate.
 	 */
-	protected void mutate(final Array<G> genes) {
+	protected int mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
 		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
 		
+		int alterations = 0;
 		if (subsetSize > 0) {
 			final int[] elements = subset(genes.length(), subsetSize, random);
 			
@@ -180,7 +192,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 			
 			//Count the number of mutations.
 			_mutations += elements.length;
+			alterations = elements.length;
 		}
+		
+		return alterations;
 	}
 	
 	@Override
