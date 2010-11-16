@@ -1,3 +1,6 @@
+- The org.jenetics.Alterer.alter method now returns the number of altered genes.
+- Refactoring: Move Accumulators.Variance and Accumulators.Mean class to 
+  org.jenetics.stat package.
 - Create org.jenetics.stat package.
 - Change type signature from 'C extends Comparable<C>' to 
   'C extends Comparable<? super C>' for all classes.
