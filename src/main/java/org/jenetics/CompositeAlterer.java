@@ -26,6 +26,8 @@ import static org.jenetics.util.ArrayUtils.foreach;
 import static org.jenetics.util.Validator.NonNull;
 import static org.jenetics.util.Validator.nonNull;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Predicate;
 
@@ -146,16 +148,20 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	}
 
 	@Override
-	public <C extends Comparable<? super C>> void alter(
+	public <C extends Comparable<? super C>> int alter(
 		final Population<G, C> population, 
 		final int generation
 	) {
+		final AtomicInteger alterations = new AtomicInteger(0);
+		
 		_alterers.foreach(new Predicate<Alterer<G>>() {
 			@Override public boolean evaluate(final Alterer<G> alterer) {
-				alterer.alter(population, generation);
+				alterations.addAndGet(alterer.alter(population, generation));
 				return true;
 			}
 		});
+		
+		return alterations.get();
 	}
 
 	/**

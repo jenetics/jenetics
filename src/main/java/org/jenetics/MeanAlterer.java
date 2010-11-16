@@ -53,7 +53,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	}
 
 	@Override
-	protected <C extends Comparable<? super C>> void recombinate(
+	protected <C extends Comparable<? super C>> int recombinate(
 		final Population<G, C> population, 
 		final int first, 
 		final int second, 
@@ -81,6 +81,8 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		
 		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
 		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
+		
+		return 1;
 	}
 	
 	@Override

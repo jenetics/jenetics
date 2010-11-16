@@ -50,7 +50,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 	}
 	
 	@Override
-	protected final <C extends Comparable<? super C>> void recombinate(
+	protected final <C extends Comparable<? super C>> int recombinate(
 		final Population<G, C> population, 
 		final int first, final int second, final int generation
 	) {
@@ -69,7 +69,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
 		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
-		crossover(genes1, genes2);
+		final int alterations = crossover(genes1, genes2);
 		
 		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1));
 		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2));
@@ -77,13 +77,15 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
 		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
+		
+		return alterations;
 	}
 
 	/**
 	 * Template method which performs the crossover. The arguments given are 
 	 * mutable non null arrays of the same length.
 	 */
-	protected abstract void crossover(final Array<G> that, final Array<G> other);
+	protected abstract int crossover(final Array<G> that, final Array<G> other);
 
 }
 

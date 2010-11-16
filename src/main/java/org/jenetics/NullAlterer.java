@@ -36,11 +36,14 @@ public final class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> 
 
 	/**
 	 * This alter method does nothing.
+	 * 
+	 * @return zero always.
 	 */
 	@Override
-	public <C extends Comparable<? super C>> void alter(
+	public <C extends Comparable<? super C>> int alter(
 		final Population<G, C> population, final int generation
 	) {
+		return 0;
 	}
 
 	@Override

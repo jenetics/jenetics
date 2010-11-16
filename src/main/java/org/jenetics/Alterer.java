@@ -57,10 +57,11 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * 		 <code>population</code> is <code>null</code> or empty, nothing is 
 	 * 		 altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
+	 * @return the number of genes that has been altered.
 	 * @throws NullPointerException if the given {@code population} is 
 	 * 		  {@code null}.
 	 */
-	public <C extends Comparable<? super C>> void alter(
+	public <C extends Comparable<? super C>> int alter(
 			final Population<G, C> population, 
 			final int generation
 		);

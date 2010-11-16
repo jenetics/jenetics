@@ -29,6 +29,7 @@ import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.EvaluatorRegistry;
@@ -65,11 +66,12 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * {@link Evaluator} provides more than one parallel tasks.
 	 */
 	@Override
-	public final <C extends Comparable<? super C>> void alter(
+	public final <C extends Comparable<? super C>> int alter(
 		final Population<G, C> population, final int generation
 	) {
 		final int subsetSize = (int)Math.ceil(population.size()*_probability);
 		
+		final AtomicInteger alterations = new AtomicInteger(0);
 		if (subsetSize > 0) {
 			final Random random = RandomRegistry.getRandom();
 			final int[] first = subset(population.size(), subsetSize, random);
@@ -81,21 +83,27 @@ public abstract class Recombination<G extends Gene<?, G>>
 				for (int i = 0; i < subsetSize; ++i) {
 					final int index = i;
 					tasks.add(new Runnable() { @Override public void run() {
-						recombinate(
-								population, 
-								first[index], 
-								second[index], 
-								generation
-							);
+						final int value = recombinate(
+													population, 
+													first[index], 
+													second[index], 
+													generation
+												);
+						alterations.addAndGet(value);
 					}});
 				}
 				evaluate(tasks);
 			} else {
 				for (int i = 0; i < subsetSize; ++i) {
-					recombinate(population, first[i], second[i], generation);
+					final int value = recombinate(
+							population, first[i], second[i], generation
+						);
+					alterations.addAndGet(value);
 				}
 			}
 		}
+		
+		return alterations.get();
 	}
 	
 	/**
@@ -107,7 +115,7 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * @param second the target index array.
 	 * @param generation the current generation.
 	 */
-	protected abstract <C extends Comparable<? super C>> void recombinate(
+	protected abstract <C extends Comparable<? super C>> int recombinate(
 			Population<G, C> population, int first, int second, int generation
 		);
 	
