@@ -32,8 +32,8 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
+import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;

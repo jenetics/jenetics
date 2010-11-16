@@ -41,8 +41,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Accumulators.Variance;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
 import org.jscience.mathematics.number.Float64;

@@ -31,9 +31,9 @@ import java.util.List;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Accumulators.Variance;
 import org.jscience.mathematics.number.Float64;
 
 /**
