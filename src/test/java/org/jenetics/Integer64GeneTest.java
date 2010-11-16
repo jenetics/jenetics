@@ -30,7 +30,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
-import org.jenetics.util.Accumulators;
+import org.jenetics.stat.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Integer64;
@@ -53,7 +53,7 @@ public class Integer64GeneTest {
 			final Integer64 max = Integer64.valueOf(1000000);
 			final Factory<Integer64Gene> factory = Integer64Gene.valueOf(min, max);
 			
-			final Accumulators.Variance<Integer64> variance = new Accumulators.Variance<Integer64>();
+			final Variance<Integer64> variance = new Variance<Integer64>();
 			
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
 			

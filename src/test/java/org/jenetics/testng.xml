@@ -145,6 +145,11 @@
 			<class name="org.jenetics.stat.LinearDistributionTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.stat.Mean">
+		<classes>
+			<class name="org.jenetics.stat.MeanTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.stat.Quantile">
 		<classes>
 			<class name="org.jenetics.stat.QuantileTest" />
@@ -155,6 +160,11 @@
             <class name="org.jenetics.stat.UniformDistributionTest" />
         </classes>
     </test>	
+	<test name="org.jenetics.stat.Variance">
+		<classes>
+			<class name="org.jenetics.stat.VarianceTest" />
+		</classes>
+	</test>	    
 	<test name="org.jenetics.util.AccumulatorsTest">
 		<classes>
 			<class name="org.jenetics.util.AccumulatorsTest" />
