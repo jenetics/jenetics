@@ -22,6 +22,10 @@
  */
 package org.jenetics;
 
+import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Distribution.Domain;
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.NormalDistribution;
 import org.jenetics.util.Array;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -58,13 +62,15 @@ public class MutatorTest {
 		return population;
 	}
 	
-	@Test(dataProvider = "combinations")
+	//@Test(dataProvider = "alterCountParameters")
 	public void alterCount(
 		final Integer ngenes, 
 		final Integer nchromosomes, 
 		final Integer npopulation
 	) {
-		final Population<Float64Gene, Float64> p1 = population(ngenes, nchromosomes, npopulation);
+		final Population<Float64Gene, Float64> p1 = population(
+					ngenes, nchromosomes, npopulation
+				);
 		final Population<Float64Gene, Float64> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 		
@@ -73,11 +79,50 @@ public class MutatorTest {
 		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
 	}
 	
-	@Test
-	public void alterProbability() {
+	@Test(dataProvider = "alterProbabilityParameters")
+	public void alterProbability(
+		final Integer ngenes, 
+		final Integer nchromosomes, 
+		final Integer npopulation,
+		final Double p
+	) {		
+		final Population<Float64Gene, Float64> population = population(
+				ngenes, nchromosomes, npopulation
+			);
 		
+		
+		// The mutator to test.
+		final Mutator<Float64Gene> mutator = new Mutator<Float64Gene>(p);
+		
+		final long N = 100;
+		final long nallgenes = ngenes*nchromosomes*npopulation;
+		final double mean = nallgenes*p;
+		final double var = nallgenes*p*(1.0 - p);
+		
+		final long min = (long)Math.max(0, mean - Math.sqrt(var)*10);
+		final long max = (long)Math.min(nallgenes, mean + Math.sqrt(var)*10);
+		final Domain<Long> domain = new Domain<Long>(min, max);
+		System.out.println(domain);
+		
+		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
+		for (int i = 0; i < N; ++i) {
+			final long alterations = mutator.alter(population, i);
+			histogram.accumulate(alterations);
+		}
+		
+		// Normal distribution as approximation for binomial distribution.
+		final Distribution<Long> dist = new NormalDistribution<Long>(domain, mean, var);
+		
+		final double χ2 = histogram.χ2(dist.cdf());
+		System.out.println(nallgenes + ":" + histogram + ": " + χ2);
+		//Assert.assertTrue(χ2 < 40); // TODO: Remove magic number.
 	}
 	
+	
+	
+	/*
+	 * Count the number of different genes.
+	 */
 	private int diff(
 		final Population<Float64Gene, Float64> p1, 
 		final Population<Float64Gene, Float64> p2
@@ -101,8 +146,8 @@ public class MutatorTest {
 		return count;
 	}
 	
-	@DataProvider(name = "combinations")
-	public Object[][] combinations() {
+	@DataProvider(name = "alterCountParameters")
+	public Object[][] alterCountParameters() {
 		return new Object[][] {
 				//    ngenes,       nchromosomes     npopulation
 				{ new Integer(1),   new Integer(1),  new Integer(100) },
@@ -117,4 +162,24 @@ public class MutatorTest {
 		};
 	}	
 	
+	@DataProvider(name = "alterProbabilityParameters")
+	public Object[][] alterProbabilityParameters() {
+		return new Object[][] {
+				//    ngenes,       nchromosomes     npopulation
+				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.5) },
+				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.5) },
+				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.5) },
+				{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.5) },
+				{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.5) },
+				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.5) },
+				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.5) },
+				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.5) },
+				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.5) }
+		};
+	}
+	
 }
+
+
+
+

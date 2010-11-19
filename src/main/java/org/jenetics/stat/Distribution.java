@@ -71,6 +71,10 @@ public interface Distribution<C extends Comparable<? super C>> {
 			return _max;
 		}
 		
+		public boolean contains(final C value) {
+			return _min.compareTo(value) <= 0 && _max.compareTo(value) >= 0;
+		}
+		
 		@Override
 		public int hashCode() {
 			return _min.hashCode() + 37*_max.hashCode() + 17;

@@ -57,7 +57,7 @@ public class Integer64GeneTest {
 			
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
 			
-			final int samples = 100000;
+			final int samples = 10000;
 			for (int i = 0; i < samples; ++i) {
 				final Integer64Gene g1 = factory.newInstance();
 				final Integer64Gene g2 = factory.newInstance();
@@ -80,6 +80,7 @@ public class Integer64GeneTest {
 				new UniformDistribution<Integer64>(min, max);
 			
 			final double χ2 = histogram.χ2(dist.cdf());
+			//System.out.println(histogram + ": " + χ2);
 			Assert.assertTrue(χ2 < 25); // TODO: Remove magic number.
 		} finally {
 			LocalContext.exit();

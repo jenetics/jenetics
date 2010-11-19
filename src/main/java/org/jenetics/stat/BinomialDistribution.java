@@ -22,6 +22,9 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.Validator.checkProbability;
+import static org.jenetics.util.Validator.nonNull;
+
 import java.util.List;
 
 import javolution.text.Text;
@@ -32,17 +35,15 @@ import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
 /**
- * Normal distribution.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class NormalDistribution<
+class BinomialDistribution<
 	N extends Number & Comparable<? super N>
-	>
+>
 	implements Distribution<N> 
 {
-	
+
 	static final class PDF<N extends Number & Comparable<? super N>> 
 		extends Function<N, Float64> 
 	{
@@ -54,24 +55,26 @@ public class NormalDistribution<
 		{ _variables.add(_variable); }
 		
 		private final Domain<N> _domain;
-		private final double _mean;
-		private final double _var;
 		
-		public PDF(final Domain<N> domain, final double mean, final double var) {
+		private final long _N;
+		private final double _p;
+		private final double _q;
+		
+		public PDF(final Domain<N> domain, final double p) {
 			_domain = domain;
-			_mean = mean;
-			_var = var;
+			_N = domain.getMax().longValue() - domain.getMin().longValue();
+			_p = p;
+			_q = 1.0 - p;
 		}
 		
 		@Override
 		public Float64 evaluate() {
-			final double x = _variable.get().doubleValue();
+			final long x = _variable.get().longValue() - _domain.getMin().longValue();
 			
 			Float64 result = Float64.ZERO;
 			if (_domain.contains(_variable.get())) {
 				result = Float64.valueOf(
-						(1.0/Math.sqrt(2*Math.PI*_var))*
-						Math.exp(-(x - _mean)*(x - _mean)/(2*_var))
+						binomial(_N, x)*Math.pow(_p, x)*Math.pow(_q, _N - x)
 					);
 			}
 			
@@ -88,7 +91,7 @@ public class NormalDistribution<
 			return Text.valueOf(String.format("p(x) = %s", ""));
 		}
 		
-	}
+	}	
 	
 	static final class CDF<N extends Number & Comparable<? super N>> 
 		extends Function<N, Float64> 
@@ -100,55 +103,40 @@ public class NormalDistribution<
 		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
 		{ _variables.add(_variable); }
 		
-		private final double _min;
-		private final double _max;
-		private final double _mean;
-		private final double _var;
+		private final Domain<N> _domain;
 		
-		public CDF(final Domain<N> domain, final double mean, final double var) {
-			_min = domain.getMin().doubleValue();
-			_max = domain.getMax().doubleValue();
-			_mean = mean;
-			_var = var;
+		private final long _N;
+		private final double _p;
+		private final double _q;
+		
+		public CDF(final Domain<N> domain, final double p) {
+			_domain = domain;
+			_N = domain.getMax().longValue() - domain.getMin().longValue();
+			_p = p;
+			_q = 1.0 - p;
 		}
 		
 		@Override
 		public Float64 evaluate() {
-			final double x = _variable.get().doubleValue();
+			long x = _variable.get().longValue();
 			
 			Float64 result = null;
-			if (x < _min) {
+			if (_domain.getMin().longValue() > x) {
 				result = Float64.ZERO;
-			} else if (x > _max) {
-				result = Float64.ONE; 
+			} else if (_domain.getMax().longValue() < x) {
+				result = Float64.ONE;
 			} else {
-				result = Float64.valueOf(
-						(1.0 + erf((x - _mean)/Math.sqrt(2*_var)))/2.0
-					);
+				x = x - _domain.getMin().longValue();
+				double v = 0;
+				for (long i = 0; i <= x; ++i) {
+					v += binomial(_N, i)*Math.pow(_p, i)*Math.pow(_q, _N - i);
+				}
+				result = Float64.valueOf(v);
 			}
 			
 			return result;
 		}
 	
-		public static double erf(final double z) {
-			final double t = 1.0/(1.0 + 0.5*Math.abs(z));
-
-			// Horner's method
-			final double result = 1 - t*Math.exp(
-					-z*z - 1.26551223 + 
-					t*( 1.00002368 + 
-					t*( 0.37409196 + 
-					t*( 0.09678418 + 
-					t*(-0.18628806 + 
-					t*( 0.27886807 + 
-					t*(-1.13520398 + 
-					t*( 1.48851587 + 
-					t*(-0.82215223 + 
-					t*(0.17087277))))))))));
-			
-			return z >= 0 ? result : -result;
-		}
-		
 		@Override
 		public List<Variable<N>> getVariables() {
 			return _variables;
@@ -159,31 +147,38 @@ public class NormalDistribution<
 			return Text.valueOf(String.format("p(x) = %s", ""));
 		}
 		
-	}
+	}	
 	
 	private final Domain<N> _domain;
-	private final double _mean;
-	private final double _var;
+	private final double _p;
 	
-	public NormalDistribution(final Domain<N> domain, final double mean, final double var) {
-		_domain = domain;
-		_mean = mean;
-		_var = var;
+	public BinomialDistribution(final Domain<N> domain, final double p) {
+		_domain = nonNull(domain, "Domain");
+		_p = checkProbability(p);
 	}
 	
 	@Override
 	public Domain<N> getDomain() {
 		return _domain;
 	}
-	
+
 	@Override
 	public Function<N, Float64> cdf() {
-		return new CDF<N>(_domain, _mean, _var);
-	}
-	
-	@Override
-	public Function<N, Float64> pdf() {
-		return new PDF<N>(_domain, _mean, _var);
+		return new CDF<N>(_domain, _p);
 	}
 
+	@Override
+	public Function<N, Float64> pdf() {
+		return new PDF<N>(_domain, _p);
+	}
+
+	
+	private static double binomial(final long n, final long k) {
+		long b = 1;
+		for (long i = 1; i <= k; ++i) {
+			b *= (n - k + i)/i;
+		}
+		return b;
+	}
+	
 }
