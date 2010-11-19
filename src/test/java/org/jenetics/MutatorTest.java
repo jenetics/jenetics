@@ -62,7 +62,7 @@ public class MutatorTest {
 		return population;
 	}
 	
-	//@Test(dataProvider = "alterCountParameters")
+	@Test(dataProvider = "alterCountParameters")
 	public void alterCount(
 		final Integer ngenes, 
 		final Integer nchromosomes, 
@@ -94,15 +94,15 @@ public class MutatorTest {
 		// The mutator to test.
 		final Mutator<Float64Gene> mutator = new Mutator<Float64Gene>(p);
 		
-		final long N = 100;
+		final long N = 500;
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final double mean = nallgenes*p;
 		final double var = nallgenes*p*(1.0 - p);
 		
-		final long min = (long)Math.max(0, mean - Math.sqrt(var)*10);
-		final long max = (long)Math.min(nallgenes, mean + Math.sqrt(var)*10);
+		final long min = 0L;//(long)Math.max(0, mean - Math.sqrt(var)*10);
+		final long max = nallgenes;//(long)Math.min(nallgenes, mean + Math.sqrt(var)*10);
 		final Domain<Long> domain = new Domain<Long>(min, max);
-		System.out.println(domain);
+//		System.out.println(domain);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
 		for (int i = 0; i < N; ++i) {
@@ -115,7 +115,7 @@ public class MutatorTest {
 		
 		final double χ2 = histogram.χ2(dist.cdf());
 		System.out.println(nallgenes + ":" + histogram + ": " + χ2);
-		//Assert.assertTrue(χ2 < 40); // TODO: Remove magic number.
+		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
 	}
 	
 	
