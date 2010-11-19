@@ -25,6 +25,7 @@ package org.jenetics;
 import org.jenetics.util.Array;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -32,33 +33,49 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class MutatorTest {	
-	
-	
-	@Test
-	public void mutate() {
-		final int npop = 1000;
-		final int ngene = 100;
-		final int nchrom = 10; 
 		
+	// Create a random population of Float64Genes.
+	static final Population<Float64Gene, Float64> population(
+		final int ngenes, 
+		final int nchromosomes, 
+		final int npopulation
+	) {
+		final Array<Float64Chromosome> chromosomes = 
+			new Array<Float64Chromosome>(nchromosomes);
 		
-		final Array<Float64Chromosome> chromosomes = new Array<Float64Chromosome>(nchrom);
-		for (int i = 0; i < nchrom; ++i) {
-			chromosomes.set(i, new Float64Chromosome(0, 10, ngene));
-		}		
+		for (int i = 0; i < nchromosomes; ++i) {
+			chromosomes.set(i, new Float64Chromosome(0, 10, ngenes));
+		}	
+		
 		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes);
+		final Population<Float64Gene, Float64> population = 
+			new Population<Float64Gene, Float64>(npopulation);
 		
+		for (int i = 0; i < npopulation; ++i) {
+			population.add(Phenotype.valueOf(genotype.newInstance(), Factories.FF, 0));
+		}	
 		
-		final Population<Float64Gene, Float64> pop1 = new Population<Float64Gene, Float64>(npop);
-		for (int i = 0; i < npop; ++i) {
-			pop1.add(Phenotype.valueOf(genotype.newInstance(), Factories.FF, 0));
-		}
-		final Population<Float64Gene, Float64> pop2 = pop1.copy();
+		return population;
+	}
+	
+	@Test(dataProvider = "combinations")
+	public void alterCount(
+		final Integer ngenes, 
+		final Integer nchromosomes, 
+		final Integer npopulation
+	) {
+		final Population<Float64Gene, Float64> p1 = population(ngenes, nchromosomes, npopulation);
+		final Population<Float64Gene, Float64> p2 = p1.copy();
+		Assert.assertEquals(p2, p1);
 		
 		final Mutator<Float64Gene> mutator = new Mutator<Float64Gene>(0.01);
 		
-		Assert.assertEquals(mutator.alter(pop1, 1), diff(pop1, pop2));
-		System.out.println(mutator.alter(pop1, 1));
-		System.out.println(genotype.getNumberOfGenes());
+		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
+	}
+	
+	@Test
+	public void alterProbability() {
+		
 	}
 	
 	private int diff(
@@ -83,5 +100,21 @@ public class MutatorTest {
 		}
 		return count;
 	}
+	
+	@DataProvider(name = "combinations")
+	public Object[][] combinations() {
+		return new Object[][] {
+				//    ngenes,       nchromosomes     npopulation
+				{ new Integer(1),   new Integer(1),  new Integer(100) },
+				{ new Integer(5),   new Integer(1),  new Integer(100) },
+				{ new Integer(80),  new Integer(1),  new Integer(100) },
+				{ new Integer(1),   new Integer(2),  new Integer(100) },
+				{ new Integer(5),   new Integer(2),  new Integer(100) },
+				{ new Integer(80),  new Integer(2),  new Integer(100) },
+				{ new Integer(1),   new Integer(15), new Integer(100) },
+				{ new Integer(5),   new Integer(15), new Integer(100) },
+				{ new Integer(80),  new Integer(15), new Integer(100) }
+		};
+	}	
 	
 }
