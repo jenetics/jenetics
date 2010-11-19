@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import org.jenetics.util.Copyable;
+
 import javolution.util.FastList;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -46,6 +48,7 @@ import javolution.xml.stream.XMLStreamException;
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>> 
 	implements List<Phenotype<G, C>>, 
+				Copyable<Population<G, C>>,
 				RandomAccess, 
 				XMLSerializable
 {
@@ -253,6 +256,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			genotypes.add(phenotype.getGenotype());
 		}
 		return genotypes;
+	}
+	
+	@Override
+	public Population<G, C> copy() {
+		return new Population<G, C>(_population);
 	}
 	
 	@Override
