@@ -56,6 +56,7 @@ public class Genotype<T extends Gene<?, T>>
 	private static final long serialVersionUID = 1L;
 	
 	private final Array<Chromosome<T>> _chromosomes; 
+	private Integer _ngenes = null;
 	
 	//Caching isValid value.
 	private Boolean _valid = null;
@@ -121,6 +122,23 @@ public class Genotype<T extends Gene<?, T>>
 	 */ 
 	public int length() {
 		return _chromosomes.length();
+	}
+	
+	/**
+	 * Return the number of genes this genotype consists of. This is the sum of
+	 * the number of genes of the genotype chromosomes.
+	 * 
+	 * @return Return the number of genes this genotype consists of.
+	 */
+	public int getNumberOfGenes() {
+		if (_ngenes == null) {
+			int ngenes = 0;
+			for (int i = 0; i < _chromosomes.length(); ++i) {
+				ngenes += _chromosomes.get(i).length();
+			}
+			_ngenes = ngenes;
+		}
+		return _ngenes.intValue();
 	}
 	
 	/**
@@ -238,7 +256,7 @@ public class Genotype<T extends Gene<?, T>>
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Array<Chromosome<G>> chromosomes
+		final Array<? extends Chromosome<G>> chromosomes
 	) {
 		nonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {

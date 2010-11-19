@@ -258,6 +258,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
 	}
 	
+	
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
