@@ -93,6 +93,16 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		Arrays.fill(_histogram, 0L);
 	}
 	
+	private Histogram(
+		final long[] histogram, 
+		final Comparator<C> comparator, 
+		final C... separators
+	) {
+		_histogram = histogram;
+		_comparator = comparator;
+		_separators = separators;
+	}
+	
 	private C[] check(final C... classes) {
 		ArrayUtils.foreach(classes, new NonNull());
 		if (classes.length == 0) {
@@ -136,6 +146,15 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		
 		assert (false): "This line will be never reached.";
 		return -1; 
+	}
+	
+	Histogram<C> merge(final Histogram<C> histogram) {
+		final long[] data = new long[_histogram.length];
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = _histogram[i] + histogram._histogram[i];
+		}
+		
+		return new Histogram<C>(data, _comparator, _separators);
 	}
 	
 	/**

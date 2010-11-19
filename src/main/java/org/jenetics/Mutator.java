@@ -22,12 +22,11 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ArrayUtils.subset;
-
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ProbabilityIndexIterator;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -67,6 +66,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Holds the number of mutation performed by this mutation class.
 	 */
 	protected int _mutations = 0;
+
+	private final double _pprob;
 	
 	/**
 	 * Default constructor, with probability = 0.01.
@@ -86,6 +87,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	public Mutator(final double probability) {
 		super(probability);
+		_pprob = Math.pow(probability, 1.0/3.0);
 	}
 	
 	/**
@@ -110,21 +112,16 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(population.size()*_probability);
-		
-		final AtomicInteger alterations = new AtomicInteger(0);
-		if (subsetSize > 0) {
-			final int[] elements = subset(population.size(), subsetSize, random);
-							
-			for (int i = 0; i < elements.length; ++i) {
-				final Phenotype<G, C> phenotype = population.get(elements[i]);
-				final Genotype<G> genotype = phenotype.getGenotype(); 
+		final ProbabilityIndexIterator it = 
+			new ProbabilityIndexIterator(population.size(), _pprob, random);
 				
-				population.set(
-					elements[i], 
-					phenotype.newInstance(mutate(genotype, alterations), generation)
-				);
-			}
+		final AtomicInteger alterations = new AtomicInteger(0);
+		for (int i = it.next(); i != -1; i = it.next()) {
+			Phenotype<G, C> pt = population.get(i);
+			final Genotype<G> gt = pt.getGenotype(); 
+			
+			pt = pt.newInstance(mutate(gt, alterations), generation);
+			population.set(i, pt);
 		}
 		
 		return alterations.get();
@@ -135,19 +132,21 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final AtomicInteger alterations
 	) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genotype.length()*_probability);
+		final ProbabilityIndexIterator it = 
+			new ProbabilityIndexIterator(genotype.length(), _pprob, random);
 		
 		Genotype<G> gt = genotype;
-		if (subsetSize > 0) {
-			final int[] elements = subset(genotype.length(), subsetSize, random);
-			
+		
+		int start = it.next();
+		if (start != -1) {
 			final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
-			for (int i = 0; i < elements.length; ++i) {
-				final Chromosome<G> chromosome = chromosomes.get(elements[i]);
+			
+			for (int i = start; i != -1; i = it.next()) {
+				final Chromosome<G> chromosome = chromosomes.get(i);
 				final Array<G> genes = chromosome.toArray().copy();
 				
 				alterations.addAndGet(mutate(genes));
-				chromosomes.set(elements[i], chromosome.newInstance(genes));
+				chromosomes.set(i, chromosome.newInstance(genes));
 			}
 				
 			gt = Genotype.valueOf(chromosomes);
@@ -180,19 +179,15 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	protected int mutate(final Array<G> genes) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
+		final ProbabilityIndexIterator it = 
+			new ProbabilityIndexIterator(genes.length(), _pprob, random);
 		
 		int alterations = 0;
-		if (subsetSize > 0) {
-			final int[] elements = subset(genes.length(), subsetSize, random);
-			
-			for (int i = 0; i < elements.length; ++i) {
-				genes.set(elements[i], genes.get(elements[i]).newInstance());
-			}
-			
-			//Count the number of mutations.
-			_mutations += elements.length;
-			alterations = elements.length;
+		
+		for (int i = it.next(); i != -1; i = it.next()) {
+			genes.set(i, genes.get(i).newInstance());
+			++_mutations;
+			++alterations;
 		}
 		
 		return alterations;

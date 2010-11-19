@@ -25,6 +25,8 @@ package org.jenetics.util;
 import static org.jenetics.util.Validator.checkProbability;
 import static org.jenetics.util.Validator.nonNull;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -108,4 +110,41 @@ public class ProbabilityIndexIterator {
 		return _pos < _n ? _pos : -1;
 	}
 	
+	
+	public static <T> Iterator<T> iterator(
+		final List<? extends T> list, 
+		final double probability,
+		final Random random
+	) {
+		return new Iterator<T>() {
+			private final ProbabilityIndexIterator it = 
+				new ProbabilityIndexIterator(list.size(), probability, random);
+			
+			private int _index = it.next();
+			
+			@Override
+			public boolean hasNext() {
+				return _index != -1;
+			}
+
+			@Override
+			public T next() {
+				final T element = list.get(_index);
+				_index = it.next();
+				return element;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+	
+	
 }
+
+
+
+
+

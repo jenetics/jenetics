@@ -195,6 +195,11 @@
 			<class name="org.jenetics.util.CharSetTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.util.ProbabilityIndexIterator">
+		<classes>
+			<class name="org.jenetics.util.ProbabilityIndexIteratorTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.Timer">
 		<classes>
 			<class name="org.jenetics.util.TimerTest" />
