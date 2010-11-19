@@ -85,6 +85,11 @@
 			<class name="org.jenetics.LinearRankSelectorTest" />
 		</classes>
 	</test>	
+    <test name="org.jenetics.Mutator">
+        <classes>
+            <class name="org.jenetics.MutatorTest" />
+        </classes>
+    </test> 	
 	<test name="org.jenetics.PartiallyMatchedCrossover">
 		<classes>
 			<class name="org.jenetics.PartiallyMatchedCrossoverTest" />

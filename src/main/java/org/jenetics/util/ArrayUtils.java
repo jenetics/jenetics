@@ -910,19 +910,54 @@ public final class ArrayUtils {
 		nonNull(random, "Random");
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
-				"Subset size smaller or equal zero: %s", k
-			));
+					"Subset size smaller or equal zero: %s", k
+				));
 		}
 		if (n < k) {
 			throw new IllegalArgumentException(String.format(
-				"n smaller than k: %s < %s.", n, k
-			));
+					"n smaller than k: %s < %s.", n, k
+				));
 		}
 		
 		final int[] sub = new int[k];
 		subset(n, sub,random);
 		return sub;
 	}
+	
+//	/**
+//	 * Return a random subset
+//	 * 
+//	 * @param n
+//	 * @param probability
+//	 * @param random
+//	 * @return
+//	 */
+//	public static int[] subset(
+//		final int n, 
+//		final double probability, 
+//		final Random random
+//	) {
+//		nonNull(random, "Random");
+//		if (n < 0) {
+//			throw new IllegalArgumentException(String.format(
+//					"n smaller than 0: %s.", n
+//				));
+//		}
+//		if (probability < 0 || probability > 1) {
+//			throw new IllegalArgumentException(String.format(
+//					"Probability not in range [0, 1]: %f", probability
+//				));
+//		}
+//		
+//		for (int i = 0; i < n; ++i) {
+//			if (random.nextDouble() < probability) {
+//				
+//			}
+//		}
+//		
+//		
+//		return null;
+//	}
 	
 	/**
 	 * <p>
