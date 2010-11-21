@@ -85,7 +85,7 @@ public class NormalDistribution<
 	
 		@Override
 		public Text toText() {
-			return Text.valueOf(String.format("p(x) = %s", ""));
+			return Text.valueOf(String.format("p(x) = N(%f, %f)(x)", _mean, _var));
 		}
 		
 	}
@@ -130,7 +130,7 @@ public class NormalDistribution<
 			return result;
 		}
 	
-		public static double erf(final double z) {
+		static double erf(final double z) {
 			final double t = 1.0/(1.0 + 0.5*Math.abs(z));
 
 			// Horner's method
@@ -156,7 +156,9 @@ public class NormalDistribution<
 	
 		@Override
 		public Text toText() {
-			return Text.valueOf(String.format("p(x) = %s", ""));
+			return Text.valueOf(String.format(
+					"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2*%f))))", _mean, _var
+				));
 		}
 		
 	}

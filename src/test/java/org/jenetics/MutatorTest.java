@@ -26,6 +26,7 @@ import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
+import org.jenetics.stat.Variance;
 import org.jenetics.util.Array;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -90,34 +91,34 @@ public class MutatorTest {
 				ngenes, nchromosomes, npopulation
 			);
 		
-		
 		// The mutator to test.
 		final Mutator<Float64Gene> mutator = new Mutator<Float64Gene>(p);
 		
-		final long N = 500;
 		final long nallgenes = ngenes*nchromosomes*npopulation;
+		final long N = 100;
 		final double mean = nallgenes*p;
-		final double var = nallgenes*p*(1.0 - p);
 		
-		final long min = 0L;//(long)Math.max(0, mean - Math.sqrt(var)*10);
-		final long max = nallgenes;//(long)Math.min(nallgenes, mean + Math.sqrt(var)*10);
+		final long min = 0;
+		final long max = nallgenes;
 		final Domain<Long> domain = new Domain<Long>(min, max);
-//		System.out.println(domain);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
+		final Variance<Long> variance = new Variance<Long>();
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator.alter(population, i);
 			histogram.accumulate(alterations);
+			variance.accumulate(alterations);
 		}
-		
+				
 		// Normal distribution as approximation for binomial distribution.
-		final Distribution<Long> dist = new NormalDistribution<Long>(domain, mean, var);
+		final Distribution<Long> dist = new NormalDistribution<Long>(
+				domain, mean, variance.getVariance()
+			);
 		
 		final double χ2 = histogram.χ2(dist.cdf());
-		System.out.println(nallgenes + ":" + histogram + ": " + χ2);
+//		System.out.println(histogram + ": " + χ2);
 		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
 	}
-	
 	
 	
 	/*
@@ -166,6 +167,16 @@ public class MutatorTest {
 	public Object[][] alterProbabilityParameters() {
 		return new Object[][] {
 				//    ngenes,       nchromosomes     npopulation
+				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.15) },
+				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.15) },
+				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.15) },
+				{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.15) },
+				{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.15) },
+				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.15) },
+				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.15) },
+				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.15) },
+				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.15) },
+				
 				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.5) },
 				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.5) },
 				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.5) },
@@ -174,7 +185,17 @@ public class MutatorTest {
 				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.5) },
 				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.5) },
 				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.5) },
-				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.5) }
+				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.5) },				
+				
+				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.85) },
+				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.85) },
+				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.85) },
+				{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.85) },
+				{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.85) },
+				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.85) },
+				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.85) },
+				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.85) },
+				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.85) }
 		};
 	}
 	
