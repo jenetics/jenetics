@@ -22,12 +22,15 @@
  */
 package org.jenetics.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
+import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Distribution.Domain;
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.NormalDistribution;
+import org.jenetics.stat.Variance;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -43,6 +46,10 @@ public class ProbabilityIndexIteratorTest {
 		
 		for (int i = it.next(); i != -1; i = it.next()) {
 			Assert.assertTrue(false);
+		}
+		
+		for (int i = 0; i < 100; ++i) {
+			Assert.assertEquals(it.next(), -1);
 		}
 	}
 	
@@ -60,16 +67,77 @@ public class ProbabilityIndexIteratorTest {
 		Assert.assertEquals(count, 1000);
 	}
 	
-	@Test
-	public void iterator() {
-		final List<Integer> list = new ArrayList<Integer>(1000);
-		for (int i = 0; i< 1000; ++i) {
-			list.add(i);
-		}
+	@Test(dataProvider = "probabilities")
+	public void distribution(final Integer n, final Double p) {
+		final double mean = n*p;
+		final double var = n*p*(1.0 - p);
 		
-		for (Iterator<Integer> it = ProbabilityIndexIterator.iterator(list, 0.01, new Random()); it.hasNext();) {
-			System.out.println(it.next());
+		final Random random = new Random();
+		final Domain<Long> domain = new Domain<Long>(0L, n.longValue());
+		
+		final Histogram<Long> histogram = Histogram.valueOf(
+					domain.getMin(), domain.getMax(), 10
+				);	
+		final Variance<Long> variance = new Variance<Long>();
+		for (int i = 0; i < 1000; ++i) {
+			final long k = k(n, p, random);
+			
+			histogram.accumulate(k);
+			variance.accumulate(k);
 		}
+				
+		// Normal distribution as approximation for binomial distribution.
+		final Distribution<Long> dist = new NormalDistribution<Long>(
+					domain, mean, var
+				);
+		
+		final double χ2 = histogram.χ2(dist.cdf());
+//		System.out.println(histogram + ": " + χ2);
+		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
+	}
+	
+	private long k(final int n, final double p, final Random random) {
+		final ProbabilityIndexIterator it = 
+			new ProbabilityIndexIterator(n, p, random);
+		
+		int k = 0;
+		for (int i = it.next(); i != -1; i = it.next()) {
+			++k;
+		}
+		return k;
+	}
+	
+	@DataProvider(name = "probabilities")
+	public Object[][] probabilities() {
+		return new Object[][] {
+				//    n,                p
+				{ new Integer(515),   new Double(0.15) },
+				{ new Integer(1115),  new Double(0.15) },
+				{ new Integer(1150),  new Double(0.15) },
+				{ new Integer(1160),  new Double(0.15) },
+				{ new Integer(1170),  new Double(0.15) },
+				{ new Integer(11100), new Double(0.15) },
+				{ new Integer(11200), new Double(0.15) },
+				{ new Integer(11500), new Double(0.15) },
+				
+				{ new Integer(515),   new Double(0.5) },
+				{ new Integer(1115),  new Double(0.5) },
+				{ new Integer(1150),  new Double(0.5) },
+				{ new Integer(1160),  new Double(0.5) },
+				{ new Integer(1170),  new Double(0.5) },
+				{ new Integer(11100), new Double(0.5) },
+				{ new Integer(11200), new Double(0.5) },
+				{ new Integer(11500), new Double(0.5) },	
+				
+				{ new Integer(515),   new Double(0.85) },
+				{ new Integer(1115),  new Double(0.85) },
+				{ new Integer(1150),  new Double(0.85) },
+				{ new Integer(1160),  new Double(0.85) },
+				{ new Integer(1170),  new Double(0.85) },
+				{ new Integer(11100), new Double(0.85) },
+				{ new Integer(11200), new Double(0.85) },
+				{ new Integer(11500), new Double(0.85) }
+		};
 	}
 }
 
