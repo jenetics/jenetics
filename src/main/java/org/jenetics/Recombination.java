@@ -114,6 +114,7 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * @param first the source index array.
 	 * @param second the target index array.
 	 * @param generation the current generation.
+	 * @return the number of genes that has been altered.
 	 */
 	protected abstract <C extends Comparable<? super C>> int recombinate(
 			Population<G, C> population, int first, int second, int generation
