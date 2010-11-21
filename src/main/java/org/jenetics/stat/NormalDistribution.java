@@ -32,7 +32,26 @@ import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
 /**
- * Normal distribution.
+ * Normal (Gaussian) distribution. With
+ * 
+ * <p>
+ * <img 
+ *     src="doc-files/normal-pdf.gif"
+ *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot 
+ *          e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
+ * />
+ * </p>
+ * as <i>pdf</i> and
+ * <p>
+ * <img 
+ *     src="doc-files/normal-cdf.gif"
+ *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
+ *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
+ * />
+ * </p>
+ * as <i>cdf</i>.
+ * 
+ * @see <a href="http://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -43,6 +62,18 @@ public class NormalDistribution<
 	implements Distribution<N> 
 {
 	
+	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/normal-pdf.gif"
+	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot 
+	 *          e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
+	 * />
+	 * </p>
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	static final class PDF<N extends Number & Comparable<? super N>> 
 		extends Function<N, Float64> 
 	{
@@ -90,6 +121,18 @@ public class NormalDistribution<
 		
 	}
 	
+	/**
+	 * <p>
+	 * <img 
+	 *     src="doc-files/normal-cdf.gif"
+	 *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
+	 *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
+	 * />
+	 * </p>
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
 	static final class CDF<N extends Number & Comparable<? super N>> 
 		extends Function<N, Float64> 
 	{
@@ -178,11 +221,32 @@ public class NormalDistribution<
 		return _domain;
 	}
 	
+	/**
+	 * Return a new CDF object.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/normal-cdf.gif"
+	 *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
+	 *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
+	 * />
+	 * </p>
+	 */
 	@Override
 	public Function<N, Float64> cdf() {
 		return new CDF<N>(_domain, _mean, _var);
 	}
 	
+	/**
+	 * Return a new PDF object.
+	 * 
+	 * <p>
+	 * <img 
+	 *     src="doc-files/normal-pdf.gif"
+	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
+	 * />
+	 * </p>
+	 */
 	@Override
 	public Function<N, Float64> pdf() {
 		return new PDF<N>(_domain, _mean, _var);
