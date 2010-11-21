@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import javolution.context.ConcurrentContext;
+
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
@@ -104,10 +106,23 @@ public class MutatorTest {
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
 		final Variance<Long> variance = new Variance<Long>();
-		for (int i = 0; i < N; ++i) {
-			final long alterations = mutator.alter(population, i);
-			histogram.accumulate(alterations);
-			variance.accumulate(alterations);
+		
+		ConcurrentContext.enter();
+		try {
+			for (int i = 0; i < N; ++i) {
+//				ConcurrentContext.execute(new Runnable() {
+//					@Override
+//					public void run() {
+						final long alterations = mutator.alter(population, 1);
+//						synchronized (histogram) {
+							histogram.accumulate(alterations);
+							variance.accumulate(alterations);	
+//						}
+//					}
+//				});
+			}
+		} finally {
+			ConcurrentContext.exit();
 		}
 				
 		// Normal distribution as approximation for binomial distribution.

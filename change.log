@@ -1,3 +1,7 @@
+- Fix the org.jenetics.Mutator class. The mutation probability is (now) the
+  probability that a given gene is mutated. (Should have been always the case.)
+- Add org.jenetics.stat.NormalDistribution class for creating statistical tests
+  for the org.jenetics.Mutator class. 
 - The org.jenetics.Alterer.alter method now returns the number of altered genes.
 - Refactoring: Move Accumulators.Variance and Accumulators.Mean class to 
   org.jenetics.stat package.
