@@ -22,6 +22,8 @@
  */
 package org.jenetics.stat;
 
+import java.util.Random;
+
 import org.jenetics.stat.Distribution.Domain;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
@@ -34,8 +36,30 @@ import org.testng.annotations.Test;
  */
 public class NormalDistributionTest {
 
+	
+	@Test(invocationCount = 10)
+	public void cdfDistribution() {
+		final Random random = new Random();
+		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1000.0, 10);
+		final Variance<Double> variance = new Variance<Double>();
+		
+		final double mean = 500;
+		final double std = 100;
+		for (int i = 0; i < 50000; ++i) {
+			final double value =  random.nextGaussian()*std + mean;
+			histogram.accumulate(value);
+			variance.accumulate(value);
+		}
+		
+		final Domain<Double> domain = new Domain<Double>(0.0, 1000.0);
+		final Distribution<Double> dist = new NormalDistribution<Double>(domain, mean, std*std);
+		
+		final Function<Double, Float64> cdf = dist.cdf();
+		Assert.assertTrue(histogram.χ2(cdf) < 26);
+	}
+	
 	@Test
-	public void pdf() {
+	public void pdfToString() {
 		final Domain<Double> domain = new Domain<Double>(0.0, 100.0);
 		final Distribution<Double> dist = new NormalDistribution<Double>(domain, 50.0, 34.0);
 		final Function<Double, Float64> pdf = dist.pdf();
@@ -44,7 +68,7 @@ public class NormalDistributionTest {
 	}
 	
 	@Test
-	public void cdf() {
+	public void cdfToString() {
 		final Domain<Double> domain = new Domain<Double>(0.0, 100.0);
 		final Distribution<Double> dist = new NormalDistribution<Double>(domain, 50.0, 34.0);
 		final Function<Double, Float64> cdf = dist.cdf();
