@@ -20,5 +20,9 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  * 	 
  */
+
+/**
+ * Provides statistics <i>helper</i> classes. 
+ */
 package org.jenetics.stat;
 

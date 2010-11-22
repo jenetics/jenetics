@@ -155,6 +155,11 @@
 			<class name="org.jenetics.stat.MeanTest" />
 		</classes>
 	</test>		
+    <test name="org.jenetics.stat.NormalDistribution">
+        <classes>
+            <class name="org.jenetics.stat.NormalDistributionTest" />
+        </classes>
+    </test> 	
 	<test name="org.jenetics.stat.Quantile">
 		<classes>
 			<class name="org.jenetics.stat.QuantileTest" />

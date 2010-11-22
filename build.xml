@@ -379,7 +379,7 @@
 		<mkdir dir="${testng.report.dir}" />
 		<testng 
 			outputdir="${testng.report.dir}"
-			haltonfailure="false" 
+			haltonfailure="true" 
 			dumpCommand="false"
 			suitename="Jenetics Tests"
 			verbose="2"
@@ -406,7 +406,7 @@
 		</delete>
 	</target>
 	
-	<target name="export" depends="clean, jar, javadoc, test">
+	<target name="export" depends="clean, jar, test, javadoc">
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
 			<fileset dir="${source.basedir}" />
