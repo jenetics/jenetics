@@ -159,6 +159,34 @@ public final class Validator {
 	}
 	
 	/**
+	 * Check if the specified value is not negative.
+	 * 
+	 * @param value the value to check.
+	 * @param message the exception message.
+	 * @return the given value.
+	 * @throws IllegalArgumentException if {@code value < 0}.
+	 */
+	public static double nonNegative(final double value, final String message) {
+		if (value < 0) {
+			throw new IllegalArgumentException(String.format(
+					"%s must not negative: %f.", message, value
+				));
+		}
+		return value;
+	}
+	
+	/**
+	 * Check if the specified value is not negative.
+	 * 
+	 * @param value the value to check.
+	 * @return the given value.
+	 * @throws IllegalArgumentException if {@code value < 0}.
+	 */
+	public static double nonNegative(final double value) {
+		return nonNegative(value, "Value");
+	}
+	
+	/**
 	 * Check if a given value is within a given closed range.
 	 * 
 	 * @param value the value to check.

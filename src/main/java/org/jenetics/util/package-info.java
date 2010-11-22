@@ -20,4 +20,8 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  * 	 
  */
+
+/**
+ * Provides <i>helper</i> classes.
+ */
 package org.jenetics.util;

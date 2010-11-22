@@ -22,6 +22,9 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.Validator.nonNegative;
+import static org.jenetics.util.Validator.nonNull;
+
 import java.util.List;
 
 import javolution.text.Text;
@@ -116,7 +119,9 @@ public class NormalDistribution<
 	
 		@Override
 		public Text toText() {
-			return Text.valueOf(String.format("p(x) = N(%f, %f)(x)", _mean, _var));
+			return Text.valueOf(String.format(
+					"p(x) = N[µ=%f, σ²=%f](x)", _mean, _var
+				));
 		}
 		
 	}
@@ -173,7 +178,7 @@ public class NormalDistribution<
 			return result;
 		}
 	
-		static double erf(final double z) {
+		private static double erf(final double z) {
 			final double t = 1.0/(1.0 + 0.5*Math.abs(z));
 
 			// Horner's method
@@ -200,7 +205,7 @@ public class NormalDistribution<
 		@Override
 		public Text toText() {
 			return Text.valueOf(String.format(
-					"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2*%f))))", _mean, _var
+					"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))", _mean, _var
 				));
 		}
 		
@@ -210,10 +215,23 @@ public class NormalDistribution<
 	private final double _mean;
 	private final double _var;
 	
-	public NormalDistribution(final Domain<N> domain, final double mean, final double var) {
-		_domain = domain;
+	/**
+	 * Create a new normal distribution object.
+	 * 
+	 * @param domain the domain of the distribution.
+	 * @param mean the mean value of the normal distribution.
+	 * @param var the variance of the normal distribution.
+	 * @throws NullPointerException if the {@code domain} is {@code null}.
+	 * @throws IllegalArgumentException if the variance is negative.
+	 */
+	public NormalDistribution(
+		final Domain<N> domain, 
+		final double mean, 
+		final double var
+	) {
+		_domain = nonNull(domain, "Domain");
 		_mean = mean;
-		_var = var;
+		_var = nonNegative(var, "Variance");
 	}
 	
 	@Override
@@ -252,4 +270,36 @@ public class NormalDistribution<
 		return new PDF<N>(_domain, _mean, _var);
 	}
 
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 17*Double.doubleToLongBits(_mean) + 37;
+		hash += 17*Double.doubleToLongBits(_var) + 37;
+		hash += 17*_domain.hashCode() + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+		
+		final NormalDistribution<?> dist = (NormalDistribution<?>)obj;
+		return _domain.equals(dist._domain) &&
+				Double.doubleToLongBits(_mean) == Double.doubleToLongBits(dist._mean) &&
+				Double.doubleToLongBits(_var) == Double.doubleToLongBits(dist._var);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("N[µ=%f, σ²=%f]", _mean, _var);
+	}
+	
 }
+
+

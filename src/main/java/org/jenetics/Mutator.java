@@ -50,12 +50,12 @@ import org.jenetics.util.RandomRegistry;
  * only source of exploration (if there is no crossover) then the mutation rate 
  * should be set so that a reasonable neighborhood of solutions is explored. 
  * </p>
- * The mutation probability is the probability that a specific gene over the 
- * whole population is mutated. The number of available genes of an population
- * is <pre>genes = p*c*g</pre> where {@code p} is the population size, {@code c} 
- * the number of chromosomes of the genotypes and {@code g} the number of genes 
- * in the chromosomes. So the number of genes mutated by the mutation is 
- * <pre>genes*mutation-probability.</pre>
+ * The mutation probability <i>p</i> is the probability that a specific gene 
+ * over the whole population is mutated. The number of available genes of an 
+ * population is <pre>genes = np·nc·ng</pre> where {@code np} is the population 
+ * size, {@code nc} the number of chromosomes of the genotypes and {@code ng} 
+ * the number of genes in the chromosomes. So the (average) number of genes 
+ * mutated by the mutation is <pre>m = genes·p.</pre>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
