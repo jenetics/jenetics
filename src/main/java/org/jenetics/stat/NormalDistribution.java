@@ -61,7 +61,7 @@ import org.jscience.mathematics.number.Float64;
  */
 public class NormalDistribution<
 	N extends Number & Comparable<? super N>
-	>
+>
 	implements Distribution<N> 
 {
 	
