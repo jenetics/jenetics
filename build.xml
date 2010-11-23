@@ -58,6 +58,9 @@
 
 	<taskdef resource="testngtasks" classpathref="build.classpath" />
 	
+	<!--
+	    Compile the project sources.
+	-->
 	<target name="compile">
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" 
@@ -80,6 +83,17 @@
 		</javac>		
 	</target>
 	
+	<!--
+	    Build jar packages from the sources:
+	    * jenetics-<version>.jar: 
+	          Contains only the project classes without depending external jars 
+	          but without tests and examples.
+	    * jenetics-all-<version>.jar:
+	          Contains project classes with depending external jars but without
+	          tests and examples.
+	    * jenetics-examples-<version>.jar
+	          Contains only the example classes.
+	-->
 	<target name="jar" depends="compile">
 		<tstamp>
 			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
@@ -163,6 +177,9 @@
 		</jar>		
 	</target>
 
+	<!--
+	    Creates the javadoc from the project sources.
+	-->
 	<target name="javadoc">
 		<tstamp>
 			<format property="JAVADOC_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
@@ -246,6 +263,9 @@
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
 	
+	<!--
+	    Create the javadoc with UML graphs from the project sources.
+	-->
 	<target name="javadoc-uml">
 		<tstamp>
 			<format property="JAVADOC_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
@@ -348,6 +368,9 @@
 
 	<target name="all" depends="jar, javadoc, test" />
 
+	<!--
+	    Compiles the project unit tests.
+	-->
 	<target name="compile-tests" depends="compile">
 		<copy todir="${build.dir}/org/jenetics/util" >
 			<fileset file="${testng.source.dir}/org/jenetics/util/*.txt" />
@@ -375,6 +398,9 @@
 		</javac>			
 	</target>
 
+	<!--
+	    Executes the projects unit tests.
+	-->
 	<target name="test" depends="compile-tests">
 		<mkdir dir="${testng.report.dir}" />
 		<testng 
@@ -393,6 +419,9 @@
 		</testng>
 	</target>
 	
+	<!--
+	    Deletes the build directory.
+	-->
 	<target name="clean" >
 		<delete dir="${build.dir}" />
 		<delete dir="${javadoc.dir}" />
@@ -406,7 +435,17 @@
 		</delete>
 	</target>
 	
-	<target name="export" depends="clean, jar, test, javadoc">
+	<!--
+	    Exports the project. Executes all tests and build a ready to deploy zip
+	    file.
+	-->
+	<target name="export" >
+		<antcall target="clean" />
+		<antcall target="test" />
+		<antcall target="clean" />
+		<antcall target="jar" />
+		<antcall target="javadoc" />
+		
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
 			<fileset dir="${source.basedir}" />
@@ -432,6 +471,15 @@
 		<copy todir="${export.dir}/build" file="${identifier}.jar"/>
 		<copy todir="${export.dir}/build" file="${identifier}-all.jar"/>
 		<copy todir="${export.dir}/build" file="${identifier}-examples.jar"/>
+		
+		<replace file="${export.dir}/BUILD.txt" token="@!identifier!@" value="${identifier}" />
+		<replace file="${export.dir}/BUILD.txt" token="@!year!@" value="${year}" />
+		<replace file="${export.dir}/build.xml" token="@!identifier!@" value="${identifier}" />
+		<replace file="${export.dir}/build.xml" token="@!year!@" value="${year}" />		
+		<replace file="${export.dir}/change.log" token="@!identifier!@" value="${identifier}" />
+		<replace file="${export.dir}/change.log" token="@!year!@" value="${year}" /> 
+		<replace file="${export.dir}/README" token="@!identifier!@" value="${identifier}" />
+		<replace file="${export.dir}/README" token="@!year!@" value="${year}" /> 	
 		
 		<zip destfile="${build.dir}/export/${identifier}.zip" level="9">
 			<fileset dir="${export.dir}"/>
