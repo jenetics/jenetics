@@ -66,8 +66,6 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Holds the number of mutation performed by this mutation class.
 	 */
 	protected int _mutations = 0;
-
-	private final double _pprob;
 	
 	/**
 	 * Default constructor, with probability = 0.01.
@@ -87,7 +85,6 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	public Mutator(final double probability) {
 		super(probability);
-		_pprob = Math.pow(probability, 1.0/3.0);
 	}
 	
 	/**
@@ -112,16 +109,20 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		assert(population != null) : "Not null is guaranteed from base class.";
 		
 		final Random random = RandomRegistry.getRandom();
-		final ProbabilityIndexIterator it = 
-			new ProbabilityIndexIterator(population.size(), _pprob, random);
+		final double probability = Math.pow(_probability, 1.0/3.0);
+		final ProbabilityIndexIterator it = new ProbabilityIndexIterator(
+				population.size(), probability, random
+			);
 				
 		final AtomicInteger alterations = new AtomicInteger(0);
 		for (int i = it.next(); i != -1; i = it.next()) {
-			Phenotype<G, C> pt = population.get(i);
-			final Genotype<G> gt = pt.getGenotype(); 
+			final Phenotype<G, C> pt = population.get(i);
 			
-			pt = pt.newInstance(mutate(gt, alterations), generation);
-			population.set(i, pt);
+			final Genotype<G> gt = pt.getGenotype(); 
+			final Genotype<G> mgt = mutate(gt, probability, alterations);
+			
+			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
+			population.set(i, mpt);
 		}
 		
 		return alterations.get();
@@ -129,11 +130,12 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
 	private Genotype<G> mutate(
 		final Genotype<G> genotype, 
+		final double probability,
 		final AtomicInteger alterations
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final ProbabilityIndexIterator it = 
-			new ProbabilityIndexIterator(genotype.length(), _pprob, random);
+			new ProbabilityIndexIterator(genotype.length(), probability, random);
 		
 		Genotype<G> gt = genotype;
 		
@@ -145,9 +147,9 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 				final Chromosome<G> chromosome = chromosomes.get(i);
 				final Array<G> genes = chromosome.toArray().copy();
 				
-				final int mutations = mutate(genes);
+				final int mutations = mutate(genes, probability);
 				if (mutations > 0) {
-					alterations.addAndGet(mutate(genes));
+					alterations.addAndGet(mutations);
 					chromosomes.set(i, chromosome.newInstance(genes));
 				}
 			}
@@ -180,10 +182,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * 
 	 * @param genes the genes to mutate.
 	 */
-	protected int mutate(final Array<G> genes) {
+	protected int mutate(final Array<G> genes, final double probability) {
 		final Random random = RandomRegistry.getRandom();
 		final ProbabilityIndexIterator it = 
-			new ProbabilityIndexIterator(genes.length(), _pprob, random);
+			new ProbabilityIndexIterator(genes.length(), probability, random);
 		
 		int alterations = 0;
 		
