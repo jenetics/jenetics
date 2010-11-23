@@ -4,8 +4,6 @@
 	<classpathentry kind="src" path="src/site"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry kind="lib" path="lib/build/ant-java2html.jar"/>
-	<classpathentry kind="lib" path="lib/build/colapi.jar"/>
 	<classpathentry kind="lib" path="lib/jscience.jar"/>
 	<classpathentry kind="lib" path="lib/jsr166y.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
