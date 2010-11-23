@@ -145,11 +145,14 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 				final Chromosome<G> chromosome = chromosomes.get(i);
 				final Array<G> genes = chromosome.toArray().copy();
 				
-				alterations.addAndGet(mutate(genes));
-				chromosomes.set(i, chromosome.newInstance(genes));
+				final int mutations = mutate(genes);
+				if (mutations > 0) {
+					alterations.addAndGet(mutate(genes));
+					chromosomes.set(i, chromosome.newInstance(genes));
+				}
 			}
 				
-			gt = Genotype.valueOf(chromosomes);
+			gt = genotype.newInstance(chromosomes);
 		}
 		
 		return gt;
