@@ -53,16 +53,40 @@ public class Genotype<T extends Gene<?, T>>
 				Realtime, 
 				Immutable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private final Array<Chromosome<T>> _chromosomes; 
-	private Integer _ngenes = null;
+	private final int _ngenes;
 	
 	//Caching isValid value.
-	private Boolean _valid = null;
+	private volatile Boolean _valid = null;
 	
-	protected Genotype(final int length) {
+	/**
+	 * Create a new genotype with the given number of chromosome and the overall
+	 * number of genes.
+	 * 
+	 * @param length the number of chromosomes of the genotype.
+	 * @param ngenes the overall number of genes of the genotype.
+	 */
+	protected Genotype(final int length, final int ngenes) {
 		_chromosomes = new Array<Chromosome<T>>(length);
+		_ngenes = ngenes;
+	}
+	
+	private Genotype(final Array<Chromosome<T>> chromosomes, final int ngenes) {
+		assert(chromosomes != null);
+		assert(ngenes(chromosomes) == ngenes);
+		
+		_chromosomes = chromosomes.seal();
+		_ngenes = ngenes;
+	}
+	
+	private static int ngenes(final Array<? extends Chromosome<?>> chromosomes) {
+		int ngenes = 0;
+		for (int i = chromosomes.length(); --i >= 0;) {
+			ngenes += chromosomes.get(i).length();
+		}
+		return ngenes;
 	}
 	
 	/**
@@ -131,14 +155,7 @@ public class Genotype<T extends Gene<?, T>>
 	 * @return Return the number of genes this genotype consists of.
 	 */
 	public int getNumberOfGenes() {
-		if (_ngenes == null) {
-			int ngenes = 0;
-			for (int i = 0; i < _chromosomes.length(); ++i) {
-				ngenes += _chromosomes.get(i).length();
-			}
-			_ngenes = ngenes;
-		}
-		return _ngenes.intValue();
+		return _ngenes;
 	}
 	
 	/**
@@ -162,11 +179,16 @@ public class Genotype<T extends Gene<?, T>>
 	 */
 	@Override
 	public Genotype<T> newInstance() {
-		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length());
+		final Genotype<T> genotype = new Genotype<T>(_chromosomes.length(), _ngenes);
+		
 		for (int i = 0; i < genotype.length(); ++i) {
 			genotype._chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
 		return genotype;
+	}
+	
+	public Genotype<T> newInstance(final Array<Chromosome<T>> chromosomes) {
+		return new Genotype<T>(chromosomes, _ngenes);
 	}
 	
 	@Override
@@ -262,12 +284,17 @@ public class Genotype<T extends Gene<?, T>>
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
+				
+		final Genotype<G> genotype = new Genotype<G>(
+				chromosomes.length(), 
+				ngenes(chromosomes)
+			);
 		
-		final Genotype<G> genotype = new Genotype<G>(chromosomes.length());
 		for (int i = 0; i < chromosomes.length(); ++i) {
 			nonNull(chromosomes.get(i), "Chromosome[" + i + "]");
 			genotype._chromosomes.set(i, chromosomes.get(i));
 		}
+		
 		return genotype;
 	}
 	
@@ -283,7 +310,9 @@ public class Genotype<T extends Gene<?, T>>
 	) {
 		nonNull(chromosome, "Chromosome");
 		
-		final Genotype<G> genotype = new Genotype<G>(1);
+		final int ngenes = chromosome.length();
+		
+		final Genotype<G> genotype = new Genotype<G>(1, ngenes);
 		genotype._chromosomes.set(0, chromosome);
 		return genotype;
 	}
@@ -295,7 +324,10 @@ public class Genotype<T extends Gene<?, T>>
 		nonNull(chrom1, "Chromosome 1");
 		nonNull(chrom2, "Chromosome 2");
 		
-		final Genotype<G> genotype = new Genotype<G>(2);
+		final int ngenes = chrom1.length() + 
+							chrom2.length();
+		
+		final Genotype<G> genotype = new Genotype<G>(2, ngenes);
 		genotype._chromosomes.set(0, chrom1);
 		genotype._chromosomes.set(1, chrom2);
 		return genotype;
@@ -310,7 +342,11 @@ public class Genotype<T extends Gene<?, T>>
 		nonNull(chrom2, "Chromosome 2");
 		nonNull(chrom3, "Chromosome 3");
 		
-		final Genotype<G> genotype = new Genotype<G>(3);
+		final int ngenes = chrom1.length() + 
+							chrom2.length() +
+							chrom3.length();		
+		
+		final Genotype<G> genotype = new Genotype<G>(3, ngenes);
 		genotype._chromosomes.set(0, chrom1);
 		genotype._chromosomes.set(1, chrom2);
 		genotype._chromosomes.set(2, chrom3);
@@ -328,7 +364,12 @@ public class Genotype<T extends Gene<?, T>>
 		nonNull(chrom3, "Chromosome 3");
 		nonNull(chrom4, "Chromosome 4");
 		
-		final Genotype<G> genotype = new Genotype<G>(4);
+		final int ngenes = chrom1.length() + 
+							chrom2.length() +
+							chrom3.length() +
+							chrom4.length();		
+		
+		final Genotype<G> genotype = new Genotype<G>(4, ngenes);
 		genotype._chromosomes.set(0, chrom1);
 		genotype._chromosomes.set(1, chrom2);
 		genotype._chromosomes.set(2, chrom3);
@@ -341,6 +382,7 @@ public class Genotype<T extends Gene<?, T>>
 	XML = new XMLFormat<Genotype>(Genotype.class) 
 	{
 		private static final String LENGTH = "length";
+		private static final String NGENES = "ngenes";
 		
 		@Override
 		public Genotype newInstance(
@@ -349,7 +391,8 @@ public class Genotype<T extends Gene<?, T>>
 			throws XMLStreamException 
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
-			final Genotype genotype = new Genotype(length);
+			final int ngenes = xml.getAttribute(NGENES, 0);
+			final Genotype genotype = new Genotype(length, ngenes);
 			for (int i = 0; i < length; ++i) {
 				final Chromosome<?> c = xml.getNext();
 				genotype._chromosomes.set(i, c);
@@ -361,6 +404,7 @@ public class Genotype<T extends Gene<?, T>>
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, gt.length());
+			xml.setAttribute(NGENES, gt.getNumberOfGenes());
 			for (int i = 0; i < gt.length(); ++i) {
 				xml.add(gt._chromosomes.get(i));
 			}
