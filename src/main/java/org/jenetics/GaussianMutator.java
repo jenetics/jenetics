@@ -22,11 +22,10 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ArrayUtils.subset;
-
 import java.util.Random;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ProbabilityIndexIterator;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -49,28 +48,21 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 	}
 
 	@Override
-	protected int mutate(final Array<G> genes, final double probability) {
+	protected int mutate(final Array<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
+		final ProbabilityIndexIterator it = iterator(genes.length(), p);
 		
 		int alterations = 0;
-		if (subsetSize > 0) {
-			final int[] elements = subset(genes.length(), subsetSize, random);
+		for (int i = it.next(); i != -1; i = it.next()) {
+			final G og = genes.get(i);
+			double value = random.nextGaussian()*og.doubleValue();
+			value = Math.min(value, og.getMax().doubleValue());
+			value = Math.max(value, og.getMin().doubleValue());
 
-			for (int i = 0; i < elements.length; ++i) {
-				final G oldGene = genes.get(elements[i]);
-				double value = random.nextGaussian()*oldGene.doubleValue();
-				value = Math.min(value, oldGene.getMax().doubleValue());
-				value = Math.max(value, oldGene.getMin().doubleValue());
-
-				final G newGene = oldGene.newInstance(value);
-				genes.set(elements[i], newGene);
-
-			}
+			genes.set(i, og.newInstance(value));
 			
-			//Count the number of mutated genes.
-			_mutations += elements.length;
-			alterations = elements.length;
+			++_mutations;
+			++alterations;
 		}
 		
 		return alterations;
