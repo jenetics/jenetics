@@ -70,13 +70,13 @@ public class ProbabilityIndexIteratorTest {
 	@Test(dataProvider = "probabilities")
 	public void distribution(final Integer n, final Double p) {
 		final double mean = n*p;
-		final double var = n*p*(1.0 - p);
+		final double var = n*p*(1 - p);
 		
 		final Random random = new Random();
 		final Domain<Long> domain = new Domain<Long>(0L, n.longValue());
 		
 		final Histogram<Long> histogram = Histogram.valueOf(
-					domain.getMin(), domain.getMax(), 10
+					domain.getMin(), domain.getMax(), 10 
 				);	
 		final Variance<Long> variance = new Variance<Long>();
 		for (int i = 0; i < 1000; ++i) {
@@ -92,26 +92,43 @@ public class ProbabilityIndexIteratorTest {
 				);
 		
 		final double χ2 = histogram.χ2(dist.cdf());
-//		System.out.println(histogram + ": " + χ2);
 		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
 	}
 	
-	private long k(final int n, final double p, final Random random) {
+	double var(final double p, final long N) {
+		return N*p*(1.0 - p);
+	}
+	
+	double mean(final double p, final long N) {
+		return N*p;
+	}
+	
+	long k(final int n, final double p, final Random random) {
 		final ProbabilityIndexIterator it = 
 			new ProbabilityIndexIterator(n, p, random);
 		
-		int k = 0;
+		int kt = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
-			++k;
+//			final ProbabilityIndexIterator itt = 
+//				new ProbabilityIndexIterator(n, p, random);
+//			
+//			for (int j = itt.next(); j != -1; j = itt.next()) {
+//				final ProbabilityIndexIterator ittt = 
+//					new ProbabilityIndexIterator(n, p, random);
+//				
+//				for (int k = ittt.next(); k != -1; k = ittt.next()) {
+//					++kt;
+//				}
+//			}
+			++kt;
 		}
-		return k;
+		return kt;
 	}
 	
 	@DataProvider(name = "probabilities")
 	public Object[][] probabilities() {
 		return new Object[][] {
 				//    n,                p
-				{ new Integer(515),   new Double(0.15) },
 				{ new Integer(1115),  new Double(0.15) },
 				{ new Integer(1150),  new Double(0.15) },
 				{ new Integer(1160),  new Double(0.15) },

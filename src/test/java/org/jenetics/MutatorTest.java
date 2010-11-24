@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import javolution.context.ConcurrentContext;
-
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
@@ -107,22 +105,10 @@ public class MutatorTest {
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
 		final Variance<Long> variance = new Variance<Long>();
 		
-		ConcurrentContext.enter();
-		try {
-			for (int i = 0; i < N; ++i) {
-//				ConcurrentContext.execute(new Runnable() {
-//					@Override
-//					public void run() {
-						final long alterations = mutator.alter(population, 1);
-//						synchronized (histogram) {
-							histogram.accumulate(alterations);
-							variance.accumulate(alterations);	
-//						}
-//					}
-//				});
-			}
-		} finally {
-			ConcurrentContext.exit();
+		for (int i = 0; i < N; ++i) {
+			final long alterations = mutator.alter(population, 1);
+			histogram.accumulate(alterations);
+			variance.accumulate(alterations);	
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
@@ -131,8 +117,15 @@ public class MutatorTest {
 			);
 		
 		final double χ2 = histogram.χ2(dist.cdf());
-//		System.out.println(histogram + ": " + χ2);
 		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
+	}
+	
+	double var(final double p, final long N) {
+		return N*p*(1.0 - p);
+	}
+	
+	double mean(final double p, final long N) {
+		return N*p;
 	}
 	
 	
@@ -182,6 +175,7 @@ public class MutatorTest {
 	public Object[][] alterProbabilityParameters() {
 		return new Object[][] {
 				//    ngenes,       nchromosomes     npopulation
+				{ new Integer(20),   new Integer(20),  new Integer(20), new Double(0.5) },
 				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.15) },
 				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.15) },
 				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.15) },

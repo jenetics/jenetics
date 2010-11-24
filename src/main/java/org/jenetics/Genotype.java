@@ -154,7 +154,7 @@ public class Genotype<T extends Gene<?, T>>
 	 * 
 	 * @return Return the number of genes this genotype consists of.
 	 */
-	public int getNumberOfGenes() {
+	int getNumberOfGenes() {
 		return _ngenes;
 	}
 	
@@ -187,7 +187,7 @@ public class Genotype<T extends Gene<?, T>>
 		return genotype;
 	}
 	
-	public Genotype<T> newInstance(final Array<Chromosome<T>> chromosomes) {
+	 Genotype<T> newInstance(final Array<Chromosome<T>> chromosomes) {
 		return new Genotype<T>(chromosomes, _ngenes);
 	}
 	

@@ -66,7 +66,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	 * mutation.
 	 */
 	@Override
-	protected int mutate(final Array<G> genes) {
+	protected int mutate(final Array<G> genes, final double probability) {
 		final Random random = RandomRegistry.getRandom();
 		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
 		
