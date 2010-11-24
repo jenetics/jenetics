@@ -191,7 +191,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		return alterations;
 	}
 	
-	private ProbabilityIndexIterator iterator(final int length, final double p) {
+	ProbabilityIndexIterator iterator(final int length, final double p) {
 		return new ProbabilityIndexIterator(length, p, RandomRegistry.getRandom());
 	}
 	

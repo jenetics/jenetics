@@ -45,6 +45,11 @@
 			<class name="org.jenetics.Float64GeneTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.GaussianMutator">
+		<classes>
+			<class name="org.jenetics.GaussianTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.GeneticAlgorithm">
 		<classes>
 			<class name="org.jenetics.GeneticAlgorithmTest" />

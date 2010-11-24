@@ -22,19 +22,19 @@
  */
 package org.jenetics;
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class MutatorTest extends MutatorTestBase {
-
+public class GaussianMutatorTest extends MutatorTestBase {
+	
 	@Override
 	public Mutator<Float64Gene> newMutator(double p) {
-		return new Mutator<Float64Gene>(p);
-	}	
+		return new GaussianMutator<Float64Gene>(p);
+	}
 	
 }
-
 
 
 
