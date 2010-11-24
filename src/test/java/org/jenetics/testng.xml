@@ -47,7 +47,7 @@
 	</test>
 	<test name="org.jenetics.GaussianMutator">
 		<classes>
-			<class name="org.jenetics.GaussianTest" />
+			<class name="org.jenetics.GaussianMutatorTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.GeneticAlgorithm">
