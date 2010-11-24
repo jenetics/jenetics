@@ -49,7 +49,7 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 	}
 
 	@Override
-	protected int mutate(final Array<G> genes) {
+	protected int mutate(final Array<G> genes, final double probability) {
 		final Random random = RandomRegistry.getRandom();
 		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
 		

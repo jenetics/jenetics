@@ -38,7 +38,7 @@ import org.jenetics.util.Validator.Verify;
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
  * of this class must assure that the protected member <code>_genes</code> is not
- * <code>null</code> and the lenght of the <code>_genes</code> > 0.
+ * <code>null</code> and the lenght of the <code>genes</code> > 0.
  * 
  * @param <G> the gene type.
  * 

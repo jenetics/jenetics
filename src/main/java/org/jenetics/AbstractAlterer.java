@@ -52,7 +52,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	}
 	
 	/**
-	 * Return the recombination probability for this alterer.
+	 * Return the recombination/alter probability for this alterer.
 	 * 
 	 * @return The recombination probability.
 	 */
