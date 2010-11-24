@@ -23,10 +23,10 @@
 package org.jenetics;
 
 import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.util.Array;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
