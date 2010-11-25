@@ -51,10 +51,17 @@ import org.jenetics.util.RandomRegistry;
  * </p>
  * The mutation probability <i>p</i> is the probability that a specific gene 
  * over the whole population is mutated. The number of available genes of an 
- * population is <pre>genes = np·nc·ng</pre> where {@code np} is the population 
- * size, {@code nc} the number of chromosomes of the genotypes and {@code ng} 
+ * population is 
+ * <p>
+ * <img src="doc-files/mutator-N_G.gif" alt="N_G=n_P \cdot n_C \cdot n_G" />
+ * </p>
+ * where <i>n<sub>P</sub></i>  is the population size, <i>n<sub>C</sub></i> the 
+ * number of chromosomes of the genotypes and <i>n<sub>G</sub></i> 
  * the number of genes in the chromosomes. So the (average) number of genes 
- * mutated by the mutation is <pre>m = genes·p.</pre>
+ * mutated by the mutation is 
+ * <p>
+ * <img src="doc-files/mutator-mean_m.gif" alt="\hat{\mu}_m=N_G \cdot p" />
+ * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
