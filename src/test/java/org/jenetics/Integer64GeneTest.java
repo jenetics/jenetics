@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+
 import java.io.IOException;
 import java.util.Random;
 
@@ -76,12 +78,7 @@ public class Integer64GeneTest {
 			
 			// Chi-Square teset for gene distribution.
 			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
-			final UniformDistribution<Integer64> dist =
-				new UniformDistribution<Integer64>(min, max);
-			
-			final double χ2 = histogram.χ2(dist.cdf());
-			//System.out.println(histogram + ": " + χ2);
-			Assert.assertTrue(χ2 < 25); // TODO: Remove magic number.
+			assertDistribution(histogram, new UniformDistribution<Integer64>(min, max));
 		} finally {
 			LocalContext.exit();
 		}

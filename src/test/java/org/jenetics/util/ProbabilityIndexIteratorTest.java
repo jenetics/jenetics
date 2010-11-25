@@ -22,9 +22,10 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+
 import java.util.Random;
 
-import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -87,12 +88,7 @@ public class ProbabilityIndexIteratorTest {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		final Distribution<Long> dist = new NormalDistribution<Long>(
-					domain, mean, var
-				);
-		
-		final double χ2 = histogram.χ2(dist.cdf());
-		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
+		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, var));
 	}
 	
 	double var(final double p, final long N) {
