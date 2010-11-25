@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
@@ -34,7 +35,6 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.RandomRegistry;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -62,11 +62,7 @@ public class CharacterChromosomeTest  {
 			
 			// Chi-Square teset for gene distribution.
 			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
-			final UniformDistribution<Long> dist =
-				new UniformDistribution<Long>(0L, 10L);
-			
-			final double χ2 = histogram.χ2(dist.cdf());
-			Assert.assertTrue(χ2 < 25); // TODO: remove magic number
+			assertDistribution(histogram, new UniformDistribution<Long>(0L, 10L));
 		} finally {
 			LocalContext.exit();
 		}

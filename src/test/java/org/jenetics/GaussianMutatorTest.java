@@ -22,16 +22,14 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+
 import java.util.Random;
 
-import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
-import org.jscience.mathematics.function.Function;
-import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
@@ -69,12 +67,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		}
 		
 		final Domain<Double> domain = new Domain<Double>(min, max);
-		final Distribution<Double> distribution = 
-			new NormalDistribution<Double>(domain, mean, var);
-		
-		final Function<Double, Float64> cdf = distribution.cdf();
-		final double χ2 = histogram.χ2(cdf);
-		Assert.assertTrue(χ2 < 28, String.format("χ2 must be smaller than 28: %f", χ2)); // TODO: remove magic number
+		assertDistribution(histogram, new NormalDistribution<Double>(domain, mean, var));
 	}
 	
 }

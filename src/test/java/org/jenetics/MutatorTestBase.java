@@ -22,7 +22,8 @@
  */
 package org.jenetics;
 
-import org.jenetics.stat.Distribution;
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -91,12 +92,7 @@ public abstract class MutatorTestBase {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		final Distribution<Long> dist = new NormalDistribution<Long>(
-				domain, mean, variance.getVariance()
-			);
-		
-		final double χ2 = histogram.χ2(dist.cdf());
-		Assert.assertTrue(χ2 < 28); // TODO: Remove magic number.
+		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, variance.getVariance()));
 	}
 	
 	
