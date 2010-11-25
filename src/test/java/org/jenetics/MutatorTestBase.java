@@ -171,7 +171,27 @@ public abstract class MutatorTestBase {
 				{ new Integer(80),  new Integer(2),  new Integer(100) },
 				{ new Integer(1),   new Integer(15), new Integer(100) },
 				{ new Integer(5),   new Integer(15), new Integer(100) },
-				{ new Integer(80),  new Integer(15), new Integer(100) }
+				{ new Integer(80),  new Integer(15), new Integer(100) },
+				
+				{ new Integer(1),   new Integer(1),  new Integer(150) },
+				{ new Integer(5),   new Integer(1),  new Integer(150) },
+				{ new Integer(80),  new Integer(1),  new Integer(150) },
+				{ new Integer(1),   new Integer(2),  new Integer(150) },
+				{ new Integer(5),   new Integer(2),  new Integer(150) },
+				{ new Integer(80),  new Integer(2),  new Integer(150) },
+				{ new Integer(1),   new Integer(15), new Integer(150) },
+				{ new Integer(5),   new Integer(15), new Integer(150) },
+				{ new Integer(80),  new Integer(15), new Integer(150) },
+				
+				{ new Integer(1),   new Integer(1),  new Integer(500) },
+				{ new Integer(5),   new Integer(1),  new Integer(500) },
+				{ new Integer(80),  new Integer(1),  new Integer(500) },
+				{ new Integer(1),   new Integer(2),  new Integer(500) },
+				{ new Integer(5),   new Integer(2),  new Integer(500) },
+				{ new Integer(80),  new Integer(2),  new Integer(500) },
+				{ new Integer(1),   new Integer(15), new Integer(500) },
+				{ new Integer(5),   new Integer(15), new Integer(500) },
+				{ new Integer(80),  new Integer(15), new Integer(500) }
 		};
 	}	
 	
