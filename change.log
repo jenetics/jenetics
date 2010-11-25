@@ -1,3 +1,4 @@
+- Fix documentation and behavior of org.jenetics.GaussianMutator class.
 - Fix the org.jenetics.Mutator class. The mutation probability is (now) the
   probability that a given gene is mutated. (Should have been always the case.)
 - Add org.jenetics.stat.NormalDistribution class for creating statistical tests
