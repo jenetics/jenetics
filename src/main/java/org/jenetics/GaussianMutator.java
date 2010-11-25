@@ -30,9 +30,16 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * The GaussianRealMutator class performs the mutation of a {@link NumberGene}. 
- * This mutator picks a new value based on a Gaussian distribution (with 
- * deviation 1.0)  around the current value of the gene. The new value won't be 
- * out of the gene's boundaries.
+ * This mutator picks a new value based on a Gaussian distribution around the 
+ * current value of the gene. The variance of the new value (before clipping to
+ * the allowed gene range) will be 
+ * <p>
+ * <img 
+ *     src="doc-files/gaussian-mutator-var.gif" 
+ *     alt="\hat{\sigma }^2 = \left ( \frac{ G_{max} - G_{min} }{4}\right )^2" 
+ * />
+ * </p>
+ * The new value will be cropped to the gene's boundaries.
  *
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -54,12 +61,14 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 		
 		int alterations = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
-			final G og = genes.get(i);
-			double value = random.nextGaussian()*og.doubleValue();
-			value = Math.min(value, og.getMax().doubleValue());
-			value = Math.max(value, og.getMin().doubleValue());
+			final G g = genes.get(i);
+			final double std = (g.getMax().doubleValue() - g.getMin().doubleValue())/4.0;
+			
+			double value = random.nextGaussian()*std + g.doubleValue();
+			value = Math.min(value, g.getMax().doubleValue());
+			value = Math.max(value, g.getMin().doubleValue());
 
-			genes.set(i, og.newInstance(value));
+			genes.set(i, g.newInstance(value));
 			
 			++_mutations;
 			++alterations;
