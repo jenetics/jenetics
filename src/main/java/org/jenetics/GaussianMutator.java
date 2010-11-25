@@ -61,20 +61,24 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 		
 		int alterations = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
-			final G g = genes.get(i);
-			final double std = (g.getMax().doubleValue() - g.getMin().doubleValue())/4.0;
-			
-			double value = random.nextGaussian()*std + g.doubleValue();
-			value = Math.min(value, g.getMax().doubleValue());
-			value = Math.max(value, g.getMin().doubleValue());
-
-			genes.set(i, g.newInstance(value));
+			genes.set(i, mutate(genes.get(i), random));
 			
 			++_mutations;
 			++alterations;
 		}
 		
 		return alterations;
+	}
+	
+	G mutate(final G gene, final Random random) {
+		final double std = 
+			(gene.getMax().doubleValue() - gene.getMin().doubleValue())/4.0;
+		
+		double value = random.nextGaussian()*std + gene.doubleValue();
+		value = Math.min(value, gene.getMax().doubleValue());
+		value = Math.max(value, gene.getMin().doubleValue());
+		
+		return gene.newInstance(value);
 	}
 	
 	@Override
