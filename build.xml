@@ -444,12 +444,18 @@
 		</delete>
 	</target>
 	
+	<target name="clean-all" depends="clean">
+        <delete>
+            <fileset dir="${basedir}" includes="test-report.html"/>
+        </delete>		
+	</target>
+	
 	<!--
 	    Exports the project. Executes all tests and build a ready to deploy zip
 	    file.
 	-->
 	<target name="export" >
-		<antcall target="clean" />
+		<antcall target="clean-all" />
 		<antcall target="test" />
 		<antcall target="clean" />
 		<antcall target="jar" />
