@@ -32,7 +32,8 @@
 	<property name="identifier" value="jenetics-${version}" />
 	<property name="year" value="2007-2010" />
 	
-	<property name="source.basedir" value="./src" />
+	<property name="basedir" value="." />
+	<property name="source.basedir" value="${basedir}/src" />
 	<property name="lib.dir" value="./lib" />
 	<property name="build.dir" value="./build" />
 	
@@ -420,6 +421,11 @@
 			<xmlfileset dir="${testng.source.dir}/org/jenetics" includes="testng.xml" />
 			<!--<classfileset dir="${build.dir}" includes="**/*Test.class" />-->
 		</testng>
+		
+		<copy 
+			file="${testng.report.dir}/emailable-report.html"
+			tofile="${basedir}/test-report.html"
+		/>
 	</target>
 	
 	<!--
@@ -433,8 +439,9 @@
 		<delete dir="bin" />
 		<delete dir="${testng.report.dir}" />
 		<delete>
-			<fileset dir="." includes="${identifier}*.jar"/>
-			<fileset dir="." includes="temp-testng-*"/>
+			<fileset dir="${basedir}" includes="${identifier}*.jar"/>
+			<fileset dir="${basedir}" includes="temp-testng-*"/>
+			<fileset dir="${basedir}" includes="test-report.html"/>
 		</delete>
 	</target>
 	
@@ -471,6 +478,7 @@
 		<copy todir="${export.dir}" file="change.log"/>
 		<copy todir="${export.dir}" file="LGPL.txt"/>
 		<copy todir="${export.dir}" file="README"/>
+		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
 		<copy todir="${export.dir}/build" file="${identifier}.jar"/>
 		<copy todir="${export.dir}/build" file="${identifier}-all.jar"/>
 		<copy todir="${export.dir}/build" file="${identifier}-examples.jar"/>
