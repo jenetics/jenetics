@@ -441,7 +441,6 @@
 		<delete>
 			<fileset dir="${basedir}" includes="${identifier}*.jar"/>
 			<fileset dir="${basedir}" includes="temp-testng-*"/>
-			<fileset dir="${basedir}" includes="test-report.html"/>
 		</delete>
 	</target>
 	
