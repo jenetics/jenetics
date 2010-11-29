@@ -182,7 +182,7 @@
 	</target>
 
 	<!--
-	    Creates the javadoc from the project sources.
+	 # Creates the javadoc from the project sources.
 	-->
 	<target name="javadoc">
 		<tstamp>
