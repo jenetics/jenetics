@@ -96,12 +96,12 @@ public class Integer64ChromosomeTest {
 		Assert.assertNotSame(c1, c2);
 	}
 	
-	@Test
+	@Test(invocationCount = 5)
 	public void xmlSerialize() throws XMLStreamException {
 		SerializeUtils.testXMLSerialization(new Integer64Chromosome(0, 100, 10));
 	}
 	
-	@Test
+	@Test(invocationCount = 5)
 	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(new Integer64Chromosome(0, 100, 10));
 	}

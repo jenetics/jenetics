@@ -111,12 +111,12 @@ public class Float64ChromosomeTest {
     	Assert.assertEquals(c2, c1);
     }
     
-    @Test
+    @Test(invocationCount = 5)
     public void xmlSerialize() throws XMLStreamException {
     	SerializeUtils.testXMLSerialization(new Float64Chromosome(-12.0, 230.123, 1));
     }
     
-    @Test
+    @Test(invocationCount = 5)
     public void objectSerialize() throws IOException {
     	SerializeUtils.testSerialization(new Float64Chromosome(-12.0, 230.123, 1));
     }

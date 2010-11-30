@@ -95,7 +95,7 @@ public class PopulationTest {
 		}
 	}
 	
-	@Test
+	@Test(invocationCount = 5)
 	public void xmlSerialization() throws XMLStreamException {
 		final int size = 10;
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
@@ -113,7 +113,7 @@ public class PopulationTest {
 		SerializeUtils.testXMLSerialization(population);
 	}
 	
-	@Test
+	@Test(invocationCount = 5)
 	public void objectSerialization() throws IOException {
 		final int size = 10;
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));

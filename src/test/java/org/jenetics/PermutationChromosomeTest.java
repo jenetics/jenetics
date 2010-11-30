@@ -68,12 +68,12 @@ public class PermutationChromosomeTest {
 		return sorted;
 	}
 	
-	@Test
+	@Test(invocationCount = 5)
 	public void xmlSerialize() throws XMLStreamException {
 		SerializeUtils.testXMLSerialization(new PermutationChromosome(10));
 	}
 	
-	@Test
+	@Test(invocationCount = 5)
 	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(new PermutationChromosome(10));
 	}

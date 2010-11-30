@@ -90,7 +90,7 @@ public class GenotypeTest {
         assertFalse(g1.equals(g2));
     }
 
-    @Test
+    @Test(invocationCount = 5)
     public void xmlSerialize() throws XMLStreamException {
         Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
         Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
@@ -100,7 +100,7 @@ public class GenotypeTest {
     	SerializeUtils.testXMLSerialization(g1);
     }
     
-    @Test
+    @Test(invocationCount = 5)
     public void objectSerialize() throws IOException {
         Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
         Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);

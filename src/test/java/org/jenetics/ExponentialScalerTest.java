@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  */
 public class ExponentialScalerTest {
 
-	@Test
+	@Test(invocationCount = 5)
 	public void serialize() throws IOException {
 		SerializeUtils.testSerialization(new ExponentialScaler(234, 345, 122));
 	}
