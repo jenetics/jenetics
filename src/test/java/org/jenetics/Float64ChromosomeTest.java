@@ -55,18 +55,22 @@ public class Float64ChromosomeTest {
 			
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
-			final Float64Chromosome chromosome = new Float64Chromosome(0, 100, 5000);
+			
 			
 			final MinMax<Float64> mm = new MinMax<Float64>();
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
 			final Variance<Float64> variance = new Variance<Float64>();
 			
-			accumulate(
-					chromosome, 
-					mm.adapt(Float64Gene.Value),
-					histogram.adapt(Float64Gene.Value),
-					variance.adapt(Float64Gene.Value)
-				);
+			for (int i = 0; i < 1000; ++i) {
+				final Float64Chromosome chromosome = new Float64Chromosome(min, max, 500);
+				
+				accumulate(
+						chromosome, 
+						mm.adapt(Float64Gene.Value),
+						histogram.adapt(Float64Gene.Value),
+						variance.adapt(Float64Gene.Value)
+					);
+			}
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);

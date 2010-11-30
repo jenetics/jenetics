@@ -53,19 +53,22 @@ public class Integer64ChromosomeTest {
 			RandomRegistry.setRandom(new Random());
 			
 			final Integer64 min = Integer64.ZERO;
-			final Integer64 max = Integer64.valueOf(100);
-			final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 5000);
+			final Integer64 max = Integer64.valueOf(10000000);
 			
 			final MinMax<Integer64> mm = new MinMax<Integer64>();			
 			final Variance<Integer64> variance = new Variance<Integer64>();
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
 			
-			accumulate(
-					chromosome, 
-					mm.adapt(Integer64Gene.Value),
-					variance.adapt(Integer64Gene.Value),
-					histogram.adapt(Integer64Gene.Value)
-				);
+			for (int i = 0; i < 1000; ++i) {
+				final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 500);
+				
+				accumulate(
+						chromosome, 
+						mm.adapt(Integer64Gene.Value),
+						variance.adapt(Integer64Gene.Value),
+						histogram.adapt(Integer64Gene.Value)
+					);
+			}
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
