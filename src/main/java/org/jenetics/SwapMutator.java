@@ -22,12 +22,11 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ArrayUtils.subset;
-
 import java.util.Random;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.ProbabilityIndexIterator;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -66,20 +65,20 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	 * mutation.
 	 */
 	@Override
-	protected int mutate(final Array<G> genes, final double probability) {
-		final Random random = RandomRegistry.getRandom();
-		final int subsetSize = (int)Math.ceil(genes.length()*_probability);
-		
+	protected int mutate(final Array<G> genes, final double p) {
 		int alterations = 0;
-		if (subsetSize > 0) {
-			final int[] elements = subset(genes.length(), subsetSize, random);
-					
-			for (int i = 0; i < elements.length; ++i) {
-				ArrayUtils.swap(genes, elements[i], random.nextInt(genes.length()));
-			}
+		
+		if (genes.length() > 1) {
+			final Random random = RandomRegistry.getRandom();
+			final ProbabilityIndexIterator it = iterator(genes.length(), p);
 			
-			_mutations += elements.length;
-			alterations = elements.length;
+			for (int i = it.next(); i != -1; i = it.next()) {
+				final int j = random.nextInt(genes.length());				
+				ArrayUtils.swap(genes, i, j);
+				
+				++_mutations;
+				++alterations;
+			}
 		}
 		
 		return alterations;
