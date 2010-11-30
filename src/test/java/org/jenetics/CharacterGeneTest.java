@@ -157,12 +157,12 @@ public class CharacterGeneTest {
         assertTrue(g1.toString().length() > 0);
     }
     
-    @Test
+    @Test(invocationCount = 5)
     public void xmlSerialize() throws XMLStreamException {
     	SerializeUtils.testXMLSerialization(CharacterGene.valueOf());
     }
     
-    @Test
+    @Test(invocationCount = 5)
     public void objectSerialize() throws IOException {
     	SerializeUtils.testSerialization(CharacterGene.valueOf());
     }

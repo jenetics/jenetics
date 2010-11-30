@@ -62,7 +62,6 @@ class SerializeUtils {
 		IOUtils.writeObject(object, out);
 		
 		final byte[] data = out.toByteArray();
-//		System.out.println("Length:" + data.length);
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = IOUtils.readObject(Serializable.class, in);
