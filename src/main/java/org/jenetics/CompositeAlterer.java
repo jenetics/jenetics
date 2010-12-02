@@ -195,7 +195,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	}
 	
 	/**
-	 * Create a new CompositeAlterer with the appended given alterer.
+	 * Create a new CompositeAlterer with the given alterer appended.
 	 * 
 	 * @param alterer the alterer to append.
 	 * @return a new CompositeAlterer.
