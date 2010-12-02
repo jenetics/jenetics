@@ -53,6 +53,11 @@
 			<class name="org.jenetics.CharacterGeneTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.CompositeAlterer">
+		<classes>
+			<class name="org.jenetics.CompositeAltererTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.ConstantFitnessFunction">
 		<classes>
 			<class name="org.jenetics.ConstantFitnessFunctionTest" />

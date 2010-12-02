@@ -22,14 +22,16 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ArrayUtils.foreach;
-import static org.jenetics.util.Validator.NonNull;
 import static org.jenetics.util.Validator.nonNull;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Predicate;
+import org.jenetics.util.Validator.NonNull;
 
 /**
  * Combines several alterers to one.
@@ -54,8 +56,10 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a1, 
 		final Alterer<G> a2
 	) {
-		super(1.0);
-		_alterers = new Array<Alterer<G>>(nonNull(a1), nonNull(a2)).seal();
+		this(new Array<Alterer<G>>(
+				nonNull(a1), 
+				nonNull(a2)
+			));
 	}
 	
 	/**
@@ -71,10 +75,11 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a2, 
 		final Alterer<G> a3
 	) {
-		super(1.0);
-		_alterers = new Array<Alterer<G>>(
-				nonNull(a1), nonNull(a2), nonNull(a3)
-			).seal();
+		this(new Array<Alterer<G>>(
+				nonNull(a1), 
+				nonNull(a2), 
+				nonNull(a3)
+			));
 	}
 	
 	/**
@@ -92,10 +97,12 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a3,
 		final Alterer<G> a4
 	) {
-		super(1.0);
-		_alterers = new Array<Alterer<G>>(
-				nonNull(a1), nonNull(a2), nonNull(a3), nonNull(a4)
-			).seal();
+		this(new Array<Alterer<G>>(
+				nonNull(a1), 
+				nonNull(a2), 
+				nonNull(a3), 
+				nonNull(a4)
+			));
 	}
 	
 	/**
@@ -115,10 +122,13 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a4,
 		final Alterer<G> a5
 	) {
-		super(1.0);
-		_alterers = new Array<Alterer<G>>(
-				nonNull(a1), nonNull(a2), nonNull(a3), nonNull(a4), nonNull(a5)
-			).seal();
+		this(new Array<Alterer<G>>(
+				nonNull(a1), 
+				nonNull(a2), 
+				nonNull(a3), 
+				nonNull(a4), 
+				nonNull(a5)
+			));
 	}
 	
 	/**
@@ -128,10 +138,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	public CompositeAlterer(final Alterer<G>... alterers) {
-		super(1.0);
-		foreach(alterers, new NonNull("Alterer"));
-		
-		_alterers = new Array<Alterer<G>>(alterers).seal();
+		this(new Array<Alterer<G>>(alterers));
 	}
 	
 	/**
@@ -142,9 +149,32 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 */
 	public CompositeAlterer(final Array<Alterer<G>> alterers) {
 		super(1.0);
-		alterers.foreach(new NonNull("Alterer"));
 		
-		_alterers = alterers.copy().seal();
+		alterers.foreach(new NonNull("Alterer"));
+		_alterers = normalize(alterers).seal();
+	}
+	
+	private Array<Alterer<G>> normalize(final Array<Alterer<G>> alterers) {
+		final Deque<Alterer<G>> stack = 
+			new LinkedList<Alterer<G>>(alterers.asList());
+		
+		final List<Alterer<G>> normalized = new LinkedList<Alterer<G>>();
+		
+		while (!stack.isEmpty()) {
+			final Alterer<G> alterer = stack.pollFirst();
+			
+			if (alterer instanceof CompositeAlterer<?>) {
+				final CompositeAlterer<G> calterer = (CompositeAlterer<G>)alterer;
+				
+				for (int i = calterer.getAlterers().length(); --i >= 0;) {
+					stack.addFirst(calterer.getAlterers().get(i));
+				}
+			} else {
+				normalized.add(alterer);
+			}
+		}
+
+		return new Array<Alterer<G>>(normalized);
 	}
 
 	@Override
@@ -162,6 +192,17 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		});
 		
 		return alterations.get();
+	}
+	
+	/**
+	 * Create a new CompositeAlterer with the appended given alterer.
+	 * 
+	 * @param alterer the alterer to append.
+	 * @return a new CompositeAlterer.
+	 * @throws NullPointerException if the given alterer is {@code null}.
+	 */
+	public CompositeAlterer<G> append(final Alterer<G> alterer) {
+		return new CompositeAlterer<G>(this, nonNull(alterer, "Alterer"));
 	}
 
 	/**
@@ -214,33 +255,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
-		nonNull(a1, "Alterer");
-		nonNull(a2, "Alterer");
-		
-		CompositeAlterer<T> alterer = null;
-		
-		if (a1 instanceof CompositeAlterer<?> && a2 instanceof CompositeAlterer<?>) {
-			final CompositeAlterer<T> ca1 = (CompositeAlterer<T>)a1;
-			final CompositeAlterer<T> ca2 = (CompositeAlterer<T>)a2;
-			
-			alterer = new CompositeAlterer<T>(ca1._alterers.append(ca2._alterers));
-		} else if (a1 instanceof CompositeAlterer<?>) {
-			final CompositeAlterer<T> ca1 = (CompositeAlterer<T>)a1;
-			
-			final Array<Alterer<T>> alterers = new Array<Alterer<T>>(ca1._alterers.length() + 1);
-			for (int i = 0; i < ca1._alterers.length(); ++i) {
-				alterers.set(i, ca1._alterers.get(i));
-			}
-			alterers.set(alterers.length() - 1, a2);
-			
-			alterer = new CompositeAlterer<T>(alterers);
-		} else if (a2 instanceof CompositeAlterer<?>) {
-			alterer = join(a2, a1);
-		} else {
-			alterer = new CompositeAlterer<T>(a1, a2);
-		}
-		
-		return alterer;
+		return new CompositeAlterer<T>(a1, a2);
 	}
 }
 
