@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
  */
 public abstract class MutatorTestBase {
 	
-	public abstract Mutator<Float64Gene> newMutator(final double p);
+	public abstract Alterer<Float64Gene> newAlterer(final double p);
 	
 	
 	@Test(dataProvider = "alterCountParameters") 
@@ -55,7 +55,7 @@ public abstract class MutatorTestBase {
 		final Population<Float64Gene, Float64> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 		
-		final Mutator<Float64Gene> mutator = newMutator(0.01);
+		final Alterer<Float64Gene> mutator = newAlterer(0.01);
 		
 		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
 	}
@@ -72,7 +72,7 @@ public abstract class MutatorTestBase {
 			);
 		
 		// The mutator to test.
-		final Mutator<Float64Gene> mutator = newMutator(p);
+		final Alterer<Float64Gene> mutator = newAlterer(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;

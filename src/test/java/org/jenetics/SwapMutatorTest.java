@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 public class SwapMutatorTest extends MutatorTestBase {
 
 	@Override
-	public Mutator<Float64Gene> newMutator(double p) {
+	public Alterer<Float64Gene> newAlterer(double p) {
 		return new SwapMutator<Float64Gene>(p);
 	}
 	
@@ -52,7 +52,7 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Population<Float64Gene, Float64> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 		
-		final Mutator<Float64Gene> mutator = newMutator(0.01);
+		final Alterer<Float64Gene> mutator = newAlterer(0.01);
 		
 		final int alterations = mutator.alter(p1, 1);
 		final int diff = diff(p1, p2);
