@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
 public class GaussianMutatorTest extends MutatorTestBase {
 	
 	@Override
-	public Mutator<Float64Gene> newMutator(double p) {
+	public Alterer<Float64Gene> newAlterer(double p) {
 		return new GaussianMutator<Float64Gene>(p);
 	}
 	

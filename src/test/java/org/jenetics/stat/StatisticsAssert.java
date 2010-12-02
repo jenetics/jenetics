@@ -46,9 +46,9 @@ public final class StatisticsAssert {
 		Assert.assertTrue(
 				χ2 < 28, 
 				String.format(
-						"The histogram doesn't follow the distribution %s. " +
+						"The histogram %s doesn't follow the distribution %s. " +
 						"χ2 must be smaller than 28: %f", 
-						distribution, χ2
+						histogram, distribution, χ2
 					)
 			); 
 	}
