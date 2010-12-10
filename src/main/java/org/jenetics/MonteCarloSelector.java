@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public final class MonteCarloSelector<
-	G extends Gene<?,G>, 
+	G extends Gene<?, G>, 
 	C extends Comparable<? super C>
 > 
 	implements Selector<G, C> 
