@@ -31,6 +31,8 @@ public final class IdentityScaler<C extends Comparable<? super C>>
 {
 	private static final long serialVersionUID = 1L;
 
+	private static IdentityScaler<?> INSTANCE = 
+		new IdentityScaler<Comparable<? super Comparable<?>>>();
 	
 	public IdentityScaler() {
 	}
@@ -45,8 +47,9 @@ public final class IdentityScaler<C extends Comparable<? super C>>
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <SC extends Comparable<? super SC>> IdentityScaler<SC> valueOf() {
-		return new IdentityScaler<SC>();
+		return (IdentityScaler<SC>) INSTANCE;
 	}
 	
 	@Override
