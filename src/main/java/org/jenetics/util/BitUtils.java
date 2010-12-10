@@ -423,7 +423,7 @@ public final class BitUtils {
 	
 	/*
 	 * The following methods are copied from the Apache.Commons.Math library.
-	 * The copied methods was 
+	 * The copied methods were: 
 	 * - org.apache.commons.math.util.MathUtil.addAndCheck(long, long, String) and
 	 * - org.apache.commons.math.util.MathUtil.subAndCheck(long, long)
 	 * *************************************************************************
