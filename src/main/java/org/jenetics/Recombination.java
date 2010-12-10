@@ -22,26 +22,29 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ArrayUtils.shuffle;
 import static org.jenetics.util.ArrayUtils.subset;
-import static org.jenetics.util.EvaluatorRegistry.evaluate;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jenetics.util.Evaluator;
-import org.jenetics.util.EvaluatorRegistry;
+import org.jenetics.util.ProbabilityIndexIterator;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * <p>
  * An EGA combine elements of existing solutions in order to create a new solution, 
  * with some of the properties of each parent. Recombination creates a new 
  * chromosome by combining parts of two (or more) parent chromosomes. This 
  * combination of chromosomes can be made by selecting one or more crossover 
  * points, splitting these chromosomes on the selected points, and merge those 
  * portions of different chromosomes to form new ones.
+ * </p>
+ * <p>
+ * The recombination probability <i>p</i> determines the probability that a given
+ * individual of a population is selected for recombination. The (<i>mean</i>)
+ * number of changed individuals depend on the concrete implementation and can 
+ * be vary from <i>p</i>&middot;<i>N</i> to 
+ * <i>p</i>&middot;<i>N</i>&middot;<i>order</i>.
+ * </p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -50,60 +53,53 @@ public abstract class Recombination<G extends Gene<?, G>>
 	extends AbstractAlterer<G> 
 {
 	
+	private final int _order;
+	
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 * 
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 * 		  valid range of {@code [0, 1]}.
+	 * 		  valid range of {@code [0, 1]} or the given {@code order} is smaller
+	 *         than two.
 	 */
-	public Recombination(final double probability) {
+	public Recombination(final double probability, final int order) {
 		super(probability);
+		if (order < 2) {
+			throw new IllegalArgumentException(String.format(
+					"Order must be greater than one, but was %d.", order
+				));
+		}
+		_order = order;
+	}
+	
+	/**
+	 * Return the number of individuals involved in the 
+	 * {@link #recombinate(Population, int[], int)} step.
+	 * 
+	 * @return the number of individuals involved in the recombination step.
+	 */
+	public int getOrder() {
+		return _order;
 	}
 
-	/**
-	 * This method executes the recombination of in parallel if the current
-	 * {@link Evaluator} provides more than one parallel tasks.
-	 */
 	@Override
 	public final <C extends Comparable<? super C>> int alter(
 		final Population<G, C> population, final int generation
 	) {
-		final int subsetSize = (int)Math.ceil(population.size()*_probability);
+		final Random random = RandomRegistry.getRandom();
+		final int order = Math.min(_order, population.size());
+		final ProbabilityIndexIterator it = iterator(population.size(), _probability);
 		
-		final AtomicInteger alterations = new AtomicInteger(0);
-		if (subsetSize > 0) {
-			final Random random = RandomRegistry.getRandom();
-			final int[] first = subset(population.size(), subsetSize, random);
-			final int[] second = subset(population.size(), subsetSize, random);
-			shuffle(second, random);
+		int alterations = 0;
+		for (int i = it.next(); i != -1; i = it.next()) {
+			final int[] individuals = subset(population.size(), order, random);
+			individuals[0] = i;
 			
-			if (EvaluatorRegistry.getParallelTasks() > 1) {
-				final List<Runnable> tasks = new ArrayList<Runnable>(subsetSize);
-				for (int i = 0; i < subsetSize; ++i) {
-					final int index = i;
-					tasks.add(new Runnable() { @Override public void run() {
-						final int value = recombinate(
-													population, 
-													first[index], 
-													second[index], 
-													generation
-												);
-						alterations.addAndGet(value);
-					}});
-				}
-				evaluate(tasks);
-			} else {
-				for (int i = 0; i < subsetSize; ++i) {
-					final int value = recombinate(
-							population, first[i], second[i], generation
-						);
-					alterations.addAndGet(value);
-				}
-			}
+			alterations += recombinate(population, individuals, generation);
 		}
-		
-		return alterations.get();
+
+		return alterations;
 	}
 	
 	/**
@@ -111,13 +107,17 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * 
 	 * @param <C> the fitness result type
 	 * @param population the population to recombine
-	 * @param first the source index array.
-	 * @param second the target index array.
+	 * @param individuals the array with the indexes of the individuals which 
+	 *        are involved in the <i>recombination</i> step. The length of the
+	 *        array is {@link #getOrder()}. The first individual is the 
+	 *        <i>primary</i> individual.
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.
 	 */
 	protected abstract <C extends Comparable<? super C>> int recombinate(
-			Population<G, C> population, int first, int second, int generation
+			final Population<G, C> population, 
+			final int[] individuals, 
+			final int generation
 		);
 	
 	
