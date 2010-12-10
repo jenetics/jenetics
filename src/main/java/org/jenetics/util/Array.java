@@ -44,7 +44,7 @@ import java.util.RandomAccess;
  * array, it <strong>must</strong> be synchronized externally.
  * <br/>
  * Use the {@link #asList()} method to work together with the 
- * <a href="http://java.sun.com/javase/6/docs/technotes/guides/collections/index.html">
+ * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
  * Java Collection Framework</a>.
  * 
  * @param <T> the element type of the array.
