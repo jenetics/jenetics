@@ -46,18 +46,19 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 	 *         valid range of {@code [0, 1]}.
 	 */
 	public Crossover(final double probability) {
-		super(probability);
+		super(probability, 2);
 	}
 	
 	@Override
 	protected final <C extends Comparable<? super C>> int recombinate(
 		final Population<G, C> population, 
-		final int first, final int second, final int generation
+		final int[] individuals, 
+		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		
-		final Phenotype<G, C> pt1 = population.get(first);
-		final Phenotype<G, C> pt2 = population.get(second);
+		final Phenotype<G, C> pt1 = population.get(individuals[0]);
+		final Phenotype<G, C> pt2 = population.get(individuals[1]);
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
@@ -69,16 +70,22 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
 		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
-		final int alterations = crossover(genes1, genes2);
+		crossover(genes1, genes2);
 		
 		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1));
 		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2));
 		
 		//Creating two new Phenotypes and exchanging it with the old.
-		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
-		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
+		population.set(
+				individuals[0], 
+				pt1.newInstance(Genotype.valueOf(chromosomes1), generation)
+			);
+		population.set(
+				individuals[1], 
+				pt2.newInstance(Genotype.valueOf(chromosomes2), generation)
+			);
 		
-		return alterations;
+		return 2;
 	}
 
 	/**

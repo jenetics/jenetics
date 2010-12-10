@@ -49,40 +49,47 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	 * 		  valid range of {@code [0, 1]}.
 	 */
 	public MeanAlterer(final double probability) {
-		super(probability);
+		super(probability, 2);
 	}
 
 	@Override
 	protected <C extends Comparable<? super C>> int recombinate(
 		final Population<G, C> population, 
-		final int first, 
-		final int second, 
+		final int[] individuals, 
 		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
 		
-		final Phenotype<G, C> pt1 = population.get(first);
-		final Phenotype<G, C> pt2 = population.get(second);
+		final Phenotype<G, C> pt1 = population.get(individuals[0]);
+		final Phenotype<G, C> pt2 = population.get(individuals[1]);
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
-		final int chIndex = random.nextInt(gt1.length());
-		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
-		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
-		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
-		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
+		final int cindex = random.nextInt(gt1.length());
+		final Array<Chromosome<G>> c1 = gt1.getChromosomes();
+		final Array<Chromosome<G>> c2 = gt2.getChromosomes();
 		
-		final int geneIndex = random.nextInt(genes1.length());
+		// Calculate the mean value of the gene array.
+		final Array<G> mean = mean(
+				c1.get(cindex).toArray().copy(), 
+				c2.get(cindex).toArray()
+			);
 		
-		genes1.set(geneIndex, genes1.get(geneIndex).mean(genes2.get(geneIndex)));
-		genes2.set(geneIndex, genes1.get(geneIndex));
-		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1));
-		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2));
+		c1.set(cindex, c1.get(cindex).newInstance(mean));
 		
-		population.set(first, pt1.newInstance(Genotype.valueOf(chromosomes1), generation));
-		population.set(second, pt2.newInstance(Genotype.valueOf(chromosomes2), generation));
+		population.set(
+				individuals[0], 
+				pt1.newInstance(Genotype.valueOf(c1), generation)
+			);
 		
 		return 1;
+	}
+	
+	private Array<G> mean(final Array<G> a, final Array<G> b) {
+		for (int i = a.length(); --i >= 0;) {
+			a.set(i, a.get(i).mean(b.get(i)));
+		}
+		return a;
 	}
 	
 	@Override

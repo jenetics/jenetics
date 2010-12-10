@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ProbabilityIndexIterator;
-import org.jenetics.util.RandomRegistry;
 
 
 /**
@@ -44,10 +43,10 @@ import org.jenetics.util.RandomRegistry;
  *	</li>
  * </ul>
  * 
- * The mutation rate is the parameter that must be optimized. The optimal value 
- * of the mutation rate depends on the role mutation plays. If mutation is the 
- * only source of exploration (if there is no crossover) then the mutation rate 
- * should be set so that a reasonable neighborhood of solutions is explored. 
+ * The mutation probability is the parameter that must be optimized. The optimal 
+ * value of the mutation rate depends on the role mutation plays. If mutation is 
+ * the only source of exploration (if there is no crossover) then the mutation 
+ * rate should be set so that a reasonable neighborhood of solutions is explored. 
  * </p>
  * The mutation probability <i>p</i> is the probability that a specific gene 
  * over the whole population is mutated. The number of available genes of an 
@@ -196,10 +195,6 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		}
 		
 		return alterations;
-	}
-	
-	ProbabilityIndexIterator iterator(final int length, final double p) {
-		return new ProbabilityIndexIterator(length, p, RandomRegistry.getRandom());
 	}
 	
 	@Override
