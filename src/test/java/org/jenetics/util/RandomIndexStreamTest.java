@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ProbabilityIndexIteratorTest {
+public class RandomIndexStreamTest {
 
 	@Test
 	public void iterateP0() {

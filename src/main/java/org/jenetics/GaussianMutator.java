@@ -57,10 +57,10 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 	@Override
 	protected int mutate(final Array<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream it = randomIndexes(genes.length(), p);
+		final IndexStream stream = randomIndexes(genes.length(), p);
 		
 		int alterations = 0;
-		for (int i = it.next(); i != -1; i = it.next()) {
+		for (int i = stream.next(); i != -1; i = stream.next()) {
 			genes.set(i, mutate(genes.get(i), random));
 			
 			++_mutations;

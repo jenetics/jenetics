@@ -70,9 +70,9 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 		
 		if (genes.length() > 1) {
 			final Random random = RandomRegistry.getRandom();
-			final IndexStream it = randomIndexes(genes.length(), p);
+			final IndexStream stream = randomIndexes(genes.length(), p);
 			
-			for (int i = it.next(); i != -1; i = it.next()) {
+			for (int i = stream.next(); i != -1; i = stream.next()) {
 				final int j = random.nextInt(genes.length());				
 				ArrayUtils.swap(genes, i, j);
 				

@@ -89,10 +89,10 @@ public abstract class Recombination<G extends Gene<?, G>>
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
-		final IndexStream it = randomIndexes(population.size(), _probability);
+		final IndexStream stream = randomIndexes(population.size(), _probability);
 		
 		int alterations = 0;
-		for (int i = it.next(); i != -1; i = it.next()) {
+		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
 			

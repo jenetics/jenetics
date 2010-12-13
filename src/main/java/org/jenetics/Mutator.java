@@ -117,8 +117,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final double p = Math.pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 		
-		final IndexStream it = randomIndexes(population.size(), p); 		
-		for (int i = it.next(); i != -1; i = it.next()) {
+		final IndexStream stream = randomIndexes(population.size(), p); 		
+		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final Phenotype<G, C> pt = population.get(i);
 			
 			final Genotype<G> gt = pt.getGenotype(); 
@@ -138,12 +138,12 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		Genotype<G> gt = genotype;
 
-		final IndexStream it = randomIndexes(genotype.length(), p);
-		int start = it.next();
+		final IndexStream stream = randomIndexes(genotype.length(), p);
+		int start = stream.next();
 		if (start != -1) {
 			final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
 			
-			for (int i = start; i != -1; i = it.next()) {
+			for (int i = start; i != -1; i = stream.next()) {
 				final Chromosome<G> chromosome = chromosomes.get(i);
 				final Array<G> genes = chromosome.toArray().copy();
 				
@@ -185,10 +185,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param p the gene mutation probability.
 	 */
 	protected int mutate(final Array<G> genes, final double p) {
-		final IndexStream it = randomIndexes(genes.length(), p);
+		final IndexStream stream = randomIndexes(genes.length(), p);
 		
 		int alterations = 0;
-		for (int i = it.next(); i != -1; i = it.next()) {
+		for (int i = stream.next(); i != -1; i = stream.next()) {
 			genes.set(i, genes.get(i).newInstance());
 			++_mutations;
 			++alterations;
