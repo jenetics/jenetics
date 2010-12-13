@@ -25,7 +25,7 @@ package org.jenetics;
 import java.util.Random;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ProbabilityIndexIterator;
+import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -57,7 +57,7 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 	@Override
 	protected int mutate(final Array<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final ProbabilityIndexIterator it = iterator(genes.length(), p);
+		final IndexStream it = randomIndexes(genes.length(), p);
 		
 		int alterations = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {

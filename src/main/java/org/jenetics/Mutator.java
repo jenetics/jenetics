@@ -25,7 +25,7 @@ package org.jenetics;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ProbabilityIndexIterator;
+import org.jenetics.util.IndexStream;
 
 
 /**
@@ -117,7 +117,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final double p = Math.pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 		
-		final ProbabilityIndexIterator it = iterator(population.size(), p); 		
+		final IndexStream it = randomIndexes(population.size(), p); 		
 		for (int i = it.next(); i != -1; i = it.next()) {
 			final Phenotype<G, C> pt = population.get(i);
 			
@@ -138,7 +138,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		Genotype<G> gt = genotype;
 
-		final ProbabilityIndexIterator it = iterator(genotype.length(), p);
+		final IndexStream it = randomIndexes(genotype.length(), p);
 		int start = it.next();
 		if (start != -1) {
 			final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
@@ -185,7 +185,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param p the gene mutation probability.
 	 */
 	protected int mutate(final Array<G> genes, final double p) {
-		final ProbabilityIndexIterator it = iterator(genes.length(), p);
+		final IndexStream it = randomIndexes(genes.length(), p);
 		
 		int alterations = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {

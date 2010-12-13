@@ -24,7 +24,8 @@ package org.jenetics;
 
 import static org.jenetics.util.Validator.checkProbability;
 
-import org.jenetics.util.ProbabilityIndexIterator;
+import org.jenetics.util.IndexStream;
+import org.jenetics.util.RandomIndexStream;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -71,8 +72,8 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	 * @param p the index selection probability.
 	 * @return new index iterator.
 	 */
-	protected static ProbabilityIndexIterator iterator(final int length, final double p) {
-		return new ProbabilityIndexIterator(length, p, RandomRegistry.getRandom());
+	protected static IndexStream randomIndexes(final int length, final double p) {
+		return new RandomIndexStream(length, p, RandomRegistry.getRandom());
 	}
 	
 	@Override
