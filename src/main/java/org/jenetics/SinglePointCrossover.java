@@ -91,7 +91,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			that.set(j, temp);
 		}
 		
-		return 1;
+		return 2;
 	}
 	
 	@Override

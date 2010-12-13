@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.TestUtils.diff;
+import static org.jenetics.TestUtils.newFloat64GenePopulation;
+
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -46,7 +49,7 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Integer nchromosomes, 
 		final Integer npopulation
 	) {
-		final Population<Float64Gene, Float64> p1 = population(
+		final Population<Float64Gene, Float64> p1 = newFloat64GenePopulation(
 					ngenes, nchromosomes, npopulation
 				);
 		final Population<Float64Gene, Float64> p2 = p1.copy();
