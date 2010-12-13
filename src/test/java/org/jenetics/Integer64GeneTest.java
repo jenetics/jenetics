@@ -84,13 +84,13 @@ public class Integer64GeneTest {
 		}
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void xmlSerialize() throws XMLStreamException {
 		SerializeUtils.testXMLSerialization(Integer64Gene.valueOf(5, 0, 10));
 		SerializeUtils.testXMLSerialization(Integer64Gene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, 0, 10));
 		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));

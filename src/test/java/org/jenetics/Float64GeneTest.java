@@ -227,13 +227,13 @@ public class Float64GeneTest {
         assertTrue(g1.toString().length() > 0);
     }
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void xmlSerialize() throws XMLStreamException {
 		SerializeUtils.testXMLSerialization(Float64Gene.valueOf(3.5, 0.5, 5.5));
 		SerializeUtils.testXMLSerialization(Float64Gene.valueOf(Math.PI, 0.5, 5.5));
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(Float64Gene.valueOf(3.5, 0.5, 5.5));
 		SerializeUtils.testSerialization(Float64Gene.valueOf(Math.PI, 0.5, 5.5));

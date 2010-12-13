@@ -38,12 +38,12 @@ public class EnumGeneTest {
 		ONE, TWO, THREE, FOUR, FIVE, SIX
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void objectSerialize() throws IOException {
 		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void xmlSerialize() throws XMLStreamException {
 		SerializeUtils.testXMLSerialization(EnumGene.valueOf(TestEnum.SIX));
 	}

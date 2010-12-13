@@ -98,7 +98,7 @@
 	    * jenetics-examples-<version>.jar
 	          Contains only the example classes.
 	-->
-	<target name="jar" depends="compile">
+	<target name="jar" depends="clean, compile">
 		<tstamp>
 			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
 		</tstamp>
@@ -486,6 +486,9 @@
 		<copy todir="${export.dir}" file="change.log"/>
 		<copy todir="${export.dir}" file="LGPL.txt"/>
 		<copy todir="${export.dir}" file="README"/>
+		<copy todir="${export.dir}" file="Jenetics.iml"/>
+		<copy todir="${export.dir}" file="Jenetics.ipr"/>
+		<copy todir="${export.dir}" file="Jenetics.iws"/>
 		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-all.jar"/>
