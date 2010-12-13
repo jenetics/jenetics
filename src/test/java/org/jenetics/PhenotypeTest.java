@@ -49,7 +49,7 @@ public class PhenotypeTest {
 		}
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void xmlSerialize() throws XMLStreamException {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();
@@ -61,7 +61,7 @@ public class PhenotypeTest {
 		SerializeUtils.testXMLSerialization(pt);
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void objectSerialize() throws IOException {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final Function ff = new Function();

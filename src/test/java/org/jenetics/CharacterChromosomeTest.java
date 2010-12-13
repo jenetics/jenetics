@@ -96,12 +96,12 @@ public class CharacterChromosomeTest  {
         assertEquals(c.length(), index);
     }
 
-    @Test(invocationCount = 5)
+    @Test
     public void xmlSerialize() throws XMLStreamException {
     	SerializeUtils.testXMLSerialization(new CharacterChromosome(23));
     }
     
-    @Test(invocationCount = 5)
+    @Test
     public void objectSerialize() throws IOException {
     	SerializeUtils.testSerialization(new CharacterChromosome(23));
     }
