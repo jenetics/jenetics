@@ -248,9 +248,9 @@
 			<class name="org.jenetics.util.CharSetTest" />
 		</classes>
 	</test>	
-	<test name="org.jenetics.util.ProbabilityIndexIterator">
+	<test name="org.jenetics.util.RandomIndexStream">
 		<classes>
-			<class name="org.jenetics.util.ProbabilityIndexIteratorTest" />
+			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>
 	</test>		
 	<test name="org.jenetics.util.Timer">
