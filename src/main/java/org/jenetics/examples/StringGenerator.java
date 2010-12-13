@@ -59,6 +59,10 @@ public class StringGenerator {
 			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
 		}
 		
+		@Override
+		public String toString() {
+			return "To be, or not to be.";
+		}
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -66,8 +70,7 @@ public class StringGenerator {
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 		
 		final String value = 
-			"To be, or not to be: that is the question: " +
-			"Whether 'tis nobler in the mind to suffer...";
+			"To be, or not to be:";
 		
 		final CharSet chars = new CharSet(CharSet.expand("a-zA-Z.,:' "));
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
@@ -89,12 +92,17 @@ public class StringGenerator {
 		));
 		EvaluatorRegistry.setEvaluator(new org.jenetics.util.ConcurrentEvaluator());
 
-		GAUtils.execute(ga, 50);
+		final int generations = 500;
 		
-		java.io.FileOutputStream out = new java.io.FileOutputStream("/home/franzw/population.xml");
-		org.jenetics.util.IOUtils.writeXML(ga.getPopulation(), out);
-		out.close();
+		GAUtils.printConfig(
+				"String generator", 
+				ga, 
+				generations, 
+				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+			);
 		
+		GAUtils.execute(ga, generations, 50);
+				
 		pool.shutdown();
 	}
 	

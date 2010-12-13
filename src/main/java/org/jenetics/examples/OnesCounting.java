@@ -55,6 +55,11 @@ public class OnesCounting {
 			return count;
 		}
 		
+		@Override
+		public String toString() {
+			return "OneCounter";
+		}
+		
 	}
 	
 
@@ -73,7 +78,16 @@ public class OnesCounting {
 			new SinglePointCrossover<BitGene>(0.06)
 		));
 		
-		GAUtils.execute(ga, 100);
+		final int generations = 100;
+		
+		GAUtils.printConfig(
+				"Ones counting", 
+				ga, 
+				generations, 
+				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+			);
+		
+		GAUtils.execute(ga, generations, 10);
 	}
 
 }

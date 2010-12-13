@@ -70,6 +70,11 @@ public class TravelingSalesman {
 			}
 			return length;
 		}
+		
+		@Override
+		public String toString() {
+			return "Point distance";
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -94,7 +99,16 @@ public class TravelingSalesman {
         ForkJoinPool pool = new ForkJoinPool();
         EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
         try {
-        	GAUtils.execute(ga, 100);
+    		final int generations = 500;
+    		
+    		GAUtils.printConfig(
+    				"Traveling salesman", 
+    				ga, 
+    				generations, 
+    				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+    			);
+    		
+    		GAUtils.execute(ga, generations, 50);
         } finally {
         	pool.shutdown();
         }
