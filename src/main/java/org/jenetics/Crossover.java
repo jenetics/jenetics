@@ -28,8 +28,13 @@ import org.jenetics.util.Array;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * <p>
  * Performs a <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">
  * Crossover</a> of two {@link Chromosome}.
+ * </p>
+ * <p>
+ * The order ({@link #getOrder()}) of this Recombination implementation is two.
+ * </p>
  * 
  * @param <G> the gene type.
  * 

@@ -26,10 +26,10 @@ import static org.jenetics.TestUtils.diff;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
+import org.jenetics.stat.Distribution.Domain;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -39,26 +39,24 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class MutatorTestBase {
-	
-	public abstract Alterer<Float64Gene> newAlterer(final double p);
+public class MeanAltererTest {
 	
 	
-	@Test(dataProvider = "alterCountParameters") 
-	public void alterCount(
-		final Integer ngenes, 
-		final Integer nchromosomes, 
-		final Integer npopulation
-	) {
+	@Test
+	public void recombinate() {
+		final int ngenes = 11;
+		final int nchromosomes = 9;
+		final int npopulation = 100;
 		final Population<Float64Gene, Float64> p1 = newFloat64GenePopulation(
-					ngenes, nchromosomes, npopulation
-				);
+				ngenes, nchromosomes, npopulation
+			);
 		final Population<Float64Gene, Float64> p2 = p1.copy();
-		Assert.assertEquals(p2, p1);
+		final int[] selected = new int[]{3, 34};
 		
-		final Alterer<Float64Gene> mutator = newAlterer(0.01);
+		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<Float64Gene>(0.1);
+		crossover.recombinate(p1, selected, 3);
 		
-		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
+		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
 	
 	@Test(dataProvider = "alterProbabilityParameters")
@@ -73,11 +71,11 @@ public abstract class MutatorTestBase {
 			);
 		
 		// The mutator to test.
-		final Alterer<Float64Gene> mutator = newAlterer(p);
+		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<Float64Gene>(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
-		final double mean = nallgenes*p;
+		final double mean = npopulation*p;
 		
 		final long min = 0;
 		final long max = nallgenes;
@@ -87,7 +85,7 @@ public abstract class MutatorTestBase {
 		final Variance<Long> variance = new Variance<Long>();
 		
 		for (int i = 0; i < N; ++i) {
-			final long alterations = mutator.alter(population, 1);
+			final long alterations = crossover.alter(population, 1);
 			histogram.accumulate(alterations);
 			variance.accumulate(alterations);	
 		}
@@ -96,22 +94,8 @@ public abstract class MutatorTestBase {
 		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, variance.getVariance()));
 	}
 	
-	public double var(final double p, final long N) {
-		return N*p*(1.0 - p);
-	}
-	
-	public double mean(final double p, final long N) {
-		return N*p;
-	}
-	
-	@DataProvider(name = "alterCountParameters")
-	public Object[][] alterCountParameters() {
-		return TestUtils.alterCountParameters();
-	}	
-	
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
 		return TestUtils.alterProbabilityParameters();
 	}
-	
 }

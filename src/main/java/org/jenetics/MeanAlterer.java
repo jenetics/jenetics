@@ -30,6 +30,10 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
+ * <p>
+ * The order ({@link #getOrder()}) of this Recombination implementation is two.
+ * </p>
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */

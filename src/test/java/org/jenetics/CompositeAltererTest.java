@@ -77,7 +77,7 @@ public class CompositeAltererTest {
 				new Population<Float64Gene, Float64>(npopulation);
 			
 			for (int i = 0; i < npopulation; ++i) {
-				population.add(Phenotype.valueOf(genotype.newInstance(), Factories.FF, 0));
+				population.add(Phenotype.valueOf(genotype.newInstance(), TestUtils.FF, 0));
 			}	
 			
 			return population;

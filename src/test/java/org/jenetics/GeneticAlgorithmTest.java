@@ -112,11 +112,11 @@ public class GeneticAlgorithmTest {
 			
 			s = ga.getStatistics();
 			Reporter.log(s.toString());
-			Assert.assertEquals(s.getAgeMean(), 9.600000000000009, 0.000001);
-			Assert.assertEquals(s.getAgeVariance(), 19.65829145728642, 0.000001);
+			Assert.assertEquals(s.getAgeMean(), 39.175000000000026, 0.000001);
+			Assert.assertEquals(s.getAgeVariance(), 366.18530150753793, 0.000001);
 			Assert.assertEquals(s.getSamples(), 200);
-			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9807764890123456, 0.00000001);
-			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9807764890123456, 0.00000001);
+			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9800565233548408, 0.00000001);
+			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9800565233548408, 0.00000001);
 		} finally {
 			ConcurrentContext.setConcurrency(concurrency);
 			LocalContext.exit();

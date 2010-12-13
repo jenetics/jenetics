@@ -123,6 +123,11 @@
 			<class name="org.jenetics.LinearRankSelectorTest" />
 		</classes>
 	</test>	
+    <test name="org.jenetics.MeanAlterer">
+        <classes>
+            <class name="org.jenetics.MeanAltererTest" />
+        </classes>
+    </test> 		
     <test name="org.jenetics.Mutator">
         <classes>
             <class name="org.jenetics.MutatorTest" />
