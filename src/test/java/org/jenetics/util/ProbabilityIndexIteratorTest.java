@@ -42,8 +42,8 @@ public class ProbabilityIndexIteratorTest {
 
 	@Test
 	public void iterateP0() {
-		final ProbabilityIndexIterator it = 
-			new ProbabilityIndexIterator(1000, 0, new Random());
+		final RandomIndexStream it = 
+			new RandomIndexStream(1000, 0, new Random());
 		
 		for (int i = it.next(); i != -1; i = it.next()) {
 			Assert.assertTrue(false);
@@ -56,8 +56,8 @@ public class ProbabilityIndexIteratorTest {
 	
 	@Test
 	public void iterateP1() {
-		final ProbabilityIndexIterator it = 
-			new ProbabilityIndexIterator(1000, 1, new Random());
+		final RandomIndexStream it = 
+			new RandomIndexStream(1000, 1, new Random());
 		
 		int count = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
@@ -100,8 +100,8 @@ public class ProbabilityIndexIteratorTest {
 	}
 	
 	long k(final int n, final double p, final Random random) {
-		final ProbabilityIndexIterator it = 
-			new ProbabilityIndexIterator(n, p, random);
+		final RandomIndexStream it = 
+			new RandomIndexStream(n, p, random);
 		
 		int kt = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {

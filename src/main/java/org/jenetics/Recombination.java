@@ -26,7 +26,7 @@ import static org.jenetics.util.ArrayUtils.subset;
 
 import java.util.Random;
 
-import org.jenetics.util.ProbabilityIndexIterator;
+import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -89,7 +89,7 @@ public abstract class Recombination<G extends Gene<?, G>>
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
-		final ProbabilityIndexIterator it = iterator(population.size(), _probability);
+		final IndexStream it = randomIndexes(population.size(), _probability);
 		
 		int alterations = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {

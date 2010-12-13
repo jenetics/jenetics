@@ -33,8 +33,8 @@ import java.util.Random;
  * 
  * [code]
  *     final Array<Integer> array = ...
- *     final ProbabilityIndexIterator it = 
- *         new ProbabilityIndexIterator(array.length(), 0.3, random);
+ *     final RandomIndexStream it = 
+ *         new RandomIndexStream(array.length(), 0.3, random);
  *         
  *     for (int i = it.next(); i != -1; i = it.next()) {
  *         final Integer element = array.get(i);
@@ -48,7 +48,7 @@ import java.util.Random;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ProbabilityIndexIterator {
+public class RandomIndexStream implements IndexStream {
 	private final int _n;
 	private final double _probability;
 	private final Random _random;
@@ -66,7 +66,7 @@ public class ProbabilityIndexIterator {
 	 * @throws NullPointerException if the given {@code random} engine is 
 	 *         {@code null}.
 	 */
-	public ProbabilityIndexIterator(
+	public RandomIndexStream(
 		final int n, 
 		final double probability, 
 		final Random random
@@ -93,6 +93,7 @@ public class ProbabilityIndexIterator {
 	 * 
 	 * @return the next <i>random</i> index.
 	 */
+	@Override
 	public int next() {
 		while (_pos < _n && _random.nextDouble() >= _probability) {
 			++_pos;
