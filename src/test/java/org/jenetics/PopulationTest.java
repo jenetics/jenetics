@@ -22,15 +22,13 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.sin;
-import static java.lang.Math.toRadians;
+import static org.jenetics.TestUtils.newFloat64GenePopulation;
 
 import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -41,15 +39,6 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class PopulationTest {
-	
-	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
-		private static final long serialVersionUID = 2793605351118238308L;
-		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			final Float64Gene gene = genotype.getChromosome().getGene(0);
-			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
-		}
-	}
 	
 	private static final class Continous implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 1L;
@@ -95,39 +84,15 @@ public class PopulationTest {
 		}
 	}
 	
-	@Test(invocationCount = 5)
-	public void xmlSerialization() throws XMLStreamException {
-		final int size = 10;
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
-		
-		for (int i = 0; i < size; ++i) {
-			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
-				gtf.newInstance(), ff, scaler, 0
-			);
-			population.add(pt);
-		}
-		
+	@Test
+	public void xmlSerialization() throws XMLStreamException {		
+		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
 		SerializeUtils.testXMLSerialization(population);
 	}
 	
-	@Test(invocationCount = 5)
+	@Test
 	public void objectSerialization() throws IOException {
-		final int size = 10;
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
-		
-		for (int i = 0; i < size; ++i) {
-			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
-				gtf.newInstance(), ff, scaler, 0
-			);
-			population.add(pt);
-		}
-		
+		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
 		SerializeUtils.testSerialization(population);
 	}
 	

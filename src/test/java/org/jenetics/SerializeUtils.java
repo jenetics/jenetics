@@ -32,7 +32,6 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.IOUtils;
 import org.testng.Assert;
-import org.testng.Reporter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -47,7 +46,6 @@ class SerializeUtils {
 		IOUtils.writeXML(object, out);
 		
 		final byte[] data = out.toByteArray();
-		Reporter.log(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = IOUtils.readXML(XMLSerializable.class, in);
