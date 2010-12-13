@@ -848,6 +848,15 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
+	 * Return the desired population size of the GA.
+	 * 
+	 * @return the desired population size of the GA.
+	 */
+	public int getPopulationSize() {
+		return _populationSize;
+	}
+	
+	/**
 	 * Return the statistics of the best phenotype. The returned statistics is 
 	 * {@code null} if the algorithms hasn't been initialized.
 	 * 

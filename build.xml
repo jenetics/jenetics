@@ -107,7 +107,7 @@
 		 # Build without the library dependencies.
 		-->
 		<jar 
-			destfile="${identifier}.jar" 
+			destfile="${build.dir}/${identifier}.jar" 
 			filesetmanifest="mergewithoutmain" 
 			index="true" 
 			update="true" 
@@ -116,6 +116,7 @@
 		>
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
+				<exclude name="*.jar" />
 			</fileset>
 			<manifest>
 				<attribute name="ProjectName" value="jenetics" />
@@ -132,7 +133,7 @@
 		 # Build with the library dependencies.
 		-->		
 		<jar 
-			destfile="${identifier}-all.jar" 
+			destfile="${build.dir}/${identifier}-all.jar" 
 			filesetmanifest="mergewithoutmain" 
 			index="true" 
 			update="true" 
@@ -143,6 +144,7 @@
 			<zipfileset src="${lib.dir}/jsr166y.jar" />
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
+				<exclude name="*.jar" />
 			</fileset>
 			<manifest>
 				<attribute name="ProjectName" value="jenetics" />
@@ -159,7 +161,7 @@
 		 # Build the examples
 		-->		
 		<jar 
-			destfile="${identifier}-examples.jar" 
+			destfile="${build.dir}/${identifier}-examples.jar" 
 			filesetmanifest="mergewithoutmain" 
 			index="true" 
 			update="true" 
@@ -168,6 +170,7 @@
 		>
 			<fileset dir="${build.dir}" >
 				<include name="org/jenetics/examples/*" />
+				<exclude name="*.jar" />
 			</fileset>
 			<manifest>
 				<attribute name="ProjectName" value="jenetics examples" />
@@ -484,9 +487,9 @@
 		<copy todir="${export.dir}" file="LGPL.txt"/>
 		<copy todir="${export.dir}" file="README"/>
 		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
-		<copy todir="${export.dir}/build" file="${identifier}.jar"/>
-		<copy todir="${export.dir}/build" file="${identifier}-all.jar"/>
-		<copy todir="${export.dir}/build" file="${identifier}-examples.jar"/>
+		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}.jar"/>
+		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-all.jar"/>
+		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-examples.jar"/>
 		
 		<replace file="${export.dir}/BUILD.txt" token="@!identifier!@" value="${identifier}" />
 		<replace file="${export.dir}/BUILD.txt" token="@!year!@" value="${year}" />

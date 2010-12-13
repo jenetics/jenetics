@@ -47,7 +47,12 @@ import org.jscience.mathematics.number.Float64;
 class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public double size;
-	 public double value;
+	public double value;
+	
+	@Override
+	public String toString() {
+		return size + "=>" + value;
+	}
 }
 
 /**
@@ -58,36 +63,41 @@ class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
 	private static final long serialVersionUID = -924756568100918419L;
 	
 	private final Item[] _items;
-	 private final double _knapsackSize;
+	private final double _knapsackSize;
 	 
-	 public KnappsackFunction(final Item[] items, double knapsackSize) {
-		  this._items = items;
-		  this._knapsackSize = knapsackSize;
-	 }
+	public KnappsackFunction(final Item[] items, double knapsackSize) {
+		_items = items;
+		_knapsackSize = knapsackSize;
+	}
 	 
-	 public Item[] getItems() {
+	public Item[] getItems() {
 		return _items;
-	 }
+	}
 	 
-	 @Override
-	 public Float64 evaluate(final Genotype<BitGene> genotype) {
-		  final Chromosome<BitGene> ch = genotype.getChromosome();
+	@Override
+	public Float64 evaluate(final Genotype<BitGene> genotype) {
+		final Chromosome<BitGene> ch = genotype.getChromosome();
 		  
-		  double size = 0;
-		  double value = 0;
-		  for (int i = 0, n = ch.length(); i < n; ++i) {
-				if (ch.getGene(i).getBit()) {
-					 size += _items[i].size;
-					 value += _items[i].value;
-				}
-		  }
+		double size = 0;
+		double value = 0;
+		for (int i = 0, n = ch.length(); i < n; ++i) {
+			if (ch.getGene(i).getBit()) {
+				size += _items[i].size;
+				value += _items[i].value;
+			}
+		}
 		  
-		  if (size > _knapsackSize) {
-				return Float64.ZERO;
-		  } else {
-				return Float64.valueOf(value);
-		  }
-	 }
+		if (size > _knapsackSize) {
+			return Float64.ZERO;
+		} else {
+			return Float64.valueOf(value);
+		}
+	}
+	 
+	@Override
+	public String toString() {
+		return "Knapsack";
+	}
 }
 
 /**
@@ -125,12 +135,19 @@ public class Knapsack {
 				 new Mutator<BitGene>(0.115),
 				 new SinglePointCrossover<BitGene>(0.16)
 		 	));
+		
+		final int generations = 1000;
+		
+		GAUtils.printConfig(
+				"Knapsack", 
+				ga, 
+				generations, 
+				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+			);
+		
+		GAUtils.execute(ga, generations, 100);
+	}
 
-		ga.setup();
-		ga.evolve(999);
-		System.out.println(ga.getTimeStatistics());
-		System.out.println(ga.getBestStatistics());
-	 }
 }
 
 

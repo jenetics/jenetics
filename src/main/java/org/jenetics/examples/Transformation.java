@@ -29,9 +29,9 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 import org.jenetics.CompositeAlterer;
+import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
-import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -94,6 +94,11 @@ public class Transformation {
 			return rotate;
 		}
 		
+		@Override
+		public String toString() {
+			return "Square error";
+		}
+		
 	}
 	
 	
@@ -134,7 +139,16 @@ public class Transformation {
 		));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		
-		GAUtils.execute(ga, 50);
+		final int generations = 500;
+		
+		GAUtils.printConfig(
+				"Affine transformation", 
+				ga, 
+				generations, 
+				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+			);
+		
+		GAUtils.execute(ga, generations, 50);
 	}
 	
 	

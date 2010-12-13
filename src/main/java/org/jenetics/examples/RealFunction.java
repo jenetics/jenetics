@@ -22,16 +22,15 @@
  */
 package org.jenetics.examples;
 
-import static java.lang.Math.acos;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
 import org.jenetics.CompositeAlterer;
+import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
-import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
@@ -56,12 +55,17 @@ public class RealFunction {
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final double radians = toRadians(convert(genotype).doubleValue());
-			return Float64.valueOf(acos(sin(radians)*cos(radians)));
+			return Float64.valueOf(cos(sin(radians)*cos(radians)));
 		}
 
 		@Override
 		public Float64 convert(final Genotype<Float64Gene> value) {
 			return value.getChromosome().getGene().getAllele();
+		}
+		
+		@Override
+		public String toString() {
+			return "cos(sin(x)*cos(c))";
 		}
 	}
 	
@@ -80,7 +84,16 @@ public class RealFunction {
 		));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		
-		GAUtils.execute(ga, 50);
+		final int generations = 1000;
+		
+		GAUtils.printConfig(
+				"Real function", 
+				ga, 
+				generations, 
+				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+			);
+		
+		GAUtils.execute(ga, generations, 100);
 	}
 	
 }
