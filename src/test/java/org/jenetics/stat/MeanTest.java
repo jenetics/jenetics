@@ -50,7 +50,6 @@ public class MeanTest {
 				moment.accumulate(data.number);
 				
 				Assert.assertEquals(moment.getMean(), data.mean);
-				Assert.assertEquals(moment.getStandardError(), data.std);
 			}
 		} finally {
 			it.close();

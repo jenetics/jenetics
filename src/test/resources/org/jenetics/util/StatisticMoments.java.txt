@@ -72,7 +72,7 @@ public class StatisticMoments {
 			));
 		
 		
-		for (int i = 0; i < 2500; ++i) {
+		for (int i = 0; i < 750; ++i) {
 			final double number = random.nextDouble()*100000 - 50000;
 			
 			m1.increment(number);
