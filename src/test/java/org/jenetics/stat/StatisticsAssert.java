@@ -40,15 +40,19 @@ public final class StatisticsAssert {
 		final Distribution<C> distribution
 	) {
 		final Function<C, Float64> cdf = distribution.cdf();
-		final double χ2 = histogram.χ2(cdf);
+		final double χ2 = histogram.χ2(cdf);		
+		final int degreeOfFreedom = histogram.length() - 1;
+		assert (degreeOfFreedom > 0);
 		
-		// TODO: remove magic number
+		final double maxChi = ChiSquare.chi_999(degreeOfFreedom);
+		
 		Assert.assertTrue(
-				χ2 < 28, 
+				χ2 < maxChi, 
 				String.format(
-						"The histogram %s doesn't follow the distribution %s. " +
-						"χ2 must be smaller than 28: %f", 
-						histogram, distribution, χ2
+						"The histogram %s doesn't follow the distribution %s. \n" +
+						"χ2 must be smaller than %f but was %f", 
+						histogram, distribution, 
+						maxChi, χ2
 					)
 			); 
 	}

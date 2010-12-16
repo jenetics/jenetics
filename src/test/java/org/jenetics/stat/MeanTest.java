@@ -48,7 +48,9 @@ public class MeanTest {
 			while (it.hasNext()) {
 				final Data data = it.next();
 				moment.accumulate(data.number);
+				
 				Assert.assertEquals(moment.getMean(), data.mean);
+				Assert.assertEquals(moment.getStandardError(), data.std);
 			}
 		} finally {
 			it.close();

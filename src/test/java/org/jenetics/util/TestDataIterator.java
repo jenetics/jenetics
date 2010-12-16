@@ -27,13 +27,12 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class TestDataIterator implements Iterator<TestDataIterator.Data>, Closeable {
+public class TestDataIterator implements Closeable {
 	
 	public static class Data {
 		public final Double number;
@@ -68,38 +67,33 @@ public class TestDataIterator implements Iterator<TestDataIterator.Data>, Closea
 	private BufferedReader _reader = null;
 	private String _line = null;
 	
-	public TestDataIterator(final InputStream input, final String separator) {
+	public TestDataIterator(final InputStream input, final String separator) 
+		throws IOException 
+	{
 		_input = input;
 		_separator = separator;
 		init();
 	}
 	
-	private void init() {
+	private void init() throws IOException {
 		if (_reader == null) {
 			_reader = new BufferedReader(new InputStreamReader(_input));
 			readLine();
 		}
 	}
 	
-	private void readLine() {
-		try {
+	private void readLine() throws IOException {
+		_line = _reader.readLine();
+		while (_line != null && _line.startsWith("#")) {
 			_line = _reader.readLine();
-			while (_line != null && _line.startsWith("#")) {
-				_line = _reader.readLine();
-			}
-		} catch (IOException ignore) {
-			ignore.printStackTrace();
-			_line = null;
 		}
 	}
 
-	@Override
 	public boolean hasNext() {
 		return _line != null;
 	}
 
-	@Override
-	public TestDataIterator.Data next() {
+	public TestDataIterator.Data next() throws IOException {
 		init();
 		
 		Double[] values = new Double[0];
@@ -114,11 +108,6 @@ public class TestDataIterator implements Iterator<TestDataIterator.Data>, Closea
 		readLine();
 		
 		return new Data(values);
-	}
-
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
