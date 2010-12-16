@@ -22,14 +22,9 @@
  */
 package org.jenetics.util;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.List;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 /**
@@ -37,31 +32,6 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class AccumulatorsTest {
-	private Double[][] _values = null;
-
-	@BeforeTest
-	public void setup() throws Exception {
-		final InputStream in = getClass().getResourceAsStream(
-						"/org/jenetics/util/statistic-moments.txt"
-					);		
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		
-		final List<String> lines = new java.util.ArrayList<String>(1000);
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			lines.add(line);
-		}
-		
-		_values = new Double[lines.size()][10];
-		
-		for (int i = 0; i < lines.size(); ++i) {
-			final String[] parts = lines.get(i).split("\\s");
-			
-			for (int j = 0; j < parts.length; ++j) {
-				_values[i][j] = Double.valueOf(parts[j]);
-			}
-		}
-	}
 	
 	@Test
 	public void min() {
