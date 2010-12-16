@@ -27,7 +27,7 @@ import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: ChiTest.java 1098 2010-12-16 20:01:36Z fwilhelm $
+ * @version $Id$
  */
 public class Chi {
 
