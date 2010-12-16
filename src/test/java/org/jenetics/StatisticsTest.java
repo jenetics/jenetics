@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  */
 public class StatisticsTest {
 
-	//@Test
+	@Test
 	public void equals() {
 		double a = 123.0;
 		double b = a;
