@@ -40,6 +40,8 @@ import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
 
 /**
+ * CharacterChromosome which represents character sequences.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */

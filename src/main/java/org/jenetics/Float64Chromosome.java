@@ -74,8 +74,9 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		final int length
 	) {
 		super(
-				new Array<Float64Gene>(length)
-				.fill(Float64Gene.valueOf(min, max).asFactory())
+				new Array<Float64Gene>(length).fill(
+						Float64Gene.valueOf(min, max).asFactory()
+					)
 			);
 	}
 	

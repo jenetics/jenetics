@@ -46,7 +46,7 @@ import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
 /**
- * BitChromosome.
+ * Implementation of the <i>classical</i> BitChromosome.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
