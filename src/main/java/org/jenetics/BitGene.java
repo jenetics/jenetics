@@ -64,6 +64,13 @@ public class BitGene
 		return _value;
 	}
 	
+	/**
+	 * Return the {@code boolean} value of this gene.
+	 * 
+	 * @see #getAllele()
+	 * 
+	 * @return the {@code boolean} value of this gene.
+	 */
 	public boolean booleanValue() {
 		return _value;
 	}
@@ -73,6 +80,11 @@ public class BitGene
 		return _value;
 	}
 	
+	/**
+	 * Return always {@code true}.
+	 * 
+	 * @return always {@code true}.
+	 */
 	@Override
 	public boolean isValid() {
 		return true;

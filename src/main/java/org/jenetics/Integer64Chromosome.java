@@ -82,8 +82,9 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 		final int length
 	) {
 		super(
-				new Array<Integer64Gene>(length)
-				.fill(Integer64Gene.valueOf(min, max).asFactory())
+				new Array<Integer64Gene>(length).fill(
+						Integer64Gene.valueOf(min, max).asFactory()
+					)
 			);
 	}
 	

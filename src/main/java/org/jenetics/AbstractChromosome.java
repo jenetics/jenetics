@@ -58,6 +58,10 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected transient Array<G> _genes = null;
 	
+	/**
+	 * Indicates whether this chromosome is valid or not. If the variable is
+	 * {@code null} the validation state hasn't been calculated yet.
+	 */
 	protected transient Boolean _valid = null;
 
 	/**

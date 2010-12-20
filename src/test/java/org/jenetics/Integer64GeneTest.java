@@ -52,7 +52,7 @@ public class Integer64GeneTest {
 			RandomRegistry.setRandom(new Random());
 			
 			final Integer64 min = Integer64.ZERO;
-			final Integer64 max = Integer64.valueOf(10000000);
+			final Integer64 max = Integer64.valueOf(Integer.MAX_VALUE);
 			final Factory<Integer64Gene> factory = Integer64Gene.valueOf(min, max);
 			
 			final Variance<Integer64> variance = new Variance<Integer64>();
