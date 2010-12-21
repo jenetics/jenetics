@@ -47,15 +47,75 @@ public class NumberStatistics<
 	extends Statistics<G, R> 
 {
 	
+	/**
+	 * Builder for the NumberStatistics class.
+	 * 
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id$
+	 */
+	protected static class Builder<
+		G extends Gene<?, G>, 
+		R extends Number & Comparable<? super R>
+	>
+		extends Statistics.Builder<G, R>
+	{
+		protected double _fitnessMean = NaN;
+		protected double _fitnessVariance = NaN;
+		protected double _standardError = NaN;
+		
+		protected Builder() {
+		}
+		
+		@Override
+		public Builder<G, R> statistics(final Statistics<G, R> statistics) {
+			super.statistics(statistics);
+			return this;
+		}
+		
+		public Builder<G, R> statistics(final NumberStatistics<G, R> statistics) {
+			super.statistics(statistics);
+			_fitnessMean = statistics._fitnessMean;
+			_fitnessVariance = statistics._fitnessVariance;
+			_standardError = statistics._standardError;
+			return this;
+		}
+		
+		public Builder<G, R> fitnessMean(final double fitnessMean) {
+			_fitnessMean = fitnessMean;
+			return this;
+		}
+		
+		public Builder<G, R> fitnessVariance(final double fitnessVariance) {
+			_fitnessVariance = fitnessVariance;
+			return this;
+		}
+		
+		public Builder<G, R> standardError(final double standardError) {
+			_standardError = standardError;
+			return this;
+		}
+		
+		@Override
+		public NumberStatistics<G, R> build() {
+			return new NumberStatistics<G, R>(
+					_generation,
+					_best,
+					_worst,
+					_fitnessMean,
+					_fitnessVariance,
+					_samples,
+					_ageMean,
+					_ageVariance,
+					_standardError
+				);
+		}
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	protected final double _fitnessMean;
 	protected final double _fitnessVariance;
 	protected final double _standardError;
-
-	protected NumberStatistics(final int generation) {
-		this(generation, null, null, NaN, NaN, 0, NaN, NaN, NaN);
-	}
 
 	protected NumberStatistics(
 		final int generation,
@@ -70,18 +130,6 @@ public class NumberStatistics<
 	) {
 		super(generation, best, worst, samples, ageMean, ageVariance);
 
-		_fitnessMean = fitnessMean;
-		_fitnessVariance = fitnessVariance;
-		_standardError = errorOfMean;
-	}
-
-	protected NumberStatistics(
-		final Statistics<G, R> other,
-		final double fitnessMean, 
-		final double fitnessVariance,
-		final double errorOfMean
-	) {
-		super(other);
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
 		_standardError = errorOfMean;
@@ -163,13 +211,12 @@ public class NumberStatistics<
 			final Float64 fitnessVariance = xml.get(FITNESS_VARIANCE);
 			final Float64 errorOfMean = xml.get(ERROR_OF_MEAN);
 
-			return new NumberStatistics(
-					stats, 
-					fitnessMean.doubleValue(),
-					fitnessVariance.doubleValue(), 
-					errorOfMean.doubleValue()
-				);
-
+			final Builder builder = new Builder().statistics(stats);
+			builder.fitnessMean(fitnessMean.doubleValue());
+			builder.fitnessVariance(fitnessVariance.doubleValue());
+			builder.standardError(errorOfMean.doubleValue());
+			
+			return builder.build();
 		}
 
 		@Override
@@ -210,8 +257,8 @@ public class NumberStatistics<
 			final int generation, 
 			final Optimize opt
 		) {
-			NumberStatistics<G, R> statistics = 
-				new NumberStatistics<G, R>(generation);
+			final Builder<G, R> builder = new Builder<G, R>();
+			builder.generation(generation);
 
 			if (!population.isEmpty()) {
 				// The statistics accumulators.
@@ -226,19 +273,17 @@ public class NumberStatistics<
 						fitnessVariance.adapt(Phenotype.<G, R>Fitness())
 					);
 
-				statistics = new NumberStatistics<G, R>(
-						generation, opt.best(minMax.getMax(), minMax.getMin()), 
-						opt.worst(minMax.getMax(), minMax.getMin()),
-						fitnessVariance.getMean(),
-						fitnessVariance.getVariance(), 
-						population.size(),
-						ageVariance.getMean(), 
-						ageVariance.getVariance(),
-						fitnessVariance.getStandardError()
-					);
+				builder.best(opt.best(minMax.getMax(), minMax.getMin()));
+				builder.worst(opt.worst(minMax.getMax(), minMax.getMin()));
+				builder.fitnessMean(fitnessVariance.getMean());
+				builder.fitnessVariance(fitnessVariance.getVariance());
+				builder.samples(population.size());
+				builder.ageMean(ageVariance.getMean());
+				builder.ageVariance(ageVariance.getVariance());
+				builder.standardError(fitnessVariance.getStandardError());
 			}
 
-			return statistics;
+			return builder.build();
 		}
 	}
 
