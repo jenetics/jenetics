@@ -106,7 +106,9 @@ public class NumberStatistics<
 					_samples,
 					_ageMean,
 					_ageVariance,
-					_standardError
+					_standardError,
+					_invalid,
+					_killed
 				);
 		}
 	}
@@ -126,9 +128,20 @@ public class NumberStatistics<
 		final int samples, 
 		final double ageMean, 
 		final double ageVariance,
-		final double errorOfMean
+		final double errorOfMean,
+		final int invalid,
+		final int killed
 	) {
-		super(generation, best, worst, samples, ageMean, ageVariance);
+		super(
+				generation, 
+				best, 
+				worst, 
+				samples, 
+				ageMean, 
+				ageVariance, 
+				invalid, 
+				killed
+			);
 
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
@@ -252,7 +265,7 @@ public class NumberStatistics<
 		}
 
 		@Override
-		public NumberStatistics<G, R> evaluate(
+		public NumberStatistics.Builder<G, R> evaluate(
 			final List<? extends Phenotype<G, R>> population,
 			final int generation, 
 			final Optimize opt
@@ -283,7 +296,7 @@ public class NumberStatistics<
 				builder.standardError(fitnessVariance.getStandardError());
 			}
 
-			return builder.build();
+			return builder;
 		}
 	}
 
