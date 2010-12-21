@@ -15,9 +15,8 @@ public class NumberStatisticsTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
-		final Statistics statistics = new Statistics(234234, null, null, 0, 0, 0);
 		final NumberStatistics numberStatistics = new NumberStatistics(
-				statistics, 3.234, 42.234, 23
+				234234, null, null, 0, 0, 0, 3.234, 42.234, 23
 			);
 		
 		SerializeUtils.testXMLSerialization(numberStatistics);
@@ -26,9 +25,8 @@ public class NumberStatisticsTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void objectSerialize() throws IOException {
-		final Statistics statistics = new Statistics(234234, null, null, 0, 0, 0);
 		final NumberStatistics numberStatistics = new NumberStatistics(
-				statistics, 3.234, 42.234, 23
+				234234, null, null, 0, 0, 0, 3.234, 42.234, 23
 			);
 		
 		SerializeUtils.testSerialization(numberStatistics);
