@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.SerializeUtils.testSerialization;
+import static org.jenetics.SerializeUtils.testXMLSerialization;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.Accumulators.accumulate;
 import static org.testng.Assert.assertEquals;
@@ -84,9 +86,9 @@ public class Float64ChromosomeTest {
     }
 
     @Test
-    public void testCreate() {
-        Float64Chromosome c1 = new Float64Chromosome(-12.0, 230.123, 100);
-        Float64Chromosome c2 = c1.newInstance();
+    public void createChromosome() {
+        final Float64Chromosome c1 = new Float64Chromosome(-12.0, 230.123, 100);
+        final Float64Chromosome c2 = c1.newInstance();
         
         for (NumberGene<Float64, ?> g : c2) {
             assertEquals(-12.0, g.getMin().doubleValue());
@@ -113,12 +115,12 @@ public class Float64ChromosomeTest {
     
     @Test
     public void xmlSerialize() throws XMLStreamException {
-    	SerializeUtils.testXMLSerialization(new Float64Chromosome(-12.0, 230.123, 1));
+    	testXMLSerialization(new Float64Chromosome(-12.0, 230.123, 1));
     }
     
     @Test
     public void objectSerialize() throws IOException {
-    	SerializeUtils.testSerialization(new Float64Chromosome(-12.0, 230.123, 1));
+    	testSerialization(new Float64Chromosome(-12.0, 230.123, 1));
     }
 
 }

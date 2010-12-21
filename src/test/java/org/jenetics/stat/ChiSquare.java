@@ -71,6 +71,10 @@ public final class ChiSquare {
 		throw new AssertionError();
 	}
 	
+	public static void main(String[] args) {
+		System.out.println(chi_9(10));
+	}
+	
 	private static String readLine(final BufferedReader reader) {
 		try {
 			String line = reader.readLine();

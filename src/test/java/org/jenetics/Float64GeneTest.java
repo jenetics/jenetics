@@ -224,6 +224,12 @@ public class Float64GeneTest {
         assertEquals(g2.getMin().doubleValue(), -1234.1234);
         assertEquals(g2.getMax().doubleValue(), 1234.1234);
     }
+	
+	@Test
+	public void createInvalidNumber() {
+		final Float64Gene gene = Float64Gene.valueOf(0, 1, 2);
+		Assert.assertFalse(gene.isValid());
+	}
 
 	@Test
     public void compareTo() {
