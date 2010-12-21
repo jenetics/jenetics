@@ -112,9 +112,11 @@ public class StatisticsTest {
 	public void calculation() {
 		int size = 2;
 		Population<Float64Gene, Float64> population = newPopulation(size);
-		Statistics.Calculator<Float64Gene, Float64> calculator = new Statistics.Calculator<Float64Gene, Float64>();
+		Statistics.Calculator<Float64Gene, Float64> calculator = 
+			new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1, Optimize.MAXIMUM);
+		Statistics<Float64Gene, Float64> statistics = 
+			calculator.evaluate(population, size + 1, Optimize.MAXIMUM).build();
 		Assert.assertEquals(statistics.getSamples(), 2);
 		Assert.assertEquals(statistics.getAgeMean(), 1.5, EPSILON);
 		Assert.assertEquals(statistics.getAgeVariance(), 0.5, EPSILON);
@@ -128,9 +130,11 @@ public class StatisticsTest {
 	public void calculation2() {
 		int size = 10;
 		Population<Float64Gene, Float64> population = newPopulation(size);
-		Statistics.Calculator<Float64Gene, Float64> calculator = new Statistics.Calculator<Float64Gene, Float64>();
+		Statistics.Calculator<Float64Gene, Float64> calculator = 
+			new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<Float64Gene, Float64> statistics = calculator.evaluate(population, size + 1, Optimize.MAXIMUM);
+		Statistics<Float64Gene, Float64> statistics = 
+			calculator.evaluate(population, size + 1, Optimize.MAXIMUM).build();
 		Assert.assertEquals(statistics.getSamples(), 10);
 		Assert.assertEquals(statistics.getAgeMean(), 5.5, EPSILON);
 		Assert.assertEquals(statistics.getAgeVariance(), 9.1666666666666, EPSILON);
@@ -145,13 +149,13 @@ public class StatisticsTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(new Statistics(123, null, null, 0, 0, 0));
+		SerializeUtils.testXMLSerialization(new Statistics(123, null, null, 0, 0, 0, 34, 34));
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0));
+		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0, 34, 34));
 	}
 
 }

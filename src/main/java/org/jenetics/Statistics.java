@@ -46,6 +46,7 @@ import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
 import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
@@ -73,6 +74,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		protected int _samples = 0;
 		protected double _ageMean = NaN;
 		protected double _ageVariance = NaN;
+		protected int _killed = 0;
+		protected int _invalid = 0;
 		
 		protected Builder() {
 		}
@@ -117,6 +120,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			return this;
 		}
 		
+		public Builder<G, C> invalid(final int invalid) {
+			_invalid = invalid;
+			return this;
+		}
+		
+		public Builder<G, C> killed(final int killed) {
+			_killed = killed;
+			return this;
+		}
+		
 		public Statistics<G, C> build() {
 			return new Statistics<G, C>(
 					_generation,
@@ -124,7 +137,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 					_worst,
 					_samples,
 					_ageMean,
-					_ageVariance
+					_ageVariance,
+					_invalid,
+					_killed
 				);
 		}
 	}
@@ -137,19 +152,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	protected final int _samples;
 	protected final double _ageMean;
 	protected final double _ageVariance;
+	protected final int _killed;
+	protected final int _invalid;
 			
 	private final FinalReference<Time> 
 		_time = new FinalReference<Time>(new Time());
-
-	/**
-	 * The number of killed phenotypes. Can be set only once.
-	 */
-	public final FinalReference<Integer> killed = new FinalReference<Integer>(0);
-	
-	/**
-	 * The number of invalid phenotypes. Can be set only onve.
-	 */
-	public final FinalReference<Integer> invalid = new FinalReference<Integer>(0);
 	
 	
 	/**
@@ -162,7 +169,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Phenotype<G, C> worst,
 		final int samples, 
 		final double ageMean, 
-		final double ageVariance
+		final double ageVariance,
+		final int killed,
+		final int invalid
 	) {
 		_generation = generation;
 		_best = best;
@@ -170,6 +179,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		_samples = samples;
 		_ageMean = ageMean;
 		_ageVariance = ageVariance;
+		_killed = killed;
+		_invalid = invalid;
 	}
 	
 	public int getGeneration() {
@@ -250,6 +261,24 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return _ageVariance;
 	}
 	
+	/**
+	 * Return the number of invalid individuals.
+	 * 
+	 * @return the number of invalid individuals.
+	 */
+	public int getInvalid() {
+		return _invalid;
+	}
+	
+	/**
+	 * Return the number of killed individuals.
+	 * 
+	 * @return the number of killed individuals.
+	 */
+	public int getKilled() {
+		return _killed;
+	}
+	
 	@Override
 	public int hashCode() {
 		int hash = 17;
@@ -257,6 +286,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		hash += (int)doubleToLongBits(_ageVariance)*37;
 		hash += _best != null ?_best.hashCode()*37 : 3; 
 		hash += _worst != null ? _worst.hashCode()*37 : 3; 
+		hash += 37*_invalid + 17;
+		hash += 37*_killed + 17;
 		return hash;
 	}
 	
@@ -275,7 +306,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			doubleToLongBits(statistics._ageMean) == doubleToLongBits(_ageMean) &&
 			doubleToLongBits(statistics._ageVariance) == doubleToLongBits(_ageVariance) &&
 			_best != null ? _best.equals(statistics._best) : statistics._best == null &&
-			_worst != null ?_worst.equals(statistics._worst) : statistics._worst == null;
+			_worst != null ?_worst.equals(statistics._worst) : statistics._worst == null &&
+			_invalid == statistics._invalid &&
+			_killed == statistics._killed;
 	}
 	
 	public boolean equals(final Statistics<G, C> statistics, final int ulps) {
@@ -283,7 +316,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				(equals(statistics._ageMean, _ageMean, ulps) &&
 				equals(statistics._ageVariance, _ageVariance, ulps) &&
 				_best != null ? _best.equals(statistics._best) : statistics._best == null &&
-				_worst != null ? _worst.equals(statistics._worst) : statistics._worst == null);
+				_worst != null ? _worst.equals(statistics._worst) : statistics._worst == null) &&
+				_invalid == statistics._invalid &&
+				_killed == statistics._killed;
 		
 	}
 	
@@ -330,6 +365,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		private static final String BEST_PHENOTYPE = "best-phenotype";
 		private static final String WORST_PHENOTYPE = "worst-phenotype";
 		private static final String STATISITCS_TIME = "statistics-time";
+		private static final String INVALID = "invalid";
+		private static final String KILLED = "killed";
 		
 		@Override
 		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml) 
@@ -339,6 +376,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final int samples = xml.getAttribute(SAMPLES, 1);
 			final Float64 meanAge = xml.get(AGE_MEAN);
 			final Float64 varianceAge = xml.get(AGE_VARIANCE);
+			final Integer64 invalid = xml.get(INVALID);
+			final Integer64 killed = xml.get(KILLED);
 			final Phenotype best = xml.get(BEST_PHENOTYPE);
 			final Phenotype worst = xml.get(WORST_PHENOTYPE);
 			
@@ -348,7 +387,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 					worst, 
 					samples, 
 					meanAge.doubleValue(), 
-					varianceAge.doubleValue()
+					varianceAge.doubleValue(),
+					invalid.intValue(),
+					killed.intValue()
 				);
 			statistics._time.set(xml.get(STATISITCS_TIME));
 			
@@ -363,6 +404,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			xml.setAttribute(SAMPLES, s._samples);
 			xml.add(Float64.valueOf(s._ageMean), AGE_MEAN);
 			xml.add(Float64.valueOf(s._ageVariance), AGE_VARIANCE);
+			xml.add(Integer64.valueOf(s._invalid), INVALID);
+			xml.add(Integer64.valueOf(s._killed), KILLED);
 			xml.add(s._best, BEST_PHENOTYPE);
 			xml.add(s._worst, WORST_PHENOTYPE);
 			xml.add(s._time.get(), STATISITCS_TIME);
@@ -590,7 +633,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * @param opt the optimization <i>direction</i>.
 		 * @return a new statistics object generated from the given arguments.
 		 */
-		public Statistics<G, C> evaluate(
+		public Statistics.Builder<G, C> evaluate(
 			final List<? extends Phenotype<G, C>> population,
 			final int generation,
 			final Optimize opt
@@ -615,7 +658,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				builder.ageVariance(ageVariance.getVariance());
 			}
 			
-			return builder.build();
+			return builder;
 		}
 
 	}

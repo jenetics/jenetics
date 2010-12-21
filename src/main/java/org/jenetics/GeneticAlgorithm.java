@@ -285,7 +285,10 @@ public class GeneticAlgorithm<
 			
 			//First valuation of the initial population.
 			_statisticTimer.start();
-			_statistics = _calculator.evaluate(_population, _generation, _optimization);
+			_statistics = _calculator.evaluate(
+					_population, _generation, _optimization
+				).build();
+			
 			_bestStatistics = _statistics;
 			_statisticTimer.stop();
 			
@@ -347,11 +350,12 @@ public class GeneticAlgorithm<
 			
 			//Evaluate the statistic
 			_statisticTimer.start();
-			_statistics = _calculator.evaluate(
+			final Statistics.Builder<G, C> builder = _calculator.evaluate(
 					_population, _generation, _optimization
 				);
-			_statistics.killed.set(_killed.get() - killed);
-			_statistics.invalid.set(_invalid.get() - invalid);
+			builder.killed(_killed.get() - killed);
+			builder.invalid(_invalid.get() - invalid);
+			_statistics = builder.build();
 			
 			final int comp = _optimization.compare(
 					_bestStatistics.getBestPhenotype(), 

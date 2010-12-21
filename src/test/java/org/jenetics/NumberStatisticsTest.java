@@ -16,7 +16,7 @@ public class NumberStatisticsTest {
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
 		final NumberStatistics numberStatistics = new NumberStatistics(
-				234234, null, null, 0, 0, 0, 3.234, 42.234, 23
+				234234, null, null, 0, 0, 0, 3.234, 42.234, 23, 23, 23
 			);
 		
 		SerializeUtils.testXMLSerialization(numberStatistics);
@@ -26,7 +26,7 @@ public class NumberStatisticsTest {
 	@Test
 	public void objectSerialize() throws IOException {
 		final NumberStatistics numberStatistics = new NumberStatistics(
-				234234, null, null, 0, 0, 0, 3.234, 42.234, 23
+				234234, null, null, 0, 0, 0, 3.234, 42.234, 23, 23, 23
 			);
 		
 		SerializeUtils.testSerialization(numberStatistics);
