@@ -70,6 +70,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	/**
 	 * Holds the number of mutation performed by this mutation class.
 	 */
+	@Deprecated
 	protected int _mutations = 0;
 	
 	/**

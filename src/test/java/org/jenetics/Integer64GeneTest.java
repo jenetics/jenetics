@@ -86,6 +86,22 @@ public class Integer64GeneTest {
 	}
 	
 	@Test
+    public void createNumber() {
+		Integer64Gene gene = Integer64Gene.valueOf(1, 0, 12);
+		Integer64Gene g2 = gene.newInstance(5);
+        
+        assertEquals(g2.getAllele().longValue(), 5);
+        assertEquals(g2.getMin().longValue(), 0);
+        assertEquals(g2.getMax().longValue(), 12);
+    }
+	
+	@Test
+	public void createInvalidNumber() {
+		final Integer64Gene gene = Integer64Gene.valueOf(0, 1, 2);
+		Assert.assertFalse(gene.isValid());
+	}
+	
+	@Test
     public void plus() {
 		final long min = -Integer.MAX_VALUE;
 		final long max = Integer.MAX_VALUE;

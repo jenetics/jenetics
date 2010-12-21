@@ -37,8 +37,7 @@ import org.jenetics.util.Accumulators.MinMax;
 import org.jscience.mathematics.number.Float64;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
- *         Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class NumberStatistics<
