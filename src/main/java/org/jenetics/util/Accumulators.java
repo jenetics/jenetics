@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.Iterator;
+
 import javolution.context.ConcurrentContext;
 
 
@@ -238,6 +240,24 @@ public final class Accumulators {
 			} finally {
 				ConcurrentContext.exit();
 			}
+		}
+	}
+	
+	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
+	 * {@code accumulator} with each value of the given {@code values}. 
+	 * 
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param a the accumulator.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	public static <T> void accumulate(
+		final Iterator<? extends T> values,
+		final Accumulator<? super T> a
+	) {
+		while (values.hasNext()) {
+			a.accumulate(values.next());
 		}
 	}
 	
