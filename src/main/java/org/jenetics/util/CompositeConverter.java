@@ -28,7 +28,7 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class TransitiveConverter<A, B, C> implements Converter<A, C> {
+public class CompositeConverter<A, B, C> implements Converter<A, C> {
 	private final Converter<A, B> _first;
 	private final Converter<B, C> _second;
 	
@@ -39,8 +39,8 @@ public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 	 * @param second second converter
 	 * @throws NullPointerException if one of the converters is {@code null}.
 	 */
-	public TransitiveConverter(
-		final Converter<A, B> first, 
+	public CompositeConverter(
+		final Converter<A, B> first,
 		final Converter<B, C> second
 	) {
 		_first = Validator.nonNull(first);
@@ -64,7 +64,7 @@ public class TransitiveConverter<A, B, C> implements Converter<A, C> {
 		final Converter<A, B> c1,
 		final Converter<B, C> c2
 	) {
-		return new TransitiveConverter<A, B, C>(c1, c2);
+		return new CompositeConverter<A, B, C>(c1, c2);
 	}
 
 	public static <A, B, C, D> Converter<A, D> valueOf(
