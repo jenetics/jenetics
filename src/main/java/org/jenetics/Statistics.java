@@ -57,13 +57,14 @@ import org.jscience.mathematics.number.Integer64;
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> 
 	implements Immutable, XMLSerializable 
 {
+	
 	/**
 	 * Builder for the Statistics class.
 	 * 
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	protected static class Builder<
+	public static class Builder<
 		G extends Gene<?, G>, 
 		C extends Comparable<? super C>
 	> 
@@ -77,59 +78,101 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		protected int _killed = 0;
 		protected int _invalid = 0;
 		
-		protected Builder() {
+		/**
+		 * Create a new Statistics builder.
+		 */
+		public Builder() {
 		}
 		
+		/**
+		 * Set the values of this builder with the values of the given 
+		 * {@code statistics}.
+		 * 
+		 * @param statistics the statistics values. If the {@code statistics}
+		 *        is {@code null} nothing is set.
+		 * @return this builder.
+		 */
 		public Builder<G, C> statistics(final Statistics<G, C> statistics) {
-			_generation = statistics._generation;
-			_best = statistics._best;
-			_worst = statistics._worst;
-			_samples = statistics._samples;
-			_ageMean = statistics._ageMean;
-			_ageVariance = statistics._ageVariance;
+			if (statistics != null) {
+				_generation = statistics._generation;
+				_best = statistics._best;
+				_worst = statistics._worst;
+				_samples = statistics._samples;
+				_ageMean = statistics._ageMean;
+				_ageVariance = statistics._ageVariance;
+			}
 			return this;
 		}
 		
+		/**
+		 * @see Statistics#getGeneration()
+		 */
 		public Builder<G, C> generation(final int generation) {
 			_generation = generation;
 			return this;
 		}
 		
-		public Builder<G, C> best(final Phenotype<G, C> best) {
+		/**
+		 * @see Statistics#getBestPhenotype()
+		 */
+		public Builder<G, C> bestPhenotype(final Phenotype<G, C> best) {
 			_best = best;
 			return this;
 		}
 		
-		public Builder<G, C> worst(final Phenotype<G, C> worst) {
+		/**
+		 * @see Statistics#getWorstPhenotype()
+		 */
+		public Builder<G, C> worstPhenotype(final Phenotype<G, C> worst) {
 			_worst = worst;
 			return this;
 		}
 		
+		/**
+		 * @see Statistics#getSamples()
+		 */
 		public Builder<G, C> samples(final int samples) {
 			_samples = samples;
 			return this;
 		}
 		
+		/**
+		 * @see Statistics#getAgeMean()
+		 */
 		public Builder<G, C> ageMean(final double ageMean) {
 			_ageMean = ageMean;
 			return this;
 		}
 		
+		/**
+		 * @see Statistics#getAgeVariance()
+		 */
 		public Builder<G, C> ageVariance(final double ageVariance) {
 			_ageVariance = ageVariance;
 			return this;
 		}
 		
+		/**
+		 * @see Statistics#getInvalid()
+		 */
 		public Builder<G, C> invalid(final int invalid) {
 			_invalid = invalid;
 			return this;
 		}
 		
+		/**
+		 * @see Statistics#getKilled()
+		 */
 		public Builder<G, C> killed(final int killed) {
 			_killed = killed;
 			return this;
 		}
 		
+		/**
+		 * Return a new Statistics object with the builder values.
+		 * 
+		 * @return new Statistics object with the builder values.
+		 */
 		public Statistics<G, C> build() {
 			return new Statistics<G, C>(
 					_generation,
@@ -155,8 +198,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	protected final int _killed;
 	protected final int _invalid;
 			
-	private final FinalReference<Time> 
-		_time = new FinalReference<Time>(new Time());
+	private final FinalReference<Time> _time = new FinalReference<Time>(new Time());
 	
 	
 	/**
@@ -183,6 +225,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		_invalid = invalid;
 	}
 	
+	/**
+	 * Return the generation of this statistics.
+	 * 
+	 * @return the generation of this statistics.
+	 */
 	public int getGeneration() {
 		return _generation;
 	}
@@ -651,8 +698,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 						ageVariance.adapt(Phenotype.<G, C>Age(generation))
 					);
 				
-				builder.best(opt.best(minMax.getMax(), minMax.getMin()));
-				builder.worst(opt.worst(minMax.getMax(), minMax.getMin()));
+				builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
+				builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
 				builder.samples(population.size());
 				builder.ageMean(ageVariance.getMean());
 				builder.ageVariance(ageVariance.getVariance());

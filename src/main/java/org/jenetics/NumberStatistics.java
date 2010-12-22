@@ -53,7 +53,7 @@ public class NumberStatistics<
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	protected static class Builder<
+	public static class Builder<
 		G extends Gene<?, G>, 
 		R extends Number & Comparable<? super R>
 	>
@@ -63,7 +63,10 @@ public class NumberStatistics<
 		protected double _fitnessVariance = NaN;
 		protected double _standardError = NaN;
 		
-		protected Builder() {
+		/**
+		 * Create a new NumberStatistics builder.
+		 */
+		public Builder() {
 		}
 		
 		@Override
@@ -72,24 +75,43 @@ public class NumberStatistics<
 			return this;
 		}
 		
+		/**
+		 * Set the values of this builder with the values of the given 
+		 * {@code statistics}.
+		 * 
+		 * @param statistics the statistics values. If the {@code statistics}
+		 *        is {@code null} nothing is set.
+		 * @return this builder.
+		 */
 		public Builder<G, R> statistics(final NumberStatistics<G, R> statistics) {
-			super.statistics(statistics);
-			_fitnessMean = statistics._fitnessMean;
-			_fitnessVariance = statistics._fitnessVariance;
-			_standardError = statistics._standardError;
+			if (statistics != null) {
+				super.statistics(statistics);
+				_fitnessMean = statistics._fitnessMean;
+				_fitnessVariance = statistics._fitnessVariance;
+				_standardError = statistics._standardError;
+			}
 			return this;
 		}
 		
+		/**
+		 * @see NumberStatistics#getFitnessMean()
+		 */
 		public Builder<G, R> fitnessMean(final double fitnessMean) {
 			_fitnessMean = fitnessMean;
 			return this;
 		}
 		
+		/**
+		 * @see NumberStatistics#getFitnessVariance()
+		 */
 		public Builder<G, R> fitnessVariance(final double fitnessVariance) {
 			_fitnessVariance = fitnessVariance;
 			return this;
 		}
 		
+		/**
+		 * @see NumberStatistics#getStandardError()
+		 */
 		public Builder<G, R> standardError(final double standardError) {
 			_standardError = standardError;
 			return this;
@@ -148,14 +170,31 @@ public class NumberStatistics<
 		_standardError = errorOfMean;
 	}
 
+	/**
+	 * Return the mean of the fitness values.
+	 * 
+	 * @return the mean of the fitness values.
+	 */
 	public double getFitnessMean() {
 		return _fitnessMean;
 	}
 
+	/**
+	 * Return the variance of the fitness values.
+	 * 
+	 * @return the variance of the fitness values.
+	 */
 	public double getFitnessVariance() {
 		return _fitnessVariance;
 	}
 
+	/**
+	 * Return the <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Standard_error_%28statistics%29">
+	 * Standard error
+	 * </a> of the calculated fitness mean.
+	 * 
+	 * @return the standard error of the calculated fitness mean.
+	 */
 	public double getStandardError() {
 		return _standardError;
 	}
@@ -286,8 +325,8 @@ public class NumberStatistics<
 						fitnessVariance.adapt(Phenotype.<G, R>Fitness())
 					);
 
-				builder.best(opt.best(minMax.getMax(), minMax.getMin()));
-				builder.worst(opt.worst(minMax.getMax(), minMax.getMin()));
+				builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
+				builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
 				builder.fitnessMean(fitnessVariance.getMean());
 				builder.fitnessVariance(fitnessVariance.getVariance());
 				builder.samples(population.size());
@@ -299,10 +338,5 @@ public class NumberStatistics<
 			return builder;
 		}
 	}
-
-	// public static <G extends Gene<?, G>, R extends Number & Comparable<R>>
-	// Calculator<G, R> calculator() {
-	// return new Calculator<G, R>();
-	// }
 
 }
