@@ -1,3 +1,7 @@
+Jenetics-0.7.0.0
+- Change the signature of the org.jenetics.Statistics.Calculator.evaluate
+  methods so that it returns a Statistics.Builder instead of a Statistics object.
+- Add builder classes for Statistics and NumberStatistics classes.
 - Rename org.jenetics.util.TransitiveConverter to
   org.jenetics.util.CompositeConverter.
 - Fix documentation and behavior of org.jenetics.GaussianMutator class.
