@@ -95,8 +95,8 @@ class KnappsackFunction implements FitnessFunction&lt;BitGene, Float64&gt; {
 	 private final double _knapsackSize;
 	 
 	 public KnappsackFunction(final Item[] items, double knapsackSize) {
-		  this._items = items;
-		  this._knapsackSize = knapsackSize;
+		  _items = items;
+		  _knapsackSize = knapsackSize;
 	 }
 	 
 	 public Item[] getItems() {
@@ -154,7 +154,8 @@ public class Knapsack {
 			new SinglePointCrossover&lt;BitGene&gt;(0.06)
 		  ));
 		  
-		  GAUtils.execute(ga, 100);
+		  ga.setup();
+		  ga.evolve(100);
 	 }
 }
 </pre></div>
@@ -169,7 +170,7 @@ number of ones. The FitnessFunction looks like this:</p>
 <div style="font-size: .75em"><pre
 	class="brush: java; toolbar: false;">
 class OneCounter implements FitnessFunction&lt;BitGene, Float64&gt; {
-    public Float64 eval(final Genotype&lt;BitGene, Float64&gt; genotype) {
+    public Float64 evaluate(final Genotype&lt;BitGene, Float64&gt; genotype) {
         int count = 0;
         for (BitGene gene : genotype.getChromosome()) {
             if (gene.getBit()) {
