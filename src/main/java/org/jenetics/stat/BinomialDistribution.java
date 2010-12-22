@@ -35,6 +35,8 @@ import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
 /**
+ * TODO: implement BinomialDistribution
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
