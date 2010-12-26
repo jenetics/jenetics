@@ -198,7 +198,10 @@ public class Timer
 	
 	@Override
 	public String toString() {
-		return String.format("%s: %11.11f s", _label, getTime().doubleValue(SI.SECOND));
+		return String.format(
+					"%s: %11.11f s", _label, 
+					getTime().doubleValue(SI.SECOND)
+				);
 	}
 	
 }
