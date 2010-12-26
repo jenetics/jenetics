@@ -28,9 +28,9 @@
  ############################################################################### 
 -->
 <project default="all">
-	<property name="version" value="0.7.0.0" />
+	<property name="version" value="0.8.0.0" />
 	<property name="identifier" value="jenetics-${version}" />
-	<property name="year" value="2007-2010" />
+	<property name="year" value="2007-2011" />
 	
 	<property name="basedir" value="." />
 	<property name="source.basedir" value="${basedir}/src" />
