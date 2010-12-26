@@ -23,10 +23,13 @@
 package org.jenetics;
 
 import static java.lang.Math.exp;
+import javolution.lang.Immutable;
 
 import org.jenetics.util.ArrayUtils;
 
 /**
+ * TODO: change formular gifs.
+ * 
  * <p>
  * In this <code>Selector</code>, the probability for selection is defined as.
  * </p>
@@ -56,11 +59,12 @@ import org.jenetics.util.ArrayUtils;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BoltzmannSelector<
+public final class BoltzmannSelector<
 	G extends Gene<?, G>, 
 	N extends Number & Comparable<? super N>
 > 
 	extends ProbabilitySelector<G, N>
+	implements Immutable
 {
 	
 	private final double _b;
@@ -126,7 +130,7 @@ public class BoltzmannSelector<
 		
 		final BoltzmannSelector<?, ?> selector = (BoltzmannSelector<?, ?>)obj;
 		return super.equals(obj) &&
-			Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b);
+				Double.compare(_b, selector._b) == 0;
 	}
 	
 	@Override

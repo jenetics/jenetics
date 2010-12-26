@@ -289,8 +289,7 @@ public class NumberStatistics<
 	};
 
 	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
-	 *         Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	public static class Calculator<
@@ -315,24 +314,24 @@ public class NumberStatistics<
 			if (!population.isEmpty()) {
 				// The statistics accumulators.
 				final MinMax<Phenotype<G, R>> minMax = new MinMax<Phenotype<G, R>>();
-				final Variance<Integer> ageVariance = new Variance<Integer>();
-				final Variance<R> fitnessVariance = new Variance<R>();
+				final Variance<Integer> age = new Variance<Integer>();
+				final Variance<R> fitness = new Variance<R>();
 
 				Accumulators.<Phenotype<G, R>>accumulate(
 						population, 
 						minMax,
-						ageVariance.adapt(Phenotype.<G, R>Age(generation)),
-						fitnessVariance.adapt(Phenotype.<G, R>Fitness())
+						age.adapt(Phenotype.<G, R>Age(generation)),
+						fitness.adapt(Phenotype.<G, R>Fitness())
 					);
 
 				builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 				builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
-				builder.fitnessMean(fitnessVariance.getMean());
-				builder.fitnessVariance(fitnessVariance.getVariance());
+				builder.fitnessMean(fitness.getMean());
+				builder.fitnessVariance(fitness.getVariance());
 				builder.samples(population.size());
-				builder.ageMean(ageVariance.getMean());
-				builder.ageVariance(ageVariance.getVariance());
-				builder.standardError(fitnessVariance.getStandardError());
+				builder.ageMean(age.getMean());
+				builder.ageVariance(age.getVariance());
+				builder.standardError(fitness.getStandardError());
 			}
 
 			return builder;

@@ -23,11 +23,22 @@
 package org.jenetics.util;
 
 /**
+ * Abstract implementation of the {@link Accumulator} interface which defines a
+ * {@code samples} property which is incremented by the {@link #accumulate(Object)}
+ * method.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class AbstractAccumulator<T> implements Accumulator<T> {
+public abstract class AbstractAccumulator<T> 
+	implements 
+		Accumulator<T>,
+		Cloneable
+{
 
+	/**
+	 * The number of accumulated samples.
+	 */
 	protected long _samples = 0;
 	
 	protected AbstractAccumulator() {
@@ -45,6 +56,41 @@ public abstract class AbstractAccumulator<T> implements Accumulator<T> {
 	@Override
 	public void accumulate(final T value) {
 		++_samples;
+	}
+	
+	@Override
+	public int hashCode() {
+		return (int)_samples*37 + 17;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final AbstractAccumulator<?> accumulator = (AbstractAccumulator<?>)obj;
+		return _samples == accumulator._samples;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format(
+				"%s[samples=%d]", getClass().getName(), _samples
+			);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public AbstractAccumulator<T> clone() {
+		try {
+			return (AbstractAccumulator<T>)super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError(e);
+		}
 	}
 	
 }

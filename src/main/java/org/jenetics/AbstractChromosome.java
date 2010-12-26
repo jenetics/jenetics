@@ -46,9 +46,10 @@ import org.jenetics.util.Validator.Verify;
  * @version $Id$
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
-	implements Chromosome<G>, 
-				Realtime, 
-				RandomAccess
+	implements 
+		Chromosome<G>, 
+		Realtime, 
+		RandomAccess
 {
 	private static final long serialVersionUID = 1;
 
@@ -69,7 +70,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * 
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 * 		  one.
+	 *         one.
 	 */
 	protected AbstractChromosome(final int length) {
 		if (length < 1) {
@@ -145,7 +146,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * @return the index of the searched gene, or -1 if the given gene was not 
 	 * 		  found.
 	 */
-	protected int indexOf(final G gene) {
+	protected int indexOf(final Object gene) {
 		return _genes.indexOf(gene);
 	}
 	

@@ -141,8 +141,7 @@ public class Float64Chromosome extends NumberChromosome<Float64Gene>
 		if (obj == this) {
 			return true;
 		}
-		return obj instanceof Float64Chromosome && 
-					super.equals(obj);
+		return obj instanceof Float64Chromosome && super.equals(obj);
 	}
 	
 	/* *************************************************************************

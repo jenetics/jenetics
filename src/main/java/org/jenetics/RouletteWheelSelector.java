@@ -31,7 +31,7 @@ import org.jenetics.util.ArrayUtils;
 
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
- *          Roulette Wheel Selection
+ *          Wikipedia: Roulette wheel selection
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -63,7 +63,7 @@ public class RouletteWheelSelector<
 		}
 		
 		final double worst = ArrayUtils.min(probabilities);
-		double sum = ArrayUtils.sum(probabilities) - worst*population.size();
+		final double sum = ArrayUtils.sum(probabilities) - worst*population.size();
 		
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {

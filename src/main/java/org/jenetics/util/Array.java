@@ -69,8 +69,13 @@ import java.util.RandomAccess;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Array<T> implements 
-	Iterable<T>, Copyable<Array<T>>, Cloneable, RandomAccess, Serializable 
+public class Array<T> 
+	implements 
+		Iterable<T>, 
+		Copyable<Array<T>>, 
+		Cloneable, 
+		RandomAccess, 
+		Serializable 
 {
 	private static final long serialVersionUID = 1L;
 	

@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import java.util.Arrays;
+import java.util.Iterator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -33,44 +33,175 @@ import org.testng.annotations.Test;
  */
 public class AccumulatorsTest {
 	
-	@Test
-	public void min() {
-		final Integer[] array = new Integer[20];
-		for (int i = 0; i < array.length; ++i) {
-			array[i] = i;
-		}
-		ArrayUtils.shuffle(array);
+	static final class IntegerIterator implements Iterator<Integer> {
+		private final int _length;
+		private int _pos = 0;
 		
-		final Accumulators.Min<Integer> min = new Accumulators.Min<Integer>();
-		Accumulators.accumulate(Arrays.asList(array), min);
-		Assert.assertEquals(min.getMin(), new Integer(0));
+		IntegerIterator(final int length) {
+			_length = length;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return _pos < _length;
+		}
+
+		@Override
+		public Integer next() {
+			return _pos++;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+	}
+	
+	static final class IntegerIterable implements Iterable<Integer> {
+		private final int _length;
+		
+		IntegerIterable(final int length) {
+			_length = length;
+		}
+		
+		@Override
+		public Iterator<Integer> iterator() {
+			return new IntegerIterator(_length);
+		}
+		
 	}
 	
 	@Test
-	public void max() {
-		final Integer[] array = new Integer[20];
-		for (int i = 0; i < array.length; ++i) {
-			array[i] = i;
+	public void callSpeed() {
+		final Accumulator<Integer> accumulator = new AbstractAccumulator<Integer>() {};
+		Timer timer = new Timer();
+		timer.start();
+		for (long i = 0, n = 100000000L; i < n; ++i) {
+			accumulator.accumulate(null);
 		}
-		ArrayUtils.shuffle(array);
+		timer.stop();
+		System.out.println(accumulator);
+		System.out.println(timer);
+	}	
+	
+
+	
+	@Test
+	public void accumulate1() {
+		final int SAMPLES = 1000;
+		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
+		Accumulators.accumulate(new IntegerIterator(SAMPLES), accumulator);
 		
-		final Accumulators.Max<Integer> max = new Accumulators.Max<Integer>();
-		Accumulators.accumulate(Arrays.asList(array), max);
-		Assert.assertEquals(max.getMax(), new Integer(19));
+		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 	}
 	
 	@Test
-	public void minMax() {
-		final Integer[] array = new Integer[20];
-		for (int i = 0; i < array.length; ++i) {
-			array[i] = i;
-		}
-		ArrayUtils.shuffle(array);
+	public void accumulate2() {
+		final int SAMPLES = 1000;
+		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
+		Accumulators.accumulate(new IntegerIterable(SAMPLES), accumulator);
 		
-		final Accumulators.MinMax<Integer> minMax = new Accumulators.MinMax<Integer>();
-		Accumulators.accumulate(Arrays.asList(array), minMax);
-		Assert.assertEquals(minMax.getMin(), new Integer(0));
-		Assert.assertEquals(minMax.getMax(), new Integer(19));
+		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
+	}
+	
+	@Test
+	public void accumulate3() {
+		final int SAMPLES = 1000;
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		
+		Accumulators.accumulate(
+				new IntegerIterable(SAMPLES), 
+				accumulator1,
+				accumulator2
+			);
+		
+		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
+	}
+	
+	@Test
+	public void accumulate4() {
+		final int SAMPLES = 1000;
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
+		
+		Accumulators.accumulate(
+				new IntegerIterable(SAMPLES), 
+				accumulator1,
+				accumulator2,
+				accumulator3
+			);
+		
+		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator3.getSamples(), SAMPLES);
+	}
+	
+	@Test
+	public void accumulate5() {
+		final int SAMPLES = 1000;
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
+		
+		Accumulators.accumulate(
+				new IntegerIterable(SAMPLES), 
+				accumulator1,
+				accumulator2,
+				accumulator3,
+				accumulator4
+			);
+		
+		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator3.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator4.getSamples(), SAMPLES);
+	}
+	
+	@Test
+	public void accumulate6() {
+		final int SAMPLES = 1000;
+		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
+		final AbstractAccumulator<Integer> accumulator5 = new AbstractAccumulator<Integer>(){};
+		
+		Accumulators.accumulate(
+				new IntegerIterable(SAMPLES), 
+				accumulator1,
+				accumulator2,
+				accumulator3,
+				accumulator4,
+				accumulator5
+			);
+		
+		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator3.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator4.getSamples(), SAMPLES);
+		Assert.assertEquals(accumulator5.getSamples(), SAMPLES);
+	}
+	
+	@Test
+	public void accumulateN() {
+		final int SAMPLES = 1000;
+		final Array<AbstractAccumulator<Integer>> accumulators = new Array<AbstractAccumulator<Integer>>(10);
+		for (int i = 0; i < accumulators.length(); ++i) {
+			accumulators.set(i, new AbstractAccumulator<Integer>(){});
+		}
+		
+		Accumulators.accumulate(
+				new IntegerIterable(SAMPLES), 
+				accumulators
+			);
+		
+		for (AbstractAccumulator<Integer> accumulator : accumulators) {
+			Assert.assertEquals(accumulator.getSamples(), SAMPLES);
+		}
 	}
 	
 //	@Test

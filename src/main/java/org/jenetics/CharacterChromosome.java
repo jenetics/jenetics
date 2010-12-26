@@ -46,9 +46,11 @@ import org.jenetics.util.Converter;
  * @version $Id$
  */
 public class CharacterChromosome 
-	extends AbstractChromosome<CharacterGene>
-	implements CharSequence, 
-				XMLSerializable
+	extends 
+		AbstractChromosome<CharacterGene>
+	implements 
+		CharSequence, 
+		XMLSerializable
 {	
 	private static final long serialVersionUID = 1L;
 
@@ -127,20 +129,10 @@ public class CharacterChromosome
 	}
 	
 	@Override
-	public Text toText() {
-		final TextBuilder out = TextBuilder.newInstance();
-		out.append("[");
-		for (CharacterGene gene : this) {
-			out.append(gene.toText());
-		}
-		out.append("]");
-		return out.toText();
-	}
-	
-	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += super.hashCode()*37;
+		hash += 37*super.hashCode() + 17;
+		hash += 37*_validCharacters.hashCode() + 17;
 		return hash;
 	}
 	
@@ -149,7 +141,30 @@ public class CharacterChromosome
 		if (obj == this) {
 			return true;
 		}
-		return obj instanceof CharacterChromosome && super.equals(obj);	
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final CharacterChromosome cc = (CharacterChromosome)obj;
+		return super.equals(obj) && _validCharacters.equals(cc._validCharacters);	
+	}
+	
+	@Override
+	public String toString() {
+		final StringBuilder out = new StringBuilder();
+		for (CharacterGene gene : this) {
+			out.append(gene.toString());
+		}
+		return out.toString();
+	}
+	
+	@Override
+	public Text toText() {
+		final TextBuilder out = TextBuilder.newInstance();
+		for (CharacterGene gene : this) {
+			out.append(gene.toText());
+		}
+		return out.toText();
 	}
 	
 	/* *************************************************************************

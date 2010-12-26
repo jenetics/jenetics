@@ -20,51 +20,36 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics.stat;
+package org.jenetics.util;
 
-import java.io.IOException;
+import java.util.Arrays;
 
-import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.AbstractAccumulatorCommonTests;
-import org.jenetics.util.TestDataIterator;
-import org.jenetics.util.TestDataIterator.Data;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class MeanTest extends AbstractAccumulatorCommonTests {
-	private final String DATA = "/org/jenetics/util/statistic-moments.txt";
+public class AccumulatorsMaxTest extends AbstractAccumulatorCommonTests {
 	
 	@Override
 	public AbstractAccumulator<Double> newAccumulator() {
-		return new Mean<Double>();
+		return new Accumulators.Max<Double>();
 	}
 	
 	@Test
-	public void mean() throws IOException {
-		final TestDataIterator it = new TestDataIterator(
-				getClass().getResourceAsStream(DATA), "\\s"
-			);
-		
-		try {
-			final Mean<Double> moment = new Mean<Double>();
-			while (it.hasNext()) {
-				final Data data = it.next();
-				moment.accumulate(data.number);
-				
-				Assert.assertEquals(moment.getMean(), data.mean);
-			}
-		} finally {
-			it.close();
+	public void max() {
+		final Integer[] array = new Integer[20];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = i;
 		}
+		ArrayUtils.shuffle(array);
+		
+		final Accumulators.Max<Integer> max = new Accumulators.Max<Integer>();
+		Accumulators.accumulate(Arrays.asList(array), max);
+		Assert.assertEquals(max.getMax(), new Integer(19));
 	}
-
+	
 }
-
-
-
-
-

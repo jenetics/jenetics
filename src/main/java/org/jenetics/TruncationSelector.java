@@ -42,6 +42,9 @@ public final class TruncationSelector<
 	implements Selector<G, C>
 {
 
+	/**
+	 * Create a new TruncationSelector object.
+	 */
 	public TruncationSelector() {
 	}
 	
@@ -95,7 +98,7 @@ public final class TruncationSelector<
 	
 	@Override
 	public String toString() {
-		return String.format("%s", getClass().getSimpleName());
+		return getClass().getName();
 	}
 
 }

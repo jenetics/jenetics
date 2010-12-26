@@ -47,10 +47,11 @@ import javolution.xml.stream.XMLStreamException;
  * @version $Id$
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>> 
-	implements List<Phenotype<G, C>>, 
-				Copyable<Population<G, C>>,
-				RandomAccess, 
-				XMLSerializable
+	implements 
+		List<Phenotype<G, C>>, 
+		Copyable<Population<G, C>>,
+		RandomAccess, 
+		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 	

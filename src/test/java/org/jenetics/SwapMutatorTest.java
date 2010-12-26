@@ -64,7 +64,7 @@ public class SwapMutatorTest extends MutatorTestBase {
 			Assert.assertEquals(alterations, 0);
 		} else {
 			Assert.assertTrue(alterations >= diff/2, String.format("%d >= %d", alterations, diff/2));
-			Assert.assertTrue(alterations < 2*diff, String.format("%d < %d", alterations, 2*diff));
+			Assert.assertTrue(alterations <= 2*diff, String.format("%d < %d", alterations, 2*diff));
 			
 		}
 	}

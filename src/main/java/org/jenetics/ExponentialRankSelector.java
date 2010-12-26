@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.pow;
+import javolution.lang.Immutable;
 
 /**
  * <p>
@@ -51,11 +52,12 @@ import static java.lang.Math.pow;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ExponentialRankSelector<
+public final class ExponentialRankSelector<
 	G extends Gene<?, G>, 
 	C extends Comparable<? super C>
 > 
 	extends ProbabilitySelector<G, C>
+	implements Immutable
 {
 	
 	private final double _c;
@@ -122,8 +124,7 @@ public class ExponentialRankSelector<
 		}
 		
 		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
-		return super.equals(selector) && 
-				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
+		return super.equals(selector) && Double.compare(_c, selector._c) == 0;
 	}
 	
 	@Override

@@ -70,12 +70,34 @@ public class Variance<N extends Number> extends Mean<N> {
 			_mean = 0;
 			_m2 = 0;
 		}
-		++_samples;
 		
 		final double data = value.doubleValue();
 		final double delta = data - _mean;
-		_mean += delta/(double)_samples;
+		
+		_mean += delta/(double)(++_samples);
 		_m2 += delta*(data - _mean);
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 37;
+		hash += 37*super.hashCode() + 17;
+		hash += 31*Double.doubleToLongBits(_m2) + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final Variance<?> variance = (Variance<?>)obj;
+		return super.equals(obj) &&
+				Double.compare(_m2, variance._m2) == 0;
 	}
 	
 	@Override
@@ -89,4 +111,11 @@ public class Variance<N extends Number> extends Mean<N> {
 					getVariance()
 				);
 	}
+	
+	@Override
+	public Variance<N> clone() {
+		return (Variance<N>)super.clone();
+	}
+	
 }
+

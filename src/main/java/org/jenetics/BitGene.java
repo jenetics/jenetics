@@ -38,9 +38,10 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class BitGene 
-	implements Gene<Boolean, BitGene>, 
-				Comparable<BitGene>, 
-				XMLSerializable 
+	implements 
+		Gene<Boolean, BitGene>, 
+		Comparable<BitGene>, 
+		XMLSerializable 
 {
 	private static final long serialVersionUID = 1L;
 	

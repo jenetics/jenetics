@@ -38,11 +38,12 @@ import javolution.lang.Immutable;
  * @version $Id$
  */
 public final class CharSet 
-	implements CharSequence, 
-				Iterable<Character>,
-				Comparable<CharSet>,
-				Immutable, 
-				Serializable 
+	implements 
+		CharSequence, 
+		Iterable<Character>,
+		Comparable<CharSet>,
+		Immutable, 
+		Serializable 
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -241,7 +242,10 @@ public final class CharSet
 						);
 				}
 	
-				final String range = expand(pattern.charAt(i - 1), pattern.charAt(i + 1));
+				final String range = expand(
+						pattern.charAt(i - 1), 
+						pattern.charAt(i + 1)
+					);
 				out.append(range);
 	
 				++i;
