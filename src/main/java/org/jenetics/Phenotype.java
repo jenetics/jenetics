@@ -50,12 +50,13 @@ import org.jenetics.util.Verifiable;
  * @version $Id$
  */
 public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>> 
-	implements Comparable<Phenotype<G, C>>, 
-				Immutable, 
-				Verifiable, 
-				XMLSerializable, 
-				Realtime, 
-				Runnable
+	implements 
+		Comparable<Phenotype<G, C>>, 
+		Immutable, 
+		Verifiable, 
+		XMLSerializable, 
+		Realtime, 
+		Runnable
 {
 	private static final long serialVersionUID = 1L;
 	

@@ -283,8 +283,37 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	}
 	
 	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*super.hashCode();
+		hash += 31*Arrays.hashCode(_separators) + 17;
+		hash += 31*Arrays.hashCode(_histogram) + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final Histogram<?> histogram = (Histogram<?>)obj;
+		return super.equals(obj) &&
+				Arrays.equals(_separators, histogram._separators) &&
+				Arrays.equals(_histogram, histogram._histogram);
+	}
+	
+	@Override
 	public String toString() {
 		return Arrays.toString(getHistogram());
+	}
+	
+	@Override
+	public Histogram<C> clone() {
+		return (Histogram<C>)super.clone();
 	}
 
 	

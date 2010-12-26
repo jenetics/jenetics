@@ -24,6 +24,8 @@ package org.jenetics.stat;
 
 import java.io.IOException;
 
+import org.jenetics.util.AbstractAccumulator;
+import org.jenetics.util.AbstractAccumulatorCommonTests;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;
 import org.testng.Assert;
@@ -33,9 +35,14 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class VarianceTest {
+public class VarianceTest extends AbstractAccumulatorCommonTests {
 	
 	private final String DATA = "/org/jenetics/util/statistic-moments.txt";	
+
+	@Override
+	public AbstractAccumulator<Double> newAccumulator() {
+		return new Variance<Double>();
+	}
 	
 	@Test
 	public void variance() throws IOException {
@@ -56,4 +63,5 @@ public class VarianceTest {
 			it.close();
 		}
 	}
+
 }

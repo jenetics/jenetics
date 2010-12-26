@@ -43,10 +43,11 @@ import org.jenetics.util.Validator;
  * @version $Id$
  */
 public class EnumGene<E extends Enum<E>> 
-	implements Gene<E, EnumGene<E>>, 
-				Mean<EnumGene<E>>, 
-				Realtime, 
-				XMLSerializable
+	implements 
+		Gene<E, EnumGene<E>>, 
+		Mean<EnumGene<E>>, 
+		Realtime, 
+		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 

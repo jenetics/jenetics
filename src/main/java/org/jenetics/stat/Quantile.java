@@ -238,10 +238,47 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 	}
 
 	@Override
+	public int hashCode() {
+		int hash = 37;
+		hash += 17*super.hashCode() + 37;
+		hash += 17*Double.doubleToLongBits(_quantile) + 37;
+		hash += 17*Arrays.hashCode(_dn) + 37;
+		hash += 17*Arrays.hashCode(_n) + 37;
+		hash += 17*Arrays.hashCode(_nn) + 37;
+		hash += 17*Arrays.hashCode(_q) + 37;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final Quantile<?> quantile = (Quantile<?>)obj;
+		return super.equals(obj) &&
+				Double.compare(_quantile, quantile._quantile) == 0 &&
+				Arrays.equals(_dn, quantile._dn) &&
+				Arrays.equals(_n, quantile._n) &&
+				Arrays.equals(_nn, quantile._nn) &&
+				Arrays.equals(_q, quantile._q);
+	}
+	
+	@Override
 	public String toString() {
 		return String.format(
 				"%s[samples=%d, qantile=%f]",
 				getClass().getSimpleName(), getSamples(), getQuantile()
 			);
 	}
+	
+	@Override
+	public Quantile<N> clone() {
+		return (Quantile<N>)super.clone();
+	}
 }
+
+

@@ -234,7 +234,7 @@ public final class Validator {
 	public static double checkProbability(final double p) {
 		if (p < 0.0 || p > 1.0) {
 			throw new IllegalArgumentException(String.format(
-					"The given probability is not in the range [0, 1]: %s", p
+					"The given probability is not in the range [0, 1]: %f", p
 				));
 		}
 		return p;

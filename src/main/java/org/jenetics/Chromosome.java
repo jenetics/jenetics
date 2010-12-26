@@ -40,11 +40,12 @@ import javolution.lang.Immutable;
  * @version $Id$
  */
 public interface Chromosome<T extends Gene<?, T>> 
-	extends Verifiable, 
-			Iterable<T>, 
-			Immutable, 
-			Factory<Chromosome<T>>, 
-			Serializable
+	extends 
+		Verifiable, 
+		Iterable<T>, 
+		Immutable, 
+		Factory<Chromosome<T>>, 
+		Serializable
 { 
 	
 	/**

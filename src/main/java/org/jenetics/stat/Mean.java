@@ -78,9 +78,29 @@ public class Mean<N extends Number> extends AdaptableAccumulator<N> {
 		if (_samples == 0) {
 			_mean = 0;
 		}
-		++_samples;
 		
-		_mean += (value.doubleValue() - _mean)/(double)_samples;
+		_mean += (value.doubleValue() - _mean)/(double)(++_samples);
+	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 37*super.hashCode() + 17;
+		hash += 37*Double.doubleToLongBits(_mean) + 17;
+		return hash;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		final Mean<?> mean = (Mean<?>)obj;
+		return super.equals(obj) && Double.compare(_mean, mean._mean) == 0;
 	}
 	
 	@Override
@@ -93,4 +113,10 @@ public class Mean<N extends Number> extends AdaptableAccumulator<N> {
 					getStandardError()
 				);
 	}
+	
+	@Override
+	public Mean<N> clone() {
+		return (Mean<N>)super.clone();
+	}
+	
 }

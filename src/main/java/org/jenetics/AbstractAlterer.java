@@ -93,8 +93,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 		}
 		
 		final AbstractAlterer<?> alterer = (AbstractAlterer<?>)obj;
-		return Double.doubleToLongBits(_probability) == 
-				Double.doubleToLongBits(alterer._probability);
+		return Double.compare(_probability, alterer._probability) == 0; 
 	}
 }
 

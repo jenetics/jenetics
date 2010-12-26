@@ -44,10 +44,11 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class CharacterGene 
-	implements Gene<Character, CharacterGene>, 
-				Comparable<CharacterGene>, 
-				Realtime, 
-				XMLSerializable 
+	implements 
+		Gene<Character, CharacterGene>, 
+		Comparable<CharacterGene>, 
+		Realtime, 
+		XMLSerializable 
 {
 	private static final long serialVersionUID = 1L;
 	

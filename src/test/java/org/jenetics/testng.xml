@@ -222,6 +222,9 @@
 	<test name="org.jenetics.util.AccumulatorsTest">
 		<classes>
 			<class name="org.jenetics.util.AccumulatorsTest" />
+			<class name="org.jenetics.util.AccumulatorsMaxTest" />
+			<class name="org.jenetics.util.AccumulatorsMinMaxTest" />
+			<class name="org.jenetics.util.AccumulatorsMinTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.Array">

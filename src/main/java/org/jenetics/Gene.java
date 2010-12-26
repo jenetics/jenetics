@@ -40,7 +40,11 @@ import javolution.lang.ValueType;
  * @version $Id$
  */
 public interface Gene<A, G extends Gene<A, G>> 
-	extends Factory<G>, Serializable, ValueType, Verifiable 
+	extends 
+		Factory<G>, 
+		Serializable, 
+		ValueType, 
+		Verifiable 
 {
 	
 	/**

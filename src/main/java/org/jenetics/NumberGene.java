@@ -46,9 +46,10 @@ public abstract class NumberGene<
 	G extends NumberGene<N, G>
 > 
 	extends Number<G> 
-	implements Gene<N, G>, 
-				Mean<G>, 
-				XMLSerializable
+	implements 
+		Gene<N, G>, 
+		Mean<G>, 
+		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 

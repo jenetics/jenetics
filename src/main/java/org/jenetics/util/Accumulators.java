@@ -28,6 +28,9 @@ import javolution.context.ConcurrentContext;
 
 
 /**
+ * Collection of some general purpose Accumulators and some static helper classes
+ * for accumulating.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -43,14 +46,34 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Min<C extends Comparable<? super C>> 
+	public static final class Min<C extends Comparable<? super C>> 
 		extends AdaptableAccumulator<C> 
 	{
 		private C _min;
 		
+		/**
+		 * Create a new Min accumulator.
+		 */
 		public Min() {
 		}
 		
+		/**
+		 * Copy constructor.
+		 * 
+		 * @param min the accumulator to copy.
+		 * @throws NullPointerException if {@code min} is {@code null}.
+		 */
+		public Min(final Min<C> min) {
+			Validator.nonNull(min, "Min");
+			_samples = min._samples;
+			_min = min._min;
+		}
+		
+		/**
+		 * Return the min value, accumulated so far.
+		 * 
+		 * @return the min value, accumulated so far.
+		 */
 		public C getMin() {
 			return _min;
 		}
@@ -72,11 +95,38 @@ public final class Accumulators {
 		}
 		
 		@Override
+		public int hashCode() {
+			int hash = 17;
+			hash += 37*super.hashCode() + 17;
+			hash += 37*(_min != null ? _min.hashCode() : 0) + 17; 
+			return hash;
+		}
+		
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if (obj == null || obj.getClass() != getClass()) {
+				return false;
+			}
+			
+			final Min<?> min = (Min<?>)obj;
+			return super.equals(obj) && 
+					(_min != null ? _min.equals(min._min) : min._min == null); 
+		}
+		
+		@Override
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, min=%s]", 
 					getClass().getSimpleName(), getSamples(), getMin()
 				);
+		}
+		
+		@Override
+		public Min<C> clone() {
+			return (Min<C>)super.clone();
 		}
 	}
 	
@@ -87,14 +137,34 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Max<C extends Comparable<? super C>> 
+	public static final class Max<C extends Comparable<? super C>> 
 		extends AdaptableAccumulator<C> 
 	{
 		private C _max;
 		
+		/**
+		 * Create a new Max accumulator.
+		 */
 		public Max() {
 		}
 		
+		/**
+		 * Copy constructor.
+		 * 
+		 * @param max the accumulator to copy.
+		 * @throws NullPointerException if {@code max} is {@code null}.
+		 */
+		public Max(final Max<C> max) {
+			Validator.nonNull(max, "Max");
+			_samples = max._samples;
+			_max = max._max;
+		}
+		
+		/**
+		 * Return the max value, accumulated so far.
+		 * 
+		 * @return the max value, accumulated so far.
+		 */
 		public C getMax() {
 			return _max;
 		}
@@ -116,11 +186,38 @@ public final class Accumulators {
 		}
 		
 		@Override
+		public int hashCode() {
+			int hash = 17;
+			hash += 37*super.hashCode() + 17;
+			hash += 37*(_max != null ? _max.hashCode() : 0) + 17; 
+			return hash;
+		}
+		
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if (obj == null || obj.getClass() != getClass()) {
+				return false;
+			}
+			
+			final Max<?> max = (Max<?>)obj;
+			return super.equals(obj) && 
+					(_max != null ? _max.equals(max._max) : max._max == null); 
+		}
+		
+		@Override
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, max=%s]", 
 					getClass().getSimpleName(), getSamples(), getMax()
 				);
+		}
+		
+		@Override
+		public Max<C> clone() {
+			return (Max<C>)super.clone();
 		}
 	}
 	
@@ -131,19 +228,45 @@ public final class Accumulators {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class MinMax<C extends Comparable<? super C>> 
+	public static final class MinMax<C extends Comparable<? super C>> 
 		extends AdaptableAccumulator<C> 
 	{
 		private C _min;
 		private C _max;
 		
+		/**
+		 * Create a new min-max accumulator.
+		 */
 		public MinMax() {
 		}
 		
+		/**
+		 * Copy constructor.
+		 * 
+		 * @param mm the accumulator to copy.
+		 * @throws NullPointerException if {@code mm} is {@code null}.
+		 */
+		public MinMax(final MinMax<C> mm) {
+			Validator.nonNull(mm, "MinMax");
+			_samples = mm._samples;
+			_min = mm._min;
+			_max = mm._max;
+		}
+		
+		/**
+		 * Return the min value, accumulated so far.
+		 * 
+		 * @return the min value, accumulated so far.
+		 */
 		public C getMin() {
 			return _min;
 		}
 		
+		/**
+		 * Return the max value, accumulated so far.
+		 * 
+		 * @return the max value, accumulated so far.
+		 */
 		public C getMax() {
 			return _max;
 		}
@@ -168,11 +291,40 @@ public final class Accumulators {
 		}
 		
 		@Override
+		public int hashCode() {
+			int hash = 17;
+			hash += 37*super.hashCode() + 17;
+			hash += 37*(_min != null ? _min.hashCode() : 0) + 17; 
+			hash += 37*(_max != null ? _max.hashCode() : 0) + 17; 
+			return hash;
+		}
+		
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if (obj == null || obj.getClass() != getClass()) {
+				return false;
+			}
+			
+			final MinMax<?> mm = (MinMax<?>)obj;
+			return super.equals(obj) && 
+					(_min != null ? _min.equals(mm._min) : mm._min == null) &&
+					(_max != null ? _max.equals(mm._max) : mm._max == null); 
+		}
+		
+		@Override
 		public String toString() {
 			return String.format(
 					"%s[samples=%d, min=%s, max=%s]", 
 					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);
+		}
+		
+		@Override
+		public MinMax<C> clone() {
+			return (MinMax<C>)super.clone();
 		}
 	}
 	
@@ -188,7 +340,7 @@ public final class Accumulators {
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values, 
-		final Array<Accumulator<? super T>> accumulators
+		final Array<? extends Accumulator<? super T>> accumulators
 	) {
 		switch (accumulators.length()) {
 		case 1:

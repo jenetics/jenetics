@@ -22,6 +22,8 @@
  */
 package org.jenetics.stat;
 
+import org.jenetics.util.AbstractAccumulator;
+import org.jenetics.util.AbstractAccumulatorCommonTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -29,8 +31,12 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class QuantileTest {
+public class QuantileTest extends AbstractAccumulatorCommonTests {
 
+	@Override
+	public AbstractAccumulator<Double> newAccumulator() {
+		return new Quantile<Double>(0.5);
+	}
 
 	@Test
 	public void quantile() {
@@ -41,4 +47,5 @@ public class QuantileTest {
 			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
 		}
 	}
+
 }

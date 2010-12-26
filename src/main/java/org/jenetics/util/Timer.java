@@ -41,7 +41,13 @@ import javolution.lang.Reusable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Timer implements Comparable<Timer>, Reusable, Serializable, Cloneable {
+public class Timer 
+	implements 
+		Comparable<Timer>, 
+		Reusable, 
+		Serializable, 
+		Cloneable 
+{
 	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_LABEL = "Timer";
 	

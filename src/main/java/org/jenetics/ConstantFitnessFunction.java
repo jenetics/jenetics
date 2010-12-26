@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
+import javolution.lang.Immutable;
 
 /**
  *  A {@link FitnessFunction} which always returns a given constant value.
@@ -36,7 +37,9 @@ public final class ConstantFitnessFunction<
 	G extends Gene<?, G>, 
 	C extends Comparable<? super C>
 > 
-	implements FitnessFunction<G, C> 
+	implements 
+		FitnessFunction<G, C>,
+		Immutable
 {
 	private static final long serialVersionUID = 1L;
 	

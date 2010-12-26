@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.io.Serializable;
 
+import javolution.lang.Immutable;
+
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -34,7 +36,12 @@ import org.jscience.mathematics.number.Float64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
+public final class ExponentialScaler 
+	implements 
+		FitnessScaler<Float64>, 
+		Serializable,
+		Immutable
+{
 	private static final long serialVersionUID = 1L;
 	
 	public static final ExponentialScaler SQR_SCALER = new ExponentialScaler(2);
@@ -101,7 +108,7 @@ public class ExponentialScaler implements FitnessScaler<Float64>, Serializable {
 		
 		final ExponentialScaler selector = (ExponentialScaler)obj;
 		return Double.doubleToLongBits(_a) == Double.doubleToLongBits(selector._a) &&
-		Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b) &&
+				Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b) &&
 				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
 	}
 	

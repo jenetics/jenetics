@@ -690,19 +690,19 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			if (!population.isEmpty()) {
 				// The statistics accumulators.
 				final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
-				final Variance<Integer> ageVariance = new Variance<Integer>();
+				final Variance<Integer> age = new Variance<Integer>();
 								
 				accumulate(
 						population, 
 						minMax, 
-						ageVariance.adapt(Phenotype.<G, C>Age(generation))
+						age.adapt(Phenotype.<G, C>Age(generation))
 					);
 				
 				builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 				builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
 				builder.samples(population.size());
-				builder.ageMean(ageVariance.getMean());
-				builder.ageVariance(ageVariance.getVariance());
+				builder.ageMean(age.getMean());
+				builder.ageVariance(age.getVariance());
 			}
 			
 			return builder;
