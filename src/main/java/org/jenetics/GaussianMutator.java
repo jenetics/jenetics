@@ -63,7 +63,6 @@ public class GaussianMutator<G extends NumberGene<?, G>> extends Mutator<G> {
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			genes.set(i, mutate(genes.get(i), random));
 			
-			++_mutations;
 			++alterations;
 		}
 		

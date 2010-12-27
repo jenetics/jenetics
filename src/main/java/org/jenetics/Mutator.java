@@ -66,12 +66,6 @@ import org.jenetics.util.IndexStream;
  * @version $Id$
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
-
-	/**
-	 * Holds the number of mutation performed by this mutation class.
-	 */
-	@Deprecated
-	protected int _mutations = 0;
 	
 	/**
 	 * Default constructor, with probability = 0.01.
@@ -91,18 +85,6 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	public Mutator(final double probability) {
 		super(probability);
-	}
-	
-	/**
-	 * Return the number of mutations performed by this mutation object.
-	 * 
-	 * @return the number of mutations performed so far.
-	 * 
-	 * @deprecated will be removed in next version.
-	 */
-	@Deprecated
-	public int getMutations() {
-		return _mutations;
 	}
  
 	/**
@@ -191,7 +173,6 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			genes.set(i, genes.get(i).newInstance());
-			++_mutations;
 			++alterations;
 		}
 		

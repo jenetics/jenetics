@@ -76,7 +76,6 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 				final int j = random.nextInt(genes.length());				
 				ArrayUtils.swap(genes, i, j);
 				
-				++_mutations;
 				++alterations;
 			}
 		}
