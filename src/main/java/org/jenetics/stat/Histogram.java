@@ -144,7 +144,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 			}
 		}
 		
-		assert (false): "This line will be never reached.";
+		assert (false): "This line will never be reached.";
 		return -1; 
 	}
 	
