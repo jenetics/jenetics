@@ -1,3 +1,5 @@
+- Remove deprecated field org.jenetics.Mutator._mutations.
+
 Jenetics-0.7.0.0
 - Change the signature of the org.jenetics.Statistics.Calculator.evaluate
   methods so that it returns a Statistics.Builder instead of a Statistics object.
