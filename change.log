@@ -1,3 +1,4 @@
+- Making the classes org.jenetics.Genotype and org.jenetics.Phenotype final.
 - Remove deprecated field org.jenetics.Mutator._mutations.
 
 Jenetics-0.7.0.0
