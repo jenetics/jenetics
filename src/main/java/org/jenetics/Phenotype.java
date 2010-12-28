@@ -49,7 +49,10 @@ import org.jenetics.util.Verifiable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>> 
+public final class Phenotype<
+	G extends Gene<?, G>, 
+	C extends Comparable<? super C>
+> 
 	implements 
 		Comparable<Phenotype<G, C>>, 
 		Immutable, 
@@ -71,7 +74,7 @@ public class Phenotype<G extends Gene<?, G>, C extends Comparable<? super C>>
 	private C _rawFitness = null;
 	private C _fitness = null;
 	
-	protected Phenotype() {
+	private Phenotype() {
 	}
 	
 	/**

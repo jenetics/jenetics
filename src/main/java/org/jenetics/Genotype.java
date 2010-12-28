@@ -45,7 +45,7 @@ import org.jenetics.util.Verifiable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Genotype<T extends Gene<?, T>> 
+public final class Genotype<T extends Gene<?, T>> 
 	implements 
 		Factory<Genotype<T>>,
 		Iterable<Chromosome<T>>, 
@@ -69,7 +69,7 @@ public class Genotype<T extends Gene<?, T>>
 	 * @param length the number of chromosomes of the genotype.
 	 * @param ngenes the overall number of genes of the genotype.
 	 */
-	protected Genotype(final int length, final int ngenes) {
+	private Genotype(final int length, final int ngenes) {
 		_chromosomes = new Array<Chromosome<T>>(length);
 		_ngenes = ngenes;
 	}
