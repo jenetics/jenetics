@@ -45,7 +45,8 @@ import org.jscience.mathematics.number.Integer64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosome extends AbstractChromosome<Integer64Gene> 
+public final class PermutationChromosome 
+	extends AbstractChromosome<Integer64Gene> 
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;

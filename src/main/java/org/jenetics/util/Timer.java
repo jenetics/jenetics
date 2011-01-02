@@ -41,7 +41,7 @@ import javolution.lang.Reusable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Timer 
+public final class Timer 
 	implements 
 		Comparable<Timer>, 
 		Reusable, 

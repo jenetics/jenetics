@@ -26,6 +26,8 @@ import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
 
+import javolution.lang.Immutable;
+
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -39,7 +41,9 @@ public final class MonteCarloSelector<
 	G extends Gene<?, G>, 
 	C extends Comparable<? super C>
 > 
-	implements Selector<G, C> 
+	implements 
+		Selector<G, C>,
+		Immutable
 {
 
 	public MonteCarloSelector() {	

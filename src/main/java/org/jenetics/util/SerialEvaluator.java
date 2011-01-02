@@ -27,10 +27,13 @@ import java.util.RandomAccess;
 
 
 /**
+ * Evaluator which evaluates the given tasks (Runables) sequentially in the
+ * main thread.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class SerialEvaluator implements Evaluator {
+public final class SerialEvaluator implements Evaluator {
 
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {

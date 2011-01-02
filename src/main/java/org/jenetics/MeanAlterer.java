@@ -24,6 +24,8 @@ package org.jenetics;
 
 import java.util.Random;
 
+import javolution.lang.Immutable;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
@@ -39,6 +41,7 @@ import org.jenetics.util.RandomRegistry;
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>> 
 	extends Recombination<G> 
+	implements Immutable
 {
 
 	public MeanAlterer() {

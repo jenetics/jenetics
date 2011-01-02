@@ -27,6 +27,8 @@ import static org.jenetics.util.BitUtils.ulpDistance;
 
 import java.util.Arrays;
 
+import javolution.lang.Immutable;
+
 import org.jenetics.util.ArrayUtils;
 
 /**
@@ -41,6 +43,7 @@ public class RouletteWheelSelector<
 	N extends Number & Comparable<? super N>
 > 
 	extends ProbabilitySelector<G, N>
+	implements Immutable
 {
 	
 	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 9);

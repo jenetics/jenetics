@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutorService;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ThreadedEvaluator implements Evaluator {
+public final class ThreadedEvaluator implements Evaluator {
 	private final int _parallelTasks;
 	private final ExecutorService _pool;
 	

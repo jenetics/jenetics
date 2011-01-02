@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import javolution.lang.Immutable;
+
 
 /**
  * <p>
@@ -60,6 +62,7 @@ public final class LinearRankSelector<
 	C extends Comparable<? super C>
 > 
 	extends ProbabilitySelector<G, C>
+	implements Immutable
 {
 	private final double _nminus;
 	private final double _nplus;
