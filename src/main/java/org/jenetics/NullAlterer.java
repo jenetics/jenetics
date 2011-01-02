@@ -22,13 +22,18 @@
  */
 package org.jenetics;
 
+import javolution.lang.Immutable;
+
 /**
  * This alterer does nothing.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class NullAlterer<G extends Gene<?, G>> extends AbstractAlterer<G> {
+public final class NullAlterer<G extends Gene<?, G>> 
+	extends AbstractAlterer<G>
+	implements Immutable
+{
 
 	public NullAlterer() {
 		super(0.0);

@@ -27,6 +27,8 @@ import static java.lang.Math.min;
 
 import java.util.Random;
 
+import javolution.lang.Immutable;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.RandomRegistry;
 
@@ -72,8 +74,9 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PartiallyMatchedCrossover<G extends Gene<?, G>> 
-	extends Crossover<G> 
+public final class PartiallyMatchedCrossover<G extends Gene<?, G>> 
+	extends Crossover<G>
+	implements Immutable
 {
 
 	public PartiallyMatchedCrossover(final double probability) {

@@ -22,12 +22,16 @@
  */
 package org.jenetics;
 
+import javolution.lang.Immutable;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public final class IdentityScaler<C extends Comparable<? super C>> 
-	implements FitnessScaler<C> 
+	implements 
+		FitnessScaler<C>,
+		Immutable
 {
 	private static final long serialVersionUID = 1L;
 

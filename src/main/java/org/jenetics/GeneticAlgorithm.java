@@ -74,7 +74,7 @@ import org.jenetics.util.Validator;
  * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
  * [code]
  *   final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
- *   IOUtils.readXML(Population.class, new FileInputStream("population.xml");
+ *       IOUtils.readXML(Population.class, new FileInputStream("population.xml");
  *   ga.setPopulation(population);
  *   //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
  *   ga.setup();
@@ -87,7 +87,8 @@ import org.jenetics.util.Validator;
  * {@link org.jenetics.util.Evaluator}.
  * [code]
  *   final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
- *   ga.setEvaluator(new ConcurrentEvaluator(numberOfThreads));
+ *   final Evaluator evaluator = new ConcurrentEvaluator(numberOfThreads);
+ *   EvaluatorRegistry.setEvaluator(evaluator);
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -40,7 +40,7 @@ import jsr166y.RecursiveAction;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ForkJoinEvaluator implements Evaluator {
+public final class ForkJoinEvaluator implements Evaluator {
 	public static final int DEFAULT_TASK_SIZE = 4;
 	
 	private final int _taskSize;
