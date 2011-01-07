@@ -23,7 +23,7 @@
 package org.jenetics.util;
 
 /**
- * Interface for accumulating values of a given type. Here a usage example:
+ * Interface for accumulating values of a given type. Here an usage example:
  * 
  * [code]
  * 	 final Accumulators.MinMax<Double> minMax = new Accumulators.MinMax<Double>();
