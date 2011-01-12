@@ -379,7 +379,7 @@ public final class Genotype<T extends Gene<?, T>>
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes"})
-	protected static final XMLFormat<Genotype> 
+	static final XMLFormat<Genotype> 
 	XML = new XMLFormat<Genotype>(Genotype.class) 
 	{
 		private static final String LENGTH = "length";
