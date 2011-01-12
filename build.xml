@@ -207,7 +207,7 @@
 			includenosourcepackages="true" 
 			docencoding="UTF-8" 
 			Encoding="UTF-8"
-			stylesheetfile="./src/site/stylesheet.css"
+			stylesheetfile="./doc/site/stylesheet.css"
 		>
 			<arg line="-charset UTF-8" />
 			<classpath refid="classpath" />
@@ -293,7 +293,7 @@
 			includenosourcepackages="true" 
 			docencoding="UTF-8" 
 			Encoding="UTF-8"
-			stylesheetfile="./src/site/stylesheet.css"
+			stylesheetfile="./doc/site/stylesheet.css"
 		>
 			<arg line="-charset UTF-8" />
 			<classpath refid="classpath" />
