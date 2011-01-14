@@ -39,12 +39,12 @@ import org.jscience.mathematics.number.Integer64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64Gene 
+public final class Integer64Gene 
 	extends NumberGene<Integer64, Integer64Gene> 
 {
 	private static final long serialVersionUID = 1L;
 	
-	protected Integer64Gene() {
+	Integer64Gene() {
 	}
 
 	public Integer64Gene divide(final Integer64Gene gene) {

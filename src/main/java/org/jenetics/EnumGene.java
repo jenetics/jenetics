@@ -42,7 +42,7 @@ import org.jenetics.util.Validator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class EnumGene<E extends Enum<E>> 
+public final class EnumGene<E extends Enum<E>> 
 	implements 
 		Gene<E, EnumGene<E>>, 
 		Mean<EnumGene<E>>, 
@@ -53,7 +53,7 @@ public class EnumGene<E extends Enum<E>>
 
 	private E _value;
 	
-	protected EnumGene() {
+	EnumGene() {
 	}
 	
 	@Override

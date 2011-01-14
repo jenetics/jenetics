@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitGene 
+public final class BitGene 
 	implements 
 		Gene<Boolean, BitGene>, 
 		Comparable<BitGene>, 
@@ -52,7 +52,7 @@ public class BitGene
 	
 	private final boolean _value;
 	
-	protected BitGene(final boolean value) {
+	BitGene(final boolean value) {
 		_value = value;
 	}
 

@@ -40,13 +40,13 @@ import org.jscience.mathematics.structure.GroupMultiplicative;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64Gene 
+public final class Float64Gene 
 	extends NumberGene<Float64, Float64Gene> 
 	implements GroupMultiplicative<Float64Gene> 
 {
 	private static final long serialVersionUID = 1L;	
 	
-	protected Float64Gene() {
+	Float64Gene() {
 	}
 
 	public Float64Gene divide(final Float64Gene gene) {
