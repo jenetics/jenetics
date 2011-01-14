@@ -1,3 +1,5 @@
+- Making all gene implementations final (BitGene, CharacterGene, EnumGene,
+  Float64Gene, Integer64Gene).
 - Making the classes org.jenetics.Genotype and org.jenetics.Phenotype final.
 - Remove deprecated field org.jenetics.Mutator._mutations.
 

@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterGene 
+public final class CharacterGene 
 	implements 
 		Gene<Character, CharacterGene>, 
 		Comparable<CharacterGene>, 
@@ -60,7 +60,7 @@ public class CharacterGene
 	private CharSet _validCharacters;
 	private Character _character;
 		
-	protected CharacterGene() {
+	CharacterGene() {
 	}
 		
 	@Override
