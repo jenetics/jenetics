@@ -401,12 +401,12 @@ public class GeneticAlgorithm<
 	/**
 	 * Evolve the GA as long the given {@link Predicate} returns {@code true}.
 	 * 
-	 * @param proceed the predicate which defines the termination condition.
+	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public void evolve(final Predicate<Statistics<G, C>> proceed) {
-		Validator.nonNull(proceed, "Termination condition");
-		while (proceed.evaluate(getStatistics())) {
+	public void evolve(final Predicate<? super Statistics<G, C>> until) {
+		Validator.nonNull(until, "Termination condition");
+		while (until.evaluate(getStatistics())) {
 			evolve();
 		}
 	}

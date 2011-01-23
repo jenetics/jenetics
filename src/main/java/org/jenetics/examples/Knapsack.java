@@ -118,7 +118,7 @@ public class Knapsack {
 	}
 	
 	public static void main(String[] argv) throws Exception {
-		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
+		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator(15));
 		
 		//Defining the fitness function and the genotype.
 		final KnappsackFunction ff = newFitnessFuntion(15, 100);
