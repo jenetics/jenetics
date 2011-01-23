@@ -37,6 +37,7 @@ import javolution.context.ConcurrentContext;
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
 import org.jenetics.util.Validator;
 
@@ -393,6 +394,19 @@ public class GeneticAlgorithm<
 	 */
 	public void evolve(final int generations) {
 		for (int i = 0; i < generations; ++i) {
+			evolve();
+		}
+	}
+	
+	/**
+	 * Evolve the GA as long the given {@link Predicate} returns {@code true}.
+	 * 
+	 * @param proceed the predicate which defines the termination condition.
+	 * @throws NullPointerException if the given predicate is {@code null}.
+	 */
+	public void evolve(final Predicate<Statistics<G, C>> proceed) {
+		Validator.nonNull(proceed, "Termination condition");
+		while (proceed.evaluate(getStatistics())) {
 			evolve();
 		}
 	}
