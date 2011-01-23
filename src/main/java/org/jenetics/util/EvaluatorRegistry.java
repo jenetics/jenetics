@@ -51,7 +51,7 @@ import javolution.context.LocalContext;
 public class EvaluatorRegistry {
 	
 	private static final LocalContext.Reference<Evaluator> EVALUATOR = 
-		new LocalContext.Reference<Evaluator>(new SerialEvaluator());
+		new LocalContext.Reference<Evaluator>(new ConcurrentEvaluator());
 	
 	
 	private EvaluatorRegistry() {

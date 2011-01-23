@@ -153,6 +153,23 @@ public class BitChromosomeTest {
         assertTrue(c1 != c2);
         assertEquals(c1.length(), c2.length());
     }
+    
+    @Test
+    public void newInstance() {
+    	final int length = 1000;
+    	BitChromosome c = BitChromosome.valueOf(length, 0.1);
+    	Assert.assertEquals(c.length(), length);
+    	
+    	c = c.newInstance();
+    	Assert.assertEquals(c.length(), length);
+    	
+    	int ones = 0;
+    	for (int i = 0; i < length; ++i) {
+    		if (c.getGene(i).booleanValue()) {
+    			++ones;
+    		}
+    	}
+    }
 
     @Test
     public void testEqualsObject() {
