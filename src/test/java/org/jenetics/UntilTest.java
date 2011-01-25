@@ -22,35 +22,30 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Predicate;
+import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
- * Some default GA termination strategies.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Until {
+public class UntilTest {
 
-	private Until() {
-		throw new AssertionError("Don't create an 'Until' instance.");
-	}
-	
-	static class Generation implements Predicate<Statistics<?, ?>> {
-		private final int _generation;
+	@Test
+	public void generation() {
+		final GeneticAlgorithm<Float64Gene, Float64> ga = TestUtils.GA();
+		ga.setup();
+		ga.evolve(Until.Generation(10));
+		Assert.assertEquals(ga.getGeneration(), 10);
 		
-		public Generation(final int generation) {
-			_generation = generation;
-		}
+		ga.evolve(5);
+		ga.evolve(Until.Generation(10));
+		Assert.assertEquals(ga.getGeneration(), 15);
 		
-		@Override 
-		public boolean evaluate(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation;
-		}		
-	}
-	
-	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
-		return new Generation(generation);
+		ga.evolve(6);
+		ga.evolve(Until.Generation(50));
+		Assert.assertEquals(ga.getGeneration(), 50);
 	}
 	
 }
