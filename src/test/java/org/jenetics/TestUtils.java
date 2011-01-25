@@ -183,6 +183,12 @@ class TestUtils {
 	 */
 	public static final FitnessFunction<Float64Gene, Float64> FF = new Continous();
 	
+	public static GeneticAlgorithm<Float64Gene, Float64> GA() {
+		return new GeneticAlgorithm<Float64Gene, Float64>(
+				Genotype.valueOf(new Float64Chromosome(0, 1)), FF
+			);
+	}
+	
 	
 	public static Phenotype<Float64Gene, Float64> newFloat64Phenotype(final double value) {
 		return Phenotype.valueOf(Genotype.valueOf(
