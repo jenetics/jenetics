@@ -24,6 +24,7 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.jenetics.stat.Histogram;
 import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -44,20 +45,25 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		}
 	}
 	
-	
-	@Test
-	public void probabilities() {
+	private static Population<Float64Gene, Float64> population(final int size) {
 		final FF ff = new FF();
 		
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(100);
-		for (int i = 0; i < 1000; ++i) {
+		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
+		for (int i = 0; i < size; ++i) {
 			population.add(Phenotype.valueOf(
-					Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(i, 0, 1000))),
+					Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(i, 0, size))),
 					ff, 
 					12
 				));
 		}
 		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
+		
+		return population;
+	}
+	
+	@Test
+	public void probabilities() {
+		final Population<Float64Gene, Float64> population = population(100);
 		
 		BoltzmannSelector<Float64Gene, Float64> selector = new BoltzmannSelector<Float64Gene, Float64>();
 		double[] probs = selector.probabilities(population, 23);
@@ -78,12 +84,32 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		Assert.assertEquals(probs.length, population.size());
 		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 		assertPositive(probs);
+	}
+	
+	@Test
+	public void select() {
+		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1000.0, 20);
+		final BoltzmannSelector<Float64Gene, Float64> 
+		selector = new BoltzmannSelector<Float64Gene, Float64>(2);
+		final Population<Float64Gene, Float64> population = population(1000);
 		
-//		for (int i = -10; i < 10; ++i) {
-//			selector = new BoltzmannSelector<Float64Gene, Float64>((double)i/11.0);
-//			System.out.println(java.util.Arrays.toString(selector.probabilities(population, 10)));
-//		}
-
+		for (int i = 0; i < 1000; ++i) {
+			final Population<Float64Gene, Float64> selected = selector.select(
+					population, 10, Optimize.MAXIMUM
+				);
+			for (Phenotype<Float64Gene, Float64> pt : selected) {
+				histogram.accumulate(pt.getFitness().doubleValue());
+			}
+		}
+		
+		System.out.println(histogram);
 	}
 	
 }
+
+
+
+
+
+
+

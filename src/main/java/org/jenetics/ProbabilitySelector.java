@@ -74,7 +74,7 @@ public abstract class ProbabilitySelector<
 			
 			assert (population.size() == probabilities.length) : 
 				"Population size and probability length are not equal.";
-			assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 			
 			final Random random = RandomRegistry.getRandom();
 			for (int i = 0; i < count; ++i) {
@@ -147,7 +147,7 @@ public abstract class ProbabilitySelector<
 	 * @return {@code true} if the sum of the probabilities are within the error
 	 * 		  range, {@code false} otherwise.
 	 */
-	protected static boolean check(final double[] probabilities) {
+	protected static boolean sum2one(final double[] probabilities) {
 		final double sum = sum(probabilities);
 		boolean check = abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 		

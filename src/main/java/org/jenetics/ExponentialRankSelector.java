@@ -102,7 +102,7 @@ public final class ExponentialRankSelector<
 			probabilities[i] = ((_c - 1)*pow(_c, i))/b;
 		}
 	
-		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 	
