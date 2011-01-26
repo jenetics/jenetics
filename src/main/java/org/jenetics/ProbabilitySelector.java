@@ -168,7 +168,7 @@ public abstract class ProbabilitySelector<
 	 * @param random the random number generator.
 	 * @return the random index.
 	 */
-	static int nextIndex(final double[] probabilities, final Random random) {
+	protected static int nextIndex(final double[] probabilities, final Random random) {
 		final double prop = random.nextDouble();
 		
 		int j = 0;
