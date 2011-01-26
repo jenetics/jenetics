@@ -141,7 +141,9 @@ public final class EnumGene<E extends Enum<E>>
 	
 
 	@SuppressWarnings({"rawtypes" })
-	private static final ObjectFactory<EnumGene> FACTORY = new ObjectFactory<EnumGene>() {
+	private static final ObjectFactory<EnumGene> FACTORY = 
+		new ObjectFactory<EnumGene>() 
+	{
 		@Override protected EnumGene<?> create() {
 			return new EnumGene();
 		}
