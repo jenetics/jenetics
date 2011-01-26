@@ -61,6 +61,12 @@ public final class EnumGene<E extends Enum<E>>
 		return _value;
 	}
 	
+	/**
+	 * Return the gene which lies between {@code this} and {@code that}, 
+	 * according to it's ordinal number ({@link Enum#ordinal()}).
+	 * 
+	 * @return the gene which lies between {@code this} and {@code that}.
+	 */
 	@Override
 	public EnumGene<E> mean(final EnumGene<E> that) {
 		Validator.nonNull(that, "Enum value");
