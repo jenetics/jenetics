@@ -75,9 +75,9 @@ public final class BoltzmannSelector<
 	}
 	
 	/**
-	 * Create a new BolzmanSelector with the given <i>b</i> value. High absolute
-	 * values of <i>b</i> can create numerical overflows while calculating the 
-	 * selection probabilities.
+	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High 
+	 * absolute values of <i>b</i> can create numerical overflows while 
+	 * calculating the selection probabilities.</b>
 	 * 
 	 * @param b the <i>b</i> value of this BolzmanSelector
 	 */
@@ -86,7 +86,10 @@ public final class BoltzmannSelector<
 	}
 
 	@Override
-	protected double[] probabilities(final Population<G, N> population, final int count) {
+	protected double[] probabilities(
+		final Population<G, N> population, 
+		final int count
+	) {
 		assert (population != null) : "Population must not be null. ";
 		assert (count >= 0) : "Population to select must be greater than zero. ";
 		
@@ -105,7 +108,7 @@ public final class BoltzmannSelector<
 		
 		ArrayUtils.normalize(probabilities);
 		
-		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 	

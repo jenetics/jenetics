@@ -76,7 +76,7 @@ public class RouletteWheelSelector<
 			Arrays.fill(probabilities, 1.0/population.size());
 		}
 		
-		assert (check(probabilities)) : "Probabilities doesn't sum to one.";
+		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 	
