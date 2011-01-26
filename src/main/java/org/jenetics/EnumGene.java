@@ -82,6 +82,9 @@ public final class EnumGene<E extends Enum<E>>
 		}
 	}
 	
+	/**
+	 * @return always {@code true}.
+	 */
 	@Override
 	public boolean isValid() {
 		return true;
