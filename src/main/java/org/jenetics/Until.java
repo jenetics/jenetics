@@ -53,4 +53,10 @@ public class Until {
 		return new Generation(generation);
 	}
 	
+//	public static <G extends Gene<?, G>, C extends Comparable<? super C>> 
+//	Predicate<Statistics<G, C>> valueOf()
+//	{
+//		return null;
+//	}
+	
 }
