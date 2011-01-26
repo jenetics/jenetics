@@ -35,6 +35,7 @@ import org.jenetics.util.Evaluator;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinEvaluator;
+import org.jenetics.util.Predicate;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.SerialEvaluator;
 import org.jenetics.util.ThreadedEvaluator;
@@ -122,6 +123,24 @@ public class GeneticAlgorithmTest {
 			LocalContext.exit();
 		}
 		
+	}
+	
+	private static class Base implements Comparable<Base> {
+		@Override public int compareTo(Base o) {
+			return 0;
+		}
+	}
+	
+	public static class Derived extends Base {
+	}
+	
+	@SuppressWarnings("null")
+	public void evolve() {
+		Predicate<Statistics<? extends Float64Gene, ? extends Base>> until = null;
+		GeneticAlgorithm<Float64Gene, Derived> ga = null;
+		
+		ga.evolve(until);
+		ga.evolve(Until.Generation(1));
 	}
 	
 	@Test(invocationCount = 10)
