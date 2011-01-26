@@ -28,8 +28,6 @@ import javolution.lang.Immutable;
 import org.jenetics.util.ArrayUtils;
 
 /**
- * TODO: change formular gifs.
- * 
  * <p>
  * In this <code>Selector</code>, the probability for selection is defined as.
  * </p>
