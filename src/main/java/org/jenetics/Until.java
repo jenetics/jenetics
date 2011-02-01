@@ -49,6 +49,13 @@ public class Until {
 		}		
 	}
 	
+	/**
+	 * Return a <i>termination predicate</i> which returns {@code false} if the
+	 * current GA generation is {@code >=} as the given {@code generation}.
+	 * ant 
+	 * @param generation the maximal GA generation.
+	 * @return the termination predicate.
+	 */
 	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
 		return new Generation(generation);
 	}
