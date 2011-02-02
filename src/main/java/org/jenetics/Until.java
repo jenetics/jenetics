@@ -54,12 +54,13 @@ public class Until {
 			
 			if (_fitness == null) {
 				_fitness = statistics.getBestFitness();
+				_stableGenerations = 1;
 			} else {
 				if (_fitness.compareTo(statistics.getBestFitness()) >= 0) {
-					proceed = ++_stableGenerations >= _genenerations;
+					proceed = ++_stableGenerations <= _genenerations;
 				} else {
 					_fitness = statistics.getBestFitness();
-					_stableGenerations = 0;
+					_stableGenerations = 1;
 				}
 			}
 			

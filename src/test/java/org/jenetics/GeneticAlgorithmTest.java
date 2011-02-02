@@ -141,6 +141,9 @@ public class GeneticAlgorithmTest {
 		
 		ga.evolve(until);
 		ga.evolve(Until.Generation(1));
+		
+		GeneticAlgorithm<Float64Gene, Float64> ga2 = null;
+		ga2.evolve(Until.<Float64>SteadyFitness(10));
 	}
 	
 	@Test(invocationCount = 10)
