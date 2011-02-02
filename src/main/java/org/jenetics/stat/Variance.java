@@ -24,8 +24,11 @@ package org.jenetics.stat;
 
 
 /**
- * <p>Calculate the variance from a finite sample of <i>n</i> observations:</p>
- * <p><img src="doc-files/variance.gif" alt="Variance" /></p>
+ * <p>Calculate the variance from a finite sample of <i>N</i> observations.</p>
+ * <p><img src="doc-files/variance.gif" 
+ *         alt="s^2_{N-1}=\frac{1}{N-1}\sum_{i=1}^{N}\left ( x_i - \bar{x} \right )^2" 
+ *    />
+ * </p>
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" >
  * 		  Wikipedia: Algorithms for calculating variance</a>
