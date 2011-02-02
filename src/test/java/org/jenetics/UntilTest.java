@@ -22,6 +22,10 @@
  */
 package org.jenetics;
 
+import java.util.Collections;
+import java.util.LinkedList;
+
+import org.jenetics.util.Predicate;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -46,6 +50,59 @@ public class UntilTest {
 		ga.evolve(6);
 		ga.evolve(Until.Generation(50));
 		Assert.assertEquals(ga.getGeneration(), 50);
+	}
+	
+	static final FitnessFunction<Float64Gene, Float64> FF = 
+		new FitnessFunction<Float64Gene, Float64>() 
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+			final double value = genotype.getChromosome().getGene().doubleValue();
+			return Float64.valueOf(Math.sin(value));
+		}
+	};
+	
+	static GeneticAlgorithm<Float64Gene, Float64> GA() {
+		return new GeneticAlgorithm<Float64Gene, Float64>(
+				Genotype.valueOf(new Float64Chromosome(0, 10)), FF
+			);
+	}
+	
+	@Test
+	public void steadyState() {
+		final int steadyGenerations = 11;
+		final LinkedList<Float64> values = new LinkedList<Float64>();
+		values.addFirst(Float64.valueOf(-100));
+		
+		final GeneticAlgorithm<Float64Gene, Float64> ga = GA();
+		ga.setPopulationSize(20);
+		ga.addAlterer(new Mutator<Float64Gene>(0.99));
+		ga.setup();
+		values.addFirst(ga.getBestPhenotype().getFitness());
+		
+		final Predicate<Statistics<?, Float64>> until = 
+			Until.<Float64>SteadyFitness(steadyGenerations);
+		
+		while (until.evaluate(ga.getStatistics())) {
+			ga.evolve();
+			values.addFirst(ga.getBestPhenotype().getFitness());
+			
+			if (values.size() > steadyGenerations) {
+				values.removeLast();
+			}			
+		}
+		
+		Assert.assertEquals(values.size(), steadyGenerations);
+		Assert.assertTrue(ga.getGeneration() > steadyGenerations);
+		
+		Collections.sort(values);
+		Float64 value = values.removeFirst();
+		for (Float64 f : values) {
+			Assert.assertEquals(f, value);
+		}
+		
 	}
 	
 	
