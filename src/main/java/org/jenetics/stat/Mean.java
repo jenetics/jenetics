@@ -25,8 +25,12 @@ package org.jenetics.stat;
 import org.jenetics.util.AdaptableAccumulator;
 
 /**
- * <p>Calculate  the Arithmetic mean:</p>
- * <p><img src="doc-files/arithmetic-mean.gif" alt="Arithmentic Mean" /></p>
+ * <p>Calculate  the Arithmetic mean from a finite sample of <i>N</i>
+ * observations.</p>
+ * <p><img src="doc-files/arithmetic-mean.gif" 
+ *         alt="\bar{x}=\frac{1}{N}\sum_{i=1}^{N}x_i" 
+ *    />
+ * </p>
  * 
  * @see <a href="http://mathworld.wolfram.com/ArithmeticMean.html">Wolfram MathWorld: Artithmetic Mean</a>
  * @see <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">Wikipedia: Arithmetic Mean</a>
