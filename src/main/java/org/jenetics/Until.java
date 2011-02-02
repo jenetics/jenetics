@@ -36,6 +36,43 @@ public class Until {
 		throw new AssertionError("Don't create an 'Until' instance.");
 	}
 	
+	static class SteadyFitness<C extends Comparable<? super C>> 
+		implements Predicate<Statistics<?, C>> 
+	{
+		private final int _genenerations;
+		
+		private C _fitness;
+		private int _stableGenerations = 0;
+		
+		public SteadyFitness(final int generations) {
+			_genenerations = generations;
+		}
+		
+		@Override
+		public boolean evaluate(final Statistics<?, C> statistics) {
+			boolean proceed = true;
+			
+			if (_fitness == null) {
+				_fitness = statistics.getBestFitness();
+			} else {
+				if (_fitness.compareTo(statistics.getBestFitness()) >= 0) {
+					proceed = ++_stableGenerations >= _genenerations;
+				} else {
+					_fitness = statistics.getBestFitness();
+					_stableGenerations = 0;
+				}
+			}
+			
+			return proceed;
+		}
+		
+	}
+	
+	public static <C extends Comparable<? super C>> 
+	Predicate<Statistics<?, C>> SteadyFitness(final int generation) {
+		return new SteadyFitness<C>(generation);
+	}
+	
 	static class Generation implements Predicate<Statistics<?, ?>> {
 		private final int _generation;
 		
