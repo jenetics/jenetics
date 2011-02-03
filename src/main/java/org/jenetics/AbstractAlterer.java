@@ -25,6 +25,7 @@ package org.jenetics;
 import static org.jenetics.util.Validator.checkProbability;
 
 import org.jenetics.util.IndexStream;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomIndexStream;
 import org.jenetics.util.RandomRegistry;
 
@@ -78,9 +79,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*Double.doubleToLongBits(_probability) + 17;
-		return hash;
+		return ObjectUtils.hashCode(_probability)*37 + 17;
 	}
 	
 	@Override
@@ -93,7 +92,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 		}
 		
 		final AbstractAlterer<?> alterer = (AbstractAlterer<?>)obj;
-		return Double.compare(_probability, alterer._probability) == 0; 
+		return ObjectUtils.equals(_probability, alterer._probability);
 	}
 }
 
