@@ -23,6 +23,7 @@
 package org.jenetics.stat;
 
 import org.jenetics.util.AdaptableAccumulator;
+import org.jenetics.util.ObjectUtils;
 
 import java.util.Arrays;
 
@@ -239,9 +240,7 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 
 	@Override
 	public int hashCode() {
-		int hash = 37;
-		hash += 17*super.hashCode() + 37;
-		hash += 17*Double.doubleToLongBits(_quantile) + 37;
+		int hash = ObjectUtils.hashCode(super.hashCode(), _quantile);
 		hash += 17*Arrays.hashCode(_dn) + 37;
 		hash += 17*Arrays.hashCode(_n) + 37;
 		hash += 17*Arrays.hashCode(_nn) + 37;
@@ -260,7 +259,7 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 		
 		final Quantile<?> quantile = (Quantile<?>)obj;
 		return super.equals(obj) &&
-				Double.compare(_quantile, quantile._quantile) == 0 &&
+				ObjectUtils.equals(_quantile, quantile._quantile) &&
 				Arrays.equals(_dn, quantile._dn) &&
 				Arrays.equals(_n, quantile._n) &&
 				Arrays.equals(_nn, quantile._nn) &&

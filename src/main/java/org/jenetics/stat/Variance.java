@@ -22,6 +22,8 @@
  */
 package org.jenetics.stat;
 
+import org.jenetics.util.ObjectUtils;
+
 
 /**
  * <p>Calculate the variance from a finite sample of <i>N</i> observations.</p>
@@ -99,8 +101,7 @@ public class Variance<N extends Number> extends Mean<N> {
 		}
 		
 		final Variance<?> variance = (Variance<?>)obj;
-		return super.equals(obj) &&
-				Double.compare(_m2, variance._m2) == 0;
+		return ObjectUtils.equals(_m2, variance._m2) && super.equals(variance);
 	}
 	
 	@Override
