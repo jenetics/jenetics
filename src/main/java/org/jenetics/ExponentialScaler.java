@@ -30,8 +30,10 @@ import org.jscience.mathematics.number.Float64;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are 
- * modified such that 
- * <p/><img src="doc-files/exponential-scaler.gif" alt="Exponential Scaler" />.</p>
+ * modified the following way. 
+ * <p/><img src="doc-files/exponential-scaler.gif" 
+ *          alt="f_s=\left(a\cdot f+b \rigth)^c" 
+ *     />.</p>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
