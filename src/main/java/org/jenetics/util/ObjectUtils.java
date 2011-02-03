@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.Arrays;
+
 /**
  * Some helper methods for creating hash codes and compare double values.
  * 
@@ -34,6 +36,22 @@ public class ObjectUtils {
 		throw new AssertionError("Don't create an 'ObjectUtils' instance.");
 	}
 	
+	public static int hashCode(final Object object) {
+		return 31*(object == null ? 0 : object.hashCode());
+	}
+	
+	public static int hashCode(final Object... objects) {
+		return Arrays.hashCode(objects);
+	}
+	
+	public static int hashCode(final int superHash, final Object object) {
+		return 31*superHash + 31*hashCode(object);
+	}
+	
+	public static int hashCode(final int superHash, final Object... objects) {
+		return 31*superHash + Arrays.hashCode(objects);
+	}	
+	
 	public static int hashCode(final double a) {
 		long bits = Double.doubleToLongBits(a);
 		return (int)(bits ^ (bits >>> 32));
@@ -43,8 +61,26 @@ public class ObjectUtils {
 		return (31*superHash + 17) + hashCode(a);
 	}
 	
+	public static int hashCode(final int superHash, final double a, final double b) {
+		return (31*superHash + 17) + hashCode(a) + hashCode(b);
+	}
+	
+	public static int hashCode(final int superHash, final double a, final double b, final double c) {
+		return (31*superHash + 17) + hashCode(a) + hashCode(b) + hashCode(c);
+	}
+	
+	public static int hashCode(final int a) {
+		return 31*a;
+	}
+	
+	public static boolean equals(final Object a, final Object b) {
+		return (a != null ? a.equals(b) : b == null);
+	}
+	
 	public static boolean equals(final double a, final double b) {
 		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
 	}
 	
 }
+
+

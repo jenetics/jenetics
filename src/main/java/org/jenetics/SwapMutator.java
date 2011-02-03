@@ -27,6 +27,7 @@ import java.util.Random;
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.IndexStream;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -85,9 +86,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*super.hashCode() + 61;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

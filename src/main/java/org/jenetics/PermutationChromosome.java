@@ -34,6 +34,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 import org.jscience.mathematics.number.Integer64;
@@ -195,9 +196,7 @@ public final class PermutationChromosome
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += super.hashCode()*37;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

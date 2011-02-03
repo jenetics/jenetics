@@ -26,6 +26,7 @@ import javolution.text.Text;
 import javolution.text.TextBuilder;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ObjectUtils;
 
 import org.jscience.mathematics.number.Number;
 
@@ -224,9 +225,7 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return 17 + (_min != null ? _min.hashCode() : 1)*37 +
-				17 + (_max != null ? _max.hashCode() : 1)*37 +
-				17 + super.hashCode()*37;
+		return ObjectUtils.hashCode(super.hashCode(), _min, _max);
 	}
 	
 	@Override

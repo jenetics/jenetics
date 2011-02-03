@@ -26,6 +26,7 @@ import static java.lang.Math.abs;
 import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.Validator.nonNull;
 
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -103,9 +104,7 @@ public class StochasticUniversalSelector<
 	
 	@Override
 	public int hashCode() {
-		int hash = 61;
-		hash += 17*super.hashCode() + 37;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

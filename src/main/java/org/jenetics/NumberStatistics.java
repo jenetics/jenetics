@@ -23,7 +23,6 @@
 package org.jenetics;
 
 import static java.lang.Double.NaN;
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
 
 import java.util.List;
@@ -34,6 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.ObjectUtils;
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -201,11 +201,12 @@ public class NumberStatistics<
 
 	@Override
 	public int hashCode() {
-		int hash = super.hashCode() * 31 + 17;
-		hash += (int) doubleToLongBits(_fitnessMean) * 31 + 17;
-		hash += (int) doubleToLongBits(_fitnessVariance) * 31 + 17;
-		hash += (int) doubleToLongBits(_standardError) * 31 + 17;
-		return hash;
+		return ObjectUtils.hashCode(
+					super.hashCode(), 
+					_fitnessMean,
+					_fitnessVariance, 
+					_standardError
+				);
 	}
 
 	@Override
@@ -218,10 +219,9 @@ public class NumberStatistics<
 		}
 
 		final NumberStatistics<?, ?> statistics = (NumberStatistics<?, ?>) obj;
-
-		return doubleToLongBits(statistics._fitnessMean) == doubleToLongBits(_fitnessMean)
-				&& doubleToLongBits(statistics._fitnessVariance) == doubleToLongBits(_fitnessVariance)
-				&& doubleToLongBits(statistics._standardError) == doubleToLongBits(_standardError);
+		return ObjectUtils.equals(statistics._fitnessMean, _fitnessMean) &&
+				ObjectUtils.equals(statistics._fitnessVariance, _fitnessVariance) &&
+				ObjectUtils.equals(statistics._standardError, _standardError);
 	}
 
 	@Override

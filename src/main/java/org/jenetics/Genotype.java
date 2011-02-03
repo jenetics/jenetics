@@ -36,6 +36,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.Validator;
 import org.jenetics.util.Verifiable;
 
@@ -194,9 +195,7 @@ public final class Genotype<T extends Gene<?, T>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*_chromosomes.hashCode();
-		return hash;
+		return ObjectUtils.hashCode(_chromosomes);
 	}
 	
 	@Override

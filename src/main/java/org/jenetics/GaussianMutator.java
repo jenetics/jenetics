@@ -28,6 +28,7 @@ import javolution.lang.Immutable;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.IndexStream;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -87,9 +88,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 17*super.hashCode() + 37;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.IndexStream;
+import org.jenetics.util.ObjectUtils;
 
 
 /**
@@ -181,9 +182,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
 	@Override
 	public int hashCode() {
-		int hash = 461;
-		hash += 61*super.hashCode() + 17;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

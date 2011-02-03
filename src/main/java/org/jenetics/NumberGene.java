@@ -33,6 +33,7 @@ import javolution.xml.XMLSerializable;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.Mean;
+import org.jenetics.util.ObjectUtils;
 import org.jscience.mathematics.number.Number;
 
 /**
@@ -201,12 +202,7 @@ public abstract class NumberGene<
 	
 	@Override
 	public int hashCode() {
-		int code = 37;
-		code += 17*_value.hashCode() + 37;
-		code += 17*_min.hashCode() + 37;
-		code += 17*_max.hashCode() + 37;
-		
-		return code;
+		return ObjectUtils.hashCode(_value, _min, _max);
 	}
 	
 	@Override

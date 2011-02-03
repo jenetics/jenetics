@@ -30,6 +30,7 @@ import java.util.Random;
 import javolution.lang.Immutable;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -141,9 +142,7 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 67;
-		hash += 37*super.hashCode() + 17;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

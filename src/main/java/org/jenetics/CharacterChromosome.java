@@ -38,6 +38,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
+import org.jenetics.util.ObjectUtils;
 
 /**
  * CharacterChromosome which represents character sequences.
@@ -130,10 +131,7 @@ public class CharacterChromosome
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*super.hashCode() + 17;
-		hash += 37*_validCharacters.hashCode() + 17;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), _validCharacters);
 	}
 	
 	@Override
