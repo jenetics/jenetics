@@ -33,6 +33,7 @@ import javolution.text.Text;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.Validator.Verify;
 
 /**
@@ -152,9 +153,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*_genes.hashCode();
-		return hash;
+		return ObjectUtils.hashCode(_genes);
 	}
 	
 	@Override

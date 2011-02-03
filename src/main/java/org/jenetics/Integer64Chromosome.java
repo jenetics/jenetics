@@ -32,6 +32,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
+import org.jenetics.util.ObjectUtils;
 import org.jscience.mathematics.number.Integer64;
 
 
@@ -138,9 +139,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += super.hashCode()*37;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

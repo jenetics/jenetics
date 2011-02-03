@@ -23,6 +23,9 @@
 package org.jenetics;
 
 import static org.jenetics.util.Validator.nonNull;
+
+import org.jenetics.util.ObjectUtils;
+
 import javolution.lang.Immutable;
 
 /**
@@ -66,7 +69,7 @@ public final class ConstantFitnessFunction<
 	
 	@Override
 	public int hashCode() {
-		return _value.hashCode();
+		return ObjectUtils.hashCode(_value);
 	}
 	
 	@Override

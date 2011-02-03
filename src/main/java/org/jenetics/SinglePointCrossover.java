@@ -25,6 +25,7 @@ package org.jenetics;
 import java.util.Random;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -96,9 +97,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	
 	@Override
 	public int hashCode() {
-		int hash = 4339;
-		hash += 61*super.hashCode() + 17;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

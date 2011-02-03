@@ -30,6 +30,7 @@ import java.util.Arrays;
 import javolution.lang.Immutable;
 
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.ObjectUtils;
 
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
@@ -82,9 +83,7 @@ public class RouletteWheelSelector<
 	
 	@Override
 	public int hashCode() {
-		int hash = 67;
-		hash += 17*super.hashCode() + 37;
-		return hash;
+		return ObjectUtils.hashCode(super.hashCode(), getClass());
 	}
 	
 	@Override

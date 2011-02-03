@@ -45,6 +45,7 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
+import org.jenetics.util.ObjectUtils;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
@@ -328,14 +329,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += (int)doubleToLongBits(_ageMean)*37;
-		hash += (int)doubleToLongBits(_ageVariance)*37;
-		hash += _best != null ?_best.hashCode()*37 : 3; 
-		hash += _worst != null ? _worst.hashCode()*37 : 3; 
-		hash += 37*_invalid + 17;
-		hash += 37*_killed + 17;
-		return hash;
+		return ObjectUtils.hashCode(_ageMean) +
+				ObjectUtils.hashCode(_ageVariance) +
+				ObjectUtils.hashCode(_best) + 
+				ObjectUtils.hashCode(_worst) +
+				ObjectUtils.hashCode(_invalid) +
+				ObjectUtils.hashCode(_killed);
 	}
 	
 	@Override
@@ -537,14 +536,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		
 		@Override
 		public int hashCode() {
-			int hash = 17;
-			hash += alter.hashCode()*37;
-			hash += combine.hashCode()*37;
-			hash += evaluation.hashCode()*37;
-			hash += execution.hashCode()*37;
-			hash += selection.hashCode()*37;
-			hash += statistics.hashCode()*37;
-			return hash;
+			return ObjectUtils.hashCode(
+					alter, combine, evaluation, execution, selection, statistics
+				);
 		}
 		
 		@Override

@@ -920,8 +920,6 @@ public class Array<T>
 			final Object element = _array[i];
 			if (element != null) {
 				hash += 37*element.hashCode() + 17;
-			} else {
-				hash += 3;
 			}
 		}
 		return hash;

@@ -32,6 +32,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Converter;
+import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.Verifiable;
 
 
@@ -168,12 +169,8 @@ public final class Phenotype<
 	
 	@Override
 	public int hashCode() {
-		int hash = 31;
-		hash += (_fitness != null ? _fitness.hashCode() : 0)*17 + 31;
-		hash += (_rawFitness != null ? _rawFitness.hashCode() : 0)*17 + 31;
-		hash += (_genotype != null ? _genotype.hashCode() : 0)*17 + 31;
-		hash += _generation*17 + 31;
-		return hash;
+		return ObjectUtils.hashCode(_generation, _fitness, _rawFitness) + 
+				ObjectUtils.hashCode(_genotype);
 	}
 
 	@Override

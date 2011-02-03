@@ -34,6 +34,7 @@ import java.util.ListIterator;
 import java.util.RandomAccess;
 
 import org.jenetics.util.Copyable;
+import org.jenetics.util.ObjectUtils;
 
 import javolution.util.FastList;
 import javolution.xml.XMLFormat;
@@ -266,7 +267,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		return _population.hashCode();
+		return ObjectUtils.hashCode(_population);
 	}
 	
 	@Override
