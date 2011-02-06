@@ -74,6 +74,7 @@
 			target="1.6" 
 			encoding="UTF-8" 
 			listfiles="yes"
+			includeantruntime="no"
 		>
 			<compilerarg value="-Xlint:unchecked" />
 			<compilerarg value="-Xlint:deprecation" />
@@ -390,6 +391,7 @@
 			target="1.6" 
 			encoding="UTF-8" 
 			listfiles="yes"
+			includeantruntime="no"
 		>
 			<compilerarg value="-Xlint:unchecked" />
 			<compilerarg value="-Xlint:deprecation" />
