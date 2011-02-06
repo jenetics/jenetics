@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.io.Serializable;
@@ -107,9 +108,7 @@ public final class ExponentialScaler
 		}
 		
 		final ExponentialScaler selector = (ExponentialScaler)obj;
-		return Double.doubleToLongBits(_a) == Double.doubleToLongBits(selector._a) &&
-				Double.doubleToLongBits(_b) == Double.doubleToLongBits(selector._b) &&
-				Double.doubleToLongBits(_c) == Double.doubleToLongBits(selector._c);
+		return eq(_a, selector._a) && eq(_b, selector._b) && eq(_c, selector._c);
 	}
 	
 	@Override

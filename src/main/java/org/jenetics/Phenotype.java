@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -184,11 +185,10 @@ public final class Phenotype<
 		}
 		
 		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
-		return
-			(_fitness != null ? _fitness.equals(pt._fitness) : pt._fitness == null) &&
-			(_rawFitness != null ? _rawFitness.equals(pt._rawFitness) : pt._rawFitness == null) &&
-			(_genotype != null ? _genotype.equals(pt._genotype) : pt._genotype == null) &&
-			_generation == pt._generation;
+		return eq(_fitness, pt._fitness) &&
+				eq(_rawFitness, pt._rawFitness) &&
+				eq(_genotype, pt._genotype) &&
+				eq(_generation, pt._generation);
 	}
 
 	@Override

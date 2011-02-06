@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 /**
@@ -75,7 +76,7 @@ public abstract class AbstractAccumulator<T>
 		}
 		
 		final AbstractAccumulator<?> accumulator = (AbstractAccumulator<?>)obj;
-		return _samples == accumulator._samples;
+		return eq(_samples, accumulator._samples);
 	}
 	
 	@Override

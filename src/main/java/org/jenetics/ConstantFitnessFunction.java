@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -81,7 +82,7 @@ public final class ConstantFitnessFunction<
 		}
 		
 		final ConstantFitnessFunction<?, ?> f = (ConstantFitnessFunction<?, ?>)obj;
-		return _value.equals(f._value);
+		return eq(_value, f._value);
 	}
 	
 	@Override

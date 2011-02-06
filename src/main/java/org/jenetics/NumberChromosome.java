@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import javolution.text.Text;
@@ -239,9 +240,7 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 		}
 				
 		final NumberChromosome<?> nc = (NumberChromosome<?>)object;
-		return _min.equals(nc._min) &&
-				_max.equals(nc._max) &&
-				super.equals(object);
+		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
 	}
 	
 	@Override

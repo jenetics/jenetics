@@ -26,6 +26,7 @@ import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
 import static org.jenetics.util.Accumulators.accumulate;
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.text.ParseException;
@@ -550,13 +551,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 			
 			final Statistics.Time time = (Statistics.Time)object;
-			return 
-				alter.equals(time.alter) &&
-				combine.equals(time.combine) &&
-				evaluation.equals(time.evaluation) &&
-				execution.equals(time.execution) &&
-				selection.equals(time.selection) &&
-				statistics.equals(time.statistics);
+			return eq(alter, time.alter) &&
+					eq(combine, time.combine) &&
+					eq(evaluation, time.evaluation) &&
+					eq(execution, time.execution) &&
+					eq(selection, time.selection) &&
+					eq(statistics, time.statistics);
 		}
 		
 		@Override

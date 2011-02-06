@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -216,9 +217,7 @@ public abstract class NumberGene<
 		}
 		
 		final NumberGene<?, ?> gene = (NumberGene<?, ?>)obj;
-		return _value.equals(gene._value) && 
-				_min.equals(gene._min) && 
-				_max.equals(gene._max);
+		return eq(_value, gene._value) && eq(_min, gene._min) && eq(_max, gene._max);
 	}
 	
 	@Override

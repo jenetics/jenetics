@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -175,10 +176,10 @@ public final class Timer
 		}
 		
 		final Timer timer = (Timer)object;
-		return _start == timer._start &&
-				_stop == timer._stop &&
-				_sum == timer._sum &&
-				_label.equals(timer._label);
+		return eq(_start, timer._start) && 
+				eq(_stop, timer._stop) && 
+				eq(_sum, timer._sum) && 
+				eq(_label, timer._label);
 	}
 	
 	@Override

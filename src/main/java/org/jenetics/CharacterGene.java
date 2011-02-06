@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -136,7 +137,7 @@ public final class CharacterGene
 			return false;
 		}
 		CharacterGene gene = (CharacterGene)obj;
-		return getAllele().equals(gene.getAllele());
+		return eq(getAllele(), gene.getAllele());
 	}
 	
 	@Override

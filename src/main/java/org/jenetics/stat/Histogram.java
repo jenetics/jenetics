@@ -26,6 +26,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.map;
 import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -300,8 +301,8 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		
 		final Histogram<?> histogram = (Histogram<?>)obj;
 		return super.equals(obj) &&
-				Arrays.equals(_separators, histogram._separators) &&
-				Arrays.equals(_histogram, histogram._histogram);
+				eq(_separators, histogram._separators) &&
+				eq(_histogram, histogram._histogram);
 	}
 	
 	@Override

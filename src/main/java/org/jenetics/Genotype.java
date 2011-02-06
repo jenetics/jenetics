@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -208,7 +209,7 @@ public final class Genotype<T extends Gene<?, T>>
 		}
 		
 		final Genotype<?> gt = (Genotype<?>)o;
-		return _chromosomes.equals(gt._chromosomes);
+		return eq(_chromosomes, gt._chromosomes);
 	}
 
 	@Override

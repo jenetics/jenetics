@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.List;
@@ -258,7 +259,7 @@ public class UniformDistribution<
 		}
 		
 		final UniformDistribution<?> dist = (UniformDistribution<?>)obj;
-		return _domain.equals(dist._domain);
+		return eq(_domain, dist._domain);
 	}
 	
 	@Override

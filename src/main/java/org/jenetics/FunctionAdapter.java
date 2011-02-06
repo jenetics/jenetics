@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -78,7 +79,7 @@ public final class FunctionAdapter<
 		}
 		
 		final FunctionAdapter<?, ?> function = (FunctionAdapter<?, ?>)obj;
-		return _adoptee.equals(function._adoptee);
+		return eq(_adoptee, function._adoptee);
 	}
 	
 	@Override

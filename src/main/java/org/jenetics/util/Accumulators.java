@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.Iterator;
@@ -111,8 +112,7 @@ public final class Accumulators {
 			}
 			
 			final Min<?> min = (Min<?>)obj;
-			return super.equals(obj) && 
-					(_min != null ? _min.equals(min._min) : min._min == null); 
+			return super.equals(obj) && eq(_min, min._min);
 		}
 		
 		@Override
@@ -199,8 +199,7 @@ public final class Accumulators {
 			}
 			
 			final Max<?> max = (Max<?>)obj;
-			return super.equals(obj) && 
-					(_max != null ? _max.equals(max._max) : max._max == null); 
+			return super.equals(obj) && eq(_max, max._max);
 		}
 		
 		@Override
@@ -301,9 +300,7 @@ public final class Accumulators {
 			}
 			
 			final MinMax<?> mm = (MinMax<?>)obj;
-			return super.equals(obj) && 
-					(_min != null ? _min.equals(mm._min) : mm._min == null) &&
-					(_max != null ? _max.equals(mm._max) : mm._max == null); 
+			return super.equals(obj) && eq(_min, mm._min) && eq(_max, mm._max);
 		}
 		
 		@Override
