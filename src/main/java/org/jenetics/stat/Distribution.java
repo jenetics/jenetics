@@ -22,9 +22,10 @@
  */
 package org.jenetics.stat;
 
-import org.jenetics.util.Validator;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Validator;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability

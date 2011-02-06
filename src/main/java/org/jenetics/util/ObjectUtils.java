@@ -36,48 +36,185 @@ public class ObjectUtils {
 		throw new AssertionError("Don't create an 'ObjectUtils' instance.");
 	}
 	
-	public static int hashCode(final Object object) {
-		return 31*(object == null ? 0 : object.hashCode());
+	public static final class HashCodeBuilder {
+		private int _hash = 0;
+		
+		private HashCodeBuilder(final int hash) {
+			_hash = hash;
+		}
+		
+		public HashCodeBuilder and(final boolean value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final boolean[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final byte value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final byte[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final short value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final short[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final int value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final int[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final long value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final long[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final float value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final float[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final double value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final double[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public HashCodeBuilder and(final Object value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final Object[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}
+		
+		public int value() {
+			return _hash;
+		}
 	}
 	
-	public static int hashCode(final Object... objects) {
-		return Arrays.hashCode(objects);
+	public static HashCodeBuilder hashCodeOf(final boolean value) {
+		return new HashCodeBuilder(hashCode(value));
 	}
 	
-	public static int hashCode(final int superHash, final Object object) {
-		return 31*superHash + 31*hashCode(object);
+	public static HashCodeBuilder hashCodeOf(final boolean[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
 	}
 	
-	public static int hashCode(final int superHash, final Object... objects) {
-		return 31*superHash + Arrays.hashCode(objects);
-	}	
-	
-	public static int hashCode(final double a) {
-		long bits = Double.doubleToLongBits(a);
-		return (int)(bits ^ (bits >>> 32));
+	public static HashCodeBuilder hashCodeOf(final byte value) {
+		return new HashCodeBuilder(hashCode(value));
 	}
 	
-	public static int hashCode(final int superHash, final double a) {
-		return (31*superHash + 17) + hashCode(a);
+	public static HashCodeBuilder hashCodeOf(final byte[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
 	}
 	
-	public static int hashCode(final int superHash, final double a, final double b) {
-		return (31*superHash + 17) + hashCode(a) + hashCode(b);
+	public static HashCodeBuilder hashCodeOf(final short value) {
+		return new HashCodeBuilder(hashCode(value));
 	}
 	
-	public static int hashCode(final int superHash, final double a, final double b, final double c) {
-		return (31*superHash + 17) + hashCode(a) + hashCode(b) + hashCode(c);
+	public static HashCodeBuilder hashCodeOf(final short[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
 	}
 	
-	public static int hashCode(final int a) {
-		return 31*a;
+	public static HashCodeBuilder hashCodeOf(final int value) {
+		return new HashCodeBuilder(hashCode(value));
 	}
 	
-	public static boolean equals(final Object a, final Object b) {
+	public static HashCodeBuilder hashCodeOf(final int[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final long value) {
+		return new HashCodeBuilder(hashCode(value));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final long[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final float value) {
+		return new HashCodeBuilder(hashCode(value));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final float[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final double value) {
+		return new HashCodeBuilder(hashCode(value));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final double[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final Object object) {
+		return new HashCodeBuilder(hashCode(object));
+	}
+	
+	public static HashCodeBuilder hashCodeOf(final Object[] values) {
+		return new HashCodeBuilder(Arrays.hashCode(values));
+	}
+	
+	private static int hashCode(final boolean value) {
+		return value ? 1231 : 1237;
+	}
+	
+	private static int hashCode(final byte value) {
+		return 31*value + 17;
+	}
+	
+	private static int hashCode(final short value) {
+		return 31*value + 17;
+	}
+	
+	private static int hashCode(final int value) {
+		return 31*value + 17;
+	}
+	
+	private static int hashCode(final long value) {
+        return 31*(int)(value^(value >>> 32));
+	}
+
+	private static int hashCode(final float value) {
+		return 31*Float.floatToIntBits(value);
+	}
+	
+	private static int hashCode(final double value) {
+		long bits = Double.doubleToLongBits(value);
+		return (int)(bits^(bits >>> 32));
+	}
+	
+	private static int hashCode(final Object value) {
+		return 31*(value == null ? 0 : value.hashCode()) + 17;
+	}
+	
+	
+	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
 	}
 	
-	public static boolean equals(final double a, final double b) {
+	public static boolean eq(final double a, final double b) {
 		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
 	}
 	

@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 
-import org.jenetics.util.BitUtils;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;

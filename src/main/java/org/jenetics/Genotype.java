@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.ListIterator;
@@ -36,7 +37,6 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.Validator;
 import org.jenetics.util.Verifiable;
 
@@ -195,7 +195,7 @@ public final class Genotype<T extends Gene<?, T>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_chromosomes);
+		return hashCodeOf(_chromosomes).value();
 	}
 	
 	@Override

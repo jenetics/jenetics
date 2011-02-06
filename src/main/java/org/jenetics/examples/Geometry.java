@@ -66,6 +66,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.ExponentialScaler;
 import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
@@ -80,7 +82,6 @@ import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jscience.mathematics.number.Float64;
 
 
 /**

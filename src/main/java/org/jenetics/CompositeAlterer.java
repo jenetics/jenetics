@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Deque;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Validator.NonNull;
 
@@ -218,7 +218,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_alterers);
+		return hashCodeOf(_alterers).value();
 	}
 	
 	@Override

@@ -22,10 +22,11 @@
  */
 package org.jenetics.stat;
 
-import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.AbstractAccumulatorCommonTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.AbstractAccumulator;
+import org.jenetics.util.AbstractAccumulatorCommonTests;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -22,9 +22,10 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.Validator.checkProbability;
 import static org.jenetics.util.Validator.nonNegative;
 import static org.jenetics.util.Validator.nonNull;
-import static org.jenetics.util.Validator.checkProbability;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -38,12 +39,13 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.LargeInteger;
+import org.jscience.mathematics.number.Number;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
-import org.jscience.mathematics.number.LargeInteger;
-import org.jscience.mathematics.number.Number;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
@@ -325,7 +327,7 @@ public class BitChromosome extends Number<BitChromosome>
 	
 	@Override
 	public int hashCode() {
-		return intValue();
+		return hashCodeOf(_genes).value();
 	}
 	
 	@Override

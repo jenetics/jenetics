@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.io.Serializable;
 
 import javolution.lang.Immutable;
@@ -92,11 +94,7 @@ public final class ExponentialScaler
 	
 	@Override
 	public int hashCode() {
-		int hash = 37;
-		hash += 17*Double.doubleToLongBits(_a) + 37;
-		hash += 17*Double.doubleToLongBits(_b) + 37;
-		hash += 17*Double.doubleToLongBits(_c) + 37;
-		return hash;
+		return hashCodeOf(_a).and(_b).and(_c).value();
 	}
 	
 	@Override

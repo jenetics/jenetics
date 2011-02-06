@@ -30,8 +30,9 @@ import java.io.Serializable;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.IOUtils;
 import org.testng.Assert;
+
+import org.jenetics.util.IOUtils;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

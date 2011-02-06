@@ -27,6 +27,8 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.CompositeAlterer;
 import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
@@ -39,7 +41,6 @@ import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

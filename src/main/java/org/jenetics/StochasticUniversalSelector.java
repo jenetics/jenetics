@@ -24,9 +24,9 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -104,7 +104,7 @@ public class StochasticUniversalSelector<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), getClass());
+		return hashCodeOf(super.hashCode()).and(getClass()).value();
 	}
 	
 	@Override

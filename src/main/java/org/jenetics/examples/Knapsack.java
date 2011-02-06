@@ -24,6 +24,8 @@ package org.jenetics.examples;
 
 import java.io.Serializable;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Chromosome;
@@ -38,7 +40,6 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
-import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

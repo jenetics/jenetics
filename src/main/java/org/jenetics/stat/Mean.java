@@ -22,8 +22,10 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import org.jenetics.util.AdaptableAccumulator;
-import org.jenetics.util.ObjectUtils;
 
 /**
  * <p>Calculate  the Arithmetic mean from a finite sample of <i>N</i>
@@ -89,7 +91,7 @@ public class Mean<N extends Number> extends AdaptableAccumulator<N> {
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), _mean);
+		return hashCodeOf(super.hashCode()).and(_mean).value();
 	}
 	
 	@Override
@@ -102,7 +104,7 @@ public class Mean<N extends Number> extends AdaptableAccumulator<N> {
 		}
 		
 		final Mean<?> mean = (Mean<?>)obj;
-		return ObjectUtils.equals(_mean, mean._mean) && super.equals(mean);
+		return eq(_mean, mean._mean) && super.equals(mean);
 	}
 	
 	@Override

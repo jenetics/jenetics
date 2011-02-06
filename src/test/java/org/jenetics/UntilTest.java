@@ -25,10 +25,11 @@ package org.jenetics;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.jenetics.util.Predicate;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

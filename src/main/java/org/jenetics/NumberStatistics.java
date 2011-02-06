@@ -24,17 +24,19 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.List;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.ObjectUtils;
-import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -201,12 +203,8 @@ public class NumberStatistics<
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(
-					super.hashCode(), 
-					_fitnessMean,
-					_fitnessVariance, 
-					_standardError
-				);
+		return hashCodeOf(super.hashCode()).
+				and(_fitnessMean).and(_fitnessVariance).and(_standardError).value();
 	}
 
 	@Override
@@ -219,9 +217,9 @@ public class NumberStatistics<
 		}
 
 		final NumberStatistics<?, ?> statistics = (NumberStatistics<?, ?>) obj;
-		return ObjectUtils.equals(statistics._fitnessMean, _fitnessMean) &&
-				ObjectUtils.equals(statistics._fitnessVariance, _fitnessVariance) &&
-				ObjectUtils.equals(statistics._standardError, _standardError);
+		return eq(statistics._fitnessMean, _fitnessMean) &&
+				eq(statistics._fitnessVariance, _fitnessVariance) &&
+				eq(statistics._standardError, _standardError);
 	}
 
 	@Override

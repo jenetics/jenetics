@@ -25,6 +25,8 @@ package org.jenetics.examples;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.jscience.mathematics.number.Integer64;
+
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.CompositeAlterer;
@@ -36,7 +38,6 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
-import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

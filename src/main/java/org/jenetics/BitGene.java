@@ -107,7 +107,7 @@ public final class BitGene
 	
 	@Override
 	public int hashCode() {
-		return _value ? 7 : 13;
+		return 31 + (_value ? 1231 : 1237);
 	}
 	
 	@Override

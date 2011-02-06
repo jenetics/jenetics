@@ -22,10 +22,11 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.checkProbability;
 
 import org.jenetics.util.IndexStream;
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomIndexStream;
 import org.jenetics.util.RandomRegistry;
 
@@ -79,7 +80,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_probability)*37 + 17;
+		return hashCodeOf(_probability).value();
 	}
 	
 	@Override
@@ -92,7 +93,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 		}
 		
 		final AbstractAlterer<?> alterer = (AbstractAlterer<?>)obj;
-		return ObjectUtils.equals(_probability, alterer._probability);
+		return eq(_probability, alterer._probability);
 	}
 }
 

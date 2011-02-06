@@ -22,7 +22,8 @@
  */
 package org.jenetics.stat;
 
-import org.jenetics.util.ObjectUtils;
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 
 /**
@@ -85,10 +86,7 @@ public class Variance<N extends Number> extends Mean<N> {
 	
 	@Override
 	public int hashCode() {
-		int hash = 37;
-		hash += 37*super.hashCode() + 17;
-		hash += 31*Double.doubleToLongBits(_m2) + 17;
-		return hash;
+		return hashCodeOf(super.hashCode()).and(_m2).value();
 	}
 	
 	@Override
@@ -101,7 +99,7 @@ public class Variance<N extends Number> extends Mean<N> {
 		}
 		
 		final Variance<?> variance = (Variance<?>)obj;
-		return ObjectUtils.equals(_m2, variance._m2) && super.equals(variance);
+		return eq(_m2, variance._m2) && super.equals(variance);
 	}
 	
 	@Override

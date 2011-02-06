@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
@@ -915,14 +916,11 @@ public class Array<T>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
+		final ObjectUtils.HashCodeBuilder hash = hashCodeOf(getClass());
 		for (int i = _start; i < _end; ++i) {
-			final Object element = _array[i];
-			if (element != null) {
-				hash += 37*element.hashCode() + 17;
-			}
+			hash.and(_array[i]);
 		}
-		return hash;
+		return hash.value();
 	}
 	
 	@Override

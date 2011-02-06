@@ -24,10 +24,11 @@ package org.jenetics.stat;
 
 import junit.framework.Assert;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.Test;
+
+import org.jenetics.stat.Distribution.Domain;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

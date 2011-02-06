@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 /**
  * Abstract implementation of the {@link Accumulator} interface which defines a
  * {@code samples} property which is incremented by the {@link #accumulate(Object)}
@@ -60,7 +62,7 @@ public abstract class AbstractAccumulator<T>
 	
 	@Override
 	public int hashCode() {
-		return (int)_samples*37 + 17;
+		return hashCodeOf(_samples).value();
 	}
 	
 	@Override

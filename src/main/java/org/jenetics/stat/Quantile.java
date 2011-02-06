@@ -22,10 +22,12 @@
  */
 package org.jenetics.stat;
 
-import org.jenetics.util.AdaptableAccumulator;
-import org.jenetics.util.ObjectUtils;
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.Arrays;
+
+import org.jenetics.util.AdaptableAccumulator;
 
 /**
  * Implementation of the quantile estimation algorithm published by
@@ -240,12 +242,8 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 
 	@Override
 	public int hashCode() {
-		int hash = ObjectUtils.hashCode(super.hashCode(), _quantile);
-		hash += 17*Arrays.hashCode(_dn) + 37;
-		hash += 17*Arrays.hashCode(_n) + 37;
-		hash += 17*Arrays.hashCode(_nn) + 37;
-		hash += 17*Arrays.hashCode(_q) + 37;
-		return hash;
+		return hashCodeOf(super.hashCode()).
+				and(_quantile).and(_dn).and(_n).and(_nn).and(_q).value();
 	}
 	
 	@Override
@@ -259,7 +257,7 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 		
 		final Quantile<?> quantile = (Quantile<?>)obj;
 		return super.equals(obj) &&
-				ObjectUtils.equals(_quantile, quantile._quantile) &&
+				eq(_quantile, quantile._quantile) &&
 				Arrays.equals(_dn, quantile._dn) &&
 				Arrays.equals(_n, quantile._n) &&
 				Arrays.equals(_nn, quantile._nn) &&

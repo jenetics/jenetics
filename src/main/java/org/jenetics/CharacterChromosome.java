@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
@@ -38,7 +39,6 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
-import org.jenetics.util.ObjectUtils;
 
 /**
  * CharacterChromosome which represents character sequences.
@@ -131,7 +131,7 @@ public class CharacterChromosome
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), _validCharacters);
+		return hashCodeOf(super.hashCode()).and(_validCharacters).value();
 	}
 	
 	@Override

@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.util.Iterator;
 
 import javolution.context.ConcurrentContext;
@@ -96,10 +98,7 @@ public final class Accumulators {
 		
 		@Override
 		public int hashCode() {
-			int hash = 17;
-			hash += 37*super.hashCode() + 17;
-			hash += 37*(_min != null ? _min.hashCode() : 0) + 17; 
-			return hash;
+			return hashCodeOf(super.hashCode()).and(_min).value();
 		}
 		
 		@Override
@@ -187,10 +186,7 @@ public final class Accumulators {
 		
 		@Override
 		public int hashCode() {
-			int hash = 17;
-			hash += 37*super.hashCode() + 17;
-			hash += 37*(_max != null ? _max.hashCode() : 0) + 17; 
-			return hash;
+			return hashCodeOf(super.hashCode()).and(_max).value();
 		}
 		
 		@Override
@@ -292,11 +288,7 @@ public final class Accumulators {
 		
 		@Override
 		public int hashCode() {
-			int hash = 17;
-			hash += 37*super.hashCode() + 17;
-			hash += 37*(_min != null ? _min.hashCode() : 0) + 17; 
-			hash += 37*(_max != null ? _max.hashCode() : 0) + 17; 
-			return hash;
+			return hashCodeOf(super.hashCode()).and(_min).and(_max).value();
 		}
 		
 		@Override

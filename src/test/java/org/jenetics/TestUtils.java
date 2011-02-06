@@ -22,8 +22,9 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Array;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

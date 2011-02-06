@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
@@ -31,10 +32,10 @@ import javolution.text.Text;
 import javolution.text.TextBuilder;
 import javolution.xml.XMLSerializable;
 
+import org.jscience.mathematics.number.Number;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.Mean;
-import org.jenetics.util.ObjectUtils;
-import org.jscience.mathematics.number.Number;
 
 /**
  * Abstract base class for implementing concrete NumberGenes.
@@ -202,7 +203,7 @@ public abstract class NumberGene<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_value, _min, _max);
+		return hashCodeOf(_value).and(_min).and(_max).value();
 	}
 	
 	@Override

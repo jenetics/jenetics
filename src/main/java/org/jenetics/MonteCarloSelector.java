@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
@@ -80,7 +81,7 @@ public final class MonteCarloSelector<
 	
 	@Override
 	public int hashCode() {
-		return 59; // Prime
+		return hashCodeOf(getClass()).value();
 	}
 	
 	@Override

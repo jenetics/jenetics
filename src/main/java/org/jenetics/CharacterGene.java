@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
@@ -36,7 +37,6 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -124,7 +124,7 @@ public final class CharacterGene
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_character);
+		return hashCodeOf(_character).value();
 	}
 	
 	@Override 

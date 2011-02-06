@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 /**
@@ -85,7 +86,7 @@ public final class TruncationSelector<
 	
 	@Override
 	public int hashCode() {
-		return 2837; //Prime
+		return hashCodeOf(getClass()).value();
 	}
 	
 	@Override

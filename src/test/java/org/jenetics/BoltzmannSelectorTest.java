@@ -24,11 +24,12 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.stat.Histogram;
+import org.jenetics.util.ArrayUtils;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

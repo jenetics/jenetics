@@ -24,12 +24,13 @@ package org.jenetics.stat;
 
 import java.io.IOException;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import org.jenetics.util.AbstractAccumulator;
 import org.jenetics.util.AbstractAccumulatorCommonTests;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

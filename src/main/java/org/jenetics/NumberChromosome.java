@@ -22,13 +22,14 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import javolution.text.Text;
 import javolution.text.TextBuilder;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.ObjectUtils;
-
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.util.Array;
 
 
 /**
@@ -225,7 +226,7 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), _min, _max);
+		return hashCodeOf(super.hashCode()).and(_min).and(_max).value();
 	}
 	
 	@Override
