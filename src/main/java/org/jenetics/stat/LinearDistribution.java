@@ -22,15 +22,18 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.util.List;
 
 import javolution.text.Text;
 import javolution.util.FastList;
 
-import org.jenetics.util.Validator;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Validator;
 
 /**
  * <p>This distribution has the following cdf.</p>
@@ -272,13 +275,7 @@ public class LinearDistribution<
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 17*_domain.hashCode() + 37;
-		hash += 17*Double.doubleToLongBits(_x1) + 37;		
-		hash += 17*Double.doubleToLongBits(_x2) + 37;
-		hash += 17*Double.doubleToLongBits(_y1) + 37;
-		hash += 17*Double.doubleToLongBits(_y2) + 37;
-		return hash;
+		return hashCodeOf(_domain).and(_x1).and(_x2).and(_y1).and(_y2).value();
 	}
 	
 	@Override

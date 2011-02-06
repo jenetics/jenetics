@@ -22,7 +22,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
+
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -32,7 +34,6 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Converter;
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.Verifiable;
 
 
@@ -169,8 +170,8 @@ public final class Phenotype<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_generation, _fitness, _rawFitness) + 
-				ObjectUtils.hashCode(_genotype);
+		return hashCodeOf(_generation).
+				and(_fitness).and(_rawFitness).and(_genotype).value();
 	}
 
 	@Override

@@ -26,10 +26,11 @@ import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

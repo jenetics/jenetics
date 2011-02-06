@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.Serializable;
@@ -161,14 +162,7 @@ public final class Timer
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		
-		hash += 37*_label.hashCode() + 17;
-		hash += 37*_start + 17;
-		hash += 37*_stop + 17;
-		hash += 37*_sum + 17;
-		
-		return hash;
+		return hashCodeOf(_label).and(_start).and(_stop).and(_sum).value();
 	}
 	
 	@Override

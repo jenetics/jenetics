@@ -26,11 +26,12 @@ import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.BitUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.BitUtils;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

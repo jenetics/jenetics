@@ -29,16 +29,17 @@ import static java.lang.Math.toRadians;
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import org.jenetics.Float64Chromosome;
-import org.jenetics.Float64Gene;
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.FitnessFunction;
 import org.jenetics.FitnessScaler;
+import org.jenetics.Float64Chromosome;
+import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
 import org.jenetics.IdentityScaler;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Factory;
-import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

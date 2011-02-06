@@ -22,15 +22,18 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.util.List;
 
 import javolution.text.Text;
 import javolution.util.FastList;
 
-import org.jenetics.util.Validator;
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Validator;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
@@ -242,7 +245,7 @@ public class UniformDistribution<
 	
 	@Override
 	public int hashCode() {
-		return 17*_domain.hashCode() + 37;
+		return hashCodeOf(_domain).value();
 	}
 	
 	@Override

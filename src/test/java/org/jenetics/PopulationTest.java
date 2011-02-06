@@ -28,10 +28,11 @@ import java.io.IOException;
 
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.ArrayUtils;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.ArrayUtils;
 
 
 /**

@@ -24,10 +24,10 @@ package org.jenetics;
 
 import java.io.Serializable;
 
+import javolution.lang.ValueType;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
-
-import javolution.lang.ValueType;
 
 /**
  * The <code>Gene</code> is the base of this genetic algorithm implementation.

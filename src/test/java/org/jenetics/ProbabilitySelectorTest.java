@@ -26,10 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.jenetics.util.Validator;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -26,6 +26,7 @@ import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
 import static org.jenetics.util.Accumulators.accumulate;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.text.ParseException;
 import java.util.List;
@@ -41,13 +42,14 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
+
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
 import org.jenetics.util.ObjectUtils;
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
@@ -329,12 +331,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_ageMean) +
-				ObjectUtils.hashCode(_ageVariance) +
-				ObjectUtils.hashCode(_best) + 
-				ObjectUtils.hashCode(_worst) +
-				ObjectUtils.hashCode(_invalid) +
-				ObjectUtils.hashCode(_killed);
+		return ObjectUtils.hashCodeOf(_ageMean).
+					and(_ageVariance).and(_best).and(_worst).
+					and(_invalid).and(_killed).value();
 	}
 	
 	@Override
@@ -536,9 +535,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		
 		@Override
 		public int hashCode() {
-			return ObjectUtils.hashCode(
-					alter, combine, evaluation, execution, selection, statistics
-				);
+			return hashCodeOf(alter).
+					and(combine).and(evaluation).and(execution).
+					and(selection).and(statistics).value();
 		}
 		
 		@Override

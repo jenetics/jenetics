@@ -28,7 +28,13 @@ import java.util.concurrent.Executors;
 
 import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
+
 import jsr166y.ForkJoinPool;
+
+import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.Test;
 
 import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Evaluator;
@@ -39,10 +45,6 @@ import org.jenetics.util.Predicate;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.SerialEvaluator;
 import org.jenetics.util.ThreadedEvaluator;
-import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.Reporter;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

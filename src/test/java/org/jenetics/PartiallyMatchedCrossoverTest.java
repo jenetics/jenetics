@@ -25,13 +25,14 @@ package org.jenetics;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.stat.NormalDistribution;
-import org.jenetics.stat.Variance;
-import org.jenetics.stat.Distribution.Domain;
 import org.jscience.mathematics.number.Float64;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jenetics.stat.Distribution.Domain;
+import org.jenetics.stat.Histogram;
+import org.jenetics.stat.NormalDistribution;
+import org.jenetics.stat.Variance;
 
 
 /**

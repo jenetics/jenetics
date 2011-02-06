@@ -26,19 +26,21 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.map;
 import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
+
+import org.jscience.mathematics.function.Function;
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.AdaptableAccumulator;
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Converters;
 import org.jenetics.util.Validator;
 import org.jenetics.util.Validator.NonNull;
-import org.jscience.mathematics.function.Function;
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -284,11 +286,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*super.hashCode();
-		hash += 31*Arrays.hashCode(_separators) + 17;
-		hash += 31*Arrays.hashCode(_histogram) + 17;
-		return hash;
+		return hashCodeOf(super.hashCode()).and(_separators).and(_histogram).value();
 	}
 	
 	@Override

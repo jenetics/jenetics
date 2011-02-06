@@ -23,10 +23,12 @@
 package org.jenetics;
 
 import static java.lang.Math.exp;
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import javolution.lang.Immutable;
 
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.ObjectUtils;
 
 /**
  * <p>
@@ -115,7 +117,7 @@ public final class BoltzmannSelector<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), _b);
+		return hashCodeOf(super.hashCode()).and(_b).value();
 	}
 	
 	@Override
@@ -128,7 +130,7 @@ public final class BoltzmannSelector<
 		}
 		
 		final BoltzmannSelector<?, ?> selector = (BoltzmannSelector<?, ?>)obj;
-		return ObjectUtils.equals(_b, selector._b) && super.equals(obj);
+		return eq(_b, selector._b) && super.equals(obj);
 	}
 	
 	@Override

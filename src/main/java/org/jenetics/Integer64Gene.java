@@ -31,9 +31,10 @@ import javolution.context.ObjectFactory;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Integer64;
+
 import org.jenetics.util.Converter;
 import org.jenetics.util.RandomRegistry;
-import org.jscience.mathematics.number.Integer64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

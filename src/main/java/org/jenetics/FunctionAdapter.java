@@ -22,9 +22,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
-import org.jenetics.util.ObjectUtils;
 import org.jscience.mathematics.function.Function;
 
 /**
@@ -65,7 +65,7 @@ public final class FunctionAdapter<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_adoptee);
+		return hashCodeOf(_adoptee).value();
 	}
 	
 	@Override

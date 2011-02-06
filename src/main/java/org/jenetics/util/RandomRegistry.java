@@ -26,7 +26,6 @@ import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
 
-
 import javolution.context.LocalContext;
 
 /**

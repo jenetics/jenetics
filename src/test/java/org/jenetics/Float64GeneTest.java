@@ -33,14 +33,15 @@ import java.util.Random;
 import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
-import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -178,7 +180,7 @@ public final class CharSet
 	
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(_characters)*17 + 31;
+		return hashCodeOf(_characters).value();
 	}
 	
 	@Override

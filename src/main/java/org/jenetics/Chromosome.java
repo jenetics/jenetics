@@ -24,11 +24,11 @@ package org.jenetics;
 
 import java.io.Serializable;
 
+import javolution.lang.Immutable;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
-
-import javolution.lang.Immutable;
 
 
 /**                                                              

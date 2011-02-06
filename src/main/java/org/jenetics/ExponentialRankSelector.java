@@ -23,8 +23,8 @@
 package org.jenetics;
 
 import static java.lang.Math.pow;
-
-import org.jenetics.util.ObjectUtils;
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import javolution.lang.Immutable;
 
@@ -111,7 +111,7 @@ public final class ExponentialRankSelector<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), _c);
+		return hashCodeOf(super.hashCode()).and(_c).value();
 	}
 	
 	@Override
@@ -124,7 +124,7 @@ public final class ExponentialRankSelector<
 		}
 		
 		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
-		return ObjectUtils.equals(_c, selector._c) && super.equals(selector);
+		return eq(_c, selector._c) && super.equals(selector);
 	}
 	
 	@Override

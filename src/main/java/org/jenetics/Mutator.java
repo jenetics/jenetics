@@ -22,11 +22,12 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.IndexStream;
-import org.jenetics.util.ObjectUtils;
 
 
 /**
@@ -182,7 +183,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), getClass());
+		return hashCodeOf(super.hashCode()).and(getClass()).value();
 	}
 	
 	@Override

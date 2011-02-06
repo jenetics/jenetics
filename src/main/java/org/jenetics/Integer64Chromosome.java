@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,10 +32,10 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.Integer64;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
-import org.jenetics.util.ObjectUtils;
-import org.jscience.mathematics.number.Integer64;
 
 
 /**
@@ -139,7 +141,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), getClass());
+		return hashCodeOf(super.hashCode()).and(getClass()).value();
 	}
 	
 	@Override

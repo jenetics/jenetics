@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Random;
@@ -135,9 +136,7 @@ public class TournamentSelector<
 	
 	@Override
 	public int hashCode() {
-		int hash = 61;
-		hash += 37*_sampleSize + 17;
-		return hash;
+		return hashCodeOf(_sampleSize).value();
 	}
 	
 	@Override

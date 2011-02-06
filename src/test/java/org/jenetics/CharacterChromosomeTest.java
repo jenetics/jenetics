@@ -31,11 +31,12 @@ import java.util.Random;
 import javolution.context.LocalContext;
 import javolution.xml.stream.XMLStreamException;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.RandomRegistry;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

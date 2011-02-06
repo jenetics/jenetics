@@ -22,13 +22,14 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.util.Random;
 
 import javolution.lang.Immutable;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Mean;
-import org.jenetics.util.ObjectUtils;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -102,7 +103,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), getClass());
+		return hashCodeOf(super.hashCode()).and(getClass()).value();
 	}
 	
 	@Override

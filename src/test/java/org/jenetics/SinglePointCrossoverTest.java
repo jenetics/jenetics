@@ -29,6 +29,11 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 
+import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -36,10 +41,6 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.RandomRegistry;
-import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

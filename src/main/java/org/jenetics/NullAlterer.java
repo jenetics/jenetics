@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import javolution.lang.Immutable;
 
 /**
@@ -53,7 +55,7 @@ public final class NullAlterer<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return 3;
+		return hashCodeOf(getClass()).value();
 	}
 	
 	@Override

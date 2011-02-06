@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import javolution.lang.Immutable;
 
 
@@ -122,10 +124,7 @@ public final class LinearRankSelector<
 	
 	@Override
 	public int hashCode() {
-		int hash = 37;
-		hash += 17*Double.doubleToLongBits(_nminus) + 37;
-		hash += 17*Double.doubleToLongBits(_nplus) + 37;
-		return hash;
+		return hashCodeOf(_nminus).and(_nplus).value();
 	}
 	
 	@Override

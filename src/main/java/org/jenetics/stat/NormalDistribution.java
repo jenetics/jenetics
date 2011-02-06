@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNegative;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -273,11 +274,7 @@ public class NormalDistribution<
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 17*Double.doubleToLongBits(_mean) + 37;
-		hash += 17*Double.doubleToLongBits(_var) + 37;
-		hash += 17*_domain.hashCode() + 37;
-		return hash;
+		return hashCodeOf(_domain).and(_mean).and(_var).value();
 	}
 	
 	@Override

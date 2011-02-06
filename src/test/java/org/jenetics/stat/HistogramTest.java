@@ -25,12 +25,13 @@ package org.jenetics.stat;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.AbstractAccumulatorCommonTests;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.AbstractAccumulator;
+import org.jenetics.util.AbstractAccumulatorCommonTests;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

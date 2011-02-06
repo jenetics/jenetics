@@ -24,13 +24,13 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.util.BitUtils.ulpDistance;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.Arrays;
 
 import javolution.lang.Immutable;
 
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.ObjectUtils;
 
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
@@ -83,7 +83,7 @@ public class RouletteWheelSelector<
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(super.hashCode(), getClass());
+		return hashCodeOf(super.hashCode()).and(getClass()).value();
 	}
 	
 	@Override

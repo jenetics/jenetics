@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.ArrayList;
@@ -33,13 +34,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
-import org.jenetics.util.Copyable;
-import org.jenetics.util.ObjectUtils;
-
 import javolution.util.FastList;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
+
+import org.jenetics.util.Copyable;
 
 /**
  * A population is a collection of Phenotypes.
@@ -267,7 +267,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(_population);
+		return hashCodeOf(_population).value();
 	}
 	
 	@Override
