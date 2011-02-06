@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -280,7 +281,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 		
 		final Population<?, ?> population = (Population<?, ?>)object;
-		return _population.equals(population._population);
+		return eq(_population, population._population);
 	}
 	
 	@Override

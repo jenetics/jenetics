@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -144,7 +145,7 @@ public class CharacterChromosome
 		}
 		
 		final CharacterChromosome cc = (CharacterChromosome)obj;
-		return super.equals(obj) && _validCharacters.equals(cc._validCharacters);	
+		return super.equals(obj) && eq(_validCharacters, cc._validCharacters);	
 	}
 	
 	@Override

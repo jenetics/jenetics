@@ -22,6 +22,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.io.IOException;
 import java.util.Random;
 
@@ -115,11 +118,7 @@ public final class EnumGene<E extends Enum<E>>
 	
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		if (_value != null) {
-			hash += 37*_value.ordinal() + 17;
-		}
-		return hash;
+		return hashCodeOf(_value).value();
 	}
 	
 	@Override
@@ -132,11 +131,7 @@ public final class EnumGene<E extends Enum<E>>
 		}
 		
 		EnumGene<?> gene = (EnumGene<?>)obj;
-		if (gene._value != null) {
-			return gene._value.equals(_value);
-		} else {
-			return _value != null && _value.equals(gene._value);
-		}
+		return eq(_value, gene._value);
 	}
 	
 

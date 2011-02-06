@@ -22,6 +22,10 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.asString;
+import static org.jenetics.util.ObjectUtils.eq;
+import static org.jenetics.util.ObjectUtils.hashCodeOf;
+
 import java.io.Serializable;
 
 import javolution.lang.Reference;
@@ -89,7 +93,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	
 	@Override
 	public int hashCode() {
-		return _value != null ? _value.hashCode() : 0;
+		return hashCodeOf(_value).value();
 	}
 	
 	@Override
@@ -102,12 +106,12 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 		}
 		
 		final FinalReference<?> f = (FinalReference<?>)object;
-		return f._value != null ? f._value.equals(_value) : _value == null;
+		return eq(_value, f._value);
 	}
 	
 	@Override
 	public String toString() {
-		return _value != null ? _value.toString() : "null";
+		return asString(_value);
 	}
 	
 }

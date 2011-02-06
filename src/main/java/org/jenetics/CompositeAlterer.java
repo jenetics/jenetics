@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -231,7 +232,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		}
 		
 		final CompositeAlterer<?> alterer = (CompositeAlterer<?>)obj;
-		return _alterers.equals(alterer._alterers);
+		return eq(_alterers, alterer._alterers);
 	}
 	
 	@Override

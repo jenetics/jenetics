@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import javolution.lang.Immutable;
@@ -137,8 +138,7 @@ public final class LinearRankSelector<
 		}
 		
 		final LinearRankSelector<?, ?> selector = (LinearRankSelector<?, ?>)obj;
-		return Double.doubleToLongBits(_nminus) == Double.doubleToLongBits(selector._nminus) &&
-			Double.doubleToLongBits(_nminus) == Double.doubleToLongBits(selector._nminus);
+		return eq(_nminus, selector._nminus) && eq(_nplus, selector._nplus);
 	}
 	
 	@Override

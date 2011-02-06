@@ -258,10 +258,10 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 		final Quantile<?> quantile = (Quantile<?>)obj;
 		return super.equals(obj) &&
 				eq(_quantile, quantile._quantile) &&
-				Arrays.equals(_dn, quantile._dn) &&
-				Arrays.equals(_n, quantile._n) &&
-				Arrays.equals(_nn, quantile._nn) &&
-				Arrays.equals(_q, quantile._q);
+				eq(_dn, quantile._dn) &&
+				eq(_n, quantile._n) &&
+				eq(_nn, quantile._nn) &&
+				eq(_q, quantile._q);
 	}
 	
 	@Override

@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Predicates.nil;
 import static org.jenetics.util.Validator.nonNull;
@@ -166,7 +167,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		}
 		
 		final AbstractChromosome<?> chromosome = (AbstractChromosome<?>)obj;
-		return _genes.equals(chromosome._genes);
+		return eq(_genes, chromosome._genes);
 	}
 
 	@Override

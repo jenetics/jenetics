@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.List;
@@ -288,11 +289,9 @@ public class LinearDistribution<
 		}
 		
 		final LinearDistribution<?> dist = (LinearDistribution<?>)obj;
-		return _domain.equals(dist._domain) &&
-				Double.doubleToLongBits(_x1) == Double.doubleToLongBits(dist._x1) &&
-				Double.doubleToLongBits(_x2) == Double.doubleToLongBits(dist._x2) &&
-				Double.doubleToLongBits(_y1) == Double.doubleToLongBits(dist._y1) &&
-				Double.doubleToLongBits(_y2) == Double.doubleToLongBits(dist._y2);
+		return eq(_domain, dist._domain) &&
+				eq(_x1, dist._x1) && eq(_x2, dist._x2) &&
+				eq(_y1, dist._y1) && eq(_y2, dist._y2);
 	}
 	
 	@Override

@@ -59,6 +59,14 @@ public class ObjectUtils {
 			_hash += Arrays.hashCode(values); return this;
 		}
 		
+		public HashCodeBuilder and(final char value) {
+			_hash += ObjectUtils.hashCode(value); return this;
+		}
+		
+		public HashCodeBuilder and(final char[] values) {
+			_hash += Arrays.hashCode(values); return this;
+		}		
+		
 		public HashCodeBuilder and(final short value) {
 			_hash += ObjectUtils.hashCode(value); return this;
 		}
@@ -184,6 +192,10 @@ public class ObjectUtils {
 		return 31*value + 17;
 	}
 	
+	private static int hashCode(final char value) {
+		return 31*value + 17;
+	}
+	
 	private static int hashCode(final short value) {
 		return 31*value + 17;
 	}
@@ -209,13 +221,80 @@ public class ObjectUtils {
 		return 31*(value == null ? 0 : value.hashCode()) + 17;
 	}
 	
+	public static boolean eq(final boolean a, final boolean b) {
+		return a == b;
+	}
+	
+	public static boolean eq(final boolean[] a, final boolean[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final byte a, final byte b) {
+		return a == b;
+	}
+	
+	public static boolean eq(final byte[] a, final byte[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final char a, final char b) {
+		return a == b;
+	}
+	
+	public static boolean eq(final char[] a, final char[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final short a, final short b) {
+		return a == b;
+	}
+	
+	public static boolean eq(final short[] a, final short[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final int a, final int b) {
+		return a == b;
+	}
+	
+	public static boolean eq(final int[] a, final int[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final long a, final long b) {
+		return a == b;
+	}
+	
+	public static boolean eq(final long[] a, final long[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final float a, final float b) {
+		return Float.floatToIntBits(a) == Float.floatToIntBits(b);
+	}
+	
+	public static boolean eq(final float[] a, final float[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final double a, final double b) {
+		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
+	}
+	
+	public static boolean eq(final double[] a, final double[] b) {
+		return Arrays.equals(a, b);
+	}
 	
 	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
 	}
 	
-	public static boolean eq(final double a, final double b) {
-		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
+	public static boolean eq(final Object[] a, final Object[] b) {
+		return Arrays.equals(a, b);
+	}
+	
+	public static String asString(final Object a) {
+		return a != null ? a.toString() : "null";
 	}
 	
 }

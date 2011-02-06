@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.io.Serializable;
@@ -193,7 +194,7 @@ public final class CharSet
 		}
 		
 		final CharSet ch = (CharSet)object;
-		return Arrays.equals(_characters, ch._characters);
+		return eq(_characters, ch._characters);
 	}
 	
 	@Override

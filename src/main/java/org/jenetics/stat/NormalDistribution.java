@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNegative;
 import static org.jenetics.util.Validator.nonNull;
@@ -287,9 +288,9 @@ public class NormalDistribution<
 		}
 		
 		final NormalDistribution<?> dist = (NormalDistribution<?>)obj;
-		return _domain.equals(dist._domain) &&
-				Double.doubleToLongBits(_mean) == Double.doubleToLongBits(dist._mean) &&
-				Double.doubleToLongBits(_var) == Double.doubleToLongBits(dist._var);
+		return eq(_domain, dist._domain) &&
+				eq(_mean, dist._mean) &&
+				eq(_var, dist._var);
 	}
 	
 	@Override
