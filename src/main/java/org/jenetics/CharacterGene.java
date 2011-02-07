@@ -125,7 +125,7 @@ public final class CharacterGene
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_character).value();
+		return hashCodeOf(getClass()).and(_character).value();
 	}
 	
 	@Override 

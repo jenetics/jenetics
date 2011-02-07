@@ -163,7 +163,11 @@ public final class Timer
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_label).and(_start).and(_stop).and(_sum).value();
+		return hashCodeOf(getClass()).
+				and(_label).
+				and(_start).
+				and(_stop).
+				and(_sum).value();
 	}
 	
 	@Override

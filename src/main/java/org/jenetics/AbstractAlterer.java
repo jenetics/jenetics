@@ -80,7 +80,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_probability).value();
+		return hashCodeOf(getClass()).and(_probability).value();
 	}
 	
 	@Override

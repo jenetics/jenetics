@@ -242,8 +242,13 @@ public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).
-				and(_quantile).and(_dn).and(_n).and(_nn).and(_q).value();
+		return hashCodeOf(getClass()).
+				and(super.hashCode()).
+				and(_quantile).
+				and(_dn).
+				and(_n).
+				and(_nn).
+				and(_q).value();
 	}
 	
 	@Override

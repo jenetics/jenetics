@@ -154,7 +154,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_genes).value();
+		return hashCodeOf(getClass()).and(_genes).value();
 	}
 	
 	@Override

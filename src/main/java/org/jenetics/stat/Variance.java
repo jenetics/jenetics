@@ -86,7 +86,7 @@ public class Variance<N extends Number> extends Mean<N> {
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_m2).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).and(_m2).value();
 	}
 	
 	@Override

@@ -327,7 +327,7 @@ public class BitChromosome extends Number<BitChromosome>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_genes).value();
+		return hashCodeOf(getClass()).and(_genes).value();
 	}
 	
 	@Override

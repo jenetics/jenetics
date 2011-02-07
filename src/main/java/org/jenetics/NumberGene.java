@@ -204,7 +204,7 @@ public abstract class NumberGene<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_value).and(_min).and(_max).value();
+		return hashCodeOf(getClass()).and(_value).and(_min).and(_max).value();
 	}
 	
 	@Override

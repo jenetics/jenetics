@@ -355,7 +355,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_optimize).
+		return hashCodeOf(getClass()).
+				and(_optimize).
 				and(_generation).
 				and(_ageMean).
 				and(_ageVariance).
@@ -560,9 +561,13 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		
 		@Override
 		public int hashCode() {
-			return hashCodeOf(alter).
-					and(combine).and(evaluation).and(execution).
-					and(selection).and(statistics).value();
+			return hashCodeOf(getClass()).
+					and(alter).
+					and(combine).
+					and(evaluation).
+					and(execution).
+					and(selection).
+					and(statistics).value();
 		}
 		
 		@Override

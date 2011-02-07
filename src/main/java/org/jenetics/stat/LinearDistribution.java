@@ -276,7 +276,10 @@ public class LinearDistribution<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_domain).and(_x1).and(_x2).and(_y1).and(_y2).value();
+		return hashCodeOf(getClass()).
+				and(_domain).
+				and(_x1).and(_x2).
+				and(_y1).and(_y2).value();
 	}
 	
 	@Override

@@ -141,7 +141,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(getClass()).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	@Override

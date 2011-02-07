@@ -125,7 +125,7 @@ public final class LinearRankSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_nminus).and(_nplus).value();
+		return hashCodeOf(getClass()).and(_nminus).and(_nplus).value();
 	}
 	
 	@Override

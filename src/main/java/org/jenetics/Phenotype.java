@@ -171,8 +171,11 @@ public final class Phenotype<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_generation).
-				and(_fitness).and(_rawFitness).and(_genotype).value();
+		return hashCodeOf(getClass()).
+				and(_generation).
+				and(_fitness).
+				and(_rawFitness).
+				and(_genotype).value();
 	}
 
 	@Override

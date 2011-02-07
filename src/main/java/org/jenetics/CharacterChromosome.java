@@ -132,7 +132,9 @@ public class CharacterChromosome
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_validCharacters).value();
+		return hashCodeOf(getClass()).
+				and(super.hashCode()).
+				and(_validCharacters).value();
 	}
 	
 	@Override

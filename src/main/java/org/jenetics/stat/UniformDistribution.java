@@ -246,7 +246,7 @@ public class UniformDistribution<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_domain).value();
+		return hashCodeOf(getClass()).and(_domain).value();
 	}
 	
 	@Override

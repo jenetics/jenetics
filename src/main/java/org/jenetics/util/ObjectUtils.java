@@ -120,68 +120,8 @@ public class ObjectUtils {
 		}
 	}
 	
-	public static HashCodeBuilder hashCodeOf(final boolean value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final boolean[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final byte value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final byte[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final short value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final short[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final int value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final int[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final long value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final long[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final float value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final float[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final double value) {
-		return new HashCodeBuilder(hashCode(value));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final double[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final Object object) {
-		return new HashCodeBuilder(hashCode(object));
-	}
-	
-	public static HashCodeBuilder hashCodeOf(final Object[] values) {
-		return new HashCodeBuilder(Arrays.hashCode(values));
+	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
+		return new HashCodeBuilder(type.hashCode());
 	}
 	
 	private static int hashCode(final boolean value) {

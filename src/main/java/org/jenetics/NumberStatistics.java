@@ -206,8 +206,11 @@ public class NumberStatistics<
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).
-				and(_fitnessMean).and(_fitnessVariance).and(_standardError).value();
+		return hashCodeOf(getClass()).
+				and(super.hashCode()).
+				and(_fitnessMean).
+				and(_fitnessVariance).
+				and(_standardError).value();
 	}
 
 	@Override
