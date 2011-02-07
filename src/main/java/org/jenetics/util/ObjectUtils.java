@@ -238,7 +238,7 @@ public class ObjectUtils {
 		return Arrays.equals(a, b);
 	}
 	
-	public static String asString(final Object a) {
+	public static String str(final Object a) {
 		return a != null ? a.toString() : "null";
 	}
 	

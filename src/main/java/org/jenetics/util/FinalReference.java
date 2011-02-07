@@ -22,9 +22,9 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.ObjectUtils.asString;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.ObjectUtils.str;
 
 import java.io.Serializable;
 
@@ -111,7 +111,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	
 	@Override
 	public String toString() {
-		return asString(_value);
+		return str(_value);
 	}
 	
 }
