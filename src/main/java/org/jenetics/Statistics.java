@@ -202,7 +202,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 	}
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 		
 	protected final Optimize _optimize;
 	protected final int _generation;
