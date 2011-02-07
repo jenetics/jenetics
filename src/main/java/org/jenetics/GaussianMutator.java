@@ -89,7 +89,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(getClass()).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	@Override

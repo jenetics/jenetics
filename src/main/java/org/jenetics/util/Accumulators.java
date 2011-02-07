@@ -99,7 +99,7 @@ public final class Accumulators {
 		
 		@Override
 		public int hashCode() {
-			return hashCodeOf(super.hashCode()).and(_min).value();
+			return hashCodeOf(getClass()).and(super.hashCode()).and(_min).value();
 		}
 		
 		@Override
@@ -186,7 +186,7 @@ public final class Accumulators {
 		
 		@Override
 		public int hashCode() {
-			return hashCodeOf(super.hashCode()).and(_max).value();
+			return hashCodeOf(getClass()).and(super.hashCode()).and(_max).value();
 		}
 		
 		@Override
@@ -287,7 +287,10 @@ public final class Accumulators {
 		
 		@Override
 		public int hashCode() {
-			return hashCodeOf(super.hashCode()).and(_min).and(_max).value();
+			return hashCodeOf(getClass()).
+					and(super.hashCode()).
+					and(_min).
+					and(_max).value();
 		}
 		
 		@Override

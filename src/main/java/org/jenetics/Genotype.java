@@ -196,7 +196,7 @@ public final class Genotype<T extends Gene<?, T>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_chromosomes).value();
+		return hashCodeOf(getClass()).and(_chromosomes).value();
 	}
 	
 	@Override

@@ -183,7 +183,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(getClass()).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	@Override

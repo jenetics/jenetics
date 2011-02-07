@@ -111,7 +111,7 @@ public final class ExponentialRankSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_c).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).and(_c).value();
 	}
 	
 	@Override

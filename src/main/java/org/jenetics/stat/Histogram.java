@@ -287,7 +287,10 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_separators).and(_histogram).value();
+		return hashCodeOf(getClass()).
+				and(super.hashCode()).
+				and(_separators).
+				and(_histogram).value();
 	}
 	
 	@Override
@@ -300,9 +303,9 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		}
 		
 		final Histogram<?> histogram = (Histogram<?>)obj;
-		return super.equals(obj) &&
-				eq(_separators, histogram._separators) &&
-				eq(_histogram, histogram._histogram);
+		return 	eq(_separators, histogram._separators) &&
+				eq(_histogram, histogram._histogram) &&
+				super.equals(obj);
 	}
 	
 	@Override

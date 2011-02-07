@@ -268,7 +268,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_population).value();
+		return hashCodeOf(getClass()).and(_population).value();
 	}
 	
 	@Override

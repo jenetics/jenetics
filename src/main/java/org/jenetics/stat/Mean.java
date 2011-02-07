@@ -91,7 +91,7 @@ public class Mean<N extends Number> extends AdaptableAccumulator<N> {
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_mean).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).and(_mean).value();
 	}
 	
 	@Override

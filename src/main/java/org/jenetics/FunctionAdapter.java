@@ -66,7 +66,7 @@ public final class FunctionAdapter<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_adoptee).value();
+		return hashCodeOf(getClass()).and(_adoptee).value();
 	}
 	
 	@Override

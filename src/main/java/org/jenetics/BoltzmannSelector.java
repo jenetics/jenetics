@@ -117,7 +117,7 @@ public final class BoltzmannSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_b).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).and(_b).value();
 	}
 	
 	@Override

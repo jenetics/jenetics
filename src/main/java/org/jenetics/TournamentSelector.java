@@ -136,7 +136,7 @@ public class TournamentSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_sampleSize).value();
+		return hashCodeOf(getClass()).and(_sampleSize).value();
 	}
 	
 	@Override

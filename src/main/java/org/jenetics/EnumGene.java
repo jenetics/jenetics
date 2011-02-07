@@ -118,7 +118,7 @@ public final class EnumGene<E extends Enum<E>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_value).value();
+		return hashCodeOf(getClass()).and(_value).value();
 	}
 	
 	@Override

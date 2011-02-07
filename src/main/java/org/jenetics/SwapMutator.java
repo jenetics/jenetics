@@ -87,7 +87,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(getClass()).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	@Override

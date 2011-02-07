@@ -104,7 +104,7 @@ public class StochasticUniversalSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(getClass()).value();
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	@Override

@@ -181,7 +181,7 @@ public final class CharSet
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_characters).value();
+		return hashCodeOf(getClass()).and(_characters).value();
 	}
 	
 	@Override

@@ -227,7 +227,10 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(super.hashCode()).and(_min).and(_max).value();
+		return hashCodeOf(getClass()).
+				and(super.hashCode()).
+				and(_min).
+				and(_max).value();
 	}
 	
 	@Override

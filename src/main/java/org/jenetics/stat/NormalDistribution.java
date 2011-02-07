@@ -275,7 +275,7 @@ public class NormalDistribution<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_domain).and(_mean).and(_var).value();
+		return hashCodeOf(getClass()).and(_domain).and(_mean).and(_var).value();
 	}
 	
 	@Override

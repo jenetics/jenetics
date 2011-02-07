@@ -219,7 +219,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_alterers).value();
+		return hashCodeOf(getClass()).and(_alterers).value();
 	}
 	
 	@Override

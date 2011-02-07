@@ -63,7 +63,7 @@ public abstract class AbstractAccumulator<T>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(_samples).value();
+		return hashCodeOf(getClass()).and(_samples).value();
 	}
 	
 	@Override
