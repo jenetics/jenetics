@@ -56,7 +56,8 @@ public class Until {
 				_fitness = statistics.getBestFitness();
 				_stableGenerations = 1;
 			} else {
-				if (_fitness.compareTo(statistics.getBestFitness()) >= 0) {
+				final Optimize opt = statistics.getOptimize();
+				if (opt.compare(_fitness, statistics.getBestFitness()) >= 0) {
 					proceed = ++_stableGenerations <= _genenerations;
 				} else {
 					_fitness = statistics.getBestFitness();
@@ -69,6 +70,15 @@ public class Until {
 		
 	}
 	
+	/**
+	 * Create a <i>terminator</i> which returns {@code false} if the fitness
+	 * hasn't improved for a given number of generations.
+	 * 
+	 * @param <C> the fitness type.
+	 * @param generation the number of generations the fitness don't have been
+	 *        improved.
+	 * @return the GA terminator.
+	 */
 	public static <C extends Comparable<? super C>> 
 	Predicate<Statistics<?, C>> SteadyFitness(final int generation) {
 		return new SteadyFitness<C>(generation);

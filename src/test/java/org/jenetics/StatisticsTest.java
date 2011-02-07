@@ -150,13 +150,17 @@ public class StatisticsTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(new Statistics(123, null, null, 0, 0, 0, 34, 34));
+		SerializeUtils.testXMLSerialization(new Statistics(
+				Optimize.MAXIMUM, 123, null, null, 0, 0, 0, 34, 34
+			));
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(new Statistics(123, null, null, 0, 0, 0, 34, 34));
+		SerializeUtils.testSerialization(new Statistics(
+				Optimize.MAXIMUM, 123, null, null, 0, 0, 0, 34, 34
+			));
 	}
 
 }

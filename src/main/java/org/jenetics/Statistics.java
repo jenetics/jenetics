@@ -23,11 +23,11 @@
 package org.jenetics;
 
 import static java.lang.Double.NaN;
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
 import static org.jenetics.util.Accumulators.accumulate;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.Validator.nonNull;
 
 import java.text.ParseException;
 import java.util.List;
@@ -50,7 +50,6 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
-import org.jenetics.util.ObjectUtils;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
@@ -73,6 +72,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		C extends Comparable<? super C>
 	> 
 	{
+		protected Optimize _optimize = Optimize.MAXIMUM;
 		protected int _generation = 0;
 		protected Phenotype<G, C> _best = null;
 		protected Phenotype<G, C> _worst = null;
@@ -98,13 +98,21 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 */
 		public Builder<G, C> statistics(final Statistics<G, C> statistics) {
 			if (statistics != null) {
+				_optimize = statistics._optimize;
 				_generation = statistics._generation;
 				_best = statistics._best;
 				_worst = statistics._worst;
 				_samples = statistics._samples;
 				_ageMean = statistics._ageMean;
 				_ageVariance = statistics._ageVariance;
+				_killed = statistics._killed;
+				_invalid = statistics._invalid;
 			}
+			return this;
+		}
+		
+		public Builder<G, C> optimize(final Optimize optimize) {
+			_optimize = nonNull(optimize, "Optimize strategy");
 			return this;
 		}
 		
@@ -179,6 +187,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 */
 		public Statistics<G, C> build() {
 			return new Statistics<G, C>(
+					_optimize,
 					_generation,
 					_best,
 					_worst,
@@ -193,6 +202,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	private static final long serialVersionUID = 1L;
 		
+	protected final Optimize _optimize;
 	protected final int _generation;
 	protected final Phenotype<G, C> _best;
 	protected final Phenotype<G, C> _worst;
@@ -210,6 +220,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * may be {@code null}
 	 */ 
 	protected Statistics(
+		final Optimize optimize,
 		final int generation,
 		final Phenotype<G, C> best, 
 		final Phenotype<G, C> worst,
@@ -219,6 +230,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final int killed,
 		final int invalid
 	) {
+		_optimize = optimize;
 		_generation = generation;
 		_best = best;
 		_worst = worst;
@@ -227,6 +239,15 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		_ageVariance = ageVariance;
 		_killed = killed;
 		_invalid = invalid;
+	}
+	
+	/**
+	 * Return the optimize strategy of the GA.
+	 * 
+	 * @return the optimize strategy of the GA.
+	 */
+	public Optimize getOptimize() {
+		return _optimize;
 	}
 	
 	/**
@@ -332,9 +353,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCodeOf(_ageMean).
-					and(_ageVariance).and(_best).and(_worst).
-					and(_invalid).and(_killed).value();
+		return hashCodeOf(_optimize).
+				and(_generation).
+				and(_ageMean).
+				and(_ageVariance).
+				and(_best).
+				and(_worst).
+				and(_invalid).
+				and(_killed).value();
 	}
 	
 	@Override
@@ -347,26 +373,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 		
 		final Statistics<?, ?> statistics = (Statistics<?, ?>)obj;
-		
-		return 
-			doubleToLongBits(statistics._ageMean) == doubleToLongBits(_ageMean) &&
-			doubleToLongBits(statistics._ageVariance) == doubleToLongBits(_ageVariance) &&
-			_best != null ? _best.equals(statistics._best) : statistics._best == null &&
-			_worst != null ?_worst.equals(statistics._worst) : statistics._worst == null &&
-			_invalid == statistics._invalid &&
-			_killed == statistics._killed;
+		return eq(_optimize, statistics._optimize) &&
+				eq(_generation, statistics._generation) &&
+ 				eq(_ageMean, statistics._ageMean) &&
+				eq(_ageVariance, statistics._ageVariance) &&
+				eq(_best, statistics._best) &&
+				eq(_worst, statistics._worst) &&
+				eq(_invalid, statistics._invalid) &&
+				eq(_killed, statistics._killed);
 	}
 	
-	public boolean equals(final Statistics<G, C> statistics, final int ulps) {
-		return statistics == this ||
-				(equals(statistics._ageMean, _ageMean, ulps) &&
-				equals(statistics._ageVariance, _ageVariance, ulps) &&
-				_best != null ? _best.equals(statistics._best) : statistics._best == null &&
-				_worst != null ? _worst.equals(statistics._worst) : statistics._worst == null) &&
-				_invalid == statistics._invalid &&
-				_killed == statistics._killed;
-		
-	}
 	
 	static boolean equals(final double a, final double b, final int ulpDistance) {
 		if (Double.isNaN(a) || Double.isNaN(b)) {
@@ -393,8 +409,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		out.append(format(fpattern, "Age mean", _ageMean));
 		out.append(format(fpattern, "Age variance", _ageVariance));
 		out.append(format(ipattern, "Samples", _samples));
-		out.append(format(spattern, "Best fitness", getBestFitness().toString()));
-		out.append(format(spattern, "Worst fitness", getWorstFitness().toString()));
+		out.append(format(spattern, "Best fitness", getBestFitness()));
+		out.append(format(spattern, "Worst fitness", getWorstFitness()));
 		out.append("+---------------------------------------------------------+");
 		
 		return out.toString();
@@ -404,6 +420,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	protected static final XMLFormat<Statistics> XML = 
 		new XMLFormat<Statistics>(Statistics.class) 
 	{
+		private static final String OPTIMIZE = "optimize";
 		private static final String GENERATION = "generation";
 		private static final String SAMPLES = "samples";
 		private static final String AGE_MEAN = "age-mean";
@@ -418,6 +435,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml) 
 			throws XMLStreamException 
 		{
+			final Optimize optimize = Optimize.valueOf(
+						xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
+					);
 			final int generation = xml.getAttribute(GENERATION, 0);
 			final int samples = xml.getAttribute(SAMPLES, 1);
 			final Float64 meanAge = xml.get(AGE_MEAN);
@@ -428,6 +448,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Phenotype worst = xml.get(WORST_PHENOTYPE);
 			
 			final Statistics statistics = new Statistics(
+					optimize,
 					generation,
 					best, 
 					worst, 
@@ -446,6 +467,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public void write(final Statistics s, final OutputElement xml) 
 			throws XMLStreamException 
 		{
+			xml.setAttribute(OPTIMIZE, s._optimize.name());
 			xml.setAttribute(GENERATION, s._generation);
 			xml.setAttribute(SAMPLES, s._samples);
 			xml.add(Float64.valueOf(s._ageMean), AGE_MEAN);
@@ -679,6 +701,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Optimize opt
 		) {	
 			final Builder<G, C> builder = new Builder<G, C>().generation(generation);
+			builder.optimize(opt);
 			
 			if (!population.isEmpty()) {
 				// The statistics accumulators.
