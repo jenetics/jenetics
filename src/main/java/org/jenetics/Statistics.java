@@ -58,7 +58,9 @@ import org.jenetics.util.FinalReference;
  * @version $Id$
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> 
-	implements Immutable, XMLSerializable 
+	implements 
+		Immutable, 
+		XMLSerializable 
 {
 	
 	/**
