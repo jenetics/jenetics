@@ -122,6 +122,7 @@ public class NumberStatistics<
 		@Override
 		public NumberStatistics<G, R> build() {
 			return new NumberStatistics<G, R>(
+					_optimize,
 					_generation,
 					_best,
 					_worst,
@@ -144,6 +145,7 @@ public class NumberStatistics<
 	protected final double _standardError;
 
 	protected NumberStatistics(
+		final Optimize optimize,
 		final int generation,
 		final Phenotype<G, R> best, 
 		final Phenotype<G, R> worst,
@@ -157,6 +159,7 @@ public class NumberStatistics<
 		final int killed
 	) {
 		super(
+				optimize,
 				generation, 
 				best, 
 				worst, 
@@ -219,7 +222,8 @@ public class NumberStatistics<
 		final NumberStatistics<?, ?> statistics = (NumberStatistics<?, ?>) obj;
 		return eq(statistics._fitnessMean, _fitnessMean) &&
 				eq(statistics._fitnessVariance, _fitnessVariance) &&
-				eq(statistics._standardError, _standardError);
+				eq(statistics._standardError, _standardError) &&
+				super.equals(obj);
 	}
 
 	@Override
@@ -308,6 +312,7 @@ public class NumberStatistics<
 		) {
 			final Builder<G, R> builder = new Builder<G, R>();
 			builder.generation(generation);
+			builder.optimize(opt);
 
 			if (!population.isEmpty()) {
 				// The statistics accumulators.
