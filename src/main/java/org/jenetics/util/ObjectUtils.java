@@ -120,36 +120,41 @@ public class ObjectUtils {
 		}
 	}
 	
+	private static final int P1 = 47;
+	private static final int P2 = 103;
+	private static final int P3 = 1231;
+	private static final int P4 = 1237;
+	
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
 		return new HashCodeBuilder(type.hashCode());
 	}
 	
 	private static int hashCode(final boolean value) {
-		return value ? 1231 : 1237;
+		return value ? P3 : P4;
 	}
 	
 	private static int hashCode(final byte value) {
-		return 31*value + 17;
+		return P1*value + P2;
 	}
 	
 	private static int hashCode(final char value) {
-		return 31*value + 17;
+		return P1*value + P2;
 	}
 	
 	private static int hashCode(final short value) {
-		return 31*value + 17;
+		return P1*value + P2;
 	}
 	
 	private static int hashCode(final int value) {
-		return 31*value + 17;
+		return P1*value + P2;
 	}
 	
 	private static int hashCode(final long value) {
-        return 31*(int)(value^(value >>> 32));
+        return P1*(int)(value^(value >>> 32));
 	}
 
 	private static int hashCode(final float value) {
-		return 31*Float.floatToIntBits(value);
+		return P1*Float.floatToIntBits(value);
 	}
 	
 	private static int hashCode(final double value) {
@@ -158,7 +163,7 @@ public class ObjectUtils {
 	}
 	
 	private static int hashCode(final Object value) {
-		return 31*(value == null ? 0 : value.hashCode()) + 17;
+		return P1*(value == null ? 0 : value.hashCode()) + P2;
 	}
 	
 	public static boolean eq(final boolean a, final boolean b) {
