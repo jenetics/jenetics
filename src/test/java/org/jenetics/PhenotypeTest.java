@@ -25,12 +25,7 @@ package org.jenetics;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
-import java.io.IOException;
-
-import javolution.xml.stream.XMLStreamException;
-
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
 
@@ -38,40 +33,32 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PhenotypeTest {
-
+public class PhenotypeTest extends ObjectTester { 
+    
 	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
-		
-		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		@Override public Float64 evaluate(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
 		}
-	}
+	}	
 	
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
-		final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
-				gtf.newInstance(), ff, scaler, 0
-			);
-		
-		SerializeUtils.testXMLSerialization(pt);
-	}
+	private final Factory<Genotype<Float64Gene>> _genotype = Genotype.valueOf(
+			new Float64Chromosome(0, 1, 50), 
+			new Float64Chromosome(0, 1, 500), 
+			new Float64Chromosome(0, 1, 100),
+			new Float64Chromosome(0, 1, 50)
+		);
+	private final FitnessFunction<Float64Gene, Float64> _ff = new Function();
+	private final FitnessScaler<Float64> _scaler = IdentityScaler.<Float64>valueOf();
+	private final Factory<?> _factory = new Factory<Phenotype<Float64Gene, Float64>>() {
+		@Override public Phenotype<Float64Gene, Float64> newInstance() {
+			return Phenotype.valueOf(_genotype.newInstance(), _ff, _scaler, 0);
+		}
+	};
 	
-	@Test
-	public void objectSerialize() throws IOException {
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final Function ff = new Function();
-		final IdentityScaler<Float64> scaler = IdentityScaler.<Float64>valueOf();
-		final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
-				gtf.newInstance(), ff, scaler, 0
-			);
-
-		SerializeUtils.testSerialization(pt);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
 	}
 	
 }
