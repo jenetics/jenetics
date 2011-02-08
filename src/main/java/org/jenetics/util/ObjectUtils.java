@@ -37,6 +37,11 @@ public class ObjectUtils {
 	}
 	
 	public static final class HashCodeBuilder {
+		private static final int P1 = 47;
+		private static final int P2 = 103;
+		private static final int P3 = 1231;
+		private static final int P4 = 1237;
+		
 		private int _hash = 0;
 		
 		private HashCodeBuilder(final int hash) {
@@ -44,7 +49,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final boolean value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += value ? P3 : P4; return this;
 		}
 		
 		public HashCodeBuilder and(final boolean[] values) {
@@ -52,7 +57,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final byte value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*value + P2; return this;
 		}
 		
 		public HashCodeBuilder and(final byte[] values) {
@@ -60,7 +65,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final char value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*value + P2; return this;
 		}
 		
 		public HashCodeBuilder and(final char[] values) {
@@ -68,7 +73,7 @@ public class ObjectUtils {
 		}		
 		
 		public HashCodeBuilder and(final short value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*value + P2; return this;
 		}
 		
 		public HashCodeBuilder and(final short[] values) {
@@ -76,7 +81,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final int value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*value + P2; return this;
 		}
 		
 		public HashCodeBuilder and(final int[] values) {
@@ -84,7 +89,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final long value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*(int)(value^(value >>> 32)); return this;
 		}
 		
 		public HashCodeBuilder and(final long[] values) {
@@ -92,7 +97,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final float value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*Float.floatToIntBits(value); return this;
 		}
 		
 		public HashCodeBuilder and(final float[] values) {
@@ -100,7 +105,9 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final double value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			long bits = Double.doubleToLongBits(value);
+			_hash += (int)(bits^(bits >>> 32));
+			return this;
 		}
 		
 		public HashCodeBuilder and(final double[] values) {
@@ -108,7 +115,7 @@ public class ObjectUtils {
 		}
 		
 		public HashCodeBuilder and(final Object value) {
-			_hash += ObjectUtils.hashCode(value); return this;
+			_hash += P1*(value == null ? 0 : value.hashCode()) + P2; return this;
 		}
 		
 		public HashCodeBuilder and(final Object[] values) {
@@ -120,50 +127,8 @@ public class ObjectUtils {
 		}
 	}
 	
-	private static final int P1 = 47;
-	private static final int P2 = 103;
-	private static final int P3 = 1231;
-	private static final int P4 = 1237;
-	
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
 		return new HashCodeBuilder(type.hashCode());
-	}
-	
-	private static int hashCode(final boolean value) {
-		return value ? P3 : P4;
-	}
-	
-	private static int hashCode(final byte value) {
-		return P1*value + P2;
-	}
-	
-	private static int hashCode(final char value) {
-		return P1*value + P2;
-	}
-	
-	private static int hashCode(final short value) {
-		return P1*value + P2;
-	}
-	
-	private static int hashCode(final int value) {
-		return P1*value + P2;
-	}
-	
-	private static int hashCode(final long value) {
-        return P1*(int)(value^(value >>> 32));
-	}
-
-	private static int hashCode(final float value) {
-		return P1*Float.floatToIntBits(value);
-	}
-	
-	private static int hashCode(final double value) {
-		long bits = Double.doubleToLongBits(value);
-		return (int)(bits^(bits >>> 32));
-	}
-	
-	private static int hashCode(final Object value) {
-		return P1*(value == null ? 0 : value.hashCode()) + P2;
 	}
 	
 	public static boolean eq(final boolean a, final boolean b) {
