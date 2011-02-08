@@ -22,21 +22,23 @@
  */
 package org.jenetics;
 
-import java.io.IOException;
-
-import javolution.xml.stream.XMLStreamException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest {
+public class PermutationChromosomeTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = new PermutationChromosome(500);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 	
 	@Test
 	public void create() {
@@ -67,16 +69,6 @@ public class PermutationChromosomeTest {
 			sorted = array.get(i).compareTo(array.get(i + 1)) <= 0;
 		}
 		return sorted;
-	}
-	
-	@Test(invocationCount = 5)
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(new PermutationChromosome(10));
-	}
-	
-	@Test(invocationCount = 5)
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(new PermutationChromosome(10));
 	}
 	
 }

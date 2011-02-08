@@ -28,11 +28,9 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.Random;
 
 import javolution.context.LocalContext;
-import javolution.xml.stream.XMLStreamException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -47,7 +45,12 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterGeneTest {
+public class CharacterGeneTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = CharacterGene.valueOf();
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstance() {
@@ -78,16 +81,6 @@ public class CharacterGeneTest {
 			LocalContext.exit();
 		}
 	}
-	
-    @Test
-    public void testHashCode() {
-        CharacterGene g1 = CharacterGene.valueOf('G');
-        CharacterGene g2 = CharacterGene.valueOf('G');
-        CharacterGene g3 = CharacterGene.valueOf('t');
-        
-        assertEquals(g1.hashCode(), g2.hashCode());
-        assertTrue(g1.hashCode() != g3.hashCode());
-    }
 
     @Test
     public void testCharacterGene() {
@@ -133,39 +126,6 @@ public class CharacterGeneTest {
         CharSet cset = CharacterGene.DEFAULT_CHARACTERS;
         assertNotNull(cset);
         assertFalse(cset.isEmpty());
-    }
-
-    @Test
-    public void testEqualsObject() {
-        CharacterGene g1 = CharacterGene.valueOf('1');
-        CharacterGene g2 = CharacterGene.valueOf('2');
-        CharacterGene g3 = CharacterGene.valueOf('3');
-        CharacterGene g4 = CharacterGene.valueOf('3');
-        
-        assertTrue(g4.equals(g3));
-        assertTrue(g4.equals(g4));
-        assertFalse(g1.equals(g2));
-        assertFalse(g2.equals(g3));
-        assertFalse(g2.equals(null));
-        assertFalse(g3.equals(""));
-    }
-
-    @Test
-    public void testToString() {
-        CharacterGene g1 = CharacterGene.valueOf('1');
-        
-        assertNotNull(g1.toString());
-        assertTrue(g1.toString().length() > 0);
-    }
-    
-    @Test
-    public void xmlSerialize() throws XMLStreamException {
-    	SerializeUtils.testXMLSerialization(CharacterGene.valueOf());
-    }
-    
-    @Test
-    public void objectSerialize() throws IOException {
-    	SerializeUtils.testSerialization(CharacterGene.valueOf());
     }
 
 }

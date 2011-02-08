@@ -25,11 +25,9 @@ package org.jenetics;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.testng.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.Random;
 
 import javolution.context.LocalContext;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
@@ -45,7 +43,12 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64GeneTest {
+public class Integer64GeneTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = Integer64Gene.valueOf(0, Long.MAX_VALUE);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 	
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstance() {
@@ -205,18 +208,6 @@ public class Integer64GeneTest {
 			assertEquals(c.getMax().longValue(), max);
 			assertEquals(c.getAllele().longValue(), (long)((i + i + 3)/2));
 		}
-	}
-	
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(Integer64Gene.valueOf(5, 0, 10));
-		SerializeUtils.testXMLSerialization(Integer64Gene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));
-	}
-	
-	@Test
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, 0, 10));
-		SerializeUtils.testSerialization(Integer64Gene.valueOf(5, Integer.MIN_VALUE, Integer.MAX_VALUE));
 	}
 	
 	@Test

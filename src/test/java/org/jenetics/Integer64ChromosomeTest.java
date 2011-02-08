@@ -25,11 +25,9 @@ package org.jenetics;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.Accumulators.accumulate;
 
-import java.io.IOException;
 import java.util.Random;
 
 import javolution.context.LocalContext;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
@@ -39,13 +37,19 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64ChromosomeTest {
+public class Integer64ChromosomeTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstance() {
@@ -81,31 +85,6 @@ public class Integer64ChromosomeTest {
 			LocalContext.exit();
 		}
     }
-	
-	@Test
-	public void equals() {
-		Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
-		Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
-		Assert.assertFalse(c1.equals(c2));
-		
-		c2 = new Integer64Chromosome(c1.toArray());
-		Assert.assertEquals(c2, c1);
-		Assert.assertNotSame(c1, c2);
-		
-		c2 = new Integer64Chromosome(c1.toArray().copy());
-		Assert.assertEquals(c2, c1);
-		Assert.assertNotSame(c1, c2);
-	}
-	
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(new Integer64Chromosome(0, 100, 10));
-	}
-	
-	@Test
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(new Integer64Chromosome(0, 100, 10));
-	}
 	
 }
 

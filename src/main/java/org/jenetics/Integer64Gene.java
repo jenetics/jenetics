@@ -241,8 +241,8 @@ public final class Integer64Gene
 		)
 			throws XMLStreamException
 		{
-			final long min = element.getAttribute(MIN, 0);
-			final long max = element.getAttribute(MAX, 100);
+			final long min = element.getAttribute(MIN, 0L);
+			final long max = element.getAttribute(MAX, 100L);
 			final long value = element.<Long>getNext();
 			return Integer64Gene.valueOf(value, min, max);
 		}

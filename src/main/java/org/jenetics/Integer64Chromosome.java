@@ -192,8 +192,8 @@ public class Integer64Chromosome extends NumberChromosome<Integer64Gene>
 		) throws XMLStreamException 
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
-			final int min = xml.getAttribute(MIN, 0);
-			final int max = xml.getAttribute(MAX, 10);
+			final long min = xml.getAttribute(MIN, 0L);
+			final long max = xml.getAttribute(MAX, 100L);
 			final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 			
 			for (int i = 0; i < length; ++i) {

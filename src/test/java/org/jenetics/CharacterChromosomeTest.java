@@ -25,24 +25,28 @@ package org.jenetics;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.testng.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.Random;
 
 import javolution.context.LocalContext;
-import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.CharSet;
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterChromosomeTest  {
+public class CharacterChromosomeTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = new CharacterChromosome(500);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 
 	
 	@Test(invocationCount = 20, successPercentage = 95)
@@ -95,16 +99,6 @@ public class CharacterChromosomeTest  {
             ++index;
         }
         assertEquals(c.length(), index);
-    }
-
-    @Test
-    public void xmlSerialize() throws XMLStreamException {
-    	SerializeUtils.testXMLSerialization(new CharacterChromosome(23));
-    }
-    
-    @Test
-    public void objectSerialize() throws IOException {
-    	SerializeUtils.testSerialization(new CharacterChromosome(23));
     }
 
 }

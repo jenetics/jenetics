@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.BitSet;
@@ -33,11 +32,18 @@ import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Factory;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitChromosomeTest {
+public class BitChromosomeTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = BitChromosome.valueOf(500, 0.3);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 
 	@Test
 	public void invert() {
@@ -54,14 +60,6 @@ public class BitChromosomeTest {
 		BitChromosome c4 = c3.invert();
 		Assert.assertEquals(c4, c1);
 	}
-	
-    @Test
-    public void testHashCode() {
-        BitChromosome c1 = BitChromosome.valueOf(10);
-        BitChromosome c2 = BitChromosome.valueOf(10);
-        
-        assertEquals(c1.equals(c2), c1.hashCode() == c2.hashCode());
-    }
 
     @Test
     public void testNumValue() {
@@ -170,22 +168,6 @@ public class BitChromosomeTest {
     		}
     	}
     }
-
-    @Test
-    public void testEqualsObject() {
-        BitChromosome c1 = BitChromosome.valueOf(10);
-        BitChromosome c2 = BitChromosome.valueOf(10, c1.toBitSet());
-        
-        assertTrue(c1.equals(c2));
-    }
-
-    @Test
-    public void testToString() {
-        BitChromosome c = BitChromosome.valueOf(12);
-        
-        assertNotNull(c.toString());
-        assertTrue(c.toString().length() > 0);
-    }
     
     @Test
     public void toByteArray() {
@@ -208,15 +190,6 @@ public class BitChromosomeTest {
     	Assert.assertEquals(sc, c);
     }
     
-    @Test
-    public void xmlSerialize() throws Exception {
-    	SerializeUtils.testXMLSerialization(BitChromosome.valueOf(50));
-    }
-    
-    @Test
-    public void objectSerialize() throws Exception {
-    	SerializeUtils.testSerialization(BitChromosome.valueOf(50));
-    }
 
 
 }
