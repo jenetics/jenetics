@@ -25,7 +25,7 @@ package org.jenetics.util;
 import java.util.Arrays;
 
 /**
- * Some helper methods for creating hash codes and compare double values.
+ * Some helper methods for creating hash codes and compare values.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
