@@ -24,37 +24,27 @@ package org.jenetics;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-
-import java.io.IOException;
-
-import javolution.xml.stream.XMLStreamException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class GenotypeTest {
-
-    @Test
-    public void testHashCode() {
-        BitChromosome c1 = BitChromosome.valueOf(12);
-        BitChromosome c2 = BitChromosome.valueOf(12);
-        BitChromosome c3 = c2.copy();
-        Genotype<BitGene> g1 = Genotype.valueOf(c1, c2, c3);
-        Genotype<BitGene> g2 = Genotype.valueOf(c2, c3);
-        Genotype<BitGene> g3 = g2;
-        
-        assertFalse(g1.equals(g2));
-        assertFalse(g1.hashCode() == g2.hashCode());
-        assertTrue(g2.equals(g3));
-        assertTrue(g2.hashCode() == g3.hashCode());
-        assertEquals(g2, g3);
-    }
-
+public class GenotypeTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = Genotype.valueOf(
+			new Float64Chromosome(0, 1, 50), 
+			new Float64Chromosome(0, 1, 500), 
+			new Float64Chromosome(0, 1, 100),
+			new Float64Chromosome(0, 1, 50)
+		);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 
     @Test
     public void testGenotypeGenotypeOfT() {
@@ -88,26 +78,6 @@ public class GenotypeTest {
         
         assertFalse(g1 == g2);
         assertFalse(g1.equals(g2));
-    }
-
-    @Test(invocationCount = 5)
-    public void xmlSerialize() throws XMLStreamException {
-        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);
-        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2, c3);
-        
-    	SerializeUtils.testXMLSerialization(g1);
-    }
-    
-    @Test(invocationCount = 5)
-    public void objectSerialize() throws IOException {
-        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c3 = new Integer64Chromosome(0, 100, 10);
-        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2, c3);
-        
-    	SerializeUtils.testSerialization(g1);
     }
     
     @Test

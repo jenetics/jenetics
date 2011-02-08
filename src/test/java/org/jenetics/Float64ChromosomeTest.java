@@ -22,17 +22,13 @@
  */
 package org.jenetics;
 
-import static org.jenetics.SerializeUtils.testSerialization;
-import static org.jenetics.SerializeUtils.testXMLSerialization;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.Accumulators.accumulate;
 import static org.testng.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.Random;
 
 import javolution.context.LocalContext;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -42,13 +38,19 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64ChromosomeTest {
+public class Float64ChromosomeTest extends ObjectTester { 
+    
+	private final Factory<?> _factory = new Float64Chromosome(0, 1, 500);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstance() {
@@ -95,33 +97,6 @@ public class Float64ChromosomeTest {
             assertEquals(-12.0, g.getMin().doubleValue());
             assertEquals(230.123, g.getMax().doubleValue());
         }
-    }
-    
-    @Test
-    public void equals() {
-    	Float64Chromosome c1 = new Float64Chromosome(-12.0, 230.123, 3);
-    	Float64Chromosome c2 = new Float64Chromosome(-12.0, 230.123, 3);
-    	Assert.assertFalse(c1.equals(c2));
-    	
-    	
-    	
-    	c2 = new Float64Chromosome(c1.toArray());
-    	Assert.assertNotSame(c2, c1);
-    	Assert.assertEquals(c2, c1);
-    	
-    	c2 = new Float64Chromosome(c1.toArray().copy());
-    	Assert.assertNotSame(c2, c1);
-    	Assert.assertEquals(c2, c1);
-    }
-    
-    @Test
-    public void xmlSerialize() throws XMLStreamException {
-    	testXMLSerialization(new Float64Chromosome(-12.0, 230.123, 1));
-    }
-    
-    @Test
-    public void objectSerialize() throws IOException {
-    	testSerialization(new Float64Chromosome(-12.0, 230.123, 1));
     }
 
 }

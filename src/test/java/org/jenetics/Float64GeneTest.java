@@ -27,11 +27,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.Random;
 
 import javolution.context.LocalContext;
-import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -47,8 +45,13 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64GeneTest { 
+public class Float64GeneTest extends ObjectTester { 
     
+	private final Factory<?> _factory = Float64Gene.valueOf(0, 1);
+	@Override protected Factory<?> getFactory() {
+		return _factory;
+	}
+	
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstance() {
 		LocalContext.enter();
@@ -245,29 +248,6 @@ public class Float64GeneTest {
     }
 
 	@Test
-    public void testHashCode() {
-        Float64Gene g1 = Float64Gene.valueOf(3.345, 0.345, 5.345);
-        Float64Gene g2 = Float64Gene.valueOf(4.345, 1.345, 7.345);
-        Float64Gene g3 = Float64Gene.valueOf(3.345, 0.345, 5.345);
-        
-        assertTrue(g1.hashCode() == g3.hashCode());
-        assertTrue(g1.hashCode() != g2.hashCode());
-    }
-
-	@Test
-    public void equalsObject() {
-        Float64Gene g1 = Float64Gene.valueOf(4.567, 2.567, 5.567);
-        Float64Gene g2 = Float64Gene.valueOf(4.567, 1.567, 7.567);
-        Float64Gene g3 = Float64Gene.valueOf(4.567, 2.567, 5.567);
-        
-        assertTrue(g1.equals(g3));
-        assertFalse(g1.equals(g2));
-        assertFalse(g2.equals(g1));
-        assertFalse(g2.equals(null));
-        assertFalse(g2.equals(""));
-    }
-
-	@Test
     public void getMinValue() {
         Float64Gene g1 = Float64Gene.valueOf(3.1, 0.1, 5.1);
         Float64Gene g2 = Float64Gene.valueOf(4.1, 1.1, 7.1);
@@ -289,25 +269,6 @@ public class Float64GeneTest {
         assertEquals(g3.getMax().doubleValue(), 5.2);
     }
 
-	@Test
-    public void testToString() {
-        Float64Gene g1 = Float64Gene.valueOf(3.5, 0.5, 5.5);
-        
-        assertTrue(g1.toString() != null);
-        assertTrue(g1.toString().length() > 0);
-    }
-	
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(Float64Gene.valueOf(3.5, 0.5, 5.5));
-		SerializeUtils.testXMLSerialization(Float64Gene.valueOf(Math.PI, 0.5, 5.5));
-	}
-	
-	@Test
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(Float64Gene.valueOf(3.5, 0.5, 5.5));
-		SerializeUtils.testSerialization(Float64Gene.valueOf(Math.PI, 0.5, 5.5));
-	}
 }
 
 

@@ -20,38 +20,28 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.util.Factory;
+import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitGeneTest extends ObjectTester {
-
-	@Override protected Factory<?> getFactory() {
-		return BitGene.FALSE;
+public class ConstantRandom extends Random {
+	private static final long serialVersionUID = 1L;
+	
+	private final int _random;
+	
+	public ConstantRandom(final int random) {
+		_random = random;
 	}
 
-    @Test
-    public void testGetValue() {
-        assertEquals(BitGene.FALSE.getBit(), false);
-        assertEquals(BitGene.ZERO.getBit(), false);
-        assertEquals(BitGene.TRUE.getBit(), true);
-        assertEquals(BitGene.ONE.getBit(), true);
-    }
-
-    @Test
-    public void testCompareTo() {
-        assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
-        assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
-        assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
-    }
-    
+	@Override
+	protected int next(int bits) {
+		return _random;
+	}
+	
+	
+	
 }
