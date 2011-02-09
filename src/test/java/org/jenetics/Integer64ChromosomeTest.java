@@ -37,7 +37,6 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -48,9 +47,9 @@ public class Integer64ChromosomeTest
 	extends NumberChromosomeTester<Integer64, Integer64Gene> 
 { 
     
-	private final Factory<Chromosome<Integer64Gene>> 
+	private final Integer64Chromosome 
 	_factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);
-	@Override protected Factory<Chromosome<Integer64Gene>> getFactory() {
+	@Override protected Integer64Chromosome getFactory() {
 		return _factory;
 	}
 
@@ -88,6 +87,34 @@ public class Integer64ChromosomeTest
 			LocalContext.exit();
 		}
     }
+	
+	@Test
+	public void firstGeneConverter() {
+		final Integer64Chromosome c = getFactory().newInstance();
+		
+		Assert.assertEquals(Integer64Chromosome.Gene.convert(c), c.getGene(0));
+	}
+	
+	@Test
+	public void geneConverter() {
+		final Integer64Chromosome c = getFactory().newInstance();
+		
+		for (int i = 0; i < c.length(); ++i) {
+			Assert.assertEquals(
+					Integer64Chromosome.Gene(i).convert(c), 
+					c.getGene(i)
+				);
+		}
+	}
+	
+	@Test
+	public void genesConverter() {
+		final Integer64Chromosome c = getFactory().newInstance();
+		Assert.assertEquals(
+				Integer64Chromosome.Genes.convert(c), 
+				c.toArray()
+			);
+	}
 	
 }
 
