@@ -42,8 +42,8 @@ public abstract class ObjectTester<T> {
 	
 	protected abstract Factory<T> getFactory();
 	
-	private Array<Object> newSameObjects(final int nobjects) {
-		final Array<Object> objects = new Array<Object>(nobjects);
+	protected Array<T> newSameObjects(final int nobjects) {
+		final Array<T> objects = new Array<T>(nobjects);
 		
 		LocalContext.enter();
 		try {
@@ -61,7 +61,7 @@ public abstract class ObjectTester<T> {
 	
 	@Test
 	public void equals() {
-		final Array<Object> same = newSameObjects(5);
+		final Array<T> same = newSameObjects(5);
 		
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -98,7 +98,7 @@ public abstract class ObjectTester<T> {
 
 	@Test
 	public void hashcode() {
-		final Array<Object> same = newSameObjects(5);
+		final Array<T> same = newSameObjects(5);
 		
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
@@ -110,7 +110,7 @@ public abstract class ObjectTester<T> {
 	
 	@Test
 	public void tostring() {
-		final Array<Object> same = newSameObjects(5);
+		final Array<T> same = newSameObjects(5);
 		
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
