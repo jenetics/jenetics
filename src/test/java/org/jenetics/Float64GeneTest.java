@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64GeneTest extends GeneTester<Float64Gene> { 
+public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> { 
     
 	private final Factory<Float64Gene> 
 	_factory = Float64Gene.valueOf(0, Double.MAX_VALUE);
@@ -114,90 +114,23 @@ public class Float64GeneTest extends GeneTester<Float64Gene> {
         assertEquals(gene.getMin().doubleValue(), -10.567);
         assertEquals(gene.getMax().doubleValue(), 10.567);
     }
-
-	@Test
-    public void plus() {
-		final double min = -Double.MAX_VALUE;
-		final double max = Double.MAX_VALUE;
-		final Float64Gene template = Float64Gene.valueOf(min, max);
-		
-		for (int i = 0; i < 500; ++i) {
-			final Float64Gene a = template.newInstance(i);
-			final Float64Gene b = template.newInstance(i);
-			final Float64Gene c = a.plus(b);
-			
-			assertEquals(a.getMin().doubleValue(), min);
-			assertEquals(a.getMax().doubleValue(), max);
-			assertEquals(b.getMin().doubleValue(), min);
-			assertEquals(b.getMax().doubleValue(), max);
-			assertEquals(c.getMin().doubleValue(), min);
-			assertEquals(c.getMax().doubleValue(), max);
-			assertEquals(c.getAllele().doubleValue(), (double)i+i);
-		}
-    }
-
-	@Test
-    public void minus() {
-		final double min = -Double.MAX_VALUE;
-		final double max = Double.MAX_VALUE;
-		final Float64Gene template = Float64Gene.valueOf(min, max);
-		
-		for (int i = -500; i < 500; ++i) {
-			final Float64Gene a = template.newInstance(i);
-			final Float64Gene b = template.newInstance(i);
-			final Float64Gene c = a.minus(b);
-			
-			assertEquals(a.getMin().doubleValue(), min);
-			assertEquals(a.getMax().doubleValue(), max);
-			assertEquals(b.getMin().doubleValue(), min);
-			assertEquals(b.getMax().doubleValue(), max);
-			assertEquals(c.getMin().doubleValue(), min);
-			assertEquals(c.getMax().doubleValue(), max);;
-			assertEquals(c.getAllele().doubleValue(), (double)i-i);
-		}
-    }
-
-	@Test
-    public void times() {
-		final double min = -Double.MAX_VALUE;
-		final double max = Double.MAX_VALUE;
-		final Float64Gene template = Float64Gene.valueOf(min, max);
-		
-		for (int i = -500; i < 500; ++i) {
-			final Float64Gene a = template.newInstance(i);
-			final Float64Gene b = template.newInstance(i);
-			final Float64Gene c = a.times(b);
-			
-			assertEquals(a.getMin().doubleValue(), min);
-			assertEquals(a.getMax().doubleValue(), max);
-			assertEquals(b.getMin().doubleValue(), min);
-			assertEquals(b.getMax().doubleValue(), max);
-			assertEquals(c.getMin().doubleValue(), min);
-			assertEquals(c.getMax().doubleValue(), max);
-			assertEquals(c.getAllele().doubleValue(), (double)i*i);
-		}
-    }
 	
 	@Test
-    public void divide() {
-		final double min = -Double.MAX_VALUE;
-		final double max = Double.MAX_VALUE;
-		final Float64Gene template = Float64Gene.valueOf(min, max);
-		
-		for (int i = 1; i < 500; ++i) {
-			final Float64Gene a = template.newInstance(i);
-			final Float64Gene b = template.newInstance(i + 3);
-			final Float64Gene c = a.divide(b);
+	public void divide() {
+		for (int i = 0; i < 100; ++i) {
+			final Float64Gene gene1 = getFactory().newInstance();
+			final Float64Gene gene2 = getFactory().newInstance();
+			final Float64Gene gene3 = gene1.divide(gene2);
 			
-			assertEquals(a.getMin().doubleValue(), min);
-			assertEquals(a.getMax().doubleValue(), max);
-			assertEquals(b.getMin().doubleValue(), min);
-			assertEquals(b.getMax().doubleValue(), max);
-			assertEquals(c.getMin().doubleValue(), min);
-			assertEquals(c.getMax().doubleValue(), max);
-			assertEquals(c.getAllele().doubleValue(), (double)i/(i + 3.0));
+			assertMinMax(gene1, gene2);
+			assertMinMax(gene2, gene3);
+			assertValid(gene3);
+			Assert.assertEquals(
+					gene3.getNumber(), 
+					gene1.getNumber().divide(gene2.getNumber())
+				);
 		}
-    }
+	}
 	
 	@Test
 	public void mean() {
@@ -235,18 +168,6 @@ public class Float64GeneTest extends GeneTester<Float64Gene> {
 		final Float64Gene gene = Float64Gene.valueOf(0, 1, 2);
 		Assert.assertFalse(gene.isValid());
 	}
-
-	@Test
-    public void compareTo() {
-        Float64Gene g1 = Float64Gene.valueOf(3.123, 0.123, 5.123);
-        Float64Gene g2 = Float64Gene.valueOf(4.123, 1.123, 7.123);
-        Float64Gene g3 = Float64Gene.valueOf(3.123, 0.123, 5.123);
-        
-        assertTrue(g1.compareTo(g2) < 0);
-        assertTrue(g2.compareTo(g1) > 0);
-        assertTrue(g1.compareTo(g1) == 0);
-        assertTrue(g3.compareTo(g1) == 0);
-    }
 
 	@Test
     public void getMinValue() {

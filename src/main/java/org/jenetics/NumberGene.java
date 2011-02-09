@@ -91,13 +91,21 @@ public abstract class NumberGene<
 	}
 	
 	/**
+	 * Create a new gene from the given {@code value}.
+	 * 
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public abstract G newInstance(final N value); 
+	
+	/**
 	 * Create a new NumberGene with the same limits and the given value.
 	 * 
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
-	public abstract G newInstance(final java.lang.Number value); 
+	public abstract G newInstance(final java.lang.Number value);
 		
 	/**
 	 * Set the <code>NumerGene</code>.

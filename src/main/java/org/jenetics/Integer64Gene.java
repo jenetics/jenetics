@@ -125,12 +125,7 @@ public final class Integer64Gene
 		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
 	}
 	
-	/**
-	 * Create a new gene from the given {@code value}.
-	 * 
-	 * @param value the value of the new gene.
-	 * @return a new gene with the given value.
-	 */
+	@Override
 	public Integer64Gene newInstance(final Integer64 value) {
 		return valueOf(value, _min, _max);
 	}
@@ -287,6 +282,7 @@ public final class Integer64Gene
 				Integer64.valueOf(in.readLong())
 			);	
 	}
+
 	
 }
 
