@@ -45,10 +45,11 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64GeneTest extends ObjectTester { 
+public class Float64GeneTest extends ObjectTester<Float64Gene> { 
     
-	private final Factory<?> _factory = Float64Gene.valueOf(0, 1);
-	@Override protected Factory<?> getFactory() {
+	private final Factory<Float64Gene> 
+	_factory = Float64Gene.valueOf(0, Double.MAX_VALUE);
+	@Override protected Factory<Float64Gene> getFactory() {
 		return _factory;
 	}
 	

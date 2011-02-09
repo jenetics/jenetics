@@ -33,7 +33,7 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PhenotypeTest extends ObjectTester { 
+public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>> { 
     
 	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 2793605351118238308L;
@@ -51,13 +51,14 @@ public class PhenotypeTest extends ObjectTester {
 		);
 	private final FitnessFunction<Float64Gene, Float64> _ff = new Function();
 	private final FitnessScaler<Float64> _scaler = IdentityScaler.<Float64>valueOf();
-	private final Factory<?> _factory = new Factory<Phenotype<Float64Gene, Float64>>() {
+	private final Factory<Phenotype<Float64Gene, Float64>> 
+	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {
 		@Override public Phenotype<Float64Gene, Float64> newInstance() {
 			return Phenotype.valueOf(_genotype.newInstance(), _ff, _scaler, 0);
 		}
 	};
 	
-	@Override protected Factory<?> getFactory() {
+	@Override protected Factory<Phenotype<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
 	

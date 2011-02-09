@@ -33,10 +33,11 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest extends ObjectTester { 
+public class PermutationChromosomeTest extends ObjectTester<Chromosome<Integer64Gene>> { 
     
-	private final Factory<?> _factory = new PermutationChromosome(500);
-	@Override protected Factory<?> getFactory() {
+	private final Factory<Chromosome<Integer64Gene>> 
+	_factory = new PermutationChromosome(500);
+	@Override protected Factory<Chromosome<Integer64Gene>> getFactory() {
 		return _factory;
 	}
 	

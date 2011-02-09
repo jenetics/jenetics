@@ -41,10 +41,11 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterChromosomeTest extends ObjectTester { 
+public class CharacterChromosomeTest extends ObjectTester<Chromosome<CharacterGene>> { 
     
-	private final Factory<?> _factory = new CharacterChromosome(500);
-	@Override protected Factory<?> getFactory() {
+	private final Factory<Chromosome<CharacterGene>> 
+	_factory = new CharacterChromosome(500);
+	@Override protected Factory<Chromosome<CharacterGene>> getFactory() {
 		return _factory;
 	}
 
