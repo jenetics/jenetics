@@ -23,17 +23,16 @@
 package org.jenetics;
 
 import java.io.Serializable;
-import java.util.Random;
 
+import javolution.context.LocalContext;
 import javolution.xml.XMLSerializable;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ConstantRandom;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,15 +45,15 @@ public abstract class ObjectTester {
 	private Array<Object> newSameObjects(final int nobjects) {
 		final Array<Object> objects = new Array<Object>(nobjects);
 		
-		final Random constant = new ConstantRandom(12312309);
-		final Random original = RandomRegistry.getRandom();
-		RandomRegistry.setRandom(constant);
+		LocalContext.enter();
 		try {
+			RandomRegistry.setRandom(new ConstantRandom(12312309));
+			
 			for (int i = 0; i < nobjects; ++i) {
 				objects.set(i, getFactory().newInstance());
 			}
 		} finally {
-			RandomRegistry.setRandom(original);
+			LocalContext.exit();
 		}
 		
 		return objects;
