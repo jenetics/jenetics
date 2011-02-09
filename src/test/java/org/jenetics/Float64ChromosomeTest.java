@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.Accumulators.accumulate;
-import static org.testng.Assert.assertEquals;
 
 import java.util.Random;
 
@@ -45,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64ChromosomeTest extends ObjectTester<Chromosome<Float64Gene>> { 
+public class Float64ChromosomeTest extends ChromosomeTester<Float64Gene> { 
     
 	private final Factory<Chromosome<Float64Gene>> 
 	_factory = new Float64Chromosome(0, Double.MAX_VALUE, 500);
@@ -54,7 +53,7 @@ public class Float64ChromosomeTest extends ObjectTester<Chromosome<Float64Gene>>
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
-    public void newInstance() {
+    public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random());
@@ -87,17 +86,6 @@ public class Float64ChromosomeTest extends ObjectTester<Chromosome<Float64Gene>>
 		} finally {
 			LocalContext.exit();
 		}
-    }
-
-    @Test
-    public void createChromosome() {
-        final Float64Chromosome c1 = new Float64Chromosome(-12.0, 230.123, 100);
-        final Float64Chromosome c2 = c1.newInstance();
-        
-        for (NumberGene<Float64, ?> g : c2) {
-            assertEquals(-12.0, g.getMin().doubleValue());
-            assertEquals(230.123, g.getMax().doubleValue());
-        }
     }
 
 }

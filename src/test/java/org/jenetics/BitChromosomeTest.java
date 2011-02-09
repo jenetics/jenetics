@@ -38,7 +38,7 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> { 
+public class BitChromosomeTest extends ChromosomeTester<BitGene> { 
     
 	private final Factory<Chromosome<BitGene>> 
 	_factory = BitChromosome.valueOf(500, 0.3);
@@ -63,7 +63,7 @@ public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> {
 	}
 
     @Test
-    public void testNumValue() {
+    public void numValue() {
         BitChromosome c1 = BitChromosome.valueOf(10);
         
         int value = c1.intValue();
@@ -74,7 +74,7 @@ public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> {
     }
 
     @Test
-    public void testBitChromosomeIntProbability() {
+    public void intProbability() {
         BitChromosome c = BitChromosome.valueOf(10, 0);
         for (BitGene g : c) {
             assertFalse(g.getBit());
@@ -87,7 +87,7 @@ public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> {
     }
 
     @Test
-    public void testBitChromosomeBitSet() {
+    public void bitChromosomeBitSet() {
         BitSet bits = new BitSet(10);
         for (int i = 0; i < 10; ++i) {
             bits.set(i, i % 2 == 0);
@@ -100,25 +100,7 @@ public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> {
     }
 
     @Test
-    public void testLength() {
-        BitChromosome c = BitChromosome.valueOf(34);
-        assertEquals(34, c.length());
-    }
-
-    @Test
-    public void testIterator() {
-        BitChromosome c = BitChromosome.valueOf(17);
-        
-        int index = 0;
-        for (BitGene g : c) {
-            assertEquals(c.getGene(index).getBit(), g.getBit());
-            ++index;
-        }
-        assertEquals(c.length(), index);
-    }
-
-    @Test
-    public void testToBigInteger() {
+    public void toBigInteger() {
         BitChromosome c = BitChromosome.valueOf(LargeInteger.valueOf(234902));
         
         LargeInteger i = c.toLargeInteger();
@@ -135,39 +117,13 @@ public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> {
     }
 
     @Test
-    public void testToBitSet() {
+    public void toBitSet() {
         BitChromosome c1 = BitChromosome.valueOf(34);
         BitChromosome c2 = BitChromosome.valueOf(34, c1.toBitSet());
         
         for (int i = 0; i < c1.length(); ++i) {
             assertEquals(c1.getGene(i).getBit(), c2.getGene(i).getBit());
         }
-    }
-
-    @Test
-    public void testCreate() {
-        BitChromosome c1 = BitChromosome.valueOf(23);
-        BitChromosome c2 = c1.newInstance();
-        
-        assertTrue(c1 != c2);
-        assertEquals(c1.length(), c2.length());
-    }
-    
-    @Test
-    public void newInstance() {
-    	final int length = 1000;
-    	BitChromosome c = BitChromosome.valueOf(length, 0.1);
-    	Assert.assertEquals(c.length(), length);
-    	
-    	c = c.newInstance();
-    	Assert.assertEquals(c.length(), length);
-    	
-    	int ones = 0;
-    	for (int i = 0; i < length; ++i) {
-    		if (c.getGene(i).booleanValue()) {
-    			++ones;
-    		}
-    	}
     }
     
     @Test

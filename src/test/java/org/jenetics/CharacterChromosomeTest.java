@@ -23,7 +23,6 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.testng.Assert.assertEquals;
 
 import java.util.Random;
 
@@ -41,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterChromosomeTest extends ObjectTester<Chromosome<CharacterGene>> { 
+public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> { 
     
 	private final Factory<Chromosome<CharacterGene>> 
 	_factory = new CharacterChromosome(500);
@@ -51,7 +50,7 @@ public class CharacterChromosomeTest extends ObjectTester<Chromosome<CharacterGe
 
 	
 	@Test(invocationCount = 20, successPercentage = 95)
-    public void newInstance() {
+    public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random());
@@ -72,34 +71,6 @@ public class CharacterChromosomeTest extends ObjectTester<Chromosome<CharacterGe
 		} finally {
 			LocalContext.exit();
 		}
-    }
-	
-    @Test
-    public void testCreate() {
-        CharacterChromosome c1 = new CharacterChromosome(34);
-        CharacterChromosome c2 = c1.newInstance();
-        
-        assertEquals(c1.length(), c2.length());
-    }
-
-    @Test
-    public void testHashCode() {
-        CharacterChromosome c1 = new CharacterChromosome(23);
-        CharacterChromosome c2 = new CharacterChromosome(23);
-        
-        assertEquals(c1.equals(c2), c1.hashCode() == c2.hashCode());
-    }
-
-    @Test
-    public void testIterator() {
-        CharacterChromosome c = new CharacterChromosome(17);
-        
-        int index = 0;
-        for (CharacterGene g : c) {
-            assertEquals(c.getGene(index), g);
-            ++index;
-        }
-        assertEquals(c.length(), index);
     }
 
 }

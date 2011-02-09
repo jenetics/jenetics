@@ -52,7 +52,7 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 	}
 	
 	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstance() {
+	public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random());
