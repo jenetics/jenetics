@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64GeneTest extends GeneTester<Integer64Gene> { 
+public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene> { 
     
 	private final Factory<Integer64Gene> 
 	_factory = Integer64Gene.valueOf(0, Long.MAX_VALUE);
@@ -107,88 +107,21 @@ public class Integer64GeneTest extends GeneTester<Integer64Gene> {
 	}
 	
 	@Test
-    public void plus() {
-		final long min = -Integer.MAX_VALUE;
-		final long max = Integer.MAX_VALUE;
-		final Integer64Gene template = Integer64Gene.valueOf(min, max);
-		
-		for (int i = -500; i < 500; ++i) {
-			final Integer64Gene a = template.newInstance(i);
-			final Integer64Gene b = template.newInstance(2*i);
-			final Integer64Gene c = a.plus(b);
+	public void divide() {
+		for (int i = 0; i < 100; ++i) {
+			final Integer64Gene gene1 = getFactory().newInstance();
+			final Integer64Gene gene2 = getFactory().newInstance();
+			final Integer64Gene gene3 = gene1.divide(gene2);
 			
-			assertEquals(a.getMin().longValue(), min);
-			assertEquals(a.getMax().longValue(), max);
-			assertEquals(b.getMin().longValue(), min);
-			assertEquals(b.getMax().longValue(), max);
-			assertEquals(c.getMin().longValue(), min);
-			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), i+i*2);
+			assertMinMax(gene1, gene2);
+			assertMinMax(gene2, gene3);
+			assertValid(gene3);
+			Assert.assertEquals(
+					gene3.getNumber(), 
+					gene1.getNumber().divide(gene2.getNumber())
+				);
 		}
-    }
-
-	@Test
-    public void minus() {
-		final long min = -Integer.MAX_VALUE;
-		final long max = Integer.MAX_VALUE;
-		final Integer64Gene template = Integer64Gene.valueOf(min, max);
-		
-		for (int i = -500; i < 500; ++i) {
-			final Integer64Gene a = template.newInstance(i);
-			final Integer64Gene b = template.newInstance(2*i);
-			final Integer64Gene c = a.minus(b);
-			
-			assertEquals(a.getMin().longValue(), min);
-			assertEquals(a.getMax().longValue(), max);
-			assertEquals(b.getMin().longValue(), min);
-			assertEquals(b.getMax().longValue(), max);
-			assertEquals(c.getMin().longValue(), min);
-			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), i-(2*i));
-		}
-    }
-
-	@Test
-    public void times() {
-		final long min = -Integer.MAX_VALUE;
-		final long max = Integer.MAX_VALUE;
-		final Integer64Gene template = Integer64Gene.valueOf(min, max);
-		
-		for (int i = -500; i < 500; ++i) {
-			final Integer64Gene a = template.newInstance(i);
-			final Integer64Gene b = template.newInstance(i);
-			final Integer64Gene c = a.times(b);
-			
-			assertEquals(a.getMin().longValue(), min);
-			assertEquals(a.getMax().longValue(), max);
-			assertEquals(b.getMin().longValue(), min);
-			assertEquals(b.getMax().longValue(), max);
-			assertEquals(c.getMin().longValue(), min);
-			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), i*i);
-		}
-    }
-	
-	@Test
-    public void divide() {
-		final long min = -Integer.MAX_VALUE;
-		final long max = Integer.MAX_VALUE;
-		final Integer64Gene template = Integer64Gene.valueOf(min, max);
-		
-		for (int i = 1; i < 500; ++i) {
-			final Integer64Gene a = template.newInstance(i);
-			final Integer64Gene b = template.newInstance(i + 3);
-			final Integer64Gene c = a.divide(b);
-			
-			assertEquals(a.getMin().longValue(), min);
-			assertEquals(a.getMax().longValue(), max);
-			assertEquals(b.getMin().longValue(), min);
-			assertEquals(b.getMax().longValue(), max);
-			assertEquals(c.getMin().longValue(), min);
-			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), i/(i + 3));
-		}
-    }
+	}
 	
 	@Test
 	public void mean() {

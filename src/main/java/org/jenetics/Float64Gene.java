@@ -133,12 +133,7 @@ public final class Float64Gene
 		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 	
-	/**
-	 * Create a new gene from the given {@code value}.
-	 * 
-	 * @param value the value of the new gene.
-	 * @return a new gene with the given value.
-	 */
+	@Override
 	public Float64Gene newInstance(final Float64 value) {
 		return valueOf(value, _min, _max);
 	}
