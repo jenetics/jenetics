@@ -37,7 +37,6 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -48,9 +47,9 @@ public class Float64ChromosomeTest
 	extends NumberChromosomeTester<Float64, Float64Gene> 
 { 
     
-	private final Factory<Chromosome<Float64Gene>> 
+	private final Float64Chromosome 
 	_factory = new Float64Chromosome(0, Double.MAX_VALUE, 500);
-	@Override protected Factory<Chromosome<Float64Gene>> getFactory() {
+	@Override protected Float64Chromosome getFactory() {
 		return _factory;
 	}
 
@@ -90,4 +89,38 @@ public class Float64ChromosomeTest
 		}
     }
 
+	@Test
+	public void firstGeneConverter() {
+		final Float64Chromosome c = getFactory().newInstance();
+		
+		Assert.assertEquals(Float64Chromosome.Gene.convert(c), c.getGene(0));
+	}
+	
+	@Test
+	public void geneConverter() {
+		final Float64Chromosome c = getFactory().newInstance();
+		
+		for (int i = 0; i < c.length(); ++i) {
+			Assert.assertEquals(
+					Float64Chromosome.Gene(i).convert(c), 
+					c.getGene(i)
+				);
+		}
+	}
+	
+	@Test
+	public void genesConverter() {
+		final Float64Chromosome c = getFactory().newInstance();
+		Assert.assertEquals(
+				Float64Chromosome.Genes.convert(c), 
+				c.toArray()
+			);
+	}
+	
 }
+
+
+
+
+
+
