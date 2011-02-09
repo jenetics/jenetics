@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64GeneTest extends ObjectTester<Integer64Gene> { 
+public class Integer64GeneTest extends GeneTester<Integer64Gene> { 
     
 	private final Factory<Integer64Gene> 
 	_factory = Integer64Gene.valueOf(0, Long.MAX_VALUE);

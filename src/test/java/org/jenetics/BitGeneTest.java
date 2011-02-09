@@ -33,7 +33,7 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitGeneTest extends ObjectTester<BitGene> {
+public class BitGeneTest extends GeneTester<BitGene> {
 
 	@Override protected Factory<BitGene> getFactory() {
 		return BitGene.FALSE;
