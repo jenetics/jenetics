@@ -44,7 +44,9 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64ChromosomeTest extends ChromosomeTester<Integer64Gene> { 
+public class Integer64ChromosomeTest 
+	extends NumberChromosomeTester<Integer64, Integer64Gene> 
+{ 
     
 	private final Factory<Chromosome<Integer64Gene>> 
 	_factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);

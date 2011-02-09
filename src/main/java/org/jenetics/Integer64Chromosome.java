@@ -42,7 +42,7 @@ import org.jenetics.util.Converter;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64Chromosome extends NumberChromosome<Integer64Gene> 
+public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Gene> 
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;

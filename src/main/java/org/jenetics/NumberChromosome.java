@@ -39,7 +39,10 @@ import org.jenetics.util.Array;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class NumberChromosome<G extends NumberGene<?, G>> 
+public abstract class NumberChromosome<
+	N extends Number<N>, 
+	G extends NumberGene<N, G>
+> 
 	extends AbstractChromosome<G>
 {
 	private static final long serialVersionUID = 1L;
@@ -47,12 +50,12 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 	/**
 	 * The minimum value of this <code>NumberChromosome</code>.
 	 */
-	protected transient Number<?> _min;
+	protected transient N _min;
 	
 	/**
 	 * The maximum value of this <code>NumberChromosome</code>.
 	 */
-	protected transient Number<?> _max;
+	protected transient N _max;
 	
 	/**
 	 * Create a new chromosome
@@ -86,6 +89,23 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 //		}
 	}
 	
+	/**
+	 * Return the minimum value of this <code>NumberChromosome</code>.
+	 * 
+	 * @return the minimum value of this <code>NumberChromosome</code>.
+	 */
+	public N getMin() {
+		return _min;
+	}
+	
+	/**
+	 * Return the maximum value of this <code>NumberChromosome</code>.
+	 * 
+	 * @return the maximum value of this <code>NumberChromosome</code>.
+	 */
+	public N getMax() {
+		return _max;
+	}
 	
 	/**
 	 * Return the byte value of this <code>NumberChromosome</code> at the given
@@ -238,11 +258,11 @@ public abstract class NumberChromosome<G extends NumberGene<?, G>>
 		if (object == this) {
 			return true;
 		}
-		if (!(object instanceof NumberChromosome<?>)) {
+		if (!(object instanceof NumberChromosome<?, ?>)) {
 			return false;
 		}
 				
-		final NumberChromosome<?> nc = (NumberChromosome<?>)object;
+		final NumberChromosome<?, ?> nc = (NumberChromosome<?, ?>)object;
 		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
 	}
 	
