@@ -34,15 +34,15 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class GenotypeTest extends ObjectTester { 
+public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> { 
     
-	private final Factory<?> _factory = Genotype.valueOf(
+	private final Factory<Genotype<Float64Gene>> _factory = Genotype.valueOf(
 			new Float64Chromosome(0, 1, 50), 
 			new Float64Chromosome(0, 1, 500), 
 			new Float64Chromosome(0, 1, 100),
 			new Float64Chromosome(0, 1, 50)
 		);
-	@Override protected Factory<?> getFactory() {
+	@Override protected Factory<Genotype<Float64Gene>> getFactory() {
 		return _factory;
 	}
 

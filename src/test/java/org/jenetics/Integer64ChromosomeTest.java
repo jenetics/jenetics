@@ -44,10 +44,11 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64ChromosomeTest extends ObjectTester { 
+public class Integer64ChromosomeTest extends ObjectTester<Chromosome<Integer64Gene>> { 
     
-	private final Factory<?> _factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);
-	@Override protected Factory<?> getFactory() {
+	private final Factory<Chromosome<Integer64Gene>> 
+	_factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);
+	@Override protected Factory<Chromosome<Integer64Gene>> getFactory() {
 		return _factory;
 	}
 

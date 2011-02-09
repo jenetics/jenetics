@@ -38,10 +38,11 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitChromosomeTest extends ObjectTester { 
+public class BitChromosomeTest extends ObjectTester<Chromosome<BitGene>> { 
     
-	private final Factory<?> _factory = BitChromosome.valueOf(500, 0.3);
-	@Override protected Factory<?> getFactory() {
+	private final Factory<Chromosome<BitGene>> 
+	_factory = BitChromosome.valueOf(500, 0.3);
+	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
 	}
 

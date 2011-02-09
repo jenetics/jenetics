@@ -38,9 +38,9 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class ObjectTester {
+public abstract class ObjectTester<T> {
 	
-	protected abstract Factory<?> getFactory();
+	protected abstract Factory<T> getFactory();
 	
 	private Array<Object> newSameObjects(final int nobjects) {
 		final Array<Object> objects = new Array<Object>(nobjects);

@@ -45,10 +45,10 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterGeneTest extends ObjectTester { 
+public class CharacterGeneTest extends ObjectTester<CharacterGene> { 
     
-	private final Factory<?> _factory = CharacterGene.valueOf();
-	@Override protected Factory<?> getFactory() {
+	private final Factory<CharacterGene> _factory = CharacterGene.valueOf();
+	@Override protected Factory<CharacterGene> getFactory() {
 		return _factory;
 	}
 

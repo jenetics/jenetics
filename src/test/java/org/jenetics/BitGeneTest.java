@@ -33,9 +33,9 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitGeneTest extends ObjectTester {
+public class BitGeneTest extends ObjectTester<BitGene> {
 
-	@Override protected Factory<?> getFactory() {
+	@Override protected Factory<BitGene> getFactory() {
 		return BitGene.FALSE;
 	}
 
