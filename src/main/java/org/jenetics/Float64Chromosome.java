@@ -42,7 +42,7 @@ import org.jenetics.util.Converter;
  * @version $Id$
  */
 public class Float64Chromosome 
-	extends NumberChromosome<Float64Gene> 
+	extends NumberChromosome<Float64, Float64Gene> 
 	implements XMLSerializable
 {	
 	private static final long serialVersionUID = 1L;
