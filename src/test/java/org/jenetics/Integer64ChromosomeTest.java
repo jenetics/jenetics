@@ -44,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64ChromosomeTest extends ObjectTester<Chromosome<Integer64Gene>> { 
+public class Integer64ChromosomeTest extends ChromosomeTester<Integer64Gene> { 
     
 	private final Factory<Chromosome<Integer64Gene>> 
 	_factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);
@@ -53,7 +53,7 @@ public class Integer64ChromosomeTest extends ObjectTester<Chromosome<Integer64Ge
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)
-    public void newInstance() {
+    public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random());

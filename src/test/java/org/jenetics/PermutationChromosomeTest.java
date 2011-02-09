@@ -33,7 +33,7 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest extends ObjectTester<Chromosome<Integer64Gene>> { 
+public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> { 
     
 	private final Factory<Chromosome<Integer64Gene>> 
 	_factory = new PermutationChromosome(500);
@@ -54,7 +54,7 @@ public class PermutationChromosomeTest extends ObjectTester<Chromosome<Integer64
 	}
 	
 	@Test
-	public void create2() {
+	public void sortedNewInstance() {
 		PermutationChromosome c = new PermutationChromosome(50, false);
 		final Array<Integer64Gene> array = c.toArray().copy();
 		Assert.assertTrue(isSorted(array));

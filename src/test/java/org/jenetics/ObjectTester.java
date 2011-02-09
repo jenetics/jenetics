@@ -47,7 +47,7 @@ public abstract class ObjectTester<T> {
 		
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new ConstantRandom(12312309));
+			RandomRegistry.setRandom(new ConstantRandom((int)System.currentTimeMillis()));
 			
 			for (int i = 0; i < nobjects; ++i) {
 				objects.set(i, getFactory().newInstance());

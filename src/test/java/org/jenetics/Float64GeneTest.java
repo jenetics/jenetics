@@ -54,7 +54,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 	}
 	
 	@Test(invocationCount = 20, successPercentage = 95)
-	public void newInstance() {
+	public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random());
