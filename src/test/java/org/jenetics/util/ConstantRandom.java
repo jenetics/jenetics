@@ -39,7 +39,7 @@ public class ConstantRandom extends Random {
 
 	@Override
 	protected int next(int bits) {
-		return _random;
+		return _random >> (32 - bits);
 	}
 	
 	

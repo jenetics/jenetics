@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  */
 public class ConstantFitnessFunctionTest {
 
-	@Test(invocationCount = 5)
+	@Test
 	public void serialize() throws IOException {
 		ConstantFitnessFunction<Float64Gene, Float64> f = 
 			new ConstantFitnessFunction<Float64Gene, Float64>(Float64.valueOf(2234.234));

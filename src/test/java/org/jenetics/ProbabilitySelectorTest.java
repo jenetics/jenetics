@@ -36,7 +36,9 @@ import org.jenetics.util.Validator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ProbabilitySelectorTest {
+public abstract class ProbabilitySelectorTest<S extends Selector<?, ?>>  
+	extends ObjectTester<S> 
+{
 
 	@Test
 	public void nextIndex() {

@@ -30,41 +30,25 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
-
-	private static class FF implements FitnessFunction<Float64Gene, Float64> {
-		private static final long serialVersionUID = -5717330505575904303L;
-
-		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			return genotype.getGene().getAllele();
-		}
-	}
+public class BoltzmannSelectorTest 
+	extends ProbabilitySelectorTest<BoltzmannSelector<Float64Gene, Float64>> 
+{
 	
-	private static Population<Float64Gene, Float64> population(final int size) {
-		final FF ff = new FF();
-		
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
-		for (int i = 0; i < size; ++i) {
-			population.add(Phenotype.valueOf(
-					Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(i, 0, size))),
-					ff, 
-					12
-				));
-		}
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		
-		return population;
+	@Override
+	protected Factory<BoltzmannSelector<Float64Gene, Float64>> getFactory() {
+		return SelectorFactories.BoltzmannSelector;
 	}
 	
 	@Test
 	public void probabilities() {
-		final Population<Float64Gene, Float64> population = population(100);
+		final Population<Float64Gene, Float64> 
+		population = TestUtils.newFloat64Population(100);
 		
 		BoltzmannSelector<Float64Gene, Float64> selector = new BoltzmannSelector<Float64Gene, Float64>();
 		double[] probs = selector.probabilities(population, 23);
@@ -92,7 +76,8 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1000.0, 20);
 		final BoltzmannSelector<Float64Gene, Float64> 
 		selector = new BoltzmannSelector<Float64Gene, Float64>(2);
-		final Population<Float64Gene, Float64> population = population(1000);
+		final Population<Float64Gene, Float64> 
+		population = TestUtils.newFloat64Population(1000);
 		
 		for (int i = 0; i < 1000; ++i) {
 			final Population<Float64Gene, Float64> selected = selector.select(
@@ -105,6 +90,7 @@ public class BoltzmannSelectorTest extends ProbabilitySelectorTest {
 		
 		System.out.println(histogram);
 	}
+
 	
 }
 
