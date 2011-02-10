@@ -31,7 +31,7 @@ import org.jenetics.util.Factory;
  * @version $Id$
  */
 public class BoltzmannSelectorTest 
-	extends ProbabilitySelectorTest<BoltzmannSelector<Float64Gene, Float64>> 
+	extends ProbabilitySelectorTester<BoltzmannSelector<Float64Gene, Float64>> 
 {
 
 	@Override

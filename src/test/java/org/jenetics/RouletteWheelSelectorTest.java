@@ -34,7 +34,7 @@ import org.jenetics.util.Factory;
  * @version $Id$
  */
 public class RouletteWheelSelectorTest	
-	extends ProbabilitySelectorTest<RouletteWheelSelector<Float64Gene, Float64>> 
+	extends ProbabilitySelectorTester<RouletteWheelSelector<Float64Gene, Float64>> 
 {
 
 	@Override

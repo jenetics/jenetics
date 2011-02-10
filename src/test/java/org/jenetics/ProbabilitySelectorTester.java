@@ -38,7 +38,7 @@ import org.jenetics.util.Validator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class ProbabilitySelectorTest<
+public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<Float64Gene, Float64>
 >  
 	extends ObjectTester<S> 
