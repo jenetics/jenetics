@@ -22,13 +22,8 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
 import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 
 /**
@@ -40,31 +35,14 @@ public class LinearRankSelectorTest
 {
 	
 	@Override
+	protected boolean isSorted() {
+		return true;
+	}
+	
+	@Override
 	protected Factory<LinearRankSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.LinearRankSelector;
 	}	
-	
-	@Test
-	public void probabilities() {
-		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		
-		final LinearRankSelector<Float64Gene, Float64> selector = new LinearRankSelector<Float64Gene, Float64>();
-		final double[] probs = selector.probabilities(population, 23);
-		Assert.assertEquals(probs.length, population.size());
-		
-		assertSortedDescending(population);
-		assertSortedDescending(probs);
-		assertPositive(probs);
-		Assert.assertEquals(sum(probs), 1.0, 0.000001);
-		
-		double diff = probs[0] - probs[1];
-		for (int i = 2; i < probs.length; ++i) {
-			Assert.assertEquals(probs[i - 1] - probs[i], diff, 0.000001);
-		}
-	}
-
-
 	
 }
 

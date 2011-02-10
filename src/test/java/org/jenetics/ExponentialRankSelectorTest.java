@@ -22,13 +22,8 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
 import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 
 /**
@@ -40,43 +35,13 @@ public class ExponentialRankSelectorTest
 {
 	
 	@Override
+	protected boolean isSorted() {
+		return true;
+	}
+	
+	@Override
 	protected Factory<ExponentialRankSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.ExponentialRankSelector;
 	}
-	
-	
-	@Test
-	public void probabilities() {
-		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		
-		ExponentialRankSelector<Float64Gene, Float64> selector = 
-			new ExponentialRankSelector<Float64Gene, Float64>(0.234234);
-		double[] props = selector.probabilities(population, 23);
-		Assert.assertEquals(props.length, population.size());
-		
-		assertSortedDescending(population);
-		assertSortedDescending(props);
-		Assert.assertEquals(sum(props), 1.0, 0.000001);
-		assertPositive(props);
-		
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		selector = new ExponentialRankSelector<Float64Gene, Float64>(1.0 - Math.ulp(1.0));
-		props = selector.probabilities(population, 23);
-		Assert.assertEquals(props.length, population.size());
-		
-		assertSortedDescending(population);
-		assertPositive(props);
-		assertSortedDescending(props);
-		Assert.assertEquals(sum(props), 1.0, 0.000001);
-		
-		
-//		for (int i = 0; i < 10; ++i) {
-//			selector = new ExponentialRankSelector<Float64Gene, Float64>((double)i/11.0);
-//			System.out.println(Arrays.toString(selector.probabilities(population, 10)));
-//		}
-//		selector = new ExponentialRankSelector<Float64Gene, Float64>(1.0 - Math.ulp(1.0));
-//		System.out.println(Arrays.toString(selector.probabilities(population, 10)));
-		
-	}
+
 }

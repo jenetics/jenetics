@@ -22,15 +22,11 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
 import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Accumulators;
-import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 
 /**
@@ -42,12 +38,17 @@ public class RouletteWheelSelectorTest
 {
 
 	@Override
+	protected boolean isSorted() {
+		return false;
+	}
+	
+	@Override
 	protected Factory<RouletteWheelSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.RouletteWheelSelector;
 	}
 	
 	@Test
-	public void select() {
+	public void selectDistribution() {
 		final Float64 min = Float64.ZERO;
 		final Float64 max = Float64.valueOf(100);
 		final int npopulation = 10000;
@@ -82,26 +83,6 @@ public class RouletteWheelSelectorTest
 		
 		// TODO: Check histogram distribution.
 		System.out.println(histogram);
-	}
-	
-	@Test
-	public void probabilities() {
-		final Factory<Genotype<Float64Gene>> gtf = 
-			Genotype.valueOf(new Float64Chromosome(0, 100));
-		
-		final Population<Float64Gene, Float64> population =  TestUtils.newFloat64Population(100);
-		for (int i = 0; i < 100; ++i) {
-			population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
-		}
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		
-		final RouletteWheelSelector<Float64Gene, Float64> selector = 
-			new RouletteWheelSelector<Float64Gene, Float64>();
-		final double[] probs = selector.probabilities(population, 23);
-		Assert.assertEquals(probs.length, population.size());
-		
-		assertPositive(probs);
-		Assert.assertEquals(sum(probs), 1.0, 0.000001);
 	}
 	
 }

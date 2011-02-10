@@ -26,20 +26,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class ProbabilitySelectorTest<S extends Selector<?, ?>>  
+public abstract class ProbabilitySelectorTest<
+	S extends ProbabilitySelector<Float64Gene, Float64>
+>  
 	extends ObjectTester<S> 
 {
 
+	protected abstract boolean isSorted();
+	
 	@Test
 	public void nextIndex() {
 		final Random random = new Random();
@@ -71,6 +77,39 @@ public abstract class ProbabilitySelectorTest<S extends Selector<?, ?>>
 		}
 	}
 	
+	@Test
+	public void probabilities() {
+		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
+		
+		final S selector = getFactory().newInstance();
+		final double[] props = selector.probabilities(population, 23);
+		Assert.assertEquals(props.length, population.size());
+		
+		if (isSorted()) {
+			assertSortedDescending(population);
+			assertSortedDescending(props);
+		}
+		Assert.assertEquals(sum(props), 1.0, 0.000001);
+		assertPositive(props);	
+	}
+	
+	@Test
+	public void select() {
+		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
+		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
+		final S selector = getFactory().newInstance();
+		
+		final double[] props = selector.probabilities(population, 23);
+		Assert.assertEquals(props.length, population.size());
+		
+		if (isSorted()) {
+			assertSortedDescending(population);
+			assertSortedDescending(props);
+		}
+		assertPositive(props);
+		Assert.assertEquals(sum(props), 1.0, 0.000001);	
+	}
 	
 	private static String toString(final double[] array) {
 		StringBuilder out = new StringBuilder();
