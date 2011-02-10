@@ -22,31 +22,29 @@
  */
 package org.jenetics;
 
-import java.util.Random;
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
+public class MonteCarloSelectorTest 
+	extends ObjectTester<MonteCarloSelector<Float64Gene, Float64>> 
+{
 
-	final Factory<ExponentialScaler> _factory = new Factory<ExponentialScaler>() {
+	final Factory<MonteCarloSelector<Float64Gene, Float64>> 
+	_factory = new Factory<MonteCarloSelector<Float64Gene,Float64>>() 
+	{
 		@Override
-		public ExponentialScaler newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			final double a = random.nextInt(100) + 10;
-			final double b = random.nextInt(100) + 10;
-			final double c = random.nextInt(100) + 10;
-			
-			return new ExponentialScaler(a, b, c);
+		public MonteCarloSelector<Float64Gene, Float64> newInstance() {
+			return new MonteCarloSelector<Float64Gene, Float64>();
 		}
 	};
 	@Override
-	protected Factory<ExponentialScaler> getFactory() {
+	protected Factory<MonteCarloSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-	
+
 }
