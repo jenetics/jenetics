@@ -127,7 +127,12 @@
         <classes>
             <class name="org.jenetics.MeanAltererTest" />
         </classes>
-    </test> 		
+    </test>
+	<test name="org.jenetics.MonteCarloSelector">
+        <classes>
+            <class name="org.jenetics.MonteCarloSelectorTest" />
+        </classes>
+    </test> 	
     <test name="org.jenetics.Mutator">
         <classes>
             <class name="org.jenetics.MutatorTest" />
