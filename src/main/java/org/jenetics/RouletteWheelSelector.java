@@ -83,7 +83,7 @@ public class RouletteWheelSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return hashCodeOf(getClass()).value();
 	}
 	
 	@Override
@@ -95,7 +95,7 @@ public class RouletteWheelSelector<
 			return false;
 		}
 		
-		return super.equals(obj);
+		return true;
 	}
 	
 	@Override

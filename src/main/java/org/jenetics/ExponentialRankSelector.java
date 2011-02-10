@@ -75,7 +75,7 @@ public final class ExponentialRankSelector<
 	public ExponentialRankSelector(final double c) {
 		if (c < 0.0 || c >= 1.0) {
 			throw new IllegalArgumentException(String.format(
-					"Value is out of range [0..1): ", c
+					"Value %s is out of range [0..1): ", c
 				));
 		}
 		_c = c;
@@ -111,7 +111,7 @@ public final class ExponentialRankSelector<
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).and(_c).value();
+		return hashCodeOf(getClass()).and(_c).value();
 	}
 	
 	@Override
@@ -124,7 +124,7 @@ public final class ExponentialRankSelector<
 		}
 		
 		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
-		return eq(_c, selector._c) && super.equals(selector);
+		return eq(_c, selector._c);
 	}
 	
 	@Override

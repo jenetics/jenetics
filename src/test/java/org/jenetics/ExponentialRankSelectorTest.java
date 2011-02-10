@@ -29,35 +29,25 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ExponentialRankSelectorTest extends ProbabilitySelectorTest {
+public class ExponentialRankSelectorTest 
+	extends ProbabilitySelectorTest<ExponentialRankSelector<Float64Gene, Float64>> 
+{
 	
-	private static class FF implements FitnessFunction<Float64Gene, Float64> {
-		private static final long serialVersionUID = -5717330505575904303L;
-
-		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			return genotype.getGene().getAllele();
-		}
+	@Override
+	protected Factory<ExponentialRankSelector<Float64Gene, Float64>> getFactory() {
+		return SelectorFactories.ExponentialRankSelector;
 	}
 	
 	
 	@Test
 	public void probabilities() {
-		final FF ff = new FF();
-		
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(100);
-		for (int i = 0; i < 100; ++i) {
-			population.add(Phenotype.valueOf(
-					Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(i, 0, 1000))),
-					ff, 
-					12
-				));
-		}
+		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
 		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		
 		ExponentialRankSelector<Float64Gene, Float64> selector = 

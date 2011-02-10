@@ -37,20 +37,17 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class RouletteWheelSelectorTest extends ProbabilitySelectorTest {
+public class RouletteWheelSelectorTest	
+	extends ProbabilitySelectorTest<RouletteWheelSelector<Float64Gene, Float64>> 
+{
 
-	private static class FF implements FitnessFunction<Float64Gene, Float64> {
-		private static final long serialVersionUID = -5717330505575904303L;
-		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			return genotype.getGene().getAllele();
-		}
+	@Override
+	protected Factory<RouletteWheelSelector<Float64Gene, Float64>> getFactory() {
+		return SelectorFactories.RouletteWheelSelector;
 	}
 	
 	@Test
 	public void select() {
-		final FF ff = new FF();
-		
 		final Float64 min = Float64.ZERO;
 		final Float64 max = Float64.valueOf(100);
 		final int npopulation = 10000;
@@ -61,7 +58,7 @@ public class RouletteWheelSelectorTest extends ProbabilitySelectorTest {
 			new Population<Float64Gene, Float64>();
 		
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(gtf.newInstance(), ff, 12));
+			population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
 		}
 		
 		final Selector<Float64Gene, Float64> selector = 
@@ -89,14 +86,12 @@ public class RouletteWheelSelectorTest extends ProbabilitySelectorTest {
 	
 	@Test
 	public void probabilities() {
-		final FF ff = new FF();
 		final Factory<Genotype<Float64Gene>> gtf = 
 			Genotype.valueOf(new Float64Chromosome(0, 100));
 		
-		final Population<Float64Gene, Float64> population = 
-			new Population<Float64Gene, Float64>(100);
+		final Population<Float64Gene, Float64> population =  TestUtils.newFloat64Population(100);
 		for (int i = 0; i < 100; ++i) {
-			population.add(Phenotype.valueOf(gtf.newInstance(), ff, 12));
+			population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
 		}
 		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
 		
