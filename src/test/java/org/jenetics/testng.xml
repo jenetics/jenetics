@@ -188,6 +188,11 @@
 			<class name="org.jenetics.OptimizeTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.StochasticUniversalSelector">
+		<classes>
+			<class name="org.jenetics.StochasticUniversalSelectorTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.SwapMutator">
 		<classes>
 			<class name="org.jenetics.SwapMutatorTest" />
