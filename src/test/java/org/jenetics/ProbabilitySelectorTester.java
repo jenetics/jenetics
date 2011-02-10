@@ -94,23 +94,6 @@ public abstract class ProbabilitySelectorTester<
 		assertPositive(props);	
 	}
 	
-	@Test
-	public void select() {
-		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
-		final S selector = getFactory().newInstance();
-		
-		final double[] props = selector.probabilities(population, 23);
-		Assert.assertEquals(props.length, population.size());
-		
-		if (isSorted()) {
-			assertSortedDescending(population);
-			assertSortedDescending(props);
-		}
-		assertPositive(props);
-		Assert.assertEquals(sum(props), 1.0, 0.000001);	
-	}
-	
 	private static String toString(final double[] array) {
 		StringBuilder out = new StringBuilder();
 		
