@@ -22,24 +22,35 @@
  */
 package org.jenetics;
 
-import java.io.IOException;
+import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.Test;
 
-import org.jenetics.util.SerializeUtils;
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ConstantFitnessFunctionTest {
+public class ConstantFitnessFunctionTest 
+	extends ObjectTester<ConstantFitnessFunction<Float64Gene, Float64>> 
+{
 
-	@Test
-	public void serialize() throws IOException {
-		ConstantFitnessFunction<Float64Gene, Float64> f = 
-			new ConstantFitnessFunction<Float64Gene, Float64>(Float64.valueOf(2234.234));
-		SerializeUtils.testSerialization(f);
+	final Factory<ConstantFitnessFunction<Float64Gene, Float64>>
+	_factory = new Factory<ConstantFitnessFunction<Float64Gene,Float64>>() {
+		@Override
+		public ConstantFitnessFunction<Float64Gene, Float64> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			return new ConstantFitnessFunction<Float64Gene, Float64>(
+					Float64.valueOf(random.nextDouble()*Double.MAX_VALUE)
+				);
+		}
+	};
+	@Override
+	protected Factory<ConstantFitnessFunction<Float64Gene, Float64>> getFactory() {
+		return _factory;
 	}
 	
 }
