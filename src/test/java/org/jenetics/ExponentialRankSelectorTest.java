@@ -31,7 +31,7 @@ import org.jenetics.util.Factory;
  * @version $Id$
  */
 public class ExponentialRankSelectorTest 
-	extends ProbabilitySelectorTest<ExponentialRankSelector<Float64Gene, Float64>> 
+	extends ProbabilitySelectorTester<ExponentialRankSelector<Float64Gene, Float64>> 
 {
 	
 	@Override
