@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.abs;
-import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
@@ -35,9 +33,10 @@ import org.jenetics.util.RandomRegistry;
  * population according to some given probability in a way that minimize chance 
  * fluctuations. It can be viewed as a type of roulette game where now we have 
  * P equally spaced points which we spin.
- * <div align="center">
- *	<img src="doc-files/StochasticUniversalSelector.gif" />
- * </div>
+ * 
+ * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Stochastic_universal_sampling">
+ * 		Wikipedia: Stochastic universal sampling
+ *      </a>
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -77,7 +76,6 @@ public class StochasticUniversalSelector<
 		
 		final double[] probabilities = probabilities(population, count, opt);
 		assert (population.size() == probabilities.length);
-		assert (abs(sum(probabilities) - 1.0) < 0.0001);
 		
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;
