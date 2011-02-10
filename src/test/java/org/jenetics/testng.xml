@@ -192,6 +192,16 @@
 		<classes>
 			<class name="org.jenetics.SwapMutatorTest" />
 		</classes>
+	</test>
+	<test name="org.jenetics.TruncationSelector">
+		<classes>
+			<class name="org.jenetics.TruncationSelectorTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.Until">
+		<classes>
+			<class name="org.jenetics.UntilTest" />
+		</classes>
 	</test>		
 	<test name="org.jenetics.stat.Accumulators">
 		<classes>
