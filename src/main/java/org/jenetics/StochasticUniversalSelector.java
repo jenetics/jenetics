@@ -75,8 +75,6 @@ public class StochasticUniversalSelector<
 			return selection;
 		}
 		
-		population.sort();
-		
 		final double[] probabilities = probabilities(population, count, opt);
 		assert (population.size() == probabilities.length);
 		assert (abs(sum(probabilities) - 1.0) < 0.0001);
@@ -100,6 +98,15 @@ public class StochasticUniversalSelector<
 		}
 
 		return selection;
+	}
+	
+	@Override
+	protected double[] probabilities(
+		final Population<G, N> population, 
+		final int count
+	) {
+		population.sort();
+		return super.probabilities(population, count);
 	}
 	
 	@Override
