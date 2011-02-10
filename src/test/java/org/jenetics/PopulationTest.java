@@ -33,6 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.SerializeUtils;
 
 
 /**

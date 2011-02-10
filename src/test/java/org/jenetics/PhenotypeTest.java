@@ -28,6 +28,7 @@ import static java.lang.Math.toRadians;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

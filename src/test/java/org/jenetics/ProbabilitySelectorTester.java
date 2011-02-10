@@ -32,6 +32,7 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.ObjectTester;
 import org.jenetics.util.Validator;
 
 /**
