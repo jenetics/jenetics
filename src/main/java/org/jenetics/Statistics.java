@@ -48,7 +48,6 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.BitUtils;
 import org.jenetics.util.FinalReference;
 
 /**
@@ -363,6 +362,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				and(_best).
 				and(_worst).
 				and(_invalid).
+				and(_samples).
 				and(_killed).value();
 	}
 	
@@ -371,7 +371,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof Statistics<?, ?>)) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		
@@ -383,20 +383,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				eq(_best, statistics._best) &&
 				eq(_worst, statistics._worst) &&
 				eq(_invalid, statistics._invalid) &&
+				eq(_samples, statistics._samples) &&
 				eq(_killed, statistics._killed);
-	}
-	
-	
-	static boolean equals(final double a, final double b, final int ulpDistance) {
-		if (Double.isNaN(a) || Double.isNaN(b)) {
-			return false;
-		}
-		
-		boolean equals = false;
-		try {
-			equals = Math.abs(BitUtils.ulpDistance(a, b)) <= ulpDistance;
-		} catch (ArithmeticException e) {}
-		return equals;
 	}
 
 	@Override
@@ -458,8 +446,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 					samples, 
 					meanAge.doubleValue(), 
 					varianceAge.doubleValue(),
-					invalid.intValue(),
-					killed.intValue()
+					killed.intValue(),
+					invalid.intValue()
 				);
 			statistics._time.set(xml.get(STATISITCS_TIME));
 			
