@@ -22,67 +22,48 @@
  */
 package org.jenetics;
 
-import java.io.IOException;
-
-import javolution.xml.stream.XMLStreamException;
+import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.BitUtils;
-import org.jenetics.util.SerializeUtils;
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class StatisticsTest {
+public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64>> {
 
-	@Test
-	public void equals() {
-		double a = 123.0;
-		double b = a;
+	final Factory<Statistics<Float64Gene, Float64>>
+	_factory = new Factory<Statistics<Float64Gene,Float64>>() {
+		private final Phenotype<Float64Gene, Float64> _best = TestUtils.newFloat64Phenotype();
+		private final Phenotype<Float64Gene, Float64> _worst = _best;
 		
-		assert Statistics.equals(a, b, 0);
-		
-		b = Math.nextUp(a);
-		assert a != b;
-		assert Statistics.equals(a, b, 1);
-		assert Statistics.equals(a, b, 2);
-		assert !Statistics.equals(a, b, 0);
-		
-		b = Math.nextUp(a);
-		b = Math.nextUp(b);
-		assert a != b;
-		assert !Statistics.equals(a, b, 0);
-		assert !Statistics.equals(a, b, 1);
-		assert Statistics.equals(a, b, 2);
-		
-		a = Math.nextAfter(0.0, Double.POSITIVE_INFINITY);
-		b = Math.nextAfter(0.0, Double.NEGATIVE_INFINITY);
-		b = Math.nextAfter(b, Double.NEGATIVE_INFINITY);
-		b = Math.nextAfter(b, Double.NEGATIVE_INFINITY);
-		assert a != b;
-		assert !Statistics.equals(a, b, 0);
-		assert !Statistics.equals(a, b, 1);
-		assert !Statistics.equals(a, b, 3);
-		assert Statistics.equals(a, b, 4);
-		
-		a = 0.0;
-		for (int i = 0; i < 10; ++i) {
-			a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
+		@Override
+		public Statistics<Float64Gene, Float64> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			final int generation = random.nextInt(1000);
+
+			final int samples = random.nextInt(1000);
+			final double ageMean = random.nextDouble();
+			final double ageVariance = random.nextDouble();
+			final int killed = random.nextInt(1000);
+			final int invalid = random.nextInt(10000);
+			
+			return new Statistics<Float64Gene, Float64>(
+					Optimize.MAXIMUM, generation, _best, _worst, 
+					samples, ageMean, ageVariance, killed, invalid
+				);
 		}
-		
-		for (int i = 0; i < 19; ++i) {
-			a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
-			Reporter.log(
-				a + "\t" + 
-				BitUtils.ulpPosition(a) + "\t" + 
-				BitUtils.ulpDistance(0.0, a)
-			);
-		}
+	};
+	@Override
+	protected Factory<Statistics<Float64Gene, Float64>> getFactory() {
+		return _factory;
 	}
 	
 	private static Population<Float64Gene, Float64> newPopulation(final int size) {
@@ -146,22 +127,6 @@ public class StatisticsTest {
 		Assert.assertEquals(statistics.getWorstPhenotype().getFitness().doubleValue(), 1.0, EPSILON);
 		
 		Reporter.log(statistics.toString());
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Test
-	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(new Statistics(
-				Optimize.MAXIMUM, 123, null, null, 0, 0, 0, 34, 34
-			));
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Test
-	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(new Statistics(
-				Optimize.MAXIMUM, 123, null, null, 0, 0, 0, 34, 34
-			));
 	}
 
 }

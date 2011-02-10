@@ -195,6 +195,10 @@ public class ObjectUtils {
 		return Arrays.equals(a, b);
 	}
 	
+	public static boolean eq(final Enum<?> a, final Enum<?> b) {
+		return a == b;
+	}
+	
 	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
 	}
