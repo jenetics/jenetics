@@ -27,6 +27,7 @@ import java.util.Random;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**

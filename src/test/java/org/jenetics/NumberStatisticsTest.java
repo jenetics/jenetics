@@ -6,6 +6,8 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
+import org.jenetics.util.SerializeUtils;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

@@ -32,6 +32,7 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.SerializeUtils;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

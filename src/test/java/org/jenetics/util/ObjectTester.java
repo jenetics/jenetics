@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import java.io.Serializable;
 
@@ -28,7 +28,6 @@ import javolution.context.LocalContext;
 import javolution.xml.XMLSerializable;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ConstantRandom;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.testng.Assert;

@@ -25,6 +25,7 @@ package org.jenetics;
 import java.util.Random;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
