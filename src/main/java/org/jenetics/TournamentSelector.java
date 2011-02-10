@@ -164,7 +164,7 @@ public class TournamentSelector<
 	
 	@Override
 	public String toString() {
-		return String.format("%s[s=%f]", getClass().getSimpleName(), _sampleSize);
+		return String.format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);
 	}
 
 }

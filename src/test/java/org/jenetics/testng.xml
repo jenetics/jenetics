@@ -193,6 +193,11 @@
 			<class name="org.jenetics.SwapMutatorTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.TournamentSelector">
+		<classes>
+			<class name="org.jenetics.TournamentSelectorTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.TruncationSelector">
 		<classes>
 			<class name="org.jenetics.TruncationSelectorTest" />
