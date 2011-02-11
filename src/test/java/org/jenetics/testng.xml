@@ -176,6 +176,12 @@
 			<class name="org.jenetics.NumberStatisticsTest" />
 		</classes>
 	</test>		
+	<test name="org.jenetics.NumberStatistics">
+		<classes>
+			<class name="org.jenetics.NumberStatisticsTest" />
+			<class name="org.jenetics.NumberStatisticsBuilderTest" />
+		</classes>
+	</test>			
 	<test name="org.jenetics.Optimize">
 		<classes>
 			<class name="org.jenetics.OptimizeTest" />

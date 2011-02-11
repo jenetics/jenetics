@@ -55,8 +55,7 @@ public class NormalDistributionTest {
 		final Domain<Double> domain = new Domain<Double>(0.0, 1000.0);
 		final Distribution<Double> dist = new NormalDistribution<Double>(domain, mean, std*std);
 		
-		final Function<Double, Float64> cdf = dist.cdf();
-		Assert.assertTrue(histogram.χ2(cdf) < 26);
+		StatisticsAssert.assertDistribution(histogram, dist);
 	}
 	
 	@Test
