@@ -172,13 +172,14 @@
 		<classes>
 			<class name="org.jenetics.StatisticsTest" />
 			<class name="org.jenetics.StatisticsBuilderTest" />
+			<class name="org.jenetics.StatisticsCalculatorTest" />
 			<class name="org.jenetics.StatisticsTimeTest" />
-			<class name="org.jenetics.NumberStatisticsTest" />
 		</classes>
 	</test>		
 	<test name="org.jenetics.NumberStatistics">
 		<classes>
 			<class name="org.jenetics.NumberStatisticsTest" />
+			<class name="org.jenetics.NumberStatisticsCalculatorTest" />
 			<class name="org.jenetics.NumberStatisticsBuilderTest" />
 		</classes>
 	</test>			

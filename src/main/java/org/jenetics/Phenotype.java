@@ -272,16 +272,14 @@ public final class Phenotype<
 	 * Create a {@link Converter} which return the phenotype age when calling
 	 * {@code converter.convert(phenotype)}.
 	 * 
-	 * @param <SG> the gene type.
-	 * @param <SC> the fitness value type.
 	 * @param currentGeneration the current generation.
 	 * @return an age {@link Converter}.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Converter<Phenotype<SG, SC>, Integer> Age(final int currentGeneration) 
+	public static Converter<Phenotype<?, ?>, Integer> 
+	Age(final int currentGeneration) 
 	{
-		return new Converter<Phenotype<SG, SC>, Integer>() {
-			@Override public Integer convert(final Phenotype<SG, SC> value) {
+		return new Converter<Phenotype<?, ?>, Integer>() {
+			@Override public Integer convert(final Phenotype<?, ?> value) {
 				return value.getAge(currentGeneration);
 			}
 		};
