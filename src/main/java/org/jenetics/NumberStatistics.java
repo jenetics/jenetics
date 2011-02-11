@@ -132,8 +132,8 @@ public class NumberStatistics<
 					_ageMean,
 					_ageVariance,
 					_standardError,
-					_invalid,
-					_killed
+					_killed,
+					_invalid
 				);
 		}
 	}
@@ -155,8 +155,8 @@ public class NumberStatistics<
 		final double ageMean, 
 		final double ageVariance,
 		final double errorOfMean,
-		final int invalid,
-		final int killed
+		final int killed,
+		final int invalid
 	) {
 		super(
 				optimize,
@@ -165,9 +165,9 @@ public class NumberStatistics<
 				worst, 
 				samples, 
 				ageMean, 
-				ageVariance, 
-				invalid, 
-				killed
+				ageVariance,  
+				killed,
+				invalid
 			);
 
 		_fitnessMean = fitnessMean;
