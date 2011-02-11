@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.util.Accumulators.accumulate;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
@@ -49,6 +48,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Accumulators;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.FinalReference;
 
@@ -711,10 +711,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
 			final Variance<Integer> age = new Variance<Integer>();
 							
-			accumulate(
+			Accumulators.<Phenotype<G, C>>accumulate(
 					population, 
 					minMax, 
-					age.adapt(Phenotype.<G, C>Age(generation))
+					age.adapt(Phenotype.Age(generation))
 				);
 			
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));

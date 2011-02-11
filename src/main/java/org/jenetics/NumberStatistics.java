@@ -322,7 +322,7 @@ public class NumberStatistics<
 			Accumulators.<Phenotype<G, R>>accumulate(
 					population, 
 					minMax,
-					age.adapt(Phenotype.<G, R>Age(generation)),
+					age.adapt(Phenotype.Age(generation)),
 					fitness.adapt(Phenotype.<G, R>Fitness())
 				);
 
