@@ -1,3 +1,7 @@
+- Change the signature of the Statistics.Calculator.evaluate method to work with
+  'Iterable<? extends Phenotype<G, C>>' for the population, instead of a
+  'List<? extends Phenotype<G, C>>'.
+- Improved tests and fixes of found bugs.
 - Making all gene implementations final (BitGene, CharacterGene, EnumGene,
   Float64Gene, Integer64Gene).
 - Making the classes org.jenetics.Genotype and org.jenetics.Phenotype final.

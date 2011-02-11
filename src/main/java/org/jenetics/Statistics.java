@@ -31,7 +31,6 @@ import static org.jenetics.util.Validator.nonNull;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Locale;
 
 import javax.measure.Measurable;
@@ -702,30 +701,27 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * @return a new statistics object generated from the given arguments.
 		 */
 		public Statistics.Builder<G, C> evaluate(
-			final List<? extends Phenotype<G, C>> population,
+			final Iterable<? extends Phenotype<G, C>> population,
 			final int generation,
 			final Optimize opt
 		) {	
 			final Builder<G, C> builder = new Builder<G, C>().generation(generation);
 			builder.optimize(opt);
 			
-			if (!population.isEmpty()) {
-				// The statistics accumulators.
-				final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
-				final Variance<Integer> age = new Variance<Integer>();
-								
-				accumulate(
-						population, 
-						minMax, 
-						age.adapt(Phenotype.<G, C>Age(generation))
-					);
-				
-				builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
-				builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
-				builder.samples(population.size());
-				builder.ageMean(age.getMean());
-				builder.ageVariance(age.getVariance());
-			}
+			final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
+			final Variance<Integer> age = new Variance<Integer>();
+							
+			accumulate(
+					population, 
+					minMax, 
+					age.adapt(Phenotype.<G, C>Age(generation))
+				);
+			
+			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
+			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
+			builder.samples((int)minMax.getSamples());
+			builder.ageMean(age.getMean());
+			builder.ageVariance(age.getVariance());
 			
 			return builder;
 		}
