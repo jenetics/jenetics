@@ -26,7 +26,6 @@ import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
-import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
@@ -68,20 +67,12 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 	
 	private static Population<Float64Gene, Float64> newPopulation(final int size) {
 		Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
-		FitnessFunction<Float64Gene, Float64> ff = new FitnessFunction<Float64Gene, Float64>() {
-			private static final long serialVersionUID = -2089185336380721853L;
-
-			@Override
-			public Float64 evaluate(Genotype<Float64Gene> genotype) {
-				return genotype.getChromosome().getGene().getAllele();
-			}
-		};
 		
 		for (int i = 1; i <= size; ++i) {
 			Float64Gene gene = Float64Gene.valueOf(i, 0, Integer.MAX_VALUE);
 			Float64Chromosome chromosome = new Float64Chromosome(gene);
 			Genotype<Float64Gene> gt = Genotype.valueOf(chromosome);
-			Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(gt, ff, i);
+			Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(gt, TestUtils.FF, i);
 			
 			population.add(pt);
 		}
@@ -94,11 +85,11 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 	@Test
 	public void calculation() {
 		int size = 2;
-		Population<Float64Gene, Float64> population = newPopulation(size);
-		Statistics.Calculator<Float64Gene, Float64> calculator = 
-			new Statistics.Calculator<Float64Gene, Float64>();
+		final Population<Float64Gene, Float64> population = newPopulation(size);
+		final Statistics.Calculator<Float64Gene, Float64> 
+		calculator = new Statistics.Calculator<Float64Gene, Float64>();
 		
-		Statistics<Float64Gene, Float64> statistics = 
+		final Statistics<Float64Gene, Float64> statistics = 
 			calculator.evaluate(population, size + 1, Optimize.MAXIMUM).build();
 		Assert.assertEquals(statistics.getSamples(), 2);
 		Assert.assertEquals(statistics.getAgeMean(), 1.5, EPSILON);
@@ -125,8 +116,6 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 		Assert.assertEquals(statistics.getWorstFitness().doubleValue(), 1.0, EPSILON);
 		Assert.assertEquals(statistics.getBestPhenotype().getFitness().doubleValue(), 10.0, EPSILON);
 		Assert.assertEquals(statistics.getWorstPhenotype().getFitness().doubleValue(), 1.0, EPSILON);
-		
-		Reporter.log(statistics.toString());
 	}
 
 }
