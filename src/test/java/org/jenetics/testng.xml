@@ -171,10 +171,7 @@
 	<test name="org.jenetics.Statistics">
 		<classes>
 			<class name="org.jenetics.StatisticsTest" />
-		</classes>
-	</test>		
-	<test name="org.jenetics.NumberStatistics">
-		<classes>
+			<class name="org.jenetics.StatisticsTimeTest" />
 			<class name="org.jenetics.NumberStatisticsTest" />
 		</classes>
 	</test>		

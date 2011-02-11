@@ -47,6 +47,7 @@ public class SerializeUtils {
 		IOUtils.writeXML(object, out);
 		
 		final byte[] data = out.toByteArray();
+		//System.out.println(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = IOUtils.readXML(XMLSerializable.class, in);

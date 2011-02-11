@@ -29,14 +29,17 @@ import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.measure.Measurable;
 import javax.measure.Measure;
 import javax.measure.MeasureFormat;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
+import javax.measure.unit.UnitFormat;
 
 import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;
@@ -612,7 +615,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			) 
 				throws XMLStreamException 
 			{
-				final MeasureFormat format = MeasureFormat.getInstance();
+				final MeasureFormat format = getMeasureFormat();
 				final Statistics.Time time = new Statistics.Time();
 
 				try {
@@ -644,8 +647,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public void write(final Statistics.Time s, final OutputElement xml) 
 				throws XMLStreamException 
 			{
-				final MeasureFormat format = MeasureFormat.getInstance();
-				
+				final MeasureFormat format = getMeasureFormat();
+
 				xml.add(format.format(s.alter.get()), ALTER_TIME);
 				xml.add(format.format(s.combine.get()), COMBINE_TIME);
 				xml.add(format.format(s.evaluation.get()), EVALUATION_TIME);
@@ -657,6 +660,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			public void read(final InputElement xml, final Statistics.Time p) 
 				throws XMLStreamException 
 			{
+			}
+			
+			private MeasureFormat getMeasureFormat() {
+				final NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+				nf.setMinimumFractionDigits(25);
+				final UnitFormat uf = UnitFormat.getInstance(Locale.ENGLISH);
+				
+				return MeasureFormat.getInstance(nf, uf);
 			}
 		};
 	}
