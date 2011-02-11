@@ -158,11 +158,6 @@
 			<class name="org.jenetics.PopulationTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.ProbabilitySelector">
-		<classes>
-			<class name="org.jenetics.ProbabilitySelectorTest" />
-		</classes>
-	</test>	
 	<test name="org.jenetics.RouletteWheelSelector">
 		<classes>
 			<class name="org.jenetics.RouletteWheelSelectorTest" />
