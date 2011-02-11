@@ -22,9 +22,12 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -198,7 +201,8 @@ class TestUtils {
 	}
 	
 	public static Phenotype<Float64Gene, Float64> newFloat64Phenotype() {
-		return newFloat64Phenotype(Math.random()*10);
+		final Random random = RandomRegistry.getRandom();
+		return newFloat64Phenotype(random.nextDouble()*10);
 	}
 	
 	public static Population<Float64Gene, Float64> newFloat64Population(final int length) {
