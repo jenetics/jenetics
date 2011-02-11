@@ -27,8 +27,6 @@ import static java.lang.String.format;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
-import java.util.List;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
@@ -309,7 +307,7 @@ public class NumberStatistics<
 
 		@Override
 		public NumberStatistics.Builder<G, R> evaluate(
-			final List<? extends Phenotype<G, R>> population,
+			final Iterable<? extends Phenotype<G, R>> population,
 			final int generation, 
 			final Optimize opt
 		) {
@@ -317,28 +315,25 @@ public class NumberStatistics<
 			builder.generation(generation);
 			builder.optimize(opt);
 
-			if (!population.isEmpty()) {
-				// The statistics accumulators.
-				final MinMax<Phenotype<G, R>> minMax = new MinMax<Phenotype<G, R>>();
-				final Variance<Integer> age = new Variance<Integer>();
-				final Variance<R> fitness = new Variance<R>();
+			final MinMax<Phenotype<G, R>> minMax = new MinMax<Phenotype<G, R>>();
+			final Variance<Integer> age = new Variance<Integer>();
+			final Variance<R> fitness = new Variance<R>();
 
-				Accumulators.<Phenotype<G, R>>accumulate(
-						population, 
-						minMax,
-						age.adapt(Phenotype.<G, R>Age(generation)),
-						fitness.adapt(Phenotype.<G, R>Fitness())
-					);
+			Accumulators.<Phenotype<G, R>>accumulate(
+					population, 
+					minMax,
+					age.adapt(Phenotype.<G, R>Age(generation)),
+					fitness.adapt(Phenotype.<G, R>Fitness())
+				);
 
-				builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
-				builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
-				builder.fitnessMean(fitness.getMean());
-				builder.fitnessVariance(fitness.getVariance());
-				builder.samples(population.size());
-				builder.ageMean(age.getMean());
-				builder.ageVariance(age.getVariance());
-				builder.standardError(fitness.getStandardError());
-			}
+			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
+			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
+			builder.fitnessMean(fitness.getMean());
+			builder.fitnessVariance(fitness.getVariance());
+			builder.samples((int)minMax.getSamples());
+			builder.ageMean(age.getMean());
+			builder.ageVariance(age.getVariance());
+			builder.standardError(fitness.getStandardError());
 
 			return builder;
 		}
