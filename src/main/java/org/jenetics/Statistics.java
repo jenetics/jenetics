@@ -198,8 +198,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 					_samples,
 					_ageMean,
 					_ageVariance,
-					_invalid,
-					_killed
+					_killed,
+					_invalid
 				);
 		}
 	}

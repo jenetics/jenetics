@@ -171,6 +171,7 @@
 	<test name="org.jenetics.Statistics">
 		<classes>
 			<class name="org.jenetics.StatisticsTest" />
+			<class name="org.jenetics.StatisticsBuilderTest" />
 			<class name="org.jenetics.StatisticsTimeTest" />
 			<class name="org.jenetics.NumberStatisticsTest" />
 		</classes>
