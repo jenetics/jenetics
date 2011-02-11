@@ -78,7 +78,7 @@ public class RouletteWheelSelectorTest
 					.adapt(Float64Gene.Allele)
 					.adapt(Float64Chromosome.Gene)
 					.adapt(Genotype.<Float64Gene>Chromosome())
-					.adapt(Phenotype.<Float64Gene, Float64>Genotype())
+					.adapt(Phenotype.<Float64Gene>Genotype())
 			);
 		
 		// TODO: Check histogram distribution.

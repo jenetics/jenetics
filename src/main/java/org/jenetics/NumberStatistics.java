@@ -323,7 +323,7 @@ public class NumberStatistics<
 					population, 
 					minMax,
 					age.adapt(Phenotype.Age(generation)),
-					fitness.adapt(Phenotype.<G, R>Fitness())
+					fitness.adapt(Phenotype.<R>Fitness())
 				);
 
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
