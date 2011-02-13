@@ -40,6 +40,7 @@
 	<property name="source.dir" value="${source.basedir}/main/java" />
 	<property name="testng.source.dir" value="${source.basedir}/test/java" />
 	<property name="testng.resource.dir" value="${source.basedir}/test/resources" />
+	<property name="example.dir" value="${source.basedir}/example/java" />
 	<property name="testng.report.dir" value="${build.dir}/testng-report" />
 	<property name="lib.build.dir" value="${lib.dir}/build" />
 	<property name="export.dir" value="${build.dir}/export/${identifier}" />
@@ -82,11 +83,28 @@
 			<include name="org/jenetics/*.gif" />
 			<include name="org/jenetics/*.html" />
 			<include name="org/jenetics/*.java" />
-			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
 			<include name="org/jenetics/stat/*.java" />
 		</javac>		
 	</target>
+	
+	<target name="compile-example" depends="compile">
+		<mkdir dir="${build.dir}" />
+		<javac destdir="${build.dir}" 
+			srcdir="${example.dir}" 
+			debug="false" 
+			source="1.6" 
+			target="1.6" 
+			encoding="UTF-8" 
+			listfiles="yes"
+			includeantruntime="no"
+		>
+			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg value="-Xlint:deprecation" />
+			<classpath refid="classpath" />
+			<include name="org/jenetics/examples/*.java" />
+		</javac>		
+	</target>	
 	
 	<!--
 	    Build jar packages from the sources:
@@ -99,7 +117,7 @@
 	    * jenetics-examples-<version>.jar
 	          Contains only the example classes.
 	-->
-	<target name="jar" depends="clean, compile">
+	<target name="jar" depends="clean, compile, compile-example">
 		<tstamp>
 			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
 		</tstamp>
@@ -113,6 +131,7 @@
 			index="true" 
 			update="true" 
 			level="9" 
+			filesonly="true"
 			duplicate="preserve"
 		>
 			<fileset dir="${build.dir}" >
@@ -138,6 +157,7 @@
 			filesetmanifest="mergewithoutmain" 
 			index="true" 
 			update="true" 
+			filesonly="true"
 			level="9" 
 			duplicate="preserve"
 		>
@@ -491,6 +511,7 @@
 		<copy todir="${export.dir}" file="Jenetics.iml"/>
 		<copy todir="${export.dir}" file="Jenetics.ipr"/>
 		<copy todir="${export.dir}" file="Jenetics.iws"/>
+		<copy todir="${export.dir}" file="run-examples.sh"/>
 		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-all.jar"/>

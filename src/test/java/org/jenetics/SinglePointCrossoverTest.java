@@ -135,7 +135,7 @@ public class SinglePointCrossoverTest {
 		final SinglePointCrossover<Float64Gene> crossover = new SinglePointCrossover<Float64Gene>(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
-		final long N = 100;
+		final long N = 200;
 		final double mean = crossover.getOrder()*npopulation*p;
 		
 		final long min = 0;

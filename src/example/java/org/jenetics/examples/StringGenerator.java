@@ -67,7 +67,7 @@ public class StringGenerator {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		final int maxThreads = 2;
+		final int maxThreads = Runtime.getRuntime().availableProcessors() + 2;
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 		
 		final String value = 

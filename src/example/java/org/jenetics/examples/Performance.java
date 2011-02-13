@@ -39,6 +39,8 @@ import org.jenetics.Genotype;
 import org.jenetics.IdentityScaler;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
+import org.jenetics.util.ConcurrentEvaluator;
+import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 
 /**
@@ -59,6 +61,8 @@ public class Performance {
 	}
 	
 	public static void main(String[] args) {
+		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
+		
 		final Function ff = new Function();
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final FitnessScaler<Float64> fs = IdentityScaler.<Float64>valueOf();
