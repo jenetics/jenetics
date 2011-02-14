@@ -77,7 +77,6 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * @param max the maximum value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Integer64Chromosome(
 		final Integer64 min, 
@@ -96,7 +95,6 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * 
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Integer64Chromosome(final long min, final long max) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max));
@@ -108,7 +106,6 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Integer64Chromosome(final Integer64 min, final Integer64 max) {
 		this(min, max, 1);
@@ -120,7 +117,6 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Integer64Chromosome(final long min, final long max, int length) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
@@ -136,7 +132,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 */
 	@Override
 	public Integer64Chromosome newInstance() {
-		return new Integer64Chromosome(_min.longValue(), _max.longValue(), length());
+		return new Integer64Chromosome(_min, _max, length());
 	}
 	
 	@Override

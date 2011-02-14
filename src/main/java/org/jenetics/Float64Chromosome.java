@@ -53,7 +53,7 @@ public class Float64Chromosome
 	}
 	
 	/**
-	 * Create a new chromosome.
+	 * Create a new chromosome from the given {@code genes}.
 	 * 
 	 * @param genes the genes this chromosome consists.
 	 * @throws IllegalArgumentException if the number of genes is smaller than 
@@ -70,14 +70,13 @@ public class Float64Chromosome
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Float64Chromosome(
 		final Float64 min, 
 		final Float64 max, 
 		final int length
 	) {
-		super(
+		this(
 				new Array<Float64Gene>(length).fill(
 						Float64Gene.valueOf(min, max).asFactory()
 					)
@@ -89,7 +88,6 @@ public class Float64Chromosome
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Float64Chromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
@@ -101,7 +99,6 @@ public class Float64Chromosome
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-	 * @throws IllegalArgumentException if min is not less max.
 	 */
 	public Float64Chromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);
@@ -130,7 +127,7 @@ public class Float64Chromosome
 	 */
 	@Override
 	public Float64Chromosome newInstance() {
-		return new Float64Chromosome(_min.doubleValue(), _max.doubleValue(), length());
+		return new Float64Chromosome(_min, _max, length());
 	}
 	
 	@Override
@@ -173,7 +170,6 @@ public class Float64Chromosome
 	{
 		return AbstractChromosome.gene(index);
 	}
-	
 	
 	static final XMLFormat<Float64Chromosome> 
 	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class) 

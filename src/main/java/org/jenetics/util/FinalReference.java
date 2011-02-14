@@ -67,7 +67,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	 * @return {@code true} if this {@link Reference} can't be set again, 
 	 * 		  false otherwise.
 	 */
-	public boolean isFinal() {
+	public synchronized boolean isFinal() {
 		return _initialized;
 	}
 	
@@ -78,7 +78,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	 * @throws IllegalStateException if you try to set the reference value twice.
 	 */
 	@Override
-	public void set(final T value) {
+	public synchronized void set(final T value) {
 		if (_initialized) {
 			throw new IllegalStateException("Value is already initialized.");
 		}
@@ -87,13 +87,13 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	}
 	
 	@Override
-	public T get() {
+	public synchronized T get() {
 		return _value;
 	}
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_value).value();
+		return hashCodeOf(getClass()).and(get()).value();
 	}
 	
 	@Override
@@ -106,12 +106,12 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 		}
 		
 		final FinalReference<?> f = (FinalReference<?>)object;
-		return eq(_value, f._value);
+		return eq(get(), f.get());
 	}
 	
 	@Override
 	public String toString() {
-		return str(_value);
+		return str(get());
 	}
 	
 }

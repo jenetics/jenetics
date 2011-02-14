@@ -53,7 +53,7 @@ public class NumberStatistics<
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	protected static class Builder<
+	public static class Builder<
 		G extends Gene<?, G>, 
 		R extends Number & Comparable<? super R>
 	>
@@ -244,12 +244,6 @@ public class NumberStatistics<
 		return out.toString();
 	}
 	
-	public static 	<G extends Gene<?, G>, R extends Number & Comparable<? super R>>
-	Builder<G, R> Builder() {
-		return new Builder<G, R>();
-	}
-	
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<NumberStatistics> XML = 
 		new XMLFormat<NumberStatistics>(NumberStatistics.class) 
@@ -317,7 +311,7 @@ public class NumberStatistics<
 			final int generation, 
 			final Optimize opt
 		) {
-			final Builder<G, R> builder = NumberStatistics.Builder();
+			final Builder<G, R> builder = new Builder<G, R>();
 			builder.generation(generation);
 			builder.optimize(opt);
 

@@ -63,7 +63,7 @@ public class RealFunction {
 
 		@Override
 		public Float64 convert(final Genotype<Float64Gene> value) {
-			return value.getChromosome().getGene().getAllele();
+			return value.getGene().getAllele();
 		}
 		
 		@Override
@@ -76,7 +76,9 @@ public class RealFunction {
 	public static void main(String[] args) {
 		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
 		
-		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
+		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
+				new Float64Chromosome(0, 360)
+			);
 		final Function ff = new Function();
 		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
 		
@@ -102,3 +104,10 @@ public class RealFunction {
 	}
 	
 }
+
+
+
+
+
+
+
