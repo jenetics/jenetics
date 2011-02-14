@@ -70,7 +70,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Builder<
+	protected static class Builder<
 		G extends Gene<?, G>, 
 		C extends Comparable<? super C>
 	> 
@@ -409,6 +409,11 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return out.toString();
 	}
 	
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>> 
+	Builder<G, C> Builder() {
+		return new Builder<G, C>();
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected static final XMLFormat<Statistics> XML = 
 		new XMLFormat<Statistics>(Statistics.class) 
@@ -705,7 +710,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final int generation,
 			final Optimize opt
 		) {	
-			final Builder<G, C> builder = new Builder<G, C>().generation(generation);
+			final Builder<G, C> builder = Statistics.Builder();
+			builder.generation(generation);
 			builder.optimize(opt);
 			
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
