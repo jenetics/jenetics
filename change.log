@@ -1,3 +1,5 @@
+- Making org.jenetics.Statisitcs.Builder constructor protected and add static
+  factory method which creates an new builder instance.
 - Change the signature of the Statistics.Calculator.evaluate method to work with
   'Iterable<? extends Phenotype<G, C>>' for the population, instead of a
   'List<? extends Phenotype<G, C>>'.

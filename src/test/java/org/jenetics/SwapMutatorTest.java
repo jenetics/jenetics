@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.diff;
+//import static org.jenetics.TestUtils.diff;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 
 import org.jscience.mathematics.number.Float64;
@@ -58,7 +58,7 @@ public class SwapMutatorTest extends MutatorTestBase {
 		final Alterer<Float64Gene> mutator = newAlterer(0.01);
 		
 		final int alterations = mutator.alter(p1, 1);
-		final int diff = diff(p1, p2);
+		//final int diff = diff(p1, p2);
 		
 		if (ngenes == 1) {
 			Assert.assertEquals(alterations, 0);

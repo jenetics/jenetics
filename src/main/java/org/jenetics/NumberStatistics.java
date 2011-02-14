@@ -53,7 +53,7 @@ public class NumberStatistics<
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static class Builder<
+	protected static class Builder<
 		G extends Gene<?, G>, 
 		R extends Number & Comparable<? super R>
 	>
@@ -243,6 +243,12 @@ public class NumberStatistics<
 
 		return out.toString();
 	}
+	
+	public static 	<G extends Gene<?, G>, R extends Number & Comparable<? super R>>
+	Builder<G, R> Builder() {
+		return new Builder<G, R>();
+	}
+	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<NumberStatistics> XML = 
@@ -297,7 +303,7 @@ public class NumberStatistics<
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>, 
-		R extends Number & Comparable<R>
+		R extends Number & Comparable<? super R>
 	>
 		extends Statistics.Calculator<G, R> 
 	{
@@ -311,7 +317,7 @@ public class NumberStatistics<
 			final int generation, 
 			final Optimize opt
 		) {
-			final Builder<G, R> builder = new Builder<G, R>();
+			final Builder<G, R> builder = NumberStatistics.Builder();
 			builder.generation(generation);
 			builder.optimize(opt);
 
