@@ -58,6 +58,12 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 		}
 	}
 	
+	@Test(expectedExceptions = NullPointerException.class)
+	public void newInstanceFromNullArray() {
+		final Chromosome<G> c = getFactory().newInstance();
+		c.newInstance(null);
+	}
+	
 	@Test
 	public void newInstanceFromRandom() {
 		for (int i = 0; i < 100; ++i) {
