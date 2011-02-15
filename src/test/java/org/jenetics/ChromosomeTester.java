@@ -72,15 +72,6 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	}
 	
 	@Test
-	public void isValid() {
-		for (int i = 0; i < 100; ++i) {
-			final Chromosome<G> c = getFactory().newInstance();
-			
-			Assert.assertTrue(c.isValid());
-		}
-	}
-	
-	@Test
 	public void iterator(){
 		final Chromosome<G> c = getFactory().newInstance();
 		final Array<G> a = c.toArray();

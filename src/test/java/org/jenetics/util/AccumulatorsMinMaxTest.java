@@ -32,11 +32,20 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class AccumulatorsMinMaxTest extends AbstractAccumulatorCommonTests {
+public class AccumulatorsMinMaxTest 
+	extends AbstractAccumulatorTester<Accumulators.MinMax<Double>> 
+{
 	
+	final Factory<Accumulators.MinMax<Double>> 
+	_factory = new Factory<Accumulators.MinMax<Double>>() {
+		@Override
+		public Accumulators.MinMax<Double> newInstance() {
+			return new Accumulators.MinMax<Double>();
+		}
+	};
 	@Override
-	public AbstractAccumulator<Double> newAccumulator() {
-		return new Accumulators.MinMax<Double>();
+	protected Factory<Accumulators.MinMax<Double>> getFactory() {
+		return _factory;
 	}
 	
 	@Test

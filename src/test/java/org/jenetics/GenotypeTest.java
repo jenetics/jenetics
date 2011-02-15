@@ -82,27 +82,6 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
     }
     
     @Test
-    public void isValid() {
-        Integer64Chromosome c1 = new Integer64Chromosome(0, 100, 10);
-        Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
-        Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2);
-        Assert.assertTrue(g1.isValid());
-        
-        c1 = new Integer64Chromosome(
-        		Integer64Gene.valueOf(0, 1, 10),
-        		Integer64Gene.valueOf(2, 1, 10),
-        		Integer64Gene.valueOf(2, 1, 10)
-        	);
-        c2 = new Integer64Chromosome(
-        		Integer64Gene.valueOf(2, 1, 10),
-        		Integer64Gene.valueOf(2, 1, 10),
-        		Integer64Gene.valueOf(2, 1, 10)
-        	);
-        g1 = Genotype.valueOf(c1, c2);
-        Assert.assertFalse(g1.isValid());
-    }
-    
-    @Test
     public void newInstance() {
     	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
     			//Rotation

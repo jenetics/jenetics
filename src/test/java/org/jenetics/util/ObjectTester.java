@@ -121,6 +121,14 @@ public abstract class ObjectTester<T> {
 	}
 	
 	@Test
+	public void isValid() {
+		final T a = getFactory().newInstance();
+		if (a instanceof Verifiable) {
+			Assert.assertTrue(((Verifiable)a).isValid());
+		}
+	}
+	
+	@Test
 	public void xmlSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
 		
