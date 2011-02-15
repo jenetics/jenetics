@@ -78,7 +78,10 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 		
 		int index = 0;
 		for (G gene : c) {
-			Assert.assertEquals(gene, a.get(index++));
+			Assert.assertEquals(gene, a.get(index));
+			Assert.assertEquals(gene, c.getGene(index));
+			
+			++index;
 		}
 	}
 	

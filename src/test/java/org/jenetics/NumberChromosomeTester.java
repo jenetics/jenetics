@@ -55,6 +55,18 @@ public abstract class NumberChromosomeTester<
 	}
 	
 	@Test
+	public void geneMinMax() {
+		@SuppressWarnings("unchecked")
+		final NumberChromosome<N, G> 
+		c = (NumberChromosome<N, G>)getFactory().newInstance();
+		
+		for (G gene : c) {
+			Assert.assertSame(gene.getMin(), c.getMin());
+			Assert.assertSame(gene.getMax(), c.getMax());
+		}
+	}
+	
+	@Test
 	public void primitiveTypeAccess() {
 		@SuppressWarnings("unchecked")
 		final NumberChromosome<N, G> 

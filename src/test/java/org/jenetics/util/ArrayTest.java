@@ -27,6 +27,8 @@ import static org.jenetics.util.Predicates.nil;
 import static org.jenetics.util.Predicates.not;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -304,6 +306,18 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			++count;
 		}
 		Assert.assertEquals(count, 5);
+	}
+	
+	@Test
+	public void iterator() {
+		final List<Integer> list = asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
+		final Array<Integer> array = new Array<Integer>(list);
+		
+		final Iterator<Integer> ai = array.iterator();
+		for (Integer i : list) {
+			Assert.assertEquals(i, ai.next());
+		}
+		Assert.assertFalse(ai.hasNext());
 	}
 	
 	@Test

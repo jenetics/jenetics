@@ -22,9 +22,13 @@
  */
 package org.jenetics.util;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 
 import javolution.context.LocalContext;
+import javolution.lang.Immutable;
 import javolution.xml.XMLSerializable;
 
 import org.jenetics.util.Array;
@@ -91,6 +95,7 @@ public abstract class ObjectTester<T> {
 	@Test
 	public void notEqualsDifferentType() {
 		final Object that = getFactory().newInstance();
+		Assert.assertFalse(that.equals(null));
 		Assert.assertFalse(that.equals(""));
 		Assert.assertFalse(that.equals(23));
 	}
@@ -127,6 +132,22 @@ public abstract class ObjectTester<T> {
 			Assert.assertTrue(((Verifiable)a).isValid());
 		}
 	}
+	
+	@Test
+	public void typeConsistency() throws Exception {
+		final T a = getFactory().newInstance();
+		
+		Assert.assertFalse(a instanceof Cloneable && a instanceof Immutable);
+		Assert.assertFalse(a instanceof Copyable<?> && a instanceof Immutable);
+		
+		if (a instanceof Immutable) {
+			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
+			for (PropertyDescriptor prop : info.getPropertyDescriptors()) {
+				Assert.assertNull(prop.getWriteMethod());
+			}
+		}
+	}
+
 	
 	@Test
 	public void xmlSerialize() throws Exception {

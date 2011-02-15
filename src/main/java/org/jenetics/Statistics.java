@@ -410,7 +410,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected static final XMLFormat<Statistics> XML = 
+	static final XMLFormat<Statistics> XML = 
 		new XMLFormat<Statistics>(Statistics.class) 
 	{
 		private static final String OPTIMIZE = "optimize";
@@ -598,7 +598,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 		
 		@SuppressWarnings("unchecked")
-		protected static final XMLFormat<Statistics.Time> XML = 
+		static final XMLFormat<Statistics.Time> XML = 
 			new XMLFormat<Statistics.Time>(Statistics.Time.class) 
 		{
 			private static final String ALTER_TIME = "alter-time";
