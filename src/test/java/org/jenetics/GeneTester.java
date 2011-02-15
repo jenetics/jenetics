@@ -75,13 +75,6 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 		}
 	}
 	
-	@Test
-	public void isValid() {
-		for (int i = 0; i < 10; ++i) {
-			Assert.assertTrue(getFactory().newInstance().isValid());
-		}
-	}
-	
 }
 
 

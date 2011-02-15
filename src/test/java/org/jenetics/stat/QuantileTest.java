@@ -22,21 +22,31 @@
  */
 package org.jenetics.stat;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.AbstractAccumulatorCommonTests;
+import org.jenetics.util.AbstractAccumulatorTester;
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class QuantileTest extends AbstractAccumulatorCommonTests {
+public class QuantileTest extends AbstractAccumulatorTester<Quantile<Double>> {
 
+	private final Factory<Quantile<Double>> _factory = new Factory<Quantile<Double>>() {
+		@Override
+		public Quantile<Double> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			return new Quantile<Double>(random.nextDouble());
+		}
+	};
 	@Override
-	public AbstractAccumulator<Double> newAccumulator() {
-		return new Quantile<Double>(0.5);
+	protected Factory<Quantile<Double>> getFactory() {
+		return _factory;
 	}
 
 	@Test
@@ -44,7 +54,6 @@ public class QuantileTest extends AbstractAccumulatorCommonTests {
 		final Quantile<Integer> quantile = new Quantile<Integer>(0.5);
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i); 
-//			System.out.println(quantile.getQuantile() + "--" + Math.floor(i/2.0));
 			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
 		}
 	}

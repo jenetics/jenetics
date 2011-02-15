@@ -30,18 +30,28 @@ import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.AbstractAccumulatorCommonTests;
+import org.jenetics.util.AbstractAccumulatorTester;
+import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class HistogramTest extends AbstractAccumulatorCommonTests {
+public class HistogramTest 
+	extends AbstractAccumulatorTester<Histogram<Double>> 
+{
 
+	private final Factory<Histogram<Double>> _factory = new Factory<Histogram<Double>>() {
+		@Override
+		public Histogram<Double> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			return Histogram.valueOf(0.0, 100.0, random.nextInt(10) + 5);
+		}
+	};
 	@Override
-	public AbstractAccumulator<Double> newAccumulator() {
-		return Histogram.valueOf(new Double[]{1d, 2d, 3d, 4d, 5d});
+	protected Factory<Histogram<Double>> getFactory() {
+		return _factory;
 	}
 	
 	@Test

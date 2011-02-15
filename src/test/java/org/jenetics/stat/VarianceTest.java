@@ -27,8 +27,8 @@ import java.io.IOException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.AbstractAccumulator;
-import org.jenetics.util.AbstractAccumulatorCommonTests;
+import org.jenetics.util.AbstractAccumulatorTester;
+import org.jenetics.util.Factory;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;
 
@@ -36,13 +36,19 @@ import org.jenetics.util.TestDataIterator.Data;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class VarianceTest extends AbstractAccumulatorCommonTests {
+public class VarianceTest extends AbstractAccumulatorTester<Variance<Double>> {
 	
 	private final String DATA = "/org/jenetics/util/statistic-moments.txt";	
 
+	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
+		@Override
+		public Variance<Double> newInstance() {
+			return new Variance<Double>();
+		}
+	};
 	@Override
-	public AbstractAccumulator<Double> newAccumulator() {
-		return new Variance<Double>();
+	protected Factory<Variance<Double>> getFactory() {
+		return _factory;
 	}
 	
 	@Test

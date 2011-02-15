@@ -27,16 +27,27 @@ import java.util.Arrays;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Accumulators.Max;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class AccumulatorsMaxTest extends AbstractAccumulatorCommonTests {
-	
+public class AccumulatorsMaxTest 
+	extends AbstractAccumulatorTester<Accumulators.Max<Double>> 
+{
+
+	final Factory<Accumulators.Max<Double>> 
+	_factory = new Factory<Accumulators.Max<Double>>() {
+		@Override
+		public Max<Double> newInstance() {
+			return new Max<Double>();
+		}
+	};
 	@Override
-	public AbstractAccumulator<Double> newAccumulator() {
-		return new Accumulators.Max<Double>();
+	protected Factory<Max<Double>> getFactory() {
+		return _factory;
 	}
 	
 	@Test

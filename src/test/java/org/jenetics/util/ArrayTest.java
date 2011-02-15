@@ -22,16 +22,13 @@
  */
 package org.jenetics.util;
 
+import static java.util.Arrays.asList;
 import static org.jenetics.util.Predicates.nil;
 import static org.jenetics.util.Predicates.not;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
@@ -41,12 +38,28 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ArrayTest {
+public class ArrayTest extends ObjectTester<Array<Double>> {
 
+	final Factory<Array<Double>> _factory = new Factory<Array<Double>>() {
+		@Override
+		public Array<Double> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			final Array<Double> array = new Array<Double>(random.nextInt(1000) + 100);
+			for (int i = 0; i < array.length(); ++i) {
+				array.set(i, random.nextDouble());
+			}
+			return array;
+		}
+	};
+	@Override
+	protected Factory<Array<Double>> getFactory() {
+		return _factory;
+	}
+	
 	@Test
-	public void create1() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
-		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+	public void newFromCollection() {
+		final Array<Integer> a1 = new Array<Integer>(asList(1, 2, 3, 4, 5));
+		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
 		final Array<Integer> a3 = new Array<Integer>(a1, a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length());
@@ -56,9 +69,9 @@ public class ArrayTest {
 	}
 	
 	@Test
-	public void create2() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
-		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+	public void newFromSubArray() {
+		final Array<Integer> a1 = new Array<Integer>(asList(0, 1, 2, 3, 4, 5, 6, 7));
+		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
 		final Array<Integer> a3 = new Array<Integer>(a1.subArray(0, 6), a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
@@ -68,9 +81,9 @@ public class ArrayTest {
 	}
 	
 	@Test
-	public void create3() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
-		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+	public void newFromOtherSubArray() {
+		final Array<Integer> a1 = new Array<Integer>(asList(0, 1, 2, 3, 4, 5, 6, 7));
+		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
 		final Array<Integer> a3 = new Array<Integer>(a1.subArray(1, 6), a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
@@ -89,23 +102,6 @@ public class ArrayTest {
 		for (int i = 0; i < a1.length() + a2.length() - 3; ++i) {
 			Assert.assertEquals(a3.get(i), new Integer(i));
 		}
-	}
-	
-	@Test
-	public void equals() {
-		final Array<Integer> a1 = new Array<Integer>(20);
-		final Array<Integer> a2 = new Array<Integer>(20);
-		for (int i = 0; i < 10; ++i) {
-			a1.set(i, i);
-		}
-		for (int i = 0; i < 10; ++i) {
-			a2.set(i + 10, i);
-		}
-		
-		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(10, 15));
-		Assert.assertEquals(a1.subArray(0, 5), a2.subArray(6, 15).subArray(4, 9));
-		Assert.assertEquals(a1.subArray(0, 5).copy(), a2.subArray(6, 15).subArray(4, 9).copy());
-		Assert.assertFalse(a1.equals(a2));
 	}
 	
 	@Test
@@ -308,13 +304,10 @@ public class ArrayTest {
 			++count;
 		}
 		Assert.assertEquals(count, 5);
-		
-//		System.out.println(sub);
-//		System.out.println(array);
 	}
 	
 	@Test
-	public void toArray1() {
+	public void toObjectArray() {
 		final Array<Integer> array = new Array<Integer>(10);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
@@ -329,7 +322,7 @@ public class ArrayTest {
 	}
 	
 	@Test
-	public void toArray2() {
+	public void toTypedArray() {
 		final Array<Integer> array = new Array<Integer>(10);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
@@ -354,26 +347,6 @@ public class ArrayTest {
 		Array<Integer> clone = array.clone();
 		Assert.assertNotSame(clone, array);
 		Assert.assertEquals(clone, array);
-	}
-	
-	@Test
-	public void serialize() throws IOException, ClassNotFoundException {
-		final Array<Integer> array = new Array<Integer>(10);
-		for (int i = 1; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		ObjectOutputStream out = new ObjectOutputStream(bout);
-		out.writeObject(array);
-		out.flush();
-		out.close();
-		
-		ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
-		ObjectInputStream in = new ObjectInputStream(bin);
-		Object object = in.readObject();
-		
-		Assert.assertEquals(object, array);
 	}
 	
 }

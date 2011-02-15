@@ -31,15 +31,15 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class AbstractAccumulatorCommonTests {
-
-	public abstract AbstractAccumulator<Double> newAccumulator();
+public abstract class AbstractAccumulatorTester<A extends AbstractAccumulator<Double>> 
+	extends ObjectTester<A> 
+{
 	
 	@Test
 	public void accumulatedSamples() {
 		final int SAMPLES = 12345;
 		final Random random = new Random(123456);
-		final AbstractAccumulator<Double> accu = newAccumulator();
+		final AbstractAccumulator<Double> accu = getFactory().newInstance();
 		
 		Assert.assertEquals(accu._samples, 0);
 		Assert.assertEquals(accu.getSamples(), 0);
@@ -53,34 +53,8 @@ public abstract class AbstractAccumulatorCommonTests {
 	}
 	
 	@Test
-	public void testHashCodeEquals() {
-		Random random = new Random(123456);
-		final Accumulator<Double> accu1 = newAccumulator();
-		for (int i = 0; i < 60000; ++i) {
-			accu1.accumulate(random.nextDouble()*6);
-		}
-		
-		random = new Random(123456);
-		final Accumulator<Double> accu2 = newAccumulator();
-		for (int i = 0; i < 60000; ++i) {
-			accu2.accumulate(random.nextDouble()*6);
-		}
-		
-		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
-		Assert.assertEquals(accu1, accu2);
-		
-		accu1.accumulate(4.5);
-		Assert.assertFalse(accu1.equals(accu2));
-		Assert.assertFalse(accu1.hashCode() == accu2.hashCode());
-		
-		accu2.accumulate(4.5);
-		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
-		Assert.assertEquals(accu1, accu2);
-	}
-	
-	@Test
 	public void testClone() {
-		AbstractAccumulator<Double> accu1 = newAccumulator();
+		AbstractAccumulator<Double> accu1 = getFactory().newInstance();
 		for (int i = 0; i < 1000; ++i) {
 			accu1.accumulate(Double.valueOf(i));
 		}
@@ -99,7 +73,7 @@ public abstract class AbstractAccumulatorCommonTests {
 		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
 		Assert.assertEquals(accu1, accu2);
 		
-		accu1 = newAccumulator();
+		accu1 = getFactory().newInstance();
 		accu2 = accu1.clone();
 		
 		Assert.assertNotSame(accu1, accu2);
