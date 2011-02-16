@@ -80,9 +80,6 @@ public class Float64ChromosomeTest
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
-			
-			// Chi-Square teset for gene distribution.
-			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
 			assertDistribution(histogram, new UniformDistribution<Float64>(min, max));
 		} finally {
 			LocalContext.exit();

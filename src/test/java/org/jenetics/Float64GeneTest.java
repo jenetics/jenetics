@@ -85,8 +85,6 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 				histogram.accumulate(g2.getAllele());
 			}
 			
-			// Chi-Square teset for gene distribution.
-			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
 			assertDistribution(histogram, new UniformDistribution<Float64>(min, max));
 		} finally {
 			LocalContext.exit();
