@@ -41,15 +41,14 @@ public abstract class AbstractAccumulatorTester<A extends AbstractAccumulator<Do
 		final Random random = new Random(123456);
 		final AbstractAccumulator<Double> accu = getFactory().newInstance();
 		
-		Assert.assertEquals(accu._samples, 0);
-		Assert.assertEquals(accu.getSamples(), 0);
+		final long samples = accu.getSamples();
 		
 		for (int i = 0; i < SAMPLES; ++i) {
 			accu.accumulate(random.nextDouble()*6);
 		}
 		
-		Assert.assertEquals(accu._samples, SAMPLES);
-		Assert.assertEquals(accu.getSamples(), SAMPLES);
+		Assert.assertEquals(accu._samples, SAMPLES + samples);
+		Assert.assertEquals(accu.getSamples(), SAMPLES + samples);
 	}
 	
 	@Test

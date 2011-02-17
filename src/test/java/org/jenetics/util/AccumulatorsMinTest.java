@@ -23,9 +23,12 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Accumulators.Min;
 
 
 /**
@@ -39,8 +42,15 @@ public class AccumulatorsMinTest
 	final Factory<Accumulators.Min<Double>> 
 	_factory = new Factory<Accumulators.Min<Double>>() {
 		@Override
-		public Accumulators.Min<Double> newInstance() {
-			return new Accumulators.Min<Double>();
+		public Min<Double> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			
+			final Min<Double> min = new Min<Double>();
+			for (int i = 0; i < 1000; ++i) {
+				min.accumulate(random.nextGaussian());
+			}
+			
+			return min;
 		}
 	};
 	@Override

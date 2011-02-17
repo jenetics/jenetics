@@ -23,9 +23,12 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Accumulators.MinMax;
 
 
 /**
@@ -40,7 +43,14 @@ public class AccumulatorsMinMaxTest
 	_factory = new Factory<Accumulators.MinMax<Double>>() {
 		@Override
 		public Accumulators.MinMax<Double> newInstance() {
-			return new Accumulators.MinMax<Double>();
+			final Random random = RandomRegistry.getRandom();
+			
+			final MinMax<Double> minMax = new MinMax<Double>();
+			for (int i = 0; i < 1000; ++i) {
+				minMax.accumulate(random.nextGaussian());
+			}
+			
+			return minMax;
 		}
 	};
 	@Override
