@@ -41,7 +41,13 @@ public class QuantileTest extends AbstractAccumulatorTester<Quantile<Double>> {
 		@Override
 		public Quantile<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return new Quantile<Double>(random.nextDouble());
+			
+			final Quantile<Double> quantile = new Quantile<Double>(random.nextDouble());
+			for (int i = 0; i < 1000; ++i) {
+				quantile.accumulate(random.nextGaussian());
+			}
+			
+			return quantile;
 		}
 	};
 	@Override

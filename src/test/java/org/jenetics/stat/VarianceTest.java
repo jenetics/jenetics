@@ -23,12 +23,14 @@
 package org.jenetics.stat;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.AbstractAccumulatorTester;
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;
 
@@ -43,7 +45,14 @@ public class VarianceTest extends AbstractAccumulatorTester<Variance<Double>> {
 	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
 		@Override
 		public Variance<Double> newInstance() {
-			return new Variance<Double>();
+			final Random random = RandomRegistry.getRandom();
+			
+			final Variance<Double> variance = new Variance<Double>();
+			for (int i = 0; i < 1000; ++i) {
+				variance.accumulate(random.nextGaussian());
+			}
+			
+			return variance;
 		}
 	};
 	@Override

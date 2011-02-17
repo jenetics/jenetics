@@ -23,12 +23,14 @@
 package org.jenetics.stat;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.AbstractAccumulatorTester;
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;
 
@@ -42,7 +44,14 @@ public class MeanTest extends AbstractAccumulatorTester<Mean<Double>> {
 	private final Factory<Mean<Double>> _factory = new Factory<Mean<Double>>() {
 		@Override
 		public Mean<Double> newInstance() {
-			return new Mean<Double>();
+			final Random random = RandomRegistry.getRandom();
+			
+			final Mean<Double> mean = new Mean<Double>();
+			for (int i = 0; i < 1000; ++i) {
+				mean.accumulate(random.nextDouble());
+			}
+			
+			return mean;
 		}
 	};
 	@Override
