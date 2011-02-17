@@ -42,11 +42,22 @@ public class HistogramTest
 	extends AbstractAccumulatorTester<Histogram<Double>> 
 {
 
-	private final Factory<Histogram<Double>> _factory = new Factory<Histogram<Double>>() {
+	private final Factory<Histogram<Double>> 
+	_factory = new Factory<Histogram<Double>>() {
 		@Override
 		public Histogram<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return Histogram.valueOf(0.0, 100.0, random.nextInt(10) + 5);
+			final double min = random.nextInt(100) + 100;
+			final double max = random.nextInt(100) + 100 + min;
+			
+			final Histogram<Double> histogram = Histogram.valueOf(
+						min, max, random.nextInt(10) + 5
+					);
+			for (int i = 0; i < 1000; ++i) {
+				histogram.accumulate(random.nextGaussian()*(max - min) + min);
+			}
+			
+			return histogram;
 		}
 	};
 	@Override

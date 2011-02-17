@@ -22,20 +22,44 @@
  */
 package org.jenetics.stat;
 
-import junit.framework.Assert;
+import java.util.Random;
 
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution.Domain;
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class LinearDistributionTest {
+public class LinearDistributionTest extends ObjectTester<LinearDistribution<Double>> {
 
+	private final Factory<LinearDistribution<Double>> 
+	_factory = new Factory<LinearDistribution<Double>>() {
+		@Override
+		public LinearDistribution<Double> newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			
+			final double min = random.nextInt(100) + 100;
+			final double max = random.nextInt(100) + 100 + min;
+			final double y2 = random.nextDouble();
+			final LinearDistribution<Double> dist = 
+				new LinearDistribution<Double>(new Domain<Double>(min, max), y2);
+			
+			return dist;
+		}
+	};
+	@Override
+	protected Factory<LinearDistribution<Double>> getFactory() {
+		return _factory;
+	}
+	
 	@Test
 	public void pdf() {
 		final Domain<Double> domain = new Domain<Double>(0.0, 1.0);
