@@ -125,7 +125,7 @@ public final class CharacterGene
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_character).value();
+		return hashCodeOf(getClass()).and(_character).and(_validCharacters).value();
 	}
 	
 	@Override 
@@ -137,7 +137,8 @@ public final class CharacterGene
 			return false;
 		}
 		CharacterGene gene = (CharacterGene)obj;
-		return eq(getAllele(), gene.getAllele());
+		return eq(_character, gene._character) &&
+				eq(_validCharacters, gene._validCharacters);
 	}
 	
 	@Override

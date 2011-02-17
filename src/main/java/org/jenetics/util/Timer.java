@@ -54,9 +54,9 @@ public final class Timer
 	private static final String DEFAULT_LABEL = "Timer";
 	
 	private String _label;
-	private long _start = 0;
-	private long _stop = 0;
-	private long _sum = 0;
+	/*private[test]*/ long _start = 0;
+	/*private[test]*/ long _stop = 0;
+	/*private[test]*/ long _sum = 0;
 	
 	/**
 	 * Create a new time with the given label. The label is use in the 

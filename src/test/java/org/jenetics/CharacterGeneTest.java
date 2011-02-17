@@ -74,8 +74,6 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				histogram.accumulate(Long.valueOf(g2.getAllele().toString()));
 			}
 			
-			// Chi-Square teset for gene distribution.
-			// http://de.wikibooks.org/wiki/Mathematik:_Statistik:_Tabelle_der_Chi-Quadrat-Verteilung
 			assertDistribution(histogram, new UniformDistribution<Long>(0L, 10L));
 		} finally {
 			LocalContext.exit();

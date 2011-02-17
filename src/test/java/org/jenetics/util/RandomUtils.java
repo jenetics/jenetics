@@ -24,54 +24,24 @@ package org.jenetics.util;
 
 import java.util.Random;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class TimerTest extends ObjectTester<Timer> {
+public class RandomUtils {
 
-	private final Factory<Timer> _factory = new Factory<Timer>() {
-		@Override
-		public Timer newInstance() {
-			final Random random = RandomRegistry.getRandom();
-			
-			final Timer timer = new Timer(RandomUtils.nextString(random.nextInt(10) + 10));
-			timer._start = random.nextLong();
-			timer._stop = timer._start + random.nextInt(1000) + 1000;
-			timer._sum = timer._stop - timer._start;
-			return timer;
+	private RandomUtils() {
+	}
+	
+	public static String nextString(final int length) {
+		final Random random = RandomRegistry.getRandom();
+		
+		final StringBuilder chars = new StringBuilder(length);
+		for (int i = 0; i < length; ++i) {
+			chars.append((char)random.nextInt(Short.MAX_VALUE));
 		}
-	};
-	@Override
-	protected Factory<Timer> getFactory() {
-		return _factory;
-	}
-	
-	@Test
-	public void label() {
-		final Timer timer = new Timer("New Timer");
-		Assert.assertEquals(timer.getLabel(), "New Timer");
-	}
-	
-	@Test 
-	void timerClone() throws InterruptedException {
-		final Timer timer = new Timer("ASDFASDF");
-		timer.start();
-		Thread.sleep(100);
-		timer.stop();
-				
-		final Timer clone = timer.clone();
-		Assert.assertEquals(clone, timer);
-		Assert.assertNotSame(clone, timer);
-		Assert.assertEquals(clone.compareTo(timer), 0);
+		
+		return chars.toString();
 	}
 	
 }
-
-
-
-
-
