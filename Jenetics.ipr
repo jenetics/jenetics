@@ -15,10 +15,7 @@
     <artifact type="jar" name="jenetics">
       <output-path>$PROJECT_DIR$/build/artifacts/jenetics</output-path>
       <properties id="ant-preprocessing">
-        <options enabled="true">
-          <file>file://$PROJECT_DIR$/build.xml</file>
-          <target>jar</target>
-        </options>
+        <options enabled="true" />
       </properties>
       <root id="archive" name="jenetics.jar" />
     </artifact>
@@ -280,6 +277,14 @@
   </component>
   <component name="ProjectDetails">
     <option name="projectName" value="Jenetics" />
+  </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="fwilhelm">
+      <words>
+        <w>alterer</w>
+        <w>ngenes</w>
+      </words>
+    </dictionary>
   </component>
   <component name="ProjectModuleManager">
     <modules>
