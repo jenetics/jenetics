@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -42,7 +43,14 @@ public class AccumulatorsMaxTest
 	_factory = new Factory<Accumulators.Max<Double>>() {
 		@Override
 		public Max<Double> newInstance() {
-			return new Max<Double>();
+			final Random random = RandomRegistry.getRandom();
+			
+			final Max<Double> max = new Max<Double>();
+			for (int i = 0; i < 1000; ++i) {
+				max.accumulate(random.nextGaussian());
+			}
+			
+			return max;
 		}
 	};
 	@Override
