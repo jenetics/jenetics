@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Iterator;
+import java.util.Random;
 import java.util.regex.PatternSyntaxException;
 
 import org.testng.Assert;
@@ -32,7 +33,19 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharSetTest {
+public class CharSetTest extends ObjectTester<CharSet> {
+
+	private final Factory<CharSet> _factory = new Factory<CharSet>() {
+		@Override
+		public CharSet newInstance() {
+			final Random random = RandomRegistry.getRandom();
+			return new CharSet(RandomUtils.nextString(random.nextInt(200) + 100));
+		}
+	};
+	@Override
+	protected Factory<CharSet> getFactory() {
+		return _factory;
+	}
 	
 	@Test
 	public void distinct1() {

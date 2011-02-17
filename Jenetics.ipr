@@ -131,6 +131,7 @@
           <option name="m_limit" value="20" />
           <option name="ignoreGettersAndSetters" value="false" />
         </inspection_tool>
+        <inspection_tool class="TodoComment" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
     </profiles>
     <option name="PROJECT_PROFILE" value="Project Default" />

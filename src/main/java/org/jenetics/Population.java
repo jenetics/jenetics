@@ -80,7 +80,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * 		  negative
 	 */
 	public Population(final int size) {
-		_population = new ArrayList<Phenotype<G, C>>(size);
+		_population = new ArrayList<Phenotype<G, C>>(size + 1);
 	}
 	
 	/**
