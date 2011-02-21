@@ -509,9 +509,12 @@ public class Array<T>
 	}
 	
 	/**
+	 * <p>
 	 * Making this array immutable. After sealing, calls to the 
-	 * {@link #set(int, Object)} will throw an {@link UnsupportedOperationException}.
-	 * Once an array is sealed, it can't be made mutable again.
+	 * {@link #set(int, Object)} methods will throw an 
+	 * {@link UnsupportedOperationException}. Once an array is sealed, it can't 
+	 * be made mutable again.
+	 * </p> 
 	 * 
 	 * @return {@code this} array.
 	 */
@@ -519,6 +522,36 @@ public class Array<T>
 		_sealed = true;
 		return this;
 	}
+	
+	/**
+	 * <p>
+	 * The {@code upcast} method returns an array of type {@code Array<? super T>} 
+	 * instead of {@code Array<T>}. This allows you to assign this array to an 
+	 * array where the element type is a super type of {@code T}.
+	 * </p>
+	 * [code]
+	 *     Array<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
+	 *     Array<Number> na = da.upcast();
+	 *     Array<Object>; oa = na.upcast();
+	 *     oa = da.upcast();
+	 * [/code]
+	 * 
+	 * This array must be {@code sealed} for an save <em>up-cast</em>, otherwise an 
+	 * {@link UnsupportedOperationException} will be thrown. 
+	 * 
+	 * @param <A> the up-casted array type.
+	 * @return the up-casted array.
+	 * @throws UnsupportedOperationException if this array is not {@code sealed}.
+	 */
+	@SuppressWarnings("unchecked")
+	public <A extends Array<? super T>> A upcast() {
+		if (!_sealed) {
+			throw new UnsupportedOperationException(
+					"Array must be sealed for an save up-cast."
+				);
+		}
+		return (A)this;
+	}	
 	
 	/**
 	 * Return whether this array is sealed (immutable) or not.
