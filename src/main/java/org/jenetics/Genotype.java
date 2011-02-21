@@ -286,17 +286,8 @@ public final class Genotype<T extends Gene<?, T>>
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 				
-		final Genotype<G> genotype = new Genotype<G>(
-				chromosomes.length(), 
-				ngenes(chromosomes)
-			);
-		
-		for (int i = 0; i < chromosomes.length(); ++i) {
-			nonNull(chromosomes.get(i), "Chromosome[" + i + "]");
-			genotype._chromosomes.set(i, chromosomes.get(i));
-		}
-		
-		return genotype;
+		final Array<Chromosome<G>> c = chromosomes.seal().upcast();
+		return new Genotype<G>(c, ngenes(chromosomes));
 	}
 	
 	/**
