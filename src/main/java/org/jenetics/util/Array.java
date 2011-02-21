@@ -895,7 +895,6 @@ public class Array<T>
 		return result;
 	}
 	
-	
 	/**
 	 * Returns a fixed-size list backed by the specified array. (Changes to
 	 * the returned list "write through" to the array.) The returned list is

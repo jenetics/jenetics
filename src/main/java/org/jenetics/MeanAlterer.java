@@ -75,8 +75,8 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
 		final int cindex = random.nextInt(gt1.length());
-		final Array<Chromosome<G>> c1 = gt1.getChromosomes();
-		final Array<Chromosome<G>> c2 = gt2.getChromosomes();
+		final Array<Chromosome<G>> c1 = gt1.toArray().copy();
+		final Array<Chromosome<G>> c2 = gt2.toArray().copy();
 		
 		// Calculate the mean value of the gene array.
 		final Array<G> mean = mean(

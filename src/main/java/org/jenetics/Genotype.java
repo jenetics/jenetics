@@ -133,8 +133,8 @@ public final class Genotype<T extends Gene<?, T>>
 		return _chromosomes.get(0).getGene();
 	}
 	
-	public Array<Chromosome<T>> getChromosomes() {
-		return _chromosomes.copy();
+	public Array<Chromosome<T>> toArray() {
+		return _chromosomes.seal();
 	}
 	
 	@Override
@@ -235,7 +235,7 @@ public final class Genotype<T extends Gene<?, T>>
 	{
 		return new Converter<Genotype<T>, Array<Chromosome<T>>>() {
 			@Override public Array<Chromosome<T>> convert(final Genotype<T> value) {
-				return value.getChromosomes();
+				return value.toArray();
 			}
 		};
 	}
@@ -316,8 +316,7 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(chrom1, "Chromosome 1");
 		nonNull(chrom2, "Chromosome 2");
 		
-		final int ngenes = chrom1.length() + 
-							chrom2.length();
+		final int ngenes = chrom1.length() + chrom2.length();
 		
 		final Genotype<G> genotype = new Genotype<G>(2, ngenes);
 		genotype._chromosomes.set(0, chrom1);

@@ -29,6 +29,8 @@ import java.util.Iterator;
 
 import javolution.context.ConcurrentContext;
 
+import org.jscience.mathematics.structure.GroupAdditive;
+
 
 /**
  * Collection of some general purpose Accumulators and some static helper classes
@@ -318,6 +320,32 @@ public final class Accumulators {
 		public MinMax<C> clone() {
 			return (MinMax<C>)super.clone();
 		}
+	}
+	
+	public static class Sum<G extends GroupAdditive<G>> 
+		extends AdaptableAccumulator<G> 
+	{
+		
+		private G _sum = null;
+		
+		public Sum() {
+		}
+		
+		public Sum(final G start) {
+			_sum = start;
+		}
+		
+		@Override
+		public void accumulate(final G value) {
+			if (_sum == null) {
+				_sum = value;
+			} else {
+				_sum = _sum.plus(value);
+			}
+			
+			++_samples;
+		}
+		
 	}
 	
 	/**
