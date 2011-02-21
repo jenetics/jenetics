@@ -126,7 +126,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final IndexStream stream = randomIndexes(genotype.length(), p);
 		int start = stream.next();
 		if (start != -1) {
-			final Array<Chromosome<G>> chromosomes = genotype.getChromosomes().copy(); 
+			final Array<Chromosome<G>> chromosomes = genotype.toArray().copy(); 
 			
 			for (int i = start; i != -1; i = stream.next()) {
 				final Chromosome<G> chromosome = chromosomes.get(i);

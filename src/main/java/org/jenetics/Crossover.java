@@ -70,8 +70,8 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
 		
-		final Array<Chromosome<G>> chromosomes1 = gt1.getChromosomes();
-		final Array<Chromosome<G>> chromosomes2 = gt2.getChromosomes();
+		final Array<Chromosome<G>> chromosomes1 = gt1.toArray().copy();
+		final Array<Chromosome<G>> chromosomes2 = gt2.toArray().copy();
 		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
 		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
