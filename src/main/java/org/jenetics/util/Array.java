@@ -291,7 +291,7 @@ public class Array<T>
 	 * 		  ({@code isSealed() == true}).
 	 */
 	public void set(final int index, final T value) {
-		checkSeal();
+		checkNotSealed();
 		checkIndex(index);
 		_array[index + _start] = value;
 	}
@@ -571,7 +571,7 @@ public class Array<T>
 	 * 		  ({@code isSealed() == true}).
 	 */
 	public Array<T> fill(final T value) {
-		checkSeal();
+		checkNotSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = value;
 		}
@@ -587,7 +587,7 @@ public class Array<T>
 	 * 		  ({@code isSealed() == true}).
 	 */
 	public Array<T> fill(final Iterator<? extends T> it) {
-		checkSeal();
+		checkNotSealed();
 		
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
 			_array[i] = it.next();
@@ -604,7 +604,7 @@ public class Array<T>
 	 * 		  ({@code isSealed() == true}).
 	 */
 	public Array<T> fill(final T[] values) {
-		checkSeal();
+		checkNotSealed();
 		System.arraycopy(values, 0, _array, _start, min(length(), values.length));
 		return this;
 	}
@@ -620,7 +620,7 @@ public class Array<T>
 	 */
 	public Array<T> fill(final Factory<? extends T> factory) {
 		Validator.nonNull(factory);
-		checkSeal();
+		checkNotSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = factory.newInstance();
 		}
@@ -906,7 +906,7 @@ public class Array<T>
 		return new org.jenetics.util.ArrayList<T>(this);
 	}
 	
-	final void checkSeal() {
+	final void checkNotSealed() {
 		if (_sealed) {
 			throw new UnsupportedOperationException("Array is sealed");
 		}
