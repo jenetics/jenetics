@@ -1,3 +1,5 @@
+- Add interfaces Sequence, Sequence.Immutable and Sequence.Mutable to make the
+  (im)mutable state of the Array class more explicit.
 - Making org.jenetics.Statisitcs.Builder constructor protected and add static
   factory method which creates an new builder instance.
 - Change the signature of the Statistics.Calculator.evaluate method to work with

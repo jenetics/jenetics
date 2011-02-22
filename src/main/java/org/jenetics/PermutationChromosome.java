@@ -39,6 +39,7 @@ import org.jscience.mathematics.number.Integer64;
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Sequence;
 import org.jenetics.util.Validator;
 
 /**
@@ -54,7 +55,7 @@ public final class PermutationChromosome
 {
 	private static final long serialVersionUID = 1L;
 
-	protected PermutationChromosome(final Array<Integer64Gene> genes) {
+	protected PermutationChromosome(final Sequence.Immutable<Integer64Gene> genes) {
 		super(genes);
 	}
 	
@@ -72,8 +73,34 @@ public final class PermutationChromosome
 	 * 			</ul>
 	 */
 	public PermutationChromosome(final int[] values) {
-		super(values.length);
-		
+		super(create(values));
+	}
+	
+	/**
+	 * Create a new randomly created permutation with the length {@code length}.
+	 * 
+	 * @param length the length of the chromosome.
+	 * @param randomize if true, the chromosome is randomized, otherwise the
+	 * 		 values of the chromosome are in ascending order from 0 to 
+	 * 		 {@code length - 1}
+	 * @throws IllegalArgumentException if the given {@code length} is smaller 
+	 * 		  than 1.
+	 */
+	public PermutationChromosome(final int length, final boolean randomize) {
+		super(create(length, randomize));
+	}
+	
+	/**
+	 * Create a new randomly created permutation with the length {@code length}.
+	 * 
+	 * @param length the length of the chromosome.
+	 * @throws IllegalArgumentException if the given {@code length} is smaller than 1.
+	 */
+	public PermutationChromosome(final int length) {
+		this(length, false);
+	}
+	
+	private static Sequence.Immutable<Integer64Gene> create(final int[] values) {
 		//Check the input.
 		Validator.nonNull(values, "Values");
 		if (values.length < 1) {
@@ -107,51 +134,37 @@ public final class PermutationChromosome
 			}
 		}
 		
+		final Array<Integer64Gene> genes = new Array<Integer64Gene>(values.length);
 		for (int i = 0; i < values.length; ++i) {
-			_genes.set(i, Integer64Gene.valueOf(values[i], 0, values.length - 1));
+			genes.set(i, Integer64Gene.valueOf(values[i], 0, values.length - 1));
 		}
+		
+		return genes.seal();
 	}
 	
-	/**
-	 * Create a new randomly created permutation with the length {@code length}.
-	 * 
-	 * @param length the length of the chromosome.
-	 * @param randomize if true, the chromosome is randomized, otherwise the
-	 * 		 values of the chromosome are in ascending order from 0 to 
-	 * 		 {@code length - 1}
-	 * @throws IllegalArgumentException if the given {@code length} is smaller 
-	 * 		  than 1.
-	 */
-	public PermutationChromosome(final int length, final boolean randomize) {
-		super(length);
+	private static Sequence.Immutable<Integer64Gene> create(final int length, final boolean randomize) {
 		if (length < 1) {
 			throw new IllegalArgumentException("Length must be greater than 1, but was " + length);
 		}
 		
 		final Random random = RandomRegistry.getRandom();
+		
+		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 		if (randomize) {
 			//Permutation algorithm from D. Knuth TAOCP, Seminumerical Algorithms, 
 			//Third edition, page 145, Algorithm P (Shuffling).
 			for (int j = 0; j < length; ++j) {
 				final int i = random.nextInt(j + 1);
-				_genes.set(j, _genes.get(i));
-				_genes.set(i, Integer64Gene.valueOf(j, 0, length - 1));
+				genes.set(j, genes.get(i));
+				genes.set(i, Integer64Gene.valueOf(j, 0, length - 1));
 			}
 		} else {
 			for (int i = 0; i < length; ++i) {
-				_genes.set(i, Integer64Gene.valueOf(i, 0, length - 1));
+				genes.set(i, Integer64Gene.valueOf(i, 0, length - 1));
 			}
 		}
-	}
-	
-	/**
-	 * Create a new randomly created permutation with the length {@code length}.
-	 * 
-	 * @param length the length of the chromosome.
-	 * @throws IllegalArgumentException if the given {@code length} is smaller than 1.
-	 */
-	public PermutationChromosome(final int length) {
-		this(length, false);
+		
+		return genes.seal();
 	}
 	
 	/**
@@ -192,7 +205,7 @@ public final class PermutationChromosome
 	}
 	
 	@Override
-	public PermutationChromosome newInstance(final Array<Integer64Gene> genes) {
+	public PermutationChromosome newInstance(final Sequence.Immutable<Integer64Gene> genes) {
 		return new PermutationChromosome(genes);
 	}
 	
@@ -243,7 +256,7 @@ public final class PermutationChromosome
 				final Integer64 value = xml.getNext();
 				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
 			}
-			return new PermutationChromosome(genes);
+			return new PermutationChromosome(genes.seal());
 		}
 		@Override
 		public void write(final PermutationChromosome chromosome, final OutputElement xml) 
@@ -285,10 +298,12 @@ public final class PermutationChromosome
 		Integer64 min = Integer64.valueOf(0);
 		Integer64 max = Integer64.valueOf(length - 1);
 		
-		_genes = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 		for (int i = 0; i < length; ++i) {
-			_genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
+			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
 		}
+		
+		_genes = genes.seal();
 	}
 	
 }

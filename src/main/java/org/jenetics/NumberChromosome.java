@@ -30,7 +30,7 @@ import javolution.text.TextBuilder;
 
 import org.jscience.mathematics.number.Number;
 
-import org.jenetics.util.Array;
+import org.jenetics.util.Sequence;
 
 
 /**
@@ -58,17 +58,6 @@ public abstract class NumberChromosome<
 	protected transient N _max;
 	
 	/**
-	 * Create a new chromosome
-	 * 
-	 * @param length the {@code length} of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 * 		  one.
-	 */
-	protected NumberChromosome(final int length) {
-		super(length);
-	}
-	
-	/**
 	 * Create a new chromosome from the given genes array.
 	 * 
 	 * @param genes the genes of the new chromosome.
@@ -76,7 +65,7 @@ public abstract class NumberChromosome<
 	 * 		  than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected NumberChromosome(final Array<G> genes) {
+	protected NumberChromosome(final Sequence.Immutable<G> genes) {
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;

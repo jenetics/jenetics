@@ -34,10 +34,10 @@ import java.util.RandomAccess;
 final class ArrayList<T> extends AbstractList<T> 
 	implements RandomAccess 
 {
-	private final Array<T> _array;
+	private final ArrayBase<T> _array;
 	
-	public ArrayList(final Array<T> array) {
-		_array = nonNull(array, "Array");
+	public ArrayList(final ArrayBase<T> array) {
+		_array = nonNull(array, "ArrayBase");
 	}
 	
 	@Override

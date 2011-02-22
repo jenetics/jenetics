@@ -22,14 +22,12 @@
  */
 package org.jenetics.util;
 
-import static java.lang.Math.min;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -54,58 +52,17 @@ import java.util.RandomAccess;
  * @version $Id$
  */
 public class Array<T> 
+	extends ArrayBase<T>
 	implements 
-		Iterable<T>, 
+		Sequence.Mutable<T>, 
 		Copyable<Array<T>>, 
 		Cloneable, 
-		RandomAccess, 
-		Serializable 
+		RandomAccess
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
-	transient Object[] _array;
-	transient int _start;
-	transient int _end;
-	transient boolean _sealed = false;
-	
-	/**
-	 * <i>Universal</i> array constructor.
-	 * 
-	 * @param array the array which holds the elements. The array will not be 
-	 * 		 copied.
-	 * @param start the start index of the given array (exclusively).
-	 * @param end the end index of the given array (exclusively)
-	 * @param sealed the seal status. If {@code true} calls to 
-	 * 		 {@link #set(int, Object)} will throw an 
-	 * 		 {@link UnsupportedOperationException}.
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
-	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
-	 */
 	Array(final Object[] array, final int start, final int end, final boolean sealed) {
-		nonNull(array, "Array");
-		if (start < 0 || end > array.length || start > end) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s)", start, end
-			));
-		}
-		
-		_array = array;
-		_start = start;
-		_end = end;
-		_sealed = sealed;
-	}
-	
-	/**
-	 * @param array the array which holds the elements. The array will not be 
-	 * 		 copied.
-	 * @param sealed the seal status. If {@code true} calls to 
-	 * 		 {@link #set(int, Object)} will throw an 
-	 * 		 {@link UnsupportedOperationException}.
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 */
-	Array(final Object[] array, final boolean sealed) {
-		this(array, 0, array.length, sealed);
+		super(array, start, end, sealed);
 	}
 	
 	/**
@@ -129,7 +86,7 @@ public class Array<T>
 	  *			is negative
 	 */
 	public Array(final int length) {
-		this(new Object[length], false);
+		super(new Object[length], false);
 	}
 	
 	/**
@@ -281,172 +238,6 @@ public class Array<T>
 	}
 	
 	/**
-	 * Set the {@code value} at the given {@code index}.
-	 * 
-	 * @param index the index of the new value.
-	 * @param value the new value.
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-	 * 		  {@code (index < 0 || index >= size())}.
-	 * @throws UnsupportedOperationException if this array is sealed 
-	 * 		  ({@code isSealed() == true}).
-	 */
-	public void set(final int index, final T value) {
-		assertNotSealed();
-		checkIndex(index);
-		_array[index + _start] = value;
-	}
-	
-	/**
-	 * Return the value at the given {@code index}.
-	 * 
-	 * @param index index of the element to return.
-	 * @return the value at the given {@code index}.
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-	 * 		  {@code (index < 0 || index >= size())}.
-	 */
-	@SuppressWarnings("unchecked")
-	public T get(final int index) {
-		checkIndex(index);
-		return (T)_array[index + _start];
-	}
-	
-	/**
-	 * Returns the index of the first occurrence of the specified element
-	 * in this array, or -1 if this array does not contain the element.
-	 * 
-	 * @param element element to search for, can be {@code null}
-	 * @return the index of the first occurrence of the specified element in
-	 * 		  this array, or -1 if this array does not contain the element
-	 */
-	public int indexOf(final Object element) {
-		int index = -1;
-		
-		if (element == null) {
-			index = indexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return object == null;
-				}
-			});
-		} else {
-			index = indexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return element.equals(object);
-				}
-			});
-		}
-		
-		return index;
-	}
-	
-	/**
-	 * Returns the index of the last occurrence of the specified element
-	 * in this array, or -1 if this array does not contain the element.
-	 * 
-	 * @param element element to search for, can be {@code null}
-	 * @return the index of the last occurrence of the specified element in
-	 * 		  this array, or -1 if this array does not contain the element
-	 */
-	public int lastIndexOf(final Object element) {
-		int index = -1;
-		
-		if (element == null) {
-			index = lastIndexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return object == null;
-				}
-			});
-		} else {
-			index = lastIndexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return element.equals(object);
-				}
-			});
-		}
-		
-		return index;
-	}
-	
-	/**
-	 * <p>
-	 * Returns the index of the first element on which the given predicate 
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * array element.
-	 * </p>
-	 * [code]
-	 * 	 // Finding index of first null value.
-	 * 	 final int index = array.indexOf(new Predicates.Nil());
-	 * 	 
-	 * 	 // Assert of no null values.
-	 * 	 assert (array.indexOf(new Predicates.Nil()) == -1);
-	 * [/code]
-	 * 
-	 * @param predicate the search predicate.
-	 * @return the index of the first element on which the given predicate 
-	 * 		  returns {@code true}, or -1 if the predicate returns {@code false}
-	 * 		  for every array element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
-	 */
-	public int indexOf(final Predicate<? super T> predicate) {
-		nonNull(predicate, "Predicate");
-		
-		int index = -1;
-		
-		for (int i = _start; i < _end && index == -1; ++i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
-			
-			if (predicate.evaluate(element)) {
-				index = i - _start;
-			}
-		}
-		
-		return index;
-	}
-	
-	/**
-	 * Iterates over this array as long as the given predicate returns 
-	 * {@code true}. This method is more or less an  <i>alias</i> of the 
-	 * {@link #indexOf(Predicate)} method. In some cases a call to a 
-	 * {@code array.foreach()} method can express your intention much better 
-	 * than a {@code array.indexOf()} call.
-	 * 
-	 * [code]
-	 * 	 final Array<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
-	 * 	 final AtomicInteger sum = new AtomicInteger(0);
-	 * 	 values.foreach(new Predicate<Integer>() {
-	 * 		  public boolean evaluate(final Integer value) {
-	 * 				sum.addAndGet(value);
-	 * 				return true;
-	 * 		  }
-	 * 	 });
-	 * 	 System.out.println("Sum: " + sum);
-	 * [/code]
-	 * 
-	 * @param predicate the predicate to apply.
-	 * @return the index of the first element on which the given predicate 
-	 * 		  returns {@code false}, or -1 if the predicate returns {@code true}
-	 * 		  for every array element.
-	 * @throws NullPointerException if the given {@code predicate} is 
-	 * 		  {@code null}.
-	 */
-	public int foreach(final Predicate<? super T> predicate) {
-		nonNull(predicate, "Predicate");
-		
-		int index = -1;
-		
-		for (int i = _start; i < _end && index == -1; ++i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
-			
-			if (!predicate.evaluate(element)) {
-				index = i - _start;
-			}
-		}
-		
-		return index;
-	}
-	
-	/**
 	 * Selects all elements of this list which satisfy a predicate. 
 	 * 
 	 * @param predicate the predicate used to test elements.
@@ -471,44 +262,6 @@ public class Array<T>
 	}
 	
 	/**
-	 * Returns the index of the last element on which the given predicate 
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * array element.
-	 * 
-	 * @param predicate the search predicate.
-	 * @return the index of the last element on which the given predicate 
-	 * 		  returns {@code true}, or -1 if the predicate returns false for 
-	 * 		  every array element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
-	 */
-	public int lastIndexOf(final Predicate<? super T> predicate) {
-		nonNull(predicate, "Predicate");
-		
-		int index = -1;
-		
-		for (int i = _end - 1; i >= _start && index == -1; --i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
-			if (predicate.evaluate(element)) {
-				index = i - _start;
-			}
-		}
-		
-		return index;
-	}
-	
-	/**
-	 * Returns {@code true} if this array contains the specified element.
-	 *
-	 * @param element element whose presence in this array is to be tested. The
-	 * 		 tested element can be {@code null}.
-	 * @return {@code true} if this array contains the specified element
-	 */
-	public boolean contains(final Object element) {
-		return indexOf(element) != -1;
-	}
-	
-	/**
 	 * <p>
 	 * Making this array immutable. After sealing, calls to the 
 	 * {@link #set(int, Object)} methods will throw an 
@@ -518,49 +271,43 @@ public class Array<T>
 	 * 
 	 * @return {@code this} array.
 	 */
-	public Array<T> seal() {
+	@Override
+	public Sequence.Immutable<T> seal() {
 		_sealed = true;
-		return this;
+		return new ImmutableArray<T>(this);
 	}
 	
-	/**
-	 * <p>
-	 * The {@code upcast} method returns an array of type {@code Array<? super T>} 
-	 * instead of {@code Array<T>}. This allows you to assign this array to an 
-	 * array where the element type is a super type of {@code T}.
-	 * </p>
-	 * [code]
-	 *     Array<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
-	 *     Array<Number> na = da.upcast();
-	 *     Array<Object>; oa = na.upcast();
-	 *     oa = da.upcast();
-	 * [/code]
-	 * 
-	 * This array must be {@code sealed} for an save <em>up-cast</em>, otherwise an 
-	 * {@link UnsupportedOperationException} will be thrown. 
-	 * 
-	 * @param <A> the up-casted array type.
-	 * @return the up-casted array.
-	 * @throws UnsupportedOperationException if this array is not {@code sealed}.
-	 */
-	@SuppressWarnings("unchecked")
-	public <A extends Array<? super T>> A upcast() {
-		if (!_sealed) {
-			throw new UnsupportedOperationException(
-					"Array must be sealed for an save up-cast."
-				);
-		}
-		return (A)this;
-	}	
-	
-	/**
-	 * Return whether this array is sealed (immutable) or not.
-	 * 
-	 * @return {@code false} if this array can be changed, {@code true} otherwise.
-	 */
-	public boolean isSealed() {
-		return _sealed;
-	}
+//	/**
+//	 * <p>
+//	 * The {@code upcast} method returns an array of type {@code Array<? super T>} 
+//	 * instead of {@code Array<T>}. This allows you to assign this array to an 
+//	 * array where the element type is a super type of {@code T}.
+//	 * </p>
+//	 * [code]
+//	 *     Array<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
+//	 *     Array<Number> na = da.upcast();
+//	 *     Array<Object>; oa = na.upcast();
+//	 *     oa = da.upcast();
+//	 * [/code]
+//	 * 
+//	 * This array must be {@code sealed} for an save <em>up-cast</em>, otherwise an 
+//	 * {@link UnsupportedOperationException} will be thrown. 
+//	 * 
+//	 * @param <S> the up-casted array type.
+//	 * @return the up-casted array.
+//	 * @throws UnsupportedOperationException if this array is not {@code sealed}.
+//	 */
+//	//@Override
+//	@SuppressWarnings("unchecked")
+//	public Sequence.Immutable<? super T> upcast() {
+//		//seal();
+//		if (!_sealed) {
+//			throw new UnsupportedOperationException(
+//					"Array must be sealed for an save up-cast."
+//				);
+//		}
+//		return null;
+//	}	
 	
 	/**
 	 * Set all array elements to the given {@code value}.
@@ -570,28 +317,23 @@ public class Array<T>
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
+	@Override
 	public Array<T> fill(final T value) {
-		assertNotSealed();
-		for (int i = _start; i < _end; ++i) {
-			_array[i] = value;
-		}
+		super.fill(value);
 		return this;
 	}
 	
 	/**
 	 * Fills the array with values of the given iterator.
 	 * 
-	 * @param it the iterator of the values to fill this array.
+	 * @param iterator the iterator of the values to fill this array.
 	 * @return {@code this} array.
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
-	public Array<T> fill(final Iterator<? extends T> it) {
-		assertNotSealed();
-		
-		for (int i = _start; i < _end && it.hasNext(); ++i) {
-			_array[i] = it.next();
-		}
+	@Override
+	public Array<T> fill(final Iterator<? extends T> iterator) {
+		super.fill(iterator);
 		return this;
 	}
 	
@@ -603,9 +345,9 @@ public class Array<T>
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
+	@Override
 	public Array<T> fill(final T[] values) {
-		assertNotSealed();
-		System.arraycopy(values, 0, _array, _start, min(length(), values.length));
+		super.fill(values);
 		return this;
 	}
 	
@@ -618,12 +360,9 @@ public class Array<T>
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
+	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
-		Validator.nonNull(factory);
-		assertNotSealed();
-		for (int i = _start; i < _end; ++i) {
-			_array[i] = factory.newInstance();
-		}
+		super.fill(factory);
 		return this;
 	}
 	
@@ -703,47 +442,10 @@ public class Array<T>
 		}
 		return result;
 	}
-	
-	/**
-	 * Return the length of this array. Once the array is created, the length
-	 * can't be changed.
-	 * 
-	 * @return the length of this array.
-	 */
-	public int length() {
-		return _end - _start;
-	}
 
 	@Override
 	public ListIterator<T> iterator() {
 		return new ArrayIterator<T>(_array, _start, _end, _sealed);
-	}
-	
-	/**
-	 * Return an iterator with the new type {@code B}.
-	 * 
-	 * @param <B> the component type of the returned type.
-	 * @param converter the converter for converting from {@code T} to {@code B}.
-	 * @return the iterator of the converted type.
-	 * @throws NullPointerException if the given {@code converter} is {@code null}.
-	 */
-	public <B> Iterator<B> iterator(
-		final Converter<? super T, ? extends B> converter
-	) {
-		nonNull(converter, "Converter");
-		
-		return new Iterator<B>() {
-			private final Iterator<T> _iterator = iterator();
-			@Override public boolean hasNext() {
-				return _iterator.hasNext();
-			}
-			@Override public B next() {
-				return converter.convert(_iterator.next());
-			}
-			@Override public void remove() {
-				_iterator.remove();
-			}
-		};
 	}
 	
 	/**
@@ -769,14 +471,9 @@ public class Array<T>
 	 * 
 	 * @see #copy()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Array<T> clone() {
-		try {
-			return (Array<T>)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError(e);
-		}
+		return (Array<T>)super.clone();
 	}
 	
 	/**
@@ -803,6 +500,7 @@ public class Array<T>
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || end > lenght() || start > end}).
 	 */
+	@Override
 	public Array<T> subArray(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
@@ -835,6 +533,7 @@ public class Array<T>
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || start > lenght()}).
 	 */	
+	@Override
 	public Array<T> subArray(final int start) {
 		return subArray(start, length());
 	}
@@ -850,6 +549,7 @@ public class Array<T>
 	 * @return an array containing all of the elements in this list in right 
 	 * 		  order
 	 */
+	@Override
 	public Object[] toArray() {
 		final Object[] array = new Object[length()];
 		System.arraycopy(_array, _start, array, 0, length());
@@ -879,6 +579,7 @@ public class Array<T>
 	 * 		  not a super type of the runtime type of every element in this array
 	 * @throws NullPointerException if the given array is {@code null}.	
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public T[] toArray(final T[] array) {
 		T[] result = null;
@@ -902,40 +603,14 @@ public class Array<T>
 	 *
 	 * @return a list view of this array
 	 */	
+	@Override
 	public List<T> asList() {
 		return new org.jenetics.util.ArrayList<T>(this);
 	}
 	
-	final void assertNotSealed() {
-		if (_sealed) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
-	}
-	
-	final void checkIndex(final int index) {
-		if (index < 0 || index >= (_end - _start)) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Index %s is out of bounds [0, %s)", index, (_end - _start)
-			));
-		}
-	}
-	
-	final void checkIndex(final int from, final int to) {
-		if (from < 0 || to > length() || from > to) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s)", from, to
-			));
-		}
-	}
-	
-	
 	@Override
 	public int hashCode() {
-		final ObjectUtils.HashCodeBuilder hash = hashCodeOf(getClass());
-		for (int i = _start; i < _end; ++i) {
-			hash.and(_array[i]);
-		}
-		return hash.value();
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	@Override
@@ -947,17 +622,7 @@ public class Array<T>
 			return false;
 		}
 		
-		final Array<?> array = (Array<?>)obj;
-		boolean equals = (length() == array.length());
-		final int difference = _start - array._start;
-		for (int i = _start; equals && i < _end; ++i) {
-			if (_array[i] != null) {
-				equals = _array[i].equals(array._array[i - difference]);
-			} else {
-				equals = array._array[i] == null;
-			}
-		}
-		return equals;
+		return super.equals(obj);
 	}
 	
 	/**
@@ -968,6 +633,7 @@ public class Array<T>
 	 * @param suffix the suffix of the string representation; e.g. {@code ']'}.
 	 * @return the string representation of this array.
 	 */
+	@Override
 	public String toString(
 		final String prefix, 
 		final String separator,
@@ -1022,3 +688,44 @@ public class Array<T>
 	
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
+ */
+class ImmutableArray<T> extends ArrayBase<T> implements Sequence.Immutable<T> {
+	private static final long serialVersionUID = 1L;
+
+	private final Array<T> _adoptee;
+	
+	ImmutableArray(final Array<T> array) {
+		super(array._array, array._start, array._end, true);
+		_adoptee = array;
+	}
+	
+	@Override
+	public Sequence.Immutable<T> subArray(int start, int end) {
+		if (start < 0 || end > length() || start > end) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s)", start, end
+			));
+		}
+		
+		return new ImmutableArray<T>(_adoptee.subArray(start, end));
+	}
+
+	@Override
+	public Sequence.Immutable<T> subArray(int start) {
+		return subArray(start, length());
+	}
+	
+	@Override
+	public Sequence.Mutable<T> copy() {
+		return _adoptee.copy();
+	}
+
+	@Override
+	public Sequence.Immutable<? super T> upcast() {
+		return this;
+	}	
+	
+}

@@ -130,7 +130,7 @@ class TestUtils {
 			chromosomes.set(i, new Float64Chromosome(0, 10, ngenes));
 		}	
 		
-		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes);
+		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes.seal());
 		final Population<Float64Gene, Float64> population = 
 			new Population<Float64Gene, Float64>(npopulation);
 		
