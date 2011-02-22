@@ -26,8 +26,8 @@ import java.io.Serializable;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Sequence;
 import org.jenetics.util.Verifiable;
 
 
@@ -57,7 +57,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
-	public Chromosome<T> newInstance(final Array<T> genes);
+	public Chromosome<T> newInstance(final Sequence.Immutable<T> genes);
 	
 	/**
 	 * Return the first gene of this chromosome.  Each chromosome must contain
@@ -86,14 +86,11 @@ public interface Chromosome<T extends Gene<?, T>>
 	public int length();
 	
 	/**
-	 * Return a unmodifiable array of the genes of this chromosome. A call of 
-	 * the {@link Array#set(int, Object)} will throw an 
-	 * {@link UnsupportedOperationException}. To get a mutable version of the
-	 * genes array you have to call {@code toArray().copy()}
+	 * Return a unmodifiable array of the genes of this chromosome.
 	 * 
-	 * @return an immutable gene array.
+	 * @return an immutable gene sequence.
 	 */
-	public Array<T> toArray();
+	public Sequence.Immutable<T> toArray();
 
 }
 

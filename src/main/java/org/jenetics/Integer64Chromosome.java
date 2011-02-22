@@ -36,6 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Sequence;
 
 
 /**
@@ -54,7 +55,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
 	 * 		  than one.
 	 */
-	protected Integer64Chromosome(final Array<Integer64Gene> genes) {
+	protected Integer64Chromosome(final Sequence.Immutable<Integer64Gene> genes) {
 		super(genes);
 	}
 	
@@ -67,7 +68,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * 		  one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		super(new Array<Integer64Gene>(genes));
+		super(new Array<Integer64Gene>(genes).seal());
 	}
 	
 	/**
@@ -86,7 +87,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		super(
 				new Array<Integer64Gene>(length).fill(
 						Integer64Gene.valueOf(min, max).asFactory()
-					)
+					).seal()
 			);
 	}
 	
@@ -123,7 +124,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	}
 	
 	@Override
-	public Integer64Chromosome newInstance(final Array<Integer64Gene> genes) {
+	public Integer64Chromosome newInstance(final Sequence.Immutable<Integer64Gene> genes) {
 		return new Integer64Chromosome(genes);
 	}
 
@@ -156,7 +157,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<Integer64Gene>, Array<Integer64Gene>> 
+	public static final Converter<AbstractChromosome<Integer64Gene>, Sequence.Immutable<Integer64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
@@ -197,7 +198,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
 			}
 			
-			final Integer64Chromosome chromosome = new Integer64Chromosome(genes);
+			final Integer64Chromosome chromosome = new Integer64Chromosome(genes.seal());
 			chromosome._min = Integer64.valueOf(min);
 			chromosome._max = Integer64.valueOf(max);
 			
@@ -246,10 +247,12 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		
 		_min = min;
 		_max = max;
-		_genes = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
 		for (int i = 0; i < length; ++i) {
-			_genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
+			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
 		}
+		
+		_genes = genes.seal();
 	}
 
 }

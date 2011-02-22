@@ -36,6 +36,7 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Sequence;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -48,7 +49,7 @@ public class Float64Chromosome
 	private static final long serialVersionUID = 1L;
 	
 	
-	protected Float64Chromosome(final Array<Float64Gene> genes) {
+	protected Float64Chromosome(final Sequence.Immutable<Float64Gene> genes) {
 		super(genes);
 	}
 	
@@ -61,7 +62,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		super(new Array<Float64Gene>(genes));
+		super(new Array<Float64Gene>(genes).seal());
 	}
 	
 	/**
@@ -79,7 +80,7 @@ public class Float64Chromosome
 		this(
 				new Array<Float64Gene>(length).fill(
 						Float64Gene.valueOf(min, max).asFactory()
-					)
+					).seal()
 			);
 	}
 	
@@ -118,7 +119,7 @@ public class Float64Chromosome
 	}
 	
 	@Override
-	public Float64Chromosome newInstance(final Array<Float64Gene> genes) {
+	public Float64Chromosome newInstance(final Sequence.Immutable<Float64Gene> genes) {
 		return new Float64Chromosome(genes);		
 	}
 
@@ -151,7 +152,7 @@ public class Float64Chromosome
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<Float64Gene>, Array<Float64Gene>> 
+	public static final Converter<AbstractChromosome<Float64Gene>, Sequence.Immutable<Float64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
@@ -192,7 +193,7 @@ public class Float64Chromosome
 				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
 			}
 			
-			final Float64Chromosome chromosome = new Float64Chromosome(genes);
+			final Float64Chromosome chromosome = new Float64Chromosome(genes.seal());
 			chromosome._min = Float64.valueOf(min);
 			chromosome._max = Float64.valueOf(max);
 			
@@ -242,10 +243,12 @@ public class Float64Chromosome
 		
 		_min = min;
 		_max = max;
-		_genes = new Array<Float64Gene>(length);
+		final Array<Float64Gene> genes = new Array<Float64Gene>(length);
 		for (int i = 0; i < length; ++i) {
-			_genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
+			genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
 		}
+		
+		_genes = genes.seal();
 	}
 
 }

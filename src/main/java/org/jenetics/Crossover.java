@@ -24,8 +24,8 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Sequence;
 
 /**
  * <p>
@@ -70,24 +70,24 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
 		
-		final Array<Chromosome<G>> chromosomes1 = gt1.toArray().copy();
-		final Array<Chromosome<G>> chromosomes2 = gt2.toArray().copy();
-		final Array<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
-		final Array<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
+		final Sequence.Mutable<Chromosome<G>> chromosomes1 = gt1.toArray().copy();
+		final Sequence.Mutable<Chromosome<G>> chromosomes2 = gt2.toArray().copy();
+		final Sequence.Mutable<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
+		final Sequence.Mutable<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
 		crossover(genes1, genes2);
 		
-		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1));
-		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2));
+		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1.seal()));
+		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2.seal()));
 		
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 				individuals[0], 
-				pt1.newInstance(Genotype.valueOf(chromosomes1), generation)
+				pt1.newInstance(Genotype.valueOf(chromosomes1.seal()), generation)
 			);
 		population.set(
 				individuals[1], 
-				pt2.newInstance(Genotype.valueOf(chromosomes2), generation)
+				pt2.newInstance(Genotype.valueOf(chromosomes2.seal()), generation)
 			);
 		
 		return 2;
@@ -97,7 +97,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 	 * Template method which performs the crossover. The arguments given are 
 	 * mutable non null arrays of the same length.
 	 */
-	protected abstract int crossover(final Array<G> that, final Array<G> other);
+	protected abstract int crossover(final Sequence.Mutable<G> that, final Sequence.Mutable<G> other);
 
 }
 

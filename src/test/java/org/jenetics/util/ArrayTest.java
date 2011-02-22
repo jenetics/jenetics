@@ -119,9 +119,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void fill1() {
-		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
+		final Sequence.Immutable<Integer> array = new Array<Integer>(10).fill(10).seal();
 		Assert.assertEquals(array.length(), 10);
-		Assert.assertTrue(array.isSealed());
 		for (Integer i : array) {
 			Assert.assertEquals(i, new Integer(10));
 		}
@@ -148,18 +147,22 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void seal1() {
-		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
+		final Array<Integer> array = new Array<Integer>(10).fill(10);
+		array.seal();
 		array.set(0, 10);
 	}
 	
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void seal2() {
-		new Array<Integer>(10).seal().fill(1);
+		final Array<Integer> array = new Array<Integer>(10);
+		array.seal();
+		array.fill(1);
 	}
 	
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void seal3() {
-		final Array<Integer> array = new Array<Integer>(10).fill(10).seal();
+		final Array<Integer> array = new Array<Integer>(10).fill(10);
+		array.seal();
 		for (ListIterator<Integer> it = array.iterator(); it.hasNext();) {
 			it.next();
 			it.set(4);
@@ -168,12 +171,15 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void seal4() {
-		new Array<Integer>(10).seal().subArray(0, 4).set(0, 1);
+		final Array<Integer> array = new Array<Integer>(10);
+		array.seal();
+		array.subArray(0, 4).set(0, 1);
 	}
 	
 	@Test
 	public void foreach() {
-		final Array<Integer> array = new Array<Integer>(10).fill(123).seal();
+		final Array<Integer> array = new Array<Integer>(10).fill(123);
+		array.seal();
 		final AtomicInteger count = new AtomicInteger(0);
 		int value = array.foreach(new Predicate<Integer>() {
 			@Override public boolean evaluate(Integer object) {

@@ -28,9 +28,9 @@ import java.util.Random;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Sequence;
 
 
 /**
@@ -75,26 +75,26 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
 		final int cindex = random.nextInt(gt1.length());
-		final Array<Chromosome<G>> c1 = gt1.toArray().copy();
-		final Array<Chromosome<G>> c2 = gt2.toArray();
+		final Sequence.Mutable<Chromosome<G>> c1 = gt1.toArray().copy();
+		final Sequence.Immutable<Chromosome<G>> c2 = gt2.toArray();
 		
 		// Calculate the mean value of the gene array.
-		final Array<G> mean = mean(
+		final Sequence.Mutable<G> mean = mean(
 				c1.get(cindex).toArray().copy(), 
 				c2.get(cindex).toArray()
 			);
 		
-		c1.set(cindex, c1.get(cindex).newInstance(mean));
+		c1.set(cindex, c1.get(cindex).newInstance(mean.seal()));
 		
 		population.set(
 				individuals[0], 
-				pt1.newInstance(Genotype.valueOf(c1), generation)
+				pt1.newInstance(Genotype.valueOf(c1.seal()), generation)
 			);
 		
 		return 1;
 	}
 	
-	private Array<G> mean(final Array<G> a, final Array<G> b) {
+	private Sequence.Mutable<G> mean(final Sequence.Mutable<G> a, final Sequence.Immutable<G> b) {
 		for (int i = a.length(); --i >= 0;) {
 			a.set(i, a.get(i).mean(b.get(i)));
 		}

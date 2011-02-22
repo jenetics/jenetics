@@ -25,9 +25,9 @@ package org.jenetics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Sequence;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,7 +44,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 	@Test
 	public void create() {
 		PermutationChromosome c = new PermutationChromosome(50, true);
-		final Array<Integer64Gene> array = c.toArray().copy();
+		final Sequence.Mutable<Integer64Gene> array = c.toArray().copy();
 		Assert.assertFalse(isSorted(array));
 		
 		ArrayUtils.sort(array);
@@ -56,7 +56,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 	@Test
 	public void sortedNewInstance() {
 		PermutationChromosome c = new PermutationChromosome(50, false);
-		final Array<Integer64Gene> array = c.toArray().copy();
+		final Sequence.Mutable<Integer64Gene> array = c.toArray().copy();
 		Assert.assertTrue(isSorted(array));
 		
 		for (int i = 0; i < array.length(); ++i) {
@@ -64,7 +64,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 		}
 	}
 	
-	private boolean isSorted(final Array<Integer64Gene> array) {
+	private boolean isSorted(final Sequence<Integer64Gene> array) {
 		boolean sorted = true;
 		for (int i = 0; i < array.length() - 1 && sorted; ++i) {
 			sorted = array.get(i).compareTo(array.get(i + 1)) <= 0;

@@ -25,8 +25,8 @@ package org.jenetics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.Sequence;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,7 +39,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	@Test
 	public void getGene() {
 		final Chromosome<G> c = getFactory().newInstance();
-		final Array<G> genes = c.toArray();
+		final Sequence.Immutable<G> genes = c.toArray();
 		
 		Assert.assertEquals(c.getGene(), genes.get(0));
 		for (int i = 0; i < genes.length(); ++i) {
@@ -51,7 +51,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	public void newInstanceFromArray() {
 		for (int i = 0; i < 100; ++i) {
 			final Chromosome<G> c1 = getFactory().newInstance();
-			final Array<G> genes = c1.toArray();
+			final Sequence.Immutable<G> genes = c1.toArray();
 			final Chromosome<G> c2 = c1.newInstance(genes);
 			
 			Assert.assertEquals(c2, c1);
@@ -80,7 +80,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	@Test
 	public void iterator(){
 		final Chromosome<G> c = getFactory().newInstance();
-		final Array<G> a = c.toArray();
+		final Sequence.Immutable<G> a = c.toArray();
 		
 		int index = 0;
 		for (G gene : c) {
@@ -94,7 +94,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	@Test
 	public void length() {
 		final Chromosome<G> c = getFactory().newInstance();
-		final Array<G> a = c.toArray();
+		final Sequence.Immutable<G> a = c.toArray();
 		
 		Assert.assertEquals(c.length(), a.length());
 	}

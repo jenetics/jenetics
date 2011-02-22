@@ -26,6 +26,7 @@ import static org.jenetics.util.Validator.nonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -144,7 +145,7 @@ public final class ArrayUtils {
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
-	public static <T> void swap(final Array<T> array, final int i, final int j) {
+	public static <T> void swap(final Sequence.Mutable<T> array, final int i, final int j) {
 		nonNull(array, "Array");
 
 		final T old = array.get(i);
@@ -226,12 +227,12 @@ public final class ArrayUtils {
 	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
-	sort(final Array<T> array) 
+	sort(final Sequence.Mutable<T> array) 
 	{
 		nonNull(array, "Array");
-		array.assertNotSealed();
 		
-		Arrays.sort(array._array, array._start, array._end);
+		//Arrays.sort(array._array, array._start, array._end);
+		Collections.sort(array.asList());
 	}
 	
 	/**
@@ -244,7 +245,7 @@ public final class ArrayUtils {
 	 *         {@code null}.
 	 */
 	public static <T extends Object & Comparable<? super T>> boolean 
-	isSorted(final Array<T> array)
+	isSorted(final Sequence<T> array)
 	{
 		nonNull(array, "Array");
 		

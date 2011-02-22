@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
-import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,6 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Sequence;
 
 /**
  * CharacterChromosome which represents character sequences.
@@ -67,9 +67,12 @@ public class CharacterChromosome
 	 * 		  one.
 	 */
 	public CharacterChromosome(final int length) {
-		super(length);
+		super(
+			new Array<CharacterGene>(length).fill(
+					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS).asFactory()
+				).seal()
+		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
-		_genes.fill(CharacterGene.valueOf(_validCharacters).asFactory()).seal();
 	}
 	
 	/**
@@ -84,9 +87,12 @@ public class CharacterChromosome
 	 * 		  one.
 	 */
 	public CharacterChromosome(final CharSet validCharacters, final int length) {
-		super(length);
-		_validCharacters = nonNull(validCharacters, "Valid characters");
-		_genes.fill(CharacterGene.valueOf(_validCharacters).asFactory()).seal();
+		super(
+			new Array<CharacterGene>(length).fill(
+					CharacterGene.valueOf(validCharacters).asFactory()
+				).seal()
+		);
+		_validCharacters = validCharacters;
 	}
 	
 	/**
@@ -99,7 +105,7 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 * 		  smaller than one.
 	 */
-	public CharacterChromosome(final Array<CharacterGene> genes) {
+	public CharacterChromosome(final Sequence.Immutable<CharacterGene> genes) {
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
@@ -111,14 +117,14 @@ public class CharacterChromosome
 
 	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
-		return new CharacterChromosome(_genes.subArray(start, end).copy());
+		return new CharacterChromosome(_genes.subArray(start, end));
 	}
 	
 	/**
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 */
 	@Override
-	public CharacterChromosome newInstance(final Array<CharacterGene> genes) {
+	public CharacterChromosome newInstance(final Sequence.Immutable<CharacterGene> genes) {
 		return new CharacterChromosome(genes);
 	}
 	
@@ -176,7 +182,7 @@ public class CharacterChromosome
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<CharacterGene>, Array<CharacterGene>> 
+	public static final Converter<AbstractChromosome<CharacterGene>, Sequence.Immutable<CharacterGene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
@@ -218,7 +224,7 @@ public class CharacterChromosome
 			for (int i = 0; i < length; ++i) {
 				array.set(i, CharacterGene.valueOf(values.charAt(i), validCharacters));
 			}
-			return new CharacterChromosome( array);
+			return new CharacterChromosome(array.seal());
 		}
 		@Override
 		public void write(final CharacterChromosome chromosome, final OutputElement xml) 
@@ -259,10 +265,12 @@ public class CharacterChromosome
 		final int length = in.readInt();
 		_validCharacters = (CharSet)in.readObject();
 		
-		_genes = new Array<CharacterGene>(length);
+		final Array<CharacterGene> genes = new Array<CharacterGene>(length);
 		for (int i = 0; i < length; ++i) {
-			_genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
+			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
 		}
+		
+		_genes = genes.seal();
 	}
 	
 }
