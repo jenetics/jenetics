@@ -41,6 +41,13 @@ public interface Sequence<T> extends Iterable<T> {
 	
 	public int foreach(final Predicate<? super T> predicate);
 	
+	/**
+	 * Returns {@code true} if this sequence contains the specified element.
+	 *
+	 * @param element element whose presence in this array is to be tested. The
+	 * 		 tested element can be {@code null}.
+	 * @return {@code true} if this sequence contains the specified element
+	 */
 	public boolean contains(final Object element);
 	
 	public int indexOf(final Object element);
@@ -74,7 +81,25 @@ public interface Sequence<T> extends Iterable<T> {
 	
 	public interface Mutable<T> extends Sequence<T> {
 		
+		/**
+		 * Set the {@code value} at the given {@code index}.
+		 * 
+		 * @param index the index of the new value.
+		 * @param value the new value.
+		 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
+		 * 		  {@code (index < 0 || index >= size())}.
+		 * @throws UnsupportedOperationException if this sequence is sealed 
+		 * 		  ({@code isSealed() == true}).
+		 */
 		public void set(final int index, final T value);
+		
+		/**
+		 * Return whether this array is sealed (immutable) or not.
+		 * 
+		 * @return {@code false} if this sequence can be changed, {@code true} 
+		 *         otherwise.
+		 */
+		public boolean isSealed();
 		
 		public Mutable<T> subArray(final int start);
 		
