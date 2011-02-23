@@ -34,7 +34,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -94,28 +93,12 @@ class ArrayBase<T> implements Serializable {
 		_array[index + _start] = value;
 	}
 	
-	/**
-	 * Return the value at the given {@code index}.
-	 * 
-	 * @param index index of the element to return.
-	 * @return the value at the given {@code index}.
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-	 * 		  {@code (index < 0 || index >= size())}.
-	 */
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
 		checkIndex(index);
 		return (T)_array[index + _start];
 	}
 	
-	/**
-	 * Returns the index of the first occurrence of the specified element
-	 * in this array, or -1 if this array does not contain the element.
-	 * 
-	 * @param element element to search for, can be {@code null}
-	 * @return the index of the first occurrence of the specified element in
-	 * 		  this array, or -1 if this array does not contain the element
-	 */
 	public int indexOf(final Object element) {
 		int index = -1;
 		
@@ -136,14 +119,6 @@ class ArrayBase<T> implements Serializable {
 		return index;
 	}
 	
-	/**
-	 * Returns the index of the last occurrence of the specified element
-	 * in this array, or -1 if this array does not contain the element.
-	 * 
-	 * @param element element to search for, can be {@code null}
-	 * @return the index of the last occurrence of the specified element in
-	 * 		  this array, or -1 if this array does not contain the element
-	 */
 	public int lastIndexOf(final Object element) {
 		int index = -1;
 		
@@ -164,26 +139,6 @@ class ArrayBase<T> implements Serializable {
 		return index;
 	}
 	
-	/**
-	 * <p>
-	 * Returns the index of the first element on which the given predicate 
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * array element.
-	 * </p>
-	 * [code]
-	 * 	 // Finding index of first null value.
-	 * 	 final int index = array.indexOf(new Predicates.Nil());
-	 * 	 
-	 * 	 // Assert of no null values.
-	 * 	 assert (array.indexOf(new Predicates.Nil()) == -1);
-	 * [/code]
-	 * 
-	 * @param predicate the search predicate.
-	 * @return the index of the first element on which the given predicate 
-	 * 		  returns {@code true}, or -1 if the predicate returns {@code false}
-	 * 		  for every array element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
-	 */
 	public int indexOf(final Predicate<? super T> predicate) {
 		nonNull(predicate, "Predicate");
 		
@@ -201,32 +156,6 @@ class ArrayBase<T> implements Serializable {
 		return index;
 	}
 	
-	/**
-	 * Iterates over this array as long as the given predicate returns 
-	 * {@code true}. This method is more or less an  <i>alias</i> of the 
-	 * {@link #indexOf(Predicate)} method. In some cases a call to a 
-	 * {@code array.foreach()} method can express your intention much better 
-	 * than a {@code array.indexOf()} call.
-	 * 
-	 * [code]
-	 * 	 final Array<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
-	 * 	 final AtomicInteger sum = new AtomicInteger(0);
-	 * 	 values.foreach(new Predicate<Integer>() {
-	 * 		  public boolean evaluate(final Integer value) {
-	 * 				sum.addAndGet(value);
-	 * 				return true;
-	 * 		  }
-	 * 	 });
-	 * 	 System.out.println("Sum: " + sum);
-	 * [/code]
-	 * 
-	 * @param predicate the predicate to apply.
-	 * @return the index of the first element on which the given predicate 
-	 * 		  returns {@code false}, or -1 if the predicate returns {@code true}
-	 * 		  for every array element.
-	 * @throws NullPointerException if the given {@code predicate} is 
-	 * 		  {@code null}.
-	 */
 	public int foreach(final Predicate<? super T> predicate) {
 		nonNull(predicate, "Predicate");
 		
@@ -244,17 +173,6 @@ class ArrayBase<T> implements Serializable {
 		return index;
 	}
 	
-	/**
-	 * Returns the index of the last element on which the given predicate 
-	 * returns {@code true}, or -1 if the predicate returns false for every
-	 * array element.
-	 * 
-	 * @param predicate the search predicate.
-	 * @return the index of the last element on which the given predicate 
-	 * 		  returns {@code true}, or -1 if the predicate returns false for 
-	 * 		  every array element.
-	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
-	 */
 	public int lastIndexOf(final Predicate<? super T> predicate) {
 		nonNull(predicate, "Predicate");
 		
@@ -344,12 +262,6 @@ class ArrayBase<T> implements Serializable {
 		return this;
 	}
 	
-	/**
-	 * Return the length of this array. Once the array is created, the length
-	 * can't be changed.
-	 * 
-	 * @return the length of this array.
-	 */
 	public int length() {
 		return _end - _start;
 	}
@@ -358,14 +270,6 @@ class ArrayBase<T> implements Serializable {
 		return new ArrayIterator<T>(_array, _start, _end, _sealed);
 	}
 	
-	/**
-	 * Return an iterator with the new type {@code B}.
-	 * 
-	 * @param <B> the component type of the returned type.
-	 * @param converter the converter for converting from {@code T} to {@code B}.
-	 * @return the iterator of the converted type.
-	 * @throws NullPointerException if the given {@code converter} is {@code null}.
-	 */
 	public <B> Iterator<B> iterator(
 		final Converter<? super T, ? extends B> converter
 	) {
@@ -396,46 +300,12 @@ class ArrayBase<T> implements Serializable {
 		}
 	}
 	
-	/**
-	 * Return an array containing all of the elements in this array in right 
-	 * order. The returned array will be "safe" in that no references to it 
-	 * are maintained by this array. (In other words, this method must allocate 
-	 * a new array.) The caller is thus free to modify the returned array. 
-	 * 
-	 * @see java.util.Collection#toArray()
-	 * 
-	 * @return an array containing all of the elements in this list in right 
-	 * 		  order
-	 */
 	public Object[] toArray() {
 		final Object[] array = new Object[length()];
 		System.arraycopy(_array, _start, array, 0, length());
 		return array;
 	}
 	
-	/**
-	 * Return an array containing all of the elements in this array in right
-	 * order; the runtime type of the returned array is that of the specified 
-	 * array. If this array fits in the specified array, it is returned therein. 
-	 * Otherwise, a new array is allocated with the runtime type of the specified 
-	 * array and the length of this array.
-	 * <p/>
-	 * If this array fits in the specified array with room to spare (i.e., the 
-	 * array has more elements than this array), the element in the array 
-	 * immediately following the end of this array is set to null. (This is 
-	 * useful in determining the length of the array only if the caller knows 
-	 * that the list does not contain any null elements.) 
-	 * 
-	 * @see java.util.Collection#toArray(Object[])
-	 * 
-	 * @param array the array into which the elements of this array are to be 
-	 * 		 stored, if it is big enough; otherwise, a new array of the same 
-	 * 		 runtime type is allocated for this purpose. 
-	 * @return an array containing the elements of this array
-	 * @throws ArrayStoreException if the runtime type of the specified array is 
-	 * 		  not a super type of the runtime type of every element in this array
-	 * @throws NullPointerException if the given array is {@code null}.	
-	 */
 	@SuppressWarnings("unchecked")
 	public T[] toArray(final T[] array) {
 		T[] result = null;
@@ -452,13 +322,6 @@ class ArrayBase<T> implements Serializable {
 		return result;
 	}
 	
-	/**
-	 * Returns a fixed-size list backed by the specified array. (Changes to
-	 * the returned list "write through" to the array.) The returned list is
-	 * fixed size, serializable and implements {@link RandomAccess}.
-	 *
-	 * @return a list view of this array
-	 */	
 	public List<T> asList() {
 		return new org.jenetics.util.ArrayList<T>(this);
 	}
@@ -484,7 +347,6 @@ class ArrayBase<T> implements Serializable {
 			));
 		}
 	}
-	
 	
 	@Override
 	public int hashCode() {
@@ -517,14 +379,6 @@ class ArrayBase<T> implements Serializable {
 		return equals;
 	}
 	
-	/**
-	 * Create a string representation of the given array.
-	 * 
-	 * @param prefix the prefix of the string representation; e.g {@code '['}.
-	 * @param separator the separator of the array elements; e.g. {@code ','}.
-	 * @param suffix the suffix of the string representation; e.g. {@code ']'}.
-	 * @return the string representation of this array.
-	 */
 	public String toString(
 		final String prefix, 
 		final String separator,
