@@ -88,16 +88,6 @@ class ArrayBase<T> implements Serializable {
 		this(array, 0, array.length, sealed);
 	}
 	
-	/**
-	 * Set the {@code value} at the given {@code index}.
-	 * 
-	 * @param index the index of the new value.
-	 * @param value the new value.
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-	 * 		  {@code (index < 0 || index >= size())}.
-	 * @throws UnsupportedOperationException if this array is sealed 
-	 * 		  ({@code isSealed() == true}).
-	 */
 	public void set(final int index, final T value) {
 		assertNotSealed();
 		checkIndex(index);
@@ -281,22 +271,10 @@ class ArrayBase<T> implements Serializable {
 		return index;
 	}
 	
-	/**
-	 * Returns {@code true} if this array contains the specified element.
-	 *
-	 * @param element element whose presence in this array is to be tested. The
-	 * 		 tested element can be {@code null}.
-	 * @return {@code true} if this array contains the specified element
-	 */
 	public boolean contains(final Object element) {
 		return indexOf(element) != -1;
 	}	
 	
-	/**
-	 * Return whether this array is sealed (immutable) or not.
-	 * 
-	 * @return {@code false} if this array can be changed, {@code true} otherwise.
-	 */
 	public boolean isSealed() {
 		return _sealed;
 	}
