@@ -27,7 +27,7 @@ import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Predicates.nil;
 import static org.jenetics.util.Validator.nonNull;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.RandomAccess;
 
 import javolution.lang.Realtime;
@@ -115,7 +115,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 	
 	@Override
-	public ListIterator<G> iterator() {
+	public Iterator<G> iterator() {
 		return _genes.iterator();
 	}
 	

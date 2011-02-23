@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.RandomAccess;
 
 
@@ -51,9 +50,6 @@ public interface Sequence<T> extends Iterable<T> {
 	 * @return the length of this sequence.
 	 */
 	public int length();
-	
-	@Override
-	public ListIterator<T> iterator();
 	
 	/**
 	 * Return an iterator with the new type {@code B}.
@@ -280,6 +276,25 @@ public interface Sequence<T> extends Iterable<T> {
 		
 		public Mutable<T> copy();
 		
+		/**
+		 * <p>
+		 * The {@code upcast} method returns an array of type {@code Array<? super T>} 
+		 * instead of {@code Array<T>}. This allows you to assign this array to an 
+		 * array where the element type is a super type of {@code T}.
+		 * </p>
+		 * [code]
+		 *     Sequence.Immutable<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
+		 *     Sequence.Immutable<Number> na = da.upcast();
+		 *     Sequence.Immutable<Object>; oa = na.upcast();
+		 *     oa = da.upcast();
+		 * [/code]
+		 * 
+		 * This array must be {@code sealed} for an save <em>up-cast</em>, otherwise an 
+		 * {@link UnsupportedOperationException} will be thrown. 
+		 * 
+		 * @return the up-casted array.
+		 * @throws UnsupportedOperationException if this array is not {@code sealed}.
+		 */
 		public Immutable<? super T> upcast();
 		
 	}

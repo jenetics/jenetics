@@ -26,7 +26,7 @@ import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -127,7 +127,7 @@ public final class Genotype<T extends Gene<?, T>>
 	}
 	
 	@Override
-	public ListIterator<Chromosome<T>> iterator() {
+	public Iterator<Chromosome<T>> iterator() {
 		return _chromosomes.iterator();
 	}
 	
