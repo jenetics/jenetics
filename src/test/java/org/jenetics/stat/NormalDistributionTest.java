@@ -30,6 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution.Domain;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,7 +41,7 @@ public class NormalDistributionTest {
 	
 	@Test(invocationCount = 10)
 	public void cdfDistribution() {
-		final Random random = new Random();
+		final Random random = RandomRegistry.getRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1000.0, 10);
 		final Variance<Double> variance = new Variance<Double>();
 		

@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
 /**
@@ -49,7 +50,7 @@ public abstract class ProbabilitySelectorTester<
 	
 	@Test
 	public void nextIndex() {
-		final Random random = new Random();
+		final Random random = RandomRegistry.getRandom();
 		
 		final double[] props = new double[10];
 		double divisor = props.length*(props.length + 1)/2.0;

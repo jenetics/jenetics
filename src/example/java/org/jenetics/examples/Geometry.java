@@ -82,6 +82,7 @@ import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
+import org.jenetics.util.RandomRegistry;
 
 
 /**
@@ -1618,7 +1619,7 @@ class GA {
 	}
 	
 	public static AffineTransform getTargetTransform() {
-		final Random random = new Random(System.currentTimeMillis());
+		final Random random = RandomRegistry.getRandom();
 		final double theta = random.nextDouble()*2*Math.PI - Math.PI;
 		final double tx = random.nextInt(600) - 300;
 		final double ty = random.nextInt(600) - 300;

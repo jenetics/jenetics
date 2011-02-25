@@ -53,7 +53,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
     public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new Random());
+			RandomRegistry.setRandom(new Random(12345));
 			
 			final CharSet characters = new CharSet("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
