@@ -57,7 +57,7 @@ public class Float64ChromosomeTest
     public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new Random());
+			RandomRegistry.setRandom(new Random(12345));
 			
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);

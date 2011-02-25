@@ -57,7 +57,7 @@ public class Integer64ChromosomeTest
     public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new Random());
+			RandomRegistry.setRandom(new Random(12345));
 			
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(10000000);

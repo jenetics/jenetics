@@ -32,6 +32,7 @@ import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
+import org.jenetics.util.RandomRegistry;
 
 
 /**
@@ -47,7 +48,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 	
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void mutate() {
-		final Random random = new Random();
+		final Random random = RandomRegistry.getRandom();
 		
 		final double min = 0;
 		final double max = 10;

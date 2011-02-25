@@ -56,7 +56,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new Random());
+			RandomRegistry.setRandom(new Random(12345));
 			
 			final CharSet characters = new CharSet("0123456789");
 			

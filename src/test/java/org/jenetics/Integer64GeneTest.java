@@ -55,7 +55,7 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 	public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
-			RandomRegistry.setRandom(new Random());
+			RandomRegistry.setRandom(new Random(12345));
 			
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(Integer.MAX_VALUE);

@@ -127,7 +127,7 @@ public class HistogramTest
 	
 	@Test
 	public void histogramIndex() {
-		final Random random = new Random();
+		final Random random = RandomRegistry.getRandom();
 		Double[] parts = new Double[10000];
 		for (int i = 0; i < parts.length; ++i) {
 			parts[i] = Double.valueOf(i);
@@ -183,7 +183,7 @@ public class HistogramTest
 	
 	@Test
 	public void histogram() {
-		final Random random = new Random();
+		final Random random = RandomRegistry.getRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(new Double[]{1d, 2d, 3d, 4d, 5d});
 		
 		for (int i = 0; i < 600000; ++i) {
