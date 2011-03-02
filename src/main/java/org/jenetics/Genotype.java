@@ -275,11 +275,8 @@ public final class Genotype<T extends Gene<?, T>>
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 		
-		@SuppressWarnings("unchecked")
-		final Sequence.Immutable<Chromosome<G>> c = (Sequence.Immutable<Chromosome<G>>)chromosomes;
-		
 		return new Genotype<G>(
-				c, 
+				chromosomes.upcast(chromosomes), 
 				ngenes(chromosomes)
 			);
 	}

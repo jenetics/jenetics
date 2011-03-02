@@ -678,8 +678,12 @@ class ImmutableArray<T> extends ArrayBase<T> implements Sequence.Immutable<T> {
 	}
 
 	@Override
-	public Sequence.Immutable<? super T> upcast() {
-		return this;
+	@SuppressWarnings("unchecked")
+	public <A> Immutable<A> upcast(final Immutable<? extends A> seq) {
+		if (seq != this) {
+			throw new IllegalArgumentException("Given sequence must be 'this'.");
+		}
+		return (Immutable<A>)seq;
 	}	
 	
 }
