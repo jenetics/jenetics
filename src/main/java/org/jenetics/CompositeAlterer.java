@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Predicate;
-import org.jenetics.util.Sequence;
+import org.jenetics.util.Seq;
 import org.jenetics.util.Validator.NonNull;
 
 /**
@@ -46,7 +46,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G> 
 {
 
-	private final Sequence<Alterer<G>> _alterers;
+	private final Seq<Alterer<G>> _alterers;
 	
 	/**
 	 * Combine the given alterers.
@@ -150,14 +150,14 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
-	public CompositeAlterer(final Sequence<Alterer<G>> alterers) {
+	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 		
 		alterers.foreach(new NonNull("Alterer"));
 		_alterers = normalize(alterers).seal();
 	}
 	
-	private Array<Alterer<G>> normalize(final Sequence<Alterer<G>> alterers) {
+	private Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
 		final Deque<Alterer<G>> stack = 
 			new LinkedList<Alterer<G>>(alterers.asList());
 		
@@ -214,7 +214,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * 
 	 * @return the alterers this alterer consists of.
 	 */
-	public Sequence<Alterer<G>> getAlterers() {
+	public Seq<Alterer<G>> getAlterers() {
 		return _alterers;
 	}
 	

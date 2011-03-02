@@ -38,7 +38,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Sequence;
+import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.Seq;
 import org.jenetics.util.Validator;
 import org.jenetics.util.Verifiable;
 
@@ -59,13 +60,13 @@ public final class Genotype<T extends Gene<?, T>>
 {
 	private static final long serialVersionUID = 2L;
 	
-	private final Sequence.Immutable<Chromosome<T>> _chromosomes; 
+	private final ImmutableSeq<Chromosome<T>> _chromosomes; 
 	private final int _ngenes;
 	
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
 	
-	private Genotype(final Sequence.Immutable<Chromosome<T>> chromosomes, final int ngenes) {
+	private Genotype(final ImmutableSeq<Chromosome<T>> chromosomes, final int ngenes) {
 		assert(chromosomes != null);
 		assert(ngenes(chromosomes) == ngenes);
 		
@@ -73,7 +74,7 @@ public final class Genotype<T extends Gene<?, T>>
 		_ngenes = ngenes;
 	}
 	
-	private static int ngenes(final Sequence<? extends Chromosome<?>> chromosomes) {
+	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
 		int ngenes = 0;
 		for (int i = chromosomes.length(); --i >= 0;) {
 			ngenes += chromosomes.get(i).length();
@@ -122,7 +123,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return _chromosomes.get(0).getGene();
 	}
 	
-	public Sequence.Immutable<Chromosome<T>> toArray() {
+	public ImmutableSeq<Chromosome<T>> toArray() {
 		return _chromosomes;
 	}
 	
@@ -179,7 +180,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return new Genotype<T>(chromosomes.seal(), _ngenes);
 	}
 	
-	 Genotype<T> newInstance(final Sequence.Immutable<Chromosome<T>> chromosomes) {
+	 Genotype<T> newInstance(final ImmutableSeq<Chromosome<T>> chromosomes) {
 		return new Genotype<T>(chromosomes, _ngenes);
 	}
 	
@@ -220,10 +221,10 @@ public final class Genotype<T extends Gene<?, T>>
 	 * Return a converter which access the chromosome array of this genotype.
 	 */
 	public static <T extends Gene<?, T>> 
-	Converter<Genotype<T>, Sequence.Immutable<Chromosome<T>>> Chromosomes()
+	Converter<Genotype<T>, ImmutableSeq<Chromosome<T>>> Chromosomes()
 	{
-		return new Converter<Genotype<T>, Sequence.Immutable<Chromosome<T>>>() {
-			@Override public Sequence.Immutable<Chromosome<T>> convert(final Genotype<T> value) {
+		return new Converter<Genotype<T>, ImmutableSeq<Chromosome<T>>>() {
+			@Override public ImmutableSeq<Chromosome<T>> convert(final Genotype<T> value) {
 				return value.toArray();
 			}
 		};
@@ -268,7 +269,7 @@ public final class Genotype<T extends Gene<?, T>>
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Sequence.Immutable<? extends Chromosome<G>> chromosomes
+		final ImmutableSeq<? extends Chromosome<G>> chromosomes
 	) {
 		nonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {

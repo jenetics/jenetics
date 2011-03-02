@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
-import org.jenetics.util.Sequence;
+import org.jenetics.util.ImmutableSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -49,7 +49,7 @@ public class Float64Chromosome
 	private static final long serialVersionUID = 1L;
 	
 	
-	protected Float64Chromosome(final Sequence.Immutable<Float64Gene> genes) {
+	protected Float64Chromosome(final ImmutableSeq<Float64Gene> genes) {
 		super(genes);
 	}
 	
@@ -119,7 +119,7 @@ public class Float64Chromosome
 	}
 	
 	@Override
-	public Float64Chromosome newInstance(final Sequence.Immutable<Float64Gene> genes) {
+	public Float64Chromosome newInstance(final ImmutableSeq<Float64Gene> genes) {
 		return new Float64Chromosome(genes);		
 	}
 
@@ -152,7 +152,7 @@ public class Float64Chromosome
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<Float64Gene>, Sequence.Immutable<Float64Gene>> 
+	public static final Converter<AbstractChromosome<Float64Gene>, ImmutableSeq<Float64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**

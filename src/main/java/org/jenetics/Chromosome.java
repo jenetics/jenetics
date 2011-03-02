@@ -27,7 +27,7 @@ import java.io.Serializable;
 import javolution.lang.Immutable;
 
 import org.jenetics.util.Factory;
-import org.jenetics.util.Sequence;
+import org.jenetics.util.ImmutableSeq;
 import org.jenetics.util.Verifiable;
 
 
@@ -57,7 +57,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
-	public Chromosome<T> newInstance(final Sequence.Immutable<T> genes);
+	public Chromosome<T> newInstance(final ImmutableSeq<T> genes);
 	
 	/**
 	 * Return the first gene of this chromosome.  Each chromosome must contain
@@ -90,7 +90,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * 
 	 * @return an immutable gene sequence.
 	 */
-	public Sequence.Immutable<T> toArray();
+	public ImmutableSeq<T> toArray();
 
 }
 

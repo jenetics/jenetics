@@ -28,8 +28,8 @@ import java.util.Random;
 
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.IndexStream;
+import org.jenetics.util.MutableSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Sequence;
 
 /**
  * The {@code SwapMutation} changes the order of genes in a chromosome, with the 
@@ -67,7 +67,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	 * mutation.
 	 */
 	@Override
-	protected int mutate(final Sequence.Mutable<G> genes, final double p) {
+	protected int mutate(final MutableSeq<G> genes, final double p) {
 		int alterations = 0;
 		
 		if (genes.length() > 1) {
