@@ -44,8 +44,8 @@ import org.jscience.mathematics.number.Number;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.ImmutableSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Sequence;
 import org.jenetics.util.Validator;
 
 /**
@@ -115,7 +115,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	@Override
-	public Sequence.Immutable<BitGene> toArray() {
+	public ImmutableSeq<BitGene> toArray() {
 		final Array<BitGene> genes = new Array<BitGene>(_length);
 		for (int i = 0; i < _length; ++i) {
 			genes.set(i, BitUtils.getBit(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
@@ -230,7 +230,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	@Override
-	public BitChromosome newInstance(final Sequence.Immutable<BitGene> genes) {
+	public BitChromosome newInstance(final ImmutableSeq<BitGene> genes) {
 		Validator.nonNull(genes, "Genes");
 		
 		final BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);

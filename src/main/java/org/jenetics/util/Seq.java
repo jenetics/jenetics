@@ -31,7 +31,7 @@ import java.util.RandomAccess;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface Sequence<T> extends Iterable<T> {
+public interface Seq<T> extends Iterable<T> {
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -222,7 +222,7 @@ public interface Sequence<T> extends Iterable<T> {
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || start > lenght()}).
 	 */
-	public Sequence<T> subArray(final int start);
+	public Seq<T> subArray(final int start);
 	
 	/**
 	 * Returns a view of the portion of this sequence between the specified 
@@ -245,7 +245,7 @@ public interface Sequence<T> extends Iterable<T> {
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || end > length() || start > end}).
 	 */
-	public Sequence<T> subArray(final int start, final int end);
+	public Seq<T> subArray(final int start, final int end);
 	
 	/**
 	 * Create a string representation of the given sequence.
@@ -258,83 +258,5 @@ public interface Sequence<T> extends Iterable<T> {
 	public String toString(
 			final String prefix, final String separator, final String suffix
 		);
-	
-	
-	/**
-	 * The immutable part of a sequence.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public interface Immutable<T> extends Sequence<T>, javolution.lang.Immutable {
-		
-		@Override
-		public Immutable<T> subArray(final int start);
-		
-		@Override
-		public Immutable<T> subArray(final int start, final int end);
-		
-		public Mutable<T> copy();
-		
-		/**
-		 * <p>
-		 * The {@code upcast} method returns an array of type {@code Array<? super T>} 
-		 * instead of {@code Array<T>}. This allows you to assign this array to an 
-		 * array where the element type is a super type of {@code T}.
-		 * </p>
-		 * [code]
-		 *     Sequence.Immutable<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
-		 *     Sequence.Immutable<Number> na = da.upcast();
-		 *     Sequence.Immutable<Object>; oa = na.upcast();
-		 *     oa = da.upcast();
-		 * [/code]
-		 * 
-		 * This array must be {@code sealed} for an save <em>up-cast</em>, otherwise an 
-		 * {@link UnsupportedOperationException} will be thrown. 
-		 * 
-		 * @return the up-casted array.
-		 * @throws UnsupportedOperationException if this array is not {@code sealed}.
-		 */
-		public <A> Immutable<A> upcast(final Immutable<? extends A> seq);
-		
-	}
-	
-	/**
-	 * The mutable view of a sequence.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public interface Mutable<T> extends Sequence<T> {
-		
-		/**
-		 * Set the {@code value} at the given {@code index}.
-		 * 
-		 * @param index the index of the new value.
-		 * @param value the new value.
-		 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
-		 * 		  {@code (index < 0 || index >= size())}.
-		 * @throws UnsupportedOperationException if this sequence is sealed 
-		 * 		  ({@code isSealed() == true}).
-		 */
-		public void set(final int index, final T value);
-		
-		/**
-		 * Return whether this sequence is sealed (immutable) or not.
-		 * 
-		 * @return {@code false} if this sequence can be changed, {@code true} 
-		 *         otherwise.
-		 */
-		public boolean isSealed();
-		
-		@Override
-		public Mutable<T> subArray(final int start);
-		
-		@Override
-		public Mutable<T> subArray(final int start, final int end);
-		
-		public Immutable<T> seal();
-		
-	}
 	
 }

@@ -54,7 +54,7 @@ import java.util.RandomAccess;
 public class Array<T> 
 	extends ArrayBase<T>
 	implements 
-		Sequence.Mutable<T>, 
+		MutableSeq<T>, 
 		Copyable<Array<T>>, 
 		Cloneable, 
 		RandomAccess
@@ -272,42 +272,10 @@ public class Array<T>
 	 * @return {@code this} array.
 	 */
 	@Override
-	public Sequence.Immutable<T> seal() {
+	public ImmutableSeq<T> seal() {
 		_sealed = true;
 		return new ImmutableArray<T>(this);
-	}
-	
-//	/**
-//	 * <p>
-//	 * The {@code upcast} method returns an array of type {@code Array<? super T>} 
-//	 * instead of {@code Array<T>}. This allows you to assign this array to an 
-//	 * array where the element type is a super type of {@code T}.
-//	 * </p>
-//	 * [code]
-//	 *     Array<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
-//	 *     Array<Number> na = da.upcast();
-//	 *     Array<Object>; oa = na.upcast();
-//	 *     oa = da.upcast();
-//	 * [/code]
-//	 * 
-//	 * This array must be {@code sealed} for an save <em>up-cast</em>, otherwise an 
-//	 * {@link UnsupportedOperationException} will be thrown. 
-//	 * 
-//	 * @param <S> the up-casted array type.
-//	 * @return the up-casted array.
-//	 * @throws UnsupportedOperationException if this array is not {@code sealed}.
-//	 */
-//	//@Override
-//	@SuppressWarnings("unchecked")
-//	public Sequence.Immutable<? super T> upcast() {
-//		//seal();
-//		if (!_sealed) {
-//			throw new UnsupportedOperationException(
-//					"Array must be sealed for an save up-cast."
-//				);
-//		}
-//		return null;
-//	}	
+	}	
 	
 	/**
 	 * Set all array elements to the given {@code value}.
@@ -646,7 +614,7 @@ public class Array<T>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class ImmutableArray<T> extends ArrayBase<T> implements Sequence.Immutable<T> {
+class ImmutableArray<T> extends ArrayBase<T> implements ImmutableSeq<T> {
 	private static final long serialVersionUID = 1L;
 
 	private final Array<T> _adoptee;
@@ -657,7 +625,7 @@ class ImmutableArray<T> extends ArrayBase<T> implements Sequence.Immutable<T> {
 	}
 	
 	@Override
-	public Sequence.Immutable<T> subArray(int start, int end) {
+	public ImmutableSeq<T> subArray(int start, int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
@@ -668,22 +636,19 @@ class ImmutableArray<T> extends ArrayBase<T> implements Sequence.Immutable<T> {
 	}
 
 	@Override
-	public Sequence.Immutable<T> subArray(int start) {
+	public ImmutableSeq<T> subArray(int start) {
 		return subArray(start, length());
 	}
 	
 	@Override
-	public Sequence.Mutable<T> copy() {
+	public MutableSeq<T> copy() {
 		return _adoptee.copy();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <A> Immutable<A> upcast(final Immutable<? extends A> seq) {
-		if (seq != this) {
-			throw new IllegalArgumentException("Given sequence must be 'this'.");
-		}
-		return (Immutable<A>)seq;
+	public <A> ImmutableSeq<A> upcast(final ImmutableSeq<? extends A> seq) {
+		return (ImmutableSeq<A>)seq;
 	}	
 	
 }

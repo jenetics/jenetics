@@ -39,8 +39,9 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.CharSet;
+import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.MutableSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Sequence;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -72,8 +73,8 @@ public class SinglePointCrossoverTest {
 	public void crossover() {		
 		final CharSet chars = CharSet.valueOf("a-zA-Z");
 		
-		final Sequence.Immutable<CharacterGene> g1 = new CharacterChromosome(chars, 20).toArray();
-		final Sequence.Immutable<CharacterGene> g2 = new CharacterChromosome(chars, 20).toArray();
+		final ImmutableSeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toArray();
+		final ImmutableSeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toArray();
 		
 		LocalContext.enter();
 		try {
@@ -82,8 +83,8 @@ public class SinglePointCrossoverTest {
 			
 			int rv = 12;
 			RandomRegistry.setRandom(new ConstRandom(rv));
-			Sequence.Mutable<CharacterGene> g1c = g1.copy();
-			Sequence.Mutable<CharacterGene> g2c = g2.copy();
+			MutableSeq<CharacterGene> g1c = g1.copy();
+			MutableSeq<CharacterGene> g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
 			Assert.assertEquals(g1c.subArray(0, rv), g2.subArray(0, rv));
 			Assert.assertEquals(g1c.subArray(rv), g2.subArray(rv));

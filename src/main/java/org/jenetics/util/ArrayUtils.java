@@ -145,7 +145,7 @@ public final class ArrayUtils {
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
-	public static <T> void swap(final Sequence.Mutable<T> array, final int i, final int j) {
+	public static <T> void swap(final MutableSeq<T> array, final int i, final int j) {
 		nonNull(array, "Array");
 
 		final T old = array.get(i);
@@ -227,7 +227,7 @@ public final class ArrayUtils {
 	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
-	sort(final Sequence.Mutable<T> array) 
+	sort(final MutableSeq<T> array) 
 	{
 		nonNull(array, "Array");
 		
@@ -245,7 +245,7 @@ public final class ArrayUtils {
 	 *         {@code null}.
 	 */
 	public static <T extends Object & Comparable<? super T>> boolean 
-	isSorted(final Sequence<T> array)
+	isSorted(final Seq<T> array)
 	{
 		nonNull(array, "Array");
 		

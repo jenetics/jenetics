@@ -36,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
-import org.jenetics.util.Sequence;
+import org.jenetics.util.ImmutableSeq;
 
 
 /**
@@ -55,7 +55,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
 	 * 		  than one.
 	 */
-	protected Integer64Chromosome(final Sequence.Immutable<Integer64Gene> genes) {
+	protected Integer64Chromosome(final ImmutableSeq<Integer64Gene> genes) {
 		super(genes);
 	}
 	
@@ -124,7 +124,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	}
 	
 	@Override
-	public Integer64Chromosome newInstance(final Sequence.Immutable<Integer64Gene> genes) {
+	public Integer64Chromosome newInstance(final ImmutableSeq<Integer64Gene> genes) {
 		return new Integer64Chromosome(genes);
 	}
 
@@ -157,7 +157,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<Integer64Gene>, Sequence.Immutable<Integer64Gene>> 
+	public static final Converter<AbstractChromosome<Integer64Gene>, ImmutableSeq<Integer64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
