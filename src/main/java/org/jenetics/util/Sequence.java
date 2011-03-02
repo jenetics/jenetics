@@ -295,7 +295,7 @@ public interface Sequence<T> extends Iterable<T> {
 		 * @return the up-casted array.
 		 * @throws UnsupportedOperationException if this array is not {@code sealed}.
 		 */
-		public Immutable<? super T> upcast();
+		public <A> Immutable<A> upcast(final Immutable<? extends A> seq);
 		
 	}
 	
