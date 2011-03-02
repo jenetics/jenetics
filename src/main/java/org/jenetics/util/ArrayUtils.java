@@ -145,7 +145,7 @@ public final class ArrayUtils {
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
 	 */
-	public static <T> void swap(final MutableSeq<T> array, final int i, final int j) {
+	public static <T> void swap(final MSeq<T> array, final int i, final int j) {
 		nonNull(array, "Array");
 
 		final T old = array.get(i);
@@ -227,32 +227,31 @@ public final class ArrayUtils {
 	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
-	sort(final MutableSeq<T> array) 
+	sort(final MSeq<T> array) 
 	{
 		nonNull(array, "Array");
 		
-		//Arrays.sort(array._array, array._start, array._end);
 		Collections.sort(array.asList());
 	}
 	
 	/**
 	 * Test whether the given array is sorted in ascending order.
 	 * 
-	 * @param array the array to test.
+	 * @param seq the array to test.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
 	 * @throws NullPointerException if the given array or one of it's element is
 	 *         {@code null}.
 	 */
 	public static <T extends Object & Comparable<? super T>> boolean 
-	isSorted(final Seq<T> array)
+	isSorted(final Seq<T> seq)
 	{
-		nonNull(array, "Array");
+		nonNull(seq, "Array");
 		
 		boolean sorted = true;
 		
-		for (int i = 0, n = array.length() - 1; i < n && sorted; ++i) {
-			sorted = array.get(i).compareTo(array.get(i + 1)) <= 0;
+		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
+			sorted = seq.get(i).compareTo(seq.get(i + 1)) <= 0;
 		}
 		
 		return sorted;
@@ -262,7 +261,7 @@ public final class ArrayUtils {
 	 * Test whether the given array is sorted in ascending order. The order of
 	 * the array elements is defined by the given comparator.
 	 * 
-	 * @param array the array to test.
+	 * @param seq the array to test.
 	 * @param comparator the comparator which defines the order.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
@@ -270,15 +269,15 @@ public final class ArrayUtils {
 	 *         the comparator is {@code null}.
 	 */
 	public static <T> boolean isSorted(
-		final Array<T> array, final Comparator<? super T> comparator
+		final Seq<T> seq, final Comparator<? super T> comparator
 	) {
-		nonNull(array, "Array");
+		nonNull(seq, "Array");
 		nonNull(comparator, "Comparator");
 		
 		boolean sorted = true;
 		
-		for (int i = 0, n = array.length() - 1; i < n && sorted; ++i) {
-			sorted = comparator.compare(array.get(i), array.get(i + 1)) <= 0;
+		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
+			sorted = comparator.compare(seq.get(i), seq.get(i + 1)) <= 0;
 		}
 		
 		return sorted;
@@ -375,19 +374,19 @@ public final class ArrayUtils {
 	 * Finds the minimum and maximum value of the given array. 
 	 * 
 	 * @param <T> the comparable type.
-	 * @param array the array to search.
+	 * @param seq the array to search.
 	 * @return an array of size two. The first element contains the minimum and
 	 * 		  the second element contains the maximum value. If the given array
 	 * 		  has size zero, the min and max values of the returned array are 
 	 * 		  {@code null}.
 	  * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T extends Object & Comparable<? super T>> Array<T> 
-	minmax(final Array<T> array) 
+	public static <T extends Object & Comparable<? super T>> Seq<T> 
+	minmax(final Seq<T> seq) 
 	{
-		nonNull(array, "Array");
+		nonNull(seq, "Array");
 		
-		final int size = array.length();
+		final int size = seq.length();
 		
 		T min = null;
 		T max = null;
@@ -395,22 +394,22 @@ public final class ArrayUtils {
 		
 		if (size%2 == 0 && size > 0) {
 			start = 2;
-			if (array.get(0).compareTo(array.get(1)) < 0) {
-				min = array.get(0);
-				max = array.get(1);
+			if (seq.get(0).compareTo(seq.get(1)) < 0) {
+				min = seq.get(0);
+				max = seq.get(1);
 			} else {
-				min = array.get(1);
-				max = array.get(0);
+				min = seq.get(1);
+				max = seq.get(0);
 			}
 		} else if (size%2 == 1) {
 			start = 1;
-			min = array.get(0);
-			max = array.get(0);
+			min = seq.get(0);
+			max = seq.get(0);
 		}
 		
 		for (int i = start; i < size; i += 2) {
-			final T first = array.get(i);
-			final T second = array.get(i + 1);
+			final T first = seq.get(i);
+			final T second = seq.get(i + 1);
 			
 			if (first.compareTo(second) < 0) {
 				if (first.compareTo(min) < 0) {
@@ -436,7 +435,7 @@ public final class ArrayUtils {
 	 * Return the <i>k</i><sup>th</sup> smallest value of the {@code values} 
 	 * array. The input array will not be rearranged.
 	 * 
-	 * @see #iselect(Array, int)
+	 * @see #iselect(Seq, int)
 	 * 
 	 * @param <T> the array element type.
 	 * @param array the array.
@@ -448,16 +447,18 @@ public final class ArrayUtils {
 	 *         {@code k > values.length() - 1}.
 	 */
 	public static <T extends Object & Comparable<? super T>> T 
-	select(final Array<T> array, final int k) 
+	select(final Seq<T> array, final int k) 
 	{
 		return array.get(iselect(array, k));
 	}
 	
 	/**
+	 * TODO: Fix it
+	 * 
 	 * Return the index of the <i>k</i><sup>th</sup> smallest value of the 
 	 * {@code values} array. The input array will not be rearranged.
 	 * 
-	 * @see #select(Array, int)
+	 * @see #select(Seq, int)
 	 * 
 	 * @param <T> the array element type.
 	 * @param array the array.
@@ -469,7 +470,7 @@ public final class ArrayUtils {
 	 * 		  {@code k > values.length() - 1}.
 	 */
 	public static <T extends Object & Comparable<? super T>> int
-	iselect(final Array<T> array, final int k) 
+	iselect(final Seq<T> array, final int k) 
 	{
 		nonNull(array, "Array");
 		if (k < 0) {
@@ -526,8 +527,8 @@ public final class ArrayUtils {
 					swap(pivot, i, j);
 				}
 				
-				array.set(pivot[l + 1], array.get(pivot[j]));
-				array.set(pivot[j], a);
+				//array.set(pivot[l + 1], array.get(pivot[j]));
+				//array.set(pivot[j], a);
 				if (j >= k) {
 					ir = j -1;
 				}

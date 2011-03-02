@@ -29,7 +29,7 @@ import java.util.Random;
 import javolution.lang.Immutable;
 
 import org.jenetics.util.IndexStream;
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -62,7 +62,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	}
 
 	@Override
-	protected int mutate(final MutableSeq<G> genes, final double p) {
+	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
 		final IndexStream stream = randomIndexes(genes.length(), p);
 		

@@ -54,7 +54,7 @@ import java.util.RandomAccess;
 public class Array<T> 
 	extends ArrayBase<T>
 	implements 
-		MutableSeq<T>, 
+		MSeq<T>, 
 		Copyable<Array<T>>, 
 		Cloneable, 
 		RandomAccess
@@ -272,9 +272,9 @@ public class Array<T>
 	 * @return {@code this} array.
 	 */
 	@Override
-	public ImmutableSeq<T> seal() {
+	public ISeq<T> seal() {
 		_sealed = true;
-		return new ImmutableArray<T>(this);
+		return new IArray<T>(this);
 	}	
 	
 	/**
@@ -607,48 +607,5 @@ public class Array<T>
 			_array[i] = in.readObject();
 		}
 	}
-	
-}
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
-class ImmutableArray<T> extends ArrayBase<T> implements ImmutableSeq<T> {
-	private static final long serialVersionUID = 1L;
-
-	private final Array<T> _adoptee;
-	
-	ImmutableArray(final Array<T> array) {
-		super(array._array, array._start, array._end, true);
-		_adoptee = array;
-	}
-	
-	@Override
-	public ImmutableSeq<T> subArray(int start, int end) {
-		if (start < 0 || end > length() || start > end) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s)", start, end
-			));
-		}
-		
-		return new ImmutableArray<T>(_adoptee.subArray(start, end));
-	}
-
-	@Override
-	public ImmutableSeq<T> subArray(int start) {
-		return subArray(start, length());
-	}
-	
-	@Override
-	public MutableSeq<T> copy() {
-		return _adoptee.copy();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <A> ImmutableSeq<A> upcast(final ImmutableSeq<? extends A> seq) {
-		return (ImmutableSeq<A>)seq;
-	}	
 	
 }

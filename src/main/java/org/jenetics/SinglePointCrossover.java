@@ -26,7 +26,7 @@ import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
 import java.util.Random;
 
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -75,7 +75,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	}
 	
 	@Override
-	protected int crossover(final MutableSeq<G> that, final MutableSeq<G> other) {
+	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());
 		
 		final Random random = RandomRegistry.getRandom();

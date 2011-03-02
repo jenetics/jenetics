@@ -119,7 +119,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void fill1() {
-		final ImmutableSeq<Integer> array = new Array<Integer>(10).fill(10).seal();
+		final ISeq<Integer> array = new Array<Integer>(10).fill(10).seal();
 		Assert.assertEquals(array.length(), 10);
 		for (Integer i : array) {
 			Assert.assertEquals(i, new Integer(10));

@@ -30,7 +30,7 @@ import javolution.text.TextBuilder;
 
 import org.jscience.mathematics.number.Number;
 
-import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.ISeq;
 
 
 /**
@@ -65,7 +65,7 @@ public abstract class NumberChromosome<
 	 * 		  than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected NumberChromosome(final ImmutableSeq<G> genes) {
+	protected NumberChromosome(final ISeq<G> genes) {
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;

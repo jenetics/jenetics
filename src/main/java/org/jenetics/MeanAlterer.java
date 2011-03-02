@@ -28,9 +28,9 @@ import java.util.Random;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.Mean;
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
 
@@ -77,11 +77,11 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
 		final int cindex = random.nextInt(gt1.length());
-		final MutableSeq<Chromosome<G>> c1 = gt1.toArray().copy();
-		final ImmutableSeq<Chromosome<G>> c2 = gt2.toArray();
+		final MSeq<Chromosome<G>> c1 = gt1.toArray().copy();
+		final ISeq<Chromosome<G>> c2 = gt2.toArray();
 		
 		// Calculate the mean value of the gene array.
-		final MutableSeq<G> mean = mean(
+		final MSeq<G> mean = mean(
 				c1.get(cindex).toArray().copy(), 
 				c2.get(cindex).toArray()
 			);
@@ -96,7 +96,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		return 1;
 	}
 	
-	private MutableSeq<G> mean(final MutableSeq<G> a, final Seq<G> b) {
+	private MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
 		for (int i = a.length(); --i >= 0;) {
 			a.set(i, a.get(i).mean(b.get(i)));
 		}

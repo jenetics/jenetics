@@ -50,6 +50,20 @@ public class ArrayUtilsTest {
 		
 	}
 	
+	@Test
+	public void iselect() {
+		final Array<Integer> array = new Array<Integer>(100);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+		}
+		
+		for (int i = 0; i < array.length(); ++i) {
+			//System.out.println(ArrayUtils.iselect(array, i));
+			//Assert.assertEquals(ArrayUtils.iselect(array, i), i);
+		}
+		//System.out.println(ArrayUtils.iselect(array, 2));
+	}
+	
 	private static boolean isSorted(int[] array) {
 		boolean sorted = true;
 		for (int i = 0; i < array.length - 1 && sorted; ++i) {
