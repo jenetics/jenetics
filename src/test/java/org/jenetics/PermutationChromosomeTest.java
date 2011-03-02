@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 /**
@@ -45,7 +45,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 	@Test
 	public void create() {
 		PermutationChromosome c = new PermutationChromosome(50, true);
-		final MutableSeq<Integer64Gene> array = c.toArray().copy();
+		final MSeq<Integer64Gene> array = c.toArray().copy();
 		Assert.assertFalse(isSorted(array));
 		
 		ArrayUtils.sort(array);
@@ -57,7 +57,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 	@Test
 	public void sortedNewInstance() {
 		PermutationChromosome c = new PermutationChromosome(50, false);
-		final MutableSeq<Integer64Gene> array = c.toArray().copy();
+		final MSeq<Integer64Gene> array = c.toArray().copy();
 		Assert.assertTrue(isSorted(array));
 		
 		for (int i = 0; i < array.length(); ++i) {

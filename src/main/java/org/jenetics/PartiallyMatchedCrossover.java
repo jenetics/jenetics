@@ -31,7 +31,7 @@ import java.util.Random;
 import javolution.lang.Immutable;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
 
@@ -87,7 +87,7 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 	}
 	
 	@Override 
-	protected int crossover(final MutableSeq<G> that, final MutableSeq<G> other) {
+	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final Random random = RandomRegistry.getRandom();
 		int index1 = random.nextInt(that.length());
 		int index2 = random.nextInt(other.length());

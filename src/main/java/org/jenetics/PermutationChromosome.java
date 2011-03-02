@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
-import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
@@ -55,7 +55,7 @@ public final class PermutationChromosome
 {
 	private static final long serialVersionUID = 1L;
 
-	protected PermutationChromosome(final ImmutableSeq<Integer64Gene> genes) {
+	protected PermutationChromosome(final ISeq<Integer64Gene> genes) {
 		super(genes);
 	}
 	
@@ -100,7 +100,7 @@ public final class PermutationChromosome
 		this(length, false);
 	}
 	
-	private static ImmutableSeq<Integer64Gene> create(final int[] values) {
+	private static ISeq<Integer64Gene> create(final int[] values) {
 		//Check the input.
 		Validator.nonNull(values, "Values");
 		if (values.length < 1) {
@@ -142,7 +142,7 @@ public final class PermutationChromosome
 		return genes.seal();
 	}
 	
-	private static ImmutableSeq<Integer64Gene> create(final int length, final boolean randomize) {
+	private static ISeq<Integer64Gene> create(final int length, final boolean randomize) {
 		if (length < 1) {
 			throw new IllegalArgumentException("Length must be greater than 1, but was " + length);
 		}
@@ -205,7 +205,7 @@ public final class PermutationChromosome
 	}
 	
 	@Override
-	public PermutationChromosome newInstance(final ImmutableSeq<Integer64Gene> genes) {
+	public PermutationChromosome newInstance(final ISeq<Integer64Gene> genes) {
 		return new PermutationChromosome(genes);
 	}
 	

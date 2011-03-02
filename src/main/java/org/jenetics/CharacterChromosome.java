@@ -39,7 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
-import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.ISeq;
 
 /**
  * CharacterChromosome which represents character sequences.
@@ -105,7 +105,7 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 * 		  smaller than one.
 	 */
-	public CharacterChromosome(final ImmutableSeq<CharacterGene> genes) {
+	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
@@ -118,7 +118,7 @@ public class CharacterChromosome
 	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
 		return new CharacterChromosome(
-					(ImmutableSeq<CharacterGene>)_genes.subArray(start, end)
+					(ISeq<CharacterGene>)_genes.subArray(start, end)
 				);
 	}
 	
@@ -126,7 +126,7 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 */
 	@Override
-	public CharacterChromosome newInstance(final ImmutableSeq<CharacterGene> genes) {
+	public CharacterChromosome newInstance(final ISeq<CharacterGene> genes) {
 		return new CharacterChromosome(genes);
 	}
 	
@@ -184,7 +184,7 @@ public class CharacterChromosome
 	 * Return a {@link Converter} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<CharacterGene>, ImmutableSeq<CharacterGene>> 
+	public static final Converter<AbstractChromosome<CharacterGene>, ISeq<CharacterGene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**

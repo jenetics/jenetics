@@ -38,7 +38,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Validator;
 import org.jenetics.util.Verifiable;
@@ -60,13 +60,13 @@ public final class Genotype<T extends Gene<?, T>>
 {
 	private static final long serialVersionUID = 2L;
 	
-	private final ImmutableSeq<Chromosome<T>> _chromosomes; 
+	private final ISeq<Chromosome<T>> _chromosomes; 
 	private final int _ngenes;
 	
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
 	
-	private Genotype(final ImmutableSeq<Chromosome<T>> chromosomes, final int ngenes) {
+	private Genotype(final ISeq<Chromosome<T>> chromosomes, final int ngenes) {
 		assert(chromosomes != null);
 		assert(ngenes(chromosomes) == ngenes);
 		
@@ -123,7 +123,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return _chromosomes.get(0).getGene();
 	}
 	
-	public ImmutableSeq<Chromosome<T>> toArray() {
+	public ISeq<Chromosome<T>> toArray() {
 		return _chromosomes;
 	}
 	
@@ -180,7 +180,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return new Genotype<T>(chromosomes.seal(), _ngenes);
 	}
 	
-	 Genotype<T> newInstance(final ImmutableSeq<Chromosome<T>> chromosomes) {
+	 Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
 		return new Genotype<T>(chromosomes, _ngenes);
 	}
 	
@@ -221,10 +221,10 @@ public final class Genotype<T extends Gene<?, T>>
 	 * Return a converter which access the chromosome array of this genotype.
 	 */
 	public static <T extends Gene<?, T>> 
-	Converter<Genotype<T>, ImmutableSeq<Chromosome<T>>> Chromosomes()
+	Converter<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
 	{
-		return new Converter<Genotype<T>, ImmutableSeq<Chromosome<T>>>() {
-			@Override public ImmutableSeq<Chromosome<T>> convert(final Genotype<T> value) {
+		return new Converter<Genotype<T>, ISeq<Chromosome<T>>>() {
+			@Override public ISeq<Chromosome<T>> convert(final Genotype<T> value) {
 				return value.toArray();
 			}
 		};
@@ -269,7 +269,7 @@ public final class Genotype<T extends Gene<?, T>>
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final ImmutableSeq<? extends Chromosome<G>> chromosomes
+		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
 		nonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {

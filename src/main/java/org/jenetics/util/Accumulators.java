@@ -360,7 +360,7 @@ public final class Accumulators {
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values, 
-		final Array<? extends Accumulator<? super T>> accumulators
+		final Seq<? extends Accumulator<? super T>> accumulators
 	) {
 		switch (accumulators.length()) {
 		case 1:

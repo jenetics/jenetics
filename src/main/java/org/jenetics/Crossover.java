@@ -24,7 +24,7 @@ package org.jenetics;
 
 import java.util.Random;
 
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -70,10 +70,10 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
 		
-		final MutableSeq<Chromosome<G>> chromosomes1 = gt1.toArray().copy();
-		final MutableSeq<Chromosome<G>> chromosomes2 = gt2.toArray().copy();
-		final MutableSeq<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
-		final MutableSeq<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
+		final MSeq<Chromosome<G>> chromosomes1 = gt1.toArray().copy();
+		final MSeq<Chromosome<G>> chromosomes2 = gt2.toArray().copy();
+		final MSeq<G> genes1 = chromosomes1.get(chIndex).toArray().copy();
+		final MSeq<G> genes2 = chromosomes2.get(chIndex).toArray().copy();
 		
 		crossover(genes1, genes2);
 		
@@ -97,7 +97,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 	 * Template method which performs the crossover. The arguments given are 
 	 * mutable non null arrays of the same length.
 	 */
-	protected abstract int crossover(final MutableSeq<G> that, final MutableSeq<G> other);
+	protected abstract int crossover(final MSeq<G> that, final MSeq<G> other);
 
 }
 

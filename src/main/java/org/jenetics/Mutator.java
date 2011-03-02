@@ -27,7 +27,7 @@ import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.IndexStream;
-import org.jenetics.util.MutableSeq;
+import org.jenetics.util.MSeq;
 
 
 /**
@@ -126,11 +126,11 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final IndexStream stream = randomIndexes(genotype.length(), p);
 		int start = stream.next();
 		if (start != -1) {
-			final MutableSeq<Chromosome<G>> chromosomes = genotype.toArray().copy(); 
+			final MSeq<Chromosome<G>> chromosomes = genotype.toArray().copy(); 
 			
 			for (int i = start; i != -1; i = stream.next()) {
 				final Chromosome<G> chromosome = chromosomes.get(i);
-				final MutableSeq<G> genes = chromosome.toArray().copy();
+				final MSeq<G> genes = chromosome.toArray().copy();
 				
 				final int mutations = mutate(genes, p);
 				if (mutations > 0) {
@@ -169,7 +169,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param genes the genes to mutate.
 	 * @param p the gene mutation probability.
 	 */
-	protected int mutate(final MutableSeq<G> genes, final double p) {
+	protected int mutate(final MSeq<G> genes, final double p) {
 		final IndexStream stream = randomIndexes(genes.length(), p);
 		
 		int alterations = 0;

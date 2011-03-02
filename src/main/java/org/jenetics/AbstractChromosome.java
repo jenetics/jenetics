@@ -34,7 +34,7 @@ import javolution.lang.Realtime;
 import javolution.text.Text;
 
 import org.jenetics.util.Converter;
-import org.jenetics.util.ImmutableSeq;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.Validator.Verify;
 
 /**
@@ -59,7 +59,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Array of genes which forms the chromosome. This array must
 	 * be initialized by the derived classes.
 	 */
-	protected transient ImmutableSeq<G> _genes = null;
+	protected transient ISeq<G> _genes = null;
 	
 	/**
 	 * Indicates whether this chromosome is valid or not. If the variable is
@@ -77,7 +77,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 * 		  smaller than one.
 	 */
-	protected AbstractChromosome(final ImmutableSeq<G> genes) {
+	protected AbstractChromosome(final ISeq<G> genes) {
 		nonNull(genes, "Gene array");
 		assert (genes.indexOf(nil()) == -1) : "Found at least on null gene.";
 		
@@ -101,7 +101,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	@Override
-	public ImmutableSeq<G> toArray() {
+	public ISeq<G> toArray() {
 		return _genes;
 	}
 	
@@ -199,9 +199,9 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * {@link Chromosome}.
 	 */
 	static <G extends Gene<?, G>, C extends AbstractChromosome<G>> 
-	Converter<C, ImmutableSeq<G>> genes() {
-		return new Converter<C, ImmutableSeq<G>>() {
-			@Override public ImmutableSeq<G> convert(final C value) {
+	Converter<C, ISeq<G>> genes() {
+		return new Converter<C, ISeq<G>>() {
+			@Override public ISeq<G> convert(final C value) {
 				return value.toArray();
 			}
 		};
