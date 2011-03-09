@@ -26,6 +26,7 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.util.Random;
 
 import javolution.context.LocalContext;
 import javolution.lang.Immutable;
@@ -47,16 +48,15 @@ public abstract class ObjectTester<T> {
 	
 	protected Array<T> newSameObjects(final int nobjects) {
 		final Array<T> objects = new Array<T>(nobjects);
-		
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(new ConstantRandom((int)System.currentTimeMillis()));
 			
-			for (int i = 0; i < nobjects; ++i) {
+		for (int i = 0; i < nobjects; ++i) {
+			LocalContext.enter();
+			try {
+				RandomRegistry.setRandom(new Random(23487589));
 				objects.set(i, getFactory().newInstance());
+			} finally {
+				LocalContext.exit();
 			}
-		} finally {
-			LocalContext.exit();
 		}
 		
 		return objects;
