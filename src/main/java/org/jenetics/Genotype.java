@@ -123,7 +123,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return _chromosomes.get(0).getGene();
 	}
 	
-	public ISeq<Chromosome<T>> toArray() {
+	public ISeq<Chromosome<T>> toSeq() {
 		return _chromosomes;
 	}
 	
@@ -180,7 +180,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return new Genotype<T>(chromosomes.seal(), _ngenes);
 	}
 	
-	 Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
+	Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
 		return new Genotype<T>(chromosomes, _ngenes);
 	}
 	
@@ -225,7 +225,7 @@ public final class Genotype<T extends Gene<?, T>>
 	{
 		return new Converter<Genotype<T>, ISeq<Chromosome<T>>>() {
 			@Override public ISeq<Chromosome<T>> convert(final Genotype<T> value) {
-				return value.toArray();
+				return value.toSeq();
 			}
 		};
 	}

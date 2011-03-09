@@ -109,7 +109,7 @@ public class Integer64ChromosomeTest
 		final Integer64Chromosome c = getFactory().newInstance();
 		Assert.assertEquals(
 				Integer64Chromosome.Genes.convert(c), 
-				c.toArray()
+				c.toSeq()
 			);
 	}
 	

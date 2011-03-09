@@ -45,7 +45,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 	@Test
 	public void create() {
 		PermutationChromosome c = new PermutationChromosome(50, true);
-		final MSeq<Integer64Gene> array = c.toArray().copy();
+		final MSeq<Integer64Gene> array = c.toSeq().copy();
 		Assert.assertFalse(isSorted(array));
 		
 		ArrayUtils.sort(array);
@@ -57,7 +57,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 	@Test
 	public void sortedNewInstance() {
 		PermutationChromosome c = new PermutationChromosome(50, false);
-		final MSeq<Integer64Gene> array = c.toArray().copy();
+		final MSeq<Integer64Gene> array = c.toSeq().copy();
 		Assert.assertTrue(isSorted(array));
 		
 		for (int i = 0; i < array.length(); ++i) {

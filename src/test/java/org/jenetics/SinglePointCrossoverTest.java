@@ -73,8 +73,8 @@ public class SinglePointCrossoverTest {
 	public void crossover() {		
 		final CharSet chars = CharSet.valueOf("a-zA-Z");
 		
-		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toArray();
-		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toArray();
+		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
+		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 		
 		LocalContext.enter();
 		try {

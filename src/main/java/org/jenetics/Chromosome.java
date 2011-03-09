@@ -90,7 +90,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * 
 	 * @return an immutable gene sequence.
 	 */
-	public ISeq<T> toArray();
+	public ISeq<T> toSeq();
 
 }
 

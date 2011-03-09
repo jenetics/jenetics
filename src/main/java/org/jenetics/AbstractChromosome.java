@@ -101,7 +101,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	@Override
-	public ISeq<G> toArray() {
+	public ISeq<G> toSeq() {
 		return _genes;
 	}
 	
@@ -202,7 +202,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	Converter<C, ISeq<G>> genes() {
 		return new Converter<C, ISeq<G>>() {
 			@Override public ISeq<G> convert(final C value) {
-				return value.toArray();
+				return value.toSeq();
 			}
 		};
 	}
