@@ -110,7 +110,7 @@ public class Float64ChromosomeTest
 		final Float64Chromosome c = getFactory().newInstance();
 		Assert.assertEquals(
 				Float64Chromosome.Genes.convert(c), 
-				c.toArray()
+				c.toSeq()
 			);
 	}
 	

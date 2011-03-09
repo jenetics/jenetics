@@ -77,13 +77,13 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		final Genotype<G> gt2 = pt2.getGenotype();
 		
 		final int cindex = random.nextInt(gt1.length());
-		final MSeq<Chromosome<G>> c1 = gt1.toArray().copy();
-		final ISeq<Chromosome<G>> c2 = gt2.toArray();
+		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
+		final ISeq<Chromosome<G>> c2 = gt2.toSeq();
 		
 		// Calculate the mean value of the gene array.
 		final MSeq<G> mean = mean(
-				c1.get(cindex).toArray().copy(), 
-				c2.get(cindex).toArray()
+				c1.get(cindex).toSeq().copy(), 
+				c2.get(cindex).toSeq()
 			);
 		
 		c1.set(cindex, c1.get(cindex).newInstance(mean.seal()));

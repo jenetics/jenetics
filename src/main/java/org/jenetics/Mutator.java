@@ -126,11 +126,11 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final IndexStream stream = randomIndexes(genotype.length(), p);
 		int start = stream.next();
 		if (start != -1) {
-			final MSeq<Chromosome<G>> chromosomes = genotype.toArray().copy(); 
+			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy(); 
 			
 			for (int i = start; i != -1; i = stream.next()) {
 				final Chromosome<G> chromosome = chromosomes.get(i);
-				final MSeq<G> genes = chromosome.toArray().copy();
+				final MSeq<G> genes = chromosome.toSeq().copy();
 				
 				final int mutations = mutate(genes, p);
 				if (mutations > 0) {

@@ -46,16 +46,6 @@ public final class ArrayUtils {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static final Array EMPTY_ARRAY = new Array(0);
-
-	/**
-	 * Thread local random engine. Used as default random object in some methods.
-	 */
-	private static final ThreadLocal<Random> RANDOM = new ThreadLocal<Random>() {
-		@Override
-		protected Random initialValue() {
-			return new Random();
-		}
-	};
 	
 	private ArrayUtils() {
 		throw new AssertionError("Don't create an 'ArrayUtils' instance.");
@@ -428,7 +418,7 @@ public final class ArrayUtils {
 			}
 		}
 		 
-		return new Array<T>(min, max);
+		return new Array<T>(min, max).seal();
 	}
 	
 	/**
@@ -440,7 +430,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void shuffle(final int[] array) {
-		shuffle(array, RANDOM.get());
+		shuffle(array, new Random());
 	}
 	
 	/**
@@ -469,7 +459,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array) {
-		shuffle(array, RANDOM.get());
+		shuffle(array, new Random());
 	}
 	
 	/**
@@ -501,7 +491,7 @@ public final class ArrayUtils {
 	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void shuffle(final Array<T> array) {
-		shuffle(array, RANDOM.get());
+		shuffle(array, new Random());
 	}
 	
 	/**
@@ -536,7 +526,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list) {
-		shuffle(list, RANDOM.get());
+		shuffle(list, new Random());
 	}
 	
 	/**
@@ -749,7 +739,7 @@ public final class ArrayUtils {
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k) {
-		return subset(n, k, RANDOM.get());
+		return subset(n, k, new Random());
 	}
 	
 	/**
@@ -850,7 +840,7 @@ public final class ArrayUtils {
 	 * 		  integer overflow.
 	 */
 	public static void subset(final int n, final int sub[]) {
-		subset(n, sub, RANDOM.get());
+		subset(n, sub, new Random());
 	}
 	
 	/**
@@ -995,7 +985,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the permutation array is {@code null}.
 	 */
 	public static void permutation(final int[] p) {
-		permutation(p, RANDOM.get());
+		permutation(p, new Random());
 	}
 	
 	/**
