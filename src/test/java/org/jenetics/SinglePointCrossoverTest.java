@@ -86,8 +86,8 @@ public class SinglePointCrossoverTest {
 			MSeq<CharacterGene> g1c = g1.copy();
 			MSeq<CharacterGene> g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c.subArray(0, rv), g2.subArray(0, rv));
-			Assert.assertEquals(g1c.subArray(rv), g2.subArray(rv));
+			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 			
 			rv = 0;
 			RandomRegistry.setRandom(new ConstRandom(rv));
@@ -96,16 +96,16 @@ public class SinglePointCrossoverTest {
 			crossover.crossover(g1c, g2c);
 			Assert.assertEquals(g1c, g2);
 			Assert.assertEquals(g2c, g1);
-			Assert.assertEquals(g1c.subArray(0, rv), g2.subArray(0, rv));
-			Assert.assertEquals(g1c.subArray(rv), g2.subArray(rv));
+			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
 			rv = 1;
 			RandomRegistry.setRandom(new ConstRandom(rv));
 			g1c = g1.copy();
 			g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c.subArray(0, rv), g2.subArray(0, rv));
-			Assert.assertEquals(g1c.subArray(rv), g2.subArray(rv));
+			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 			
 			rv = g1.length();
 			RandomRegistry.setRandom(new ConstRandom(rv));
@@ -114,8 +114,8 @@ public class SinglePointCrossoverTest {
 			crossover.crossover(g1c, g2c);
 			Assert.assertEquals(g1c, g2);
 			Assert.assertEquals(g2c, g1);
-			Assert.assertEquals(g1c.subArray(0, rv), g2.subArray(0, rv));
-			Assert.assertEquals(g1c.subArray(rv), g2.subArray(rv));
+			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 		} finally {
 			LocalContext.exit();
 		}

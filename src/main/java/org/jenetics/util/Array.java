@@ -258,7 +258,7 @@ public class Array<T>
 			}
 		}
 		
-		return copy.subArray(0, index);
+		return copy.subSeq(0, index);
 	}
 	
 	/**
@@ -419,7 +419,7 @@ public class Array<T>
 	/**
 	 * Return a shallow copy of this array. The array elements are not cloned.
 	 * The copied array is not sealed. If the array is a sub-array (created
-	 * with the {@link #subArray(int, int)} method, only the sub-array-part is
+	 * with the {@link #subSeq(int, int)} method, only the sub-array-part is
 	 * copied. The {@link #clone()} method <i>copies</i> the whole array.
 	 * 
 	 * @see #clone()
@@ -434,7 +434,7 @@ public class Array<T>
 	
 	/**
 	 * Create a one to one copy of the given array. If this array is a sub array,
-	 * created with {@link #subArray(int, int)}, the whole underlying data array
+	 * created with {@link #subSeq(int, int)}, the whole underlying data array
 	 * with its {@code start} and {@code stop} information is cloned.
 	 * 
 	 * @see #copy()
@@ -445,7 +445,7 @@ public class Array<T>
 	}
 
 	@Override
-	public Array<T> subArray(final int start, final int end) {
+	public Array<T> subSeq(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
@@ -456,8 +456,8 @@ public class Array<T>
 	}
 		
 	@Override
-	public Array<T> subArray(final int start) {
-		return subArray(start, length());
+	public Array<T> subSeq(final int start) {
+		return subSeq(start, length());
 	}
 	
 	/**

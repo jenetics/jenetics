@@ -28,6 +28,8 @@ import java.util.RandomAccess;
 
 
 /**
+ * General interface for a ordered, fixed sized, object sequence.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -206,23 +208,20 @@ public interface Seq<T> extends Iterable<T> {
 	 * Returns a view of the portion of this sequence between the specified 
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start} 
 	 * and {@code end} are equal, the returned sequence has the length zero.) The 
-	 * returned sequence is backed by this sequence, so non-structural changes in the 
-	 * returned sequence are reflected in this array, and vice-versa.
+	 * returned sequence is backed by this sequence, so non-structural changes 
+	 * in the returned sequence are reflected in this sequence, and vice-versa.
 	 * <p/>
 	 * This method eliminates the need for explicit range operations (of the 
-	 * sort that commonly exist for arrays). Any operation that expects an array 
-	 * can be used as a range operation by passing an sub array view instead of 
-	 * an whole array. E.g.:
-	 * [code]
-	 * 	 Array<?> copy = array.subArray(5, 7).copy();
-	 * [/code]
+	 * sort that commonly exist for arrays). Any operation that expects an sequence 
+	 * can be used as a range operation by passing an sub sequence view instead of 
+	 * an whole sequence.
 	 * 
 	 * @param start low end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || start > lenght()}).
 	 */
-	public Seq<T> subArray(final int start);
+	public Seq<T> subSeq(final int start);
 	
 	/**
 	 * Returns a view of the portion of this sequence between the specified 
@@ -233,11 +232,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * <p/>
 	 * This method eliminates the need for explicit range operations (of the 
 	 * sort that commonly exist for arrays). Any operation that expects an array 
-	 * can be used as a range operation by passing an sub array view instead of 
-	 * an whole array. E.g.:
-	 * [code]
-	 * 	 Array<?> copy = array.subArray(5, 7).copy();
-	 * [/code]
+	 * can be used as a range operation by passing an sub sequence view instead of 
+	 * an whole sequence.
 	 * 
 	 * @param start low end point (inclusive) of the sub sequence.
 	 * @param end high end point (exclusive) of the sub sequence.
@@ -245,7 +241,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || end > length() || start > end}).
 	 */
-	public Seq<T> subArray(final int start, final int end);
+	public Seq<T> subSeq(final int start, final int end);
 	
 	/**
 	 * Create a string representation of the given sequence.
