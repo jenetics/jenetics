@@ -36,20 +36,26 @@ class IArray<T> extends ArrayBase<T> implements ISeq<T> {
 		_adoptee = array;
 	}
 	
+	void defense() {
+		final Object[] array = new Object[length()];
+		System.arraycopy(_array, _start, array, 0, length());
+		_array = array;
+	}
+	
 	@Override
-	public ISeq<T> subArray(int start, int end) {
+	public ISeq<T> subSeq(final int start, final int end) {
 		if (start < 0 || end > length() || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
 			));
 		}
 		
-		return new IArray<T>(_adoptee.subArray(start, end));
+		return new IArray<T>(_adoptee.subSeq(start, end));
 	}
 
 	@Override
-	public ISeq<T> subArray(int start) {
-		return subArray(start, length());
+	public ISeq<T> subSeq(final int start) {
+		return subSeq(start, length());
 	}
 	
 	@Override

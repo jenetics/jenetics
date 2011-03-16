@@ -118,7 +118,7 @@ public class CharacterChromosome
 	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
 		return new CharacterChromosome(
-					(ISeq<CharacterGene>)_genes.subArray(start, end)
+					(ISeq<CharacterGene>)_genes.subSeq(start, end)
 				);
 	}
 	

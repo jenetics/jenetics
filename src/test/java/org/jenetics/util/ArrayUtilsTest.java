@@ -130,10 +130,10 @@ public class ArrayUtilsTest {
 		Assert.assertFalse(ArrayUtils.isSorted(array));
 		
 		final Array<Integer> clonedArray = array.copy();
-		ArrayUtils.sort(array.subArray(30, 40));
-		Assert.assertTrue(ArrayUtils.isSorted(array.subArray(30, 40)));
-		Assert.assertEquals(array.subArray(0, 30), clonedArray.subArray(0, 30));
-		Assert.assertEquals(array.subArray(40), clonedArray.subArray(40));
+		ArrayUtils.sort(array.subSeq(30, 40));
+		Assert.assertTrue(ArrayUtils.isSorted(array.subSeq(30, 40)));
+		Assert.assertEquals(array.subSeq(0, 30), clonedArray.subSeq(0, 30));
+		Assert.assertEquals(array.subSeq(40), clonedArray.subSeq(40));
 	}
 	
 	@Test
@@ -151,7 +151,7 @@ public class ArrayUtilsTest {
 		
 		final Array<Integer> clonedArray = array.copy();
 		ArrayUtils.sort(clonedArray, 30, 40);
-		ArrayUtils.sort(array.subArray(30, 40));
+		ArrayUtils.sort(array.subSeq(30, 40));
 		Assert.assertEquals(array, clonedArray);
 	}
 	

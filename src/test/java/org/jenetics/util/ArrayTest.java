@@ -74,7 +74,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void newFromSubArray() {
 		final Array<Integer> a1 = new Array<Integer>(asList(0, 1, 2, 3, 4, 5, 6, 7));
 		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
-		final Array<Integer> a3 = new Array<Integer>(a1.subArray(0, 6), a2);
+		final Array<Integer> a3 = new Array<Integer>(a1.subSeq(0, 6), a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
 		for (int i = 0; i < a1.length() + a2.length() - 2; ++i) {
@@ -86,7 +86,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void newFromOtherSubArray() {
 		final Array<Integer> a1 = new Array<Integer>(asList(0, 1, 2, 3, 4, 5, 6, 7));
 		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
-		final Array<Integer> a3 = new Array<Integer>(a1.subArray(1, 6), a2);
+		final Array<Integer> a3 = new Array<Integer>(a1.subSeq(1, 6), a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
 		for (int i = 1; i < a1.length() + a2.length() - 2; ++i) {
@@ -98,7 +98,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void create4() {
 		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
 		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
-		final Array<Integer> a3 = new Array<Integer>(a1, a2.subArray(2, 7));
+		final Array<Integer> a3 = new Array<Integer>(a1, a2.subSeq(2, 7));
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
 		for (int i = 0; i < a1.length() + a2.length() - 3; ++i) {
@@ -173,7 +173,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void seal4() {
 		final Array<Integer> array = new Array<Integer>(10);
 		array.seal();
-		array.subArray(0, 4).set(0, 1);
+		array.subSeq(0, 4).set(0, 1);
 	}
 	
 	@Test
@@ -275,7 +275,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, i);
 		}
 		
-		final Array<Integer> copy = array.subArray(3, 8).copy();
+		final Array<Integer> copy = array.subSeq(3, 8).copy();
 		Assert.assertEquals(copy.length(), 5);
 		for (int i = 0; i < 5; ++i) {
 			Assert.assertEquals(copy.get(i), new Integer(i + 3));
@@ -289,7 +289,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, i);
 		}
 		
-		final Array<Integer> sub = array.subArray(3, 8);
+		final Array<Integer> sub = array.subSeq(3, 8);
 		Assert.assertEquals(sub.length(), 5);
 		for (int i = 0; i < 5; ++i) {
 			Assert.assertEquals(sub.get(i), new Integer(i + 3));
