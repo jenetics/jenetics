@@ -39,13 +39,13 @@ import java.util.ListIterator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class ArrayBase<T> implements Serializable {
+class ArraySeq<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	transient Object[] _array;
 	transient int _start;
 	transient int _end;
-	transient boolean _sealed = false;
+	transient boolean _sealed = false; 
 	
 	/**
 	 * <i>Universal</i> array constructor.
@@ -61,7 +61,7 @@ class ArrayBase<T> implements Serializable {
 	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
 	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
-	ArrayBase(final Object[] array, final int start, final int end, final boolean sealed) {
+	ArraySeq(final Object[] array, final int start, final int end, final boolean sealed) {
 		nonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
@@ -83,7 +83,7 @@ class ArrayBase<T> implements Serializable {
 	 * 		 {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
-	ArrayBase(final Object[] array, final boolean sealed) {
+	ArraySeq(final Object[] array, final boolean sealed) {
 		this(array, 0, array.length, sealed);
 	}
 	
@@ -205,7 +205,7 @@ class ArrayBase<T> implements Serializable {
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
-	public ArrayBase<T> fill(final T value) {
+	public ArraySeq<T> fill(final T value) {
 		assertNotSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = value;
@@ -221,7 +221,7 @@ class ArrayBase<T> implements Serializable {
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
-	public ArrayBase<T> fill(final Iterator<? extends T> it) {
+	public ArraySeq<T> fill(final Iterator<? extends T> it) {
 		assertNotSealed();
 		
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
@@ -238,7 +238,7 @@ class ArrayBase<T> implements Serializable {
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
-	public ArrayBase<T> fill(final T[] values) {
+	public ArraySeq<T> fill(final T[] values) {
 		assertNotSealed();
 		System.arraycopy(values, 0, _array, _start, min(length(), values.length));
 		return this;
@@ -253,7 +253,7 @@ class ArrayBase<T> implements Serializable {
 	 * @throws UnsupportedOperationException if this array is sealed 
 	 * 		  ({@code isSealed() == true}).
 	 */
-	public ArrayBase<T> fill(final Factory<? extends T> factory) {
+	public ArraySeq<T> fill(final Factory<? extends T> factory) {
 		Validator.nonNull(factory);
 		assertNotSealed();
 		for (int i = _start; i < _end; ++i) {
@@ -292,9 +292,9 @@ class ArrayBase<T> implements Serializable {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected ArrayBase<T> clone() {
+	protected ArraySeq<T> clone() {
 		try {
-			return (ArrayBase<T>)super.clone();
+			return (ArraySeq<T>)super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError(e);
 		}
@@ -362,11 +362,11 @@ class ArrayBase<T> implements Serializable {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof ArrayBase<?>)) {
+		if (!(obj instanceof ArraySeq<?>)) {
 			return false;
 		}
 		
-		final ArrayBase<?> array = (ArrayBase<?>)obj;
+		final ArraySeq<?> array = (ArraySeq<?>)obj;
 		boolean equals = (length() == array.length());
 		final int difference = _start - array._start;
 		for (int i = _start; equals && i < _end; ++i) {

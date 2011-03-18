@@ -32,11 +32,11 @@ import java.util.RandomAccess;
  * @version $Id$
  */
 final class ArrayList<T> extends AbstractList<T> 
-	implements RandomAccess 
+	implements RandomAccess  
 {
-	private final ArrayBase<T> _array;
+	private final ArraySeq<T> _array;
 	
-	public ArrayList(final ArrayBase<T> array) {
+	public ArrayList(final ArraySeq<T> array) {
 		_array = nonNull(array, "ArrayBase");
 	}
 	

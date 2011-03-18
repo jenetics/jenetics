@@ -26,12 +26,12 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class IArray<T> extends ArrayBase<T> implements ISeq<T> {
+class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
 
-	private final Array<T> _adoptee;
+	private final Array<T> _adoptee; 
 	
-	IArray(final Array<T> array) {
+	ArrayISeq(final Array<T> array) {
 		super(array._array, array._start, array._end, true);
 		_adoptee = array;
 	}
@@ -50,7 +50,7 @@ class IArray<T> extends ArrayBase<T> implements ISeq<T> {
 			));
 		}
 		
-		return new IArray<T>(_adoptee.subSeq(start, end));
+		return new ArrayISeq<T>(_adoptee.subSeq(start, end));
 	}
 
 	@Override
