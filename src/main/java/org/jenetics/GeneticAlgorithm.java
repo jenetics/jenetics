@@ -23,12 +23,12 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
-import static org.jenetics.util.EvaluatorRegistry.evaluate;
 import static org.jenetics.util.Validator.checkProbability;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -36,6 +36,8 @@ import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.ConcurrentEvaluator;
+import org.jenetics.util.Evaluator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
@@ -134,22 +136,28 @@ public class GeneticAlgorithm<
 	
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 	
+	// Alterers
 	private Alterer<G> _alterer = new CompositeAlterer<G>(
 			new SinglePointCrossover<G>(0.1),
 			new Mutator<G>(0.05)
 		);
 	
+	// Selectors
 	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
 	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
 	
+	// Population
 	private int _populationSize = DEFAULT_POPULATION_SIZE;
 	private Population<G, C> _population = new Population<G, C>(_populationSize);
 	private int _maximalPhenotypeAge = DEFAULT_MAXIMAL_PHENOTYPE_AGE;
 	private volatile int _generation = 0;
 	
+	// Statistics
 	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
 	private Statistics<G, C> _bestStatistics = null;
-	private Statistics<G, C> _statistics = null;	
+	private Statistics<G, C> _statistics = null;
+	private final AtomicInteger _killed = new AtomicInteger(0);
+	private final AtomicInteger _invalid = new AtomicInteger(0);
 	
 	//Some performance measure.
 	private final Timer _executionTimer = new Timer("Execution time");
@@ -158,9 +166,10 @@ public class GeneticAlgorithm<
 	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
+
 	
-	private final AtomicInteger _killed = new AtomicInteger(0);
-	private final AtomicInteger _invalid = new AtomicInteger(0);
+	private final AtomicReference<Evaluator> _evaluator = 
+		new AtomicReference<Evaluator>(new ConcurrentEvaluator());
 	
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
@@ -282,7 +291,7 @@ public class GeneticAlgorithm<
 			
 			//Evaluate the fitness.
 			_evaluateTimer.start();
-			evaluate(_population);		
+			_evaluator.get().evaluate(_population);		
 			_evaluateTimer.stop();
 			
 			//First valuation of the initial population.
@@ -347,7 +356,7 @@ public class GeneticAlgorithm<
 			
 			//Evaluate the fitness
 			_evaluateTimer.start();
-			evaluate(_population);		
+			_evaluator.get().evaluate(_population);		
 			_evaluateTimer.stop();
 			
 			//Evaluate the statistic
@@ -588,6 +597,26 @@ public class GeneticAlgorithm<
 	 */
 	public Lock getLock() {
 		return _lock;
+	}
+	
+	/**
+	 * Return the currently used {@link Evaluator}. The default evaluator used
+	 * by the GA is the {@link ConcurrentEvaluator}.
+	 * 
+	 * @return the currently used Evaluator.
+	 */
+	public Evaluator getEvaluator() {
+		return _evaluator.get();
+	}
+	
+	/**
+	 * Set the evaluator the GA is using to evaluate the populations fitness
+	 * functions. 
+	 * 
+	 * @param evaluator the new {@link Evaluator}.
+	 */
+	public void setEvaluator(final Evaluator evaluator) {
+		_evaluator.set(nonNull(evaluator, "Evaluator"));
 	}
 	
 	/**

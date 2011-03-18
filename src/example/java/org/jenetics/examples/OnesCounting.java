@@ -32,8 +32,6 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.util.ConcurrentEvaluator;
-import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 
 
@@ -66,8 +64,6 @@ public class OnesCounting {
 	
 
 	public static void main(String[] args) throws Exception {
-		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
-		
 		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 			BitChromosome.valueOf(20, 0.15)
 		);

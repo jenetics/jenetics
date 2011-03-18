@@ -24,8 +24,6 @@ package org.jenetics.examples;
 
 import java.io.Serializable;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Chromosome;
@@ -37,9 +35,8 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.util.ConcurrentEvaluator;
-import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -118,9 +115,7 @@ public class Knapsack {
 		return new KnappsackFunction(items, knapsackSize);
 	}
 	
-	public static void main(String[] argv) throws Exception {
-		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
-		
+	public static void main(String[] argv) throws Exception {		
 		//Defining the fitness function and the genotype.
 		final KnappsackFunction ff = newFitnessFuntion(15, 100);
 		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(

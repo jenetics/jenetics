@@ -37,7 +37,6 @@ import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
-import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinEvaluator;
 
@@ -97,7 +96,7 @@ public class TravelingSalesman {
 //        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
         
         ForkJoinPool pool = new ForkJoinPool();
-        EvaluatorRegistry.setEvaluator(new ForkJoinEvaluator(pool));
+        ga.setEvaluator(new ForkJoinEvaluator(pool));
         try {
     		final int generations = 500;
     		
