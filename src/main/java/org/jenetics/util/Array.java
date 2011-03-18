@@ -52,7 +52,7 @@ import java.util.RandomAccess;
  * @version $Id$
  */
 public class Array<T> 
-	extends ArrayBase<T>
+	extends ArraySeq<T> 
 	implements 
 		MSeq<T>, 
 		Copyable<Array<T>>, 
@@ -274,7 +274,7 @@ public class Array<T>
 	@Override
 	public ISeq<T> seal() {
 		_sealed = true;
-		return new IArray<T>(this);
+		return new ArrayISeq<T>(this);
 	}	
 	
 	/**
