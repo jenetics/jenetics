@@ -36,7 +36,6 @@ import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.CharSet;
-import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
 
 /**
@@ -91,7 +90,6 @@ public class StringGenerator {
 			new Mutator<CharacterGene>(0.05),
 			new SinglePointCrossover<CharacterGene>(0.1)
 		));
-		EvaluatorRegistry.setEvaluator(new org.jenetics.util.ConcurrentEvaluator());
 
 		final int generations = 500;
 		

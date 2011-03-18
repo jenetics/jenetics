@@ -27,8 +27,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.CompositeAlterer;
 import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
@@ -39,10 +37,9 @@ import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Converter;
-import org.jenetics.util.EvaluatorRegistry;
 import org.jenetics.util.Factory;
+import org.jscience.mathematics.number.Float64;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -74,8 +71,6 @@ public class RealFunction {
 	
 	
 	public static void main(String[] args) {
-		EvaluatorRegistry.setEvaluator(new ConcurrentEvaluator());
-		
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
 				new Float64Chromosome(0, 360)
 			);
