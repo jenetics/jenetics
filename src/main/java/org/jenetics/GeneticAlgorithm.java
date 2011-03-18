@@ -611,9 +611,11 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the evaluator the GA is using to evaluate the populations fitness
-	 * functions. 
+	 * functions. <i>Setting the evaluator is thread save; no additional locking
+	 * necessary.</i>
 	 * 
 	 * @param evaluator the new {@link Evaluator}.
+	 * @throws NullPointerException if the given {@code evaluator} is {@code null}.
 	 */
 	public void setEvaluator(final Evaluator evaluator) {
 		_evaluator.set(nonNull(evaluator, "Evaluator"));
