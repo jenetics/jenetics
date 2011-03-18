@@ -1,3 +1,6 @@
+Jenetics-0.8.0.0
+- The EvaluatorRegistry is no longer used. Only the GA directly was using it, so 
+  remove the registry and add the Evaluator as member to the GA.
 - Rename Genotype.toArray to Genotype.toSeq and Chromosome.toArray to 
   Chromosome.toSeq.
 - Add interfaces Seq, ISeq and MSeq to make the (im)mutable state of the Array 
