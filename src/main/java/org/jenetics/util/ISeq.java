@@ -56,6 +56,17 @@ public interface ISeq<T>
 	 */
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
 	
+	/**
+	 * Return a shallow copy of this array. The array elements are not cloned.
+	 * The copied array is not sealed. If the array is a sub-array (created
+	 * with the {@link #subSeq(int, int)} method, only the sub-array-part is
+	 * copied.
+	 * 
+	 * @return a shallow copy of this array.
+	 */
+	@Override
+	public MSeq<T> copy();
+	
 }
 
 
