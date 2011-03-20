@@ -31,25 +31,18 @@ import java.util.RandomAccess;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-final class ArrayList<T> extends AbstractList<T> 
+class ArraySeqList<T> extends AbstractList<T> 
 	implements RandomAccess  
 {
-	private final ArraySeq<T> _array;
+	final ArraySeq<T> _array;
 	
-	public ArrayList(final ArraySeq<T> array) {
+	public ArraySeqList(final ArraySeq<T> array) {
 		_array = nonNull(array, "ArrayBase");
 	}
 	
 	@Override
 	public T get(final int index) {
 		return _array.get(index);
-	}
-	
-	@Override
-	public T set(final int index, final T element) {
-		final T old = _array.get(index);
-		_array.set(index, element);
-		return old;
 	}
 
 	@Override
