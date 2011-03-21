@@ -253,8 +253,15 @@
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.Array">
+		<groups>
+			<define name="performance" >
+				<include name="performance" />
+			</define>
+		</groups>
+		
 		<classes>
 			<class name="org.jenetics.util.ArrayTest" />
+			<class name="org.jenetics.util.ArrayPerformanceTest" />
 		</classes>
 	</test>		
 	<test name="org.jenetics.util.ArrayUtils">
