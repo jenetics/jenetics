@@ -418,7 +418,7 @@ public final class ArrayUtils {
 			}
 		}
 		 
-		return new Array<T>(min, max).seal();
+		return new Array<T>(min, max).toISeq();
 	}
 	
 	/**

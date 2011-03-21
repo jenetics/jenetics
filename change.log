@@ -1,4 +1,6 @@
 Jenetics-0.8.0.0
+- Rename the Array.seal() method to Array.toISeq() and remove the Array.isSealed()
+  method.
 - Add new TestNG version 6.0.
 - The EvaluatorRegistry is no longer used. Only the GA directly was using it, so 
   remove the registry and add the Evaluator as member to the GA.

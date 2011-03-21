@@ -177,7 +177,7 @@ public final class Genotype<T extends Gene<?, T>>
 			chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
 		
-		return new Genotype<T>(chromosomes.seal(), _ngenes);
+		return new Genotype<T>(chromosomes.toISeq(), _ngenes);
 	}
 	
 	Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
@@ -295,7 +295,7 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(chromosome, "Chromosome");
 		
 		return new Genotype<G>(
-				new Array<Chromosome<G>>(chromosome).seal(), 
+				new Array<Chromosome<G>>(chromosome).toISeq(), 
 				chromosome.length()
 			);
 	}
@@ -308,7 +308,7 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch2, "Chromosome 2");
 		
 		return new Genotype<G>(
-				new Array<Chromosome<G>>(ch1, ch2).seal(), 
+				new Array<Chromosome<G>>(ch1, ch2).toISeq(), 
 				ch1.length() + ch2.length()
 			);
 	}
@@ -323,7 +323,7 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch3, "Chromosome 3");
 		
 		return new Genotype<G>(
-				new Array<Chromosome<G>>(ch1, ch2, ch3).seal(), 
+				new Array<Chromosome<G>>(ch1, ch2, ch3).toISeq(), 
 				ch1.length() + ch2.length() + ch3.length()
 			);		
 	}
@@ -340,7 +340,7 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch4, "Chromosome 4");
 		
 		return new Genotype<G>(
-				new Array<Chromosome<G>>(ch1, ch2, ch3, ch4).seal(), 
+				new Array<Chromosome<G>>(ch1, ch2, ch3, ch4).toISeq(), 
 				ch1.length() + ch2.length() + ch3.length() + ch4.length()
 			);
 	}
@@ -366,7 +366,7 @@ public final class Genotype<T extends Gene<?, T>>
 				chromosomes.set(i, c);
 			}
 			
-			return new Genotype(chromosomes.seal(), ngenes);
+			return new Genotype(chromosomes.toISeq(), ngenes);
 		}
 		@Override 
 		public void write(final Genotype gt, final OutputElement xml) 

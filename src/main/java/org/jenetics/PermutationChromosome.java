@@ -139,7 +139,7 @@ public final class PermutationChromosome
 			genes.set(i, Integer64Gene.valueOf(values[i], 0, values.length - 1));
 		}
 		
-		return genes.seal();
+		return genes.toISeq();
 	}
 	
 	private static ISeq<Integer64Gene> create(final int length, final boolean randomize) {
@@ -164,7 +164,7 @@ public final class PermutationChromosome
 			}
 		}
 		
-		return genes.seal();
+		return genes.toISeq();
 	}
 	
 	/**
@@ -256,7 +256,7 @@ public final class PermutationChromosome
 				final Integer64 value = xml.getNext();
 				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
 			}
-			return new PermutationChromosome(genes.seal());
+			return new PermutationChromosome(genes.toISeq());
 		}
 		@Override
 		public void write(final PermutationChromosome chromosome, final OutputElement xml) 
@@ -303,7 +303,7 @@ public final class PermutationChromosome
 			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
 		}
 		
-		_genes = genes.seal();
+		_genes = genes.toISeq();
 	}
 	
 }

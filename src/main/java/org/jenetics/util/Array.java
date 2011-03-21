@@ -61,7 +61,7 @@ public final class Array<T>
 {
 	private static final long serialVersionUID = 2L;
 		
-	transient boolean _sealed = false;
+	private transient boolean _sealed = false;
 	
 	Array(final Object[] array, final int start, final int end, final boolean sealed) {
 		super(array, start, end);
@@ -308,7 +308,7 @@ public final class Array<T>
 	}
 	
 	@Override
-	public ISeq<T> seal() {
+	public ISeq<T> toISeq() {
 		_sealed = true;
 		return new ArrayISeq<T>(_array, _start, _end);
 	}
@@ -420,7 +420,9 @@ public final class Array<T>
 	 */
 	@Override
 	public Array<T> clone() {
-		return (Array<T>)super.clone();
+		final Array<T> clone = (Array<T>)super.clone();
+		clone._sealed = false;
+		return clone;
 	}
 
 	@Override

@@ -119,7 +119,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void fill1() {
-		final ISeq<Integer> array = new Array<Integer>(10).fill(10).seal();
+		final ISeq<Integer> array = new Array<Integer>(10).fill(10).toISeq();
 		Assert.assertEquals(array.length(), 10);
 		for (Integer i : array) {
 			Assert.assertEquals(i, new Integer(10));
@@ -149,7 +149,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).fill(11);
 		final Array<Integer> copy = array.copy();
 		
-		final ISeq<Integer> sealed = copy.seal();
+		final ISeq<Integer> sealed = copy.toISeq();
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 			
@@ -162,7 +162,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).fill(11);
 		final Array<Integer> copy = array.copy();
 		
-		final ISeq<Integer> sealed = copy.seal();
+		final ISeq<Integer> sealed = copy.toISeq();
 		array.fill(34);
 		Assert.assertEquals(sealed, copy);
 	}
@@ -172,7 +172,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).fill(10);
 		final Array<Integer> copy = array.copy();
 		
-		final ISeq<Integer> sealed = copy.seal();
+		final ISeq<Integer> sealed = copy.toISeq();
 		
 		for (ListIterator<Integer> it = array.iterator(); it.hasNext();) {
 			it.next();
@@ -188,7 +188,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10);
 		final Array<Integer> copy = array.copy();
 		
-		final ISeq<Integer> sealed = copy.seal();
+		final ISeq<Integer> sealed = copy.toISeq();
 		array.subSeq(0, 4).set(0, 1);
 		Assert.assertEquals(sealed, copy);
 		Assert.assertEquals(array.get(0), new Integer(1));
@@ -197,7 +197,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void foreach() {
 		final Array<Integer> array = new Array<Integer>(10).fill(123);
-		array.seal();
+		array.toISeq();
 		final AtomicInteger count = new AtomicInteger(0);
 		int value = array.foreach(new Predicate<Integer>() {
 			@Override public boolean evaluate(Integer object) {
