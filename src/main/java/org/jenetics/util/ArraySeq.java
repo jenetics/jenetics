@@ -40,13 +40,10 @@ import java.util.ListIterator;
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	transient ArrayData _data = null;
-	
+		
 	transient Object[] _array;
 	transient int _start;
-	transient int _end;
-	transient boolean _sealed = false; 
+	transient int _end; 
 	
 	/**
 	 * <i>Universal</i> array constructor.
@@ -62,7 +59,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
 	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
-	ArraySeq(final Object[] array, final int start, final int end, final boolean sealed) {
+	ArraySeq(final Object[] array, final int start, final int end) {
 		nonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
@@ -72,7 +69,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		_array = array;
 		_start = start;
 		_end = end;
-		_sealed = sealed;
 	}
 	
 	/**
@@ -83,8 +79,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * 		 {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
-	ArraySeq(final Object[] array, final boolean sealed) {
-		this(array, 0, array.length, sealed);
+	ArraySeq(final Object[] array) {
+		this(array, 0, array.length);
 	}
 	
 	@Override
@@ -201,7 +197,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public ListIterator<T> iterator() {
-		return new ArrayIterator<T>(_array, _start, _end, _sealed);
+		return new ArraySeqIterator<T>(this);
 	}
 	
 	@Override
@@ -262,12 +258,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	@Override
 	public List<T> asList() {
 		return new ArraySeqList<T>(this);
-	}
-	
-	final void assertNotSealed() {
-		if (_sealed) {
-			throw new UnsupportedOperationException("Array is sealed");
-		}
 	}
 	
 	final void checkIndex(final int index) {
@@ -364,7 +354,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		_array = new Object[length];
 		_start = 0;
 		_end = length;
-		_sealed = false;		
 		for (int i = 0; i < length; ++i) {
 			_array[i] = in.readObject();
 		}

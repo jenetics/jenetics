@@ -31,29 +31,19 @@ import java.util.NoSuchElementException;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-final class ArrayIterator<T> implements ListIterator<T> {
-	private final Object[] _array;
-	private final boolean _sealed;
-	private final int _start;
-	private final int _end;
-	private int _pos;
+class ArraySeqIterator<T> implements ListIterator<T> {
+	final ArraySeq<T> _array;
 	
-	public ArrayIterator(
-		final Object[] array, 
-		final int start, 
-		final int end, 
-		final boolean sealed
-	) {
-		_start = start;
-		_end = end;
+	int _pos;
+	
+	public ArraySeqIterator(final ArraySeq<T> array) {
 		_array = array;
-		_sealed = sealed;
-		_pos = _start - 1;
+		_pos = array._start - 1;
 	}
 	
 	@Override
 	public boolean hasNext() {
-		return _pos < _end - 1;
+		return _pos < _array._end - 1;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -62,7 +52,7 @@ final class ArrayIterator<T> implements ListIterator<T> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array[++_pos];
+		return (T)_array._array[++_pos];
 	}
 	
 	@Override
@@ -72,7 +62,7 @@ final class ArrayIterator<T> implements ListIterator<T> {
 	
 	@Override
 	public boolean hasPrevious() {
-		return _pos > _start;
+		return _pos > _array._start;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -81,7 +71,7 @@ final class ArrayIterator<T> implements ListIterator<T> {
 		if (!hasPrevious()) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array[--_pos];
+		return (T)_array._array[--_pos];
 	}
 
 	@Override
@@ -91,10 +81,7 @@ final class ArrayIterator<T> implements ListIterator<T> {
 	
 	@Override
 	public void set(final T value) {
-		if (_sealed) {
-			throw new UnsupportedOperationException("Array is sealed.");
-		}
-		_array[_pos] = value;
+		throw new UnsupportedOperationException("Array is sealed.");
 	}
 	
 	@Override
