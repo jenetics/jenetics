@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,44 +17,42 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.Validator.nonNull;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
  */
-final class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
-	private static final long serialVersionUID = 1L;
+final class ArrayData {
 
+	Object[] array;
+	int start;
+	int end;
 	
-	ArrayISeq(final Object[] array, final int start, final int end) {
-		super(array, start, end, true);
-	}
-	
-	@Override
-	public ISeq<T> subSeq(final int start, final int end) {
-		checkIndex(start, end);
-		return new ArrayISeq<T>(_array, start + _start, end + _start);
-	}
-
-	@Override
-	public ISeq<T> subSeq(final int start) {
-		return subSeq(start, length());
+	ArrayData(final Object[] array) {
+		this(array, 0);
 	}
 	
-	@Override
-	public MSeq<T> copy() {
-		return new Array<T>(toArray(), 0, length(), false);
+	ArrayData(final Object[] array, final int start) {
+		this(array, start, array.length);
 	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <A> ISeq<A> upcast(final ISeq<? extends A> seq) {
-		return (ISeq<A>)seq;
-	}	
+	
+	ArrayData(final Object[] array, final int start, final int end) {
+		nonNull(array, "Array");
+		if (start < 0 || end > array.length || start > end) {
+			throw new ArrayIndexOutOfBoundsException(String.format(
+				"Invalid index range: [%d, %s)", start, end
+			));
+		}
+		
+		this.array = array;
+		this.start = start;
+		this.end = end;
+	}
 	
 }
-

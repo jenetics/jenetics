@@ -41,6 +41,8 @@ import java.util.ListIterator;
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	transient ArrayData _data = null;
+	
 	transient Object[] _array;
 	transient int _start;
 	transient int _end;
@@ -67,7 +69,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				"Invalid index range: [%d, %s)", start, end
 			));
 		}
-		
 		_array = array;
 		_start = start;
 		_end = end;
