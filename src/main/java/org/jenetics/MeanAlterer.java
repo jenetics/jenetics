@@ -86,11 +86,11 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 				c2.get(cindex).toSeq()
 			);
 		
-		c1.set(cindex, c1.get(cindex).newInstance(mean.seal()));
+		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 		
 		population.set(
 				individuals[0], 
-				pt1.newInstance(Genotype.valueOf(c1.seal()), generation)
+				pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
 			);
 		
 		return 1;

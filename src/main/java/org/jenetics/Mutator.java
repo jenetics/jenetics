@@ -135,11 +135,11 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 				final int mutations = mutate(genes, p);
 				if (mutations > 0) {
 					alterations.addAndGet(mutations);
-					chromosomes.set(i, chromosome.newInstance(genes.seal()));
+					chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
 				}
 			}
 				
-			gt = genotype.newInstance(chromosomes.seal());
+			gt = genotype.newInstance(chromosomes.toISeq());
 		}
 		
 		return gt;

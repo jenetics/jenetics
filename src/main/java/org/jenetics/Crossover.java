@@ -77,17 +77,17 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 		
 		crossover(genes1, genes2);
 		
-		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1.seal()));
-		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2.seal()));
+		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1.toISeq()));
+		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2.toISeq()));
 		
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 				individuals[0], 
-				pt1.newInstance(Genotype.valueOf(chromosomes1.seal()), generation)
+				pt1.newInstance(Genotype.valueOf(chromosomes1.toISeq()), generation)
 			);
 		population.set(
 				individuals[1], 
-				pt2.newInstance(Genotype.valueOf(chromosomes2.seal()), generation)
+				pt2.newInstance(Genotype.valueOf(chromosomes2.toISeq()), generation)
 			);
 		
 		return 2;

@@ -154,7 +154,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		super(1.0);
 		
 		alterers.foreach(new NonNull("Alterer"));
-		_alterers = normalize(alterers).seal();
+		_alterers = normalize(alterers).toISeq();
 	}
 	
 	private Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {

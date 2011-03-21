@@ -120,7 +120,7 @@ public class BitChromosome extends Number<BitChromosome>
 		for (int i = 0; i < _length; ++i) {
 			genes.set(i, BitUtils.getBit(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
 		}
-		return genes.seal();
+		return genes.toISeq();
 	}
 
 	@Override

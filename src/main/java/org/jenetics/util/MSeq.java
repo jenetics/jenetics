@@ -91,6 +91,6 @@ public interface MSeq<T> extends Seq<T> {
 	 * 
 	 * @return an immutable view of this sequence.
 	 */
-	public ISeq<T> seal();
+	public ISeq<T> toISeq();
 	
 }

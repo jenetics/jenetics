@@ -70,7 +70,7 @@ public class CharacterChromosome
 		super(
 			new Array<CharacterGene>(length).fill(
 					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS).asFactory()
-				).seal()
+				).toISeq()
 		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
 	}
@@ -90,7 +90,7 @@ public class CharacterChromosome
 		super(
 			new Array<CharacterGene>(length).fill(
 					CharacterGene.valueOf(validCharacters).asFactory()
-				).seal()
+				).toISeq()
 		);
 		_validCharacters = validCharacters;
 	}
@@ -226,7 +226,7 @@ public class CharacterChromosome
 			for (int i = 0; i < length; ++i) {
 				array.set(i, CharacterGene.valueOf(values.charAt(i), validCharacters));
 			}
-			return new CharacterChromosome(array.seal());
+			return new CharacterChromosome(array.toISeq());
 		}
 		@Override
 		public void write(final CharacterChromosome chromosome, final OutputElement xml) 
@@ -272,7 +272,7 @@ public class CharacterChromosome
 			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
 		}
 		
-		_genes = genes.seal();
+		_genes = genes.toISeq();
 	}
 	
 }

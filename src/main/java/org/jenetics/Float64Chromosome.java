@@ -62,7 +62,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		super(new Array<Float64Gene>(genes).seal());
+		super(new Array<Float64Gene>(genes).toISeq());
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class Float64Chromosome
 		this(
 				new Array<Float64Gene>(length).fill(
 						Float64Gene.valueOf(min, max).asFactory()
-					).seal()
+					).toISeq()
 			);
 	}
 	
@@ -193,7 +193,7 @@ public class Float64Chromosome
 				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
 			}
 			
-			final Float64Chromosome chromosome = new Float64Chromosome(genes.seal());
+			final Float64Chromosome chromosome = new Float64Chromosome(genes.toISeq());
 			chromosome._min = Float64.valueOf(min);
 			chromosome._max = Float64.valueOf(max);
 			
@@ -248,7 +248,7 @@ public class Float64Chromosome
 			genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
 		}
 		
-		_genes = genes.seal();
+		_genes = genes.toISeq();
 	}
 
 }
