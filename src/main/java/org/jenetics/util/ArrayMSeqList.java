@@ -29,14 +29,15 @@ package org.jenetics.util;
  */
 class ArrayMSeqList<T> extends ArraySeqList<T> {
 	
-	ArrayMSeqList(Array<T> array) {
+	ArrayMSeqList(final Array<T> array) {
 		super(array);
 	}
 	
 	@Override
 	public T set(final int index, final T element) {
-		final T old = _array.get(index);
-		((Array<T>)_array).set(index, element);
+		final Array<T> array = (Array<T>)_array;
+		final T old = array.get(index);
+		array.set(index, element);
 		return old;
 	}
 }

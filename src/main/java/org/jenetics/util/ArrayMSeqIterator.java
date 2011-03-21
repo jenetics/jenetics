@@ -22,37 +22,19 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.Validator.nonNull;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+ * @version $Id$
  */
-final class ArrayData {
-
-	Object[] array;
-	int start;
-	int end;
+public class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
 	
-	ArrayData(final Object[] array) {
-		this(array, 0);
+	public ArrayMSeqIterator(final Array<T> array) {
+		super(array);
 	}
 	
-	ArrayData(final Object[] array, final int start) {
-		this(array, start, array.length);
+	@Override
+	public void set(final T value) {
+		final Array<T> array = (Array<T>)_array;
+		array.set(_pos, value);
 	}
-	
-	ArrayData(final Object[] array, final int start, final int end) {
-		nonNull(array, "Array");
-		if (start < 0 || end > array.length || start > end) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Invalid index range: [%d, %s)", start, end
-			));
-		}
-		
-		this.array = array;
-		this.start = start;
-		this.end = end;
-	}
-	
 }

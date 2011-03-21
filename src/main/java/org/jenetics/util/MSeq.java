@@ -86,14 +86,6 @@ public interface MSeq<T> extends Seq<T> {
 	public MSeq<T> fill(final Factory<? extends T> factory);	 
 	
 	/**
-	 * Return whether this sequence is sealed (immutable) or not.
-	 * 
-	 * @return {@code false} if this sequence can be changed, {@code true} 
-	 *         otherwise.
-	 */
-	public boolean isSealed();
-	
-	/**
 	 * Seal this mutable sequence and return an immutable view of this
 	 * sequence.
 	 * 

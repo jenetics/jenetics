@@ -130,7 +130,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void fill2() {
 		final Array<Integer> array = new Array<Integer>(10).fill(0);
 		Assert.assertEquals(array.length(), 10);
-		Assert.assertFalse(array.isSealed());
 		
 		final AtomicInteger integer = new AtomicInteger(0);
 		array.fill(new Factory<Integer>() {
@@ -144,36 +143,55 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			Assert.assertEquals(array.get(i), new Integer(i));
 		}
 	}
-	
-	@Test(expectedExceptions = UnsupportedOperationException.class)
+
+	@Test
 	public void seal1() {
-		final Array<Integer> array = new Array<Integer>(10).fill(10);
-		array.seal();
-		array.set(0, 10);
+		final Array<Integer> array = new Array<Integer>(10).fill(11);
+		final Array<Integer> copy = array.copy();
+		
+		final ISeq<Integer> sealed = copy.seal();
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, i);
+			
+			Assert.assertEquals(sealed, copy);
+		}
 	}
 	
-	@Test(expectedExceptions = UnsupportedOperationException.class)
+	@Test
 	public void seal2() {
-		final Array<Integer> array = new Array<Integer>(10);
-		array.seal();
-		array.fill(1);
+		final Array<Integer> array = new Array<Integer>(10).fill(11);
+		final Array<Integer> copy = array.copy();
+		
+		final ISeq<Integer> sealed = copy.seal();
+		array.fill(34);
+		Assert.assertEquals(sealed, copy);
 	}
 	
-	@Test(expectedExceptions = UnsupportedOperationException.class)
+	@Test
 	public void seal3() {
 		final Array<Integer> array = new Array<Integer>(10).fill(10);
-		array.seal();
+		final Array<Integer> copy = array.copy();
+		
+		final ISeq<Integer> sealed = copy.seal();
+		
 		for (ListIterator<Integer> it = array.iterator(); it.hasNext();) {
 			it.next();
 			it.set(4);
 		}
+		
+		Assert.assertEquals(sealed, copy);
+		Assert.assertEquals(array, new Array<Integer>(10).fill(4));
 	}
 	
-	@Test(expectedExceptions = UnsupportedOperationException.class)
+	@Test
 	public void seal4() {
 		final Array<Integer> array = new Array<Integer>(10);
-		array.seal();
+		final Array<Integer> copy = array.copy();
+		
+		final ISeq<Integer> sealed = copy.seal();
 		array.subSeq(0, 4).set(0, 1);
+		Assert.assertEquals(sealed, copy);
+		Assert.assertEquals(array.get(0), new Integer(1));
 	}
 	
 	@Test

@@ -161,7 +161,7 @@ public final class ArrayUtils {
 	) {
 		nonNull(array, "Array");
 		nonNull(comparator, "Comparator");
-		array.assertNotSealed();
+		array.cloneIfSealed();
 		array.checkIndex(from, to);
 		
 		@SuppressWarnings("unchecked")
@@ -183,7 +183,7 @@ public final class ArrayUtils {
 	) {
 		nonNull(array, "Array");
 		nonNull(comparator, "Comparator");
-		array.assertNotSealed();
+		array.cloneIfSealed();
 		
 		sort(array, 0, array.length(), comparator);
 	}
@@ -202,7 +202,7 @@ public final class ArrayUtils {
 	sort(final Array<T> array, final int from, final int to) 
 	{
 		nonNull(array, "Array");
-		array.assertNotSealed();
+		array.cloneIfSealed();
 		array.checkIndex(from, to);
 		
 		Arrays.sort(array._array, from + array._start, to + array._start);
@@ -303,7 +303,7 @@ public final class ArrayUtils {
 	) {
 		nonNull(array, "Array");
 		nonNull(comparator, "Comparator");
-		array.assertNotSealed();
+		array.cloneIfSealed();
 			
 		_quicksort(array, from, to - 1, comparator);
 	}

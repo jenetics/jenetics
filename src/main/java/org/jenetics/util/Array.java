@@ -32,6 +32,7 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.RandomAccess;
 
 /** 
@@ -59,9 +60,12 @@ public final class Array<T>
 		RandomAccess
 {
 	private static final long serialVersionUID = 2L;
+		
+	transient boolean _sealed = false;
 	
 	Array(final Object[] array, final int start, final int end, final boolean sealed) {
-		super(array, start, end, sealed);
+		super(array, start, end);
+		_sealed = sealed;
 	}
 	
 	/**
@@ -85,7 +89,7 @@ public final class Array<T>
 	  *			is negative
 	 */
 	public Array(final int length) {
-		super(new Object[length], false);
+		super(new Object[length]);
 	}
 	
 	/**
@@ -262,14 +266,14 @@ public final class Array<T>
 	
 	@Override
 	public void set(final int index, final T value) {
-		assertNotSealed();
+		cloneIfSealed();
 		checkIndex(index);
 		_array[index + _start] = value;
 	}
 	
 	@Override
 	public Array<T> fill(final T value) {
-		assertNotSealed();
+		cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = value;
 		}
@@ -278,7 +282,7 @@ public final class Array<T>
 	
 	@Override
 	public Array<T> fill(final Iterator<? extends T> it) {
-		assertNotSealed();
+		cloneIfSealed();
 		
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
 			_array[i] = it.next();
@@ -288,7 +292,7 @@ public final class Array<T>
 	
 	@Override
 	public Array<T> fill(final T[] values) {
-		assertNotSealed();
+		cloneIfSealed();
 		System.arraycopy(values, 0, _array, _start, min(length(), values.length));
 		return this;
 	}
@@ -296,7 +300,7 @@ public final class Array<T>
 	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
 		Validator.nonNull(factory);
-		assertNotSealed();
+		cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array[i] = factory.newInstance();
 		}
@@ -309,9 +313,11 @@ public final class Array<T>
 		return new ArrayISeq<T>(_array, _start, _end);
 	}
 	
-	@Override
-	public boolean isSealed() {
-		return _sealed;
+	final void cloneIfSealed() {
+		if (_sealed) {
+			_array = _array.clone();
+			_sealed = false;
+		}
 	}
 	
 	/**
@@ -434,20 +440,13 @@ public final class Array<T>
 	}
 	
 	@Override
-	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+	public ListIterator<T> iterator() {
+		return new ArrayMSeqIterator<T>(this);
 	}
 	
 	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-		
-		return super.equals(obj);
+	public int hashCode() {
+		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 	private void writeObject(final ObjectOutputStream out)
