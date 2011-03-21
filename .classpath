@@ -7,6 +7,6 @@
 	<classpathentry kind="lib" path="lib/jscience.jar"/>
 	<classpathentry kind="lib" path="lib/jsr166y.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/build/testng-5.13.1.jar"/>
+	<classpathentry kind="lib" path="lib/build/testng-6.0.jar"/>
 	<classpathentry kind="output" path="build/bin"/>
 </classpath>
