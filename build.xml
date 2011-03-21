@@ -35,7 +35,8 @@
 	<property name="basedir" value="." />
 	<property name="source.basedir" value="${basedir}/src" />
 	<property name="lib.dir" value="./lib" />
-	<property name="build.dir" value="./build" />
+	<property name="build.dir" value="./build/main" />
+	<property name="test.build.dir" value="./build/test" />
 	
 	<property name="source.dir" value="${source.basedir}/main/java" />
 	<property name="testng.source.dir" value="${source.basedir}/test/java" />
@@ -400,10 +401,11 @@
 	    Compiles the project unit tests.
 	-->
 	<target name="compile-tests" depends="compile">
-		<copy todir="${build.dir}/org/jenetics/util" >
+		<mkdir dir="${test.build.dir}" />
+		<copy todir="${test.build.dir}/org/jenetics/util" >
 			<fileset file="${testng.source.dir}/org/jenetics/util/*.txt" />
 		</copy>		
-		<javac destdir="${build.dir}" 
+		<javac destdir="${test.build.dir}" 
 			srcdir="${testng.source.dir}" 
 			debug="true"
 			debuglevel="lines,vars,source"
@@ -441,9 +443,10 @@
 			<classpath refid="classpath" />
 			<classpath refid="build.classpath" />
 			<classpath path="${build.dir}" />
+			<classpath path="${test.build.dir}" />
 			<classpath path="${testng.resource.dir}" />
 			<xmlfileset dir="${testng.source.dir}/org/jenetics" includes="testng.xml" />
-			<!--<classfileset dir="${build.dir}" includes="**/*Test.class" />-->
+			<!--<classfileset dir="${build.dir}" includes="**/*.class" />-->
 		</testng>
 		
 		<copy 
@@ -457,6 +460,7 @@
 	-->
 	<target name="clean" >
 		<delete dir="${build.dir}" />
+		<delete dir="${test.build.dir}" />
 		<delete dir="${javadoc.dir}" />
 		<delete dir="export" />
 		<delete dir="test-output" />
