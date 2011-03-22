@@ -52,7 +52,7 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array._array[++_pos];
+		return (T)_array._array.data[++_pos];
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 		if (!hasPrevious()) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array._array[--_pos];
+		return (T)_array._array.data[--_pos];
 	}
 
 	@Override

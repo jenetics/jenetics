@@ -26,9 +26,6 @@ import static java.lang.Math.min;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +60,7 @@ public final class Array<T>
 		
 	private transient boolean _sealed = false;
 	
-	Array(final Object[] array, final int start, final int end, final boolean sealed) {
+	Array(final ArrayRef array, final int start, final int end, final boolean sealed) {
 		super(array, start, end);
 		_sealed = sealed;
 	}
@@ -76,7 +73,7 @@ public final class Array<T>
 	  *			is negative
 	 */
 	public Array(final int length) {
-		super(new Object[length]);
+		super(length);
 	}
 	
 	/**
@@ -87,7 +84,7 @@ public final class Array<T>
 	 */
 	public Array(final T first) {
 		this(1);
-		_array[0] = first;
+		_array.data[0] = first;
 	}
 	
 	/**
@@ -102,8 +99,8 @@ public final class Array<T>
 		final T second
 	) {
 		this(2);
-		_array[0] = first;
-		_array[1] = second;
+		_array.data[0] = first;
+		_array.data[1] = second;
 	}
 	
 	/**
@@ -120,9 +117,9 @@ public final class Array<T>
 		final T third
 	) {
 		this(3);
-		_array[0] = first;
-		_array[1] = second;
-		_array[2] = third;
+		_array.data[0] = first;
+		_array.data[1] = second;
+		_array.data[2] = third;
 	}
 	
 	/**
@@ -141,10 +138,10 @@ public final class Array<T>
 		final T fourth
 	) {
 		this(4);
-		_array[0] = first;
-		_array[1] = second;
-		_array[2] = third;
-		_array[3] = fourth;
+		_array.data[0] = first;
+		_array.data[1] = second;
+		_array.data[2] = third;
+		_array.data[3] = fourth;
 	}
 	
 	/**
@@ -165,11 +162,11 @@ public final class Array<T>
 		final T fifth
 	) {
 		this(5);
-		_array[0] = first;
-		_array[1] = second;
-		_array[2] = third;
-		_array[3] = fourth;
-		_array[4] = fifth;
+		_array.data[0] = first;
+		_array.data[1] = second;
+		_array.data[2] = third;
+		_array.data[3] = fourth;
+		_array.data[4] = fifth;
 	}
 	
 	/**
@@ -192,12 +189,12 @@ public final class Array<T>
 		final T... rest
 	) {
 		this(5 + rest.length);
-		_array[0] = first;
-		_array[1] = second;
-		_array[2] = third;
-		_array[3] = fourth;
-		_array[4] = fifth;
-		System.arraycopy(rest, 0, _array, 5, rest.length);
+		_array.data[0] = first;
+		_array.data[1] = second;
+		_array.data[2] = third;
+		_array.data[3] = fourth;
+		_array.data[4] = fifth;
+		System.arraycopy(rest, 0, _array.data, 5, rest.length);
 	}
 	
 	/**
@@ -208,7 +205,7 @@ public final class Array<T>
 	 */
 	public Array(final T[] values) {
 		this(values.length);
-		System.arraycopy(values, 0, _array, 0, values.length);
+		System.arraycopy(values, 0, _array.data, 0, values.length);
 	}
 	
 	/**
@@ -223,7 +220,7 @@ public final class Array<T>
 		
 		int index = 0;
 		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
-			_array[index] = it.next();
+			_array.data[index] = it.next();
 		}
 	}
 	
@@ -255,14 +252,14 @@ public final class Array<T>
 	public void set(final int index, final T value) {
 		cloneIfSealed();
 		checkIndex(index);
-		_array[index + _start] = value;
+		_array.data[index + _start] = value;
 	}
 	
 	@Override
 	public Array<T> fill(final T value) {
 		cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
-			_array[i] = value;
+			_array.data[i] = value;
 		}
 		return this;
 	}
@@ -272,7 +269,7 @@ public final class Array<T>
 		cloneIfSealed();
 		
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
-			_array[i] = it.next();
+			_array.data[i] = it.next();
 		}
 		return this;
 	}
@@ -280,7 +277,7 @@ public final class Array<T>
 	@Override
 	public Array<T> fill(final T[] values) {
 		cloneIfSealed();
-		System.arraycopy(values, 0, _array, _start, min(length(), values.length));
+		System.arraycopy(values, 0, _array.data, _start, min(length(), values.length));
 		return this;
 	}
 	
@@ -289,7 +286,7 @@ public final class Array<T>
 		Validator.nonNull(factory);
 		cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
-			_array[i] = factory.newInstance();
+			_array.data[i] = factory.newInstance();
 		}
 		return this;
 	}
@@ -302,7 +299,7 @@ public final class Array<T>
 	
 	final void cloneIfSealed() {
 		if (_sealed) {
-			_array = _array.clone();
+			_array = new ArrayRef(_array.data.clone());
 			_sealed = false;
 		}
 	}
@@ -318,8 +315,8 @@ public final class Array<T>
 	 */
 	public Array<T> append(final T value) {
 		final Array<T> array = new Array<T>(length() + 1);
-		System.arraycopy(_array, _start, array._array, 0, length());
-		array._array[array.length() - 1] = value;
+		System.arraycopy(_array.data, _start, array._array.data, 0, length());
+		array._array.data[array.length() - 1] = value;
 		return array;
 	}
 	
@@ -337,12 +334,12 @@ public final class Array<T>
 		final Array<T> appended = new Array<T>(length() + array.length());
 		
 		System.arraycopy(
-				_array, _start, 
-				appended._array, 0, length()
+				_array.data, _start, 
+				appended._array.data, 0, length()
 			);
 		System.arraycopy(
-				array._array, array._start, 
-				appended._array, length(), array.length()
+				array._array.data, array._start, 
+				appended._array.data, length(), array.length()
 			);
 		
 		return appended;
@@ -362,10 +359,10 @@ public final class Array<T>
 		nonNull(values, "Values");
 		final Array<T> array = new Array<T>(length() + values.size());
 		
-		System.arraycopy(_array, _start, array._array, 0, length());
+		System.arraycopy(_array.data, _start, array._array.data, 0, length());
 		int index = length();
 		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
-			array._array[index] = it.next();
+			array._array.data[index] = it.next();
 		}
 		
 		return array;
@@ -385,12 +382,12 @@ public final class Array<T>
 		
 		final int length = length();
 		final Array<B> result = new Array<B>(length);
-		assert (result._array.length == length);
+		assert (result._array.data.length == length);
 		
 		for (int i = length; --i <= 0;) {
 			@SuppressWarnings("unchecked")
-			final T value = (T)_array[i + _start];
-			result._array[i] = converter.convert(value);
+			final T value = (T)_array.data[i + _start];
+			result._array.data[i] = converter.convert(value);
 		}
 		return result;
 	}
@@ -406,7 +403,7 @@ public final class Array<T>
 	 */
 	@Override
 	public Array<T> copy() {
-		return new Array<T>(toArray(), 0, length(), false);
+		return new Array<T>(new ArrayRef(toArray()), 0, length(), false);
 	}
 	
 	/**
@@ -447,32 +444,6 @@ public final class Array<T>
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
-	}
-	
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
-	{
-		out.defaultWriteObject();
-
-		out.writeInt(length());
-		for (int i = _start; i < _end; ++i) {
-			out.writeObject(_array[i]);
-		}		
-	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
-	{
-		in.defaultReadObject();
-
-		final int length = in.readInt();
-		_array = new Object[length];
-		_start = 0;
-		_end = length;
-		_sealed = false;		
-		for (int i = 0; i < length; ++i) {
-			_array[i] = in.readObject();
-		}
 	}
 	
 }

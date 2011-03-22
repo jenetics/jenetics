@@ -166,7 +166,7 @@ public final class ArrayUtils {
 		
 		@SuppressWarnings("unchecked")
 		final Comparator<Object> c = (Comparator<Object>)comparator;
-		Arrays.sort(array._array, from + array._start, to + array._start, c);
+		Arrays.sort(array._array.data, from + array._start, to + array._start, c);
 	}
 	
 	/**
@@ -205,7 +205,7 @@ public final class ArrayUtils {
 		array.cloneIfSealed();
 		array.checkIndex(from, to);
 		
-		Arrays.sort(array._array, from + array._start, to + array._start);
+		Arrays.sort(array._array.data, from + array._start, to + array._start);
 	}
 	
 	/**
@@ -334,14 +334,14 @@ public final class ArrayUtils {
 				++i; 
 			} while (
 					i < right && 
-					comparator.compare((T)array._array[i + array._start], pivot) < 0
+					comparator.compare((T)array._array.data[i + array._start], pivot) < 0
 				);
 			
 			do {
 				--j;
 			} while (
 					j > left && 
-					comparator.compare((T)array._array[j + array._start], pivot) > 0
+					comparator.compare((T)array._array.data[j + array._start], pivot) > 0
 				);
 			if (j <= i) {
 				break;
@@ -354,9 +354,9 @@ public final class ArrayUtils {
 	}
 	
 	private static <T> void _swap(final Array<T> array, final int i, final int j) {
-		final Object temp = array._array[i + array._start];
-		array._array[i + array._start] = array._array[j + array._start];
-		array._array[j + array._start] = temp;
+		final Object temp = array._array.data[i + array._start];
+		array._array.data[i + array._start] = array._array.data[j + array._start];
+		array._array.data[j + array._start] = temp;
 	}
 	
 	

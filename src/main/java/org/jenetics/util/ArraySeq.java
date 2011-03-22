@@ -41,7 +41,7 @@ import java.util.ListIterator;
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
 		
-	transient Object[] _array;
+	transient ArrayRef _array;
 	transient int _start;
 	transient int _end; 
 	
@@ -59,7 +59,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
 	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
-	ArraySeq(final Object[] array, final int start, final int end) {
+	ArraySeq(final ArrayRef array, final int start, final int end) {
 		nonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
@@ -71,23 +71,15 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		_end = end;
 	}
 	
-	/**
-	 * @param array the array which holds the elements. The array will not be 
-	 * 		 copied.
-	 * @param sealed the seal status. If {@code true} calls to 
-	 * 		 {@link #set(int, Object)} will throw an 
-	 * 		 {@link UnsupportedOperationException}.
-	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 */
-	ArraySeq(final Object[] array) {
-		this(array, 0, array.length);
+	ArraySeq(final int length) {
+		this(new ArrayRef(length), 0, length);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
 		checkIndex(index);
-		return (T)_array[index + _start];
+		return (T)_array.data[index + _start];
 	}
 	
 	@Override
@@ -140,7 +132,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
+			final T element = (T)_array.data[i];
 			
 			if (predicate.evaluate(element)) {
 				index = i - _start;
@@ -158,7 +150,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
+			final T element = (T)_array.data[i];
 			
 			if (!predicate.evaluate(element)) {
 				index = i - _start;
@@ -176,7 +168,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		
 		for (int i = _end - 1; i >= _start && index == -1; --i) {
 			@SuppressWarnings("unchecked")
-			final T element = (T)_array[i];
+			final T element = (T)_array.data[i];
 			if (predicate.evaluate(element)) {
 				index = i - _start;
 			}
@@ -234,7 +226,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	@Override
 	public Object[] toArray() {
 		final Object[] array = new Object[length()];
-		System.arraycopy(_array, _start, array, 0, length());
+		System.arraycopy(_array.data, _start, array, 0, length());
 		return array;
 	}
 	
@@ -243,9 +235,9 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public T[] toArray(final T[] array) {
 		T[] result = null;
 		if (array.length < length()) {
-			result = (T[])Arrays.copyOfRange(_array, _start, _end, array.getClass());
+			result = (T[])Arrays.copyOfRange(_array.data, _start, _end, array.getClass());
 		} else {
-			System.arraycopy(_array, _start, array, 0, length());
+			System.arraycopy(_array.data, _start, array, 0, length());
 			if (array.length > length()) {
 				array[length()] = null;
 			}
@@ -280,7 +272,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public int hashCode() {
 		final ObjectUtils.HashCodeBuilder hash = hashCodeOf(getClass());
 		for (int i = _start; i < _end; ++i) {
-			hash.and(_array[i]);
+			hash.and(_array.data[i]);
 		}
 		return hash.value();
 	}
@@ -298,10 +290,10 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		boolean equals = (length() == array.length());
 		final int difference = _start - array._start;
 		for (int i = _start; equals && i < _end; ++i) {
-			if (_array[i] != null) {
-				equals = _array[i].equals(array._array[i - difference]);
+			if (_array.data[i] != null) {
+				equals = _array.data[i].equals(array._array.data[i - difference]);
 			} else {
-				equals = array._array[i] == null;
+				equals = array._array.data[i] == null;
 			}
 		}
 		return equals;
@@ -317,11 +309,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		  
 		  out.append(prefix);
 		  if (length() > 0) {
-			out.append(_array[_start]);
+			out.append(_array.data[_start]);
 		  }
 		  for (int i = _start + 1; i < _end; ++i) {
 			out.append(separator);
-			out.append(_array[i]);
+			out.append(_array.data[i]);
 		  }
 		  out.append(suffix);
 		  
@@ -338,24 +330,25 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		throws IOException 
 	{
 		out.defaultWriteObject();
-
+	
 		out.writeInt(length());
 		for (int i = _start; i < _end; ++i) {
-			out.writeObject(_array[i]);
+			out.writeObject(_array.data[i]);
 		}		
 	}
-
+	
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException 
 	{
 		in.defaultReadObject();
-
+	
 		final int length = in.readInt();
-		_array = new Object[length];
+		_array = new ArrayRef(length);
 		_start = 0;
 		_end = length;
 		for (int i = 0; i < length; ++i) {
-			_array[i] = in.readObject();
+			_array.data[i] = in.readObject();
 		}
 	}
+	
 }
