@@ -86,11 +86,11 @@ public interface MSeq<T> extends Seq<T> {
 	public MSeq<T> fill(final Factory<? extends T> factory);	 
 	
 	/**
-	 * Seal this mutable sequence and return an immutable view of this
-	 * sequence.
+	 * Return a read-only projection of this sequence.
 	 * 
-	 * @return an immutable view of this sequence.
+	 * @return a read-only projection of this sequence
 	 */
 	public ISeq<T> toISeq();
 	
 }
+
