@@ -69,19 +69,6 @@ public final class Array<T>
 	}
 	
 	/**
-	 * Create a new array from the given two arrays.
-	 * 
-	 * @param a1 array one.
-	 * @param a2 array two.
-	 * @throws NullPointerException if one of the arrays is {@code null}.
-	 */
-	Array(final Array<? extends T> a1, final Array<? extends T> a2) {
-		this(a1.length() + a2.length());
-		System.arraycopy(a1._array, a1._start, _array, 0, a1.length());
-		System.arraycopy(a2._array, a2._start, _array, a1.length(), a2.length());
-	}
-	
-	/**
 	 * Create a new array with the given length.
 	 * 
 	 * @param length the array length.
@@ -347,7 +334,18 @@ public final class Array<T>
 	 * @throws NullPointerException if the {@code arrays} is {@code null}.
 	 */
 	public Array<T> append(final Array<? extends T> array) {
-		return new Array<T>(this, nonNull(array, "Array"));
+		final Array<T> appended = new Array<T>(length() + array.length());
+		
+		System.arraycopy(
+				_array, _start, 
+				appended._array, 0, length()
+			);
+		System.arraycopy(
+				array._array, array._start, 
+				appended._array, length(), array.length()
+			);
+		
+		return appended;
 	}
 	
 	/**
