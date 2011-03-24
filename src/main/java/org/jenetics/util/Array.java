@@ -52,17 +52,13 @@ public final class Array<T>
 	extends ArraySeq<T> 
 	implements 
 		MSeq<T>, 
-		Copyable<Array<T>>, 
-		Cloneable, 
+		Copyable<Array<T>> ,
 		RandomAccess
 {
 	private static final long serialVersionUID = 2L;
-		
-	private transient boolean _sealed = false;
-	
-	Array(final ArrayRef array, final int start, final int end, final boolean sealed) {
+			
+	Array(final ArrayRef array, final int start, final int end) {
 		super(array, start, end);
-		_sealed = sealed;
 	}
 	
 	/**
@@ -250,14 +246,15 @@ public final class Array<T>
 	
 	@Override
 	public void set(final int index, final T value) {
-		cloneIfSealed();
 		checkIndex(index);
+		
+		_array.cloneIfSealed();
 		_array.data[index + _start] = value;
 	}
 	
 	@Override
 	public Array<T> fill(final T value) {
-		cloneIfSealed();
+		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array.data[i] = value;
 		}
@@ -266,8 +263,7 @@ public final class Array<T>
 	
 	@Override
 	public Array<T> fill(final Iterator<? extends T> it) {
-		cloneIfSealed();
-		
+		_array.cloneIfSealed();
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
 			_array.data[i] = it.next();
 		}
@@ -276,15 +272,16 @@ public final class Array<T>
 	
 	@Override
 	public Array<T> fill(final T[] values) {
-		cloneIfSealed();
+		_array.cloneIfSealed();
 		System.arraycopy(values, 0, _array.data, _start, min(length(), values.length));
 		return this;
 	}
 	
 	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
-		Validator.nonNull(factory);
-		cloneIfSealed();
+		nonNull(factory);
+		
+		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array.data[i] = factory.newInstance();
 		}
@@ -293,15 +290,8 @@ public final class Array<T>
 	
 	@Override
 	public ISeq<T> toISeq() {
-		_sealed = true;
-		return new ArrayISeq<T>(_array, _start, _end);
-	}
-	
-	final void cloneIfSealed() {
-		if (_sealed) {
-			_array = new ArrayRef(_array.data.clone());
-			_sealed = false;
-		}
+		_array._sealed = true;
+		return new ArrayISeq<T>(new ArrayRef(_array.data), _start, _end);
 	}
 	
 	/**
@@ -398,32 +388,17 @@ public final class Array<T>
 	 * with the {@link #subSeq(int, int)} method, only the sub-array-part is
 	 * copied. The {@link #clone()} method <i>copies</i> the whole array.
 	 * 
-	 * @see #clone()
 	 * @return a shallow copy of this array.
 	 */
 	@Override
 	public Array<T> copy() {
-		return new Array<T>(new ArrayRef(toArray()), 0, length(), false);
-	}
-	
-	/**
-	 * Create a one to one copy of the given array. If this array is a sub array,
-	 * created with {@link #subSeq(int, int)}, the whole underlying data array
-	 * with its {@code start} and {@code stop} information is cloned.
-	 * 
-	 * @see #copy()
-	 */
-	@Override
-	public Array<T> clone() {
-		final Array<T> clone = (Array<T>)super.clone();
-		clone._sealed = false;
-		return clone;
+		return new Array<T>(new ArrayRef(toArray()), 0, length());
 	}
 
 	@Override
 	public Array<T> subSeq(final int start, final int end) {
 		checkIndex(start, end);
-		return new Array<T>(_array, start + _start, end + _start, _sealed);
+		return new Array<T>(_array, start + _start, end + _start);
 	}
 		
 	@Override

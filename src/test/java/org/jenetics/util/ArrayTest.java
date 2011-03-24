@@ -29,7 +29,6 @@ import static org.jenetics.util.Predicates.not;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -42,6 +41,15 @@ import org.testng.annotations.Test;
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
+	static Factory<Double> RANDOM = new Factory<Double>() {
+		private final Random random = new Random();
+		@Override
+		public Double newInstance() {
+			return random.nextDouble();
+		}
+
+	};
+	
 	final Factory<Array<Double>> _factory = new Factory<Array<Double>>() {
 		@Override
 		public Array<Double> newInstance() {
@@ -118,7 +126,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 	
 	@Test
-	public void fill1() {
+	public void fillConstant() {
 		final ISeq<Integer> array = new Array<Integer>(10).fill(10).toISeq();
 		Assert.assertEquals(array.length(), 10);
 		for (Integer i : array) {
@@ -127,7 +135,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 	
 	@Test
-	public void fill2() {
+	public void fillFactory() {
 		final Array<Integer> array = new Array<Integer>(10).fill(0);
 		Assert.assertEquals(array.length(), 10);
 		
@@ -143,7 +151,71 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			Assert.assertEquals(array.get(i), new Integer(i));
 		}
 	}
-
+	
+	@Test
+	public void immutable() {
+		//final Random random = new Random();
+		
+		final Array<Double> array = getFactory().newInstance();
+		final Array<Double> copy = array.copy();
+		Assert.assertEquals(copy, array);
+		
+		int i = 0;
+		int j = array.length();
+		
+		final Array<Double> sub = array.subSeq(i, j);
+		assertEquals(sub, 0, array, i, j - i);
+		
+		final ISeq<Double> iseq = sub.toISeq();
+		final MSeq<Double> cseq = iseq.copy();
+		assertEquals(iseq, 0, cseq, 0, iseq.length());
+		
+		sub.fill(RANDOM);
+		assertEquals(sub, i, array, 0, j - i);
+		assertEquals(iseq, 0, cseq, 0, iseq.length());
+		
+		/*
+		while (i < j) {
+			Array<Double> sub = array.subSeq(i, j);
+			
+			int index = random.nextInt(sub.length());
+			double value = random.nextDouble();
+			sub.set(index, value);
+			
+			Assert.assertEquals(sub.get(index), value);
+			Assert.assertEquals(array.get(index + i), value);
+			
+			ISeq<Double> iseq = sub.toISeq();
+			Double[] iseqa = iseq.toArray(new Double[0]);
+			for (int n = 0; n < sub.length(); ++n) {
+				Assert.assertEquals(sub.get(n), iseq.get(n));
+				Assert.assertEquals(iseqa[n], iseq.get(n));
+			}
+			
+			for (int n = 0; n < sub.length(); ++n) {
+				final Double d = random.nextDouble();
+				sub.set(n, d);
+				Assert.assertEquals(sub.get(n), d);
+			}
+			for (int n = 0; n < iseq.length(); ++n) {
+				Assert.assertEquals(iseq.get(n), iseqa[n]);
+			}
+			
+			++i; --j;
+		}
+		*/
+	}
+	
+	static <T> void assertEquals(
+		final Seq<T> actual, final int srcPos, 
+		final Seq<T> expected, final int desPos, final int length
+	) {
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(actual.get(srcPos + i), expected.get(desPos + i));
+		}
+	}
+	
+	/*
 	@Test
 	public void seal1() {
 		final Array<Integer> array = new Array<Integer>(10).fill(11);
@@ -193,6 +265,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		Assert.assertEquals(sealed, copy);
 		Assert.assertEquals(array.get(0), new Integer(1));
 	}
+	*/
 	
 	@Test
 	public void foreach() {
@@ -373,18 +446,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			Assert.assertEquals(oa[i], array.get(i));
 		}
 		Assert.assertEquals(new Array<Integer>(oa), array);
-	}
-	
-	@Test
-	public void cloning() {
-		final Array<Integer> array = new Array<Integer>(10);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-		}
-		
-		Array<Integer> clone = array.clone();
-		Assert.assertNotSame(clone, array);
-		Assert.assertEquals(clone, array);
 	}
 	
 }
