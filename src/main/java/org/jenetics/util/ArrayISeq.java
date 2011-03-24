@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -34,11 +33,6 @@ final class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	
 	ArrayISeq(final ArrayRef array, final int start, final int end) {
 		super(array, start, end);
-	}
-	
-	@Override
-	public List<T> asList() {
-		return new ArraySeqList<T>(this);
 	}
 	
 	@Override
