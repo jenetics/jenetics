@@ -54,7 +54,7 @@ final class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	
 	@Override
 	public MSeq<T> copy() {
-		return new Array<T>(new ArrayRef(toArray()), 0, length(), false);
+		return new Array<T>(new ArrayRef(toArray()), 0, length());
 	}
 
 	@Override
