@@ -242,6 +242,44 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  ({@code start < 0 || end > length() || start > end}).
 	 */
 	public Seq<T> subSeq(final int start, final int end);
+
+	/**
+	 * Returns the hash code value for this sequence. The hash code is defined 
+	 * as followed: 
+	 * 
+	 * [code]
+	 *     int hashCode = 1;
+	 *     Iterator<E> i = seq.iterator();
+	 *     while (i.hasNext()) {
+	 *         final E obj = i.next();
+	 *         hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
+	 *     }
+	 * [/code]
+	 * 
+	 * @see List#hashCode()
+	 * 
+	 * @return the hash code value for this list
+	 */
+	@Override
+	public int hashCode();
+	
+	/**
+	 * Compares the specified object with this sequence for equality. Returns 
+	 * true if and only if the specified object is also a sequence, both 
+	 * sequence have the same size, and all corresponding pairs of elements in 
+	 * the two sequences are equal. (Two elements e1 and e2 are equal if 
+	 * (e1==null ? e2==null : e1.equals(e2)).) This definition ensures that the 
+	 * equals method works properly across different implementations of the Seq 
+	 * interface. 
+	 * 
+	 * @see List#equals(Object)
+	 * 
+	 * @param object the object to be compared for equality with this sequence. 
+	 * @return {@code true} if the specified object is equal to this sequence,
+	 *         {@code false} otherwise.
+	 */
+	@Override
+	public boolean equals(final Object object);
 	
 	/**
 	 * Create a string representation of the given sequence.
@@ -255,4 +293,18 @@ public interface Seq<T> extends Iterable<T> {
 			final String prefix, final String separator, final String suffix
 		);
 	
+	/**
+	 * Create a string representation of the given sequence.
+	 * 
+	 * @param separator the separator of the array elements; e.g. {@code ','}.
+	 * @return the string representation of this sequence.
+	 */
+	public String toString(final String separator);
+	
 }
+
+
+
+
+
+

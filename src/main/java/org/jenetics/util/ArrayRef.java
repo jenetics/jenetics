@@ -41,11 +41,6 @@ final class ArrayRef implements Cloneable {
 		this.length = length;
 	}
 	
-	void set(final Object[] data) {
-		this.data = data;
-		length = data.length;
-	}
-	
 	final void cloneIfSealed() {
 		if (_sealed) {
 			data = data.clone();
