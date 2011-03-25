@@ -46,8 +46,8 @@ public interface Seq<T> extends Iterable<T> {
 	public T get(final int index);
 	
 	/**
-	 * Return the length of this sequence. Once the array is created, the length
-	 * can't be changed.
+	 * Return the length of this sequence. Once the sequence is created, the 
+	 * length can't be changed.
 	 * 
 	 * @return the length of this sequence.
 	 */
@@ -70,10 +70,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * {@code true}. This method is more or less an  <i>alias</i> of the 
 	 * {@link #indexOf(Predicate)} method. In some cases a call to a 
 	 * {@code sequence.foreach()} method can express your intention much better 
-	 * than a {@code array.indexOf()} call.
+	 * than a {@code seq.indexOf()} call.
 	 * 
 	 * [code]
-	 *     final Sequence<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+	 *     final Seq<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
 	 *     final AtomicInteger sum = new AtomicInteger(0);
 	 *     values.foreach(new Predicate<Integer>() {
 	 *         public boolean evaluate(final Integer value) {
@@ -96,8 +96,8 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
 	 *
-	 * @param element element whose presence in this array is to be tested. The
-	 * 		 tested element can be {@code null}.
+	 * @param element element whose presence in this sequence is to be tested. 
+	 *        The tested element can be {@code null}.
 	 * @return {@code true} if this sequence contains the specified element
 	 */
 	public boolean contains(final Object element);
@@ -120,7 +120,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * 	 // Finding index of first null value.
-	 * 	 final int index = sequence.indexOf(new Predicates.Nil());
+	 * 	 final int index = seq.indexOf(new Predicates.Nil());
 	 * 	 
 	 * 	 // Assert of no null values.
 	 * 	 assert (sequence.indexOf(new Predicates.Nil()) == -1);
@@ -167,8 +167,8 @@ public interface Seq<T> extends Iterable<T> {
 	public List<T> asList();
 	
 	/**
-	 * Return an sequence containing all of the elements in this array in right 
-	 * order. The returned sequence will be "safe" in that no references to it 
+	 * Return an array containing all of the elements in this sequence in right 
+	 * order. The returned array will be "safe" in that no references to it 
 	 * are maintained by this sequence. (In other words, this method must allocate 
 	 * a new array.) The caller is thus free to modify the returned array. 
 	 * 
