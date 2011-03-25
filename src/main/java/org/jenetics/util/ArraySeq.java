@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.io.IOException;
@@ -32,7 +31,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -188,7 +186,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public ListIterator<T> iterator() {
+	public Iterator<T> iterator() {
 		return new ArraySeqIterator<T>(this);
 	}
 	
@@ -269,31 +267,32 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
-	public int hashCode() {
-		final ObjectUtils.HashCodeBuilder hash = hashCodeOf(getClass());
+	public final int hashCode() {
+		int hash = 1;
 		for (int i = _start; i < _end; ++i) {
-			hash.and(_array.data[i]);
+			final Object element = _array.data[i];
+			hash = 31*hash + (element == null ? 0: element.hashCode());
 		}
-		return hash.value();
+		return hash;
 	}
 	
 	@Override
-	public boolean equals(final Object obj) {
+	public final boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof ArraySeq<?>)) {
+		if (!(obj instanceof Seq<?>)) {
 			return false;
 		}
 		
-		final ArraySeq<?> array = (ArraySeq<?>)obj;
-		boolean equals = (length() == array.length());
-		final int difference = _start - array._start;
-		for (int i = _start; equals && i < _end; ++i) {
-			if (_array.data[i] != null) {
-				equals = _array.data[i].equals(array._array.data[i - difference]);
+		final Seq<?> seq = (Seq<?>)obj;
+		boolean equals = (length() == seq.length());
+		for (int i = length(); equals && --i >= 0;) {
+			final Object element = _array.data[i + _start];
+			if (element != null) {
+				equals = element.equals(seq.get(i));
 			} else {
-				equals = array._array.data[i] == null;
+				equals = seq.get(i) == null;
 			}
 		}
 		return equals;
@@ -321,10 +320,14 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
+	public String toString(final String separator) {
+		return toString("", separator, "");
+	}
+	
+	@Override
 	public String toString() {
 		  return toString("[", ",", "]");
 	}
-	
 	
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException 

@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * Mutable sequence view.
@@ -86,6 +87,15 @@ public interface MSeq<T> extends Seq<T> {
 	public MSeq<T> fill(final Factory<? extends T> factory);	 
 	
 	/**
+	 * Returns a list iterator over the elements in this sequence (in proper 
+	 * sequence). 
+	 * 
+	 * @return a list iterator over the elements in this list (in proper 
+	 *           sequence)
+	 */
+	public ListIterator<T> listIterator();
+	
+	/**
 	 * Return a read-only projection of this sequence.
 	 * 
 	 * @return a read-only projection of this sequence
@@ -93,4 +103,7 @@ public interface MSeq<T> extends Seq<T> {
 	public ISeq<T> toISeq();
 	
 }
+
+
+
 

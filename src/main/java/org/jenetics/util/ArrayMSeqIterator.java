@@ -26,7 +26,7 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
+final class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
 	
 	public ArrayMSeqIterator(final Array<T> array) {
 		super(array);

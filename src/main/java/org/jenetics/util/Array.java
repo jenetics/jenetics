@@ -23,7 +23,6 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Collection;
@@ -412,13 +411,8 @@ public final class Array<T>
 	}
 	
 	@Override
-	public ListIterator<T> iterator() {
+	public ListIterator<T> listIterator() {
 		return new ArrayMSeqIterator<T>(this);
-	}
-	
-	@Override
-	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
 	
 }
