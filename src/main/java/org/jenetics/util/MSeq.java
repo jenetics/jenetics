@@ -28,6 +28,8 @@ import java.util.ListIterator;
 /**
  * Mutable ordered sequence.
  * 
+ * @see ISeq
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -40,8 +42,6 @@ public interface MSeq<T> extends Seq<T> {
 	 * @param value the new value.
 	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
 	 * 		  {@code (index < 0 || index >= size())}.
-	 * @throws UnsupportedOperationException if this sequence is sealed 
-	 * 		  ({@code isSealed() == true}).
 	 */
 	public void set(final int index, final T value);
 	
@@ -50,8 +50,6 @@ public interface MSeq<T> extends Seq<T> {
 	 *
 	 * @param value {@code value} to fill this array with.
 	 * @return {@code this} array.
-	 * @throws UnsupportedOperationException if this array is sealed 
-	 * 		  ({@code isSealed() == true}).
 	 */
 	public MSeq<T> fill(final T value);
 	
@@ -60,8 +58,6 @@ public interface MSeq<T> extends Seq<T> {
 	 * 
 	 * @param it the iterator of the values to fill this array.
 	 * @return {@code this} array.
-	 * @throws UnsupportedOperationException if this array is sealed 
-	 * 		  ({@code isSealed() == true}).
 	 */
 	public MSeq<T> fill(final Iterator<? extends T> it);
 	
@@ -70,8 +66,6 @@ public interface MSeq<T> extends Seq<T> {
 	 * 
 	 * @param values the first initial values of this array
 	 * @return {@code this} array.
-	 * @throws UnsupportedOperationException if this array is sealed 
-	 * 		  ({@code isSealed() == true}).
 	 */
 	public MSeq<T> fill(final T[] values);
 	
@@ -81,8 +75,6 @@ public interface MSeq<T> extends Seq<T> {
 	 * @param factory the value factory.
 	 * @return {@code this} array.
 	 * @throws NullPointerException if the given {@code factory} is {@code null}.
-	 * @throws UnsupportedOperationException if this array is sealed 
-	 * 		  ({@code isSealed() == true}).
 	 */
 	public MSeq<T> fill(final Factory<? extends T> factory);	 
 	

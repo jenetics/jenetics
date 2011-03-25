@@ -28,6 +28,8 @@ import javolution.lang.Immutable;
  * Immutable sequence view. This interface allows to create a mutable copy of 
  * this immutable sequence.
  * 
+ * @see MSeq
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
