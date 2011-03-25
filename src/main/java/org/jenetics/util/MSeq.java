@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
- * Mutable sequence view.
+ * Mutable ordered sequence.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
