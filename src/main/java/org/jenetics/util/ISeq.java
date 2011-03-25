@@ -45,7 +45,7 @@ public interface ISeq<T>
 	 * type of {@code T}.
 	 * </p>
 	 * [code]
-	 *     ISeq<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).seal();
+	 *     ISeq<Double> da = new Array<Double>(Arrays.asList(0.0, 1.0, 2.0)).toISeq();
 	 *     ISeq<Number> na = da.upcast(da);
 	 *     ISeq<Object>; oa = na.upcast(na);
 	 *     oa = da.upcast(da);
