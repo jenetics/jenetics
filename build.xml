@@ -138,6 +138,7 @@
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
 				<exclude name="*.jar" />
+				<include name="**/*.class" />
 			</fileset>
 			<manifest>
 				<attribute name="ProjectName" value="jenetics" />

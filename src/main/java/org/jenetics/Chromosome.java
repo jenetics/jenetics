@@ -86,7 +86,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	public int length();
 	
 	/**
-	 * Return a unmodifiable array of the genes of this chromosome.
+	 * Return a unmodifiable sequence of the genes of this chromosome.
 	 * 
 	 * @return an immutable gene sequence.
 	 */
