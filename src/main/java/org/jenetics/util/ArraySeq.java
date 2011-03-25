@@ -210,17 +210,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		};
 	}
 	
-
-	@Override
-	@SuppressWarnings("unchecked")
-	protected ArraySeq<T> clone() {
-		try {
-			return (ArraySeq<T>)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError(e);
-		}
-	}
-	
 	@Override
 	public Object[] toArray() {
 		final Object[] array = new Object[length()];
