@@ -39,6 +39,12 @@ public interface ISeq<T>
 		Copyable<MSeq<T>>,
 		Immutable 
 {
+	
+	@Override
+	public ISeq<T> subSeq(final int start, final int end);
+	
+	@Override
+	public ISeq<T> subSeq(final int start);
 			
 	/**
 	 * <p>

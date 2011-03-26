@@ -33,7 +33,7 @@ import java.util.ListIterator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface MSeq<T> extends Seq<T> {
+public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	
 	/**
 	 * Set the {@code value} at the given {@code index}.
@@ -87,12 +87,19 @@ public interface MSeq<T> extends Seq<T> {
 	 */
 	public ListIterator<T> listIterator();
 	
+	@Override
+	public MSeq<T> subSeq(final int start, final int end);
+	
+	@Override
+	public MSeq<T> subSeq(final int start);
+	
 	/**
 	 * Return a read-only projection of this sequence.
 	 * 
 	 * @return a read-only projection of this sequence
 	 */
 	public ISeq<T> toISeq();
+
 	
 }
 

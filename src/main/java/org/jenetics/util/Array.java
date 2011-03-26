@@ -51,7 +51,6 @@ public final class Array<T>
 	extends ArraySeq<T> 
 	implements 
 		MSeq<T>, 
-		Copyable<Array<T>> ,
 		RandomAccess
 {
 	private static final long serialVersionUID = 2L;
@@ -381,14 +380,6 @@ public final class Array<T>
 		return result;
 	}
 	
-	/**
-	 * Return a shallow copy of this array. The array elements are not cloned.
-	 * The copied array is not sealed. If the array is a sub-array (created
-	 * with the {@link #subSeq(int, int)} method, only the sub-array-part is
-	 * copied. The {@link #clone()} method <i>copies</i> the whole array.
-	 * 
-	 * @return a shallow copy of this array.
-	 */
 	@Override
 	public Array<T> copy() {
 		return new Array<T>(new ArrayRef(toArray()), 0, length());
