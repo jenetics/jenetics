@@ -100,18 +100,17 @@ public class Until {
 	/**
 	 * Return a <i>termination predicate</i> which returns {@code false} if the
 	 * current GA generation is {@code >=} as the given {@code generation}.
-	 * ant 
+	 * 
+	 * [code]
+	 *     final GeneticAlgortihm<Float64Gene, Float64> ga = ...
+	 *     ga.evolve(Until.Generation(100));
+	 * [/code]
+	 * 
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
 	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
 		return new Generation(generation);
 	}
-	
-//	public static <G extends Gene<?, G>, C extends Comparable<? super C>> 
-//	Predicate<Statistics<G, C>> valueOf()
-//	{
-//		return null;
-//	}
 	
 }

@@ -37,10 +37,6 @@ import java.util.RandomAccess;
  * <strong>This array is not synchronized.</strong> If multiple threads access
  * an {@code Array} concurrently, and at least one of the threads modifies the
  * array, it <strong>must</strong> be synchronized externally.
- * <br/>
- * Use the {@link #asList()} method to work together with the 
- * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
- * Java Collection Framework</a>.
  * 
  * @param <T> the element type of the array.
  * 
