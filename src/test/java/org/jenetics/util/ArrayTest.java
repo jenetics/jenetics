@@ -152,58 +152,52 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		}
 	}
 	
+	static interface ArrayAlterer {
+		void alter(final MSeq<Double> seq);
+	}
+	
 	@Test
-	public void immutable() {
-		//final Random random = new Random();
-		
-		final Array<Double> array = getFactory().newInstance();
-		final Array<Double> copy = array.copy();
+	void immutableFill() {
+		immutable(new ArrayAlterer() {
+			@Override public void alter(final MSeq<Double> seq) {
+				seq.fill(RANDOM);
+			}
+		});
+	}
+	
+	@Test
+	void immutableSet() {
+		immutable(new ArrayAlterer() {
+			@Override public void alter(final MSeq<Double> seq) {
+				for (int i = 0; i < seq.length(); ++i) {
+					seq.set(i, Math.random());
+				}
+			}
+		});
+	}
+	
+	private void immutable(final ArrayAlterer alterer) {
+		Array<Double> array = getFactory().newInstance();
+		Array<Double> copy = array.copy();
 		Assert.assertEquals(copy, array);
 		
 		int i = 0;
 		int j = array.length();
-		
-		final Array<Double> sub = array.subSeq(i, j);
-		assertEquals(sub, 0, array, i, j - i);
-		
-		final ISeq<Double> iseq = sub.toISeq();
-		final MSeq<Double> cseq = iseq.copy();
-		assertEquals(iseq, 0, cseq, 0, iseq.length());
-		
-		sub.fill(RANDOM);
-		assertEquals(sub, i, array, 0, j - i);
-		assertEquals(iseq, 0, cseq, 0, iseq.length());
-		
-		/*
-		while (i < j) {
-			Array<Double> sub = array.subSeq(i, j);
+		while (i < j) {			
+			final Array<Double> sub = array.subSeq(i, j);
+			assertEquals(sub, 0, array, i, j - i);
 			
-			int index = random.nextInt(sub.length());
-			double value = random.nextDouble();
-			sub.set(index, value);
+			final ISeq<Double> iseq = sub.toISeq();
+			final MSeq<Double> cseq = iseq.copy();
+			assertEquals(iseq, 0, cseq, 0, iseq.length());
 			
-			Assert.assertEquals(sub.get(index), value);
-			Assert.assertEquals(array.get(index + i), value);
-			
-			ISeq<Double> iseq = sub.toISeq();
-			Double[] iseqa = iseq.toArray(new Double[0]);
-			for (int n = 0; n < sub.length(); ++n) {
-				Assert.assertEquals(sub.get(n), iseq.get(n));
-				Assert.assertEquals(iseqa[n], iseq.get(n));
-			}
-			
-			for (int n = 0; n < sub.length(); ++n) {
-				final Double d = random.nextDouble();
-				sub.set(n, d);
-				Assert.assertEquals(sub.get(n), d);
-			}
-			for (int n = 0; n < iseq.length(); ++n) {
-				Assert.assertEquals(iseq.get(n), iseqa[n]);
-			}
+			alterer.alter(sub);
+			Assert.assertEquals(sub, array.subSeq(i, j));
+			Assert.assertEquals(iseq, cseq);
 			
 			++i; --j;
+			array = copy.copy();
 		}
-		*/
 	}
 	
 	static <T> void assertEquals(
@@ -214,58 +208,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			Assert.assertEquals(actual.get(srcPos + i), expected.get(desPos + i));
 		}
 	}
-	
-	/*
-	@Test
-	public void seal1() {
-		final Array<Integer> array = new Array<Integer>(10).fill(11);
-		final Array<Integer> copy = array.copy();
-		
-		final ISeq<Integer> sealed = copy.toISeq();
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, i);
-			
-			Assert.assertEquals(sealed, copy);
-		}
-	}
-	
-	@Test
-	public void seal2() {
-		final Array<Integer> array = new Array<Integer>(10).fill(11);
-		final Array<Integer> copy = array.copy();
-		
-		final ISeq<Integer> sealed = copy.toISeq();
-		array.fill(34);
-		Assert.assertEquals(sealed, copy);
-	}
-	
-	@Test
-	public void seal3() {
-		final Array<Integer> array = new Array<Integer>(10).fill(10);
-		final Array<Integer> copy = array.copy();
-		
-		final ISeq<Integer> sealed = copy.toISeq();
-		
-		for (ListIterator<Integer> it = array.iterator(); it.hasNext();) {
-			it.next();
-			it.set(4);
-		}
-		
-		Assert.assertEquals(sealed, copy);
-		Assert.assertEquals(array, new Array<Integer>(10).fill(4));
-	}
-	
-	@Test
-	public void seal4() {
-		final Array<Integer> array = new Array<Integer>(10);
-		final Array<Integer> copy = array.copy();
-		
-		final ISeq<Integer> sealed = copy.toISeq();
-		array.subSeq(0, 4).set(0, 1);
-		Assert.assertEquals(sealed, copy);
-		Assert.assertEquals(array.get(0), new Integer(1));
-	}
-	*/
 	
 	@Test
 	public void foreach() {

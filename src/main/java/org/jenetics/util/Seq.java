@@ -219,7 +219,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param start low end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
 	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
-	 * 		  ({@code start < 0 || start > lenght()}).
+	 * 		  ({@code start < 0 || start > length()}).
 	 */
 	public Seq<T> subSeq(final int start);
 	
