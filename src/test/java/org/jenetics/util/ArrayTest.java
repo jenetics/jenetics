@@ -26,7 +26,6 @@ import static java.util.Arrays.asList;
 import static org.jenetics.util.Predicates.nil;
 import static org.jenetics.util.Predicates.not;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -68,8 +67,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void newFromCollection() {
-		final Array<Integer> a1 = new Array<Integer>(asList(1, 2, 3, 4, 5));
-		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a1 = new Array<Integer>(1, 2, 3, 4, 5);
+		final Array<Integer> a2 = new Array<Integer>(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.append(a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length());
@@ -80,8 +79,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void newFromSubArray() {
-		final Array<Integer> a1 = new Array<Integer>(asList(0, 1, 2, 3, 4, 5, 6, 7));
-		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a1 = new Array<Integer>(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = new Array<Integer>(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.subSeq(0, 6).append(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
@@ -92,8 +91,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void newFromOtherSubArray() {
-		final Array<Integer> a1 = new Array<Integer>(asList(0, 1, 2, 3, 4, 5, 6, 7));
-		final Array<Integer> a2 = new Array<Integer>(asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a1 = new Array<Integer>(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = new Array<Integer>(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.subSeq(1, 6).append(a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
@@ -104,8 +103,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void create4() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
-		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10, 11, 12, 13));
+		final Array<Integer> a1 = new Array<Integer>(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = new Array<Integer>(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.append(a2.subSeq(2, 7));
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
@@ -239,30 +238,30 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void append1() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5));
-		final Array<Integer> a2 = new Array<Integer>(Arrays.asList(6, 7, 8, 9, 10));
+		final Array<Integer> a1 = new Array<Integer>(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a2 = new Array<Integer>(6, 7, 8, 9, 10);
 		final Array<Integer> a3 = a1.append(a2);
 		
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3, 
-				new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+				new Array<Integer>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 	
 	@Test
 	public void append2() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5));
-		final Array<Integer> a3 = a1.append(Arrays.asList(6, 7, 8, 9, 10));
+		final Array<Integer> a1 = new Array<Integer>(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a3 = a1.append(asList(6, 7, 8, 9, 10));
 		
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3, 
-				new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+				new Array<Integer>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 	
 	@Test
 	public void append3() {
-		final Array<Integer> a1 = new Array<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5));
+		final Array<Integer> a1 = new Array<Integer>(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a2 = a1.append(6);
 		final Array<Integer> a3 = a1.append(6);
 		

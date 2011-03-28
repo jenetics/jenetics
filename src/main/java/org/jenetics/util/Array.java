@@ -55,6 +55,20 @@ public final class Array<T>
 {
 	private static final long serialVersionUID = 2L;
 			
+	@SuppressWarnings("rawtypes")
+	private static final Array EMPTY = new Array(0);
+	
+	/**
+	 * Return the empty array.
+	 * 
+	 * @param <T> the element type.
+	 * @return empty array.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Array<T> empty() {
+		return (Array<T>)EMPTY;
+	}	
+	
 	Array(final ArrayRef array, final int start, final int end) {
 		super(array, start, end);
 	}
