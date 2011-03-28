@@ -73,7 +73,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * than a {@code seq.indexOf()} call.
 	 * 
 	 * [code]
-	 *     final Seq<Integer> values = new Array<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+	 *     final Seq<Integer> values = new Array<Integer>(1, 2, 3, 4, 5);
 	 *     final AtomicInteger sum = new AtomicInteger(0);
 	 *     values.foreach(new Predicate<Integer>() {
 	 *         public boolean evaluate(final Integer value) {
@@ -249,10 +249,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * 
 	 * [code]
 	 *     int hashCode = 1;
-	 *     Iterator<E> i = seq.iterator();
-	 *     while (i.hasNext()) {
-	 *         final E obj = i.next();
-	 *         hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
+	 *     final Iterator<E> it = seq.iterator();
+	 *     while (it.hasNext()) {
+	 *         final E obj = it.next();
+	 *         hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 *     }
 	 * [/code]
 	 * 

@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 import static org.jenetics.util.Validator.nonNull;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,28 +39,6 @@ import java.util.Random;
  * @version $Id$
  */
 public final class ArrayUtils {
-	
-	/**
-	 * The empty, immutable array. This array is {@link Serializable}.
-	 */
-	@SuppressWarnings("rawtypes")
-	public static final Array EMPTY_ARRAY = new Array(0);
-	
-	private ArrayUtils() {
-		throw new AssertionError("Don't create an 'ArrayUtils' instance.");
-	}
-	
-	/**
-	 * Return the empty, immutable array. This array is {@link Serializable}.
-	 * 
-	 * @see #EMPTY_ARRAY
-	 * @param <T> the element type.
-	 * @return the empty, immutable array.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Array<T> emptyArray() {
-		return (Array<T>)EMPTY_ARRAY;
-	}
 	
 	/**
 	 * Swap two elements of an given array.
@@ -773,41 +750,6 @@ public final class ArrayUtils {
 		subset(n, sub,random);
 		return sub;
 	}
-	
-//	/**
-//	 * Return a random subset
-//	 * 
-//	 * @param n
-//	 * @param probability
-//	 * @param random
-//	 * @return
-//	 */
-//	public static int[] subset(
-//		final int n, 
-//		final double probability, 
-//		final Random random
-//	) {
-//		nonNull(random, "Random");
-//		if (n < 0) {
-//			throw new IllegalArgumentException(String.format(
-//					"n smaller than 0: %s.", n
-//				));
-//		}
-//		if (probability < 0 || probability > 1) {
-//			throw new IllegalArgumentException(String.format(
-//					"Probability not in range [0, 1]: %f", probability
-//				));
-//		}
-//		
-//		for (int i = 0; i < n; ++i) {
-//			if (random.nextDouble() < probability) {
-//				
-//			}
-//		}
-//		
-//		
-//		return null;
-//	}
 	
 	/**
 	 * <p>
