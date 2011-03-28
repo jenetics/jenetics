@@ -29,6 +29,10 @@ import java.util.RandomAccess;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
+ * <br/>
+ * Use the {@link #asList()} method to work together with the 
+ * <a href="http://download.oracle.com/javase/6/docs/technotes/guides/collections/index.html">
+ * Java Collection Framework</a>.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
