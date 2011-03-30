@@ -71,7 +71,7 @@
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" 
 			srcdir="${source.dir}" 
-			debug="false" 
+			debug="true" 
 			source="1.6" 
 			target="1.6" 
 			encoding="UTF-8" 
@@ -93,7 +93,7 @@
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" 
 			srcdir="${example.dir}" 
-			debug="false" 
+			debug="true" 
 			source="1.6" 
 			target="1.6" 
 			encoding="UTF-8" 
