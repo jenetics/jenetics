@@ -132,7 +132,6 @@
 			index="true" 
 			update="true" 
 			level="9" 
-			filesonly="true"
 			duplicate="preserve"
 		>
 			<fileset dir="${build.dir}" >
@@ -159,7 +158,6 @@
 			filesetmanifest="mergewithoutmain" 
 			index="true" 
 			update="true" 
-			filesonly="true"
 			level="9" 
 			duplicate="preserve"
 		>
