@@ -58,6 +58,10 @@ public final class Timer
 	/*private[test]*/ long _stop = 0;
 	/*private[test]*/ long _sum = 0;
 	
+	private long _samples = 0;
+	private double _mean = Double.NaN;
+	private double _m2 = Double.NaN;
+	
 	/**
 	 * Create a new time with the given label. The label is use in the 
 	 * {@link #toString()} method.
@@ -88,7 +92,21 @@ public final class Timer
 	 */
 	public void stop() {
 		_stop = System.nanoTime();
-		_sum += _stop - _start;
+		final long time = _stop - _start;
+		
+		if (_samples == 0) {
+			_mean = 0;
+			_m2 = 0;
+		}
+		final double data = time;
+		final double delta = data - _mean;
+		
+		_mean += delta/(double)(++_samples);
+		_m2 += delta*(data - _mean);
+		_sum += time;
+		
+		++_samples;
+		
 	}
 	
 	/**
@@ -99,6 +117,9 @@ public final class Timer
 		_sum = 0;
 		_start = 0;
 		_stop = 0;
+		_samples = 0;
+		_m2 = Double.NaN;
+		_mean = Double.NaN;
 	}
 	
 	/**
