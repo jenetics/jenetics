@@ -286,7 +286,12 @@
 		</copy>		
 		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
-		</copy>				
+		</copy>			
+		<copy 
+			file="${basedir}/doc/site/inherit.gif" 
+			todir="${javadoc.dir}/resources" 
+			overwrite="true"
+		/>
 		<replace dir="${javadoc.dir}" token="@!identifier!@" value="${identifier}" />
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
