@@ -151,6 +151,31 @@ public final class Timer
 	}
 	
 	/**
+	 * Return the average of the measured times.
+	 * 
+	 * @return the average of the measured times.
+	 */
+	public Measurable<Duration> getTimeMean() {
+		return Measure.valueOf(_mean, SI.NANO(SI.SECOND));
+	}
+	
+	/**
+	 * Return the variance of the measured times.
+	 * 
+	 * @return the variance of the measured times.
+	 */
+	public Measurable<Duration> getTimeVariance() {
+		double variance = Double.NaN;
+		if (_samples == 1) {
+			variance = _m2;
+		} else if (_samples > 1) {
+			variance = _m2/(double)(_samples - 1);
+		}
+		
+		return Measure.valueOf(variance, SI.NANO(SI.SECOND));
+	}
+	
+	/**
 	 * Return the timer label.
 	 * 
 	 * @return the timer label.
