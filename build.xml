@@ -104,6 +104,7 @@
 			<compilerarg value="-Xlint:deprecation" />
 			<classpath refid="classpath" />
 			<include name="org/jenetics/examples/*.java" />
+			<include name="org/jenetics/performance/*.java" />
 		</javac>		
 	</target>	
 	
@@ -191,6 +192,7 @@
 		>
 			<fileset dir="${build.dir}" >
 				<include name="org/jenetics/examples/*" />
+				<include name="org/jenetics/performance/*" />
 				<exclude name="*.jar" />
 			</fileset>
 			<manifest>
