@@ -172,6 +172,10 @@ public class Float64Chromosome
 		return AbstractChromosome.gene(index);
 	}
 	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+	
 	static final XMLFormat<Float64Chromosome> 
 	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class) 
 	{
@@ -217,6 +221,9 @@ public class Float64Chromosome
 		}
 	};
 
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException 
