@@ -109,8 +109,6 @@ public final class ArrayUtils {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void swap(final MSeq<T> array, final int i, final int j) {
 		nonNull(array, "Array");
@@ -129,8 +127,6 @@ public final class ArrayUtils {
 	 *			<tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array or comparator is 
 	 *			{@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void sort(
 		final Array<T> array, final int from, final int to,
@@ -143,6 +139,7 @@ public final class ArrayUtils {
 		
 		@SuppressWarnings("unchecked")
 		final Comparator<Object> c = (Comparator<Object>)comparator;
+		array._array.cloneIfSealed();
 		Arrays.sort(array._array.data, from + array._start, to + array._start, c);
 	}
 	
@@ -152,15 +149,12 @@ public final class ArrayUtils {
 	 * 
 	 * @throws NullPointerException if the give array or comparator is 
 	 *			{@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		({@code array.isSealed() == true}).
 	 */
 	public static <T> void sort(
 		final Array<T> array, final Comparator<? super T> comparator
 	) {
 		nonNull(array, "Array");
 		nonNull(comparator, "Comparator");
-		array._array.cloneIfSealed();
 		
 		sort(array, 0, array.length(), comparator);
 	}
@@ -172,8 +166,6 @@ public final class ArrayUtils {
 	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array, final int from, final int to) 
@@ -182,6 +174,7 @@ public final class ArrayUtils {
 		array._array.cloneIfSealed();
 		array.checkIndex(from, to);
 		
+		array._array.cloneIfSealed();
 		Arrays.sort(array._array.data, from + array._start, to + array._start);
 	}
 	

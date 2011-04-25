@@ -66,8 +66,7 @@ public class Until {
 			}
 			
 			return proceed;
-		}
-		
+		}	
 	}
 	
 	/**

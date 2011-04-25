@@ -552,30 +552,30 @@ public class GeneticAlgorithm<
 	 *  
 	 *  //Starting the GA in separate thread.
 	 *  final Thread thread = new Thread(new Runnable() {
-	 *     public void run() {
-	 *           while (!Thread.currentThread().isInterrupted() && 
-	 *                  !stopCondition.evaluate(ga)) 
-	 *           {
-	 *               if (ga.getGeneration() == 0) {
-	 *                   ga.setup();
-	 *               } else {
-	 *                   ga.evolve();
-	 *               }
-	 *           }
-	 *       }
-	 *   });
-	 *   thread.start();
+	 *      public void run() {
+	 *          while (!Thread.currentThread().isInterrupted() && 
+	 *                 !stopCondition.evaluate(ga)) 
+	 *          {
+	 *              if (ga.getGeneration() == 0) {
+	 *                  ga.setup();
+	 *              } else {
+	 *                  ga.evolve();
+	 *              }
+	 *          }
+	 *      }
+	 *  });
+	 *  thread.start();
 	 *  
 	 *   //Changing the GA parameters outside the evolving thread. All parameters
 	 *   //are changed before the next evolve step.
-	 *   ga.getLock().lock();
-	 *   try {
-	 *       ga.setAlterer(new Mutation(Probability.valueOf(0.02));
-	 *       ga.setPopulationSize(55);
-	 *       ga.setMaximalPhenotypeAge(30);
-	 *   } finally {
-	 *       ga.getLock().unlock();
-	 *   }
+	 *  ga.getLock().lock();
+	 *  try {
+	 *      ga.setAlterer(new Mutation(Probability.valueOf(0.02));
+	 *      ga.setPopulationSize(55);
+	 *      ga.setMaximalPhenotypeAge(30);
+	 *  } finally {
+	 *      ga.getLock().unlock();
+	 *  }
 	 * [/code]
 	 * 
 	 * You can use the same lock if you want get a consistent state of the used

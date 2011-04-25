@@ -22,7 +22,7 @@
  */
 package org.jenetics.performance;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import org.jenetics.util.Timer;
 
@@ -67,12 +67,22 @@ public class PerformanceMeasure {
 			
 		}
 		
-		private void printHeader() {
-			
+		private void printHeader() throws IOException {
+			_printer.append("+");
+			for (int i = 0; i < _widths.length; ++i) {
+				for (int j = 0, n = _widths[i]; j < n; ++j) {
+					_printer.append("-");
+				}
+				_printer.append("+");
+			}
 		}
 	}
 	
 }
+
+
+
+
 
 
 

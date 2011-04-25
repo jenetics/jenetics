@@ -177,6 +177,10 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		return AbstractChromosome.gene(index);
 	}
 	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+	
 	static final XMLFormat<Integer64Chromosome> 
 	XML = new XMLFormat<Integer64Chromosome>(Integer64Chromosome.class) {
 		private static final String LENGTH = "length";
@@ -221,6 +225,10 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		{
 		}
 	};
+	
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException 

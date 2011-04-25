@@ -28,7 +28,7 @@ package org.jenetics.util;
  * [code]
  * 	 final MinMax<Double> minMax = new MinMax<Double>();
  * 	 final Variance<Double> variance = new Variance<Double>();
- * 	 final Qunatile<Double> quantile = new Quantile<Double>();
+ * 	 final Quantile<Double> quantile = new Quantile<Double>();
  * 	 
  * 	 final List<Double> values = ...;
  * 	 Accumulators.accumulate(values, minMax, variance, quantile);
