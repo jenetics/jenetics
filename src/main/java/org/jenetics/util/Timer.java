@@ -61,6 +61,7 @@ public final class Timer
 	private long _samples = 0;
 	private double _mean = Double.NaN;
 	private double _m2 = Double.NaN;
+	private final Accumulators.MinMax<Long> _minmax = new Accumulators.MinMax<Long>();
 	
 	/**
 	 * Create a new time with the given label. The label is use in the 
@@ -93,6 +94,7 @@ public final class Timer
 	public void stop() {
 		_stop = System.nanoTime();
 		final long time = _stop - _start;
+		_minmax.accumulate(time);
 		
 		if (_samples == 0) {
 			_mean = 0;
@@ -155,7 +157,7 @@ public final class Timer
 	 * 
 	 * @return the average of the measured times.
 	 */
-	public Measurable<Duration> getTimeMean() {
+	public Measurable<Duration> getMean() {
 		return Measure.valueOf(_mean, SI.NANO(SI.SECOND));
 	}
 	
@@ -164,7 +166,7 @@ public final class Timer
 	 * 
 	 * @return the variance of the measured times.
 	 */
-	public Measurable<Duration> getTimeVariance() {
+	public Measurable<Duration> getVariance() {
 		double variance = Double.NaN;
 		if (_samples == 1) {
 			variance = _m2;
@@ -173,6 +175,14 @@ public final class Timer
 		}
 		
 		return Measure.valueOf(variance, SI.NANO(SI.SECOND));
+	}
+	
+	public Measurable<Duration> getMin() {
+		return Measure.valueOf(_minmax.getMin(), SI.NANO(SI.SECOND));
+	}
+	
+	public Measurable<Duration> getMax() {
+		return Measure.valueOf(_minmax.getMax(), SI.NANO(SI.SECOND));
 	}
 	
 	/**

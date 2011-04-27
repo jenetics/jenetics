@@ -22,44 +22,90 @@
  */
 package org.jenetics.performance;
 
-import javax.measure.unit.SI;
-
 import org.jenetics.util.Array;
+import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ArrayTest {
+public class ArrayTest extends PerfTest {
 
-	static final class Getter {
-		private static final int N = 1000;
-		private static final int LOOPS = 1000000;
-		final Array<Integer> array = new Array<Integer>(N);
-		
-		public void forloop() {
-			
-			final Timer timer = new Timer("for loop");
-			
-			for (int i = LOOPS; --i >= 0;) {
-				timer.start();
-				for (int j = N; --j >= 0;) {
-					array.get(j);
-				}
-				timer.stop();
-			}
-			
-			final double nanos = timer.getTime().doubleValue(SI.NANO(SI.SECOND));
-			System.out.println(String.format(
-					"Getter: %s ns", nanos/(N*LOOPS)
-				));
+	private final int N = 1000000;
+	private final int LOOPS = 1000;
+	private final Array<Integer> _array = new Array<Integer>(N);
+	
+	public ArrayTest() {
+		super("Array");
+	}
+	
+	
+	private void init() {
+		for (int j = N; --j >= 0;) {
+			_array.set(j, 23);
+			_array.get(j);
+		}
+		for (int j = N; --j >= 0;) {
+			_array.set(j, 2);
+			_array.get(j);
 		}
 	}
 	
+	private void forLoopGetter() {
+		final Timer timer = newTimer("for-loop (getter)");
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			for (int j = N; --j >= 0;) {
+				_array.get(j);
+			}
+			timer.stop();
+		}
+	}
+	
+	private void foreachLoopGetter() {
+		final Timer timer = newTimer("foreach");
+		
+		final Predicate<Integer> getter = new Predicate<Integer>() {
+			@Override public boolean evaluate(Integer object) {
+				@SuppressWarnings("unused") final Integer i = object;
+				return true;
+			}
+		};
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			_array.foreach(getter);
+			timer.stop();
+		}
+	}
+	
+	private void forLoopSetter() {
+		final Timer timer = newTimer("for-loop (setter)");
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			for (int j = N; --j >= 0;) {
+				_array.set(j, 1);
+			}
+			timer.stop();
+		}
+	}
+	
+	@Override
+	protected void measure() {
+		init();
+		
+		foreachLoopGetter();
+		forLoopGetter();
+		forLoopSetter();
+	}
+	
 	public static void main(String[] args) {
-		final Getter getter = new Getter();
-		getter.forloop();
+		final ArrayTest test = new ArrayTest();
+		test.measure();
+		System.out.println(test);
 	}
 	
 }
