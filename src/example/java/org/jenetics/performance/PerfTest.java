@@ -22,6 +22,7 @@
  */
 package org.jenetics.performance;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import org.jenetics.util.Timer;
  * @version $Id$
  */
 public abstract class PerfTest {
+	
+	protected int N = 1;
 
 	private final String _group;
 	private final List<Timer> _timers = new ArrayList<Timer>();
@@ -42,38 +45,71 @@ public abstract class PerfTest {
 		_group = group;
 	}
 	
+	protected abstract int calls();
+	
 	protected Timer newTimer(final String name) {
 		final Timer timer = new Timer(name);
 		_timers.add(timer);
 		return timer;
 	}
 	
-	protected abstract void measure();
+	protected abstract PerfTest measure();	
 	
+	public void print(final PrintStream out) {
+		out.print(this);
+	}
 	
 	@Override
 	public String toString() {
-		final String header = "| %-20s | %8s      | %8s      | %8s      |";
-		final String row =    "| %-20s | %05.8f ms | %05.8f ms | %05.8f ms |";
+		final int[] columns = new int[]{37, 16, 16, 16}; 
+		final String hhline = hline(columns, '=');
+		final String hline = hline(columns, '-');
+		
+		final String header = String.format(
+				"| %%-%ds | %%-%ds | %%-%ds | %%-%ds |",
+				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
+			);
+		final String row = String.format(
+				"| %%-%ds | %%%df ns | %%%df ns | %%%df ns |",
+				columns[0] - 2, columns[1] - 5, columns[2] - 5, columns[3] - 5
+			);
 		
 		final StringBuilder out = new StringBuilder();
-		out.append("+======================+===============+===============+===============+\n");
+		out.append(hhline).append('\n');
 		out.append(String.format(header, _group, "Mean", "Min", "Max")).append("\n");
-		out.append("+======================+===============+===============+===============+\n");
+		out.append(hhline).append('\n');
 		
 		for (Timer timer : _timers) {
 			out.append(String.format(
 					row, 
 					timer.getLabel(), 
-					timer.getMean().doubleValue(SI.MILLI(SI.SECOND)),
-					timer.getMin().doubleValue(SI.MILLI(SI.SECOND)),
-					timer.getMax().doubleValue(SI.MILLI(SI.SECOND))
+					timer.getMean().doubleValue(SI.NANO(SI.SECOND))/calls(),
+					timer.getMin().doubleValue(SI.NANO(SI.SECOND))/calls(),
+					timer.getMax().doubleValue(SI.NANO(SI.SECOND))/calls()
 				));
 			out.append("\n");
-			out.append("+----------------------+---------------+---------------+---------------+\n");
+			out.append(hline).append('\n');
+		}
+
+		return out.toString();
+	}
+	
+	private static String hline(final int[] columns, final char c) {
+		final StringBuilder out = new StringBuilder();
+		out.append('+');
+		for (int i = 0; i < columns.length; ++i) {
+			for (int j = 0; j < columns[i]; ++j) {
+				out.append(c);
+			}
+			out.append('+');
 		}
 		
 		return out.toString();
+	}
+	
+	public static void main(final String[] args) {
+		//System.getProperties().list(System.out);
+		new ArrayTest().measure().print(System.out);
 	}
 	
 }

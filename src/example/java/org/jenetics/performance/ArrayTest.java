@@ -22,7 +22,11 @@
  */
 package org.jenetics.performance;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import org.jenetics.util.Array;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
 
@@ -32,7 +36,7 @@ import org.jenetics.util.Timer;
  */
 public class ArrayTest extends PerfTest {
 
-	private final int N = 1000000;
+	private int N = 1000000;
 	private final int LOOPS = 1000;
 	private final Array<Integer> _array = new Array<Integer>(N);
 	
@@ -40,6 +44,10 @@ public class ArrayTest extends PerfTest {
 		super("Array");
 	}
 	
+	@Override
+	protected int calls() {
+		return N;
+	}
 	
 	private void init() {
 		for (int j = N; --j >= 0;) {
@@ -93,19 +101,71 @@ public class ArrayTest extends PerfTest {
 		}
 	}
 	
+	private void fill() {
+		final Timer timer = newTimer("fill(Integer)");
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			_array.fill(1);
+			timer.stop();
+		}
+	}
+	
+	private void fillFactory() {
+		final Timer timer = newTimer("fill(Factory)");
+		
+		final Factory<Integer> factory = new Factory<Integer>() {
+			@Override
+			public Integer newInstance() {
+				return 1;
+			}
+		};
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			_array.fill(factory);
+			timer.stop();
+		}
+	}
+	
+	private void iterator() {
+		final Timer timer = newTimer("iterator");
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			for (Iterator<Integer> it = _array.iterator(); it.hasNext();) {
+				it.next();
+			}
+			timer.stop();
+		}
+	}
+	
+	private void listIterator() {
+		final Timer timer = newTimer("listIterator");
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			for (ListIterator<Integer> it = _array.listIterator(); it.hasNext();) {
+				it.next();
+				it.set(1);
+			}
+			timer.stop();
+		}
+	}
+	
 	@Override
-	protected void measure() {
+	protected ArrayTest measure() {
 		init();
 		
 		foreachLoopGetter();
 		forLoopGetter();
 		forLoopSetter();
-	}
-	
-	public static void main(String[] args) {
-		final ArrayTest test = new ArrayTest();
-		test.measure();
-		System.out.println(test);
+		iterator();
+		listIterator();
+		fill();
+		fillFactory();
+		
+		return this;
 	}
 	
 }
