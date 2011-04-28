@@ -694,7 +694,7 @@ public final class ArrayUtils {
 		}
 		
 		return partition;
-	}	
+	}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.

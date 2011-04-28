@@ -156,18 +156,27 @@ public final class Timer
 	}
 	
 	/**
-	 * Return the average of the measured times.
+	 * The number of measured interim times.
 	 * 
-	 * @return the average of the measured times.
+	 * @return the number of measured interim times.
+	 */
+	public long getSamples() {
+		return _minmax.getSamples();
+	}
+	
+	/**
+	 * Return the average of the measured interim times.
+	 * 
+	 * @return the average of the measured interim times.
 	 */
 	public Measurable<Duration> getMean() {
 		return Measure.valueOf(_mean, SI.NANO(SI.SECOND));
 	}
 	
 	/**
-	 * Return the variance of the measured times.
+	 * Return the variance of the measured interim times.
 	 * 
-	 * @return the variance of the measured times.
+	 * @return the variance of the measured interim times.
 	 */
 	public Measurable<Duration> getVariance() {
 		double variance = Double.NaN;
@@ -180,10 +189,20 @@ public final class Timer
 		return Measure.valueOf(variance, SI.NANO(SI.SECOND));
 	}
 	
+	/**
+	 * Return the minimal measured interim time.
+	 * 
+	 * @return the minimal measured interim time.
+	 */
 	public Measurable<Duration> getMin() {
 		return Measure.valueOf(_minmax.getMin(), SI.NANO(SI.SECOND));
 	}
 	
+	/**
+	 * Return the maximal measured interim time.
+	 * 
+	 * @return the maximal measured interim time.
+	 */
 	public Measurable<Duration> getMax() {
 		return Measure.valueOf(_minmax.getMax(), SI.NANO(SI.SECOND));
 	}
