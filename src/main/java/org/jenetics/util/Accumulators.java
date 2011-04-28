@@ -45,6 +45,12 @@ public final class Accumulators {
 		throw new AssertionError("Don't create an 'Accumulators' instance.");
 	}	
 	
+	public static final Accumulator<Object> NULL =
+		new Accumulator<Object>() {
+			@Override public void accumulate(Object value) {
+			}
+		};
+	
 	/**
 	 * Calculates min value.
 	 * 
