@@ -35,8 +35,6 @@ import javax.measure.unit.SI;
 
 import javolution.lang.Reusable;
 
-import org.jenetics.util.Accumulators.MinMax;
-
 /**
  * Timer for measure the performance of the GA. The timer uses nano second
  * precision (by using {@link System#nanoTime()}). This timer is not synchronized.
@@ -63,8 +61,8 @@ public final class Timer
 	private long _samples = 0;
 	private double _mean = Double.NaN;
 	private double _m2 = Double.NaN;
-	// TODO: Workaround for serialization problem.
-	private transient final MinMax<Long> _minmax = new MinMax<Long>();
+
+	private transient Accumulator<? super Long> _accumulator = Accumulators.NULL;
 	
 	/**
 	 * Create a new time with the given label. The label is use in the 
@@ -85,6 +83,16 @@ public final class Timer
 	}
 	
 	/**
+	 * Set the accumulator for the interim results.
+	 * 
+	 * @param accumulator the accumulator used for the interim results.
+	 * @throws NullPointerException if the {@code accumulator} is {@code null}.
+	 */
+	public void setAccumulator(final Accumulator<? super Long> accumulator) {
+		_accumulator = nonNull(accumulator, "Accumulator");
+	}
+	
+	/**
 	 * Start the timer.
 	 */
 	public void start() {
@@ -97,7 +105,7 @@ public final class Timer
 	public void stop() {
 		_stop = System.nanoTime();
 		final long time = _stop - _start;
-		_minmax.accumulate(time);
+		_accumulator.accumulate(time);
 		
 		if (_samples == 0) {
 			_mean = 0;
@@ -153,58 +161,6 @@ public final class Timer
 	 */
 	public Measurable<Duration> getInterimTime() {
 		return Measure.valueOf(_stop - _start, SI.NANO(SI.SECOND));
-	}
-	
-	/**
-	 * The number of measured interim times.
-	 * 
-	 * @return the number of measured interim times.
-	 */
-	public long getSamples() {
-		return _minmax.getSamples();
-	}
-	
-	/**
-	 * Return the average of the measured interim times.
-	 * 
-	 * @return the average of the measured interim times.
-	 */
-	public Measurable<Duration> getMean() {
-		return Measure.valueOf(_mean, SI.NANO(SI.SECOND));
-	}
-	
-	/**
-	 * Return the variance of the measured interim times.
-	 * 
-	 * @return the variance of the measured interim times.
-	 */
-	public Measurable<Duration> getVariance() {
-		double variance = Double.NaN;
-		if (_samples == 1) {
-			variance = _m2;
-		} else if (_samples > 1) {
-			variance = _m2/(double)(_samples - 1);
-		}
-		
-		return Measure.valueOf(variance, SI.NANO(SI.SECOND));
-	}
-	
-	/**
-	 * Return the minimal measured interim time.
-	 * 
-	 * @return the minimal measured interim time.
-	 */
-	public Measurable<Duration> getMin() {
-		return Measure.valueOf(_minmax.getMin(), SI.NANO(SI.SECOND));
-	}
-	
-	/**
-	 * Return the maximal measured interim time.
-	 * 
-	 * @return the maximal measured interim time.
-	 */
-	public Measurable<Duration> getMax() {
-		return Measure.valueOf(_minmax.getMax(), SI.NANO(SI.SECOND));
 	}
 	
 	/**

@@ -26,8 +26,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.measure.unit.SI;
-
+import org.jenetics.stat.Variance;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Timer;
 
 /**
@@ -40,6 +41,8 @@ public abstract class PerfTest {
 
 	private final String _group;
 	private final List<Timer> _timers = new ArrayList<Timer>();
+	private final List<Variance<Long>> _variances = new ArrayList<Variance<Long>>();
+	private final List<MinMax<Long>> _minmax = new ArrayList<MinMax<Long>>();
 	
 	public PerfTest(final String group) {
 		_group = group;
@@ -48,8 +51,21 @@ public abstract class PerfTest {
 	protected abstract int calls();
 	
 	protected Timer newTimer(final String name) {
+		final Variance<Long> variance = new Variance<Long>();
+		final MinMax<Long> minmax = new MinMax<Long>();
+		_variances.add(variance);
+		_minmax.add(minmax);
+		
 		final Timer timer = new Timer(name);
+		timer.setAccumulator(new Accumulator<Long>() {
+			@Override public void accumulate(final Long value) {
+				variance.accumulate(value);
+				minmax.accumulate(value);
+			}
+		});
+		
 		_timers.add(timer);
+		
 		return timer;
 	}
 	
@@ -79,13 +95,17 @@ public abstract class PerfTest {
 		out.append(String.format(header, _group, "Mean", "Min", "Max")).append("\n");
 		out.append(hhline).append('\n');
 		
-		for (Timer timer : _timers) {
+		for (int i = 0, n = _timers.size(); i < n; ++i) {
+			final Timer timer = _timers.get(i);
+			final Variance<Long> variance = _variances.get(i);
+			final MinMax<Long> minmax = _minmax.get(i);
+			
 			out.append(String.format(
 					row, 
 					timer.getLabel(), 
-					timer.getMean().doubleValue(SI.NANO(SI.SECOND))/calls(),
-					timer.getMin().doubleValue(SI.NANO(SI.SECOND))/calls(),
-					timer.getMax().doubleValue(SI.NANO(SI.SECOND))/calls()
+					variance.getMean()/calls(),
+					minmax.getMin().doubleValue()/calls(),
+					minmax.getMax().doubleValue()/calls()
 				));
 			out.append("\n");
 			out.append(hline).append('\n');
