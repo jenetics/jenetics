@@ -35,6 +35,8 @@ import javax.measure.unit.SI;
 
 import javolution.lang.Reusable;
 
+import org.jenetics.util.Accumulators.MinMax;
+
 /**
  * Timer for measure the performance of the GA. The timer uses nano second
  * precision (by using {@link System#nanoTime()}). This timer is not synchronized.
@@ -61,7 +63,8 @@ public final class Timer
 	private long _samples = 0;
 	private double _mean = Double.NaN;
 	private double _m2 = Double.NaN;
-	private final Accumulators.MinMax<Long> _minmax = new Accumulators.MinMax<Long>();
+	// TODO: Workaround for serialization problem.
+	private transient final MinMax<Long> _minmax = new MinMax<Long>();
 	
 	/**
 	 * Create a new time with the given label. The label is use in the 
