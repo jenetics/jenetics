@@ -37,9 +37,8 @@ import org.jenetics.util.Timer;
  */
 public abstract class PerfTest {
 	
-	protected int N = 1;
-
 	private final String _group;
+	
 	private final List<Timer> _timers = new ArrayList<Timer>();
 	private final List<Variance<Long>> _variances = new ArrayList<Variance<Long>>();
 	private final List<MinMax<Long>> _minmax = new ArrayList<MinMax<Long>>();
