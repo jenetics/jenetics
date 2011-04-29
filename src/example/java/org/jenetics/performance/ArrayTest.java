@@ -22,10 +22,12 @@
  */
 package org.jenetics.performance;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
@@ -153,6 +155,30 @@ public class ArrayTest extends PerfTest {
 		}
 	}
 	
+	private void sort() {
+		final Timer timer = newTimer("sort");
+		
+		for (int i = _array.length(); --i >= 0;) {
+			_array.set(i, i);
+		}
+		ArrayUtils.shuffle(_array);
+		
+		final Comparator<Integer> comparator = new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o1.compareTo(o2);
+			}
+		};
+		
+		for (int i = 50; --i >= 0;) {
+			timer.start();
+			ArrayUtils.sort(_array, comparator);
+			timer.stop();
+			
+			ArrayUtils.shuffle(_array);
+		}
+	}
+	
 	@Override
 	protected ArrayTest measure() {
 		init();
@@ -164,6 +190,7 @@ public class ArrayTest extends PerfTest {
 		listIterator();
 		fill();
 		fillFactory();
+		sort();
 		
 		return this;
 	}
