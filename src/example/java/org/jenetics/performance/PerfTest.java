@@ -114,8 +114,8 @@ public abstract class PerfTest {
 					row, 
 					timer.getLabel(), 
 					new FormattableDuration(variance.getMean()),
-					new FormattableDuration(minmax.getMin().doubleValue()/calls()),
-					new FormattableDuration(minmax.getMax().doubleValue()/calls())
+					new FormattableDuration(minmax.getMin()),
+					new FormattableDuration(minmax.getMax())
 				));
 			out.append("\n");
 			out.append(hline).append('\n');
