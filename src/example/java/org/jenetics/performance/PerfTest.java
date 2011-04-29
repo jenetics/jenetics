@@ -22,9 +22,20 @@
  */
 package org.jenetics.performance;
 
+import static java.util.FormattableFlags.LEFT_JUSTIFY;
+
 import java.io.PrintStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Formattable;
+import java.util.Formatter;
 import java.util.List;
+
+import javax.measure.Measurable;
+import javax.measure.Measure;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
 
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator;
@@ -85,8 +96,8 @@ public abstract class PerfTest {
 				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
 			);
 		final String row = String.format(
-				"| %%-%ds | %%%df ns | %%%df ns | %%%df ns |",
-				columns[0] - 2, columns[1] - 5, columns[2] - 5, columns[3] - 5
+				"| %%-%ds | %%%d.5s | %%%d.5s | %%%d.5s |",
+				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
 			);
 		
 		final StringBuilder out = new StringBuilder();
@@ -102,9 +113,9 @@ public abstract class PerfTest {
 			out.append(String.format(
 					row, 
 					timer.getLabel(), 
-					variance.getMean()/calls(),
-					minmax.getMin().doubleValue()/calls(),
-					minmax.getMax().doubleValue()/calls()
+					new FormattableDuration(variance.getMean()),
+					new FormattableDuration(minmax.getMin().doubleValue()/calls()),
+					new FormattableDuration(minmax.getMax().doubleValue()/calls())
 				));
 			out.append("\n");
 			out.append(hline).append('\n');
@@ -126,9 +137,94 @@ public abstract class PerfTest {
 		return out.toString();
 	}
 	
+	private static class FormattableDuration implements Formattable {
+
+		private final Measurable<Duration> _duration;
+		
+		public FormattableDuration(final Measurable<Duration> duration) {
+			_duration = duration;
+		}
+		
+		public FormattableDuration(final double nanos) {
+			this(Measure.valueOf(nanos, SI.NANO(SI.SECOND)));
+		}
+		
+		@Override
+		public void formatTo(
+			final Formatter formatter, 
+			final int flags, 
+			final int width,
+			final int precision
+		) {
+			final double nanos = _duration.doubleValue(SI.NANO(SI.SECOND));
+			final double micros = _duration.doubleValue(SI.MICRO(SI.SECOND));
+			final double millis = _duration.doubleValue(SI.MILLI(SI.SECOND));
+			final double seconds = _duration.doubleValue(SI.SECOND);
+			
+			final NumberFormat nf = NumberFormat.getNumberInstance();
+			nf.setMinimumFractionDigits(precision);
+			nf.setMaximumFractionDigits(precision);
+			
+			String unit = "";
+			String value = "";
+			if ((long)seconds > 0) {
+				unit = "s ";
+				value = nf.format(seconds);
+			} else if ((long)millis > 0) {
+				unit = "ms";
+				value = nf.format(millis);
+			} else if ((long)micros > 0) {
+				unit = "µs";
+				value = nf.format(micros);
+			} else {
+				unit = "ns";
+				value = nf.format(nanos);
+			}
+		
+			String result = value + " " + unit;
+			if (result.length() < width) {
+				if ((flags & LEFT_JUSTIFY) == LEFT_JUSTIFY) {
+					result = result + padding(width - result.length());
+				} else {
+					result = padding(width - result.length()) + result;
+				}
+			}
+			
+			formatter.format(result);
+			
+		}
+		
+		private String padding(final int width) {
+			final char[] chars = new char[width];
+			Arrays.fill(chars, ' ');
+			return new String(chars);
+		}
+		
+	}
+	
+	
 	public static void main(final String[] args) {
 		//System.getProperties().list(System.out);
 		new ArrayTest().measure().print(System.out);
+		new PopulationTest().measure().print(System.out);
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
