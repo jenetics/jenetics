@@ -179,6 +179,16 @@ public class ArrayTest extends PerfTest {
 		}
 	}
 	
+	private void copy() {
+		final Timer timer = newTimer("copy");
+		
+		for (int i = LOOPS; --i >= 0;) {
+			timer.start();
+			_array.copy();
+			timer.stop();
+		}
+	}
+	
 	@Override
 	protected ArrayTest measure() {
 		init();
@@ -191,6 +201,7 @@ public class ArrayTest extends PerfTest {
 		fill();
 		fillFactory();
 		sort();
+		copy();
 		
 		return this;
 	}
