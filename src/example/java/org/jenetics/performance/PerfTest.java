@@ -113,9 +113,9 @@ public abstract class PerfTest {
 			out.append(String.format(
 					row, 
 					timer.getLabel(), 
-					new FormattableDuration(variance.getMean()),
-					new FormattableDuration(minmax.getMin()),
-					new FormattableDuration(minmax.getMax())
+					FormattableDuration(variance.getMean()),
+					FormattableDuration(minmax.getMin()),
+					FormattableDuration(minmax.getMax())
 				));
 			out.append("\n");
 			out.append(hline).append('\n');
@@ -137,76 +137,71 @@ public abstract class PerfTest {
 		return out.toString();
 	}
 	
-	private static class FormattableDuration implements Formattable {
-
-		private final Measurable<Duration> _duration;
-		
-		public FormattableDuration(final Measurable<Duration> duration) {
-			_duration = duration;
-		}
-		
-		public FormattableDuration(final double nanos) {
-			this(Measure.valueOf(nanos, SI.NANO(SI.SECOND)));
-		}
-		
-		@Override
-		public void formatTo(
-			final Formatter formatter, 
-			final int flags, 
-			final int width,
-			final int precision
-		) {
-			final double nanos = _duration.doubleValue(SI.NANO(SI.SECOND));
-			final double micros = _duration.doubleValue(SI.MICRO(SI.SECOND));
-			final double millis = _duration.doubleValue(SI.MILLI(SI.SECOND));
-			final double seconds = _duration.doubleValue(SI.SECOND);
+	private static Formattable FormattableDuration(final double nanos) {
+		return new Formattable() {
 			
-			final NumberFormat nf = NumberFormat.getNumberInstance();
-			nf.setMinimumFractionDigits(precision);
-			nf.setMaximumFractionDigits(precision);
+			private final Measurable<Duration> 
+			_duration = Measure.valueOf(nanos, SI.NANO(SI.SECOND));
 			
-			String unit = "";
-			String value = "";
-			if ((long)seconds > 0) {
-				unit = "s ";
-				value = nf.format(seconds);
-			} else if ((long)millis > 0) {
-				unit = "ms";
-				value = nf.format(millis);
-			} else if ((long)micros > 0) {
-				unit = "µs";
-				value = nf.format(micros);
-			} else {
-				unit = "ns";
-				value = nf.format(nanos);
-			}
-		
-			String result = value + " " + unit;
-			if (result.length() < width) {
-				if ((flags & LEFT_JUSTIFY) == LEFT_JUSTIFY) {
-					result = result + padding(width - result.length());
+			@Override
+			public void formatTo(
+				final Formatter formatter, 
+				final int flags, 
+				final int width,
+				final int precision
+			) {
+				final double nanos = _duration.doubleValue(SI.NANO(SI.SECOND));
+				final double micros = _duration.doubleValue(SI.MICRO(SI.SECOND));
+				final double millis = _duration.doubleValue(SI.MILLI(SI.SECOND));
+				final double seconds = _duration.doubleValue(SI.SECOND);
+				
+				final NumberFormat nf = NumberFormat.getNumberInstance();
+				nf.setMinimumFractionDigits(precision);
+				nf.setMaximumFractionDigits(precision);
+				
+				String unit = "";
+				String value = "";
+				if ((long)seconds > 0) {
+					unit = "s ";
+					value = nf.format(seconds);
+				} else if ((long)millis > 0) {
+					unit = "ms";
+					value = nf.format(millis);
+				} else if ((long)micros > 0) {
+					unit = "µs";
+					value = nf.format(micros);
 				} else {
-					result = padding(width - result.length()) + result;
+					unit = "ns";
+					value = nf.format(nanos);
 				}
+			
+				String result = value + " " + unit;
+				if (result.length() < width) {
+					if ((flags & LEFT_JUSTIFY) == LEFT_JUSTIFY) {
+						result = result + padding(width - result.length());
+					} else {
+						result = padding(width - result.length()) + result;
+					}
+				}
+				
+				formatter.format(result);
+				
 			}
 			
-			formatter.format(result);
+			private String padding(final int width) {
+				final char[] chars = new char[width];
+				Arrays.fill(chars, ' ');
+				return new String(chars);
+			}
 			
-		}
-		
-		private String padding(final int width) {
-			final char[] chars = new char[width];
-			Arrays.fill(chars, ' ');
-			return new String(chars);
-		}
-		
+		};
 	}
-	
 	
 	public static void main(final String[] args) {
 		//System.getProperties().list(System.out);
 		new ArrayTest().measure().print(System.out);
 		new PopulationTest().measure().print(System.out);
+		new ChromosomeTest().measure().print(System.out);
 	}
 	
 }
