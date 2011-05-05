@@ -22,57 +22,38 @@
  */
 package org.jenetics.performance;
 
-import org.jenetics.Float64Chromosome;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-@Suite("Chromosome")
-public class ChromosomeTest {
-
-	private int SIZE = 1000000;
-	private final int LOOPS = 10;
+public final class PerformanceTests {
 	
-	public ChromosomeTest() {
+	private PerformanceTests() {
 	}
-
 	
-	@Test(1)
-	public TestCase newInstance = new TestCase("newInstance()", LOOPS, SIZE) {
-		private final Float64Chromosome 
-		_chromosome = new Float64Chromosome(0, 1, getSize());
-		
-		@Override
-		protected void test() {
-			_chromosome.newInstance();
-		}
-	};
-	
-	@Test(2)
-	public TestCase newInstnaceISeq = new TestCase("newInstance(ISeq", LOOPS, SIZE) {
-		private final Float64Chromosome 
-		_chromosome = new Float64Chromosome(0, 1, getSize());
-		
-		@Override
-		protected void test() {
-			_chromosome.newInstance(_chromosome.toSeq());
-		}
-	};
-	
-	@Test(3)
-	public TestCase isValid = new TestCase("isValid", LOOPS, SIZE) {
-		private Float64Chromosome _chromosome = new Float64Chromosome(0, 1, getSize());
-		
-		@Override
-		protected void beforeTest() {
-			_chromosome = new Float64Chromosome(0, 1, getSize());
-		}
-		
-		@Override
-		protected void test() {
-			_chromosome.isValid();
-		}
-	};
+	public static void main(final String[] args) {
+		new TestSuite(ArrayTest.class).run().print();
+		new TestSuite(ChromosomeTest.class).run().print();
+		new TestSuite(PopulationTest.class).run().print();
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

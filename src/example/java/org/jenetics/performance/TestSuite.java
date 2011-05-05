@@ -24,10 +24,12 @@ package org.jenetics.performance;
 
 import static java.util.FormattableFlags.LEFT_JUSTIFY;
 
-import java.io.PrintStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Formattable;
 import java.util.Formatter;
 import java.util.List;
@@ -37,91 +39,62 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulator;
-import org.jenetics.util.Accumulators.MinMax;
-import org.jenetics.util.Timer;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class PerfTest {
+public final class TestSuite {
+	private final String _name;
+	private final TestCase[] _tests;
 	
-	private final String _group;
-	
-	private final List<Timer> _timers = new ArrayList<Timer>();
-	private final List<Variance<Long>> _variances = new ArrayList<Variance<Long>>();
-	private final List<MinMax<Long>> _minmax = new ArrayList<MinMax<Long>>();
-	
-	public PerfTest(final String group) {
-		_group = group;
+	public TestSuite(final String name, final TestCase[] tests) {
+		_name = name;
+		_tests = tests;
 	}
 	
-	protected abstract int calls();
-	
-	protected Timer newTimer(final String name) {
-		final Variance<Long> variance = new Variance<Long>();
-		final MinMax<Long> minmax = new MinMax<Long>();
-		_variances.add(variance);
-		_minmax.add(minmax);
-		
-		final Timer timer = new Timer(name);
-		timer.setAccumulator(new Accumulator<Long>() {
-			@Override public void accumulate(final Long value) {
-				variance.accumulate(value);
-				minmax.accumulate(value);
-			}
-		});
-		
-		_timers.add(timer);
-		
-		return timer;
-	}
-	
-	protected abstract PerfTest measure();	
-	
-	public void print(final PrintStream out) {
-		out.print(this);
-	}
-	
-	@Override
-	public String toString() {
-		final int[] columns = new int[]{37, 16, 16, 16}; 
-		final String hhline = hline(columns, '=');
-		final String hline = hline(columns, '-');
-		
-		final String header = String.format(
-				"| %%-%ds | %%-%ds | %%-%ds | %%-%ds |",
-				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
-			);
-		final String row = String.format(
-				"| %%-%ds | %%%d.5s | %%%d.5s | %%%d.5s |",
-				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
-			);
-		
-		final StringBuilder out = new StringBuilder();
-		out.append(hhline).append('\n');
-		out.append(String.format(header, _group, "Mean", "Min", "Max")).append("\n");
-		out.append(hhline).append('\n');
-		
-		for (int i = 0, n = _timers.size(); i < n; ++i) {
-			final Timer timer = _timers.get(i);
-			final Variance<Long> variance = _variances.get(i);
-			final MinMax<Long> minmax = _minmax.get(i);
-			
-			out.append(String.format(
-					row, 
-					timer.getLabel(), 
-					FormattableDuration(variance.getMean()),
-					FormattableDuration(minmax.getMin()),
-					FormattableDuration(minmax.getMax())
-				));
-			out.append("\n");
-			out.append(hline).append('\n');
-		}
+	public TestSuite(final Class<?> suite) {
+		try {
+			if (suite.isAnnotationPresent(Suite.class)) {
+				_name = suite.getAnnotation(Suite.class).value();
+				final Object object = suite.newInstance();
+				
+				final List<TestCase> tests = new ArrayList<TestCase>();
 
-		return out.toString();
+				for (Field field : suite.getFields()) {
+					if (field.isAnnotationPresent(Test.class) && 
+						field.getType().isAssignableFrom(TestCase.class)) 
+					{
+						final TestCase test = (TestCase)field.get(object);
+						test.setOrdinal(field.getAnnotation(Test.class).value());
+						
+						tests.add(test);
+					}
+				}
+				
+				Collections.sort(tests);
+				_tests = tests.toArray(new TestCase[0]);
+			} else {
+				_name = "<group>";
+				_tests = new TestCase[0];
+			}
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	public String getName() {
+		return _name;
+	}
+	
+	public TestCase[] getTests() {
+		return _tests;
+	}
+	
+	public TestSuite run() {
+		for (TestCase test : _tests) {
+			test.run();
+		}
+		return this;
 	}
 	
 	private static String hline(final int[] columns, final char c) {
@@ -197,26 +170,53 @@ public abstract class PerfTest {
 		};
 	}
 	
-	public static void main(final String[] args) {
-		//System.getProperties().list(System.out);
-		new ArrayTest().measure().print(System.out);
-		new PopulationTest().measure().print(System.out);
-		new ChromosomeTest().measure().print(System.out);
+	public void print() {
+		System.out.println(toString());
+	}
+	
+	public void print(final Appendable appendable) throws IOException {
+		appendable.append(toString());
+	}
+	
+	@Override
+	public String toString() {
+		final int[] columns = new int[]{37, 16, 16, 16}; 
+		final String hhline = hline(columns, '=');
+		final String hline = hline(columns, '-');
+		
+		final String header = String.format(
+				"| %%-%ds | %%-%ds | %%-%ds | %%-%ds |",
+				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
+			);
+		final String row = String.format(
+				"| %%-%ds | %%%d.5s | %%%d.5s | %%%d.5s |",
+				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
+			);
+		
+		final NumberFormat nf = NumberFormat.getNumberInstance();
+		
+		final StringBuilder out = new StringBuilder();
+		out.append(hhline).append('\n');
+		out.append(String.format(header, _name, "Mean", "Min", "Max")).append("\n");
+		out.append(hhline).append('\n');
+		
+		for (TestCase test : _tests) {
+			out.append(String.format(
+					row, 
+					String.format("%-20s 1/%s", test.getTimer().getLabel(), nf.format(test.getSize())), 
+					FormattableDuration(test.getVariance().getMean()),
+					FormattableDuration(test.getMinMax().getMin()),
+					FormattableDuration(test.getMinMax().getMax())
+				));
+			out.append("\n");
+			out.append(hline).append('\n');	
+		}
+		out.deleteCharAt(out.length() - 1);
+
+		return out.toString();
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

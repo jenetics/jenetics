@@ -22,32 +22,23 @@
  */
 package org.jenetics.performance;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class SinglePointCrossoverTest extends PerfTest {
+@Documented
+@Inherited
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Suite {
 
-	private int N = 1000000;
-	private final int LOOPS = 1000;
-		
-	public SinglePointCrossoverTest() {
-		super("SinglePointCrossover");
-	}
-
-	@Override
-	protected int calls() {
-		return N;
-	}
+	public String value();
 	
-	private void crossover() {
-		
-	}
-
-	@Override
-	protected SinglePointCrossoverTest measure() {
-		crossover();
-		return this;
-	}
-
 }
