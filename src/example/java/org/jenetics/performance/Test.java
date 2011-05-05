@@ -22,57 +22,23 @@
  */
 package org.jenetics.performance;
 
-import org.jenetics.Float64Chromosome;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-@Suite("Chromosome")
-public class ChromosomeTest {
+@Documented
+@Inherited
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.FIELD})
+public @interface Test {
 
-	private int SIZE = 1000000;
-	private final int LOOPS = 10;
-	
-	public ChromosomeTest() {
-	}
-
-	
-	@Test(1)
-	public TestCase newInstance = new TestCase("newInstance()", LOOPS, SIZE) {
-		private final Float64Chromosome 
-		_chromosome = new Float64Chromosome(0, 1, getSize());
+	public int value() default 1;
 		
-		@Override
-		protected void test() {
-			_chromosome.newInstance();
-		}
-	};
-	
-	@Test(2)
-	public TestCase newInstnaceISeq = new TestCase("newInstance(ISeq", LOOPS, SIZE) {
-		private final Float64Chromosome 
-		_chromosome = new Float64Chromosome(0, 1, getSize());
-		
-		@Override
-		protected void test() {
-			_chromosome.newInstance(_chromosome.toSeq());
-		}
-	};
-	
-	@Test(3)
-	public TestCase isValid = new TestCase("isValid", LOOPS, SIZE) {
-		private Float64Chromosome _chromosome = new Float64Chromosome(0, 1, getSize());
-		
-		@Override
-		protected void beforeTest() {
-			_chromosome = new Float64Chromosome(0, 1, getSize());
-		}
-		
-		@Override
-		protected void test() {
-			_chromosome.isValid();
-		}
-	};
-	
 }

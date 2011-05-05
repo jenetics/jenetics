@@ -30,180 +30,123 @@ import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
-import org.jenetics.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ArrayTest extends PerfTest {
+@Suite("Array")
+public class ArrayTest {
 
-	private int N = 1000000;
-	private final int LOOPS = 1000;
-	private final Array<Integer> _array = new Array<Integer>(N);
+	private static final Predicate<Integer> GETTER = new Predicate<Integer>() {
+		@Override 
+		public boolean evaluate(final Integer value) {
+			return true;
+		}
+	};
+	
+	private static final Factory<Integer> INTEGER_FACTORY = new Factory<Integer>() {
+		@Override
+		public Integer newInstance() {
+			return 1;
+		}
+	};
+	
+	private static final int LOOPS = 1000;
+	private static int SIZE = 1000000;
+	
+	private final Array<Integer> _array = new Array<Integer>(SIZE);
 	
 	public ArrayTest() {
-		super("Array");
 	}
 	
-	@Override
-	protected int calls() {
-		return N;
-	}
-	
-	private void init() {
-		for (int j = N; --j >= 0;) {
-			_array.set(j, 23);
-			_array.get(j);
-		}
-		for (int j = N; --j >= 0;) {
-			_array.set(j, 2);
-			_array.get(j);
-		}
-	}
-	
-	private void forLoopGetter() {
-		final Timer timer = newTimer("for-loop (getter)");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
-			for (int j = N; --j >= 0;) {
-				_array.get(j);
+	@Test(1)
+	public final TestCase forLoopGetter = new TestCase("for-loop (getter)", LOOPS, SIZE) {
+		@Override protected void test() {
+			for (int i = _array.length(); --i >= 0;) {
+				_array.get(i);
 			}
-			timer.stop();
 		}
-	}
+	};
 	
-	private void foreachLoopGetter() {
-		final Timer timer = newTimer("foreach");
-		
-		final Predicate<Integer> getter = new Predicate<Integer>() {
-			@Override public boolean evaluate(Integer object) {
-				@SuppressWarnings("unused") final Integer i = object;
-				return true;
+	@Test(2)
+	public final TestCase foreachLoopGetter = new TestCase("foreach", LOOPS, SIZE) {
+		@Override protected void test() {
+			_array.foreach(GETTER);
+		}
+	};
+	
+	@Test(3)
+	public final TestCase foreachLoopSetter = new TestCase("for-loop (setter)", LOOPS, SIZE) {
+		@Override protected void test() {
+			for (int i = _array.length(); --i >= 0;) {
+				_array.set(i, 1);
 			}
-		};
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
-			_array.foreach(getter);
-			timer.stop();
 		}
-	}
+	};
 	
-	private void forLoopSetter() {
-		final Timer timer = newTimer("for-loop (setter)");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
-			for (int j = N; --j >= 0;) {
-				_array.set(j, 1);
-			}
-			timer.stop();
-		}
-	}
-	
-	private void fill() {
-		final Timer timer = newTimer("fill(Integer)");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
+	@Test(4)
+	public final TestCase fill = new TestCase("fill", LOOPS, SIZE) {
+		@Override protected void test() {
 			_array.fill(1);
-			timer.stop();
 		}
-	}
+	};
 	
-	private void fillFactory() {
-		final Timer timer = newTimer("fill(Factory)");
-		
-		final Factory<Integer> factory = new Factory<Integer>() {
-			@Override
-			public Integer newInstance() {
-				return 1;
-			}
-		};
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
-			_array.fill(factory);
-			timer.stop();
+	@Test(5)
+	public final TestCase fillFactory = new TestCase("fill(Factory)", LOOPS, SIZE) {
+		@Override protected void test() {
+			_array.fill(INTEGER_FACTORY);
 		}
-	}
+	};
 	
-	private void iterator() {
-		final Timer timer = newTimer("iterator");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
+	@Test(6)
+	public final TestCase iterator = new TestCase("iterator", LOOPS, SIZE) {
+		@Override protected void test() {
 			for (Iterator<Integer> it = _array.iterator(); it.hasNext();) {
 				it.next();
 			}
-			timer.stop();
 		}
-	}
+	};
 	
-	private void listIterator() {
-		final Timer timer = newTimer("listIterator");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
+	@Test(7)
+	public final TestCase listIterator = new TestCase("listIterator", LOOPS, SIZE) {
+		@Override 
+		protected void test() {
 			for (ListIterator<Integer> it = _array.listIterator(); it.hasNext();) {
 				it.next();
 				it.set(1);
 			}
-			timer.stop();
 		}
-	}
+	};
 	
-	private void sort() {
-		final Timer timer = newTimer("sort");
-		
-		for (int i = _array.length(); --i >= 0;) {
-			_array.set(i, i);
-		}
-		ArrayUtils.shuffle(_array);
-		
-		final Comparator<Integer> comparator = new Comparator<Integer>() {
-			@Override
+	@Test(8)
+	public final TestCase sort = new TestCase("sort", 50, SIZE) {
+		private final Comparator<Integer> _comparator = new Comparator<Integer>() {
+			@Override 
 			public int compare(Integer o1, Integer o2) {
 				return o1.compareTo(o2);
 			}
 		};
 		
-		for (int i = 50; --i >= 0;) {
-			timer.start();
-			ArrayUtils.sort(_array, comparator);
-			timer.stop();
-			
+		@Override 
+		protected void beforeTest() {
+			for (int i = _array.length(); --i >= 0;) {
+				_array.set(i, i);
+			}
 			ArrayUtils.shuffle(_array);
 		}
-	}
-	
-	private void copy() {
-		final Timer timer = newTimer("copy");
 		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
-			_array.copy();
-			timer.stop();
+		@Override 
+		protected void test() {
+			ArrayUtils.sort(_array, _comparator);
 		}
-	}
+	};
 	
-	@Override
-	protected ArrayTest measure() {
-		init();
-		
-		foreachLoopGetter();
-		forLoopGetter();
-		forLoopSetter();
-		iterator();
-		listIterator();
-		fill();
-		fillFactory();
-		sort();
-		copy();
-		
-		return this;
-	}
+	@Test(9)
+	public final TestCase copy = new TestCase("copy", LOOPS, SIZE) {
+		@Override protected void test() {
+			_array.copy();
+		}
+	};
 	
 }

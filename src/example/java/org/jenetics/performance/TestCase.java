@@ -22,6 +22,8 @@
  */
 package org.jenetics.performance;
 
+import javolution.lang.Reusable;
+
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulators.MinMax;
 import org.jenetics.util.Accumulator;
@@ -31,21 +33,41 @@ import org.jenetics.util.Timer;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class TestCase implements Runnable {
+public abstract class TestCase 
+	implements 
+		Runnable, 
+		Reusable, 
+		Comparable<TestCase> 
+{
 
 	private final String _name;
+	private final int _loops;
+	private final int _size;
+	
+	private int _ordinal = 1;
+	
 	protected Timer _timer;
 	private Variance<Long> _variance;
 	private MinMax<Long> _minmax;
 	
-	public TestCase(
-		final String name
-	) {
+	public TestCase(final String name, final int loops, final int size) {
 		_name = name;
-		init();
+		_loops = loops;
+		_size = size;
+		
+		reset();
 	}
 	
-	private void init() {
+	public TestCase(final String name, final int loops) {
+		this(name, loops, 1);
+	}
+	
+	public TestCase(final String name) {
+		this(name, 1000);
+	}
+	
+	@Override
+	public void reset() {
 		_timer = new Timer(_name);
 		_variance = new Variance<Long>();
 		_minmax = new MinMax<Long>();
@@ -60,11 +82,35 @@ public abstract class TestCase implements Runnable {
 	
 	@Override
 	public final void run() {
-		init();
-		test();
+		reset();
+		for (int i = 0; i < _loops; ++i) {
+			beforeTest();
+			_timer.start();
+			test();
+			_timer.stop();
+			afterTest();
+		}
+	}
+	
+	protected void beforeTest() {
 	}
 	
 	protected abstract void test();
+	
+	protected void afterTest() {
+	}
+	
+	public void setOrdinal(final int ordinal) {
+		_ordinal = ordinal;
+	}
+	
+	public int getOrdinal() {
+		return _ordinal;
+	}
+	
+	public int getSize() {
+		return _size;
+	}
 	
 	public Timer getTimer() {
 		return _timer;
@@ -76,6 +122,11 @@ public abstract class TestCase implements Runnable {
 	
 	public MinMax<Long> getMinMax() {
 		return _minmax;
+	}
+	
+	@Override
+	public int compareTo(final TestCase test) {
+		return _ordinal - test._ordinal;
 	}
 	
 }

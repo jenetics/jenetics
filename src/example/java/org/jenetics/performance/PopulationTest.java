@@ -34,74 +34,53 @@ import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PopulationTest extends PerfTest {
+@Suite("Population")
+public class PopulationTest {
 
-	private int N = 1000000;
+	private int SIZE = 1000000;
 	private final int LOOPS = 1000;
-	
+
 	private final Population<Float64Gene, Float64> _population = newFloat64GenePopulation(
-			1, 1, N
+			1, 1, SIZE
 		);
 	
-	public PopulationTest() {
-		super("Population");
-	}
-
-	@Override
-	protected int calls() {
-		return N;
-	}
-
-	private void iterator() {
-		final Timer timer = newTimer("iterator");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
+	@Test(1)
+	public TestCase iterator = new TestCase("iterator", LOOPS, SIZE) {
+		@Override
+		protected void test() {
 			for (Iterator<?> it = _population.iterator(); it.hasNext();) {
 				it.next();
 			}
-			timer.stop();
 		}
-	}
-	
-	private void iterator2() {
-		final Timer timer = newTimer("iterator2");
-		
-		for (int i = LOOPS; --i >= 0;) {
-			timer.start();
-			for (@SuppressWarnings("unused") Object value : _population) {
-			}
-			timer.stop();
+	};
+
+	@Test(2)
+	public TestCase iterable = new TestCase("iterable", LOOPS, SIZE) {
+		@Override
+		protected void test() {
+			for (@SuppressWarnings("unused") Object value : _population); 
 		}
-	}
-	
-	private void sort() {
-		final Timer timer = newTimer("sort");
-		
-		for (int i = 50; --i >= 0;) {
-			timer.start();
+	};
+
+	@Test(3)
+	public TestCase sort = new TestCase("sort", LOOPS, SIZE) {
+		@Override
+		protected void test() {
 			_population.sort();
-			timer.stop();
-			
+		}
+		
+		@Override
+		protected void afterTest() {
 			ArrayUtils.shuffle(_population);
-		}	
-	}
+		}
+	};
 	
-	@Override
-	protected PerfTest measure() {
-		iterator();
-		iterator2();
-		sort();
-		return this;
-	}
-	
-	
+
 	private static final class Continous 
 		implements FitnessFunction<Float64Gene, Float64> 
 	{
