@@ -89,7 +89,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		
 		_genes = genes;
 	}
-	
+		
 	@Override
 	public G getGene(final int index) {
 		return _genes.get(index);

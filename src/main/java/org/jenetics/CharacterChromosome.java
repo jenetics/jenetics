@@ -39,6 +39,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 /**
@@ -110,6 +111,11 @@ public class CharacterChromosome
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
 
+	@SuppressWarnings("unchecked")
+	public Factory<CharacterChromosome> asFactory() {
+		return (Factory<CharacterChromosome>)(Object)this;
+	}
+	
 	@Override
 	public char charAt(final int index) {
 		return getGene(index).getAllele();
