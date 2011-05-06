@@ -513,6 +513,18 @@
         </delete>		
 	</target>
 	
+	<target name="run-perftest" depends="compile-example">
+		<java 
+			classname="org.jenetics.performance.PerformanceTests"
+			output="${basedir}/perftest-report.txt"
+		>
+			<classpath >
+				<pathelement path="${build.dir}" />
+				<pathelement location="${lib.dir}/jscience.jar"/>
+			</classpath>
+		</java>
+	</target>
+	
 	<!--
 	    Exports the project. Executes all tests and build a ready to deploy zip
 	    file.
@@ -523,6 +535,7 @@
 		<antcall target="clean" />
 		<antcall target="jar" />
 		<antcall target="javadoc" />
+		<antcall target="run-perftest" />
 		
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
@@ -551,6 +564,7 @@
 		<copy todir="${export.dir}" file="Jenetics.iws"/>
 		<copy todir="${export.dir}" file="run-examples.sh"/>
 		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
+		<copy todir="${export.dir}" file="${basedir}/perftest-report.txt"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-all.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-examples.jar"/>
