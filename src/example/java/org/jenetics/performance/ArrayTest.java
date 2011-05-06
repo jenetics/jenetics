@@ -52,7 +52,7 @@ public class ArrayTest {
 		}
 	};
 	
-	private static final int LOOPS = 1000;
+	private static final int LOOPS = 20;
 	private static int SIZE = 1000000;
 	
 	private final Array<Integer> _array = new Array<Integer>(SIZE);

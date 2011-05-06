@@ -46,8 +46,8 @@ import org.jenetics.util.ConcurrentEvaluator;
 public class GATest {
 
 	private static final int LOOPS = 20;
-	private static final int NGENES = 10;
-	private static final int NCHROMOSOMES = 100;
+	private static final int NGENES = 5;
+	private static final int NCHROMOSOMES = 50;
 	
 	
 	private static final class Float64GeneFF 
@@ -101,7 +101,7 @@ public class GATest {
 		
 		@Override
 		protected void test() {
-			_ga.evolve(1000);
+			_ga.evolve(200);
 		}
 	};
 	
@@ -131,7 +131,7 @@ public class GATest {
 		
 		@Override
 		protected void test() {
-			_ga.evolve(1000);
+			_ga.evolve(200);
 		}
 		
 	};

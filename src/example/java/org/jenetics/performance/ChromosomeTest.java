@@ -32,7 +32,7 @@ import org.jenetics.Float64Chromosome;
 public class ChromosomeTest {
 
 	private int SIZE = 1000000;
-	private final int LOOPS = 10;
+	private final int LOOPS = 20;
 	
 	public ChromosomeTest() {
 	}

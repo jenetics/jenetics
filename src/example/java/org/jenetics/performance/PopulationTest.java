@@ -41,7 +41,7 @@ import org.jenetics.util.ArrayUtils;
 public class PopulationTest {
 
 	private int SIZE = 1000000;
-	private final int LOOPS = 1000;
+	private final int LOOPS = 20;
 
 	private final Population<Float64Gene, Float64> _population = newFloat64GenePopulation(
 			1, 1, SIZE
