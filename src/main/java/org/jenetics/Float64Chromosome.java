@@ -36,6 +36,7 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 /**
@@ -123,6 +124,11 @@ public class Float64Chromosome
 		return new Float64Chromosome(genes);		
 	}
 
+	@SuppressWarnings("unchecked")
+	public Factory<Float64Chromosome> asFactory() {
+		return (Factory<Float64Chromosome>)(Object)this;
+	}
+	
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */

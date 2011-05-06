@@ -36,6 +36,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Converter;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 
@@ -128,6 +129,11 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		return new Integer64Chromosome(genes);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Factory<Integer64Chromosome> asFactory() {
+		return (Factory<Integer64Chromosome>)(Object)this;
+	}
+	
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
