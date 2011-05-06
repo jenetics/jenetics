@@ -22,39 +22,54 @@
  */
 package org.jenetics.performance;
 
+import org.jenetics.Float64Chromosome;
+import org.jenetics.Float64Gene;
+import org.jenetics.Genotype;
+import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class PerformanceTests {
+class GenotypeBuilder {
+
+	private int _ngenes = 1;
+	private int _nchromosomes = 1;
+	private double _min = 0;
+	private double _max = 1;
 	
-	private PerformanceTests() {
+	public GenotypeBuilder() {
 	}
 	
-	public static void main(final String[] args) {
-		new TestSuite(ArrayTest.class).run().print();
-		new TestSuite(ChromosomeTest.class).run().print();
-		new TestSuite(PopulationTest.class).run().print();
-		new TestSuite(GATest.class).run().print();
+	public GenotypeBuilder ngenes(final int ngenes) {
+		_ngenes = ngenes;
+		return this;
+	}
+	
+	public GenotypeBuilder nchromosomes(final int nchromosomes) {
+		_nchromosomes = nchromosomes;
+		return this;
+	}
+	
+	public GenotypeBuilder min(final double min) {
+		_min = min;
+		return this;
+	}
+	
+	public GenotypeBuilder max(final double max) {
+		_max = max;
+		return this;
+	}
+	
+	public Genotype<Float64Gene> build() {
+		final Array<Float64Chromosome> chromosomes = 
+			new Array<Float64Chromosome>(_nchromosomes);
+		
+		for (int i = 0; i < _nchromosomes; ++i) {
+			chromosomes.set(i, new Float64Chromosome(_min, _max, _ngenes));
+		}	
+		
+		return Genotype.valueOf(chromosomes.toISeq());
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

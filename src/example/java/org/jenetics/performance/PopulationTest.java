@@ -27,12 +27,10 @@ import java.util.Iterator;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.FitnessFunction;
-import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
-import org.jenetics.util.Array;
 import org.jenetics.util.ArrayUtils;
 
 /**
@@ -99,19 +97,16 @@ public class PopulationTest {
 		final int nchromosomes, 
 		final int npopulation
 	) {
-		final Array<Float64Chromosome> chromosomes = 
-			new Array<Float64Chromosome>(nchromosomes);
+		final GenotypeBuilder gtb = new GenotypeBuilder();
+		gtb.ngenes(ngenes);
+		gtb.nchromosomes(nchromosomes);
+		gtb.min(0);
+		gtb.max(10);	
 		
-		for (int i = 0; i < nchromosomes; ++i) {
-			chromosomes.set(i, new Float64Chromosome(0, 10, ngenes));
-		}	
-		
-		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes.toISeq());
-		final Population<Float64Gene, Float64> population = 
-			new Population<Float64Gene, Float64>(npopulation);
-		
+		final Population<Float64Gene, Float64> 
+		population = new Population<Float64Gene, Float64>(npopulation);
 		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0));
+			population.add(Phenotype.valueOf(gtb.build(), FF, 0));
 		}	
 		
 		return population;
