@@ -50,7 +50,7 @@ public class ChromosomeTest {
 	};
 	
 	@Test(2)
-	public TestCase newInstnaceISeq = new TestCase("newInstance(ISeq", LOOPS, SIZE) {
+	public TestCase newInstnaceISeq = new TestCase("newInstance(ISeq)", LOOPS, SIZE) {
 		private final Float64Chromosome 
 		_chromosome = new Float64Chromosome(0, 1, getSize());
 		
@@ -61,7 +61,7 @@ public class ChromosomeTest {
 	};
 	
 	@Test(3)
-	public TestCase isValid = new TestCase("isValid", LOOPS, SIZE) {
+	public TestCase isValid = new TestCase("isValid()", LOOPS, SIZE) {
 		private Float64Chromosome _chromosome = new Float64Chromosome(0, 1, getSize());
 		
 		@Override

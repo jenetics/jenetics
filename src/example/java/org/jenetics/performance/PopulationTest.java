@@ -48,7 +48,7 @@ public class PopulationTest {
 		);
 	
 	@Test(1)
-	public TestCase iterator = new TestCase("iterator", LOOPS, SIZE) {
+	public TestCase iterator = new TestCase("iterator()", LOOPS, SIZE) {
 		@Override
 		protected void test() {
 			for (Iterator<?> it = _population.iterator(); it.hasNext();) {
@@ -58,7 +58,7 @@ public class PopulationTest {
 	};
 
 	@Test(2)
-	public TestCase iterable = new TestCase("iterable", LOOPS, SIZE) {
+	public TestCase iterable = new TestCase("iterable()", LOOPS, SIZE) {
 		@Override
 		protected void test() {
 			for (@SuppressWarnings("unused") Object value : _population); 
@@ -66,7 +66,7 @@ public class PopulationTest {
 	};
 
 	@Test(3)
-	public TestCase sort = new TestCase("sort", LOOPS, SIZE) {
+	public TestCase sort = new TestCase("sort()", LOOPS, SIZE) {
 		@Override
 		protected void test() {
 			_population.sort();

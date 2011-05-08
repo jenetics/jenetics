@@ -78,7 +78,7 @@ public class ArrayTest {
 	};
 	
 	@Test(2)
-	public final TestCase foreachLoopGetter = new TestCase("foreach", LOOPS, SIZE) {
+	public final TestCase foreachLoopGetter = new TestCase("foreach(GETTER)", LOOPS, SIZE) {
 		@Override 
 		protected void test() {
 			_array.foreach(GETTER);
@@ -96,7 +96,7 @@ public class ArrayTest {
 	};
 	
 	@Test(4)
-	public final TestCase fill = new TestCase("fill", LOOPS, SIZE) {
+	public final TestCase fill = new TestCase("fill(1)", LOOPS, SIZE) {
 		@Override 
 		protected void test() {
 			_array.fill(1);
@@ -112,7 +112,7 @@ protected void test() {
 	};
 	
 	@Test(6)
-	public final TestCase iterator = new TestCase("iterator", LOOPS, SIZE) {
+	public final TestCase iterator = new TestCase("iterator()", LOOPS, SIZE) {
 		@Override 
 		protected void test() {
 			for (Iterator<Integer> it = _array.iterator(); it.hasNext();) {
@@ -122,7 +122,7 @@ protected void test() {
 	};
 	
 	@Test(7)
-	public final TestCase listIterator = new TestCase("listIterator", LOOPS, SIZE) {
+	public final TestCase listIterator = new TestCase("listIterator()", LOOPS, SIZE) {
 		@Override 
 		protected void test() {
 			for (ListIterator<Integer> it = _array.listIterator(); it.hasNext();) {
@@ -133,7 +133,7 @@ protected void test() {
 	};
 	
 	@Test(8)
-	public final TestCase sort = new TestCase("sort", 50, SIZE) {
+	public final TestCase sort = new TestCase("sort()", 50, SIZE) {
 		private final Comparator<Integer> _comparator = new Comparator<Integer>() {
 			@Override 
 			public int compare(Integer o1, Integer o2) {
@@ -156,7 +156,7 @@ protected void test() {
 	};
 	
 	@Test(9)
-	public final TestCase copy = new TestCase("copy", LOOPS, SIZE) {
+	public final TestCase copy = new TestCase("copy()", LOOPS, SIZE) {
 		@Override 
 		protected void test() {
 			_array.copy();
