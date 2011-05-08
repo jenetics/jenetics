@@ -62,7 +62,15 @@ public class ArrayTest {
 	
 	@Test(1)
 	public final TestCase forLoopGetter = new TestCase("for-loop (getter)", LOOPS, SIZE) {
-		@Override protected void test() {
+		{
+			_array.fill(INTEGER_FACTORY);
+			for (int i = _array.length(); --i >= 0;) {
+				_array.get(i);
+			}
+		}
+		
+		@Override 
+		protected void test() {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.get(i);
 			}
@@ -71,14 +79,16 @@ public class ArrayTest {
 	
 	@Test(2)
 	public final TestCase foreachLoopGetter = new TestCase("foreach", LOOPS, SIZE) {
-		@Override protected void test() {
+		@Override 
+		protected void test() {
 			_array.foreach(GETTER);
 		}
 	};
 	
 	@Test(3)
 	public final TestCase foreachLoopSetter = new TestCase("for-loop (setter)", LOOPS, SIZE) {
-		@Override protected void test() {
+		@Override 
+		protected void test() {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, 1);
 			}
@@ -87,21 +97,24 @@ public class ArrayTest {
 	
 	@Test(4)
 	public final TestCase fill = new TestCase("fill", LOOPS, SIZE) {
-		@Override protected void test() {
+		@Override 
+		protected void test() {
 			_array.fill(1);
 		}
 	};
 	
 	@Test(5)
 	public final TestCase fillFactory = new TestCase("fill(Factory)", LOOPS, SIZE) {
-		@Override protected void test() {
+		@Override
+protected void test() {
 			_array.fill(INTEGER_FACTORY);
 		}
 	};
 	
 	@Test(6)
 	public final TestCase iterator = new TestCase("iterator", LOOPS, SIZE) {
-		@Override protected void test() {
+		@Override 
+		protected void test() {
 			for (Iterator<Integer> it = _array.iterator(); it.hasNext();) {
 				it.next();
 			}
@@ -144,7 +157,8 @@ public class ArrayTest {
 	
 	@Test(9)
 	public final TestCase copy = new TestCase("copy", LOOPS, SIZE) {
-		@Override protected void test() {
+		@Override 
+		protected void test() {
 			_array.copy();
 		}
 	};
