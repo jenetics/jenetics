@@ -30,16 +30,16 @@
  *     Initialize population;
  *     Measure fitness of populaton;
  *     while (!stopCondition) {
- *     select offsprings;select survivors;
- *     increase survirvor age;
- *     alter offsprings;
- *     add survivors and offsprings to new population;
- *     measure fitness of new population;
+ *         select offsprings;select survivors;
+ *         increase survirvor age;
+ *         alter offsprings;
+ *         add survivors and offsprings to new population;
+ *         measure fitness of new population;
  *     } 
  * [/code]
  * 
  * <h3>Data structures</h3>
- * <p><img alt="Structure Diagram" src="doc-files/structure.gif" ></img><p/>
+ * <p><img alt="Structure Diagram" src="doc-files/structure.png" ></img><p/>
  * 
  * The diagram above shows the main data structures of the GA implementation. 
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are 
