@@ -111,6 +111,11 @@ public class CharacterChromosome
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
 
+	/**
+	 * Return a more specific view of this chromosome factory.
+	 * 
+	 * @return a more specific view of thiw chromosome factory.
+	 */
 	@SuppressWarnings("unchecked")
 	public Factory<CharacterChromosome> asFactory() {
 		return (Factory<CharacterChromosome>)(Object)this;
