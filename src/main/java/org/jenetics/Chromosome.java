@@ -53,7 +53,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * and the given {@code genes}.
 	 * 
 	 * @param genes the genes of the new chromosome. The given genes array is
-	 *        not copied, it is sealed instead.
+	 *        not copied.
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */

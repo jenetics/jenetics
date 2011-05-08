@@ -124,6 +124,11 @@ public class Float64Chromosome
 		return new Float64Chromosome(genes);		
 	}
 
+	/**
+	 * Return a more specific view of this chromosome factory.
+	 * 
+	 * @return a more specific view of thiw chromosome factory.
+	 */
 	@SuppressWarnings("unchecked")
 	public Factory<Float64Chromosome> asFactory() {
 		return (Factory<Float64Chromosome>)(Object)this;

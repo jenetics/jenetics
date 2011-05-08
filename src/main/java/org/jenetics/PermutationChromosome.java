@@ -38,6 +38,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.BitUtils;
+import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
@@ -196,6 +197,16 @@ public final class PermutationChromosome
 		return _valid;
 	}
 
+	/**
+	 * Return a more specific view of this chromosome factory.
+	 * 
+	 * @return a more specific view of thiw chromosome factory.
+	 */
+	@SuppressWarnings("unchecked")
+	public Factory<PermutationChromosome> asFactory() {
+		return (Factory<PermutationChromosome>)(Object)this;
+	}
+	
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */

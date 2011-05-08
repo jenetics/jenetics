@@ -33,11 +33,9 @@ package org.jenetics;
  * 
  * [code]
  * 	 GeneticAlgorithm<Float64Gene, Double> ga = ...
- * 	 ga.setAlterer(new CompositeAlterer<Float64Gene>(
- * 		  new Crossover<Float64Gene>(0.1),
- * 		  new Mutator<Float64Gene>(0.05),
- * 		  new MeanAlterer<Float64eGene>(0.2)
- * 	 ));
+ * 	 ga.setAlterer(new Crossover<Float64Gene>(0.1));
+ *   ga.addAlterer(new Mutator<Float64Gene>(0.05))
+ *   ga.addAlterer(new MeanAlterer<Float64eGene>(0.2));
  * [/code]
  * 
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
