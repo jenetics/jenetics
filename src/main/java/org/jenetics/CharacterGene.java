@@ -42,6 +42,8 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
+ * Character gene implementation.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -54,6 +56,9 @@ public final class CharacterGene
 {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * The default character set used by this gene.
+	 */
 	public static final CharSet DEFAULT_CHARACTERS = new CharSet(
 				CharSet.expand("0-9a-zA-Z") +  
 				" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"

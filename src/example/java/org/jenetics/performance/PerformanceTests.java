@@ -22,6 +22,9 @@
  */
 package org.jenetics.performance;
 
+import javolution.context.LogContext;
+import javolution.lang.ClassInitializer;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -33,6 +36,13 @@ public final class PerformanceTests {
 	}
 	
 	public static void main(final String[] args) {
+		LogContext.enter(LogContext.NULL);
+		try {
+			ClassInitializer.initializeClassPath();
+		} finally {
+			LogContext.exit();
+		}
+		
 		new TestSuite(ArrayTest.class).run().print();
 		new TestSuite(ChromosomeTest.class).run().print();
 		new TestSuite(PopulationTest.class).run().print();
