@@ -87,11 +87,8 @@
  *     Selector<BitGene> selector = new StochasticUniversalSelector();
  *     ga.setOffspringSelector(selector);
  *     ga.setSurvivorSelector(selector);
- *     Alterer alterer = new CompositeAlterer(
- *             new SinglePointCrossover<BitGene>(0.1),
- *             new Mutation<BitGene>(0.001)
- *         );
- *     ga.setAlterer(alterer);
+ *     ga.setAlterer(new SinglePointCrossover<BitGene>(0.1));
+ *     ga.addAlterer(new Mutation<BitGene>(0.001));
  * [/code]
  * 
  * You can define selection strategies for survivors and offsprings 
@@ -179,10 +176,8 @@
  *             ga.setMaximalPhenotypeAge(10);
  *             ga.setPopulationSize(1000);
  *             ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
- *             ga.setAlterer(new CompositeAlterer(
- *                     new Mutation<BitGene>(0.115), 
- *                     new SinglePointCrossover<BitGene>(0.06)
- *                 ));
+ *             ga.setAlterer(new Mutation<BitGene>(0.115));
+ *             ga.addAlterer(new SinglePointCrossover<BitGene>(0.06));
  *             
  *             ga.setup();
  *             ga.evolve(100);
@@ -238,13 +233,10 @@
  *     GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm.valueOf(gtf, ff);
  *     ga.setFitnessScaler(new PowerScaler(2.0));
  *     ga.setPopulationSize(20);
+ *     ga.setAlterer(new Mutation<Float64Gene>(0.05));
+ *     ga.addAlterer(new MeanAlterer<Float64Gene>(0.5));
  *     
- *     ga.setAlterer(new CompositeAlterer(
- *             new Mutation<Float64Gene>(0.05),
- *             new MeanAlterer<Float64Gene>(0.5)
- *         ));
- *     ga.setup();     
- *     
+ *     ga.setup();
  *     for (int i = 0; i < 50; ++i) {
  *         ga.evolve();
  *         System.out.println(ga);
@@ -315,10 +307,8 @@
  *                  
  *              final GeneticAlgorithm<IntegerGene, Integer> ga = GeneticAlgorithm.valueOf(gtf, ff);
  *              ga.setPopulationSize(100);
- *              ga.setAlterer(new CompositeAlterer(
- *                      new Mutation<IntegerGene>(0.5), 
- *                      new PartiallyMatchedCrossover<IntegerGene>(0.3)
- *                  ));
+ *              ga.setAlterer(new Mutation<IntegerGene>(0.5));
+ *              ga.addAlterer(new PartiallyMatchedCrossover<IntegerGene>(0.3));
  *                  
  *              ga.setup();
  *              ga.evolve(10);

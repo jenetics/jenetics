@@ -149,10 +149,8 @@ public class Knapsack {
 		  ga.setMaximalPhenotypeAge(10);
 		  ga.setPopulationSize(1000);
 		  ga.setSelectors(new RouletteWheelSelector&lt;BitGene, Float64&gt;());
-		  ga.setAlterer(new CompositeAlterer&lt;BitGene&gt;(
-			new Mutator&lt;BitGene&gt;(0.115),
-			new SinglePointCrossover&lt;BitGene&gt;(0.06)
-		  ));
+		  ga.setAlterer(new Mutator&lt;BitGene&gt;(0.115));
+		  ga.addAlterer(new SinglePointCrossover&lt;BitGene&gt;(0.06));
 		  
 		  ga.setup();
 		  ga.evolve(100);
@@ -215,13 +213,10 @@ GeneticAlgorithm&lt;Float64Gene, Float64&gt; ga =
 
 ga.setFitnessScaler(new ExponentialScaler(2.0));
 ga.setPopulationSize(20);
-ga.setAlterer(new CompositeAlterer&lt;Float64Gene&gt;(
-        new Mutation&lt;Float64Gene&lt;(0.05),
-        new MeanAlterer&lt;Float64Gene&gt;(0.5)
-    ));
+ga.setAlterer(new Mutation&lt;Float64Gene&lt;(0.05));
+ga.addAlterer(new MeanAlterer&lt;Float64Gene&gt;(0.5));
 
 ga.setup();     
-
 for (int i = 0; i < 50; ++i) {
     ga.evolve();
     System.out.println(ga);
@@ -297,10 +292,8 @@ public class TravelingSalesman {
                 GeneticAlgorithm.valueOf(gtf, ff);
 
         ga.setPopulationSize(100);
-        ga.setAlterer(new CompositeAlterer&lt;Integer64Gene&gt;(
-                new Mutation&lt;Integer64Gene&gt;(0.5), 
-                new PartiallyMatchedCrossover&lt;Integer64Gene&gt;(0.3)
-            ));
+        ga.setAlterer(new Mutation&lt;Integer64Gene&gt;(0.5));
+        ga.addAlterer(new PartiallyMatchedCrossover&lt;Integer64Gene&gt;(0.3));
         ga.setup();
         ga.evolve(10);
     }
