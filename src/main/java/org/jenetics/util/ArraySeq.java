@@ -240,7 +240,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	final void checkIndex(final int index) {
-		if (index < 0 || index >= (_end - _start)) {
+		if (index < 0 || index >= length()) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Index %s is out of bounds [0, %s)", index, (_end - _start)
 			));
@@ -248,7 +248,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	final void checkIndex(final int from, final int to) {
-		if (from < 0 || to > length() || from > to) {
+		if (from > to) {
+			throw new IllegalArgumentException(
+				"fromIndex(" + from + ") > toIndex(" + to+ ")"
+			);
+		}
+		if (from < 0 || to > length()) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", from, to
 			));

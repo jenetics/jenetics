@@ -357,8 +357,7 @@ public final class Array<T>
 		final int from, final int to, 
 		final Comparator<? super T> comparator
 	) {
-		checkIndex(from);
-		checkIndex(to - 1);
+		checkIndex(from, to);
 		if (from > to) {
 			throw new IllegalArgumentException(String.format(
 					"From index > to index: %d > %d.", from, to
@@ -418,6 +417,35 @@ public final class Array<T>
 		final Object temp = _array.data[i + _start];
 		_array.data[i + _start] = _array.data[j + _start];
 		_array.data[j + _start] = temp;
+	}
+	
+	/**
+	 * Reverses the given array in place.
+	 */
+	public void reverse() {
+		reverse(0, length());
+	}
+	
+	/**
+	 * Reverses the part of the array determined by the to indexes.
+	 * 
+	 * @param from the first index (inclusive)
+	 * @param to the second index (exclusive)
+	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
+	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 *			<tt>to &gt; a.length</tt>
+	 */
+	public void reverse(final int from, final int to) {
+		checkIndex(from, to);
+		_array.cloneIfSealed();
+		
+		int i = from;
+		int j = to;
+		while (i < j) {
+			--j;
+			_swap(i, j);
+			++i;
+		}
 	}
 	
 	@Override
