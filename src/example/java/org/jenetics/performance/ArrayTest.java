@@ -153,9 +153,39 @@ protected void test() {
 		protected void test() {
 			ArrayUtils.sort(_array, _comparator);
 		}
+		
+		@Override
+		protected void afterTest() {
+			if (!ArrayUtils.isSorted(_array)) {
+				throw new IllegalArgumentException("Error: array not sorted");
+			}
+		}
 	};
 	
 	@Test(9)
+	public final TestCase quicksort = new TestCase("quicksort()", 50, SIZE) {
+		@Override 
+		protected void beforeTest() {
+			for (int i = _array.length(); --i >= 0;) {
+				_array.set(i, i);
+			}
+			ArrayUtils.shuffle(_array);
+		}
+		
+		@Override 
+		protected void test() {
+			_array.sort();
+		}
+		
+		@Override
+		protected void afterTest() {
+			if (!ArrayUtils.isSorted(_array)) {
+				throw new IllegalArgumentException("Error: array not sorted");
+			}
+		}
+	};	
+	
+	@Test(10)
 	public final TestCase copy = new TestCase("copy()", LOOPS, SIZE) {
 		@Override 
 		protected void test() {
