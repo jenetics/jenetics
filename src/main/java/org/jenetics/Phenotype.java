@@ -395,7 +395,7 @@ public final class Phenotype<
 		}
 		
 		@SuppressWarnings("unchecked")
-		Phenotype<SG, SC> pt = (Phenotype<SG, SC>)FACTORY.object();
+		final Phenotype<SG, SC> pt = (Phenotype<SG, SC>)FACTORY.object();
 		pt._genotype = genotype;
 		pt._fitnessFunction = fitnessFunction;
 		pt._fitnessScaler = fitnessScaler;

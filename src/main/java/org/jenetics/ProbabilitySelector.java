@@ -149,14 +149,7 @@ public abstract class ProbabilitySelector<
 	 */
 	protected static boolean sum2one(final double[] probabilities) {
 		final double sum = sum(probabilities);
-		boolean check = abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
-		
-//		if (!check) {
-//			System.out.println("Sum: " + sum + "	  " + probabilities.length);
-//			System.out.println(Arrays.toString(probabilities));
-//		}
-		
-		return check;
+		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 	}
 		
 	/**
