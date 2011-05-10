@@ -26,9 +26,10 @@ import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Validator.checkProbability;
 
+import java.util.Random;
+
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomIndexStream;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * Abstract implementation of the alterer interface.
@@ -74,8 +75,10 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	 * @param p the index selection probability.
 	 * @return new index iterator.
 	 */
-	protected static IndexStream randomIndexes(final int length, final double p) {
-		return new RandomIndexStream(length, p, RandomRegistry.getRandom());
+	protected static IndexStream randomIndexes(
+		final Random random, final int length, final double p
+	) {
+		return new RandomIndexStream(random, length, p);
 	}
 	
 	@Override

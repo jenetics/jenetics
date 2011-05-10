@@ -24,10 +24,12 @@ package org.jenetics;
 
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.RandomRegistry;
 
 
 /**
@@ -102,7 +104,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final double p = Math.pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 		
-		final IndexStream stream = randomIndexes(population.size(), p); 		
+		final Random random = RandomRegistry.getRandom();
+		final IndexStream stream = randomIndexes(random, population.size(), p); 		
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final Phenotype<G, C> pt = population.get(i);
 			
@@ -123,7 +126,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		Genotype<G> gt = genotype;
 
-		final IndexStream stream = randomIndexes(genotype.length(), p);
+		final Random random = RandomRegistry.getRandom();
+		final IndexStream stream = randomIndexes(random, genotype.length(), p);
 		int start = stream.next();
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy(); 
@@ -170,7 +174,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param p the gene mutation probability.
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
-		final IndexStream stream = randomIndexes(genes.length(), p);
+		final Random random = RandomRegistry.getRandom();
+		final IndexStream stream = randomIndexes(random, genes.length(), p);
 		
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
