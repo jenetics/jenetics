@@ -26,6 +26,7 @@ import static java.lang.Math.min;
 import static org.jenetics.util.Validator.nonNull;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -258,6 +259,174 @@ public final class Array<T>
 		
 		_array.cloneIfSealed();
 		_array.data[index + _start] = value;
+	}
+	
+	/**
+	 * <p>
+	 * Sorts the array of objects into ascending order, according to the natural 
+	 * ordering of its elements. All elements in the array <b>must</b> implement 
+	 * the Comparable interface. Furthermore, all elements in the array must be 
+	 * mutually comparable.
+	 * </p>
+	 * The sorting algorithm is the Quicksort.
+	 * 
+	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
+	 *          Wikipedia: Quicksort
+	 *      </a>
+	 * 
+	 * @throws ClassCastException if the array contains elements that are not 
+	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 */
+	public void sort() {
+		sort(0, length());
+	}
+	
+	/**
+	 * <p>
+	 * Sorts the array of objects into ascending order, according to the natural 
+	 * ordering of its elements. All elements in the array <b>must</b> implement 
+	 * the Comparable interface. Furthermore, all elements in the array must be 
+	 * mutually comparable.
+	 * </p>
+	 * The sorting algorithm is the Quicksort.
+	 * 
+	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
+	 *          Wikipedia: Quicksort
+	 *      </a>
+	 * 
+	 * @param from the index of the first element (inclusive) to be sorted.
+	 * @param to the index of the last element (exclusive) to be sorted.
+	 * @throws ArrayIndexOutOfBoundsException if {@code from < 0 or to > length()}
+	 * @throws IllegalArgumentException if {@code from > to}
+	 * @throws ClassCastException if the array contains elements that are not 
+	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 */	
+	public void sort(final int from, final int to) {
+		sort(from, to, new Comparator<T>() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override 
+			public int compare(final T o1, final T o2) {
+				return ((Comparable)o1).compareTo(o2);
+			}
+		});
+	}
+	
+	/**
+	 * <p>
+	 * Sorts the array of objects according to the order induced by the specified 
+	 * comparator. All elements in the array must be mutually comparable by the 
+	 * specified comparator.
+	 * </p>
+	 * The sorting algorithm is the Quicksort.
+	 * 
+	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
+	 *          Wikipedia: Quicksort
+	 *      </a>
+	 * 
+	 * @throws NullPointerException if the given {@code comparator} is 
+	 *         {@code null}.
+	 * @throws ClassCastException if the array contains elements that are not 
+	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 */		
+	public void sort(final Comparator<? super T> comparator) {
+		sort(0, length(), comparator);
+	}
+	
+	/**
+	 * <p>
+	 * Sorts the array of objects according to the order induced by the specified 
+	 * comparator. All elements in the array must be mutually comparable by the 
+	 * specified comparator.
+	 * </p>
+	 * The sorting algorithm is the Quicksort.
+	 * 
+	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
+	 *          Wikipedia: Quicksort
+	 *      </a>
+	 * 
+	 * @param from the index of the first element (inclusive) to be sorted.
+	 * @param to the index of the last element (exclusive) to be sorted.
+	 * @throws NullPointerException if the given {@code comparator} is 
+	 *         {@code null}.
+	 * @throws ArrayIndexOutOfBoundsException if {@code from < 0 or to > length()}
+	 * @throws IllegalArgumentException if {@code from > to}
+	 * @throws ClassCastException if the array contains elements that are not 
+	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 */		
+	public void sort(
+		final int from, final int to, 
+		final Comparator<? super T> comparator
+	) {
+		checkIndex(from);
+		checkIndex(to - 1);
+		if (from > to) {
+			throw new IllegalArgumentException(String.format(
+					"From index > to index: %d > %d.", from, to
+				));
+		}
+		nonNull(comparator, "Comparator");
+		
+		_array.cloneIfSealed();
+		_quicksort(from, to - 1, comparator);
+	}
+	
+	
+	private void _quicksort(
+		final int left, final int right, 
+		final Comparator<? super T> comparator
+	) {
+		if (right > left) {
+			final int j = _partition(left, right, comparator); 
+			_quicksort(left, j - 1, comparator);
+			_quicksort(j + 1, right, comparator);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private int _partition(
+		final int left, final int right,
+		final Comparator<? super T> comparator 
+	) {
+		final T pivot = (T)_array.data[left + _start];
+		int i = left;
+		int j = right + 1;
+		while (true) {
+			do { 
+				++i; 
+			} while (
+					i < right && 
+					comparator.compare((T)_array.data[i + _start], pivot) < 0
+				);
+			
+			do {
+				--j;
+			} while (
+					j > left && 
+					comparator.compare((T)_array.data[j + _start], pivot) > 0
+				);
+			if (j <= i) {
+				break;
+			}
+			_swap(i, j);
+		}
+		_swap(left, j);
+		
+		return j;
+	}	
+	
+	private void _swap(final int i, final int j) {
+		final Object temp = _array.data[i + _start];
+		_array.data[i + _start] = _array.data[j + _start];
+		_array.data[j + _start] = temp;
+	}
+	
+	@Override
+	public void swap(final int i, final int j) {
+		checkIndex(i);
+		checkIndex(j);
+		
+		_array.cloneIfSealed();
+		_swap(i, j);
 	}
 	
 	@Override
