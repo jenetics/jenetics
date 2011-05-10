@@ -30,7 +30,7 @@ import org.jenetics.util.Predicate;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Until {
+public final class Until {
 
 	private Until() {
 		throw new AssertionError("Don't create an 'Until' instance.");

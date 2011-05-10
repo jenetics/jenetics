@@ -44,7 +44,7 @@ public class RandomIndexStreamTest {
 	@Test
 	public void iterateP0() {
 		final RandomIndexStream it = 
-			new RandomIndexStream(1000, 0, new Random());
+			new RandomIndexStream(new Random(), 1000, 0);
 		
 		for (int i = it.next(); i != -1; i = it.next()) {
 			Assert.assertTrue(false);
@@ -58,7 +58,7 @@ public class RandomIndexStreamTest {
 	@Test
 	public void iterateP1() {
 		final RandomIndexStream it = 
-			new RandomIndexStream(1000, 1, new Random());
+			new RandomIndexStream(new Random(), 1000, 1);
 		
 		int count = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
@@ -102,7 +102,7 @@ public class RandomIndexStreamTest {
 	
 	long k(final int n, final double p, final Random random) {
 		final RandomIndexStream it = 
-			new RandomIndexStream(n, p, random);
+			new RandomIndexStream(random, n, p);
 		
 		int kt = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
