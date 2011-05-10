@@ -371,8 +371,6 @@ public final class ArrayUtils {
 	 * 
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void shuffle(final Array<T> array) {
 		shuffle(array, new Random());
@@ -388,8 +386,6 @@ public final class ArrayUtils {
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is 
 	 * 		  {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
 	 */
 	public static <T> void shuffle(final Array<T> array, final Random random) {
 		nonNull(array, "Array");
@@ -460,34 +456,6 @@ public final class ArrayUtils {
 	}
 	
 	/**
-	 * Reverses the part of the array determined by the to indexes.
-	 * 
-	 * @param <T> the array type.
-	 * @param array the array to reverse
-	 * @param from the first index (inclusive)
-	 * @param to the second index (exclusive)
-	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	 *			<tt>to &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
-	 */
-	public static <T> void reverse(final Array<T> array, final int from, final int to) {
-		nonNull(array, "Array");
-		rangeCheck(array.length(), from, to);
-		
-		int i = from;
-		int j = to;
-		
-		while (i < j) {
-			--j;
-			swap(array, i, j);
-			++i;
-		}
-	}
-	
-	/**
 	 * Reverses the given array in place.
 	 * 
 	 * @param <T> the array type.
@@ -497,20 +465,6 @@ public final class ArrayUtils {
 	public static <T> void reverse(final T[] array) {
 		nonNull(array, "Array");
 		reverse(array, 0, array.length);
-	}
-	
-	/**
-	 * Reverses the given array in place.
-	 * 
-	 * @param <T> the array type.
-	 * @param array the array to reverse.
-	 * @throws NullPointerException if the give array is {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
-	 * 		  ({@code array.isSealed() == true}).
-	 */
-	public static <T> void reverse(final Array<T> array) {
-		nonNull(array, "Array");
-		reverse(array, 0, array.length());
 	}
 	
 	private static void rangeCheck(int length, int from, int to) {
