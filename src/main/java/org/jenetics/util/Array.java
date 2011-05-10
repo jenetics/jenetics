@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 
 /** 
  * Array class which wraps the the java build in array type T[]. Once the array
@@ -44,7 +45,9 @@ import java.util.ListIterator;
  */
 public final class Array<T> 
 	extends ArraySeq<T> 
-	implements MSeq<T>
+	implements 
+		MSeq<T>, 
+		RandomAccess
 {
 	private static final long serialVersionUID = 2L;
 			

@@ -254,7 +254,7 @@ public class NumberStatistics<
 
 		@Override
 		public NumberStatistics newInstance(
-			final Class<NumberStatistics> cls,
+			final Class<NumberStatistics> type,
 			final InputElement xml
 		) 
 			throws XMLStreamException 
