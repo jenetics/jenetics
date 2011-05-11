@@ -366,23 +366,23 @@ public final class Array<T>
 		nonNull(comparator, "Comparator");
 		
 		_array.cloneIfSealed();
-		_quicksort(from, to - 1, comparator);
+		quicksort(from, to - 1, comparator);
 	}
 	
 	
-	private void _quicksort(
+	private void quicksort(
 		final int left, final int right, 
 		final Comparator<? super T> comparator
 	) {
 		if (right > left) {
-			final int j = _partition(left, right, comparator); 
-			_quicksort(left, j - 1, comparator);
-			_quicksort(j + 1, right, comparator);
+			final int j = partition(left, right, comparator); 
+			quicksort(left, j - 1, comparator);
+			quicksort(j + 1, right, comparator);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	private int _partition(
+	private int partition(
 		final int left, final int right,
 		final Comparator<? super T> comparator 
 	) {
