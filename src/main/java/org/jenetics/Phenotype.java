@@ -165,7 +165,6 @@ public final class Phenotype<
 	
 	@Override
 	public int compareTo(final Phenotype<G, C> pt) {
-		nonNull(pt, "Phenotype");
 		return getFitness().compareTo(pt.getFitness());
 	}	
 	
@@ -173,8 +172,8 @@ public final class Phenotype<
 	public int hashCode() {
 		return hashCodeOf(getClass()).
 				and(_generation).
-				and(_fitness).
-				and(_rawFitness).
+				and(getFitness()).
+				and(getRawFitness()).
 				and(_genotype).value();
 	}
 
@@ -188,8 +187,8 @@ public final class Phenotype<
 		}
 		
 		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
-		return eq(_fitness, pt._fitness) &&
-				eq(_rawFitness, pt._rawFitness) &&
+		return eq(getFitness(), pt.getFitness()) &&
+				eq(getRawFitness(), pt.getRawFitness()) &&
 				eq(_genotype, pt._genotype) &&
 				eq(_generation, pt._generation);
 	}
@@ -201,7 +200,7 @@ public final class Phenotype<
 
 	@Override
 	public String toString() {
-		return toText().toString() + " --> " + _fitness;
+		return toText().toString() + " --> " + getFitness();
 	}
 	
 	@SuppressWarnings("rawtypes")
