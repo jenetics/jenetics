@@ -67,12 +67,6 @@ public class PopulationTest {
 
 	@Test(3)
 	public TestCase sort = new TestCase("sort()", LOOPS, SIZE) {
-		@Override
-		protected void beforeTest() {
-			for (Phenotype<?, ?> pt : _population) {
-				pt.evaluate();
-			}
-		}
 		
 		@Override
 		protected void test() {
