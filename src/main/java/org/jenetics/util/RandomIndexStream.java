@@ -54,26 +54,6 @@ public class RandomIndexStream implements IndexStream {
 	private final Random _random;
 	
 	private int _pos = -1;
-	
-	/**
-	 * Create a new ProbabilityIndexIterator.
-	 * 
-	 * @param n the maximal value (exclusively) of the iterator.
-	 * @param probability the index selection probability.
-	 * @param random the random engine used for creating the random indexes.
-	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
-	 *         {@code n <= 0} or the given {@code probability} is not valid.
-	 * @throws NullPointerException if the given {@code random} engine is 
-	 *         {@code null}.
-	 * @deprecated Use {@link #RandomIndexStream(Random,int,double)} instead
-	 */
-	public RandomIndexStream(
-		final int n, 
-		final double probability, 
-		final Random random
-	) {
-		this(random, n, probability);
-	}
 
 	/**
 	 * Create a new ProbabilityIndexIterator.
