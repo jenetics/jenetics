@@ -6,17 +6,17 @@ Befor you can run the examples you must build the
 library. Then you can run the given examples.
 
 - Knapsack:
-    java -cp Jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.Knapsack
+    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.Knapsack
     
 - OnesCounting:
-    java -cp Jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.OnesCounting
+    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.OnesCounting
     
 - RealFunction:
-    java -cp Jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.RealFunction
+    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.RealFunction
     
 - StringGenerator:
-    java -cp Jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.StringGenerator
+    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.StringGenerator
     
 - TravelingSalesman:
-    java -cp Jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.TravelingSalesman
+    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.TravelingSalesman
 
