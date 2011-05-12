@@ -448,7 +448,6 @@ public final class Array<T>
 		}
 	}
 	
-	@Override
 	public void swap(final int i, final int j) {
 		checkIndex(i);
 		checkIndex(j);
