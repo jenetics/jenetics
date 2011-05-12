@@ -137,6 +137,7 @@
 		>
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
+				<exclude name="org/jenetics/performance/*" />
 				<exclude name="*.jar" />
 				<include name="**/*.class" />
 			</fileset>
