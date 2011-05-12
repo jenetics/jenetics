@@ -46,16 +46,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public void set(final int index, final T value);
 	
 	/**
-	 * Swap the elements at the position {@code i} and {@code j}.
-	 * 
-	 * @param i the position of the first element.
-	 * @param j the position of the second element.
-	 * @throws ArrayIndexOutOfBoundsException if one of the indexes is out of 
-	 *         range {@code (index < 0 || index >= size())}.
-	 */
-	public void swap(final int i, final int j);
-	
-	/**
 	 * Set all sequence elements to the given {@code value}.
 	 *
 	 * @param value {@code value} to fill this sequence with.
