@@ -37,7 +37,7 @@ import org.jenetics.util.Seq;
 public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> { 
     
 	private final Factory<Chromosome<Integer64Gene>> 
-	_factory = new PermutationChromosome(500);
+	_factory = new PermutationChromosome(500, true);
 	@Override protected Factory<Chromosome<Integer64Gene>> getFactory() {
 		return _factory;
 	}
