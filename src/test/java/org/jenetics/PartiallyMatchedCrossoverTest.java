@@ -78,6 +78,25 @@ public class PartiallyMatchedCrossoverTest {
 		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
 	}
 	
+	//@Test
+	public void corssoverWithIllegalChromosome() {
+		final PartiallyMatchedCrossover<Integer64Gene> pmco = 
+			new PartiallyMatchedCrossover<Integer64Gene>(1);
+		
+		final int length = 1000;
+		final Array<Integer64Gene> that = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> other = new Array<Integer64Gene>(length);
+		for (int i = 0; i < length; ++i) {
+			that.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
+			other.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
+		}
+		ArrayUtils.shuffle(that);
+		ArrayUtils.shuffle(other);
+		
+		pmco.crossover(that, other);
+		
+	}
+	
 	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes, 
