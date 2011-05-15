@@ -183,6 +183,7 @@ public final class PermutationChromosome
 				if (value >= 0 && value < length()) {
 					if (BitUtils.getBit(check, value)) {
 						valid = false;
+						System.out.println("value: " + value);
 					} else {
 						BitUtils.setBit(check, value, true);
 					}

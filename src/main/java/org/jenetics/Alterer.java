@@ -32,10 +32,10 @@ package org.jenetics;
  * be chained by appending an new (component) alterers.
  * 
  * [code]
- * 	 GeneticAlgorithm<Float64Gene, Double> ga = ...
- * 	 ga.setAlterer(new Crossover<Float64Gene>(0.1));
- *   ga.addAlterer(new Mutator<Float64Gene>(0.05))
- *   ga.addAlterer(new MeanAlterer<Float64eGene>(0.2));
+ *     GeneticAlgorithm<Float64Gene, Double> ga = ...
+ *     ga.setAlterer(new Crossover<Float64Gene>(0.1));
+ *     ga.addAlterer(new Mutator<Float64Gene>(0.05))
+ *     ga.addAlterer(new MeanAlterer<Float64eGene>(0.2));
  * [/code]
  * 
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.

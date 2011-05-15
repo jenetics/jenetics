@@ -30,7 +30,6 @@ import java.util.Random;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
@@ -89,56 +88,62 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 	@Override 
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final Random random = RandomRegistry.getRandom();
-		int index1 = random.nextInt(that.length());
-		int index2 = random.nextInt(other.length());
-		index1 = min(index1, index2);
-		index2 = max(index1, index2) + 1;
+		int begin = random.nextInt(that.length());
+		int end = random.nextInt(other.length());
+		begin = min(begin, end);
+		end = max(begin, end) + 1;
 		
-		final Array<G> thatGenes = new Array<G>(index2 - index1);
-		final Array<G> otherGenes = new Array<G>(index2 - index1);
-		
-		//Swap the gene range.
-		for (int i = index1; i < index2; ++i) {
-			final int index = i - index1;
-			
-			thatGenes.set(index, that.get(i));
-			otherGenes.set(index, other.get(i));
-			
-			that.set(i, otherGenes.get(index));
-			other.set(i, thatGenes.get(index));
-		}
-		
-		//Repair the chromosomes.
-		for (int i = 0, n = index2 - index1; i < n; ++i) {
-			final int thatIndex = indexOf(that, index1, index2, otherGenes.get(i));
-			final int otherIndex = indexOf(other, index1, index2, thatGenes.get(i));
-			
-			that.set(thatIndex, thatGenes.get(i));
-			other.set(otherIndex, otherGenes.get(i));
-		}
+		swap(that, other, begin, end);
+		repair(that, other, begin, end);
+		repair(other, that, begin, end);		
 		
 		return 1;
 	}
 	
-	private static <A> int indexOf(
-		final Seq<A> genes, final int idx1, final int idx2, final A gene
+	private void swap(
+		final MSeq<G> that, final MSeq<G> other, 
+		final int begin, final int end
+	) {
+		for (int i = begin; i < end; ++i) {
+			final G temp = that.get(i);
+			that.set(i, other.get(i));
+			other.set(i, temp);
+		}
+	}
+	
+	private void repair(
+		final MSeq<G> that, final MSeq<G> other, 
+		final int begin, final int end
+	) {
+		for (int i = 0; i < begin; ++i) {
+			int index = indexOf(that, begin, end, that.get(i));
+			while (index != -1) {
+				that.set(i, other.get(index));
+				index = indexOf(that, begin, end, that.get(i));
+			}
+		}
+		for (int i = end; i < that.length(); ++i) {
+			int index = indexOf(that, begin, end, that.get(i));
+			while (index != -1) {
+				that.set(i, other.get(index));
+				index = indexOf(that, begin, end, that.get(i));
+			}
+		}
+	}
+	
+	private int indexOf(
+		final Seq<G> genes, 
+		final int begin, final int end, 
+		final G gene
 	) {
 		int index = -1;
-		for (int i = 0; index == -1 && i < idx1; ++i) {
-			if (genes.get(i) == gene) {
+		
+		for (int i = begin; i < end && index == -1; ++i) {
+			if (genes.get(i).equals(gene)) {
 				index = i;
 			}
 		}
-		for (int i = idx2; index == -1 && i < genes.length(); ++i) {
-			if (genes.get(i) == gene) {
-				index = i;
-			}
-		}
-		for (int i = idx1; index == -1 && i < idx2; ++i) {
-			if (genes.get(i) == gene) {
-				index = i;
-			}
-		}
+
 		return index;
 	}
 	

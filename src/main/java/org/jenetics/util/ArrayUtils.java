@@ -372,7 +372,7 @@ public final class ArrayUtils {
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void shuffle(final Array<T> array) {
+	public static <T> void shuffle(final MSeq<T> array) {
 		shuffle(array, new Random());
 	}
 	
@@ -387,7 +387,7 @@ public final class ArrayUtils {
 	 * @throws NullPointerException if the give array or the random object is 
 	 * 		  {@code null}.
 	 */
-	public static <T> void shuffle(final Array<T> array, final Random random) {
+	public static <T> void shuffle(final MSeq<T> array, final Random random) {
 		nonNull(array, "Array");
 		nonNull(random, "Random");
 		

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Validator.NonNull;
@@ -46,7 +47,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G> 
 {
 
-	private final Seq<Alterer<G>> _alterers;
+	private final ISeq<Alterer<G>> _alterers;
 	
 	/**
 	 * Combine the given alterers.

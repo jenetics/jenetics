@@ -26,6 +26,7 @@ import static org.jenetics.TestUtils.newFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -33,6 +34,8 @@ import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Array;
+import org.jenetics.util.ArrayUtils;
 
 
 /**
@@ -41,6 +44,40 @@ import org.jenetics.stat.Variance;
  */
 public class PartiallyMatchedCrossoverTest {
 
+	
+	@Test(invocationCount = 10)
+	public void crossover() {
+		final PartiallyMatchedCrossover<Integer64Gene> pmco = 
+			new PartiallyMatchedCrossover<Integer64Gene>(1);
+		
+		final int length = 1000;
+		final Array<Integer64Gene> that = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> other = new Array<Integer64Gene>(length);
+		for (int i = 0; i < length; ++i) {
+			that.set(i, Integer64Gene.valueOf(i, 0, length));
+			other.set(i, Integer64Gene.valueOf(i, 0, length));
+		}
+		ArrayUtils.shuffle(that);
+		ArrayUtils.shuffle(other);
+		
+		final PermutationChromosome thatChrom1 = new PermutationChromosome(that.toISeq());
+		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
+		
+		final PermutationChromosome otherChrom1 = new PermutationChromosome(other.toISeq());
+		Assert.assertTrue(otherChrom1.isValid(), "otherChrom1 not valid");
+		
+		pmco.crossover(that, other);
+		
+		final PermutationChromosome thatChrom2 = new PermutationChromosome(that.toISeq());
+		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
+		
+		final PermutationChromosome otherChrom2 = new PermutationChromosome(other.toISeq());
+		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
+		
+		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
+		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
+	}
+	
 	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes, 

@@ -1,4 +1,6 @@
 Jenetics-0.8.0.0
+- Fix PartiallyMatchedCrossover.crossover() method. The method doesn't perform
+  any crossover.
 - Add Array.sort() methods.
 - Add performance tests.
 - Rename the Array.seal() method to Array.toISeq() and remove the Array.isSealed()
