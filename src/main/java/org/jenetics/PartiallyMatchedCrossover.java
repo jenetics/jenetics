@@ -100,19 +100,19 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 		return 1;
 	}
 	
-	private void swap(
-		final MSeq<G> that, final MSeq<G> other, 
+	private static <T> void swap(
+		final MSeq<T> that, final MSeq<T> other, 
 		final int begin, final int end
 	) {
 		for (int i = begin; i < end; ++i) {
-			final G temp = that.get(i);
+			final T temp = that.get(i);
 			that.set(i, other.get(i));
 			other.set(i, temp);
 		}
 	}
 	
-	private void repair(
-		final MSeq<G> that, final MSeq<G> other, 
+	private static <T> void repair(
+		final MSeq<T> that, final MSeq<T> other, 
 		final int begin, final int end
 	) {
 		for (int i = 0; i < begin; ++i) {
@@ -122,7 +122,7 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 				index = indexOf(that, begin, end, that.get(i));
 			}
 		}
-		for (int i = end; i < that.length(); ++i) {
+		for (int i = end, n = that.length(); i < n; ++i) {
 			int index = indexOf(that, begin, end, that.get(i));
 			while (index != -1) {
 				that.set(i, other.get(index));
@@ -131,19 +131,17 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 		}
 	}
 	
-	private int indexOf(
-		final Seq<G> genes, 
+	private static int indexOf(
+		final Seq<?> genes, 
 		final int begin, final int end, 
-		final G gene
+		final Object gene
 	) {
 		int index = -1;
-		
 		for (int i = begin; i < end && index == -1; ++i) {
 			if (genes.get(i).equals(gene)) {
 				index = i;
 			}
 		}
-
 		return index;
 	}
 	
