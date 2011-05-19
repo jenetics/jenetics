@@ -74,6 +74,7 @@ public class CharacterChromosome
 				).toISeq()
 		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
+		_valid = true;
 	}
 	
 	/**
@@ -94,6 +95,7 @@ public class CharacterChromosome
 				).toISeq()
 		);
 		_validCharacters = validCharacters;
+		_valid = true;
 	}
 	
 	/**

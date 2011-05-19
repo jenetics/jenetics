@@ -66,13 +66,18 @@ public final class CharacterGene
 	
 	private CharSet _validCharacters;
 	private Character _character;
+	
+	private Boolean _valid;
 		
 	CharacterGene() {
 	}
 		
 	@Override
 	public boolean isValid() {
-		return _validCharacters.contains(_character);
+		if (_valid) {
+			_valid = _validCharacters.contains(_character);
+		}
+		return _valid.booleanValue();
 	}
 	
 	@Override
@@ -101,7 +106,9 @@ public final class CharacterGene
 	
 	@Override
 	public CharacterGene copy() {
-		return valueOf(_character, _validCharacters);
+		final CharacterGene gene = valueOf(_character, _validCharacters);
+		gene._valid = _valid;
+		return gene;
 	}
 	
 	/**
@@ -230,7 +237,10 @@ public final class CharacterGene
 	public static CharacterGene valueOf(final CharSet validCharacters) {
 		final Random random = RandomRegistry.getRandom();
 		int pos = random.nextInt(validCharacters.length());
-		return valueOf(validCharacters.charAt(pos), validCharacters);
+		
+		final CharacterGene gene = valueOf(validCharacters.charAt(pos), validCharacters);
+		gene._valid = true;
+		return gene;
 	}
 		
 	/**
@@ -267,11 +277,11 @@ public final class CharacterGene
 		nonNull(character, "Character");
 		nonNull(validCharacters, "Valid characters");
 		
-		CharacterGene g = FACTORY.object();
-		g._character = character;
-		g._validCharacters = validCharacters;
+		final CharacterGene gene = FACTORY.object();
+		gene._character = character;
+		gene._validCharacters = validCharacters;
 		
-		return g;
+		return gene;
 	}
 	
 	
