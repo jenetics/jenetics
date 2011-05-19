@@ -64,6 +64,7 @@ public class Float64Chromosome
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
 		super(new Array<Float64Gene>(genes).toISeq());
+		_valid = true;
 	}
 	
 	/**
@@ -83,6 +84,7 @@ public class Float64Chromosome
 						Float64Gene.valueOf(min, max).asFactory()
 					).toISeq()
 			);
+		_valid = true;
 	}
 	
 	/**
