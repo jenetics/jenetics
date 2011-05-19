@@ -90,6 +90,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 						Integer64Gene.valueOf(min, max).asFactory()
 					).toISeq()
 			);
+		_valid = true;
 	}
 	
 	/**
@@ -155,7 +156,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
-			return true;
+			return true; 
 		}
 		return obj instanceof Integer64Chromosome && super.equals(obj);
 	}
