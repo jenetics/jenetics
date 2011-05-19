@@ -75,6 +75,7 @@ public final class PermutationChromosome
 	 */
 	public PermutationChromosome(final int[] values) {
 		super(create(values));
+		_valid = true;
 	}
 	
 	/**
@@ -89,6 +90,7 @@ public final class PermutationChromosome
 	 */
 	public PermutationChromosome(final int length, final boolean randomize) {
 		super(create(length, randomize));
+		_valid = true;
 	}
 	
 	/**
