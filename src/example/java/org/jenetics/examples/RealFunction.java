@@ -79,14 +79,14 @@ public class RealFunction {
 		
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());
 		ga.setFitnessScaler(SQR_SCALER);
-		ga.setPopulationSize(1000);
+		ga.setPopulationSize(10);
 		ga.setAlterer(new CompositeAlterer<Float64Gene>(
 			new Mutator<Float64Gene>(0.03),
 			new MeanAlterer<Float64Gene>(0.6)
 		));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		
-		final int generations = 1000;
+		final int generations = 10;
 		
 		GAUtils.printConfig(
 				"Real function", 
@@ -95,7 +95,7 @@ public class RealFunction {
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
 		
-		GAUtils.execute(ga, generations, 100);
+		GAUtils.execute(ga, generations, 1);
 	}
 	
 }
