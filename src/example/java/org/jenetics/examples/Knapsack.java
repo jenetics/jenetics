@@ -124,7 +124,7 @@ public class Knapsack {
 		 
 		final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
 		ga.setMaximalPhenotypeAge(30);
-		ga.setPopulationSize(1000);
+		ga.setPopulationSize(100);
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Float64>());
 		ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
 		ga.setAlterer(new CompositeAlterer<BitGene>(
@@ -132,7 +132,7 @@ public class Knapsack {
 				 new SinglePointCrossover<BitGene>(0.16)
 		 	));
 		
-		final int generations = 1000;
+		final int generations = 100;
 		
 		GAUtils.printConfig(
 				"Knapsack", 
@@ -141,7 +141,7 @@ public class Knapsack {
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
 		
-		GAUtils.execute(ga, generations, 100);
+		GAUtils.execute(ga, generations, 10);
 	}
 
 }

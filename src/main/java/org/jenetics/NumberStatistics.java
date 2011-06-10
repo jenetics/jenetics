@@ -325,7 +325,7 @@ public class NumberStatistics<
 					age.adapt(Phenotype.Age(generation)),
 					fitness.adapt(Phenotype.<R>Fitness())
 				);
-
+			Thread t;
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));
 			builder.fitnessMean(fitness.getMean());

@@ -140,7 +140,7 @@ public class Transformation {
 		));
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		
-		final int generations = 500;
+		final int generations = 50;
 		
 		GAUtils.printConfig(
 				"Affine transformation", 
@@ -149,7 +149,7 @@ public class Transformation {
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
 		
-		GAUtils.execute(ga, generations, 50);
+		GAUtils.execute(ga, generations, 10);
 	}
 	
 	
