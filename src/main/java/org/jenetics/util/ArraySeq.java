@@ -42,6 +42,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	transient ArrayRef _array;
 	transient int _start;
 	transient int _end; 
+	transient final int _length;
 	
 	/**
 	 * <i>Universal</i> array constructor.
@@ -67,6 +68,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		_array = array;
 		_start = start;
 		_end = end;
+		_length = _end - _start;
 	}
 	
 	ArraySeq(final int length) {
@@ -182,7 +184,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	
 	@Override
 	public int length() {
-		return _end - _start;
+		return _length;
 	}
 
 	@Override
@@ -240,7 +242,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	final void checkIndex(final int index) {
-		if (index < 0 || index >= length()) {
+		if (index < 0 || index >= _length) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Index %s is out of bounds [0, %s)", index, (_end - _start)
 			));
@@ -253,7 +255,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				"fromIndex(" + from + ") > toIndex(" + to+ ")"
 			);
 		}
-		if (from < 0 || to > length()) {
+		if (from < 0 || to > _length) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", from, to
 			));
