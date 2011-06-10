@@ -28,7 +28,8 @@ package org.jenetics.util;
  */
 final class ArrayRef implements Cloneable {
 	Object[] data;
-	int length;
+	final int length;
+	
 	boolean _sealed = false;
 	
 	ArrayRef(final Object[] data) {
