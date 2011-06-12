@@ -42,7 +42,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	transient ArrayRef _array;
 	transient int _start;
 	transient int _end; 
-	transient final int _length;
+	transient int _length;
 	
 	/**
 	 * <i>Universal</i> array constructor.
@@ -341,11 +341,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	{
 		in.defaultReadObject();
 	
-		final int length = in.readInt();
-		_array = new ArrayRef(length);
+		_length = in.readInt();
+		_array = new ArrayRef(_length);
 		_start = 0;
-		_end = length;
-		for (int i = 0; i < length; ++i) {
+		_end = _length;
+		for (int i = 0; i < _length; ++i) {
 			_array.data[i] = in.readObject();
 		}
 	}
