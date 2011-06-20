@@ -40,6 +40,10 @@ import java.util.Random;
  */
 public final class ArrayUtils {
 	
+	private ArrayUtils() {
+		throw new AssertionError("Don't create an 'ArrayUtils' instance.");
+	}
+	
 	/**
 	 * Swap two elements of an given array.
 	 * 
