@@ -422,8 +422,8 @@ public final class Array<T>
 	/**
 	 * Reverses the given array in place.
 	 */
-	public void reverse() {
-		reverse(0, length());
+	public Array<T> reverse() {
+		return reverse(0, length());
 	}
 	
 	/**
@@ -435,7 +435,7 @@ public final class Array<T>
 	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
 	 */
-	public void reverse(final int from, final int to) {
+	public Array<T> reverse(final int from, final int to) {
 		checkIndex(from, to);
 		_array.cloneIfSealed();
 		
@@ -446,6 +446,8 @@ public final class Array<T>
 			_swap(i, j);
 			++i;
 		}
+		
+		return this;
 	}
 	
 	public void swap(final int i, final int j) {
