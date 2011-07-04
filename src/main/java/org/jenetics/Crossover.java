@@ -90,8 +90,9 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 				pt2.newInstance(Genotype.valueOf(chromosomes2.toISeq()), generation)
 			);
 		
-		return 2;
+		return getOrder();
 	}
+	
 
 	/**
 	 * Template method which performs the crossover. The arguments given are 
@@ -99,6 +100,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
 	 */
 	protected abstract int crossover(final MSeq<G> that, final MSeq<G> other);
 
+	
 }
 
 
