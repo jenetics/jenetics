@@ -169,17 +169,58 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		sort(Optimize.MAXIMUM.<C>descending());
 	}
 	
-	public void sort(final Comparator<C> comparator) {
-		Collections.sort(_population, new Comparator<Phenotype<G, C>>() {
-			@Override
-			public int compare(
-					final Phenotype<G, C> pt1, 
-					final Phenotype<G, C> pt2
-			) {
-				return comparator.compare(pt1.getFitness(), pt2.getFitness());
-			}
-		});
+	public void sort(final Comparator<? super C> comparator) {
+		quicksort(0, size() - 1, comparator);
 	}
+		
+		
+	private void quicksort(
+		final int left, final int right, 
+		final Comparator<? super C> comparator
+	) {
+		if (right > left) {
+			final int j = partition(left, right, comparator); 
+			quicksort(left, j - 1, comparator);
+			quicksort(j + 1, right, comparator);
+		}
+	}
+		
+	private int partition(
+		final int left, final int right,
+		final Comparator<? super C> comparator 
+	) {
+		final C pivot = _population.get(left).getFitness();
+		int i = left;
+		int j = right + 1;
+		while (true) {
+			do { 
+				++i; 
+			} while (
+				i < right && 
+				comparator.compare(_population.get(i).getFitness(), pivot) < 0
+			);
+			
+			do {
+				--j;
+			} while (
+				j > left && 
+				comparator.compare(_population.get(j).getFitness(), pivot) > 0
+			);
+			if (j <= i) {
+				break;
+			}
+			swap(i, j);
+		}
+		swap(left, j);
+		
+		return j;
+	}	
+	
+	private void swap(final int i, final int j) {
+		final Phenotype<G, C> temp = _population.get(i);
+		_population.set(i, _population.get(j));
+		_population.set(j, temp);
+	}	
 	
 	/**
 	 * Reverse the order of the population.
@@ -331,6 +372,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	};
 	
 }
+
 
 
 
