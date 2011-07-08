@@ -217,9 +217,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}	
 	
 	private void swap(final int i, final int j) {
-		final Phenotype<G, C> temp = _population.get(i);
-		_population.set(i, _population.get(j));
-		_population.set(j, temp);
+		_population.set(i, _population.set(j, _population.get(i)));
 	}	
 	
 	/**
