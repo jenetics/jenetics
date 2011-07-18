@@ -1,3 +1,5 @@
+- Simplify CharacterChromosome construction
+
 Jenetics-0.8.0.0
 - Fix PartiallyMatchedCrossover.crossover() method. The method doesn't perform
   any crossover.
