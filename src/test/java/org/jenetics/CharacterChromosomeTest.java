@@ -28,6 +28,8 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
@@ -69,6 +71,34 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			LocalContext.exit();
 		}
     }
+	
+	@Test(dataProvider = "genes")
+	public void newCharacterChromosome(final String genes) {
+		final CharSet characters = new CharSet("0123456789");
+		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
+		
+		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);
+	}
+	
+	@Test(dataProvider = "genes", expectedExceptions = IllegalArgumentException.class)
+	public void newIllegalCharacterChromosome(final String genes) {
+		final CharSet characters = new CharSet("012356789");
+		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
+		
+		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);		
+	}
+	
+	@DataProvider(name = "genes")
+	public Object[][] genes() {
+		return new Object[][] {
+				{"54374"},
+				{"543794578"},
+				{"54374546"},
+				{"543345647"},
+				{"54304897"},
+				{"5433457245"}
+		};
+	}
 
 }
 
