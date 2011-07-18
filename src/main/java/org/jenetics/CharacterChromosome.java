@@ -112,6 +112,46 @@ public class CharacterChromosome
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
+	
+	/**
+	 * Create a new chromosome from the given genes (given as string).
+	 * 
+	 * @param genes the character genes.
+	 * @param validCharacters the valid characters.
+	 * @throws IllegalArgumentException if not all genes are in the set of valid
+	 *         characters or the genes is an empty string.
+	 */
+	public CharacterChromosome(final String genes, final CharSet validCharacters) {
+		super(
+			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
+				private int _index = 0;
+				@Override
+				public CharacterGene newInstance() {
+					final char c = genes.charAt(_index++);
+					if (!validCharacters.contains(c)) {
+						throw new IllegalArgumentException(String.format(
+								"Character '%s' not in valid characters %s", 
+								c, validCharacters
+							));
+					}
+					return CharacterGene.valueOf(c, validCharacters);
+				}
+			}).toISeq()
+		);
+		
+		_validCharacters = validCharacters;
+	}
+	
+	/**
+	 * Create a new chromosome from the given genes (given as string).
+	 * 
+	 * @param genes the character genes.
+	 * @throws IllegalArgumentException if not all genes are in the set of valid
+	 *         characters or the genes is an empty string.
+	 */
+	public CharacterChromosome(final String genes) {
+		this(genes, CharacterGene.DEFAULT_CHARACTERS);
+	}
 
 	/**
 	 * Return a more specific view of this chromosome factory.
