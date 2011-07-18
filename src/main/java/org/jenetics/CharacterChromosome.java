@@ -119,7 +119,7 @@ public class CharacterChromosome
 	 * @param genes the character genes.
 	 * @param validCharacters the valid characters.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *         characters or the genes is an empty string.
+	 *         characters or the genes string is empty.
 	 */
 	public CharacterChromosome(final String genes, final CharSet validCharacters) {
 		super(
