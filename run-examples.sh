@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.0.0"
+VERSION="0.8.1.0"
 CLS_PATH="./build/main/jenetics-${VERSION}-all.jar:./build/main/jenetics-${VERSION}-examples.jar:."
 
 java -cp $CLS_PATH org.jenetics.examples.Knapsack
