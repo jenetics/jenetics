@@ -28,7 +28,7 @@
  ############################################################################### 
 -->
 <project default="all">
-	<property name="version" value="0.9.0.0" />
+	<property name="version" value="0.8.1.0" />
 	<property name="identifier" value="jenetics-${version}" />
 	<property name="year" value="2007-2011" />
 	
@@ -466,34 +466,6 @@
 		/>
 	</target>
 	
-	<target name="performance-test" depends="compile-tests">
-		<mkdir dir="${testng.report.dir}" />
-		<testng 
-			outputdir="${testng.report.dir}"
-			haltonfailure="true" 
-			dumpCommand="false"
-			suitename="Jenetics Tests"
-			groups="performance"
-			verbose="2"
-		>
-			<classpath refid="classpath" />
-			<classpath refid="build.classpath" />
-			<classpath path="${build.dir}" />
-			<classpath path="${test.build.dir}" />
-			<classpath path="${testng.resource.dir}" />
-			<xmlfileset 
-				dir="${testng.source.dir}/org/jenetics" 
-				includes="performance-testng.xml" 
-			/>
-			<!--<classfileset dir="${build.dir}" includes="**/*.class" />-->
-		</testng>
-		
-		<copy 
-			file="${testng.report.dir}/emailable-report.html"
-			tofile="${basedir}/test-report.html"
-		/>
-	</target>
-	
 	<!--
 	    Deletes the build directory.
 	-->
@@ -524,8 +496,8 @@
 		>
 			<classpath >
 				<pathelement path="${build.dir}" />
-				<pathelement location="${lib.dir}/jscience.jar"/>
 			</classpath>
+			<classpath refid="classpath" />
 		</java>
 	</target>
 	
