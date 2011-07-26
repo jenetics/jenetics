@@ -71,11 +71,7 @@ class PermutationIndexStream implements IndexStream {
 		int value = length;
 		
 		while (value == length) {
-			value = BigInteger.probablePrime(
-					// avoid integer overflow
-					Math.min(length, 31), 
-					random
-				).intValue();
+			value = BigInteger.probablePrime(31, random).intValue();
 		}	
 		
 		return value;
