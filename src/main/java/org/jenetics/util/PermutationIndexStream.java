@@ -68,7 +68,7 @@ final class ArrayPermutation implements IndexStream {
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationIndexStream implements IndexStream {
+class PermutationIndexStream implements IndexStream {
 		
 	private final int _length;
 	private final int _stride;
