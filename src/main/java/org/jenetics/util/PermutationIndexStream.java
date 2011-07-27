@@ -42,7 +42,7 @@ class PermutationIndexStream implements IndexStream {
 	
 	
 	public PermutationIndexStream(final int length) {
-		this(length, prime(length), prime(length));
+		this(length, new Random().nextInt(length), prime(length));
 	}
 	
 	public PermutationIndexStream(
@@ -83,7 +83,7 @@ class PermutationIndexStream implements IndexStream {
 		
 		if (_calls < _length) {
 			if (_pos >= _length) {
-				_start = (_start + 1)%_stride;
+				_start = (_start + 1)%_length;
 				_pos = _start;
 			}
 
@@ -104,7 +104,7 @@ class PermutationIndexStream implements IndexStream {
 	
 	
 	public static void main(String[] args) {
-		final int N = 1000000;
+		final int N = 100000;
 		final Set<Integer> values = new HashSet<Integer>(N);
 		
 		final IndexStream stream = new PermutationIndexStream(N);
@@ -112,7 +112,7 @@ class PermutationIndexStream implements IndexStream {
 		
 		int count = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
-			//System.out.println((count++) + " --> " + i);
+			System.out.println((count++) + " --> " + i);
 			if (values.contains(i)) {
 				System.out.println("double: " + i);
 			}
