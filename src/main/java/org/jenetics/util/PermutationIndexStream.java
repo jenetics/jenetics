@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -31,8 +30,46 @@ import java.util.Set;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class PermutationIndexStream implements IndexStream {
+final class ArrayPermutation implements IndexStream {
 	
+	private final byte[] _array;
+	private int _pos = 0;
+	
+	ArrayPermutation(final int length, final Random random) {
+		assert(length <= Byte.MAX_VALUE);
+		
+		_array = new byte[length];
+		for (int i = 0; i < length; ++i) {
+			_array[i] = (byte)i;
+		}
+		for (int j = _array.length - 1; j > 0; --j) {
+			swap(_array, j, random.nextInt(j + 1));
+		}
+	}
+	
+	private static void swap(final byte[] array, final int i, final int j) {
+		final byte temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+	
+	@Override
+	public int next() {
+		int next = -1;
+		if (_pos < _array.length) {
+			next = _array[_pos++];
+		}
+		
+		return next;
+	}
+}
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
+ */
+public class PermutationIndexStream implements IndexStream {
+		
 	private final int _length;
 	private final int _stride;
 	
@@ -41,40 +78,38 @@ class PermutationIndexStream implements IndexStream {
 	private int _calls = 0;
 	
 	
-	public PermutationIndexStream(final int length) {
-		this(length, new Random().nextInt(length), prime(length));
-	}
-	
-	public PermutationIndexStream(
-		final int length, 
-		final int start, 
-		final int stride
-	) {
-		if (length < 1) {
-			throw new IllegalArgumentException();
-		}
-		if (start < 0) {
-			throw new IllegalArgumentException();
-		}
-		if (stride < 1 || stride == length) {
-			throw new IllegalArgumentException();
-		}
-		
+	PermutationIndexStream(final int length, final Random random) {
 		_length = length;
-		_start = start%length;
+		
+		// The stride has to be smaller than length and relative prime to length.
+		_stride = stride(length, random);
+		_start = random.nextInt(length);
 		_pos = _start;
-		_stride = stride;
 	}
 	
-	private static int prime(final int length) {
-		final Random random = new Random();
+	private static int stride(final int length, final Random random) {
 		int value = length;
-		
-		while (value == length) {
-			value = BigInteger.probablePrime(Integer.SIZE - 1, random).intValue();
+
+		while (value >= length || gcd(length, value) != 1) {
+			value = random.nextInt(length/2) + length/2;
 		}	
 		
+		System.out.println("lenght: " + length + ", stride: " + value);
 		return value;
+	}
+	
+	private static int gcd(final int a, final int b) {
+		int x = a;
+		int y = b;
+		int mod = x%y;
+		
+		while (mod != 0) {
+			x = y;
+			y = mod;
+			mod = x%y;
+		}
+		
+		return y;
 	}
 	
 	@Override
@@ -98,35 +133,57 @@ class PermutationIndexStream implements IndexStream {
 	@Override
 	public String toString() {
 		return String.format(
-				"Length: %d, start: %d, stride: %d", _length, _start, _stride
+				"Length: %d, start: %d, stride: %d",
+				_length, _start, _stride
 			);
+	}
+	
+	public static IndexStream valueOf(final int length) {
+		if (length >= 0) {
+			if (length <= Byte.MAX_VALUE) {
+				return new ArrayPermutation(length, new Random());
+			} else {
+				return new PermutationIndexStream(length, new Random());
+			}
+		} else {
+			throw new IllegalArgumentException(
+					"Length must be greater than zero: " + length
+				);
+		}
 	}
 	
 	
 	public static void main(String[] args) {
-		final int N = 100000;
-		final Set<Integer> values = new HashSet<Integer>(N);
-		
-		final IndexStream stream = new PermutationIndexStream(N);
-//		final IndexStream stream = new PermutationIndexStream(N, N - 1, N - 1);
+		for (int length = 129; length < 1000; ++length) {
+			System.out.println("Test length " + length);
+			for (int i = 0; i < 1000; ++i) {
+				test(length);
+			}
+		}
+	}
+	
+	private static void test(final int length) {
+		final Set<Integer> values = new HashSet<Integer>(length);
+		final IndexStream stream = PermutationIndexStream.valueOf(length);
 		
 		int count = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
-			System.out.println((count++) + " --> " + i);
 			if (values.contains(i)) {
-				System.out.println("double: " + i);
+				System.out.println((count++) + " --> " + i);
+				System.out.println("Double value: " + i);
+				System.out.println(stream);
+				System.exit(1);
 			}
 			values.add(i);
 		}
 		
-		System.out.println(values.size());
-		for (int i = 0; i < N; ++i) {
+		for (int i = 0; i < length; ++i) {
 			if (!values.contains(i)) {
-				System.out.println("missing: " + i);
+				System.out.println("Missing value: " + i);
+				System.out.println(stream);
+				System.exit(1);
 			}
 		}
-		
-		System.out.println(stream);
 	}
 
 }
