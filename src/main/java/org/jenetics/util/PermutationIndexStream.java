@@ -80,21 +80,23 @@ public class PermutationIndexStream implements IndexStream {
 	
 	PermutationIndexStream(final int length, final Random random) {
 		_length = length;
-		
-		// The stride has to be smaller than length and relative prime to length.
 		_stride = stride(length, random);
 		_start = random.nextInt(length);
 		_pos = _start;
+		
+		assert(_stride < _length);
+		assert(gcd(_stride, _length) == 1);
+		assert(_start < _length);
 	}
 	
+	// The stride has to be smaller than length and relative prime to length.
 	private static int stride(final int length, final Random random) {
 		int value = length;
 
-		while (value >= length || gcd(length, value) != 1) {
+		while (gcd(length, value) != 1) {
 			value = random.nextInt(length/2) + length/2;
 		}	
 		
-		System.out.println("lenght: " + length + ", stride: " + value);
 		return value;
 	}
 	
@@ -139,11 +141,15 @@ public class PermutationIndexStream implements IndexStream {
 	}
 	
 	public static IndexStream valueOf(final int length) {
+		return valueOf(length, new Random());
+	}
+	
+	public static IndexStream valueOf(final int length, final Random random) {
 		if (length >= 0) {
 			if (length <= Byte.MAX_VALUE) {
-				return new ArrayPermutation(length, new Random());
+				return new ArrayPermutation(length, random);
 			} else {
-				return new PermutationIndexStream(length, new Random());
+				return new PermutationIndexStream(length, random);
 			}
 		} else {
 			throw new IllegalArgumentException(
@@ -154,9 +160,9 @@ public class PermutationIndexStream implements IndexStream {
 	
 	
 	public static void main(String[] args) {
-		for (int length = 129; length < 1000; ++length) {
+		for (int length = 129; length < 10000; ++length) {
 			System.out.println("Test length " + length);
-			for (int i = 0; i < 1000; ++i) {
+			for (int i = 0; i < 5000; ++i) {
 				test(length);
 			}
 		}
@@ -168,6 +174,7 @@ public class PermutationIndexStream implements IndexStream {
 		
 		int count = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
+//			System.out.println((count++) + " --> " + i);
 			if (values.contains(i)) {
 				System.out.println((count++) + " --> " + i);
 				System.out.println("Double value: " + i);
