@@ -89,7 +89,7 @@ abstract class PermutationIndexStream implements IndexStream {
 	final static class PseudoPermutation extends PermutationIndexStream {
 		
 		private final int _stride;
-		private int _start;
+		private final int _start;
 		private int _calls = 0;
 		
 		PseudoPermutation(final int length, final Random random) {
@@ -132,13 +132,7 @@ abstract class PermutationIndexStream implements IndexStream {
 		@Override
 		public int next() {
 			int next = -1;
-			
 			if (_calls < _length) {
-				if (_pos >= _length) {
-					_start = (_start + 1)%_length;
-					_pos = _start;
-				}
-
 				next = _pos;
 				_pos = (_pos + _stride)%_length;
 				++_calls;
