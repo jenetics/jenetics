@@ -272,11 +272,16 @@
 			<class name="org.jenetics.util.CharSetTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.util.PermutationIndexStream">
+		<classes>
+			<class name="org.jenetics.util.PermutationIndexStreamTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.RandomIndexStream">
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>
-	</test>		
+	</test>			
 	<test name="org.jenetics.util.Timer">
 		<classes>
 			<class name="org.jenetics.util.TimerTest" />
