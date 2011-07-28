@@ -42,6 +42,17 @@ import org.jenetics.stat.Variance;
 public class RandomIndexStreamTest {
 
 	@Test
+	public void repeatable() {
+		final IndexStream stream1 = new RandomIndexStream(new Random(1), 1000, 0.5);
+		final IndexStream stream2 = new RandomIndexStream(new Random(1), 1000, 0.5);
+		
+		for (int i = stream1.next(); i != -1; i = stream1.next()) {
+			Assert.assertEquals(i, stream2.next());
+		}
+		Assert.assertEquals(stream2.next(), -1);
+	}
+	
+	@Test
 	public void iterateP0() {
 		final RandomIndexStream it = 
 			new RandomIndexStream(new Random(), 1000, 0);
