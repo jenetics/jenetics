@@ -26,6 +26,8 @@ import java.util.Random;
 
 
 /**
+ * This class creates an index stream for one particular (pseudo) permutation.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
