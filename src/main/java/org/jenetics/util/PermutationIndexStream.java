@@ -86,13 +86,13 @@ abstract class PermutationIndexStream implements IndexStream {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	final static class PseudoPermutation extends PermutationIndexStream {
+	final static class StridePermutation extends PermutationIndexStream {
 		
 		private final int _stride;
 		private final int _start;
 		private int _calls = 0;
 		
-		PseudoPermutation(final int length, final Random random) {
+		StridePermutation(final int length, final Random random) {
 			super(length, random);
 			
 			_stride = stride(_length, _random);
@@ -167,7 +167,7 @@ abstract class PermutationIndexStream implements IndexStream {
 		if (length <= Byte.MAX_VALUE) {
 			stream = new ArrayPermutation(length, random);
 		} else {
-			stream = new PseudoPermutation(length, random);
+			stream = new StridePermutation(length, random);
 		}
 		return stream;
 	}
