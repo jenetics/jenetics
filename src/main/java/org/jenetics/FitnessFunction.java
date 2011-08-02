@@ -30,7 +30,7 @@ import java.io.Serializable;
  * together form the {@link Genotype}.
  * <p/>
  * The <code>FitnessFunction</code> is shared by all <code>Phenotypes</code> and 
- * should be thread save. Typically the <code>evaluate</code> method is reentrant.
+ * should be thread safe. Typically the <code>evaluate</code> method is reentrant.
  * 
  * @param <G> the gene type.
  * @param <C> the result type of the fitness function. The result type must be
