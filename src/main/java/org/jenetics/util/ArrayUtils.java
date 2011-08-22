@@ -695,7 +695,7 @@ public final class ArrayUtils {
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
-		if (!MathUtils.isMultiplicationSave(n, k)) {
+		if (!math.isMultiplicationSave(n, k)) {
 			throw new IllegalArgumentException(String.format(
 				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)", 
 				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
