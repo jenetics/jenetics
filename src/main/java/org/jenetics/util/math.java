@@ -26,10 +26,10 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-final class MathUtils {
+final class math {
 
-	private MathUtils() {
-		throw new AssertionError("Don't create an 'MathUtils' instance.");
+	private math() {
+		throw new AssertionError("Don't create an 'math' instance.");
 	}
 	
 	static long add(final long a, final long b) {
