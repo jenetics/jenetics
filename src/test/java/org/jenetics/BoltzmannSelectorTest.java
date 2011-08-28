@@ -22,8 +22,11 @@
  */
 package org.jenetics;
 
+import org.testng.annotations.Test;
+
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.stat.Distribution;
 import org.jenetics.util.Factory;
 
 /**
@@ -42,6 +45,16 @@ public class BoltzmannSelectorTest
 	@Override
 	protected Factory<BoltzmannSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.BoltzmannSelector;
+	}
+	
+	@Override
+	protected Distribution<Float64> getDistribution() {
+		return null;
+	}
+	
+	@Override  
+	@Test
+	public void selectDistribution() {
 	}
 
 }

@@ -29,11 +29,12 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Random;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;

@@ -23,10 +23,9 @@
 package org.jenetics;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.Test;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.util.Accumulators;
+import org.jenetics.stat.Distribution;
+import org.jenetics.stat.LinearDistribution;
 import org.jenetics.util.Factory;
 
 /**
@@ -37,6 +36,12 @@ public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<Float64Gene, Float64>> 
 {
 
+	
+	@Override
+	protected Distribution<Float64> getDistribution() {
+		return new LinearDistribution<Float64>(_domain, 0);
+	}
+
 	@Override
 	protected boolean isSorted() {
 		return false;
@@ -45,44 +50,6 @@ public class RouletteWheelSelectorTest
 	@Override
 	protected Factory<RouletteWheelSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.RouletteWheelSelector;
-	}
-	
-	@Test
-	public void selectDistribution() {
-		final Float64 min = Float64.ZERO;
-		final Float64 max = Float64.valueOf(100);
-		final int npopulation = 10000;
-		final Factory<Genotype<Float64Gene>> gtf = 
-			Genotype.valueOf(new Float64Chromosome(min, max));
-		
-		final Population<Float64Gene, Float64> population = 
-			new Population<Float64Gene, Float64>();
-		
-		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
-		}
-		
-		final Selector<Float64Gene, Float64> selector = 
-			new RouletteWheelSelector<Float64Gene, Float64>();
-		
-		final Population<Float64Gene, Float64> selection = 
-			selector.select(population, npopulation/2, Optimize.MAXIMUM);
-		
-		// Check the distribution of the selected population. PDF must be linear
-		// increasing, since the RouletteWheelSelector is a fitness proportional
-		// selector.
-		final Histogram<Float64> histogram = Histogram.valueOf(min, max, 15);
-		Accumulators.accumulate(
-				selection, 
-				histogram
-					.adapt(Float64Gene.Allele)
-					.adapt(Float64Chromosome.Gene)
-					.adapt(Genotype.<Float64Gene>Chromosome())
-					.adapt(Phenotype.<Float64Gene>Genotype())
-			);
-		
-		// TODO: Check histogram distribution.
-		System.out.println(histogram);
 	}
 	
 }
