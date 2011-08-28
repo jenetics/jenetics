@@ -32,7 +32,6 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Validator;
 
@@ -43,7 +42,7 @@ import org.jenetics.util.Validator;
 public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<Float64Gene, Float64>
 >  
-	extends ObjectTester<S> 
+	extends SelectorTester<S> 
 {
 
 	protected abstract boolean isSorted();
