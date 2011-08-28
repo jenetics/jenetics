@@ -47,6 +47,10 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 		); 
 	
 	
+	protected S getSelector() {
+		return getFactory().newInstance();
+	}
+	
 	protected abstract Distribution<Float64> getDistribution();
 	
 	@Test
@@ -64,7 +68,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 			population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
 		}
 		
-		final S selector = getFactory().newInstance();
+		final S selector = getSelector();
 		
 		final Population<Float64Gene, Float64> selection = 
 			selector.select(population, npopulation/2, Optimize.MAXIMUM);
