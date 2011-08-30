@@ -24,8 +24,8 @@ package org.jenetics.stat;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
-import static org.jenetics.util.Validator.nonNegative;
-import static org.jenetics.util.Validator.nonNull;
+import static org.jenetics.util.validation.nonNegative;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.List;
 

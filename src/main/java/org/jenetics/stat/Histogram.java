@@ -28,7 +28,7 @@ import static org.jenetics.util.ArrayUtils.map;
 import static org.jenetics.util.ArrayUtils.sum;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
-import static org.jenetics.util.Validator.nonNull;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -40,8 +40,7 @@ import org.jscience.mathematics.number.Integer64;
 import org.jenetics.util.AdaptableAccumulator;
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.Converters;
-import org.jenetics.util.Validator;
-import org.jenetics.util.Validator.NonNull;
+import org.jenetics.util.validation.NonNull;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -189,7 +188,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public long[] getHistogram(final long[] histogram) {
-		Validator.nonNull(histogram);
+		nonNull(histogram);
 		
 		long[] hist = histogram;
 		if (histogram != null && histogram.length >= _histogram.length) {

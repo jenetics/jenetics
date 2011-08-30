@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.validation.nonNull;
 
 import java.io.IOException;
 import java.util.Random;
@@ -39,7 +40,6 @@ import javolution.xml.stream.XMLStreamException;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -72,7 +72,7 @@ public final class EnumGene<E extends Enum<E>>
 	 */
 	@Override
 	public EnumGene<E> mean(final EnumGene<E> that) {
-		Validator.nonNull(that, "Enum value");
+		nonNull(that, "Enum value");
 		
 		if (that._value == _value) {
 			return that;
@@ -152,8 +152,7 @@ public final class EnumGene<E extends Enum<E>>
 	}
 	
 	public static <T extends Enum<T>> EnumGene<T> valueOf(final T value) {
-		Validator.nonNull(value, "Enum value");
-		return newInstance(value);
+		return newInstance(nonNull(value, "Enum value"));
 	}
 
 	@Override

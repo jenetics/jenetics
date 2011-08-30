@@ -24,6 +24,7 @@ package org.jenetics.stat;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.List;
 
@@ -34,7 +35,6 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.util.Validator;
 
 /**
  * <p>This distribution has the following cdf.</p>
@@ -217,7 +217,7 @@ public class LinearDistribution<
 	private final double _y2;
 	
 	public LinearDistribution(final Domain<N> domain, final double y1) {
-		_domain = Validator.nonNull(domain);
+		_domain = nonNull(domain);
 		
 		_y1 = Math.max(y1, 0.0);
 		_x1 = domain.getMin().doubleValue();

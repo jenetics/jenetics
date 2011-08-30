@@ -23,7 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.Validator.nonNull;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.Collection;
 import java.util.Comparator;

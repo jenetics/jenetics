@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.validation.nonNull;
+
 /**
  * Adapts an accumulator from type {@code A} to type {@code B}.
  * 
@@ -44,8 +46,8 @@ public final class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 		final Accumulator<? super A> adoptee, 
 		final Converter<? super B, ? extends A> converter
 	) {
-		_adoptee = Validator.nonNull(adoptee);
-		_converter = Validator.nonNull(converter);
+		_adoptee = nonNull(adoptee);
+		_converter = nonNull(converter);
 	}
 	
 	/**

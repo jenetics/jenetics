@@ -22,10 +22,10 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.validation.nonNull;
+
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
-
-import org.jenetics.util.Validator;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
@@ -60,8 +60,8 @@ public interface Distribution<C extends Comparable<? super C>> {
 						"Min value must be smaller the max value: [%s, %s]", min, max
 					));
 			}
-			_min = Validator.nonNull(min, "Minimum");
-			_max = Validator.nonNull(max, "Maximum");
+			_min = nonNull(min, "Minimum");
+			_max = nonNull(max, "Maximum");
 		}
 
 		public C getMin() {

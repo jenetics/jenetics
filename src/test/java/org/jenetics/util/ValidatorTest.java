@@ -37,7 +37,7 @@ public class ValidatorTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.foreach(new Validator.CheckRange<Integer>(0, 100));
+		array.foreach(new validation.CheckRange<Integer>(0, 100));
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
@@ -47,7 +47,7 @@ public class ValidatorTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(new Validator.CheckRange<Integer>(0, 100));
+		array.foreach(new validation.CheckRange<Integer>(0, 100));
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -57,7 +57,7 @@ public class ValidatorTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.foreach(new Validator.CheckRange<Integer>(0, 100));
+		array.foreach(new validation.CheckRange<Integer>(0, 100));
 	}
 	
 	@Test
@@ -70,14 +70,14 @@ public class ValidatorTest {
 				}
 			});
 		}
-		Assert.assertEquals(array.foreach(new Validator.Verify()), -1);
+		Assert.assertEquals(array.foreach(new validation.Verify()), -1);
 		
 		array.set(77, new Verifiable() {
 			@Override public boolean isValid() {
 				return false;
 			}
 		});
-		Assert.assertEquals(array.foreach(new Validator.Verify()), 77);
+		Assert.assertEquals(array.foreach(new validation.Verify()), 77);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class ValidatorTest {
 			array.set(i, i);
 		}
 		
-		array.foreach(new Validator.NonNull());
+		array.foreach(new validation.NonNull());
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
@@ -97,27 +97,27 @@ public class ValidatorTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(new Validator.NonNull());
+		array.foreach(new validation.NonNull());
 	}
 	
 	@Test
 	public void nonNull1() {
-		Validator.nonNull("df");
+		validation.nonNull("df");
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nonNull2() {
-		Validator.nonNull(null);
+		validation.nonNull(null);
 	}
 	
 	@Test
 	public void rangeCheck1() {
-		Validator.checkRange(3, 0, 10);
+		validation.checkRange(3, 0, 10);
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void rangeCheck2() {
-		Validator.checkRange(-3, 0, 10);
+		validation.checkRange(-3, 0, 10);
 	}
 	
 }
