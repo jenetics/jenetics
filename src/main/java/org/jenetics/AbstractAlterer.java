@@ -24,7 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
-import static org.jenetics.util.Validator.checkProbability;
+import static org.jenetics.util.validation.checkProbability;
 
 import java.util.Random;
 

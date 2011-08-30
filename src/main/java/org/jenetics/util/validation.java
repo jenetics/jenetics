@@ -29,9 +29,9 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Validator {
+public final class validation {
 
-	private Validator() {
+	private validation() {
 		throw new AssertionError("Don't create an 'Validator' instance.");
 	}
 

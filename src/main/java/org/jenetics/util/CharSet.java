@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.validation.nonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public final class CharSet
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSet(final CharSequence characters) {
-		Validator.nonNull(characters, "Characters");
+		nonNull(characters, "Characters");
 		
 		final char[] chars = new char[characters.length()];
 		for (int i = 0; i < characters.length(); ++i) {
@@ -228,7 +229,7 @@ public final class CharSet
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
 	public static String expand(final CharSequence pattern) {
-		Validator.nonNull(pattern, "Pattern");
+		nonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
 	
 		for (int i = 0, n = pattern.length(); i < n; ++i) {

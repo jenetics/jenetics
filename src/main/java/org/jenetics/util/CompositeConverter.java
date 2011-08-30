@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.validation.nonNull;
+
 /**
  * This class allows to build transitive converters.
  * 
@@ -43,8 +45,8 @@ public class CompositeConverter<A, B, C> implements Converter<A, C> {
 		final Converter<A, B> first,
 		final Converter<B, C> second
 	) {
-		_first = Validator.nonNull(first);
-		_second = Validator.nonNull(second);
+		_first = nonNull(first);
+		_second = nonNull(second);
 	}
 	
 	@Override

@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
-import static org.jenetics.util.Validator.nonNull;
+import static org.jenetics.util.validation.nonNull;
 
 /**
  * In truncation selection individuals are sorted according to their fitness. 

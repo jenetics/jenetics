@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
+import org.jenetics.util.validation;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -126,7 +126,7 @@ public abstract class ProbabilitySelectorTester<
 	}
 	
 	private static void randomize(final double[] array, final Random random) {
-		Validator.nonNull(array, "Array");
+		validation.nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

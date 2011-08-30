@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.validation.nonNull;
+
 import java.util.List;
 import java.util.RandomAccess;
 
@@ -37,7 +39,7 @@ public final class SerialEvaluator implements Evaluator {
 
 	@Override
 	public void evaluate(final List<? extends Runnable> runnables) {
-		Validator.nonNull(runnables, "Runnables");
+		nonNull(runnables, "Runnables");
 		
 		if (runnables instanceof RandomAccess) {
 			for (int i = runnables.size(); --i >= 0;) {

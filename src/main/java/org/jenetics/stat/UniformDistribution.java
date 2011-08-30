@@ -24,6 +24,7 @@ package org.jenetics.stat;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.List;
 
@@ -34,7 +35,6 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.util.Validator;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
@@ -185,7 +185,7 @@ public class UniformDistribution<
 	 * @throws NullPointerException if the {@code domain} is {@code null}.
 	 */
 	public UniformDistribution(final Domain<N> domain) {
-		_domain = Validator.nonNull(domain, "Domain");
+		_domain = nonNull(domain, "Domain");
 	}
 
 	/**

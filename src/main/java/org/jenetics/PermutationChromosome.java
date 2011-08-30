@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.validation.nonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,7 +42,6 @@ import org.jenetics.util.BitUtils;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Validator;
 
 /**
  * The mutable methods of the {@link AbstractChromosome} has been overridden so 
@@ -105,7 +105,7 @@ public final class PermutationChromosome
 	
 	private static ISeq<Integer64Gene> create(final int[] values) {
 		//Check the input.
-		Validator.nonNull(values, "Values");
+		nonNull(values, "Values");
 		if (values.length < 1) {
 			throw new IllegalArgumentException(
 					"Array must contain at least one value."

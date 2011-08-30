@@ -25,7 +25,7 @@ package org.jenetics;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.Predicates.nil;
-import static org.jenetics.util.Validator.nonNull;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
@@ -35,7 +35,7 @@ import javolution.text.Text;
 
 import org.jenetics.util.Converter;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.Validator.Verify;
+import org.jenetics.util.validation.Verify;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors

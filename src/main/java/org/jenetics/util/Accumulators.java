@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.validation.nonNull;
 
 import java.util.Iterator;
 
@@ -75,7 +76,7 @@ public final class Accumulators {
 		 * @throws NullPointerException if {@code min} is {@code null}.
 		 */
 		public Min(final Min<C> min) {
-			Validator.nonNull(min, "Min");
+			nonNull(min, "Min");
 			_samples = min._samples;
 			_min = min._min;
 		}
@@ -162,7 +163,7 @@ public final class Accumulators {
 		 * @throws NullPointerException if {@code max} is {@code null}.
 		 */
 		public Max(final Max<C> max) {
-			Validator.nonNull(max, "Max");
+			nonNull(max, "Max");
 			_samples = max._samples;
 			_max = max._max;
 		}
@@ -250,7 +251,7 @@ public final class Accumulators {
 		 * @throws NullPointerException if {@code mm} is {@code null}.
 		 */
 		public MinMax(final MinMax<C> mm) {
-			Validator.nonNull(mm, "MinMax");
+			nonNull(mm, "MinMax");
 			_samples = mm._samples;
 			_min = mm._min;
 			_max = mm._max;
