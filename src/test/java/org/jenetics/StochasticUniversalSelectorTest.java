@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
+import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
 
 /**
@@ -56,13 +57,14 @@ public class StochasticUniversalSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return null;
+		return new UniformDistribution<Float64>(_domain);
 	}
 	
+	// TODO: implement select-distribution test.
 	@Override  
 	@Test
 	public void selectDistribution() {
+		//super.selectDistribution();
 	}
-	
 
 }

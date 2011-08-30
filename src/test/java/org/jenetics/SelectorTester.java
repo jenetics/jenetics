@@ -53,11 +53,11 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	
 	protected abstract Distribution<Float64> getDistribution();
 	
-	@Test
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void selectDistribution() {
 		final Float64 min = _domain.getMin();
 		final Float64 max = _domain.getMax();
-		final int npopulation = 10000;
+		final int npopulation = 50000;
 		final Factory<Genotype<Float64Gene>> gtf = 
 			Genotype.valueOf(new Float64Chromosome(min, max));
 		
