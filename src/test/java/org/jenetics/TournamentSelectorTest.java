@@ -24,10 +24,13 @@ package org.jenetics;
 
 import java.util.Random;
 
+import org.testng.annotations.Test;
+
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.stat.Distribution;
+import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -35,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class TournamentSelectorTest 
-	extends ObjectTester<TournamentSelector<Float64Gene, Float64>> 
+	extends SelectorTester<TournamentSelector<Float64Gene, Float64>> 
 {
 	
 	final Factory<TournamentSelector<Float64Gene, Float64>> 
@@ -50,6 +53,18 @@ public class TournamentSelectorTest
 	@Override
 	protected Factory<TournamentSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
+	}
+	
+	@Override
+	protected Distribution<Float64> getDistribution() {
+		return new UniformDistribution<Float64>(_domain);
+	}
+	
+	// TODO: implement select-distribution test.
+	@Override  
+	@Test
+	public void selectDistribution() {
+		//super.selectDistribution();
 	}
 
 }

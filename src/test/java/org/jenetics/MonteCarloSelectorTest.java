@@ -24,15 +24,16 @@ package org.jenetics;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.stat.Distribution;
+import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class MonteCarloSelectorTest 
-	extends ObjectTester<MonteCarloSelector<Float64Gene, Float64>> 
+	extends SelectorTester<MonteCarloSelector<Float64Gene, Float64>> 
 {
 
 	final Factory<MonteCarloSelector<Float64Gene, Float64>> 
@@ -47,5 +48,9 @@ public class MonteCarloSelectorTest
 	protected Factory<MonteCarloSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-
+	@Override
+	protected Distribution<Float64> getDistribution() {
+		return new UniformDistribution<Float64>(_domain);
+	}
+	
 }

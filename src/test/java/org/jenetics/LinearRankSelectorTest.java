@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import org.testng.annotations.Test;
-
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
@@ -58,11 +56,6 @@ public class LinearRankSelectorTest
 		return new LinearRankSelector<Float64Gene, Float64>(0.0);
 	}
 	
-	@Override  
-	@Test
-	public void selectDistribution() {
-		super.selectDistribution();
-	}
 	
 }
 
