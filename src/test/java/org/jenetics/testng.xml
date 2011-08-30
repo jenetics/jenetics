@@ -282,9 +282,9 @@
 			<class name="org.jenetics.util.TimerTest" />
 		</classes>
 	</test>		
-	<test name="org.jenetics.util.Validator">
+	<test name="org.jenetics.util.validation">
 		<classes>
-			<class name="org.jenetics.util.ValidatorTest" />
+			<class name="org.jenetics.util.validationTest" />
 		</classes>
 	</test>	
 </suite>
