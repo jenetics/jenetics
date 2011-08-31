@@ -158,7 +158,7 @@ public abstract class ObjectTester<T> {
 				final XMLSerializable serializable = 
 					(XMLSerializable)getFactory().newInstance();
 				
-				SerializeUtils.testXMLSerialization(serializable);
+				serialize.testXMLSerialization(serializable);
 			}
 		}
 	}
@@ -172,7 +172,7 @@ public abstract class ObjectTester<T> {
 				final Serializable serializable = 
 					(Serializable)getFactory().newInstance();
 				
-				SerializeUtils.testSerialization(serializable);
+				serialize.testSerialization(serializable);
 			}
 		}
 	}

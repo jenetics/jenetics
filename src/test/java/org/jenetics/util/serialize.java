@@ -38,8 +38,12 @@ import org.jenetics.util.io;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class SerializeUtils {
+public class serialize {
 
+	private serialize() {
+		throw new AssertionError("Don't create an 'serialize' instance.");
+	}
+	
 	public static void testXMLSerialization(final XMLSerializable object) 
 		throws XMLStreamException 
 	{

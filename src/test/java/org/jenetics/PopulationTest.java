@@ -33,7 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ArrayUtils;
-import org.jenetics.util.SerializeUtils;
+import org.jenetics.util.serialize;
 
 
 /**
@@ -89,13 +89,13 @@ public class PopulationTest {
 	@Test
 	public void xmlSerialization() throws XMLStreamException {		
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		SerializeUtils.testXMLSerialization(population);
+		serialize.testXMLSerialization(population);
 	}
 	
 	@Test
 	public void objectSerialization() throws IOException {
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		SerializeUtils.testSerialization(population);
+		serialize.testSerialization(population);
 	}
 	
 }
