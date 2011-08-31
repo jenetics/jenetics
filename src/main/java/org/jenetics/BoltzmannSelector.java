@@ -28,7 +28,7 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 
 /**
  * <p>
@@ -103,13 +103,13 @@ public final class BoltzmannSelector<
 		}
 		
 		// Scale the fitness values to avoid overflows.
-		ArrayUtils.divide(probabilities, ArrayUtils.max(probabilities));
+		array.divide(probabilities, array.max(probabilities));
 		
 		for (int i = probabilities.length; --i >= 0;) {
 			probabilities[i] = exp(_b*probabilities[i]);
 		}
 		
-		ArrayUtils.normalize(probabilities);
+		array.normalize(probabilities);
 		
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;

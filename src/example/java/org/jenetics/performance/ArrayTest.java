@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 
@@ -146,17 +146,17 @@ protected void test() {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			ArrayUtils.shuffle(_array);
+			array.shuffle(_array);
 		}
 		
 		@Override 
 		protected void test() {
-			ArrayUtils.sort(_array, _comparator);
+			array.sort(_array, _comparator);
 		}
 		
 		@Override
 		protected void afterTest() {
-			if (!ArrayUtils.isSorted(_array)) {
+			if (!array.isSorted(_array)) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}
@@ -169,7 +169,7 @@ protected void test() {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			ArrayUtils.shuffle(_array);
+			array.shuffle(_array);
 		}
 		
 		@Override 
@@ -179,7 +179,7 @@ protected void test() {
 		
 		@Override
 		protected void afterTest() {
-			if (!ArrayUtils.isSorted(_array)) {
+			if (!array.isSorted(_array)) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}

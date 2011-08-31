@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.array.sum;
 import static org.jenetics.util.bit.ulpDistance;
 import static org.jenetics.util.validation.nonNull;
 

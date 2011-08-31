@@ -31,7 +31,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.validation;
 
@@ -81,7 +81,7 @@ public abstract class ProbabilitySelectorTester<
 	@Test
 	public void probabilities() {
 		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
-		ArrayUtils.shuffle(population, new Random(System.currentTimeMillis()));
+		array.shuffle(population, new Random(System.currentTimeMillis()));
 		
 		final S selector = getFactory().newInstance();
 		final double[] props = selector.probabilities(population, 23);

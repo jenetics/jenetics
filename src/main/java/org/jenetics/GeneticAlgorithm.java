@@ -35,7 +35,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.Factory;
@@ -839,7 +839,7 @@ public class GeneticAlgorithm<
 	 * 		  one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
-		ArrayUtils.foreach(population, new NonNull());
+		array.foreach(population, new NonNull());
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.",
@@ -869,7 +869,7 @@ public class GeneticAlgorithm<
 	 *			one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
-		ArrayUtils.foreach(genotypes, new NonNull());
+		array.foreach(genotypes, new NonNull());
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
