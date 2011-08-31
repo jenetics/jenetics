@@ -31,10 +31,10 @@ import org.jscience.mathematics.number.Integer64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Converters {
+public final class converter {
 
-	private Converters() {
-		throw new AssertionError("Don't create Converters instance.");
+	private converter() {
+		throw new AssertionError("Don't create 'converter' instance.");
 	}
 	
 	public static final Converter<Float64, Double> Float64ToDouble =
