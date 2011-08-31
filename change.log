@@ -1,5 +1,6 @@
 Jenetics-0.8.1.0
 - Improve Population.sort() method
+- Rename org.jenetics.util.Converters to org.jenetics.util.converter.
 - Rename org.jenetics.util.Accumulators to org.jenetics.util.accumulator.
 - Rename org.jenetics.util.Predicates to org.jenetics.util.predicate.
 - Rename org.jenetics.util.ArrayUtils to org.jenetics.util.array.

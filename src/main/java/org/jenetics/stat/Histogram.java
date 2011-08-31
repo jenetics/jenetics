@@ -26,6 +26,8 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static org.jenetics.util.array.map;
 import static org.jenetics.util.array.sum;
+import static org.jenetics.util.converter.DoubleToFloat64;
+import static org.jenetics.util.converter.LongToInteger64;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.validation.nonNull;
@@ -39,7 +41,6 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.AdaptableAccumulator;
 import org.jenetics.util.array;
-import org.jenetics.util.Converters;
 import org.jenetics.util.validation.NonNull;
 
 /**
@@ -383,7 +384,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		return valueOf(map(
 				toSeparators(min.doubleValue(), max.doubleValue(), nclasses), 
 				new Float64[nclasses - 1],
-				Converters.DoubleToFloat64
+				DoubleToFloat64
 			));
 	}
 	
@@ -457,7 +458,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		return valueOf(map(
 				toSeparators(min.longValue(), max.longValue(), nclasses), 
 				new Integer64[0],
-				Converters.LongToInteger64
+				LongToInteger64
 			));
 	}
 	
