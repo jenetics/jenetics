@@ -38,7 +38,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.BitUtils;
+import org.jenetics.util.bit;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
@@ -128,12 +128,12 @@ public final class PermutationChromosome
 				));
 			}
 			
-			if (BitUtils.getBit(check, values[i])) {
+			if (bit.getBit(check, values[i])) {
 				throw new IllegalArgumentException(String.format(
 						"Value %s is duplicate.", values[i]
 					));
 			} else {
-				BitUtils.setBit(check, values[i], true);
+				bit.setBit(check, values[i], true);
 			}
 		}
 		
@@ -183,11 +183,11 @@ public final class PermutationChromosome
 			for (int i = 0; i < length() && valid; ++i) {
 				final int value = _genes.get(i).intValue();
 				if (value >= 0 && value < length()) {
-					if (BitUtils.getBit(check, value)) {
+					if (bit.getBit(check, value)) {
 						valid = false;
 						System.out.println("value: " + value);
 					} else {
-						BitUtils.setBit(check, value, true);
+						bit.setBit(check, value, true);
 					}
 				} else {
 					valid = false;

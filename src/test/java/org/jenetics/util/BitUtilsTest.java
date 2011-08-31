@@ -53,8 +53,8 @@ public class BitUtilsTest {
 	public void convertByteArrayLargeInteger() {
 		LargeInteger i = LargeInteger.valueOf(23443L);
 		
-		byte[] array = BitUtils.toByteArray(i);
-		LargeInteger i2 = BitUtils.toLargeInteger(array);
+		byte[] array = bit.toByteArray(i);
+		LargeInteger i2 = bit.toLargeInteger(array);
 		Assert.assertEquals(i2, i);
 	}
 	
@@ -63,15 +63,15 @@ public class BitUtilsTest {
 		byte[] data = new byte[10];
 		for (int i = 0; i < data.length*8; ++i) {
 			if (i%2 == 0) {
-				BitUtils.setBit(data, i, true);
+				bit.setBit(data, i, true);
 			} else {
-				BitUtils.setBit(data, i, false);
+				bit.setBit(data, i, false);
 			}
 		}
 		
 		byte[] sdata = data.clone();
-		BitUtils.shiftLeft(sdata, 8);
-		BitUtils.shiftRight(sdata, 8);
+		bit.shiftLeft(sdata, 8);
+		bit.shiftRight(sdata, 8);
 		data[0] = (byte)0;
 		Assert.assertEquals(sdata, data);
 	}
@@ -82,21 +82,21 @@ public class BitUtilsTest {
 		Arrays.fill(data, (byte)0);
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(BitUtils.getBit(data, i), false);
+			Assert.assertEquals(bit.getBit(data, i), false);
 		}
 		
 		for (int i = 0; i < data.length*8; ++i) {
 			if (i%2 == 0) {
-				BitUtils.setBit(data, i, true);
+				bit.setBit(data, i, true);
 			} else {
-				BitUtils.setBit(data, i, false);
+				bit.setBit(data, i, false);
 			}
 		}
 		for (int i = 0; i < data.length*8; ++i) {
 			if (i%2 == 0) {
-				Assert.assertEquals(BitUtils.getBit(data, i), true);
+				Assert.assertEquals(bit.getBit(data, i), true);
 			} else {
-				Assert.assertEquals(BitUtils.getBit(data, i), false);
+				Assert.assertEquals(bit.getBit(data, i), false);
 			}
 		}
 	}
@@ -106,15 +106,15 @@ public class BitUtilsTest {
 		byte[] data = new byte[10];
 		for (int i = 0; i < data.length*8; ++i) {
 			if (i%2 == 0) {
-				BitUtils.setBit(data, i, true);
+				bit.setBit(data, i, true);
 			} else {
-				BitUtils.setBit(data, i, false);
+				bit.setBit(data, i, false);
 			}
 		}
 		
 		byte[] idata = data.clone();
-		BitUtils.invert(idata);
-		BitUtils.invert(idata);
+		bit.invert(idata);
+		bit.invert(idata);
 		Assert.assertEquals(idata, data);
 	}
 
@@ -125,10 +125,10 @@ public class BitUtilsTest {
 			data[i] = (byte)(Math.random()*256);
 		}
 		
-		final String dataString = BitUtils.toString(data);
+		final String dataString = bit.toString(data);
 		Reporter.log(dataString);
 		
-		final byte[] sdata = BitUtils.toByteArray(dataString);
+		final byte[] sdata = bit.toByteArray(dataString);
 		Assert.assertEquals(sdata, data);
 	}
 	

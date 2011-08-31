@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.BitUtils.ulpDistance;
+import static org.jenetics.util.bit.ulpDistance;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Arrays;
