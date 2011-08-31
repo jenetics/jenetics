@@ -28,7 +28,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.util.SerializeUtils;
+import org.jenetics.util.serialize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -42,12 +42,12 @@ public class EnumGeneTest {
 	
 	@Test
 	public void objectSerialize() throws IOException {
-		SerializeUtils.testSerialization(EnumGene.valueOf(TestEnum.ONE));
+		serialize.testSerialization(EnumGene.valueOf(TestEnum.ONE));
 	}
 	
 	@Test
 	public void xmlSerialize() throws XMLStreamException {
-		SerializeUtils.testXMLSerialization(EnumGene.valueOf(TestEnum.SIX));
+		serialize.testXMLSerialization(EnumGene.valueOf(TestEnum.SIX));
 	}
 }
 
