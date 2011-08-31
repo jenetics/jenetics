@@ -24,7 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.Predicates.nil;
+import static org.jenetics.util.predicate.nil;
 import static org.jenetics.util.validation.nonNull;
 
 import java.util.Iterator;

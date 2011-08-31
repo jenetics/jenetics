@@ -23,8 +23,8 @@
 package org.jenetics.util;
 
 import static java.util.Arrays.asList;
-import static org.jenetics.util.Predicates.nil;
-import static org.jenetics.util.Predicates.not;
+import static org.jenetics.util.predicate.nil;
+import static org.jenetics.util.predicate.not;
 
 import java.util.Iterator;
 import java.util.List;
