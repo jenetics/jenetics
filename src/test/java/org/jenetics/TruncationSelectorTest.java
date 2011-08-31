@@ -53,7 +53,6 @@ public class TruncationSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		final Float64 step = _domain.getMax().minus(_domain.getMin()).divide(_histogramSize);
 		final Domain<Float64> domain = new Domain<Float64>(
 				_domain.getMax().minus(_domain.getMin()).divide(2),
 				_domain.getMax()
