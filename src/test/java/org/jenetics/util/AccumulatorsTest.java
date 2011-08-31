@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.accumulator.accumulate;
+
 import java.util.Iterator;
 
 import org.testng.Assert;
@@ -90,7 +92,7 @@ public class AccumulatorsTest {
 	public void accumulate1() {
 		final int SAMPLES = 1000;
 		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
-		Accumulators.accumulate(new IntegerIterator(SAMPLES), accumulator);
+		accumulate(new IntegerIterator(SAMPLES), accumulator);
 		
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 	}
@@ -99,7 +101,7 @@ public class AccumulatorsTest {
 	public void accumulate2() {
 		final int SAMPLES = 1000;
 		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
-		Accumulators.accumulate(new IntegerIterable(SAMPLES), accumulator);
+		accumulate(new IntegerIterable(SAMPLES), accumulator);
 		
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 	}
@@ -110,7 +112,7 @@ public class AccumulatorsTest {
 		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
 		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
 		
-		Accumulators.accumulate(
+		accumulate(
 				new IntegerIterable(SAMPLES), 
 				accumulator1,
 				accumulator2
@@ -127,7 +129,7 @@ public class AccumulatorsTest {
 		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
 		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
 		
-		Accumulators.accumulate(
+		accumulate(
 				new IntegerIterable(SAMPLES), 
 				accumulator1,
 				accumulator2,
@@ -147,7 +149,7 @@ public class AccumulatorsTest {
 		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
 		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
 		
-		Accumulators.accumulate(
+		accumulate(
 				new IntegerIterable(SAMPLES), 
 				accumulator1,
 				accumulator2,
@@ -170,7 +172,7 @@ public class AccumulatorsTest {
 		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
 		final AbstractAccumulator<Integer> accumulator5 = new AbstractAccumulator<Integer>(){};
 		
-		Accumulators.accumulate(
+		accumulate(
 				new IntegerIterable(SAMPLES), 
 				accumulator1,
 				accumulator2,
@@ -194,7 +196,7 @@ public class AccumulatorsTest {
 			accumulators.set(i, new AbstractAccumulator<Integer>(){});
 		}
 		
-		Accumulators.accumulate(
+		accumulate(
 				new IntegerIterable(SAMPLES), 
 				accumulators
 			);

@@ -40,9 +40,9 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Accumulators {
+public final class accumulator {
 
-	private Accumulators() {
+	private accumulator() {
 		throw new AssertionError("Don't create an 'Accumulators' instance.");
 	}	
 	
@@ -371,20 +371,20 @@ public final class Accumulators {
 	) {
 		switch (accumulators.length()) {
 		case 1:
-			Accumulators.<T>accumulate(
+			accumulator.<T>accumulate(
 					values, 
 					accumulators.get(0)
 				); 
 			break;
 		case 2:
-			Accumulators.<T>accumulate(
+			accumulator.<T>accumulate(
 					values, 
 					accumulators.get(0), 
 					accumulators.get(1)
 				); 
 			break;
 		case 3:
-			Accumulators.<T>accumulate(
+			accumulator.<T>accumulate(
 					values, 
 					accumulators.get(0), 
 					accumulators.get(1),
@@ -392,7 +392,7 @@ public final class Accumulators {
 				); 
 			break;
 		case 4:
-			Accumulators.<T>accumulate(
+			accumulator.<T>accumulate(
 					values, 
 					accumulators.get(0), 
 					accumulators.get(1),
@@ -401,7 +401,7 @@ public final class Accumulators {
 				);
 			break;
 		case 5:
-			Accumulators.<T>accumulate(
+			accumulator.<T>accumulate(
 					values, 
 					accumulators.get(0), 
 					accumulators.get(1),

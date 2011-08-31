@@ -25,7 +25,7 @@ package org.jenetics.performance;
 import javolution.lang.Reusable;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.Accumulators.MinMax;
+import org.jenetics.util.accumulator.MinMax;
 import org.jenetics.util.Accumulator;
 import org.jenetics.util.Timer;
 

@@ -23,13 +23,13 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.util.accumulator.accumulate;
 
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
-import org.jenetics.util.Accumulators;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 
@@ -80,7 +80,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 				selector.select(population, npopulation/2, Optimize.MAXIMUM);
 			
 			
-			Accumulators.accumulate(
+			accumulate(
 					selection, 
 					histogram
 						.adapt(Float64Gene.Allele)
