@@ -22,6 +22,9 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.array.isSorted;
+import static org.jenetics.util.array.sort;
+
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Random;
@@ -45,7 +48,7 @@ public class ArrayUtilsTest {
 			int[] sub = new int[i];
 			array.subset(1000, sub, random);
 			
-			Assert.assertTrue(isSorted(sub));
+			Assert.assertTrue(isSortedd(sub));
 		}
 		
 	}
@@ -64,7 +67,7 @@ public class ArrayUtilsTest {
 		//System.out.println(ArrayUtils.iselect(array, 2));
 	}
 	
-	private static boolean isSorted(int[] array) {
+	private static boolean isSortedd(int[] array) {
 		boolean sorted = true;
 		for (int i = 0; i < array.length - 1 && sorted; ++i) {
 			sorted = array[i] < array[i + 1];
@@ -83,32 +86,32 @@ public class ArrayUtilsTest {
 	}
 	
 	@Test
-	public void isSorted() {
+	public void sorted() {
 		final Array<Integer> array = new Array<Integer>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		Assert.assertTrue(org.jenetics.util.array.isSorted(array));
+		Assert.assertTrue(isSorted(array));
 		
 		array.set(10, 5);
-		Assert.assertFalse(org.jenetics.util.array.isSorted(array));
+		Assert.assertFalse(isSorted(array));
 		
 		array.fill(-234);
-		Assert.assertTrue(org.jenetics.util.array.isSorted(array));
+		Assert.assertTrue(isSorted(array));
 		
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, array.length() - i);
 		}
-		Assert.assertFalse(org.jenetics.util.array.isSorted(array));
+		Assert.assertFalse(isSorted(array));
 	}
 	
 	@Test
-	public void isSorted2() {
+	public void sorted2() {
 		final Array<Integer> array = new Array<Integer>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		Assert.assertFalse(org.jenetics.util.array.isSorted(array, new Comparator<Integer>() {
+		Assert.assertFalse(isSorted(array, new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
 				return -o1.compareTo(o2);
@@ -117,7 +120,7 @@ public class ArrayUtilsTest {
 	}
 	
 	@Test
-	public void sort() {
+	public void sort1() {
 		final Random random = new Random();
 		final Factory<Integer> factory = new Factory<Integer>() {
 			@Override public Integer newInstance() {
@@ -127,11 +130,11 @@ public class ArrayUtilsTest {
 		
 		final Array<Integer> array = new Array<Integer>(100);
 		array.fill(factory);
-		Assert.assertFalse(org.jenetics.util.array.isSorted(array));
+		Assert.assertFalse(isSorted(array));
 		
 		final Array<Integer> clonedArray = array.copy();
 		org.jenetics.util.array.sort(array.subSeq(30, 40));
-		Assert.assertTrue(org.jenetics.util.array.isSorted(array.subSeq(30, 40)));
+		Assert.assertTrue(isSorted(array.subSeq(30, 40)));
 		Assert.assertEquals(array.subSeq(0, 30), clonedArray.subSeq(0, 30));
 		Assert.assertEquals(array.subSeq(40), clonedArray.subSeq(40));
 	}
@@ -147,11 +150,11 @@ public class ArrayUtilsTest {
 		
 		final Array<Integer> array = new Array<Integer>(100);
 		array.fill(factory);
-		Assert.assertFalse(org.jenetics.util.array.isSorted(array));
+		Assert.assertFalse(isSorted(array));
 		
 		final Array<Integer> clonedArray = array.copy();
-		org.jenetics.util.array.sort(clonedArray, 30, 40);
-		org.jenetics.util.array.sort(array.subSeq(30, 40));
+		sort(clonedArray, 30, 40);
+		sort(array.subSeq(30, 40));
 		Assert.assertEquals(array, clonedArray);
 	}
 	
@@ -199,7 +202,7 @@ public class ArrayUtilsTest {
 		
 		Timer timer = new Timer();
 		timer.start();
-		org.jenetics.util.array.sort(array);
+		sort(array);
 		timer.stop();
 		Reporter.log(timer.toString());
 	}

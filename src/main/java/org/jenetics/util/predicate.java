@@ -31,10 +31,10 @@ import static org.jenetics.util.validation.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Predicates {
+public final class predicate {
 
-	private Predicates() {
-		throw new AssertionError("Don't create an 'Predicates' instance.");
+	private predicate() {
+		throw new AssertionError("Don't create an 'predicate' instance.");
 	}
 	
 	/**
