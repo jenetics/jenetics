@@ -22,8 +22,8 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ObjectUtils.eq;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.validation.nonNull;
 
 import javolution.lang.Immutable;

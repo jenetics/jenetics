@@ -23,8 +23,8 @@
 package org.jenetics;
 
 import static java.lang.Math.exp;
-import static org.jenetics.util.ObjectUtils.eq;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
 
 import javolution.lang.Immutable;
 

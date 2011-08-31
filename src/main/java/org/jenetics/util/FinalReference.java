@@ -22,9 +22,9 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.ObjectUtils.eq;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
-import static org.jenetics.util.ObjectUtils.str;
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.util.object.str;
 
 import java.io.Serializable;
 

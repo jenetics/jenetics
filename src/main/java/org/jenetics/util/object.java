@@ -30,10 +30,10 @@ import java.util.Arrays;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ObjectUtils {
+public final class object {
 
-	private ObjectUtils() {
-		throw new AssertionError("Don't create an 'ObjectUtils' instance.");
+	private object() {
+		throw new AssertionError("Don't create an 'object' instance.");
 	}
 	
 	public static final class HashCodeBuilder {
