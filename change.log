@@ -1,5 +1,6 @@
 Jenetics-0.8.1.0
 - Improve Population.sort() method
+- Rename org.jenetics.util.ObjectUtils to org.jenetics.util.object.
 - Rename org.jenetics.util.Validator to org.jenetics.util.validation.
 - Improve 'isValid' implementation of Gene and Chromosomes
 - Additional Selector tests.
