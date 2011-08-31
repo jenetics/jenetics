@@ -24,16 +24,9 @@ package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import org.testng.annotations.Test;
 
 import org.jscience.mathematics.number.Float64;
-import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Distribution.Domain;
@@ -54,6 +47,8 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 			Float64.ZERO, Float64.valueOf(100)
 		); 
 	
+	protected final int _histogramSize = 30;
+	
 	
 	protected S getSelector() {
 		return getFactory().newInstance();
@@ -61,83 +56,32 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	
 	protected abstract Distribution<Float64> getDistribution();
 	
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void selectDistribution() throws InterruptedException, ExecutionException {
+	//@Test(invocationCount = 20, successPercentage = 100)
+//	@Test
+	public void selectDistribution() {
 		final Float64 min = _domain.getMin();
 		final Float64 max = _domain.getMax();
-		final int npopulation = 10000;
+		final Histogram<Float64> histogram = Histogram.valueOf(min, max, _histogramSize);
+		
 		final Factory<Genotype<Float64Gene>> 
 		gtf = Genotype.valueOf(new Float64Chromosome(min, max));
 		
+		final int npopulation = 1000;
+		final int loops = 1000;
+		final Population<Float64Gene, Float64> 
+		population = new Population<Float64Gene, Float64>(npopulation);
 		
-		final Population<Float64Gene, Float64> population = 
-			new Population<Float64Gene, Float64>(npopulation);
-		
-		for (int i = 0; i < npopulation; ++i) {
-			population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
-		}
-		
-		final S selector = getSelector();
-		
-		final Population<Float64Gene, Float64> selection = 
-			selector.select(population, npopulation/2, Optimize.MAXIMUM);
-		
-		// Check the distribution of the selected population. PDF must be linear
-		// increasing, since the RouletteWheelSelector is a fitness proportional
-		// selector.
-		final Histogram<Float64> histogram = Histogram.valueOf(min, max, 15);
-		Accumulators.accumulate(
-				selection, 
-				histogram
-					.adapt(Float64Gene.Allele)
-					.adapt(Float64Chromosome.Gene)
-					.adapt(Genotype.<Float64Gene>Chromosome())
-					.adapt(Phenotype.<Float64Gene>Genotype())
-			);
-		
-		
-		//assertDistribution(histogram, getDistribution());
-	}
-	
-	static class HistCall<S extends Selector<Float64Gene, Float64>> 
-		implements Callable<Histogram<Float64>> 
-	{
-		private final int _npopulation;
-		private final Factory<Genotype<Float64Gene>> _gtf;
-		private final S _selector;
-		private final Float64 _min;
-		private final Float64 _max;
-		
-		public HistCall(
-			final int npopulation, 
-			final Factory<Genotype<Float64Gene>> gtf,
-			final S selector,
-			final Float64 min,
-			final Float64 max
-		) {
-			_npopulation = npopulation;
-			_gtf = gtf;
-			_selector = selector;
-			_min = min;
-			_max = max;
-		}
-		
-		@Override
-		public Histogram<Float64> call() throws Exception {
-			final Population<Float64Gene, Float64> population = 
-				new Population<Float64Gene, Float64>(_npopulation);
-			
-			for (int i = 0; i < _npopulation; ++i) {
-				population.add(Phenotype.valueOf(_gtf.newInstance(), TestUtils.FF, 12));
+		for (int j = 0; j < loops; ++j) {
+			for (int i = 0; i < npopulation; ++i) {
+				population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
 			}
-						
-			final Population<Float64Gene, Float64> selection = 
-				_selector.select(population, _npopulation/2, Optimize.MAXIMUM);
 			
-			// Check the distribution of the selected population. PDF must be linear
-			// increasing, since the RouletteWheelSelector is a fitness proportional
-			// selector.
-			final Histogram<Float64> histogram = Histogram.valueOf(_min, _max, 15);
+			final S selector = getSelector();
+			
+			final Population<Float64Gene, Float64> selection = 
+				selector.select(population, npopulation/2, Optimize.MAXIMUM);
+			
+			
 			Accumulators.accumulate(
 					selection, 
 					histogram
@@ -145,11 +89,13 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 						.adapt(Float64Chromosome.Gene)
 						.adapt(Genotype.<Float64Gene>Chromosome())
 						.adapt(Phenotype.<Float64Gene>Genotype())
-				);	
+				);
 			
-			return histogram;
+			population.clear();
 		}
 		
+		
+		assertDistribution(histogram, getDistribution());
 	}
 	
 }
