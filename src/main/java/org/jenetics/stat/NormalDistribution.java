@@ -22,6 +22,8 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.stat.math.Φ;
+import static org.jenetics.stat.math.φ;
 import static org.jenetics.util.ObjectUtils.eq;
 import static org.jenetics.util.ObjectUtils.hashCodeOf;
 import static org.jenetics.util.validation.nonNegative;
@@ -105,10 +107,11 @@ public class NormalDistribution<
 			
 			Float64 result = Float64.ZERO;
 			if (_domain.contains(_variable.get())) {
-				result = Float64.valueOf(
-						(1.0/Math.sqrt(2*Math.PI*_var))*
-						Math.exp(-(x - _mean)*(x - _mean)/(2*_var))
-					);
+				result = Float64.valueOf(φ(x, _mean, Math.sqrt(_var)));
+//				result = Float64.valueOf(
+//						(1.0/Math.sqrt(2*Math.PI*_var))*
+//						Math.exp(-(x - _mean)*(x - _mean)/(2*_var))
+//					);
 			}
 			
 			return result;
@@ -172,31 +175,10 @@ public class NormalDistribution<
 			} else if (x > _max) {
 				result = Float64.ONE; 
 			} else {
-				result = Float64.valueOf(
-						(1.0 + erf((x - _mean)/Math.sqrt(2*_var)))/2.0
-					);
+				result = Float64.valueOf(Φ(x, _mean, Math.sqrt(_var)));
 			}
 			
 			return result;
-		}
-	
-		private static double erf(final double z) {
-			final double t = 1.0/(1.0 + 0.5*Math.abs(z));
-
-			// Horner's method
-			final double result = 1 - t*Math.exp(
-					-z*z - 1.26551223 + 
-					t*( 1.00002368 + 
-					t*( 0.37409196 + 
-					t*( 0.09678418 + 
-					t*(-0.18628806 + 
-					t*( 0.27886807 + 
-					t*(-1.13520398 + 
-					t*( 1.48851587 + 
-					t*(-0.82215223 + 
-					t*(0.17087277))))))))));
-			
-			return z >= 0 ? result : -result;
 		}
 		
 		@Override

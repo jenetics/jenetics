@@ -150,7 +150,18 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		return -1; 
 	}
 	
-	Histogram<C> merge(final Histogram<C> histogram) {
+	public Histogram<C> merge(final Histogram<C> histogram) {
+		if (!_comparator.equals(histogram._comparator)) {
+			throw new IllegalArgumentException(
+					"The histogram comparators are not equals."
+				);
+		}
+		if (!Arrays.equals(_separators, histogram._separators)) {
+			throw new IllegalArgumentException(
+					"The histogram separators are not equals."
+				);
+		}
+		
 		final long[] data = new long[_histogram.length];
 		for (int i = 0; i < data.length; ++i) {
 			data[i] = _histogram[i] + histogram._histogram[i];
@@ -327,18 +338,20 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	 * @throws NullPointerException if the {@code separators} are {@code null}.
 	 * @throws IllegalArgumentException if {@code separators.length == 0}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
 		final C... separators
 	) {
-		return new Histogram<C>(
-				new Comparator<C>() {
-					@Override public int compare(final C o1, final C o2) {
-						return o1.compareTo(o2);
-					}
-				}, 
-				separators
-			);
+		return new Histogram<C>(COMPARATOR, separators);
 	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private static final Comparator COMPARATOR = new Comparator() {
+		@Override
+		public int compare(final Object o1, final Object o2) {
+			return ((Comparable)o1).compareTo((Comparable)o2);
+		}
+	};
 	
 	/**
 	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i> 
