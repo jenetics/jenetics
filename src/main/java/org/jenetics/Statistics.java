@@ -24,8 +24,8 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
-import static org.jenetics.util.ObjectUtils.eq;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.validation.nonNull;
 
 import java.text.NumberFormat;

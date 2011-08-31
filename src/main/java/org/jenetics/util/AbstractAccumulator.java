@@ -22,8 +22,8 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.ObjectUtils.eq;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
 
 /**
  * Abstract implementation of the {@link Accumulator} interface which defines a

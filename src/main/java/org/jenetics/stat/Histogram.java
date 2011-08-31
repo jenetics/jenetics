@@ -26,8 +26,8 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static org.jenetics.util.ArrayUtils.map;
 import static org.jenetics.util.ArrayUtils.sum;
-import static org.jenetics.util.ObjectUtils.eq;
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.validation.nonNull;
 
 import java.util.Arrays;

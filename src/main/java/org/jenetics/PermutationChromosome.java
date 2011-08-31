@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ObjectUtils.hashCodeOf;
+import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.validation.nonNull;
 
 import java.io.IOException;
