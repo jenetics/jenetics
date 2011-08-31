@@ -31,10 +31,10 @@ import org.jscience.mathematics.number.LargeInteger;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class BitUtils {
+public final class bit {
 
-	private BitUtils() {
-		throw new AssertionError("Don't create an 'BitUtils' instance.");
+	private bit() {
+		throw new AssertionError("Don't create an 'bit' instance.");
 	}
 	
 	public static byte[] toByteArray(final LargeInteger value) {
