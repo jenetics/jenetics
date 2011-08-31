@@ -38,10 +38,10 @@ import java.util.Random;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class ArrayUtils {
+public final class array {
 	
-	private ArrayUtils() {
-		throw new AssertionError("Don't create an 'ArrayUtils' instance.");
+	private array() {
+		throw new AssertionError("Don't create an 'array' instance.");
 	}
 	
 	/**

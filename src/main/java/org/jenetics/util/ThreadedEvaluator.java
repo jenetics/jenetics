@@ -138,7 +138,7 @@ public final class ThreadedEvaluator implements Evaluator {
 		final List<? extends Runnable> runnables, 
 		final int parts
 	) {
-		final int[] indexes = ArrayUtils.partition(runnables.size(), parts);
+		final int[] indexes = array.partition(runnables.size(), parts);
 		final List<EvaluatorCallable> workers = new ArrayList<EvaluatorCallable>(indexes.length);
 		for (int i = 0; i < indexes.length - 1; ++i) {
 			workers.add(new EvaluatorCallable(runnables, indexes[i], indexes[i + 1]));

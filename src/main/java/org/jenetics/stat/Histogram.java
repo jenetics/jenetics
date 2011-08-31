@@ -24,8 +24,8 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
-import static org.jenetics.util.ArrayUtils.map;
-import static org.jenetics.util.ArrayUtils.sum;
+import static org.jenetics.util.array.map;
+import static org.jenetics.util.array.sum;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.validation.nonNull;
@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.AdaptableAccumulator;
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 import org.jenetics.util.Converters;
 import org.jenetics.util.validation.NonNull;
 
@@ -106,7 +106,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	}
 	
 	private C[] check(final C... classes) {
-		ArrayUtils.foreach(classes, new NonNull());
+		array.foreach(classes, new NonNull());
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}

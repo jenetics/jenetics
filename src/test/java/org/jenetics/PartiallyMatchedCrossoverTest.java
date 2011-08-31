@@ -35,7 +35,7 @@ import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Array;
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 
 
 /**
@@ -57,8 +57,8 @@ public class PartiallyMatchedCrossoverTest {
 			that.set(i, Integer64Gene.valueOf(i, 0, length));
 			other.set(i, Integer64Gene.valueOf(i, 0, length));
 		}
-		ArrayUtils.shuffle(that);
-		ArrayUtils.shuffle(other);
+		array.shuffle(that);
+		array.shuffle(other);
 		
 		final PermutationChromosome thatChrom1 = new PermutationChromosome(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
@@ -90,8 +90,8 @@ public class PartiallyMatchedCrossoverTest {
 			that.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
 			other.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
 		}
-		ArrayUtils.shuffle(that);
-		ArrayUtils.shuffle(other);
+		array.shuffle(that);
+		array.shuffle(other);
 		
 		pmco.crossover(that, other);
 		

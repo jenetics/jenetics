@@ -26,7 +26,7 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
-import org.jenetics.util.ArrayUtils;
+import org.jenetics.util.array;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
@@ -76,7 +76,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 			
 			for (int i = stream.next(); i != -1; i = stream.next()) {
 				final int j = random.nextInt(genes.length());				
-				ArrayUtils.swap(genes, i, j);
+				array.swap(genes, i, j);
 				
 				++alterations;
 			}

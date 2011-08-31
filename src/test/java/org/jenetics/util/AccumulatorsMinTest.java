@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.array.shuffle;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -64,7 +66,7 @@ public class AccumulatorsMinTest
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;
 		}
-		ArrayUtils.shuffle(array);
+		shuffle(array);
 		
 		final Accumulators.Min<Integer> min = new Accumulators.Min<Integer>();
 		Accumulators.accumulate(Arrays.asList(array), min);

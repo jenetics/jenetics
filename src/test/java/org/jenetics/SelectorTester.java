@@ -24,8 +24,6 @@ package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
-import org.testng.annotations.Test;
-
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
