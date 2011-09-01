@@ -110,16 +110,6 @@ public class objectTest {
 		object.nonNull(null);
 	}
 	
-	@Test
-	public void rangeCheck1() {
-		object.checkRange(3, 0, 10);
-	}
-	
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void rangeCheck2() {
-		object.checkRange(-3, 0, 10);
-	}
-	
 }
 
 

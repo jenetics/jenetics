@@ -188,29 +188,6 @@ public final class object {
 	}
 	
 	/**
-	 * Check if a given value is within a given closed range.
-	 * 
-	 * @param value the value to check.
-	 * @param min the min value (inclusively).
-	 * @param max the max value (exclusively).
-	 * @return {@code value} if within the range.
-	 * @throws IllegalArgumentException if the given {@code value} is out of
-	 * 		  range.
-	 */
-	public static <T extends Comparable<? super T>> T checkRange(
-		final T value, 
-		final T min, 
-		final T max
-	) {
-		if (value.compareTo(min) < 0 || value.compareTo(max) > 0) {
-			throw new IllegalArgumentException(String.format(
-				"Value %s is out of range [%s, %s).", value, min, max
-			));
-		}
-		return value;
-	}
-	
-	/**
 	 * Check if the given integer is negative.
 	 * 
 	 * @param length the value to check.
