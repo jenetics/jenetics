@@ -24,7 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
@@ -41,7 +41,7 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.validation.Verify;
+import org.jenetics.util.object.Verify;
 
 /**
  * This class is the encoded problem solution with one to many Chromosomes.

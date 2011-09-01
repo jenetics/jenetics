@@ -24,7 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -35,7 +35,7 @@ import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Seq;
-import org.jenetics.util.validation.NonNull;
+import org.jenetics.util.object.NonNull;
 
 /**
  * Combines several alterers to one.

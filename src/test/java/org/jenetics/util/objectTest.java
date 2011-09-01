@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ValidationTest {
+public class objectTest {
 
 	@Test
 	public void rangeCheckPredicate1() {
@@ -37,7 +37,7 @@ public class ValidationTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.foreach(new validation.CheckRange<Integer>(0, 100));
+		array.foreach(new object.CheckRange<Integer>(0, 100));
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
@@ -47,7 +47,7 @@ public class ValidationTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(new validation.CheckRange<Integer>(0, 100));
+		array.foreach(new object.CheckRange<Integer>(0, 100));
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -57,7 +57,7 @@ public class ValidationTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.foreach(new validation.CheckRange<Integer>(0, 100));
+		array.foreach(new object.CheckRange<Integer>(0, 100));
 	}
 	
 	@Test
@@ -70,14 +70,14 @@ public class ValidationTest {
 				}
 			});
 		}
-		Assert.assertEquals(array.foreach(new validation.Verify()), -1);
+		Assert.assertEquals(array.foreach(new object.Verify()), -1);
 		
 		array.set(77, new Verifiable() {
 			@Override public boolean isValid() {
 				return false;
 			}
 		});
-		Assert.assertEquals(array.foreach(new validation.Verify()), 77);
+		Assert.assertEquals(array.foreach(new object.Verify()), 77);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class ValidationTest {
 			array.set(i, i);
 		}
 		
-		array.foreach(new validation.NonNull());
+		array.foreach(new object.NonNull());
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
@@ -97,27 +97,27 @@ public class ValidationTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(new validation.NonNull());
+		array.foreach(new object.NonNull());
 	}
 	
 	@Test
 	public void nonNull1() {
-		validation.nonNull("df");
+		object.nonNull("df");
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nonNull2() {
-		validation.nonNull(null);
+		object.nonNull(null);
 	}
 	
 	@Test
 	public void rangeCheck1() {
-		validation.checkRange(3, 0, 10);
+		object.checkRange(3, 0, 10);
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void rangeCheck2() {
-		validation.checkRange(-3, 0, 10);
+		object.checkRange(-3, 0, 10);
 	}
 	
 }

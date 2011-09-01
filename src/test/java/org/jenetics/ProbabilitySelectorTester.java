@@ -22,18 +22,20 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.nonNull;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.array;
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.validation;
+import org.jenetics.util.array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -126,7 +128,7 @@ public abstract class ProbabilitySelectorTester<
 	}
 	
 	private static void randomize(final double[] array, final Random random) {
-		validation.nonNull(array, "Array");
+		nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

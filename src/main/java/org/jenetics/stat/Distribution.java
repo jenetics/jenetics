@@ -22,7 +22,7 @@
  */
 package org.jenetics.stat;
 
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNull;
 
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;

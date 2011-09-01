@@ -30,7 +30,7 @@ import static org.jenetics.util.converter.DoubleToFloat64;
 import static org.jenetics.util.converter.LongToInteger64;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.AdaptableAccumulator;
 import org.jenetics.util.array;
-import org.jenetics.util.validation.NonNull;
+import org.jenetics.util.object.NonNull;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
