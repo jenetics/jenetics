@@ -38,141 +38,16 @@ public final class predicate {
 	}
 	
 	/**
-	 * This predicate return {@code true} if the given value is {@code null}.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * A predicate which return {@code true} if an given value is {@code null}.
 	 */
-	public static class Nil implements Predicate<Object> {
-
-		/**
-		 * Return {@code true} if the given value is {@code null}.
-		 * 
-		 * @return {@code true} if the given value is {@code null}, {@code false}
-		 * 		  otherwise.
-		 */
-		@Override
-		public boolean evaluate(final Object object) {
+	public static Predicate<Object> Null = new Predicate<Object>() {
+		@Override public boolean evaluate(final Object object) {
 			return object == null;
 		}
-		
-		@Override
-		public String toString() {
+		@Override public String toString() {
 			return String.format("%s", getClass().getSimpleName());
 		}
-		
-	}
-	
-	/**
-	 * This predicate negates the value of its given, adapted predicate.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static class Not<T> implements Predicate<T> {
-		private final Predicate<? super T> _a;
-		
-		/**
-		 * The predicate which will be negated.
-		 * 
-		 * @param a the predicate which will be negated.
-		 * @throws NullPointerException if the given predicate is {@code null}.
-		 */
-		public Not(final Predicate<? super T> a) {
-			_a = nonNull(a);
-		}
-		
-		/**
-		 * Negate the result of the adopted predicate.
-		 */
-		@Override
-		public boolean evaluate(final T object) {
-			return !_a.evaluate(object);
-		}
-		
-		@Override
-		public String toString() {
-			return String.format("%s[%s]", getClass().getSimpleName(), _a);
-		}
-		
-	}
-	
-	/**
-	 * A logical {@code and} combination of two predicates.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static class And<T> implements Predicate<T> {
-		private final Predicate<? super T> _a;
-		private final Predicate<? super T> _b;
-		
-		/**
-		 * Create a new {@code and} combination of the two given predicates.
-		 * 
-		 * @param a the first predicate
-		 * @param b the second predicate
-		 * @throws NullPointerException if one of the predicates is {@code null}.
-		 */
-		public And(final Predicate<? super T> a, final Predicate<? super T> b) {
-			_a = nonNull(a);
-			_b = nonNull(b);
-		}
-		
-		@Override
-		public boolean evaluate(final T object) {
-			return _a.evaluate(object) && _b.evaluate(object);
-		}
-		
-		@Override
-		public String toString() {
-			return String.format("%s[%s, %s]", getClass().getSimpleName(), _a, _b);
-		}
-	}
-	
-	/**
-	 * A logical {@code or} combination of two predicates.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static class Or<T> implements Predicate<T> {
-		private final Predicate<? super T> _a;
-		private final Predicate<? super T> _b;
-		
-		/**
-		 * Create a new {@code or} combination of the two given predicates.
-		 * 
-		 * @param a the first predicate
-		 * @param b the second predicate
-		 * @throws NullPointerException if one of the predicates is {@code null}.
-		 */
-		public Or(final Predicate<? super T> a, final Predicate<? super T> b) {
-			_a = nonNull(a);
-			_b = nonNull(b);
-		}
-		
-		@Override
-		public boolean evaluate(final T object) {
-			return _a.evaluate(object) || _b.evaluate(object);
-		}
-		
-		@Override
-		public String toString() {
-			return String.format("%s[%s, %s]", getClass().getSimpleName(), _a, _b);
-		}
-	}
-	
-	/**
-	 * Return a predicate which return {@code true} if an given value is 
-	 * {@code null}.
-	 * 
-	 * @return a predicate which return {@code true} if an given value is 
-	 * 		  {@code null}.
-	 */
-	public static Predicate<Object> nil() {
-		return new Nil();
-	}
+	};
 	
 	/**
 	 * Return a predicate which negates the return value of the given predicate.
@@ -182,8 +57,16 @@ public final class predicate {
 	 * @return a predicate which negates the return value of the given predicate.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public static <T> Predicate<T> not(final Predicate<? super T> a) {
-		return new Not<T>(a);
+	public static <T> Predicate<T> Not(final Predicate<? super T> a) {
+		return new Predicate<T>() {
+			{nonNull(a);}
+			@Override public boolean evaluate(final T object) {
+				return !a.evaluate(object);
+			}
+			@Override public String toString() {
+				return String.format("%s[%s]", getClass().getSimpleName(), a);
+			}
+		};
 	}
 	
 	/**
@@ -196,11 +79,19 @@ public final class predicate {
 	 * @throws NullPointerException if one of the given predicates is 
 	 * 		  {@code null}.
 	 */
-	public static <T> Predicate<T> and(
+	public static <T> Predicate<T> And(
 		final Predicate<? super T> a, 
 		final Predicate<? super T> b
 	) {
-		return new And<T>(a, b);
+		return new Predicate<T>() {
+			{nonNull(a); nonNull(b);}
+			@Override public boolean evaluate(final T object) {
+				return a.evaluate(object) && b.evaluate(object);
+			}
+			@Override public String toString() {
+				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
+			}
+		};
 	}
 	
 	/**
@@ -213,11 +104,19 @@ public final class predicate {
 	 * @throws NullPointerException if one of the given predicates is 
 	 * 		  {@code null}.
 	 */
-	public static <T> Predicate<T> or(
+	public static <T> Predicate<T> Or(
 		final Predicate<? super T> a, 
 		final Predicate<? super T> b
 	) {
-		return new Or<T>(a, b);
+		return new Predicate<T>() {
+			{nonNull(a); nonNull(b);}
+			@Override public boolean evaluate(final T object) {
+				return a.evaluate(object) || b.evaluate(object);
+			}
+			@Override public String toString() {
+				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
+			}
+		};
 	}
 	
 }

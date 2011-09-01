@@ -23,8 +23,8 @@
 package org.jenetics.util;
 
 import static java.util.Arrays.asList;
-import static org.jenetics.util.predicate.nil;
-import static org.jenetics.util.predicate.not;
+import static org.jenetics.util.predicate.Null;
+import static org.jenetics.util.predicate.Not;
 
 import java.util.Iterator;
 import java.util.List;
@@ -120,7 +120,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		array.set(18, null);
 		array.set(19, null);
 		
-		final Array<Integer> filtered = array.filter(not(nil()));
+		final Array<Integer> filtered = array.filter(Not(Null));
 		Assert.assertEquals(filtered.length(), array.length() - 2);
 	}
 	
