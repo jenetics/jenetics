@@ -24,7 +24,7 @@ package org.jenetics;
 
 import static java.lang.Math.abs;
 import static org.jenetics.util.array.sum;
-import static org.jenetics.util.bit.ulpDistance;
+import static org.jenetics.util.math.ulpDistance;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;

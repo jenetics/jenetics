@@ -22,19 +22,20 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.str;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.BitSet;
 
-import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import org.jscience.mathematics.number.LargeInteger;
+
 import org.jenetics.util.Factory;
-import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -156,7 +157,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			data[i] = (byte)(Math.random()*256);
 		}
 		
-		final String dataString = bit.toString(data);
+		final String dataString = str(data);
 		Reporter.log(dataString);
 		
 		final byte[] sdata = BitChromosome.toByteArray(dataString);

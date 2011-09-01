@@ -382,6 +382,32 @@ public final class object {
 		return a != null ? a.toString() : "null";
 	}
 	
+	public static String str(final long n) {
+		final StringBuilder out = new StringBuilder();
+		for (int i = 63; i >= 0; --i) {
+			out.append((n >>> i) & 1);
+		}
+		return out.toString();
+	}
+	
+	public static String str(final byte... data) {
+		final StringBuilder out = new StringBuilder();
+		
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[0] >>> j) & 1);
+			}
+		}
+		for (int i = 1; i < data.length; ++i) {
+			out.append('|');
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[i] >>> j) & 1);
+			}
+		}
+
+		return out.toString();
+	}
+	
 }
 
 
