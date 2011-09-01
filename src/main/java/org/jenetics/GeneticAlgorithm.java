@@ -23,8 +23,9 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
-import static org.jenetics.util.validation.checkProbability;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.array.foreach;
+import static org.jenetics.util.object.checkProbability;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,13 +36,12 @@ import java.util.concurrent.locks.ReentrantLock;
 import javolution.context.ConcurrentContext;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.array;
 import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Evaluator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
-import org.jenetics.util.validation.NonNull;
+import org.jenetics.util.object.NonNull;
 
 /**
  * Main class. 
@@ -839,7 +839,7 @@ public class GeneticAlgorithm<
 	 * 		  one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
-		array.foreach(population, new NonNull());
+		foreach(population, new NonNull());
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.",
@@ -869,7 +869,7 @@ public class GeneticAlgorithm<
 	 *			one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
-		array.foreach(genotypes, new NonNull());
+		foreach(genotypes, new NonNull());
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +

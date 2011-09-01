@@ -22,10 +22,10 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.validation.checkProbability;
-import static org.jenetics.util.validation.nonNegative;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNegative;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -43,10 +43,9 @@ import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.bit;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.validation;
+import org.jenetics.util.bit;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
@@ -231,7 +230,7 @@ public class BitChromosome extends Number<BitChromosome>
 	
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
-		validation.nonNull(genes, "Genes");
+		nonNull(genes, "Genes");
 		
 		final BitChromosome chromosome = BitChromosome.newInstance(genes.length(), _p);
 		
@@ -474,7 +473,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 *         is zero or contains other characters than '0' or '1'.
 	 */
 	public static BitChromosome valueOf(final CharSequence value) {
-		validation.nonNull(value, "Input");
+		nonNull(value, "Input");
 		if (value.length() == 0) {
 			throw new IllegalArgumentException("Length must greater than zero.");
 		}

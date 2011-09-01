@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNull;
 
 /**
  * This class allows to build transitive converters.

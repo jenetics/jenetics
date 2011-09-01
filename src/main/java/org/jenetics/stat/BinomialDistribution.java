@@ -22,8 +22,8 @@
  */
 package org.jenetics.stat;
 
-import static org.jenetics.util.validation.checkProbability;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.checkProbability;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.List;
 

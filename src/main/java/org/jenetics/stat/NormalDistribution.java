@@ -26,8 +26,8 @@ import static org.jenetics.stat.math.Φ;
 import static org.jenetics.stat.math.φ;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.validation.nonNegative;
-import static org.jenetics.util.validation.nonNull;
+import static org.jenetics.util.object.nonNegative;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.List;
 
