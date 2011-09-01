@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
@@ -35,7 +36,7 @@ import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Seq;
-import org.jenetics.util.object.NonNull;
+
 
 /**
  * Combines several alterers to one.
@@ -154,7 +155,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 		
-		alterers.foreach(new NonNull("Alterer"));
+		alterers.foreach(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
 	}
 	

@@ -35,42 +35,7 @@ public final class object {
 	private object() {
 		throw new AssertionError("Don't create an 'object' instance.");
 	}
-	
-	/**
-	 * A {@code null} checking predicate which can be used to check an array
-	 * for null values. The following code will throw an 
-	 * {@link NullPointerException} if one of the array elements is {@code null}.
-	 * 
-	 * [code]
-	 * 	 final Array<String> array = ...
-	 * 	 array.foreach(new NonNull());
-	 * 	 ...
-	 * 	 final String[] array = ...
-	 * 	 ArrayUtils.foreach(array, new NonNull());
-	 * [/code]
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static final class NonNull implements Predicate<Object> {
-		private final String _message;
 		
-		public NonNull() {
-			this("Object");
-		}
-		
-		public NonNull(final String message) {
-			_message = message;
-		}
-		
-		@Override
-		public boolean evaluate(final Object object) {
-			nonNull(object, _message );
-			return true;
-		}
-		
-	}
-	
 	
 	/**
 	 * A range checking predicate which can be used to check whether the elements
@@ -83,34 +48,25 @@ public final class object {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * 	 final Array<Integer> array = ...
-	 * 	 array.foreach(new CheckRange<Integer>(0, 10));
+	 * 	 array.foreach(CheckRange<(0, 10));
 	 * [/code]
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
 	 */
-	public static final class CheckRange<C extends Comparable<? super C>> 
-		implements Predicate<C> 
+	public static final <C extends Comparable<? super C>> Predicate<C> 
+	CheckRange(final C min, final C max) 
 	{
-		private final C _min;
-		private final C _max;
-		
-		public CheckRange(final C min, final C max) {
-			_min = nonNull(min);
-			_max = nonNull(max);
-		}
-		
-		@Override
-		public boolean evaluate(final C value) {
-			nonNull(value);
-			if (value.compareTo(_min) < 0 || value.compareTo(_max) >= 0) {
-				throw new IllegalArgumentException(String.format(
-						"Given value %s is out of range [%s, %s)", 
-						value, _min, _max
-					));
+		return new Predicate<C>() {
+			@Override
+			public boolean evaluate(final C value) {
+				nonNull(value);
+				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
+					throw new IllegalArgumentException(String.format(
+							"Given value %s is out of range [%s, %s)", 
+							value, min, max
+						));
+				}
+				return true;
 			}
-			return true;
-		}	
+		};
 	}
 	
 	
@@ -118,20 +74,53 @@ public final class object {
 	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
-	 * 	 array.foreach(new Verify()) == -1
+	 * 	 array.foreach(Verify) == -1
 	 * [/code]
 	 * is true.
-	 * 
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
 	 */
-	public static final class Verify implements Predicate<Verifiable> {
+	public static final Predicate<Verifiable> Verify = new Predicate<Verifiable>() {
 		@Override
 		public boolean evaluate(final Verifiable object) {
 			return object.isValid();
 		}
-	}
+	};
 	
+	/**
+	 * A {@code null} checking predicate which can be used to check an array
+	 * for null values. The following code will throw an 
+	 * {@link NullPointerException} if one of the array elements is {@code null}.
+	 * 
+	 * [code]
+	 * 	 final Array<String> array = ...
+	 * 	 array.foreach(NonNull("Object"));
+	 * 	 ...
+	 * 	 final String[] array = ...
+	 * 	 ArrayUtils.foreach(array, NonNull);
+	 * [/code]
+	 */
+	public static final Predicate<Object> NonNull = NonNull("Object");
+	
+	/**
+	 * A {@code null} checking predicate which can be used to check an array
+	 * for null values. The following code will throw an 
+	 * {@link NullPointerException} if one of the array elements is {@code null}.
+	 * 
+	 * [code]
+	 * 	 final Array<String> array = ...
+	 * 	 array.foreach(NonNull("Object"));
+	 * 	 ...
+	 * 	 final String[] array = ...
+	 * 	 ArrayUtils.foreach(array, NonNull);
+	 * [/code]
+	 */
+	public static final Predicate<Object> NonNull(final String message) {
+		return new Predicate<Object>() {
+			@Override public boolean evaluate(final Object object) {
+				nonNull(object, message );
+				return true;
+			}
+		};
+	}
 	
 	/**
 	 * Checks that the specified object reference is not {@code null}.
