@@ -22,6 +22,11 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.math.sum;
+
+import java.io.IOException;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -39,6 +44,16 @@ public class mathTest {
 		math.add(Long.MIN_VALUE, 10);
 		math.add(Long.MIN_VALUE + 10, -10);
 		math.add(Long.MIN_VALUE + 100, -100);
+	}
+	
+	@Test
+	public void summarize() throws IOException {
+		final double[] values = new double[150000];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = 1.0/values.length;
+		}
+		
+		Assert.assertEquals(sum(values), 1.0);
 	}
 	
 }
