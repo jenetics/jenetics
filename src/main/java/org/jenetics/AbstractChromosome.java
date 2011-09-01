@@ -22,10 +22,11 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.predicate.nil;
 import static org.jenetics.util.object.nonNull;
+import static org.jenetics.util.predicate.nil;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
@@ -35,7 +36,6 @@ import javolution.text.Text;
 
 import org.jenetics.util.Converter;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.object.Verify;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
@@ -108,7 +108,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.foreach(new Verify()) == -1;
+			_valid = _genes.foreach(Verify) == -1;
 		}
 		
 		return _valid;

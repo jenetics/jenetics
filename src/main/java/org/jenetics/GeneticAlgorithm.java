@@ -24,6 +24,7 @@ package org.jenetics;
 
 import static java.lang.Math.round;
 import static org.jenetics.util.array.foreach;
+import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;
 
@@ -41,7 +42,7 @@ import org.jenetics.util.Evaluator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
-import org.jenetics.util.object.NonNull;
+
 
 /**
  * Main class. 
@@ -839,7 +840,7 @@ public class GeneticAlgorithm<
 	 * 		  one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
-		foreach(population, new NonNull());
+		foreach(population, NonNull);
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.",
@@ -869,7 +870,7 @@ public class GeneticAlgorithm<
 	 *			one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
-		foreach(genotypes, new NonNull());
+		foreach(genotypes, NonNull);
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +

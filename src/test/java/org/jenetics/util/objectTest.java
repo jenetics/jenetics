@@ -22,6 +22,10 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.object.CheckRange;
+import static org.jenetics.util.object.NonNull;
+import static org.jenetics.util.object.Verify;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,7 +41,7 @@ public class objectTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.foreach(new object.CheckRange<Integer>(0, 100));
+		array.foreach(CheckRange(0, 100));
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
@@ -47,7 +51,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(new object.CheckRange<Integer>(0, 100));
+		array.foreach(CheckRange(0, 100));
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -57,7 +61,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.foreach(new object.CheckRange<Integer>(0, 100));
+		array.foreach(CheckRange(0, 100));
 	}
 	
 	@Test
@@ -70,14 +74,14 @@ public class objectTest {
 				}
 			});
 		}
-		Assert.assertEquals(array.foreach(new object.Verify()), -1);
+		Assert.assertEquals(array.foreach(Verify), -1);
 		
 		array.set(77, new Verifiable() {
 			@Override public boolean isValid() {
 				return false;
 			}
 		});
-		Assert.assertEquals(array.foreach(new object.Verify()), 77);
+		Assert.assertEquals(array.foreach(Verify), 77);
 	}
 	
 	@Test
@@ -87,7 +91,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		
-		array.foreach(new object.NonNull());
+		array.foreach(NonNull);
 	}
 	
 	@Test(expectedExceptions = NullPointerException.class)
@@ -97,7 +101,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(new object.NonNull());
+		array.foreach(NonNull);
 	}
 	
 	@Test

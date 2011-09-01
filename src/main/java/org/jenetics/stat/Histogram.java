@@ -24,10 +24,12 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
+import static org.jenetics.util.array.foreach;
 import static org.jenetics.util.array.map;
 import static org.jenetics.util.array.sum;
 import static org.jenetics.util.converter.DoubleToFloat64;
 import static org.jenetics.util.converter.LongToInteger64;
+import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
@@ -40,8 +42,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.AdaptableAccumulator;
-import org.jenetics.util.array;
-import org.jenetics.util.object.NonNull;
+
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -107,7 +108,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	}
 	
 	private C[] check(final C... classes) {
-		array.foreach(classes, new NonNull());
+		foreach(classes, NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}

@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
@@ -41,7 +42,6 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.object.Verify;
 
 /**
  * This class is the encoded problem solution with one to many Chromosomes.
@@ -160,7 +160,7 @@ public final class Genotype<T extends Gene<?, T>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.foreach(new Verify()) == -1;
+			_valid = _chromosomes.foreach(Verify) == -1;
 		}
 		return _valid;
 	}
