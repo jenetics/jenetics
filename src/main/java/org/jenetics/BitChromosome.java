@@ -26,6 +26,7 @@ import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
 import static org.jenetics.util.object.nonNull;
+import static org.jenetics.util.object.str;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -349,7 +350,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Text toText() {
-		return Text.valueOf(bit.toString(toByteArray()));
+		return Text.valueOf(str(toByteArray()));
 	}
 	
 	@Override
@@ -527,7 +528,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
 			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(bit.toString(chromosome.toByteArray()));
+			xml.addText(str(chromosome.toByteArray()));
 		}
 		@Override
 		public void read(final InputElement element, final BitChromosome gene) {
