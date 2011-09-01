@@ -28,6 +28,7 @@ package org.jenetics.stat;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
+@SuppressWarnings("javadoc")
 final class math {
 	
 	private math() {
@@ -41,7 +42,7 @@ final class math {
 	 * @param z the value to calculate the error function for.
 	 * @return the error function for {@code z}.
 	 */
-	static double erf(final double z) {
+	public static double erf(final double z) {
 		final double t = 1.0/(1.0 + 0.5*Math.abs(z));
 
 		// Horner's method
@@ -67,7 +68,7 @@ final class math {
 	 * @param x the value to calculate φ for.
 	 * @return the φ value for x.
 	 */
-	static double phi(final double x) {
+	public static double phi(final double x) {
 		return Math.exp(-x*x/2.0) / Math.sqrt(2.0*Math.PI);
 	}
 	
@@ -78,7 +79,7 @@ final class math {
 	 * @param x the value to calculate φ for.
 	 * @return the φ value for x.
 	 */
-	static double φ(final double x) {
+	public static double φ(final double x) {
 		return phi(x);
 	}
 	
@@ -91,7 +92,7 @@ final class math {
 	 * @param sigma the stddev.
 	 * @return the φ value for x.
 	 */
-	static double phi(final double x, final double mu, final double sigma) {
+	public static double phi(final double x, final double mu, final double sigma) {
 		return phi((x - mu)/sigma)/sigma;
 	}
 	
@@ -104,7 +105,7 @@ final class math {
 	 * @param σ the stddev.
 	 * @return the φ value for x.
 	 */
-	static double φ(final double x, final double µ, final double σ) {
+	public static double φ(final double x, final double µ, final double σ) {
 		return phi(x, µ, σ);
 	}
 	
@@ -114,7 +115,7 @@ final class math {
 	 * @param z the value to calculate Φ for.
 	 * @return the Φ for value z.
 	 */
-	static double Phi(final double z) {
+	public static double Phi(final double z) {
 		if (z < -8.0) {
 			return 0.0;
 		}
@@ -137,7 +138,7 @@ final class math {
 	 * @param z the value to calculate Φ for.
 	 * @return the Φ for value z.
 	 */
-	static double Φ(final double z) {
+	public static double Φ(final double z) {
 		return Phi(z);
 	}
 	
@@ -150,7 +151,7 @@ final class math {
 	 * @param sigma the stddev.
 	 * @return the φ value for x.
 	 */
-	static double Phi(final double z, final double mu, final double sigma) {
+	public static double Phi(final double z, final double mu, final double sigma) {
 		return Phi((z - mu)/sigma);
 	}
 	
@@ -163,7 +164,7 @@ final class math {
 	 * @param σ the stddev.
 	 * @return the φ value for x.
 	 */
-	static double Φ(final double z, final double µ, final double σ) {
+	public static double Φ(final double z, final double µ, final double σ) {
 		return Phi(z, µ, σ);
 	}
 	
