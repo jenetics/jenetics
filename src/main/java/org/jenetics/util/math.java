@@ -23,6 +23,8 @@
 package org.jenetics.util;
 
 /**
+ * Object with mathematical functions.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -32,6 +34,15 @@ final class math {
 		throw new AssertionError("Don't create an 'math' instance.");
 	}
 	
+	/**
+	 * Add to long values and throws an ArithmeticException in the case of an
+	 * overflow.
+	 * 
+	 * @param a the first summand.
+	 * @param b the second summand. 
+	 * @return the sum of the given values.
+	 * @throws ArithmeticException if the summation would lead to an overflow.
+	 */
 	static long add(final long a, final long b) {
 		final long c = a + b;
 		if (((c ^ a) & (c ^ b) >> 63) != 0) {
@@ -41,6 +52,15 @@ final class math {
 		return c;
 	}
 	
+	/**
+	 * Subtracts to long values and throws an ArithmeticException in the case of an
+	 * overflow.
+	 * 
+	 * @param a the minuend.
+	 * @param b the subtrahend. 
+	 * @return the difference of the given values.
+	 * @throws ArithmeticException if the subtraction would lead to an overflow.
+	 */
 	static long sub(final long a, final long b) {
 		if (a >= 0 && b >= 0) {
 			final long c = a - b;
@@ -55,6 +75,14 @@ final class math {
 			
 		}
 		return 0;
+	}
+	
+	static double plus(final double a, final long ulpDistance) {
+		long t = Double.doubleToLongBits(a) + ulpDistance;
+		if (t < 0) {
+			t = Long.MIN_VALUE - t;
+		}
+		return Double.longBitsToDouble(t);
 	}
 	
 	static boolean isMultiplicationSave(final int a, final int b) {

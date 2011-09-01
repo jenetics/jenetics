@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.math.sub;
+
 import org.jscience.mathematics.number.LargeInteger;
 
 
@@ -60,6 +62,7 @@ public final class bit {
 		if (bits <= 0) {
 			return data;
 		}
+		
 		
 		int d = 0;
 		if (data.length == 1) {
@@ -355,13 +358,7 @@ public final class bit {
 		return t;
 	}	
 	
-	public static double plus(final double a, final long ulpDistance) {
-		long t = Double.doubleToLongBits(a) + ulpDistance;
-		if (t < 0) {
-			t = Long.MIN_VALUE - t;
-		}
-		return Double.longBitsToDouble(t);
-	}
+
 	
 	public static String toString(final long n) {
 		final StringBuilder out = new StringBuilder();
@@ -388,110 +385,6 @@ public final class bit {
 
 		return out.toString();
 	}
-	
-	/**
-	 * Convert a string which was created with the {@link #toString(byte...)}
-	 * method back to an byte array.
-	 * 
-	 * @param data the string to convert.
-	 * @return the byte array.
-	 * @throws IllegalArgumentException if the given data string could not be
-	 * 		  converted.
-	 */
-	public static byte[] toByteArray(final String data) {
-		final String[] parts = data.split("\\|");
-		final byte[] bytes = new byte[parts.length];
-		
-		for (int i = 0; i < parts.length; ++i) {
-			if (parts[i].length() != 8) {
-				throw new IllegalArgumentException(
-					"Byte value doesn't contain 8 bit: " + parts[i]
-				);
-			} else {
-				try {
-					bytes[i] = (byte)Integer.parseInt(parts[i], 2);
-				} catch (NumberFormatException e) {
-					throw new IllegalArgumentException(e);
-				}
-			}
-		}
-		
-		return bytes;
-	}
-	
-	
-	
-	/*
-	 * The following methods are copied from the Apache.Commons.Math library.
-	 * The copied methods were: 
-	 * - org.apache.commons.math.util.MathUtil.addAndCheck(long, long, String) and
-	 * - org.apache.commons.math.util.MathUtil.subAndCheck(long, long)
-	 * *************************************************************************
-	 * 
-	 * Licensed to the Apache Software Foundation (ASF) under one or more
-	 * contributor license agreements.	See the NOTICE file distributed with
-	 * this work for additional information regarding copyright ownership.
-	 * The ASF licenses this file to You under the Apache License, Version 2.0
-	 * (the "License"); you may not use this file except in compliance with
-	 * the License.  You may obtain a copy of the License at
-	 *
-	 * 	  http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 */	
-	static long add(final long a, final long b) {
-		long sum = 0;
-		if (a > b) {
-			// use symmetry to reduce boundry cases
-			sum = add(b, a);
-		} else {
-			assert a <= b;
-			
-			if (a < 0) {
-				if (b < 0) {
-					// check for negative overflow
-					if (Long.MIN_VALUE - b <= a) {
-						sum = a + b;
-					} else {
-						throw new ArithmeticException();
-					}
-				} else {
-					// opposite sign addition is always safe
-					sum = a + b;
-				}
-			} else {
-				assert a >= 0;
-				assert b >= 0;
-
-				// check for positive overflow
-				if (a <= Long.MAX_VALUE - b) {
-					sum = a + b;
-				} else {
-					throw new ArithmeticException();
-				}
-			}
-		}
-		return sum;
-	}	
-	
-	static long sub(final long a, final long b) {
-		long ret = 0;
-		if (b == Long.MIN_VALUE) {
-			if (a < 0) {
-				ret = a - b;
-			} else {
-				throw new ArithmeticException();
-			}
-		} else {
-			// use additive inverse
-			ret = add(a, -b);
-		}
-		return ret;
-	}	  
 	
 }
 
