@@ -25,7 +25,6 @@ package org.jenetics.util;
 import static org.jenetics.util.array.isSorted;
 import static org.jenetics.util.array.sort;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -73,16 +72,6 @@ public class ArrayUtilsTest {
 			sorted = array[i] < array[i + 1];
 		}
 		return sorted;
-	}
-	
-	@Test
-	public void sum() throws IOException {
-		final double[] values = new double[150000];
-		for (int i = 0; i < values.length; ++i) {
-			values[i] = 1.0/values.length;
-		}
-		
-		Assert.assertEquals(array.sum(values), 1.0);
 	}
 	
 	@Test

@@ -23,6 +23,8 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
+import static org.jenetics.util.math.min;
+import static org.jenetics.util.math.sum;
 import static org.jenetics.util.math.ulpDistance;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -30,7 +32,6 @@ import java.util.Arrays;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.array;
 
 /**
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
@@ -66,8 +67,8 @@ public class RouletteWheelSelector<
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
 		
-		final double worst = array.min(probabilities);
-		final double sum = array.sum(probabilities) - worst*population.size();
+		final double worst = min(probabilities);
+		final double sum = sum(probabilities) - worst*population.size();
 		
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {

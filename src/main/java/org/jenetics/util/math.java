@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.object.nonNull;
+
 
 /**
  * Object with mathematical functions.
@@ -77,6 +79,140 @@ public final class math {
 		}
 		
 		return z;
+	}
+	
+	/**
+	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+	 * Kahan summation algorithm</a>.
+	 * 
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double sum(final double[] values) {
+		nonNull(values);
+
+		double sum = 0.0;
+		double c = 0.0;
+		double y = 0.0;
+		double t = 0.0;
+		
+		for (int i = values.length; --i >= 0;) {
+			y = values[i] - c;
+			t = sum + y;
+			c = t - sum - y;
+			sum = t;
+		}
+		
+		return sum;
+	}
+	
+	/**
+	 * Add the values of the given array.
+	 * 
+	 * @param values the values to add.
+	 * @return the values sum.
+	 * @throws NullPointerException if the values are null;
+	 */
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (int i = 0; i < values.length; ++i) {
+			sum += values[i];
+		}
+		return sum;
+	}
+	
+	/**
+	 * Normalize the given double array, so that it sum to one. The normalization
+	 * is performed in place and the same {@code values} are returned.
+	 * 
+	 * @param values the values to normalize.
+	 * @return the {@code values} array.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static double[] normalize(final double[] values) {
+		nonNull(values);
+		
+		final double sum = 1.0/sum(values);
+		for (int i = values.length; --i >= 0;) {
+			values[i] = values[i]*sum;
+		}
+		
+		return values;
+	}
+	
+	/**
+	 * Return the minimum value of the given double array.
+	 * 
+	 * @param values the double array.
+	 * @return the minimum value or {@link Double#NaN} if the given array is empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double min(final double[] values) {
+		nonNull(values);
+		
+		double min = Double.NaN;
+		if (values.length > 0) {
+			min = values[0];
+			
+			for (int i = values.length; --i >= 1;) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+		
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 * 
+	 * @param values the double array.
+	 * @return the maximum value or {@link Double#NaN} if the given array is empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double max(final double[] values) {
+		nonNull(values);
+		
+		double max = Double.NaN;
+		if (values.length > 0) {
+			max = values[0];
+			
+			for (int i = values.length; --i >= 1;) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+		
+		return max;
+	}
+	
+	/**
+	 * Component wise multiplication of the given double array. 
+	 * 
+	 * @param values the double values to multiply.
+	 * @param multiplier the multiplier.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static void times(final double[] values, final double multiplier) {
+		for (int i = values.length; --i >= 0;) {
+			values[i] *= multiplier;
+		}
+	}
+	
+	/**
+	 * Component wise division of the given double array. 
+	 * 
+	 * @param values the double values to divide.
+	 * @param divisor the divisor.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static void divide(final double[] values, final double divisor) {
+		for (int i = values.length; --i >= 0;) {
+			values[i] /= divisor;
+		}
 	}
 	
 	static double plus(final double a, final long ulpDistance) {

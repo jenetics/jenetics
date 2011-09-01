@@ -23,12 +23,13 @@
 package org.jenetics;
 
 import static java.lang.Math.exp;
+import static org.jenetics.util.math.divide;
+import static org.jenetics.util.math.max;
+import static org.jenetics.util.math.normalize;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import javolution.lang.Immutable;
-
-import org.jenetics.util.array;
 
 /**
  * <p>
@@ -103,13 +104,13 @@ public final class BoltzmannSelector<
 		}
 		
 		// Scale the fitness values to avoid overflows.
-		array.divide(probabilities, array.max(probabilities));
+		divide(probabilities, max(probabilities));
 		
 		for (int i = probabilities.length; --i >= 0;) {
 			probabilities[i] = exp(_b*probabilities[i]);
 		}
 		
-		array.normalize(probabilities);
+		normalize(probabilities);
 		
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
