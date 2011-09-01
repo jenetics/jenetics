@@ -40,7 +40,7 @@ public final class predicate {
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
 	 */
-	public static Predicate<Object> Null = new Predicate<Object>() {
+	public static final Predicate<Object> Null = new Predicate<Object>() {
 		@Override public boolean evaluate(final Object object) {
 			return object == null;
 		}
