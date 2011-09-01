@@ -44,12 +44,16 @@ final class math {
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
 	static long add(final long a, final long b) {
-		final long c = a + b;
-		if (((c ^ a) & (c ^ b) >> 63) != 0) {
+		final long z = a + b;
+		if (a > 0) {
+			if (b > 0 && z < 0) {
+				throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+			}
+		} else if (b < 0 && z > 0) {
 			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
 		}
-
-		return c;
+		
+		return z;
 	}
 	
 	/**
@@ -62,19 +66,16 @@ final class math {
 	 * @throws ArithmeticException if the subtraction would lead to an overflow.
 	 */
 	static long sub(final long a, final long b) {
-		if (a >= 0 && b >= 0) {
-			final long c = a - b;
-			if (((a ^ b) & (a ^ c) >> 63) != 0) {
-				throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+		final long z = a - b;
+		if (a > 0) {
+			if (b < 0 && z < 0) {
+				throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
 			}
-	
-			return c;
-		} else if (a >= 0 && b < 0) {
-			return add(a, b);
-		} else if (a < 0 && b >= 0) {
-			
+		} else if (b > 0 && z > 0) {
+			throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
 		}
-		return 0;
+		
+		return z;
 	}
 	
 	static double plus(final double a, final long ulpDistance) {

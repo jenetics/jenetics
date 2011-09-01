@@ -267,6 +267,11 @@
 			<class name="org.jenetics.util.CharSetTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.util.math">
+		<classes>
+			<class name="org.jenetics.util.mathTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.PermutationIndexStream">
 		<classes>
 			<class name="org.jenetics.util.PermutationIndexStreamTest" />
