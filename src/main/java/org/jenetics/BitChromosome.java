@@ -515,7 +515,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			final int length = xml.getAttribute(LENGTH, 1);
 			final double probability = xml.getAttribute(PROBABILITY, 0.5);
-			final byte[] data = bit.toByteArray(xml.getText().toString());
+			final byte[] data = toByteArray(xml.getText().toString());
 			final BitChromosome chromosome = BitChromosome.valueOf(data);
 			chromosome._p = probability;
 			chromosome._length = length;
@@ -533,5 +533,36 @@ public class BitChromosome extends Number<BitChromosome>
 		public void read(final InputElement element, final BitChromosome gene) {
 		}
 	};	
+	
+	
+	/**
+	 * Convert a string which was created with the {@link #toString(byte...)}
+	 * method back to an byte array.
+	 * 
+	 * @param data the string to convert.
+	 * @return the byte array.
+	 * @throws IllegalArgumentException if the given data string could not be
+	 * 		  converted.
+	 */
+	 static byte[] toByteArray(final String data) {
+		final String[] parts = data.split("\\|");
+		final byte[] bytes = new byte[parts.length];
+		
+		for (int i = 0; i < parts.length; ++i) {
+			if (parts[i].length() != 8) {
+				throw new IllegalArgumentException(
+					"Byte value doesn't contain 8 bit: " + parts[i]
+				);
+			} else {
+				try {
+					bytes[i] = (byte)Integer.parseInt(parts[i], 2);
+				} catch (NumberFormatException e) {
+					throw new IllegalArgumentException(e);
+				}
+			}
+		}
+		
+		return bytes;
+	}
 }
 

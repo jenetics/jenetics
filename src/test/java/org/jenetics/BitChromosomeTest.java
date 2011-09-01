@@ -30,9 +30,11 @@ import java.util.BitSet;
 
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -147,6 +149,19 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     	Assert.assertEquals(sc, c);
     }
     
+	@Test
+	public void toStringToByteArray() {
+		byte[] data = new byte[10];
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = (byte)(Math.random()*256);
+		}
+		
+		final String dataString = bit.toString(data);
+		Reporter.log(dataString);
+		
+		final byte[] sdata = BitChromosome.toByteArray(dataString);
+		Assert.assertEquals(sdata, data);
+	}
 
 
 }
