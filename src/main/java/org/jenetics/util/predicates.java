@@ -31,9 +31,9 @@ import static org.jenetics.util.object.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class predicate {
+public final class predicates {
 
-	private predicate() {
+	private predicates() {
 		throw new AssertionError("Don't create an 'predicate' instance.");
 	}
 	
