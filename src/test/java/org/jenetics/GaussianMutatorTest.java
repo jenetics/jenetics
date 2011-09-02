@@ -28,11 +28,11 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Range;
 
 
 /**
@@ -68,7 +68,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 			variance.accumulate(value);
 		}
 		
-		final Domain<Double> domain = new Domain<Double>(min, max);
+		final Range<Double> domain = new Range<Double>(min, max);
 		assertDistribution(histogram, new NormalDistribution<Double>(domain, mean, var));
 	}
 	

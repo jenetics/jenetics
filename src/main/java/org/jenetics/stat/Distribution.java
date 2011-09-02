@@ -22,10 +22,10 @@
  */
 package org.jenetics.stat;
 
-import static org.jenetics.util.object.nonNull;
-
 import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Range;
 
 /**
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
@@ -37,75 +37,11 @@ import org.jscience.mathematics.number.Float64;
 public interface Distribution<C extends Comparable<? super C>> {
 
 	/**
-	 * The domain of the distriibution.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
-	 */
-	public static class Domain<C extends Comparable<? super C>> {
-		private final C _min;
-		private final C _max;
-
-		/**
-		 * Create a new domain object.
-		 *
-		 * @param min the minimum value of the domain.
-		 * @param max the maximum value of the domain.
-		 * @throws IllegalArgumentException if {@code min >= max}
-		 * @throws NullPointerException if one of the arguments is {@code null}.
-		 */
-		public Domain(final C min, final C max) {
-			if (min.compareTo(max) >= 0) {
-				throw new IllegalArgumentException(String.format(
-						"Min value must be smaller the max value: [%s, %s]", min, max
-					));
-			}
-			_min = nonNull(min, "Minimum");
-			_max = nonNull(max, "Maximum");
-		}
-
-		public C getMin() {
-			return _min;
-		}
-
-		public C getMax() {
-			return _max;
-		}
-		
-		public boolean contains(final C value) {
-			return _min.compareTo(value) <= 0 && _max.compareTo(value) >= 0;
-		}
-		
-		@Override
-		public int hashCode() {
-			return _min.hashCode() + 37*_max.hashCode() + 17;
-		}
-		
-		@Override
-		public boolean equals(final Object obj) {
-			if (obj == this) {
-				return true;
-			}
-			if (obj == null || obj.getClass() != getClass()) {
-				return false;
-			}
-			
-			final Domain<?> domain = (Domain<?>)obj;
-			return _min.equals(domain._min) && _max.equals(domain._max);
-		}
-		
-		@Override
-		public String toString() {
-			return "[" + _min + ", " + _max + "]";
-		}
-	}
-
-	/**
 	 * Return the domain of this probability distribution.
 	 *
 	 * @return the domain of this probability distribution.
 	 */
-	public Domain<C> getDomain();
+	public Range<C> getDomain();
 
 	/**
 	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).

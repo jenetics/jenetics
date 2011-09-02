@@ -35,6 +35,8 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Range;
+
 
 /**
  * <p>This distribution has the following cdf.</p>
@@ -210,13 +212,13 @@ public class LinearDistribution<
 	}
 		
 	
-	private final Domain<N> _domain;
+	private final Range<N> _domain;
 	private final double _x1;
 	private final double _x2;
 	private final double _y1;
 	private final double _y2;
 	
-	public LinearDistribution(final Domain<N> domain, final double y1) {
+	public LinearDistribution(final Range<N> domain, final double y1) {
 		_domain = nonNull(domain);
 		
 		_y1 = Math.max(y1, 0.0);
@@ -234,7 +236,7 @@ public class LinearDistribution<
 	}
 	
 	@Override
-	public Domain<N> getDomain() {
+	public Range<N> getDomain() {
 		return _domain;
 	}
 

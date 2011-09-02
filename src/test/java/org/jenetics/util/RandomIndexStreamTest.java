@@ -30,7 +30,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
@@ -86,7 +85,7 @@ public class RandomIndexStreamTest {
 		final double var = n*p*(1 - p);
 		
 		final Random random = new Random();
-		final Domain<Long> domain = new Domain<Long>(0L, n.longValue());
+		final Range<Long> domain = new Range<Long>(0L, n.longValue());
 		
 		final Histogram<Long> histogram = Histogram.valueOf(
 					domain.getMin(), domain.getMax(), 10 

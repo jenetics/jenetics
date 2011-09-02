@@ -29,8 +29,8 @@ import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -53,7 +53,7 @@ public class NormalDistributionTest {
 			variance.accumulate(value);
 		}
 		
-		final Domain<Double> domain = new Domain<Double>(0.0, 1000.0);
+		final Range<Double> domain = new Range<Double>(0.0, 1000.0);
 		final Distribution<Double> dist = new NormalDistribution<Double>(domain, mean, std*std);
 		
 		StatisticsAssert.assertDistribution(histogram, dist);
@@ -61,7 +61,7 @@ public class NormalDistributionTest {
 	
 	@Test
 	public void pdfToString() {
-		final Domain<Double> domain = new Domain<Double>(0.0, 100.0);
+		final Range<Double> domain = new Range<Double>(0.0, 100.0);
 		final Distribution<Double> dist = new NormalDistribution<Double>(domain, 50.0, 34.0);
 		final Function<Double, Float64> pdf = dist.pdf();
 		
@@ -70,7 +70,7 @@ public class NormalDistributionTest {
 	
 	@Test
 	public void cdfToString() {
-		final Domain<Double> domain = new Domain<Double>(0.0, 100.0);
+		final Range<Double> domain = new Range<Double>(0.0, 100.0);
 		final Distribution<Double> dist = new NormalDistribution<Double>(domain, 50.0, 34.0);
 		final Function<Double, Float64> cdf = dist.cdf();
 		

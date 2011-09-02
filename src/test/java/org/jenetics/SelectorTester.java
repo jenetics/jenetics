@@ -28,10 +28,10 @@ import static org.jenetics.util.accumulator.accumulate;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -41,7 +41,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S> 
 {
 
-	protected final Domain<Float64> _domain = new Domain<Float64>(
+	protected final Range<Float64> _domain = new Range<Float64>(
 			Float64.ZERO, Float64.valueOf(100)
 		); 
 	
