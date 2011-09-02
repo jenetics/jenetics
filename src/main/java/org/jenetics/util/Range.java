@@ -22,47 +22,47 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-
+import static org.jenetics.util.object.nonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Tuple2<T1, T2> {
+public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
+
+	/**
+	 * Create a new range object.
+	 *
+	 * @param min the minimum value of the domain.
+	 * @param max the maximum value of the domain.
+	 * @throws IllegalArgumentException if {@code min >= max}
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public Range(final C min, final C max) {
+		super(nonNull(min, "Min value"), nonNull(max, "Max value"));
+		if (min.compareTo(max) >= 0) {
+			throw new IllegalArgumentException(String.format(
+					"Min value must be smaller the max value: [%s, %s]", min, max
+				));
+		}
+	}
 	
-	public final T1 _1;
-	public final T2 _2;
+	public C getMin() {
+		return _1;
+	}
+
+	public C getMax() {
+		return _2;
+	}
 	
-	public Tuple2(final T1 t1, final T2 t2) {
-		_1 = t1;
-		_2 = t2;
+	public boolean contains(final C value) {
+		return _1.compareTo(value) <= 0 && _2.compareTo(value) >= 0;
 	}
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(Tuple2.class).and(_1).and(_2).value();
+		return hashCodeOf(Range.class).and(super.hashCode()).value();
 	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-		
-		final Tuple2<?, ?> tuple = (Tuple2<?, ?>)obj;
-		return eq(_1, tuple._1) && eq(_2, tuple._2);
-	}
-	
-	@Override
-	public String toString() {
-		return "(" + _1 + ", " + _2 + ")";
-	}
-	
+
 }
-
-
