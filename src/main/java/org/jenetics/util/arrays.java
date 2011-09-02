@@ -38,9 +38,9 @@ import java.util.Random;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class array {
+public final class arrays {
 	
-	private array() {
+	private arrays() {
 		throw new AssertionError("Don't create an 'array' instance.");
 	}
 	

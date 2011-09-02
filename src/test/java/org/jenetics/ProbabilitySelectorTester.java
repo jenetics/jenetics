@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.array;
+import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -83,7 +83,7 @@ public abstract class ProbabilitySelectorTester<
 	@Test
 	public void probabilities() {
 		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
-		array.shuffle(population, new Random(System.currentTimeMillis()));
+		arrays.shuffle(population, new Random(System.currentTimeMillis()));
 		
 		final S selector = getFactory().newInstance();
 		final double[] props = selector.probabilities(population, 23);

@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.array;
+import org.jenetics.util.arrays;
 import org.jenetics.util.serialize;
 
 
@@ -69,7 +69,7 @@ public class PopulationTest {
 			Assert.assertTrue(first.compareTo(second) >= 0);
 		}
 		
-		array.shuffle(population);
+		arrays.shuffle(population);
 		population.sort(Optimize.MAXIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.evaluate(population.get(i).getGenotype());
@@ -77,7 +77,7 @@ public class PopulationTest {
 			Assert.assertTrue(first.compareTo(second) >= 0, first + "<" + second);
 		}
 		
-		array.shuffle(population);
+		arrays.shuffle(population);
 		population.sort(Optimize.MINIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.evaluate(population.get(i).getGenotype());

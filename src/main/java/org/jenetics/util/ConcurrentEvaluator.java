@@ -71,7 +71,7 @@ public class ConcurrentEvaluator implements Evaluator {
 	private void eval(final List<? extends Runnable> runnables) {
 		ConcurrentContext.enter();
 		try {
-			final int[] parts = array.partition(runnables.size(), _parallelTasks);
+			final int[] parts = arrays.partition(runnables.size(), _parallelTasks);
 			
 			if (runnables instanceof RandomAccess) {
 				for (int i = 0; i < parts.length - 1; ++i) {
