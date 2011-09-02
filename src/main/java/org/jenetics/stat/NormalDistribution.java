@@ -96,11 +96,13 @@ public class NormalDistribution<
 		private final Range<N> _domain;
 		private final double _mean;
 		private final double _var;
+		private final double _stddev;
 		
 		public PDF(final Range<N> domain, final double mean, final double var) {
 			_domain = domain;
 			_mean = mean;
 			_var = var;
+			_stddev = Math.sqrt(var);
 		}
 		
 		@Override
@@ -109,11 +111,7 @@ public class NormalDistribution<
 			
 			Float64 result = Float64.ZERO;
 			if (_domain.contains(_variable.get())) {
-				result = Float64.valueOf(φ(x, _mean, Math.sqrt(_var)));
-//				result = Float64.valueOf(
-//						(1.0/Math.sqrt(2*Math.PI*_var))*
-//						Math.exp(-(x - _mean)*(x - _mean)/(2*_var))
-//					);
+				result = Float64.valueOf(φ(x, _mean, _stddev));
 			}
 			
 			return result;
@@ -159,12 +157,14 @@ public class NormalDistribution<
 		private final double _max;
 		private final double _mean;
 		private final double _var;
+		private final double _stddev;
 		
 		public CDF(final Range<N> domain, final double mean, final double var) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_mean = mean;
 			_var = var;
+			_stddev = Math.sqrt(var);
 		}
 		
 		@Override
@@ -177,7 +177,7 @@ public class NormalDistribution<
 			} else if (x > _max) {
 				result = Float64.ONE; 
 			} else {
-				result = Float64.valueOf(Φ(x, _mean, Math.sqrt(_var)));
+				result = Float64.valueOf(Φ(x, _mean, _stddev));
 			}
 			
 			return result;
