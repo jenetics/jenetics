@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.Statistics.Calculator;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulator;
+import org.jenetics.util.accumulators;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -86,7 +86,7 @@ public class StatisticsCalculatorTest {
 		final Statistics<Float64Gene, Float64> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<Integer>();
-		accumulator.accumulate(population(size), ageVariance.adapt(Phenotype.Age(gen)));
+		accumulators.accumulate(population(size), ageVariance.adapt(Phenotype.Age(gen)));
 		
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());
 		Assert.assertEquals(statistics.getAgeVariance(), ageVariance.getVariance());

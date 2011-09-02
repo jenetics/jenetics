@@ -34,7 +34,7 @@ package org.jenetics.util;
  * 	 Accumulators.accumulate(values, minMax, variance, quantile);
  * [/code]
  * 
- * @see accumulator
+ * @see accumulators
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

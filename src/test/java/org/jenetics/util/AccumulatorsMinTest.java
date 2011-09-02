@@ -30,7 +30,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.accumulator.Min;
+import org.jenetics.util.accumulators.Min;
 
 
 /**
@@ -38,11 +38,11 @@ import org.jenetics.util.accumulator.Min;
  * @version $Id$
  */
 public class AccumulatorsMinTest 
-	extends AbstractAccumulatorTester<accumulator.Min<Double>> 
+	extends AbstractAccumulatorTester<accumulators.Min<Double>> 
 {
 
-	final Factory<accumulator.Min<Double>> 
-	_factory = new Factory<accumulator.Min<Double>>() {
+	final Factory<accumulators.Min<Double>> 
+	_factory = new Factory<accumulators.Min<Double>>() {
 		@Override
 		public Min<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
@@ -56,7 +56,7 @@ public class AccumulatorsMinTest
 		}
 	};
 	@Override
-	protected Factory<accumulator.Min<Double>> getFactory() {
+	protected Factory<accumulators.Min<Double>> getFactory() {
 		return _factory;
 	}
 	
@@ -68,8 +68,8 @@ public class AccumulatorsMinTest
 		}
 		shuffle(array);
 		
-		final accumulator.Min<Integer> min = new accumulator.Min<Integer>();
-		accumulator.accumulate(Arrays.asList(array), min);
+		final accumulators.Min<Integer> min = new accumulators.Min<Integer>();
+		accumulators.accumulate(Arrays.asList(array), min);
 		Assert.assertEquals(min.getMin(), new Integer(0));
 	}
 	

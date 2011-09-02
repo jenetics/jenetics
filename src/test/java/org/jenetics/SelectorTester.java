@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.accumulator.accumulate;
+import static org.jenetics.util.accumulators.accumulate;
 
 import org.jscience.mathematics.number.Float64;
 

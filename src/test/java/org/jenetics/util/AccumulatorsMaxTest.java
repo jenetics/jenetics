@@ -30,7 +30,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.accumulator.Max;
+import org.jenetics.util.accumulators.Max;
 
 
 /**
@@ -38,11 +38,11 @@ import org.jenetics.util.accumulator.Max;
  * @version $Id$
  */
 public class AccumulatorsMaxTest 
-	extends AbstractAccumulatorTester<accumulator.Max<Double>> 
+	extends AbstractAccumulatorTester<accumulators.Max<Double>> 
 {
 
-	final Factory<accumulator.Max<Double>> 
-	_factory = new Factory<accumulator.Max<Double>>() {
+	final Factory<accumulators.Max<Double>> 
+	_factory = new Factory<accumulators.Max<Double>>() {
 		@Override
 		public Max<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
@@ -68,8 +68,8 @@ public class AccumulatorsMaxTest
 		}
 		shuffle(array);
 		
-		final accumulator.Max<Integer> max = new accumulator.Max<Integer>();
-		accumulator.accumulate(Arrays.asList(array), max);
+		final accumulators.Max<Integer> max = new accumulators.Max<Integer>();
+		accumulators.accumulate(Arrays.asList(array), max);
 		Assert.assertEquals(max.getMax(), new Integer(19));
 	}
 	
