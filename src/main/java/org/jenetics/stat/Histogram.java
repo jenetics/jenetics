@@ -24,8 +24,8 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
-import static org.jenetics.util.array.foreach;
-import static org.jenetics.util.array.map;
+import static org.jenetics.util.arrays.foreach;
+import static org.jenetics.util.arrays.map;
 import static org.jenetics.util.converter.DoubleToFloat64;
 import static org.jenetics.util.converter.LongToInteger64;
 import static org.jenetics.util.math.sum;

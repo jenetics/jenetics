@@ -47,7 +47,7 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 		final MSeq<Integer64Gene> array = c.toSeq().copy();
 		Assert.assertFalse(isSorted(array));
 		
-		org.jenetics.util.array.sort(array);
+		org.jenetics.util.arrays.sort(array);
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(array.get(i).intValue(), i);
 		}

@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
-import static org.jenetics.util.array.foreach;
+import static org.jenetics.util.arrays.foreach;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;

@@ -22,8 +22,8 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.array.isSorted;
-import static org.jenetics.util.array.sort;
+import static org.jenetics.util.arrays.isSorted;
+import static org.jenetics.util.arrays.sort;
 
 import java.util.Comparator;
 import java.util.Random;
@@ -45,7 +45,7 @@ public class ArrayUtilsTest {
 		
 		for (int i = 1; i < 100; ++i) {
 			int[] sub = new int[i];
-			array.subset(1000, sub, random);
+			arrays.subset(1000, sub, random);
 			
 			Assert.assertTrue(isSortedd(sub));
 		}
@@ -122,7 +122,7 @@ public class ArrayUtilsTest {
 		Assert.assertFalse(isSorted(array));
 		
 		final Array<Integer> clonedArray = array.copy();
-		org.jenetics.util.array.sort(array.subSeq(30, 40));
+		org.jenetics.util.arrays.sort(array.subSeq(30, 40));
 		Assert.assertTrue(isSorted(array.subSeq(30, 40)));
 		Assert.assertEquals(array.subSeq(0, 30), clonedArray.subSeq(0, 30));
 		Assert.assertEquals(array.subSeq(40), clonedArray.subSeq(40));

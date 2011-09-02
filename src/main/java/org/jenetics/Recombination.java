@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.array.subset;
+import static org.jenetics.util.arrays.subset;
 
 import java.util.Random;
 
