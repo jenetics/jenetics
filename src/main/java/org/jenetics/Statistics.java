@@ -48,8 +48,8 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulator;
-import org.jenetics.util.accumulator.MinMax;
+import org.jenetics.util.accumulators;
+import org.jenetics.util.accumulators.MinMax;
 import org.jenetics.util.FinalReference;
 
 /**
@@ -712,7 +712,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
 			final Variance<Integer> age = new Variance<Integer>();
 							
-			accumulator.<Phenotype<G, C>>accumulate(
+			accumulators.<Phenotype<G, C>>accumulate(
 					population, 
 					minMax, 
 					age.adapt(Phenotype.Age(generation))

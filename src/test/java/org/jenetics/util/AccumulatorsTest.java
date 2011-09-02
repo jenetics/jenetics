@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.accumulator.accumulate;
+import static org.jenetics.util.accumulators.accumulate;
 
 import java.util.Iterator;
 

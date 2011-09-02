@@ -40,10 +40,10 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class accumulator {
+public final class accumulators {
 
-	private accumulator() {
-		throw new AssertionError("Don't create an 'Accumulators' instance.");
+	private accumulators() {
+		throw new AssertionError("Don't create an 'accumulators' instance.");
 	}	
 	
 	public static final Accumulator<Object> NULL =
@@ -362,58 +362,58 @@ public final class accumulator {
 	 * 
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
-	 * @param accumulators the accumulators to apply.
+	 * @param accus the accumulators to apply.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
 		final Iterable<? extends T> values, 
-		final Seq<? extends Accumulator<? super T>> accumulators
+		final Seq<? extends Accumulator<? super T>> accus
 	) {
-		switch (accumulators.length()) {
+		switch (accus.length()) {
 		case 1:
-			accumulator.<T>accumulate(
+			accumulators.<T>accumulate(
 					values, 
-					accumulators.get(0)
+					accus.get(0)
 				); 
 			break;
 		case 2:
-			accumulator.<T>accumulate(
+			accumulators.<T>accumulate(
 					values, 
-					accumulators.get(0), 
-					accumulators.get(1)
+					accus.get(0), 
+					accus.get(1)
 				); 
 			break;
 		case 3:
-			accumulator.<T>accumulate(
+			accumulators.<T>accumulate(
 					values, 
-					accumulators.get(0), 
-					accumulators.get(1),
-					accumulators.get(2)
+					accus.get(0), 
+					accus.get(1),
+					accus.get(2)
 				); 
 			break;
 		case 4:
-			accumulator.<T>accumulate(
+			accumulators.<T>accumulate(
 					values, 
-					accumulators.get(0), 
-					accumulators.get(1),
-					accumulators.get(2),
-					accumulators.get(3)
+					accus.get(0), 
+					accus.get(1),
+					accus.get(2),
+					accus.get(3)
 				);
 			break;
 		case 5:
-			accumulator.<T>accumulate(
+			accumulators.<T>accumulate(
 					values, 
-					accumulators.get(0), 
-					accumulators.get(1),
-					accumulators.get(2),
-					accumulators.get(3),
-					accumulators.get(4)
+					accus.get(0), 
+					accus.get(1),
+					accus.get(2),
+					accus.get(3),
+					accus.get(4)
 				); 
 			break;
 		default:
 			ConcurrentContext.enter();
 			try {
-				for (final Accumulator<? super T> accumulator : accumulators) {
+				for (final Accumulator<? super T> accumulator : accus) {
 					ConcurrentContext.execute(new Acc<T>(values, accumulator));
 				}
 			} finally {

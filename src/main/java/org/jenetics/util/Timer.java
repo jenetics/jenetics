@@ -58,7 +58,7 @@ public final class Timer
 	/*private[test]*/ long _stop = 0;
 	/*private[test]*/ long _sum = 0;
 
-	private transient Accumulator<? super Long> _accumulator = accumulator.NULL;
+	private transient Accumulator<? super Long> _accumulator = accumulators.NULL;
 	
 	/**
 	 * Create a new time with the given label. The label is use in the 
