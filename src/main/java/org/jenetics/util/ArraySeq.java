@@ -214,8 +214,14 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	
 	@Override
 	public Object[] toArray() {
-		final Object[] array = new Object[length()];
-		System.arraycopy(_array.data, _start, array, 0, length());
+		Object[] array = null;
+		if (length() == _array.data.length) {
+			array = _array.data.clone();
+		} else {
+			array = new Object[length()];
+			System.arraycopy(_array.data, _start, array, 0, length());
+		}
+		
 		return array;
 	}
 	
