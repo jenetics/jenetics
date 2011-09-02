@@ -38,6 +38,8 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Range;
+
 /**
  * Normal (Gaussian) distribution. With
  * 
@@ -91,11 +93,11 @@ public class NormalDistribution<
 		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
 		{ _variables.add(_variable); }
 		
-		private final Domain<N> _domain;
+		private final Range<N> _domain;
 		private final double _mean;
 		private final double _var;
 		
-		public PDF(final Domain<N> domain, final double mean, final double var) {
+		public PDF(final Range<N> domain, final double mean, final double var) {
 			_domain = domain;
 			_mean = mean;
 			_var = var;
@@ -158,7 +160,7 @@ public class NormalDistribution<
 		private final double _mean;
 		private final double _var;
 		
-		public CDF(final Domain<N> domain, final double mean, final double var) {
+		public CDF(final Range<N> domain, final double mean, final double var) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_mean = mean;
@@ -195,7 +197,7 @@ public class NormalDistribution<
 		
 	}
 	
-	private final Domain<N> _domain;
+	private final Range<N> _domain;
 	private final double _mean;
 	private final double _var;
 	
@@ -209,7 +211,7 @@ public class NormalDistribution<
 	 * @throws IllegalArgumentException if the variance is negative.
 	 */
 	public NormalDistribution(
-		final Domain<N> domain, 
+		final Range<N> domain, 
 		final double mean, 
 		final double var
 	) {
@@ -219,7 +221,7 @@ public class NormalDistribution<
 	}
 	
 	@Override
-	public Domain<N> getDomain() {
+	public Range<N> getDomain() {
 		return _domain;
 	}
 	

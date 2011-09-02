@@ -29,10 +29,10 @@ import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,7 +50,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 			final double max = random.nextInt(100) + 100 + min;
 			final double y2 = random.nextDouble();
 			final LinearDistribution<Double> dist = 
-				new LinearDistribution<Double>(new Domain<Double>(min, max), y2);
+				new LinearDistribution<Double>(new Range<Double>(min, max), y2);
 			
 			return dist;
 		}
@@ -62,7 +62,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	
 	@Test
 	public void pdf() {
-		final Domain<Double> domain = new Domain<Double>(0.0, 1.0);
+		final Range<Double> domain = new Range<Double>(0.0, 1.0);
 		final LinearDistribution<Double> dist = new LinearDistribution<Double>(domain, 0);
 		final Function<Double, Float64> pdf = dist.pdf();
 		
@@ -76,7 +76,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	
 	@Test
 	public void cdf() {
-		final Domain<Double> domain = new Domain<Double>(0.0, 1.0);
+		final Range<Double> domain = new Range<Double>(0.0, 1.0);
 		final LinearDistribution<Double> dist = new LinearDistribution<Double>(domain, 0);
 		final Function<Double, Float64> cdf = dist.cdf();
 		

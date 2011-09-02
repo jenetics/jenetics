@@ -25,9 +25,9 @@ package org.jenetics;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.UniformDistribution;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -53,7 +53,7 @@ public class TruncationSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		final Domain<Float64> domain = new Domain<Float64>(
+		final Range<Float64> domain = new Range<Float64>(
 				_domain.getMax().minus(_domain.getMin()).divide(2),
 				_domain.getMax()
 			);

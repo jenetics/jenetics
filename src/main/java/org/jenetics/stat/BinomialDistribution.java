@@ -34,6 +34,8 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Range;
+
 /**
  * TODO: implement BinomialDistribution
  * 
@@ -56,13 +58,13 @@ class BinomialDistribution<
 		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
 		{ _variables.add(_variable); }
 		
-		private final Domain<N> _domain;
+		private final Range<N> _domain;
 		
 		private final long _N;
 		private final double _p;
 		private final double _q;
 		
-		public PDF(final Domain<N> domain, final double p) {
+		public PDF(final Range<N> domain, final double p) {
 			_domain = domain;
 			_N = domain.getMax().longValue() - domain.getMin().longValue();
 			_p = p;
@@ -105,13 +107,13 @@ class BinomialDistribution<
 		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
 		{ _variables.add(_variable); }
 		
-		private final Domain<N> _domain;
+		private final Range<N> _domain;
 		
 		private final long _N;
 		private final double _p;
 		private final double _q;
 		
-		public CDF(final Domain<N> domain, final double p) {
+		public CDF(final Range<N> domain, final double p) {
 			_domain = domain;
 			_N = domain.getMax().longValue() - domain.getMin().longValue();
 			_p = p;
@@ -151,16 +153,16 @@ class BinomialDistribution<
 		
 	}	
 	
-	private final Domain<N> _domain;
+	private final Range<N> _domain;
 	private final double _p;
 	
-	public BinomialDistribution(final Domain<N> domain, final double p) {
+	public BinomialDistribution(final Range<N> domain, final double p) {
 		_domain = nonNull(domain, "Domain");
 		_p = checkProbability(p);
 	}
 	
 	@Override
-	public Domain<N> getDomain() {
+	public Range<N> getDomain() {
 		return _domain;
 	}
 

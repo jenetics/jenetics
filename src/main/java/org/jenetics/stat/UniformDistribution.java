@@ -35,6 +35,8 @@ import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Range;
+
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
@@ -79,7 +81,7 @@ public class UniformDistribution<
 		private final double _max;
 		private final Float64 _probability;
 		
-		public PDF(final Domain<N> domain) {
+		public PDF(final Range<N> domain) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_probability = Float64.valueOf(1.0/(_max - _min));
@@ -138,7 +140,7 @@ public class UniformDistribution<
 		private final double _max;
 		private final double _divisor;
 		
-		public CDF(final Domain<N> domain) {
+		public CDF(final Range<N> domain) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_divisor = _max - _min;
@@ -176,7 +178,7 @@ public class UniformDistribution<
 	}
 
 
-	private final Domain<N> _domain;
+	private final Range<N> _domain;
 
 	/**
 	 * Create a new uniform distribution with the given {@code domain}.
@@ -184,7 +186,7 @@ public class UniformDistribution<
 	 * @param domain the domain of the distribution.
 	 * @throws NullPointerException if the {@code domain} is {@code null}.
 	 */
-	public UniformDistribution(final Domain<N> domain) {
+	public UniformDistribution(final Range<N> domain) {
 		_domain = nonNull(domain, "Domain");
 	}
 
@@ -197,11 +199,11 @@ public class UniformDistribution<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public UniformDistribution(final N min, final N max) {
-		this(new Domain<N>(min, max));
+		this(new Range<N>(min, max));
 	}
 
 	@Override
-	public Domain<N> getDomain() {
+	public Range<N> getDomain() {
 		return _domain;
 	}
 

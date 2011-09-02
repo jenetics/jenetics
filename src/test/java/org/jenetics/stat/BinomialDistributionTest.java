@@ -35,7 +35,7 @@ public class BinomialDistributionTest {
 
 //	@Test
 //	public void pdf() {
-//		final Domain<Long> domain = new Domain<Long>(0L, 20L);
+//		final Range<Long> domain = new Range<Long>(0L, 20L);
 //		final double probability = 0.5;
 //		final Distribution<Long> dist = new BinomialDistribution<Long>(domain, probability);
 //		final Function<Long, Float64> pdf = dist.pdf();
@@ -47,7 +47,7 @@ public class BinomialDistributionTest {
 //	
 //	@Test
 //	public void cdf() {
-//		final Domain<Long> domain = new Domain<Long>(0L, 20L);
+//		final Range<Long> domain = new Range<Long>(0L, 20L);
 //		final double probability = 0.5;
 //		final Distribution<Long> dist = new BinomialDistribution<Long>(domain, probability);
 //		final Function<Long, Float64> cdf = dist.cdf();

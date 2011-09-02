@@ -31,10 +31,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Distribution.Domain;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -82,7 +82,7 @@ public abstract class MutatorTestBase {
 		
 		final long min = 0;
 		final long max = nallgenes;
-		final Domain<Long> domain = new Domain<Long>(min, max);
+		final Range<Long> domain = new Range<Long>(min, max);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
 		final Variance<Long> variance = new Variance<Long>();
