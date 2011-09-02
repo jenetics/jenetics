@@ -31,9 +31,9 @@ import org.jscience.mathematics.number.Integer64;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class converter {
+public final class converters {
 
-	private converter() {
+	private converters() {
 		throw new AssertionError("Don't create 'converter' instance.");
 	}
 	
