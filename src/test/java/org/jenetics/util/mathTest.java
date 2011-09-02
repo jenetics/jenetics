@@ -36,45 +36,84 @@ import org.testng.annotations.Test;
  */
 public class mathTest {
 
-	@Test(dataProvider = "validSummands")
+	@Test(dataProvider = "validSum")
 	public void validAdd(final Long a, final Long b) {
 		math.add(a, b);
 	}
 	
-	@DataProvider(name = "validSummands")
-	public Object[][] validSummands() {
+	@DataProvider(name = "validSum")
+	public Object[][] validSum() {
 		return new Object[][] {
-			{ Long.MAX_VALUE, 0L },
-			{ Long.MAX_VALUE - 1, 1L },
-			{ Long.MAX_VALUE - 100, 100L },
-			{ Long.MAX_VALUE, Long.MIN_VALUE },
+			{Long.MAX_VALUE, 0L},
+			{Long.MAX_VALUE - 1, 1L},
+			{Long.MAX_VALUE - 100, 100L},
+			{Long.MAX_VALUE, Long.MIN_VALUE},
 			
-			{ Long.MIN_VALUE, 10L },
-			{ Long.MIN_VALUE + 10, -10L },
-			{ Long.MIN_VALUE + 100, -100L },
-			{ Long.MIN_VALUE, Long.MAX_VALUE }
+			{Long.MIN_VALUE, 10L},
+			{Long.MIN_VALUE + 10, -10L},
+			{Long.MIN_VALUE + 100, -100L},
+			{Long.MIN_VALUE, Long.MAX_VALUE}
 		};
 	}
 	
-	@Test(dataProvider = "invalidSummands", expectedExceptions = ArithmeticException.class)
+	@Test(dataProvider = "invalidSum", expectedExceptions = ArithmeticException.class)
 	public void invalidAdd(final Long a, final Long b) {
-		System.out.println(math.add(a, b));
+		math.add(a, b);
 	}
 
-	@DataProvider(name = "invalidSummands")
-	public Object[][] invalidSummands() {
+	@DataProvider(name = "invalidSum")
+	public Object[][] invalidSum() {
 		return new Object[][] {
-			{ Long.MAX_VALUE, 1L },
-			{ Long.MAX_VALUE - 1, 2L },
-			{ Long.MAX_VALUE - 100, 101L },
-			{ Long.MAX_VALUE, Long.MAX_VALUE },
+			{Long.MAX_VALUE, 1L},
+			{Long.MAX_VALUE - 1, 2L},
+			{Long.MAX_VALUE - 100, 101L},
+			{Long.MAX_VALUE, Long.MAX_VALUE},
 			
-			{ Long.MIN_VALUE, -1L },
-			{ Long.MIN_VALUE, -10L },
-			{ Long.MIN_VALUE + 100, Long.MIN_VALUE },
-			{ Long.MIN_VALUE, Long.MIN_VALUE }
+			{Long.MIN_VALUE, -1L},
+			{Long.MIN_VALUE, -10L},
+			{Long.MIN_VALUE + 100, Long.MIN_VALUE},
+			{Long.MIN_VALUE, Long.MIN_VALUE}
 		};
 	}	
+	
+	@Test(dataProvider = "validDifference")
+	public void validSub(final Long a, final Long b) {
+		math.sub(a, b);
+	}
+	
+	@DataProvider(name = "validDifference") 
+	public Object[][] validDifference() {
+		return new Object[][]{
+			{Long.MIN_VALUE, 0L},
+			{Long.MIN_VALUE + 1, 1L},
+			{Long.MIN_VALUE + 100, 100L},
+			{Long.MIN_VALUE, Long.MIN_VALUE},
+			
+			{Long.MAX_VALUE, 0L},
+			{Long.MAX_VALUE, 1L},
+			{Long.MAX_VALUE, 100L},
+			{Long.MAX_VALUE, Long.MAX_VALUE}
+		};
+	}
+	
+	@Test(dataProvider = "invalidDifference", expectedExceptions = ArithmeticException.class)
+	public void invalidSub(final Long a, final Long b) {
+		math.sub(a, b);
+	}
+	
+	@DataProvider(name = "invalidDifference") 
+	public Object[][] invalidDifference() {
+		return new Object[][]{
+			{Long.MIN_VALUE, 1L},
+			{Long.MIN_VALUE + 1, 2L},
+			{Long.MIN_VALUE + 100, 101L},
+			
+			{Long.MAX_VALUE - 1, Long.MAX_VALUE + 1},
+			{Long.MAX_VALUE - 100, Long.MAX_VALUE + 100},
+			{Long.MAX_VALUE, Long.MIN_VALUE + 1},
+			{Long.MAX_VALUE, Long.MIN_VALUE}
+		};
+	}
 	
 	@Test
 	public void summarize() throws IOException {
@@ -87,3 +126,10 @@ public class mathTest {
 	}
 	
 }
+
+
+
+
+
+
+
