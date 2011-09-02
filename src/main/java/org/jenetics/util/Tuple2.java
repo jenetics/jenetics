@@ -30,10 +30,10 @@ import static org.jenetics.util.object.hashCodeOf;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Tuple2<T1, T2> {
+class Tuple2<T1, T2> {
 	
-	public final T1 _1;
-	public final T2 _2;
+	final T1 _1;
+	final T2 _2;
 	
 	public Tuple2(final T1 t1, final T2 t2) {
 		_1 = t1;

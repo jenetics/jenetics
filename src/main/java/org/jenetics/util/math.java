@@ -250,40 +250,40 @@ public final class math {
 	 * position of a double number.
 	 * 
 	 * [code]
-	 * 	double a = 0.0;
-	 * 	for (int i = 0; i < 10; ++i) {
-	 * 		 a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
-	 * 	}
+	 *  double a = 0.0;
+	 *  for (int i = 0; i < 10; ++i) {
+	 *      a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
+	 *  }
 	 *
-	 * 	for (int i = 0; i < 19; ++i) {
-	 * 		 a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
-	 * 		 System.out.println(
-	 * 			  a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
-	 * 		 );
-	 * 	 }
+	 *  for (int i = 0; i < 19; ++i) {
+	 *      a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
+	 *      System.out.println(
+	 *           a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
+	 *      );
+	 *   }
 	 * [/code]
 	 * 
 	 * The code fragment above will create the following output:
 	 * <pre>
-	 * 	 4.4E-323	 9 	9
-	 * 	 4.0E-323	 8 	8
-	 * 	 3.5E-323	 7 	7
-	 * 	 3.0E-323	 6 	6
-	 * 	 2.5E-323	 5 	5
-	 * 	 2.0E-323	 4 	4
-	 * 	 1.5E-323	 3 	3
-	 * 	 1.0E-323	 2 	2
-	 * 	 4.9E-324	 1 	1
-	 * 	 0.0         0  0
-	 * 	-4.9E-324	-1 	1
-	 * 	-1.0E-323	-2 	2
-	 * 	-1.5E-323	-3 	3
-	 * 	-2.0E-323	-4 	4
-	 * 	-2.5E-323	-5 	5
-	 * 	-3.0E-323	-6 	6
-	 * 	-3.5E-323	-7 	7
-	 * 	-4.0E-323	-8 	8
-	 * 	-4.4E-323	-9 	9
+	 *   4.4E-323    9  9
+	 *   4.0E-323    8  8
+	 *   3.5E-323    7  7
+	 *   3.0E-323    6  6
+	 *   2.5E-323    5  5
+	 *   2.0E-323    4  4
+	 *   1.5E-323    3  3
+	 *   1.0E-323    2  2
+	 *   4.9E-324    1  1
+	 *   0.0         0  0
+	 *  -4.9E-324   -1  1
+	 *  -1.0E-323   -2  2
+	 *  -1.5E-323   -3  3
+	 *  -2.0E-323   -4  4
+	 *  -2.5E-323   -5  5
+	 *  -3.0E-323   -6  6
+	 *  -3.5E-323   -7  7
+	 *  -4.0E-323   -8  8
+	 *  -4.4E-323   -9  9
 	 * </pre>
 	 * 
 	 * @param a the double number.
