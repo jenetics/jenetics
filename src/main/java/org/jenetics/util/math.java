@@ -47,6 +47,10 @@ public final class math {
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
 	public static long add(final long a, final long b) {
+		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
+			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+		}
+		
 		final long z = a + b;
 		if (a > 0) {
 			if (b > 0 && z < 0) {
