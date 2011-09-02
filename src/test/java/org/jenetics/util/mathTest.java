@@ -27,6 +27,7 @@ import static org.jenetics.util.math.sum;
 import java.io.IOException;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -35,16 +36,45 @@ import org.testng.annotations.Test;
  */
 public class mathTest {
 
-	@Test
-	public void add() {
-		math.add(Long.MAX_VALUE, 0);
-		math.add(Long.MAX_VALUE - 1, 1);
-		math.add(Long.MAX_VALUE- 100, 100);
-		
-		math.add(Long.MIN_VALUE, 10);
-		math.add(Long.MIN_VALUE + 10, -10);
-		math.add(Long.MIN_VALUE + 100, -100);
+	@Test(dataProvider = "validSummands")
+	public void validAdd(final Long a, final Long b) {
+		math.add(a, b);
 	}
+	
+	@DataProvider(name = "validSummands")
+	public Object[][] validSummands() {
+		return new Object[][] {
+			{ Long.MAX_VALUE, 0L },
+			{ Long.MAX_VALUE - 1, 1L },
+			{ Long.MAX_VALUE - 100, 100L },
+			{ Long.MAX_VALUE, Long.MIN_VALUE },
+			
+			{ Long.MIN_VALUE, 10L },
+			{ Long.MIN_VALUE + 10, -10L },
+			{ Long.MIN_VALUE + 100, -100L },
+			{ Long.MIN_VALUE, Long.MAX_VALUE }
+		};
+	}
+	
+	@Test(dataProvider = "invalidSummands", expectedExceptions = ArithmeticException.class)
+	public void invalidAdd(final Long a, final Long b) {
+		System.out.println(math.add(a, b));
+	}
+
+	@DataProvider(name = "invalidSummands")
+	public Object[][] invalidSummands() {
+		return new Object[][] {
+			{ Long.MAX_VALUE, 1L },
+			{ Long.MAX_VALUE - 1, 2L },
+			{ Long.MAX_VALUE - 100, 101L },
+			{ Long.MAX_VALUE, Long.MAX_VALUE },
+			
+			{ Long.MIN_VALUE, -1L },
+			{ Long.MIN_VALUE, -10L },
+			{ Long.MIN_VALUE + 100, Long.MIN_VALUE },
+			{ Long.MIN_VALUE, Long.MIN_VALUE }
+		};
+	}	
 	
 	@Test
 	public void summarize() throws IOException {
