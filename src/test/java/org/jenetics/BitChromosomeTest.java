@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.str;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -157,7 +156,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			data[i] = (byte)(Math.random()*256);
 		}
 		
-		final String dataString = str(data);
+		final String dataString = BitChromosome.toString(data);
 		Reporter.log(dataString);
 		
 		final byte[] sdata = BitChromosome.toByteArray(dataString);

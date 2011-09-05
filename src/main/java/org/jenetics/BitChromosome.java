@@ -528,13 +528,31 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
 			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(str(chromosome.toByteArray()));
+			xml.addText(BitChromosome.toString(chromosome.toByteArray()));
 		}
 		@Override
 		public void read(final InputElement element, final BitChromosome gene) {
 		}
 	};	
 	
+	
+	static String toString(final byte[] data) {
+		final StringBuilder out = new StringBuilder(data.length*8 + data.length);
+		
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[data.length - 1] >>> j) & 1);
+			}
+		}
+		for (int i = data.length - 2; i >= 0 ;--i) {
+			out.append('|');
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[i] >>> j) & 1);
+			}
+		}
+
+		return out.toString();
+	}
 	
 	/**
 	 * Convert a string which was created with the {@link #toString(byte...)}
@@ -556,7 +574,7 @@ public class BitChromosome extends Number<BitChromosome>
 				);
 			} else {
 				try {
-					bytes[i] = (byte)Integer.parseInt(parts[i], 2);
+					bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
 				} catch (NumberFormatException e) {
 					throw new IllegalArgumentException(e);
 				}

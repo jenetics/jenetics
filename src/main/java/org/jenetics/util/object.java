@@ -395,10 +395,10 @@ public final class object {
 		
 		if (data.length > 0) {
 			for (int j = 7; j >= 0; --j) {
-				out.append((data[0] >>> j) & 1);
+				out.append((data[data.length - 1] >>> j) & 1);
 			}
 		}
-		for (int i = 1; i < data.length; ++i) {
+		for (int i = data.length - 2; i >= 0 ;--i) {
 			out.append('|');
 			for (int j = 7; j >= 0; --j) {
 				out.append((data[i] >>> j) & 1);
