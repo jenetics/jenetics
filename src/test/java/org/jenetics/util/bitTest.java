@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import java.util.Iterator;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -80,20 +81,29 @@ public class bitTest {
 		}
 	}
 	
+	
 	@DataProvider(name = "shiftBits")
-	public Object[][] shiftBits() {
-		return new Object[][] {
-				{0, 3}, 
-				{1, 5}, 
-				{2, 7}, 
-				{5, 5}, 
-				{7, 5}, 
-				{13, 5}, 
-				{16, 6}, 
-				{17, 4}, 
-				{38, 7},
-				{123, 100},
-				{1234, 1234}
+	public Iterator<Object[]> shiftBits() {
+		final Random random = new Random(12323233232L);
+		final int size = 25;
+		
+		return new Iterator<Object[]>() {
+			private int _pos = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return _pos < size;
+			}
+			@Override
+			public Object[] next() {
+				final int shifts = (_pos++)*random.nextInt(1000);
+				final int bytes = shifts/8 + 1;
+				return new Object[]{ shifts, bytes };
+			}
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
 		};
 	}
 	
