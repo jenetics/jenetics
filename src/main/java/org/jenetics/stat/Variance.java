@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Double.NaN;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -43,7 +44,7 @@ import static org.jenetics.util.object.hashCodeOf;
  */
 public class Variance<N extends Number> extends Mean<N> {
 	
-	private double _m2 = Double.NaN;
+	private double _m2 = NaN;
 	
 	public Variance() {
 	}
@@ -56,7 +57,7 @@ public class Variance<N extends Number> extends Mean<N> {
 	 *         if {@code getSamples() == 0}.
 	 */
 	public double getVariance() {
-		double variance = Double.NaN;
+		double variance = NaN;
 		
 		if (_samples == 1) {
 			variance = _m2;

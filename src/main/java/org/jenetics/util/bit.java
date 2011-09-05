@@ -56,7 +56,6 @@ public final class bit {
 	 * @param bits the number of bits to shift.
 	 * @return the given <code>data</code> array.
 	 */
-	@Deprecated
 	public static byte[] shiftRight(final byte[] data, final int bits) {
 		if (bits <= 0) {
 			return data;
@@ -108,48 +107,34 @@ public final class bit {
 	 * to the left. The bits on the right side are filled with zeros.
 	 * 
 	 * @param data the data bits to shift.
-	 * @param bits the number of bits to shift.
+	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
 	 */
-	@Deprecated
-	public static byte[] shiftLeft(final byte[] data, final int bits) {
-		if (bits <= 0) {
-			return data;
-		}
+	public static byte[] shiftLeft(final byte[] data, final int shift) {
+		final int bytes = shift >>> 3;
+		final int bits = shift%8;
 		
-		int d = 0;
-		if (data.length == 1) {
-			if (bits <= 8) {
-				d = data[0] & 0xFF;
-				d <<= bits;
-				data[0] = (byte)d;
-			} else {
-				data[0] = 0;
+		if (bytes > 0) {
+			for (int i = 0, n = data.length - bytes; i < n; ++i) {
+				data[data.length - 1 - i] = data[data.length - 1 - i - bytes];
 			}
-		} else if (data.length > 1) {
+			for (int i = 0; i < bytes; ++i) {
+				data[i] = (byte)0;
+			}
+		}
+		if (bits > 0) {
 			int carry = 0;
+			int nextCarry = 0;
 			
-			if (bits < 8) {
-				for (int i = 0; i < data.length - 1; ++i) {
-					carry = data[i + 1] & (1 >>> (8 - bits));
-					
-					d = data[i] & 0xFF;
-					d <<= bits;
-					d |= carry;
-	
-					data[i] = (byte)d;
-				}
+			for (int i = 0; i < data.length; ++i) {
+				int d = data[i] & 0xFF;
+				nextCarry = (d >> (8 - bits));
 				
-				d = data[data.length - 1] & 0xFF;
 				d <<= bits;
-	
-				data[data.length - 1] = (byte)d ;
-			} else {
-				for (int i = 0; i < data.length - 1; ++i) {
-					data[i] = data[i + 1];
-				}
-				data[data.length - 1] = 0;
-				shiftLeft(data, bits - 8);
+				d |= carry;
+				data[i] = (byte)(d & 0xFF);
+							
+				carry = nextCarry;
 			}
 		}
 		
@@ -162,7 +147,6 @@ public final class bit {
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 */
-	@Deprecated
 	public static byte[] increment(final byte[] data) {
 		if (data.length == 0) {
 			return data;
@@ -203,7 +187,6 @@ public final class bit {
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 */
-	@Deprecated
 	public static byte[] complement(final byte[] data) {
 		return increment(invert(data));
 	}
@@ -227,7 +210,7 @@ public final class bit {
 			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
 		}
 		
-		final int pos = data.length - index/8 - 1;
+		final int pos = index/8;
 		final int bitPos = index%8;
 		
 		int d = data[pos] & 0xFF;
@@ -258,7 +241,7 @@ public final class bit {
 			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
 		}
 		
-		final int pos = data.length - index/8 - 1;
+		final int pos = index/8;
 		final int bitPos = index%8;
 		final int d = data[pos] & 0xFF;
 		return (d & (1 << bitPos)) != 0;

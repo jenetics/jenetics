@@ -22,9 +22,10 @@
  */
 package org.jenetics.util;
 
-import java.util.Arrays;
+import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jscience.mathematics.number.LargeInteger;
@@ -58,46 +59,57 @@ public class bitTest {
 		Assert.assertEquals(i2, i);
 	}
 	
-	@Test
-	public void shift() {
-		byte[] data = new byte[10];
+	@Test(dataProvider = "shiftBits")
+	public void shiftLeft(final Integer shift, final Integer bytes) {
+		final long seed = 9420987471198734L;
+		final Random random = new Random(seed);
+		final byte[] data = new byte[bytes];
+		
 		for (int i = 0; i < data.length*8; ++i) {
-			if (i%2 == 0) {
-				bit.setBit(data, i, true);
-			} else {
-				bit.setBit(data, i, false);
-			}
+			bit.setBit(data, i, random.nextBoolean());
 		}
 		
-		byte[] sdata = data.clone();
-		bit.shiftLeft(sdata, 8);
-		bit.shiftRight(sdata, 8);
-		data[0] = (byte)0;
-		Assert.assertEquals(sdata, data);
+		bit.shiftLeft(data, shift);
+		
+		random.setSeed(seed);
+		for (int i = 0; i < shift; ++i) {
+			Assert.assertEquals(bit.getBit(data, i), false);
+		}
+		for (int i = shift, n = data.length*8; i < n; ++i) {
+			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean());
+		}
+	}
+	
+	@DataProvider(name = "shiftBits")
+	public Object[][] shiftBits() {
+		return new Object[][] {
+				{0, 3}, 
+				{1, 5}, 
+				{2, 7}, 
+				{5, 5}, 
+				{7, 5}, 
+				{13, 5}, 
+				{16, 6}, 
+				{17, 4}, 
+				{38, 7},
+				{123, 100},
+				{1234, 1234}
+		};
 	}
 	
 	@Test
-	public void getBit() {
-		byte[] data = new byte[4];
-		Arrays.fill(data, (byte)0);
-		
+	public void setGetBit() {
+		final long seed = 94209874710998734L;
+		final Random random = new Random(seed);
+		final byte[] data = new byte[10000];
+				
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), false);
+			bit.setBit(data, i, random.nextBoolean());
 		}
 		
+		random.setSeed(seed);
 		for (int i = 0; i < data.length*8; ++i) {
-			if (i%2 == 0) {
-				bit.setBit(data, i, true);
-			} else {
-				bit.setBit(data, i, false);
-			}
-		}
-		for (int i = 0; i < data.length*8; ++i) {
-			if (i%2 == 0) {
-				Assert.assertEquals(bit.getBit(data, i), true);
-			} else {
-				Assert.assertEquals(bit.getBit(data, i), false);
-			}
+			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean());
 		}
 	}
 	
