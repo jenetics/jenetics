@@ -252,14 +252,14 @@
 			<class name="org.jenetics.util.ArrayTest" />
 		</classes>
 	</test>		
-	<test name="org.jenetics.util.ArrayUtils">
+	<test name="org.jenetics.util.arrays">
 		<classes>
-			<class name="org.jenetics.util.ArrayUtilsTest" />
+			<class name="org.jenetics.util.arraysTest" />
 		</classes>
 	</test>	
-	<test name="org.jenetics.util.BitUtils">
+	<test name="org.jenetics.util.bit">
 		<classes>
-			<class name="org.jenetics.util.BitUtilsTest" />
+			<class name="org.jenetics.util.bitTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.CharSet">
