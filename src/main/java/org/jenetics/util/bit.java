@@ -56,6 +56,7 @@ public final class bit {
 	 * @param bits the number of bits to shift.
 	 * @return the given <code>data</code> array.
 	 */
+	@Deprecated
 	public static byte[] shiftRight(final byte[] data, final int bits) {
 		if (bits <= 0) {
 			return data;
@@ -110,6 +111,7 @@ public final class bit {
 	 * @param bits the number of bits to shift.
 	 * @return the given <code>data</code> array.
 	 */
+	@Deprecated
 	public static byte[] shiftLeft(final byte[] data, final int bits) {
 		if (bits <= 0) {
 			return data;
@@ -160,6 +162,7 @@ public final class bit {
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 */
+	@Deprecated
 	public static byte[] increment(final byte[] data) {
 		if (data.length == 0) {
 			return data;
@@ -200,6 +203,7 @@ public final class bit {
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 */
+	@Deprecated
 	public static byte[] complement(final byte[] data) {
 		return increment(invert(data));
 	}
@@ -266,6 +270,7 @@ public final class bit {
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
 	 */
+	@Deprecated
 	public static void flip(final byte[] data, final int index) {
 		if (data.length == 0) {
 			return;
