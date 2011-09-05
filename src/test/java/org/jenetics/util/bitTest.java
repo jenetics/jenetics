@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitUtilsTest {
+public class bitTest {
 
 	static long add(long a, long b) {
 		long c = a + b;
