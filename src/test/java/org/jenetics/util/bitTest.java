@@ -203,23 +203,35 @@ public class bitTest {
 		bit.get(data, 100);
 	}
 	
-	@Test
-	public void increment() {
-		final byte[] data = new byte[3];
-		//bit.set(data, 0);
-		
-		System.out.println(LargeInteger.valueOf(1).toByteArray(data, 0));
-		
-		System.out.println("lib: " + object.str(data));
-		System.out.println(bit.toLargeInteger(data));
-		bit.increment(data);
-		System.out.println(object.str(data));
-		System.out.println(bit.toLargeInteger(data));
-		
-		bit.increment(data);
-		System.out.println(object.str(data));
-		System.out.println(bit.toLargeInteger(data));
-	}
+//	@Test
+//	public void increment() {
+//		final byte[] data = new byte[3];
+//		//bit.set(data, 0);
+//		
+//		for (int i = 0; i < 257; ++i) {
+//			System.out.println(i + ": " + object.str(data));
+//			bit.increment(data);
+//		}
+//		System.out.println(object.str(data));
+//		
+//		bit.invert(data);
+//		System.out.println(object.str(data));
+//		
+//		bit.increment(data);
+//		System.out.println(object.str(data));
+//		
+////		System.out.println(LargeInteger.valueOf(1).toByteArray(data, 0));
+////		
+////		System.out.println("lib: " + object.str(data));
+////		System.out.println(bit.toLargeInteger(data));
+////		bit.increment(data);
+////		System.out.println(object.str(data));
+////		System.out.println(bit.toLargeInteger(data));
+////		
+////		bit.increment(data);
+////		System.out.println(object.str(data));
+////		System.out.println(bit.toLargeInteger(data));
+//	}
 	
 	@Test
 	public void invert() {
