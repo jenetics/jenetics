@@ -390,6 +390,21 @@ public final class object {
 		return out.toString();
 	}
 	
+	/**
+	 * Print a binary representation of the given byte array. The printed string
+	 * has the following format:
+	 * <pre>
+	 *  Byte:       3        2        1        0     
+	 *              |        |        |        |  
+	 *  Array: "11110011|10011101|01000000|00101010"
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
+	 * <i>Only the array string is printed.</i>
+	 * 
+	 * @param data the byte array to convert to a string.
+	 * @return the binary representation of the given byte array.
+	 */
 	public static String str(final byte... data) {
 		final StringBuilder out = new StringBuilder();
 		

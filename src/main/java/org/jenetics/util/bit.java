@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.min;
+
 import org.jscience.mathematics.number.LargeInteger;
 
 
@@ -49,53 +51,46 @@ public final class bit {
 	}
 
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given <code>bits</code>
-	 * to the right. The bits on the left side are filled with zeros.
+	 * Shifting all bits in the given <code>data</code> array the given 
+	 * {@code shift} to the right. The bits on the left side are filled with 
+	 * zeros. It is assumed the following array layout:
+	 * <pre>
+	 *  Byte:       3        2        1        0     
+	 *              |        |        |        |  
+	 *  Array: |11110011|10011101|01000000|00101010|
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
 	 * 
 	 * @param data the data bits to shift.
-	 * @param bits the number of bits to shift.
+	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
 	 */
-	public static byte[] shiftRight(final byte[] data, final int bits) {
-		if (bits <= 0) {
-			return data;
-		}
+	public static byte[] shiftRight(final byte[] data, final int shift) {
+		final int bytes = min(shift/8, data.length);
+		final int bits = shift%8;
 		
-		
-		int d = 0;
-		if (data.length == 1) {
-			if (bits <= 8) {
-				d = data[0] & 0xFF;
-				d >>>= bits;
-				data[0] = (byte)d;
-			} else {
-				data[0] = 0;
+		if (bytes > 0) {
+			for (int i = 0, n = data.length - bytes; i < n; ++i) {
+				data[i] = data[i + bytes];
 			}
-		} else if (data.length > 1) {
+			for (int i = data.length, n = data.length - bytes; --i >= n;) {
+				data[i] = (byte)0;
+			}
+		}
+		if (bits > 0 && bytes < data.length) {
 			int carry = 0;
+			int nextCarry = 0;
 			
-			if (bits < 8) {
-				for (int i = data.length - 1; i > 0; --i) {
-					carry = data[i - 1] & (1 << (bits - 1));
-					carry = carry << (8 - bits);
-					
-					d = data[i] & 0xFF;
-					d >>>= bits;
-					d |= carry;
-	
-					data[i] = (byte)d;
-				}
+			for (int i = data.length; --i >= 0;) {
+				int d = data[i] & 0xFF;
+				nextCarry = (d << (8 - bits));
 				
-				d = data[0] & 0xFF;
 				d >>>= bits;
-	
-				data[0] = (byte)d ;
-			} else {
-				for (int i = data.length - 1; i > 0; --i) {
-					data[i] = data[i - 1];
-				}
-				data[0] = 0;
-				shiftRight(data, bits - 8);
+				d |= carry;
+				data[i] = (byte)(d & 0xFF);
+							
+				carry = nextCarry;
 			}
 		}
 		
@@ -103,15 +98,23 @@ public final class bit {
 	}
 	
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given <code>bits</code>
-	 * to the left. The bits on the right side are filled with zeros.
+	 * Shifting all bits in the given <code>data</code> array the given 
+	 * {@code shift} to the left. The bits on the right side are filled with 
+	 * zeros. It is assumed the following array layout:
+	 * <pre>
+	 *  Byte:       3        2        1        0     
+	 *              |        |        |        |  
+	 *  Array: |11110011|10011101|01000000|00101010|
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
 	 * 
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
 	 */
 	public static byte[] shiftLeft(final byte[] data, final int shift) {
-		final int bytes = shift >>> 3;
+		final int bytes = min(shift/8, data.length);
 		final int bits = shift%8;
 		
 		if (bytes > 0) {
@@ -122,13 +125,13 @@ public final class bit {
 				data[i] = (byte)0;
 			}
 		}
-		if (bits > 0) {
+		if (bits > 0 && bytes < data.length) {
 			int carry = 0;
 			int nextCarry = 0;
 			
 			for (int i = 0; i < data.length; ++i) {
 				int d = data[i] & 0xFF;
-				nextCarry = (d >> (8 - bits));
+				nextCarry = (d >>> (8 - bits));
 				
 				d <<= bits;
 				d |= carry;
