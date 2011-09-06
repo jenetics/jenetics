@@ -279,9 +279,9 @@ public final class bit {
 			int d = data[bytes] & 0xFF;
 			
 			if ((d & (1 << bits)) == 0) {
-				d = d | (1 << bits);
+				d |= (1 << bits);
 			} else {
-				d = d & ~(1 << bits);
+				d &= ~(1 << bits);
 			}
 			data[bytes] = (byte)d;
 		}
