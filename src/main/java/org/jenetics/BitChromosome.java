@@ -93,11 +93,11 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	private void set(final int index, final boolean value) {
-		bit.setBit(_genes, index, value);
+		bit.set(_genes, index, value);
 	}
 	
 	private boolean get(final int index) {
-		return bit.getBit(_genes, index);
+		return bit.get(_genes, index);
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public class BitChromosome extends Number<BitChromosome>
 	public ISeq<BitGene> toSeq() {
 		final Array<BitGene> genes = new Array<BitGene>(_length);
 		for (int i = 0; i < _length; ++i) {
-			genes.set(i, bit.getBit(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
+			genes.set(i, bit.get(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
 		}
 		return genes.toISeq();
 	}
@@ -240,7 +240,7 @@ public class BitChromosome extends Number<BitChromosome>
 			if (genes.get(i) == BitGene.TRUE) {
 				++ones;
 			}
-			bit.setBit(chromosome._genes, i, genes.get(i) == BitGene.TRUE);
+			bit.set(chromosome._genes, i, genes.get(i) == BitGene.TRUE);
 		}
 		chromosome._p = (double)ones/(double)genes.length();
 		return chromosome;
@@ -251,7 +251,7 @@ public class BitChromosome extends Number<BitChromosome>
 		final Random random = RandomRegistry.getRandom();
 		final BitChromosome chromosome = BitChromosome.newInstance(_length, _p);
 		for (int i = 0; i < _length; ++i) {
-			bit.setBit(chromosome._genes, i, random.nextDouble() < _p);
+			bit.set(chromosome._genes, i, random.nextDouble() < _p);
 		}
 		return chromosome;
 	}
@@ -266,7 +266,7 @@ public class BitChromosome extends Number<BitChromosome>
 	public String toCanonicalString() {
 		final StringBuilder out = new StringBuilder(length());
 		for (int i = 0; i < _length; ++i) {
-			out.append(bit.getBit(_genes, i) ? '1' : '0');
+			out.append(bit.get(_genes, i) ? '1' : '0');
 		}
 		return out.toString();
 	}
@@ -443,9 +443,9 @@ public class BitChromosome extends Number<BitChromosome>
 		for (int i = 0; i < length; ++i) {
 			if (bits.get(i)) {
 				++ones;
-				bit.setBit(chromosome._genes, i, true);
+				bit.set(chromosome._genes, i, true);
 			} else {
-				bit.setBit(chromosome._genes, i, false);
+				bit.set(chromosome._genes, i, false);
 			}
 			
 		}
@@ -486,9 +486,9 @@ public class BitChromosome extends Number<BitChromosome>
 			final char c = value.charAt(i);
 			if (c == '1') {
 				++ones;
-				bit.setBit(chromosome._genes, i, true);
+				bit.set(chromosome._genes, i, true);
 			} else if (c == '0') {
-				bit.setBit(chromosome._genes, i, false);
+				bit.set(chromosome._genes, i, false);
 			} else {
 				throw new IllegalArgumentException(String.format(
 					"Illegal character '%s' at position %d", c, i

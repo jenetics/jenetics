@@ -128,12 +128,12 @@ public final class PermutationChromosome
 				));
 			}
 			
-			if (bit.getBit(check, values[i])) {
+			if (bit.get(check, values[i])) {
 				throw new IllegalArgumentException(String.format(
 						"Value %s is duplicate.", values[i]
 					));
 			} else {
-				bit.setBit(check, values[i], true);
+				bit.set(check, values[i], true);
 			}
 		}
 		
@@ -183,11 +183,11 @@ public final class PermutationChromosome
 			for (int i = 0; i < length() && valid; ++i) {
 				final int value = _genes.get(i).intValue();
 				if (value >= 0 && value < length()) {
-					if (bit.getBit(check, value)) {
+					if (bit.get(check, value)) {
 						valid = false;
 						System.out.println("value: " + value);
 					} else {
-						bit.setBit(check, value, true);
+						bit.set(check, value, true);
 					}
 				} else {
 					valid = false;
