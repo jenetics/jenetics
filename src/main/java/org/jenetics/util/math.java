@@ -120,7 +120,7 @@ public final class math {
 	 */
 	public static long sum(final long[] values) {
 		long sum = 0;
-		for (int i = 0; i < values.length; ++i) {
+		for (int i = values.length; --i >= 0;) {
 			sum += values[i];
 		}
 		return sum;
