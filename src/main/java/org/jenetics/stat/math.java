@@ -22,6 +22,12 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.exp;
+import static java.lang.Math.log;
+import static java.lang.Math.sqrt;
+
 /**
  * Some statistical special functions.
  * 
@@ -36,6 +42,33 @@ final class math {
 	}
 	
 	/**
+	 * Uses Lanczos approximation formula. See Numerical Recipes 6.1.
+	 * 
+	 * @param x
+	 * @return
+	 */
+	static double logGamma(final double x) {
+		final double ser = 1.0 + 76.18009173 / 
+							(x + 0) - 86.50532033 / 
+							(x + 1) + 24.01409822 / 
+							(x + 2) - 1.231739516 / 
+							(x + 3) + 0.00120858003 / 
+							(x + 4) - 0.00000536382 / 
+							(x + 5);
+		
+		return (x - 0.5)*log(x + 4.5) - (x + 4.5) + log(ser*sqrt(2 * PI));
+	}
+	
+	static double gamma(final double x) {
+		return exp(logGamma(x));
+	}
+	
+	static double Γ(final double x) {
+		return gamma(x);
+	}
+	
+	
+	/**
 	 * Return the <i>error function</i> of {@code z}. The fractional error of
 	 * this implementation is less than 1.2E-7.
 	 * 
@@ -43,10 +76,10 @@ final class math {
 	 * @return the error function for {@code z}.
 	 */
 	public static double erf(final double z) {
-		final double t = 1.0/(1.0 + 0.5*Math.abs(z));
+		final double t = 1.0/(1.0 + 0.5*abs(z));
 
 		// Horner's method
-		final double result = 1 - t*Math.exp(
+		final double result = 1 - t*exp(
 				-z*z - 1.26551223 + 
 				t*( 1.00002368 + 
 				t*( 0.37409196 + 
