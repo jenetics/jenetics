@@ -39,6 +39,71 @@ public final class bit {
 		throw new AssertionError("Don't create an 'bit' instance.");
 	}
 	
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to the specified value.
+	 * 
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @param value the value to set.
+	 * @return the given data array.
+	 * @throws IndexOutOfBoundsException if the index is 
+	 *         {@code (index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static byte[] set(final byte[] data, final int index, final boolean value) {
+		if (data.length > 0) {
+			final int bytes = index/8;
+			final int bits = index%8;
+			
+			int d = data[bytes] & 0xFF;
+			if (value) {
+				d = d | (1 << bits);
+			} else {
+				d = d & ~(1 << bits);
+			}
+			data[bytes] = (byte)d;
+		}
+		
+		return data;
+	}
+	
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to true.
+	 * 
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @return the given data array.
+	 * @throws IndexOutOfBoundsException if the index is 
+	 *         {@code (index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static byte[] set(final byte[] data, final int index) {
+		return set(data, index, true);
+	}
+	
+	/**
+	 * Return the (boolean) value of the byte array at the given bit index.
+	 * 
+	 * @param data the byte array.
+	 * @param index the bit index.
+	 * @return the value at the given bit index.
+	 * @throws IndexOutOfBoundsException if the index is 
+	 *         {@code (index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static boolean get(final byte[] data, final int index) {
+		if (data.length > 0) {
+			final int bytes = index/8;
+			final int bits = index%8;
+			final int d = data[bytes] & 0xFF;
+			return (d & (1 << bits)) != 0;
+		} else {
+			return false;
+		}
+	}
+	
 	public static byte[] toByteArray(final LargeInteger value) {
 		final int byteLength = value.bitLength()/8 + 1;
 		byte[] array = new byte[byteLength];
@@ -197,64 +262,6 @@ public final class bit {
 	 */
 	public static byte[] complement(final byte[] data) {
 		return increment(invert(data));
-	}
-	
-	/**
-	 * Set the bit in the given byte array at the bit position (not the index
-	 * within the byte array) to the specified value.
-	 * 
-	 * @param data the byte array.
-	 * @param index the bit index within the byte array.
-	 * @param value the value to set.
-	 * @return the given data array.
-	 * @throws NullPointerException if the {@code data} array is {@code null}.
-	 */
-	public static byte[] setBit(final byte[] data, final int index, final boolean value) {
-		if (data.length == 0) {
-			return data;
-		}
-		
-		final int max = data.length*8;
-		if (index >= max || index < 0) {
-			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
-		}
-		
-		final int bytes = index/8;
-		final int bits = index%8;
-		
-		int d = data[bytes] & 0xFF;
-		if (value) {
-			d = d | (1 << bits);
-		} else {
-			d = d & ~(1 << bits);
-		}
-		data[bytes] = (byte)d;
-		
-		return data;
-	}
-	
-	/**
-	 * Return the (boolean) value of the byte array at the given bit index.
-	 * 
-	 * @param data the byte array.
-	 * @param index the bit index.
-	 * @return the value at the given bit index.
-	 * @throws NullPointerException if the {@code data} array is {@code null}.
-	 */
-	public static boolean getBit(final byte[] data, final int index) {
-		if (data.length == 0) {
-			return false;
-		}
-		
-		final int max = data.length*8;
-		if (index >= max || index < 0) {
-			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
-		}
-		
-		final int bytes = index/8;
-		final int bits = index%8;
-		final int d = data[bytes] & 0xFF;
-		return (d & (1 << bits)) != 0;
 	}
 	
 	/**

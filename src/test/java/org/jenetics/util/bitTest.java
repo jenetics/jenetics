@@ -47,12 +47,12 @@ public class bitTest {
 	
 	@Test
 	public void flip() {
-		final long seed = 2342423443L;
+		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[4];
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			bit.setBit(data, i, random.nextBoolean());
+			bit.set(data, i, random.nextBoolean());
 		}
 		
 		final byte[] cdata = data.clone();
@@ -63,57 +63,57 @@ public class bitTest {
 //		System.out.println(object.str(cdata));
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(bit.getBit(cdata, i), !bit.getBit(data, i), "Index: " + i);
+			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
 		}
 	}
 	
 	
 	@Test(dataProvider = "shiftBits")
 	public void shiftLeft(final Integer shift, final Integer bytes) {
-		final long seed = 9420987471198734L;
+		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[bytes];
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			bit.setBit(data, i, random.nextBoolean());
+			bit.set(data, i, random.nextBoolean());
 		}
 		
 		bit.shiftLeft(data, shift);
 		
 		random.setSeed(seed);
 		for (int i = 0; i < shift; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), false);
+			Assert.assertEquals(bit.get(data, i), false);
 		}
 		for (int i = shift, n = data.length*8; i < n; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean(), "Index: " + i);
+			Assert.assertEquals(bit.get(data, i), random.nextBoolean(), "Index: " + i);
 		}
 	}
 	
 	@Test
 	public void bigShiftLeft() {
-		final long seed = 94209874198734L;
+		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[10];
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			bit.setBit(data, i, random.nextBoolean());
+			bit.set(data, i, random.nextBoolean());
 		}
 		
 		bit.shiftLeft(data, 100);
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), false);
+			Assert.assertEquals(bit.get(data, i), false);
 		}
 	}
 	
 	@Test(dataProvider = "shiftBits")
 	public void shiftRight(final Integer shift, final Integer bytes) {
-		final long seed = 9420987671198734L;
+		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[bytes];
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			bit.setBit(data, i, random.nextBoolean());
+			bit.set(data, i, random.nextBoolean());
 		}
 		
 		bit.shiftRight(data, shift);
@@ -121,27 +121,27 @@ public class bitTest {
 		random.setSeed(seed);
 		for (int i = 0; i < shift; ++i) {
 			random.nextBoolean();
-			Assert.assertEquals(bit.getBit(data, data.length*8 - 1 - i), false);
+			Assert.assertEquals(bit.get(data, data.length*8 - 1 - i), false);
 		}
 		for (int i = 0, n = data.length*8 - shift; i < n; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean(), "Index: " + i);
+			Assert.assertEquals(bit.get(data, i), random.nextBoolean(), "Index: " + i);
 		}
 	}
 	
 	@Test
 	public void bigShiftRight() {
-		final long seed = 94209874198734L;
+		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[10];
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			bit.setBit(data, i, random.nextBoolean());
+			bit.set(data, i, random.nextBoolean());
 		}
 		
 		bit.shiftRight(data, 100);
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), false, "Index: " + i);
+			Assert.assertEquals(bit.get(data, i), false, "Index: " + i);
 		}
 	}
 	
@@ -170,35 +170,66 @@ public class bitTest {
 	
 	@Test
 	public void setGetBit() {
-		final long seed = 94209874710998734L;
+		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[10000];
 				
 		for (int i = 0; i < data.length*8; ++i) {
-			bit.setBit(data, i, random.nextBoolean());
+			bit.set(data, i, random.nextBoolean());
 		}
 		
 		random.setSeed(seed);
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean());
+			Assert.assertEquals(bit.get(data, i), random.nextBoolean());
 		}
+	}
+	
+	@Test(expectedExceptions = IndexOutOfBoundsException.class) 
+	public void setOutOfIndex() {
+		final byte[] data = new byte[3];
+		bit.set(data, 100, false);
+	}
+	
+	@Test(expectedExceptions = IndexOutOfBoundsException.class) 
+	public void getOutOfIndex() {
+		final byte[] data = new byte[3];
+		bit.get(data, 100);
+	}
+	
+	@Test
+	public void increment() {
+		final byte[] data = new byte[3];
+		//bit.set(data, 0);
+		
+		System.out.println(LargeInteger.valueOf(1).toByteArray(data, 0));
+		
+		System.out.println("lib: " + object.str(data));
+		System.out.println(bit.toLargeInteger(data));
+		bit.increment(data);
+		System.out.println(object.str(data));
+		System.out.println(bit.toLargeInteger(data));
+		
+		bit.increment(data);
+		System.out.println(object.str(data));
+		System.out.println(bit.toLargeInteger(data));
 	}
 	
 	@Test
 	public void invert() {
-		byte[] data = new byte[10];
+		final long seed = System.currentTimeMillis();
+		final Random random = new Random(seed);
+		final byte[] data = new byte[1000];
+		
 		for (int i = 0; i < data.length*8; ++i) {
-			if (i%2 == 0) {
-				bit.setBit(data, i, true);
-			} else {
-				bit.setBit(data, i, false);
-			}
+			bit.set(data, i, random.nextBoolean());
 		}
 		
-		byte[] idata = data.clone();
-		bit.invert(idata);
-		bit.invert(idata);
-		Assert.assertEquals(idata, data);
+		final byte[] cdata = data.clone();
+		bit.invert(cdata);
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
+		}
 	}
 	
 }
