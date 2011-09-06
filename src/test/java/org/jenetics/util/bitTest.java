@@ -35,20 +35,6 @@ import org.jscience.mathematics.number.LargeInteger;
  * @version $Id$
  */
 public class bitTest {
-
-	static long add(long a, long b) {
-		long c = a + b;
-		if (((c ^ a) & (c ^ b) >> 63) != 0) {
-			throw new ArithmeticException();
-		}
-
-		return c;
-	}
-	
-	@Test
-	public void add() {
-		add(Long.MAX_VALUE, 0);
-	}
 	
 	@Test
 	public void convertByteArrayLargeInteger() {
@@ -58,6 +44,29 @@ public class bitTest {
 		LargeInteger i2 = bit.toLargeInteger(array);
 		Assert.assertEquals(i2, i);
 	}
+	
+	@Test
+	public void flip() {
+		final long seed = 2342423443L;
+		final Random random = new Random(seed);
+		final byte[] data = new byte[4];
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.setBit(data, i, random.nextBoolean());
+		}
+		
+		final byte[] cdata = data.clone();
+//		System.out.println(object.str(cdata));
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.flip(cdata, i);
+		}
+//		System.out.println(object.str(cdata));
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			Assert.assertEquals(bit.getBit(cdata, i), !bit.getBit(data, i), "Index: " + i);
+		}
+	}
+	
 	
 	@Test(dataProvider = "shiftBits")
 	public void shiftLeft(final Integer shift, final Integer bytes) {
@@ -76,7 +85,7 @@ public class bitTest {
 			Assert.assertEquals(bit.getBit(data, i), false);
 		}
 		for (int i = shift, n = data.length*8; i < n; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean());
+			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean(), "Index: " + i);
 		}
 	}
 	
@@ -132,7 +141,7 @@ public class bitTest {
 		bit.shiftRight(data, 100);
 		
 		for (int i = 0; i < data.length*8; ++i) {
-			Assert.assertEquals(bit.getBit(data, i), false);
+			Assert.assertEquals(bit.getBit(data, i), false, "Index: " + i);
 		}
 	}
 	
