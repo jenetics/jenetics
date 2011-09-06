@@ -65,6 +65,7 @@ public final class bit {
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftRight(final byte[] data, final int shift) {
 		final int bytes = min(shift/8, data.length);
@@ -112,6 +113,7 @@ public final class bit {
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftLeft(final byte[] data, final int shift) {
 		final int bytes = min(shift/8, data.length);
@@ -149,6 +151,7 @@ public final class bit {
 	 * 
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
 		if (data.length == 0) {
@@ -172,6 +175,7 @@ public final class bit {
 	 * 
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] invert(final byte[] data)	{
 		int d = 0;
@@ -189,6 +193,7 @@ public final class bit {
 	 * 
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] complement(final byte[] data) {
 		return increment(invert(data));
@@ -202,6 +207,7 @@ public final class bit {
 	 * @param index the bit index within the byte array.
 	 * @param value the value to set.
 	 * @return the given data array.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] setBit(final byte[] data, final int index, final boolean value) {
 		if (data.length == 0) {
@@ -233,6 +239,7 @@ public final class bit {
 	 * @param data the byte array.
 	 * @param index the bit index.
 	 * @return the value at the given bit index.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static boolean getBit(final byte[] data, final int index) {
 		if (data.length == 0) {
@@ -255,6 +262,7 @@ public final class bit {
 	 * 
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	@Deprecated
 	public static void flip(final byte[] data, final int index) {
