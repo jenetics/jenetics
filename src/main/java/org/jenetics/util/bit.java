@@ -48,7 +48,7 @@ public final class bit {
 	 * @param value the value to set.
 	 * @return the given data array.
 	 * @throws IndexOutOfBoundsException if the index is 
-	 *         {@code (index >= max || index < 0}.
+	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index, final boolean value) {
@@ -76,7 +76,7 @@ public final class bit {
 	 * @param index the bit index within the byte array.
 	 * @return the given data array.
 	 * @throws IndexOutOfBoundsException if the index is 
-	 *         {@code (index >= max || index < 0}.
+	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index) {
@@ -90,7 +90,7 @@ public final class bit {
 	 * @param index the bit index.
 	 * @return the value at the given bit index.
 	 * @throws IndexOutOfBoundsException if the index is 
-	 *         {@code (index >= max || index < 0}.
+	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static boolean get(final byte[] data, final int index) {
@@ -269,7 +269,7 @@ public final class bit {
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
 	 * @throws IndexOutOfBoundsException if the index is 
-	 *         {@code (index >= max || index < 0}.
+	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
