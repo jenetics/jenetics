@@ -53,8 +53,8 @@ public final class bit {
 	 */
 	public static byte[] set(final byte[] data, final int index, final boolean value) {
 		if (data.length > 0) {
-			final int bytes = index/8;
-			final int bits = index%8;
+			final int bytes = index >>> 3; // = index/8
+			final int bits = index & 7;    // = index%8
 			
 			int d = data[bytes] & 0xFF;
 			if (value) {
@@ -95,8 +95,8 @@ public final class bit {
 	 */
 	public static boolean get(final byte[] data, final int index) {
 		if (data.length > 0) {
-			final int bytes = index/8;
-			final int bits = index%8;
+			final int bytes = index >>> 3; // = index/8
+			final int bits = index & 7;    // = index%8
 			final int d = data[bytes] & 0xFF;
 			return (d & (1 << bits)) != 0;
 		} else {
@@ -133,8 +133,8 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftRight(final byte[] data, final int shift) {
-		final int bytes = min(shift/8, data.length);
-		final int bits = shift%8;
+		final int bytes = min(shift >>> 3, data.length);
+		final int bits = shift & 7;
 		
 		if (bytes > 0) {
 			for (int i = 0, n = data.length - bytes; i < n; ++i) {
@@ -160,6 +160,7 @@ public final class bit {
 			}
 		}
 		
+		
 		return data;
 	}
 	
@@ -181,8 +182,8 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftLeft(final byte[] data, final int shift) {
-		final int bytes = min(shift/8, data.length);
-		final int bits = shift%8;
+		final int bytes = min(shift >>> 3, data.length);
+		final int bits = shift & 7;
 		
 		if (bytes > 0) {
 			for (int i = 0, n = data.length - bytes; i < n; ++i) {
@@ -196,7 +197,7 @@ public final class bit {
 			int carry = 0;
 			int nextCarry = 0;
 			
-			for (int i = 0; i < data.length; ++i) {
+			for (int i = bytes; i < data.length; ++i) {
 				int d = data[i] & 0xFF;
 				nextCarry = (d >>> (8 - bits));
 				
@@ -219,18 +220,16 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
-		if (data.length == 0) {
-			return data;
-		}
+		boolean carry = true;
+		int index = 0;
 		
-		int d = 0;
-		int pos = data.length - 1;
-		do {
-			d = data[pos] & 0xFF;
+		while (index < data.length && carry) {
+			int d = data[index] & 0xFF;
 			++d;
-			data[pos] = (byte)d;
-			--pos;
-		} while (pos >= 0 && data[pos + 1] == 0);
+			data[index++] = (byte)d;
+			
+			carry = d > 0xFF;
+		}
 		
 		return data;
 	}
@@ -269,28 +268,23 @@ public final class bit {
 	 * 
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
+	 * @throws IndexOutOfBoundsException if the index is 
+	 *         {@code (index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
-		if (data.length == 0) {
-			return data;
+		if (data.length > 0) {
+			final int bytes = index >>> 3; // = index/8
+			final int bits = index & 7;    // = index%8
+			int d = data[bytes] & 0xFF;
+			
+			if ((d & (1 << bits)) == 0) {
+				d = d | (1 << bits);
+			} else {
+				d = d & ~(1 << bits);
+			}
+			data[bytes] = (byte)d;
 		}
-		
-		final int max = data.length*8;
-		if (index >= max || index < 0) {
-			throw new IndexOutOfBoundsException("Index out of bounds: " + index);
-		}
-		
-		final int bytes = index/8;
-		final int bits = index%8;
-		int d = data[bytes] & 0xFF;
-		
-		if ((d & (1 << bits)) == 0) {
-			d = d | (1 << bits);
-		} else {
-			d = d & ~(1 << bits);
-		}
-		data[bytes] = (byte)d;
 		
 		return data;
 	}
