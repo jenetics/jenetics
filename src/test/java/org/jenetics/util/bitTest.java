@@ -41,8 +41,17 @@ public class bitTest {
 		LargeInteger i = LargeInteger.valueOf(23443L);
 		
 		byte[] array = bit.toByteArray(i);
+		
 		LargeInteger i2 = bit.toLargeInteger(array);
 		Assert.assertEquals(i2, i);
+		
+		byte[] b1 = new byte[3];
+		LargeInteger.valueOf(1).toByteArray(b1, 0);
+		System.out.println("Bytes: " + object.str(b1));
+		
+		LargeInteger i3 = LargeInteger.valueOf(b1, 0, b1.length);
+		System.out.println("LI: " + i3);
+		
 	}
 	
 	@Test
@@ -56,11 +65,9 @@ public class bitTest {
 		}
 		
 		final byte[] cdata = data.clone();
-//		System.out.println(object.str(cdata));
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.flip(cdata, i);
 		}
-//		System.out.println(object.str(cdata));
 		
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
