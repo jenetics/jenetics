@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.Iterator;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -81,29 +80,82 @@ public class bitTest {
 		}
 	}
 	
+	@Test
+	public void bigShiftLeft() {
+		final long seed = 94209874198734L;
+		final Random random = new Random(seed);
+		final byte[] data = new byte[10];
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.setBit(data, i, random.nextBoolean());
+		}
+		
+		bit.shiftLeft(data, 100);
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			Assert.assertEquals(bit.getBit(data, i), false);
+		}
+	}
+	
+	@Test(dataProvider = "shiftBits")
+	public void shiftRight(final Integer shift, final Integer bytes) {
+		final long seed = 9420987671198734L;
+		final Random random = new Random(seed);
+		final byte[] data = new byte[bytes];
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.setBit(data, i, random.nextBoolean());
+		}
+		
+		bit.shiftRight(data, shift);
+		
+		random.setSeed(seed);
+		for (int i = 0; i < shift; ++i) {
+			random.nextBoolean();
+			Assert.assertEquals(bit.getBit(data, data.length*8 - 1 - i), false);
+		}
+		for (int i = 0, n = data.length*8 - shift; i < n; ++i) {
+			Assert.assertEquals(bit.getBit(data, i), random.nextBoolean(), "Index: " + i);
+		}
+	}
+	
+	@Test
+	public void bigShiftRight() {
+		final long seed = 94209874198734L;
+		final Random random = new Random(seed);
+		final byte[] data = new byte[10];
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.setBit(data, i, random.nextBoolean());
+		}
+		
+		bit.shiftRight(data, 100);
+		
+		for (int i = 0; i < data.length*8; ++i) {
+			Assert.assertEquals(bit.getBit(data, i), false);
+		}
+	}
 	
 	@DataProvider(name = "shiftBits")
-	public Iterator<Object[]> shiftBits() {
-		final Random random = new Random(12323233232L);
-		final int size = 25;
-		
-		return new Iterator<Object[]>() {
-			private int _pos = 0;
-			
-			@Override
-			public boolean hasNext() {
-				return _pos < size;
-			}
-			@Override
-			public Object[] next() {
-				final int shifts = (_pos++)*random.nextInt(1000);
-				final int bytes = shifts/8 + 1;
-				return new Object[]{ shifts, bytes };
-			}
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
+	public Object[][] shiftBits() {
+		return new Object[][] {
+				{0, 0},
+				{0, 1},
+				{1, 1},
+				{1, 2},
+				{0, 3},
+				{1, 3},
+				{3, 3},
+				{7, 3},
+				{8, 3},
+				{9, 3},
+				{24, 3},
+				{17, 5},
+				{345, 50},
+				{0, 100},
+				{1, 100},
+				{80, 100},
+				{799, 100}
 		};
 	}
 	
