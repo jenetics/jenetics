@@ -33,7 +33,7 @@ import java.util.Random;
 
 
 /**
- * Utility class concerning arrays.
+ * Static helper methods concerning arrays.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
