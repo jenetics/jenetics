@@ -28,7 +28,8 @@ import org.jscience.mathematics.number.LargeInteger;
 
 
 /**
- * Some bit utils.
+ * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
+ * <b>little-endian</b></a> byte order.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
