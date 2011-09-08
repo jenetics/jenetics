@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import java.util.Iterator;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -35,24 +36,6 @@ import org.jscience.mathematics.number.LargeInteger;
  * @version $Id$
  */
 public class bitTest {
-	
-	@Test
-	public void convertByteArrayLargeInteger() {
-		LargeInteger i = LargeInteger.valueOf(23443L);
-		
-		byte[] array = bit.toByteArray(i);
-		
-		LargeInteger i2 = bit.toLargeInteger(array);
-		Assert.assertEquals(i2, i);
-		
-		byte[] b1 = new byte[3];
-		LargeInteger.valueOf(1).toByteArray(b1, 0);
-		System.out.println("Bytes: " + object.str(b1));
-		
-		LargeInteger i3 = LargeInteger.valueOf(b1, 0, b1.length);
-		System.out.println("LI: " + i3);
-		
-	}
 	
 	@Test
 	public void flip() {
@@ -251,7 +234,98 @@ public class bitTest {
 		}
 	}
 	
+	@Test(dataProvider = "toByteArrayData")
+	public void toByteArray(final LargeInteger value) {
+		final byte[] data = bit.toByteArray(value);
+		final LargeInteger i = bit.toLargeInteger(data);
+		final byte[] idata = bit.toByteArray(i);
+		
+		Assert.assertEquals(idata, data);
+		Assert.assertEquals(i, value);
+	}
+	
+	@DataProvider(name = "toByteArrayData")
+	public Iterator<Object[]> toByteArrayData() {
+		final long seed = System.currentTimeMillis();
+		final Random random = new Random(seed);
+		final int length = 25;
+		
+		return new Iterator<Object[]>() {
+			private int _pos = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return _pos < length;
+			}
+
+			@Override
+			public Object[] next() {
+				final int size = random.nextInt(100) + 1;
+				final byte[] data = new byte[size];
+				random.nextBytes(data);
+				_pos += 1;
+				
+				return new Object[]{ LargeInteger.valueOf(data, 0, data.length) };
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+	
+	@Test(dataProvider = "toLargeIntegerData")
+	public void toLargeInteger(final byte[] data) {
+		final LargeInteger i = bit.toLargeInteger(data);
+		
+		final byte[] idata = bit.toByteArray(i);
+		final LargeInteger j = bit.toLargeInteger(idata);
+		
+		for (int k = 0, n = Math.min(idata.length, data.length); k < n; ++k) {
+			if (idata[idata.length - k - 1] != data[data.length - k - 1]) {
+				Assert.assertEquals(idata[k], data[k]);
+			}
+			
+		}
+		Assert.assertEquals(j, i);
+	}
+	
+	@DataProvider(name = "toLargeIntegerData")
+	public Iterator<Object[]> toLargeIntegerData() {
+		final long seed = System.currentTimeMillis();
+		final Random random = new Random(seed);
+		final int length = 25;
+		
+		return new Iterator<Object[]>() {
+			private int _pos = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return _pos < length;
+			}
+
+			@Override
+			public Object[] next() {
+				final int size = random.nextInt(1000) + 1;
+				final byte[] data = new byte[size];
+				random.nextBytes(data);
+				_pos += 1;
+				
+				return new Object[]{ data };
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+	
 }
+
+
+
 
 
 
