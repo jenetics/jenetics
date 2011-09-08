@@ -1,13 +1,8 @@
 Jenetics-0.8.1.0
+- Fix methods in 'org.jenetics.util.bit' class (former 'org.jenetics.util.BitUtils'
+  class).
 - Improve Population.sort() method
-- Rename org.jenetics.util.Converters to org.jenetics.util.converter.
-- Rename org.jenetics.util.Accumulators to org.jenetics.util.accumulator.
-- Rename org.jenetics.util.Predicates to org.jenetics.util.predicate.
-- Rename org.jenetics.util.ArrayUtils to org.jenetics.util.array.
-- Rename org.jenetics.util.BitUtils to org.jenetics.util.bit.
-- Rename org.jenetics.util.IOUtils to org.jenetics.util.io.
-- Rename org.jenetics.util.ObjectUtils to org.jenetics.util.object.
-- Rename org.jenetics.util.Validator to org.jenetics.util.validation.
+- Cleanup of 'org.jenetics.util' package.
 - Improve 'isValid' implementation of Gene and Chromosomes
 - Additional Selector tests.
 - Simplify CharacterChromosome construction
