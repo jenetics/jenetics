@@ -109,11 +109,33 @@ public final class bit {
 		
 		final byte[] array = new byte[bytes];
 		value.toByteArray(array, 0);
-		return array;
+		return reverse(array);
 	}
 	
 	public static LargeInteger toLargeInteger(final byte[] array) {
-		return LargeInteger.valueOf(array, 0, array.length);
+		reverse(array);
+		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
+		reverse(array);
+		return li;
+	}
+	
+	private static byte[] reverse(final byte[] array) {
+		int i = 0;
+		int j = array.length;
+		
+		while (i < j) {
+			--j;
+			swap(array, i, j);
+			++i;
+		}
+		
+		return array;
+	}
+	
+	private static void swap(final byte[] array, final int i, final int j) {
+		final byte temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 	}
 
 	/**
