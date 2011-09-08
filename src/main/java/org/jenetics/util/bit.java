@@ -31,6 +31,14 @@ import org.jscience.mathematics.number.LargeInteger;
  * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
  * <b>little-endian</b></a> byte order.
  * 
+ * <pre>
+ *  Byte:       3        2        1        0     
+ *              |        |        |        |  
+ *  Array: |11110011|10011101|01000000|00101010|
+ *          |                 |        |      |
+ *  Bit:    23                15       7      0
+ * </pre>
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -105,21 +113,6 @@ public final class bit {
 		}
 	}
 	
-	public static byte[] toByteArray(final LargeInteger value) {
-		final int bytes = (value.bitLength() >>> 3) + 1;
-		
-		final byte[] array = new byte[bytes];
-		value.toByteArray(array, 0);
-		return reverse(array);
-	}
-	
-	public static LargeInteger toLargeInteger(final byte[] array) {
-		reverse(array);
-		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
-		reverse(array);
-		return li;
-	}
-	
 	private static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
@@ -142,14 +135,7 @@ public final class bit {
 	/**
 	 * Shifting all bits in the given <code>data</code> array the given 
 	 * {@code shift} to the right. The bits on the left side are filled with 
-	 * zeros. It is assumed the following array layout:
-	 * <pre>
-	 *  Byte:       3        2        1        0     
-	 *              |        |        |        |  
-	 *  Array: |11110011|10011101|01000000|00101010|
-	 *          |                 |        |      |
-	 *  Bit:    23                15       7      0
-	 * </pre>
+	 * zeros.
 	 * 
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
@@ -191,14 +177,7 @@ public final class bit {
 	/**
 	 * Shifting all bits in the given <code>data</code> array the given 
 	 * {@code shift} to the left. The bits on the right side are filled with 
-	 * zeros. It is assumed the following array layout:
-	 * <pre>
-	 *  Byte:       3        2        1        0     
-	 *              |        |        |        |  
-	 *  Array: |11110011|10011101|01000000|00101010|
-	 *          |                 |        |      |
-	 *  Bit:    23                15       7      0
-	 * </pre>
+	 * zeros.
 	 * 
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
@@ -311,6 +290,38 @@ public final class bit {
 		}
 		
 		return data;
+	}
+	
+	/**
+	 * Convert the given {@link LargeInteger} value to an byte array.
+	 * 
+	 * @see #toLargeInteger(byte[])
+	 * 
+	 * @param value the value to convert.
+	 * @return the byte array representing the given {@link LargeInteger}.
+	 * @throws NullPointerException if the given value is {@code null}.
+	 */
+	public static byte[] toByteArray(final LargeInteger value) {
+		final int bytes = (value.bitLength() >>> 3) + 1;
+		
+		final byte[] array = new byte[bytes];
+		value.toByteArray(array, 0);
+		return reverse(array);
+	}
+	
+	/**
+	 * Convert the given byte array into an {@link LargeInteger}.
+	 * 
+	 * @see #toByteArray(LargeInteger)
+	 * 
+	 * @param array the byte array to convert.
+	 * @return the {@link LargeInteger} built from the given byte array.
+	 */
+	public static LargeInteger toLargeInteger(final byte[] array) {
+		reverse(array);
+		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
+		reverse(array);
+		return li;
 	}
 	
 }
