@@ -176,7 +176,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @return LargeInteger value this BitChromosome represents.
 	 */
 	public LargeInteger toLargeInteger() {
-		return LargeInteger.valueOf(_genes, 0, _genes.length);
+		return bit.toLargeInteger(_genes);
 	}
 	
 	 /**
