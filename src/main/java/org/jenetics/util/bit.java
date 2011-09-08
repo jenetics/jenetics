@@ -105,8 +105,9 @@ public final class bit {
 	}
 	
 	public static byte[] toByteArray(final LargeInteger value) {
-		final int byteLength = value.bitLength()/8 + 1;
-		byte[] array = new byte[byteLength];
+		final int bytes = (value.bitLength() >>> 3) + 1;
+		
+		final byte[] array = new byte[bytes];
 		value.toByteArray(array, 0);
 		return array;
 	}
