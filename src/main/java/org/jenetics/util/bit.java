@@ -112,25 +112,6 @@ public final class bit {
 			return false;
 		}
 	}
-	
-	private static byte[] reverse(final byte[] array) {
-		int i = 0;
-		int j = array.length;
-		
-		while (i < j) {
-			--j;
-			swap(array, i, j);
-			++i;
-		}
-		
-		return array;
-	}
-	
-	private static void swap(final byte[] array, final int i, final int j) {
-		final byte temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
-	}
 
 	/**
 	 * Shifting all bits in the given <code>data</code> array the given 
@@ -322,6 +303,25 @@ public final class bit {
 		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
 		reverse(array);
 		return li;
+	}
+	
+	private static byte[] reverse(final byte[] array) {
+		int i = 0;
+		int j = array.length;
+		
+		while (i < j) {
+			--j;
+			swap(array, i, j);
+			++i;
+		}
+		
+		return array;
+	}
+	
+	private static void swap(final byte[] array, final int i, final int j) {
+		final byte temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 	}
 	
 }
