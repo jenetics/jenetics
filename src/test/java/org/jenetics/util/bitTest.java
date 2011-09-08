@@ -186,35 +186,30 @@ public class bitTest {
 		bit.get(data, 100);
 	}
 	
-//	@Test
-//	public void increment() {
-//		final byte[] data = new byte[3];
-//		//bit.set(data, 0);
-//		
-//		for (int i = 0; i < 257; ++i) {
-//			System.out.println(i + ": " + object.str(data));
-//			bit.increment(data);
-//		}
-//		System.out.println(object.str(data));
-//		
-//		bit.invert(data);
-//		System.out.println(object.str(data));
-//		
-//		bit.increment(data);
-//		System.out.println(object.str(data));
-//		
-////		System.out.println(LargeInteger.valueOf(1).toByteArray(data, 0));
-////		
-////		System.out.println("lib: " + object.str(data));
-////		System.out.println(bit.toLargeInteger(data));
-////		bit.increment(data);
-////		System.out.println(object.str(data));
-////		System.out.println(bit.toLargeInteger(data));
-////		
-////		bit.increment(data);
-////		System.out.println(object.str(data));
-////		System.out.println(bit.toLargeInteger(data));
-//	}
+	@Test
+	public void increment() {
+		final int min = -128;
+		final int max = 127;
+		
+		for (int i = min; i < -2; ++i) {
+			final LargeInteger li1 = LargeInteger.valueOf(i);
+			final byte[] data = bit.toByteArray(li1);
+			
+			bit.increment(data);
+			
+			final LargeInteger li2 = bit.toLargeInteger(data);
+			Assert.assertEquals(li2, li1.plus(1));
+		}
+		for (int i = 0; i < max; ++i) {
+			final LargeInteger li1 = LargeInteger.valueOf(i);
+			final byte[] data = bit.toByteArray(li1);
+			
+			bit.increment(data);
+			
+			final LargeInteger li2 = bit.toLargeInteger(data);
+			Assert.assertEquals(li2, li1.plus(1));
+		}
+	}
 	
 	@Test
 	public void invert() {
@@ -248,7 +243,7 @@ public class bitTest {
 	public Iterator<Object[]> toByteArrayData() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
-		final int length = 25;
+		final int length = 20;
 		
 		return new Iterator<Object[]>() {
 			private int _pos = 0;
@@ -295,7 +290,7 @@ public class bitTest {
 	public Iterator<Object[]> toLargeIntegerData() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
-		final int length = 25;
+		final int length = 20;
 		
 		return new Iterator<Object[]>() {
 			private int _pos = 0;
