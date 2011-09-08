@@ -152,7 +152,17 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		return -1; 
 	}
 	
-	public Histogram<C> merge(final Histogram<C> histogram) {
+	/**
+	 * Add the given {@code histogram} to this in a newly created one.
+	 * 
+	 * @param histogram the histogram to add.
+	 * @return a new histogram with the added values of this and the given one.
+	 * @throws IllegalArgumentException if the {@link #length()} and the 
+	 *         separators of {@code this} and the given {@code histogram} are
+	 *         not the same.
+	 * @throw NullPointerException if the given {@code histogram} is {@code null}. 
+	 */
+	public Histogram<C> plus(final Histogram<C> histogram) {
 		if (!_comparator.equals(histogram._comparator)) {
 			throw new IllegalArgumentException(
 					"The histogram comparators are not equals."
