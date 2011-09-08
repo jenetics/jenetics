@@ -38,7 +38,7 @@ public class mathTest {
 
 	@Test(dataProvider = "validSum")
 	public void validAdd(final Long a, final Long b) {
-		math.add(a, b);
+		math.plus(a, b);
 	}
 	
 	@DataProvider(name = "validSum")
@@ -58,7 +58,7 @@ public class mathTest {
 	
 	@Test(dataProvider = "invalidSum", expectedExceptions = ArithmeticException.class)
 	public void invalidAdd(final Long a, final Long b) {
-		math.add(a, b);
+		math.plus(a, b);
 	}
 
 	@DataProvider(name = "invalidSum")
@@ -78,7 +78,7 @@ public class mathTest {
 	
 	@Test(dataProvider = "validDifference")
 	public void validSub(final Long a, final Long b) {
-		math.sub(a, b);
+		math.minus(a, b);
 	}
 	
 	@DataProvider(name = "validDifference") 
@@ -98,7 +98,7 @@ public class mathTest {
 	
 	@Test(dataProvider = "invalidDifference", expectedExceptions = ArithmeticException.class)
 	public void invalidSub(final Long a, final Long b) {
-		math.sub(a, b);
+		math.minus(a, b);
 	}
 	
 	@DataProvider(name = "invalidDifference") 

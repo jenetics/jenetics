@@ -46,7 +46,7 @@ public final class math {
 	 * @return the sum of the given values.
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
-	public static long add(final long a, final long b) {
+	public static long plus(final long a, final long b) {
 		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
 			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
 		}
@@ -72,7 +72,7 @@ public final class math {
 	 * @return the difference of the given values.
 	 * @throws ArithmeticException if the subtraction would lead to an overflow.
 	 */
-	public static long sub(final long a, final long b) {
+	public static long minus(final long a, final long b) {
 		final long z = a - b;
 		if (a > 0) {
 			if (b < 0 && z < 0) {
@@ -219,13 +219,13 @@ public final class math {
 		}
 	}
 	
-	static double plus(final double a, final long ulpDistance) {
-		long t = Double.doubleToLongBits(a) + ulpDistance;
-		if (t < 0) {
-			t = Long.MIN_VALUE - t;
-		}
-		return Double.longBitsToDouble(t);
-	}
+//	static double plusULPDistance(final double a, final long ulpDistance) {
+//		long t = Double.doubleToLongBits(a) + ulpDistance;
+//		if (t < 0) {
+//			t = Long.MIN_VALUE - t;
+//		}
+//		return Double.longBitsToDouble(t);
+//	}
 	
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
@@ -242,7 +242,7 @@ public final class math {
 	 * @throws ArithmeticException if the distance doesn't fit in a long value.
 	 */
 	public static long ulpDistance(final double a, final double b) {
-		return sub(ulpPosition(a), ulpPosition(b));
+		return minus(ulpPosition(a), ulpPosition(b));
 	}
 	
 	/**
