@@ -41,7 +41,7 @@ import java.util.Random;
 public final class arrays {
 	
 	private arrays() {
-		throw new AssertionError("Don't create an 'array' instance.");
+		throw new AssertionError("Don't create an 'arrays' instance.");
 	}
 	
 	/**
