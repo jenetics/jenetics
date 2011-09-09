@@ -56,7 +56,6 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
-		nonNull(array, "Array");
 		final int old = array[i];
 		array[i] = array[j];
 		array[j] = old;
@@ -75,8 +74,6 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
-		nonNull(array, "Array");
-		
 		final T old = array[i];
 		array[i] = array[j];
 		array[j] = old;
@@ -95,8 +92,6 @@ public final class arrays {
 	 * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void swap(final List<T> list, final int i, final int j) {
-		nonNull(list, "Array");
-		
 		final T old = list.get(i);
 		list.set(i, list.get(j));
 		list.set(j, old);
@@ -115,8 +110,6 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void swap(final MSeq<T> array, final int i, final int j) {
-		nonNull(array, "Array");
-
 		final T old = array.get(i);
 		array.set(i, array.get(j));
 		array.set(j, old);
@@ -125,7 +118,8 @@ public final class arrays {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
-	 * @see arrays#sort(Array, int, int, Comparator)
+	 * @see Arrays#sort(Object[], int, int, Comparator)
+	 * 
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
@@ -133,11 +127,11 @@ public final class arrays {
 	 *			{@code null}.
 	 */
 	public static <T> void sort(
-		final Array<T> array, final int from, final int to,
+		final Array<T> array, 
+		final int from, 
+		final int to,
 		final Comparator<? super T> comparator
 	) {
-		nonNull(array, "Array");
-		nonNull(comparator, "Comparator");
 		array._array.cloneIfSealed();
 		array.checkIndex(from, to);
 		
@@ -149,23 +143,24 @@ public final class arrays {
 	
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
-	 * @see arrays#sort(Array, Comparator)
+	 * 
+	 * @see Arrays#sort(Object[], Comparator)
 	 * 
 	 * @throws NullPointerException if the give array or comparator is 
 	 *			{@code null}.
 	 */
 	public static <T> void sort(
-		final Array<T> array, final Comparator<? super T> comparator
+		final Array<T> array, 
+		final Comparator<? super T> comparator
 	) {
-		nonNull(array, "Array");
-		nonNull(comparator, "Comparator");
-		
 		sort(array, 0, array.length(), comparator);
 	}
 	
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
-	 * @see arrays#sort(Array, int, int)
+	 * 
+	 * @see Arrays#sort(Object[], int, int)
+	 * 
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
@@ -174,10 +169,7 @@ public final class arrays {
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final Array<T> array, final int from, final int to) 
 	{
-		nonNull(array, "Array");
-		array._array.cloneIfSealed();
 		array.checkIndex(from, to);
-		
 		array._array.cloneIfSealed();
 		Arrays.sort(array._array.data, from + array._start, to + array._start);
 	}
@@ -185,7 +177,6 @@ public final class arrays {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
-	 * @see arrays#sort(MSeq)
 	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
@@ -193,8 +184,6 @@ public final class arrays {
 	public static <T extends Object & Comparable<? super T>> void 
 	sort(final MSeq<T> array) 
 	{
-		nonNull(array, "Array");
-		
 		Collections.sort(array.asList());
 	}
 	
@@ -210,10 +199,7 @@ public final class arrays {
 	public static <T extends Object & Comparable<? super T>> boolean 
 	isSorted(final Seq<T> seq)
 	{
-		nonNull(seq, "Array");
-		
 		boolean sorted = true;
-		
 		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
 			sorted = seq.get(i).compareTo(seq.get(i + 1)) <= 0;
 		}
@@ -235,11 +221,7 @@ public final class arrays {
 	public static <T> boolean isSorted(
 		final Seq<T> seq, final Comparator<? super T> comparator
 	) {
-		nonNull(seq, "Array");
-		nonNull(comparator, "Comparator");
-		
 		boolean sorted = true;
-		
 		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
 			sorted = comparator.compare(seq.get(i), seq.get(i + 1)) <= 0;
 		}
@@ -270,7 +252,6 @@ public final class arrays {
 	 * 		  {@code null}.
 	 */
 	public static void shuffle(final int[] array, final Random random) {
-		nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -300,7 +281,6 @@ public final class arrays {
 	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array, final Random random) {
-		nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -330,9 +310,6 @@ public final class arrays {
 	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final MSeq<T> array, final Random random) {
-		nonNull(array, "Array");
-		nonNull(random, "Random");
-		
 		for (int j = array.length() - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
@@ -363,9 +340,6 @@ public final class arrays {
 	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list, final Random random) {
-		nonNull(list, "List");
-		nonNull(random, "Random");
-		
 		for (int j = list.size() - 1; j > 0; --j) {
 			swap(list, j, random.nextInt(j + 1));
 		}
@@ -384,12 +358,10 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
-		nonNull(array, "Array");
 		rangeCheck(array.length, from, to);
 		
 		int i = from;
 		int j = to;
-		
 		while (i < j) {
 			--j;
 			swap(array, i, j);
@@ -405,7 +377,6 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array) {
-		nonNull(array, "Array");
 		reverse(array, 0, array.length);
 	}
 	
@@ -1023,10 +994,6 @@ public final class arrays {
 	}
 	
 }
-
-
-
-
 
 
 
