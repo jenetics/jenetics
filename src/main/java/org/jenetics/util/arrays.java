@@ -125,7 +125,7 @@ public final class arrays {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
-	 * @see Arrays#sort(Object[], int, int, Comparator)
+	 * @see arrays#sort(Array, int, int, Comparator)
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
@@ -149,7 +149,7 @@ public final class arrays {
 	
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
-	 * @see Arrays#sort(Object[], Comparator)
+	 * @see arrays#sort(Array, Comparator)
 	 * 
 	 * @throws NullPointerException if the give array or comparator is 
 	 *			{@code null}.
@@ -165,7 +165,7 @@ public final class arrays {
 	
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
-	 * @see Arrays#sort(Object[], int, int)
+	 * @see arrays#sort(Array, int, int)
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
@@ -185,7 +185,7 @@ public final class arrays {
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 * 
-	 * @see Arrays#sort(Object[])
+	 * @see arrays#sort(MSeq)
 	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed 
 	 * 		  ({@code array.isSealed() == true}).
