@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
 
 
 /**
@@ -94,8 +93,6 @@ public final class math {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double sum(final double[] values) {
-		nonNull(values);
-
 		double sum = 0.0;
 		double c = 0.0;
 		double y = 0.0;
@@ -135,8 +132,6 @@ public final class math {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static double[] normalize(final double[] values) {
-		nonNull(values);
-		
 		final double sum = 1.0/sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
@@ -153,8 +148,6 @@ public final class math {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double min(final double[] values) {
-		nonNull(values);
-		
 		double min = Double.NaN;
 		if (values.length > 0) {
 			min = values[0];
@@ -177,8 +170,6 @@ public final class math {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double max(final double[] values) {
-		nonNull(values);
-		
 		double max = Double.NaN;
 		if (values.length > 0) {
 			max = values[0];
