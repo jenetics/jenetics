@@ -34,7 +34,7 @@ import org.jscience.mathematics.number.Integer64;
 public final class converters {
 
 	private converters() {
-		throw new AssertionError("Don't create 'converter' instance.");
+		throw new AssertionError("Don't create 'converters' instance.");
 	}
 	
 	public static final Converter<Float64, Double> Float64ToDouble =
