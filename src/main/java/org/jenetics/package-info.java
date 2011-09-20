@@ -333,6 +333,9 @@
  *          private static double RADIUS = 10.0;
  *     } 
  * [/code]
+ * 
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 package org.jenetics;
 

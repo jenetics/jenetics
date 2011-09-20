@@ -23,6 +23,9 @@
 
 /**
  * Provides statistics <i>helper</i> classes. 
+ * 
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
  */
 package org.jenetics.stat;
 
