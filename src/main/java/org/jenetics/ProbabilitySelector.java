@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 import static org.jenetics.util.math.sum;
 import static org.jenetics.util.math.ulpDistance;
 import static org.jenetics.util.object.nonNull;
@@ -47,7 +48,7 @@ public abstract class ProbabilitySelector<
 > 
 	implements Selector<G, C> 
 {	
-	private static final long MAX_ULP_DISTANCE = (long)Math.pow(10, 10);
+	private static final long MAX_ULP_DISTANCE = (long)pow(10, 10);
 
 	protected ProbabilitySelector() {
 	}
