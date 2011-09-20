@@ -160,7 +160,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	 * @throws IllegalArgumentException if the {@link #length()} and the 
 	 *         separators of {@code this} and the given {@code histogram} are
 	 *         not the same.
-	 * @throw NullPointerException if the given {@code histogram} is {@code null}. 
+	 * @throws NullPointerException if the given {@code histogram} is {@code null}. 
 	 */
 	public Histogram<C> plus(final Histogram<C> histogram) {
 		if (!_comparator.equals(histogram._comparator)) {
