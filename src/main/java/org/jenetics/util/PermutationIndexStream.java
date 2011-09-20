@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 import java.util.Random;
 
-
 /**
  * This class creates an index stream for one particular (pseudo) permutation.
  * 
@@ -102,7 +101,7 @@ abstract class PermutationIndexStream implements IndexStream {
 			_pos = _start;
 			
 			assert(_stride < _length);
-			assert(gcd(_stride, _length) == 1);
+			assert(math.gcd(_stride, _length) == 1);
 			assert(_start < _length);
 		}
 		
@@ -110,25 +109,11 @@ abstract class PermutationIndexStream implements IndexStream {
 		private static int stride(final int length, final Random random) {
 			int value = length;
 
-			while (gcd(length, value) != 1) {
+			while (math.gcd(length, value) != 1) {
 				value = random.nextInt(length/2) + length/2;
 			}	
 			
 			return value;
-		}
-		
-		private static int gcd(final int a, final int b) {
-			int x = a;
-			int y = b;
-			int mod = x%y;
-			
-			while (mod != 0) {
-				x = y;
-				y = mod;
-				mod = x%y;
-			}
-			
-			return y;
 		}
 		
 		@Override

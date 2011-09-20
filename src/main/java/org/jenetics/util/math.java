@@ -210,6 +210,51 @@ public final class math {
 		}
 	}
 	
+	/**
+	 * Binary exponentiation algorithm.
+	 * 
+	 * @param b the base number.
+	 * @param e the exponent.
+	 * @return {@code b^e}.
+	 */
+	static int pow(final int b, final int e) {
+		if (e < 0) {
+			throw new IllegalArgumentException(String.format(
+					"Exponent is negative: %d", e
+				));
+		}
+		
+		int base = b;
+		int exp = e;
+		int result = 1;
+		
+		while (exp != 0) {
+			if ((exp & 1) != 0) {
+				result *= base;
+			}
+			exp >>= 1;
+			base *= base;
+		}
+		
+		return result;
+	}
+
+	
+	static int gcd(final int a, final int b) {
+		int x = a;
+		int y = b;
+		int mod = x%y;
+		
+		while (mod != 0) {
+			x = y;
+			y = mod;
+			mod = x%y;
+		}
+		
+		return y;
+	}
+	
+	
 //	static double plusULPDistance(final double a, final long ulpDistance) {
 //		long t = Double.doubleToLongBits(a) + ulpDistance;
 //		if (t < 0) {
