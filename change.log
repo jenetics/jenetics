@@ -1,4 +1,8 @@
 Jenetics-0.8.1.0
+- New name schema for 'utility' classes which only contains static methods. Such 
+  classes are now lower case.
+- Cleanup utility classes is org.jenetics.util package.
+- Remove org.jenetics.util.IOUtils class.
 - Fix methods in 'org.jenetics.util.bit' class (former 'org.jenetics.util.BitUtils'
   class).
 - Improve Population.sort() method
