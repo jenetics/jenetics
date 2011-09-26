@@ -25,10 +25,10 @@ package org.jenetics;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
-import jsr166y.ForkJoinPool;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;

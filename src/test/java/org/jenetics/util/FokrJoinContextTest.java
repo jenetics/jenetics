@@ -23,11 +23,11 @@
 package org.jenetics.util;
 
 import java.util.Properties;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javolution.context.ConcurrentContext;
 import javolution.lang.Configurable;
-import jsr166y.ForkJoinPool;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
