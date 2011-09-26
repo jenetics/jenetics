@@ -168,7 +168,6 @@
 			duplicate="preserve"
 		>
 			<zipfileset src="${lib.dir}/jscience.jar" />
-			<zipfileset src="${lib.dir}/jsr166y.jar" />
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
 				<exclude name="org/jenetics/performance/*" />
@@ -499,7 +498,6 @@
 		>
 			<classpath >
 				<pathelement path="${build.dir}" />
-				<pathelement location="${lib.dir}/jsr166y.jar"/>
 			</classpath>
 			<classpath refid="classpath" />
 		</java>
