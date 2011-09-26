@@ -28,7 +28,7 @@
  ############################################################################### 
 -->
 <project default="all">
-	<property name="version" value="0.8.1.0" />
+	<property name="version" value="0.9.0.0" />
 	<property name="identifier" value="jenetics-${version}" />
 	<property name="year" value="2007-2011" />
 	
@@ -49,6 +49,9 @@
 	<property name="colapi.classpath" value="${lib.dir}/build/colapi.jar" />
 	<property name="umlgraph.classpath" value="${lib.dir}/build/UmlGraph-5.3.jar" />
 	<property name="java2html.classpath" value="${lib.dir}/build/ant-java2html.jar" />
+	
+	<property name="jdk.source" value="1.7" />
+	<property name="jdk.target" value="1.7" />
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}" >
@@ -72,8 +75,8 @@
 		<javac destdir="${build.dir}" 
 			srcdir="${source.dir}" 
 			debug="true" 
-			source="1.6" 
-			target="1.6" 
+			source="${jdk.source}" 
+			target="${jdk.target}" 
 			encoding="UTF-8" 
 			listfiles="yes"
 			includeantruntime="no"
@@ -94,8 +97,8 @@
 		<javac destdir="${build.dir}" 
 			srcdir="${example.dir}" 
 			debug="true" 
-			source="1.6" 
-			target="1.6" 
+			source="${jdk.source}" 
+			target="${jdk.target}" 
 			encoding="UTF-8" 
 			listfiles="yes"
 			includeantruntime="no"
@@ -225,7 +228,7 @@
 			version="true" 
 			use="true" 
 			linksource="yes" 
-			source="1.6" 
+			source="${jdk.source}" 
 			useexternalfile="true" 
 			access="protected" 
 			breakiterator="yes" 
@@ -250,7 +253,7 @@
 			</fileset>
 			<doctitle>&lt;h1&gt;Jenetics API (Version ${version})&lt;/h1&gt;</doctitle>
 			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
-			<link offline="false" href="http://download.oracle.com/javase/6/docs/api/" />
+			<link offline="false" href="http://download.oracle.com/javase/7/docs/api/" />
 			<link offline="false" href="http://jscience.org/api/" />
 			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
 		</javadoc>
@@ -316,7 +319,7 @@
 			version="true" 
 			use="true" 
 			linksource="yes" 
-			source="1.6" 
+			source="${jdk.source}" 
 			useexternalfile="true" 
 			access="protected" 
 			breakiterator="yes" 
@@ -419,8 +422,8 @@
 			srcdir="${testng.source.dir}" 
 			debug="true"
 			debuglevel="lines,vars,source"
-			source="1.6" 
-			target="1.6" 
+			source="${jdk.source}" 
+			target="${jdk.target}" 
 			encoding="UTF-8" 
 			listfiles="yes"
 			includeantruntime="no"
