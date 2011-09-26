@@ -20,56 +20,27 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *     
  */
-package org.jenetics.performance;
+package org.jenetics.stat;
 
-import javolution.context.LogContext;
-import javolution.lang.ClassInitializer;
-
-import org.jenetics.GeneticAlgorithm;
-import org.jenetics.util.ForkJoinContext;
-
+import java.util.concurrent.Executor;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
  */
-public final class PerformanceTests {
+public abstract class TaskComponent {
+
+	public abstract Executor getExecutor();
 	
-	private PerformanceTests() {
-	}
-	
-	public static void main(final String[] args) {
-		LogContext.enter(LogContext.NULL);
-		try {
-			ClassInitializer.initializeClassPath();			
-		} finally {
-			LogContext.exit();
+	public class Service {
+		
+		public void foo() {
+			getExecutor().execute(new Runnable() {
+				@Override public void run() {
+				}
+			});
 		}
 		
-		GeneticAlgorithm.setConcurrentContext(ForkJoinContext.class);
-		
-		new TestSuite(ArrayTest.class).run().print();
-		new TestSuite(ChromosomeTest.class).run().print();
-		new TestSuite(PopulationTest.class).run().print();
-		new TestSuite(GATest.class).run().print();
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

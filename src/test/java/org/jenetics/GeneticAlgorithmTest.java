@@ -30,13 +30,9 @@ import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
 import jsr166y.ForkJoinPool;
 
-import org.jenetics.util.ConcurrentEvaluator;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ForkJoinEvaluator;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.SerialEvaluator;
-import org.jenetics.util.ThreadedEvaluator;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -91,7 +87,6 @@ public class GeneticAlgorithmTest {
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
-			ga.setEvaluator(new SerialEvaluator());
 			ga.setPopulationSize(200);
 			ga.setAlterer(new MeanAlterer<Float64Gene>());
 			ga.setOffspringFraction(0.3);
@@ -153,7 +148,6 @@ public class GeneticAlgorithmTest {
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
-			ga.setEvaluator(new ForkJoinEvaluator(pool));
 			ga.setPopulationSize(1000);
 			ga.setAlterer(new MeanAlterer<Float64Gene>());
 			ga.setOffspringFraction(0.3);
@@ -178,7 +172,6 @@ public class GeneticAlgorithmTest {
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
-			ga.setEvaluator(new ThreadedEvaluator(pool));
 			ga.setPopulationSize(1000);
 			ga.setAlterer(new MeanAlterer<Float64Gene>());
 			ga.setOffspringFraction(0.3);
@@ -200,7 +193,6 @@ public class GeneticAlgorithmTest {
 		final FitnessFunction<Float64Gene, Float64> ff = new FF();
 		
 		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
-		ga.setEvaluator(new ConcurrentEvaluator(10));
 		ga.setPopulationSize(1000);
 		ga.setAlterer(new MeanAlterer<Float64Gene>());
 		ga.setOffspringFraction(0.3);

@@ -9,7 +9,7 @@
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public
@@ -17,52 +17,35 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
-
-import java.util.List;
-import java.util.RandomAccess;
-
+import javolution.context.ConcurrentContext;
 
 /**
- * Evaluator which evaluates the given tasks (Runables) sequentially in the
- * main thread.
- * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
  */
-public final class SerialEvaluator implements Evaluator {
+public final class TestContext extends ConcurrentContext {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void evaluate(final List<? extends Runnable> runnables) {
-		nonNull(runnables, "Runnables");
-		
-		if (runnables instanceof RandomAccess) {
-			for (int i = runnables.size(); --i >= 0;) {
-				runnables.get(i).run();
-			}
-		} else {
-			for (Runnable runnable : runnables) {
-				runnable.run();
-			}
-		}
-	}
-	
-	@Override
-	public int getParallelTasks() {
-		return 1;
+	protected void executeAction(Runnable runnable) {
+		System.out.println("executeAction");
+		runnable.run();
 	}
 
 	@Override
-	public String toString() {
-		return String.format(
-				"%s[tasks=%d]", 
-				getClass().getSimpleName(), getParallelTasks()
-			);
+	protected void enterAction() {
+		System.out.println("enterAction");
+	}
+
+	@Override
+	protected void exitAction() {
+		System.out.println("exitAction");
 	}
 	
 }
