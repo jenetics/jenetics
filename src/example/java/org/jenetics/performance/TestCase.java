@@ -69,8 +69,8 @@ public abstract class TestCase
 	@Override
 	public void reset() {
 		_timer = new Timer(_name);
-		_variance = new Variance<Long>();
-		_minmax = new MinMax<Long>();
+		_variance = new Variance<>();
+		_minmax = new MinMax<>();
 		
 		_timer.setAccumulator(new Accumulator<Long>() {
 			@Override public void accumulate(final Long value) {

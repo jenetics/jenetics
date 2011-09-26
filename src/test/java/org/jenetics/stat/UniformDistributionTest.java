@@ -35,7 +35,7 @@ public class UniformDistributionTest {
 
 	@Test 
 	public void pdf() {
-		final UniformDistribution<Double> dist = new UniformDistribution<Double>(0.0, 10.0);
+		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
 		final Function<Double, Float64> pdf = dist.pdf();
 		
 		Assert.assertEquals(pdf.evaluate(0.00), Float64.valueOf(0.1));
@@ -52,7 +52,7 @@ public class UniformDistributionTest {
 	
 	@Test
 	public void pdfToString() {
-		final UniformDistribution<Double> dist = new UniformDistribution<Double>(0.0, 10.0);
+		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
 		final Function<Double, Float64> pdf = dist.pdf();
 		
 		Assert.assertEquals(pdf.toString(), "p(x) = 0.1");
@@ -60,7 +60,7 @@ public class UniformDistributionTest {
 	
 	@Test
 	public void cdf() {
-		final UniformDistribution<Double> dist = new UniformDistribution<Double>(0.0, 10.0);
+		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
 		final Function<Double, Float64> cdf = dist.cdf();
 		
 		Assert.assertEquals(cdf.evaluate(-9.0), Float64.valueOf(0.0));
@@ -80,7 +80,7 @@ public class UniformDistributionTest {
 	
 	@Test
 	public void cdfToString() {
-		final UniformDistribution<Double> dist = new UniformDistribution<Double>(1.0, 10.0);
+		final UniformDistribution<Double> dist = new UniformDistribution<>(1.0, 10.0);
 		final Function<Double, Float64> cdf = dist.cdf();
 		
 		Assert.assertEquals(cdf.toString(), "P(x) = (x - 1.0)/(10.0 - 1.0)");

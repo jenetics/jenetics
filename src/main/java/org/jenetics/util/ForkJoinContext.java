@@ -48,9 +48,9 @@ public class ForkJoinContext extends ConcurrentContext {
 	private static final long serialVersionUID = 1L;
 
 	private static AtomicReference<ForkJoinPool> 
-	_POOL = new AtomicReference<ForkJoinPool>();
+	_POOL = new AtomicReference<>();
 	
-	private final FastList<Future<?>> _futures = new FastList<Future<?>>(10);
+	private final FastList<Future<?>> _futures = new FastList<>(10);
 	
 	public ForkJoinContext() {
 	}

@@ -38,7 +38,7 @@ final class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	@Override
 	public ISeq<T> subSeq(final int start, final int end) {
 		checkIndex(start, end);
-		return new ArrayISeq<T>(_array, start + _start, end + _start);
+		return new ArrayISeq<>(_array, start + _start, end + _start);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ final class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	
 	@Override
 	public MSeq<T> copy() {
-		return new Array<T>(new ArrayRef(toArray()), 0, length());
+		return new Array<>(new ArrayRef(toArray()), 0, length());
 	}
 
 	@Override

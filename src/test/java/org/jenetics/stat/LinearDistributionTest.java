@@ -50,7 +50,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 			final double max = random.nextInt(100) + 100 + min;
 			final double y2 = random.nextDouble();
 			final LinearDistribution<Double> dist = 
-				new LinearDistribution<Double>(new Range<Double>(min, max), y2);
+				new LinearDistribution<>(new Range<>(min, max), y2);
 			
 			return dist;
 		}
@@ -62,8 +62,8 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	
 	@Test
 	public void pdf() {
-		final Range<Double> domain = new Range<Double>(0.0, 1.0);
-		final LinearDistribution<Double> dist = new LinearDistribution<Double>(domain, 0);
+		final Range<Double> domain = new Range<>(0.0, 1.0);
+		final LinearDistribution<Double> dist = new LinearDistribution<>(domain, 0);
 		final Function<Double, Float64> pdf = dist.pdf();
 		
 		for (int i = 0; i <= 10; ++i) {
@@ -76,8 +76,8 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	
 	@Test
 	public void cdf() {
-		final Range<Double> domain = new Range<Double>(0.0, 1.0);
-		final LinearDistribution<Double> dist = new LinearDistribution<Double>(domain, 0);
+		final Range<Double> domain = new Range<>(0.0, 1.0);
+		final LinearDistribution<Double> dist = new LinearDistribution<>(domain, 0);
 		final Function<Double, Float64> cdf = dist.cdf();
 		
 		for (int i = 0; i <= 10; ++i) {

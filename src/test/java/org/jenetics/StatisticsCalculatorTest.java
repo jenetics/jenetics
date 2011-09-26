@@ -40,7 +40,7 @@ import org.jenetics.util.accumulators;
 public class StatisticsCalculatorTest {
 
 	public Calculator<Float64Gene, Float64> newCalculator() {
-		return new Calculator<Float64Gene, Float64>();
+		return new Calculator<>();
 	}
 	
 	public Iterable<Phenotype<Float64Gene, Float64>> population(final int size) {
@@ -85,7 +85,7 @@ public class StatisticsCalculatorTest {
 		builder = calculator.evaluate(population(size), gen, Optimize.MAXIMUM);
 		final Statistics<Float64Gene, Float64> statistics = builder.build();
 
-		final Variance<Integer> ageVariance = new Variance<Integer>();
+		final Variance<Integer> ageVariance = new Variance<>();
 		accumulators.accumulate(population(size), ageVariance.adapt(Phenotype.Age(gen)));
 		
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());

@@ -43,7 +43,7 @@ public class ConstantFitnessFunctionTest
 		@Override
 		public ConstantFitnessFunction<Float64Gene, Float64> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return new ConstantFitnessFunction<Float64Gene, Float64>(
+			return new ConstantFitnessFunction<>(
 					Float64.valueOf(random.nextDouble()*Double.MAX_VALUE)
 				);
 		}

@@ -61,7 +61,7 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 			final Integer64 max = Integer64.valueOf(Integer.MAX_VALUE);
 			final Factory<Integer64Gene> factory = Integer64Gene.valueOf(min, max);
 			
-			final Variance<Integer64> variance = new Variance<Integer64>();
+			final Variance<Integer64> variance = new Variance<>();
 			
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
 			
@@ -82,7 +82,7 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 				histogram.accumulate(g2.getAllele());
 			}
 			
-			assertDistribution(histogram, new UniformDistribution<Integer64>(min, max));
+			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		} finally {
 			LocalContext.exit();
 		}

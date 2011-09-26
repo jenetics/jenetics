@@ -119,7 +119,7 @@ public class NumberStatistics<
 		
 		@Override
 		public NumberStatistics<G, R> build() {
-			return new NumberStatistics<G, R>(
+			return new NumberStatistics<>(
 					_optimize,
 					_generation,
 					_best,
@@ -311,13 +311,13 @@ public class NumberStatistics<
 			final int generation, 
 			final Optimize opt
 		) {
-			final Builder<G, R> builder = new Builder<G, R>();
+			final Builder<G, R> builder = new Builder<>();
 			builder.generation(generation);
 			builder.optimize(opt);
 
-			final MinMax<Phenotype<G, R>> minMax = new MinMax<Phenotype<G, R>>();
-			final Variance<Integer> age = new Variance<Integer>();
-			final Variance<R> fitness = new Variance<R>();
+			final MinMax<Phenotype<G, R>> minMax = new MinMax<>();
+			final Variance<Integer> age = new Variance<>();
+			final Variance<R> fitness = new Variance<>();
 
 			accumulators.<Phenotype<G, R>>accumulate(
 					population, 

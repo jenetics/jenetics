@@ -64,7 +64,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 			final Float64 max = Float64.valueOf(100);
 			final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
 			
-			final Variance<Float64> variance = new Variance<Float64>();
+			final Variance<Float64> variance = new Variance<>();
 			 
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
 			
@@ -86,7 +86,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 				histogram.accumulate(g2.getAllele());
 			}
 			
-			assertDistribution(histogram, new UniformDistribution<Float64>(min, max));
+			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		} finally {
 			LocalContext.exit();
 		}

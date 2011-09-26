@@ -172,16 +172,16 @@ public final class Genotype<T extends Gene<?, T>>
 	 */
 	@Override
 	public Genotype<T> newInstance() {
-		final Array<Chromosome<T>> chromosomes = new Array<Chromosome<T>>(length());		
+		final Array<Chromosome<T>> chromosomes = new Array<>(length());		
 		for (int i = 0; i < length(); ++i) {
 			chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
 		
-		return new Genotype<T>(chromosomes.toISeq(), _ngenes);
+		return new Genotype<>(chromosomes.toISeq(), _ngenes);
 	}
 	
 	Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
-		return new Genotype<T>(chromosomes, _ngenes);
+		return new Genotype<>(chromosomes, _ngenes);
 	}
 	
 	@Override
@@ -276,7 +276,7 @@ public final class Genotype<T extends Gene<?, T>>
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 		
-		return new Genotype<G>(
+		return new Genotype<>(
 				chromosomes.upcast(chromosomes), 
 				ngenes(chromosomes)
 			);
@@ -294,8 +294,8 @@ public final class Genotype<T extends Gene<?, T>>
 	) {
 		nonNull(chromosome, "Chromosome");
 		
-		return new Genotype<G>(
-				new Array<Chromosome<G>>(chromosome).toISeq(), 
+		return new Genotype<>(
+				new Array<>(chromosome).toISeq(), 
 				chromosome.length()
 			);
 	}
@@ -307,8 +307,8 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch1, "Chromosome 1");
 		nonNull(ch2, "Chromosome 2");
 		
-		return new Genotype<G>(
-				new Array<Chromosome<G>>(ch1, ch2).toISeq(), 
+		return new Genotype<>(
+				new Array<>(ch1, ch2).toISeq(), 
 				ch1.length() + ch2.length()
 			);
 	}
@@ -322,8 +322,8 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch2, "Chromosome 2");
 		nonNull(ch3, "Chromosome 3");
 		
-		return new Genotype<G>(
-				new Array<Chromosome<G>>(ch1, ch2, ch3).toISeq(), 
+		return new Genotype<>(
+				new Array<>(ch1, ch2, ch3).toISeq(), 
 				ch1.length() + ch2.length() + ch3.length()
 			);		
 	}
@@ -339,8 +339,8 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch3, "Chromosome 3");
 		nonNull(ch4, "Chromosome 4");
 		
-		return new Genotype<G>(
-				new Array<Chromosome<G>>(ch1, ch2, ch3, ch4).toISeq(), 
+		return new Genotype<>(
+				new Array<>(ch1, ch2, ch3, ch4).toISeq(), 
 				ch1.length() + ch2.length() + ch3.length() + ch4.length()
 			);
 	}
@@ -360,7 +360,7 @@ public final class Genotype<T extends Gene<?, T>>
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
 			final int ngenes = xml.getAttribute(NGENES, 0);
-			final Array<Chromosome> chromosomes = new Array<Chromosome>(length);
+			final Array<Chromosome> chromosomes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
 				final Chromosome<?> c = xml.getNext();
 				chromosomes.set(i, c);

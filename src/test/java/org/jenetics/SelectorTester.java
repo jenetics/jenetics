@@ -41,7 +41,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S> 
 {
 
-	protected final Range<Float64> _domain = new Range<Float64>(
+	protected final Range<Float64> _domain = new Range<>(
 			Float64.ZERO, Float64.valueOf(100)
 		); 
 	
@@ -67,7 +67,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 		final int npopulation = 1000;
 		final int loops = 1000;
 		final Population<Float64Gene, Float64> 
-		population = new Population<Float64Gene, Float64>(npopulation);
+		population = new Population<>(npopulation);
 		
 		for (int j = 0; j < loops; ++j) {
 			for (int i = 0; i < npopulation; ++i) {

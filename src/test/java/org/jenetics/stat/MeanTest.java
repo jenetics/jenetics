@@ -46,7 +46,7 @@ public class MeanTest extends AbstractAccumulatorTester<Mean<Double>> {
 		public Mean<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final Mean<Double> mean = new Mean<Double>();
+			final Mean<Double> mean = new Mean<>();
 			for (int i = 0; i < 1000; ++i) {
 				mean.accumulate(random.nextDouble());
 			}
@@ -66,7 +66,7 @@ public class MeanTest extends AbstractAccumulatorTester<Mean<Double>> {
 			);
 		
 		try {
-			final Mean<Double> moment = new Mean<Double>();
+			final Mean<Double> moment = new Mean<>();
 			while (it.hasNext()) {
 				final Data data = it.next();
 				moment.accumulate(data.number);

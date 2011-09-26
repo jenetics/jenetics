@@ -82,10 +82,10 @@ public abstract class MutatorTestBase {
 		
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<Long>(min, max);
+		final Range<Long> domain = new Range<>(min, max);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
-		final Variance<Long> variance = new Variance<Long>();
+		final Variance<Long> variance = new Variance<>();
 		
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator.alter(population, 1);
@@ -94,7 +94,10 @@ public abstract class MutatorTestBase {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, variance.getVariance()));
+		assertDistribution(
+				histogram, 
+				new NormalDistribution<>(domain, mean, variance.getVariance())
+			);
 	}
 	
 	public double var(final double p, final long N) {

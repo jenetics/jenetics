@@ -61,7 +61,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a1, 
 		final Alterer<G> a2
 	) {
-		this(new Array<Alterer<G>>(
+		this(new Array<>(
 				nonNull(a1), 
 				nonNull(a2)
 			));
@@ -80,7 +80,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a2, 
 		final Alterer<G> a3
 	) {
-		this(new Array<Alterer<G>>(
+		this(new Array<>(
 				nonNull(a1), 
 				nonNull(a2), 
 				nonNull(a3)
@@ -102,7 +102,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a3,
 		final Alterer<G> a4
 	) {
-		this(new Array<Alterer<G>>(
+		this(new Array<>(
 				nonNull(a1), 
 				nonNull(a2), 
 				nonNull(a3), 
@@ -127,7 +127,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a4,
 		final Alterer<G> a5
 	) {
-		this(new Array<Alterer<G>>(
+		this(new Array<>(
 				nonNull(a1), 
 				nonNull(a2), 
 				nonNull(a3), 
@@ -144,7 +144,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 */
 	@SafeVarargs
 	public CompositeAlterer(final Alterer<G>... alterers) {
-		this(new Array<Alterer<G>>(alterers));
+		this(new Array<>(alterers));
 	}
 	
 	/**
@@ -161,10 +161,9 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	}
 	
 	private Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
-		final Deque<Alterer<G>> stack = 
-			new LinkedList<Alterer<G>>(alterers.asList());
+		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
 		
-		final List<Alterer<G>> normalized = new LinkedList<Alterer<G>>();
+		final List<Alterer<G>> normalized = new LinkedList<>();
 		
 		while (!stack.isEmpty()) {
 			final Alterer<G> alterer = stack.pollFirst();
@@ -180,7 +179,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 			}
 		}
 
-		return new Array<Alterer<G>>(normalized);
+		return new Array<>(normalized);
 	}
 
 	@Override
@@ -208,7 +207,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if the given alterer is {@code null}.
 	 */
 	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return new CompositeAlterer<G>(this, nonNull(alterer, "Alterer"));
+		return new CompositeAlterer<>(this, nonNull(alterer, "Alterer"));
 	}
 
 	/**
@@ -259,7 +258,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
-		return new CompositeAlterer<T>(a1, a2);
+		return new CompositeAlterer<>(a1, a2);
 	}
 }
 

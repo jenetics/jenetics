@@ -68,12 +68,12 @@ public class OnesCounting {
 			BitChromosome.valueOf(20, 0.15)
 		);
 		final OneCounter ff = new OneCounter();
-		final GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<BitGene, Integer>(gtf, ff);
+		final GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Integer>());
 		ga.setPopulationSize(50);
 		ga.setSelectors(new RouletteWheelSelector<BitGene, Integer>());
-		ga.setAlterer(new CompositeAlterer<BitGene>(
+		ga.setAlterer(new CompositeAlterer<>(
 			new Mutator<BitGene>(0.55), 
 			new SinglePointCrossover<BitGene>(0.06)
 		));

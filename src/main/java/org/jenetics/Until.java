@@ -80,7 +80,7 @@ public final class Until {
 	 */
 	public static <C extends Comparable<? super C>> 
 	Predicate<Statistics<?, C>> SteadyFitness(final int generation) {
-		return new SteadyFitness<C>(generation);
+		return new SteadyFitness<>(generation);
 	}
 	
 	static class Generation implements Predicate<Statistics<?, ?>> {

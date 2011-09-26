@@ -43,7 +43,7 @@ public class TruncationSelectorTest
 	{
 		@Override
 		public TruncationSelector<Float64Gene, Float64> newInstance() {
-			return new TruncationSelector<Float64Gene, Float64>();
+			return new TruncationSelector<>();
 		}
 	};
 	@Override
@@ -53,13 +53,11 @@ public class TruncationSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		final Range<Float64> domain = new Range<Float64>(
+		final Range<Float64> domain = new Range<>(
 				_domain.getMax().minus(_domain.getMin()).divide(2),
 				_domain.getMax()
 			);
-		return new UniformDistribution<Float64>(
-			domain
-		);
+		return new UniformDistribution<>(domain);
 	}
 
 }

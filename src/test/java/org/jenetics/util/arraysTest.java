@@ -84,7 +84,7 @@ public class arraysTest {
 	
 	@Test
 	public void iselect() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -106,7 +106,7 @@ public class arraysTest {
 	
 	@Test
 	public void sorted() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -126,7 +126,7 @@ public class arraysTest {
 	
 	@Test
 	public void sorted2() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -147,7 +147,7 @@ public class arraysTest {
 			}
 		};
 		
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		array.fill(factory);
 		Assert.assertFalse(isSorted(array));
 		
@@ -167,7 +167,7 @@ public class arraysTest {
 			}
 		};
 		
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		array.fill(factory);
 		Assert.assertFalse(isSorted(array));
 		
@@ -214,7 +214,7 @@ public class arraysTest {
 //	}
 	
 	public static void main(String[] args) {
-		Array<Integer> array = new Array<Integer>(10000000);
+		Array<Integer> array = new Array<>(10000000);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, (int)(Math.random()*1000));
 		}

@@ -56,12 +56,12 @@ public class GeneticAlgorithmTest {
 	@Test
 	public void setGetAlterer() {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 
-			new GeneticAlgorithm<Float64Gene, Float64>(
+			new GeneticAlgorithm<>(
 					Genotype.valueOf(new Float64Chromosome(0, 1)), 
 					new FF()
 				);
 		
-		final Alterer<Float64Gene> alterer = new Mutator<Float64Gene>();
+		final Alterer<Float64Gene> alterer = new Mutator<>();
 		ga.setAlterer(alterer);
 		Assert.assertSame(ga.getAlterer(), alterer);
 		

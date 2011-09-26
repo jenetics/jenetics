@@ -191,7 +191,7 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulateN() {
 		final int SAMPLES = 1000;
-		final Array<AbstractAccumulator<Integer>> accumulators = new Array<AbstractAccumulator<Integer>>(10);
+		final Array<AbstractAccumulator<Integer>> accumulators = new Array<>(10);
 		for (int i = 0; i < accumulators.length(); ++i) {
 			accumulators.set(i, new AbstractAccumulator<Integer>(){});
 		}

@@ -414,7 +414,7 @@ public final class accumulators {
 			ConcurrentContext.enter();
 			try {
 				for (final Accumulator<? super T> accumulator : accus) {
-					ConcurrentContext.execute(new Acc<T>(values, accumulator));
+					ConcurrentContext.execute(new Acc<>(values, accumulator));
 				}
 			} finally {
 				ConcurrentContext.exit();
@@ -476,8 +476,8 @@ public final class accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Acc<T>(values, a1));
-			ConcurrentContext.execute(new Acc<T>(values, a2));;			
+			ConcurrentContext.execute(new Acc<>(values, a1));
+			ConcurrentContext.execute(new Acc<>(values, a2));;			
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -503,9 +503,9 @@ public final class accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Acc<T>(values, a1));
-			ConcurrentContext.execute(new Acc<T>(values, a2));
-			ConcurrentContext.execute(new Acc<T>(values, a3));			
+			ConcurrentContext.execute(new Acc<>(values, a1));
+			ConcurrentContext.execute(new Acc<>(values, a2));
+			ConcurrentContext.execute(new Acc<>(values, a3));			
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -533,10 +533,10 @@ public final class accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {
-			ConcurrentContext.execute(new Acc<T>(values, a1));
-			ConcurrentContext.execute(new Acc<T>(values, a2));
-			ConcurrentContext.execute(new Acc<T>(values, a3));
-			ConcurrentContext.execute(new Acc<T>(values, a4));	
+			ConcurrentContext.execute(new Acc<>(values, a1));
+			ConcurrentContext.execute(new Acc<>(values, a2));
+			ConcurrentContext.execute(new Acc<>(values, a3));
+			ConcurrentContext.execute(new Acc<>(values, a4));	
 		} finally {
 			ConcurrentContext.exit();
 		}
@@ -566,11 +566,11 @@ public final class accumulators {
 	) {
 		ConcurrentContext.enter();
 		try {	
-			ConcurrentContext.execute(new Acc<T>(values, a1));
-			ConcurrentContext.execute(new Acc<T>(values, a2));
-			ConcurrentContext.execute(new Acc<T>(values, a3));
-			ConcurrentContext.execute(new Acc<T>(values, a4));
-			ConcurrentContext.execute(new Acc<T>(values, a5));
+			ConcurrentContext.execute(new Acc<>(values, a1));
+			ConcurrentContext.execute(new Acc<>(values, a2));
+			ConcurrentContext.execute(new Acc<>(values, a3));
+			ConcurrentContext.execute(new Acc<>(values, a4));
+			ConcurrentContext.execute(new Acc<>(values, a5));
 		} finally {
 			ConcurrentContext.exit();
 		}

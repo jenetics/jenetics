@@ -63,7 +63,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		super(new Array<Float64Gene>(genes).toISeq());
+		super(new Array<>(genes).toISeq());
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class Float64Chromosome
 			final double min = xml.getAttribute(MIN, 0.0);
 			final double max = xml.getAttribute(MAX, 1.0);
 			
-			final Array<Float64Gene> genes = new Array<Float64Gene>(length);
+			final Array<Float64Gene> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
 				final Float64 value = xml.getNext();
 				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
@@ -262,7 +262,7 @@ public class Float64Chromosome
 		
 		_min = min;
 		_max = max;
-		final Array<Float64Gene> genes = new Array<Float64Gene>(length);
+		final Array<Float64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
 		}

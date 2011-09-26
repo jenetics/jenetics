@@ -74,7 +74,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				histogram.accumulate(Long.valueOf(g2.getAllele().toString()));
 			}
 			
-			assertDistribution(histogram, new UniformDistribution<Long>(0L, 10L));
+			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
 		} finally {
 			LocalContext.exit();
 		}

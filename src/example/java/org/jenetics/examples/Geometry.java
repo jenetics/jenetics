@@ -1085,7 +1085,7 @@ class OffspringFractionRangeModel extends DefaultBoundedRangeModel
 	
 	@Override
 	public Dictionary<Integer, JComponent> getLables() {
-		final Dictionary<Integer, JComponent> lables = new Hashtable<Integer, JComponent>();
+		final Dictionary<Integer, JComponent> lables = new Hashtable<>();
 		
 		for (int i = MIN; i <= MAX; i += 10) {
 			final JLabel label = new JLabel("." + i/10);
@@ -1130,7 +1130,7 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 	
 	@Override
 	public Dictionary<Integer, JComponent> getLables() {
-		final Dictionary<Integer, JComponent> lables = new Hashtable<Integer, JComponent>();
+		final Dictionary<Integer, JComponent> lables = new Hashtable<>();
 		
 		for (int i = MIN; i <= MAX; i += 100) {
 			final JLabel label = new JLabel("." + i/100);
@@ -1277,10 +1277,10 @@ class DrawPanel extends JPanel {
 	private Point2D[] _targetPolygon;
 	
 	private final AtomicReference<AffineTransform> _populationBestTransform = 
-		new AtomicReference<AffineTransform>();
+		new AtomicReference<>();
 	
 	private final AtomicReference<AffineTransform> _alltimeBestTransform =
-		new AtomicReference<AffineTransform>();
+		new AtomicReference<>();
 	
 	public DrawPanel() {	
 		addComponentListener(new ComponentAdapter() {
@@ -1392,7 +1392,7 @@ class Stepable implements Runnable {
 	private final Lock _lock = new ReentrantLock();
 	private final Condition _run = _lock.newCondition();
 
-	private final List<StepListener> _listeners = new CopyOnWriteArrayList<StepListener>();
+	private final List<StepListener> _listeners = new CopyOnWriteArrayList<>();
 	
 	private volatile int _steps = 0;
 	private final Runnable _stepTask;
@@ -1652,7 +1652,7 @@ class GA {
 	
 	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final Function function) {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 
-			new GeneticAlgorithm<Float64Gene, Float64>(
+			new GeneticAlgorithm<>(
 				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM
 			);
 		ga.addAlterer(new Mutator<Float64Gene>(0.1));

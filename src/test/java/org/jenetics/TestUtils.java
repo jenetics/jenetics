@@ -124,7 +124,7 @@ class TestUtils {
 		final int npopulation
 	) {
 		final Array<Float64Chromosome> chromosomes = 
-			new Array<Float64Chromosome>(nchromosomes);
+			new Array<>(nchromosomes);
 		
 		for (int i = 0; i < nchromosomes; ++i) {
 			chromosomes.set(i, new Float64Chromosome(0, 10, ngenes));
@@ -132,7 +132,7 @@ class TestUtils {
 		
 		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes.toISeq());
 		final Population<Float64Gene, Float64> population = 
-			new Population<Float64Gene, Float64>(npopulation);
+			new Population<>(npopulation);
 		
 		for (int i = 0; i < npopulation; ++i) {
 			population.add(Phenotype.valueOf(genotype.newInstance(), FF, 0));
@@ -188,7 +188,7 @@ class TestUtils {
 	public static final FitnessFunction<Float64Gene, Float64> FF = new Continous();
 	
 	public static GeneticAlgorithm<Float64Gene, Float64> GA() {
-		return new GeneticAlgorithm<Float64Gene, Float64>(
+		return new GeneticAlgorithm<>(
 				Genotype.valueOf(new Float64Chromosome(0, 1)), FF
 			);
 	}
@@ -207,7 +207,7 @@ class TestUtils {
 	
 	public static Population<Float64Gene, Float64> newFloat64Population(final int length) {
 		final Population<Float64Gene, Float64> population = 
-			new Population<Float64Gene, Float64>(length);
+			new Population<>(length);
 		
 		for (int i = 0; i < length; ++i) {
 			population.add(newFloat64Phenotype());

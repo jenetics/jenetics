@@ -127,7 +127,7 @@ public class Knapsack {
 		ga.setPopulationSize(100);
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Float64>());
 		ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
-		ga.setAlterer(new CompositeAlterer<BitGene>(
+		ga.setAlterer(new CompositeAlterer<>(
 				 new Mutator<BitGene>(0.115),
 				 new SinglePointCrossover<BitGene>(0.16)
 		 	));

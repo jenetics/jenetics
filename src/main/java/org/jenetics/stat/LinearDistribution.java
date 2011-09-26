@@ -98,8 +98,8 @@ public class LinearDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final double _min;
@@ -159,8 +159,8 @@ public class LinearDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final double _x1;
@@ -254,7 +254,7 @@ public class LinearDistribution<
 	 */
 	@Override
 	public Function<N, Float64> cdf() {
-		return new CDF<N>(_x1, _y1, _x2, _y2);
+		return new CDF<>(_x1, _y1, _x2, _y2);
 	}
 
 	/**
@@ -273,7 +273,7 @@ public class LinearDistribution<
 	 */
 	@Override
 	public Function<N, Float64> pdf() {
-		return new PDF<N>(_x1, _y1, _x2, _y2);
+		return new PDF<>(_x1, _y1, _x2, _y2);
 	}
 	
 	@Override

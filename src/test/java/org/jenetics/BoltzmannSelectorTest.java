@@ -50,7 +50,7 @@ public class BoltzmannSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<Float64>(_domain);
+		return new UniformDistribution<>(_domain);
 	}
 	
 	// TODO: implement select-distribution test.

@@ -68,7 +68,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
 	public Population(final Collection<? extends Phenotype<G, C>> population) {
-		_population = new ArrayList<Phenotype<G,C>>(population);
+		_population = new ArrayList<>(population);
 	}
 	
 	/**
@@ -80,14 +80,14 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * 		  negative
 	 */
 	public Population(final int size) {
-		_population = new ArrayList<Phenotype<G, C>>(size + 1);
+		_population = new ArrayList<>(size + 1);
 	}
 	
 	/**
 	 * Creating a new <code>Population</code>.
 	 */
 	public Population() {
-		_population = new ArrayList<Phenotype<G, C>>();
+		_population = new ArrayList<>();
 	}
 	
 	/**
@@ -293,7 +293,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 	
 	public List<Genotype<G>> getGenotypes() {
-		final List<Genotype<G>> genotypes = new FastList<Genotype<G>>(_population.size());
+		final List<Genotype<G>> genotypes = new FastList<>(_population.size());
 		for (Phenotype<G, C> phenotype : _population) {
 			genotypes.add(phenotype.getGenotype());
 		}
@@ -302,7 +302,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	@Override
 	public Population<G, C> copy() {
-		return new Population<G, C>(_population);
+		return new Population<>(_population);
 	}
 	
 	@Override

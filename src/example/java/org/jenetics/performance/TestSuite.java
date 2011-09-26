@@ -58,7 +58,7 @@ public final class TestSuite {
 				_name = suite.getAnnotation(Suite.class).value();
 				final Object object = suite.newInstance();
 				
-				final List<TestCase> tests = new ArrayList<TestCase>();
+				final List<TestCase> tests = new ArrayList<>();
 
 				for (Field field : suite.getFields()) {
 					if (field.isAnnotationPresent(Test.class) && 

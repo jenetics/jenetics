@@ -63,7 +63,7 @@ public class Performance {
 		final FitnessScaler<Float64> fs = IdentityScaler.<Float64>valueOf();
 		
 		final int size = 1000000;
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>(size);
+		final Population<Float64Gene, Float64> population = new Population<>(size);
 		for (int i = 0; i < size; ++i) {
 			final Phenotype<Float64Gene, Float64> pt = Phenotype.valueOf(
 				gtf.newInstance(), ff, fs, 0

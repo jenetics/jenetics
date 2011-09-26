@@ -52,7 +52,7 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 			final int killed = random.nextInt(1000);
 			final int invalid = random.nextInt(10000);
 			
-			return new Statistics<Float64Gene, Float64>(
+			return new Statistics<>(
 					Optimize.MAXIMUM, generation, _best, _worst, 
 					samples, ageMean, ageVariance, killed, invalid
 				);

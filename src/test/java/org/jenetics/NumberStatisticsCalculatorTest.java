@@ -34,7 +34,7 @@ public class NumberStatisticsCalculatorTest extends StatisticsCalculatorTest {
 
 	@Override
 	public Calculator<Float64Gene, Float64> newCalculator() {
-		return new Calculator<Float64Gene, Float64>();
+		return new Calculator<>();
 	}
 	
 }

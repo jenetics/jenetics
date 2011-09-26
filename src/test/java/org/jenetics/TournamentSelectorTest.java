@@ -47,7 +47,7 @@ public class TournamentSelectorTest
 		@Override
 		public TournamentSelector<Float64Gene, Float64> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return new TournamentSelector<Float64Gene, Float64>(random.nextInt(10) + 2);
+			return new TournamentSelector<>(random.nextInt(10) + 2);
 		}
 	};
 	@Override
@@ -57,7 +57,7 @@ public class TournamentSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<Float64>(_domain);
+		return new UniformDistribution<>(_domain);
 	}
 	
 	// TODO: implement select-distribution test.

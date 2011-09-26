@@ -47,7 +47,7 @@ public class VarianceTest extends AbstractAccumulatorTester<Variance<Double>> {
 		public Variance<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final Variance<Double> variance = new Variance<Double>();
+			final Variance<Double> variance = new Variance<>();
 			for (int i = 0; i < 1000; ++i) {
 				variance.accumulate(random.nextGaussian());
 			}
@@ -67,7 +67,7 @@ public class VarianceTest extends AbstractAccumulatorTester<Variance<Double>> {
 			);
 		
 		try {
-			final Variance<Double> moment = new Variance<Double>();
+			final Variance<Double> moment = new Variance<>();
 			while (it.hasNext()) {
 				final Data data = it.next();
 				moment.accumulate(data.number);

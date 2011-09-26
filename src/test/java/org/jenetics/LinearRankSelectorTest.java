@@ -48,12 +48,12 @@ public class LinearRankSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new LinearDistribution<Float64>(_domain, 0);
+		return new LinearDistribution<>(_domain, 0);
 	}
 	
 	@Override
 	protected LinearRankSelector<Float64Gene, Float64> getSelector() {
-		return new LinearRankSelector<Float64Gene, Float64>(0.0);
+		return new LinearRankSelector<>(0.0);
 	}
 	
 	

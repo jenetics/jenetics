@@ -43,7 +43,7 @@ public class GaussianMutatorTest extends MutatorTestBase {
 	
 	@Override
 	public Alterer<Float64Gene> newAlterer(double p) {
-		return new GaussianMutator<Float64Gene>(p);
+		return new GaussianMutator<>(p);
 	}
 	
 	@Test(invocationCount = 20, successPercentage = 95)
@@ -56,10 +56,10 @@ public class GaussianMutatorTest extends MutatorTestBase {
 		final double var = Math.pow((max - min)/4.0, 2);
 		
 		final Float64Gene gene = Float64Gene.valueOf(mean, min, max);
-		final GaussianMutator<Float64Gene> mutator = new GaussianMutator<Float64Gene>();
+		final GaussianMutator<Float64Gene> mutator = new GaussianMutator<>();
 		
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 10.0, 10);
-		final Variance<Double> variance = new Variance<Double>();
+		final Variance<Double> variance = new Variance<>();
 		
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).doubleValue();
@@ -68,8 +68,8 @@ public class GaussianMutatorTest extends MutatorTestBase {
 			variance.accumulate(value);
 		}
 		
-		final Range<Double> domain = new Range<Double>(min, max);
-		assertDistribution(histogram, new NormalDistribution<Double>(domain, mean, var));
+		final Range<Double> domain = new Range<>(min, max);
+		assertDistribution(histogram, new NormalDistribution<>(domain, mean, var));
 	}
 	
 }

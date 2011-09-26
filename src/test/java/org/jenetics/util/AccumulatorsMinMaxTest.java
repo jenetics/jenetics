@@ -47,7 +47,7 @@ public class AccumulatorsMinMaxTest
 		public accumulators.MinMax<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final MinMax<Double> minMax = new MinMax<Double>();
+			final MinMax<Double> minMax = new MinMax<>();
 			for (int i = 0; i < 1000; ++i) {
 				minMax.accumulate(random.nextGaussian());
 			}
@@ -68,7 +68,7 @@ public class AccumulatorsMinMaxTest
 		}
 		shuffle(array);
 		
-		final accumulators.MinMax<Integer> minMax = new accumulators.MinMax<Integer>();
+		final accumulators.MinMax<Integer> minMax = new accumulators.MinMax<>();
 		accumulators.accumulate(Arrays.asList(array), minMax);
 		Assert.assertEquals(minMax.getMin(), new Integer(0));
 		Assert.assertEquals(minMax.getMax(), new Integer(19));
