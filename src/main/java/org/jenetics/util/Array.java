@@ -185,6 +185,7 @@ public final class Array<T>
 	 * @param rest the rest of the array element.
 	 * @throws NullPointerException if the {@code rest} array is {@code null}.
 	 */
+	@SafeVarargs
 	public Array(
 		final T first,
 		final T second,

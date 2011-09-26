@@ -142,6 +142,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
+	@SafeVarargs
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		this(new Array<Alterer<G>>(alterers));
 	}

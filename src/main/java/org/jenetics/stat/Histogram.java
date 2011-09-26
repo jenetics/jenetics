@@ -88,6 +88,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	 *         or the {@code comparator} is {@code null}.
 	 * @throws IllegalArgumentException if the given separators array is empty.
 	 */
+	@SafeVarargs
 	public Histogram(final Comparator<C> comparator, final C... separators) {
 		_separators = check(separators);
 		_comparator = nonNull(comparator, "Comparator");
@@ -97,6 +98,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		Arrays.fill(_histogram, 0L);
 	}
 	
+	@SafeVarargs
 	private Histogram(
 		final long[] histogram, 
 		final Comparator<C> comparator, 
@@ -107,6 +109,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 		_separators = separators;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private C[] check(final C... classes) {
 		foreach(classes, NonNull);
 		if (classes.length == 0) {
