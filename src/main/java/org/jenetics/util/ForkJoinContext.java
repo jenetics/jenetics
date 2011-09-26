@@ -26,13 +26,13 @@ import static org.jenetics.util.object.nonNull;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javolution.context.ConcurrentContext;
 import javolution.context.ObjectFactory;
 import javolution.util.FastList;
-import jsr166y.ForkJoinPool;
 
 /**
  * Since the parallelization of the library is build on the {@link ConcurrentContext}
