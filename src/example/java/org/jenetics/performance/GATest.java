@@ -36,7 +36,6 @@ import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Array;
-import org.jenetics.util.ConcurrentEvaluator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -95,7 +94,6 @@ public class GATest {
 			_ga.addAlterer(new Mutator<Float64Gene>(0.2));
 			_ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
 			_ga.setSurvivorSelector(new BoltzmannSelector<Float64Gene, Float64>());
-			_ga.setEvaluator(new ConcurrentEvaluator());
 			_ga.setup();
 		}
 		
@@ -125,7 +123,6 @@ public class GATest {
 			_ga.addAlterer(new Mutator<CharacterGene>(0.2));
 			_ga.setOffspringSelector(new RouletteWheelSelector<CharacterGene, Float64>());
 			_ga.setSurvivorSelector(new BoltzmannSelector<CharacterGene, Float64>());
-			_ga.setEvaluator(new ConcurrentEvaluator());
 			_ga.setup();
 		}
 		

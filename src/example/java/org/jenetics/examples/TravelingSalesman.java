@@ -25,7 +25,6 @@ package org.jenetics.examples;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
-import jsr166y.ForkJoinPool;
 
 import org.jenetics.Chromosome;
 import org.jenetics.CompositeAlterer;
@@ -38,7 +37,6 @@ import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ForkJoinEvaluator;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
@@ -92,25 +90,16 @@ public class TravelingSalesman {
         //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
         //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());
         
-//        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-//        EvaluatorRegistry.setEvaluator(new ThreadedEvaluator(pool));
-        
-        ForkJoinPool pool = new ForkJoinPool();
-        ga.setEvaluator(new ForkJoinEvaluator(pool));
-        try {
-    		final int generations = 500;
-    		
-    		GAUtils.printConfig(
-    				"Traveling salesman", 
-    				ga, 
-    				generations, 
-    				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
-    			);
-    		
-    		GAUtils.execute(ga, generations, 50);
-        } finally {
-        	pool.shutdown();
-        }
+		final int generations = 500;
+		
+		GAUtils.printConfig(
+				"Traveling salesman", 
+				ga, 
+				generations, 
+				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
+			);
+		
+		GAUtils.execute(ga, generations, 50);
         
 //		try {
 //			XMLSerializer.write(ga.getPopulation(), new FileOutputStream("/home/franzw/population.xml"));

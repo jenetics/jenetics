@@ -29,16 +29,16 @@ import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javolution.context.ConcurrentContext;
+import javolution.context.LogContext;
+import javolution.lang.Configurable;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.ConcurrentEvaluator;
-import org.jenetics.util.Evaluator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
@@ -86,14 +86,6 @@ import org.jenetics.util.Timer;
  *   System.out.println(ga.getStatistics());
  * [/code]
  * 
- * If you have a problem to solve which requires expensive fitness calculation
- * you can parallelize the fitness calculation by using an 
- * {@link org.jenetics.util.Evaluator}.
- * [code]
- *   final int numberOfThreads = Runtime.getRuntime().availableProcessors() + 1;
- *   final Evaluator evaluator = new ConcurrentEvaluator(numberOfThreads);
- *   EvaluatorRegistry.setEvaluator(evaluator);
- * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -168,9 +160,6 @@ public class GeneticAlgorithm<
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 
-	
-	private final AtomicReference<Evaluator> _evaluator = 
-		new AtomicReference<Evaluator>(new ConcurrentEvaluator());
 	
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
@@ -291,9 +280,7 @@ public class GeneticAlgorithm<
 			}
 			
 			//Evaluate the fitness.
-			_evaluateTimer.start();
-			_evaluator.get().evaluate(_population);		
-			_evaluateTimer.stop();
+			evaluate();
 			
 			//First valuation of the initial population.
 			_statisticTimer.start();
@@ -356,9 +343,7 @@ public class GeneticAlgorithm<
 			_combineTimer.stop();
 			
 			//Evaluate the fitness
-			_evaluateTimer.start();
-			_evaluator.get().evaluate(_population);		
-			_evaluateTimer.stop();
+			evaluate();
 			
 			//Evaluate the statistic
 			_statisticTimer.start();
@@ -395,6 +380,19 @@ public class GeneticAlgorithm<
 		statistic.getTime().combine.set(_combineTimer.getInterimTime());
 		statistic.getTime().evaluation.set(_evaluateTimer.getInterimTime());
 		statistic.getTime().statistics.set(_statisticTimer.getInterimTime());
+	}
+	
+	private void evaluate() {
+		_evaluateTimer.start();
+		ConcurrentContext.enter();
+		try  {
+			for (int i = 0; i < _population.size(); ++i) {
+				ConcurrentContext.execute(_population.get(i));
+			}
+		} finally {
+			ConcurrentContext.exit();
+			_evaluateTimer.stop();
+		}
 	}
 	
 	/**
@@ -600,28 +598,6 @@ public class GeneticAlgorithm<
 	 */
 	public Lock getLock() {
 		return _lock;
-	}
-	
-	/**
-	 * Return the currently used {@link Evaluator}. The default evaluator used
-	 * by the GA is the {@link ConcurrentEvaluator}.
-	 * 
-	 * @return the currently used Evaluator.
-	 */
-	public Evaluator getEvaluator() {
-		return _evaluator.get();
-	}
-	
-	/**
-	 * Set the evaluator the GA is using to evaluate the populations fitness
-	 * functions. <i>Setting the evaluator is thread save; no additional locking
-	 * necessary.</i>
-	 * 
-	 * @param evaluator the new {@link Evaluator}.
-	 * @throws NullPointerException if the given {@code evaluator} is {@code null}.
-	 */
-	public void setEvaluator(final Evaluator evaluator) {
-		_evaluator.set(nonNull(evaluator, "Evaluator"));
 	}
 	
 	/**
@@ -998,6 +974,40 @@ public class GeneticAlgorithm<
 		}
 		
 		return String.format("%4d: (best) %s", generation, phenotype);
+	}
+	
+	public static void setConcurrency(final int concurrency) {
+		if (concurrency > ConcurrentContext.getConcurrency()) {
+			LogContext.enter(LogContext.NULL);
+			try {
+				final Properties properties = new Properties();
+				properties.put(
+					"javolution.context.ConcurrentContext#MAXIMUM_CONCURRENCY", 
+					concurrency
+				);
+				
+				Configurable.read(properties);
+			} finally {
+				LogContext.exit();
+			}
+		}
+		
+		ConcurrentContext.setConcurrency(concurrency);
+	}
+	
+	public static void setConcurrentContext(
+		final Class<? extends ConcurrentContext> context
+	) {
+		LogContext.enter(LogContext.NULL);
+		try {
+			final Properties properties = new Properties();
+			properties.put(
+				"javolution.context.ConcurrentContext#DEFAULT", context
+			);
+			Configurable.read(properties);
+		} finally {
+			LogContext.exit();
+		}
 	}
 	
 	/**
