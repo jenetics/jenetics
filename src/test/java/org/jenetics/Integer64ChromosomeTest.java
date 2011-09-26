@@ -62,8 +62,8 @@ public class Integer64ChromosomeTest
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(10000000);
 			
-			final MinMax<Integer64> mm = new MinMax<Integer64>();			
-			final Variance<Integer64> variance = new Variance<Integer64>();
+			final MinMax<Integer64> mm = new MinMax<>();			
+			final Variance<Integer64> variance = new Variance<>();
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
 			
 			for (int i = 0; i < 1000; ++i) {
@@ -79,7 +79,7 @@ public class Integer64ChromosomeTest
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
-			assertDistribution(histogram, new UniformDistribution<Integer64>(min, max));
+			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		} finally {
 			LocalContext.exit();
 		}

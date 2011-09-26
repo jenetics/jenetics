@@ -42,7 +42,7 @@ public class QuantileTest extends AbstractAccumulatorTester<Quantile<Double>> {
 		public Quantile<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final Quantile<Double> quantile = new Quantile<Double>(random.nextDouble());
+			final Quantile<Double> quantile = new Quantile<>(random.nextDouble());
 			for (int i = 0; i < 1000; ++i) {
 				quantile.accumulate(random.nextGaussian());
 			}
@@ -57,7 +57,7 @@ public class QuantileTest extends AbstractAccumulatorTester<Quantile<Double>> {
 
 	@Test
 	public void quantile() {
-		final Quantile<Integer> quantile = new Quantile<Integer>(0.5);
+		final Quantile<Integer> quantile = new Quantile<>(0.5);
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i); 
 			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);

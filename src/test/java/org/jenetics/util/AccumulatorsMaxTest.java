@@ -47,7 +47,7 @@ public class AccumulatorsMaxTest
 		public Max<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final Max<Double> max = new Max<Double>();
+			final Max<Double> max = new Max<>();
 			for (int i = 0; i < 1000; ++i) {
 				max.accumulate(random.nextGaussian());
 			}
@@ -68,7 +68,7 @@ public class AccumulatorsMaxTest
 		}
 		shuffle(array);
 		
-		final accumulators.Max<Integer> max = new accumulators.Max<Integer>();
+		final accumulators.Max<Integer> max = new accumulators.Max<>();
 		accumulators.accumulate(Arrays.asList(array), max);
 		Assert.assertEquals(max.getMax(), new Integer(19));
 	}

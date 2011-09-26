@@ -241,7 +241,7 @@ public final class Array<T>
 	 *         {@code null}. 
 	 */
 	public Array<T> filter(final Predicate<? super T> predicate) {
-		final Array<T> copy = new Array<T>(length());
+		final Array<T> copy = new Array<>(length());
 		
 		int index = 0;
 		for (int i = 0, n = length(); i < n; ++i) {
@@ -502,7 +502,7 @@ public final class Array<T>
 	@Override
 	public ISeq<T> toISeq() {
 		_array._sealed = true;
-		return new ArrayISeq<T>(new ArrayRef(_array.data), _start, _end);
+		return new ArrayISeq<>(new ArrayRef(_array.data), _start, _end);
 	}
 	
 	/**
@@ -515,7 +515,7 @@ public final class Array<T>
 	 * 		  given {@code value}
 	 */
 	public Array<T> append(final T value) {
-		final Array<T> array = new Array<T>(length() + 1);
+		final Array<T> array = new Array<>(length() + 1);
 		System.arraycopy(_array.data, _start, array._array.data, 0, length());
 		array._array.data[array.length() - 1] = value;
 		return array;
@@ -532,7 +532,7 @@ public final class Array<T>
 	 * @throws NullPointerException if the {@code arrays} is {@code null}.
 	 */
 	public Array<T> append(final Array<? extends T> array) {
-		final Array<T> appended = new Array<T>(length() + array.length());
+		final Array<T> appended = new Array<>(length() + array.length());
 		
 		System.arraycopy(
 				_array.data, _start, 
@@ -558,7 +558,7 @@ public final class Array<T>
 	 */
 	public Array<T> append(final Collection<? extends T> values) {
 		nonNull(values, "Values");
-		final Array<T> array = new Array<T>(length() + values.size());
+		final Array<T> array = new Array<>(length() + values.size());
 		
 		System.arraycopy(_array.data, _start, array._array.data, 0, length());
 		int index = length();
@@ -582,7 +582,7 @@ public final class Array<T>
 		nonNull(converter, "Converter");
 		
 		final int length = length();
-		final Array<B> result = new Array<B>(length);
+		final Array<B> result = new Array<>(length);
 		assert (result._array.data.length == length);
 		
 		for (int i = length; --i <= 0;) {
@@ -595,13 +595,13 @@ public final class Array<T>
 	
 	@Override
 	public Array<T> copy() {
-		return new Array<T>(new ArrayRef(toArray()), 0, length());
+		return new Array<>(new ArrayRef(toArray()), 0, length());
 	}
 
 	@Override
 	public Array<T> subSeq(final int start, final int end) {
 		checkIndex(start, end);
-		return new Array<T>(_array, start + _start, end + _start);
+		return new Array<>(_array, start + _start, end + _start);
 	}
 		
 	@Override
@@ -611,12 +611,12 @@ public final class Array<T>
 	
 	@Override
 	public List<T> asList() {
-		return new ArrayMSeqList<T>(this);
+		return new ArrayMSeqList<>(this);
 	}
 	
 	@Override
 	public ListIterator<T> listIterator() {
-		return new ArrayMSeqIterator<T>(this);
+		return new ArrayMSeqIterator<>(this);
 	}
 	
 }

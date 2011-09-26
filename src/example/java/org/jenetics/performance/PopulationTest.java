@@ -105,7 +105,7 @@ public class PopulationTest {
 		gtb.max(10);	
 		
 		final Population<Float64Gene, Float64> 
-		population = new Population<Float64Gene, Float64>(npopulation);
+		population = new Population<>(npopulation);
 		for (int i = 0; i < npopulation; ++i) {
 			population.add(Phenotype.valueOf(gtb.build(), FF, 0));
 		}	

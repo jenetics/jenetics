@@ -134,7 +134,7 @@ public class Transformation {
 		
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
-		ga.setAlterer(new CompositeAlterer<Float64Gene>(
+		ga.setAlterer(new CompositeAlterer<>(
 			new Mutator<Float64Gene>(0.03),
 			new MeanAlterer<Float64Gene>(0.6)
 		));

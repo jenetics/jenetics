@@ -54,8 +54,8 @@ class BinomialDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final Range<N> _domain;
@@ -103,8 +103,8 @@ class BinomialDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final Range<N> _domain;
@@ -168,12 +168,12 @@ class BinomialDistribution<
 
 	@Override
 	public Function<N, Float64> cdf() {
-		return new CDF<N>(_domain, _p);
+		return new CDF<>(_domain, _p);
 	}
 
 	@Override
 	public Function<N, Float64> pdf() {
-		return new PDF<N>(_domain, _p);
+		return new PDF<>(_domain, _p);
 	}
 
 	

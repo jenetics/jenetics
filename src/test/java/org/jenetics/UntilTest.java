@@ -66,7 +66,7 @@ public class UntilTest {
 	};
 	
 	static GeneticAlgorithm<Float64Gene, Float64> GA() {
-		return new GeneticAlgorithm<Float64Gene, Float64>(
+		return new GeneticAlgorithm<>(
 				Genotype.valueOf(new Float64Chromosome(0, 10)), FF
 			);
 	}
@@ -74,7 +74,7 @@ public class UntilTest {
 	@Test
 	public void steadyState() {
 		final int steadyGenerations = 11;
-		final LinkedList<Float64> values = new LinkedList<Float64>();
+		final LinkedList<Float64> values = new LinkedList<>();
 		values.addFirst(Float64.valueOf(-100));
 		
 		final GeneticAlgorithm<Float64Gene, Float64> ga = GA();

@@ -73,8 +73,8 @@ public class UniformDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final double _min;
@@ -132,8 +132,8 @@ public class UniformDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final double _min;
@@ -199,7 +199,7 @@ public class UniformDistribution<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public UniformDistribution(final N min, final N max) {
-		this(new Range<N>(min, max));
+		this(new Range<>(min, max));
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class UniformDistribution<
 	 */
 	@Override
 	public Function<N, Float64> pdf() {
-		return new PDF<N>(_domain);
+		return new PDF<>(_domain);
 	}
 	
 	/**
@@ -243,7 +243,7 @@ public class UniformDistribution<
 	 */
 	@Override
 	public Function<N, Float64> cdf() {
-		return new CDF<N>(_domain);
+		return new CDF<>(_domain);
 	}
 	
 	@Override

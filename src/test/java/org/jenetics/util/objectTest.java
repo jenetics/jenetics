@@ -59,7 +59,7 @@ public class objectTest {
 	
 	@Test
 	public void rangeCheckPredicate1() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -68,7 +68,7 @@ public class objectTest {
 	
 	@Test(expectedExceptions = NullPointerException.class)
 	public void rangeCheckPredicate2() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -78,7 +78,7 @@ public class objectTest {
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void rangeCheckPredicate3() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -88,7 +88,7 @@ public class objectTest {
 	
 	@Test
 	public void validPredicate() {
-		final Array<Verifiable> array = new Array<Verifiable>(100);
+		final Array<Verifiable> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, new Verifiable() {
 				@Override public boolean isValid() {
@@ -108,7 +108,7 @@ public class objectTest {
 	
 	@Test
 	public void nonNullPredicate1() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
@@ -118,7 +118,7 @@ public class objectTest {
 	
 	@Test(expectedExceptions = NullPointerException.class)
 	public void nonNullPredicate2() {
-		final Array<Integer> array = new Array<Integer>(100);
+		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}

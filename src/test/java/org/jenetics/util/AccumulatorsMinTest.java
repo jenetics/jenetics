@@ -47,7 +47,7 @@ public class AccumulatorsMinTest
 		public Min<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final Min<Double> min = new Min<Double>();
+			final Min<Double> min = new Min<>();
 			for (int i = 0; i < 1000; ++i) {
 				min.accumulate(random.nextGaussian());
 			}
@@ -68,7 +68,7 @@ public class AccumulatorsMinTest
 		}
 		shuffle(array);
 		
-		final accumulators.Min<Integer> min = new accumulators.Min<Integer>();
+		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(Arrays.asList(array), min);
 		Assert.assertEquals(min.getMin(), new Integer(0));
 	}

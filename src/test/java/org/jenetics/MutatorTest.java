@@ -30,7 +30,7 @@ public class MutatorTest extends MutatorTestBase {
 
 	@Override
 	public Alterer<Float64Gene> newAlterer(double p) {
-		return new Mutator<Float64Gene>(p);
+		return new Mutator<>(p);
 	}	
 	
 }

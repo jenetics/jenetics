@@ -23,7 +23,7 @@ public class NumberStatisticsTest
 			final Random random = RandomRegistry.getRandom();
 			
 			final NumberStatistics.Builder<Float64Gene, Float64> 
-			builder = new NumberStatistics.Builder<Float64Gene, Float64>();
+			builder = new NumberStatistics.Builder<>();
 			builder.ageMean(random.nextDouble());
 			builder.ageVariance(random.nextDouble());
 			builder.invalid(random.nextInt(1000));

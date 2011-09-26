@@ -86,7 +86,7 @@ public final class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 			final Accumulator<? super A> adoptee, 
 			final Converter<? super B, ? extends A> converter
 	) {
-		return new AccumulatorAdapter<A, B>(adoptee, converter);
+		return new AccumulatorAdapter<>(adoptee, converter);
 	}
 	
 	@Override

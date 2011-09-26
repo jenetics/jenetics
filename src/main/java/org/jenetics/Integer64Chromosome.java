@@ -69,7 +69,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * 		  one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		super(new Array<Integer64Gene>(genes).toISeq());
+		super(new Array<>(genes).toISeq());
 	}
 	
 	/**
@@ -207,7 +207,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 			final int length = xml.getAttribute(LENGTH, 0);
 			final long min = xml.getAttribute(MIN, 0L);
 			final long max = xml.getAttribute(MAX, 100L);
-			final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
+			final Array<Integer64Gene> genes = new Array<>(length);
 			
 			for (int i = 0; i < length; ++i) {
 				final Integer64 value = xml.getNext();
@@ -267,7 +267,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		
 		_min = min;
 		_max = max;
-		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
 		}

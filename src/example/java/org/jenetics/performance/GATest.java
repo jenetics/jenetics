@@ -108,7 +108,7 @@ public class GATest {
 		String.format("CharacterGene[G=%s, C=%s]", NGENES, NCHROMOSOMES), 
 		LOOPS, NGENES*NCHROMOSOMES
 	) {
-		private final Array<CharacterChromosome> _chromosomes = new Array<CharacterChromosome>(NCHROMOSOMES);
+		private final Array<CharacterChromosome> _chromosomes = new Array<>(NCHROMOSOMES);
 		{
 			_chromosomes.fill(new CharacterChromosome(NGENES).asFactory());
 		}

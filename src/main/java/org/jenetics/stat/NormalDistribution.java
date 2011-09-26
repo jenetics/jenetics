@@ -89,8 +89,8 @@ public class NormalDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final Range<N> _domain;
@@ -149,8 +149,8 @@ public class NormalDistribution<
 		private static final long serialVersionUID = 1L;
 		
 		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<N>("x");
-		private final List<Variable<N>> _variables = new FastList<Variable<N>>(1);
+		private final Variable<N> _variable = new Variable.Local<>("x");
+		private final List<Variable<N>> _variables = new FastList<>(1);
 		{ _variables.add(_variable); }
 		
 		private final double _min;
@@ -238,7 +238,7 @@ public class NormalDistribution<
 	 */
 	@Override
 	public Function<N, Float64> cdf() {
-		return new CDF<N>(_domain, _mean, _var);
+		return new CDF<>(_domain, _mean, _var);
 	}
 	
 	/**
@@ -253,7 +253,7 @@ public class NormalDistribution<
 	 */
 	@Override
 	public Function<N, Float64> pdf() {
-		return new PDF<N>(_domain, _mean, _var);
+		return new PDF<>(_domain, _mean, _var);
 	}
 
 	

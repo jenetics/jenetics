@@ -116,7 +116,7 @@ public class BitChromosome extends Number<BitChromosome>
 	
 	@Override
 	public ISeq<BitGene> toSeq() {
-		final Array<BitGene> genes = new Array<BitGene>(_length);
+		final Array<BitGene> genes = new Array<>(_length);
 		for (int i = 0; i < _length; ++i) {
 			genes.set(i, bit.get(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
 		}

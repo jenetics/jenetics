@@ -63,7 +63,7 @@ class GenotypeBuilder {
 	
 	public Genotype<Float64Gene> build() {
 		final Array<Float64Chromosome> chromosomes = 
-			new Array<Float64Chromosome>(_nchromosomes);
+			new Array<>(_nchromosomes);
 		
 		for (int i = 0; i < _nchromosomes; ++i) {
 			chromosomes.set(i, new Float64Chromosome(_min, _max, _ngenes));

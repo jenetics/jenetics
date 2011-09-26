@@ -39,7 +39,7 @@ public class RouletteWheelSelectorTest
 	
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new LinearDistribution<Float64>(_domain, 0);
+		return new LinearDistribution<>(_domain, 0);
 	}
 
 	@Override

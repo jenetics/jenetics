@@ -78,7 +78,7 @@ public class StringGenerator {
 		);
 		final Function ff = new Function(value);
 		final GeneticAlgorithm<CharacterGene, Integer64> 
-		ga = new GeneticAlgorithm<CharacterGene, Integer64>(gtf, ff);
+		ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setPopulationSize(5000);
 		ga.setOffspringFraction(0.7);
@@ -86,7 +86,7 @@ public class StringGenerator {
 		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
 		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
 		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
-		ga.setAlterer(new CompositeAlterer<CharacterGene>(
+		ga.setAlterer(new CompositeAlterer<>(
 			new Mutator<CharacterGene>(0.05),
 			new SinglePointCrossover<CharacterGene>(0.1)
 		));

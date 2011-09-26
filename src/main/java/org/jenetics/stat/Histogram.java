@@ -182,7 +182,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 			data[i] = _histogram[i] + histogram._histogram[i];
 		}
 		
-		return new Histogram<C>(data, _comparator, _separators);
+		return new Histogram<>(data, _comparator, _separators);
 	}
 	
 	/**
@@ -357,7 +357,7 @@ public class Histogram<C> extends AdaptableAccumulator<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
 		final C... separators
 	) {
-		return new Histogram<C>(COMPARATOR, separators);
+		return new Histogram<>(COMPARATOR, separators);
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})

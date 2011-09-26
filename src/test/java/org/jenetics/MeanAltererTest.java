@@ -54,7 +54,7 @@ public class MeanAltererTest {
 		final Population<Float64Gene, Float64> p2 = p1.copy();
 		final int[] selected = new int[]{3, 34};
 		
-		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<Float64Gene>(0.1);
+		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(0.1);
 		crossover.recombinate(p1, selected, 3);
 		
 		Assert.assertEquals(diff(p1, p2), ngenes);
@@ -72,7 +72,7 @@ public class MeanAltererTest {
 			);
 		
 		// The mutator to test.
-		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<Float64Gene>(p);
+		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -80,10 +80,10 @@ public class MeanAltererTest {
 		
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<Long>(min, max);
+		final Range<Long> domain = new Range<>(min, max);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
-		final Variance<Long> variance = new Variance<Long>();
+		final Variance<Long> variance = new Variance<>();
 		
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
@@ -92,7 +92,7 @@ public class MeanAltererTest {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, variance.getVariance()));
+		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
 	
 	@DataProvider(name = "alterProbabilityParameters")

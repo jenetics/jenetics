@@ -137,7 +137,7 @@ public final class PermutationChromosome
 			}
 		}
 		
-		final Array<Integer64Gene> genes = new Array<Integer64Gene>(values.length);
+		final Array<Integer64Gene> genes = new Array<>(values.length);
 		for (int i = 0; i < values.length; ++i) {
 			genes.set(i, Integer64Gene.valueOf(values[i], 0, values.length - 1));
 		}
@@ -152,7 +152,7 @@ public final class PermutationChromosome
 		
 		final Random random = RandomRegistry.getRandom();
 		
-		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> genes = new Array<>(length);
 		if (randomize) {
 			//Permutation algorithm from D. Knuth TAOCP, Seminumerical Algorithms, 
 			//Third edition, page 145, Algorithm P (Shuffling).
@@ -264,7 +264,7 @@ public final class PermutationChromosome
 			final int length = xml.getAttribute(LENGTH, 0);
 			final int min = xml.getAttribute(MIN, 0);
 			final int max = xml.getAttribute(MAX, length);
-			final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
+			final Array<Integer64Gene> genes = new Array<>(length);
 			
 			for (int i = 0; i < length; ++i) {
 				final Integer64 value = xml.getNext();
@@ -312,7 +312,7 @@ public final class PermutationChromosome
 		Integer64 min = Integer64.valueOf(0);
 		Integer64 max = Integer64.valueOf(length - 1);
 		
-		final Array<Integer64Gene> genes = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
 		}

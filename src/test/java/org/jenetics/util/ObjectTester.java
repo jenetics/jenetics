@@ -47,7 +47,7 @@ public abstract class ObjectTester<T> {
 	protected abstract Factory<T> getFactory();
 	
 	protected Array<T> newSameObjects(final int nobjects) {
-		final Array<T> objects = new Array<T>(nobjects);
+		final Array<T> objects = new Array<>(nobjects);
 			
 		for (int i = 0; i < nobjects; ++i) {
 			LocalContext.enter();

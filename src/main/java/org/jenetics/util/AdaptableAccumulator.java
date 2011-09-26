@@ -64,7 +64,7 @@ public abstract class AdaptableAccumulator<A> extends AbstractAccumulator<A> {
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
 	public <B> AdaptableAccumulator<B> adapt(final Converter<B, A> converter) {
-		return new AccumulatorAdapter<A, B>(this, converter);
+		return new AccumulatorAdapter<>(this, converter);
 	}
 	
 }

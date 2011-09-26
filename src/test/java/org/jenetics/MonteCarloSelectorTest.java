@@ -41,7 +41,7 @@ public class MonteCarloSelectorTest
 	{
 		@Override
 		public MonteCarloSelector<Float64Gene, Float64> newInstance() {
-			return new MonteCarloSelector<Float64Gene, Float64>();
+			return new MonteCarloSelector<>();
 		}
 	};
 	@Override
@@ -50,7 +50,7 @@ public class MonteCarloSelectorTest
 	}
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<Float64>(_domain);
+		return new UniformDistribution<>(_domain);
 	}
 	
 }

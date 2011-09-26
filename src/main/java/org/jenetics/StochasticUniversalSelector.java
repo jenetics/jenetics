@@ -69,7 +69,7 @@ public class StochasticUniversalSelector<
 			);
 		}
 		
-		final Population<G, N> selection = new Population<G, N>(count);
+		final Population<G, N> selection = new Population<>(count);
 		if (count == 0) {
 			return selection;
 		}

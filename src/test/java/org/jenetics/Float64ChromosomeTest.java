@@ -63,9 +63,9 @@ public class Float64ChromosomeTest
 			final Float64 max = Float64.valueOf(100);
 			
 			
-			final MinMax<Float64> mm = new MinMax<Float64>();
+			final MinMax<Float64> mm = new MinMax<>();
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
-			final Variance<Float64> variance = new Variance<Float64>();
+			final Variance<Float64> variance = new Variance<>();
 			
 			for (int i = 0; i < 1000; ++i) {
 				final Float64Chromosome chromosome = new Float64Chromosome(min, max, 500);
@@ -80,7 +80,7 @@ public class Float64ChromosomeTest
 			
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
-			assertDistribution(histogram, new UniformDistribution<Float64>(min, max));
+			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		} finally {
 			LocalContext.exit();
 		}

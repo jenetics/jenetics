@@ -107,7 +107,7 @@ public class TournamentSelector<
 			));
 		}
 		
-		final Population<G, C> pop = new Population<G, C>(count);
+		final Population<G, C> pop = new Population<>(count);
 		if (count == 0) {
 			return pop;
 		}
@@ -154,12 +154,12 @@ public class TournamentSelector<
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
-		return new TournamentSelector<SG, SC>(sampleSize);
+		return new TournamentSelector<>(sampleSize);
 	}
 	
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
 	TournamentSelector<SG, SC> valueOf() {
-		return new TournamentSelector<SG, SC>();
+		return new TournamentSelector<>();
 	}
 	
 	@Override

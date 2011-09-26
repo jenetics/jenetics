@@ -85,12 +85,12 @@ public class RandomIndexStreamTest {
 		final double var = n*p*(1 - p);
 		
 		final Random random = new Random();
-		final Range<Long> domain = new Range<Long>(0L, n.longValue());
+		final Range<Long> domain = new Range<>(0L, n.longValue());
 		
 		final Histogram<Long> histogram = Histogram.valueOf(
 					domain.getMin(), domain.getMax(), 10 
 				);	
-		final Variance<Long> variance = new Variance<Long>();
+		final Variance<Long> variance = new Variance<>();
 		for (int i = 0; i < 1000; ++i) {
 			final long k = k(n, p, random);
 			
@@ -99,7 +99,7 @@ public class RandomIndexStreamTest {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, var));
+		assertDistribution(histogram, new NormalDistribution<>(domain, mean, var));
 	}
 	
 	double var(final double p, final long N) {

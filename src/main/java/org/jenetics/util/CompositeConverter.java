@@ -66,7 +66,7 @@ public class CompositeConverter<A, B, C> implements Converter<A, C> {
 		final Converter<A, B> c1,
 		final Converter<B, C> c2
 	) {
-		return new CompositeConverter<A, B, C>(c1, c2);
+		return new CompositeConverter<>(c1, c2);
 	}
 
 	public static <A, B, C, D> Converter<A, D> valueOf(

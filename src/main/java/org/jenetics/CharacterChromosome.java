@@ -274,7 +274,7 @@ public class CharacterChromosome
 					VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
 				));
 			
-			final Array<CharacterGene> array = new Array<CharacterGene>(length);
+			final Array<CharacterGene> array = new Array<>(length);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
 				array.set(i, CharacterGene.valueOf(values.charAt(i), validCharacters));
@@ -320,7 +320,7 @@ public class CharacterChromosome
 		final int length = in.readInt();
 		_validCharacters = (CharSet)in.readObject();
 		
-		final Array<CharacterGene> genes = new Array<CharacterGene>(length);
+		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
 		}

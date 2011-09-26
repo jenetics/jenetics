@@ -189,7 +189,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public Iterator<T> iterator() {
-		return new ArraySeqIterator<T>(this);
+		return new ArraySeqIterator<>(this);
 	}
 	
 	@Override
@@ -244,7 +244,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	
 	@Override
 	public List<T> asList() {
-		return new ArraySeqList<T>(this);
+		return new ArraySeqList<>(this);
 	}
 	
 	final void checkIndex(final int index) {

@@ -101,7 +101,7 @@ public class PermutationIndexStreamTest {
 	public void completeness(final int length) {
 		final IndexStream stream = PermutationIndexStream.valueOf(length);
 		
-		final Set<Integer> values = new HashSet<Integer>(length);
+		final Set<Integer> values = new HashSet<>(length);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			Assert.assertFalse(
 					values.contains(i), 

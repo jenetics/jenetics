@@ -68,7 +68,7 @@ public abstract class ProbabilitySelector<
 			));
 		}
 		
-		final Population<G, C> selection = new Population<G, C>(count);
+		final Population<G, C> selection = new Population<>(count);
 		
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count, opt);

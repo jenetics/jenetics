@@ -57,7 +57,7 @@ public class PopulationTest {
 	
 	@Test
 	public void sort() {
-		final Population<Float64Gene, Float64> population = new Population<Float64Gene, Float64>();
+		final Population<Float64Gene, Float64> population = new Population<>();
 		for (int i = 0; i < 100; ++i) {
 			population.add(pt(Math.random()*9.0));
 		}

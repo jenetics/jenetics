@@ -130,23 +130,23 @@ public class GeneticAlgorithm<
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 	
 	// Alterers
-	private Alterer<G> _alterer = new CompositeAlterer<G>(
+	private Alterer<G> _alterer = new CompositeAlterer<>(
 			new SinglePointCrossover<G>(0.1),
 			new Mutator<G>(0.05)
 		);
 	
 	// Selectors
-	private Selector<G, C> _survivorSelector = new TournamentSelector<G, C>(3);
-	private Selector<G, C> _offspringSelector = new TournamentSelector<G, C>(3);
+	private Selector<G, C> _survivorSelector = new TournamentSelector<>(3);
+	private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
 	
 	// Population
 	private int _populationSize = DEFAULT_POPULATION_SIZE;
-	private Population<G, C> _population = new Population<G, C>(_populationSize);
+	private Population<G, C> _population = new Population<>(_populationSize);
 	private int _maximalPhenotypeAge = DEFAULT_MAXIMAL_PHENOTYPE_AGE;
 	private volatile int _generation = 0;
 	
 	// Statistics
-	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<G, C>();
+	private Statistics.Calculator<G, C> _calculator = new Statistics.Calculator<>();
 	private Statistics<G, C> _bestStatistics = null;
 	private Statistics<G, C> _statistics = null;
 	private final AtomicInteger _killed = new AtomicInteger(0);
@@ -422,7 +422,7 @@ public class GeneticAlgorithm<
 	}
 	
 	private Array<Population<G, C>> select() {
-		final Array<Population<G, C>> selection = new Array<Population<G, C>>(2);
+		final Array<Population<G, C>> selection = new Array<>(2);
 		final int numberOfSurvivors = getNumberOfSurvivors();
 		final int numberOfOffspring = getNumberOfOffsprings();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
@@ -461,7 +461,7 @@ public class GeneticAlgorithm<
 		final Population<G, C> offsprings
 	) {
 		assert (survivors.size() + offsprings.size() == _populationSize);
-		final Population<G, C> population = new Population<G, C>(_populationSize);
+		final Population<G, C> population = new Population<>(_populationSize);
 		
 		ConcurrentContext.enter();
 		try {
@@ -824,7 +824,7 @@ public class GeneticAlgorithm<
 			));
 		}
 		
-		final Population<G, C> pop = new Population<G, C>(population.size());
+		final Population<G, C> pop = new Population<>(population.size());
 		for (Phenotype<G, C> phenotype : population) {
 			pop.add(phenotype.newInstance(
 					_fitnessFunction, _fitnessScaler, _generation
@@ -854,7 +854,7 @@ public class GeneticAlgorithm<
 			);
 		}
 		
-		final Population<G, C> pop = new Population<G, C>(genotypes.size());
+		final Population<G, C> pop = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
 			pop.add(Phenotype.valueOf(
 				genotype, 
@@ -873,7 +873,7 @@ public class GeneticAlgorithm<
 	 * @return The copy of the current population.
 	 */
 	public Population<G, C> getPopulation() {
-		return new Population<G, C>(_population);
+		return new Population<>(_population);
 	}
 	
 	/**
@@ -1028,7 +1028,7 @@ public class GeneticAlgorithm<
 		final Optimize optimization
 	)
 	{
-		return new GeneticAlgorithm<SG, SC>(
+		return new GeneticAlgorithm<>(
 			genotypeFactory, fitnessFunction, fitnessScaler, optimization
 		);
 	}
@@ -1049,7 +1049,7 @@ public class GeneticAlgorithm<
 		final FitnessScaler<SC> fitnessScaler
 	)
 	{
-		return new GeneticAlgorithm<SG, SC>(
+		return new GeneticAlgorithm<>(
 			genotypeFactory, fitnessFunction, fitnessScaler
 		);
 	}
@@ -1070,7 +1070,7 @@ public class GeneticAlgorithm<
 		final Optimize optimization
 	) 
 	{
-		return new GeneticAlgorithm<SG, SC>(
+		return new GeneticAlgorithm<>(
 				genotypeFactory, fitnessFunction, optimization
 			);
 	}
@@ -1089,7 +1089,7 @@ public class GeneticAlgorithm<
 		final FitnessFunction<SG, SC> fitnessFunction
 	) 
 	{
-		return new GeneticAlgorithm<SG, SC>(genotypeFactory, fitnessFunction);
+		return new GeneticAlgorithm<>(genotypeFactory, fitnessFunction);
 	}
 }
 

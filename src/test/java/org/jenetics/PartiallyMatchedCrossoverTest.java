@@ -48,11 +48,11 @@ public class PartiallyMatchedCrossoverTest {
 	@Test(invocationCount = 10)
 	public void crossover() {
 		final PartiallyMatchedCrossover<Integer64Gene> pmco = 
-			new PartiallyMatchedCrossover<Integer64Gene>(1);
+			new PartiallyMatchedCrossover<>(1);
 		
 		final int length = 1000;
-		final Array<Integer64Gene> that = new Array<Integer64Gene>(length);
-		final Array<Integer64Gene> other = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> that = new Array<>(length);
+		final Array<Integer64Gene> other = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			that.set(i, Integer64Gene.valueOf(i, 0, length));
 			other.set(i, Integer64Gene.valueOf(i, 0, length));
@@ -81,11 +81,11 @@ public class PartiallyMatchedCrossoverTest {
 	//@Test
 	public void corssoverWithIllegalChromosome() {
 		final PartiallyMatchedCrossover<Integer64Gene> pmco = 
-			new PartiallyMatchedCrossover<Integer64Gene>(1);
+			new PartiallyMatchedCrossover<>(1);
 		
 		final int length = 1000;
-		final Array<Integer64Gene> that = new Array<Integer64Gene>(length);
-		final Array<Integer64Gene> other = new Array<Integer64Gene>(length);
+		final Array<Integer64Gene> that = new Array<>(length);
+		final Array<Integer64Gene> other = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			that.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
 			other.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
@@ -109,7 +109,7 @@ public class PartiallyMatchedCrossoverTest {
 			);
 		
 		// The mutator to test.
-		final PartiallyMatchedCrossover<Float64Gene> crossover = new PartiallyMatchedCrossover<Float64Gene>(p);
+		final PartiallyMatchedCrossover<Float64Gene> crossover = new PartiallyMatchedCrossover<>(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
@@ -117,10 +117,10 @@ public class PartiallyMatchedCrossoverTest {
 		
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<Long>(min, max);
+		final Range<Long> domain = new Range<>(min, max);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
-		final Variance<Long> variance = new Variance<Long>();
+		final Variance<Long> variance = new Variance<>();
 		
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
@@ -129,7 +129,7 @@ public class PartiallyMatchedCrossoverTest {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, variance.getVariance()));
+		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
 	
 	@DataProvider(name = "alterProbabilityParameters")

@@ -189,7 +189,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * @return new Statistics object with the builder values.
 		 */
 		public Statistics<G, C> build() {
-			return new Statistics<G, C>(
+			return new Statistics<>(
 					_optimize,
 					_generation,
 					_best,
@@ -215,7 +215,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	protected final int _killed;
 	protected final int _invalid;
 			
-	private final FinalReference<Time> _time = new FinalReference<Time>(new Time());
+	private final FinalReference<Time> _time = new FinalReference<>(new Time());
 	
 	
 	/**
@@ -506,7 +506,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Measurable<Duration>> 
-			execution = new FinalReference<Measurable<Duration>>(ZERO);
+			execution = new FinalReference<>(ZERO);
 		
 		/**
 		 * The selection time.
@@ -514,7 +514,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Measurable<Duration>> 
-			selection = new FinalReference<Measurable<Duration>>(ZERO);
+			selection = new FinalReference<>(ZERO);
 		
 		/**
 		 * The alter time.
@@ -522,7 +522,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Measurable<Duration>> 
-			alter = new FinalReference<Measurable<Duration>>(ZERO);
+			alter = new FinalReference<>(ZERO);
 		
 		/**
 		 * Combination time between offsprings and survivors.
@@ -530,7 +530,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Measurable<Duration>> 
-			combine = new FinalReference<Measurable<Duration>>(ZERO);
+			combine = new FinalReference<>(ZERO);
 		
 		/**
 		 * The evaluation time.
@@ -538,7 +538,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Measurable<Duration>> 
-			evaluation = new FinalReference<Measurable<Duration>>(ZERO);
+			evaluation = new FinalReference<>(ZERO);
 		
 		/**
 		 * The statistics time.
@@ -546,7 +546,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * is thrown.
 		 */
 		public final FinalReference<Measurable<Duration>> 
-			statistics = new FinalReference<Measurable<Duration>>(ZERO);
+			statistics = new FinalReference<>(ZERO);
 		
 		
 		@Override
@@ -705,12 +705,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final int generation,
 			final Optimize opt
 		) {	
-			final Builder<G, C> builder = new Builder<G, C>();
+			final Builder<G, C> builder = new Builder<>();
 			builder.generation(generation);
 			builder.optimize(opt);
 			
-			final MinMax<Phenotype<G, C>> minMax = new MinMax<Phenotype<G, C>>();
-			final Variance<Integer> age = new Variance<Integer>();
+			final MinMax<Phenotype<G, C>> minMax = new MinMax<>();
+			final Variance<Integer> age = new Variance<>();
 							
 			accumulators.<Phenotype<G, C>>accumulate(
 					population, 

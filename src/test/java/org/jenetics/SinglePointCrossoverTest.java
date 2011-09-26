@@ -79,7 +79,7 @@ public class SinglePointCrossoverTest {
 		LocalContext.enter();
 		try {
 			final SinglePointCrossover<CharacterGene> 
-			crossover = new SinglePointCrossover<CharacterGene>();
+			crossover = new SinglePointCrossover<>();
 			
 			int rv = 12;
 			RandomRegistry.setRandom(new ConstRandom(rv));
@@ -133,7 +133,7 @@ public class SinglePointCrossoverTest {
 			);
 		
 		// The mutator to test.
-		final SinglePointCrossover<Float64Gene> crossover = new SinglePointCrossover<Float64Gene>(p);
+		final SinglePointCrossover<Float64Gene> crossover = new SinglePointCrossover<>(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 200;
@@ -141,10 +141,10 @@ public class SinglePointCrossoverTest {
 		
 		final long min = 0;
 		final long max = nallgenes;
-		final Range<Long> domain = new Range<Long>(min, max);
+		final Range<Long> domain = new Range<>(min, max);
 		
 		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
-		final Variance<Long> variance = new Variance<Long>();
+		final Variance<Long> variance = new Variance<>();
 		
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
@@ -153,7 +153,7 @@ public class SinglePointCrossoverTest {
 		}
 				
 		// Normal distribution as approximation for binomial distribution.
-		assertDistribution(histogram, new NormalDistribution<Long>(domain, mean, variance.getVariance()));
+		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
 	
 	@DataProvider(name = "alterProbabilityParameters")
