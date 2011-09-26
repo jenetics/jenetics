@@ -25,9 +25,6 @@ package org.jenetics.performance;
 import javolution.context.LogContext;
 import javolution.lang.ClassInitializer;
 
-import org.jenetics.GeneticAlgorithm;
-import org.jenetics.util.ForkJoinContext;
-
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,7 +43,7 @@ public final class PerformanceTests {
 			LogContext.exit();
 		}
 		
-		GeneticAlgorithm.setConcurrentContext(ForkJoinContext.class);
+		//GeneticAlgorithm.setConcurrentContext(ForkJoinContext.class);
 		
 		new TestSuite(ArrayTest.class).run().print();
 		new TestSuite(ChromosomeTest.class).run().print();
