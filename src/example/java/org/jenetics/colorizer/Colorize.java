@@ -38,7 +38,7 @@ import java.util.HashSet;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+ * @version $Id$
  */
 public final class Colorize {
 
@@ -167,7 +167,7 @@ public final class Colorize {
 				State state = this;
 				if (Character.isJavaIdentifierPart((char)read)) {
 					state = IDENTIFIER;
-					state.start = doc.length() - 1;
+					state._start = doc.length() - 1;
 				} else if (read == '"') {
 					state = STRING_LITERAL;
 					doc.insert(doc.length() - 1, "<font color=\"" + STRING_COLOR + "\">");
@@ -193,10 +193,10 @@ public final class Colorize {
 					doc.append("</code>");
 					state = DATA;
 				} else if (!Character.isJavaIdentifierPart((char)read)) { // End of identifier.
-					String name = doc.substring(start, doc.length() - 1);
+					String name = doc.substring(_start, doc.length() - 1);
 					if (IDENTIFIERS.contains(name)) { // Identifier found.
-						doc.insert(start + name.length(), "</b></font>");
-						doc.insert(start, "<font color=\"" + KEYWORD_COLOR + "\"><b>");
+						doc.insert(_start + name.length(), "</b></font>");
+						doc.insert(_start, "<font color=\"" + KEYWORD_COLOR + "\"><b>");
 					}
 					state = CODE;
 				}
@@ -231,7 +231,7 @@ public final class Colorize {
 		
 		;
 		
-		public int start = -1;
+		int _start = -1;
 		
 		public abstract State apply(final int read, final StringBuilder doc);
 		
