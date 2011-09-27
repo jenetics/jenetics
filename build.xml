@@ -46,7 +46,7 @@
 	<property name="lib.build.dir" value="${lib.dir}/build" />
 	<property name="export.dir" value="${build.dir}/export/${identifier}" />
 	<property name="javadoc.dir" value="${build.dir}/javadoc" />
-	<property name="colapi.classpath" value="${lib.dir}/build/colapi.jar" />
+	<property name="colorizer.jar" value="${lib.dir}/build/colorizer.jar" />
 	<property name="umlgraph.classpath" value="${lib.dir}/build/UmlGraph-5.3.jar" />
 	<property name="java2html.classpath" value="${lib.dir}/build/ant-java2html.jar" />
 	
@@ -258,7 +258,7 @@
 		</javadoc>
 
     	<!-- Formats/colarizes code between [code]...[/code] -->
-		<java classname="Colapi" classpath="${colapi.classpath}" >
+		<java jar="${colorizer.jar}" fork="true">
 			<arg value="${javadoc.dir}" />
 		</java>
 		
@@ -367,7 +367,7 @@
 		</javadoc>
 
     	<!-- Formats/colarizes code between [code]...[/code] -->
-		<java classname="Colapi" classpath="${colapi.classpath}" >
+		<java classname="Colapi" classpath="${colorizer.classpath}" >
 			<arg value="${javadoc.dir}" />
 		</java>
 		
@@ -560,6 +560,55 @@
 			<fileset dir="${export.dir}"/>
 		</zip>
 	</target>
+	
+	
+	<target name="build-colorizer">
+		<mkdir dir="${build.dir}" />
+		<javac destdir="${build.dir}" 
+			srcdir="${example.dir}" 
+			debug="true" 
+			source="${jdk.source}" 
+			target="${jdk.target}" 
+			encoding="UTF-8" 
+			listfiles="yes"
+			includeantruntime="no"
+		>
+			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg value="-Xlint:deprecation" />
+			<include name="org/jenetics/colorizer/*.java" />
+		</javac>
+		
+		<tstamp>
+			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
+		</tstamp>
+		
+		<!--
+		 # Build without the library dependencies.
+		-->
+		<jar 
+			destfile="${build.dir}/colorizer.jar" 
+			filesetmanifest="mergewithoutmain" 
+			index="true" 
+			update="true" 
+			level="9" 
+			duplicate="preserve"
+		>
+			<fileset dir="${build.dir}" >
+				<include name="org/jenetics/colorizer/*.class" />
+			</fileset>
+			<manifest>
+				<attribute name="ProjectName" value="colorizer" />
+				<attribute name="Version" value="${version}" />
+				<attribute name="Vendor" value="Franz Wilhelmstötter" />
+				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
+				<attribute name="Implementation-URL" value="http://jenetics.sourceforge.net" />
+				<attribute name="Implementation-Vendor" value="Jenetics" />
+				<attribute name="Implementation-Version" value="${JAR_TIMESTAMP}" />
+				<attribute name="Main-Class" value="org.jenetics.colorizer.Colorize" />
+			</manifest>
+		</jar>		
+	</target>
+	
 	
 	<target name="set-since-tag">
 		<replace dir="${source.dir}" token="@!since!@" value="${version}" />
