@@ -6,7 +6,7 @@ body {
     background-color: #F5F5F5;
     color:#353833;
     font-family:Arial, Helvetica, sans-serif;
-    font-size:76%;
+    font-size:80%;
     margin:0;
 }
 a:link, a:visited {
@@ -52,6 +52,7 @@ h6 {
 ul {
     list-style-type:disc;
 }
+
 code, tt {
     font-size:1.2em;
 }
@@ -62,6 +63,13 @@ table tr td dt code {
     font-size:1.2em;
     vertical-align:top;
 }
+
+code[lang="java"] {
+    white-space:pre;
+    font-family: Consolas, "Courier New", Courier, Monospace;
+    font-size:1.0em;
+}
+
 sup {
     font-size:.6em;
 }
@@ -315,7 +323,7 @@ ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockLi
 }
 ul.blockList ul.blockList ul.blockList li.blockList, ul.blockList ul.blockList ul.blockListLast li.blockList {
     padding:0 0 5px 8px;
-    background-color:#ffffff;
+    background-color:#F5F5F5;
     border:1px solid #9eadc0;
     border-top:none;
 }
@@ -400,7 +408,7 @@ ul.blockList ul.blockList li.blockList table {
     background-color:#eeeeef;
 }
 .rowColor {
-    background-color:#ffffff;
+    background-color:#F5FEFF;
 }
 .overviewSummary td, .packageSummary td, .contentContainer ul.blockList li.blockList td, .summary td, .classUseContainer td, .constantValuesContainer td {
     text-align:left;
