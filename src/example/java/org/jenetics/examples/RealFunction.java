@@ -75,7 +75,7 @@ public class RealFunction {
 				new Float64Chromosome(0, 360)
 			);
 		final Function ff = new Function();
-		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
+		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());
 		ga.setFitnessScaler(SQR_SCALER);

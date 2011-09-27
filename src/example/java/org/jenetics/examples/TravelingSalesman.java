@@ -81,7 +81,7 @@ public class TravelingSalesman {
 		final Factory<Genotype<Integer64Gene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);
-		final GeneticAlgorithm<Integer64Gene, Double> ga = GeneticAlgorithm.valueOf(gtf, ff, Optimize.MINIMUM);
+		final GeneticAlgorithm<Integer64Gene, Double> ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(300);
         ga.setAlterer(new CompositeAlterer<>(
             new SwapMutator<Integer64Gene>(0.2), 

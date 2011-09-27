@@ -1,3 +1,7 @@
+Jenetics-0.9.0.0
+- Remove GeneticAlgorithm.valueOf methods. They are no longer needed due to the
+  extended type inference capabilities of Java 7 (diamond operator <>). 
+
 Jenetics-0.8.1.0
 - New name schema for 'utility' classes which only contains static methods. Such 
   classes are now lower case.

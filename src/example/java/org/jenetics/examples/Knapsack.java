@@ -122,7 +122,7 @@ public class Knapsack {
 				BitChromosome.valueOf(15, 0.5)
 			);
 		 
-		final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(genotype, ff);
+		final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(genotype, ff);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setPopulationSize(100);
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Float64>());
