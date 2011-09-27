@@ -88,7 +88,7 @@ public class GATest {
 		
 		@Override
 		protected void beforeTest() {
-			_ga = GeneticAlgorithm.valueOf(_gtb.build(), new Float64GeneFF());
+			_ga = new GeneticAlgorithm<>(_gtb.build(), new Float64GeneFF());
 			_ga.setAlterer(new MeanAlterer<Float64Gene>());
 			_ga.addAlterer(new SinglePointCrossover<Float64Gene>());
 			_ga.addAlterer(new Mutator<Float64Gene>(0.2));
@@ -118,7 +118,7 @@ public class GATest {
 		
 		@Override
 		protected void beforeTest() {
-			_ga = GeneticAlgorithm.valueOf(_gt, new CharacterGeneFF());
+			_ga = new GeneticAlgorithm<>(_gt, new CharacterGeneFF());
 			_ga.addAlterer(new SinglePointCrossover<CharacterGene>());
 			_ga.addAlterer(new Mutator<CharacterGene>(0.2));
 			_ga.setOffspringSelector(new RouletteWheelSelector<CharacterGene, Float64>());

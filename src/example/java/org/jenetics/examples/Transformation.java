@@ -130,7 +130,7 @@ public class Transformation {
 		);
 		
 		final Function ff = new Function(source, target);
-		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(gtf, ff);
+		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);

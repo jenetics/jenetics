@@ -86,7 +86,7 @@ public class GeneticAlgorithmTest {
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
-			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
+			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(200);
 			ga.setAlterer(new MeanAlterer<Float64Gene>());
 			ga.setOffspringFraction(0.3);
@@ -147,7 +147,7 @@ public class GeneticAlgorithmTest {
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
-			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
+			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
 			ga.setAlterer(new MeanAlterer<Float64Gene>());
 			ga.setOffspringFraction(0.3);
@@ -171,7 +171,7 @@ public class GeneticAlgorithmTest {
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
 			final FitnessFunction<Float64Gene, Float64> ff = new FF();
 			
-			final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
+			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
 			ga.setAlterer(new MeanAlterer<Float64Gene>());
 			ga.setOffspringFraction(0.3);
@@ -192,7 +192,7 @@ public class GeneticAlgorithmTest {
 		final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
 		final FitnessFunction<Float64Gene, Float64> ff = new FF();
 		
-		final GeneticAlgorithm<Float64Gene, Float64> ga = GeneticAlgorithm.valueOf(factory, ff);
+		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 		ga.setPopulationSize(1000);
 		ga.setAlterer(new MeanAlterer<Float64Gene>());
 		ga.setOffspringFraction(0.3);
