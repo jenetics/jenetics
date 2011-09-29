@@ -381,7 +381,7 @@ public class GeneticAlgorithm<
 	private void evaluate() {
 		_evaluateTimer.start();
 		try (Concurrency c = Concurrency.start()) {
-			for (int i = 0; i < _population.size(); ++i) {
+			for (int i =  _population.size(); --i >= 0;) {
 				c.execute(_population.get(i));
 			}
 		}
@@ -421,26 +421,22 @@ public class GeneticAlgorithm<
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 		
 		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Runnable() {
-				@Override public void run() {
-					final Population<G, C> survivors = _survivorSelector.select(
-						_population, numberOfSurvivors, _optimization
-					);
-					
-					assert (survivors.size() == numberOfSurvivors);
-					selection.set(0, survivors);
-				}
-			});
-			c.execute(new Runnable() {
-				@Override public void run() {
-					final Population<G, C> offsprings = _offspringSelector.select(
-						_population, numberOfOffspring, _optimization
-					);	
-					
-					assert (offsprings.size() == numberOfOffspring);
-					selection.set(1, offsprings);
-				}
-			});
+			c.execute(new Runnable() { @Override public void run() {
+				final Population<G, C> survivors = _survivorSelector.select(
+					_population, numberOfSurvivors, _optimization
+				);
+				
+				assert (survivors.size() == numberOfSurvivors);
+				selection.set(0, survivors);
+			}});
+			c.execute(new Runnable() { @Override public void run() {
+				final Population<G, C> offsprings = _offspringSelector.select(
+					_population, numberOfOffspring, _optimization
+				);	
+				
+				assert (offsprings.size() == numberOfOffspring);
+				selection.set(1, offsprings);
+			}});
 		}
 	
 		return selection;
@@ -455,42 +451,38 @@ public class GeneticAlgorithm<
 		
 		try (Concurrency c = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() {
-				@Override public void run() {
-					for (int i = 0, n = survivors.size(); i < n; ++i) {
-						final Phenotype<G, C> survivor = survivors.get(i);
+			c.execute(new Runnable() { @Override public void run() {
+				for (int i = 0, n = survivors.size(); i < n; ++i) {
+					final Phenotype<G, C> survivor = survivors.get(i);
+					
+					final boolean isTooOld = 
+						survivor.getAge(_generation) > _maximalPhenotypeAge;
 						
-						final boolean isTooOld = 
-							survivor.getAge(_generation) > _maximalPhenotypeAge;
-							
-						final boolean isInvalid = isTooOld || !survivor.isValid();
-						
-						// Sorry, too old or not valid.
-						if (isInvalid) {
-							final Phenotype<G, C> newpt = Phenotype.valueOf(
-									_genotypeFactory.newInstance(), 
-									_fitnessFunction, 
-									_fitnessScaler, 
-									_generation
-								);
-							survivors.set(i, newpt);
-						}
-						
-						if (isTooOld) {
-							_killed.incrementAndGet();
-						} else if (isInvalid) {
-							_invalid.incrementAndGet();
-						}
+					final boolean isInvalid = isTooOld || !survivor.isValid();
+					
+					// Sorry, too old or not valid.
+					if (isInvalid) {
+						final Phenotype<G, C> newpt = Phenotype.valueOf(
+								_genotypeFactory.newInstance(), 
+								_fitnessFunction, 
+								_fitnessScaler, 
+								_generation
+							);
+						survivors.set(i, newpt);
+					}
+					
+					if (isTooOld) {
+						_killed.incrementAndGet();
+					} else if (isInvalid) {
+						_invalid.incrementAndGet();
 					}
 				}
-			});
+			}});
 			
 			// In the mean time we can add the offsprings.
-			c.execute(new Runnable() {
-				@Override public void run() {
-					population.addAll(offsprings);
-				}
-			});
+			c.execute(new Runnable() { @Override public void run() {
+				population.addAll(offsprings);
+			}});
 		}
 		
 		population.addAll(survivors);
