@@ -29,8 +29,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javolution.context.ConcurrentContext;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -54,9 +52,8 @@ public class ForkJoinContextTest {
 	private long _execute(final Integer level) {
 		final AtomicLong counter = new AtomicLong(1);
 		
-		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Runnable() {
+		try (Concurrency c = Concurrency.start()) {
+			c.execute(new Runnable() {
 				@Override public void run() {
 					if (level == 0) {
 						System.out.println("READY");
@@ -65,7 +62,7 @@ public class ForkJoinContextTest {
 					}	
 				}
 			});
-			ConcurrentContext.execute(new Runnable() {
+			c.execute(new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -76,18 +73,15 @@ public class ForkJoinContextTest {
 					}
 				}
 			});
-		} finally {
-			ConcurrentContext.exit();
 		}
 		
 		return counter.longValue();
 	}
 	
 	private static void exec() {
-		ConcurrentContext.enter();
-		try {
+		try (Concurrency c = Concurrency.start()) {
 			for (int i = 0; i < 5; ++i) {
-				ConcurrentContext.execute(new Runnable() {
+				c.execute(new Runnable() {
 					@Override
 					public void run() {
 						try {
@@ -98,8 +92,6 @@ public class ForkJoinContextTest {
 					}
 				});
 				}
-		} finally {
-			ConcurrentContext.exit();
 		}		
 	}
 	
