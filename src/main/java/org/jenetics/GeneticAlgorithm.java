@@ -29,14 +29,11 @@ import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javolution.context.ConcurrentContext;
-import javolution.context.LogContext;
-import javolution.lang.Configurable;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
@@ -974,40 +971,6 @@ public class GeneticAlgorithm<
 		}
 		
 		return String.format("%4d: (best) %s", generation, phenotype);
-	}
-	
-	public static void setConcurrency(final int concurrency) {
-		if (concurrency > ConcurrentContext.getConcurrency()) {
-			LogContext.enter(LogContext.NULL);
-			try {
-				final Properties properties = new Properties();
-				properties.put(
-					"javolution.context.ConcurrentContext#MAXIMUM_CONCURRENCY", 
-					concurrency
-				);
-				
-				Configurable.read(properties);
-			} finally {
-				LogContext.exit();
-			}
-		}
-		
-		ConcurrentContext.setConcurrency(concurrency);
-	}
-	
-	public static void setConcurrentContext(
-		final Class<? extends ConcurrentContext> context
-	) {
-		LogContext.enter(LogContext.NULL);
-		try {
-			final Properties properties = new Properties();
-			properties.put(
-				"javolution.context.ConcurrentContext#DEFAULT", context
-			);
-			Configurable.read(properties);
-		} finally {
-			LogContext.exit();
-		}
 	}
 	
 }

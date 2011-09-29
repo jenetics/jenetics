@@ -42,9 +42,7 @@ public final class PerformanceTests {
 		} finally {
 			LogContext.exit();
 		}
-		
-		//GeneticAlgorithm.setConcurrentContext(ForkJoinContext.class);
-		
+				
 		new TestSuite(ArrayTest.class).run().print();
 		new TestSuite(ChromosomeTest.class).run().print();
 		new TestSuite(PopulationTest.class).run().print();

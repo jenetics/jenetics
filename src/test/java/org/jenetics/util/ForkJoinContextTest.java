@@ -22,16 +22,14 @@
  */
 package org.jenetics.util;
 
-import java.util.Properties;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
-
-import javolution.context.ConcurrentContext;
-import javolution.lang.Configurable;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import javolution.context.ConcurrentContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,19 +38,17 @@ import org.testng.annotations.Test;
 public class ForkJoinContextTest {
 
 	static {
-		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(10));
+		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(1));
 	}
 	
 	@Test(dataProvider = "levels")
 	public void execute(final Integer level) {
-		final Properties properties = new Properties();
-		properties.put(
-			"javolution.context.ConcurrentContext#DEFAULT", 
-			ForkJoinContext.class
-		);
-		Configurable.read(properties);
-		
-		Assert.assertEquals(_execute(level), level + 1);
+		try {
+			Concurrency.setContext(ForkJoinContext.class);
+			Assert.assertEquals(_execute(level), level + 1);
+		} finally {
+			Concurrency.setContext(ConcurrentContext.DEFAULT.get());
+		}
 	}
 	
 	private long _execute(final Integer level) {
@@ -61,13 +57,23 @@ public class ForkJoinContextTest {
 		ConcurrentContext.enter();
 		try {
 			ConcurrentContext.execute(new Runnable() {
-				@Override
-				public void run() {
+				@Override public void run() {
 					if (level == 0) {
 						System.out.println("READY");
 					} else {
 						counter.addAndGet(_execute(level - 1));
 					}	
+				}
+			});
+			ConcurrentContext.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						exec();
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						assert(false) : e.toString();
+					}
 				}
 			});
 		} finally {
@@ -77,11 +83,41 @@ public class ForkJoinContextTest {
 		return counter.longValue();
 	}
 	
+	private static void exec() {
+		ConcurrentContext.enter();
+		try {
+			for (int i = 0; i < 5; ++i) {
+				ConcurrentContext.execute(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(2);
+						} catch (InterruptedException e) {
+							assert(false) : e.toString();
+						}
+					}
+				});
+				}
+		} finally {
+			ConcurrentContext.exit();
+		}		
+	}
+	
 	@DataProvider(name = "levels")
 	public Object[][] levels() {
 		return new Object[][] {
 			{ 1 }, { 2 }, { 5 }, { 7 }, { 10 }, { 15 }, { 21 }, { 50 }, { 100 }
 		};
 	}
+
+	@Test
+	public void deadLock() {
+
+	}
+	
 	
 }
+
+
+
+

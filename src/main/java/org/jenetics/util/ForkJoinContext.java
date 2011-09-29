@@ -43,16 +43,15 @@ import javolution.util.FastList;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class ForkJoinContext extends ConcurrentContext {
+public final class ForkJoinContext extends ConcurrentContext {
 
 	private static final long serialVersionUID = 1L;
 
-	private static AtomicReference<ForkJoinPool> 
-	_POOL = new AtomicReference<>();
+	private final static AtomicReference<ForkJoinPool> _POOL = new AtomicReference<>();
 	
 	private final FastList<Future<?>> _futures = new FastList<>(10);
 	
-	public ForkJoinContext() {
+	ForkJoinContext() {
 	}
 	
 	/**
