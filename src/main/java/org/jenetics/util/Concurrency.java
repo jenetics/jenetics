@@ -25,10 +25,31 @@ package org.jenetics.util;
 import java.util.Properties;
 
 import javolution.context.ConcurrentContext;
+import javolution.context.Context;
 import javolution.context.LogContext;
 import javolution.lang.Configurable;
 
 /**
+ * Simplify the usage of the {@link ConcurrentContext} usage by using the the 
+ * Java 'try' for resources capability.
+ * [code]
+ *     try (Concurrency c = Concurrency.start()) {
+ *         c.execute(task1);
+ *         c.execute(task2);
+ *     }
+ * [/code] 
+ * 
+ * This is equivalent to
+ * [code]
+ *     ConcurrentContext.enter()
+ *     try {
+ *         ConcurrentContext.execute(task1);
+ *         ConcurrentContext.execute(task2);
+ *     } finally {
+ *         ConcurrentContext.exit();
+ *     }
+ * [/code]
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -40,8 +61,9 @@ public final class Concurrency implements AutoCloseable {
 	private static final String 
 	KEY_CONCURRENTCY = "javolution.context.ConcurrentContext#MAXIMUM_CONCURRENCY";
 	
+	private static final Concurrency INSTANCE = new Concurrency();
+	
 	private Concurrency() {
-		ConcurrentContext.enter();
 	}
 	
 	public static void setConcurrency(final int concurrency) {
@@ -75,11 +97,13 @@ public final class Concurrency implements AutoCloseable {
 	
 	@SuppressWarnings("unchecked")
 	public static Class<ConcurrentContext> getContext() {
-		return (Class<ConcurrentContext>)ConcurrentContext.getCurrent().getClass();
+		final Context context = ConcurrentContext.getCurrent();
+		return (Class<ConcurrentContext>)ConcurrentContext.class.cast(context).getClass();
 	}
 	
 	public static Concurrency start() {
-		return new Concurrency();
+		ConcurrentContext.enter();
+		return INSTANCE;
 	}
 	
 	public void execute(final Runnable task) {
@@ -90,24 +114,7 @@ public final class Concurrency implements AutoCloseable {
 	public void close() {
 		ConcurrentContext.exit();
 	}
-	
-	public static void main(final String[] args) {
-		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Runnable() {
-				@Override public void run() {
-				}
-			});
-		}
-		
-		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Runnable() {
-				@Override public void run() {
-				}
-			});
-		} finally {
-			ConcurrentContext.exit();
-		}
-	}
 
 }
+
+

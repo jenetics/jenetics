@@ -47,7 +47,7 @@ public class ForkJoinContextTest {
 			Concurrency.setContext(ForkJoinContext.class);
 			Assert.assertEquals(_execute(level), level + 1);
 		} finally {
-			Concurrency.setContext(ConcurrentContext.DEFAULT.get());
+			Concurrency.setDefaultContext();
 		}
 	}
 	

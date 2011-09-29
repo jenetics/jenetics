@@ -33,9 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javolution.context.ConcurrentContext;
-
 import org.jenetics.util.Array;
+import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.Timer;
@@ -381,15 +380,12 @@ public class GeneticAlgorithm<
 	
 	private void evaluate() {
 		_evaluateTimer.start();
-		ConcurrentContext.enter();
-		try  {
+		try (Concurrency c = Concurrency.start()) {
 			for (int i = 0; i < _population.size(); ++i) {
-				ConcurrentContext.execute(_population.get(i));
+				c.execute(_population.get(i));
 			}
-		} finally {
-			ConcurrentContext.exit();
-			_evaluateTimer.stop();
 		}
+		_evaluateTimer.stop();
 	}
 	
 	/**
@@ -424,9 +420,8 @@ public class GeneticAlgorithm<
 		final int numberOfOffspring = getNumberOfOffsprings();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 		
-		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Runnable() {
+		try (Concurrency c = Concurrency.start()) {
+			c.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> survivors = _survivorSelector.select(
 						_population, numberOfSurvivors, _optimization
@@ -436,7 +431,7 @@ public class GeneticAlgorithm<
 					selection.set(0, survivors);
 				}
 			});
-			ConcurrentContext.execute(new Runnable() {
+			c.execute(new Runnable() {
 				@Override public void run() {
 					final Population<G, C> offsprings = _offspringSelector.select(
 						_population, numberOfOffspring, _optimization
@@ -446,8 +441,6 @@ public class GeneticAlgorithm<
 					selection.set(1, offsprings);
 				}
 			});
-		} finally {
-			ConcurrentContext.exit();
 		}
 	
 		return selection;
@@ -460,10 +453,9 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 		
-		ConcurrentContext.enter();
-		try {
+		try (Concurrency c = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			ConcurrentContext.execute(new Runnable() {
+			c.execute(new Runnable() {
 				@Override public void run() {
 					for (int i = 0, n = survivors.size(); i < n; ++i) {
 						final Phenotype<G, C> survivor = survivors.get(i);
@@ -494,13 +486,11 @@ public class GeneticAlgorithm<
 			});
 			
 			// In the mean time we can add the offsprings.
-			ConcurrentContext.execute(new Runnable() {
+			c.execute(new Runnable() {
 				@Override public void run() {
 					population.addAll(offsprings);
 				}
 			});
-		} finally {
-			ConcurrentContext.exit();
 		}
 		
 		population.addAll(survivors);

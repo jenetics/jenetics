@@ -28,8 +28,6 @@ import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
-import javolution.context.ConcurrentContext;
-
 import org.jscience.mathematics.structure.GroupAdditive;
 
 
@@ -411,14 +409,11 @@ public final class accumulators {
 				); 
 			break;
 		default:
-			ConcurrentContext.enter();
-			try {
+			try (Concurrency c = Concurrency.start()) {
 				for (final Accumulator<? super T> accumulator : accus) {
-					ConcurrentContext.execute(new Acc<>(values, accumulator));
+					c.execute(new Acc<>(values, accumulator));
 				}
-			} finally {
-				ConcurrentContext.exit();
-			}
+			} 
 		}
 	}
 	
@@ -474,12 +469,9 @@ public final class accumulators {
 		final Accumulator<? super T> a1,
 		final Accumulator<? super T> a2
 	) {
-		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Acc<>(values, a1));
-			ConcurrentContext.execute(new Acc<>(values, a2));;			
-		} finally {
-			ConcurrentContext.exit();
+		try (Concurrency c = Concurrency.start()) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));;			
 		}
 	}
 	
@@ -501,13 +493,10 @@ public final class accumulators {
 		final Accumulator<? super T> a2,
 		final Accumulator<? super T> a3
 	) {
-		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Acc<>(values, a1));
-			ConcurrentContext.execute(new Acc<>(values, a2));
-			ConcurrentContext.execute(new Acc<>(values, a3));			
-		} finally {
-			ConcurrentContext.exit();
+		try (Concurrency c = Concurrency.start()) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));			
 		}
 	}
 	
@@ -531,14 +520,11 @@ public final class accumulators {
 		final Accumulator<? super T> a3,
 		final Accumulator<? super T> a4
 	) {
-		ConcurrentContext.enter();
-		try {
-			ConcurrentContext.execute(new Acc<>(values, a1));
-			ConcurrentContext.execute(new Acc<>(values, a2));
-			ConcurrentContext.execute(new Acc<>(values, a3));
-			ConcurrentContext.execute(new Acc<>(values, a4));	
-		} finally {
-			ConcurrentContext.exit();
+		try (Concurrency c = Concurrency.start()) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
+			c.execute(new Acc<>(values, a4));	
 		}
 	}
 	
@@ -564,15 +550,12 @@ public final class accumulators {
 		final Accumulator<? super T> a4,
 		final Accumulator<? super T> a5
 	) {
-		ConcurrentContext.enter();
-		try {	
-			ConcurrentContext.execute(new Acc<>(values, a1));
-			ConcurrentContext.execute(new Acc<>(values, a2));
-			ConcurrentContext.execute(new Acc<>(values, a3));
-			ConcurrentContext.execute(new Acc<>(values, a4));
-			ConcurrentContext.execute(new Acc<>(values, a5));
-		} finally {
-			ConcurrentContext.exit();
+		try (Concurrency c = Concurrency.start()) {
+			c.execute(new Acc<>(values, a1));
+			c.execute(new Acc<>(values, a2));
+			c.execute(new Acc<>(values, a3));
+			c.execute(new Acc<>(values, a4));
+			c.execute(new Acc<>(values, a5));
 		}
 	}	
 	
