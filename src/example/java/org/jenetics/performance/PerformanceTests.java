@@ -42,6 +42,9 @@ public final class PerformanceTests {
 		} finally {
 			LogContext.exit();
 		}
+		
+		//ForkJoinContext.setForkkJoinPool(new ForkJoinPool(10));
+		//Concurrency.setContext(ForkJoinContext.class);
 				
 		new TestSuite(ArrayTest.class).run().print();
 		new TestSuite(ChromosomeTest.class).run().print();
