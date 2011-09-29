@@ -31,6 +31,7 @@ import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ForkJoinContext;
 import org.jenetics.util.Predicate;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
@@ -44,6 +45,10 @@ import org.testng.annotations.Test;
  */
 public class GeneticAlgorithmTest {
 
+	static {
+		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(5));
+	}
+	
 	private static class FF implements FitnessFunction<Float64Gene, Float64> {
 		private static final long serialVersionUID = 618089611921083000L;
 
