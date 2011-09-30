@@ -26,10 +26,11 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
+import java.io.Serializable;
+
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import org.jenetics.FitnessFunction;
 import org.jenetics.FitnessScaler;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
@@ -38,6 +39,8 @@ import org.jenetics.IdentityScaler;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
+
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -46,11 +49,14 @@ import org.jscience.mathematics.number.Float64;
  */
 public class Performance {
 	
-	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
+	private static final class Perf 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
+	{
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			final double radians = toRadians(gene.doubleValue());
 			return Float64.valueOf(Math.log(sin(radians)*cos(radians)));
@@ -58,7 +64,7 @@ public class Performance {
 	}
 	
 	public static void main(String[] args) {
-		final Function ff = new Function();
+		final Perf ff = new Perf();
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
 		final FitnessScaler<Float64> fs = IdentityScaler.<Float64>valueOf();
 		

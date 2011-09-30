@@ -27,8 +27,9 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
+import java.io.Serializable;
+
 import org.jenetics.CompositeAlterer;
-import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
@@ -47,21 +48,24 @@ import org.jscience.mathematics.number.Float64;
  */
 public class RealFunction {
 	private static final class FF 
-		implements FitnessFunction<Float64Gene, Float64>,
-					Function<Genotype<Float64Gene>, Float64>
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			final double radians = toRadians(apply(genotype).doubleValue());
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
+			final double radians = toRadians(converter.apply(genotype).doubleValue());
 			return Float64.valueOf(cos(sin(radians)*cos(radians)));
 		}
 
-		@Override
-		public Float64 apply(final Genotype<Float64Gene> value) {
-			return value.getGene().getAllele();
-		}
+		private Function<Genotype<Float64Gene>, Float64> 
+		converter = new  Function<Genotype<Float64Gene>, Float64>() {
+			@Override
+			public Float64 apply(final Genotype<Float64Gene> value) {
+				return value.getGene().getAllele();
+			}
+		};
 		
 		@Override
 		public String toString() {

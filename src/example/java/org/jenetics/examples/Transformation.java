@@ -27,11 +27,11 @@ import static org.jenetics.ExponentialScaler.SQR_SCALER;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.CompositeAlterer;
-import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
@@ -49,8 +49,8 @@ import org.jenetics.util.Factory;
 public class Transformation {
 
 	private static final class FF 
-		implements FitnessFunction<Float64Gene, Float64>,
-					Function<Genotype<Float64Gene>, AffineTransform>
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
@@ -63,8 +63,8 @@ public class Transformation {
 		}
 
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			final AffineTransform transform = apply(genotype);
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
+			final AffineTransform transform = converter.apply(genotype);
 			
 			double error = 0;
 			final Point2D point = new Point2D.Double();
@@ -77,23 +77,26 @@ public class Transformation {
 			return Float64.valueOf(error);
 		}
 		
-		@Override
-		public AffineTransform apply(final Genotype<Float64Gene> genotype) {
-			final double theta = genotype.getChromosome(0).getGene().doubleValue();
-			final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
-			final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
-			final double shx = genotype.getChromosome(2).getGene(0).doubleValue();
-			final double shy = genotype.getChromosome(2).getGene(1).doubleValue();
-			
-			final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
-			final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
-			final AffineTransform shear = AffineTransform.getShearInstance(shx, shy);
-			
-			rotate.concatenate(translate);
-			rotate.concatenate(shear);
-			
-			return rotate;
-		}
+		private Function<Genotype<Float64Gene>, AffineTransform>
+		converter = new Function<Genotype<Float64Gene>, AffineTransform>() {
+			@Override
+			public AffineTransform apply(final Genotype<Float64Gene> genotype) {
+				final double theta = genotype.getChromosome(0).getGene().doubleValue();
+				final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
+				final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
+				final double shx = genotype.getChromosome(2).getGene(0).doubleValue();
+				final double shy = genotype.getChromosome(2).getGene(1).doubleValue();
+				
+				final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
+				final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
+				final AffineTransform shear = AffineTransform.getShearInstance(shx, shy);
+				
+				rotate.concatenate(translate);
+				rotate.concatenate(shear);
+				
+				return rotate;
+			}
+		};
 		
 		@Override
 		public String toString() {

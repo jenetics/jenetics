@@ -122,7 +122,7 @@ public class GeneticAlgorithm<
 	private final Optimize _optimization;
 	
 	private final Factory<Genotype<G>> _genotypeFactory;
-	private final FitnessFunction<G, C> _fitnessFunction;
+	private final Function<Genotype<G>, C> _fitnessFunction;
 	private FitnessScaler<C> _fitnessScaler;
 	
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
@@ -169,7 +169,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
-		final FitnessFunction<G, C> fitnessFunction
+		final Function<Genotype<G>, C> fitnessFunction
 	) {	 
 		this(
 				genotypeFactory, 
@@ -190,7 +190,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
-		final FitnessFunction<G, C> fitnessFunction,
+		final Function<Genotype<G>, C> fitnessFunction,
 		final Optimize optimization
 	) {	 
 		this(
@@ -212,7 +212,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
-		final FitnessFunction<G, C> fitnessFunction, 
+		final Function<Genotype<G>, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler
 	) {	 
 		this(
@@ -235,7 +235,7 @@ public class GeneticAlgorithm<
 	 */
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
-		final FitnessFunction<G, C> fitnessFunction, 
+		final Function<Genotype<G>, C> fitnessFunction, 
 		final FitnessScaler<C> fitnessScaler,
 		final Optimize optimization
 	) {	 
@@ -591,11 +591,11 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Return the used {@link FitnessFunction} of the GA. 
+	 * Return the used fitness {@link Function} of the GA. 
 	 * 
-	 * @return the used {@link FitnessFunction} of the GA. 
+	 * @return the used fitness {@link Function} of the GA. 
 	 */
-	public FitnessFunction<G, C> getFitnessFunction() {
+	public Function<Genotype<G>, C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
 	

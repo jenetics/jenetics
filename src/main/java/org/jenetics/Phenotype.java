@@ -40,12 +40,12 @@ import org.jenetics.util.Verifiable;
 
 /**
  * The <code>Phenotype</code> consists of a {@link Genotype} plus a 
- * {@link FitnessFunction}, where the	{@link FitnessFunction} represents the
+ * fitness {@link Function}, where the fitness {@link Function} represents the
  * environment where the {@link Genotype} lives. 
  * This class implements the {@link Comparable} interface, to define a natural 
  * order between two <code>Phenotype</code>s. The natural order of the 
  * <code>Phenotypes</code> is defined by its fitness value (given by the 
- * {@link FitnessFunction}.
+ * fitness {@link Function}.
  * The <code>Phenotype</code> is immutable and therefore can't be changed after 
  * creation.
  * 
@@ -67,7 +67,7 @@ public final class Phenotype<
 	private static final long serialVersionUID = 1L;
 	
 	private Genotype<G> _genotype;
-	private FitnessFunction<G, C> _fitnessFunction;
+	private Function<Genotype<G>, C> _fitnessFunction;
 	private FitnessScaler<C> _fitnessScaler;
 	
 	private int _generation = 0;
@@ -97,7 +97,7 @@ public final class Phenotype<
 	 */
 	public void evaluate() {
 		if (_rawFitness == null) {
-			_rawFitness = _fitnessFunction.evaluate(_genotype);
+			_rawFitness = _fitnessFunction.apply(_genotype);
 			_fitness = _fitnessScaler.scale(_rawFitness);
 		}
 	}
@@ -238,7 +238,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final FitnessFunction<G, C> function, 
+			final Function<Genotype<G>, C> function, 
 			final FitnessScaler<C> scaler, 
 			final int generation
 	) {
@@ -256,7 +256,7 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final FitnessFunction<G, C> function, 
+			final Function<Genotype<G>, C> function, 
 			final int generation
 	) {
 		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
@@ -362,7 +362,7 @@ public final class Phenotype<
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
-		final FitnessFunction<SG, SC> fitnessFunction,
+		final Function<Genotype<SG>, SC> fitnessFunction,
 		final int generation
 	) {
 		return valueOf(genotype, fitnessFunction, new IdentityScaler<SC>(), generation);
@@ -382,7 +382,7 @@ public final class Phenotype<
 	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>> 
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
-		final FitnessFunction<SG, SC> fitnessFunction, 
+		final Function<Genotype<SG>, SC> fitnessFunction, 
 		final FitnessScaler<SC> fitnessScaler,
 		final int generation
 	) {

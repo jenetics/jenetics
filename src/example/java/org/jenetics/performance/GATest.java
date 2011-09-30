@@ -22,12 +22,13 @@
  */
 package org.jenetics.performance;
 
+import java.io.Serializable;
+
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
-import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -36,6 +37,7 @@ import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Array;
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,23 +52,25 @@ public class GATest {
 	
 	
 	private static final class Float64GeneFF 
-		implements FitnessFunction<Float64Gene, Float64> 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			return genotype.getChromosome().getGene().getAllele(); 
 		}
 	}
 	
 	private static final class CharacterGeneFF
-		implements FitnessFunction<CharacterGene, Float64>
+		implements Function<Genotype<CharacterGene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Float64 evaluate(final Genotype<CharacterGene> genotype) {
+		public Float64 apply(final Genotype<CharacterGene> genotype) {
 			return Float64.valueOf(
 					genotype.getChromosome().getGene().getAllele().hashCode()
 				);

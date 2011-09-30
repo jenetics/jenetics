@@ -26,10 +26,14 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
+import java.io.Serializable;
+
 import javolution.lang.Immutable;
 
+import org.jenetics.util.Function;
+
 /**
- *  A {@link FitnessFunction} which always returns a given constant value.
+ *  A fitness {@link Function} which always returns a given constant value.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -41,8 +45,9 @@ public final class ConstantFitnessFunction<
 	C extends Comparable<? super C>
 > 
 	implements 
-		FitnessFunction<G, C>,
-		Immutable
+		Function<Genotype<G>, C>,
+		Immutable,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -50,7 +55,7 @@ public final class ConstantFitnessFunction<
 	
 	/**
 	 * Create a new <i>constant</i> fitness function with the given value. This
-	 * value is returned for every {@link #evaluate(Genotype)} call.
+	 * value is returned for every {@link #apply(Genotype)} call.
 	 * 
 	 * @param value the constant value.
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
@@ -63,7 +68,7 @@ public final class ConstantFitnessFunction<
 	 * Always return the given constant value.
 	 */
 	@Override
-	public C evaluate(final Genotype<G> genotype) {
+	public C apply(final Genotype<G> genotype) {
 		return _value;
 	}
 	

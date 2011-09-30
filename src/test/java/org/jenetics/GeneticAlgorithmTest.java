@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,11 +50,14 @@ public class GeneticAlgorithmTest {
 		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(5));
 	}
 	
-	private static class FF implements FitnessFunction<Float64Gene, Float64> {
+	private static class FF 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
+	{
 		private static final long serialVersionUID = 618089611921083000L;
 
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			return genotype.getGene().getAllele();
 		}
 	}
@@ -89,7 +93,7 @@ public class GeneticAlgorithmTest {
 			RandomRegistry.setRandom(new Random(12345));
 			
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
-			final FitnessFunction<Float64Gene, Float64> ff = new FF();
+			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(200);
@@ -150,7 +154,7 @@ public class GeneticAlgorithmTest {
 		
 		try {
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
-			final FitnessFunction<Float64Gene, Float64> ff = new FF();
+			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
@@ -174,7 +178,7 @@ public class GeneticAlgorithmTest {
 		
 		try {
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
-			final FitnessFunction<Float64Gene, Float64> ff = new FF();
+			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
 			
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
@@ -195,7 +199,7 @@ public class GeneticAlgorithmTest {
 	@Test(invocationCount = 10)
 	public void evolveConcurrent() {
 		final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(-1, 1));
-		final FitnessFunction<Float64Gene, Float64> ff = new FF();
+		final Function<Genotype<Float64Gene>, Float64> ff = new FF();
 		
 		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 		ga.setPopulationSize(1000);
