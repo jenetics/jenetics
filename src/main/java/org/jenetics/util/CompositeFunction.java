@@ -30,7 +30,7 @@ import static org.jenetics.util.object.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CompositeConverter<A, B, C> implements Function<A, C> {
+public class CompositeFunction<A, B, C> implements Function<A, C> {
 	private final Function<A, B> _first;
 	private final Function<B, C> _second;
 	
@@ -41,7 +41,7 @@ public class CompositeConverter<A, B, C> implements Function<A, C> {
 	 * @param second second converter
 	 * @throws NullPointerException if one of the converters is {@code null}.
 	 */
-	public CompositeConverter(
+	public CompositeFunction(
 		final Function<A, B> first,
 		final Function<B, C> second
 	) {
@@ -66,7 +66,7 @@ public class CompositeConverter<A, B, C> implements Function<A, C> {
 		final Function<A, B> c1,
 		final Function<B, C> c2
 	) {
-		return new CompositeConverter<>(c1, c2);
+		return new CompositeFunction<>(c1, c2);
 	}
 
 	public static <A, B, C, D> Function<A, D> valueOf(
