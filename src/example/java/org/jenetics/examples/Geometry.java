@@ -875,10 +875,10 @@ class GeometryController implements StepListener {
 		final long time = System.currentTimeMillis();
 		if (time - _lastRepaintTime > MIN_REPAINT_TIME) {
 			_geometry.setPopulationBestTransform(
-					_function.apply(_populationBestPhenotype.getGenotype())
+					_function._converter.apply(_populationBestPhenotype.getGenotype())
 				);
 			_geometry.setGABestTransform(
-					_function.apply(_gaBestPhenotype.getGenotype())
+					_function._converter.apply(_gaBestPhenotype.getGenotype())
 				);
 			_geometry.repaint();
 			_geometry.setGeneration(_generation);
@@ -1519,8 +1519,7 @@ interface StepListener extends EventListener {
 class GA {
 	
 	static class GAFF 
-		implements FitnessFunction<Float64Gene, Float64>, 
-					Function<Genotype<Float64Gene>, AffineTransform> 
+		implements FitnessFunction<Float64Gene, Float64>
 	{
 		private static final long serialVersionUID = 1L;
 	
@@ -1543,7 +1542,7 @@ class GA {
 		}
 		
 		Float64 distance(final Genotype<Float64Gene> genotype) {
-			final AffineTransform transform = apply(genotype);
+			final AffineTransform transform = _converter.apply(genotype);
 	
 			double error = 0;
 			Point2D point = new Point2D.Double();
@@ -1557,7 +1556,7 @@ class GA {
 		}
 		
 		Float64 area(final Genotype<Float64Gene> genotype) {
-			final AffineTransform transform = apply(genotype);
+			final AffineTransform transform = _converter.apply(genotype);
 						
 			final Point2D[] points = new Point2D.Double[_source.length];
 			for (int i = 0; i < _source.length; ++i) {
@@ -1567,26 +1566,30 @@ class GA {
 			return Float64.valueOf(GeometryUtils.area(_source, points));
 		}
 	
-		@Override
-		public AffineTransform apply(final Genotype<Float64Gene> genotype) {
-			System.out.println(genotype);
-			final double theta = genotype.getChromosome(0).getGene().doubleValue();
-			final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
-			final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
-			final double shx = genotype.getChromosome(2).getGene(0).doubleValue();
-			final double shy = genotype.getChromosome(2).getGene(1).doubleValue();
-	
-			final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
-			final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
-			final AffineTransform shear = AffineTransform.getShearInstance(shx,shy);
-	
-			final AffineTransform transform = new AffineTransform();
-			transform.concatenate(shear);
-			transform.concatenate(rotate);
-			transform.concatenate(translate);
-	
-			return transform;
-		}
+		public final Function<Genotype<Float64Gene>, AffineTransform> 
+		_converter = new Function<Genotype<Float64Gene>, AffineTransform>() {
+		
+			@Override
+			public AffineTransform apply(final Genotype<Float64Gene> genotype) {
+				System.out.println(genotype);
+				final double theta = genotype.getChromosome(0).getGene().doubleValue();
+				final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
+				final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
+				final double shx = genotype.getChromosome(2).getGene(0).doubleValue();
+				final double shy = genotype.getChromosome(2).getGene(1).doubleValue();
+		
+				final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
+				final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
+				final AffineTransform shear = AffineTransform.getShearInstance(shx,shy);
+		
+				final AffineTransform transform = new AffineTransform();
+				transform.concatenate(shear);
+				transform.concatenate(rotate);
+				transform.concatenate(translate);
+		
+				return transform;
+			}
+		};
 	
 	}
 	
