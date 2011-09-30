@@ -845,14 +845,17 @@ public final class arrays {
 	/**
 	 * @see #indexOf(Object[], Object)
 	 */
-	public static <T> int indexOf(final T[] array, final Predicate<? super T> predicate) {
+	public static <T> int indexOf(
+		final T[] array, 
+		final Function<? super T, Boolean> predicate
+	) {
 		nonNull(array, "Array");
 		nonNull(predicate, "Predicate");
 		
 		int index = -1;
 		
 		for (int i = 0; i < array.length && index == -1; ++i) {
-			if (predicate.evaluate(array[i])) {
+			if (predicate.apply(array[i])) {
 				index = i;
 			}
 		}
@@ -865,7 +868,7 @@ public final class arrays {
 	 */
 	public static <T> int indexOf(
 		final Iterable<? extends T> values, 
-		final Predicate<? super T> predicate
+		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(values, "Array");
 		nonNull(predicate, "Predicate");
@@ -875,7 +878,7 @@ public final class arrays {
 		for (Iterator<? extends T> 
 			it = values.iterator(); it.hasNext() && index == -1; ++i) 
 		{
-			if (predicate.evaluate(it.next())) {
+			if (predicate.apply(it.next())) {
 				index = i;
 			}
 		}
@@ -906,14 +909,14 @@ public final class arrays {
 	 */
 	public static <T> int foreach(
 		final T[] array, 
-		final Predicate<? super T> predicate
+		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(array, "Array");
 		nonNull(predicate, "Predicate");
 		
 		int index = -1;
 		for (int i = 0; i < array.length && index == -1; ++i) {			
-			if (!predicate.evaluate(array[i])) {
+			if (!predicate.apply(array[i])) {
 				index = i;
 			}
 		}
@@ -935,7 +938,7 @@ public final class arrays {
 	 */
 	public static <T> int foreach(
 		final Iterable<? extends T> values, 
-		final Predicate<? super T> predicate
+		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(values, "Array");
 		nonNull(predicate, "Predicate");
@@ -945,7 +948,7 @@ public final class arrays {
 		for (Iterator<? extends T> 
 			it = values.iterator(); it.hasNext() && index == -1; ++i) 
 		{
-			if (!predicate.evaluate(it.next())) {
+			if (!predicate.apply(it.next())) {
 				index = i;
 			}
 		}

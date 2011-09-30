@@ -29,7 +29,7 @@ import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Predicate;
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -83,10 +83,10 @@ public class UntilTest {
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
 		
-		final Predicate<Statistics<?, Float64>> until = 
+		final Function<Statistics<?, Float64>, Boolean> until = 
 			Until.<Float64>SteadyFitness(steadyGenerations);
 		
-		while (until.evaluate(ga.getStatistics())) {
+		while (until.apply(ga.getStatistics())) {
 			ga.evolve();
 			values.addFirst(ga.getBestPhenotype().getFitness());
 			

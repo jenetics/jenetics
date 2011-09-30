@@ -32,7 +32,7 @@ import javolution.context.LocalContext;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinContext;
-import org.jenetics.util.Predicate;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -134,7 +134,7 @@ public class GeneticAlgorithmTest {
 	
 	@SuppressWarnings("null")
 	public void evolve() {
-		Predicate<Statistics<? extends Float64Gene, ? extends Base>> until = null;
+		Function<Statistics<? extends Float64Gene, ? extends Base>, Boolean> until = null;
 		GeneticAlgorithm<Float64Gene, Derived> ga = null;
 		
 		ga.evolve(until);
