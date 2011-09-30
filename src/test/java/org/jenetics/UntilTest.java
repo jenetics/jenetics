@@ -53,13 +53,11 @@ public class UntilTest {
 		Assert.assertEquals(ga.getGeneration(), 50);
 	}
 	
-	static final FitnessFunction<Float64Gene, Float64> FF = 
-		new FitnessFunction<Float64Gene, Float64>() 
+	static final Function<Genotype<Float64Gene>, Float64> FF = 
+		new Function<Genotype<Float64Gene>, Float64>() 
 	{
-		private static final long serialVersionUID = 1L;
-
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			final double value = genotype.getChromosome().getGene().doubleValue();
 			return Float64.valueOf(Math.sin(value));
 		}

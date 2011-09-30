@@ -22,10 +22,13 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -33,11 +36,14 @@ import org.testng.annotations.Test;
  */
 public class OptimizeTest {
 
-	private static class FF implements FitnessFunction<Float64Gene, Double> {
+	private static class FF 
+		implements Function<Genotype<Float64Gene>, Double>,
+					Serializable
+	{
 		private static final long serialVersionUID = 6215331666272441749L;
 
 		@Override
-		public Double evaluate(Genotype<Float64Gene> genotype) {
+		public Double apply(Genotype<Float64Gene> genotype) {
 			return genotype.getGene().doubleValue();
 		}
 	}

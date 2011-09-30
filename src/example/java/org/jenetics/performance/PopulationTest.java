@@ -22,15 +22,16 @@
  */
 package org.jenetics.performance;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
+import org.jenetics.util.Function;
 import org.jenetics.util.arrays;
 
 /**
@@ -81,17 +82,18 @@ public class PopulationTest {
 	
 
 	private static final class Continous 
-		implements FitnessFunction<Float64Gene, Float64> 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public Float64 evaluate(Genotype<Float64Gene> genotype) {
+		public Float64 apply(Genotype<Float64Gene> genotype) {
 			return genotype.getChromosome().getGene().getAllele(); 
 		}
 	}
 
-	private static final FitnessFunction<Float64Gene, Float64> FF = new Continous();
+	private static final Function<Genotype<Float64Gene>, Float64> FF = new Continous();
 	
 	private static final Population<Float64Gene, Float64> newFloat64GenePopulation(
 		final int ngenes, 

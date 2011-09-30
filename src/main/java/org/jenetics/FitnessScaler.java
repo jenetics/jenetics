@@ -30,7 +30,6 @@ import java.io.Serializable;
  * 
  * @param <C> the result type of the fitness function to scale. The scaled value
  * 			  must (of course) of the same type.
- * @see FitnessFunction
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

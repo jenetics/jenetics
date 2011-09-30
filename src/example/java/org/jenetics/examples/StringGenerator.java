@@ -22,6 +22,7 @@
  */
 package org.jenetics.examples;
 
+import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,13 +31,13 @@ import org.jscience.mathematics.number.Integer64;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
 import org.jenetics.CompositeAlterer;
-import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.CharSet;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,17 +45,20 @@ import org.jenetics.util.Factory;
  */
 public class StringGenerator {
 
-	private static class Function implements FitnessFunction<CharacterGene, Integer64> {
+	private static class Gen 
+		implements Function<Genotype<CharacterGene>, Integer64>,
+					Serializable
+	{
 		private static final long serialVersionUID = 1L;
 		
 		private final String value;
 		
-		public Function(final String value) { 
+		public Gen(final String value) { 
 			this.value = value;
 		}
 		
 		@Override
-		public Integer64 evaluate(final Genotype<CharacterGene> genotype) {
+		public Integer64 apply(final Genotype<CharacterGene> genotype) {
 			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
 			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
 		}
@@ -76,7 +80,7 @@ public class StringGenerator {
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
 			new CharacterChromosome(chars, value.length())
 		);
-		final Function ff = new Function(value);
+		final Gen ff = new Gen(value);
 		final GeneticAlgorithm<CharacterGene, Integer64> 
 		ga = new GeneticAlgorithm<>(gtf, ff);
 		

@@ -38,6 +38,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Dictionary;
 import java.util.EventListener;
@@ -69,7 +70,6 @@ import javax.swing.event.ChangeListener;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.ExponentialScaler;
-import org.jenetics.FitnessFunction;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
@@ -1519,7 +1519,8 @@ interface StepListener extends EventListener {
 class GA {
 	
 	static class GAFF 
-		implements FitnessFunction<Float64Gene, Float64>
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 	
@@ -1536,7 +1537,7 @@ class GA {
 		}
 	
 		@Override
-		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			return distance(genotype);
 			//return area(genotype);
 		}

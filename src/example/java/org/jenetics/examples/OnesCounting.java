@@ -22,10 +22,11 @@
  */
 package org.jenetics.examples;
 
+import java.io.Serializable;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.CompositeAlterer;
-import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -33,6 +34,7 @@ import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 
 
 /**
@@ -41,11 +43,14 @@ import org.jenetics.util.Factory;
  */
 public class OnesCounting {
 
-	private static class OneCounter implements FitnessFunction<BitGene, Integer> {
+	private static class OneCounter 
+		implements Function<Genotype<BitGene>, Integer>,
+					Serializable
+	{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public Integer evaluate(Genotype<BitGene> genotype) {
+		public Integer apply(Genotype<BitGene> genotype) {
 			int count = 0;
 			for (BitGene gene : genotype.getChromosome()) {
 				if (gene.getBit()) {

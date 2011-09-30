@@ -22,11 +22,13 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -172,12 +174,13 @@ class TestUtils {
 	 * @version $Id$
 	 */
 	private static final class Continous 
-		implements FitnessFunction<Float64Gene, Float64> 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public Float64 evaluate(Genotype<Float64Gene> genotype) {
+		public Float64 apply(Genotype<Float64Gene> genotype) {
 			return genotype.getChromosome().getGene().getAllele(); 
 		}
 	}
@@ -185,7 +188,7 @@ class TestUtils {
 	/**
 	 * 'Identity' fitness function.
 	 */
-	public static final FitnessFunction<Float64Gene, Float64> FF = new Continous();
+	public static final Function<Genotype<Float64Gene>, Float64> FF = new Continous();
 	
 	public static GeneticAlgorithm<Float64Gene, Float64> GA() {
 		return new GeneticAlgorithm<>(

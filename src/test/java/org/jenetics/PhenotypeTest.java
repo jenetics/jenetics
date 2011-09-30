@@ -25,9 +25,12 @@ package org.jenetics;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
+import java.io.Serializable;
+
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ObjectTester;
 
 /**
@@ -36,9 +39,12 @@ import org.jenetics.util.ObjectTester;
  */
 public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>> { 
     
-	private static final class Function implements FitnessFunction<Float64Gene, Float64> {
+	private static final class FF 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
+	{
 		private static final long serialVersionUID = 2793605351118238308L;
-		@Override public Float64 evaluate(final Genotype<Float64Gene> genotype) {
+		@Override public Float64 apply(final Genotype<Float64Gene> genotype) {
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
 		}
@@ -50,7 +56,7 @@ public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>>
 			new Float64Chromosome(0, 1, 100),
 			new Float64Chromosome(0, 1, 50)
 		);
-	private final FitnessFunction<Float64Gene, Float64> _ff = new Function();
+	private final Function<Genotype<Float64Gene>, Float64> _ff = new FF();
 	private final FitnessScaler<Float64> _scaler = IdentityScaler.<Float64>valueOf();
 	private final Factory<Phenotype<Float64Gene, Float64>> 
 	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {

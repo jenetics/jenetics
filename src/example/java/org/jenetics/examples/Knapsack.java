@@ -28,7 +28,6 @@ import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Chromosome;
 import org.jenetics.CompositeAlterer;
-import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -36,6 +35,8 @@ import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
+
 import org.jscience.mathematics.number.Float64;
 
 /**
@@ -57,7 +58,10 @@ class Item implements Serializable {
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
+class KnappsackFunction 
+	implements Function<Genotype<BitGene>, Float64>,
+				Serializable
+{
 	private static final long serialVersionUID = -924756568100918419L;
 	
 	private final Item[] _items;
@@ -73,7 +77,7 @@ class KnappsackFunction implements FitnessFunction<BitGene, Float64> {
 	}
 	 
 	@Override
-	public Float64 evaluate(final Genotype<BitGene> genotype) {
+	public Float64 apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
 		  
 		double size = 0;

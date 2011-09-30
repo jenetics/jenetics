@@ -26,9 +26,10 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 
+import java.io.Serializable;
+
 import org.jenetics.Chromosome;
 import org.jenetics.CompositeAlterer;
-import org.jenetics.FitnessFunction;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Integer64Gene;
@@ -37,6 +38,7 @@ import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
@@ -46,17 +48,20 @@ import org.jenetics.util.Factory;
  */
 public class TravelingSalesman {
 	
-	private static class Function implements FitnessFunction<Integer64Gene, Double> {
+	private static class FF 
+		implements Function<Genotype<Integer64Gene>, Double>,
+					Serializable
+	{
 		private static final long serialVersionUID = 1L;
 		
 		private final double[][] _adjacence;
 		
-		public Function(final double[][] adjacence) {
+		public FF(final double[][] adjacence) {
 			_adjacence = adjacence;
 		}
 		
 		@Override
-		public Double evaluate(final Genotype<Integer64Gene> genotype) {
+		public Double apply(final Genotype<Integer64Gene> genotype) {
 			final Chromosome<Integer64Gene> path = genotype.getChromosome();
 			
 			double length = 0.0;
@@ -77,7 +82,7 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 		
-		final FitnessFunction<Integer64Gene, Double> ff = new Function(adjacencyMatrix(stops));
+		final Function<Genotype<Integer64Gene>, Double> ff = new FF(adjacencyMatrix(stops));
 		final Factory<Genotype<Integer64Gene>> gtf = Genotype.valueOf(
 			new PermutationChromosome(stops)
 		);

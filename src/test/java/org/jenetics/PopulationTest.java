@@ -25,6 +25,7 @@ package org.jenetics;
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javolution.xml.stream.XMLStreamException;
 
@@ -32,6 +33,7 @@ import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.arrays;
 import org.jenetics.util.serialize;
 
@@ -42,15 +44,18 @@ import org.jenetics.util.serialize;
  */
 public class PopulationTest {
 	
-	private static final class Continous implements FitnessFunction<Float64Gene, Float64> {
+	private static final class Continous 
+		implements Function<Genotype<Float64Gene>, Float64>,
+					Serializable
+	{
 		private static final long serialVersionUID = 1L;
 		@Override
-		public Float64 evaluate(Genotype<Float64Gene> genotype) {
+		public Float64 apply(Genotype<Float64Gene> genotype) {
 			return genotype.getChromosome().getGene().getAllele();
 		}
 	}
 	
-	private static final FitnessFunction<Float64Gene, Float64> _cf = new Continous();
+	private static final Function<Genotype<Float64Gene>, Float64> _cf = new Continous();
 	private static Phenotype<Float64Gene, Float64> pt(double value) {
 		return Phenotype.valueOf(Genotype.valueOf(new Float64Chromosome(Float64Gene.valueOf(value, 0, 10))), _cf, 0);
 	}
@@ -64,24 +69,24 @@ public class PopulationTest {
 		
 		population.sort();
 		for (int i = 0; i < population.size() - 1; ++i) {
-			Float64 first = _cf.evaluate(population.get(i).getGenotype());
-			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
+			Float64 first = _cf.apply(population.get(i).getGenotype());
+			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) >= 0);
 		}
 		
 		arrays.shuffle(population);
 		population.sort(Optimize.MAXIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
-			Float64 first = _cf.evaluate(population.get(i).getGenotype());
-			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
+			Float64 first = _cf.apply(population.get(i).getGenotype());
+			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) >= 0, first + "<" + second);
 		}
 		
 		arrays.shuffle(population);
 		population.sort(Optimize.MINIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
-			Float64 first = _cf.evaluate(population.get(i).getGenotype());
-			Float64 second = _cf.evaluate(population.get(i + 1).getGenotype());
+			Float64 first = _cf.apply(population.get(i).getGenotype());
+			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) <= 0, first + ">" + second);
 		}
 	}

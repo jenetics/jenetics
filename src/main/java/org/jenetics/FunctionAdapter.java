@@ -26,7 +26,10 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
-import org.jscience.mathematics.function.Function;
+import java.io.Serializable;
+
+import org.jenetics.util.Function;
+
 
 /**
  * Adapter class to allow the genetic algorithm to interact with the 
@@ -40,14 +43,15 @@ public final class FunctionAdapter<
 	G extends Gene<?, G>, 
 	C extends Comparable<? super C>
 > 
-	implements FitnessFunction<G, C> 
+	implements Function<Genotype<G>, C>,
+				Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private final Function<Genotype<G>, C> _adoptee;
+	private final org.jscience.mathematics.function.Function<Genotype<G>, C> _adoptee;
 	
 	/**
-	 * Create a new {@link FitnessFunction} with the given 
+	 * Create a new fitness {@link Function} with the given 
 	 * <a href="http://jscience.org/">JScience</a> {@link Function} object.
 	 * 
 	 * @param adoptee the <a href="http://jscience.org/">JScience</a>
@@ -55,12 +59,14 @@ public final class FunctionAdapter<
 	 * @throws NullPointerException if the function {@code adoptee} is 
 	 * 		 {@code null}.
 	 */
-	public FunctionAdapter(final Function<Genotype<G>, C> adoptee) {
+	public FunctionAdapter(
+		final org.jscience.mathematics.function.Function<Genotype<G>, C> adoptee
+	) {
 		_adoptee = nonNull(adoptee, "Fitness function");
 	}
 	
 	@Override
-	public C evaluate(final Genotype<G> genotype) {
+	public C apply(final Genotype<G> genotype) {
 		return _adoptee.evaluate(genotype);
 	}
 	
