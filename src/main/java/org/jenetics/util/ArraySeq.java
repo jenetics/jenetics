@@ -194,7 +194,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	
 	@Override
 	public <B> Iterator<B> iterator(
-		final Converter<? super T, ? extends B> converter
+		final Function<? super T, ? extends B> converter
 	) {
 		nonNull(converter, "Converter");
 		
@@ -204,7 +204,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				return _iterator.hasNext();
 			}
 			@Override public B next() {
-				return converter.convert(_iterator.next());
+				return converter.apply(_iterator.next());
 			}
 			@Override public void remove() {
 				_iterator.remove();

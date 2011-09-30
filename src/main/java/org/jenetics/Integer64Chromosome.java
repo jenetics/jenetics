@@ -35,7 +35,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
@@ -166,24 +166,24 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * ************************************************************************/
 	
 	/**
-	 * Return a {@link Converter} which returns the gene array from this
+	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>> 
+	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
-	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<Chromosome<Integer64Gene>, Integer64Gene> 
+	public static final Function<Chromosome<Integer64Gene>, Integer64Gene> 
 		Gene = AbstractChromosome.gene();
 	
 	/**
-	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Converter<Chromosome<Integer64Gene>, Integer64Gene> 
+	public static final Function<Chromosome<Integer64Gene>, Integer64Gene> 
 	Gene(final int index) 
 	{
 		return AbstractChromosome.gene(index);

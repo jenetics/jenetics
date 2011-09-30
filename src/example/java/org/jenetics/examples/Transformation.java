@@ -39,7 +39,7 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 
 /**
@@ -48,23 +48,23 @@ import org.jenetics.util.Factory;
  */
 public class Transformation {
 
-	private static final class Function 
+	private static final class FF 
 		implements FitnessFunction<Float64Gene, Float64>,
-					Converter<Genotype<Float64Gene>, AffineTransform>
+					Function<Genotype<Float64Gene>, AffineTransform>
 	{
 		private static final long serialVersionUID = 1L;
 		
 		private final Point2D[] _source;
 		private final Point2D[] _target;
 		
-		public Function(final Point2D[] source, final Point2D[] target) {
+		public FF(final Point2D[] source, final Point2D[] target) {
 			_source = source;
 			_target = target;
 		}
 
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			final AffineTransform transform = convert(genotype);
+			final AffineTransform transform = apply(genotype);
 			
 			double error = 0;
 			final Point2D point = new Point2D.Double();
@@ -78,7 +78,7 @@ public class Transformation {
 		}
 		
 		@Override
-		public AffineTransform convert(final Genotype<Float64Gene> genotype) {
+		public AffineTransform apply(final Genotype<Float64Gene> genotype) {
 			final double theta = genotype.getChromosome(0).getGene().doubleValue();
 			final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
 			final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
@@ -129,7 +129,7 @@ public class Transformation {
 			new Float64Chromosome(Float64Gene.valueOf(-400, 400), Float64Gene.valueOf(-400, 400))	//Shear
 		);
 		
-		final Function ff = new Function(source, target);
+		final FF ff = new FF(source, target);
 		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setFitnessScaler(SQR_SCALER);

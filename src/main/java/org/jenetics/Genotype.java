@@ -37,7 +37,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -221,10 +221,10 @@ public final class Genotype<T extends Gene<?, T>>
 	 * Return a converter which access the chromosome array of this genotype.
 	 */
 	public static <T extends Gene<?, T>> 
-	Converter<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
+	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
 	{
-		return new Converter<Genotype<T>, ISeq<Chromosome<T>>>() {
-			@Override public ISeq<Chromosome<T>> convert(final Genotype<T> value) {
+		return new Function<Genotype<T>, ISeq<Chromosome<T>>>() {
+			@Override public ISeq<Chromosome<T>> apply(final Genotype<T> value) {
 				return value.toSeq();
 			}
 		};
@@ -235,10 +235,10 @@ public final class Genotype<T extends Gene<?, T>>
 	 * this genotype.
 	 */
 	public static <T extends Gene<?, T>> 
-	Converter<Genotype<T>, Chromosome<T>> Chromosome(final int index)
+	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
 	{
-		return new Converter<Genotype<T>, Chromosome<T>>() {
-			@Override public Chromosome<T> convert(final Genotype<T> value) {
+		return new Function<Genotype<T>, Chromosome<T>>() {
+			@Override public Chromosome<T> apply(final Genotype<T> value) {
 				return value.getChromosome(index);
 			}
 		};
@@ -248,10 +248,10 @@ public final class Genotype<T extends Gene<?, T>>
 	 * Return a converter which access the first chromosome of this genotype.
 	 */
 	public static <T extends Gene<?, T>> 
-	Converter<Genotype<T>, Chromosome<T>> Chromosome()
+	Function<Genotype<T>, Chromosome<T>> Chromosome()
 	{
-		return new Converter<Genotype<T>, Chromosome<T>>() {
-			@Override public Chromosome<T> convert(final Genotype<T> value) {
+		return new Function<Genotype<T>, Chromosome<T>>() {
+			@Override public Chromosome<T> apply(final Genotype<T> value) {
 				return value.getChromosome();
 			}
 		};

@@ -80,8 +80,8 @@ import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.Converter;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -661,7 +661,7 @@ class GeometryController implements StepListener {
 	
 	private GeneticAlgorithm<Float64Gene, Float64> _ga;
 	private AffineTransform _transform;
-	private GA.Function _function;
+	private GA.GAFF _function;
 	private Point2D[] _source;
 	private Point2D[] _target;
 	private Stepable _stepable;
@@ -695,7 +695,7 @@ class GeometryController implements StepListener {
 		_source = GA.getSourcePolygon();
 		_transform = GA.getTargetTransform();
 		_target = GA.getTargetPolygon(_transform);
-		_function = new GA.Function(_source, _target);
+		_function = new GA.GAFF(_source, _target);
 		
 		_ga = GA.getGA(_function);
 		_ga.setPopulationSize(_populationSizeSpinnerModel.getNumber().intValue());
@@ -875,10 +875,10 @@ class GeometryController implements StepListener {
 		final long time = System.currentTimeMillis();
 		if (time - _lastRepaintTime > MIN_REPAINT_TIME) {
 			_geometry.setPopulationBestTransform(
-					_function.convert(_populationBestPhenotype.getGenotype())
+					_function.apply(_populationBestPhenotype.getGenotype())
 				);
 			_geometry.setGABestTransform(
-					_function.convert(_gaBestPhenotype.getGenotype())
+					_function.apply(_gaBestPhenotype.getGenotype())
 				);
 			_geometry.repaint();
 			_geometry.setGeneration(_generation);
@@ -1518,20 +1518,20 @@ interface StepListener extends EventListener {
  */
 class GA {
 	
-	static class Function 
+	static class GAFF 
 		implements FitnessFunction<Float64Gene, Float64>, 
-					Converter<Genotype<Float64Gene>, AffineTransform> 
+					Function<Genotype<Float64Gene>, AffineTransform> 
 	{
 		private static final long serialVersionUID = 1L;
 	
 		private final Point2D[] _source;
 		private final Point2D[] _target;
 	
-		public Function() {
+		public GAFF() {
 			this(null, null);
 		}
 		
-		public Function(final Point2D[] source, final Point2D[] target) {
+		public GAFF(final Point2D[] source, final Point2D[] target) {
 			_source = source != null ? source.clone() : source;
 			_target = target != null ? target.clone() : target;
 		}
@@ -1543,7 +1543,7 @@ class GA {
 		}
 		
 		Float64 distance(final Genotype<Float64Gene> genotype) {
-			final AffineTransform transform = convert(genotype);
+			final AffineTransform transform = apply(genotype);
 	
 			double error = 0;
 			Point2D point = new Point2D.Double();
@@ -1557,7 +1557,7 @@ class GA {
 		}
 		
 		Float64 area(final Genotype<Float64Gene> genotype) {
-			final AffineTransform transform = convert(genotype);
+			final AffineTransform transform = apply(genotype);
 						
 			final Point2D[] points = new Point2D.Double[_source.length];
 			for (int i = 0; i < _source.length; ++i) {
@@ -1568,7 +1568,7 @@ class GA {
 		}
 	
 		@Override
-		public AffineTransform convert(final Genotype<Float64Gene> genotype) {
+		public AffineTransform apply(final Genotype<Float64Gene> genotype) {
 			System.out.println(genotype);
 			final double theta = genotype.getChromosome(0).getGene().doubleValue();
 			final double tx = genotype.getChromosome(1).getGene(0).doubleValue();
@@ -1650,7 +1650,7 @@ class GA {
 		return target;
 	}
 	
-	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final Function function) {
+	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final GAFF function) {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 
 			new GeneticAlgorithm<>(
 				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM

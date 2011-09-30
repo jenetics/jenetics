@@ -28,7 +28,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -148,9 +148,9 @@ public final class BitGene
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
-	public static final Converter<BitGene, Boolean> Allele =
-		new Converter<BitGene, Boolean>() {
-				@Override public Boolean convert(final BitGene value) {
+	public static final Function<BitGene, Boolean> Allele =
+		new Function<BitGene, Boolean>() {
+				@Override public Boolean apply(final BitGene value) {
 					return value._value;
 				}
 			};

@@ -66,7 +66,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
 	public <B> Iterator<B> iterator(
-		final Converter<? super T, ? extends B> converter
+		final Function<? super T, ? extends B> converter
 	);
 	
 	/**

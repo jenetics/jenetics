@@ -37,7 +37,7 @@ import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jscience.mathematics.number.Float64;
 
@@ -46,20 +46,20 @@ import org.jscience.mathematics.number.Float64;
  * @version $Id$
  */
 public class RealFunction {
-	private static final class Function 
+	private static final class FF 
 		implements FitnessFunction<Float64Gene, Float64>,
-					Converter<Genotype<Float64Gene>, Float64>
+					Function<Genotype<Float64Gene>, Float64>
 	{
 		private static final long serialVersionUID = 1L;
 		
 		@Override
 		public Float64 evaluate(final Genotype<Float64Gene> genotype) {
-			final double radians = toRadians(convert(genotype).doubleValue());
+			final double radians = toRadians(apply(genotype).doubleValue());
 			return Float64.valueOf(cos(sin(radians)*cos(radians)));
 		}
 
 		@Override
-		public Float64 convert(final Genotype<Float64Gene> value) {
+		public Float64 apply(final Genotype<Float64Gene> value) {
 			return value.getGene().getAllele();
 		}
 		
@@ -74,7 +74,7 @@ public class RealFunction {
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
 				new Float64Chromosome(0, 360)
 			);
-		final Function ff = new Function();
+		final FF ff = new FF();
 		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());

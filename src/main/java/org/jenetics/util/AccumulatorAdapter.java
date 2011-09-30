@@ -32,7 +32,7 @@ import static org.jenetics.util.object.nonNull;
  */
 public final class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 	private final Accumulator<? super A> _adoptee;
-	private final Converter<? super B, ? extends A> _converter;
+	private final Function<? super B, ? extends A> _converter;
 	
 	/**
 	 * Create an new AccumulatorAdapter. 
@@ -44,7 +44,7 @@ public final class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 	 */
 	public AccumulatorAdapter(
 		final Accumulator<? super A> adoptee, 
-		final Converter<? super B, ? extends A> converter
+		final Function<? super B, ? extends A> converter
 	) {
 		_adoptee = nonNull(adoptee);
 		_converter = nonNull(converter);
@@ -64,13 +64,13 @@ public final class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 	 * 
 	 * @return the needed converter from type {@code A} to  type {@code B}.
 	 */
-	public Converter<? super B, ? extends A> getConverter() {
+	public Function<? super B, ? extends A> getConverter() {
 		return _converter;
 	}
 	
 	@Override
 	public void accumulate(final B value) {
-		_adoptee.accumulate(_converter.convert(value));
+		_adoptee.accumulate(_converter.apply(value));
 		++_samples;
 	}
 	
@@ -84,7 +84,7 @@ public final class AccumulatorAdapter<A, B> extends AdaptableAccumulator<B> {
 	 */
 	public static <A, B> AccumulatorAdapter<A, B> valueOf(
 			final Accumulator<? super A> adoptee, 
-			final Converter<? super B, ? extends A> converter
+			final Function<? super B, ? extends A> converter
 	) {
 		return new AccumulatorAdapter<>(adoptee, converter);
 	}

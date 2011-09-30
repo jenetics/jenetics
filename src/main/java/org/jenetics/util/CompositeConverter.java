@@ -30,9 +30,9 @@ import static org.jenetics.util.object.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CompositeConverter<A, B, C> implements Converter<A, C> {
-	private final Converter<A, B> _first;
-	private final Converter<B, C> _second;
+public class CompositeConverter<A, B, C> implements Function<A, C> {
+	private final Function<A, B> _first;
+	private final Function<B, C> _second;
 	
 	/**
 	 * Create a new transitive converter with the given converters.
@@ -42,16 +42,16 @@ public class CompositeConverter<A, B, C> implements Converter<A, C> {
 	 * @throws NullPointerException if one of the converters is {@code null}.
 	 */
 	public CompositeConverter(
-		final Converter<A, B> first,
-		final Converter<B, C> second
+		final Function<A, B> first,
+		final Function<B, C> second
 	) {
 		_first = nonNull(first);
 		_second = nonNull(second);
 	}
 	
 	@Override
-	public C convert(final A value) {
-		return _second.convert(_first.convert(value));
+	public C apply(final A value) {
+		return _second.apply(_first.apply(value));
 	}
 	
 	@Override
@@ -62,36 +62,36 @@ public class CompositeConverter<A, B, C> implements Converter<A, C> {
 			);
 	}
 	
-	public static <A, B, C> Converter<A, C> valueOf(
-		final Converter<A, B> c1,
-		final Converter<B, C> c2
+	public static <A, B, C> Function<A, C> valueOf(
+		final Function<A, B> c1,
+		final Function<B, C> c2
 	) {
 		return new CompositeConverter<>(c1, c2);
 	}
 
-	public static <A, B, C, D> Converter<A, D> valueOf(
-		final Converter<A, B> c1,
-		final Converter<B, C> c2,
-		final Converter<C, D> c3
+	public static <A, B, C, D> Function<A, D> valueOf(
+		final Function<A, B> c1,
+		final Function<B, C> c2,
+		final Function<C, D> c3
 	) {
 		return valueOf(valueOf(c1, c2), c3);
 	}
 	
-	public static <A, B, C, D, E> Converter<A, E> valueOf(
-		final Converter<A, B> c1,
-		final Converter<B, C> c2,
-		final Converter<C, D> c3,
-		final Converter<D, E> c4
+	public static <A, B, C, D, E> Function<A, E> valueOf(
+		final Function<A, B> c1,
+		final Function<B, C> c2,
+		final Function<C, D> c3,
+		final Function<D, E> c4
 	) {
 		return valueOf(valueOf(valueOf(c1, c2), c3), c4);
 	}
 	
-	public static <A, B, C, D, E, F> Converter<A, F> valueOf(
-		final Converter<A, B> c1,
-		final Converter<B, C> c2,
-		final Converter<C, D> c3,
-		final Converter<D, E> c4,
-		final Converter<E, F> c5
+	public static <A, B, C, D, E, F> Function<A, F> valueOf(
+		final Function<A, B> c1,
+		final Function<B, C> c2,
+		final Function<C, D> c3,
+		final Function<D, E> c4,
+		final Function<E, F> c5
 	) {
 		return valueOf(valueOf(valueOf(valueOf(c1, c2), c3), c4), c5);
 	}

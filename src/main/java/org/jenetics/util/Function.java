@@ -28,7 +28,7 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface Converter<A, B> {
+public interface Function<A, B> {
 
 	/**
 	 * Convert a type {@code A} to type {@code B}.
@@ -36,6 +36,6 @@ public interface Converter<A, B> {
 	 * @param value the value to convert.
 	 * @return the converted value.
 	 */
-	public B convert(A value);
+	public B apply(A value);
 	
 }

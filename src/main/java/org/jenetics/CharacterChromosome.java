@@ -38,7 +38,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
@@ -234,24 +234,24 @@ public class CharacterChromosome
 	 * ************************************************************************/
 	
 	/**
-	 * Return a {@link Converter} which returns the gene array from this
+	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<AbstractChromosome<CharacterGene>, ISeq<CharacterGene>> 
+	public static final Function<AbstractChromosome<CharacterGene>, ISeq<CharacterGene>> 
 		Genes = AbstractChromosome.genes();
 	
 	/**
-	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Converter<Chromosome<CharacterGene>, CharacterGene> 
+	public static final Function<Chromosome<CharacterGene>, CharacterGene> 
 		Gene = AbstractChromosome.gene();
 	
 	/**
-	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Converter<Chromosome<CharacterGene>, CharacterGene> 
+	public static final Function<Chromosome<CharacterGene>, CharacterGene> 
 	Gene(final int index) 
 	{
 		return AbstractChromosome.gene(index);

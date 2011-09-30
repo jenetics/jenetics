@@ -37,30 +37,30 @@ public final class converters {
 		throw new AssertionError("Don't create 'converters' instance.");
 	}
 	
-	public static final Converter<Float64, Double> Float64ToDouble =
-		new Converter<Float64, Double>() {
-			@Override public Double convert(final Float64 value) {
+	public static final Function<Float64, Double> Float64ToDouble =
+		new Function<Float64, Double>() {
+			@Override public Double apply(final Float64 value) {
 				return value.doubleValue();
 			}
 		};
 		
-	public static final Converter<Double, Float64> DoubleToFloat64 =
-		new Converter<Double, Float64>() {
-			@Override public Float64 convert(final Double value) {
+	public static final Function<Double, Float64> DoubleToFloat64 =
+		new Function<Double, Float64>() {
+			@Override public Float64 apply(final Double value) {
 				return Float64.valueOf(value);
 			}
 		};	
 		
-	public static final Converter<Integer64, Long> Integer64ToLong =
-		new Converter<Integer64, Long>() {
-			@Override public Long convert(final Integer64 value) {
+	public static final Function<Integer64, Long> Integer64ToLong =
+		new Function<Integer64, Long>() {
+			@Override public Long apply(final Integer64 value) {
 				return value.longValue();
 			}
 		};
 		
-	public static final Converter<Long, Integer64> LongToInteger64 =
-		new Converter<Long, Integer64>() {
-			@Override public Integer64 convert(final Long value) {
+	public static final Function<Long, Integer64> LongToInteger64 =
+		new Function<Long, Integer64>() {
+			@Override public Integer64 apply(final Long value) {
 				return Integer64.valueOf(value);
 			}
 		};

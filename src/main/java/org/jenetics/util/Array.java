@@ -578,7 +578,7 @@ public final class Array<T>
 	 * @throws NullPointerException if the element {@code converter} is 
 	 *         {@code null}.
 	 */
-	public <B> Array<B> map(final Converter<? super T, ? extends B> converter) {
+	public <B> Array<B> map(final Function<? super T, ? extends B> converter) {
 		nonNull(converter, "Converter");
 		
 		final int length = length();
@@ -588,7 +588,7 @@ public final class Array<T>
 		for (int i = length; --i <= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
-			result._array.data[i] = converter.convert(value);
+			result._array.data[i] = converter.apply(value);
 		}
 		return result;
 	}

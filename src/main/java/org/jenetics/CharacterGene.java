@@ -36,7 +36,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.CharSet;
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -171,9 +171,9 @@ public final class CharacterGene
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
-	public static final Converter<CharacterGene, Character> Allele =
-		new Converter<CharacterGene, Character>() {
-				@Override public Character convert(final CharacterGene value) {
+	public static final Function<CharacterGene, Character> Allele =
+		new Function<CharacterGene, Character>() {
+				@Override public Character apply(final CharacterGene value) {
 					return value._character;
 				}
 			};
@@ -181,9 +181,9 @@ public final class CharacterGene
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
-	public static final Converter<CharacterGene, CharSet> ValidCharacters =
-		new Converter<CharacterGene, CharSet>() {
-				@Override public CharSet convert(final CharacterGene value) {
+	public static final Function<CharacterGene, CharSet> ValidCharacters =
+		new Function<CharacterGene, CharSet>() {
+				@Override public CharSet apply(final CharacterGene value) {
 					return value._validCharacters;
 				}
 			};
