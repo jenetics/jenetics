@@ -34,7 +34,7 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.structure.GroupMultiplicative;
 
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -74,9 +74,9 @@ public final class Float64Gene
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
-	public static final Converter<Float64Gene, Float64> Allele =
-		new Converter<Float64Gene, Float64>() {
-				@Override public Float64 convert(final Float64Gene value) {
+	public static final Function<Float64Gene, Float64> Allele =
+		new Function<Float64Gene, Float64>() {
+				@Override public Float64 apply(final Float64Gene value) {
 					return value._value;
 				}
 			};
@@ -84,14 +84,14 @@ public final class Float64Gene
 	/**
 	 * Converter for accessing the allele from a given number gene.
 	 */			
-	public static final Converter<Float64Gene, Float64> Value = Allele;
+	public static final Function<Float64Gene, Float64> Value = Allele;
 	
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Float64Gene, Float64> Min =
-		new Converter<Float64Gene, Float64>() {
-				@Override public Float64 convert(final Float64Gene value) {
+	public static final Function<Float64Gene, Float64> Min =
+		new Function<Float64Gene, Float64>() {
+				@Override public Float64 apply(final Float64Gene value) {
 					return value._min;
 				}
 			};
@@ -99,9 +99,9 @@ public final class Float64Gene
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Float64Gene, Float64> Max =
-		new Converter<Float64Gene, Float64>() {
-				@Override public Float64 convert(final Float64Gene value) {
+	public static final Function<Float64Gene, Float64> Max =
+		new Function<Float64Gene, Float64>() {
+				@Override public Float64 apply(final Float64Gene value) {
 					return value._max;
 				}
 			};

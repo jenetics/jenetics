@@ -34,7 +34,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
 
 
@@ -268,82 +268,82 @@ public final class Phenotype<
 	 * ************************************************************************/
 	
 	/**
-	 * Create a {@link Converter} which return the phenotype age when calling
+	 * Create a {@link Function} which return the phenotype age when calling
 	 * {@code converter.convert(phenotype)}.
 	 * 
 	 * @param currentGeneration the current generation.
-	 * @return an age {@link Converter}.
+	 * @return an age {@link Function}.
 	 */
-	public static Converter<Phenotype<?, ?>, Integer> 
+	public static Function<Phenotype<?, ?>, Integer> 
 	Age(final int currentGeneration) 
 	{
-		return new Converter<Phenotype<?, ?>, Integer>() {
-			@Override public Integer convert(final Phenotype<?, ?> value) {
+		return new Function<Phenotype<?, ?>, Integer>() {
+			@Override public Integer apply(final Phenotype<?, ?> value) {
 				return value.getAge(currentGeneration);
 			}
 		};
 	}
 	
 	/**
-	 * Create a {@link Converter} which return the phenotype generation when 
+	 * Create a {@link Function} which return the phenotype generation when 
 	 * calling {@code converter.convert(phenotype)}.
 	 * 
-	 * @return a generation {@link Converter}.
+	 * @return a generation {@link Function}.
 	 */
-	public static Converter<Phenotype<?, ?>, Integer> Generation() {
-		return new Converter<Phenotype<?, ?>, Integer>() {
-			@Override public Integer convert(final Phenotype<?, ?> value) {
+	public static Function<Phenotype<?, ?>, Integer> Generation() {
+		return new Function<Phenotype<?, ?>, Integer>() {
+			@Override public Integer apply(final Phenotype<?, ?> value) {
 				return value.getGeneration();
 			}
 		};
 	}
 	
 	/**
-	 * Create a {@link Converter} which return the phenotype fitness when 
+	 * Create a {@link Function} which return the phenotype fitness when 
 	 * calling {@code converter.convert(phenotype)}.
 	 * 
 	 * @param <SC> the fitness value type.
-	 * @return a fitness {@link Converter}.
+	 * @return a fitness {@link Function}.
 	 */
 	public static <SC extends Comparable<? super SC>>
-	Converter<Phenotype<?, SC>, SC> Fitness() 
+	Function<Phenotype<?, SC>, SC> Fitness() 
 	{
-		return new Converter<Phenotype<?, SC>, SC>() {
-			@Override public SC convert(final Phenotype<?, SC> value) {
+		return new Function<Phenotype<?, SC>, SC>() {
+			@Override public SC apply(final Phenotype<?, SC> value) {
 				return value.getFitness();
 			}
 		};
 	}
 	
 	/**
-	 * Create a {@link Converter} which return the phenotype raw fitness when 
+	 * Create a {@link Function} which return the phenotype raw fitness when 
 	 * calling {@code converter.convert(phenotype)}.
 	 * 
 	 * @param <SC> the fitness value type.
-	 * @return a raw fitness {@link Converter}.
+	 * @return a raw fitness {@link Function}.
 	 */
 	public static <SC extends Comparable<? super SC>>
-	Converter<Phenotype<?, SC>, SC> RawFitnees() 
+	Function<Phenotype<?, SC>, SC> RawFitnees() 
 	{
-		return new Converter<Phenotype<?, SC>, SC>() {
-			@Override public SC convert(final Phenotype<?, SC> value) {
+		return new Function<Phenotype<?, SC>, SC>() {
+			@Override public SC apply(final Phenotype<?, SC> value) {
 				return value.getRawFitness();
 			}
 		};
 	}
 	
 	/**
-	 * Create a {@link Converter} which return the phenotype genotype when 
+	 * Create a {@link Function} which return the phenotype genotype when 
 	 * calling {@code converter.convert(phenotype)}.
 	 * 
 	 * @param <SG> the gene type.
-	 * @return a genotype {@link Converter}.
+	 * @return a genotype {@link Function}.
 	 */
 	public static <SG extends Gene<?, SG>>
-	Converter<Phenotype<SG, ?>, Genotype<SG>> Genotype() 
+	Function<Phenotype<SG, ?>, Genotype<SG>> Genotype() 
 	{
-		return new Converter<Phenotype<SG, ?>, Genotype<SG>>() {
-			@Override public Genotype<SG> convert(final Phenotype<SG, ?> value) {
+		return new Function<Phenotype<SG, ?>, Genotype<SG>>() {
+			@Override public Genotype<SG> apply(final Phenotype<SG, ?> value) {
 				return value.getGenotype();
 			}
 		};

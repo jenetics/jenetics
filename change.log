@@ -3,6 +3,9 @@ Jenetics-0.9.0.0
   extended type inference capabilities of Java 7 (diamond operator <>).
 - Move the static 'concurrency' methods from the 'GeneticAlgorithm' class to a 
   new 'Concurrency' class.
+- The new org.jenetics.util.Function interfaces replaces the FitnessFunction,
+  Predicate and Converter interface.
+- Convert source to Java 7.
 
 Jenetics-0.8.1.0
 - New name schema for 'utility' classes which only contains static methods. Such 

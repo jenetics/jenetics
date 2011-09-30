@@ -90,7 +90,7 @@ public class Float64ChromosomeTest
 	public void firstGeneConverter() {
 		final Float64Chromosome c = getFactory().newInstance();
 		
-		Assert.assertEquals(Float64Chromosome.Gene.convert(c), c.getGene(0));
+		Assert.assertEquals(Float64Chromosome.Gene.apply(c), c.getGene(0));
 	}
 	
 	@Test
@@ -99,7 +99,7 @@ public class Float64ChromosomeTest
 		
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(
-					Float64Chromosome.Gene(i).convert(c), 
+					Float64Chromosome.Gene(i).apply(c), 
 					c.getGene(i)
 				);
 		}
@@ -109,7 +109,7 @@ public class Float64ChromosomeTest
 	public void genesConverter() {
 		final Float64Chromosome c = getFactory().newInstance();
 		Assert.assertEquals(
-				Float64Chromosome.Genes.convert(c), 
+				Float64Chromosome.Genes.apply(c), 
 				c.toSeq()
 			);
 	}

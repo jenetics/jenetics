@@ -971,7 +971,7 @@ public final class arrays {
 	public static <A, B> B[] map(
 		final A[] a, 
 		final B[] b,
-		final Converter<A, B> converter
+		final Function<A, B> converter
 	) {
 		nonNull(a, "Source array");
 		nonNull(b, "Target array");
@@ -987,7 +987,7 @@ public final class arrays {
 		}
 		
 		for (int i = 0; i < result.length; ++i) {
-			result[i] = converter.convert(a[i]);
+			result[i] = converter.apply(a[i]);
 		}
 		
 		return result;

@@ -34,7 +34,7 @@ import java.util.RandomAccess;
 import javolution.lang.Realtime;
 import javolution.text.Text;
 
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
@@ -169,39 +169,39 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * ************************************************************************/
 	
 	/**
-	 * Return a {@link Converter} which returns the first {@link Gene} from this
+	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
 	static <G extends Gene<?, G>, C extends Chromosome<G>> 
-	Converter<C, G> gene() {
-		return new Converter<C, G>() {
-			@Override public G convert(final C value) {
+	Function<C, G> gene() {
+		return new Function<C, G>() {
+			@Override public G apply(final C value) {
 				return value.getGene();
 			}
 		};
 	}
 	
 	/**
-	 * Return a {@link Converter} which returns the {@link Gene} with the given
+	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
 	static <G extends Gene<?, G>, C extends Chromosome<G>> 
-	Converter<C, G> gene(final int index) {
-		return new Converter<C, G>() {
-			@Override public G convert(final C value) {
+	Function<C, G> gene(final int index) {
+		return new Function<C, G>() {
+			@Override public G apply(final C value) {
 				return value.getGene(index);
 			}
 		};
 	}
 
 	/**
-	 * Return a {@link Converter} which returns the gene array from this
+	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
 	static <G extends Gene<?, G>, C extends AbstractChromosome<G>> 
-	Converter<C, ISeq<G>> genes() {
-		return new Converter<C, ISeq<G>>() {
-			@Override public ISeq<G> convert(final C value) {
+	Function<C, ISeq<G>> genes() {
+		return new Function<C, ISeq<G>>() {
+			@Override public ISeq<G> apply(final C value) {
 				return value.toSeq();
 			}
 		};

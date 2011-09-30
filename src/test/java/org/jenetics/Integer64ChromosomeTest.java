@@ -89,7 +89,7 @@ public class Integer64ChromosomeTest
 	public void firstGeneConverter() {
 		final Integer64Chromosome c = getFactory().newInstance();
 		
-		Assert.assertEquals(Integer64Chromosome.Gene.convert(c), c.getGene(0));
+		Assert.assertEquals(Integer64Chromosome.Gene.apply(c), c.getGene(0));
 	}
 	
 	@Test
@@ -98,7 +98,7 @@ public class Integer64ChromosomeTest
 		
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(
-					Integer64Chromosome.Gene(i).convert(c), 
+					Integer64Chromosome.Gene(i).apply(c), 
 					c.getGene(i)
 				);
 		}
@@ -108,7 +108,7 @@ public class Integer64ChromosomeTest
 	public void genesConverter() {
 		final Integer64Chromosome c = getFactory().newInstance();
 		Assert.assertEquals(
-				Integer64Chromosome.Genes.convert(c), 
+				Integer64Chromosome.Genes.apply(c), 
 				c.toSeq()
 			);
 	}

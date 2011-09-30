@@ -33,7 +33,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Integer64;
 
-import org.jenetics.util.Converter;
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -64,9 +64,9 @@ public final class Integer64Gene
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
-	public static final Converter<Integer64Gene, Integer64> Allele =
-		new Converter<Integer64Gene, Integer64>() {
-				@Override public Integer64 convert(final Integer64Gene value) {
+	public static final Function<Integer64Gene, Integer64> Allele =
+		new Function<Integer64Gene, Integer64>() {
+				@Override public Integer64 apply(final Integer64Gene value) {
 					return value._value;
 				}
 			};
@@ -74,14 +74,14 @@ public final class Integer64Gene
 	/**
 	 * Converter for accessing the allele from a given number gene.
 	 */			
-	public static final Converter<Integer64Gene, Integer64> Value = Allele;
+	public static final Function<Integer64Gene, Integer64> Value = Allele;
 	
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Integer64Gene, Integer64> Min =
-		new Converter<Integer64Gene, Integer64>() {
-				@Override public Integer64 convert(final Integer64Gene value) {
+	public static final Function<Integer64Gene, Integer64> Min =
+		new Function<Integer64Gene, Integer64>() {
+				@Override public Integer64 apply(final Integer64Gene value) {
 					return value._min;
 				}
 			};
@@ -89,9 +89,9 @@ public final class Integer64Gene
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Converter<Integer64Gene, Integer64> Max =
-		new Converter<Integer64Gene, Integer64>() {
-				@Override public Integer64 convert(final Integer64Gene value) {
+	public static final Function<Integer64Gene, Integer64> Max =
+		new Function<Integer64Gene, Integer64>() {
+				@Override public Integer64 apply(final Integer64Gene value) {
 					return value._value;
 				}
 			};
