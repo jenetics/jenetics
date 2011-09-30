@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.Array;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.Predicate;
 import org.jenetics.util.Seq;
 
 
@@ -189,10 +189,10 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	) {
 		final AtomicInteger alterations = new AtomicInteger(0);
 		
-		_alterers.foreach(new Predicate<Alterer<G>>() {
-			@Override public boolean evaluate(final Alterer<G> alterer) {
+		_alterers.foreach(new Function<Alterer<G>, Boolean>() {
+			@Override public Boolean apply(final Alterer<G> alterer) {
 				alterations.addAndGet(alterer.alter(population, generation));
-				return true;
+				return Boolean.TRUE;
 			}
 		});
 		

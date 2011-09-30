@@ -87,15 +87,15 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		int index = -1;
 		
 		if (element == null) {
-			index = indexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return object == null;
+			index = indexOf(new Function<T, Boolean>() {
+				@Override public Boolean apply(final T object) {
+					return object == null ? Boolean.TRUE : Boolean.FALSE;
 				}
 			});
 		} else {
-			index = indexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return element.equals(object);
+			index = indexOf(new Function<T, Boolean>() {
+				@Override public Boolean apply(final T object) {
+					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
 				}
 			});
 		}
@@ -108,15 +108,15 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		int index = -1;
 		
 		if (element == null) {
-			index = lastIndexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return object == null;
+			index = lastIndexOf(new Function<T, Boolean>() {
+				@Override public Boolean apply(final T object) {
+					return object == null ? Boolean.TRUE : Boolean.FALSE;
 				}
 			});
 		} else {
-			index = lastIndexOf(new Predicate<T>() {
-				@Override public boolean evaluate(final T object) {
-					return element.equals(object);
+			index = lastIndexOf(new Function<T, Boolean>() {
+				@Override public Boolean apply(final T object) {
+					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
 				}
 			});
 		}
@@ -125,7 +125,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
-	public int indexOf(final Predicate<? super T> predicate) {
+	public int indexOf(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 		
 		int index = -1;
@@ -134,7 +134,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			
-			if (predicate.evaluate(element)) {
+			if (predicate.apply(element)) {
 				index = i - _start;
 			}
 		}
@@ -143,7 +143,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
-	public int foreach(final Predicate<? super T> predicate) {
+	public int foreach(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 		
 		int index = -1;
@@ -152,7 +152,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			
-			if (!predicate.evaluate(element)) {
+			if (!predicate.apply(element)) {
 				index = i - _start;
 			}
 		}
@@ -161,7 +161,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
-	public int lastIndexOf(final Predicate<? super T> predicate) {
+	public int lastIndexOf(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 		
 		int index = -1;
@@ -169,7 +169,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		for (int i = _end - 1; i >= _start && index == -1; --i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			if (predicate.evaluate(element)) {
+			if (predicate.apply(element)) {
 				index = i - _start;
 			}
 		}

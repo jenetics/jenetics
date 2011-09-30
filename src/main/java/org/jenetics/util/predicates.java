@@ -40,9 +40,10 @@ public final class predicates {
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
 	 */
-	public static final Predicate<Object> Null = new Predicate<Object>() {
-		@Override public boolean evaluate(final Object object) {
-			return object == null;
+	public static final Function<Object, Boolean> 
+	Null = new Function<Object, Boolean>() {
+		@Override public Boolean apply(final Object object) {
+			return object == null ? Boolean.TRUE : Boolean.FALSE;
 		}
 		@Override public String toString() {
 			return String.format("%s", getClass().getSimpleName());
@@ -57,11 +58,11 @@ public final class predicates {
 	 * @return a predicate which negates the return value of the given predicate.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public static <T> Predicate<T> Not(final Predicate<? super T> a) {
-		return new Predicate<T>() {
+	public static <T> Function<T, Boolean> Not(final Function<? super T, Boolean> a) {
+		return new Function<T, Boolean>() {
 			{nonNull(a);}
-			@Override public boolean evaluate(final T object) {
-				return !a.evaluate(object);
+			@Override public Boolean apply(final T object) {
+				return a.apply(object) ? Boolean.FALSE : Boolean.TRUE;
 			}
 			@Override public String toString() {
 				return String.format("%s[%s]", getClass().getSimpleName(), a);
@@ -79,14 +80,14 @@ public final class predicates {
 	 * @throws NullPointerException if one of the given predicates is 
 	 * 		  {@code null}.
 	 */
-	public static <T> Predicate<T> And(
-		final Predicate<? super T> a, 
-		final Predicate<? super T> b
+	public static <T> Function<T, Boolean> And(
+		final Function<? super T, Boolean> a, 
+		final Function<? super T, Boolean> b
 	) {
-		return new Predicate<T>() {
+		return new Function<T, Boolean>() {
 			{nonNull(a); nonNull(b);}
-			@Override public boolean evaluate(final T object) {
-				return a.evaluate(object) && b.evaluate(object);
+			@Override public Boolean apply(final T object) {
+				return a.apply(object) && b.apply(object);
 			}
 			@Override public String toString() {
 				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
@@ -104,14 +105,14 @@ public final class predicates {
 	 * @throws NullPointerException if one of the given predicates is 
 	 * 		  {@code null}.
 	 */
-	public static <T> Predicate<T> Or(
-		final Predicate<? super T> a, 
-		final Predicate<? super T> b
+	public static <T> Function<T, Boolean> Or(
+		final Function<? super T, Boolean> a, 
+		final Function<? super T, Boolean> b
 	) {
-		return new Predicate<T>() {
+		return new Function<T, Boolean>() {
 			{nonNull(a); nonNull(b);}
-			@Override public boolean evaluate(final T object) {
-				return a.evaluate(object) || b.evaluate(object);
+			@Override public Boolean apply(final T object) {
+				return a.apply(object) || b.apply(object);
 			}
 			@Override public String toString() {
 				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);

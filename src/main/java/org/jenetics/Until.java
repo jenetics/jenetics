@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Predicate;
+import org.jenetics.util.Function;
 
 /**
  * Some default GA termination strategies.
@@ -37,7 +37,7 @@ public final class Until {
 	}
 	
 	static class SteadyFitness<C extends Comparable<? super C>> 
-		implements Predicate<Statistics<?, C>> 
+		implements Function<Statistics<?, C>, Boolean> 
 	{
 		private final int _genenerations;
 		
@@ -49,7 +49,7 @@ public final class Until {
 		}
 		
 		@Override
-		public boolean evaluate(final Statistics<?, C> statistics) {
+		public Boolean apply(final Statistics<?, C> statistics) {
 			boolean proceed = true;
 			
 			if (_fitness == null) {
@@ -65,7 +65,7 @@ public final class Until {
 				}
 			}
 			
-			return proceed;
+			return proceed ? Boolean.TRUE : Boolean.FALSE;
 		}	
 	}
 	
@@ -79,11 +79,11 @@ public final class Until {
 	 * @return the GA terminator.
 	 */
 	public static <C extends Comparable<? super C>> 
-	Predicate<Statistics<?, C>> SteadyFitness(final int generation) {
+	Function<Statistics<?, C>, Boolean> SteadyFitness(final int generation) {
 		return new SteadyFitness<>(generation);
 	}
 	
-	static class Generation implements Predicate<Statistics<?, ?>> {
+	static class Generation implements Function<Statistics<?, ?>, Boolean> {
 		private final int _generation;
 		
 		public Generation(final int generation) {
@@ -91,8 +91,8 @@ public final class Until {
 		}
 		
 		@Override 
-		public boolean evaluate(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation;
+		public Boolean apply(final Statistics<?, ?> statistics) {
+			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
 		}		
 	}
 	
@@ -108,7 +108,7 @@ public final class Until {
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
-	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
+	public static Function<Statistics<?, ?>, Boolean> Generation(final int generation) {
 		return new Generation(generation);
 	}
 	

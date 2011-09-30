@@ -23,12 +23,12 @@
 package org.jenetics.util;
 
 /**
- * Convert a type {@code A} to type {@code B}.
+ * A function of 1 parameter.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface Function<A, B> {
+public interface Function<T, R> {
 
 	/**
 	 * Convert a type {@code A} to type {@code B}.
@@ -36,6 +36,6 @@ public interface Function<A, B> {
 	 * @param value the value to convert.
 	 * @return the converted value.
 	 */
-	public B apply(A value);
+	public R apply(T value);
 	
 }

@@ -72,7 +72,7 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Iterates over this sequence as long as the given predicate returns 
 	 * {@code true}. This method is more or less an  <i>alias</i> of the 
-	 * {@link #indexOf(Predicate)} method. In some cases a call to a 
+	 * {@link #indexOf(Function)} method. In some cases a call to a 
 	 * {@code sequence.foreach()} method can express your intention much better 
 	 * than a {@code seq.indexOf()} call.
 	 * 
@@ -95,7 +95,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is 
 	 * 		  {@code null}.
 	 */
-	public int foreach(final Predicate<? super T> predicate);
+	public int foreach(final Function<? super T, Boolean> predicate);
 	
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
@@ -136,7 +136,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  for every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int indexOf(final Predicate<? super T> predicate);
+	public int indexOf(final Function<? super T, Boolean> predicate);
 	
 	/**
 	 * Returns the index of the last occurrence of the specified element
@@ -159,7 +159,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int lastIndexOf(final Predicate<? super T> predicate);
+	public int lastIndexOf(final Function<? super T, Boolean> predicate);
 	
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to

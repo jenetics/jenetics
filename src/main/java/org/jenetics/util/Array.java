@@ -240,13 +240,13 @@ public final class Array<T>
 	 * @throws NullPointerException if the given {@code predicate} is 
 	 *         {@code null}. 
 	 */
-	public Array<T> filter(final Predicate<? super T> predicate) {
+	public Array<T> filter(final Function<? super T, Boolean> predicate) {
 		final Array<T> copy = new Array<>(length());
 		
 		int index = 0;
 		for (int i = 0, n = length(); i < n; ++i) {
 			final T value = get(i);
-			if (predicate.evaluate(value)) {
+			if (predicate.apply(value)) {
 				copy.set(index++, value);
 			}
 		}

@@ -33,10 +33,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.sql.rowset.Predicate;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Predicate;
+import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
 
 
@@ -407,9 +409,9 @@ public class GeneticAlgorithm<
 	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public void evolve(final Predicate<? super Statistics<G, C>> until) {
+	public void evolve(final Function<? super Statistics<G, C>, Boolean> until) {
 		nonNull(until, "Termination condition");
-		while (until.evaluate(getStatistics())) {
+		while (until.apply(getStatistics())) {
 			evolve();
 		}
 	}

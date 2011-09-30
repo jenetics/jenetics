@@ -29,7 +29,7 @@ import java.util.ListIterator;
 import org.jenetics.util.Array;
 import org.jenetics.util.arrays;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Predicate;
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -38,10 +38,11 @@ import org.jenetics.util.Predicate;
 @Suite("Array")
 public class ArrayTest {
 
-	private static final Predicate<Integer> GETTER = new Predicate<Integer>() {
+	private static final Function<Integer, Boolean> 
+	GETTER = new Function<Integer, Boolean>() {
 		@Override 
-		public boolean evaluate(final Integer value) {
-			return true;
+		public Boolean apply(final Integer value) {
+			return Boolean.TRUE;
 		}
 	};
 	
@@ -106,7 +107,7 @@ public class ArrayTest {
 	@Test(5)
 	public final TestCase fillFactory = new TestCase("fill(Factory)", LOOPS, SIZE) {
 		@Override
-protected void test() {
+		protected void test() {
 			_array.fill(INTEGER_FACTORY);
 		}
 	};

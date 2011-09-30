@@ -51,12 +51,12 @@ public final class object {
 	 * 	 array.foreach(CheckRange<(0, 10));
 	 * [/code]
 	 */
-	public static final <C extends Comparable<? super C>> Predicate<C> 
+	public static final <C extends Comparable<? super C>> Function<C, Boolean> 
 	CheckRange(final C min, final C max) 
 	{
-		return new Predicate<C>() {
+		return new Function<C,Boolean>() {
 			@Override
-			public boolean evaluate(final C value) {
+			public Boolean apply(final C value) {
 				nonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
 					throw new IllegalArgumentException(String.format(
@@ -64,7 +64,7 @@ public final class object {
 							value, min, max
 						));
 				}
-				return true;
+				return Boolean.TRUE;
 			}
 		};
 	}
@@ -78,10 +78,11 @@ public final class object {
 	 * [/code]
 	 * is true.
 	 */
-	public static final Predicate<Verifiable> Verify = new Predicate<Verifiable>() {
+	public static final Function<Verifiable, Boolean> 
+	Verify = new Function<Verifiable,Boolean>() {
 		@Override
-		public boolean evaluate(final Verifiable object) {
-			return object.isValid();
+		public Boolean apply(final Verifiable object) {
+			return object.isValid() ? Boolean.TRUE : Boolean.FALSE;
 		}
 	};
 	
@@ -98,7 +99,7 @@ public final class object {
 	 * 	 ArrayUtils.foreach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Predicate<Object> NonNull = NonNull("Object");
+	public static final Function<Object, Boolean> NonNull = NonNull("Object");
 	
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
@@ -113,11 +114,11 @@ public final class object {
 	 * 	 ArrayUtils.foreach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Predicate<Object> NonNull(final String message) {
-		return new Predicate<Object>() {
-			@Override public boolean evaluate(final Object object) {
+	public static final Function<Object, Boolean> NonNull(final String message) {
+		return new Function<Object,Boolean>() {
+			@Override public Boolean apply(final Object object) {
 				nonNull(object, message );
-				return true;
+				return Boolean.TRUE;
 			}
 		};
 	}

@@ -213,11 +213,11 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).fill(123);
 		array.toISeq();
 		final AtomicInteger count = new AtomicInteger(0);
-		int value = array.foreach(new Predicate<Integer>() {
-			@Override public boolean evaluate(Integer object) {
+		int value = array.foreach(new Function<Integer, Boolean>() {
+			@Override public Boolean apply(Integer object) {
 				Assert.assertEquals(object, new Integer(123));
 				count.addAndGet(1);
-				return true;
+				return Boolean.TRUE;
 			}
 		});
 		
@@ -225,8 +225,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		Assert.assertEquals(count.get(), 10);
 		
 		count.set(0);
-		value = array.foreach(new Predicate<Integer>() {
-			@Override public boolean evaluate(Integer object) {
+		value = array.foreach(new Function<Integer, Boolean>() {
+			@Override public Boolean apply(Integer object) {
 				Assert.assertEquals(object, new Integer(123));
 				return count.addAndGet(1) != 5;
 			}
