@@ -31,7 +31,6 @@ import java.io.Serializable;
 import javax.measure.Measure;
 import javax.measure.unit.SI;
 
-import org.jenetics.FitnessScaler;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
@@ -66,7 +65,7 @@ public class Performance {
 	public static void main(String[] args) {
 		final Perf ff = new Perf();
 		final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(new Float64Chromosome(0, 360));
-		final FitnessScaler<Float64> fs = IdentityScaler.<Float64>valueOf();
+		final Function<Float64, Float64> fs = new IdentityScaler<>();
 		
 		final int size = 1000000;
 		final Population<Float64Gene, Float64> population = new Population<>(size);

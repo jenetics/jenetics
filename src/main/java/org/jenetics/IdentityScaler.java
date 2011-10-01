@@ -22,7 +22,11 @@
  */
 package org.jenetics;
 
+import java.io.Serializable;
+
 import javolution.lang.Immutable;
+
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -30,13 +34,11 @@ import javolution.lang.Immutable;
  */
 public final class IdentityScaler<C extends Comparable<? super C>> 
 	implements 
-		FitnessScaler<C>,
-		Immutable
+		Function<C, C>,
+		Immutable,
+		Serializable
 {
 	private static final long serialVersionUID = 1L;
-
-	private static IdentityScaler<?> INSTANCE = 
-		new IdentityScaler<Comparable<? super Comparable<?>>>();
 	
 	public IdentityScaler() {
 	}
@@ -47,15 +49,10 @@ public final class IdentityScaler<C extends Comparable<? super C>>
 	 *  @return the input {@code value}.
 	 */
 	@Override
-	public C scale(final C value) {
+	public C apply(final C value) {
 		return value;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <SC extends Comparable<? super SC>> IdentityScaler<SC> valueOf() {
-		return (IdentityScaler<SC>) INSTANCE;
-	}
-	
 	@Override
 	public int hashCode() {
 		return 37;
