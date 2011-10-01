@@ -134,7 +134,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			
-			if (predicate.apply(element)) {
+			if (predicate.apply(element) == Boolean.TRUE) {
 				index = i - _start;
 			}
 		}
@@ -152,7 +152,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			
-			if (!predicate.apply(element)) {
+			if (predicate.apply(element) != Boolean.TRUE) {
 				index = i - _start;
 			}
 		}
@@ -169,7 +169,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		for (int i = _end - 1; i >= _start && index == -1; --i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			if (predicate.apply(element)) {
+			if (predicate.apply(element) == Boolean.TRUE) {
 				index = i - _start;
 			}
 		}
