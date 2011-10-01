@@ -70,7 +70,7 @@ public class OnesCounting {
 
 	public static void main(String[] args) throws Exception {
 		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-			BitChromosome.valueOf(20, 0.15)
+				new BitChromosome(20, 0.15)
 		);
 		final OneCounter ff = new OneCounter();
 		final GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);

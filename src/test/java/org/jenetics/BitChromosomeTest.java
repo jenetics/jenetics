@@ -43,14 +43,14 @@ import org.jenetics.util.Factory;
 public class BitChromosomeTest extends ChromosomeTester<BitGene> { 
     
 	private final Factory<Chromosome<BitGene>> 
-	_factory = BitChromosome.valueOf(500, 0.3);
+	_factory = new BitChromosome(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
 	}
 
 	@Test
 	public void invert() {
-		BitChromosome c1 = BitChromosome.valueOf(100, 0.3);
+		BitChromosome c1 = new BitChromosome(100, 0.3);
 		BitChromosome c2 = c1.copy();
 		Assert.assertNotSame(c2, c1);
 		Assert.assertEquals(c2, c1);
@@ -66,7 +66,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
     @Test
     public void numValue() {
-        BitChromosome c1 = BitChromosome.valueOf(10);
+        BitChromosome c1 = new BitChromosome(10);
         
         int value = c1.intValue();
         assertEquals((short)value, c1.shortValue());
@@ -77,12 +77,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
     @Test
     public void intProbability() {
-        BitChromosome c = BitChromosome.valueOf(10, 0);
+        BitChromosome c = new BitChromosome(10, 0);
         for (BitGene g : c) {
             assertFalse(g.getBit());
         }
         
-        c = BitChromosome.valueOf(10, 1);
+        c = new BitChromosome(10, 1);
         for (BitGene g : c) {
             assertTrue(g.getBit());
         }
@@ -95,7 +95,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
             bits.set(i, i % 2 == 0);
         }
         
-        BitChromosome c = BitChromosome.valueOf(bits);
+        BitChromosome c = new BitChromosome(bits);
         for (int i = 0; i < bits.length(); ++i) {
             assertEquals(c.getGene(i).getBit(), i % 2 == 0);
         }
@@ -103,7 +103,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
     @Test
     public void toBigInteger() {
-        BitChromosome c = BitChromosome.valueOf(LargeInteger.valueOf(234902));
+        BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
         
         LargeInteger i = c.toLargeInteger();
         assertEquals(i, LargeInteger.valueOf(234902));
@@ -113,15 +113,15 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
         
         byte[] data = new byte[3];
         c.toByteArray(data);
-        BitChromosome c2 = BitChromosome.valueOf(data);
+        BitChromosome c2 = new BitChromosome(data);
         LargeInteger i2 = c2.toLargeInteger();
         assertEquals(i2, LargeInteger.valueOf(234902));
     }
 
     @Test
     public void toBitSet() {
-        BitChromosome c1 = BitChromosome.valueOf(34);
-        BitChromosome c2 = BitChromosome.valueOf(34, c1.toBitSet());
+        BitChromosome c1 = new BitChromosome(34);
+        BitChromosome c2 = new BitChromosome(34, c1.toBitSet());
         
         for (int i = 0; i < c1.length(); ++i) {
             assertEquals(c1.getGene(i).getBit(), c2.getGene(i).getBit());
@@ -134,7 +134,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		for (int i = 0; i < data.length; ++i) {
 			data[i] = (byte)(Math.random()*256);
 		}
-    	BitChromosome bc = BitChromosome.valueOf(data);
+    	BitChromosome bc = new BitChromosome(data);
     	
     	Assert.assertEquals(bc.toByteArray(), data);
     	
@@ -142,9 +142,9 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     
     @Test
     public void toCanonicalString() {
-    	BitChromosome c = BitChromosome.valueOf(LargeInteger.valueOf(234902));
+    	BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
     	String value = c.toCanonicalString();
-    	BitChromosome sc = BitChromosome.valueOf(value);
+    	BitChromosome sc = new BitChromosome(value);
     	
     	Assert.assertEquals(sc, c);
     }

@@ -123,7 +123,7 @@ public class Knapsack {
 		//Defining the fitness function and the genotype.
 		final KnappsackFunction ff = newFitnessFuntion(15, 100);
 		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-				BitChromosome.valueOf(15, 0.5)
+				new BitChromosome(15, 0.5)
 			);
 		 
 		final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(genotype, ff);

@@ -35,6 +35,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -237,19 +238,62 @@ public final class Colorize {
 		
 		private static final String KEYWORD_COLOR = "#7F0055";
 		private static final String COMMENT_COLOR = "#3F7F5F";
-		private static final String STRING_COLOR = "#0000A0";
+		private static final String STRING_COLOR = "#0000FF";
 		
-		private static final String[] KEYWORDS = { "abstract", "continue", "for",
-			"new", "switch", "assert", "default", "if", "package",
-			"synchronized", "boolean", "do", "goto", "private", "this",
-			"break", "double", "implements", "protected", "throw", "byte",
-			"else", "import", "public", "throws", "case", "enum", "instanceof",
-			"return", "transient", "catch", "extends", "int", "short", "try",
-			"char", "final", "interface", "static", "void", "class", "finally",
-			"long", "strictfp", "volatile", "const", "float", "native",
-			"super", "while" };
+		private static final String[] KEYWORDS = { 
+			"abstract", 
+			"continue", 
+			"for",
+			"new", 
+			"switch", 
+			"assert", 
+			"default", 
+			"if", 
+			"package",
+			"synchronized", 
+			"boolean", 
+			"do", 
+			"goto", 
+			"private", 
+			"this",
+			"break", 
+			"double", 
+			"implements", 
+			"protected", 
+			"throw", 
+			"byte",
+			"else", 
+			"import", 
+			"public", 
+			"throws", 
+			"case", 
+			"enum", 
+			"instanceof",
+			"return", 
+			"transient", 
+			"catch", 
+			"extends", 
+			"int", 
+			"short", 
+			"try",
+			"char", 
+			"final", 
+			"interface", 
+			"static", 
+			"void", 
+			"class", 
+			"finally",
+			"long", 
+			"strictfp", 
+			"volatile", 
+			"const", 
+			"float", 
+			"native",
+			"super", 
+			"while" 
+		};
 
-		private static final HashSet<String> IDENTIFIERS = new HashSet<>();
+		private static final Set<String> IDENTIFIERS = new HashSet<>();
 		static {
 			for (int i = 0; i < KEYWORDS.length; i++) {
 				IDENTIFIERS.add(KEYWORDS[i]);
