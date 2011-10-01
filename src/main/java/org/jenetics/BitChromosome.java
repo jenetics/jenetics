@@ -93,6 +93,10 @@ public class BitChromosome extends Number<BitChromosome>
 		nonNegative(length);
 		checkProbability(p);
 		
+		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
+		_genes = new byte[bytes];
+		_length = length;
+		
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0, n = length(); i < n; ++i) {
 			set(i, random.nextDouble() < p);
@@ -135,6 +139,10 @@ public class BitChromosome extends Number<BitChromosome>
 	 */
 	public BitChromosome(final int length, final BitSet bits) {
 		nonNull(bits, "BitSet");
+		
+		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
+		_genes = new byte[bytes];
+		_length = length;
 		
 		int ones = 0;
 		for (int i = 0; i < length; ++i) {
