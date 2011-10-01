@@ -57,7 +57,7 @@ public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>>
 			new Float64Chromosome(0, 1, 50)
 		);
 	private final Function<Genotype<Float64Gene>, Float64> _ff = new FF();
-	private final FitnessScaler<Float64> _scaler = IdentityScaler.<Float64>valueOf();
+	private final Function<Float64, Float64> _scaler = new IdentityScaler<>();
 	private final Factory<Phenotype<Float64Gene, Float64>> 
 	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {
 		@Override public Phenotype<Float64Gene, Float64> newInstance() {

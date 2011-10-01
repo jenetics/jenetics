@@ -123,7 +123,7 @@ public class GeneticAlgorithm<
 	
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final Function<Genotype<G>, C> _fitnessFunction;
-	private FitnessScaler<C> _fitnessScaler;
+	private Function<C, C> _fitnessScaler;
 	
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 	
@@ -213,7 +213,7 @@ public class GeneticAlgorithm<
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
 		final Function<Genotype<G>, C> fitnessFunction, 
-		final FitnessScaler<C> fitnessScaler
+		final Function<C, C> fitnessScaler
 	) {	 
 		this(
 				genotypeFactory, 
@@ -236,7 +236,7 @@ public class GeneticAlgorithm<
 	public GeneticAlgorithm(
 		final Factory<Genotype<G>> genotypeFactory, 
 		final Function<Genotype<G>, C> fitnessFunction, 
-		final FitnessScaler<C> fitnessScaler,
+		final Function<C, C> fitnessScaler,
 		final Optimize optimization
 	) {	 
 		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
@@ -605,16 +605,16 @@ public class GeneticAlgorithm<
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
-	public void setFitnessScaler(final FitnessScaler<C> scaler) {
+	public void setFitnessScaler(final Function<C, C> scaler) {
 		_fitnessScaler = nonNull(scaler, "FitnessScaler");
 	}
 	
 	/**
-	 * Return the currently used {@link FitnessScaler} of the GA. 
+	 * Return the currently used fitness scaler {@link Function} of the GA. 
 	 * 
-	 * @return the currently used {@link FitnessScaler} of the GA. 
+	 * @return the currently used fitness scaler {@link Function} of the GA. 
 	 */
-	public FitnessScaler<C> getFitnessScaler() {
+	public Function<C, C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
 	

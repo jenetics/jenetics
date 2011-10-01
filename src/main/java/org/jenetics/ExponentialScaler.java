@@ -31,6 +31,8 @@ import javolution.lang.Immutable;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Function;
+
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are 
  * modified the following way. 
@@ -43,7 +45,7 @@ import org.jscience.mathematics.number.Float64;
  */
 public final class ExponentialScaler 
 	implements 
-		FitnessScaler<Float64>, 
+		Function<Float64, Float64>, 
 		Serializable,
 		Immutable
 {
@@ -89,7 +91,7 @@ public final class ExponentialScaler
 	}
 
 	@Override
-	public Float64 scale(final Float64 value) {
+	public Float64 apply(final Float64 value) {
 		return Float64.valueOf(Math.pow((_a*value.doubleValue() + _b), _c));
 	}
 	

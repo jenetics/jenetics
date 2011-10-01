@@ -68,7 +68,7 @@ public final class Phenotype<
 	
 	private Genotype<G> _genotype;
 	private Function<Genotype<G>, C> _fitnessFunction;
-	private FitnessScaler<C> _fitnessScaler;
+	private Function<C, C> _fitnessScaler;
 	
 	private int _generation = 0;
 	
@@ -98,7 +98,7 @@ public final class Phenotype<
 	public void evaluate() {
 		if (_rawFitness == null) {
 			_rawFitness = _fitnessFunction.apply(_genotype);
-			_fitness = _fitnessScaler.scale(_rawFitness);
+			_fitness = _fitnessScaler.apply(_rawFitness);
 		}
 	}
 	
@@ -239,7 +239,7 @@ public final class Phenotype<
 	 */
 	public Phenotype<G, C> newInstance(
 			final Function<Genotype<G>, C> function, 
-			final FitnessScaler<C> scaler, 
+			final Function<C, C> scaler, 
 			final int generation
 	) {
 		return valueOf(_genotype, function, scaler, generation);
@@ -259,7 +259,7 @@ public final class Phenotype<
 			final Function<Genotype<G>, C> function, 
 			final int generation
 	) {
-		return valueOf(_genotype, function, IdentityScaler.<C>valueOf(), generation);
+		return valueOf(_genotype, function, new IdentityScaler<C>(), generation);
 	}
 	
 	
@@ -383,7 +383,7 @@ public final class Phenotype<
 	Phenotype<SG, SC> valueOf(
 		final Genotype<SG> genotype, 
 		final Function<Genotype<SG>, SC> fitnessFunction, 
-		final FitnessScaler<SC> fitnessScaler,
+		final Function<SC, SC> fitnessScaler,
 		final int generation
 	) {
 		nonNull(genotype, "Genotype");
