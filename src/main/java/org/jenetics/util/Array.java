@@ -246,7 +246,7 @@ public final class Array<T>
 		int index = 0;
 		for (int i = 0, n = length(); i < n; ++i) {
 			final T value = get(i);
-			if (predicate.apply(value)) {
+			if (predicate.apply(value) == Boolean.TRUE) {
 				copy.set(index++, value);
 			}
 		}
