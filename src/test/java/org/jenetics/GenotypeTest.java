@@ -49,8 +49,8 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 
     @Test
     public void testGenotypeGenotypeOfT() {
-        BitChromosome c1 = BitChromosome.valueOf(12);
-        BitChromosome c2 = BitChromosome.valueOf(12);
+        BitChromosome c1 = new BitChromosome(12);
+        BitChromosome c2 = new BitChromosome(12);
         BitChromosome c3 = c2.copy();
         Genotype<BitGene> g2 = Genotype.valueOf(c1, c2, c3);
         Genotype<BitGene> g4 = g2;

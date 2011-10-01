@@ -1,4 +1,5 @@
 Jenetics-0.9.0.0
+- Convert BitChromosome.valueOf() to constructors.
 - Remove GeneticAlgorithm.valueOf methods. They are no longer needed due to the
   extended type inference capabilities of Java 7 (diamond operator <>).
 - Move the static 'concurrency' methods from the 'GeneticAlgorithm' class to a 
