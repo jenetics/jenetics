@@ -249,6 +249,10 @@ public final class PermutationChromosome
 		return out.toString();
 	}
 	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+	
 	static final XMLFormat<PermutationChromosome> 
 	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
 		
@@ -291,6 +295,10 @@ public final class PermutationChromosome
 		{
 		}
 	};
+	
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException 
