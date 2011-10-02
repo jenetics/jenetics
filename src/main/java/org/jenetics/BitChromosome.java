@@ -28,6 +28,9 @@ import static org.jenetics.util.object.nonNegative;
 import static org.jenetics.util.object.nonNull;
 import static org.jenetics.util.object.str;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.Random;
@@ -73,12 +76,6 @@ public class BitChromosome extends Number<BitChromosome>
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
 	protected byte[] _genes;
-	
-	/**
-	 * Protected constructor, needed for the FACTORY.
-	 */
-	protected BitChromosome() {
-	}
 
 	/**
 	 * Construct a new BitChromosome with the given _length. 
@@ -464,40 +461,6 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	
-	static final XMLFormat<BitChromosome> 
-	XML = new XMLFormat<BitChromosome>(BitChromosome.class) 
-	{
-		private static final String LENGTH = "length";
-		private static final String PROBABILITY = "probability";
-		
-		@Override
-		public BitChromosome newInstance(
-			final Class<BitChromosome> cls, final InputElement xml
-		) 
-			throws XMLStreamException 
-		{
-			final int length = xml.getAttribute(LENGTH, 1);
-			final double probability = xml.getAttribute(PROBABILITY, 0.5);
-			final byte[] data = toByteArray(xml.getText().toString());
-			final BitChromosome chromosome = new BitChromosome(data);
-			chromosome._p = probability;
-			chromosome._length = length;
-			return chromosome;
-		} 
-		@Override
-		public void write(final BitChromosome chromosome, final OutputElement xml) 
-			throws XMLStreamException 
-		{
-			xml.setAttribute(LENGTH, chromosome._length);
-			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(BitChromosome.toString(chromosome.toByteArray()));
-		}
-		@Override
-		public void read(final InputElement element, final BitChromosome gene) {
-		}
-	};	
-	
-	
 	static String toString(final byte[] data) {
 		final StringBuilder out = new StringBuilder(data.length*8 + data.length);
 		
@@ -545,5 +508,75 @@ public class BitChromosome extends Number<BitChromosome>
 		
 		return bytes;
 	}
+	 
+	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/	
+	
+	static final XMLFormat<BitChromosome> 
+	XML = new XMLFormat<BitChromosome>(BitChromosome.class) 
+	{
+		private static final String LENGTH = "length";
+		private static final String PROBABILITY = "probability";
+		
+		@Override
+		public BitChromosome newInstance(
+			final Class<BitChromosome> cls, final InputElement xml
+		) 
+			throws XMLStreamException 
+		{
+			final int length = xml.getAttribute(LENGTH, 1);
+			final double probability = xml.getAttribute(PROBABILITY, 0.5);
+			final byte[] data = toByteArray(xml.getText().toString());
+			final BitChromosome chromosome = new BitChromosome(data);
+			chromosome._p = probability;
+			chromosome._length = length;
+			return chromosome;
+		} 
+		@Override
+		public void write(final BitChromosome chromosome, final OutputElement xml) 
+			throws XMLStreamException 
+		{
+			xml.setAttribute(LENGTH, chromosome._length);
+			xml.setAttribute(PROBABILITY, chromosome._p);
+			xml.addText(BitChromosome.toString(chromosome.toByteArray()));
+		}
+		@Override
+		public void read(final InputElement element, final BitChromosome gene) {
+		}
+	};	
+	
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+	
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException 
+	{
+		out.defaultWriteObject();
+	
+		out.writeInt(_length);
+		out.writeDouble(_p);
+		out.writeInt(_genes.length);
+		out.write(_genes);
+	}
+	
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException 
+	{
+		in.defaultReadObject();
+	
+		_length = in.readInt();
+		_p = in.readDouble();
+		
+		final int bytes = in.readInt();
+		_genes = new byte[bytes];
+		in.readFully(_genes);
+		
+	}
+	
 }
+
+
 
