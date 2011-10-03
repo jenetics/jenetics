@@ -106,13 +106,14 @@ public final class ForkJoinContext extends ConcurrentContext {
 	}
 
 	static {
-		ObjectFactory.setInstance(new ObjectFactory<ForkJoinContext>() {
-			@Override
-			protected ForkJoinContext create() {
-				return new ForkJoinContext();
-			}
-		}, 
-		ForkJoinContext.class);
+		ObjectFactory.setInstance(
+			new ObjectFactory<ForkJoinContext>() {
+				@Override protected ForkJoinContext create() {
+					return new ForkJoinContext();
+				}
+			}, 
+			ForkJoinContext.class
+		);
 	}
 	
 }
