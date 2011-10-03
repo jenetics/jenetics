@@ -405,6 +405,10 @@ public final class Phenotype<
 		return pt;
 	}
 
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<Phenotype> 
 	XML = new XMLFormat<Phenotype>(Phenotype.class) 

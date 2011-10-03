@@ -36,7 +36,43 @@ import org.testng.annotations.Test;
 public class ForkJoinContextTest {
 
 	static {
-		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(1));
+		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(3));
+	}
+	
+	@SuppressWarnings("unused")
+	private static class Task implements Runnable {
+		private int _id;
+		
+		public Task(final int id) {
+			_id = id;
+		}
+		
+		@Override
+		public void run() {
+			try (Concurrency c = Concurrency.start()) {
+				for (int i = 0; i < 10; ++i) {
+					
+					final int id = i;
+					c.execute(new Runnable() { @Override public void run() {
+						try {
+							//System.out.println(String.format("%d - %d", _id, id));
+							Thread.sleep(5);
+						} catch (Exception e) {
+							assert(false) : e.getMessage();
+						}
+					}});
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void potentialDeadLock() {
+		try (Concurrency c = Concurrency.start()) {
+			for (int i = 0; i < 10; ++i) {
+				c.execute(new Task(i));
+			}
+		}
 	}
 	
 	@Test(dataProvider = "levels")
@@ -67,7 +103,7 @@ public class ForkJoinContextTest {
 				public void run() {
 					try {
 						exec();
-						Thread.sleep(5);
+						Thread.sleep(2);
 					} catch (InterruptedException e) {
 						assert(false) : e.toString();
 					}
@@ -100,11 +136,6 @@ public class ForkJoinContextTest {
 		return new Object[][] {
 			{ 1 }, { 2 }, { 5 }, { 7 }, { 10 }, { 15 }, { 21 }, { 50 }, { 100 }
 		};
-	}
-
-	@Test
-	public void deadLock() {
-
 	}
 	
 	

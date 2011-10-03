@@ -345,6 +345,10 @@ public final class Genotype<T extends Gene<?, T>>
 			);
 	}
 	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+	
 	@SuppressWarnings({ "unchecked", "rawtypes"})
 	static final XMLFormat<Genotype> 
 	XML = new XMLFormat<Genotype>(Genotype.class) 

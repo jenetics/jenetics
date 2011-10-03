@@ -32,14 +32,8 @@ import javolution.lang.Configurable;
 /**
  * Simplify the usage of the {@link ConcurrentContext} usage by using the the 
  * Java 'try' for resources capability.
- * [code]
- *     try (Concurrency c = Concurrency.start()) {
- *         c.execute(task1);
- *         c.execute(task2);
- *     }
- * [/code] 
- * 
- * This is equivalent to
+ * <p/>
+ * Normally you will write
  * [code]
  *     ConcurrentContext.enter()
  *     try {
@@ -49,6 +43,17 @@ import javolution.lang.Configurable;
  *         ConcurrentContext.exit();
  *     }
  * [/code]
+ * to execute two tasks. By using this class you can shorten the code to be 
+ * written to:
+ * [code]
+ *     try (Concurrency c = Concurrency.start()) {
+ *         c.execute(task1);
+ *         c.execute(task2);
+ *     }
+ * [/code] 
+ * 
+ * This is equivalent to
+
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -66,6 +71,11 @@ public final class Concurrency implements AutoCloseable {
 	private Concurrency() {
 	}
 	
+	/**
+	 * Set the number of threads to use by the {@link ConcurrentContext}.
+	 * 
+	 * @param concurrency the number of threads.
+	 */
 	public static void setConcurrency(final int concurrency) {
 		if (concurrency > ConcurrentContext.getConcurrency()) {
 			final Properties properties = new Properties();
@@ -76,6 +86,12 @@ public final class Concurrency implements AutoCloseable {
 		ConcurrentContext.setConcurrency(concurrency);
 	}
 	
+	/**
+	 * Set the concurrent-context to be used by the concurrency.
+	 * 
+	 * @param type the concurrent-context type.
+	 * @throws NullPointerException if the given {@code type} is {@code null}.
+	 */
 	public static void setContext(final Class<? extends ConcurrentContext> type) {
 		final Properties properties = new Properties();
 		properties.put(KEY_CONTEXT, type);
@@ -91,6 +107,9 @@ public final class Concurrency implements AutoCloseable {
 		}
 	}
 	
+	/**
+	 * Reset to the default default context.
+	 */
 	public static void setDefaultContext() {
 		setContext(ConcurrentContext.DEFAULT.get());
 	}
