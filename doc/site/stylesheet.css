@@ -53,6 +53,19 @@ ul {
     list-style-type:disc;
 }
 
+div.code {
+    background-color: #F9F9F9;
+    margin: 3px;
+    padding: 8px;
+    border:1px solid #9EADC0;
+}
+
+code[lang="java"] {
+    white-space:pre;
+    font-family: Consolas, "Courier New", Courier, Monospace;
+    font-size:1.0em;
+}
+
 code, tt {
     font-size:1.2em;
 }
@@ -62,12 +75,6 @@ dt code {
 table tr td dt code {
     font-size:1.2em;
     vertical-align:top;
-}
-
-code[lang="java"] {
-    white-space:pre;
-    font-family: Consolas, "Courier New", Courier, Monospace;
-    font-size:1.0em;
 }
 
 sup {

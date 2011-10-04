@@ -25,7 +25,7 @@ package org.jenetics.util;
 import static org.jenetics.util.object.nonNull;
 
 /**
- * This class allows to build transitive converters.
+ * This class allows to build composite functions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

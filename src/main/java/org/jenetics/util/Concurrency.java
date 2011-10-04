@@ -35,21 +35,21 @@ import javolution.lang.Configurable;
  * <p/>
  * Normally you will write
  * [code]
- *     ConcurrentContext.enter()
- *     try {
- *         ConcurrentContext.execute(task1);
- *         ConcurrentContext.execute(task2);
- *     } finally {
- *         ConcurrentContext.exit();
- *     }
+ * ConcurrentContext.enter();
+ * try {
+ *     ConcurrentContext.execute(task1);
+ *     ConcurrentContext.execute(task2);
+ * } finally {
+ *     ConcurrentContext.exit();
+ * }
  * [/code]
  * to execute two tasks. By using this class you can shorten the code to be 
  * written to:
  * [code]
- *     try (Concurrency c = Concurrency.start()) {
- *         c.execute(task1);
- *         c.execute(task2);
- *     }
+ * try (Concurrency c = Concurrency.start()) {
+ *     c.execute(task1);
+ *     c.execute(task2);
+ * }
  * [/code] 
  * 
  * This is equivalent to
