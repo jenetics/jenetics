@@ -44,15 +44,15 @@
  * The diagram above shows the main data structures of the GA implementation. 
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are 
  * aggregated in {@link org.jenetics.Chromosome}s. One to n Chromosomes are 
- * aggregated in {@link org.jenetics.Genotype}s. A Genptype and a 
- * {@link org.jenetics.FitnessFunction} form the {@link org.jenetics.Phenotype}.
+ * aggregated in {@link org.jenetics.Genotype}s. A Genptype and a fitness 
+ * {@link org.jenetics.util.Function} form the {@link org.jenetics.Phenotype}.
  * Phenotypes are collected into a {@link org.jenetics.Population}.
  * 
  * 
  * <h3>Settting up the {@link org.jenetics.GeneticAlgorithm}</h3> 
  * 
  * The minimum GA setup needs a genotype {@link org.jenetics.util.Factory} and 
- * an {@link org.jenetics.FitnessFunction}. The genotype 
+ * a fitness {@link org.jenetics.util.Function}. The genotype 
  * {@link org.jenetics.Genotype} implements the {@link org.jenetics.util.Factory} 
  * interface and can be used as prototype.
  * [code]
@@ -191,7 +191,7 @@
  * 
  * Ones counting is one of the simplest model-problem and consists of a binary
  * chromosome. The fitness of a {@link org.jenetics.Genotype} is proportional to 
- * the number of ones. The {@link org.jenetics.FitnessFunction} looks like this:
+ * the number of ones. The fitness {@link org.jenetics.util.Function} looks like this:
  * 
  * [code]
  *     class OneCounter implements FitnessFunction<BitGene, Float64> {

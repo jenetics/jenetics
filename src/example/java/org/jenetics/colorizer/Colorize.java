@@ -55,7 +55,7 @@ public final class Colorize {
 			Files.walkFileTree(dir.toPath(), colorizer);
 			
 			System.out.println(String.format(
-					"Processed %d files and modified %d.", 
+					"Colorizer processed %d files and modified %d.", 
 					colorizer.getProcessed(), 
 					colorizer.getModified()
 				));
@@ -113,10 +113,10 @@ public final class Colorize {
 						} else if (read == '&') {
 							doc.append("&amp;");
 						} else {
-							doc.append((char) read);
+							doc.append((char)read);
 						}
 					} else {
-						doc.append((char) read);
+						doc.append((char)read);
 					}
 					
 					if (state == State.CODE) {
@@ -135,11 +135,8 @@ public final class Colorize {
 						out.write(doc.toString());
 					}
 				}				
-
 			}
-
 		}
-		
 		
 	}
 	
@@ -154,10 +151,22 @@ public final class Colorize {
 					doc.substring(doc.length() - 6).equalsIgnoreCase("[code]")) 
 				{
 					doc.setLength(doc.length() - 6);
-					doc.append("<code lang=\"java\">");
-					state = CODE;
+					doc.append("<div class=\"code\"><code lang=\"java\">");
+					state = SKIP_NL;
 				}			
 				
+				return state;
+			}
+		},
+		
+		SKIP_NL {
+			@Override
+			public State apply(final int read, final StringBuilder doc) {
+				State state = this;
+				if (read == '\n') {
+					doc.setLength(doc.length() - 1);
+					state = CODE;
+				}
 				return state;
 			}
 		},
@@ -190,8 +199,9 @@ public final class Colorize {
 				if ((read == ']') && // code identifier.
 					doc.substring(doc.length() - 7).equalsIgnoreCase("[/code]")) 
 				{
-					doc.setLength(doc.length() - 7);
-					doc.append("</code>");
+					int index = doc.lastIndexOf("\n");
+					doc.setLength(index);
+					doc.append("</code></div>");
 					state = DATA;
 				} else if (!Character.isJavaIdentifierPart((char)read)) { // End of identifier.
 					String name = doc.substring(_start, doc.length() - 1);

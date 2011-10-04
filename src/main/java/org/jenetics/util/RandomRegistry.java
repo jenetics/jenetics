@@ -55,7 +55,7 @@ import javolution.context.LocalContext;
  */
 public final class RandomRegistry {
 	private static final LocalContext.Reference<Random> RANDOM = 
-		new LocalContext.Reference<>(new Random(System.currentTimeMillis()));
+		new LocalContext.Reference<>(new Random());
 	
 	private RandomRegistry() {
 		throw new AssertionError("Don't create an 'RandomRegistry' instance.");
