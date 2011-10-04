@@ -27,17 +27,17 @@ package org.jenetics.util;
  * stream ends if {@link #next()} returns {@code -1}. Here some usage examples:
  * 
  * [code]
- *     final IndexStream stream = ...;
- *     for (int i = stream.next(); i != -1; i = stream.next()) {
- *         System.out.println(i);
- *     }
+ * final IndexStream stream = ...;
+ * for (int i = stream.next(); i != -1; i = stream.next()) {
+ *     System.out.println(i);
+ * }
  * [/code]
  * [code]
- *     final IndexStream stream = ...;
- *     int index = 0;
- *     while ((index = stream.next()) != -1) {
- *         System.out.println(i);
- *     }
+ * final IndexStream stream = ...;
+ * int index = 0;
+ * while ((index = stream.next()) != -1) {
+ *     System.out.println(i);
+ * }
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

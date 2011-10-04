@@ -82,10 +82,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * Construct a Mutation object which a given mutation probability.
 	 * 
 	 * @param probability Mutation probability. The given probability is
-	 *			divided by the number of chromosomes of the genotype to form
-	 *			the concrete mutation probability.
+	 *        divided by the number of chromosomes of the genotype to form
+	 *        the concrete mutation probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 * 		  valid range of {@code [0, 1]}..
+	 *         valid range of {@code [0, 1]}..
 	 */
 	public Mutator(final double probability) {
 		super(probability);
@@ -156,18 +156,18 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * <p/>
 	 * This implementation, for example, does it in this way:
 	 * [code]
-	 *     protected int mutate(final Array<G> genes, final double p) {
-	 *         final Random random = RandomRegistry.getRandom();
-	 *         final ProbabilityIndexIterator it = 
-	 *             new ProbabilityIndexIterator(genes.length(), p, random);
+	 * protected int mutate(final Array<G> genes, final double p) {
+	 *     final Random random = RandomRegistry.getRandom();
+	 *     final ProbabilityIndexIterator it = 
+	 *         new ProbabilityIndexIterator(genes.length(), p, random);
 	 *	
-	 *         int alterations = 0;
-	 *         for (int i = it.next(); i != -1; i = it.next()) {
-	 *             genes.set(i, genes.get(i).newInstance());
-	 *             ++alterations;
-	 *         }
-	 *         return alterations;
+	 *     int alterations = 0;
+	 *     for (int i = it.next(); i != -1; i = it.next()) {
+	 *         genes.set(i, genes.get(i).newInstance());
+	 *         ++alterations;
 	 *     }
+	 *     return alterations;
+	 * }
 	 * [/code]
 	 * 
 	 * @param genes the genes to mutate.

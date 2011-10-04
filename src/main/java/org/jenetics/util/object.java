@@ -47,8 +47,8 @@ public final class object {
 	 * The following code will throw an {@link IllegalArgumentException} if the
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
-	 * 	 final Array<Integer> array = ...
-	 * 	 array.foreach(CheckRange<(0, 10));
+	 * final Array<Integer> array = ...
+	 * array.foreach(CheckRange<(0, 10));
 	 * [/code]
 	 */
 	public static final <C extends Comparable<? super C>> Function<C, Boolean> 
@@ -74,7 +74,7 @@ public final class object {
 	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
-	 * 	 array.foreach(Verify) == -1
+	 * array.foreach(Verify) == -1
 	 * [/code]
 	 * is true.
 	 */
@@ -92,11 +92,11 @@ public final class object {
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
 	 * 
 	 * [code]
-	 * 	 final Array<String> array = ...
-	 * 	 array.foreach(NonNull("Object"));
-	 * 	 ...
-	 * 	 final String[] array = ...
-	 * 	 ArrayUtils.foreach(array, NonNull);
+	 * final Array<String> array = ...
+	 * array.foreach(NonNull("Object"));
+	 * ...
+	 * final String[] array = ...
+	 * ArrayUtils.foreach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Function<Object, Boolean> NonNull = NonNull("Object");
@@ -107,11 +107,11 @@ public final class object {
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
 	 * 
 	 * [code]
-	 * 	 final Array<String> array = ...
-	 * 	 array.foreach(NonNull("Object"));
-	 * 	 ...
-	 * 	 final String[] array = ...
-	 * 	 ArrayUtils.foreach(array, NonNull);
+	 * final Array<String> array = ...
+	 * array.foreach(NonNull("Object"));
+	 * ...
+	 * final String[] array = ...
+	 * ArrayUtils.foreach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Function<Object, Boolean> NonNull(final String message) {

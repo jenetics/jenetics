@@ -40,7 +40,6 @@ import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
-
 /**
  * Character gene implementation.
  * 

@@ -27,15 +27,15 @@
  * proposed and analyzed by <a href="http://en.wikipedia.org/wiki/John_Henry_Holland" >
  * John Holland</a> in 1975. The GA consists of the following steps:
  * [code]
- *     Initialize population;
- *     Measure fitness of populaton;
- *     while (!stopCondition) {
- *         select offsprings;select survivors;
- *         increase survirvor age;
- *         alter offsprings;
- *         add survivors and offsprings to new population;
- *         measure fitness of new population;
- *     } 
+ * Initialize population;
+ * Measure fitness of populaton;
+ * while (!stopCondition) {
+ *     select offsprings;select survivors;
+ *     increase survirvor age;
+ *     alter offsprings;
+ *     add survivors and offsprings to new population;
+ *     measure fitness of new population;
+ * } 
  * [/code]
  * 
  * <h3>Data structures</h3>

@@ -52,10 +52,10 @@ public interface ISeq<T>
 	 * type of {@code T}.
 	 * </p>
 	 * [code]
-	 *     ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
-	 *     ISeq<Number> na = da.upcast(da);
-	 *     ISeq<Object>; oa = na.upcast(na);
-	 *     oa = da.upcast(da);
+	 * ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
+	 * ISeq<Number> na = da.upcast(da);
+	 * ISeq<Object>; oa = na.upcast(na);
+	 * oa = da.upcast(da);
 	 * [/code]
 	 * 
 	 * @param seq the sequence to cast.

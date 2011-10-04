@@ -30,7 +30,6 @@ import java.io.Serializable;
 
 import org.jenetics.util.Function;
 
-
 /**
  * Adapter class to allow the genetic algorithm to interact with the 
  * {@link Function} object of the <a href="http://jscience.org/">JScience</a> 

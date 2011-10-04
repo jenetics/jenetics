@@ -65,7 +65,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	 * {@link IllegalStateException} or not.
 	 * 
 	 * @return {@code true} if this {@link Reference} can't be set again, 
-	 * 		  false otherwise.
+	 *         false otherwise.
 	 */
 	public synchronized boolean isFinal() {
 		return _initialized;

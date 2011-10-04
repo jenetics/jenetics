@@ -32,14 +32,14 @@ import java.util.Random;
  * indices with a given probability.
  * 
  * [code]
- *     final Array<Integer> array = ...
- *     final RandomIndexStream it = 
- *         new RandomIndexStream(array.length(), 0.3, random);
+ * final Array<Integer> array = ...
+ * final RandomIndexStream it = 
+ *     new RandomIndexStream(array.length(), 0.3, random);
  *         
- *     for (int i = it.next(); i != -1; i = it.next()) {
- *         final Integer element = array.get(i);
- *         System.out.println(element);
- *     }
+ * for (int i = it.next(); i != -1; i = it.next()) {
+ *     final Integer element = array.get(i);
+ *     System.out.println(element);
+ * }
  * [/code]
  * 
  * The example above iterates over the given <i>array</i>. Every array element

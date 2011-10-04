@@ -34,7 +34,6 @@ import java.util.regex.PatternSyntaxException;
 
 import javolution.lang.Immutable;
 
-
 /**
  * Helper class holding the valid characters.
  * 
