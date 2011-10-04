@@ -39,13 +39,13 @@ import javolution.context.LocalContext;
  * <a href="http://javolution.org/">javolution</a> project.
  * 
  * [code]
- *     LocalContext.enter();
- *     try {
- *         RandomRegistry.setRandom(new MyRandom());
- *         ...
- *     } finally {
- *         LocalContext.exit(); // Restore the previous random engine.
- *     }
+ * LocalContext.enter();
+ * try {
+ *     RandomRegistry.setRandom(new MyRandom());
+ *     ...
+ * } finally {
+ *     LocalContext.exit(); // Restore the previous random engine.
+ * }
  * [/code]
  * 
  * @see LocalContext

@@ -119,12 +119,12 @@ public final class Timer
 	 * Return the overall time of this timer. The following code snippet would
 	 * return a measured time of 10 s (theoretically).
 	 * [code]
-	 * 	 final Timer timer = new Timer();
-	 * 	 for (int i = 0; i < 10) {
-	 * 		  timer.start();
-	 * 		  Thread.sleep(1000);
-	 * 		  timer.stop();
-	 * 	 }
+	 * final Timer timer = new Timer();
+	 * for (int i = 0; i < 10) {
+	 *     timer.start();
+	 *     Thread.sleep(1000);
+	 *     timer.stop();
+	 * }
 	 * [/code]
 	 * 
 	 * @return the measured time so far.

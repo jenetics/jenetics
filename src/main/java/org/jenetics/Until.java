@@ -101,8 +101,8 @@ public final class Until {
 	 * current GA generation is {@code >=} as the given {@code generation}.
 	 * 
 	 * [code]
-	 *     final GeneticAlgortihm<Float64Gene, Float64> ga = ...
-	 *     ga.evolve(Until.Generation(100));
+	 * final GeneticAlgortihm<Float64Gene, Float64> ga = ...
+	 * ga.evolve(Until.Generation(100));
 	 * [/code]
 	 * 
 	 * @param generation the maximal GA generation.

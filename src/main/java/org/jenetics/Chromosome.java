@@ -30,7 +30,6 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Verifiable;
 
-
 /**                                                              
  * A chromosome is an array of genes.
  * 

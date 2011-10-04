@@ -77,15 +77,15 @@ public interface Seq<T> extends Iterable<T> {
 	 * than a {@code seq.indexOf()} call.
 	 * 
 	 * [code]
-	 *     final Seq<Integer> values = new Array<Integer>(1, 2, 3, 4, 5);
-	 *     final AtomicInteger sum = new AtomicInteger(0);
-	 *     values.foreach(new Predicate<Integer>() {
-	 *         public boolean evaluate(final Integer value) {
-	 *             sum.addAndGet(value);
-	 *             return true;
-	 *         }
-	 *     });
-	 *     System.out.println("Sum: " + sum);
+	 * final Seq<Integer> values = new Array<Integer>(1, 2, 3, 4, 5);
+	 * final AtomicInteger sum = new AtomicInteger(0);
+	 * values.foreach(new Predicate<Integer>() {
+	 *     public boolean evaluate(final Integer value) {
+	 *         sum.addAndGet(value);
+	 *         return true;
+	 *     }
+	 * });
+	 * System.out.println("Sum: " + sum);
 	 * [/code]
 	 * 
 	 * @param predicate the predicate to apply.
@@ -123,11 +123,11 @@ public interface Seq<T> extends Iterable<T> {
 	 * sequence element.
 	 * </p>
 	 * [code]
-	 * 	 // Finding index of first null value.
-	 * 	 final int index = seq.indexOf(new Predicates.Nil());
+	 * // Finding index of first null value.
+	 * final int index = seq.indexOf(new Predicates.Nil());
 	 * 	 
-	 * 	 // Assert of no null values.
-	 * 	 assert (sequence.indexOf(new Predicates.Nil()) == -1);
+	 * // Assert of no null values.
+	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
 	 * [/code]
 	 * 
 	 * @param predicate the search predicate.
@@ -252,12 +252,12 @@ public interface Seq<T> extends Iterable<T> {
 	 * as followed: 
 	 * 
 	 * [code]
-	 *     int hashCode = 1;
-	 *     final Iterator<E> it = seq.iterator();
-	 *     while (it.hasNext()) {
-	 *         final E obj = it.next();
-	 *         hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
-	 *     }
+	 * int hashCode = 1;
+	 * final Iterator<E> it = seq.iterator();
+	 * while (it.hasNext()) {
+	 *     final E obj = it.next();
+	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
+	 * }
 	 * [/code]
 	 * 
 	 * @see List#hashCode()

@@ -29,21 +29,21 @@ package org.jenetics.util;
  * 
  * Usage example:
  * [code]
- *     // Convert a string on the fly into a double value.
- *     final Converter<String, Double> converter = new Converter<String, Double>() {
- *             public Double convert(final String value) {
- *                 return Double.valueOf(value);
- *             }
- *         };
+ * // Convert a string on the fly into a double value.
+ * final Converter<String, Double> converter = new Converter<String, Double>() {
+ *         public Double convert(final String value) {
+ *             return Double.valueOf(value);
+ *         }
+ *     };
  *     
- *     // The values to accumulate
- *     final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
+ * // The values to accumulate
+ * final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
  *     
- *     // Min accumulator extends the AbstractAccumulator
- *     final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
+ * // Min accumulator extends the AbstractAccumulator
+ * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
  *     
- *     // No pain to accumulate collections of a different type.
- *     Accumulators.accumulate(values, accumulator.adapt(converter));
+ * // No pain to accumulate collections of a different type.
+ * Accumulators.accumulate(values, accumulator.adapt(converter));
  * [/code]
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

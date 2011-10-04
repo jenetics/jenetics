@@ -37,7 +37,6 @@ import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 
-
 /**
  * Combines several alterers to one.
  * 

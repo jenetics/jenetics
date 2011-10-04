@@ -48,40 +48,40 @@ import org.jenetics.util.Timer;
  * 
  * A simple GeneticAlgorithm setup.
  * [code]
- *  //Defining a genotype factory.
- *  final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
- *                    BitChromosome.valueOf(10, 0.5);
- *              );
+ * //Defining a genotype factory.
+ * final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
+ *                   BitChromosome.valueOf(10, 0.5);
+ *             );
  *   
- *  // Defining the fitness function.
- *   final FitnessFunction<BitGene, Float64> ff = ...;
+ * // Defining the fitness function.
+ * final FitnessFunction<BitGene, Float64> ff = ...;
  *   
- *   // The given fitness function will be maximized. By default 
- *   // the GA tries to maximize the fitness function.
- *   final Optimize opt = Optimize.MINIMUM;
+ * // The given fitness function will be maximized. By default 
+ * // the GA tries to maximize the fitness function.
+ * final Optimize opt = Optimize.MINIMUM;
  *   
- *   // Create the GA.
- *   final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
+ * // Create the GA.
+ * final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
  * [code]
- *   ga.setup();
- *   ga.evolve(100);
- *   System.out.println(ga.getStatistics());
+ * ga.setup();
+ * ga.evolve(100);
+ * System.out.println(ga.getStatistics());
  * [/code]
  * 
  * It is possible to set an initial population instead an random one. The 
  * fitness function and the fitness scaler is not initialized by the
  * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
  * [code]
- *   final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
- *       IOUtils.readXML(Population.class, new FileInputStream("population.xml");
- *   ga.setPopulation(population);
- *   //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
- *   ga.setup();
- *   ga.evolve(100);
- *   System.out.println(ga.getStatistics());
+ * final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
+ *     IOUtils.readXML(Population.class, new FileInputStream("population.xml");
+ * ga.setPopulation(population);
+ * //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
+ * ga.setup();
+ * ga.evolve(100);
+ * System.out.println(ga.getStatistics());
  * [/code]
  * 
  * 
@@ -527,48 +527,48 @@ public class GeneticAlgorithm<
 	 * <p/>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 *  final GeneticAlgorithm<DoubleGene, Float64> ga = ...
-	 *  final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
+	 * final GeneticAlgorithm<DoubleGene, Float64> ga = ...
+	 * final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
 	 *  
-	 *  //Starting the GA in separate thread.
-	 *  final Thread thread = new Thread(new Runnable() {
-	 *      public void run() {
-	 *          while (!Thread.currentThread().isInterrupted() && 
-	 *                 !stopCondition.evaluate(ga)) 
-	 *          {
-	 *              if (ga.getGeneration() == 0) {
-	 *                  ga.setup();
-	 *              } else {
-	 *                  ga.evolve();
-	 *              }
-	 *          }
-	 *      }
-	 *  });
-	 *  thread.start();
-	 *  
-	 *   //Changing the GA parameters outside the evolving thread. All parameters
-	 *   //are changed before the next evolve step.
-	 *  ga.getLock().lock();
-	 *  try {
-	 *      ga.setAlterer(new Mutation(Probability.valueOf(0.02));
-	 *      ga.setPopulationSize(55);
-	 *      ga.setMaximalPhenotypeAge(30);
-	 *  } finally {
-	 *      ga.getLock().unlock();
-	 *  }
+	 * //Starting the GA in separate thread.
+	 * final Thread thread = new Thread(new Runnable() {
+	 *     public void run() {
+	 *         while (!Thread.currentThread().isInterrupted() && 
+	 *                !stopCondition.evaluate(ga)) 
+	 *         {
+	 *             if (ga.getGeneration() == 0) {
+	 *                 ga.setup();
+	 *             } else {
+	 *                 ga.evolve();
+	 *             }
+	 *         }
+	 *     }
+	 * });
+	 * thread.start();
+	 * 
+	 *  //Changing the GA parameters outside the evolving thread. All parameters
+	 *  //are changed before the next evolve step.
+	 * ga.getLock().lock();
+	 * try {
+	 *     ga.setAlterer(new Mutation(Probability.valueOf(0.02));
+	 *     ga.setPopulationSize(55);
+	 *     ga.setMaximalPhenotypeAge(30);
+	 * } finally {
+	 *     ga.getLock().unlock();
+	 * }
 	 * [/code]
 	 * 
 	 * You can use the same lock if you want get a consistent state of the used
 	 * parameters, if they where changed within an other thread.
 	 * 
 	 * [code]
-	 *   ga.getLock().lock();
-	 *   try {
-	 *       final Statistics<?, ?> statistics = ga.getStatistic();
-	 *       final FitnessScaler<?> scaler = ga.getFitnessScaler();
-	 *   } finally {
-	 *       ga.getLock().unlock();
-	 *   }
+	 * ga.getLock().lock();
+	 * try {
+	 *     final Statistics<?, ?> statistics = ga.getStatistic();
+	 *     final FitnessScaler<?> scaler = ga.getFitnessScaler();
+	 * } finally {
+	 *     ga.getLock().unlock();
+	 * }
 	 * [/code]
 	 * 
 	 * The code above ensures that the returned {@code statistics} and 

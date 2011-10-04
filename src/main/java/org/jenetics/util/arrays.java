@@ -408,10 +408,10 @@ public final class arrays {
 	 * The following examples prints the start index (inclusive) and the end
 	 * index (exclusive) of the {@code partition(15, 6)}.
 	 * [code]
-	 * 	 int[] parts = partition(15, 6);
-	 * 	 for (int i = 0; i < parts.length - 1; ++i) {
-	 * 		  System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]); 
-	 * 	 }
+	 * int[] parts = partition(15, 6);
+	 * for (int i = 0; i < parts.length - 1; ++i) {
+	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]); 
+	 * }
 	 * [/code]
 	 * <pre>
 	 * 	 0: 0 	2
@@ -424,23 +424,23 @@ public final class arrays {
 	 * 
 	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
-	 *   ConcurrentContext.enter();
-	 *   try {
-	 *       final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
+	 * ConcurrentContext.enter();
+	 * try {
+	 *     final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
 	 *		
-	 *       for (int i = 0; i < parts.length - 1; ++i) {
-	 *           final int part = i;
-	 *           ConcurrentContext.execute(new Runnable() {
-	 *               public void run() {
-	 *                   for (int j = parts[part + 1]; --j >= parts[part];) {
-	 *                       population.get(j).evaluate();
-	 *                   }
-	 *               }
-	 *           });
-	 *       }
-	 *    } finally {
-	 *        ConcurrentContext.exit();
-	 *    }
+	 *     for (int i = 0; i < parts.length - 1; ++i) {
+	 *         final int part = i;
+	 *         ConcurrentContext.execute(new Runnable() {
+	 *             public void run() {
+	 *                 for (int j = parts[part + 1]; --j >= parts[part];) {
+	 *                     population.get(j).evaluate();
+	 *                 }
+	 *             }
+	 *         });
+	 *     }
+	 * } finally {
+	 *      ConcurrentContext.exit();
+	 * }
 	 * [/code]
 	 * 
 	 * @param size the size of the array to partition.
@@ -895,10 +895,10 @@ public final class arrays {
 	 * Can be used to check all array elements for nullness.
 	 * 
 	 * [code]
-	 * 	 public void foo(final Integer[] values) {
-	 * 		  ArrayUtils.foreach(values, new Validator.NonNull());
-	 * 		  ...
-	 * 	 }
+	 * public void foo(final Integer[] values) {
+	 *     ArrayUtils.foreach(values, new Validator.NonNull());
+	 *     ...
+	 * }
 	 * [/code]
 	 * 
 	 * @param array the array to iterate.
@@ -933,7 +933,7 @@ public final class arrays {
 	 * @param values the values to iterate.
 	 * @param predicate the applied predicate.
 	 * @return the index of the last visited element, or -1 if all elements has
-	 * 		  been visited.
+	 *         been visited.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(

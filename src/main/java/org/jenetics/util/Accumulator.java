@@ -26,12 +26,12 @@ package org.jenetics.util;
  * Interface for accumulating values of a given type. Here an usage example:
  * 
  * [code]
- * 	 final MinMax<Double> minMax = new MinMax<Double>();
- * 	 final Variance<Double> variance = new Variance<Double>();
- * 	 final Quantile<Double> quantile = new Quantile<Double>();
+ * final MinMax<Double> minMax = new MinMax<Double>();
+ * final Variance<Double> variance = new Variance<Double>();
+ * final Quantile<Double> quantile = new Quantile<Double>();
  * 	 
- * 	 final List<Double> values = ...;
- * 	 Accumulators.accumulate(values, minMax, variance, quantile);
+ * final List<Double> values = ...;
+ * Accumulators.accumulate(values, minMax, variance, quantile);
  * [/code]
  * 
  * @see accumulators

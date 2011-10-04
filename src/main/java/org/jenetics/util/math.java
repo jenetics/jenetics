@@ -22,8 +22,6 @@
  */
 package org.jenetics.util;
 
-
-
 /**
  * Object with mathematical functions.
  * 
@@ -286,17 +284,17 @@ public final class math {
 	 * position of a double number.
 	 * 
 	 * [code]
-	 *  double a = 0.0;
-	 *  for (int i = 0; i < 10; ++i) {
-	 *      a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
-	 *  }
+	 * double a = 0.0;
+	 * for (int i = 0; i < 10; ++i) {
+	 *     a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
+	 * }
 	 *
-	 *  for (int i = 0; i < 19; ++i) {
-	 *      a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
-	 *      System.out.println(
-	 *           a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
-	 *      );
-	 *   }
+	 * for (int i = 0; i < 19; ++i) {
+	 *     a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
+	 *     System.out.println(
+	 *          a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
+	 *     );
+	 * }
 	 * [/code]
 	 * 
 	 * The code fragment above will create the following output:
