@@ -81,7 +81,7 @@ public abstract class MappableAccumulator<T>
 	 * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
 	 *     
 	 * // No pain to accumulate collections of a different type.
-	 * Accumulators.accumulate(values, accumulator.adapt(converter));
+	 * Accumulators.accumulate(values, accumulator.map(converter));
 	 * [/code]
 	 * 
 	 * @param <B> the type of the returned adapter (view).
