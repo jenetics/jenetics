@@ -149,30 +149,12 @@ final class AccumulatorAdapter<A, B> extends MappableAccumulator<B> {
 	 *        type {@code B}.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public AccumulatorAdapter(
+	AccumulatorAdapter(
 		final Accumulator<? super A> adoptee, 
 		final Function<? super B, ? extends A> converter
 	) {
 		_adoptee = nonNull(adoptee);
 		_converter = nonNull(converter);
-	}
-	
-	/**
-	 * Return the adapted Accumulator.
-	 * 
-	 * @return the adapted Accumulator.
-	 */
-	public Accumulator<? super A> getAccumulator() {
-		return _adoptee;
-	}
-	
-	/**
-	 * Return the needed converter from type {@code A} to  type {@code B}.
-	 * 
-	 * @return the needed converter from type {@code A} to  type {@code B}.
-	 */
-	public Function<? super B, ? extends A> getConverter() {
-		return _converter;
 	}
 	
 	@Override
