@@ -322,8 +322,8 @@ public class NumberStatistics<
 			accumulators.<Phenotype<G, R>>accumulate(
 					population, 
 					minMax,
-					age.adapt(Phenotype.Age(generation)),
-					fitness.adapt(Phenotype.<R>Fitness())
+					age.map(Phenotype.Age(generation)),
+					fitness.map(Phenotype.<R>Fitness())
 				);
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));

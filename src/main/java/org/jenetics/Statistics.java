@@ -715,7 +715,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			accumulators.<Phenotype<G, C>>accumulate(
 					population, 
 					minMax, 
-					age.adapt(Phenotype.Age(generation))
+					age.map(Phenotype.Age(generation))
 				);
 			
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));

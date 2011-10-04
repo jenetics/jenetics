@@ -83,10 +83,10 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 			accumulate(
 					selection, 
 					histogram
-						.adapt(Float64Gene.Allele)
-						.adapt(Float64Chromosome.Gene)
-						.adapt(Genotype.<Float64Gene>Chromosome())
-						.adapt(Phenotype.<Float64Gene>Genotype())
+						.map(Float64Gene.Allele)
+						.map(Float64Chromosome.Gene)
+						.map(Genotype.<Float64Gene>Chromosome())
+						.map(Phenotype.<Float64Gene>Genotype())
 				);
 			
 			population.clear();

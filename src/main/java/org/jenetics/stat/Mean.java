@@ -25,7 +25,8 @@ package org.jenetics.stat;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import org.jenetics.util.AdaptableAccumulator;
+import org.jenetics.util.MappableAccumulator;
+
 
 /**
  * <p>Calculate  the Arithmetic mean from a finite sample of <i>N</i>
@@ -41,7 +42,7 @@ import org.jenetics.util.AdaptableAccumulator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Mean<N extends Number> extends AdaptableAccumulator<N> {
+public class Mean<N extends Number> extends MappableAccumulator<N> {
 
 	protected double _mean = Double.NaN;
 	

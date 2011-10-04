@@ -72,9 +72,9 @@ public class Float64ChromosomeTest
 				
 				accumulate(
 						chromosome, 
-						mm.adapt(Float64Gene.Value),
-						histogram.adapt(Float64Gene.Value),
-						variance.adapt(Float64Gene.Value)
+						mm.map(Float64Gene.Value),
+						histogram.map(Float64Gene.Value),
+						variance.map(Float64Gene.Value)
 					);
 			}
 			

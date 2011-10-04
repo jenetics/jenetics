@@ -86,7 +86,7 @@ public class StatisticsCalculatorTest {
 		final Statistics<Float64Gene, Float64> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<>();
-		accumulators.accumulate(population(size), ageVariance.adapt(Phenotype.Age(gen)));
+		accumulators.accumulate(population(size), ageVariance.map(Phenotype.Age(gen)));
 		
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());
 		Assert.assertEquals(statistics.getAgeVariance(), ageVariance.getVariance());
