@@ -57,7 +57,7 @@ public final class accumulators {
 	 * @version $Id$
 	 */
 	public static final class Min<C extends Comparable<? super C>> 
-		extends AdaptableAccumulator<C> 
+		extends MappableAccumulator<C> 
 	{
 		private C _min;
 		
@@ -144,7 +144,7 @@ public final class accumulators {
 	 * @version $Id$
 	 */
 	public static final class Max<C extends Comparable<? super C>> 
-		extends AdaptableAccumulator<C> 
+		extends MappableAccumulator<C> 
 	{
 		private C _max;
 		
@@ -231,7 +231,7 @@ public final class accumulators {
 	 * @version $Id$
 	 */
 	public static final class MinMax<C extends Comparable<? super C>> 
-		extends AdaptableAccumulator<C> 
+		extends MappableAccumulator<C> 
 	{
 		private C _min;
 		private C _max;
@@ -328,7 +328,7 @@ public final class accumulators {
 	}
 	
 	public static class Sum<G extends GroupAdditive<G>> 
-		extends AdaptableAccumulator<G> 
+		extends MappableAccumulator<G> 
 	{
 		
 		private G _sum = null;

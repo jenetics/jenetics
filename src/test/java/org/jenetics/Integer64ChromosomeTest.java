@@ -71,9 +71,9 @@ public class Integer64ChromosomeTest
 				
 				accumulate(
 						chromosome, 
-						mm.adapt(Integer64Gene.Value),
-						variance.adapt(Integer64Gene.Value),
-						histogram.adapt(Integer64Gene.Value)
+						mm.map(Integer64Gene.Value),
+						variance.map(Integer64Gene.Value),
+						histogram.map(Integer64Gene.Value)
 					);
 			}
 			

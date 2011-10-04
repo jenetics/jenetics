@@ -27,7 +27,8 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Arrays;
 
-import org.jenetics.util.AdaptableAccumulator;
+import org.jenetics.util.MappableAccumulator;
+
 
 /**
  * Implementation of the quantile estimation algorithm published by
@@ -46,7 +47,7 @@ import org.jenetics.util.AdaptableAccumulator;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Quantile<N extends Number> extends AdaptableAccumulator<N> {
+public class Quantile<N extends Number> extends MappableAccumulator<N> {
 
 	// The desired quantile.
 	private double _quantile;             

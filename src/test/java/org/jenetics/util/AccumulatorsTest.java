@@ -75,7 +75,7 @@ public class AccumulatorsTest {
 	
 	@Test
 	public void callSpeed() {
-		final Accumulator<Integer> accumulator = new AbstractAccumulator<Integer>() {};
+		final Accumulator<Integer> accumulator = new MappableAccumulator<Integer>() {};
 		Timer timer = new Timer();
 		timer.start();
 		for (long i = 0, n = 100000000L; i < n; ++i) {
@@ -91,7 +91,7 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulate1() {
 		final int SAMPLES = 1000;
-		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator = new MappableAccumulator<Integer>(){};
 		accumulate(new IntegerIterator(SAMPLES), accumulator);
 		
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
@@ -100,7 +100,7 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulate2() {
 		final int SAMPLES = 1000;
-		final AbstractAccumulator<Integer> accumulator = new AbstractAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator = new MappableAccumulator<Integer>(){};
 		accumulate(new IntegerIterable(SAMPLES), accumulator);
 		
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
@@ -109,8 +109,8 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulate3() {
 		final int SAMPLES = 1000;
-		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator1 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
 		
 		accumulate(
 				new IntegerIterable(SAMPLES), 
@@ -125,9 +125,9 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulate4() {
 		final int SAMPLES = 1000;
-		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator1 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator3 = new MappableAccumulator<Integer>(){};
 		
 		accumulate(
 				new IntegerIterable(SAMPLES), 
@@ -144,10 +144,10 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulate5() {
 		final int SAMPLES = 1000;
-		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator1 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator3 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator4 = new MappableAccumulator<Integer>(){};
 		
 		accumulate(
 				new IntegerIterable(SAMPLES), 
@@ -166,11 +166,11 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulate6() {
 		final int SAMPLES = 1000;
-		final AbstractAccumulator<Integer> accumulator1 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator2 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator3 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator4 = new AbstractAccumulator<Integer>(){};
-		final AbstractAccumulator<Integer> accumulator5 = new AbstractAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator1 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator3 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator4 = new MappableAccumulator<Integer>(){};
+		final MappableAccumulator<Integer> accumulator5 = new MappableAccumulator<Integer>(){};
 		
 		accumulate(
 				new IntegerIterable(SAMPLES), 
@@ -191,9 +191,9 @@ public class AccumulatorsTest {
 	@Test
 	public void accumulateN() {
 		final int SAMPLES = 1000;
-		final Array<AbstractAccumulator<Integer>> accumulators = new Array<>(10);
+		final Array<MappableAccumulator<Integer>> accumulators = new Array<>(10);
 		for (int i = 0; i < accumulators.length(); ++i) {
-			accumulators.set(i, new AbstractAccumulator<Integer>(){});
+			accumulators.set(i, new MappableAccumulator<Integer>(){});
 		}
 		
 		accumulate(
@@ -201,7 +201,7 @@ public class AccumulatorsTest {
 				accumulators
 			);
 		
-		for (AbstractAccumulator<Integer> accumulator : accumulators) {
+		for (MappableAccumulator<Integer> accumulator : accumulators) {
 			Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 		}
 	}
