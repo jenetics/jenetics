@@ -297,7 +297,7 @@ public final class Array<T>
 	 * 
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
-	 * @throws ArrayIndexOutOfBoundsException if {@code from < 0 or to > length()}
+	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
 	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws ClassCastException if the array contains elements that are not 
 	 *        <i>mutually comparable</i> (for example, strings and integers).
@@ -349,7 +349,7 @@ public final class Array<T>
 	 * @param to the index of the last element (exclusive) to be sorted.
 	 * @throws NullPointerException if the given {@code comparator} is 
 	 *         {@code null}.
-	 * @throws ArrayIndexOutOfBoundsException if {@code from < 0 or to > length()}
+	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
 	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws ClassCastException if the array contains elements that are not 
 	 *        <i>mutually comparable</i> (for example, strings and integers).
@@ -433,7 +433,7 @@ public final class Array<T>
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
 	 */
 	public Array<T> reverse(final int from, final int to) {

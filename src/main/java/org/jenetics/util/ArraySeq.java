@@ -55,7 +55,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * 		 {@link #set(int, Object)} will throw an 
 	 * 		 {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 * @throws ArrayIndexOutOfBoundsException for an illegal start/end point index 
+	 * @throws IndexOutOfBoundsException for an illegal start/end point index 
 	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
