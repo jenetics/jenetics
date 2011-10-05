@@ -407,14 +407,14 @@ public final class Array<T>
 			if (j <= i) {
 				break;
 			}
-			_swap(i, j);
+			uncheckedSwap(i, j);
 		}
-		_swap(left, j);
+		uncheckedSwap(left, j);
 		
 		return j;
 	}	
 	
-	private void _swap(final int i, final int j) {
+	private void uncheckedSwap(final int i, final int j) {
 		final Object temp = _array.data[i + _start];
 		_array.data[i + _start] = _array.data[j + _start];
 		_array.data[j + _start] = temp;
@@ -444,7 +444,7 @@ public final class Array<T>
 		int j = to;
 		while (i < j) {
 			--j;
-			_swap(i, j);
+			uncheckedSwap(i, j);
 			++i;
 		}
 		
@@ -456,7 +456,7 @@ public final class Array<T>
 		checkIndex(j);
 		
 		_array.cloneIfSealed();
-		_swap(i, j);
+		uncheckedSwap(i, j);
 	}
 	
 //	public void swap(final Array<T> array, final int i, final int j) {
