@@ -44,7 +44,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range 
+	 * @throws IndexOutOfBoundsException if the index is out of range 
 	 * 		  {@code (index < 0 || index >= size())}.
 	 */
 	public T get(final int index);
@@ -222,7 +222,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 
 	 * @param start low end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
-	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
+	 * @throws IndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || start > length()}).
 	 */
 	public Seq<T> subSeq(final int start);
@@ -242,7 +242,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param start low end point (inclusive) of the sub sequence.
 	 * @param end high end point (exclusive) of the sub sequence.
 	 * @return a view of the specified range within this sequence.
-	 * @throws ArrayIndexOutOfBoundsException for an illegal end point index value 
+	 * @throws IndexOutOfBoundsException for an illegal end point index value 
 	 * 		  ({@code start < 0 || end > length() || start > end}).
 	 */
 	public Seq<T> subSeq(final int start, final int end);
