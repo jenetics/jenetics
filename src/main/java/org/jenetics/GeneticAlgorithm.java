@@ -50,18 +50,18 @@ import org.jenetics.util.Timer;
  * [code]
  * //Defining a genotype factory.
  * final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
- *                   BitChromosome.valueOf(10, 0.5);
- *             );
+ *     new BitChromosome<>(10, 0.5);
+ * );
  *   
  * // Defining the fitness function.
- * final FitnessFunction<BitGene, Float64> ff = ...;
+ * final Function<Genotype<BitGene>, Float64> ff = ...;
  *   
  * // The given fitness function will be maximized. By default 
  * // the GA tries to maximize the fitness function.
  * final Optimize opt = Optimize.MINIMUM;
  *   
  * // Create the GA.
- * final GeneticAlgorithm<BitGene, Float64> ga = GeneticAlgorithm.valueOf(gt, ff, opt);
+ * final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(gt, ff, opt);
  * [/code]
  * All other needed GA parameters are initialized with default values. Therefore
  * the GA is ready for use now.
@@ -69,6 +69,30 @@ import org.jenetics.util.Timer;
  * ga.setup();
  * ga.evolve(100);
  * System.out.println(ga.getStatistics());
+ * [/code]
+ * 
+ * After finishing you can safe the best population to disk and initialize 
+ * another GA instance with the saved population.
+ * [code]
+ * // Save the GAs population.
+ * try (
+ *     FileOutputStream fout = new FileOutputStream("population.pop");
+ *     ObjectOutputStream oout = new ObjectOutputStream(fout)
+ * ) {
+ *     oout.writeObject(ga.getPopulation());
+ * }
+ * 
+ * // Restore the GAs population.
+ * try (
+ *     FileInputStream fin = new FileInputStream("population.pop");
+ *     ObjectInputStream oin = new ObjectInputStream(fin)
+ * ) {
+ *     \@SuppressWarnings("unchecked")
+ *     Population<BitGene, Float64> 
+ *     population = (Population<BitGene, Float64>)oin.readObject();
+ *     
+ *     ga.setPopulation(population);
+ * }
  * [/code]
  * 
  * It is possible to set an initial population instead an random one. The 

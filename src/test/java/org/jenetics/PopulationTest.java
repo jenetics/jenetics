@@ -24,9 +24,12 @@ package org.jenetics;
 
 import static org.jenetics.TestUtils.newFloat64GenePopulation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.Float64;
@@ -36,6 +39,7 @@ import org.testng.annotations.Test;
 import org.jenetics.util.Function;
 import org.jenetics.util.arrays;
 import org.jenetics.util.serialize;
+import org.jenetics.util.testio;
 
 
 /**
@@ -88,6 +92,38 @@ public class PopulationTest {
 			Float64 first = _cf.apply(population.get(i).getGenotype());
 			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) <= 0, first + ">" + second);
+		}
+	}
+	
+	@Test
+	public void phenotypeXMLSerialization() 
+		throws XMLStreamException 
+	{
+		final Population<Float64Gene, Float64> population = new Population<>();
+		for (int i = 0; i < 1000; ++i) {
+			population.add(pt(Math.random()*9.0));
+		}
+	
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		testio.writeXML(population, out);
+		
+		final byte[] data = out.toByteArray();
+		
+		final ByteArrayInputStream in = new ByteArrayInputStream(data);
+		
+		@SuppressWarnings("unchecked")
+		final Population<Float64Gene, Float64> 
+		copy = ( Population<Float64Gene, Float64>)testio.readXML(XMLSerializable.class, in);
+		
+		for (int i = 1; i < population.size(); ++i) {
+			Assert.assertSame(
+				copy.get(i - 1).getFitnessFunction(),
+				copy.get(i).getFitnessFunction()
+			);
+			Assert.assertSame(
+				copy.get(i - 1).getFitnessScaler(),
+				copy.get(i).getFitnessScaler()
+			);
 		}
 	}
 	

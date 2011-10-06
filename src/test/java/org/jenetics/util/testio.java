@@ -47,9 +47,9 @@ import javolution.xml.stream.XMLStreamException;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class io {
+public final class testio {
 
-	private io() {
+	private testio() {
 		throw new AssertionError("Don't create an 'io' instance.");
 	}
 	
