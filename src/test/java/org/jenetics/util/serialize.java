@@ -32,7 +32,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.testng.Assert;
 
-import org.jenetics.util.io;
+import org.jenetics.util.testio;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -48,13 +48,13 @@ public class serialize {
 		throws XMLStreamException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		io.writeXML(object, out);
+		testio.writeXML(object, out);
 		
 		final byte[] data = out.toByteArray();
 		//System.out.println(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = io.readXML(XMLSerializable.class, in);
+		final Object copy = testio.readXML(XMLSerializable.class, in);
 		
 		Assert.assertEquals(copy, object);
 	}
@@ -63,12 +63,12 @@ public class serialize {
 		throws IOException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		io.writeObject(object, out);
+		testio.writeObject(object, out);
 		
 		final byte[] data = out.toByteArray();
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = io.readObject(Serializable.class, in);
+		final Object copy = testio.readObject(Serializable.class, in);
 		
 		Assert.assertEquals(copy, object);
 	}

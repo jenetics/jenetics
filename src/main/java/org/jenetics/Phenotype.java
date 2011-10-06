@@ -113,6 +113,26 @@ public final class Phenotype<
 	}
 	
 	/**
+	 * Return the fitness function used by this phenotype to calculate the
+	 * (raw) fitness value.
+	 * 
+	 * @return the fitness function.
+	 */
+	public Function<Genotype<G>, C> getFitnessFunction() {
+		return _fitnessFunction;
+	}
+	
+	/**
+	 * Return the fitness scaler used by this phenotype to scale the <i>raw</i>
+	 * fitness.
+	 * 
+	 * @return the fitness scaler.
+	 */
+	public Function<C, C> getFitnessScaler() {
+		return _fitnessScaler;
+	}
+	
+	/**
 	 * Return the fitness value of this <code>Phenotype</code>.
 	 * 
 	 * @return The fitness value of this <code>Phenotype</code>.
