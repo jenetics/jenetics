@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -70,7 +70,7 @@ public final class ExponentialRankSelector<
 	 * 
 	 * @param c the <i>c</i> value.
 	 * @throws IllegalArgumentException if {@code c} is not within the range
-	 * 		  {@code [0..1)}.
+	 *         {@code [0..1)}.
 	 */
 	public ExponentialRankSelector(final double c) {
 		if (c < 0.0 || c >= 1.0) {

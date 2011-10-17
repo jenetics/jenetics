@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
  */
 package org.jenetics;
 
@@ -129,7 +129,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * 
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not 
-	 * 		  found.
+	 *         found.
 	 */
 	protected int indexOf(final Object gene) {
 		return _genes.indexOf(gene);

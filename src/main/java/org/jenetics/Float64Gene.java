@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -83,7 +83,7 @@ public final class Float64Gene
 			
 	/**
 	 * Converter for accessing the allele from a given number gene.
-	 */			
+	 */
 	public static final Function<Float64Gene, Float64> Value = Allele;
 	
 	/**
@@ -285,10 +285,10 @@ public final class Float64Gene
 		in.defaultReadObject();
 	
 		set(
-				Float64.valueOf(in.readDouble()), 
-				Float64.valueOf(in.readDouble()),
-				Float64.valueOf(in.readDouble())
-			);	
+			Float64.valueOf(in.readDouble()), 
+			Float64.valueOf(in.readDouble()),
+			Float64.valueOf(in.readDouble())
+		);
 	}
 
 }

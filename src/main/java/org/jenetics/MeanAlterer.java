@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -57,7 +57,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	 * 
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 * 		  valid range of {@code [0, 1]}.
+	 *         valid range of {@code [0, 1]}.
 	 */
 	public MeanAlterer(final double probability) {
 		super(probability, 2);

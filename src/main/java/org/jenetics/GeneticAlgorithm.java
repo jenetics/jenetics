@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *  
  */
 package org.jenetics;
 
@@ -113,8 +113,8 @@ import org.jenetics.util.Timer;
  * @version $Id$
  * 
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
- * 		  Wikipedia: Genetic algorithm
- * 	  </a>
+ *          Wikipedia: Genetic algorithm
+ *      </a>
  * 
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).
@@ -209,7 +209,7 @@ public class GeneticAlgorithm<
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
-	 * 		 fitness function.
+	 *        fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
@@ -254,7 +254,7 @@ public class GeneticAlgorithm<
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
-	 * 		 fitness function.
+	 *        fitness function.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
@@ -325,7 +325,7 @@ public class GeneticAlgorithm<
 	 * Evolve one generation.
 	 * 
 	 * @throws IllegalStateException if the {@link GeneticAlgorithm#setup()} 
-	 * 		  method was not called first.
+	 *         method was not called first.
 	 */
 	public void evolve() {
 		_lock.lock();
@@ -701,7 +701,7 @@ public class GeneticAlgorithm<
 	 * been initialized yet.
 	 * 
 	 * @return the best {@link Phenotype} so far or {@code null} if the GA hasn't
-	 * 		  been initialized yet.
+	 *         been initialized yet.
 	 */
 	public Phenotype<G, C> getBestPhenotype() {
 		return _bestStatistics != null ? _bestStatistics.getBestPhenotype() : null;
@@ -712,7 +712,7 @@ public class GeneticAlgorithm<
 	 * if the GA hasn't been initialized yet.
 	 * 
 	 * @return the current {@link Population} {@link Statistics} or {@code null} 
-	 * 		  if the GA hasn't been initialized yet.
+	 *         if the GA hasn't been initialized yet.
 	 */
 	public Statistics<G, C> getStatistics() {
 		return _statistics;
@@ -798,7 +798,7 @@ public class GeneticAlgorithm<
 	 * 
 	 * @param size The population size.
 	 * @throws IllegalArgumentException if the population size is smaller than
-	 *		one.
+	 *         one.
 	 */
 	public void setPopulationSize(final int size) {
 		if (size < 1) {
@@ -814,11 +814,11 @@ public class GeneticAlgorithm<
 	 * function and fitness scaler will not be changed.
 	 * 
 	 * @param population The list of phenotypes to set. The population size is 
-	 * 		 set to <code>phenotype.size()</code>.
+	 *        set to <code>phenotype.size()</code>.
 	 * @throws NullPointerException if the population, or one of its element, is 
-	 * 		  {@code null}.
+	 *         {@code null}.
 	 * @throws IllegalArgumentException it the population size is smaller than
-	 * 		  one.
+	 *         one.
 	 */
 	public void setPopulation(final List<Phenotype<G, C>> population) {
 		foreach(population, NonNull);
@@ -844,11 +844,11 @@ public class GeneticAlgorithm<
 	 * function and fitness scaler will not be changed.
 	 * 
 	 * @param genotypes The list of genotypes to set. The population size is set 
-	 * 		 to <code>genotypes.size()</code>.
+	 *        to <code>genotypes.size()</code>.
 	 * @throws NullPointerException if the population, or one of its elements, 
-	 * 		  is {@code null}s.
+	 *         is {@code null}s.
 	 * @throws IllegalArgumentException it the population size is smaller than
-	 *			one.
+	 *         one.
 	 */
 	public void setGenotypes(final List<Genotype<G>> genotypes) {
 		foreach(genotypes, NonNull);
@@ -895,7 +895,7 @@ public class GeneticAlgorithm<
 	 * {@code null} if the algorithms hasn't been initialized.
 	 * 
 	 * @return the statistics of the best phenotype, or {@code null} if the GA
-	 * 		  hashn't been initialized yet.
+	 *         hasn't been initialized yet.
 	 */
 	public Statistics<G, C> getBestStatistics() {
 		return _bestStatistics;
@@ -924,7 +924,7 @@ public class GeneticAlgorithm<
 	 * 
 	 * @param calculator the new statistic calculator.
 	 * @throws NullPointerException if the given {@code calculator} is 
-	 * 		  {@code null}.
+	 *         {@code null}.
 	 */
 	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
 		_calculator = nonNull(calculator, "Statistic calculator");

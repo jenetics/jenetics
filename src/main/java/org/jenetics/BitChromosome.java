@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -263,7 +263,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * Return the long value this BitChromosome represents. 
 	 * 
 	 * @return Long value this BitChromosome represents.
-	 */	 
+	 */
 	@Override
 	public long longValue() {
 		return toLargeInteger().longValue();
@@ -294,42 +294,42 @@ public class BitChromosome extends Number<BitChromosome>
 		return bit.toLargeInteger(_genes);
 	}
 	
-	 /**
-	  * Returns the two's-complement binary representation of this 
-	  * large integer. The output array is in <i>big-endian</i>
-	  * byte-order: the most significant byte is at the offset position.
-	  * 
-	  * <p>Note: This representation is consistent with <code>java.lang.BigInteger
-	  *			 </code> byte array representation and can be used for conversion 
-	  *			 between the two classes.</p>
-	  * 
-	  * @param	bytes the bytes to hold the binary representation 
-	  *			(two's-complement) of this large integer.
-     * @return the number of bytes written.
-     * @throws IndexOutOfBoundsException 
-     *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
-     * @throws NullPointerException it the give array is {@code null}.
-     */
-    public int toByteArray(final byte[] bytes) {
-    	if (bytes.length < _genes.length) {
-    		throw new IndexOutOfBoundsException(); 
-    	}
-    	
-    	System.arraycopy(_genes, 0, bytes, 0, _genes.length);
-    	
-    	return _genes.length;
-    }
-    
-    /**
-     * @return a byte array which represents this {@code BitChromosome}. The 
-     *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
-     * @see #toByteArray(byte[])
-     */
-    public byte[] toByteArray() {
-    	final byte[] data = new byte[_genes.length];
-    	toByteArray(data);
-    	return data;
-    }
+	/**
+	 * Returns the two's-complement binary representation of this 
+	 * large integer. The output array is in <i>big-endian</i>
+	 * byte-order: the most significant byte is at the offset position.
+	 * 
+	 * <p>Note: This representation is consistent with <code>java.lang.BigInteger
+	 *          </code> byte array representation and can be used for conversion 
+	 *          between the two classes.</p>
+	 * 
+	 * @param bytes the bytes to hold the binary representation 
+	 *	       (two's-complement) of this large integer.
+	 * @return the number of bytes written.
+	 * @throws IndexOutOfBoundsException 
+	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
+	 * @throws NullPointerException it the give array is {@code null}.
+	 */
+	public int toByteArray(final byte[] bytes) {
+		if (bytes.length < _genes.length) {
+			throw new IndexOutOfBoundsException(); 
+		}
+		
+		System.arraycopy(_genes, 0, bytes, 0, _genes.length);
+		
+		return _genes.length;
+	}
+
+	/**
+	 * @return a byte array which represents this {@code BitChromosome}. The 
+	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
+	 * @see #toByteArray(byte[])
+	 */
+	public byte[] toByteArray() {
+		final byte[] data = new byte[_genes.length];
+		toByteArray(data);
+		return data;
+	}
 	
 	/**
 	 * Return the corresponding BitSet of this BitChromosome. 
@@ -376,7 +376,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * a FALSE by a 0.
 	 * 
 	 * @return String representation (containing only '1' and '0') of the
-	 * 		BitChromosome.
+	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
 		final StringBuilder out = new StringBuilder(length());
@@ -486,7 +486,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @param data the string to convert.
 	 * @return the byte array.
 	 * @throws IllegalArgumentException if the given data string could not be
-	 * 		  converted.
+	 *         converted.
 	 */
 	 static byte[] toByteArray(final String data) {
 		final String[] parts = data.split("\\|");

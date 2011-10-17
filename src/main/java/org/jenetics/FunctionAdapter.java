@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *  
  */
 package org.jenetics;
 
@@ -54,9 +54,9 @@ public final class FunctionAdapter<
 	 * <a href="http://jscience.org/">JScience</a> {@link Function} object.
 	 * 
 	 * @param adoptee the <a href="http://jscience.org/">JScience</a>
-	 * 		 {@link Function} object.
+	 *        {@link Function} object.
 	 * @throws NullPointerException if the function {@code adoptee} is 
-	 * 		 {@code null}.
+	 *         {@code null}.
 	 */
 	public FunctionAdapter(
 		final org.jscience.mathematics.function.Function<Genotype<G>, C> adoptee

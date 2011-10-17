@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -57,7 +57,7 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the number of genes that has been altered.
 	 * @throws NullPointerException if the given {@code population} is 
-	 * 		  {@code null}. 
+	 *        {@code null}. 
 	 */
 	public <C extends Comparable<? super C>> int alter(
 			final Population<G, C> population, 
