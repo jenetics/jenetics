@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -73,7 +73,7 @@ public final class Integer64Gene
 			
 	/**
 	 * Converter for accessing the allele from a given number gene.
-	 */			
+	 */
 	public static final Function<Integer64Gene, Integer64> Value = Allele;
 	
 	/**
@@ -114,7 +114,7 @@ public final class Integer64Gene
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 * @throws IllegalArgumentException if the gene value is not in the range
-	 *		(value < min || value > max).
+	 *         (value < min || value > max).
 	 */
 	public Integer64Gene newInstance(final long value) {
 		return valueOf(Integer64.valueOf(value), _min, _max);
@@ -277,10 +277,10 @@ public final class Integer64Gene
 		in.defaultReadObject();
 	
 		set(
-				Integer64.valueOf(in.readLong()), 
-				Integer64.valueOf(in.readLong()),
-				Integer64.valueOf(in.readLong())
-			);	
+			Integer64.valueOf(in.readLong()), 
+			Integer64.valueOf(in.readLong()),
+			Integer64.valueOf(in.readLong())
+		);
 	}
 
 	

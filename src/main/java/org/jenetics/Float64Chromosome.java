@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -114,7 +114,7 @@ public class Float64Chromosome
 	 * @param max the maximal value of this chromosome.
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 * 		  one.
+	 *         one.
 	 */
 	public Float64Chromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);

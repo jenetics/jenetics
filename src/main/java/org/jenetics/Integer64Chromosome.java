@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -54,7 +54,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * 
 	 * @param genes the genes of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
-	 * 		  than one.
+	 *         than one.
 	 */
 	protected Integer64Chromosome(final ISeq<Integer64Gene> genes) {
 		super(genes);
@@ -66,7 +66,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * @param genes the genes of the new chromosome.
 	 * @throws NullPointerException if the given genes array is {@code null}.
 	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
-	 * 		  one.
+	 *         one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
 		super(new Array<>(genes).toISeq());

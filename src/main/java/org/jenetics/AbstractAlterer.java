@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
  */
 package org.jenetics;
 
@@ -52,7 +52,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	 * 
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 * 		  valid range of {@code [0, 1]}.
+	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
 		_probability = checkProbability(probability);

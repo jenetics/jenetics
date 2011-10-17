@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ * 
  */
 package org.jenetics;
 
@@ -34,7 +34,7 @@ import org.jenetics.util.Verifiable;
  * A common interface for Genes.
  * 
  * @param <A> the <a href="http://en.wikipedia.org/wiki/Allele">Allele</a> type
- * 			  of this gene.
+ *        of this gene.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *  
  */
 package org.jenetics;
 
@@ -65,7 +65,7 @@ public class CharacterChromosome
 	 * 
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 * 		  one.
+	 *         one.
 	 */
 	public CharacterChromosome(final int length) {
 		super(
@@ -84,9 +84,9 @@ public class CharacterChromosome
 	 * @param validCharacters the valid characters for this chromosome.
 	 * @param length the length of the new chromosome.
 	 * @throws NullPointerException if the {@code validCharacters} is 
-	 * 		  {@code null}.
+	 *         {@code null}.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than 
-	 * 		  one.
+	 *         one.
 	 */
 	public CharacterChromosome(final CharSet validCharacters, final int length) {
 		super(
@@ -106,7 +106,7 @@ public class CharacterChromosome
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 * 		  smaller than one.
+	 *         smaller than one.
 	 */
 	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);

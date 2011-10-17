@@ -91,7 +91,13 @@ public abstract class MappableAccumulator<T>
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
 	public <B> MappableAccumulator<B> map(final Function<B, T> converter) {
-		return new AccumulatorAdapter<>(this, converter);
+		nonNull(converter, "Converter");
+		return new MappableAccumulator<B>() {
+			@Override 
+			public void accumulate(final B value) {
+				MappableAccumulator.this.accumulate(converter.apply(value));
+			}
+		};
 	}
 	
 	@Override
@@ -121,7 +127,7 @@ public abstract class MappableAccumulator<T>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public MappableAccumulator<T> clone() {
+	protected MappableAccumulator<T> clone() {
 		try {
 			return (MappableAccumulator<T>)super.clone();
 		} catch (CloneNotSupportedException e) {
@@ -129,47 +135,4 @@ public abstract class MappableAccumulator<T>
 		}
 	}
 	
-}
-
-/**
- * Adapts an accumulator from type {@code A} to type {@code B}.
- * 
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
-final class AccumulatorAdapter<A, B> extends MappableAccumulator<B> {
-	private final Accumulator<? super A> _adoptee;
-	private final Function<? super B, ? extends A> _converter;
-	
-	/**
-	 * Create an new AccumulatorAdapter. 
-	 * 
-	 * @param adoptee the original, adapted, Accumulator.
-	 * @param converter the converter needed to convert from type {@code A} to 
-	 *        type {@code B}.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	AccumulatorAdapter(
-		final Accumulator<? super A> adoptee, 
-		final Function<? super B, ? extends A> converter
-	) {
-		_adoptee = nonNull(adoptee);
-		_converter = nonNull(converter);
-	}
-	
-	@Override
-	public void accumulate(final B value) {
-		_adoptee.accumulate(_converter.apply(value));
-		++_samples;
-	}
-
-	@Override
-	public String toString() {
-		return String.format(
-				"%s[a=%s, c=%s]", 
-				getClass().getSimpleName(), _adoptee, _converter
-			);
-	}
-
-
 }
