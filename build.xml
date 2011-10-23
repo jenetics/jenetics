@@ -46,6 +46,7 @@
 	<property name="lib.build.dir" value="${lib.dir}/build" />
 	<property name="export.dir" value="${build.dir}/export/${identifier}" />
 	<property name="javadoc.dir" value="${build.dir}/javadoc" />
+	<property name="jscience.classpath" value="${lib.dir}/jscience-4.3.1.jar" />
 	<property name="colorizer.jar" value="${lib.dir}/build/colorizer.jar" />
 	<property name="umlgraph.classpath" value="${lib.dir}/build/UmlGraph-5.3.jar" />
 	<property name="java2html.classpath" value="${lib.dir}/build/ant-java2html.jar" />
@@ -167,7 +168,7 @@
 			level="9" 
 			duplicate="preserve"
 		>
-			<zipfileset src="${lib.dir}/jscience.jar" />
+			<zipfileset src="${jscience.classpath}" />
 			<fileset dir="${build.dir}" >
 				<exclude name="org/jenetics/examples/*" />
 				<exclude name="org/jenetics/performance/*" />
