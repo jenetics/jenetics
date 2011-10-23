@@ -258,7 +258,7 @@
 			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
 		</javadoc>
 
-    	<!-- Formats/colarizes code between [code]...[/code] -->
+		<!-- Formats/colarizes code between [code]...[/code] -->
 		<java jar="${colorizer.jar}" fork="true">
 			<arg value="${javadoc.dir}" />
 		</java>
@@ -284,7 +284,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
-            <include name="org/jenetics/stat/*.java" />
+			<include name="org/jenetics/stat/*.java" />
 		</java2html>
 			
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
@@ -362,7 +362,7 @@
 			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
 		</javadoc>
 
-    	<!-- Formats/colarizes code between [code]...[/code] -->
+		<!-- Formats/colarizes code between [code]...[/code] -->
 		<java classname="Colapi" classpath="${colorizer.classpath}" >
 			<arg value="${javadoc.dir}" />
 		</java>
@@ -388,7 +388,7 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/examples/*.java" />
 			<include name="org/jenetics/util/*.java" />
-            <include name="org/jenetics/stat/*.java" />
+			<include name="org/jenetics/stat/*.java" />
 		</java2html>
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/doc-files" />
@@ -482,9 +482,9 @@
 	</target>
 	
 	<target name="clean-all" depends="clean">
-        <delete>
-            <fileset dir="${basedir}" includes="test-report.html"/>
-        </delete>		
+		<delete>
+			<fileset dir="${basedir}" includes="test-report.html"/>
+		</delete>
 	</target>
 	
 	<target name="run-perftest" depends="compile-example">
