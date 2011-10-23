@@ -39,8 +39,12 @@
     </TreeState>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="d6e7ad44-4de0-41bc-9afc-26c692e5f74d" name="Default" comment="">
+    <list default="true" readonly="true" id="d6e7ad44-4de0-41bc-9afc-26c692e5f74d" name="Default" comment="Update IntelliJ project files after installing new version.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.iml" afterPath="$PROJECT_DIR$/Jenetics.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.ipr" afterPath="$PROJECT_DIR$/Jenetics.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Jenetics.iws" afterPath="$PROJECT_DIR$/Jenetics.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeqIterator.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeqIterator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/jenetics/util/MappableAccumulator.java" afterPath="$PROJECT_DIR$/src/main/java/org/jenetics/util/MappableAccumulator.java" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="Jenetics.iws" />
@@ -63,6 +67,9 @@
     <leftPanel />
     <rightPanel />
     <splitter proportion="0.5" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="ASSERT_NOT_NULL" value="false" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -115,43 +122,90 @@
       <file leaf-file-name="ArrayRef.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArrayRef.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="60" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.0">
+            <state line="19" column="6" selection-start="866" selection-end="866" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArraySeq.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeq.java">
+      <file leaf-file-name="bit.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/bit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="26" selection-start="1507" selection-end="1507" vertical-scroll-proportion="0.0">
+            <state line="307" column="26" selection-start="8812" selection-end="8812" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="accumulators.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/accumulators.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="40" column="19" selection-start="1472" selection-end="1472" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Evaluator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Evaluator.java">
+      <file leaf-file-name="object.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/object.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="19" selection-start="1840" selection-end="1840" vertical-scroll-proportion="0.0">
+            <state line="425" column="102" selection-start="11732" selection-end="11732" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeneticAlgorithm.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/GeneticAlgorithm.java">
+      <file leaf-file-name="Array.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Array.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1081" column="5" selection-start="32373" selection-end="32373" vertical-scroll-proportion="0.0">
+            <state line="46" column="19" selection-start="1813" selection-end="1813" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IOUtils.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/IOUtils.java">
+      <file leaf-file-name="CharSet.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/CharSet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="19" selection-start="1682" selection-end="1682" vertical-scroll-proportion="-7.1959457">
+            <state line="42" column="19" selection-start="1528" selection-end="1528" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArraySeqIterator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeqIterator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="49" column="78" selection-start="1565" selection-end="1565" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="math.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/math.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="19" selection-start="1170" selection-end="1170" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Timer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Timer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="45" column="19" selection-start="1679" selection-end="1679" vertical-scroll-proportion="-2.103139">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="arrays.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/arrays.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="62" column="57" selection-start="2033" selection-end="2033" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -171,7 +225,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/NumberUniform.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/Distribution.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/util/Accumulators.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/stat/UniformNumberDistribution.java" />
@@ -187,6 +240,7 @@
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/Float64Chromosome.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/Genotype.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/jenetics/GeneticAlgorithm.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeqIterator.java" />
       </list>
     </option>
   </component>
@@ -205,21 +259,12 @@
       <profile-state>
         <expanded-state>
           <State>
-            <id>Code maturity issues</id>
-          </State>
-          <State>
-            <id>Groovy</id>
-          </State>
-          <State>
-            <id>Inspections</id>
-          </State>
-          <State>
-            <id>Probable bugs</id>
+            <id />
           </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>TodoComment</id>
+            <id>Abstraction issues</id>
           </State>
         </selected-state>
       </profile-state>
@@ -248,9 +293,10 @@
       <abbreviatePackageNames />
       <autoscrollToSource />
       <autoscrollFromSource />
-      <sortByType />
+      <sortByType ProjectPane="true" />
     </navigator>
     <panes>
+      <pane id="Favorites" />
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Project Files">
@@ -314,16 +360,40 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Jenetics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Jenetics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Jenetics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Jenetics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="org.jenetics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="Jenetics" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -440,39 +510,10 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jenetics" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jenetics" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jenetics" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jenetics" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org.jenetics" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="TestNG" />
     <property name="OverrideImplement.combined" value="true" />
@@ -480,16 +521,16 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="Errors" />
+    <property name="options.lastSelected" value="preferences.sourceCode" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -591,24 +632,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -634,6 +657,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -743,23 +784,21 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1053" extended-state="0" />
+    <frame x="-1" y="-3" width="1922" height="1083" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18688525" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32677597" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.24986595" sideWeight="0.66415095" order="1" side_tool="false" content_ui="tabs" x="727" y="70" width="466" height="1060" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293348" sideWeight="0.9989293" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27457264" sideWeight="0.67322403" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.49622643" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.24986595" sideWeight="0.66415095" order="1" side_tool="false" content_ui="tabs" x="727" y="70" width="466" height="1060" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24145299" sideWeight="0.6709265" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21757771" sideWeight="0.65471697" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25373933" sideWeight="0.67322403" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.49622643" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41847825" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26549146" sideWeight="0.6709265" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924527" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Code explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -767,7 +806,9 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32826087" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32677597" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.9989293" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Formatter" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -824,6 +865,18 @@
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="Jenetics" />
+        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="Jenetics" />
+        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+      </PATH_ELEMENT>
+    </PATH>
+  </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
@@ -838,51 +891,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/change.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="0" selection-start="1865" selection-end="1865" vertical-scroll-proportion="0.7172131" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Jenetics.iws">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/BitGeneTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="13" selection-start="1290" selection-end="1290" vertical-scroll-proportion="0.52755904" />
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/bin/java/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="483" column="22" selection-start="23388" selection-end="23388" vertical-scroll-proportion="0.33258426" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/jenetics/MeanAltererTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="9" selection-start="1653" selection-end="1653" vertical-scroll-proportion="0.58651686" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/CharacterGene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="257" column="32" selection-start="7704" selection-end="7704" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/EnumGene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="19" selection-start="1687" selection-end="1687" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/Float64Chromosome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="30" selection-start="1649" selection-end="1649" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/package-info.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.617849" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/Genotype.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="174" column="84" selection-start="4870" selection-end="4870" vertical-scroll-proportion="0.0" />
@@ -890,42 +898,103 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/Alterer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="3" selection-start="925" selection-end="925" vertical-scroll-proportion="0.05033557">
+        <state line="21" column="3" selection-start="925" selection-end="925" vertical-scroll-proportion="0.05033557" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/GeneticAlgorithm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="431" column="100" selection-start="13216" selection-end="13216" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/Gene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="100" selection-start="1589" selection-end="1589" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeq.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="26" selection-start="1505" selection-end="1505" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/arrays.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="57" selection-start="2033" selection-end="2033" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArrayRef.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="60" selection-start="1105" selection-end="1105" vertical-scroll-proportion="0.0">
+        <state line="19" column="6" selection-start="866" selection-end="866" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeq.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/bit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="26" selection-start="1507" selection-end="1507" vertical-scroll-proportion="0.0">
+        <state line="307" column="26" selection-start="8812" selection-end="8812" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/bin/java/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="22" selection-start="3513" selection-end="3513" vertical-scroll-proportion="-5.001131">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Evaluator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/accumulators.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="19" selection-start="1840" selection-end="1840" vertical-scroll-proportion="0.0">
+        <state line="40" column="19" selection-start="1472" selection-end="1472" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/GeneticAlgorithm.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/object.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1081" column="5" selection-start="32373" selection-end="32373" vertical-scroll-proportion="0.0">
+        <state line="425" column="102" selection-start="11732" selection-end="11732" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/IOUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Array.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="19" selection-start="1682" selection-end="1682" vertical-scroll-proportion="-7.1959457">
+        <state line="46" column="19" selection-start="1813" selection-end="1813" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/CharSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="19" selection-start="1528" selection-end="1528" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/ArraySeqIterator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="78" selection-start="1565" selection-end="1565" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="19" selection-start="1170" selection-end="1170" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/jenetics/util/Timer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="19" selection-start="1679" selection-end="1679" vertical-scroll-proportion="-2.103139">
           <folding />
         </state>
       </provider>
@@ -942,6 +1011,18 @@
               <list>
                 <option value="0.2" />
                 <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="Copyright.UI">
+        <settings>
+          <last-edited>Jenetics-LGPL</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
@@ -972,7 +1053,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.6</last-edited>
+          <last-edited>1.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -989,7 +1070,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -997,7 +1077,18 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>build</last-edited>
+          <last-edited>lib</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>
