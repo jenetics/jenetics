@@ -1,4 +1,5 @@
 Jenetics-0.9.0.0
+- Update JScience library from 4.3 to 4.3.1.
 - Simplify 'Accumulator' class hierarchy. Remove 'AdaptableAccumulator' and 
   rename 'AbstractAccumulator' to 'MappableAccumulator'.
 - Convert BitChromosome.valueOf() to constructors.
