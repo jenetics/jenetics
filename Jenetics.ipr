@@ -56,8 +56,11 @@
       </value>
     </option>
   </component>
+  <component name="CompilerAPISettings">
+    <option name="MAXIMUM_HEAP_SIZE" value="2048" />
+  </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="compAPI" />
+    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -137,6 +140,9 @@
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
+  </component>
+  <component name="JavacSettings">
+    <option name="MAXIMUM_HEAP_SIZE" value="2048" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -294,8 +300,11 @@
       <module fileurl="file://$PROJECT_DIR$/Jenetics.iml" filepath="$PROJECT_DIR$/Jenetics.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build" />
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/bin" />
   </component>
   <component name="RMI Configuration">
     <Server />
@@ -361,15 +370,15 @@
   <component name="libraryTable">
     <library name="build">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/build/testng-5.13.1.jar!/" />
+        <root url="file://$PROJECT_DIR$/lib/build" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+      <jarDirectory url="file://$PROJECT_DIR$/lib/build" recursive="false" />
     </library>
     <library name="lib">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/jscience.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jsr166y.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
