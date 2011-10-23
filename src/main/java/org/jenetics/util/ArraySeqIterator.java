@@ -45,9 +45,9 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 	public boolean hasNext() {
 		return _pos < _array._end - 1;
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Override
+	@SuppressWarnings("unchecked")
 	public T next() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
