@@ -76,8 +76,7 @@ public abstract class MappableAccumulator<T>
 	 *     
 	 * // The values to accumulate
 	 * final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
-	 *     
-	 * // Min accumulator extends the AbstractAccumulator
+	 *
 	 * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
 	 *     
 	 * // No pain to accumulate collections of a different type.
