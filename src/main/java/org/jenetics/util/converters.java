@@ -41,8 +41,7 @@ public final class converters {
 	
 	public static final Function<Object, String>
 	ObjectToString = new Function<Object, String>() {
-		@Override
-		public String apply(final Object value) {
+		@Override public String apply(final Object value) {
 			return Objects.toString(value);
 		}
 	};
