@@ -63,11 +63,6 @@
 			<class name="org.jenetics.ConstantFitnessFunctionTest" />
 		</classes>
 	</test>	
-	<test name="org.jenetics.EnumGene">
-		<classes>
-			<class name="org.jenetics.EnumGeneTest" />
-		</classes>
-	</test>	
 	<test name="org.jenetics.Float64Chromosome">
 		<classes>
 			<class name="org.jenetics.Float64ChromosomeTest" />
