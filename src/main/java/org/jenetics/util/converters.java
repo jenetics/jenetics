@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.Objects;
+
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
@@ -36,6 +38,14 @@ public final class converters {
 	private converters() {
 		throw new AssertionError("Don't create 'converters' instance.");
 	}
+	
+	public static final Function<Object, String>
+	ObjectToString = new Function<Object, String>() {
+		@Override
+		public String apply(final Object value) {
+			return Objects.toString(value);
+		}
+	};
 	
 	public static final Function<Float64, Double> 
 	Float64ToDouble = new Function<Float64, Double>() {

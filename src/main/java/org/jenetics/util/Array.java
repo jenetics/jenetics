@@ -25,6 +25,7 @@ package org.jenetics.util;
 import static java.lang.Math.min;
 import static org.jenetics.util.object.nonNull;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -383,7 +384,11 @@ public final class Array<T>
 		nonNull(comparator, "Comparator");
 		
 		_array.cloneIfSealed();
-		quicksort(from, to - 1, comparator);
+		
+		@SuppressWarnings("unchecked")
+		final T[] data = (T[])_array.data;
+		Arrays.sort(data, from, to, comparator);
+//		quicksort(from, to - 1, comparator);
 	}
 	
 	
@@ -601,7 +606,7 @@ public final class Array<T>
 		final Array<B> result = new Array<>(length);
 		assert (result._array.data.length == length);
 		
-		for (int i = length; --i <= 0;) {
+		for (int i = length; --i >= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 			result._array.data[i] = converter.apply(value);
