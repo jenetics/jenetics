@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import javolution.context.StackContext;
+import javolution.util.FastList;
+
 /** 
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array). 
@@ -241,17 +244,30 @@ public final class Array<T>
 	 *         {@code null}. 
 	 */
 	public Array<T> filter(final Function<? super T, Boolean> predicate) {
-		final Array<T> copy = new Array<>(length());
-		
-		int index = 0;
-		for (int i = 0, n = length(); i < n; ++i) {
-			final T value = get(i);
-			if (predicate.apply(value) == Boolean.TRUE) {
-				copy.set(index++, value);
+		StackContext.enter();
+		try {
+			final FastList<T> filtered = FastList.newInstance();
+			for (int i = 0, n = length(); i < n; ++i) {
+				@SuppressWarnings("unchecked")
+				final T value = (T)_array.data[i + _start];
+				
+				if (predicate.apply((T)value) == Boolean.TRUE) {
+					filtered.add(value);
+				}
 			}
+			
+			final Array<T> copy = new Array<>(filtered.size());
+			int index = 0;
+			for (FastList.Node<T> n = filtered.head(), end = filtered.tail(); 
+				(n = n.getNext()) != end;) 
+			{
+				copy.set(index++, n.getValue());
+			}
+			
+			return copy;
+		} finally {
+			StackContext.exit();
 		}
-		
-		return copy.subSeq(0, index);
 	}
 	
 	@Override
