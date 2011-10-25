@@ -72,8 +72,7 @@ public final class Phenotype<
 	
 	private int _generation = 0;
 	
-	//Storing the fitness value and a fitnessCalculated flag
-	//for lazy evaluation.
+	//Storing the fitness value for lazy evaluation.
 	private C _rawFitness = null;
 	private C _fitness = null;
 	
