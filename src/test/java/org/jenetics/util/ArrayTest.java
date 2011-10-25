@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import static java.util.Arrays.asList;
+import static org.jenetics.util.converters.ObjectToString;
 import static org.jenetics.util.predicates.Null;
 import static org.jenetics.util.predicates.Not;
 
@@ -122,6 +123,24 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		
 		final Array<Integer> filtered = array.filter(Not(Null));
 		Assert.assertEquals(filtered.length(), array.length() - 2);
+	}
+	
+	@Test
+	public void map() {
+		final Array<Integer> integers = new Array<Integer>(20).fill(new Factory<Integer>() {
+			private int _value = 0;
+			@Override
+			public Integer newInstance() {
+				return _value++;
+			}
+		});
+		
+		final Array<String> strings = integers.map(ObjectToString);
+		
+		Assert.assertEquals(strings.length(), integers.length());
+		for (int i = 0; i < strings.length(); ++i) {
+			Assert.assertEquals(strings.get(i), Integer.toString(i));
+		}
 	}
 	
 	@Test
