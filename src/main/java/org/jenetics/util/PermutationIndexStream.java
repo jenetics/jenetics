@@ -30,7 +30,7 @@ import java.util.Random;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-abstract class PermutationIndexStream implements IndexStream {
+abstract class PermutationIndexStream extends IndexStream {
 
 	final Random _random;
 	final int _length;
