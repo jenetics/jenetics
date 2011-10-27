@@ -22,11 +22,13 @@
  */
 package org.jenetics.util;
 
-import static java.util.Arrays.asList;
 import static org.jenetics.util.converters.ObjectToString;
-import static org.jenetics.util.predicates.Null;
 import static org.jenetics.util.predicates.Not;
+import static org.jenetics.util.predicates.Null;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -126,14 +128,44 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 	
 	@Test
-	public void map() {
-		final Array<Integer> integers = new Array<Integer>(20).fill(new Factory<Integer>() {
-			private int _value = 0;
-			@Override
-			public Integer newInstance() {
-				return _value++;
+	public void sort() {
+		final Array<Integer> integers = new Array<Integer>(10000).fill(factories.Int());
+		
+		Assert.assertTrue(arrays.isSorted(integers));
+		
+		integers.sort();
+		Assert.assertTrue(arrays.isSorted(integers));
+		
+		arrays.shuffle(integers, new Random());
+		integers.sort();
+		Assert.assertTrue(arrays.isSorted(integers));
+	}
+	
+	@Test
+	public void quicksort() {
+		final Array<Integer> integers = new Array<Integer>(10000).fill(factories.Int());
+		
+		Assert.assertTrue(arrays.isSorted(integers));
+		
+		final Comparator<Integer> comparator = new Comparator<Integer>() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override 
+			public int compare(final Integer o1, final Integer o2) {
+				return ((Comparable)o1).compareTo(o2);
 			}
-		});
+		};
+		
+		integers.quicksort(0, integers.length() - 1, comparator);
+		Assert.assertTrue(arrays.isSorted(integers));
+		
+		arrays.shuffle(integers, new Random());
+		integers.quicksort(0, integers.length() - 1, comparator);
+		Assert.assertTrue(arrays.isSorted(integers));
+	}
+	
+	@Test
+	public void map() {
+		final Array<Integer> integers = new Array<Integer>(20).fill(factories.Int());
 		
 		final Array<String> strings = integers.map(ObjectToString);
 		
@@ -141,6 +173,27 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		for (int i = 0; i < strings.length(); ++i) {
 			Assert.assertEquals(strings.get(i), Integer.toString(i));
 		}
+	}
+	
+	@Test
+	public void reverse() {
+		final Array<Integer> integers = new Array<Integer>(1000).fill(factories.Int(999, -1));
+		
+		Assert.assertFalse(arrays.isSorted(integers));
+		integers.reverse();
+		Assert.assertTrue(arrays.isSorted(integers));
+	}
+	
+	@Test
+	public void asList() {
+		final Array<Integer> integers = new Array<Integer>(1000).fill(factories.Int());
+		Assert.assertTrue(arrays.isSorted(integers));
+		
+		arrays.shuffle(integers, new Random());
+		Assert.assertFalse(arrays.isSorted(integers));
+		
+		Collections.sort(integers.asList());
+		Assert.assertTrue(arrays.isSorted(integers));
 	}
 	
 	@Test
@@ -157,13 +210,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).fill(0);
 		Assert.assertEquals(array.length(), 10);
 		
-		final AtomicInteger integer = new AtomicInteger(0);
-		array.fill(new Factory<Integer>() {
-			@Override
-			public Integer newInstance() {
-				return integer.getAndIncrement();
-			}
-		});
+		array.fill(factories.Int());
 		
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(array.get(i), new Integer(i));
@@ -270,7 +317,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void append2() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a3 = a1.append(asList(6, 7, 8, 9, 10));
+		final Array<Integer> a3 = a1.append(Arrays.asList(6, 7, 8, 9, 10));
 		
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3, 
@@ -367,7 +414,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void iterator() {
-		final List<Integer> list = asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
+		final List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
 		final Array<Integer> array = new Array<>(list);
 		
 		final Iterator<Integer> ai = array.iterator();

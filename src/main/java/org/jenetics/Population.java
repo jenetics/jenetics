@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
-import javolution.util.FastList;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -293,7 +292,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 	
 	public List<Genotype<G>> getGenotypes() {
-		final List<Genotype<G>> genotypes = new FastList<>(_population.size());
+		final List<Genotype<G>> genotypes = new ArrayList<>(_population.size());
 		for (Phenotype<G, C> phenotype : _population) {
 			genotypes.add(phenotype.getGenotype());
 		}

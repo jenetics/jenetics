@@ -491,11 +491,13 @@
 		<java 
 			classname="org.jenetics.performance.PerformanceTests"
 			output="${basedir}/perftest-report.txt"
+			fork="yes"
 		>
 			<classpath >
 				<pathelement path="${build.dir}" />
 			</classpath>
 			<classpath refid="classpath" />
+			<!--<jvmarg value="-XX:AggressiveOpts"/>-->
 		</java>
 	</target>
 	
