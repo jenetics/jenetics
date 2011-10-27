@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.Random;
+
 /**
  * Interface which delivers a stream of (positive) indexes ({@code int}s)s. The
  * stream ends if {@link #next()} returns {@code -1}. Here some usage examples:
@@ -43,14 +45,64 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface IndexStream {
+public abstract class IndexStream {
 
+	protected IndexStream() {
+	}
+	
 	/**
 	 * Return the next (positive inclusive zero) index, or -1 if the stream has 
 	 * reached its end.
 	 * 
 	 * @return the next index, or -1 if the stream has reached its end.
 	 */
-	public int next();
+	public abstract int next();
+	
+	/**
+	 * Create a new random IndexIterator.
+	 * @param random the random engine used for creating the random indexes.
+	 * @param n the maximal value (exclusively) of the iterator.
+	 * @param probability the index selection probability.
+	 * 
+	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
+	 *         {@code n <= 0} or the given {@code probability} is not valid.
+	 * @throws NullPointerException if the given {@code random} engine is 
+	 *         {@code null}.
+	 */
+	public static IndexStream Random(
+		final Random random, 
+		final int n, 
+		final double probability
+	) {
+		if (n == Integer.MAX_VALUE) {
+			throw new IllegalArgumentException(String.format(
+					"n must be smaller than Integer.MAX_VALUE."
+				));
+		}
+		if (n <= 0) {
+			throw new IllegalArgumentException(String.format(
+					"n must be greate than zero: %d", n
+				));
+		}
+		
+		return new IndexStream() {
+			private int _pos = -1;
+			
+			@Override
+			public int next() {
+				while (_pos < n && random.nextDouble() >= probability) {
+					++_pos;
+				}
+				if (_pos < n) {
+					++_pos;
+				}
+
+				return _pos < n ? _pos : -1;
+			}
+			
+		};
+	}
 	
 }
+
+

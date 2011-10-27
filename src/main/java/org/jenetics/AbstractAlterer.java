@@ -29,7 +29,6 @@ import static org.jenetics.util.object.checkProbability;
 import java.util.Random;
 
 import org.jenetics.util.IndexStream;
-import org.jenetics.util.RandomIndexStream;
 
 /**
  * Abstract implementation of the alterer interface.
@@ -78,7 +77,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	protected static IndexStream randomIndexes(
 		final Random random, final int length, final double p
 	) {
-		return new RandomIndexStream(random, length, p);
+		return IndexStream.Random(random, length, p);
 	}
 	
 	@Override
