@@ -22,13 +22,9 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.checkProbability;
-
-import java.util.Random;
-
-import org.jenetics.util.IndexStream;
 
 /**
  * Abstract implementation of the alterer interface.
@@ -64,20 +60,6 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 	 */
 	public double getProbability() {
 		return _probability;
-	}
-	
-	/**
-	 * Helper method which creates an index iterator with the given maximum
-	 * length and probability.
-	 * 
-	 * @param length the maximal index (exclusively) of the iterator.
-	 * @param p the index selection probability.
-	 * @return new index iterator.
-	 */
-	protected static IndexStream randomIndexes(
-		final Random random, final int length, final double p
-	) {
-		return IndexStream.Random(random, length, p);
 	}
 	
 	@Override

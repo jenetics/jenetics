@@ -89,7 +89,9 @@ public abstract class Recombination<G extends Gene<?, G>>
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
-		final IndexStream stream = randomIndexes(random, population.size(), _probability);
+		final IndexStream stream = IndexStream.Random(
+			random, population.size(), _probability
+		);
 		
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
