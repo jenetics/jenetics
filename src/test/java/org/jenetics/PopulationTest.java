@@ -29,17 +29,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javolution.xml.XMLSerializable;
+
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.Function;
+import org.jenetics.util.IO;
 import org.jenetics.util.arrays;
 import org.jenetics.util.serialize;
-import org.jenetics.util.testio;
 
 
 /**
@@ -97,7 +97,7 @@ public class PopulationTest {
 	
 	@Test
 	public void phenotypeXMLSerialization() 
-		throws XMLStreamException 
+		throws IOException 
 	{
 		final Population<Float64Gene, Float64> population = new Population<>();
 		for (int i = 0; i < 1000; ++i) {
@@ -105,7 +105,7 @@ public class PopulationTest {
 		}
 	
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		testio.writeXML(population, out);
+		IO.xml.write(population, out);
 		
 		final byte[] data = out.toByteArray();
 		
@@ -113,7 +113,7 @@ public class PopulationTest {
 		
 		@SuppressWarnings("unchecked")
 		final Population<Float64Gene, Float64> 
-		copy = ( Population<Float64Gene, Float64>)testio.readXML(XMLSerializable.class, in);
+		copy = ( Population<Float64Gene, Float64>)IO.xml.read(XMLSerializable.class, in);
 		
 		for (int i = 1; i < population.size(); ++i) {
 			Assert.assertSame(
@@ -128,7 +128,7 @@ public class PopulationTest {
 	}
 	
 	@Test
-	public void xmlSerialization() throws XMLStreamException {		
+	public void xmlSerialization() throws IOException {		
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
 		serialize.testXMLSerialization(population);
 	}

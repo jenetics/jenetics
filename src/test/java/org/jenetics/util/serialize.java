@@ -27,12 +27,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javolution.xml.XMLSerializable;
-import javolution.xml.stream.XMLStreamException;
-
 import org.testng.Assert;
 
-import org.jenetics.util.testio;
+import javolution.xml.XMLSerializable;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -45,16 +43,16 @@ public class serialize {
 	}
 	
 	public static void testXMLSerialization(final XMLSerializable object) 
-		throws XMLStreamException 
+		throws IOException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		testio.writeXML(object, out);
+		IO.xml.write(object, out);
 		
 		final byte[] data = out.toByteArray();
 		//System.out.println(new String(data));
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = testio.readXML(XMLSerializable.class, in);
+		final Object copy = IO.xml.read(XMLSerializable.class, in);
 		
 		Assert.assertEquals(copy, object);
 	}
@@ -63,12 +61,12 @@ public class serialize {
 		throws IOException 
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		testio.writeObject(object, out);
+		IO.object.write(object, out);
 		
 		final byte[] data = out.toByteArray();
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = testio.readObject(Serializable.class, in);
+		final Object copy = IO.object.read(Serializable.class, in);
 		
 		Assert.assertEquals(copy, object);
 	}
