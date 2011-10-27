@@ -37,6 +37,8 @@ import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
 /**
+ * Class for object serialization.
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
  */
@@ -45,18 +47,42 @@ public abstract class IO {
 	protected IO() {
 	}
 	
+	/**
+	 * Write the (serializable) object to the given path.
+	 * 
+	 * @param object the object to serialize.
+	 * @param path the path to write the object to.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
 	public void write(final Object object, final String path)
 		throws IOException
 	{
 		write(object, new File(path));
 	}
 	
+	/**
+	 * Write the (serializable) object to the given path.
+	 * 
+	 * @param object the object to serialize.
+	 * @param path the path to write the object to.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
 	public void write(final Object object, final Path path) 
 		throws IOException
 	{
 		write(object, path.toFile());
 	}
 	
+	/**
+	 * Write the (serializable) object to the given file.
+	 * 
+	 * @param object the object to serialize.
+	 * @param file the file to write the object to.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
 	public void write(final Object object, final File file)
 		throws IOException
 	{
@@ -65,9 +91,26 @@ public abstract class IO {
 		}
 	}
 	
+	/**
+	 * Write the (serializable) object to the given output stream.
+	 * 
+	 * @param object the object to serialize.
+	 * @param out the output stream to write the object to.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 */
 	public abstract void write(final Object object, final OutputStream out) 
 		throws IOException;	
 	
+	/**
+	 * Reads an object from the given file.
+	 * 
+	 * @param path the path to read from.
+	 * @param type the type of the read object.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
 	public <T> T read(final Class<T> type, final String path)
 		throws IOException
 	{
@@ -76,6 +119,15 @@ public abstract class IO {
 		}
 	}
 		
+	/**
+	 * Reads an object from the given file.
+	 * 
+	 * @param path the path to read from.
+	 * @param type the type of the read object.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
 	public <T> T read(final Class<T> type, final Path path)
 		throws IOException
 	{
@@ -84,6 +136,15 @@ public abstract class IO {
 		}
 	}
 	
+	/**
+	 * Reads an object from the given file.
+	 * 
+	 * @param file the file to read from.
+	 * @param type the type of the read object.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
 	public <T> T read(final Class<T> type, final File file)
 		throws IOException
 	{
@@ -92,10 +153,22 @@ public abstract class IO {
 		}
 	}	
 	
+	/**
+	 * Reads an object from the given input stream.
+	 * 
+	 * @param in the input stream to read from.
+	 * @param type the type of the read object.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
 	public abstract <T> T read(final Class<T> type, final InputStream in) 
 		throws IOException;
 	
 	
+	/**
+	 * IO implementation for <i>XML</i> serialization.
+	 */
 	public static final IO xml = new IO() {
 		
 		@Override
@@ -105,8 +178,10 @@ public abstract class IO {
 			try {
 				final OutputStream nco = new NonClosableOutputStream(out);
 				final XMLObjectWriter writer = XMLObjectWriter.newInstance(nco);
+				writer.setIndentation("\t");
 				try {
 					writer.write(object);
+					writer.flush();
 				} finally {
 					writer.reset();
 				}
@@ -133,6 +208,9 @@ public abstract class IO {
 		}		
 	};
 	
+	/**
+	 * IO implementation for <i>native</i> Java serializazion.
+	 */
 	public static IO object = new IO() {
 		
 		@Override
