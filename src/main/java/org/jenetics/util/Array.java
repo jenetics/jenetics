@@ -392,7 +392,7 @@ public final class Array<T>
 	}
 	
 	
-	private void quicksort(
+	void quicksort(
 		final int left, final int right, 
 		final Comparator<? super T> comparator
 	) {
