@@ -50,7 +50,7 @@ import javolution.xml.stream.XMLStreamException;
 public final class testio {
 
 	private testio() {
-		throw new AssertionError("Don't create an 'io' instance.");
+		throw new AssertionError("Don't create an 'testio' instance.");
 	}
 	
 	
