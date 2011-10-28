@@ -158,6 +158,8 @@ public class UniformDistribution<
 
 
 	private final Range<N> _domain;
+	private final Function<N, Float64> _cdf;
+	private final Function<N, Float64> _pdf;
 
 	/**
 	 * Create a new uniform distribution with the given {@code domain}.
@@ -167,6 +169,8 @@ public class UniformDistribution<
 	 */
 	public UniformDistribution(final Range<N> domain) {
 		_domain = nonNull(domain, "Domain");
+		_cdf = new CDF<>(_domain);
+		_pdf = new PDF<>(_domain);
 	}
 
 	/**
@@ -202,7 +206,7 @@ public class UniformDistribution<
 	 */
 	@Override
 	public Function<N, Float64> getPDF() {
-		return new PDF<>(_domain);
+		return _pdf;
 	}
 	
 	/**
@@ -222,7 +226,7 @@ public class UniformDistribution<
 	 */
 	@Override
 	public Function<N, Float64> getCDF() {
-		return new CDF<>(_domain);
+		return _cdf;
 	}
 	
 	@Override
