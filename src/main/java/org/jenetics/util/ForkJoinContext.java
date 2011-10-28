@@ -55,21 +55,24 @@ public final class ForkJoinContext extends ConcurrentContext {
 	}
 	
 	/**
-	 * Set the fork-join-pool used by this context from outside. If not set, a
-	 * new one is created.
+	 * Set the fork-join-pool used by this context. This method doesn't replace
+	 * an already set {@link ForkJoinPool}. Before the <i>context</i> can be
+	 * used a {@link ForkJoinPool} must be set.
 	 * 
 	 * @param pool the fork-join-pool to use.
+	 * @return {@code true} if the given pool has been set, {@code false} 
+	 *         otherwise.
 	 * @throws NullPointerException if the pool is {@code null}.
 	 */
-	public static void setForkkJoinPool(final ForkJoinPool pool) {
-		_POOL.compareAndSet(null, nonNull(pool, "ForkJoinPool"));
+	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
+		return _POOL.compareAndSet(null, nonNull(pool, "ForkJoinPool"));
 	}
 	
 	/**
 	 * Return the current fork-join-pool used by this context.
 	 * 
 	 * @return the current fork-join-pool used by this context. Can be 
-	 *         {@code null}.
+	 *         {@code null} if not set jet.
 	 */
 	public static ForkJoinPool getForkJoinPool() {
 		return _POOL.get();
