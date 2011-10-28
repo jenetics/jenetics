@@ -24,12 +24,12 @@ package org.jenetics.stat;
 
 import java.util.Random;
 
-import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
@@ -64,11 +64,11 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	public void pdf() {
 		final Range<Double> domain = new Range<>(0.0, 1.0);
 		final LinearDistribution<Double> dist = new LinearDistribution<>(domain, 0);
-		final Function<Double, Float64> pdf = dist.pdf();
+		final Function<Double, Float64> pdf = dist.getPDF();
 		
 		for (int i = 0; i <= 10; ++i) {
 			final double x = i/10.0;
-			Assert.assertEquals(x*2, pdf.evaluate(x).doubleValue(), 0.00001);
+			Assert.assertEquals(x*2, pdf.apply(x).doubleValue(), 0.00001);
 		}
 		
 		Assert.assertEquals("p(x) = 2.000000·x + 0.000000", pdf.toString());
@@ -78,11 +78,11 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	public void cdf() {
 		final Range<Double> domain = new Range<>(0.0, 1.0);
 		final LinearDistribution<Double> dist = new LinearDistribution<>(domain, 0);
-		final Function<Double, Float64> cdf = dist.cdf();
+		final Function<Double, Float64> cdf = dist.getCDF();
 		
 		for (int i = 0; i <= 10; ++i) {
 			final double x = i/10.0;
-			final double y = cdf.evaluate(x).doubleValue();
+			final double y = cdf.apply(x).doubleValue();
 			Assert.assertEquals(x*x, y, 0.0001);
 		}
 		

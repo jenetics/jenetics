@@ -24,11 +24,11 @@ package org.jenetics.stat;
 
 import java.util.Random;
 
-import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Range;
 
@@ -63,7 +63,7 @@ public class NormalDistributionTest {
 	public void pdfToString() {
 		final Range<Double> domain = new Range<>(0.0, 100.0);
 		final Distribution<Double> dist = new NormalDistribution<>(domain, 50.0, 34.0);
-		final Function<Double, Float64> pdf = dist.pdf();
+		final Function<Double, Float64> pdf = dist.getPDF();
 		
 		Assert.assertEquals(pdf.toString(), "p(x) = N[µ=50.000000, σ²=34.000000](x)");
 	}
@@ -72,7 +72,7 @@ public class NormalDistributionTest {
 	public void cdfToString() {
 		final Range<Double> domain = new Range<>(0.0, 100.0);
 		final Distribution<Double> dist = new NormalDistribution<>(domain, 50.0, 34.0);
-		final Function<Double, Float64> cdf = dist.cdf();
+		final Function<Double, Float64> cdf = dist.getCDF();
 		
 		Assert.assertEquals(cdf.toString(), "P(x) = 1/2(1 + erf((x - 50.000000)/(sqrt(2·34.000000))))");
 	}

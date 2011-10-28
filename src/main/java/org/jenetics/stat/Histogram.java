@@ -36,14 +36,12 @@ import static org.jenetics.util.object.nonNull;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.MappableAccumulator;
 import org.jenetics.util.arrays;
-
-
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -285,11 +283,11 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	private long n0(final int j, final Function<C, Float64> cdf) {
 		Float64 p0j = Float64.ZERO;
 		if (j == 0) {
-			p0j = cdf.evaluate(_separators[0]);
+			p0j = cdf.apply(_separators[0]);
 		} else if (j == _histogram.length - 1) {
-			p0j = Float64.ONE.minus(cdf.evaluate(_separators[_separators.length - 1]));
+			p0j = Float64.ONE.minus(cdf.apply(_separators[_separators.length - 1]));
 		} else {
-			p0j = cdf.evaluate(_separators[j]).minus(cdf.evaluate(_separators[j - 1]));
+			p0j = cdf.apply(_separators[j]).minus(cdf.apply(_separators[j - 1]));
 		}
 		
 		return max(round(p0j.doubleValue()*_samples), 1L);

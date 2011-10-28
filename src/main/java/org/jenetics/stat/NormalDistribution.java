@@ -29,15 +29,11 @@ import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
 import static org.jenetics.util.object.nonNull;
 
-import java.util.List;
+import java.io.Serializable;
 
-import javolution.text.Text;
-import javolution.util.FastList;
-
-import org.jscience.mathematics.function.Function;
-import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 /**
@@ -84,14 +80,11 @@ public class NormalDistribution<
 	 * @version $Id$
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
+		implements 
+			Function<N, Float64>,
+			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<>("x");
-		private final List<Variable<N>> _variables = new FastList<>(1);
-		{ _variables.add(_variable); }
 		
 		private final Range<N> _domain;
 		private final double _mean;
@@ -106,11 +99,11 @@ public class NormalDistribution<
 		}
 		
 		@Override
-		public Float64 evaluate() {
-			final double x = _variable.get().doubleValue();
+		public Float64 apply(final N value) {
+			final double x = value.doubleValue();
 			
 			Float64 result = Float64.ZERO;
-			if (_domain.contains(_variable.get())) {
+			if (_domain.contains(value)) {
 				result = Float64.valueOf(φ(x, _mean, _stddev));
 			}
 			
@@ -118,15 +111,8 @@ public class NormalDistribution<
 		}
 	
 		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
-	
-		@Override
-		public Text toText() {
-			return Text.valueOf(String.format(
-					"p(x) = N[µ=%f, σ²=%f](x)", _mean, _var
-				));
+		public String toString() {
+			return String.format("p(x) = N[µ=%f, σ²=%f](x)", _mean, _var);
 		}
 		
 	}
@@ -144,14 +130,11 @@ public class NormalDistribution<
 	 * @version $Id$
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
+		implements 
+			Function<N, Float64>,
+			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<>("x");
-		private final List<Variable<N>> _variables = new FastList<>(1);
-		{ _variables.add(_variable); }
 		
 		private final double _min;
 		private final double _max;
@@ -168,8 +151,8 @@ public class NormalDistribution<
 		}
 		
 		@Override
-		public Float64 evaluate() {
-			final double x = _variable.get().doubleValue();
+		public Float64 apply(final N value) {
+			final double x = value.doubleValue();
 			
 			Float64 result = null;
 			if (x < _min) {
@@ -182,17 +165,13 @@ public class NormalDistribution<
 			
 			return result;
 		}
-		
-		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
 	
 		@Override
-		public Text toText() {
-			return Text.valueOf(String.format(
-					"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))", _mean, _var
-				));
+		public String toString() {
+			return String.format(
+				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))", 
+				_mean, _var
+			);
 		}
 		
 	}
@@ -237,7 +216,7 @@ public class NormalDistribution<
 	 * </p>
 	 */
 	@Override
-	public Function<N, Float64> cdf() {
+	public Function<N, Float64> getCDF() {
 		return new CDF<>(_domain, _mean, _var);
 	}
 	
@@ -252,7 +231,7 @@ public class NormalDistribution<
 	 * </p>
 	 */
 	@Override
-	public Function<N, Float64> pdf() {
+	public Function<N, Float64> getPDF() {
 		return new PDF<>(_domain, _mean, _var);
 	}
 

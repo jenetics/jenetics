@@ -26,15 +26,11 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
-import java.util.List;
+import java.io.Serializable;
 
-import javolution.text.Text;
-import javolution.util.FastList;
-
-import org.jscience.mathematics.function.Function;
-import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 
@@ -68,14 +64,11 @@ public class UniformDistribution<
 	 * @version $Id$
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
+		implements 
+			Function<N, Float64>,
+			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<>("x");
-		private final List<Variable<N>> _variables = new FastList<>(1);
-		{ _variables.add(_variable); }
 		
 		private final double _min;
 		private final double _max;
@@ -88,8 +81,8 @@ public class UniformDistribution<
 		}
 		
 		@Override
-		public Float64 evaluate() {
-			final double x = _variable.get().doubleValue();
+		public Float64 apply(final N value) {
+			final double x = value.doubleValue();
 			
 			Float64 result = Float64.ZERO;
 			if (x >= _min && x <= _max) {
@@ -100,13 +93,8 @@ public class UniformDistribution<
 		}
 	
 		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
-	
-		@Override
-		public Text toText() {
-			return Text.valueOf(String.format("p(x) = %s", _probability));
+		public String toString() {
+			return String.format("p(x) = %s", _probability);
 		}
 		
 	}	
@@ -127,14 +115,12 @@ public class UniformDistribution<
 	 * @version $Id$
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
+		implements 
+			Function<N, Float64>,
+			Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<>("x");
-		private final List<Variable<N>> _variables = new FastList<>(1);
-		{ _variables.add(_variable); }
 		
 		private final double _min;
 		private final double _max;
@@ -148,8 +134,8 @@ public class UniformDistribution<
 		}
 		
 		@Override
-		public Float64 evaluate() {
-			final double x = _variables.get(0).get().doubleValue();
+		public Float64 apply(final N value) {
+			final double x = value.doubleValue();
 			
 			Float64 result = Float64.ZERO;
 			if (x < _min) {
@@ -164,15 +150,8 @@ public class UniformDistribution<
 		}
 
 		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
-
-		@Override
-		public Text toText() {
-			return Text.valueOf(String.format(
-						"P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max
-					));
+		public String toString() {
+			return String.format("P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max);
 		}
 		
 	}
@@ -222,7 +201,7 @@ public class UniformDistribution<
 	 *  
 	 */
 	@Override
-	public Function<N, Float64> pdf() {
+	public Function<N, Float64> getPDF() {
 		return new PDF<>(_domain);
 	}
 	
@@ -242,7 +221,7 @@ public class UniformDistribution<
 	 *  
 	 */
 	@Override
-	public Function<N, Float64> cdf() {
+	public Function<N, Float64> getCDF() {
 		return new CDF<>(_domain);
 	}
 	
