@@ -193,6 +193,9 @@ public class LinearDistribution<
 		
 	
 	private final Range<N> _domain;
+	private final Function<N, Float64> _cdf;
+	private final Function<N, Float64> _pdf;
+	
 	private final double _x1;
 	private final double _x2;
 	private final double _y1;
@@ -209,6 +212,9 @@ public class LinearDistribution<
 		} else {
 			_x2 = domain.getMax().doubleValue();
 		}
+		
+		_cdf = new CDF<>(_x1, _y1, _x2, _y2);
+		_pdf = new PDF<>(_x1, _y1, _x2, _y2);
 	}
 	
 	private static double y2(final double x1, final double x2, final double y1) {
@@ -234,7 +240,7 @@ public class LinearDistribution<
 	 */
 	@Override
 	public Function<N, Float64> getCDF() {
-		return new CDF<>(_x1, _y1, _x2, _y2);
+		return _cdf;
 	}
 
 	/**
@@ -253,7 +259,7 @@ public class LinearDistribution<
 	 */
 	@Override
 	public Function<N, Float64> getPDF() {
-		return new PDF<>(_x1, _y1, _x2, _y2);
+		return _pdf;
 	}
 	
 	@Override

@@ -177,6 +177,8 @@ public class NormalDistribution<
 	}
 	
 	private final Range<N> _domain;
+	private final Function<N, Float64> _cdf;
+	private final Function<N, Float64> _pdf;
 	private final double _mean;
 	private final double _var;
 	
@@ -197,6 +199,9 @@ public class NormalDistribution<
 		_domain = nonNull(domain, "Domain");
 		_mean = mean;
 		_var = nonNegative(var, "Variance");
+		
+		_pdf = new PDF<>(_domain, _mean, _var);
+		_cdf = new CDF<>(_domain, _mean, _var);
 	}
 	
 	@Override
@@ -217,7 +222,7 @@ public class NormalDistribution<
 	 */
 	@Override
 	public Function<N, Float64> getCDF() {
-		return new CDF<>(_domain, _mean, _var);
+		return _cdf;
 	}
 	
 	/**
@@ -232,7 +237,7 @@ public class NormalDistribution<
 	 */
 	@Override
 	public Function<N, Float64> getPDF() {
-		return new PDF<>(_domain, _mean, _var);
+		return _pdf;
 	}
 
 	
