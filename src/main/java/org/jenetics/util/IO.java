@@ -48,6 +48,76 @@ public abstract class IO {
 	}
 	
 	/**
+	 * IO implementation for <i>XML</i> serialization.
+	 */
+	public static final IO xml = new IO() {
+		
+		@Override
+		public void write(final Object object, final OutputStream out) 
+			throws IOException 
+		{
+			try {
+				final OutputStream nco = new NonClosableOutputStream(out);
+				final XMLObjectWriter writer = XMLObjectWriter.newInstance(nco);
+				writer.setIndentation("\t");
+				try {
+					writer.write(object);
+					writer.flush();
+				} finally {
+					writer.reset();
+				}
+			} catch (XMLStreamException e) {
+				throw new IOException(e);
+			}
+		}	
+		
+		@Override
+		public <T> T read(final Class<T> type, final InputStream in) 
+			throws IOException 
+		{
+			try {
+				final InputStream nci = new NonClosableInputStream(in);
+				final XMLObjectReader reader = XMLObjectReader.newInstance(nci);
+				try {
+					return type.cast(reader.read());
+				} finally {
+					reader.reset();
+				}
+			} catch (XMLStreamException e) {
+				throw new IOException(e);
+			}
+		}		
+	};
+	
+	/**
+	 * IO implementation for <i>native</i> Java serialization.
+	 */
+	public static IO object = new IO() {
+		
+		@Override
+		public void write(final Object object, final OutputStream out) 
+			throws IOException
+		{
+			final ObjectOutputStream oout = new ObjectOutputStream(out);
+			oout.writeObject(object);
+			out.flush();
+		}
+		
+		@Override
+		public <T> T read(final Class<T> type, final InputStream in) 
+			throws IOException
+		{
+			final ObjectInputStream oin = new ObjectInputStream(in);
+			try {
+				return type.cast(oin.readObject());
+			} catch (ClassNotFoundException e) {
+				throw new IOException(e);
+			}
+		}
+	};
+	
+	
+	/**
 	 * Write the (serializable) object to the given path.
 	 * 
 	 * @param object the object to serialize.
@@ -165,78 +235,12 @@ public abstract class IO {
 	public abstract <T> T read(final Class<T> type, final InputStream in) 
 		throws IOException;
 	
-	
-	/**
-	 * IO implementation for <i>XML</i> serialization.
-	 */
-	public static final IO xml = new IO() {
-		
-		@Override
-		public void write(final Object object, final OutputStream out) 
-			throws IOException 
-		{
-			try {
-				final OutputStream nco = new NonClosableOutputStream(out);
-				final XMLObjectWriter writer = XMLObjectWriter.newInstance(nco);
-				writer.setIndentation("\t");
-				try {
-					writer.write(object);
-					writer.flush();
-				} finally {
-					writer.reset();
-				}
-			} catch (XMLStreamException e) {
-				throw new IOException(e);
-			}
-		}	
-		
-		@Override
-		public <T> T read(final Class<T> type, final InputStream in) 
-			throws IOException 
-		{
-			try {
-				final InputStream nci = new NonClosableInputStream(in);
-				final XMLObjectReader reader = XMLObjectReader.newInstance(nci);
-				try {
-					return type.cast(reader.read());
-				} finally {
-					reader.reset();
-				}
-			} catch (XMLStreamException e) {
-				throw new IOException(e);
-			}
-		}		
-	};
-	
-	/**
-	 * IO implementation for <i>native</i> Java serializazion.
-	 */
-	public static IO object = new IO() {
-		
-		@Override
-		public void write(final Object object, final OutputStream out) 
-			throws IOException
-		{
-			final ObjectOutputStream oout = new ObjectOutputStream(out);
-			oout.writeObject(object);
-			out.flush();
-		}
-		
-		@Override
-		public <T> T read(final Class<T> type, final InputStream in) 
-			throws IOException
-		{
-			final ObjectInputStream oin = new ObjectInputStream(in);
-			try {
-				return type.cast(oin.readObject());
-			} catch (ClassNotFoundException e) {
-				throw new IOException(e);
-			}
-		}
-	};
 
 	
-	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
 		
@@ -287,6 +291,10 @@ public abstract class IO {
 		
 	}
 	
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
 		
