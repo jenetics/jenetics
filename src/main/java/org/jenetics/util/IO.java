@@ -40,7 +40,7 @@ import javolution.xml.stream.XMLStreamException;
  * Class for object serialization.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+ * @version $Id$
  */
 public abstract class IO {
 
@@ -239,7 +239,7 @@ public abstract class IO {
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+	 * @version $Id$
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -293,7 +293,7 @@ public abstract class IO {
 	
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+	 * @version $Id$
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
