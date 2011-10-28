@@ -59,8 +59,8 @@ public final class predicates {
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
 	public static <T> Function<T, Boolean> Not(final Function<? super T, Boolean> a) {
+		nonNull(a);
 		return new Function<T, Boolean>() {
-			{nonNull(a);}
 			@Override public Boolean apply(final T object) {
 				return a.apply(object) ? Boolean.FALSE : Boolean.TRUE;
 			}
@@ -84,8 +84,9 @@ public final class predicates {
 		final Function<? super T, Boolean> a, 
 		final Function<? super T, Boolean> b
 	) {
+		nonNull(a);
+		nonNull(b);
 		return new Function<T, Boolean>() {
-			{nonNull(a); nonNull(b);}
 			@Override public Boolean apply(final T object) {
 				return a.apply(object) && b.apply(object);
 			}
@@ -109,8 +110,9 @@ public final class predicates {
 		final Function<? super T, Boolean> a, 
 		final Function<? super T, Boolean> b
 	) {
+		nonNull(a);
+		nonNull(b);
 		return new Function<T, Boolean>() {
-			{nonNull(a); nonNull(b);}
 			@Override public Boolean apply(final T object) {
 				return a.apply(object) || b.apply(object);
 			}
