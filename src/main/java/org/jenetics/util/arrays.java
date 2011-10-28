@@ -50,7 +50,7 @@ public final class arrays {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
@@ -68,7 +68,7 @@ public final class arrays {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
@@ -86,7 +86,7 @@ public final class arrays {
 	 * @param list the array
 	 * @param i index of the first list element.
 	 * @param j index of the second list element.
-	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give list is {@code null}.
@@ -104,7 +104,7 @@ public final class arrays {
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
-	 * @throws ArrayIndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
@@ -121,7 +121,7 @@ public final class arrays {
 	 * @see Arrays#sort(Object[], int, int, Comparator)
 	 * 
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array or comparator is 
 	 *			{@code null}.
@@ -162,7 +162,7 @@ public final class arrays {
 	 * @see Arrays#sort(Object[], int, int)
 	 * 
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
@@ -353,7 +353,7 @@ public final class arrays {
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
-	 * @throws ArrayIndexOutOfBoundsException if <tt>from &lt; 0</tt> or
+	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
