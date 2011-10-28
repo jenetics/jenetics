@@ -22,8 +22,10 @@
  */
 package org.jenetics.stat;
 
-import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Function;
+
 import org.testng.Assert;
 
 /**
@@ -39,7 +41,7 @@ public final class StatisticsAssert {
 		final Histogram<C> histogram,
 		final Distribution<C> distribution
 	) {
-		final Function<C, Float64> cdf = distribution.cdf();
+		final Function<C, Float64> cdf = distribution.getCDF();
 		final double χ2 = histogram.χ2(cdf);		
 		final int degreeOfFreedom = histogram.length() - 1;
 		assert (degreeOfFreedom > 0);

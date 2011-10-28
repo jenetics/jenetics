@@ -22,8 +22,10 @@
  */
 package org.jenetics.stat;
 
-import org.jscience.mathematics.function.Function;
 import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Function;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -36,24 +38,24 @@ public class UniformDistributionTest {
 	@Test 
 	public void pdf() {
 		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
-		final Function<Double, Float64> pdf = dist.pdf();
+		final Function<Double, Float64> pdf = dist.getPDF();
 		
-		Assert.assertEquals(pdf.evaluate(0.00), Float64.valueOf(0.1));
-		Assert.assertEquals(pdf.evaluate(1.15), Float64.valueOf(0.1));
-		Assert.assertEquals(pdf.evaluate(2.24), Float64.valueOf(0.1));
-		Assert.assertEquals(pdf.evaluate(3.43), Float64.valueOf(0.1));
-		Assert.assertEquals(pdf.evaluate(4.42), Float64.valueOf(0.1));
-		Assert.assertEquals(pdf.evaluate(5.59), Float64.valueOf(0.1));
-		Assert.assertEquals(pdf.evaluate(10.0), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(0.00), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(1.15), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(2.24), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(3.43), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(4.42), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(5.59), Float64.valueOf(0.1));
+		Assert.assertEquals(pdf.apply(10.0), Float64.valueOf(0.1));
 		
-		Assert.assertEquals(pdf.evaluate(-0.01), Float64.valueOf(0.0));
-		Assert.assertEquals(pdf.evaluate(10.01), Float64.valueOf(0.0));
+		Assert.assertEquals(pdf.apply(-0.01), Float64.valueOf(0.0));
+		Assert.assertEquals(pdf.apply(10.01), Float64.valueOf(0.0));
 	}
 	
 	@Test
 	public void pdfToString() {
 		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
-		final Function<Double, Float64> pdf = dist.pdf();
+		final Function<Double, Float64> pdf = dist.getPDF();
 		
 		Assert.assertEquals(pdf.toString(), "p(x) = 0.1");
 	}
@@ -61,27 +63,27 @@ public class UniformDistributionTest {
 	@Test
 	public void cdf() {
 		final UniformDistribution<Double> dist = new UniformDistribution<>(0.0, 10.0);
-		final Function<Double, Float64> cdf = dist.cdf();
+		final Function<Double, Float64> cdf = dist.getCDF();
 		
-		Assert.assertEquals(cdf.evaluate(-9.0), Float64.valueOf(0.0));
-		Assert.assertEquals(cdf.evaluate(0.0), Float64.valueOf(0.0));
-		Assert.assertEquals(cdf.evaluate(1.0), Float64.valueOf(0.1));
-		Assert.assertEquals(cdf.evaluate(2.0), Float64.valueOf(0.2));
-		Assert.assertEquals(cdf.evaluate(3.0), Float64.valueOf(0.3));
-		Assert.assertEquals(cdf.evaluate(4.0), Float64.valueOf(0.4));
-		Assert.assertEquals(cdf.evaluate(5.0), Float64.valueOf(0.5));
-		Assert.assertEquals(cdf.evaluate(6.0), Float64.valueOf(0.6));
-		Assert.assertEquals(cdf.evaluate(7.0), Float64.valueOf(0.7));
-		Assert.assertEquals(cdf.evaluate(8.0), Float64.valueOf(0.8));
-		Assert.assertEquals(cdf.evaluate(9.0), Float64.valueOf(0.9));
-		Assert.assertEquals(cdf.evaluate(10.0), Float64.valueOf(1.0));
-		Assert.assertEquals(cdf.evaluate(19.0), Float64.valueOf(1.0));
+		Assert.assertEquals(cdf.apply(-9.0), Float64.valueOf(0.0));
+		Assert.assertEquals(cdf.apply(0.0), Float64.valueOf(0.0));
+		Assert.assertEquals(cdf.apply(1.0), Float64.valueOf(0.1));
+		Assert.assertEquals(cdf.apply(2.0), Float64.valueOf(0.2));
+		Assert.assertEquals(cdf.apply(3.0), Float64.valueOf(0.3));
+		Assert.assertEquals(cdf.apply(4.0), Float64.valueOf(0.4));
+		Assert.assertEquals(cdf.apply(5.0), Float64.valueOf(0.5));
+		Assert.assertEquals(cdf.apply(6.0), Float64.valueOf(0.6));
+		Assert.assertEquals(cdf.apply(7.0), Float64.valueOf(0.7));
+		Assert.assertEquals(cdf.apply(8.0), Float64.valueOf(0.8));
+		Assert.assertEquals(cdf.apply(9.0), Float64.valueOf(0.9));
+		Assert.assertEquals(cdf.apply(10.0), Float64.valueOf(1.0));
+		Assert.assertEquals(cdf.apply(19.0), Float64.valueOf(1.0));
 	}
 	
 	@Test
 	public void cdfToString() {
 		final UniformDistribution<Double> dist = new UniformDistribution<>(1.0, 10.0);
-		final Function<Double, Float64> cdf = dist.cdf();
+		final Function<Double, Float64> cdf = dist.getCDF();
 		
 		Assert.assertEquals(cdf.toString(), "P(x) = (x - 1.0)/(10.0 - 1.0)");
 	}

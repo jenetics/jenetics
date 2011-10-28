@@ -25,15 +25,11 @@ package org.jenetics.stat;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;
 
-import java.util.List;
+import java.io.Serializable;
 
-import javolution.text.Text;
-import javolution.util.FastList;
-
-import org.jscience.mathematics.function.Function;
-import org.jscience.mathematics.function.Variable;
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 /**
@@ -49,14 +45,11 @@ class BinomialDistribution<
 {
 
 	static final class PDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
+		implements 
+			Function<N, Float64>,
+			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<>("x");
-		private final List<Variable<N>> _variables = new FastList<>(1);
-		{ _variables.add(_variable); }
 		
 		private final Range<N> _domain;
 		
@@ -72,11 +65,11 @@ class BinomialDistribution<
 		}
 		
 		@Override
-		public Float64 evaluate() {
-			final long x = _variable.get().longValue() - _domain.getMin().longValue();
+		public Float64 apply(final N value) {
+			final long x = value.longValue() - _domain.getMin().longValue();
 			
 			Float64 result = Float64.ZERO;
-			if (_domain.contains(_variable.get())) {
+			if (_domain.contains(value)) {
 				result = Float64.valueOf(
 						binomial(_N, x)*Math.pow(_p, x)*Math.pow(_q, _N - x)
 					);
@@ -86,26 +79,18 @@ class BinomialDistribution<
 		}
 	
 		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
-	
-		@Override
-		public Text toText() {
-			return Text.valueOf(String.format("p(x) = %s", ""));
+		public String toString() {
+			return String.format("p(x) = %s", "");
 		}
 		
 	}	
 	
 	static final class CDF<N extends Number & Comparable<? super N>> 
-		extends Function<N, Float64> 
+		implements 
+			Function<N, Float64>,
+			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
-		// Create and initialize the used variable 'x'.
-		private final Variable<N> _variable = new Variable.Local<>("x");
-		private final List<Variable<N>> _variables = new FastList<>(1);
-		{ _variables.add(_variable); }
 		
 		private final Range<N> _domain;
 		
@@ -121,8 +106,8 @@ class BinomialDistribution<
 		}
 		
 		@Override
-		public Float64 evaluate() {
-			long x = _variable.get().longValue();
+		public Float64 apply(final N value) {
+			long x = value.longValue();
 			
 			Float64 result = null;
 			if (_domain.getMin().longValue() > x) {
@@ -142,13 +127,8 @@ class BinomialDistribution<
 		}
 	
 		@Override
-		public List<Variable<N>> getVariables() {
-			return _variables;
-		}
-	
-		@Override
-		public Text toText() {
-			return Text.valueOf(String.format("p(x) = %s", ""));
+		public String toString() {
+			return String.format("p(x) = %s", "");
 		}
 		
 	}	
@@ -167,12 +147,12 @@ class BinomialDistribution<
 	}
 
 	@Override
-	public Function<N, Float64> cdf() {
+	public Function<N, Float64> getCDF() {
 		return new CDF<>(_domain, _p);
 	}
 
 	@Override
-	public Function<N, Float64> pdf() {
+	public Function<N, Float64> getPDF() {
 		return new PDF<>(_domain, _p);
 	}
 
