@@ -25,9 +25,6 @@ package org.jenetics;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import javolution.text.Text;
-import javolution.text.TextBuilder;
-
 import org.jscience.mathematics.number.Number;
 
 import org.jenetics.util.ISeq;
@@ -254,13 +251,7 @@ public abstract class NumberChromosome<
 		final NumberChromosome<?, ?> nc = (NumberChromosome<?, ?>)object;
 		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
 	}
-	
-	@Override
-	public Text toText() {
-		final TextBuilder out = TextBuilder.newInstance();
-		out.append(_genes.toString("[", ",", "]"));		
-		return out.toText();
-	}
+
 	
 }
 
