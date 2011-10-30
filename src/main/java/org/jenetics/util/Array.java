@@ -536,7 +536,7 @@ public final class Array<T>
 	 * @return a new array which contains the values of {@code this} and the
 	 * 		  given {@code value}
 	 */
-	public Array<T> append(final T value) {
+	public Array<T> add(final T value) {
 		final Array<T> array = new Array<>(length() + 1);
 		System.arraycopy(_array.data, _start, array._array.data, 0, length());
 		array._array.data[array.length() - 1] = value;
@@ -553,7 +553,7 @@ public final class Array<T>
 	 * 		  given {@code array}
 	 * @throws NullPointerException if the {@code arrays} is {@code null}.
 	 */
-	public Array<T> append(final Array<? extends T> array) {
+	public Array<T> add(final Array<? extends T> array) {
 		final Array<T> appended = new Array<>(length() + array.length());
 		
 		System.arraycopy(
@@ -578,7 +578,7 @@ public final class Array<T>
 	 * 		  given {@code array}
 	 * @throws NullPointerException if the {@code values} is {@code null}.
 	 */
-	public Array<T> append(final Collection<? extends T> values) {
+	public Array<T> add(final Collection<? extends T> values) {
 		nonNull(values, "Values");
 		final Array<T> array = new Array<>(length() + values.size());
 		

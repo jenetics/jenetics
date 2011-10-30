@@ -72,7 +72,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void newFromCollection() {
 		final Array<Integer> a1 = new Array<>(1, 2, 3, 4, 5);
 		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
-		final Array<Integer> a3 = a1.append(a2);
+		final Array<Integer> a3 = a1.add(a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length());
 		for (int i = 0; i < a1.length() + a2.length(); ++i) {
@@ -84,7 +84,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void newFromSubArray() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
 		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
-		final Array<Integer> a3 = a1.subSeq(0, 6).append(a2);
+		final Array<Integer> a3 = a1.subSeq(0, 6).add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
 		for (int i = 0; i < a1.length() + a2.length() - 2; ++i) {
@@ -96,7 +96,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void newFromOtherSubArray() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
 		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
-		final Array<Integer> a3 = a1.subSeq(1, 6).append(a2);
+		final Array<Integer> a3 = a1.subSeq(1, 6).add(a2);
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
 		for (int i = 1; i < a1.length() + a2.length() - 2; ++i) {
@@ -108,7 +108,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void create4() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
 		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
-		final Array<Integer> a3 = a1.append(a2.subSeq(2, 7));
+		final Array<Integer> a3 = a1.add(a2.subSeq(2, 7));
 		
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
 		for (int i = 0; i < a1.length() + a2.length() - 3; ++i) {
@@ -306,7 +306,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void append1() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10);
-		final Array<Integer> a3 = a1.append(a2);
+		final Array<Integer> a3 = a1.add(a2);
 		
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3, 
@@ -317,7 +317,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void append2() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a3 = a1.append(Arrays.asList(6, 7, 8, 9, 10));
+		final Array<Integer> a3 = a1.add(Arrays.asList(6, 7, 8, 9, 10));
 		
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3, 
@@ -328,8 +328,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void append3() {
 		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a2 = a1.append(6);
-		final Array<Integer> a3 = a1.append(6);
+		final Array<Integer> a2 = a1.add(6);
+		final Array<Integer> a3 = a1.add(6);
 		
 		Assert.assertEquals(a2.length(), a1.length() + 1);
 		Assert.assertEquals(a3.length(), a1.length() + 1);

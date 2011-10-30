@@ -1,4 +1,5 @@
 Jenetics-0.9.0.0
+- Rename Array.append methods to Array.add.
 - Add an 'IO' class with IO helper methods.
 - Remove EnumGene, can be replaced by Integer64Gene.
 - Update JScience library from 4.3 to 4.3.1.
