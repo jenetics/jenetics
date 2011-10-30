@@ -154,7 +154,7 @@ public class CharacterChromosome
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 * 
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
 	public Factory<CharacterChromosome> asFactory() {
@@ -247,6 +247,10 @@ public class CharacterChromosome
 		return AbstractChromosome.gene(index);
 	}
 	
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+	
 	static final XMLFormat<CharacterChromosome> 
 	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class) 
 	{
@@ -289,6 +293,10 @@ public class CharacterChromosome
 		
 	};
 
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+	
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException 
 	{
