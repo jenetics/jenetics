@@ -31,9 +31,6 @@ import static org.jenetics.util.predicates.Null;
 import java.util.Iterator;
 import java.util.RandomAccess;
 
-import javolution.lang.Realtime;
-import javolution.text.Text;
-
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
@@ -50,7 +47,6 @@ import org.jenetics.util.ISeq;
 public abstract class AbstractChromosome<G extends Gene<?, G>> 
 	implements 
 		Chromosome<G>, 
-		Realtime, 
 		RandomAccess
 {
 	private static final long serialVersionUID = 1;
@@ -151,11 +147,6 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		
 		final AbstractChromosome<?> chromosome = (AbstractChromosome<?>)obj;
 		return eq(_genes, chromosome._genes);
-	}
-
-	@Override
-	public Text toText() {
-		return Text.valueOf(_genes.toString());
 	}
 	
 	@Override

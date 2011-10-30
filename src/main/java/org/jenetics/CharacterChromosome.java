@@ -30,16 +30,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javolution.text.CharArray;
-import javolution.text.Text;
-import javolution.text.TextBuilder;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.CharSet;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
@@ -220,14 +218,6 @@ public class CharacterChromosome
 		return out.toString();
 	}
 	
-	@Override
-	public Text toText() {
-		final TextBuilder out = TextBuilder.newInstance();
-		for (CharacterGene gene : this) {
-			out.append(gene.toText());
-		}
-		return out.toText();
-	}
 	
 	/* *************************************************************************
 	 *  Property access methods
