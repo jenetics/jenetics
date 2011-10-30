@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -94,7 +92,7 @@ public enum BitGene
 	
 	@Override
 	public BitGene copy() {
-		return _value ? TRUE : FALSE;
+		return this;
 	}
 	
 	/**
@@ -102,8 +100,7 @@ public enum BitGene
 	 */
 	@Override
 	public BitGene newInstance() {
-		final Random random = RandomRegistry.getRandom();
-		return random.nextBoolean() ? TRUE : FALSE;
+		return RandomRegistry.getRandom().nextBoolean() ? TRUE : FALSE;
 	}
 
 	@Override
