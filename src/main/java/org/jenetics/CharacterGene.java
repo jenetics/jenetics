@@ -285,7 +285,7 @@ public final class CharacterGene
 	
 	
 	/* *************************************************************************
-	 *  Factory methods
+	 *  XML object serialization
 	 * ************************************************************************/
 	
 	static final XMLFormat<CharacterGene> 
