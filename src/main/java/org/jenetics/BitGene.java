@@ -37,22 +37,23 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class BitGene 
+public enum BitGene 
 	implements 
 		Gene<Boolean, BitGene>, 
-		Comparable<BitGene>, 
 		XMLSerializable 
 {
-	private static final long serialVersionUID = 1L;
 	
-	public static final BitGene TRUE = new BitGene(true);
-	public static final BitGene FALSE = new BitGene(false);
-	public static final BitGene ONE = TRUE;
+	FALSE(false),
+	TRUE(true);
+	
+	private static final long serialVersionUID = 2L;
+	
 	public static final BitGene ZERO = FALSE;
+	public static final BitGene ONE = TRUE;
 	
 	private final boolean _value;
 	
-	BitGene(final boolean value) {
+	private BitGene(final boolean value) {
 		_value = value;
 	}
 
@@ -103,36 +104,6 @@ public final class BitGene
 	public BitGene newInstance() {
 		final Random random = RandomRegistry.getRandom();
 		return random.nextBoolean() ? TRUE : FALSE;
-	}
-	
-	@Override
-	public int hashCode() {
-		return 31 + (_value ? 1231 : 1237);
-	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		final BitGene gene = (BitGene)obj;
-		return _value == gene._value;
-	}
-	
-	@Override
-	public int compareTo(final BitGene gene) {
-		if (this == gene) {
-			return 0;
-		} else if (_value && !gene._value) {
-			return 1;
-		} else if (!_value && gene._value) {
-			return -1;
-		} else {
-			return 0;
-		}
 	}
 
 	@Override
