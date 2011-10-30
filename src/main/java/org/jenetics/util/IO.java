@@ -90,7 +90,7 @@ public abstract class IO {
 	};
 	
 	/**
-	 * IO implementation for <i>native</i> Java serialization.
+	 * IO implementation for "native" <i>Java</i> serialization.
 	 */
 	public static IO object = new IO() {
 		

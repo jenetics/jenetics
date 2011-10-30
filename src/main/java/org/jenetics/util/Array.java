@@ -356,11 +356,12 @@ public final class Array<T>
 	 * comparator. All elements in the array must be mutually comparable by the 
 	 * specified comparator.
 	 * </p>
-	 * The sorting algorithm is the Quicksort.
+	 * The sorting algorithm is the <i>Timsort</i>.
 	 * 
-	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
-	 *          Wikipedia: Quicksort
+	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Timsort">
+	 *          Wikipedia: Timsort
 	 *      </a>
+	 * @see Arrays#sort(Object[], int, int, Comparator)
 	 * 
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
