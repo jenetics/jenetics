@@ -25,6 +25,7 @@ package org.jenetics.util;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javolution.context.LocalContext;
 
@@ -54,9 +55,35 @@ import javolution.context.LocalContext;
  * @version $Id$
  */
 public final class RandomRegistry {
-	private static final LocalContext.Reference<Random> RANDOM = 
-		new LocalContext.Reference<>(new Random());
 	
+	private static class RandomAccessor {
+		private final Random _random;
+		
+		RandomAccessor() {
+			this(null);
+		}
+		
+		RandomAccessor(final Random random) {
+			_random = random;
+		}
+		
+		public Random get() {
+			return _random;
+		}
+	}
+	
+	private static final RandomAccessor DEFAULT_RANDOM_ACCESSOR = 
+	new RandomAccessor() {
+		@Override
+		public Random get() {
+			return ThreadLocalRandom.current();
+		}
+	};
+	
+	private static final LocalContext.Reference<RandomAccessor> RANDOM = 
+		new LocalContext.Reference<>(DEFAULT_RANDOM_ACCESSOR);
+	
+		
 	private RandomRegistry() {
 		throw new AssertionError("Don't create an 'RandomRegistry' instance.");
 	}
@@ -67,7 +94,7 @@ public final class RandomRegistry {
 	 * @return the global {@link Random} object.
 	 */
 	public static Random getRandom() {
-		return RANDOM.get();
+		return RANDOM.get().get();
 	}
 	
 	/**
@@ -77,7 +104,20 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		RANDOM.set(nonNull(random, "Random object"));
+		RANDOM.set(new RandomAccessor(nonNull(random, "Random object")));
+	}
+	
+	/**
+	 * Set the random object to it's default value.
+	 */
+	public static void setDefault() {
+		RANDOM.set(DEFAULT_RANDOM_ACCESSOR);
 	}
 
 }
+
+
+
+
+
+
