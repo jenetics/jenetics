@@ -281,6 +281,11 @@
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
 		</classes>
+	</test>	
+	<test name="org.jenetics.util.RandomRegistry">
+		<classes>
+			<class name="org.jenetics.util.RandomRegistryTest" />
+		</classes>
 	</test>			
 	<test name="org.jenetics.util.Timer">
 		<classes>
