@@ -28,6 +28,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javolution.context.LocalContext;
+import javolution.lang.Reference;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The RandomRegistry
@@ -56,31 +57,17 @@ import javolution.context.LocalContext;
  */
 public final class RandomRegistry {
 	
-	private static class RandomAccessor {
-		private final Random _random;
-		
-		RandomAccessor() {
-			this(null);
-		}
-		
-		RandomAccessor(final Random random) {
-			_random = random;
-		}
-		
-		public Random get() {
-			return _random;
-		}
-	}
 	
-	private static final RandomAccessor DEFAULT_RANDOM_ACCESSOR = 
-	new RandomAccessor() {
-		@Override
-		public Random get() {
+	private static final Reference<Random> DEFAULT_RANDOM_ACCESSOR = 
+	new Reference<Random>() {
+		@Override public Random get() {
 			return ThreadLocalRandom.current();
+		}
+		@Override public void set(Random random) {
 		}
 	};
 	
-	private static final LocalContext.Reference<RandomAccessor> RANDOM = 
+	private static final LocalContext.Reference<Reference<Random>> RANDOM = 
 		new LocalContext.Reference<>(DEFAULT_RANDOM_ACCESSOR);
 	
 		
@@ -104,7 +91,14 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		RANDOM.set(new RandomAccessor(nonNull(random, "Random object")));
+		nonNull(random, "Random object");
+		RANDOM.set(new Reference<Random>() {
+			@Override public Random get() {
+				return random;
+			}
+			@Override public void set(Random random) {
+			}
+		});
 	}
 	
 	/**
