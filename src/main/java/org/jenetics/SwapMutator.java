@@ -72,7 +72,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 		
 		if (genes.length() > 1) {
 			final Random random = RandomRegistry.getRandom();
-			final IndexStream stream = IndexStream.Random(random, genes.length(), p);
+			final IndexStream stream = IndexStream.Random(genes.length(), p, random);
 			
 			for (int i = stream.next(); i != -1; i = stream.next()) {
 				final int j = random.nextInt(genes.length());				

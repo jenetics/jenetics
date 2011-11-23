@@ -42,8 +42,8 @@ public class RandomIndexStreamTest {
 
 	@Test
 	public void repeatable() {
-		final IndexStream stream1 = IndexStream.Random(new Random(1), 1000, 0.5);
-		final IndexStream stream2 = IndexStream.Random(new Random(1), 1000, 0.5);
+		final IndexStream stream1 = IndexStream.Random(1000, 0.5, new Random(1));
+		final IndexStream stream2 = IndexStream.Random(1000, 0.5, new Random(1));
 		
 		for (int i = stream1.next(); i != -1; i = stream1.next()) {
 			Assert.assertEquals(i, stream2.next());
@@ -53,7 +53,7 @@ public class RandomIndexStreamTest {
 	
 	@Test
 	public void iterateP0() {
-		final IndexStream it = IndexStream.Random(new Random(), 1000, 0);
+		final IndexStream it = IndexStream.Random(1000, 0, new Random());
 		
 		for (int i = it.next(); i != -1; i = it.next()) {
 			Assert.assertTrue(false);
@@ -66,7 +66,7 @@ public class RandomIndexStreamTest {
 	
 	@Test
 	public void iterateP1() {
-		final IndexStream it = IndexStream.Random(new Random(), 1000, 1);
+		final IndexStream it = IndexStream.Random(1000, 1, new Random());
 		
 		int count = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
@@ -109,7 +109,7 @@ public class RandomIndexStreamTest {
 	}
 	
 	long k(final int n, final double p, final Random random) {
-		final IndexStream it = IndexStream.Random(random, n, p);
+		final IndexStream it = IndexStream.Random(n, p, random);
 		
 		int kt = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {

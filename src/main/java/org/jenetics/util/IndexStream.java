@@ -60,19 +60,18 @@ public abstract class IndexStream {
 	
 	/**
 	 * Create a new random IndexIterator.
-	 * @param random the random engine used for creating the random indexes.
 	 * @param n the maximal value (exclusively) of the iterator.
 	 * @param probability the index selection probability.
-	 * 
+	 * @param random the random engine used for creating the random indexes.
 	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
 	 *         {@code n <= 0} or the given {@code probability} is not valid.
 	 * @throws NullPointerException if the given {@code random} engine is 
 	 *         {@code null}.
 	 */
 	public static IndexStream Random(
-		final Random random, 
 		final int n, 
-		final double probability
+		final double probability, 
+		final Random random
 	) {
 		if (n == Integer.MAX_VALUE) {
 			throw new IllegalArgumentException(String.format(
