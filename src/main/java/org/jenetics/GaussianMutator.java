@@ -64,7 +64,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	@Override
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(random, genes.length(), p);
+		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
 		
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {

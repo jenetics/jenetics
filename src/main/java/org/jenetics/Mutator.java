@@ -105,7 +105,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final AtomicInteger alterations = new AtomicInteger(0);
 		
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(random, population.size(), p); 		
+		final IndexStream stream = IndexStream.Random(population.size(), p, random); 		
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final Phenotype<G, C> pt = population.get(i);
 			
@@ -127,7 +127,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		Genotype<G> gt = genotype;
 
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(random, genotype.length(), p);
+		final IndexStream stream = IndexStream.Random(genotype.length(), p, random);
 		int start = stream.next();
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy(); 
@@ -175,7 +175,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(random, genes.length(), p);
+		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
 		
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
