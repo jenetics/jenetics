@@ -33,18 +33,27 @@ import org.jenetics.util.Seq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> { 
+public class PermutationChromosomeTest 
+	extends ChromosomeTester<PermutationGene<Integer>> 
+{ 
     
-	private final Factory<Chromosome<Integer64Gene>> 
-	_factory = new PermutationChromosome(500, true);
-	@Override protected Factory<Chromosome<Integer64Gene>> getFactory() {
+	private final Factory<Chromosome<PermutationGene<Integer>>> 
+	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
+		@Override
+		public PermutationChromosome<Integer> newInstance() {
+			return PermutationChromosome.valueOf(500);
+		}
+	};
+	
+	@Override protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
 		return _factory;
 	}
 	
+	/*
 	@Test
 	public void create() {
-		PermutationChromosome c = new PermutationChromosome(50, true);
-		final MSeq<Integer64Gene> array = c.toSeq().copy();
+		PermutationChromosome<Integer> c = PermutationChromosome.valueOf(50);
+		final MSeq<PermutationGene<Integer>> array = c.toSeq().copy();
 		Assert.assertFalse(isSorted(array));
 		
 		org.jenetics.util.arrays.sort(array);
@@ -71,5 +80,6 @@ public class PermutationChromosomeTest extends ChromosomeTester<Integer64Gene> {
 		}
 		return sorted;
 	}
+	*/
 	
 }

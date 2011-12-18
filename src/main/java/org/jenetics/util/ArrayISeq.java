@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.object.nonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,6 +45,22 @@ final class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	@Override
 	public ISeq<T> subSeq(final int start) {
 		return subSeq(start, length());
+	}
+	
+	@Override
+	public <B> ArrayISeq<B> map(final Function<? super T, ? extends B> converter) {
+		nonNull(converter, "Converter");
+		
+		final int length = length();
+		final ArrayISeq<B> result = new ArrayISeq<>(new ArrayRef(length), 0, length);
+		assert (result._array.data.length == length);
+		
+		for (int i = length; --i >= 0;) {
+			@SuppressWarnings("unchecked")
+			final T value = (T)_array.data[i + _start];
+			result._array.data[i] = converter.apply(value);
+		}
+		return result;
 	}
 	
 	@Override

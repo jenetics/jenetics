@@ -28,6 +28,7 @@ import static java.lang.Math.sin;
 
 import java.io.Serializable;
 
+import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
 import org.jenetics.CompositeAlterer;
 import org.jenetics.GeneticAlgorithm;
@@ -36,6 +37,7 @@ import org.jenetics.Integer64Gene;
 import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
+import org.jenetics.PermutationGene;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -49,7 +51,7 @@ import org.jenetics.util.Function;
 public class TravelingSalesman {
 	
 	private static class FF 
-		implements Function<Genotype<Integer64Gene>, Double>,
+		implements Function<Genotype<PermutationGene<Integer>>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -61,13 +63,13 @@ public class TravelingSalesman {
 		}
 		
 		@Override
-		public Double apply(final Genotype<Integer64Gene> genotype) {
-			final Chromosome<Integer64Gene> path = genotype.getChromosome();
+		public Double apply(final Genotype<PermutationGene<Integer>> genotype) {
+			final Chromosome<PermutationGene<Integer>> path = genotype.getChromosome();
 			
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
-				final int from = path.getGene(i).intValue();
-				final int to = path.getGene((i + 1)%n).intValue();
+				final int from = path.getGene(i).getAllele();
+				final int to = path.getGene((i + 1)%n).getAllele();
 				length += _adjacence[from][to];
 			}
 			return length;
@@ -82,16 +84,18 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 		
-		final Function<Genotype<Integer64Gene>, Double> ff = new FF(adjacencyMatrix(stops));
-		final Factory<Genotype<Integer64Gene>> gtf = Genotype.valueOf(
-			new PermutationChromosome(stops)
+		final Function<Genotype<PermutationGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
+		final Factory<Genotype<PermutationGene<Integer>>> gtf = Genotype.valueOf(
+			PermutationChromosome.valueOf(stops)
 		);
-		final GeneticAlgorithm<Integer64Gene, Double> ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
+		final GeneticAlgorithm<PermutationGene<Integer>, Double> 
+			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(300);
-        ga.setAlterer(new CompositeAlterer<>(
-            new SwapMutator<Integer64Gene>(0.2), 
-            new PartiallyMatchedCrossover<Integer64Gene>(0.3)
-        ));
+		ga.setAlterer(new SwapMutator<PermutationGene<Integer>>(0.2));
+		
+		Alterer<PermutationGene<Integer>> a = new PartiallyMatchedCrossover<>(0.3);
+		ga.addAlterer(a);
+		
         //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
         //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());
         

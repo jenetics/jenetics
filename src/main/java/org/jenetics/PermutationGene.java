@@ -27,9 +27,11 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import javolution.context.ObjectFactory;
 
+import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.arrays;
 import org.jenetics.util.object;
 
 /**
@@ -40,22 +42,31 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int _index = -1;
-	
-	T[] _validAlleles;
-	private T _allele;
+	private ISeq<T> _validAlleles;
+	private int _alleleIndex = -1;
 	
 	PermutationGene() {
 	}
 	
+	public ISeq<T> getValidAlleles() {
+		return _validAlleles;
+	}
+	
+	public int getAlleleIndex() {
+		return _alleleIndex;
+	}
+	
 	@Override
 	public T getAllele() {
-		return _allele;
+		return _validAlleles.get(_alleleIndex);
 	}
 	
 	@Override
 	public PermutationGene<T> copy() {
-		return this;
+		final PermutationGene<T> gene = new PermutationGene<>();
+		gene._validAlleles = _validAlleles;
+		gene._alleleIndex = _alleleIndex;
+		return gene;
 	}
 
 	@Override
@@ -68,9 +79,8 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		@SuppressWarnings("unchecked")
 		final PermutationGene<T> gene = (PermutationGene<T>)FACTORY.object();
 		
-		gene._index = RandomRegistry.getRandom().nextInt(_validAlleles.length);
+		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
-		gene._allele = _validAlleles[gene._index];
 		return gene;
 	}
 	
@@ -81,8 +91,7 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 	@Override
 	public int hashCode() {
 		return hashCodeOf(PermutationGene.class)
-				.and(_index)
-				.and(_allele)
+				.and(_alleleIndex)
 				.and(_validAlleles).value();
 	}
 	
@@ -96,19 +105,29 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		}
 		
 		final PermutationGene<?> pg = (PermutationGene<?>)obj;
-		return eq(_index, pg._index) && 
-				eq(_allele, pg._allele) && 
+		return eq(_alleleIndex, pg._alleleIndex) && 
 				eq(_validAlleles, pg._validAlleles);
 	}
 	
 	@Override
 	public String toString() {
-		return object.str(_allele);
+		return object.str(getAllele());
 	}
 	
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
+	
+	public static <T> Function<Integer, PermutationGene<T>> ToGene(
+		final ISeq<T> validAlleles
+	) {
+		return new Function<Integer, PermutationGene<T>>() {
+			@Override
+			public PermutationGene<T> apply(final Integer index) {
+				return valueOf(validAlleles, index);
+			}
+		};
+	}
 	
 	@SuppressWarnings("rawtypes")
 	private static final ObjectFactory<PermutationGene> 
@@ -119,31 +138,43 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		}
 	};
 	
-	public static <T> PermutationGene<T> valueOf(final T allele, final T[] validAlleles ) {
-		if (validAlleles.length == 0) {
+	public static <T> PermutationGene<T> valueOf(
+		final T[] validAlleles, 
+		final int alleleIndex
+	) {
+		return valueOf(new Array<>(validAlleles).toISeq(), alleleIndex);
+	}
+	
+	public static <T> PermutationGene<T> valueOf(
+		final ISeq<T> validAlleles, 
+		final int alleleIndex
+	) {
+		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
 			);
 		}
 		
-		final int index = arrays.indexOf(validAlleles, allele);
-		if (index == -1) {
-			throw new IllegalArgumentException(String.format(
-				"Array of valid alleles doesn't contain allele '%s'.", allele
+		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
+			throw new IndexOutOfBoundsException(String.format(
+				"Allele index is not in range [0, %d).", alleleIndex
 			));
 		}
 		
 		@SuppressWarnings("unchecked")
 		final PermutationGene<T> gene = (PermutationGene<T>)FACTORY.object();
 		
-		gene._index = index;
-		gene._allele = allele;
-		gene._validAlleles = validAlleles.clone();
+		gene._validAlleles = validAlleles;
+		gene._alleleIndex = alleleIndex;
 		return gene;
 	}
 	
 	public static <T> PermutationGene<T> valueOf(final T[] validAlleles) {
-		if (validAlleles.length == 0) {
+		return valueOf(new Array<>(validAlleles).toISeq());
+	}
+	
+	public static <T> PermutationGene<T> valueOf(final ISeq<T> validAlleles) {
+		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
 			);
@@ -151,9 +182,8 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		
 		@SuppressWarnings("unchecked")
 		final PermutationGene<T> gene = (PermutationGene<T>)FACTORY.object();
-		gene._index = RandomRegistry.getRandom().nextInt(validAlleles.length);
 		gene._validAlleles = validAlleles;
-		gene._allele = validAlleles[gene._index];
+		gene._alleleIndex = RandomRegistry.getRandom().nextInt(validAlleles.length());
 		return gene;
 	}
 

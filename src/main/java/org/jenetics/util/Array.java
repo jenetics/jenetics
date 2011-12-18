@@ -587,15 +587,7 @@ public final class Array<T>
 		return array;
 	}
 	
-	/**
-	 * Create a new array with element type {@code B}.
-	 * 
-	 * @param <B> the element type of the new array.
-	 * @param converter the array element converter.
-	 * @return a new array with element type {@code B}.
-	 * @throws NullPointerException if the element {@code converter} is 
-	 *         {@code null}.
-	 */
+	@Override
 	public <B> Array<B> map(final Function<? super T, ? extends B> converter) {
 		nonNull(converter, "Converter");
 		
