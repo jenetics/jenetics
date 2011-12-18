@@ -100,7 +100,7 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		if (obj == this) {
 			return true;
 		}
-		if (getClass() != obj.getClass()) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		
@@ -118,13 +118,23 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 	 *  Static object creation methods
 	 * ************************************************************************/
 	
-	public static <T> Function<Integer, PermutationGene<T>> ToGene(
+	static <T> Function<Integer, PermutationGene<T>> ToGene(
 		final ISeq<T> validAlleles
 	) {
 		return new Function<Integer, PermutationGene<T>>() {
 			@Override
 			public PermutationGene<T> apply(final Integer index) {
 				return valueOf(validAlleles, index);
+			}
+		};
+	}
+	
+	static <T> Factory<PermutationGene<T>> Gene(final ISeq<T> validAlleles) {
+		return new Factory<PermutationGene<T>>() {
+			private int _index = 0;
+			@Override
+			public PermutationGene<T> newInstance() {
+				return PermutationGene.valueOf(validAlleles, _index++);
 			}
 		};
 	}

@@ -138,6 +138,11 @@
 			<class name="org.jenetics.PermutationChromosomeTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.PermutationGene">
+		<classes>
+			<class name="org.jenetics.PermutationGeneTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.Phenotype">
 		<classes>
 			<class name="org.jenetics.PhenotypeTest" />
