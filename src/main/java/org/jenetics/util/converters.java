@@ -46,6 +46,13 @@ public final class converters {
 		}
 	};
 	
+	public static final Function<String, Integer>
+	StringToInteger = new Function<String, Integer>() {
+		@Override public Integer apply(final String value) {
+			return Integer.parseInt(value);
+		}
+	};	
+	
 	public static final Function<Float64, Double> 
 	Float64ToDouble = new Function<Float64, Double>() {
 		@Override public Double apply(final Float64 value) {
@@ -75,3 +82,7 @@ public final class converters {
 	};
 	
 }
+
+
+
+

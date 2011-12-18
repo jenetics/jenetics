@@ -22,26 +22,24 @@
  */
 package org.jenetics;
 
+import static org.jenetics.util.converters.StringToInteger;
+import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
-import java.util.Random;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jscience.mathematics.number.Integer64;
-
 import org.jenetics.util.Array;
-import org.jenetics.util.bit;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.bit;
 
 /**
  * The mutable methods of the {@link AbstractChromosome} has been overridden so 
@@ -50,124 +48,31 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class PermutationChromosome 
-	extends AbstractChromosome<Integer64Gene> 
+public final class PermutationChromosome<T> 
+	extends AbstractChromosome<PermutationGene<T>> 
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
-	protected PermutationChromosome(final ISeq<Integer64Gene> genes) {
+	private ISeq<T> _validAlleles;
+	
+	PermutationChromosome(final int length, final ISeq<PermutationGene<T>> genes) {
 		super(genes);
+		_validAlleles = genes.get(0).getValidAlleles();
 	}
 	
-	/**
-	 * Create a new PermutationChromosome from the given {@code values}.
-	 * 
-	 * @param values the values of the newly created PermutationChromosome.
-	 * @throws NullPointerException it the given {@code values} are {@code null}.
-	 * @throws IllegalArgumentException if
-	 * 			<ul>
-	 * 				<li>the {@code values} array contains duplicate values or</li>
-	 * 				<li>one of the array value is smaller than zero or</li>
-	 * 				<li>one of the array value is greater than {@code values.length - 1} or</li>
-	 * 				<li>the array length is smaller than 1</li>
-	 * 			</ul>
-	 */
-	public PermutationChromosome(final int[] values) {
-		super(create(values));
+	public PermutationChromosome(final ISeq<T> validAlleles) {
+		super(
+			new Array<PermutationGene<T>>(validAlleles.length()).fill(
+					PermutationGene.valueOf(validAlleles)
+				).toISeq()
+		);
+		_validAlleles = validAlleles;
 		_valid = true;
 	}
-	
-	/**
-	 * Create a new randomly created permutation with the length {@code length}.
-	 * 
-	 * @param length the length of the chromosome.
-	 * @param randomize if true, the chromosome is randomized, otherwise the
-	 * 		 values of the chromosome are in ascending order from 0 to 
-	 * 		 {@code length - 1}
-	 * @throws IllegalArgumentException if the given {@code length} is smaller 
-	 * 		  than 1.
-	 */
-	public PermutationChromosome(final int length, final boolean randomize) {
-		super(create(length, randomize));
-		_valid = true;
-	}
-	
-	/**
-	 * Create a new randomly created permutation with the length {@code length}.
-	 * 
-	 * @param length the length of the chromosome.
-	 * @throws IllegalArgumentException if the given {@code length} is smaller than 1.
-	 */
-	public PermutationChromosome(final int length) {
-		this(length, false);
-	}
-	
-	private static ISeq<Integer64Gene> create(final int[] values) {
-		//Check the input.
-		nonNull(values, "Values");
-		if (values.length < 1) {
-			throw new IllegalArgumentException(
-					"Array must contain at least one value."
-				);
-		}
-		
-		byte[] check = new byte[values.length/8 + 1];
-		Arrays.fill(check, (byte)0);
-		for (int i = 0; i < values.length; ++i) {
-			if (values[i] < 0) {
-				throw new IllegalArgumentException(String.format(
-					"Value %s at position %s is smaller than zero.",
-					values[i], i
-				));
-			}
-			if (values[i] > values.length - 1) {
-				throw new IllegalArgumentException(String.format(
-					"Value %s at position %s is greater or equal than array length %s.",
-					values[i], i, values.length
-				));
-			}
-			
-			if (bit.get(check, values[i])) {
-				throw new IllegalArgumentException(String.format(
-						"Value %s is duplicate.", values[i]
-					));
-			} else {
-				bit.set(check, values[i], true);
-			}
-		}
-		
-		final Array<Integer64Gene> genes = new Array<>(values.length);
-		for (int i = 0; i < values.length; ++i) {
-			genes.set(i, Integer64Gene.valueOf(values[i], 0, values.length - 1));
-		}
-		
-		return genes.toISeq();
-	}
-	
-	private static ISeq<Integer64Gene> create(final int length, final boolean randomize) {
-		if (length < 1) {
-			throw new IllegalArgumentException("Length must be greater than 1, but was " + length);
-		}
-		
-		final Random random = RandomRegistry.getRandom();
-		
-		final Array<Integer64Gene> genes = new Array<>(length);
-		if (randomize) {
-			//Permutation algorithm from D. Knuth TAOCP, Seminumerical Algorithms, 
-			//Third edition, page 145, Algorithm P (Shuffling).
-			for (int j = 0; j < length; ++j) {
-				final int i = random.nextInt(j + 1);
-				genes.set(j, genes.get(i));
-				genes.set(i, Integer64Gene.valueOf(j, 0, length - 1));
-			}
-		} else {
-			for (int i = 0; i < length; ++i) {
-				genes.set(i, Integer64Gene.valueOf(i, 0, length - 1));
-			}
-		}
-		
-		return genes.toISeq();
+
+	public ISeq<T> getValidAlleles() {
+		return _validAlleles;
 	}
 	
 	/**
@@ -181,11 +86,10 @@ public final class PermutationChromosome
 			
 			boolean valid = super.isValid();
 			for (int i = 0; i < length() && valid; ++i) {
-				final int value = _genes.get(i).intValue();
+				final int value = _genes.get(i).getAlleleIndex();
 				if (value >= 0 && value < length()) {
 					if (bit.get(check, value)) {
 						valid = false;
-						System.out.println("value: " + value);
 					} else {
 						bit.set(check, value, true);
 					}
@@ -206,21 +110,21 @@ public final class PermutationChromosome
 	 * @return a more specific view of thiw chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
-	public Factory<PermutationChromosome> asFactory() {
-		return (Factory<PermutationChromosome>)(Object)this;
+	public Factory<PermutationChromosome<T>> asFactory() {
+		return (Factory<PermutationChromosome<T>>)(Object)this;
 	}
 	
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
 	@Override
-	public PermutationChromosome newInstance() {
-		return new PermutationChromosome(length(), true);
+	public PermutationChromosome<T> newInstance() {
+		return new PermutationChromosome<>(_validAlleles);
 	}
 	
 	@Override
-	public PermutationChromosome newInstance(final ISeq<Integer64Gene> genes) {
-		return new PermutationChromosome(genes);
+	public PermutationChromosome<T> newInstance(final ISeq<PermutationGene<T>> genes) {
+		return new PermutationChromosome<>(genes.length(), genes);
 	}
 	
 	@Override
@@ -242,50 +146,77 @@ public final class PermutationChromosome
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		out.append(_genes.get(0).getAllele().intValue());
+		out.append(_genes.get(0).getAllele());
 		for (int i = 1; i < length(); ++i) {
-			out.append("|").append(_genes.get(i).getAllele().intValue());
+			out.append("|").append(_genes.get(i).getAllele());
 		}
 		return out.toString();
+	}
+	
+	public static <T> PermutationChromosome<T> valueOf(
+		final ISeq<PermutationGene<T>> genes
+	) {
+		return new PermutationChromosome<>(genes.length(), genes);
+	}
+	
+	public static PermutationChromosome<Integer> valueOf(final int length) {
+		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
+		return new PermutationChromosome<>(alleles);
 	}
 	
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 	
+	@SuppressWarnings("rawtypes")
 	static final XMLFormat<PermutationChromosome> 
 	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
 		
 		private static final String LENGTH = "length";
-		private static final String MIN = "min";
-		private static final String MAX = "max";
+		private static final String ALLELE_INDEXES = "allele-indexes";
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public PermutationChromosome newInstance(
 			final Class<PermutationChromosome> cls, final InputElement xml
-		) throws XMLStreamException 
+		) throws XMLStreamException
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
-			final int min = xml.getAttribute(MIN, 0);
-			final int max = xml.getAttribute(MAX, length);
-			final Array<Integer64Gene> genes = new Array<>(length);
-			
+			final Array<Object> alleles = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
-				final Integer64 value = xml.getNext();
-				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
+				alleles.set(i, xml.getNext());
 			}
+			
+			final ISeq<Object> ialleles = alleles.toISeq();
+			
+			final Array<Integer> indexes = new Array<>(
+				xml.get(ALLELE_INDEXES, String.class
+			).split(",")).map(StringToInteger);
+			
+			final Array<Object> genes = new Array<>(length);
+			for (int i = 0; i < length; ++i) {
+				genes.set(i, PermutationGene.valueOf(ialleles, indexes.get(i)));
+			}
+			
 			return new PermutationChromosome(genes.toISeq());
 		}
+		
 		@Override
 		public void write(final PermutationChromosome chromosome, final OutputElement xml) 
 			throws XMLStreamException 
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
-			xml.setAttribute(MIN, 0);
-			xml.setAttribute(MAX, chromosome.length() - 1);
-			for (Integer64Gene gene : chromosome) {
-				xml.add(gene.getAllele());
+			for (Object allele : chromosome.getValidAlleles()) {
+				xml.add(allele);
 			}
+
+			final PermutationChromosome<?> pc = chromosome;
+			final String indexes = pc.toSeq().map(new Function<Object, Integer>() {
+				@Override public Integer apply(final Object value) {
+					return ((PermutationGene<?>)value).getAlleleIndex();
+				}
+			}).toString(",");
+			xml.add(indexes, ALLELE_INDEXES);
 		}
 		@Override
 		public void read(
@@ -304,25 +235,24 @@ public final class PermutationChromosome
 		throws IOException 
 	{
 		out.defaultWriteObject();
-	
-		out.writeInt(length());		
-		for (Integer64Gene gene : _genes) {
-			out.writeLong(gene.longValue());
+		
+		out.writeObject(_validAlleles);
+		for (PermutationGene<?> gene : _genes) {
+			out.writeInt(gene.getAlleleIndex());
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException 
 	{
 		in.defaultReadObject();
-	
-		final int length = in.readInt();
-		Integer64 min = Integer64.valueOf(0);
-		Integer64 max = Integer64.valueOf(length - 1);
 		
-		final Array<Integer64Gene> genes = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
+		_validAlleles = (ISeq<T>)in.readObject();
+		
+		final Array<PermutationGene<T>> genes = new Array<>(_validAlleles.length());
+		for (int i = 0; i < _validAlleles.length(); ++i) {
+			genes.set(i, PermutationGene.valueOf(_validAlleles, in.readInt()));
 		}
 		
 		_genes = genes.toISeq();

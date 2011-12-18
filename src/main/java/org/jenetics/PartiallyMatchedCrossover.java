@@ -76,8 +76,8 @@ import org.jenetics.util.Seq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class PartiallyMatchedCrossover<G extends Gene<?, G>> 
-	extends Crossover<G>
+public final class PartiallyMatchedCrossover<T> 
+	extends Crossover<PermutationGene<T>>
 	implements Immutable
 {
 
@@ -86,7 +86,10 @@ public final class PartiallyMatchedCrossover<G extends Gene<?, G>>
 	}
 	
 	@Override 
-	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
+	protected int crossover(
+		final MSeq<PermutationGene<T>> that, 
+		final MSeq<PermutationGene<T>> other
+	) {
 		final Random random = RandomRegistry.getRandom();
 		int begin = random.nextInt(that.length());
 		int end = random.nextInt(other.length());

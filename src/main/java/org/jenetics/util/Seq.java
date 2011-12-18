@@ -171,6 +171,20 @@ public interface Seq<T> extends Iterable<T> {
 	public List<T> asList();
 	
 	/**
+	 * Builds a new sequence by applying a function to all elements of this 
+	 * sequence. 
+	 * 
+	 * @param <B> the element type of the returned collection. 
+	 * @param converter the function to apply to each element. 
+	 * @return a new sequence of type That resulting from applying the given 
+	 *         function f to each element of this sequence and collecting the 
+	 *         results.
+	 * @throws NullPointerException if the element {@code converter} is 
+	 *         {@code null}.
+	 */
+	public <B> Seq<B> map(final Function<? super T, ? extends B> converter);
+	
+	/**
 	 * Return an array containing all of the elements in this sequence in right 
 	 * order. The returned array will be "safe" in that no references to it 
 	 * are maintained by this sequence. (In other words, this method must allocate 

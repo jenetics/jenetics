@@ -22,18 +22,21 @@
  */
 package org.jenetics;
 
-import static org.jenetics.TestUtils.newFloat64GenePopulation;
+import static org.jenetics.TestUtils.newPermutationFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
+import static org.jenetics.util.factories.Int;
 
-import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
 import org.jenetics.util.Array;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.Range;
 import org.jenetics.util.arrays;
 
@@ -47,31 +50,31 @@ public class PartiallyMatchedCrossoverTest {
 	
 	@Test(invocationCount = 10)
 	public void crossover() {
-		final PartiallyMatchedCrossover<Integer64Gene> pmco = 
+		final PartiallyMatchedCrossover<Integer> pmco = 
 			new PartiallyMatchedCrossover<>(1);
 		
 		final int length = 1000;
-		final Array<Integer64Gene> that = new Array<>(length);
-		final Array<Integer64Gene> other = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			that.set(i, Integer64Gene.valueOf(i, 0, length));
-			other.set(i, Integer64Gene.valueOf(i, 0, length));
-		}
+		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
+		final ISeq<Integer> ialleles = alleles.toISeq();
+		
+		final Array<PermutationGene<Integer>> that = alleles.map(PermutationGene.ToGene(ialleles));
+		final Array<PermutationGene<Integer>> other = alleles.map(PermutationGene.ToGene(ialleles));
+		
 		arrays.shuffle(that);
 		arrays.shuffle(other);
 		
-		final PermutationChromosome thatChrom1 = new PermutationChromosome(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.valueOf(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
 		
-		final PermutationChromosome otherChrom1 = new PermutationChromosome(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.valueOf(other.toISeq());
 		Assert.assertTrue(otherChrom1.isValid(), "otherChrom1 not valid");
 		
 		pmco.crossover(that, other);
 		
-		final PermutationChromosome thatChrom2 = new PermutationChromosome(that.toISeq());
+		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.valueOf(that.toISeq());
 		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
 		
-		final PermutationChromosome otherChrom2 = new PermutationChromosome(other.toISeq());
+		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.valueOf(other.toISeq());
 		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
 		
 		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
@@ -80,18 +83,14 @@ public class PartiallyMatchedCrossoverTest {
 	
 	//@Test
 	public void corssoverWithIllegalChromosome() {
-		final PartiallyMatchedCrossover<Integer64Gene> pmco = 
-			new PartiallyMatchedCrossover<>(1);
-		
+		final PartiallyMatchedCrossover<Integer> pmco = new PartiallyMatchedCrossover<>(1);
+			
 		final int length = 1000;
-		final Array<Integer64Gene> that = new Array<>(length);
-		final Array<Integer64Gene> other = new Array<>(length);
-		for (int i = 0; i < length; ++i) {
-			that.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
-			other.set(i, Integer64Gene.valueOf(i%(length/2), 0, length));
-		}
-		arrays.shuffle(that);
-		arrays.shuffle(other);
+		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
+		final ISeq<Integer> ialleles = alleles.toISeq();
+		
+		final Array<PermutationGene<Integer>> that = alleles.map(PermutationGene.ToGene(ialleles));
+		final Array<PermutationGene<Integer>> other = alleles.map(PermutationGene.ToGene(ialleles));
 		
 		pmco.crossover(that, other);
 		
@@ -104,12 +103,12 @@ public class PartiallyMatchedCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {		
-		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(
+		final Population<PermutationGene<Float64>, Float64> population = newPermutationFloat64GenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 		
 		// The mutator to test.
-		final PartiallyMatchedCrossover<Float64Gene> crossover = new PartiallyMatchedCrossover<>(p);
+		final PartiallyMatchedCrossover<Float64> crossover = new PartiallyMatchedCrossover<>(p);
 		
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;

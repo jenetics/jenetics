@@ -29,6 +29,7 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -142,6 +143,44 @@ class TestUtils {
 		
 		return population;
 	}
+	
+	public static final Population<PermutationGene<Float64>, Float64> newPermutationFloat64GenePopulation(
+		final int ngenes, 
+		final int nchromosomes, 
+		final int npopulation
+	) {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Float64> alleles = new Array<>(ngenes);
+		for (int i = 0; i < ngenes; ++i) {
+			alleles.set(i, Float64.valueOf(random.nextDouble()*10));
+		}
+		final ISeq<Float64> ialleles = alleles.toISeq();
+		
+		final Array<PermutationChromosome<Float64>> chromosomes = 
+			new Array<>(nchromosomes);
+		
+		for (int i = 0; i < nchromosomes; ++i) {
+			chromosomes.set(i, new PermutationChromosome<>(ialleles));
+		}	
+		
+		final Genotype<PermutationGene<Float64>> genotype = Genotype.valueOf(chromosomes.toISeq());
+		final Population<PermutationGene<Float64>, Float64> population = 
+			new Population<>(npopulation);
+		
+		for (int i = 0; i < npopulation; ++i) {
+			population.add(Phenotype.valueOf(genotype.newInstance(), PFF, 0));
+		}	
+		
+		return population;
+	}
+	
+	private static final Function<Genotype<PermutationGene<Float64>>, Float64> 
+	PFF = new Function<Genotype<PermutationGene<Float64>>, Float64>() {
+		@Override
+		public Float64 apply(Genotype<PermutationGene<Float64>> value) {
+			return value.getGene().getAllele();
+		}
+	};
 	
 	/**
 	 * Count the number of different genes.

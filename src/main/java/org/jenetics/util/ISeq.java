@@ -44,6 +44,9 @@ public interface ISeq<T>
 	
 	@Override
 	public ISeq<T> subSeq(final int start);
+	
+	@Override
+	public <B> ISeq<B> map(final Function<? super T, ? extends B> converter);
 			
 	/**
 	 * <p>
