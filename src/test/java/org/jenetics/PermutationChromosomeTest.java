@@ -41,12 +41,18 @@ public class PermutationChromosomeTest
 	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
 		@Override
 		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.valueOf(500);
+			return PermutationChromosome.valueOf(2);
 		}
 	};
 	
-	@Override protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
+	@Override 
+	protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
 		return _factory;
+	}
+	
+	@Test
+	public void valueOf() {
+		PermutationChromosome<Integer> c = PermutationChromosome.valueOf(50);
 	}
 	
 	/*

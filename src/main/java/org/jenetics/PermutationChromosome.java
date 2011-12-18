@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static org.jenetics.PermutationGene.Gene;
 import static org.jenetics.util.converters.StringToInteger;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.object.hashCodeOf;
@@ -63,9 +64,9 @@ public final class PermutationChromosome<T>
 	
 	public PermutationChromosome(final ISeq<T> validAlleles) {
 		super(
-			new Array<PermutationGene<T>>(validAlleles.length()).fill(
-					PermutationGene.valueOf(validAlleles)
-				).toISeq()
+			new Array<PermutationGene<T>>(
+				validAlleles.length()
+			).fill(Gene(validAlleles)).toISeq()
 		);
 		_validAlleles = validAlleles;
 		_valid = true;
