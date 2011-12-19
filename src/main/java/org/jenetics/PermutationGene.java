@@ -139,6 +139,7 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		};
 	}
 	
+	
 	@SuppressWarnings("rawtypes")
 	private static final ObjectFactory<PermutationGene> 
 	FACTORY = new ObjectFactory<PermutationGene>() {

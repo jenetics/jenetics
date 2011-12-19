@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.RandomAccess;
 
 import javolution.context.StackContext;
@@ -479,6 +480,16 @@ public final class Array<T>
 		
 		_array.cloneIfSealed();
 		uncheckedSwap(i, j);
+	}
+	
+	public Array<T> shuffle(final Random random) {
+		_array.cloneIfSealed();
+		
+		for (int j = length() - 1; j > 0; --j) {
+			uncheckedSwap(j, random.nextInt(j + 1));
+		}
+		
+		return this;
 	}
 	
 	@Override
