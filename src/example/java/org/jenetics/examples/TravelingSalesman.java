@@ -28,12 +28,10 @@ import static java.lang.Math.sin;
 
 import java.io.Serializable;
 
-import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
 import org.jenetics.CompositeAlterer;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.Integer64Gene;
 import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
@@ -92,12 +90,7 @@ public class TravelingSalesman {
 			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(300);
 		ga.setAlterer(new SwapMutator<PermutationGene<Integer>>(0.2));
-		
-		Alterer<PermutationGene<Integer>> a = new PartiallyMatchedCrossover<>(0.3);
-		ga.addAlterer(a);
-		
-        //ga.setSelectors(new org.jenetics.MonteCarloSelector<IntegerGene, Double>());
-        //ga.setAlterer(new org.jenetics.NullAlterer<IntegerGene>());
+		ga.addAlterer(new PartiallyMatchedCrossover<Integer>(0.3));
         
 		final int generations = 500;
 		
