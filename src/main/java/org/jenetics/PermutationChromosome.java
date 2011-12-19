@@ -23,8 +23,8 @@
 package org.jenetics;
 
 import static org.jenetics.PermutationGene.Gene;
-import static org.jenetics.util.converters.StringToInteger;
 import static org.jenetics.util.factories.Int;
+import static org.jenetics.util.functions.StringToInteger;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
@@ -42,6 +42,7 @@ import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
+
 
 /**
  * The mutable methods of the {@link AbstractChromosome} has been overridden so 

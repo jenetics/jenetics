@@ -22,9 +22,9 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.converters.ObjectToString;
-import static org.jenetics.util.predicates.Not;
-import static org.jenetics.util.predicates.Null;
+import static org.jenetics.util.functions.ObjectToString;
+import static org.jenetics.util.functions.Not;
+import static org.jenetics.util.functions.Null;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
