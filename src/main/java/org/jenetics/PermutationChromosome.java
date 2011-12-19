@@ -40,6 +40,7 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 /**
@@ -62,11 +63,16 @@ public final class PermutationChromosome<T>
 		_validAlleles = genes.get(0).getValidAlleles();
 	}
 	
+	/**
+	 * Create a new, random chromosome with the given valid alleles.
+	 * 
+	 * @param validAlleles the valid alleles used for this permutation arrays.
+	 */
 	public PermutationChromosome(final ISeq<T> validAlleles) {
 		super(
 			new Array<PermutationGene<T>>(
 				validAlleles.length()
-			).fill(Gene(validAlleles)).toISeq()
+			).fill(Gene(validAlleles)).shuffle(RandomRegistry.getRandom()).toISeq()
 		);
 		_validAlleles = validAlleles;
 		_valid = true;
@@ -199,7 +205,7 @@ public final class PermutationChromosome<T>
 				genes.set(i, PermutationGene.valueOf(ialleles, indexes.get(i)));
 			}
 			
-			return new PermutationChromosome(genes.toISeq());
+			return new PermutationChromosome(genes.length(), genes.toISeq());
 		}
 		
 		@Override
