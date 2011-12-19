@@ -24,6 +24,11 @@ package org.jenetics.util;
 
 import static org.jenetics.util.object.nonNull;
 
+import java.util.Objects;
+
+import org.jscience.mathematics.number.Float64;
+import org.jscience.mathematics.number.Integer64;
+
 /**
  * This class contains some short general purpose predicates, like {@code Nil},
  * {@code Not}, {@code And} and {@code Or}.
@@ -31,9 +36,46 @@ import static org.jenetics.util.object.nonNull;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class predicates {
+public final class functions {
 
-	private predicates() {
+	public static final Function<Object, String>
+	ObjectToString = new Function<Object, String>() {
+		@Override public String apply(final Object value) {
+			return Objects.toString(value);
+		}
+	};
+	public static final Function<String, Integer>
+	StringToInteger = new Function<String, Integer>() {
+		@Override public Integer apply(final String value) {
+			return Integer.parseInt(value);
+		}
+	};
+	public static final Function<Float64, Double> 
+	Float64ToDouble = new Function<Float64, Double>() {
+		@Override public Double apply(final Float64 value) {
+			return value.doubleValue();
+		}
+	};
+	public static final Function<Double, Float64> 
+	DoubleToFloat64 = new Function<Double, Float64>() {
+		@Override public Float64 apply(final Double value) {
+			return Float64.valueOf(value);
+		}
+	};
+	public static final Function<Integer64, Long> 
+	Integer64ToLong = new Function<Integer64, Long>() {
+		@Override public Long apply(final Integer64 value) {
+			return value.longValue();
+		}
+	};
+	public static final Function<Long, Integer64> 
+	LongToInteger64 = new Function<Long, Integer64>() {
+		@Override public Integer64 apply(final Long value) {
+			return Integer64.valueOf(value);
+		}
+	};
+
+	private functions() {
 		throw new AssertionError("Don't create an 'predicate' instance.");
 	}
 	
