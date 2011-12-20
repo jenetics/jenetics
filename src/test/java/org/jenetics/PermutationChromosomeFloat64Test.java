@@ -22,28 +22,44 @@
  */
 package org.jenetics;
 
+import java.util.Random;
+
+import org.jscience.mathematics.number.Float64;
+
+import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest 
-	extends ChromosomeTester<PermutationGene<Integer>> 
+public class PermutationChromosomeFloat64Test 
+	extends ChromosomeTester<PermutationGene<Float64>> 
 { 
-    
-	private final Factory<Chromosome<PermutationGene<Integer>>> 
-	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
+	
+	private final Factory<Chromosome<PermutationGene<Float64>>> 
+	_factory = new Factory<Chromosome<PermutationGene<Float64>>>() {
+		private final ISeq<Float64> _alleles = new Array<Float64>(100).fill(new Factory<Float64>() {
+			private final Random _random = RandomRegistry.getRandom();
+			@Override
+			public Float64 newInstance() {
+				return Float64.valueOf(_random.nextGaussian()*1000);
+			}
+			
+		}).toISeq();
+		
 		@Override
-		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.valueOf(100);
+		public PermutationChromosome<Float64> newInstance() {
+			return new PermutationChromosome<>(_alleles);
 		}
 	};
 	
 	@Override 
-	protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
+	protected Factory<Chromosome<PermutationGene<Float64>>> getFactory() {
 		return _factory;
 	}
-	
-	
+
 }
+
