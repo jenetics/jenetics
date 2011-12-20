@@ -22,28 +22,33 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest 
-	extends ChromosomeTester<PermutationGene<Integer>> 
+public class PermutationChromosomeEnumTest 
+	extends ChromosomeTester<PermutationGene<PermutationEnum>> 
 { 
-    
-	private final Factory<Chromosome<PermutationGene<Integer>>> 
-	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
+	
+	
+	private final Factory<Chromosome<PermutationGene<PermutationEnum>>> 
+	_factory = new Factory<Chromosome<PermutationGene<PermutationEnum>>>() {
+		private final ISeq<PermutationEnum> _alleles = 
+			new Array<>(PermutationEnum.values()).toISeq();
+		
 		@Override
-		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.valueOf(100);
+		public PermutationChromosome<PermutationEnum> newInstance() {
+			return new PermutationChromosome<>(_alleles);
 		}
 	};
 	
 	@Override 
-	protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
+	protected Factory<Chromosome<PermutationGene<PermutationEnum>>> getFactory() {
 		return _factory;
 	}
-	
-	
+
 }

@@ -22,28 +22,52 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.Factory;
+import javolution.xml.XMLFormat;
+import javolution.xml.XMLSerializable;
+import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationChromosomeTest 
-	extends ChromosomeTester<PermutationGene<Integer>> 
-{ 
-    
-	private final Factory<Chromosome<PermutationGene<Integer>>> 
-	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
+public enum PermutationEnum implements XMLSerializable {
+	_1,
+	_2,
+	_3,
+	_4,
+	_5,
+	_6,
+	_7,
+	_8,
+	_9,
+	_10,
+	_11,
+	_12,
+	_13,
+	_14,
+	_15;
+	
+	
+	static final XMLFormat<PermutationEnum> 
+	XML = new XMLFormat<PermutationEnum>(PermutationEnum.class) 
+	{		
 		@Override
-		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.valueOf(100);
+		public PermutationEnum newInstance(
+			final Class<PermutationEnum> cls, final InputElement xml
+		) 
+			throws XMLStreamException 
+		{
+			return PermutationEnum.valueOf(xml.getText().toString());
+		}
+		@Override
+		public void write(final PermutationEnum gene, final OutputElement xml) 
+			throws XMLStreamException 
+		{
+			xml.addText(gene.name());
+		}
+		@Override
+		public void read(final InputElement element, final PermutationEnum gene) {
 		}
 	};
-	
-	@Override 
-	protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
-		return _factory;
-	}
-	
 	
 }
