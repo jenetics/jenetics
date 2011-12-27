@@ -30,54 +30,115 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 /**
- * This class contains some short general purpose predicates, like {@code Nil},
- * {@code Not}, {@code And} and {@code Or}.
+ * This class contains some short general purpose functions.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public final class functions {
 
+	private functions() {
+		throw new AssertionError("Don't create an 'functions' instance.");
+	}
+	
+	/**
+	 * Convert an object to a string by calling the objects {@link Object#toString()}
+	 * method.
+	 */
 	public static final Function<Object, String>
 	ObjectToString = new Function<Object, String>() {
 		@Override public String apply(final Object value) {
 			return Objects.toString(value);
 		}
 	};
+	
+	/**
+	 * Convert a string to an integer. If the string can't be converted, an 
+	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
+	 * method.
+	 */
 	public static final Function<String, Integer>
 	StringToInteger = new Function<String, Integer>() {
 		@Override public Integer apply(final String value) {
 			return Integer.parseInt(value);
 		}
 	};
+	
+	/**
+	 * Convert a string to a long. If the string can't be converted, an 
+	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
+	 * method.
+	 */
+	public static final Function<String, Long>
+	StringToLong = new Function<String, Long>() {
+		@Override public Long apply(final String value) {
+			return Long.parseLong(value);
+		}
+	};
+	
+	/**
+	 * Convert a string to a float. If the string can't be converted, an 
+	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
+	 * method.
+	 */
+	public static final Function<String, Float>
+	StringToFloat = new Function<String, Float>() {
+		@Override public Float apply(final String value) {
+			return Float.parseFloat(value);
+		}
+	};
+	
+	/**
+	 * Convert a string to a double. If the string can't be converted, an 
+	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
+	 * method.
+	 */
+	public static final Function<String, Double>
+	StringToDouble = new Function<String, Double>() {
+		@Override public Double apply(final String value) {
+			return Double.parseDouble(value);
+		}
+	};
+	
+	/**
+	 * Convert a {@link Float64} value to a {@link Double} value.
+	 */
 	public static final Function<Float64, Double> 
 	Float64ToDouble = new Function<Float64, Double>() {
 		@Override public Double apply(final Float64 value) {
 			return value.doubleValue();
 		}
 	};
+	
+	/**
+	 * Convert a {@link Double} value to a {@link Float64} value.
+	 */
 	public static final Function<Double, Float64> 
 	DoubleToFloat64 = new Function<Double, Float64>() {
 		@Override public Float64 apply(final Double value) {
 			return Float64.valueOf(value);
 		}
 	};
+	
+	/**
+	 * Convert a {@link Integer64} value to a {@link Long} value.
+	 */
 	public static final Function<Integer64, Long> 
 	Integer64ToLong = new Function<Integer64, Long>() {
 		@Override public Long apply(final Integer64 value) {
 			return value.longValue();
 		}
 	};
+	
+	/**
+	 * Convert a {link Long} value to a {@link Integer64} value.
+	 */
 	public static final Function<Long, Integer64> 
 	LongToInteger64 = new Function<Long, Integer64>() {
 		@Override public Integer64 apply(final Long value) {
 			return Integer64.valueOf(value);
 		}
 	};
-
-	private functions() {
-		throw new AssertionError("Don't create an 'predicate' instance.");
-	}
 	
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
