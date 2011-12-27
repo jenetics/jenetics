@@ -62,6 +62,7 @@ public final class PermutationChromosome<T>
 	PermutationChromosome(final int length, final ISeq<PermutationGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
+		_valid = true;
 	}
 	
 	/**
@@ -76,7 +77,6 @@ public final class PermutationChromosome<T>
 			).fill(Gene(validAlleles)).shuffle(RandomRegistry.getRandom()).toISeq()
 		);
 		_validAlleles = validAlleles;
-		_valid = true;
 	}
 
 	public ISeq<T> getValidAlleles() {
@@ -161,13 +161,25 @@ public final class PermutationChromosome<T>
 		return out.toString();
 	}
 	
+	/**
+	 * Create a new PermutationChromosome from the given genes.
+	 * 
+	 * @param genes the genes of this chromosome.
+	 * @return a new PermutationChromosome from the given genes.
+	 */
 	public static <T> PermutationChromosome<T> valueOf(
 		final ISeq<PermutationGene<T>> genes
 	) {
 		return new PermutationChromosome<>(genes.length(), genes);
 	}
 	
-	public static PermutationChromosome<Integer> valueOf(final int length) {
+	/**
+	 * Create a integer permutation chromosome with the given length.
+	 * 
+	 * @param length the chromosome length.
+	 * @return a integer permutation chromosome with the given length.
+	 */
+	public static PermutationChromosome<Integer> ofInteger(final int length) {
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		return new PermutationChromosome<>(alleles);
 	}
