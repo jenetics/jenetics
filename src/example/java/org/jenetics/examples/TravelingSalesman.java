@@ -84,7 +84,7 @@ public class TravelingSalesman {
 		
 		final Function<Genotype<PermutationGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
 		final Factory<Genotype<PermutationGene<Integer>>> gtf = Genotype.valueOf(
-			PermutationChromosome.valueOf(stops)
+			PermutationChromosome.ofInteger(stops)
 		);
 		final GeneticAlgorithm<PermutationGene<Integer>, Double> 
 			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);

@@ -36,7 +36,7 @@ public class PermutationChromosomeTest
 	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
 		@Override
 		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.valueOf(100);
+			return PermutationChromosome.ofInteger(100);
 		}
 	};
 	

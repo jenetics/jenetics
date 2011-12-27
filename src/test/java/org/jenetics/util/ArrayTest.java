@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.ObjectToString;
 import static org.jenetics.util.functions.Not;
 import static org.jenetics.util.functions.Null;
@@ -130,7 +131,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void sort() {
-		final Array<Integer> integers = new Array<Integer>(10000).fill(factories.Int());
+		final Array<Integer> integers = new Array<Integer>(10000).fill(Int());
 		
 		Assert.assertTrue(arrays.isSorted(integers));
 		
@@ -144,7 +145,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void quicksort() {
-		final Array<Integer> integers = new Array<Integer>(10000).fill(factories.Int());
+		final Array<Integer> integers = new Array<Integer>(10000).fill(Int());
 		
 		Assert.assertTrue(arrays.isSorted(integers));
 		
@@ -166,7 +167,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void map() {
-		final Array<Integer> integers = new Array<Integer>(20).fill(factories.Int());
+		final Array<Integer> integers = new Array<Integer>(20).fill(Int());
 		
 		final Array<String> strings = integers.map(ObjectToString);
 		
@@ -178,7 +179,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void reverse() {
-		final Array<Integer> integers = new Array<Integer>(1000).fill(factories.Int(999, -1));
+		final Array<Integer> integers = new Array<Integer>(1000).fill(Int(999, -1));
 		
 		Assert.assertFalse(arrays.isSorted(integers));
 		integers.reverse();
@@ -187,7 +188,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	
 	@Test
 	public void asList() {
-		final Array<Integer> integers = new Array<Integer>(1000).fill(factories.Int());
+		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
 		Assert.assertTrue(arrays.isSorted(integers));
 		
 		arrays.shuffle(integers, new Random());
@@ -211,7 +212,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).fill(0);
 		Assert.assertEquals(array.length(), 10);
 		
-		array.fill(factories.Int());
+		array.fill(Int());
 		
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(array.get(i), new Integer(i));
