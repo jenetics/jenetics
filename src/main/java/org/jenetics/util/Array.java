@@ -389,7 +389,7 @@ public final class Array<T>
 		
 		@SuppressWarnings("unchecked")
 		final T[] data = (T[])_array.data;
-		Arrays.sort(data, from, to, comparator);
+		Arrays.sort(data, from + _start, to + _start, comparator);
 //		quicksort(from, to - 1, comparator);
 	}
 	

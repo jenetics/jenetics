@@ -152,7 +152,7 @@ public class ArrayTest {
 		
 		@Override 
 		protected void test() {
-			arrays.sort(_array, _comparator);
+			_array.sort(_comparator);
 		}
 		
 		@Override

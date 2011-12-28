@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.ObjectToString;
 import static org.jenetics.util.functions.Not;
@@ -163,6 +164,27 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		arrays.shuffle(integers, new Random());
 		integers.quicksort(0, integers.length() - 1, comparator);
 		Assert.assertTrue(arrays.isSorted(integers));
+	}
+	
+	@Test
+	public void sort2() {
+		final Random random = new Random();
+		final Factory<Integer> factory = new Factory<Integer>() {
+			@Override public Integer newInstance() {
+				return random.nextInt(10000);
+			}
+		};
+		
+		final Array<Integer> array = new Array<>(100);
+		array.fill(factory);
+		Assert.assertFalse(isSorted(array));
+		
+		final Array<Integer> clonedArray = array.copy();
+		Assert.assertEquals(array, clonedArray);
+		
+		clonedArray.sort(30, 40);
+		array.subSeq(30, 40).sort();
+		Assert.assertEquals(array, clonedArray);
 	}
 	
 	@Test

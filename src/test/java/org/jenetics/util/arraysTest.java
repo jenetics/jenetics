@@ -158,25 +158,6 @@ public class arraysTest {
 		Assert.assertEquals(array.subSeq(40), clonedArray.subSeq(40));
 	}
 	
-	@Test
-	public void sort2() {
-		final Random random = new Random();
-		final Factory<Integer> factory = new Factory<Integer>() {
-			@Override public Integer newInstance() {
-				return random.nextInt(10000);
-			}
-		};
-		
-		final Array<Integer> array = new Array<>(100);
-		array.fill(factory);
-		Assert.assertFalse(isSorted(array));
-		
-		final Array<Integer> clonedArray = array.copy();
-		sort(clonedArray, 30, 40);
-		sort(array.subSeq(30, 40));
-		Assert.assertEquals(array, clonedArray);
-	}
-	
 //	@Test
 //	public void performance() {
 //		final int SIZE = 1000;
