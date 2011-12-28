@@ -141,9 +141,9 @@
 			<class name="org.jenetics.PermutationChromosomeCharacterTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.PermutationGene">
+	<test name="org.jenetics.EnumGene">
 		<classes>
-			<class name="org.jenetics.PermutationGeneTest" />
+			<class name="org.jenetics.EnumGeneTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.Phenotype">

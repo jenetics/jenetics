@@ -34,11 +34,11 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class PermutationChromosomeCharacterTest 
-	extends ChromosomeTester<PermutationGene<Character>> 
+	extends ChromosomeTester<EnumGene<Character>> 
 	{ 
 	
-	private final Factory<Chromosome<PermutationGene<Character>>> 
-	_factory = new Factory<Chromosome<PermutationGene<Character>>>() {
+	private final Factory<Chromosome<EnumGene<Character>>> 
+	_factory = new Factory<Chromosome<EnumGene<Character>>>() {
 		private final char[] _characters = "qwertzuiopü+asdfghjklöä#yxcvbnm,.-".toCharArray();
 		private final ISeq<Character> _alleles = new Array<Character>(100).fill(new Factory<Character>() {
 			private final Random _random = RandomRegistry.getRandom();
@@ -56,7 +56,7 @@ public class PermutationChromosomeCharacterTest
 	};
 	
 	@Override 
-	protected Factory<Chromosome<PermutationGene<Character>>> getFactory() {
+	protected Factory<Chromosome<EnumGene<Character>>> getFactory() {
 		return _factory;
 	}
 
