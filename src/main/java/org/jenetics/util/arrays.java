@@ -207,7 +207,7 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array) {
-		shuffle(array, new Random());
+		shuffle(array, RandomRegistry.getRandom());
 	}
 	
 	/**
@@ -236,7 +236,7 @@ public final class arrays {
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void shuffle(final MSeq<T> array) {
-		shuffle(array, new Random());
+		shuffle(array, RandomRegistry.getRandom());
 	}
 	
 	/**
@@ -266,7 +266,7 @@ public final class arrays {
 	 * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list) {
-		shuffle(list, new Random());
+		shuffle(list, RandomRegistry.getRandom());
 	}
 	
 	/**
@@ -431,7 +431,7 @@ public final class arrays {
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k) {
-		return subset(n, k, new Random());
+		return subset(n, k, RandomRegistry.getRandom());
 	}
 	
 	/**
@@ -497,7 +497,7 @@ public final class arrays {
 	 * 		  integer overflow.
 	 */
 	public static void subset(final int n, final int sub[]) {
-		subset(n, sub, new Random());
+		subset(n, sub, RandomRegistry.getRandom());
 	}
 	
 	/**
@@ -642,7 +642,7 @@ public final class arrays {
 	 * @throws NullPointerException if the permutation array is {@code null}.
 	 */
 	public static void permutation(final int[] p) {
-		permutation(p, new Random());
+		permutation(p, RandomRegistry.getRandom());
 	}
 	
 	/**
