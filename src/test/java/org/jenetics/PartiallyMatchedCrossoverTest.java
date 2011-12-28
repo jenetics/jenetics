@@ -57,8 +57,8 @@ public class PartiallyMatchedCrossoverTest {
 		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 		
-		final Array<PermutationGene<Integer>> that = alleles.map(PermutationGene.ToGene(ialleles));
-		final Array<PermutationGene<Integer>> other = alleles.map(PermutationGene.ToGene(ialleles));
+		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
+		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
 		
 		arrays.shuffle(that);
 		arrays.shuffle(other);
@@ -89,8 +89,8 @@ public class PartiallyMatchedCrossoverTest {
 		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
 		
-		final Array<PermutationGene<Integer>> that = alleles.map(PermutationGene.ToGene(ialleles));
-		final Array<PermutationGene<Integer>> other = alleles.map(PermutationGene.ToGene(ialleles));
+		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
+		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
 		
 		pmco.crossover(that, other);
 		
@@ -103,7 +103,7 @@ public class PartiallyMatchedCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {		
-		final Population<PermutationGene<Float64>, Float64> population = newPermutationFloat64GenePopulation(
+		final Population<EnumGene<Float64>, Float64> population = newPermutationFloat64GenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
 		

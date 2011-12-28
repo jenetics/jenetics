@@ -35,21 +35,21 @@ import org.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class PermutationGeneTest extends GeneTester<PermutationGene<Integer>> {
+public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	
-	private final Factory<PermutationGene<Integer>>
-	_factory = new Factory<PermutationGene<Integer>>() {
+	private final Factory<EnumGene<Integer>>
+	_factory = new Factory<EnumGene<Integer>>() {
 		private ISeq<Integer> _alleles = new Array<Integer>(100).fill(Int()).toISeq();
 		
 		@Override
-		public PermutationGene<Integer> newInstance() {
-			return PermutationGene.valueOf(_alleles);
+		public EnumGene<Integer> newInstance() {
+			return EnumGene.valueOf(_alleles);
 		}
 		
 	};
 	
 	@Override
-	protected Factory<PermutationGene<Integer>> getFactory() {
+	protected Factory<EnumGene<Integer>> getFactory() {
 		return _factory;
 	}
 
@@ -64,8 +64,8 @@ public class PermutationGeneTest extends GeneTester<PermutationGene<Integer>> {
 		}
 
 		for (int i = 0; i < alleles.length(); ++i) {
-			Assert.assertEquals(PermutationGene.valueOf(alleles, i).getAllele(), new Integer(i));
-			Assert.assertSame(PermutationGene.valueOf(alleles, i).getValidAlleles(), alleles);
+			Assert.assertEquals(EnumGene.valueOf(alleles, i).getAllele(), new Integer(i));
+			Assert.assertSame(EnumGene.valueOf(alleles, i).getValidAlleles(), alleles);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class PermutationGeneTest extends GeneTester<PermutationGene<Integer>> {
 		final int length = 100;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		
-		PermutationGene.valueOf(alleles, length + 1);
+		EnumGene.valueOf(alleles, length + 1);
 	}
 	
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
@@ -82,7 +82,7 @@ public class PermutationGeneTest extends GeneTester<PermutationGene<Integer>> {
 		final int length = 100;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		
-		PermutationGene.valueOf(alleles, -1);
+		EnumGene.valueOf(alleles, -1);
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -90,7 +90,7 @@ public class PermutationGeneTest extends GeneTester<PermutationGene<Integer>> {
 		final int length = 0;
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		
-		PermutationGene.valueOf(alleles);
+		EnumGene.valueOf(alleles);
 	}
 	
 }

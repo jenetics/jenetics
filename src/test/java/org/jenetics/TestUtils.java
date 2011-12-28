@@ -144,7 +144,7 @@ class TestUtils {
 		return population;
 	}
 	
-	public static final Population<PermutationGene<Float64>, Float64> newPermutationFloat64GenePopulation(
+	public static final Population<EnumGene<Float64>, Float64> newPermutationFloat64GenePopulation(
 		final int ngenes, 
 		final int nchromosomes, 
 		final int npopulation
@@ -163,8 +163,8 @@ class TestUtils {
 			chromosomes.set(i, new PermutationChromosome<>(ialleles));
 		}	
 		
-		final Genotype<PermutationGene<Float64>> genotype = Genotype.valueOf(chromosomes.toISeq());
-		final Population<PermutationGene<Float64>, Float64> population = 
+		final Genotype<EnumGene<Float64>> genotype = Genotype.valueOf(chromosomes.toISeq());
+		final Population<EnumGene<Float64>, Float64> population = 
 			new Population<>(npopulation);
 		
 		for (int i = 0; i < npopulation; ++i) {
@@ -174,10 +174,10 @@ class TestUtils {
 		return population;
 	}
 	
-	private static final Function<Genotype<PermutationGene<Float64>>, Float64> 
-	PFF = new Function<Genotype<PermutationGene<Float64>>, Float64>() {
+	private static final Function<Genotype<EnumGene<Float64>>, Float64> 
+	PFF = new Function<Genotype<EnumGene<Float64>>, Float64>() {
 		@Override
-		public Float64 apply(Genotype<PermutationGene<Float64>> value) {
+		public Float64 apply(Genotype<EnumGene<Float64>> value) {
 			return value.getGene().getAllele();
 		}
 	};

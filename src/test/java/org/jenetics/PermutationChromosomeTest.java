@@ -29,11 +29,11 @@ import org.jenetics.util.Factory;
  * @version $Id$
  */
 public class PermutationChromosomeTest 
-	extends ChromosomeTester<PermutationGene<Integer>> 
+	extends ChromosomeTester<EnumGene<Integer>> 
 { 
     
-	private final Factory<Chromosome<PermutationGene<Integer>>> 
-	_factory = new Factory<Chromosome<PermutationGene<Integer>>>() {
+	private final Factory<Chromosome<EnumGene<Integer>>> 
+	_factory = new Factory<Chromosome<EnumGene<Integer>>>() {
 		@Override
 		public PermutationChromosome<Integer> newInstance() {
 			return PermutationChromosome.ofInteger(100);
@@ -41,7 +41,7 @@ public class PermutationChromosomeTest
 	};
 	
 	@Override 
-	protected Factory<Chromosome<PermutationGene<Integer>>> getFactory() {
+	protected Factory<Chromosome<EnumGene<Integer>>> getFactory() {
 		return _factory;
 	}
 	

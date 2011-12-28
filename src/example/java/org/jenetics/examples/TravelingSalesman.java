@@ -35,7 +35,7 @@ import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
-import org.jenetics.PermutationGene;
+import org.jenetics.EnumGene;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -49,7 +49,7 @@ import org.jenetics.util.Function;
 public class TravelingSalesman {
 	
 	private static class FF 
-		implements Function<Genotype<PermutationGene<Integer>>, Double>,
+		implements Function<Genotype<EnumGene<Integer>>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
@@ -61,8 +61,8 @@ public class TravelingSalesman {
 		}
 		
 		@Override
-		public Double apply(final Genotype<PermutationGene<Integer>> genotype) {
-			final Chromosome<PermutationGene<Integer>> path = genotype.getChromosome();
+		public Double apply(final Genotype<EnumGene<Integer>> genotype) {
+			final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
 			
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
@@ -82,14 +82,14 @@ public class TravelingSalesman {
 	public static void main(String[] args) {
 		final int stops = 20;
 		
-		final Function<Genotype<PermutationGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
-		final Factory<Genotype<PermutationGene<Integer>>> gtf = Genotype.valueOf(
+		final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
+		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
 			PermutationChromosome.ofInteger(stops)
 		);
-		final GeneticAlgorithm<PermutationGene<Integer>, Double> 
+		final GeneticAlgorithm<EnumGene<Integer>, Double> 
 			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(300);
-		ga.setAlterer(new SwapMutator<PermutationGene<Integer>>(0.2));
+		ga.setAlterer(new SwapMutator<EnumGene<Integer>>(0.2));
 		ga.addAlterer(new PartiallyMatchedCrossover<Integer>(0.3));
         
 		final int generations = 500;

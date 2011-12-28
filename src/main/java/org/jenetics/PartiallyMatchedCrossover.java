@@ -77,7 +77,7 @@ import org.jenetics.util.Seq;
  * @version $Id$
  */
 public final class PartiallyMatchedCrossover<T> 
-	extends Crossover<PermutationGene<T>>
+	extends Crossover<EnumGene<T>>
 	implements Immutable
 {
 
@@ -87,8 +87,8 @@ public final class PartiallyMatchedCrossover<T>
 	
 	@Override 
 	protected int crossover(
-		final MSeq<PermutationGene<T>> that, 
-		final MSeq<PermutationGene<T>> other
+		final MSeq<EnumGene<T>> that, 
+		final MSeq<EnumGene<T>> other
 	) {
 		final Random random = RandomRegistry.getRandom();
 		int begin = random.nextInt(that.length());

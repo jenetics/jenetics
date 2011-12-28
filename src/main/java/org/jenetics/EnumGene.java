@@ -38,14 +38,14 @@ import org.jenetics.util.object;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
+public final class EnumGene<T> implements Gene<T, EnumGene<T>> {
 
 	private static final long serialVersionUID = 1L;
 	
 	private ISeq<T> _validAlleles;
 	private int _alleleIndex = -1;
 	
-	PermutationGene() {
+	EnumGene() {
 	}
 	
 	public ISeq<T> getValidAlleles() {
@@ -62,8 +62,8 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 	}
 	
 	@Override
-	public PermutationGene<T> copy() {
-		final PermutationGene<T> gene = new PermutationGene<>();
+	public EnumGene<T> copy() {
+		final EnumGene<T> gene = new EnumGene<>();
 		gene._validAlleles = _validAlleles;
 		gene._alleleIndex = _alleleIndex;
 		return gene;
@@ -75,22 +75,22 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 	}
 
 	@Override
-	public PermutationGene<T> newInstance() {
+	public EnumGene<T> newInstance() {
 		@SuppressWarnings("unchecked")
-		final PermutationGene<T> gene = (PermutationGene<T>)FACTORY.object();
+		final EnumGene<T> gene = (EnumGene<T>)FACTORY.object();
 		
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
 		return gene;
 	}
 	
-	public Factory<PermutationGene<T>> asFactory() {
+	public Factory<EnumGene<T>> asFactory() {
 		return this;
 	}
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(PermutationGene.class)
+		return hashCodeOf(EnumGene.class)
 				.and(_alleleIndex)
 				.and(_validAlleles).value();
 	}
@@ -104,7 +104,7 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 			return false;
 		}
 		
-		final PermutationGene<?> pg = (PermutationGene<?>)obj;
+		final EnumGene<?> pg = (EnumGene<?>)obj;
 		return eq(_alleleIndex, pg._alleleIndex) && 
 				eq(_validAlleles, pg._validAlleles);
 	}
@@ -118,45 +118,45 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 	 *  Static object creation methods
 	 * ************************************************************************/
 	
-	static <T> Function<Integer, PermutationGene<T>> ToGene(
+	static <T> Function<Integer, EnumGene<T>> ToGene(
 		final ISeq<T> validAlleles
 	) {
-		return new Function<Integer, PermutationGene<T>>() {
+		return new Function<Integer, EnumGene<T>>() {
 			@Override
-			public PermutationGene<T> apply(final Integer index) {
+			public EnumGene<T> apply(final Integer index) {
 				return valueOf(validAlleles, index);
 			}
 		};
 	}
 	
-	static <T> Factory<PermutationGene<T>> Gene(final ISeq<T> validAlleles) {
-		return new Factory<PermutationGene<T>>() {
+	static <T> Factory<EnumGene<T>> Gene(final ISeq<T> validAlleles) {
+		return new Factory<EnumGene<T>>() {
 			private int _index = 0;
 			@Override
-			public PermutationGene<T> newInstance() {
-				return PermutationGene.valueOf(validAlleles, _index++);
+			public EnumGene<T> newInstance() {
+				return EnumGene.valueOf(validAlleles, _index++);
 			}
 		};
 	}
 	
 	
 	@SuppressWarnings("rawtypes")
-	private static final ObjectFactory<PermutationGene> 
-	FACTORY = new ObjectFactory<PermutationGene>() {
+	private static final ObjectFactory<EnumGene> 
+	FACTORY = new ObjectFactory<EnumGene>() {
 		@Override
-		protected PermutationGene create() {
-			return new PermutationGene();
+		protected EnumGene create() {
+			return new EnumGene();
 		}
 	};
 	
-	public static <T> PermutationGene<T> valueOf(
+	public static <T> EnumGene<T> valueOf(
 		final T[] validAlleles, 
 		final int alleleIndex
 	) {
 		return valueOf(new Array<>(validAlleles).toISeq(), alleleIndex);
 	}
 	
-	public static <T> PermutationGene<T> valueOf(
+	public static <T> EnumGene<T> valueOf(
 		final ISeq<T> validAlleles, 
 		final int alleleIndex
 	) {
@@ -173,18 +173,18 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		}
 		
 		@SuppressWarnings("unchecked")
-		final PermutationGene<T> gene = (PermutationGene<T>)FACTORY.object();
+		final EnumGene<T> gene = (EnumGene<T>)FACTORY.object();
 		
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = alleleIndex;
 		return gene;
 	}
 	
-	public static <T> PermutationGene<T> valueOf(final T[] validAlleles) {
+	public static <T> EnumGene<T> valueOf(final T[] validAlleles) {
 		return valueOf(new Array<>(validAlleles).toISeq());
 	}
 	
-	public static <T> PermutationGene<T> valueOf(final ISeq<T> validAlleles) {
+	public static <T> EnumGene<T> valueOf(final ISeq<T> validAlleles) {
 		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
@@ -192,7 +192,7 @@ public final class PermutationGene<T> implements Gene<T, PermutationGene<T>> {
 		}
 		
 		@SuppressWarnings("unchecked")
-		final PermutationGene<T> gene = (PermutationGene<T>)FACTORY.object();
+		final EnumGene<T> gene = (EnumGene<T>)FACTORY.object();
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(validAlleles.length());
 		return gene;

@@ -36,11 +36,11 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class PermutationChromosomeFloat64Test 
-	extends ChromosomeTester<PermutationGene<Float64>> 
+	extends ChromosomeTester<EnumGene<Float64>> 
 { 
 	
-	private final Factory<Chromosome<PermutationGene<Float64>>> 
-	_factory = new Factory<Chromosome<PermutationGene<Float64>>>() {
+	private final Factory<Chromosome<EnumGene<Float64>>> 
+	_factory = new Factory<Chromosome<EnumGene<Float64>>>() {
 		private final ISeq<Float64> _alleles = new Array<Float64>(100).fill(new Factory<Float64>() {
 			private final Random _random = RandomRegistry.getRandom();
 			@Override
@@ -57,7 +57,7 @@ public class PermutationChromosomeFloat64Test
 	};
 	
 	@Override 
-	protected Factory<Chromosome<PermutationGene<Float64>>> getFactory() {
+	protected Factory<Chromosome<EnumGene<Float64>>> getFactory() {
 		return _factory;
 	}
 

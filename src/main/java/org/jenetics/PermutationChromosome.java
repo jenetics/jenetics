@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.PermutationGene.Gene;
+import static org.jenetics.EnumGene.Gene;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.StringToInteger;
 import static org.jenetics.util.object.hashCodeOf;
@@ -52,14 +52,14 @@ import org.jenetics.util.bit;
  * @version $Id$
  */
 public final class PermutationChromosome<T> 
-	extends AbstractChromosome<PermutationGene<T>> 
+	extends AbstractChromosome<EnumGene<T>> 
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
 	private ISeq<T> _validAlleles;
 	
-	PermutationChromosome(final int length, final ISeq<PermutationGene<T>> genes) {
+	PermutationChromosome(final int length, final ISeq<EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
@@ -72,7 +72,7 @@ public final class PermutationChromosome<T>
 	 */
 	public PermutationChromosome(final ISeq<T> validAlleles) {
 		super(
-			new Array<PermutationGene<T>>(
+			new Array<EnumGene<T>>(
 				validAlleles.length()
 			).fill(Gene(validAlleles)).shuffle(RandomRegistry.getRandom()).toISeq()
 		);
@@ -131,7 +131,7 @@ public final class PermutationChromosome<T>
 	}
 	
 	@Override
-	public PermutationChromosome<T> newInstance(final ISeq<PermutationGene<T>> genes) {
+	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
 		return new PermutationChromosome<>(genes.length(), genes);
 	}
 	
@@ -168,7 +168,7 @@ public final class PermutationChromosome<T>
 	 * @return a new PermutationChromosome from the given genes.
 	 */
 	public static <T> PermutationChromosome<T> valueOf(
-		final ISeq<PermutationGene<T>> genes
+		final ISeq<EnumGene<T>> genes
 	) {
 		return new PermutationChromosome<>(genes.length(), genes);
 	}
@@ -215,7 +215,7 @@ public final class PermutationChromosome<T>
 			
 			final Array<Object> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
-				genes.set(i, PermutationGene.valueOf(ialleles, indexes.get(i)));
+				genes.set(i, EnumGene.valueOf(ialleles, indexes.get(i)));
 			}
 			
 			return new PermutationChromosome(genes.length(), genes.toISeq());
@@ -233,7 +233,7 @@ public final class PermutationChromosome<T>
 			final PermutationChromosome<?> pc = chromosome;
 			final String indexes = pc.toSeq().map(new Function<Object, Integer>() {
 				@Override public Integer apply(final Object value) {
-					return ((PermutationGene<?>)value).getAlleleIndex();
+					return ((EnumGene<?>)value).getAlleleIndex();
 				}
 			}).toString(",");
 			xml.add(indexes, ALLELE_INDEXES);
@@ -257,7 +257,7 @@ public final class PermutationChromosome<T>
 		out.defaultWriteObject();
 		
 		out.writeObject(_validAlleles);
-		for (PermutationGene<?> gene : _genes) {
+		for (EnumGene<?> gene : _genes) {
 			out.writeInt(gene.getAlleleIndex());
 		}
 	}
@@ -270,9 +270,9 @@ public final class PermutationChromosome<T>
 		
 		_validAlleles = (ISeq<T>)in.readObject();
 		
-		final Array<PermutationGene<T>> genes = new Array<>(_validAlleles.length());
+		final Array<EnumGene<T>> genes = new Array<>(_validAlleles.length());
 		for (int i = 0; i < _validAlleles.length(); ++i) {
-			genes.set(i, PermutationGene.valueOf(_validAlleles, in.readInt()));
+			genes.set(i, EnumGene.valueOf(_validAlleles, in.readInt()));
 		}
 		
 		_genes = genes.toISeq();
