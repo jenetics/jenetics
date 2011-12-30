@@ -310,9 +310,7 @@ public final class bit {
 		int j = array.length;
 		
 		while (i < j) {
-			--j;
-			swap(array, i, j);
-			++i;
+			swap(array, i++, --j);
 		}
 		
 		return array;
