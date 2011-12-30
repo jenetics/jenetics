@@ -92,7 +92,7 @@ public class ForkJoinContextTest {
 			c.execute(new Runnable() {
 				@Override public void run() {
 					if (level == 0) {
-						System.out.println("READY");
+						//System.out.println("READY");
 					} else {
 						counter.addAndGet(_execute(level - 1));
 					}	
