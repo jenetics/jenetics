@@ -304,9 +304,7 @@ public final class arrays {
 		int i = from;
 		int j = to;
 		while (i < j) {
-			--j;
-			swap(array, i, j);
-			++i;
+			swap(array, i++, --j);
 		}
 	}
 	

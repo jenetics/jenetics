@@ -466,9 +466,7 @@ public final class Array<T>
 		int i = from;
 		int j = to;
 		while (i < j) {
-			--j;
-			uncheckedSwap(i, j);
-			++i;
+			uncheckedSwap(i++, --j);
 		}
 		
 		return this;
