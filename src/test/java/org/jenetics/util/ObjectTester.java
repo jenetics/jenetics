@@ -30,6 +30,8 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 import javolution.lang.Immutable;
+import javolution.lang.Reflection;
+import javolution.lang.Reflection.Method;
 import javolution.xml.XMLSerializable;
 
 import org.jenetics.util.Array;
@@ -109,6 +111,20 @@ public abstract class ObjectTester<T> {
 			final Object other = same.get(i);
 			
 			Assert.assertEquals(that.hashCode(), other.hashCode());
+		}
+	}
+	
+	@Test
+	public void cloning() {
+		final Object that = getFactory().newInstance();
+		if (that instanceof Cloneable) {
+			final Method clone = Reflection.getMethod(String.format(
+				"%s.clone()", that.getClass().getName()
+			));
+			final Object other = clone.invoke(that);
+			
+			Assert.assertEquals(other, that);
+			Assert.assertNotSame(other, that);
 		}
 	}
 	
