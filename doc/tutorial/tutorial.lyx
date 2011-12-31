@@ -5,12 +5,37 @@
 \textclass amsbook
 \begin_preamble
 \usepackage{listings}
-
-\newcommand{\sourceRoot}{./code/}
-\newcommand{\myPackage}{}
-\newcommand{\myJPackage}{}
-\newcommand{\sourcePackage}[2]{\subsection*{Package: #2}\renewcommand{\myPackage}{#1}\renewcommand{\myJPackage}{#2}}
-\newcommand{\sourceClass}[1]{\lstinputlisting[caption=\myJPackage.#1]{\sourceRoot\myPackage/#1}}
+\usepackage{color}
+ 
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+ 
+\lstset{ %
+  language=java, 
+  basicstyle=\footnotesize, 
+  numbers=left,  
+  numberstyle=\footnotesize, 
+  stepnumber=1,      
+  numbersep=5pt, 
+  backgroundcolor=\color{white},
+  showspaces=false,  
+  showstringspaces=false, 
+  showtabs=false,   
+  frame=single,  
+  %frameshape={RYRYNYYYY}{yny}{yny}{RYRYNYYYY},
+  tabsize=4,    
+  captionpos=b,     
+  breaklines=true,     
+  breakatwhitespace=false,  
+  %title=\lstname,        
+  numberstyle=\tiny\color{gray},   
+  keywordstyle=\color{blue}\bfseries, 
+  commentstyle=\color{dkgreen}, 
+  stringstyle=\color{mauve},
+  escapeinside={\%*}{*)},  
+  morekeywords={*,...} 
+}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -103,62 +128,6 @@ final GeneticAlgorithm ga = new GeneticAlgorithm()
 \end_layout
 
 \begin_layout Standard
-jhh
-\end_layout
-
-\begin_layout Standard
-kjlkj lj lj lkj lj lj lj lj ljl jljlkjjoihu 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-fgasdfg lk l 
-\end_layout
-
-\begin_layout Plain Layout
-
-sdfgsdfg 
-\end_layout
-
-\begin_layout Plain Layout
-
-sdg
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -166,63 +135,14 @@ status open
 
 
 \backslash
-begin{lstlisting}[language=java]
-\end_layout
-
-\begin_layout Plain Layout
-
-class Item implements Serializable {
-\end_layout
-
-\begin_layout Plain Layout
-
-    private static final long serialVersionUID = 1L;
-\end_layout
-
-\begin_layout Plain Layout
-
-    public double size;
-\end_layout
-
-\begin_layout Plain Layout
-
-    public double value;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+lstset{caption={Knapsack}}
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-end{lstlisting}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-asdfasdfadf
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-sourceClass{Knapsack.java}
+lstinputlisting{code/Knapsack.java}
 \end_layout
 
 \end_inset
