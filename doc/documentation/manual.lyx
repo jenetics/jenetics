@@ -332,6 +332,14 @@ The Alterers are concatenated, first the crossove (with corssober probability
 Basic classes
 \end_layout
 
+\begin_layout Paragraph*
+GeneticAlgorithm
+\end_layout
+
+\begin_layout Paragraph*
+Alterer
+\end_layout
+
 \begin_layout Section
 Multithreading
 \end_layout
