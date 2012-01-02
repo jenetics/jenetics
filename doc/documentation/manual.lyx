@@ -108,7 +108,7 @@ Jenetics
 \end_layout
 
 \begin_layout Date
-Version 0.9.0
+Version 0.9.0.0
 \end_layout
 
 \begin_layout Author
@@ -116,10 +116,38 @@ Franz Wilhelmstötter
 \end_layout
 
 \begin_layout Abstract
-Jenetics is an Genetic Algorithm Library written in Java.
+
+\shape smallcaps
+Jenetics
+\shape default
+ is an Genetic Algorithm Library written in Java.
  It is designed with a clear separation of the several concepts of the algorithm
 , e.g.
- Gene, Chromosome, Genotype, Phenotype, Population and FitnessFunction.
+ 
+\family typewriter
+Gene
+\family default
+, 
+\family typewriter
+Chromosome
+\family default
+, 
+\family typewriter
+Genotype
+\family default
+, 
+\family typewriter
+Phenotype
+\family default
+, 
+\family typewriter
+Population
+\family default
+ and Fitness-
+\family typewriter
+Function
+\family default
+.
 \end_layout
 
 \begin_layout Section
@@ -127,7 +155,11 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The Jenetics project provides an 
+The 
+\shape smallcaps
+Jenetics
+\shape default
+ project provides an 
 \begin_inset CommandInset href
 LatexCommand href
 name "Genetic algorithm"
@@ -202,7 +234,7 @@ reference "fig:Structure-diagram"
 
 \end_inset
 
- shows the main data structures of the GA implementation.
+ shows the main data structures of the GA.
  The Gene is the base of the class structure.
  Genes are aggregated in Chromosomes.
  One to n Chromosomes are aggregated in Genotypes.
@@ -257,12 +289,40 @@ while not finished:
 \end_layout
 
 \begin_layout Subsection
-Simple GA Setup
+Simple setup
 \end_layout
 
 \begin_layout Standard
-The minimum GA setup needs a Genotype Factory and a Fitness Function.
- The Genotype implements the Factory interface and can be used as prototype.
+The minimum GA setup needs a 
+\family typewriter
+Genotype
+\family default
+, 
+\family typewriter
+Factory
+\family default
+ and a fitness 
+\family typewriter
+Function
+\family default
+.
+ The 
+\family typewriter
+Genotype
+\family default
+ implements the 
+\family typewriter
+Factory
+\family default
+ interface and is used as prototype for creating the initial 
+\family typewriter
+Population
+\family default
+ and for creating new, random 
+\family typewriter
+Genotype
+\family default
+s.
 \end_layout
 
 \begin_layout Standard
@@ -273,32 +333,62 @@ status open
 
 \begin_layout Plain Layout
 
-final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    BitChromosome.valueOf(10, 0.5)
+    final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
 
-);
+        BitChromosome.valueOf(10, 0.5)
 \end_layout
 
 \begin_layout Plain Layout
 
-final Function<Genotype<BitGene>, Float64> ff = ...
+    );
 \end_layout
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<BitGene, Float64> 
+    final Function<Genotype<BitGene>, Double> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-ga = new GeneticAlgorithm<>(gtf, ff)
+    final GeneticAlgorithm<BitGene, Double> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga = new GeneticAlgorithm<>(gtf, ff)
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.evolve(100);
+\end_layout
+
+\begin_layout Plain Layout
+
+    System.out.println(ga);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -315,26 +405,48 @@ Genotype
 \family typewriter
 Factory
 \family default
- gtf in this example will create genotypes which consits of a 
+ 
+\family typewriter
+gtf
+\family default
+ in this example will create genotypes which consits of one 
 \family typewriter
 BitChromosome
 \family default
- of length 10.
- The one to zero probability of the newly created genotypes are set to 0.5.
- The fitness function is parameterized with 
+ with length 10.
+ The one to zero probability of the newly created genotypes is set to 0.5.
+ The fitness 
+\family typewriter
+Function
+\family default
+ is parameterized with a 
 \family typewriter
 BitGene
 \family default
- and 
+ and a 
 \family typewriter
-Float64
+Double
 \family default
 .
- That meas that the function is calculaating the fitness value, which is
- a Comparable.
- Now we are donee.
- A new GA instance can be created with the genotype-factory and the fitness-func
-tion.
+ That means that the fitness 
+\family typewriter
+Function
+\family default
+ is calculating the fitness value as 
+\family typewriter
+Double
+\family default
+.
+ At least, the fitness value must be at least a 
+\family typewriter
+Comparable
+\family default
+.
+ The 
+\family typewriter
+GeneticAlgorithm
+\family default
+ must be created with the genotype-factory and the fitness-function.
  For starting the evolution just call 
 \family typewriter
 ga.setup()
@@ -344,40 +456,12 @@ ga.setup()
 ga.evolve(100)
 \family default
 .
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-ga.evolve(100);
-\end_layout
-
-\begin_layout Plain Layout
-
-System.out.println(ga);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
+ The 
 \family typewriter
-GeneticAlgorithm.setup()
+ga.setup()
 \family default
- call creates the initial popullation and calculates its fitness.
- Then the GA evolves 100 generations an prints the (last) population statistics.
+ call creates the initial population and calculates its fitness.
+ Then the GA evolves 100 generations an prints the last population statistics.
  
 \end_layout
 
@@ -392,17 +476,46 @@ status open
 
 \begin_layout Plain Layout
 
-ga.setSelectors(new TournamentSelector<BitGene>(5));
+public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.setAlterer(new SinglePointCrossover<BitGene>(0.1));
+    ...
 \end_layout
 
 \begin_layout Plain Layout
 
-ga.addAlterer(new Mutation<BitGene>(0.01));
+    ga.setSelectors(new TournamentSelector<BitGene>(5));
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.setAlterer(new SinglePointCrossover<BitGene>(0.1));
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.addAlterer(new Mutation<BitGene>(0.01));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.evolve(100);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -411,7 +524,7 @@ ga.addAlterer(new Mutation<BitGene>(0.01));
 \end_layout
 
 \begin_layout Standard
-The Alterers are concatenated, first the crossove (with corssober probability
+The Alterers are concatenated, first the crossover (with corsage probability
  0.1) is performed and then the chromosomes are mutated (with probability
  0.01).
 \end_layout
@@ -433,7 +546,7 @@ Concurrency
 \end_layout
 
 \begin_layout Standard
-The Jenetics library tries to parallelize independent taks whenever possible.
+The Jenetics library tries to parallelize independent task whenever possible.
  It uses the 
 \family typewriter
 
@@ -524,6 +637,11 @@ ConcurrentContext
 ForkJoinPool
 \family default
 .
+ This allows you to use the same thread-pool for the GA and 
+\shape italic
+other
+\shape default
+ concurrent task.
 \end_layout
 
 \begin_layout Standard
