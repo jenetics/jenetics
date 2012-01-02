@@ -130,21 +130,29 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\noindent
-\align left
-\begin_inset Caption
+
+\end_layout
 
 \begin_layout Plain Layout
- 
+\align center
 \begin_inset Graphics
 	filename graphic/StructureClassDiagram.svg
 	lyxscale 70
-	height 33pheight%
-	noUnzip
+	height 45theight%
 
 \end_inset
 
 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Structure-diagram"
+
+\end_inset
+
+Structure diagram
 \end_layout
 
 \end_inset
@@ -159,6 +167,22 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Structure-diagram"
+
+\end_inset
+
+ shows the main data structures of the GA implementation.
+ The Gene is the base of the class structure.
+ Genes are aggregated in Chromosomes.
+ One to n Chromosomes are aggregated in Genotypes.
+ A Genotype and a fitness function from the Phenotype are collected into
+ a Population.
 \end_layout
 
 \begin_layout Standard
