@@ -123,11 +123,38 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption
+
+\begin_layout Plain Layout
+ 
 \begin_inset Graphics
 	filename graphic/StructureClassDiagram.svg
 	lyxscale 70
-	width 60col%
+	height 33pheight%
+	noUnzip
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
