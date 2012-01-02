@@ -26,7 +26,7 @@
       <fontname>Dialog</fontname>
       <fontsize>12</fontsize>
       <defaultstereotypeview>0</defaultstereotypeview>
-      <activediagram>Class Diagram</activediagram>
+      <activediagram>StructureClassDiagram</activediagram>
     </settings>
     <searchpath href="PROJECT_DIR" />
     <members>
@@ -37,7 +37,7 @@
       <member type="pgml"
               name="jenetics_ClassDiagram.pgml"
               diagramclass="org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram"
-              diagramname="Class Diagram" />
+              diagramname="StructureClassDiagram" />
       <member type="pgml"
               name="jenetics_UseCaseDiagram.pgml"
               diagramclass="org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram"
@@ -58,7 +58,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Jan 02 18:55:44 CET 2012'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Jan 02 19:12:44 CET 2012'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -259,7 +259,7 @@
   </XMI.content>
 </XMI>
 <pgml description="org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram|127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A60"
-      name="Class Diagram"
+      name="StructureClassDiagram"
 >
   <group name="Fig0"
        description="org.argouml.uml.diagram.static_structure.ui.FigInterface[368, 560, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
