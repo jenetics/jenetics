@@ -107,6 +107,10 @@ figs-within-sections
 Jenetics
 \end_layout
 
+\begin_layout Date
+Version 0.9.0
+\end_layout
+
 \begin_layout Author
 Franz Wilhelmstötter
 \end_layout
@@ -120,6 +124,27 @@ Jenetics is an Genetic Algorithm Library written in Java.
 
 \begin_layout Section
 Introduction
+\end_layout
+
+\begin_layout Standard
+The Jenetics project provides an 
+\begin_inset CommandInset href
+LatexCommand href
+name "Genetic algorithm"
+target "http://en.wikipedia.org/wiki/Genetic_algorithm"
+
+\end_inset
+
+ (GA) implementation.
+ Genetic algorithms was first proposed and analyzed by 
+\begin_inset CommandInset href
+LatexCommand href
+name "John Holland"
+target "http://en.wikipedia.org/wiki/John_Henry_Holland"
+
+\end_inset
+
+ in 1975.
 \end_layout
 
 \begin_layout Standard
@@ -404,11 +429,53 @@ Alterer
 \end_layout
 
 \begin_layout Section
-Multithreading
+Concurrency
 \end_layout
 
 \begin_layout Standard
-The fitness calculation is performed concurrently.
+The Jenetics library tries to parallelize independent taks whenever possible.
+ It uses the 
+\family typewriter
+
+\begin_inset CommandInset href
+LatexCommand href
+name "ConcurrentContext"
+target "http://javolution.org/target/site/apidocs/javolution/context/ConcurrentContext.html"
+
+\end_inset
+
+ 
+\family default
+from the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Javolution"
+target "http://javolution.org/"
+
+\end_inset
+
+ library for concurrent task execution.
+ In the default configuration the 
+\family typewriter
+ConcurrentContext
+\family default
+ utilizes all available
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This is defined by 
+\family typewriter
+Runtime.getRuntime().availableProcessors()
+\family default
+.
+\end_layout
+
+\end_inset
+
+ cores of the target machine.
+ If you want to change the number of used cores you must do this before
+ the GA initialization.
 \end_layout
 
 \begin_layout Standard
@@ -418,7 +485,169 @@ status open
 
 \begin_layout Plain Layout
 
-Concurrency.setForkJoinPool(new ForkJoinPool());
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int parallelism = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+    Concurrency.setConcurrency(parallelism);
+\end_layout
+
+\begin_layout Plain Layout
+
+    // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+ConcurrentContext
+\family default
+ uses it's own--optimized--thread-pool implementation, but you have the
+ possibility to replace this with the JDKs 
+\family typewriter
+ForkJoinPool
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int parallelism = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+    final ForkJoinPool pool = new ForkJoinPool(parallelism);
+\end_layout
+
+\begin_layout Plain Layout
+
+    Concurrency.setForkJoinPool(pool)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+aslfk asöldfka ölsdkf aäölsdkf öalsdkf 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ConcurrentContext.enter();
+\end_layout
+
+\begin_layout Plain Layout
+
+try {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConcurrentContext.execute(new Runnable() { public void run() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Do some work
+\end_layout
+
+\begin_layout Plain Layout
+
+    }});
+\end_layout
+
+\begin_layout Plain Layout
+
+} finally {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConcurrentContext.exit();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The fitness calculation is performed concurrently.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+try (Concurrency c = Concurrency.start()) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    c.execute(task1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    c.execute(taks2);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
