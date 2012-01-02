@@ -123,6 +123,18 @@ Introduction
 \end_layout
 
 \begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename graphic/StructureClassDiagram.svg
+	lyxscale 70
+	width 60col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=bash"
 inline false
