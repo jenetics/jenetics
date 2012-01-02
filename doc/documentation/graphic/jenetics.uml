@@ -35,7 +35,7 @@
       <member type="xmi"
               name="jenetics.xmi" />
       <member type="pgml"
-              name="jenetics_ClassDiagram.pgml"
+              name="jenetics_StructureClassDiagram.pgml"
               diagramclass="org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram"
               diagramname="StructureClassDiagram" />
       <member type="pgml"
@@ -58,7 +58,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Jan 02 19:12:44 CET 2012'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Jan 02 22:36:42 CET 2012'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -207,8 +207,8 @@
           </UML:Association.connection>
         </UML:Association>
         <UML:Interface xmi.id = '127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A98'
-          name = 'Function' visibility = 'public' isSpecification = 'false' isRoot = 'false'
-          isLeaf = 'false' isAbstract = 'false'>
+          name = '(Fitness)Function' visibility = 'public' isSpecification = 'false'
+          isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Classifier.feature>
             <UML:Operation xmi.id = '127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A99'
               name = 'apply' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
@@ -538,7 +538,7 @@
                         offset="5" />
     </private>
     <path name="Fig2.0"
-      description="org.tigris.gef.presentation.FigPoly"
+      description="org.argouml.gefext.ArgoFigPoly"
       fill="0"
       fillcolor="white"
       stroke="1"
@@ -588,7 +588,7 @@
       justification="Center"
     >Genotype</text>
     <group name="Fig3.2"
-         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 304, 64, 0]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 305, 190, 0]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
          fill="0"
          fillcolor="white"
@@ -601,8 +601,8 @@
       
       <rectangle name="Fig3.2.0"
         x="369"
-        y="304"
-        width="64"
+        y="305"
+        width="190"
         height="0"
         fill="0"
         fillcolor="white"
@@ -720,7 +720,7 @@
                         offset="5" />
     </private>
     <path name="Fig4.0"
-      description="org.tigris.gef.presentation.FigPoly"
+      description="org.argouml.gefext.ArgoFigPoly"
       fill="0"
       fillcolor="white"
       stroke="1"
@@ -770,7 +770,7 @@
       justification="Center"
     >Phenotype</text>
     <group name="Fig5.2"
-         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 177, 64, 0]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 177, 190, 0]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A8A"
          fill="0"
          fillcolor="white"
@@ -784,7 +784,7 @@
       <rectangle name="Fig5.2.0"
         x="369"
         y="177"
-        width="64"
+        width="190"
         height="0"
         fill="0"
         fillcolor="white"
@@ -902,7 +902,7 @@
                         offset="5" />
     </private>
     <path name="Fig6.0"
-      description="org.tigris.gef.presentation.FigPoly"
+      description="org.argouml.gefext.ArgoFigPoly"
       fill="0"
       fillcolor="white"
       stroke="1"
@@ -952,7 +952,7 @@
       justification="Center"
     >Population</text>
     <group name="Fig7.2"
-         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 49, 64, 0]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 49, 190, 0]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A92"
          fill="0"
          fillcolor="white"
@@ -966,7 +966,7 @@
       <rectangle name="Fig7.2.0"
         x="369"
         y="49"
-        width="64"
+        width="190"
         height="0"
         fill="0"
         fillcolor="white"
@@ -1084,7 +1084,7 @@
                         offset="5" />
     </private>
     <path name="Fig8.0"
-      description="org.tigris.gef.presentation.FigPoly"
+      description="org.argouml.gefext.ArgoFigPoly"
       fill="0"
       fillcolor="white"
       stroke="1"
@@ -1132,7 +1132,7 @@
       bold="false"
       textsize="12"
       justification="Center"
-    >Function</text>
+    >(Fitness)Function</text>
     <group name="Fig9.2"
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[97, 177, 190, 19]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A98"
@@ -1265,7 +1265,7 @@
                         offset="5" />
     </private>
     <path name="Fig10.0"
-      description="org.tigris.gef.presentation.FigPoly"
+      description="org.argouml.gefext.ArgoFigPoly"
       fill="0"
       fillcolor="white"
       stroke="1"
