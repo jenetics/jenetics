@@ -1176,6 +1176,184 @@ Examples
 \end_layout
 
 \begin_layout Subsection
+Ones Counting
+\end_layout
+
+\begin_layout Standard
+Ones counting is one of the simplest model-problem and consists of a binary
+ chromosome.
+ The fitness of a Genotype is proportional to the number of ones.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class OneCounter implements Function<Genotype<BitGene>, Integer>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override 		
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Integer apply(Genotype<BitGene> genotype) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        int count = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        for (BitGene gene : genotype.getChromosome()) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            if (gene.getBit()) {
+\end_layout
+
+\begin_layout Plain Layout
+
+                ++count;
+\end_layout
+
+\begin_layout Plain Layout
+
+            }
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+        return count;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class OnesCounting {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+\end_layout
+
+\begin_layout Plain Layout
+
+            new BitChromosome(20, 0.3333)
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+        final OneCounter ff = new OneCounter();
+\end_layout
+
+\begin_layout Plain Layout
+
+        final GeneticAlgorithm<BitGene, Integer> ga = 
+\end_layout
+
+\begin_layout Plain Layout
+
+            new GeneticAlgorithm<>(gtf, ff);
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setAlterer(new CompositeAlterer<>(
+\end_layout
+
+\begin_layout Plain Layout
+
+            new Mutator<BitGene>(0.55),
+\end_layout
+
+\begin_layout Plain Layout
+
+            new SinglePointChrosover<BitGene>(0.06)
+\end_layout
+
+\begin_layout Plain Layout
+
+        ));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.evolve(100);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Real Function
+\end_layout
+
+\begin_layout Subsection
 Knapsack
 \end_layout
 
