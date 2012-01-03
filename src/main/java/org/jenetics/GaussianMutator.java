@@ -33,7 +33,7 @@ import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * The GaussianRealMutator class performs the mutation of a {@link NumberGene}. 
+ * The GaussianMutator class performs the mutation of a {@link NumberGene}. 
  * This mutator picks a new value based on a Gaussian distribution around the 
  * current value of the gene. The variance of the new value (before clipping to
  * the allowed gene range) will be 
