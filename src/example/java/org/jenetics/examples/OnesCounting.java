@@ -68,7 +68,7 @@ public class OnesCounting {
 	}
 	
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 				new BitChromosome(20, 0.15)
 		);
