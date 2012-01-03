@@ -179,6 +179,10 @@ target "http://en.wikipedia.org/wiki/John_Henry_Holland"
  in 1975.
 \end_layout
 
+\begin_layout Subsection
+Design
+\end_layout
+
 \begin_layout Standard
 \begin_inset listings
 lstparams "extendedchars=true,language=C,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
@@ -199,7 +203,7 @@ $F_{f}(P_{0})$
 
 \begin_layout Plain Layout
 
-while (!finished) {
+while !finished:
 \end_layout
 
 \begin_layout Plain Layout
@@ -237,14 +241,14 @@ leftarrow S_i + O_i$
 
 \begin_layout Plain Layout
 
-}
-\end_layout
-
-\begin_layout Plain Layout
-
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Genetic-algorithm"
+
+\end_inset
 
 Genetic algorithm
 \end_layout
@@ -257,6 +261,23 @@ Genetic algorithm
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+There are more than one way to perform the basic operations of an Genetic
+ algorithm.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Genetic-algorithm"
+
+\end_inset
+
+ shows the steps of the 
+\shape smallcaps
+Jenetics
+\shape default
+ Genetic algorithm.
 \end_layout
 
 \begin_layout Standard
