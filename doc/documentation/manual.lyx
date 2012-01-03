@@ -93,7 +93,7 @@ figs-within-sections
 \quotes_language danish
 \papercolumns 1
 \papersides 2
-\paperpagestyle headings
+\paperpagestyle fancy
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -180,15 +180,91 @@ target "http://en.wikipedia.org/wiki/John_Henry_Holland"
 \end_layout
 
 \begin_layout Standard
+\begin_inset listings
+lstparams "extendedchars=true,language=C,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$P_{0} 
+\backslash
+leftarrow P_{initial}$
+\end_layout
+
+\begin_layout Plain Layout
+
+$F_{f}(P_{0})$
+\end_layout
+
+\begin_layout Plain Layout
+
+while (!finished) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    $i 
+\backslash
+leftarrow i + 1$
+\end_layout
+
+\begin_layout Plain Layout
+
+    $S_i 
+\backslash
+leftarrow select_{survivors}(P_{i - 1})$
+\end_layout
+
+\begin_layout Plain Layout
+
+    $O_i 
+\backslash
+leftarrow alter(select_{offsprings}(P_{i - 1}))$
+\end_layout
+
+\begin_layout Plain Layout
+
+    $P_i 
+\backslash
+leftarrow S_i + O_i$
+\end_layout
+
+\begin_layout Plain Layout
+
+    $F_{f}(P_{i})$
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+Genetic algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -240,52 +316,6 @@ reference "fig:Structure-diagram"
  One to n Chromosomes are aggregated in Genotypes.
  A Genotype and a fitness function from the Phenotype are collected into
  a Population.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=bash"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Create initial population
-\end_layout
-
-\begin_layout Plain Layout
-
-Calculate fitness for initial population
-\end_layout
-
-\begin_layout Plain Layout
-
-while not finished:
-\end_layout
-
-\begin_layout Plain Layout
-
-    Select survivors and offsprings
-\end_layout
-
-\begin_layout Plain Layout
-
-    Alter offspring population
-\end_layout
-
-\begin_layout Plain Layout
-
-    Create new individuals for invalid and dead individuals
-\end_layout
-
-\begin_layout Plain Layout
-
-    Calculate fitness for new population
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
