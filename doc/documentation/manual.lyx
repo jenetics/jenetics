@@ -162,7 +162,7 @@ Jenetics
  project provides an 
 \begin_inset CommandInset href
 LatexCommand href
-name "Genetic algorithm"
+name "genetic algorithm"
 target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
 \end_inset
@@ -264,7 +264,7 @@ Genetic algorithm
 \end_layout
 
 \begin_layout Standard
-There are more than one way to perform the basic operations of an Genetic
+There are more than one way to perform the basic operations of an genetic
  algorithm.
  Listing 
 \begin_inset CommandInset ref
@@ -277,7 +277,7 @@ reference "lis:Genetic-algorithm"
 \shape smallcaps
 Jenetics
 \shape default
- Genetic algorithm.
+ genetic algorithm.
 \end_layout
 
 \begin_layout Standard
@@ -581,15 +581,228 @@ The Alterers are concatenated, first the crossover (with corsage probability
 \end_layout
 
 \begin_layout Section
-Basic classes
+Genetic operators
 \end_layout
 
-\begin_layout Paragraph*
-GeneticAlgorithm
+\begin_layout Subsection
+Mutation
 \end_layout
 
-\begin_layout Paragraph*
-Alterer
+\begin_layout Standard
+There are two distinct roles 
+\emph on
+mutation
+\emph default
+ plays in a Genetic algorithm:
+\end_layout
+
+\begin_layout Enumerate
+Exploring the search space.
+ By making small moves mutation allows a population to explore the search
+ space.
+ This exploration is often slow compared to crossover, but in problems where
+ crossover is disruptive this can be an important way to explore the landscape.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Maintaining diversity.
+ Mutation prevents a population from correlating.
+ Even if most of the search is being performed by crossover, mutation can
+ be vital to provide the diversity which crossover needs.
+ 
+\end_layout
+
+\begin_layout Standard
+The mutation probability 
+\begin_inset Formula $P$
+\end_inset
+
+ is the parameter that must be optimized.
+ The optimal value of the mutation rate depends on the role mutation plays.
+ If mutation is the only source of exploration (if there is no crossover)
+ then the mutation rate should be set so that a reasonable neighborhood
+ of solutions is explored.
+\end_layout
+
+\begin_layout Standard
+The mutation probability 
+\begin_inset Formula $P$
+\end_inset
+
+ is the probability that a specific gene over the whole population is mutated.
+ The number of available genes of an population is 
+\begin_inset Formula 
+\begin{equation}
+N_{G}=n_{P}\centerdot n_{C}\centerdot n_{G}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $n_{P}$
+\end_inset
+
+ is the population size, 
+\begin_inset Formula $n_{C}$
+\end_inset
+
+ the number of chromosomes of the genotype and 
+\begin_inset Formula $n_{G}$
+\end_inset
+
+ the number of genes in the chromosome.
+ That means, the (average) number of genes mutated by an mutator is
+\begin_inset Formula 
+\begin{equation}
+\hat{\mu}=N_{G}\centerdot P
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Mutator
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Mutator
+\family default
+ class has to deal with the problem, that the genes are arranged in a 
+\shape italic
+3-dimensional
+\shape default
+ structure (population: genotype 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ chromosome 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ gene).
+ The mutator selects the gene which will be mutated in three steps:
+\end_layout
+
+\begin_layout Enumerate
+Select a genotype 
+\begin_inset Formula $Gt$
+\end_inset
+
+ from the population with probability 
+\begin_inset Formula $P_{Gt}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Enumerate
+select a chromosome 
+\begin_inset Formula $C$
+\end_inset
+
+ from the selected genotype 
+\begin_inset Formula $Gt$
+\end_inset
+
+ with probability 
+\begin_inset Formula $P_{C}$
+\end_inset
+
+ and
+\end_layout
+
+\begin_layout Enumerate
+select a gene 
+\begin_inset Formula $G$
+\end_inset
+
+ from the selected chromosome 
+\begin_inset Formula $C$
+\end_inset
+
+ with probability 
+\begin_inset Formula $P_{G}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The needed sub-selection probabilities are set to 
+\begin_inset Formula 
+\begin{equation}
+P_{Gt}=P_{C}=P_{G}=\sqrt[3]{P}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+GaussianMutator
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+GaussianMutator
+\family default
+ class performs the mutation of a 
+\family typewriter
+NumberGene
+\family default
+.
+ This mutator picks a new value based on a Gaussian distribution around
+ the current value of the gene.
+ The variance of the new value (before clipping to the allowed gene range)
+ will be 
+\begin_inset Formula 
+\begin{equation}
+\hat{\sigma}^{2}=\left(\frac{G_{max}-G_{min}}{4}\right)^{2}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $G_{min}$
+\end_inset
+
+ and 
+\begin_inset Formula $G_{max}$
+\end_inset
+
+ are the valid minimum and maximum values of the number gene.
+ The new value will be cropped to the gene's boundaries.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+SwapMutator
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+SwapMutator
+\family default
+ class changes the order of genes in a chromosome, with the hope of bringing
+ related genes closer together, thereby facilitating the production of building
+ blocks.
+ This mutation operator can also be used for combinatorial problems, where
+ no duplicated genes within a chromosome are allowed, e.g.
+ for the TSP.
+ 
 \end_layout
 
 \begin_layout Section
