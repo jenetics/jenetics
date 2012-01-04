@@ -6,6 +6,7 @@
 \begin_preamble
 \usepackage{listings}
 \usepackage{color}
+\usepackage{url}
  
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
@@ -65,7 +66,7 @@ figs-within-sections
 \graphics default
 \default_output_format default
 \output_sync 0
-\bibtex_command default
+\bibtex_command bibtex
 \index_command default
 \paperfontsize default
 \spacing single
@@ -120,7 +121,11 @@ Franz Wilhelmstötter
 \shape smallcaps
 Jenetics
 \shape default
- is an Genetic Algorithm Library written in Java.
+ is an 
+\series bold
+Genetic Algorithm
+\series default
+ Library written in Java.
  It is designed with a clear separation of the several concepts of the algorithm
 , e.g.
  
@@ -164,7 +169,11 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-This document is not an tutorial for 
+The 
+\shape smallcaps
+Jenetics
+\shape default
+ project is a Java library which provides an 
 \begin_inset CommandInset href
 LatexCommand href
 name "genetic algorithm"
@@ -172,9 +181,34 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
 \end_inset
 
- (GA).
- It is assumed that the reader has a basic knowledge about genetic algorithms.
- A good GA introduction can be found here 
+ (GA) implementation.
+ Genetic algorithms was first proposed and analyzed by 
+\begin_inset CommandInset href
+LatexCommand href
+name "John Holland"
+target "http://en.wikipedia.org/wiki/John_Henry_Holland"
+
+\end_inset
+
+ in 1975.
+ This document is not an introduction or a tutorial for genetic algorithms.
+ It is assumed that the reader has a knowledge about the structure and the
+ functionality of genetic algorithms.
+ A good GA introduction can be found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sivanandam2010"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "michalewicz1996genetic"
+
+\end_inset
+
+ and 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
