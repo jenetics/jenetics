@@ -164,11 +164,7 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The 
-\shape smallcaps
-Jenetics
-\shape default
- project provides an 
+This document is not an tutorial for 
 \begin_inset CommandInset href
 LatexCommand href
 name "genetic algorithm"
@@ -176,16 +172,16 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
 \end_inset
 
- (GA) implementation.
- Genetic algorithms was first proposed and analyzed by 
-\begin_inset CommandInset href
-LatexCommand href
-name "John Holland"
-target "http://en.wikipedia.org/wiki/John_Henry_Holland"
+ (GA).
+ It is assumed that the reader has a basic knowledge about genetic algorithms.
+ A good GA introduction can be found here 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Whitley94agenetic"
 
 \end_inset
 
- in 1975.
+.
 \end_layout
 
 \begin_layout Subsection
@@ -1193,12 +1189,7 @@ status open
 
 \begin_layout Plain Layout
 
-class OneCounter implements Function<Genotype<BitGene>, Integer>
-\end_layout
-
-\begin_layout Plain Layout
-
-{
+class OneCounter implements Function<Genotype<BitGene>, Integer> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1374,6 +1365,17 @@ lstset{caption={Knapsack}}
 \backslash
 lstinputlisting{code/Knapsack.java}
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "references"
+options "bibtotoc,plain"
 
 \end_inset
 
