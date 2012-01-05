@@ -27,7 +27,7 @@
  #     
  ############################################################################### 
 -->
-<project default="all">
+<project default="jar">
 	<property name="version" value="0.9.0.0" />
 	<property name="identifier" value="jenetics-${version}" />
 	<property name="year" value="2007-2012" />
@@ -405,8 +405,6 @@
 		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
 	</target>
 
-	<target name="all" depends="jar, javadoc, test" />
-
 	<!--
 	    Compiles the project unit tests.
 	-->
@@ -442,7 +440,7 @@
 	<!--
 	    Executes the projects unit tests.
 	-->
-	<target name="test" depends="test-compile">
+	<target name="test-run" depends="test-compile">
 		<mkdir dir="${testng.report.dir}" />
 		<testng 
 			outputdir="${testng.report.dir}"
@@ -524,7 +522,7 @@
 	-->
 	<target name="export" >
 		<antcall target="clean-all" />
-		<antcall target="test" />
+		<antcall target="test-run" />
 		<antcall target="clean" />
 		<antcall target="jar" />
 		<antcall target="javadoc" />
