@@ -26,7 +26,7 @@ package org.jenetics;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class Xor extends Recombination<BitGene> {
+class Xor extends Recombinator<BitGene> {
 
 	public Xor(double probability, int order) {
 		super(probability, order);

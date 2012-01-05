@@ -44,7 +44,7 @@ import org.jenetics.util.Seq;
  * @version $Id$
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>> 
-	extends Recombination<G> 
+	extends Recombinator<G> 
 	implements Immutable
 {
 
