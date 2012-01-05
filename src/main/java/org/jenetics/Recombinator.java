@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class Recombination<G extends Gene<?, G>> 
+public abstract class Recombinator<G extends Gene<?, G>> 
 	extends AbstractAlterer<G> 
 {
 	
@@ -63,7 +63,7 @@ public abstract class Recombination<G extends Gene<?, G>>
 	 * 		  valid range of {@code [0, 1]} or the given {@code order} is smaller
 	 *         than two.
 	 */
-	public Recombination(final double probability, final int order) {
+	public Recombinator(final double probability, final int order) {
 		super(probability);
 		if (order < 2) {
 			throw new IllegalArgumentException(String.format(

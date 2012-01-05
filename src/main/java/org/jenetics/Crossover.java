@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class Crossover<G extends Gene<?, G>> extends Recombination<G> {
+public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
