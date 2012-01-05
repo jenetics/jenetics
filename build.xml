@@ -43,6 +43,7 @@
 	<property name="testng.source.dir" value="${source.basedir}/test/java" />
 	<property name="testng.resource.dir" value="${source.basedir}/test/resources" />
 	<property name="example.dir" value="${source.basedir}/example/java" />
+	<property name="tool.dir" value="${source.basedir}/tool/java" />
 	<property name="testng.report.dir" value="${build.dir}/testng-report" />
 	<property name="lib.build.dir" value="${lib.dir}/build" />
 	<property name="export.dir" value="${build.dir}/export/${identifier}" />
@@ -579,7 +580,7 @@
 	<target name="build-colorizer">
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" 
-			srcdir="${example.dir}" 
+			srcdir="${tool.dir}" 
 			debug="true" 
 			source="${jdk.source}" 
 			target="${jdk.target}" 
