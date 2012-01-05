@@ -31,18 +31,18 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * <p>
- * An EGA combine elements of existing solutions in order to create a new solution, 
- * with some of the properties of each parent. Recombination creates a new 
- * chromosome by combining parts of two (or more) parent chromosomes. This 
- * combination of chromosomes can be made by selecting one or more crossover 
- * points, splitting these chromosomes on the selected points, and merge those 
- * portions of different chromosomes to form new ones.
+ * An enhanced genetic algorithm (EGA) combine elements of existing solutions in 
+ * order to create a new solution, with some of the properties of each parent. 
+ * Recombination creates a new chromosome by combining parts of two (or more) 
+ * parent chromosomes. This combination of chromosomes can be made by selecting 
+ * one or more crossover points, splitting these chromosomes on the selected 
+ * points, and merge those portions of different chromosomes to form new ones.
  * </p>
  * <p>
  * The recombination probability <i>p</i> determines the probability that a given
- * individual of a population is selected for recombination. The (<i>mean</i>)
- * number of changed individuals depend on the concrete implementation and can 
- * be vary from <i>p</i>&middot;<i>N</i> to 
+ * individual (genotype, not gene) of a population is selected for recombination. 
+ * The (<i>mean</i>) number of changed individuals depend on the concrete 
+ * implementation and can be vary from <i>p</i>&middot;<i>N</i> to 
  * <i>p</i>&middot;<i>N</i>&middot;<i>order</i>.
  * </p>
  * 
