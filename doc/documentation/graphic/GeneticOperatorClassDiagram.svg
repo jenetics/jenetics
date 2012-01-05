@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="543" version="1.1" width="780" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="321" x="254" y="14"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="321" x="254" y="14"/>
+<text font-family="Dialog" font-size="12" x="393" y="46">
+Alterer</text>
+<text font-family="Dialog" font-size="12" x="366" y="28">
+&lt;&lt;interface&gt;&gt;</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="321" x="254" y="56"/>
+<text font-family="Dialog" font-size="12" x="258" y="70">
+alter(p : Population,generation : Integer) : Integer</text>
+<rect fill="#ffffff" height="69" stroke="#ffffff" stroke-width="1" width="215" x="126" y="126"/>
+<rect fill="none" height="69" stroke="#000000" stroke-width="1" width="215" x="126" y="126"/>
+<text font-family="Dialog" font-size="12" x="209" y="139">
+Mutator</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="215" x="126" y="149"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="215" x="126" y="171"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="462" y="126"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="462" y="126"/>
+<text font-family="Dialog" font-size="12" x="514" y="139">
+Recombinator</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="462" y="149"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="462" y="170"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="270" x2="270" y1="126" y2="121"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="270" x2="270" y1="116" y2="111"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="270" x2="270" y1="106" y2="101"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="270" x2="270" y1="96" y2="91"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="270" x2="270" y1="86" y2="81"/>
+<polygon fill="#ffffff" points="270,80 277,92 263,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="270,80 277,92 263,92" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="287" y="111">
+&lt;&lt;realize&gt;&gt;</text>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="126" y2="121"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="116" y2="111"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="106" y2="101"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="96" y2="91"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="86" y2="81"/>
+<polygon fill="#ffffff" points="558,80 565,92 551,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="558,80 565,92 551,92" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="463" y="115">
+&lt;&lt;realize&gt;&gt;</text>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="14" y="238"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="238"/>
+<text font-family="Dialog" font-size="12" x="56" y="251">
+GaussianMutator</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="261"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="282"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="238" y="238"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="238" y="238"/>
+<text font-family="Dialog" font-size="12" x="293" y="251">
+SwapMutator</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="261"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="282"/>
+<polyline fill="none" points="142,238 142,194" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="142,194 149,206 135,206" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="142,194 149,206 135,206" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="301,238 301,194" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="301,194 308,206 294,206" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="301,194 308,206 294,206" stroke="#000000" stroke-width="1"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="350" y="350"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="350" y="350"/>
+<text font-family="Dialog" font-size="12" x="415" y="363">
+Crossover</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="350" y="373"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="350" y="394"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="574" y="350"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="574" y="350"/>
+<text font-family="Dialog" font-size="12" x="632" y="363">
+MeanAlterer</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="373"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="394"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="238" y="462"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="238" y="462"/>
+<text font-family="Dialog" font-size="12" x="268" y="475">
+SinglePointCrossover</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="485"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="506"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="462" y="462"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="462" y="462"/>
+<text font-family="Dialog" font-size="12" x="475" y="475">
+PartiallyMatchedCrossover</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="462" y="485"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="462" y="506"/>
+<polyline fill="none" points="478,350 478,192" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="478,192 485,204 471,204" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="478,192 485,204 471,204" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="637,350 637,192" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="637,192 644,204 630,204" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="637,192 644,204 630,204" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="366,462 366,416" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="366,416 373,428 359,428" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="366,416 373,428 359,428" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="525,462 525,416" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="525,416 532,428 518,428" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="525,416 532,428 518,428" stroke="#000000" stroke-width="1"/>
+</svg>
