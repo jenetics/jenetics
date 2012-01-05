@@ -623,6 +623,46 @@ The Alterers are concatenated, first the crossover (with corsage probability
 Genetic operators
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "Genetic operators"
+target "https://en.wikipedia.org/wiki/Genetic_operator"
+
+\end_inset
+
+ are responsible for the genetic diversity of the genetic algorithm.
+ The genetic operator types used in 
+\shape smallcaps
+Jenetics
+\shape default
+ are
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+name "mutation"
+target "https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)"
+
+\end_inset
+
+ and
+\end_layout
+
+\begin_layout Enumerate
+recombination (e.g.
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "crossover"
+target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
+
+\end_inset
+
+).
+\end_layout
+
 \begin_layout Subsection
 Mutation
 \end_layout
@@ -845,7 +885,39 @@ SwapMutator
 \end_layout
 
 \begin_layout Subsection
-Crossover
+Recombination
+\end_layout
+
+\begin_layout Standard
+An enhanced genetic algorithm (EGA) combine elements of existing solutions
+ in order to create a new solution, with some of the properties of each
+ parent.
+ Recombination creates a new chromosome by combining parts of two (or more)
+ parent chromosomes.
+ This combination of chromosomes can be made by selecting one or more crossover
+ points, splitting these chromosomes on the selected points, and merge those
+ portions of different chromosomes to form new ones.
+ 
+\end_layout
+
+\begin_layout Standard
+The recombination probability 
+\begin_inset Formula $P$
+\end_inset
+
+ determines the probability that a given individual (genotype) of a population
+ is selected for recombination.
+ The (mean) number of changed individuals depend on the concrete implementation
+ and can be vary from 
+\begin_inset Formula $P\centerdot N$
+\end_inset
+
+ to 
+\begin_inset Formula $P\centerdot N\centerdot order$
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -967,6 +1039,10 @@ C1 = 012|654|3789
 
 \begin_layout LyX-Code
 C2 = 987|345|6210
+\end_layout
+
+\begin_layout Section
+Selectors
 \end_layout
 
 \begin_layout Section
@@ -1206,7 +1282,7 @@ Examples
 \end_layout
 
 \begin_layout Subsection
-Ones Counting
+Ones counting
 \end_layout
 
 \begin_layout Standard
@@ -1375,7 +1451,165 @@ public class OnesCounting {
 \end_layout
 
 \begin_layout Subsection
-Real Function
+Real function
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class RealFunction 
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Function<Genotype<Float64Gene>, Double> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Double apply(final Genotype<Float64> genotype) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final double angle = genotype.getGene().doubleValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+        return cos(sin(angle)*cos(angle));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class Real {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
+\end_layout
+
+\begin_layout Plain Layout
+
+            new Float64Chromosome(0.0, 2.0*PI)
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+        final RealFunction ff = new RealFunction();
+\end_layout
+
+\begin_layout Plain Layout
+
+        final GeneticAlgorithm<Float64Gene, Double> ga =
+\end_layout
+
+\begin_layout Plain Layout
+
+            new GeneticAlgorithm<>(gtf, ff);
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setStatisticsCalculator(
+\end_layout
+
+\begin_layout Plain Layout
+
+            new NumberStatistics.Calculator<Float64Gene, Double>()
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setFitnessScaler(SQR_SCALER);
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setPopulationSize(20);
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setAlterer(new Mutator<Float64Gene>(0.03));
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.addAlterer(new MeanAlterer<Float64Gene>(0.6));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+        ga.evolve(100);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
