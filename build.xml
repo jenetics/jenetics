@@ -95,7 +95,7 @@
 		</javac>		
 	</target>
 	
-	<target name="compile-example" depends="compile">
+	<target name="example-compile" depends="compile">
 		<mkdir dir="${build.dir}" />
 		<javac destdir="${build.dir}" 
 			srcdir="${example.dir}" 
@@ -125,7 +125,7 @@
 	    * jenetics-examples-<version>.jar
 	          Contains only the example classes.
 	-->
-	<target name="jar" depends="clean, compile, compile-example">
+	<target name="jar" depends="clean, compile, example-compile">
 		<tstamp>
 			<format property="JAR_TIMESTAMP" pattern="yyyy-MM-dd HH:mm" />
 		</tstamp>
@@ -410,7 +410,7 @@
 	<!--
 	    Compiles the project unit tests.
 	-->
-	<target name="compile-tests" depends="compile">
+	<target name="test-compile" depends="compile">
 		<mkdir dir="${test.build.dir}" />
 		<copy todir="${test.build.dir}/org/jenetics/util" >
 			<fileset file="${testng.source.dir}/org/jenetics/util/*.txt" />
@@ -435,13 +435,14 @@
 			<include name="org/jenetics/*.java" />
 			<include name="org/jenetics/util/*.java" />
 			<include name="org/jenetics/stat/*.java" />
+			<include name="org/jenetics/performance/*.java" />
 		</javac>			
 	</target>
 
 	<!--
 	    Executes the projects unit tests.
 	-->
-	<target name="test" depends="compile-tests">
+	<target name="test" depends="test-compile">
 		<mkdir dir="${testng.report.dir}" />
 		<testng 
 			outputdir="${testng.report.dir}"
@@ -490,13 +491,14 @@
 		</delete>
 	</target>
 	
-	<target name="run-perftest" depends="compile-example">
+	<target name="perftest-run" depends="test-compile">
 		<java 
 			classname="org.jenetics.performance.PerformanceTests"
 			output="${basedir}/perftest-report.txt"
 			fork="yes"
 		>
 			<classpath >
+				<pathelement path="${test.build.dir}" />
 				<pathelement path="${build.dir}" />
 			</classpath>
 			<classpath refid="classpath" />
@@ -504,7 +506,7 @@
 		</java>
 	</target>
 	
-	<target name="manual">
+	<target name="manual-compile">
 		<exec executable="lyx" failifexecutionfails="false" >
 			<arg value="-e"/>
 			<arg value="pdf"/>
@@ -526,8 +528,8 @@
 		<antcall target="clean" />
 		<antcall target="jar" />
 		<antcall target="javadoc" />
-		<antcall target="run-perftest" />
-		<antcall target="manual" />
+		<antcall target="perftest-run" />
+		<antcall target="manual-compile" />
 		
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
