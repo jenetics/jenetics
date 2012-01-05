@@ -34,6 +34,7 @@
 	
 	<property name="basedir" value="." />
 	<property name="source.basedir" value="${basedir}/src" />
+	<property name="doc.basedir" value="${basedir}/doc" />
 	<property name="lib.dir" value="./lib" />
 	<property name="build.dir" value="./build/main" />
 	<property name="test.build.dir" value="./build/test" />
@@ -476,6 +477,7 @@
 		<delete dir="bin" />
 		<delete dir="${testng.report.dir}" />
 		<delete>
+			<fileset dir="${basedir}" includes="*.pdf"/>
 			<fileset dir="${basedir}" includes="${identifier}*.jar"/>
 			<fileset dir="${basedir}" includes="temp-testng-*"/>
 		</delete>
@@ -501,6 +503,18 @@
 		</java>
 	</target>
 	
+	<target name="manual">
+		<exec executable="lyx" failifexecutionfails="false" >
+			<arg value="-e"/>
+			<arg value="pdf"/>
+			<arg value="${doc.basedir}/documentation/manual.lyx"/>
+		</exec>
+		<copy 
+			file="${doc.basedir}/documentation/manual.pdf"
+			tofile="${basedir}/manual-${version}.pdf"
+		/>
+	</target>
+	
 	<!--
 	    Exports the project. Executes all tests and build a ready to deploy zip
 	    file.
@@ -512,6 +526,7 @@
 		<antcall target="jar" />
 		<antcall target="javadoc" />
 		<antcall target="run-perftest" />
+		<antcall target="manual" />
 		
 		<mkdir dir="${export.dir}/src"/>
 		<copy todir="${export.dir}/src" >
@@ -530,6 +545,7 @@
 			<fileset dir="${javadoc.dir}" />
 		</copy>	
 		
+		<copy todir="${export.dir}" file="manual-${version}.pdf"/>
 		<copy todir="${export.dir}" file="BUILD.txt"/>
 		<copy todir="${export.dir}" file="build.xml"/>
 		<copy todir="${export.dir}" file="change.log"/>
