@@ -94,7 +94,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	}
 	
 	/**
-	 * Create a new random IntegerChromosome.
+	 * Create a new random IntegerChromosome of length one.
 	 * 
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
