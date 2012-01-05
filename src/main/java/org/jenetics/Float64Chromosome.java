@@ -87,7 +87,7 @@ public class Float64Chromosome
 	}
 	
 	/**
-	 * Create a new random chromosome.
+	 * Create a new random chromosome of length one.
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
@@ -97,7 +97,7 @@ public class Float64Chromosome
 	}
 	
 	/**
-	 * Create a new random chromosome.
+	 * Create a new random chromosome of length one.
 	 * 
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
