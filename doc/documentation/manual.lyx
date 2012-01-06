@@ -317,6 +317,8 @@ reference "lis:Genetic-algorithm"
 Jenetics
 \shape default
  genetic algorithm.
+ In the first line the initial population is generated and the second line
+ calculates the fitness values from the initial population.
 \end_layout
 
 \begin_layout Standard
@@ -1081,7 +1083,13 @@ C2 = 987|345|6210
 \end_layout
 
 \begin_layout Section
-Selectors
+Selection
+\end_layout
+
+\begin_layout Standard
+Selectors are responsible for selecting a given number of genotypes (chromosomes
+) from the population.
+ You can define different selectors for offsprings and for the survivors.
 \end_layout
 
 \begin_layout Section
