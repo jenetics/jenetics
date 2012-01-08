@@ -754,7 +754,7 @@ The mutation probability
  The number of available genes of an population is 
 \begin_inset Formula 
 \begin{equation}
-N_{G}=n_{P}\centerdot n_{C}\centerdot n_{G}
+N_{G}=n_{P}\cdot n_{C}\cdot n_{G}
 \end{equation}
 
 \end_inset
@@ -775,7 +775,7 @@ where
  That means, the (average) number of genes mutated by an mutator is
 \begin_inset Formula 
 \begin{equation}
-\hat{\mu}=N_{G}\centerdot P
+\hat{\mu}=N_{G}\cdot P
 \end{equation}
 
 \end_inset
@@ -950,11 +950,11 @@ The recombination probability
  is selected for recombination.
  The (mean) number of changed individuals depend on the concrete implementation
  and can be vary from 
-\begin_inset Formula $P\centerdot N$
+\begin_inset Formula $P\cdot N$
 \end_inset
 
  to 
-\begin_inset Formula $P\centerdot N\centerdot order$
+\begin_inset Formula $P\cdot N\cdot order$
 \end_inset
 
 .
