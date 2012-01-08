@@ -574,6 +574,7 @@
 		<zip destfile="${build.dir}/export/${identifier}.zip" level="9">
 			<fileset dir="${export.dir}"/>
 		</zip>
+		<checksum file="${build.dir}/export/${identifier}.zip" forceOverwrite="yes" />
 	</target>
 	
 	
