@@ -30,7 +30,7 @@ package org.jenetics.util;
 abstract class CharISeq extends ArrayISeq<Character> {
 	private static final long serialVersionUID = 1L;
 	
-	protected final char[] _characters;
+	final char[] _characters;
 	
 	CharISeq(final char[] characters) {
 		super(toArrayRef(characters), 0, characters.length);
