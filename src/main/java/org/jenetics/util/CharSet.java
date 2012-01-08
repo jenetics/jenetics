@@ -44,7 +44,7 @@ public final class CharSet
 	extends CharISeq
 	implements 
 		CharSequence, 
-		Iterable<Character>,
+		ISeq<Character>,
 		Comparable<CharSet>,
 		Immutable, 
 		Serializable 
