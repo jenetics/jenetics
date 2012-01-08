@@ -41,6 +41,7 @@ import javolution.lang.Immutable;
  * @version $Id$
  */
 public final class CharSet 
+	extends CharISeq
 	implements 
 		CharSequence, 
 		Iterable<Character>,
@@ -48,10 +49,8 @@ public final class CharSet
 		Immutable, 
 		Serializable 
 {
-	private static final long serialVersionUID = 1L;
-	
-	private final char[] _characters;
-	
+	private static final long serialVersionUID = 2L;
+		
 	/**
 	 * Create a new (distinct) CharSet from the given {@code characters}.
 	 * 
@@ -59,6 +58,10 @@ public final class CharSet
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSet(final CharSequence characters) {
+		super(toCharArray(characters));
+	}
+	
+	private static char[] toCharArray(final CharSequence characters) {
 		nonNull(characters, "Characters");
 		
 		final char[] chars = new char[characters.length()];
@@ -66,7 +69,7 @@ public final class CharSet
 			chars[i] = characters.charAt(i);
 		}
 		
-		_characters = distinct(chars);
+		return distinct(chars);
 	}
 	
 	/**
@@ -76,7 +79,7 @@ public final class CharSet
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSet(final char[] characters) {
-		_characters = distinct(characters.clone());
+		super(distinct(characters.clone()));
 	}
 	
 	private static char[] distinct(final char[] chars) {
@@ -106,6 +109,15 @@ public final class CharSet
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public boolean contains(final Object object) {
+		if (object instanceof Character) {
+			return contains((Character)object);
+		} else {
+			return false;
+		}
 	}
 	
 	/**
