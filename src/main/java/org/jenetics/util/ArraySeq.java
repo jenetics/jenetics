@@ -269,7 +269,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		int hash = 1;
 		for (int i = _start; i < _end; ++i) {
 			final Object element = _array.data[i];
@@ -279,7 +279,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	@Override
-	public final boolean equals(final Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		}
