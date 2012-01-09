@@ -154,7 +154,13 @@ public abstract class ObjectTester<T> {
 		final T a = getFactory().newInstance();
 		
 		Assert.assertFalse(a instanceof Cloneable && a instanceof Immutable);
-		Assert.assertFalse(a instanceof Copyable<?> && a instanceof Immutable);
+		if (a instanceof Copyable<?>) {
+			final Object b = ((Copyable<?>)a).copy();
+			if (a.getClass() == b.getClass()) {
+				Assert.assertFalse(a instanceof Copyable<?> && a instanceof Immutable);
+			}
+		}
+		
 		
 		if (a instanceof Immutable) {
 			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
