@@ -237,7 +237,7 @@ leftarrow P_{initial}$
 
 \begin_layout Plain Layout
 
-$F_{f}(P_{0})$
+$F(P_{0})$
 \end_layout
 
 \begin_layout Plain Layout
@@ -275,7 +275,7 @@ leftarrow S_i + O_i$
 
 \begin_layout Plain Layout
 
-    $F_{f}(P_{i})$
+    $F(P_{i})$
 \end_layout
 
 \begin_layout Plain Layout
@@ -303,9 +303,7 @@ Genetic algorithm
 \end_layout
 
 \begin_layout Standard
-There are more than one way to perform the basic operations of an genetic
- algorithm.
- Listing 
+Listing 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "lis:Genetic-algorithm"
@@ -625,6 +623,281 @@ The Alterers are concatenated, first the crossover (with corsage probability
 Genetic operators
 \end_layout
 
+\begin_layout Subsection
+Select
+\end_layout
+
+\begin_layout Standard
+Selectors are responsible for selecting a given number of genotypes (chromosomes
+) from the population.
+ You can define different selectors for offsprings and for the survivors.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+TournamentSelector
+\end_layout
+
+\begin_layout Standard
+In tournament selection the best Phenotype from a random sample of s individuals
+ is chosen for the next generation.
+ The samples are drawn (in this class) without replacement.
+ An individual will win a tournament only if its fitness is greater than
+ the fitness of the other s-1 competitors.
+ Note that the worst Phenotype individual never survives, and the best Phenotype
+ individual wins in all the tournaments it participates.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+TruncationSelector
+\end_layout
+
+\begin_layout Standard
+In truncation selection individuals are sorted according to their fitness.
+ Only the best individuals are selected.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+MonteCarloSelector
+\end_layout
+
+\begin_layout Standard
+Select the phenotypes from a given population randomly.
+ This class can be used to measure the performance of an other given selector.
+\end_layout
+
+\begin_layout Subsubsection
+Probability selector
+\end_layout
+
+\begin_layout Standard
+Probability selectors selects individuals from a given population based
+ on a selection probability 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+, which is assigned to each individual 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The selection probability of an individual 
+\begin_inset Formula $i$
+\end_inset
+
+ follows a binomial distribution 
+\begin_inset Formula 
+\begin{equation}
+p_{i}(k)=\left(\begin{array}{c}
+n\\
+k
+\end{array}\right)p_{i}^{k}\left(1-p_{i}\right)^{n-k}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of selected individuals and 
+\begin_inset Formula $k$
+\end_inset
+
+ the number of individual 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+LinearRankSelector
+\end_layout
+
+\begin_layout Standard
+In linear ranking selection, individuals (phenotypes) are sorted according
+ to their fitness values and the rank N is assignee to the best Phenotype
+ individual and the rank 1 to the worst Phenotype.
+ The selection probability is linearly assigned to the individuals according
+ to their rank.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p_{i}=\frac{1}{N}\left(n_{m}+\left(n_{p}-n_{m}\right)\frac{i-1}{N-1}\right)
+\end{equation}
+
+\end_inset
+
+Here 
+\begin_inset Formula $\frac{n_{m}}{N}$
+\end_inset
+
+ is the probability of the worst individual to be selected and 
+\begin_inset Formula $\frac{n_{p}}{N}$
+\end_inset
+
+ the probability of the best individual to be selected.
+ As the population size is held constant, the condition 
+\begin_inset Formula $n_{p}=2-n_{m}$
+\end_inset
+
+ and 
+\begin_inset Formula $n_{m}\geq0$
+\end_inset
+
+ must be fulfilled.
+ Note that all individuals get a different rank, i.e., a different selection
+ probability, even they have the same fitness value.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Blickle97acomparison"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+ExponentialRankSelector
+\family default
+ 
+\end_layout
+
+\begin_layout Standard
+An alternative to the "weak" LinearRankSelector is to assign survival probabilit
+ies to the sorted individuals using an exponential function.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p_{i}=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $c$
+\end_inset
+
+ must within the range 
+\begin_inset Formula $\left[0\ldots1\right)$
+\end_inset
+
+.
+ A small value of 
+\begin_inset Formula $c$
+\end_inset
+
+ increases the probability of the best phenotypes to be selected.
+ If c is set to zero, the selection probability of the best phenotype is
+ set to one.
+ The selection probability of all other phenotypes is zero.
+ A value near one equalizes the selection probabilities.
+ 
+\end_layout
+
+\begin_layout Standard
+This selector sorts the population in descending order while calculating
+ the selection probabilities.
+ 
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+BoltzmannSelector
+\end_layout
+
+\begin_layout Standard
+The selection probability is defined as 
+\begin_inset Formula 
+\begin{equation}
+p_{i}=\frac{\exp(b\cdot f_{i})}{Z}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $b$
+\end_inset
+
+ controls the selection intensity and 
+\begin_inset Formula 
+\begin{equation}
+Z=\sum_{i=1}^{n}\exp(f_{i})
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula $f_{i}$
+\end_inset
+
+ denotes the fitness of the individual 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ Positive values of 
+\begin_inset Formula $b$
+\end_inset
+
+ increases the selection probability of individuals with high fitness values
+ and negative values of 
+\begin_inset Formula $b$
+\end_inset
+
+ decreases it.
+ If 
+\begin_inset Formula $b$
+\end_inset
+
+ is zero, the selection probability of all individuals is set to 
+\begin_inset Formula $\frac{1}{N}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+RouletteWheelSelector
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+StochasticUniversalSelector
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Subsection
+Alter
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset href
 LatexCommand href
@@ -704,7 +977,7 @@ Genetic operators
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Mutation
 \end_layout
 
@@ -925,7 +1198,7 @@ SwapMutator
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Recombination
 \end_layout
 
@@ -1080,16 +1353,6 @@ C1 = 012|654|3789
 
 \begin_layout LyX-Code
 C2 = 987|345|6210
-\end_layout
-
-\begin_layout Section
-Selection
-\end_layout
-
-\begin_layout Standard
-Selectors are responsible for selecting a given number of genotypes (chromosomes
-) from the population.
- You can define different selectors for offsprings and for the survivors.
 \end_layout
 
 \begin_layout Section
