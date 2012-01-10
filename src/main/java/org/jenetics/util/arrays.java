@@ -46,6 +46,16 @@ public final class arrays {
 	
 	/**
 	 * Unified method for calculating the hash code of every Seq implementation.
+	 * The hash code is defined as followed: 
+	 * 
+	 * [code]
+	 * int hashCode = 1;
+	 * final Iterator<E> it = seq.iterator();
+	 * while (it.hasNext()) {
+	 *     final E obj = it.next();
+	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
+	 * }
+	 * [/code]
 	 * 
 	 * @see Seq#hashCode()
 	 * 
