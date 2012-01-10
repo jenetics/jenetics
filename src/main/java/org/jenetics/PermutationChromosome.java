@@ -137,7 +137,9 @@ public final class PermutationChromosome<T>
 	
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(super.hashCode()).value();
+		return hashCodeOf(getClass())
+				.and(super.hashCode())
+				.value();
 	}
 	
 	@Override

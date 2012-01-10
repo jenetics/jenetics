@@ -32,6 +32,7 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.arrays;
 import org.jenetics.util.object;
 
 /**
@@ -92,7 +93,7 @@ public final class EnumGene<T> implements Gene<T, EnumGene<T>> {
 	public int hashCode() {
 		return hashCodeOf(EnumGene.class)
 				.and(_alleleIndex)
-				.and(_validAlleles).value();
+				.and(arrays.hashCode(_validAlleles)).value();
 	}
 	
 	@Override
@@ -105,8 +106,8 @@ public final class EnumGene<T> implements Gene<T, EnumGene<T>> {
 		}
 		
 		final EnumGene<?> pg = (EnumGene<?>)obj;
-		return eq(_alleleIndex, pg._alleleIndex) && 
-				eq(_validAlleles, pg._validAlleles);
+		return eq(_alleleIndex, pg._alleleIndex) &&
+				arrays.equals(_validAlleles, pg._validAlleles);
 	}
 	
 	@Override

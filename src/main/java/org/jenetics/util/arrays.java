@@ -45,6 +45,54 @@ public final class arrays {
 	}
 	
 	/**
+	 * Unified method for calculating the hash code of every Seq implementation.
+	 * 
+	 * @see Seq#hashCode()
+	 * 
+	 * @param seq the sequence to calculate the hash code for.
+	 * @return the hash code of the given sequence.
+	 */
+	public static int hashCode(final Seq<?> seq) {
+		int hash = 1;
+		for (int i = 0, n = seq.length(); i < n; ++i) {
+			final Object element = seq.get(i);
+			hash = 31*hash + (element == null ? 0: element.hashCode());
+		}
+		return hash;
+	}
+	
+	/**
+	 * Unified method for compare to sequences for equality.
+	 * 
+	 * @see Seq#equals(Object)
+	 * 
+	 * @param seq the sequence to test for equality.
+	 * @param obj the object to test for equality with the sequence.
+	 * @return {@code true} if the given objects are sequences and contain the
+	 *         same objects in the same order, {@code false} otherwise. 
+	 */
+	public static boolean equals(final Seq<?> seq, final Object obj) {
+		if (obj == seq) {
+			return true;
+		}
+		if (!(obj instanceof Seq<?>)) {
+			return false;
+		}
+		
+		final Seq<?> other = (Seq<?>)obj;
+		boolean equals = (seq.length() == other.length());
+		for (int i = seq.length(); equals && --i >= 0;) {
+			final Object element = seq.get(i);
+			if (element != null) {
+				equals = element.equals(other.get(i));
+			} else {
+				equals = other.get(i) == null;
+			}
+		}
+		return equals;
+	}
+	
+	/**
 	 * Swap two elements of an given array.
 	 * 
 	 * @param array the array

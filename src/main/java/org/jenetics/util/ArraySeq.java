@@ -270,34 +270,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	
 	@Override
 	public int hashCode() {
-		int hash = 1;
-		for (int i = _start; i < _end; ++i) {
-			final Object element = _array.data[i];
-			hash = 31*hash + (element == null ? 0: element.hashCode());
-		}
-		return hash;
+		return arrays.hashCode(this);
 	}
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof Seq<?>)) {
-			return false;
-		}
-		
-		final Seq<?> seq = (Seq<?>)obj;
-		boolean equals = (length() == seq.length());
-		for (int i = length(); equals && --i >= 0;) {
-			final Object element = _array.data[i + _start];
-			if (element != null) {
-				equals = element.equals(seq.get(i));
-			} else {
-				equals = seq.get(i) == null;
-			}
-		}
-		return equals;
+		return arrays.equals(this, obj);
 	}
 	
 	@Override
