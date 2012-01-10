@@ -22,12 +22,8 @@
  */
 package org.jenetics;
 
-import java.util.Random;
-
-import org.jenetics.util.Array;
+import org.jenetics.util.CharSet;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -38,16 +34,8 @@ public class PermutationChromosomeCharacterTest
 	{ 
 	
 	private final Factory<Chromosome<EnumGene<Character>>> 
-	_factory = new Factory<Chromosome<EnumGene<Character>>>() {
-		private final char[] _characters = "qwertzuiopü+asdfghjklöä#yxcvbnm,.-".toCharArray();
-		private final ISeq<Character> _alleles = new Array<Character>(100).fill(new Factory<Character>() {
-			private final Random _random = RandomRegistry.getRandom();
-			@Override
-			public Character newInstance() {
-				return _characters[_random.nextInt(_characters.length)];
-			}
-			
-		}).toISeq();
+	_factory = new Factory<Chromosome<EnumGene<Character>>>() {		
+		private final CharSet _alleles = CharSet.valueOf("a-zA-Z");
 		
 		@Override
 		public PermutationChromosome<Character> newInstance() {

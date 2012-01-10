@@ -294,6 +294,10 @@ public final class object {
 			_hash += Arrays.hashCode(values); return this;
 		}
 		
+		public HashCodeBuilder and(final Seq<?> values) {
+			_hash += arrays.hashCode(values); return this;
+		}
+		
 		public int value() {
 			return _hash;
 		}
@@ -377,6 +381,10 @@ public final class object {
 	
 	public static boolean eq(final Object[] a, final Object[] b) {
 		return Arrays.equals(a, b);
+	}
+	
+	public static boolean eq(final Seq<?> a, final Seq<?> b) {
+		return arrays.equals(a, b);
 	}
 	
 	public static String str(final Object a) {
