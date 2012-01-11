@@ -33,8 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.sql.rowset.Predicate;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
@@ -426,7 +424,7 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Evolve the GA as long the given {@link Predicate} returns {@code true}.
+	 * Evolve the GA as long the given {@link Function} returns {@code true}.
 	 * 
 	 * @see Until
 	 * 

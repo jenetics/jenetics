@@ -33,6 +33,7 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -531,6 +532,23 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	    }
 	}
 
+	
+	public <A extends Appendable> A print(final A out) throws IOException {
+		Object min = "...";
+		Object max = null;
+		for (int i = 0; i < length() - 1; ++i) {
+			max = _separators[i];
+			out.append("[" + min + "," + max + ")");
+			out.append(" " + _histogram[i] + "\n");
+			min = max;
+		}
+		if (length() - 1 > 0) {
+			out.append("[" + min + ",...)");
+			out.append(" " + _histogram[length() - 1] + "\n");
+		}
+		
+		return out;
+	}
 	
 }
 
