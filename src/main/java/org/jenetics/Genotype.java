@@ -42,6 +42,7 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
+import org.jenetics.util.object;
 
 /**
  * This class is the encoded problem solution with one to many Chromosomes.
@@ -343,6 +344,18 @@ public final class Genotype<T extends Gene<?, T>>
 				new Array<>(ch1, ch2, ch3, ch4).toISeq(), 
 				ch1.length() + ch2.length() + ch3.length() + ch4.length()
 			);
+	}
+	
+	@SafeVarargs
+	public static <G extends Gene<?, G>> Genotype<G> valueOf(
+		final Chromosome<G>... chromosomes
+	) {
+		final Array<Chromosome<G>> array = new Array<>(chromosomes);
+		if (array.foreach(object.NonNull) != -1) {
+			throw new NullPointerException("One of the given chromosomes is null.");
+		}
+		
+		return valueOf(array.toISeq());
 	}
 	
 	/* *************************************************************************
