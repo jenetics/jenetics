@@ -39,7 +39,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
 import org.jenetics.util.arrays;
-import org.jenetics.util.serialize;
+import org.jenetics.util.Serialize;
 
 
 /**
@@ -130,13 +130,13 @@ public class PopulationTest {
 	@Test
 	public void xmlSerialization() throws IOException {		
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		serialize.testXMLSerialization(population);
+		Serialize.testXMLSerialization(population);
 	}
 	
 	@Test
 	public void objectSerialization() throws IOException {
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		serialize.testSerialization(population);
+		Serialize.testSerialization(population);
 	}
 	
 }

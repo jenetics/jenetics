@@ -36,9 +36,9 @@ import javolution.xml.XMLSerializable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class serialize {
+public class Serialize {
 
-	private serialize() {
+	private Serialize() {
 		throw new AssertionError("Don't create an 'serialize' instance.");
 	}
 	
