@@ -37,6 +37,7 @@ import org.jenetics.util.ObjectTester;
  */
 public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> { 
     
+	
 	private final Factory<Genotype<Float64Gene>> _factory = Genotype.valueOf(
 			new Float64Chromosome(0, 1, 50), 
 			new Float64Chromosome(0, 1, 500), 
@@ -47,6 +48,21 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 		return _factory;
 	}
 
+	@Test
+	public void factory() {
+		final Genotype<Float64Gene> factory = (Genotype<Float64Gene>)_factory;
+		final Genotype<Float64Gene> gt = _factory.newInstance();
+		
+		Assert.assertEquals(factory.length(), gt.length());
+		Assert.assertEquals(factory.getNumberOfGenes(), gt.getNumberOfGenes());
+		for (int i = 0; i < factory.length(); ++i) {
+			Assert.assertEquals(
+				factory.getChromosome(i).length(), 
+				gt.getChromosome(i).length()
+			);
+		}
+	}
+	
     @Test
     public void testGenotypeGenotypeOfT() {
         BitChromosome c1 = new BitChromosome(12);
