@@ -25,12 +25,8 @@ package org.jenetics.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 
 import org.testng.Assert;
-
-import javolution.xml.XMLSerializable;
-
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -38,35 +34,23 @@ import javolution.xml.XMLSerializable;
  */
 public class Serialize {
 
-	private Serialize() {
-		throw new AssertionError("Don't create an 'serialize' instance.");
-	}
+	private final IO _io;
 	
-	public static void testXMLSerialization(final XMLSerializable object) 
-		throws IOException 
-	{
+	Serialize(final IO io) {
+		_io = io;
+	}
+
+	public static Serialize xml = new Serialize(IO.xml);
+	
+	public static Serialize object = new Serialize(IO.object);
+	
+	public void test(final Object object) throws IOException {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.xml.write(object, out);
+		_io.write(object, out);
 		
 		final byte[] data = out.toByteArray();
-		//System.out.println(new String(data));
-		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = IO.xml.read(XMLSerializable.class, in);
-		
-		Assert.assertEquals(copy, object);
-	}
-	
-	public static void testSerialization(final Serializable object) 
-		throws IOException 
-	{
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.object.write(object, out);
-		
-		final byte[] data = out.toByteArray();
-		
-		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = IO.object.read(Serializable.class, in);
+		final Object copy = _io.read(Object.class, in);
 		
 		Assert.assertEquals(copy, object);
 	}
