@@ -129,6 +129,18 @@ public abstract class ObjectTester<T> {
 	}
 	
 	@Test
+	public void copying() {
+		final Object that = getFactory().newInstance();
+		if (that instanceof Copyable<?>) {
+			final Object other = ((Copyable<?>)that).copy();
+			if (other.getClass() == that.getClass()) {
+				Assert.assertEquals(other, that);
+				Assert.assertNotSame(other, that);
+			}
+		}
+	}
+	
+	@Test
 	public void tostring() {
 		final Array<T> same = newSameObjects(5);
 		
