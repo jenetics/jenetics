@@ -31,6 +31,50 @@ abstract class math_gamma {
 	math_gamma() {
 	}
 
+	
+	public static double lngamma(final double z) {
+		if (z <= 0.0) {
+			throw new ArithmeticException();
+		}
+
+		double x;
+		double tmp;
+		double y;
+		double ser;
+		
+		y = z;
+		x = z;
+		tmp = x + 5.24218750000000000;
+		tmp = (x + 0.5)*Math.log(tmp) - tmp;
+		ser = 0.999999999999997092;
+		for (int i = 0; i < cof.length; ++i) {
+			ser += cof[i]/(++y);
+		}
+		return tmp+log(2.5066282746310005*ser/x);
+	}
+
+	private static final double[] cof = {
+		57.1562356658629235,
+		-59.5979603554754912,
+		14.1360979747417471,
+		-0.491913816097620199,
+		0.339946499848118887e-4,
+		0.465236289270485756e-4,
+		-0.983744753048795646e-4,
+		0.158088703224912494e-3,
+		-0.210264441724104883e-3,
+		0.217439618115212643e-3,
+		-0.164318106536763890e-3,
+		0.844182239838527433e-4,
+		0-.261908384015814087e-4,
+		0.368991826595316234e-5
+	};
+	
+	public static double lnΓ(final double z) {
+		return lngamma(z);
+	}
+	
+	
 	/**
 	 * Returns the <a
 	 * href="http://mathworld.wolfram.com/IncompleteGammaFunction.html">
