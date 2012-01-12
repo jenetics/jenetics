@@ -130,13 +130,13 @@ public class PopulationTest {
 	@Test
 	public void xmlSerialization() throws IOException {		
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		Serialize.testXMLSerialization(population);
+		Serialize.xml.test(population);
 	}
 	
 	@Test
 	public void objectSerialization() throws IOException {
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(23, 34, 123);
-		Serialize.testSerialization(population);
+		Serialize.object.test(population);
 	}
 	
 }
