@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Some helper methods for creating hash codes and compare values.
@@ -212,96 +213,258 @@ public final class object {
 		return new DefaultHashCodeBuilder(type.hashCode());
 	}
 	
+	/**
+	 * Compares the two given {@code boolean} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final boolean a, final boolean b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code boolean} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final boolean[] a, final boolean[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code byte} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final byte a, final byte b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code byte} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final byte[] a, final byte[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code char} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final char a, final char b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code char} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final char[] a, final char[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code short} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final short a, final short b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code short} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final short[] a, final short[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code int} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final int a, final int b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code int} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final int[] a, final int[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code long} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final long a, final long b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code long} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final long[] a, final long[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code float} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final float a, final float b) {
 		return Float.floatToIntBits(a) == Float.floatToIntBits(b);
 	}
 	
+	/**
+	 * Compares the two given {@code float} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final float[] a, final float[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code double} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final double a, final double b) {
 		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
 	}
 	
+	/**
+	 * Compares the two given {@code double} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final double[] a, final double[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code Enum} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final Enum<?> a, final Enum<?> b) {
 		return a == b;
 	}
 	
+	/**
+	 * Compares the two given {@code Object} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
 	}
 	
+	/**
+	 * Compares the two given {@code Object} arrays.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final Object[] a, final Object[] b) {
 		return Arrays.equals(a, b);
 	}
 	
+	/**
+	 * Compares the two given {@code Seq} values.
+	 * 
+	 * @param a first value to compare.
+	 * @param b second value to compare.
+	 * @return {@code true} if the given values are equal, {@code false} 
+	 *         otherwise.
+	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
 		return arrays.equals(a, b);
 	}
 	
+	/**
+	 * Returns the result of calling toString for a non-null argument and "null" 
+	 * for a null argument.
+	 * 
+	 * @see Objects#toString(Object)
+	 * 
+	 * @param a the object.
+	 * @return the result of calling toString for a non-null argument and "null" 
+	 *         for a null argument
+	 */
 	public static String str(final Object a) {
-		return a != null ? a.toString() : "null";
-	}
-	
-	public static String str(final long n) {
-		final StringBuilder out = new StringBuilder();
-		for (int i = 63; i >= 0; --i) {
-			out.append((n >>> i) & 1);
-		}
-		return out.toString();
+		return Objects.toString(a);
 	}
 	
 	/**
