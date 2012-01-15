@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Some helper methods for creating hash codes and compare values.
+ * Some helper methods for creating hash codes and comparing values.
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
