@@ -28,7 +28,7 @@ import java.util.Arrays;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-final class DefaultHashCodeBuilder implements HashCodeBuilder {
+final class DefaultHashCodeBuilder extends HashCodeBuilder {
 	private static final int P1 = 47;
 	private static final int P2 = 103;
 	private static final int P3 = 1231;
@@ -36,8 +36,8 @@ final class DefaultHashCodeBuilder implements HashCodeBuilder {
 	
 	private int _hash = 0;
 	
-	public DefaultHashCodeBuilder(final int hash) {
-		_hash = hash;
+	public DefaultHashCodeBuilder(final Class<?> type) {
+		super(type);
 	}
 	
 	@Override
@@ -137,8 +137,4 @@ final class DefaultHashCodeBuilder implements HashCodeBuilder {
 		_hash += arrays.hashCode(values); return this;
 	}
 	
-	@Override
-	public int value() {
-		return _hash;
-	}
 }

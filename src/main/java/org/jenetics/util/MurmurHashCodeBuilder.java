@@ -23,16 +23,18 @@
 package org.jenetics.util;
 
 /**
- * This is an implementation by Viliam Holub of the fast non-cryptographic 
- * murmurhash2 algorithm. 
+ * Scala mumur implementation.
  *  
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class MurmurHashCodeBuilder implements HashCodeBuilder {
+class MurmurHashCodeBuilder extends HashCodeBuilder {
 
-	private int _hash = 0;
-			
+	MurmurHashCodeBuilder(final Class<?> type) {
+		super(type);
+	}
+	
+	
 	@Override
 	public HashCodeBuilder and(boolean value) {
 		_hash = mix(_hash, value ? 1 : 0);

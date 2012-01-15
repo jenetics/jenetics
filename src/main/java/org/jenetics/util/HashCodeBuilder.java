@@ -40,15 +40,21 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public interface HashCodeBuilder {
+public abstract class HashCodeBuilder {
 
+	int _hash = 0;
+	
+	HashCodeBuilder(final Class<?> type) {
+		_hash = type.hashCode();
+	}
+	
 	/**
 	 * Add hash code for a {@code boolean}.
 	 * 
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final boolean value);
+	public abstract HashCodeBuilder and(final boolean value);
 
 	/**
 	 * Add hash code for an {@code boolean} array.
@@ -56,7 +62,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final boolean[] values);
+	public abstract HashCodeBuilder and(final boolean[] values);
 
 	/**
 	 * Add hash code for a {@code byte}.
@@ -64,7 +70,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final byte value);
+	public abstract HashCodeBuilder and(final byte value);
 
 	/**
 	 * Add hash code for an {@code byte} arrays.
@@ -72,7 +78,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final byte[] values);
+	public abstract HashCodeBuilder and(final byte[] values);
 
 	/**
 	 * Add hash code for a {@code char}.
@@ -80,7 +86,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final char value);
+	public abstract HashCodeBuilder and(final char value);
 
 	/**
 	 * Add hash code for an {@code char} array.
@@ -88,7 +94,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final char[] values);
+	public abstract HashCodeBuilder and(final char[] values);
 
 	/**
 	 * Add hash code for a {@code short}.
@@ -96,7 +102,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final short value);
+	public abstract HashCodeBuilder and(final short value);
 
 	/**
 	 * Add hash code for an {@code short} array.
@@ -104,7 +110,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final short[] values);
+	public abstract HashCodeBuilder and(final short[] values);
 
 	/**
 	 * Add hash code for an {@code int}.
@@ -112,7 +118,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final int value);
+	public abstract HashCodeBuilder and(final int value);
 
 	/**
 	 * Add hash code for an {@code int} array.
@@ -120,7 +126,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final int[] values);
+	public abstract HashCodeBuilder and(final int[] values);
 
 	/**
 	 * Add hash code for a {@code long}.
@@ -128,7 +134,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final long value);
+	public abstract HashCodeBuilder and(final long value);
 
 	/**
 	 * Add hash code for an {@code long} array.
@@ -136,7 +142,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final long[] values);
+	public abstract HashCodeBuilder and(final long[] values);
 
 	/**
 	 * Add hash code for a {@code float}.
@@ -144,7 +150,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final float value);
+	public abstract HashCodeBuilder and(final float value);
 
 	/**
 	 * Add hash code for an {@code float} array.
@@ -152,7 +158,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final float[] values);
+	public abstract HashCodeBuilder and(final float[] values);
 
 	/**
 	 * Add hash code for a {@code double}.
@@ -160,7 +166,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final double value);
+	public abstract HashCodeBuilder and(final double value);
 
 	/**
 	 * Add hash code for an {@code double} array.
@@ -168,7 +174,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final double[] values);
+	public abstract HashCodeBuilder and(final double[] values);
 
 	/**
 	 * Add hash code for a {@code Object}.
@@ -176,7 +182,7 @@ public interface HashCodeBuilder {
 	 * @param value the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final Object value);
+	public abstract HashCodeBuilder and(final Object value);
 
 	/**
 	 * Add hash code for an {@code Object}.
@@ -184,7 +190,7 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final Object[] values);
+	public abstract HashCodeBuilder and(final Object[] values);
 
 	/**
 	 * Add hash code for a {@code Seq}.
@@ -192,14 +198,16 @@ public interface HashCodeBuilder {
 	 * @param values the value to add to the hash code.
 	 * @return {@code this}
 	 */
-	public HashCodeBuilder and(final Seq<?> values);
+	public abstract HashCodeBuilder and(final Seq<?> values);
 
 	/**
 	 * Return the calculated hash value.
 	 * 
 	 * @return the calculated hash value.
 	 */
-	public int value();
+	public int value() {
+		return _hash;
+	}
 
 }
 

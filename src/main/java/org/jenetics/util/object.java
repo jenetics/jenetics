@@ -216,7 +216,7 @@ public final class object {
 	 * @return a new HashCodeBuilder.
 	 */
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
-		return new DefaultHashCodeBuilder(type.hashCode());
+		return new DefaultHashCodeBuilder(type);
 	}
 	
 	/**
