@@ -23,13 +23,19 @@
 package org.jenetics.util;
 
 /**
- * Interface for building hash codes.
- * 
+ * Interface for building hash codes. The HashCodeBuilder is created via a
+ * factory method in the {@link object} class.
+ * <p/>
+ * Example for calculating the hash code for a given class:
  * [code]
  * public int hashCode() {
- *     return object.hashCodeOf(getClass()).and(_prop1).and(_prop2).value();
+ *     return object.hashCodeOf(getClass())
+ *                  .and(_prop1)
+ *                  .and(_prop2).value();
  * }
  * [/code]
+ * 
+ * @see object#hashCodeOf(Class)
  * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
