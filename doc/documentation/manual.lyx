@@ -247,35 +247,35 @@ while !finished:
 
 \begin_layout Plain Layout
 
-    $i 
+    $g 
 \backslash
-leftarrow i + 1$
+leftarrow g + 1$
 \end_layout
 
 \begin_layout Plain Layout
 
-    $S_i 
+    $S_g 
 \backslash
-leftarrow select_{survivors}(P_{i - 1})$
+leftarrow select_{S}(P_{g - 1})$
 \end_layout
 
 \begin_layout Plain Layout
 
-    $O_i 
+    $O_g 
 \backslash
-leftarrow alter(select_{offsprings}(P_{i - 1}))$
+leftarrow alter(select_{O}(P_{g - 1}))$
 \end_layout
 
 \begin_layout Plain Layout
 
-    $P_i 
+    $P_g 
 \backslash
-leftarrow S_i + O_i$
+leftarrow filter[g_i<g_{max}]((S_g)) + filter[g_i<g_{max}](O_g)$
 \end_layout
 
 \begin_layout Plain Layout
 
-    $F(P_{i})$
+    $F(P_g)$
 \end_layout
 
 \begin_layout Plain Layout
@@ -315,8 +315,21 @@ reference "lis:Genetic-algorithm"
 Jenetics
 \shape default
  genetic algorithm.
- In the first line the initial population is generated and the second line
- calculates the fitness values from the initial population.
+ In the first two lines the initial population is created and the fitness
+ value is calculated.
+ This is done by the 
+\family typewriter
+GeneticAlgorithm.setup()
+\family default
+ method.
+ The steps from line 4 to 8 are repeated until a given termination criterion
+ is fulfilled.
+ Line 5 selects the survivor population which will be passed to the next
+ generation without change.
+ (The survivor/offspring fraction is set with GeneticAlgorithm.setOffspringFracti
+on(double)).
+ The offsprings are selected and altered and are merged with the survivors
+ to the new population.
 \end_layout
 
 \begin_layout Standard
@@ -1585,6 +1598,14 @@ try (Concurrency c = Concurrency.start()) {
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Statistics
+\end_layout
+
+\begin_layout Standard
+Statistics helper classes.
 \end_layout
 
 \begin_layout Section
