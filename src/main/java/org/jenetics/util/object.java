@@ -209,6 +209,12 @@ public final class object {
 		return p;
 	}
 	
+	/**
+	 * Create a HashCodeBuilder for the given type.
+	 * 
+	 * @param type the type the HashCodebuilder is created for.
+	 * @return a new HashCodeBuilder.
+	 */
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
 		return new DefaultHashCodeBuilder(type.hashCode());
 	}
