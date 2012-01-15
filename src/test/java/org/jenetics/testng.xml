@@ -279,7 +279,12 @@
 		<classes>
 			<class name="org.jenetics.util.mathTest" />
 		</classes>
-	</test>		
+	</test>	
+	<test name="org.jenetics.util.Murmur2HashCodeBuilder">
+		<classes>
+			<class name="org.jenetics.util.Murmur2HashCodeBuilderTest" />
+		</classes>
+	</test>			
 	<test name="org.jenetics.util.PermutationIndexStream">
 		<classes>
 			<class name="org.jenetics.util.PermutationIndexStreamTest" />

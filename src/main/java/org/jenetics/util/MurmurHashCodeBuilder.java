@@ -29,103 +29,93 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class Murmur2HashCodeBuilder implements HashCodeBuilder {
+class MurmurHashCodeBuilder implements HashCodeBuilder {
 
 	private int _hash = 0;
-	
-	private byte[] _temp = new byte[8];
-	
-	// https://github.com/tnm/murmurhash-java/blob/master/src/main/java/ie/ucd/murmur/MurmurHash.java
-	static int hash32(final byte[] data, final int length, final int seed) {
-		// 'm' and 'r' are mixing constants generated offline.
-		// They're not really 'magic', they just happen to work well.
-		final int m = 0x5bd1e995;
-		final int r = 24;
-		
-		// Initialize the hash to a random value
-		int h = seed^length;
-		final int length4 = length/4;
-
-		for (int i = 0; i < length4; i++) {
-			final int i4 = i*4;
-			int k = (data[i4 + 0]&0xff) + 
-					((data[i4 + 1]&0xff) << 8) + 
-					((data[i4 + 2]&0xff) << 16) +
-					((data[i4 + 3]&0xff) << 24);
 			
-			k *= m;
-			k ^= k >>> r;
-			k *= m;
-			h *= m;
-			h ^= k;
-		}
-
-		// Handle the last few bytes of the input array
-		switch (length%4) {
-			case 3: h ^= (data[(length&~3) +2]&0xff) << 16;
-			case 2: h ^= (data[(length&~3) +1]&0xff) << 8;
-			case 1: h ^= (data[length&~3]&0xff);
-			h *= m;
-		}
-
-		h ^= h >>> 13;
-		h *= m;
-		h ^= h >>> 15;
-
-		return h;
-	}
-	
 	@Override
 	public HashCodeBuilder and(boolean value) {
-		return null;
+		_hash = mix(_hash, value ? 1 : 0);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(boolean[] values) {
-		return null;
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, values[i] ? 1 : 0);
+		}
+		
+		_hash = finalizeHash(h, values.length);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(final byte value) {
-		_temp[0] = value;
-		_hash = hash32(_temp, 1, _hash);
+		_hash = mix(_hash, value);
 		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(final byte[] values) {
-		_hash = hash32(values, values.length, _hash);
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, values[i]);
+		}
+		
+		_hash = finalizeHash(h, values.length);
 		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(char value) {
-		return null;
+		_hash = mix(_hash, value);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(char[] values) {
-		return null;
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, values[i]);
+		}
+		
+		_hash = finalizeHash(h, values.length);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(short value) {
-		return null;
+		_hash = mix(_hash, value);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(short[] values) {
-		return null;
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, values[i]);
+		}
+		
+		_hash = finalizeHash(h, values.length);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(int value) {
-		return null;
+		_hash = mix(_hash, value);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(int[] values) {
-		return null;
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, values[i]);
+		}
+		_hash = finalizeHash(h, values.length);
+		
+		return this;
 	}
 
 	@Override
@@ -178,4 +168,73 @@ class Murmur2HashCodeBuilder implements HashCodeBuilder {
 		return _hash;
 	}
 
+	/*
+	 * Static hashing methods.
+	 */
+	
+	private static int bytesHash(final byte[] data, final int seed) {
+		int len = data.length;
+		int h = seed;
+
+		// Body
+		int i = 0;
+		while (len >= 4) {
+			int k = data[i + 0] & 0xFF;
+			k |= (data[i + 1] & 0xFF) << 8;
+			k |= (data[i + 2] & 0xFF) << 16;
+			k |= (data[i + 3] & 0xFF) << 24;
+
+			h = mix(h, k);
+
+			i += 4;
+			len -= 4;
+		}
+
+		// Tail
+		int k = 0;
+		if (len == 3)
+			k ^= (data[i + 2] & 0xFF) << 16;
+		if (len >= 2)
+			k ^= (data[i + 1] & 0xFF) << 8;
+		if (len >= 1) {
+			k ^= (data[i + 0] & 0xFF);
+			h = mixLast(h, k);
+		}
+
+		// Finalization
+		return finalizeHash(h, data.length);
+	}
+	
+	private static int mix(final int hash, final int data) {
+		int h = mixLast(hash, data);
+		h = Integer.rotateLeft(h, 13);
+		return h*5 + 0xe6546b64;
+	}
+	
+	private static int mixLast(final int data, final int hash) {
+		int k = data;
+
+		k *= 0xcc9e2d51;
+		k = Integer.rotateLeft(k, 15);
+		k *= 0x1b873593;
+
+		return hash^k;
+	}
+	
+	private static int finalizeHash(final int hash, final int length) {
+		return avalanche(hash^length);
+	}
+
+	private static final int avalanche(int hash) {
+		int h = hash;
+
+		h ^= h >>> 16;
+		h *= 0x85ebca6b;
+		h ^= h >>> 13;
+		h *= 0xc2b2ae35;
+		h ^= h >>> 16;
+
+		return h;
+	}
+	
 }
