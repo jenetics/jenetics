@@ -23,6 +23,10 @@
 package org.jenetics.util;
 
 /**
+ * Implementation based on the MurmurHash 3.0 algorithm implementation of 
+ * Scala 2.9:
+ * http://www.scala-lang.org/api/current/index.html#scala.util.MurmurHash 
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
