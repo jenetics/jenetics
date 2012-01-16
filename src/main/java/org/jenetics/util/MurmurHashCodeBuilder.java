@@ -23,12 +23,14 @@
 package org.jenetics.util;
 
 /**
- * Scala mumur implementation.
+ * Implementation based on the MurmurHash 3.0 algorithm implementation of 
+ * Scala 2.9:
+ * http://www.scala-lang.org/api/current/index.html#scala.util.MurmurHash 
  *  
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class MurmurHashCodeBuilder extends HashCodeBuilder {
+final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	MurmurHashCodeBuilder(final Class<?> type) {
 		super(type);
@@ -36,13 +38,13 @@ class MurmurHashCodeBuilder extends HashCodeBuilder {
 	
 	
 	@Override
-	public HashCodeBuilder and(boolean value) {
+	public HashCodeBuilder and(final boolean value) {
 		_hash = mix(_hash, value ? 1 : 0);
 		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(boolean[] values) {
+	public HashCodeBuilder and(final boolean[] values) {
 		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
 			h = mix(h, values[i] ? 1 : 0);
@@ -60,6 +62,18 @@ class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final byte[] values) {
+		_hash = bytesHash(values, _hash);
+		return this;
+	}
+
+	@Override
+	public HashCodeBuilder and(final char value) {
+		_hash = mix(_hash, value);
+		return this;
+	}
+
+	@Override
+	public HashCodeBuilder and(final char[] values) {
 		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
 			h = mix(h, values[i]);
@@ -70,30 +84,13 @@ class MurmurHashCodeBuilder extends HashCodeBuilder {
 	}
 
 	@Override
-	public HashCodeBuilder and(char value) {
+	public HashCodeBuilder and(final short value) {
 		_hash = mix(_hash, value);
 		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(char[] values) {
-		int h = _hash;
-		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, values[i]);
-		}
-		
-		_hash = finalizeHash(h, values.length);
-		return this;
-	}
-
-	@Override
-	public HashCodeBuilder and(short value) {
-		_hash = mix(_hash, value);
-		return this;
-	}
-
-	@Override
-	public HashCodeBuilder and(short[] values) {
+	public HashCodeBuilder and(final short[] values) {
 		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
 			h = mix(h, values[i]);
@@ -110,59 +107,92 @@ class MurmurHashCodeBuilder extends HashCodeBuilder {
 	}
 
 	@Override
-	public HashCodeBuilder and(int[] values) {
+	public HashCodeBuilder and(final int[] values) {
 		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
 			h = mix(h, values[i]);
 		}
 		_hash = finalizeHash(h, values.length);
-		
 		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(long value) {
-		return null;
+	public HashCodeBuilder and(final long value) {
+		_hash = mix(_hash, (int)((value >>> 32) & 0xFFFFFFFF));
+		_hash = mix(_hash, (int)((value >>>  0) & 0xFFFFFFFF));
+		_hash = finalizeHash(_hash, 2);
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(long[] values) {
-		return null;
+	public HashCodeBuilder and(final long[] values) {
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, (int)((values[i] >>> 32) & 0xFFFFFFFF));
+			h = mix(h, (int)((values[i] >>>  0) & 0xFFFFFFFF));
+		}
+		_hash = finalizeHash(h, values.length*2);
+		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(float value) {
-		return null;
+		and(Float.floatToIntBits(value));
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(float[] values) {
-		return null;
+	public HashCodeBuilder and(final float[] values) {
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, Float.floatToIntBits(values[i]));
+		}
+		_hash = finalizeHash(h, values.length);
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(double value) {
-		return null;
+	public HashCodeBuilder and(final double value) {
+		and(Double.doubleToLongBits(value));
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(double[] values) {
-		return null;
+	public HashCodeBuilder and(final double[] values) {
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			final long value = Double.doubleToLongBits(values[i]);
+			h = mix(h, (int)((value >>> 32) & 0xFFFFFFFF));
+			h = mix(h, (int)((value >>>  0) & 0xFFFFFFFF));
+		}
+		_hash = finalizeHash(h, values.length*2);
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(Object value) {
-		return null;
+	public HashCodeBuilder and(final Object value) {
+		and(value.hashCode());
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(Object[] values) {
-		return null;
+	public HashCodeBuilder and(final Object[] values) {
+		int h = _hash;
+		for (int i = 0; i < values.length; ++i) {
+			h = mix(h, values[i].hashCode());
+		}
+		_hash = finalizeHash(h, values.length);
+		return this;
 	}
 
 	@Override
-	public HashCodeBuilder and(Seq<?> values) {
-		return null;
+	public HashCodeBuilder and(final Seq<?> values) {
+		int h = _hash;
+		for (int i = 0; i < values.length(); ++i) {
+			h = mix(h, values.get(i).hashCode());
+		}
+		_hash = finalizeHash(h, values.length());
+		return this;
 	}
 
 	@Override
