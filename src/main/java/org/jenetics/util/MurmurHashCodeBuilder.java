@@ -45,12 +45,11 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final boolean[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, values[i] ? 1 : 0);
+			_hash = mix(_hash, values[i] ? 1 : 0);
 		}
 		
-		_hash = finalizeHash(h, values.length);
+		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
 
@@ -74,12 +73,11 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final char[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, values[i]);
+			_hash = mix(_hash, values[i]);
 		}
 		
-		_hash = finalizeHash(h, values.length);
+		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
 
@@ -91,12 +89,11 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final short[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, values[i]);
+			_hash = mix(_hash, values[i]);
 		}
 		
-		_hash = finalizeHash(h, values.length);
+		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
 
@@ -108,11 +105,10 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final int[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, values[i]);
+			_hash = mix(_hash, values[i]);
 		}
-		_hash = finalizeHash(h, values.length);
+		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
 
@@ -126,12 +122,11 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final long[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, (int)((values[i] >>> 32) & 0xFFFFFFFF));
-			h = mix(h, (int)((values[i] >>>  0) & 0xFFFFFFFF));
+			_hash = mix(_hash, (int)((values[i] >>> 32) & 0xFFFFFFFF));
+			_hash = mix(_hash, (int)((values[i] >>>  0) & 0xFFFFFFFF));
 		}
-		_hash = finalizeHash(h, values.length*2);
+		_hash = finalizeHash(_hash, values.length*2);
 		return this;
 	}
 
@@ -143,11 +138,10 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final float[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, Float.floatToIntBits(values[i]));
+			_hash = mix(_hash, Float.floatToIntBits(values[i]));
 		}
-		_hash = finalizeHash(h, values.length);
+		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
 
@@ -159,39 +153,55 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final double[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
 			final long value = Double.doubleToLongBits(values[i]);
-			h = mix(h, (int)((value >>> 32) & 0xFFFFFFFF));
-			h = mix(h, (int)((value >>>  0) & 0xFFFFFFFF));
+			_hash = mix(_hash, (int)((value >>> 32) & 0xFFFFFFFF));
+			_hash = mix(_hash, (int)((value >>>  0) & 0xFFFFFFFF));
 		}
-		_hash = finalizeHash(h, values.length*2);
+		_hash = finalizeHash(_hash, values.length*2);
 		return this;
 	}
 
+	private void and(final String value) {
+		for (int i = 0; i < value.length(); ++i) {
+			_hash = mix(_hash, value.charAt(i));
+		}
+		_hash = finalizeHash(_hash, value.length());
+	}
+	
 	@Override
 	public HashCodeBuilder and(final Object value) {
-		and(value.hashCode());
+		if (value instanceof String) {
+			and((String)value);
+		} else {
+			and(value.hashCode());
+		}
 		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(final Object[] values) {
-		int h = _hash;
 		for (int i = 0; i < values.length; ++i) {
-			h = mix(h, values[i].hashCode());
+			if (values[i] instanceof String) {
+				and((String)values[i]);
+			} else {
+				_hash = mix(_hash, values[i].hashCode());
+			}
 		}
-		_hash = finalizeHash(h, values.length);
+		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
 
 	@Override
 	public HashCodeBuilder and(final Seq<?> values) {
-		int h = _hash;
 		for (int i = 0; i < values.length(); ++i) {
-			h = mix(h, values.get(i).hashCode());
+			if (values.get(i) instanceof String) {
+				and((String)values.get(i));
+			} else {
+				_hash = mix(_hash, values.get(i).hashCode());
+			}
 		}
-		_hash = finalizeHash(h, values.length());
+		_hash = finalizeHash(_hash, values.length());
 		return this;
 	}
 
@@ -243,7 +253,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 		return h*5 + 0xe6546b64;
 	}
 	
-	private static int mixLast(final int data, final int hash) {
+	private static int mixLast(final int hash, final int data) {
 		int k = data;
 
 		k *= 0xcc9e2d51;
