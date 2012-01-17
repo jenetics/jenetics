@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import org.testng.annotations.Test;
+
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
@@ -44,13 +46,25 @@ public class MonteCarloSelectorTest
 			return new MonteCarloSelector<>();
 		}
 	};
+	
 	@Override
 	protected Factory<MonteCarloSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
+	
+	@Override
+	protected boolean isCheckEnabled() {
+		return true;
+	}
+	
 	@Override
 	protected Distribution<Float64> getDistribution() {
 		return new UniformDistribution<>(_domain);
+	}
+	
+	@Test
+	public void foo() {
+		
 	}
 	
 }
