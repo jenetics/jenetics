@@ -43,13 +43,13 @@ public final class StatisticsAssert {
 	) {
 		final Function<C, Float64> cdf = distribution.getCDF();
 		final double χ2 = histogram.χ2(cdf);		
-		final int degreeOfFreedom = histogram.length() - 1;
+		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 		
-		final double maxChi = ChiSquare.chi_999(degreeOfFreedom);
+		final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
 		
 		if (χ2 > maxChi) {
-			System.out.println(				String.format(
+			System.out.println(String.format(
 					"The histogram %s doesn't follow the distribution %s. \n" +
 					"χ2 must be smaller than %f but was %f", 
 					histogram, distribution, 
@@ -58,7 +58,7 @@ public final class StatisticsAssert {
 		}
 		
 		Assert.assertTrue(
-				χ2 < maxChi, 
+				χ2 <= maxChi, 
 				String.format(
 						"The histogram %s doesn't follow the distribution %s. \n" +
 						"χ2 must be smaller than %f but was %f", 

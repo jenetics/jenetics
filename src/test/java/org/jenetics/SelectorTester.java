@@ -25,6 +25,8 @@ package org.jenetics;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.accumulators.accumulate;
 
+import org.testng.annotations.Test;
+
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
@@ -45,7 +47,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 			Float64.ZERO, Float64.valueOf(100)
 		); 
 	
-	protected final int _histogramSize = 30;
+	protected final int _histogramSize = 37;
 	
 	
 	protected S getSelector() {
@@ -54,9 +56,16 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	
 	protected abstract Distribution<Float64> getDistribution();
 	
-	//@Test(invocationCount = 20, successPercentage = 100)
-//	@Test
+	protected boolean isCheckEnabled() {
+		return true;
+	}
+	
+	@Test(invocationCount = 20, successPercentage = 95)
 	public void selectDistribution() {
+		final int npopulation = 101;
+		final int loops = 500;
+			
+			
 		final Float64 min = _domain.getMin();
 		final Float64 max = _domain.getMax();
 		final Histogram<Float64> histogram = Histogram.valueOf(min, max, _histogramSize);
@@ -64,21 +73,21 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 		final Factory<Genotype<Float64Gene>> 
 		gtf = Genotype.valueOf(new Float64Chromosome(min, max));
 		
-		final int npopulation = 1000;
-		final int loops = 1000;
+
+		
 		final Population<Float64Gene, Float64> 
 		population = new Population<>(npopulation);
 		
-		for (int j = 0; j < loops; ++j) {
+		final S selector = getSelector();
+		
+		for (int j = 0; j < loops; ++j) {	
 			for (int i = 0; i < npopulation; ++i) {
 				population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
 			}
 			
-			final S selector = getSelector();
 			
 			final Population<Float64Gene, Float64> selection = 
-				selector.select(population, npopulation/2, Optimize.MAXIMUM);
-			
+				selector.select(population, npopulation, Optimize.MAXIMUM);
 			
 			accumulate(
 					selection, 
@@ -92,8 +101,9 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 			population.clear();
 		}
 		
-		
-		assertDistribution(histogram, getDistribution());
+		if (isCheckEnabled()) {
+			assertDistribution(histogram, getDistribution());
+		}
 	}
 	
 }

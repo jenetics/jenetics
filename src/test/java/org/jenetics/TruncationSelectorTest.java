@@ -59,5 +59,10 @@ public class TruncationSelectorTest
 			);
 		return new UniformDistribution<>(domain);
 	}
+	
+	@Override
+	protected boolean isCheckEnabled() {
+		return false;
+	}
 
 }
