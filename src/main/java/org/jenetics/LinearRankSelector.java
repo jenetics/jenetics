@@ -106,7 +106,7 @@ public final class LinearRankSelector<
 		final int count
 	) {
 		assert(population != null) : "Population can not be null. ";
-		assert(count >= 0) : "Population to select must be greater than zero. ";
+		assert(count > 0) : "Population to select must be greater than zero. ";
 		
 		//Sort the population.
 		population.sort();

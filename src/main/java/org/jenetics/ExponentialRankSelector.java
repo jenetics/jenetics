@@ -92,7 +92,7 @@ public final class ExponentialRankSelector<
 		final int count
 	) {
 		assert(population != null) : "Population can not be null. ";
-		assert(count >= 0) : "Population to select must be greater than zero. ";
+		assert(count > 0) : "Population to select must be greater than zero. ";
 		
 		//Sorted population required.
 		population.sort();
