@@ -95,7 +95,7 @@ public final class BoltzmannSelector<
 		final int count
 	) {
 		assert (population != null) : "Population must not be null. ";
-		assert (count >= 0) : "Population to select must be greater than zero. ";
+		assert (count > 0) : "Population to select must be greater than zero. ";
 		
 		// Copy the fitness values to probabilities arrays.
 		final double[] probabilities = new double[population.size()];
