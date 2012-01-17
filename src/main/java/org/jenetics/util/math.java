@@ -215,16 +215,16 @@ public final class math {
 	 * @param e the exponent.
 	 * @return {@code b^e}.
 	 */
-	static int pow(final int b, final int e) {
+	public static long pow(final int b, final int e) {
 		if (e < 0) {
 			throw new IllegalArgumentException(String.format(
 					"Exponent is negative: %d", e
 				));
 		}
 		
-		int base = b;
+		long base = b;
 		int exp = e;
-		int result = 1;
+		long result = 1;
 		
 		while (exp != 0) {
 			if ((exp & 1) != 0) {
