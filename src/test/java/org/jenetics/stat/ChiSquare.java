@@ -42,7 +42,7 @@ public final class ChiSquare {
 			0.9, 0.95, 0.975, 0.99, 0.995, 0.999, 0.9999
 		};
 	
-	private static final double[][] TABLE = new double[100][PROPS.length];
+	private static final double[][] TABLE = new double[1000][PROPS.length];
 	
 	static {
 		final InputStream in = ChiSquare.class.getResourceAsStream(CHI);
