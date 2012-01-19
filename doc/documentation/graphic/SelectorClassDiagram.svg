@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="559" version="1.1" width="700" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="417" x="158" y="14"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="417" x="158" y="14"/>
+<text font-family="Dialog" font-size="12" x="340" y="46">
+Selector</text>
+<text font-family="Dialog" font-size="12" x="318" y="28">
+&lt;&lt;interface&gt;&gt;</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="417" x="158" y="56"/>
+<text font-family="Dialog" font-size="12" x="162" y="70">
+select(population : Population,count : Integer) : Population</text>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="14" y="366"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="366"/>
+<text font-family="Dialog" font-size="12" x="52" y="379">
+BoltzmannSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="389"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="410"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="430" y="478"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="430" y="478"/>
+<text font-family="Dialog" font-size="12" x="448" y="491">
+ExponentialRankSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="430" y="501"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="430" y="522"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="494" y="366"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="494" y="366"/>
+<text font-family="Dialog" font-size="12" x="529" y="379">
+LinearRankSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="389"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="410"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="238" y="142"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="238" y="142"/>
+<text font-family="Dialog" font-size="12" x="272" y="155">
+MonteCarloSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="165"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="186"/>
+<rect fill="#ffffff" height="66" stroke="#ffffff" stroke-width="1" width="416" x="158" y="254"/>
+<rect fill="none" height="66" stroke="#000000" stroke-width="1" width="416" x="158" y="254"/>
+<text font-family="Dialog" font-size="12" x="307" y="267">
+ProbabilitySelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="416" x="158" y="277"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="416" x="158" y="298"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="238" y="366"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="238" y="366"/>
+<text font-family="Dialog" font-size="12" x="262" y="379">
+RouletteWheelSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="389"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="410"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="190" y="478"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="190" y="478"/>
+<text font-family="Dialog" font-size="12" x="198" y="491">
+StochasticUniversalSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="190" y="501"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="190" y="522"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="494" y="142"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="494" y="142"/>
+<text font-family="Dialog" font-size="12" x="526" y="155">
+TournamentSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="165"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="186"/>
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="14" y="142"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="142"/>
+<text font-family="Dialog" font-size="12" x="50" y="155">
+TruncationSelector</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="165"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="186"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="254" y2="249"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="244" y2="239"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="234" y2="229"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="224" y2="219"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="214" y2="209"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="204" y2="199"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="194" y2="189"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="184" y2="179"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="174" y2="169"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="164" y2="159"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="154" y2="149"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="144" y2="139"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="134" y2="129"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="124" y2="119"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="114" y2="109"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="104" y2="99"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="94" y2="89"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="462" x2="462" y1="84" y2="80"/>
+<polygon fill="#ffffff" points="462,80 469,92 455,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="462,80 469,92 455,92" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="376" y="238">
+&lt;&lt;realize&gt;&gt;</text>
+<polyline fill="none" points="174,366 174,319" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="174,319 181,331 167,331" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="174,319 181,331 167,331" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="462,478 462,319" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="462,319 469,331 455,331" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="462,319 469,331 455,331" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="558,366 558,319" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="558,319 565,331 551,331" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="558,319 565,331 551,331" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="334,366 334,319" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="334,319 341,331 327,331" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="334,319 341,331 327,331" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="334,478 334,432" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="334,432 341,444 327,444" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="334,432 341,444 327,444" stroke="#000000" stroke-width="1"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="142" y2="137"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="132" y2="127"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="122" y2="117"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="112" y2="107"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="102" y2="97"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="92" y2="87"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="558" x2="558" y1="82" y2="80"/>
+<polygon fill="#ffffff" points="558,80 565,92 551,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="558,80 565,92 551,92" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="471" y="123">
+&lt;&lt;realize&gt;&gt;</text>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="142" y2="137"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="132" y2="127"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="122" y2="117"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="112" y2="107"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="102" y2="97"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="92" y2="87"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="334" x2="334" y1="82" y2="80"/>
+<polygon fill="#ffffff" points="334,80 341,92 327,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="334,80 341,92 327,92" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="354" y="123">
+&lt;&lt;realize&gt;&gt;</text>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="142" y2="137"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="132" y2="127"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="122" y2="117"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="112" y2="107"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="102" y2="97"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="92" y2="87"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="174" x2="174" y1="82" y2="80"/>
+<polygon fill="#ffffff" points="174,80 181,92 167,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="174,80 181,92 167,92" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="69" y="121">
+&lt;&lt;realize&gt;&gt;</text>
+</svg>
