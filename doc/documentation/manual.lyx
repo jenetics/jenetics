@@ -991,7 +991,7 @@ In linear ranking selection the individuals are sorted according to their
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{1}{N}\left(n^{\text{⁻}}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)
+p_{i}=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)
 \end{equation}
 
 \end_inset
