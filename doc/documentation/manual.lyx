@@ -765,7 +765,7 @@ offspringFraction
 and the number of selected survivors 
 \begin_inset Formula 
 \begin{eqnarray*}
-\left\Vert S_{g}\right\Vert  & = & \left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert 
+\left\Vert S_{g}\right\Vert  & = & \left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
 \end{eqnarray*}
 
 \end_inset
@@ -819,6 +819,17 @@ Selector class diagram
 
 \end_layout
 
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Selector-class-diagram"
+
+\end_inset
+
+ shows the class hierarchy of the available selectors.
+\end_layout
+
 \begin_layout Paragraph
 
 \family typewriter
@@ -826,13 +837,45 @@ TournamentSelector
 \end_layout
 
 \begin_layout Standard
-In tournament selection the best Phenotype from a random sample of s individuals
- is chosen for the next generation.
- The samples are drawn (in this class) without replacement.
+In 
+\begin_inset CommandInset href
+LatexCommand href
+name "tournament selection"
+target "https://en.wikipedia.org/wiki/Tournament_selection"
+
+\end_inset
+
+ the best individual from a random sample of 
+\begin_inset Formula $s$
+\end_inset
+
+ individuals is chosen for the population 
+\begin_inset Formula $Pg$
+\end_inset
+
+.
+ The samples are drawn (in this class) with replacement.
  An individual will win a tournament only if its fitness is greater than
- the fitness of the other s-1 competitors.
- Note that the worst Phenotype individual never survives, and the best Phenotype
- individual wins in all the tournaments it participates.
+ the fitness of the other 
+\begin_inset Formula $s-1$
+\end_inset
+
+ competitors.
+ Note that the worst individual never survives, and the best individual
+ wins in all the tournaments it participates.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+Selection distribution?
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -842,8 +885,20 @@ TruncationSelector
 \end_layout
 
 \begin_layout Standard
-In truncation selection individuals are sorted according to their fitness.
- Only the best individuals are selected.
+In 
+\begin_inset CommandInset href
+LatexCommand href
+name "truncation selection"
+target "https://en.wikipedia.org/wiki/Truncation_selection"
+
+\end_inset
+
+ individuals are sorted according to their fitness.
+ Only the 
+\begin_inset Formula $n$
+\end_inset
+
+ best individuals are selected.
 \end_layout
 
 \begin_layout Paragraph
@@ -855,15 +910,21 @@ MonteCarloSelector
 \begin_layout Standard
 Select the phenotypes from a given population randomly.
  This class can be used to measure the performance of an other given selector.
+ In general, the 
+\shape italic
+performance
+\shape default
+ of a selector should be better than the selection performance of the monte
+ carlo selector.
 \end_layout
 
-\begin_layout Subsubsection
-Probability selector
+\begin_layout Paragraph
+Probability selectors
 \end_layout
 
 \begin_layout Standard
 Probability selectors selects individuals from a given population based
- on a selection probability 
+ on the selection probability 
 \begin_inset Formula $p_{i}$
 \end_inset
 
@@ -899,7 +960,7 @@ where
 \begin_inset Formula $i$
 \end_inset
 
-.
+ in the set of selected individuals.
 \end_layout
 
 \begin_layout Paragraph
@@ -909,37 +970,47 @@ LinearRankSelector
 \end_layout
 
 \begin_layout Standard
-In linear ranking selection, individuals (phenotypes) are sorted according
- to their fitness values and the rank N is assignee to the best Phenotype
- individual and the rank 1 to the worst Phenotype.
- The selection probability is linearly assigned to the individuals according
- to their rank.
- 
+In linear ranking selection the individuals are sorted according to their
+ fitness values.
+ The rank 
+\begin_inset Formula $N$
+\end_inset
+
+ is assignee to the best individual and the rank 1 to the worst induvidual.
+ The selection probability 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ of individual 
+\begin_inset Formula $i$
+\end_inset
+
+ is linearly assigned to the individuals according to their rank.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{1}{N}\left(n_{m}+\left(n_{p}-n_{m}\right)\frac{i-1}{N-1}\right)
+p_{i}=\frac{1}{N}\left(n^{\text{⁻}}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)
 \end{equation}
 
 \end_inset
 
 Here 
-\begin_inset Formula $\frac{n_{m}}{N}$
+\begin_inset Formula $\frac{n^{-}}{N}$
 \end_inset
 
  is the probability of the worst individual to be selected and 
-\begin_inset Formula $\frac{n_{p}}{N}$
+\begin_inset Formula $\frac{n^{+}}{N}$
 \end_inset
 
  the probability of the best individual to be selected.
  As the population size is held constant, the condition 
-\begin_inset Formula $n_{p}=2-n_{m}$
+\begin_inset Formula $n^{+}=2-n^{-}$
 \end_inset
 
  and 
-\begin_inset Formula $n_{m}\geq0$
+\begin_inset Formula $n^{-}\geq0$
 \end_inset
 
  must be fulfilled.
@@ -963,9 +1034,12 @@ ExponentialRankSelector
 \end_layout
 
 \begin_layout Standard
-An alternative to the "weak" LinearRankSelector is to assign survival probabilit
-ies to the sorted individuals using an exponential function.
- 
+An alternative to the 
+\shape italic
+weak
+\shape default
+ LinearRankSelector is to assign survival probabilities to the sorted individual
+s using an exponential function 
 \end_layout
 
 \begin_layout Standard
@@ -989,16 +1063,16 @@ where
 \begin_inset Formula $c$
 \end_inset
 
- increases the probability of the best phenotypes to be selected.
- If c is set to zero, the selection probability of the best phenotype is
- set to one.
- The selection probability of all other phenotypes is zero.
- A value near one equalizes the selection probabilities.
- 
-\end_layout
+ increases the probability of the best individual to be selected.
+ If 
+\begin_inset Formula $c$
+\end_inset
 
-\begin_layout Standard
-This selector sorts the population in descending order while calculating
+ is set to zero, the selection probability of the best individual is set
+ to one.
+ The selection probability of all other individuals is zero.
+ A value near one equalizes the selection probabilities.
+ This selector sorts the population in descending order while calculating
  the selection probabilities.
  
 \end_layout
@@ -1013,7 +1087,7 @@ BoltzmannSelector
 The selection probability is defined as 
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{\exp(b\cdot f_{i})}{Z}
+p_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z}
 \end{equation}
 
 \end_inset
@@ -1025,7 +1099,7 @@ where
  controls the selection intensity and 
 \begin_inset Formula 
 \begin{equation}
-Z=\sum_{i=1}^{n}\exp(f_{i})
+Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}
 \end{equation}
 
 \end_inset
@@ -1200,7 +1274,7 @@ Maintaining diversity.
 
 \begin_layout Standard
 The mutation probability 
-\begin_inset Formula $P$
+\begin_inset Formula $p_{m}$
 \end_inset
 
  is the parameter that must be optimized.
@@ -1212,7 +1286,7 @@ The mutation probability
 
 \begin_layout Standard
 The mutation probability 
-\begin_inset Formula $P$
+\begin_inset Formula $p_{m}$
 \end_inset
 
  is the probability that a specific gene over the whole population is mutated.
@@ -1240,7 +1314,7 @@ where
  That means, the (average) number of genes mutated by an mutator is
 \begin_inset Formula 
 \begin{equation}
-\hat{\mu}=N_{G}\cdot P
+\hat{\mu}=N_{G}\cdot p_{m}
 \end{equation}
 
 \end_inset
