@@ -263,14 +263,21 @@ leftarrow select_{S}(P_{g - 1})$
 
     $O_g 
 \backslash
-leftarrow alter(select_{O}(P_{g - 1}))$
+leftarrow select_{O}(P_{g - 1})$
+\end_layout
+
+\begin_layout Plain Layout
+
+    $O_g 
+\backslash
+leftarrow alter(O_g)$
 \end_layout
 
 \begin_layout Plain Layout
 
     $P_g 
 \backslash
-leftarrow filter[g_i<g_{max}]((S_g)) + filter[g_i<g_{max}](O_g)$
+leftarrow filter[g_i<g_{max}](S_g) + filter[g_i<g_{max}](O_g)$
 \end_layout
 
 \begin_layout Plain Layout
@@ -310,11 +317,11 @@ reference "lis:Genetic-algorithm"
 
 \end_inset
 
- shows the steps of the 
+ shows the steps the 
 \shape smallcaps
 Jenetics
 \shape default
- genetic algorithm.
+ genetic algorithm is using.
  In the first two lines the initial population is created and the fitness
  value is calculated.
  This is done by the 
@@ -633,7 +640,31 @@ The Alterers are concatenated, first the crossover (with corsage probability
 \end_layout
 
 \begin_layout Section
-Genetic operators
+Genetic operator
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset CommandInset href
+LatexCommand href
+name "genetic operators"
+target "https://en.wikipedia.org/wiki/Genetic_operator"
+
+\end_inset
+
+ are used for creating 
+\shape italic
+genetic
+\shape default
+ diversity (
+\family typewriter
+Alterer
+\family default
+) and select potentially useful solutions for recombination (
+\family typewriter
+Selector
+\family default
+).
 \end_layout
 
 \begin_layout Subsection
@@ -641,9 +672,151 @@ Select
 \end_layout
 
 \begin_layout Standard
-Selectors are responsible for selecting a given number of genotypes (chromosomes
-) from the population.
- You can define different selectors for offsprings and for the survivors.
+Selectors are responsible for selecting a given number of individuals from
+ the population.
+ The selectors are used to divide the population into 
+\shape italic
+survivors
+\shape default
+ and 
+\shape italic
+offsprings
+\shape default
+.
+ The selectors for 
+\shape italic
+offsprings
+\shape default
+ and for the 
+\shape italic
+survivors
+\shape default
+ can be choosen independently.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+GeneticAlgorithm<Float64Gene, Double> ga = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setOffspringFraction(0.7);
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setSurvivorSelector(
+\end_layout
+
+\begin_layout Plain Layout
+
+    new RouletteWheelSelector<Float64Gene, Double>()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setOffspringSelector(
+\end_layout
+
+\begin_layout Plain Layout
+
+    new TournamentSelector<Float64Gene, Double>()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With the property 
+\family typewriter
+offspringFraction
+\family default
+ (
+\begin_inset Formula $o_{f}$
+\end_inset
+
+) it is possible to control the number of selected offsprings 
+\begin_inset Formula 
+\[
+\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot o_{f}\right)
+\]
+
+\end_inset
+
+and the number of selected survivors 
+\begin_inset Formula 
+\begin{eqnarray*}
+\left\Vert S_{g}\right\Vert  & = & \left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert 
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/SelectorClassDiagram.svg
+	lyxscale 70
+	width 95text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Selector-class-diagram"
+
+\end_inset
+
+Selector class diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -973,7 +1146,13 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Genetic operators
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Alterer-class-diagram"
+
+\end_inset
+
+Alterer class diagram
 \end_layout
 
 \end_inset
