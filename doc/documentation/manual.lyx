@@ -923,8 +923,12 @@ Probability selectors
 \end_layout
 
 \begin_layout Standard
-Probability selectors selects individuals from a given population based
- on the selection probability 
+Probability selectors--also known as 
+\shape italic
+fitness proportional
+\shape default
+ selectors--selects individuals from a given population based on the selection
+ probability 
 \begin_inset Formula $p_{i}$
 \end_inset
 
@@ -933,7 +937,95 @@ Probability selectors selects individuals from a given population based
 \end_inset
 
 .
- The selection probability of an individual 
+ 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/FitnessProportionalSelection.eps
+	width 98text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-proportional-selection"
+
+\end_inset
+
+Fitness proportional selection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general fitness proportional selection works as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fitness-proportional-selection"
+
+\end_inset
+
+.
+ A uniform distributed random number 
+\begin_inset Formula $r\in\left[0,F\right)$
+\end_inset
+
+ determines which individual is selected: 
+\begin_inset Formula 
+\begin{equation}
+i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the number of individuals and 
+\begin_inset Formula $f_{i}$
+\end_inset
+
+ the fitness value of the 
+\begin_inset Formula $i$
+\end_inset
+
+th individual.
+ The probability selector works the same way, only the fitness value 
+\begin_inset Formula $f_{i}$
+\end_inset
+
+ is replaced by the individual's selection probability 
+\begin_inset Formula $p_{i}$
+\end_inset
+
+.
+ It is not necessary to sort the population.
+\end_layout
+
+\begin_layout Standard
+The selection probability of an individual 
 \begin_inset Formula $i$
 \end_inset
 
