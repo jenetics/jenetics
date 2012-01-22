@@ -64,13 +64,27 @@ figs-within-sections
 \font_tt_scale 100
 
 \graphics default
-\default_output_format default
+\default_output_format pdf2
 \output_sync 0
 \bibtex_command bibtex
 \index_command default
+\float_placement h
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_title "Jenetics"
+\pdf_author "Franz Wilhelmstötter"
+\pdf_subject "Genetic Algorithm"
+\pdf_keywords "Research, Artificial Intelligence, Bio-Informatics"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
 \papersize a4paper
 \use_geometry false
 \use_amsmath 1
