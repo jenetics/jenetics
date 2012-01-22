@@ -923,16 +923,20 @@ Probability selectors
 \end_layout
 
 \begin_layout Standard
-Probability selectors--also known as 
+The probability selectors are a variation of of 
 \shape italic
 fitness proportional
 \shape default
- selectors--selects individuals from a given population based on the selection
+ selectors and selects individuals from a given population based on the
+ 
+\shape italic
+selection
+\shape default
  probability 
 \begin_inset Formula $p_{i}$
 \end_inset
 
-, which is assigned to each individual 
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -979,7 +983,7 @@ Fitness proportional selection
 \end_layout
 
 \begin_layout Standard
-In general fitness proportional selection works as shown in figure 
+Fitness proportional selection works as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-proportional-selection"
@@ -987,11 +991,11 @@ reference "fig:Fitness-proportional-selection"
 \end_inset
 
 .
- A uniform distributed random number 
+ An uniform distributed random number 
 \begin_inset Formula $r\in\left[0,F\right)$
 \end_inset
 
- determines which individual is selected: 
+ specifies which individual is selected: 
 \begin_inset Formula 
 \begin{equation}
 i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
@@ -1008,10 +1012,10 @@ where
 \end_inset
 
  the fitness value of the 
-\begin_inset Formula $i$
+\begin_inset Formula $i^{\textrm{th}}$
 \end_inset
 
-th individual.
+ individual.
  The probability selector works the same way, only the fitness value 
 \begin_inset Formula $f_{i}$
 \end_inset
@@ -1022,10 +1026,7 @@ th individual.
 
 .
  It is not necessary to sort the population.
-\end_layout
-
-\begin_layout Standard
-The selection probability of an individual 
+ The selection probability of an individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -1048,7 +1049,7 @@ where
 \begin_inset Formula $k$
 \end_inset
 
- the number of individual 
+ the number of how individual 
 \begin_inset Formula $i$
 \end_inset
 
