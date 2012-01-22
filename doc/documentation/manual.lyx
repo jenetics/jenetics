@@ -349,7 +349,7 @@ GeneticAlgorithm.setup()
  generation without change.
  (The survivor/offspring fraction is set with GeneticAlgorithm.setOffspringFracti
 on(double)).
- The offsprings are selected and altered and are merged with the survivors
+ The offspring are selected and altered and are merged with the survivors
  to the new population.
 \end_layout
 
@@ -533,7 +533,7 @@ Factory
 \family typewriter
 gtf
 \family default
- in this example will create genotypes which consits of one 
+ in this example will create genotypes which consists of one 
 \family typewriter
 BitChromosome
 \family default
@@ -694,18 +694,18 @@ survivors
 \shape default
  and 
 \shape italic
-offsprings
+offspring
 \shape default
 .
  The selectors for 
 \shape italic
-offsprings
+offspring
 \shape default
  and for the 
 \shape italic
 survivors
 \shape default
- can be choosen independently.
+ can be chosen independently.
  
 \end_layout
 
@@ -768,7 +768,7 @@ offspringFraction
 \begin_inset Formula $o_{f}$
 \end_inset
 
-) it is possible to control the number of selected offsprings 
+) it is possible to control the number of selected offspring 
 \begin_inset Formula 
 \[
 \left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot o_{f}\right)
@@ -928,8 +928,8 @@ Select the phenotypes from a given population randomly.
 \shape italic
 performance
 \shape default
- of a selector should be better than the selection performance of the monte
- carlo selector.
+ of a selector should be better than the selection performance of the Monte
+ Carlo selector.
 \end_layout
 
 \begin_layout Paragraph
@@ -1083,7 +1083,7 @@ In linear ranking selection the individuals are sorted according to their
 \begin_inset Formula $N$
 \end_inset
 
- is assignee to the best individual and the rank 1 to the worst induvidual.
+ is assignee to the best individual and the rank 1 to the worst individual.
  The selection probability 
 \begin_inset Formula $p_{i}$
 \end_inset
