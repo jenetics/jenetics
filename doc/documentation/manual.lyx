@@ -7,7 +7,8 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{url}
- 
+\usepackage{cclicenses}
+
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -107,7 +108,7 @@ figs-within-sections
 \paragraph_indentation default
 \quotes_language danish
 \papercolumns 1
-\papersides 2
+\papersides 1
 \paperpagestyle fancy
 \tracking_changes false
 \output_changes false
@@ -118,16 +119,155 @@ figs-within-sections
 
 \begin_body
 
-\begin_layout Title
+\begin_layout Standard
+\align center
+
+\family sans
+\series bold
+\size giant
+\noun on
 Jenetics
+\series default
+\noun default
+
+\begin_inset VSpace 6mm
+\end_inset
+
+
 \end_layout
 
-\begin_layout Date
-Version 0.9.0.0
+\begin_layout Standard
+\align center
+
+\family sans
+\size largest
+Java Genetic Algorithm Library Manual
 \end_layout
 
-\begin_layout Author
+\begin_layout Standard
+\begin_inset VSpace vfill*
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\family sans
+\series bold
+\noun on
 Franz Wilhelmstötter
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\family sans
+\size small
+0.9.0 / 2012
+\family default
+\size default
+
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{roman}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill*
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename graphic/by-nc-sa.svg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+
+\size footnotesize
+This manual by Franz Wilhelmstötter is licensed under a 
+\begin_inset CommandInset href
+LatexCommand href
+name "Creative Commons"
+target "http://creativecommons.org/licenses/by-nc-sa/3.0/"
+
+\end_inset
+
+ Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Abstract
@@ -170,8 +310,36 @@ Function
 \end_layout
 
 \begin_layout Standard
+\noindent
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic}
+\end_layout
 
 \end_inset
 
@@ -230,10 +398,6 @@ key "Whitley94agenetic"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Subsection
-Design
 \end_layout
 
 \begin_layout Standard
@@ -336,21 +500,27 @@ reference "lis:Genetic-algorithm"
 Jenetics
 \shape default
  genetic algorithm is using.
- In the first two lines the initial population is created and the fitness
- value is calculated.
- This is done by the 
+ The first line creates the initial population and the second line calculates
+ the fitness value of the individuals.
+ (This is done by the 
 \family typewriter
 GeneticAlgorithm.setup()
 \family default
- method.
- The steps from line 4 to 8 are repeated until a given termination criterion
+ method.) Line 4 increases the generation number and line 5 and 6 selects
+ the survivor and the offspring population.
+ (The survivor/offspring fraction is set with the 
+\family typewriter
+GeneticAlgorithm.setOffspringFraction(double)
+\family default
+ method.) The selected off-springs are altered in line 7.
+ The next line combines the survivor population and the altered offspring
+ population, after removing the 
+\shape italic
+died
+\shape default
+ individuals, to the new population.
+ The steps from line 4 to 9 are repeated until a given termination criterion
  is fulfilled.
- Line 5 selects the survivor population which will be passed to the next
- generation without change.
- (The survivor/offspring fraction is set with GeneticAlgorithm.setOffspringFracti
-on(double)).
- The offspring are selected and altered and are merged with the survivors
- to the new population.
 \end_layout
 
 \begin_layout Standard
@@ -412,20 +582,16 @@ reference "fig:Structure-diagram"
  a Population.
 \end_layout
 
-\begin_layout Subsection
-Simple setup
+\begin_layout Section
+Getting started
 \end_layout
 
 \begin_layout Standard
-The minimum GA setup needs a 
+The minimum GA setup needs a genotype-factory, 
 \family typewriter
-Genotype
+Factory<Genotype<Gene<?>>
 \family default
-, 
-\family typewriter
-Factory
-\family default
- and a fitness 
+, and a fitness 
 \family typewriter
 Function
 \family default
@@ -438,7 +604,7 @@ Genotype
 \family typewriter
 Factory
 \family default
- interface and is used as prototype for creating the initial 
+ interface and can be used as prototype for creating the initial 
 \family typewriter
 Population
 \family default
@@ -521,29 +687,17 @@ public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-Genotype
-\family default
- 
-\family typewriter
-Factory
-\family default
- 
+The genotype-factory 
 \family typewriter
 gtf
 \family default
- in this example will create genotypes which consists of one 
+ in the example above will create genotypes which consists of one 
 \family typewriter
 BitChromosome
 \family default
  with length 10.
  The one to zero probability of the newly created genotypes is set to 0.5.
- The fitness 
-\family typewriter
-Function
-\family default
- is parameterized with a 
+ The fitness-function is parameterized with a 
 \family typewriter
 BitGene
 \family default
@@ -552,16 +706,13 @@ BitGene
 Double
 \family default
 .
- That means that the fitness 
-\family typewriter
-Function
-\family default
- is calculating the fitness value as 
+ That means that the fitness-function is calculating the fitness value as
+ 
 \family typewriter
 Double
 \family default
 .
- At least, the fitness value must be at least a 
+ The return value of the fitness-function must be at least 
 \family typewriter
 Comparable
 \family default
@@ -570,7 +721,7 @@ Comparable
 \family typewriter
 GeneticAlgorithm
 \family default
- must be created with the genotype-factory and the fitness-function.
+ object is then created with the genotype-factory and the fitness-function.
  For starting the evolution just call 
 \family typewriter
 ga.setup()
@@ -639,6 +790,11 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
+    System.out.println(ga);
+\end_layout
+
+\begin_layout Plain Layout
+
 }
 \end_layout
 
@@ -648,9 +804,11 @@ public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Standard
-The Alterers are concatenated, first the crossover (with corsage probability
+The alterers are concatenated, first the crossover (with corsage probability
  0.1) is performed and then the chromosomes are mutated (with probability
  0.01).
+ For a detailed description of the available genetic operators revere the
+ next section.
 \end_layout
 
 \begin_layout Section
@@ -658,10 +816,9 @@ Genetic operator
 \end_layout
 
 \begin_layout Standard
-The 
 \begin_inset CommandInset href
 LatexCommand href
-name "genetic operators"
+name "Genetic operators"
 target "https://en.wikipedia.org/wiki/Genetic_operator"
 
 \end_inset
@@ -2325,6 +2482,13 @@ lstset{caption={Knapsack}}
 lstinputlisting{code/Knapsack.java}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
 \end_inset
 
 
