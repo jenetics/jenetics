@@ -1038,6 +1038,16 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
  competitors.
  Note that the worst individual never survives, and the best individual
  wins in all the tournaments it participates.
+ The selection pressure can be varied by changing the tournament size 
+\begin_inset Formula $s$
+\end_inset
+
+.
+ For large values of 
+\begin_inset Formula $s$
+\end_inset
+
+, weak individuals have less chance being selected.
 \end_layout
 
 \begin_layout Standard
@@ -2003,7 +2013,7 @@ Concurrency
 \end_layout
 
 \begin_layout Standard
-The Jenetics library tries to parallelize independent task whenever possible.
+The Jenetics library parallelizes independent task whenever possible.
  It uses the 
 \family typewriter
 
@@ -2024,7 +2034,7 @@ target "http://javolution.org/"
 
 \end_inset
 
- library for concurrent task execution.
+ project for concurrent task execution.
  In the default configuration the 
 \family typewriter
 ConcurrentContext
@@ -2046,6 +2056,11 @@ Runtime.getRuntime().availableProcessors()
  cores of the target machine.
  If you want to change the number of used cores you must do this before
  the GA initialization.
+ The configuration is done by the 
+\family typewriter
+org.jenetics.util.Concurrency
+\family default
+ class as shown in the following example.
 \end_layout
 
 \begin_layout Standard
@@ -2055,22 +2070,37 @@ status open
 
 \begin_layout Plain Layout
 
-public static void main(final String[] args) {
+import org.jenetics.util.Concurrency;
 \end_layout
 
 \begin_layout Plain Layout
 
-    final int parallelism = 10;
+public class Main {
 \end_layout
 
 \begin_layout Plain Layout
 
-    Concurrency.setConcurrency(parallelism);
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    // ...
+        final int parallelism = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+        Concurrency.setConcurrency(parallelism);
+\end_layout
+
+\begin_layout Plain Layout
+
+        // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -2088,17 +2118,17 @@ The
 \family typewriter
 ConcurrentContext
 \family default
- uses it's own--optimized--thread-pool implementation, but you have the
- possibility to replace this with the JDKs 
+ uses it's own--optimized--thread-pool implementation.
+ If you need to have a single executor service you can use the 
 \family typewriter
 ForkJoinPool
 \family default
-.
+ from the JDK.
  This allows you to use the same thread-pool for the GA and 
 \shape italic
 other
 \shape default
- concurrent task.
+ concurrent task in your application.
 \end_layout
 
 \begin_layout Standard
@@ -2108,27 +2138,47 @@ status open
 
 \begin_layout Plain Layout
 
-public static void main(final String[] args) {
+import java.util.concurrent.ForkJoinPool;
 \end_layout
 
 \begin_layout Plain Layout
 
-    final int parallelism = 10;
+import org.jenetics.util.Concurrency;
 \end_layout
 
 \begin_layout Plain Layout
 
-    final ForkJoinPool pool = new ForkJoinPool(parallelism);
+public class Main {
 \end_layout
 
 \begin_layout Plain Layout
 
-    Concurrency.setForkJoinPool(pool)
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    // ...
+        final int parallelism = 10;
+\end_layout
+
+\begin_layout Plain Layout
+
+        final ForkJoinPool pool = new ForkJoinPool(parallelism);
+\end_layout
+
+\begin_layout Plain Layout
+
+        Concurrency.setForkJoinPool(pool)
+\end_layout
+
+\begin_layout Plain Layout
+
+        // ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -2138,11 +2188,20 @@ public static void main(final String[] args) {
 
 \end_inset
 
+The concurrent context from the Javolution project is used in the following
+ way.
+ A detailed usage description can be found at 
+\begin_inset Flex URL
+status collapsed
 
+\begin_layout Plain Layout
+
+http://javolution.org/
 \end_layout
 
-\begin_layout Standard
-aslfk asöldfka ölsdkf aäölsdkf öalsdkf 
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -2167,7 +2226,24 @@ try {
 
 \begin_layout Plain Layout
 
-        // Do some work
+        ...
+ // Execution of task one.
+\end_layout
+
+\begin_layout Plain Layout
+
+    }});
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConcurrentContext.execute(new Runnable() { public void run() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+ // Execution task two.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2192,12 +2268,17 @@ try {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-The fitness calculation is performed concurrently.
- 
+The example above executes the two tasks in parallel.
+ The 
+\family typewriter
+exit()
+\family default
+ call in the finally block waits until the two tasks finishes execution.
+ Using the 
+\family typewriter
+Concurrency
+\family default
+ class, this can be written more compactly.
 \end_layout
 
 \begin_layout Standard
@@ -2212,12 +2293,34 @@ try (Concurrency c = Concurrency.start()) {
 
 \begin_layout Plain Layout
 
-    c.execute(task1);
+    c.execute(new Runnable() { public void run() {
 \end_layout
 
 \begin_layout Plain Layout
 
-    c.execute(taks2);
+        ...
+ // Execution of task one.
+\end_layout
+
+\begin_layout Plain Layout
+
+    }});
+\end_layout
+
+\begin_layout Plain Layout
+
+    c.execute(new Runnable() { public void run() {
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+ // Execution of task two.
+\end_layout
+
+\begin_layout Plain Layout
+
+    }});
 \end_layout
 
 \begin_layout Plain Layout
