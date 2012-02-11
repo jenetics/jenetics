@@ -836,6 +836,10 @@ Alterer
 Selector
 \family default
 ).
+ This section gives you an overview about the genetic operators available
+ in the Jenetics library.
+ It also contains some theoretical information, which should help to choose
+ the right combination of operators for your problem you want to solve.
 \end_layout
 
 \begin_layout Subsection
