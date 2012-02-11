@@ -927,17 +927,17 @@ offspringFraction
 
 ) it is possible to control the number of selected offspring 
 \begin_inset Formula 
-\[
+\begin{equation}
 \left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot o_{f}\right)
-\]
+\end{equation}
 
 \end_inset
 
 and the number of selected survivors 
 \begin_inset Formula 
-\begin{eqnarray*}
+\begin{eqnarray}
 \left\Vert S_{g}\right\Vert  & = & \left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
-\end{eqnarray*}
+\end{eqnarray}
 
 \end_inset
 
@@ -1226,6 +1226,43 @@ where
 \begin_layout Paragraph
 
 \family typewriter
+RouletteWheelSelector 
+\end_layout
+
+\begin_layout Standard
+The roulette-wheel selector is also known as fitness proportional selector.
+ The fitness value 
+\begin_inset Formula $f_{i}$
+\end_inset
+
+ is used to calculate the selection probability of individual 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ 
+\begin_inset Formula 
+\begin{equation}
+p_{i}=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
+\end{equation}
+
+\end_inset
+
+Selecting 
+\begin_inset Formula $n$
+\end_inset
+
+ individuals from a given population is equivalent to play 
+\begin_inset Formula $n$
+\end_inset
+
+ times on the roulette-wheel.
+ The population must not be sorted when selecting.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
 LinearRankSelector
 \end_layout
 
@@ -1251,7 +1288,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)
+p_{i}=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
 
 \end_inset
@@ -1305,7 +1342,7 @@ weak
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1}
+p_{i}=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
 
 \end_inset
@@ -1347,7 +1384,7 @@ BoltzmannSelector
 The selection probability of the Boltzmann selector is defined as 
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z}
+p_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
 
 \end_inset
@@ -1359,7 +1396,7 @@ where
  controls the selection intensity and 
 \begin_inset Formula 
 \begin{equation}
-Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}
+Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}},
 \end{equation}
 
 \end_inset
@@ -1397,36 +1434,26 @@ Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}
 \begin_layout Paragraph
 
 \family typewriter
-RouletteWheelSelector 
-\end_layout
-
-\begin_layout Standard
-The selection probability of the roulette-wheel selection is defined as
- 
-\begin_inset Formula 
-\begin{equation}
-p_{i}=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
-\end{equation}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
 StochasticUniversalSelector
 \end_layout
 
 \begin_layout Standard
-Stochastic-universal selection is a method for selecting individuals according
- to some given probability in a way that minimizes the chance of fluctuations.
+Stochastic-universal selection
+\begin_inset CommandInset citation
+LatexCommand cite
+key "back1996evolutionary"
+
+\end_inset
+
+ (SUS) is a method for selecting individuals according to some given probability
+ in a way that minimizes the chance of fluctuations.
  It can be viewed as a type of roulette game where we now have 
 \begin_inset Formula $P$
 \end_inset
 
  equally spaced points which we spin.
+ SUS uses a single random value for selecting individuals by choosing them
+ at equally spaced intervals.
  The selection method was introduced by James Baker.
 \begin_inset CommandInset citation
 LatexCommand cite
