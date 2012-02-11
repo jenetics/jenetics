@@ -252,7 +252,7 @@ pagenumbering{roman}
 \align center
 
 \size footnotesize
-This manual by Franz Wilhelmstötter is licensed under a 
+This manual is licensed under a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
@@ -1094,21 +1094,17 @@ Probability selectors
 \end_layout
 
 \begin_layout Standard
-The probability selectors are a variation of of 
+The probability selectors are a variation of 
 \shape italic
 fitness proportional
 \shape default
- selectors and selects individuals from a given population based on the
+ selectors and selects individuals from a given population based on it's
  
 \shape italic
 selection
 \shape default
  probability 
 \begin_inset Formula $p_{i}$
-\end_inset
-
- of individual 
-\begin_inset Formula $i$
 \end_inset
 
 .
@@ -1123,7 +1119,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename graphic/FitnessProportionalSelection.eps
-	width 98text%
+	width 96text%
 
 \end_inset
 
@@ -1216,11 +1212,11 @@ where
 \begin_inset Formula $n$
 \end_inset
 
- is the number of selected individuals and 
+ is the overall number of selected individuals and 
 \begin_inset Formula $k$
 \end_inset
 
- the number of how individual 
+ the number of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -1234,7 +1230,7 @@ LinearRankSelector
 \end_layout
 
 \begin_layout Standard
-In linear ranking selection the individuals are sorted according to their
+In linear-ranking selection the individuals are sorted according to their
  fitness values.
  The rank 
 \begin_inset Formula $N$
@@ -1278,8 +1274,8 @@ Here
 \end_inset
 
  must be fulfilled.
- Note that all individuals get a different rank, i.e., a different selection
- probability, even they have the same fitness value.
+ Note that all individuals get a different rank, respectively, a different
+ selection probability, even they have the same fitness value.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Blickle97acomparison"
@@ -1302,8 +1298,8 @@ An alternative to the
 \shape italic
 weak
 \shape default
- LinearRankSelector is to assign survival probabilities to the sorted individual
-s using an exponential function 
+ linear-rank selector is to assign survival probabilities to the sorted
+ individuals using an exponential function 
 \end_layout
 
 \begin_layout Standard
@@ -1348,7 +1344,7 @@ BoltzmannSelector
 \end_layout
 
 \begin_layout Standard
-The selection probability is defined as 
+The selection probability of the Boltzmann selector is defined as 
 \begin_inset Formula 
 \begin{equation}
 p_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z}
@@ -1401,11 +1397,20 @@ Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}
 \begin_layout Paragraph
 
 \family typewriter
-RouletteWheelSelector
+RouletteWheelSelector 
 \end_layout
 
 \begin_layout Standard
-xxx
+The selection probability of the roulette-wheel selection is defined as
+ 
+\begin_inset Formula 
+\begin{equation}
+p_{i}=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
+\end{equation}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -1415,7 +1420,80 @@ StochasticUniversalSelector
 \end_layout
 
 \begin_layout Standard
-xxx
+Stochastic-universal selection is a method for selecting individuals according
+ to some given probability in a way that minimizes the chance of fluctuations.
+ It can be viewed as a type of roulette game where we now have 
+\begin_inset Formula $P$
+\end_inset
+
+ equally spaced points which we spin.
+ The selection method was introduced by James Baker.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "baker1987selection"
+
+\end_inset
+
+
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/StochasticUniversalSelection.eps
+	width 96text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Stochastic-universal-selection"
+
+\end_inset
+
+Stochastic-universal selection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Stochastic-universal-selection"
+
+\end_inset
+
+ shows how the stochastic-universal selection works; 
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of individuals to select.
+ The selection probability for the stochastic-universal selector is defined
+ as 
+\begin_inset Formula 
+\begin{equation}
+p_{i}=\frac{xx}{yy}
+\end{equation}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1886,6 +1964,10 @@ C2 = 987|345|6210
 \end_layout
 
 \begin_layout Section
+Practice
+\end_layout
+
+\begin_layout Subsection
 Concurrency
 \end_layout
 
@@ -2117,7 +2199,7 @@ try (Concurrency c = Concurrency.start()) {
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Statistics
 \end_layout
 
