@@ -302,9 +302,9 @@ Phenotype
 \family typewriter
 Population
 \family default
- and Fitness-
+ and fitness
 \family typewriter
-Function
+ Function
 \family default
 .
 \end_layout
@@ -809,6 +809,22 @@ The alterers are concatenated, first the crossover (with corsage probability
  0.01).
  For a detailed description of the available genetic operators revere the
  next section.
+\end_layout
+
+\begin_layout Section
+Basic classes
+\end_layout
+
+\begin_layout Subsection
+Genes
+\end_layout
+
+\begin_layout Subsection
+Fitness function
+\end_layout
+
+\begin_layout Subsection
+Fitness scaler
 \end_layout
 
 \begin_layout Section
