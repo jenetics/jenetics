@@ -589,9 +589,9 @@ Getting started
 \begin_layout Standard
 The minimum GA setup needs a genotype-factory, 
 \family typewriter
-Factory<Genotype<Gene<?,?>>
+Factory<Genotype<?>
 \family default
-, and a fitness 
+>, and a fitness 
 \family typewriter
 Function
 \family default
@@ -812,7 +812,7 @@ The alterers are concatenated, first the crossover (with corsage probability
 \end_layout
 
 \begin_layout Section
-Genetic operator
+Genetic operators
 \end_layout
 
 \begin_layout Standard
@@ -2083,6 +2083,10 @@ import org.jenetics.util.Concurrency;
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
 public class Main {
 \end_layout
 
@@ -2123,16 +2127,16 @@ The
 ConcurrentContext
 \family default
  uses it's own--optimized--thread-pool implementation.
- If you need to have a single executor service you can use the 
+ If you need to have a single executor service, for the GA and your own
+ classes, you can initialize the 
+\family typewriter
+Concurrency
+\family default
+ class with the 
 \family typewriter
 ForkJoinPool
 \family default
  from the JDK.
- This allows you to use the same thread-pool for the GA and 
-\shape italic
-other
-\shape default
- concurrent task in your application.
 \end_layout
 
 \begin_layout Standard
@@ -2148,6 +2152,10 @@ import java.util.concurrent.ForkJoinPool;
 \begin_layout Plain Layout
 
 import org.jenetics.util.Concurrency;
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -2172,7 +2180,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        Concurrency.setForkJoinPool(pool)
+        Concurrency.setForkJoinPool(pool);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2517,8 +2525,234 @@ Describe GA termination strategies.
 Serialization
 \end_layout
 
+\begin_layout Standard
+Jenetics has build-in XML serialization for a number of classes:
+\end_layout
+
+\begin_layout Itemize
+BitGene
+\end_layout
+
+\begin_layout Itemize
+CharacterGene
+\end_layout
+
+\begin_layout Itemize
+EnumGene
+\end_layout
+
+\begin_layout Itemize
+Float64Gene
+\end_layout
+
+\begin_layout Itemize
+Integer64Gene
+\end_layout
+
+\begin_layout Itemize
+CharacterChromosome
+\end_layout
+
+\begin_layout Itemize
+PermutationChromosome
+\end_layout
+
+\begin_layout Itemize
+Float64Chromosome
+\end_layout
+
+\begin_layout Itemize
+Integer64Chomosome
+\end_layout
+
+\begin_layout Itemize
+Genotype
+\end_layout
+
+\begin_layout Itemize
+Phenotype
+\end_layout
+
+\begin_layout Itemize
+Population
+\end_layout
+
+\begin_layout Standard
+Serialization of GA objects.
+ Jenetics allows you to write a population to disk and load it to a GA again
+ and start evolving again.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+GeneticAlgorithm<BitGene, Integer> ga = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+File file = new File("population.xml");
+\end_layout
+
+\begin_layout Plain Layout
+
+IO.xml.write(ga.getPopulation(), file);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Population<BitGene,Integer> pop = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    (Population<BitGene, Integer>)IO.xml.read(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Population.class, file);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<?xml version="1.0" encoding="UTF-8" ?>
+\end_layout
+
+\begin_layout Plain Layout
+
+<org.jenetics.Population size="10">
+\end_layout
+
+\begin_layout Plain Layout
+
+	<org.jenetics.Phenotype generation="9">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<org.jenetics.Genotype length="1" ngenes="1">
+\end_layout
+
+\begin_layout Plain Layout
+
+			<org.jenetics.Float64Chromosome length="1" min="0.0" max="360.0">
+\end_layout
+
+\begin_layout Plain Layout
+
+				<org.jscience.mathematics.number.Float64 value="255.96573260244065"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</org.jenetics.Float64Chromosome>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</org.jenetics.Genotype>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<fitness class="org.jscience.mathematics.number.Float64" value="0.9456646624865551"
+/>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<raw-fitness class="org.jscience.mathematics.number.Float64" value="0.9724529101640
+6299"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</org.jenetics.Phenotype>
+\end_layout
+
+\begin_layout Plain Layout
+
+	<org.jenetics.Phenotype generation="10">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<org.jenetics.Genotype length="1" ngenes="1">
+\end_layout
+
+\begin_layout Plain Layout
+
+			<org.jenetics.Float64Chromosome length="1" min="0.0" max="360.0">
+\end_layout
+
+\begin_layout Plain Layout
+
+				<org.jscience.mathematics.number.Float64 value="255.96573260244065"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</org.jenetics.Float64Chromosome>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</org.jenetics.Genotype>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<fitness class="org.jscience.mathematics.number.Float64" value="0.9456646624865551"
+/>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<raw-fitness class="org.jscience.mathematics.number.Float64" value="0.9456646624865
+551"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</org.jenetics.Phenotype>
+\end_layout
+
+\begin_layout Plain Layout
+
+</org.jenetics.Population>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Examples
+\end_layout
+
+\begin_layout Standard
+In this section contains some coding examples.
 \end_layout
 
 \begin_layout Subsection
