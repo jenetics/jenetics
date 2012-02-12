@@ -572,7 +572,7 @@ public class GeneticAlgorithm<
 	 *  //are changed before the next evolve step.
 	 * ga.getLock().lock();
 	 * try {
-	 *     ga.setAlterer(new Mutation(Probability.valueOf(0.02));
+	 *     ga.setAlterer(new Mutation(0.02);
 	 *     ga.setPopulationSize(55);
 	 *     ga.setMaximalPhenotypeAge(30);
 	 * } finally {
@@ -587,7 +587,7 @@ public class GeneticAlgorithm<
 	 * ga.getLock().lock();
 	 * try {
 	 *     final Statistics<?, ?> statistics = ga.getStatistic();
-	 *     final FitnessScaler<?> scaler = ga.getFitnessScaler();
+	 *     final Function<?, ?> scaler = ga.getFitnessScaler();
 	 * } finally {
 	 *     ga.getLock().unlock();
 	 * }
