@@ -594,7 +594,7 @@ public class GeneticAlgorithm<
 	 * [/code]
 	 * 
 	 * The code above ensures that the returned {@code statistics} and 
-	 * {@code scaler} were used together within the same {@link #evolve()} step.
+	 * {@code scaler} where used together within the same {@link #evolve()} step.
 	 * 
 	 * @return the lock acquired in the {@link #setup()} and the {@link #evolve()}
 	 * 		  method.
