@@ -549,14 +549,14 @@ public class GeneticAlgorithm<
 	 * <p/>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm<DoubleGene, Float64> ga = ...
-	 * final Predicate<GeneticAlgorithm<?, ?>> stopCondition = ...
+	 * final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+	 * final Function<GeneticAlgorithm<?, ?>, Boolean> stopCondition = ...
 	 *  
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
 	 *     public void run() {
 	 *         while (!Thread.currentThread().isInterrupted() && 
-	 *                !stopCondition.evaluate(ga)) 
+	 *                !stopCondition.apply(ga)) 
 	 *         {
 	 *             if (ga.getGeneration() == 0) {
 	 *                 ga.setup();
