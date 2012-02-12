@@ -165,7 +165,7 @@ Franz Wilhelmstötter
 
 \family sans
 \size small
-0.9.0 / 2012
+0.9.0 - 2012
 \family default
 \size default
 
@@ -2014,7 +2014,15 @@ Concurrency
 
 \begin_layout Standard
 The Jenetics library parallelizes independent task whenever possible.
- It uses the 
+ Especially the evaluation of the fitness-function is done concurrently.
+ That means that the GA's fitness-function must be thread safe, because
+ the fitness-function is shared by all phenotypes of a population.
+ The easiest way for achieving thread-safety is to make the fitness-function
+ re-entrant.
+\end_layout
+
+\begin_layout Standard
+Jenetics uses the 
 \family typewriter
 
 \begin_inset CommandInset href
@@ -2333,12 +2341,222 @@ try (Concurrency c = Concurrency.start()) {
 
 \end_layout
 
+\begin_layout Paragraph
+Lock
+\end_layout
+
+\begin_layout Standard
+If the GA itself runs in a separate thread and you want to change the configurat
+ion of the GA while running you have to acquire the GA's lock to do this
+ in a safe manner.
+ The following code example shows how to start the GA in it's own thread.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+final Function<GeneticAlgorithm<?, ?>, Boolean> stopCondition = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Starting the GA in separate thread.
+\end_layout
+
+\begin_layout Plain Layout
+
+Thread thread = new Thread(new Runnable() { public void run(){
+\end_layout
+
+\begin_layout Plain Layout
+
+    while(!Thread.currentThread().isInterrupted() &&
+\end_layout
+
+\begin_layout Plain Layout
+
+          !stopCondition.apply(ga))
+\end_layout
+
+\begin_layout Plain Layout
+
+    {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (ga.getGeneration() == 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+        } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+            ga.evolve();
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}});
+\end_layout
+
+\begin_layout Plain Layout
+
+thread.start();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Change the GA configuration.
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.getLock().lock();
+\end_layout
+
+\begin_layout Plain Layout
+
+try {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.setAlterer(new Mutation(0.02));
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.setPopulationSize(120);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.setMaximalPhenotypeAge(30);
+\end_layout
+
+\begin_layout Plain Layout
+
+} finally {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.getLock().unlock();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Read the GA configuration.
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.getLock().lock();
+\end_layout
+
+\begin_layout Plain Layout
+
+try {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Statistics<?, ?> statistics = ga.getStatistics();
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Function<?, ?> scaler = ga.getFitnessScaler();
+\end_layout
+
+\begin_layout Plain Layout
+
+} finally {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.getLock().unlock();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The code above ensures that the returned statistics and fitness-scaler where
+ used within the same 
+\family typewriter
+evolve()
+\family default
+ step.
+\end_layout
+
 \begin_layout Subsection
 Statistics
 \end_layout
 
 \begin_layout Standard
 Statistics helper classes.
+\end_layout
+
+\begin_layout Subsection
+Termination
+\end_layout
+
+\begin_layout Standard
+Describe GA termination strategies.
+\end_layout
+
+\begin_layout Subsection
+Serialization
 \end_layout
 
 \begin_layout Section
