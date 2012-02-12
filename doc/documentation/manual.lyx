@@ -589,7 +589,7 @@ Getting started
 \begin_layout Standard
 The minimum GA setup needs a genotype-factory, 
 \family typewriter
-Factory<Genotype<Gene<?>>
+Factory<Genotype<Gene<?,?>>
 \family default
 , and a fitness 
 \family typewriter
@@ -1133,7 +1133,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename graphic/FitnessProportionalSelection.eps
-	width 96text%
+	width 90text%
 
 \end_inset
 
@@ -1486,7 +1486,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename graphic/StochasticUniversalSelection.eps
-	width 96text%
+	width 90text%
 
 \end_inset
 
@@ -2118,10 +2118,6 @@ public class Main {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 The 
 \family typewriter
 ConcurrentContext
@@ -2234,8 +2230,7 @@ try {
 
 \begin_layout Plain Layout
 
-        ...
- // Execution of task one.
+        // Execution of task one.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2250,8 +2245,7 @@ try {
 
 \begin_layout Plain Layout
 
-        ...
- // Execution task two.
+        // Execution task two.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2306,8 +2300,7 @@ try (Concurrency c = Concurrency.start()) {
 
 \begin_layout Plain Layout
 
-        ...
- // Execution of task one.
+        // Execution of task one.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2322,8 +2315,7 @@ try (Concurrency c = Concurrency.start()) {
 
 \begin_layout Plain Layout
 
-        ...
- // Execution of task two.
+        // Execution of task two.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2341,15 +2333,11 @@ try (Concurrency c = Concurrency.start()) {
 
 \end_layout
 
-\begin_layout Paragraph
-Lock
-\end_layout
-
 \begin_layout Standard
 If the GA itself runs in a separate thread and you want to change the configurat
 ion of the GA while running you have to acquire the GA's lock to do this
  in a safe manner.
- The following code example shows how to start the GA in it's own thread.
+ The following code example shows how to start the GA in a separate thread.
 \end_layout
 
 \begin_layout Standard
@@ -2364,7 +2352,7 @@ final GeneticAlgorithm<Float64Gene, Float64> ga = ...
 
 \begin_layout Plain Layout
 
-final Function<GeneticAlgorithm<?, ?>, Boolean> stopCondition = ...
+ga.setup();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2378,47 +2366,17 @@ final Function<GeneticAlgorithm<?, ?>, Boolean> stopCondition = ...
 
 \begin_layout Plain Layout
 
-Thread thread = new Thread(new Runnable() { public void run(){
+Thread thread = new Thread(new Runnable() { public void run() {
 \end_layout
 
 \begin_layout Plain Layout
 
-    while(!Thread.currentThread().isInterrupted() &&
+    while(!Thread.currentThread().isInterrupted()) {
 \end_layout
 
 \begin_layout Plain Layout
 
-          !stopCondition.apply(ga))
-\end_layout
-
-\begin_layout Plain Layout
-
-    {
-\end_layout
-
-\begin_layout Plain Layout
-
-        if (ga.getGeneration() == 0) {
-\end_layout
-
-\begin_layout Plain Layout
-
-            ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-        } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-            ga.evolve();
-\end_layout
-
-\begin_layout Plain Layout
-
-        }
+        ga.evolve();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2442,7 +2400,7 @@ thread.start();
 
 \begin_layout Plain Layout
 
-// Change the GA configuration.
+// Update the GA configuration.
 \end_layout
 
 \begin_layout Plain Layout
