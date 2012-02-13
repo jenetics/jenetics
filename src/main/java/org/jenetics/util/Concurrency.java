@@ -56,8 +56,7 @@ import javolution.lang.Configurable;
  * This is equivalent to
  * 
  * 
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz
- *         Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public final class Concurrency implements AutoCloseable {
