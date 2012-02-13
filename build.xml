@@ -507,7 +507,7 @@
 	<target name="manual-compile">
 		<exec executable="lyx" failifexecutionfails="false" >
 			<arg value="-e"/>
-			<arg value="pdf"/>
+			<arg value="pdf2"/>
 			<arg value="${doc.basedir}/documentation/manual.lyx"/>
 		</exec>
 		<copy 
