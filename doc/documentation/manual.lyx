@@ -816,25 +816,24 @@ Basic classes
 \end_layout
 
 \begin_layout Standard
-This chapter describes the base classes which are used to transform your
- problem to an GA solvable problem.
-\end_layout
-
-\begin_layout Subsection
-Genes
+This chapter describes the base classes which enables you transform your
+ actual problem into a structure so that it is solvable by Jenetics.
+ 
 \end_layout
 
 \begin_layout Standard
-Genes are the atoms of the Jenetics library.
- They contain the actual information (alleles) of the encoded solution.
-\end_layout
-
-\begin_layout Subsection
-Chromosomes
-\end_layout
-
-\begin_layout Standard
-Chromosome layout
+The central class the GA is working with, is the 
+\family typewriter
+Genotype
+\family default
+.
+ It is the structural representative of an individual.
+ The 
+\family typewriter
+Phenotype
+\family default
+ class is the actual representative of an individual, but only consists
+ of the genotype and the fitness-function and doesn't change the basic structure.
 \end_layout
 
 \begin_layout Standard
@@ -842,10 +841,6 @@ Chromosome layout
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -874,13 +869,121 @@ Genotype structure
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genotype-structure"
+
+\end_inset
+
+ shows the genotype structure.
+ A genotype consists of 
+\begin_inset Formula $N_{G}$
+\end_inset
+
+ chromosomes and a chromosome consists of 
+\begin_inset Formula $N_{C[i]}$
+\end_inset
+
+ genes (depends of the chromosome).
+ The overall number of genes of a genotype is therefore given by the sum
+ of the chromosomes genes: 
+\begin_inset Formula 
+\begin{equation}
+N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}
+\end{equation}
+
+\end_inset
+
+The chromosomes doesn't have to have the same size.
+ It is only required that all genes are from the same type and the genes
+ within a chromosome have the same constraints; e.
+\begin_inset space ~
+\end_inset
+
+g.
+ the same min- and max values for number-genes.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
+final Genotype<Float64Gene> genotype = Genotype.valueOf(
+\end_layout
+
+\begin_layout Plain Layout
+
+    new Float64Chromosome(0.0, 1.0, 8),
+\end_layout
+
+\begin_layout Plain Layout
+
+    new Float64Chromosome(1.0, 2.0, 10),
+\end_layout
+
+\begin_layout Plain Layout
+
+    new Float64Chromosome(0.0, 10.0, 9),
+\end_layout
+
+\begin_layout Plain Layout
+
+    new Float64Chromosome(0.1, 0.9, 5)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The code snippet above creates a genotype with the same structure as shown
+ in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genotype-structure"
+
+\end_inset
+
+.
+ In this example a 
+\family typewriter
+Float64Gene
+\family default
+ has been chosen as gene type.
+ A single gene can be accessed as followed via 
+\family typewriter
+\size small
+genotype\SpecialChar \textcompwordmark{}
+.getChromosome(2)\SpecialChar \textcompwordmark{}
+.getGene(8)
+\family default
+\size default
+.
+\end_layout
+
+\begin_layout Subsection
+Genes
+\end_layout
+
+\begin_layout Standard
+Genes are the atoms of the Jenetics library.
+ They contain the actual information (alleles) of the encoded solution.
 \end_layout
 
 \begin_layout Subsection
