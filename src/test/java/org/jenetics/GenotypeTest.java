@@ -98,6 +98,17 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
     }
     
     @Test
+    public void numberOfGenes() {
+		final Genotype<Float64Gene> genotype = Genotype.valueOf(
+			new Float64Chromosome(0.0, 1.0, 8),
+			new Float64Chromosome(1.0, 2.0, 10),
+			new Float64Chromosome(0.0, 10.0, 9),
+			new Float64Chromosome(0.1, 0.9, 5)
+		);
+		Assert.assertEquals(genotype.getNumberOfGenes(), 32);
+    }
+    
+    @Test
     public void newInstance() {
     	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
     			//Rotation
