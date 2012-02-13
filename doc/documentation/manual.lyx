@@ -815,8 +815,27 @@ The alterers are concatenated, first the crossover (with corsage probability
 Basic classes
 \end_layout
 
+\begin_layout Standard
+This chapter describes the base classes which are used to transform your
+ problem to an GA solveable problem.
+\end_layout
+
 \begin_layout Subsection
 Genes
+\end_layout
+
+\begin_layout Standard
+Genes are the atoms of the Jenetics library.
+ They contain the actual information (alleles) where you store the information
+ of your solution.
+\end_layout
+
+\begin_layout Subsection
+Chromosomes
+\end_layout
+
+\begin_layout Standard
+Chromosome layout
 \end_layout
 
 \begin_layout Subsection
@@ -2644,7 +2663,6 @@ Population<BitGene,Integer> pop =
 \end_layout
 
 \begin_layout Standard
-
 \begin_inset listings
 inline false
 status open
