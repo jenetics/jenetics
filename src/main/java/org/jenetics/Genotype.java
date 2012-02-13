@@ -148,7 +148,7 @@ public final class Genotype<T extends Gene<?, T>>
 	 * 
 	 * @return Return the number of genes this genotype consists of.
 	 */
-	int getNumberOfGenes() {
+	public int getNumberOfGenes() {
 		return _ngenes;
 	}
 	
