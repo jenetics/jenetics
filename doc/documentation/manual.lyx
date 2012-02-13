@@ -821,6 +821,10 @@ This chapter describes the base classes which enables you transform your
  
 \end_layout
 
+\begin_layout Paragraph
+Genotype
+\end_layout
+
 \begin_layout Standard
 The central class the GA is working with, is the 
 \family typewriter
@@ -977,6 +981,59 @@ genotype\SpecialChar \textcompwordmark{}
 .
 \end_layout
 
+\begin_layout Paragraph
+Fitness function
+\end_layout
+
+\begin_layout Standard
+The fitness function is also an essential part when modeling the GA.
+ It takes a genotype as argument and returns, at least, a 
+\family typewriter
+Comparable
+\family default
+ object as result.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Id implements Function<Genotype<Float64Gene>, Float64> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Float64 apply(final Genotype<Float64Gene> genotype) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return genotype.getGene().getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Genes
 \end_layout
@@ -984,10 +1041,6 @@ Genes
 \begin_layout Standard
 Genes are the atoms of the Jenetics library.
  They contain the actual information (alleles) of the encoded solution.
-\end_layout
-
-\begin_layout Subsection
-Fitness function
 \end_layout
 
 \begin_layout Subsection
