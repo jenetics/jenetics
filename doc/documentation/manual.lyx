@@ -817,7 +817,7 @@ Basic classes
 
 \begin_layout Standard
 This chapter describes the base classes which are used to transform your
- problem to an GA solveable problem.
+ problem to an GA solvable problem.
 \end_layout
 
 \begin_layout Subsection
@@ -826,8 +826,7 @@ Genes
 
 \begin_layout Standard
 Genes are the atoms of the Jenetics library.
- They contain the actual information (alleles) where you store the information
- of your solution.
+ They contain the actual information (alleles) of the encoded solution.
 \end_layout
 
 \begin_layout Subsection
@@ -836,6 +835,52 @@ Chromosomes
 
 \begin_layout Standard
 Chromosome layout
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/Genotype.eps
+	width 80text%
+	BoundingBox 0bp 50bp 402bp 246bp
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genotype-structure"
+
+\end_inset
+
+Genotype structure
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
