@@ -188,6 +188,18 @@ public abstract class IO {
 			return read(type, in);
 		}
 	}
+	
+	/**
+	 * Reads an object from the given file.
+	 * 
+	 * @param path the path to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
+	public Object read(final String path) throws IOException {
+		return read(Object.class, path);
+	}
 		
 	/**
 	 * Reads an object from the given file.
@@ -209,6 +221,18 @@ public abstract class IO {
 	/**
 	 * Reads an object from the given file.
 	 * 
+	 * @param path the path to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
+	public Object read(final Path path) throws IOException {
+		return read(Object.class, path);
+	}
+	
+	/**
+	 * Reads an object from the given file.
+	 * 
 	 * @param file the file to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -224,6 +248,18 @@ public abstract class IO {
 	}	
 	
 	/**
+	 * Reads an object from the given file.
+	 * 
+	 * @param file the file to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
+	public Object read(final File file) throws IOException {
+		return read(Object.class, file);
+	}
+	
+	/**
 	 * Reads an object from the given input stream.
 	 * 
 	 * @param in the input stream to read from.
@@ -235,6 +271,17 @@ public abstract class IO {
 	public abstract <T> T read(final Class<T> type, final InputStream in) 
 		throws IOException;
 	
+	/**
+	 * Reads an object from the given input stream.
+	 * 
+	 * @param in the input stream to read from.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
+	 * @throws IOException if the object could not be read.
+	 */
+	public Object read(final InputStream in) throws IOException {
+		return read(Object.class, in);
+	}
 
 	
 	/**
