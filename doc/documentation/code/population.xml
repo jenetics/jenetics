@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<org.jenetics.Population size="5">
+  <org.jenetics.Phenotype generation="5">
+    <org.jenetics.Genotype length="4" ngenes="32">
+      <org.jenetics.Float64Chromosome length="8" min="0.0" max="1.0">
+        <org.jscience.mathematics.number.Float64 value="0.76293546489060549"/>
+        <org.jscience.mathematics.number.Float64 value="0.4490748942977255"/>
+        <org.jscience.mathematics.number.Float64 value="0.8685782517794772"/>
+        <org.jscience.mathematics.number.Float64 value="0.43404173006814706"/>
+        <org.jscience.mathematics.number.Float64 value="0.7748011760986598"/>
+        <org.jscience.mathematics.number.Float64 value="0.92755029476262807"/>
+        <org.jscience.mathematics.number.Float64 value="0.8880996269143448"/>
+        <org.jscience.mathematics.number.Float64 value="0.17634803367965379"/>
+      </org.jenetics.Float64Chromosome>
+      <org.jenetics.Float64Chromosome length="10" min="1.0" max="2.0">
+        <org.jscience.mathematics.number.Float64 value="1.7742547808863836"/>
+        <org.jscience.mathematics.number.Float64 value="1.0714759765863326"/>
+        <org.jscience.mathematics.number.Float64 value="1.4881208724154296"/>
+        <org.jscience.mathematics.number.Float64 value="1.969210737048173"/>
+        <org.jscience.mathematics.number.Float64 value="1.0842413675851379"/>
+        <org.jscience.mathematics.number.Float64 value="1.7349757564088444"/>
+        <org.jscience.mathematics.number.Float64 value="1.062253646580321"/>
+        <org.jscience.mathematics.number.Float64 value="1.9431300005515593"/>
+        <org.jscience.mathematics.number.Float64 value="1.5618721365435897"/>
+        <org.jscience.mathematics.number.Float64 value="1.5171036936625253"/>
+      </org.jenetics.Float64Chromosome>
+      <org.jenetics.Float64Chromosome length="9" min="0.0" max="10.0">
+        <org.jscience.mathematics.number.Float64 value="0.61670513678230066"/>
+        <org.jscience.mathematics.number.Float64 value="6.6359384257223706"/>
+        <org.jscience.mathematics.number.Float64 value="8.133001248940242"/>
+        <org.jscience.mathematics.number.Float64 value="1.5579372281497306"/>
+        <org.jscience.mathematics.number.Float64 value="4.6681690463573968"/>
+        <org.jscience.mathematics.number.Float64 value="3.998294652354959"/>
+        <org.jscience.mathematics.number.Float64 value="7.5422435572236646"/>
+        <org.jscience.mathematics.number.Float64 value="8.331927525959226"/>
+        <org.jscience.mathematics.number.Float64 value="0.05821680659662265"/>
+      </org.jenetics.Float64Chromosome>
+      <org.jenetics.Float64Chromosome length="5" min="0.1" max="0.9">
+        <org.jscience.mathematics.number.Float64 value="0.6781179819630284"/>
+        <org.jscience.mathematics.number.Float64 value="0.5866711457075686"/>
+        <org.jscience.mathematics.number.Float64 value="0.27517412822245135"/>
+        <org.jscience.mathematics.number.Float64 value="0.68681756057994758"/>
+        <org.jscience.mathematics.number.Float64 value="0.7145905151735616"/>
+      </org.jenetics.Float64Chromosome>
+    </org.jenetics.Genotype>
+    <fitness 
+      class="org.jscience.mathematics.number.Float64" 
+      value="62.76897467920044"
+     />
+    <raw-fitness 
+      class="org.jscience.mathematics.number.Float64" 
+      value="19.979985186009532"
+    />
+    ...
+</org.jenetics.Population>
