@@ -55,7 +55,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	}
 	
 	@Override
-	protected final <C extends Comparable<? super C>> int recombinate(
+	protected final <C extends Comparable<? super C>> int recombine(
 		final Population<G, C> population, 
 		final int[] individuals, 
 		final int generation

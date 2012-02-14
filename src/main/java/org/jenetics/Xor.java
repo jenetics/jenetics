@@ -33,7 +33,7 @@ class Xor extends Recombinator<BitGene> {
 	}
 
 	@Override
-	protected <C extends Comparable<? super C>> int recombinate(
+	protected <C extends Comparable<? super C>> int recombine(
 		final Population<BitGene, C> population, 
 		final int[] individuals, 
 		final int generation

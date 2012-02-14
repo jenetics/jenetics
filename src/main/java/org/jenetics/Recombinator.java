@@ -75,7 +75,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	
 	/**
 	 * Return the number of individuals involved in the 
-	 * {@link #recombinate(Population, int[], int)} step.
+	 * {@link #recombine(Population, int[], int)} step.
 	 * 
 	 * @return the number of individuals involved in the recombination step.
 	 */
@@ -98,7 +98,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
 			
-			alterations += recombinate(population, individuals, generation);
+			alterations += recombine(population, individuals, generation);
 		}
 
 		return alterations;
@@ -116,7 +116,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.
 	 */
-	protected abstract <C extends Comparable<? super C>> int recombinate(
+	protected abstract <C extends Comparable<? super C>> int recombine(
 			final Population<G, C> population, 
 			final int[] individuals, 
 			final int generation

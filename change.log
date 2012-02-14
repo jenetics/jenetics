@@ -1,4 +1,5 @@
 Jenetics-0.9.0.0
+- Rename Recombinator.recombinate to Recombinator.recombine.
 - Add IO.read methods without Class argument.
 - Rename Recombination to Recombinator.
 - Rename Array.append methods to Array.add.
