@@ -36,7 +36,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id: org.eclipse.jdt.ui.prefs 421 2010-03-18 22:41:17Z fwilhelm $
+ * @version $Id$
  */
 public class Serial {
 
