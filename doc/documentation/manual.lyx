@@ -273,8 +273,12 @@ target "http://creativecommons.org/licenses/by-nc-sa/3.0/"
 
 \begin_layout Abstract
 
+\family sans
+\series bold
 \shape smallcaps
 Jenetics
+\family default
+\series default
 \shape default
  is an 
 \series bold
@@ -353,8 +357,12 @@ Introduction
 
 \begin_layout Standard
 The 
+\family sans
+\series bold
 \shape smallcaps
 Jenetics
+\family default
+\series default
 \shape default
  project is a Java library which provides an 
 \begin_inset CommandInset href
@@ -497,8 +505,12 @@ reference "lis:Genetic-algorithm"
 \end_inset
 
  shows the steps the 
+\family sans
+\series bold
 \shape smallcaps
 Jenetics
+\family default
+\series default
 \shape default
  genetic algorithm is using.
  The first line creates the initial population and the second line calculates
@@ -818,7 +830,15 @@ Basic classes
 
 \begin_layout Standard
 This chapter describes the base classes which enables you transform your
- actual problem into a structure so that it is solvable by Jenetics.
+ actual problem into a structure so that it is solvable by 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
  
 \end_layout
 
@@ -1047,7 +1067,15 @@ Genes
 \end_layout
 
 \begin_layout Standard
-Genes are the atoms of the Jenetics library.
+Genes are the atoms of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
  They contain the actual information (alleles) of the encoded solution.
 \end_layout
 
@@ -1081,7 +1109,15 @@ Selector
 \family default
 ).
  This section gives you an overview about the genetic operators available
- in the Jenetics library.
+ in the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
  It also contains some theoretical information, which should help to choose
  the right combination of operators for your problem you want to solve.
 \end_layout
@@ -1777,8 +1813,12 @@ target "https://en.wikipedia.org/wiki/Genetic_operator"
 
  are responsible for the genetic diversity of the genetic algorithm.
  The genetic operator types used in 
+\family sans
+\series bold
 \shape smallcaps
 Jenetics
+\family default
+\series default
 \shape default
  are
 \end_layout
@@ -2236,7 +2276,15 @@ Concurrency
 \end_layout
 
 \begin_layout Standard
-The Jenetics library parallelizes independent task whenever possible.
+The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library parallelizes independent task whenever possible.
  Especially the evaluation of the fitness-function is done concurrently.
  That means that the GA's fitness-function must be thread safe, because
  the fitness-function is shared by all phenotypes of a population.
@@ -2245,7 +2293,15 @@ The Jenetics library parallelizes independent task whenever possible.
 \end_layout
 
 \begin_layout Standard
-Jenetics uses the 
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the 
 \family typewriter
 
 \begin_inset CommandInset href
@@ -2749,8 +2805,16 @@ Serialization
 \end_layout
 
 \begin_layout Standard
-Jenetics has build-in XML serialization for a number of classes, all located
- in the 
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ has build-in XML serialization for a number of classes, all located in
+ the 
 \family typewriter
 org.jenetics
 \family default
@@ -2881,8 +2945,16 @@ end{multicols}
 
 \begin_layout Standard
 Serialization of GA objects.
- Jenetics allows you to write a population to disk and load it to a GA again
- and start evolving again.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ allows you to write a population to disk and load it to a GA again and
+ start evolving again.
  
 \end_layout
 
