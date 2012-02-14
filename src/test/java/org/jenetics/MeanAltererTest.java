@@ -55,7 +55,7 @@ public class MeanAltererTest {
 		final int[] selected = new int[]{3, 34};
 		
 		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(0.1);
-		crossover.recombinate(p1, selected, 3);
+		crossover.recombine(p1, selected, 3);
 		
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}

@@ -64,7 +64,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	}
 
 	@Override
-	protected <C extends Comparable<? super C>> int recombinate(
+	protected <C extends Comparable<? super C>> int recombine(
 		final Population<G, C> population, 
 		final int[] individuals, 
 		final int generation
