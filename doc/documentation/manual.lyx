@@ -99,6 +99,7 @@ figs-within-sections
 \paperorientation portrait
 \suppress_date false
 \use_refstyle 1
+\boxbgcolor #ffffff
 \index Index
 \shortcut idx
 \color #008000
@@ -284,9 +285,17 @@ Jenetics
 \series bold
 Genetic Algorithm
 \series default
- Library written in Java.
+, respectively an 
+\series bold
+Evolutionary Algorithm
+\series default
+, Library written in Java.
  It is designed with a clear separation of the several concepts of the algorithm
-, e.g.
+, e.
+\begin_inset space ~
+\end_inset
+
+g.
  
 \family typewriter
 Gene
@@ -364,7 +373,28 @@ Jenetics
 \family default
 \series default
 \shape default
- project is a Java library which provides an 
+ project is a Java
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The library depends on Java SE 7; 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ library which provides an 
 \begin_inset CommandInset href
 LatexCommand href
 name "genetic algorithm"
@@ -602,9 +632,9 @@ Getting started
 \begin_layout Standard
 The minimum GA setup needs a genotype-factory, 
 \family typewriter
-Factory<Genotype<?>
+Factory<Genotype<?>>
 \family default
->, and a fitness 
+, and a fitness 
 \family typewriter
 Function
 \family default
@@ -1001,9 +1031,7 @@ Float64Gene
  A single gene can be accessed as followed via 
 \family typewriter
 \size small
-genotype\SpecialChar \textcompwordmark{}
-.getChromosome(2)\SpecialChar \textcompwordmark{}
-.getGene(8)
+genotype.getChromosome(2).getGene(8)
 \family default
 \size default
 .
@@ -1205,11 +1233,11 @@ With the property
 \family typewriter
 offspringFraction
 \family default
- (
+, 
 \begin_inset Formula $o_{f}$
 \end_inset
 
-) it is possible to control the number of selected offspring 
+, it is possible to control the number of selected offspring 
 \begin_inset Formula 
 \begin{equation}
 \left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot o_{f}\right)
@@ -1476,7 +1504,7 @@ where
 \end_inset
 
  is replaced by the individual's selection probability 
-\begin_inset Formula $p_{i}$
+\begin_inset Formula $P_{i}$
 \end_inset
 
 .
@@ -1787,16 +1815,7 @@ reference "fig:Stochastic-universal-selection"
 \end_inset
 
  is the number of individuals to select.
- The selection probability for the stochastic-universal selector is defined
- as 
-\begin_inset Formula 
-\begin{equation}
-P_{i}=\frac{xx}{yy}
-\end{equation}
-
-\end_inset
-
-
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1976,9 +1995,13 @@ The
 \family typewriter
 Mutator
 \family default
- class has to deal with the problem, that the genes are arranged in a 
+ class has to deal with the problem, that the genes are arranged in a
 \shape italic
-3-dimensional
+ 
+\begin_inset Formula $3D$
+\end_inset
+
+
 \shape default
  structure (see section 
 \begin_inset CommandInset ref
@@ -2119,7 +2142,15 @@ An enhanced genetic algorithm (EGA) combine elements of existing solutions
  This combination of chromosomes can be made by selecting one or more crossover
  points, splitting these chromosomes on the selected points, and merge those
  portions of different chromosomes to form new ones.
- 
+\end_layout
+
+\begin_layout Standard
+\align block
+
+\shape italic
+Because of the possible different chromosome length and/or chromosome constraint
+s within a genotype, only chromosomes with the same genotype position are
+ recombined.
 \end_layout
 
 \begin_layout Standard
@@ -2145,7 +2176,7 @@ The recombination probability
  is the order of the recombination, which is the number of individuals involved
  in the 
 \family typewriter
-recombinate( Population, int[], int )
+recombine
 \family default
  method.
 \end_layout
@@ -2184,14 +2215,30 @@ The
 \family typewriter
 PartiallyMatchedCrossover
 \family default
- (PMX) class guarantees that all genes are found exactly once in each chromosome.
+ class guarantees that all genes are found exactly once in each chromosome.
  No gene is duplicated by this crossover.
- The PMX can be applied usefully in the TSP or other permutation problem
- encodings.
+ The partially-matched crossover (PMX) can be applied usefully in the TSP
+ or other permutation problem encodings.
  Permutation encoding is useful for all problems where the fitness only
  depends on the ordering of the genes within the chromosome.
  This is the case in many combinatorial optimization problems.
  Other crossover operators for combinatorial optimization are:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{multicols}{2}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -2208,6 +2255,22 @@ edge recombination crossover
 
 \begin_layout Itemize
 edge assembly crossover
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3065,6 +3128,14 @@ footnotesize}
 When serializing a whole population the fitness function and fitness scaler
  are not serialized.
  
+\end_layout
+
+\begin_layout Subsection
+Building
+\end_layout
+
+\begin_layout Standard
+// Describe how to build the library from source.
 \end_layout
 
 \begin_layout Section
