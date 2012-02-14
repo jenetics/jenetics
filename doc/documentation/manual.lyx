@@ -8,6 +8,7 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage{cclicenses}
+\usepackage{multicol} 
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
@@ -823,6 +824,13 @@ This chapter describes the base classes which enables you transform your
 
 \begin_layout Paragraph
 Genotype
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Genotype"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -900,7 +908,7 @@ reference "fig:Genotype-structure"
  of the chromosomes genes: 
 \begin_inset Formula 
 \begin{equation}
-N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}
+N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 \end{equation}
 
 \end_inset
@@ -1079,7 +1087,7 @@ Selector
 \end_layout
 
 \begin_layout Subsection
-Select
+Selectors
 \end_layout
 
 \begin_layout Standard
@@ -1242,9 +1250,7 @@ reference "fig:Selector-class-diagram"
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-TournamentSelector
+Tournament selector
 \end_layout
 
 \begin_layout Standard
@@ -1300,9 +1306,7 @@ Selection distribution?
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-TruncationSelector
+Truncation selector
 \end_layout
 
 \begin_layout Standard
@@ -1323,9 +1327,7 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-MonteCarloSelector
+Monte-Carlo selector
 \end_layout
 
 \begin_layout Standard
@@ -1450,10 +1452,10 @@ where
  follows a binomial distribution 
 \begin_inset Formula 
 \begin{equation}
-p_{i}(k)=\left(\begin{array}{c}
+P_{i}(k)=\left(\begin{array}{c}
 n\\
 k
-\end{array}\right)p_{i}^{k}\left(1-p_{i}\right)^{n-k}
+\end{array}\right)P_{i}^{k}\left(1-P_{i}\right)^{n-k}
 \end{equation}
 
 \end_inset
@@ -1474,9 +1476,7 @@ where
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-RouletteWheelSelector 
+Roulette-wheel selector
 \end_layout
 
 \begin_layout Standard
@@ -1493,7 +1493,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
  
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
+P_{i}=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
 \end{equation}
 
 \end_inset
@@ -1511,9 +1511,7 @@ Selecting
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-LinearRankSelector
+Linear-rank selector
 \end_layout
 
 \begin_layout Standard
@@ -1538,7 +1536,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
+P_{i}=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
 
 \end_inset
@@ -1573,11 +1571,7 @@ key "Blickle97acomparison"
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-ExponentialRankSelector
-\family default
- 
+Exponential-rank selector
 \end_layout
 
 \begin_layout Standard
@@ -1592,7 +1586,7 @@ weak
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
+P_{i}=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
 
 \end_inset
@@ -1625,16 +1619,14 @@ where
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-BoltzmannSelector
+Boltzmann selector
 \end_layout
 
 \begin_layout Standard
 The selection probability of the Boltzmann selector is defined as 
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
+P_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
 
 \end_inset
@@ -1682,9 +1674,7 @@ Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}},
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-StochasticUniversalSelector
+Stochastic-universal selector
 \end_layout
 
 \begin_layout Standard
@@ -1765,7 +1755,7 @@ reference "fig:Stochastic-universal-selection"
  as 
 \begin_inset Formula 
 \begin{equation}
-p_{i}=\frac{xx}{yy}
+P_{i}=\frac{xx}{yy}
 \end{equation}
 
 \end_inset
@@ -1774,7 +1764,7 @@ p_{i}=\frac{xx}{yy}
 \end_layout
 
 \begin_layout Subsection
-Alter
+Alterers
 \end_layout
 
 \begin_layout Standard
@@ -1805,7 +1795,11 @@ target "https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)"
 \end_layout
 
 \begin_layout Enumerate
-recombination (e.g.
+recombination (e.
+\begin_inset space ~
+\end_inset
+
+g.
  
 \begin_inset CommandInset href
 LatexCommand href
@@ -1871,7 +1865,7 @@ There are two distinct roles
 \emph on
 mutation
 \emph default
- plays in a Genetic algorithm:
+ plays in an Genetic algorithm:
 \end_layout
 
 \begin_layout Enumerate
@@ -1893,7 +1887,7 @@ Maintaining diversity.
 
 \begin_layout Standard
 The mutation probability 
-\begin_inset Formula $p_{m}$
+\begin_inset Formula $P(m)$
 \end_inset
 
  is the parameter that must be optimized.
@@ -1905,45 +1899,35 @@ The mutation probability
 
 \begin_layout Standard
 The mutation probability 
-\begin_inset Formula $p_{m}$
+\begin_inset Formula $P(m)$
 \end_inset
 
- is the probability that a specific gene over the whole population is mutated.
- The number of available genes of an population is 
+ is the probability that a specific gene, over the whole population, is
+ mutated.
+ That means, the (average) number of genes mutated by an mutator is
 \begin_inset Formula 
 \begin{equation}
-N_{G}=n_{P}\cdot n_{C}\cdot n_{G}
+\hat{\mu}=N_{g}\cdot P(m)
 \end{equation}
 
 \end_inset
 
 where 
-\begin_inset Formula $n_{P}$
+\begin_inset Formula $N_{g}$
 \end_inset
 
- is the population size, 
-\begin_inset Formula $n_{C}$
-\end_inset
-
- the number of chromosomes of the genotype and 
-\begin_inset Formula $n_{G}$
-\end_inset
-
- the number of genes in the chromosome.
- That means, the (average) number of genes mutated by an mutator is
-\begin_inset Formula 
-\begin{equation}
-\hat{\mu}=N_{G}\cdot p_{m}
-\end{equation}
+ is the number of available genes of the population (see equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Number of genes"
 
 \end_inset
 
-
+).
+ 
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
 Mutator
 \end_layout
 
@@ -1956,25 +1940,24 @@ Mutator
 \shape italic
 3-dimensional
 \shape default
- structure (population: genotype 
-\begin_inset Formula $\rightarrow$
+ structure (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:Genotype"
+
 \end_inset
 
- chromosome 
-\begin_inset Formula $\rightarrow$
-\end_inset
-
- gene).
+).
  The mutator selects the gene which will be mutated in three steps:
 \end_layout
 
 \begin_layout Enumerate
 Select a genotype 
-\begin_inset Formula $Gt$
+\begin_inset Formula $G[i]$
 \end_inset
 
  from the population with probability 
-\begin_inset Formula $P_{Gt}$
+\begin_inset Formula $P_{G}(m)$
 \end_inset
 
 ,
@@ -1982,15 +1965,15 @@ Select a genotype
 
 \begin_layout Enumerate
 select a chromosome 
-\begin_inset Formula $C$
+\begin_inset Formula $C[j]$
 \end_inset
 
  from the selected genotype 
-\begin_inset Formula $Gt$
+\begin_inset Formula $G[i]$
 \end_inset
 
  with probability 
-\begin_inset Formula $P_{C}$
+\begin_inset Formula $P_{C}(m)$
 \end_inset
 
  and
@@ -1998,15 +1981,15 @@ select a chromosome
 
 \begin_layout Enumerate
 select a gene 
-\begin_inset Formula $G$
+\begin_inset Formula $g[k]$
 \end_inset
 
  from the selected chromosome 
-\begin_inset Formula $C$
+\begin_inset Formula $C[j]$
 \end_inset
 
  with probability 
-\begin_inset Formula $P_{G}$
+\begin_inset Formula $P_{g}(m)$
 \end_inset
 
 .
@@ -2016,7 +1999,7 @@ select a gene
 The needed sub-selection probabilities are set to 
 \begin_inset Formula 
 \begin{equation}
-P_{Gt}=P_{C}=P_{G}=\sqrt[3]{P}
+P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}
 \end{equation}
 
 \end_inset
@@ -2025,9 +2008,7 @@ P_{Gt}=P_{C}=P_{G}=\sqrt[3]{P}
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-GaussianMutator
+Gaussian mutator
 \end_layout
 
 \begin_layout Standard
@@ -2046,17 +2027,17 @@ NumberGene
  will be 
 \begin_inset Formula 
 \begin{equation}
-\hat{\sigma}^{2}=\left(\frac{G_{max}-G_{min}}{4}\right)^{2}
+\hat{\sigma}^{2}=\left(\frac{g_{max}-g_{min}}{4}\right)^{2}
 \end{equation}
 
 \end_inset
 
 where 
-\begin_inset Formula $G_{min}$
+\begin_inset Formula $g_{min}$
 \end_inset
 
  and 
-\begin_inset Formula $G_{max}$
+\begin_inset Formula $g_{max}$
 \end_inset
 
  are the valid minimum and maximum values of the number gene.
@@ -2064,9 +2045,7 @@ where
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-SwapMutator
+Swap mutator
 \end_layout
 
 \begin_layout Standard
@@ -2078,7 +2057,11 @@ SwapMutator
  related genes closer together, thereby facilitating the production of building
  blocks.
  This mutation operator can also be used for combinatorial problems, where
- no duplicated genes within a chromosome are allowed, e.g.
+ no duplicated genes within a chromosome are allowed, e.
+\begin_inset space ~
+\end_inset
+
+g.
  for the TSP.
  
 \end_layout
@@ -2101,28 +2084,34 @@ An enhanced genetic algorithm (EGA) combine elements of existing solutions
 
 \begin_layout Standard
 The recombination probability 
-\begin_inset Formula $P$
+\begin_inset Formula $P(r)$
 \end_inset
 
  determines the probability that a given individual (genotype) of a population
  is selected for recombination.
  The (mean) number of changed individuals depend on the concrete implementation
  and can be vary from 
-\begin_inset Formula $P\cdot N$
+\begin_inset Formula $P(r)\cdot N_{g}$
 \end_inset
 
  to 
-\begin_inset Formula $P\cdot N\cdot order$
+\begin_inset Formula $P(r)\cdot N_{g}\cdot O_{R}$
 \end_inset
 
-.
- 
+ , where 
+\begin_inset Formula $O_{R}$
+\end_inset
+
+ is the order of the recombination, which is the number of individuals involved
+ in the 
+\family typewriter
+recombinate( Population, int[], int )
+\family default
+ method.
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-SinglePointCrossover
+Single-point crossover
 \end_layout
 
 \begin_layout Standard
@@ -2147,9 +2136,7 @@ If we create a child and its complement we preserving the total number of
 \end_layout
 
 \begin_layout Paragraph
-
-\family typewriter
-PartiallyMatchedCrossover
+Partially-matched crossover
 \end_layout
 
 \begin_layout Standard
@@ -2762,61 +2749,141 @@ Serialization
 \end_layout
 
 \begin_layout Standard
-Jenetics has build-in XML serialization for a number of classes:
+Jenetics has build-in XML serialization for a number of classes, all located
+ in the 
+\family typewriter
+org.jenetics
+\family default
+ package:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{multicols}{2}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 BitGene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 CharacterGene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 EnumGene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Float64Gene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Integer64Gene
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
+BitChromosome
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
 CharacterChromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 PermutationChromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Float64Chromosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Integer64Chomosome
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Genotype
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Phenotype
 \end_layout
 
 \begin_layout Itemize
+
+\family typewriter
 Population
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Statistics
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+NumberStatistics
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{multicols}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 Serialization of GA objects.
  Jenetics allows you to write a population to disk and load it to a GA again
  and start evolving again.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2826,7 +2893,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<BitGene, Integer> ga = ...
+// Writing the population to disk.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2845,17 +2912,22 @@ IO.xml.write(ga.getPopulation(), file);
 
 \begin_layout Plain Layout
 
-Population<BitGene,Integer> pop = 
+// Reading the population from disk.
 \end_layout
 
 \begin_layout Plain Layout
 
-    (Population<BitGene, Integer>)IO.xml.read(
+Population<Float64Gene,Float64> population = 
 \end_layout
 
 \begin_layout Plain Layout
 
-        Population.class, file);
+    (Population<Float64Gene, Float64)IO.xml.read(file);
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setPopulation(population);
 \end_layout
 
 \end_inset
@@ -2864,122 +2936,63 @@ Population<BitGene,Integer> pop =
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
+The following listing shows the XML serialization of a population which
+ consists of genotypes as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genotype-structure"
+
+\end_inset
+
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:Genotype"
+
+\end_inset
+
+.
+ Only the first phenotype is shown.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-<?xml version="1.0" encoding="UTF-8" ?>
+
+\backslash
+lstset{basicstyle=
+\backslash
+tiny}
 \end_layout
 
 \begin_layout Plain Layout
 
-<org.jenetics.Population size="10">
+
+\backslash
+lstinputlisting[language=XML]{code/population.xml}
 \end_layout
 
 \begin_layout Plain Layout
 
-	<org.jenetics.Phenotype generation="9">
-\end_layout
 
-\begin_layout Plain Layout
-
-		<org.jenetics.Genotype length="1" ngenes="1">
-\end_layout
-
-\begin_layout Plain Layout
-
-			<org.jenetics.Float64Chromosome length="1" min="0.0" max="360.0">
-\end_layout
-
-\begin_layout Plain Layout
-
-				<org.jscience.mathematics.number.Float64 value="255.96573260244065"/>
-\end_layout
-
-\begin_layout Plain Layout
-
-			</org.jenetics.Float64Chromosome>
-\end_layout
-
-\begin_layout Plain Layout
-
-		</org.jenetics.Genotype>
-\end_layout
-
-\begin_layout Plain Layout
-
-		<fitness class="org.jscience.mathematics.number.Float64" value="0.9456646624865551"
-/>
-\end_layout
-
-\begin_layout Plain Layout
-
-		<raw-fitness class="org.jscience.mathematics.number.Float64" value="0.9724529101640
-6299"/>
-\end_layout
-
-\begin_layout Plain Layout
-
-	</org.jenetics.Phenotype>
-\end_layout
-
-\begin_layout Plain Layout
-
-	<org.jenetics.Phenotype generation="10">
-\end_layout
-
-\begin_layout Plain Layout
-
-		<org.jenetics.Genotype length="1" ngenes="1">
-\end_layout
-
-\begin_layout Plain Layout
-
-			<org.jenetics.Float64Chromosome length="1" min="0.0" max="360.0">
-\end_layout
-
-\begin_layout Plain Layout
-
-				<org.jscience.mathematics.number.Float64 value="255.96573260244065"/>
-\end_layout
-
-\begin_layout Plain Layout
-
-			</org.jenetics.Float64Chromosome>
-\end_layout
-
-\begin_layout Plain Layout
-
-		</org.jenetics.Genotype>
-\end_layout
-
-\begin_layout Plain Layout
-
-		<fitness class="org.jscience.mathematics.number.Float64" value="0.9456646624865551"
-/>
-\end_layout
-
-\begin_layout Plain Layout
-
-		<raw-fitness class="org.jscience.mathematics.number.Float64" value="0.9456646624865
-551"/>
-\end_layout
-
-\begin_layout Plain Layout
-
-	</org.jenetics.Phenotype>
-\end_layout
-
-\begin_layout Plain Layout
-
-</org.jenetics.Population>
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+When serializing a whole population the fitness function and fitness scaler
+ are not serialized.
+ 
 \end_layout
 
 \begin_layout Section
