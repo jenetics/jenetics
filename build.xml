@@ -505,11 +505,29 @@
 	</target>
 	
 	<target name="manual-compile">
+		<tstamp>
+			<format property="MANUAL_TIMESTAMP" pattern="yyyyMMdd" />
+		</tstamp>	
+		<copy 
+			file="${doc.basedir}/documentation/manual.lyx"
+			tofile="${doc.basedir}/documentation/__manual.lyx"
+		/>	
+		<replace 
+		    file="${doc.basedir}/documentation/__manual.lyx" 
+		    token="@!identifier!@" value="${version}---${MANUAL_TIMESTAMP}" 
+	    />
+		
 		<exec executable="lyx" failifexecutionfails="false" >
 			<arg value="-e"/>
 			<arg value="pdf2"/>
-			<arg value="${doc.basedir}/documentation/manual.lyx"/>
+			<arg value="${doc.basedir}/documentation/__manual.lyx"/>
 		</exec>
+		
+		<delete file="${doc.basedir}/documentation/__manual.lyx" />
+		<move 
+			file="${doc.basedir}/documentation/__manual.pdf"
+			tofile="${doc.basedir}/documentation/manual.pdf"
+		/>		
 		<copy 
 			file="${doc.basedir}/documentation/manual.pdf"
 			tofile="${basedir}/manual-${version}.pdf"
