@@ -855,7 +855,7 @@ The alterers are concatenated, first the crossover (with corsage probability
 \end_layout
 
 \begin_layout Section
-Basic classes
+Base classes
 \end_layout
 
 \begin_layout Standard
@@ -1047,7 +1047,27 @@ The fitness function is also an essential part when modeling the GA.
 \family typewriter
 Comparable
 \family default
- object as result.
+ object as result---the fitness value.
+ This allows the GA, respectively the selection operators, to select the
+ offspring- and survivor population.
+ Some selectors have stronger requirements to the fitness value than a 
+\family typewriter
+Comparable
+\family default
+, but this constraints is checked by the type system at compile time.
+\end_layout
+
+\begin_layout Standard
+The following example shows the simpliest possible fitness funtion.
+ It returns the allele of an 
+\begin_inset Formula $1\mathsf{x}1$
+\end_inset
+
+
+\shape italic
+ float
+\shape default
+ genotype.
 \end_layout
 
 \begin_layout Standard
@@ -1087,10 +1107,83 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 
 \end_inset
 
+The first type parameter defines the kind of genotype from which the fitness
+ value is calculated and the second type parameter determines the return
+ type.
+ As already mentioned, return type must implement the 
+\family typewriter
+Comparable
+\family default
+ interface.
+\end_layout
+
+\begin_layout Paragraph
+Fitness scaler
+\end_layout
+
+\begin_layout Standard
+The fitness value, calculated by the fitness function, is 
+\shape italic
+only
+\shape default
+ the 
+\shape italic
+raw
+\shape default
+-fitness of an individual.
+ The Jenetics library allows you to apply an additional scaling function
+ on the raw-fitness to form the actual fitness value.
+ This can be usefull when using probablity selectors (see chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:Probability-selectors"
+
+\end_inset
+
+), where the actual amount of the fitness value influences the selection
+ probability.
+ In such cases, the fitness scaler gives you additional flexibility when
+ selecting offspring and survivors.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class Doubling extends Function<Float64, Float64> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Float64 apply(final Float64 value) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return value.times(Float64.valueOf(2));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Paragraph
 Genes
 \end_layout
 
@@ -1105,10 +1198,6 @@ Jenetics
 \shape default
  library.
  They contain the actual information (alleles) of the encoded solution.
-\end_layout
-
-\begin_layout Subsection
-Fitness scaler
 \end_layout
 
 \begin_layout Section
@@ -1407,6 +1496,13 @@ performance
 
 \begin_layout Paragraph
 Probability selectors
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Probability-selectors"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
