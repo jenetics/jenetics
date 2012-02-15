@@ -716,7 +716,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    System.out.println(ga);
+    System.out.println(ga.getBestPhenotype());
 \end_layout
 
 \begin_layout Plain Layout
@@ -779,7 +779,8 @@ ga.evolve(100)
 ga.setup()
 \family default
  call creates the initial population and calculates its fitness.
- Then the GA evolves 100 generations an prints the last population statistics.
+ Then the GA evolves 100 generations an prints the best phenotype found
+ so far.
  
 \end_layout
 
@@ -833,7 +834,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    System.out.println(ga);
+    System.out.println(ga.getBestPhenotype());
 \end_layout
 
 \begin_layout Plain Layout
@@ -1058,7 +1059,7 @@ Comparable
 \end_layout
 
 \begin_layout Standard
-The following example shows the simpliest possible fitness funtion.
+The following example shows the simplest possible fitness function.
  It returns the allele of an 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
@@ -1133,7 +1134,7 @@ raw
 -fitness of an individual.
  The Jenetics library allows you to apply an additional scaling function
  on the raw-fitness to form the actual fitness value.
- This can be usefull when using probablity selectors (see chapter 
+ This can be useful when using probability selectors (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "par:Probability-selectors"
@@ -2948,7 +2949,58 @@ Statistics
 \end_layout
 
 \begin_layout Standard
-Statistics helper classes.
+The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library gives you statistics information for every evolved generation.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+for (int i = 0; i < 100; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.evolve();
+\end_layout
+
+\begin_layout Plain Layout
+
+    System.out.println(ga.getStatistics());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The statistics object stores information---among other things---about the
+ best- and the worst phenotype and some timing information, for performance
+ analysis.
 \end_layout
 
 \begin_layout Subsection
@@ -2956,7 +3008,264 @@ Termination
 \end_layout
 
 \begin_layout Standard
-Describe GA termination strategies.
+The easiest way to terminate an GA is to evolve a specific number of generations.
+ This works well for most problems and termination is guaranteed.
+ With the statistics object you can access after every generation you can
+ define a more advanced termination strategy using this information.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+// Defining your termination function.
+\end_layout
+
+\begin_layout Plain Layout
+
+final Function<Statistics<Float64Gene, Float64>, Boolean> until = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.evolve(until);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The GA terminates when the termination function returns false.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with some default terminations functions implemented in the 
+\family typewriter
+Until
+\family default
+ class in the 
+\family typewriter
+org.jenetics
+\family default
+ package.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "extendedchars=true,language=C,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+class SteadyFitness<C extends Comparable<? super C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+   implements Function<Statistics<?, C>, Boolean>
+\end_layout
+
+\begin_layout Plain Layout
+
+ {
+\end_layout
+
+\begin_layout Plain Layout
+
+  private final int _genenerations;
+\end_layout
+
+\begin_layout Plain Layout
+
+  private C _fitness;
+\end_layout
+
+\begin_layout Plain Layout
+
+  private int _stableGenerations = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  public SteadyFitness(final int generations) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    _genenerations = generations;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+  public Boolean apply(final Statistics<?, C> stat) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    boolean proceed = true;
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (_fitness == null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      _fitness = stat.getBestFitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+      _stableGenerations = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      final Optimize opt = stat.getOptimize();
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (opt.compare(_fitness, stat.getBestFitness()) >= 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        proceed = ++_stableGenerations <= _genenerations;
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        _fitness = stat.getBestFitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+        _stableGenerations = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    return proceed ? Boolean.TRUE : Boolean.FALSE;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Steady-state-termination"
+
+\end_inset
+
+Steady state termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Steady-state-termination"
+
+\end_inset
+
+ shows the (shortened) code for the steady-state termination function which
+ you can find in the 
+\family typewriter
+Until
+\family default
+ class and should give you an idea you to implement your own termination
+ function.
 \end_layout
 
 \begin_layout Subsection
@@ -3224,14 +3533,6 @@ footnotesize}
 When serializing a whole population the fitness function and fitness scaler
  are not serialized.
  
-\end_layout
-
-\begin_layout Subsection
-Building
-\end_layout
-
-\begin_layout Standard
-// Describe how to build the library from source.
 \end_layout
 
 \begin_layout Section
