@@ -1446,19 +1446,6 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 , weak individuals have less chance being selected.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status open
-
-\begin_layout Plain Layout
-Selection distribution?
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Paragraph
 Truncation selector
 \end_layout
@@ -3048,6 +3035,20 @@ ga.setup();
 ga.evolve(until);
 \end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Using the 'Until.SteadyFitness' terminator.
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.evolve(Until.SteadyFitness(5));
+\end_layout
+
 \end_inset
 
 
@@ -3072,6 +3073,11 @@ Until
 org.jenetics
 \family default
  package.
+ the Steady-fitness terminator for example finishes the 
+\emph on
+evolution
+\emph default
+ if the best fitness value doesn't increase for 5 consecutive generations.
 \end_layout
 
 \begin_layout Standard
