@@ -495,7 +495,11 @@ leftarrow alter(O_g)$
 
     $P_g 
 \backslash
-leftarrow filter[g_i<g_{max}](S_g) + filter[g_i<g_{max}](O_g)$
+leftarrow filter[g_i 
+\backslash
+ge g_{max}](S_g) + filter[g_i 
+\backslash
+ge g_{max}](O_g)$
 \end_layout
 
 \begin_layout Plain Layout
@@ -3016,6 +3020,10 @@ for (int i = 0; i < 100; ++i) {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The statistics object stores information---among other things---about the
  best- and the worst phenotype and some timing information, for performance
  analysis.
@@ -3747,7 +3755,9 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-tiny}
+tiny
+\backslash
+ttfamily}
 \end_layout
 
 \begin_layout Plain Layout
@@ -4052,7 +4062,9 @@ status open
 \backslash
 lstset{basicstyle=
 \backslash
-scriptsize}
+scriptsize
+\backslash
+ttfamily}
 \end_layout
 
 \begin_layout Plain Layout
@@ -4209,7 +4221,7 @@ public class Real {
 
 \begin_layout Plain Layout
 
-        final Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
+        Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
@@ -4224,12 +4236,12 @@ public class Real {
 
 \begin_layout Plain Layout
 
-        final RealFunction ff = new RealFunction();
+        RealFunction ff = new RealFunction();
 \end_layout
 
 \begin_layout Plain Layout
 
-        final GeneticAlgorithm<Float64Gene, Double> ga =
+        GeneticAlgorithm<Float64Gene, Double> ga =
 \end_layout
 
 \begin_layout Plain Layout
