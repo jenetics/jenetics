@@ -3301,13 +3301,13 @@ https://en.wikipedia.org/wiki/Pseudorandom_number_generator
 
  is an essential part of an GA.
  It is used to create the initial population and new (random) individuals
- for those who died, respectively exeeded the maximal allowed age.
+ for those who died, respectively exceeded the maximal allowed age.
  Jenetics uses the Java 
 \family typewriter
 Random
 \family default
  object for generating random numbers.
- To make the random engine plugable, the 
+ To make the random engine pluggable, the 
 \family typewriter
 Random
 \family default
@@ -3318,8 +3318,12 @@ RandomRegistry
 .
  This makes it possible to change the implementation of the random engine
  without changing the client code.
- In interaction with the LocalContext class from the Javolution project,
- you can easily change the random engine only for some parts of the code.
+ In interaction with the 
+\family typewriter
+LocalContext
+\family default
+ class from the Javolution project, you can easily change the random engine
+ only for some parts of the code.
 \end_layout
 
 \begin_layout Standard
@@ -3402,9 +3406,9 @@ try {
 \end_layout
 
 \begin_layout Standard
-The example above shows how to create an random, but reproduceable, list
+The example above shows how to create an random, but reproducible, list
  of genotypes.
- This might be usefull while testing your application or when you want to
+ This might be useful while testing your application or when you want to
  run the GA several times with the same initial population.
 \end_layout
 
@@ -3446,7 +3450,7 @@ ga.setup(genotypes);
 \begin_layout Standard
 This example uses the generated genotypes to setup the initial population
  of the GA.
- The GA is created with the first element of the geneotyps, which is used
+ The GA is created with the first element of the genotypes, which is used
  as genotype factory.
  This guarantees that the same kind of genotypes are created while evolving.
 \end_layout
