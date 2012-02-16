@@ -15,6 +15,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{keyword}{rgb}{0.5,0,0.5}
 \definecolor{background}{rgb}{0.96,0.96,0.96}
+\definecolor{white}{rgb}{1.0,1.0,1.0}
  
 \lstset{ %
   language=java, 
@@ -3943,6 +3944,10 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
         ga.setAlterers(
 \end_layout
 
@@ -3977,6 +3982,16 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
+        System.out.println(ga.getTimeStatistics());
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(ga.getBestStatistics());
+\end_layout
+
+\begin_layout Plain Layout
+
     }
 \end_layout
 
@@ -3996,12 +4011,15 @@ ty of 0.3333.
  The altering of the offspring population is performed by mutation, with
  mutation probability of 0.55, and then by a single-point crossover, with
  crossover probability of 0.06.
- After creating the initial population, with the ga.setup() call, 100 generations
- are evolved.
+ After creating the initial population, with the 
+\family typewriter
+ga.setup()
+\family default
+ call, 100 generations are evolved.
  The tournament selector is used for both, the offspring- and the survivor
  selection---this is the default selector.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) see the JavaDoc:
@@ -4022,6 +4040,46 @@ http://jenetics.sourceforge.net/javadoc/index.html
 \end_inset
 
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{code/OnesCounting.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example will print the overall timing statistics and the statistics
+ of the best population onto the console.
+ The output will look like above.
 \end_layout
 
 \begin_layout Subsection
