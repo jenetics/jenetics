@@ -3029,6 +3029,42 @@ The statistics object stores information---among other things---about the
  analysis.
 \end_layout
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{code/Statistics.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Termination
 \end_layout
@@ -3997,11 +4033,6 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
-        System.out.println(ga.getBestStatistics());
-\end_layout
-
-\begin_layout Plain Layout
-
     }
 \end_layout
 
@@ -4089,8 +4120,7 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-The example will print the overall timing statistics and the statistics
- of the best population onto the console.
+The example will print the overall timing statistics onto the console.
  The output will look like above.
 \end_layout
 
