@@ -77,7 +77,10 @@ public class UntilTest {
 		
 		final GeneticAlgorithm<Float64Gene, Float64> ga = GA();
 		ga.setPopulationSize(20);
-		ga.addAlterer(new Mutator<Float64Gene>(0.999));
+		ga.setAlterers(
+			ga.getAlterer(),
+			new Mutator<Float64Gene>(0.999)
+		);
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
 		

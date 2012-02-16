@@ -807,7 +807,9 @@ public class GeneticAlgorithm<
 	 * Add a Alterer to the already existing alterers of this GeneticAlgorithm.
 	 * 
 	 * @param alterer the {@link Alterer} to add.
+	 * @deprecated use {@link #setAlterers(Alterer...)} instead.
 	 */
+	@Deprecated
 	public void addAlterer(final Alterer<G> alterer) {
 		_alterer = CompositeAlterer.join(_alterer, nonNull(alterer, "Alterer"));
 	}

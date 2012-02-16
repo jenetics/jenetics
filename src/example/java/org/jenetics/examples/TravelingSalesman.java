@@ -89,8 +89,10 @@ public class TravelingSalesman {
 		final GeneticAlgorithm<EnumGene<Integer>, Double> 
 			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(300);
-		ga.setAlterer(new SwapMutator<EnumGene<Integer>>(0.2));
-		ga.addAlterer(new PartiallyMatchedCrossover<Integer>(0.3));
+		ga.setAlterers(
+			new SwapMutator<EnumGene<Integer>>(0.2),
+			new PartiallyMatchedCrossover<Integer>(0.3)
+		);
         
 		final int generations = 500;
 		

@@ -843,8 +843,10 @@ class GeometryController implements StepListener {
 				public void run() {
 					_ga.getLock().lock();
 					try {
-						_ga.setAlterer(new Mutator<Float64Gene>(probability));
-						_ga.addAlterer(new MeanAlterer<Float64Gene>());
+						_ga.setAlterers(
+							new Mutator<Float64Gene>(probability),
+							new MeanAlterer<Float64Gene>()
+						);
 						System.out.println("Mutation probability: " + probability);
 					} finally {
 						_ga.getLock().unlock();
@@ -1659,7 +1661,10 @@ class GA {
 			new GeneticAlgorithm<>(
 				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM
 			);
-		ga.addAlterer(new Mutator<Float64Gene>(0.1));
+		ga.setAlterers(
+			ga.getAlterer(),
+			new Mutator<Float64Gene>(0.1)
+		);
 		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);
