@@ -3275,6 +3275,130 @@ Until
 \end_layout
 
 \begin_layout Subsection
+Randomness
+\end_layout
+
+\begin_layout Standard
+An essential part of an GA is to create new random individuals.
+ By default the Java Random object is used for creating new individuals.
+ The user is able to change the Random engine beeing used for the whole
+ GA or only parts of it.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
+\end_layout
+
+\begin_layout Plain Layout
+
+    new Float64Chromosome(0.0, 100.0, 10)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+List<Genotype<Float64Gene>> genotypes = new ArrayList<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+LocalContext.enter();
+\end_layout
+
+\begin_layout Plain Layout
+
+try {
+\end_layout
+
+\begin_layout Plain Layout
+
+    RandomRegistry.setRandom(new Random(12345));
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (int i = 0; i < 100; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        genotypes.add(factory.newInstance());
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+} finally {
+\end_layout
+
+\begin_layout Plain Layout
+
+    LocalContext.exit();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Function<Genotype<Float64Gene>, Float64> ff = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(
+\end_layout
+
+\begin_layout Plain Layout
+
+    factory, ff
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setGenotypes(genotypes);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code above allows you to create exactly the same initial population
+ only by creating an defined Random object.
+\end_layout
+
+\begin_layout Subsection
 Serialization
 \end_layout
 
