@@ -793,7 +793,18 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Add a Alterer to the GeneticAlgorithm.
+	 * Set the given alterers.
+	 * 
+	 * @param alterers the alterers to set.
+	 * @throws NullPointerException if the alterers are null.
+	 */
+	@SafeVarargs
+	public final void setAlterers(final Alterer<G>... alterers) {
+		setAlterer(new CompositeAlterer<>(alterers));
+	}
+	
+	/**
+	 * Add a Alterer to the already existing alterers of this GeneticAlgorithm.
 	 * 
 	 * @param alterer the {@link Alterer} to add.
 	 */
