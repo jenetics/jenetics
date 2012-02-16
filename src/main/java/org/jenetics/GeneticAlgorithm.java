@@ -28,7 +28,7 @@ import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -95,7 +95,7 @@ import org.jenetics.util.Timer;
  * 
  * It is possible to set an initial population instead an random one. The 
  * fitness function and the fitness scaler is not initialized by the
- * {@link #setPopulation(List)} or {@link #setGenotypes(List)} function.
+ * {@link #setPopulation(Collection)} or {@link #setGenotypes(Collection)} function.
  * [code]
  * final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
  *     IOUtils.readXML(Population.class, new FileInputStream("population.xml");
@@ -270,23 +270,15 @@ public class GeneticAlgorithm<
 	/**
 	 * Setting up the <code>GeneticAlgorithm</code>. Subsequent calls to this 
 	 * method throw IllegalStateException. If no initial population has been 
-	 * set (with {@link #setPopulation(List)} or {@link #setGenotypes(List)}) a
-	 * random population is generated.
+	 * set (with {@link #setPopulation(Collection)} or 
+	 * {@link #setGenotypes(Collection)}) a random population is generated.
 	 * 
 	 * @throws IllegalStateException if called more than once.
 	 */
 	public void setup() {
 		_lock.lock();
 		try {
-			if (_generation > 0) {
-				throw new IllegalStateException(
-					"The method GeneticAlgorithm.setup() must be called only once."
-				);
-			}
-			
-			++_generation;
-			
-			_executionTimer.start();
+			prepareSetup();
 			
 			//Initializing/filling up the Population.
 			for (int i = _population.size(); i < _populationSize; ++i) {
@@ -299,24 +291,57 @@ public class GeneticAlgorithm<
 				_population.add(pt);
 			}
 			
-			//Evaluate the fitness.
-			evaluate();
-			
-			//First valuation of the initial population.
-			_statisticTimer.start();
-			_statistics = _calculator.evaluate(
-					_population, _generation, _optimization
-				).build();
-			
-			_bestStatistics = _statistics;
-			_statisticTimer.stop();
-			
-			_executionTimer.stop();
-			
-			setTimes(_statistics);
+			finishSetup();
 		} finally {
 			_lock.unlock();
 		}
+	}
+	
+	/**
+	 * Setting up the <code>GeneticAlgorithm</code> with the given initial 
+	 * population. Subsequent calls to this method throw IllegalStateException.
+	 * 
+	 * @param genotypes the initial population.
+	 * @throws IllegalStateException if called more than once.
+	 */
+	public void setup(final Collection<Genotype<G>> genotypes) {
+		_lock.lock();
+		try {
+			prepareSetup();
+			setGenotypes(genotypes);
+			finishSetup();
+		} finally {
+			_lock.unlock();
+		}
+	}
+	
+	private void prepareSetup() {
+		if (_generation > 0) {
+			throw new IllegalStateException(
+				"The method GeneticAlgorithm.setup() must be called only once."
+			);
+		}
+		
+		++_generation;
+		_executionTimer.start();
+	}
+	
+	private void finishSetup() {
+		//Evaluate the fitness.
+		evaluate();
+		
+		//First valuation of the initial population.
+		_statisticTimer.start();
+		_statistics = _calculator.evaluate(
+				_population, _generation, _optimization
+			).build();
+		
+		_bestStatistics = _statistics;
+		_statisticTimer.stop();
+		
+		_executionTimer.stop();
+		
+		setTimes(_statistics);
 	}
 	
 	/**
@@ -818,7 +843,7 @@ public class GeneticAlgorithm<
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
 	 */
-	public void setPopulation(final List<Phenotype<G, C>> population) {
+	public void setPopulation(final Collection<Phenotype<G, C>> population) {
 		foreach(population, NonNull);
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -833,6 +858,7 @@ public class GeneticAlgorithm<
 					_fitnessFunction, _fitnessScaler, _generation
 				));
 		}
+		
 		_population = pop;
 		_populationSize = population.size();
 	}
@@ -848,7 +874,7 @@ public class GeneticAlgorithm<
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
 	 */
-	public void setGenotypes(final List<Genotype<G>> genotypes) {
+	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
 		foreach(genotypes, NonNull);
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
@@ -857,16 +883,17 @@ public class GeneticAlgorithm<
 			);
 		}
 		
-		final Population<G, C> pop = new Population<>(genotypes.size());
+		final Population<G, C> population = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
-			pop.add(Phenotype.valueOf(
+			population.add(Phenotype.valueOf(
 				genotype, 
 				_fitnessFunction,
 				_fitnessScaler,
 				_generation
 			));
 		}
-		_population = pop;
+		
+		_population = population;
 		_populationSize = genotypes.size();
 	}
 	
