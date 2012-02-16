@@ -3795,7 +3795,16 @@ Examples
 \end_layout
 
 \begin_layout Standard
-In this section contains some coding examples.
+In this section contains some coding examples which should give you a feeling
+ of how to use the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
 \end_layout
 
 \begin_layout Subsection
@@ -3803,8 +3812,12 @@ Ones counting
 \end_layout
 
 \begin_layout Standard
-Ones counting is one of the simplest model-problem and consists of a binary
- chromosome.
+Ones counting is one of the simplest model-problem.
+ It uses binary chromosome and forms a 
+\emph on
+real
+\emph default
+ genetic algorithm, in the classical sense.
  The fitness of a Genotype is proportional to the number of ones.
  
 \end_layout
@@ -3885,12 +3898,12 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+        Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
@@ -3920,7 +3933,7 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
-        ga.setAlterer(new CompositeAlterer<>(
+        ga.setAlterers(
 \end_layout
 
 \begin_layout Plain Layout
@@ -3935,7 +3948,7 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
-        ));
+        );
 \end_layout
 
 \begin_layout Plain Layout
@@ -3965,6 +3978,11 @@ public class OnesCounting {
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The genotype of this example consists of one BitChromosome with a ones probabili
+ty of 0.3333.
 \end_layout
 
 \begin_layout Subsection
