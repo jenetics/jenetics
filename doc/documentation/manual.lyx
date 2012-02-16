@@ -671,7 +671,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+    Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
@@ -686,12 +686,12 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    final Function<Genotype<BitGene>, Double> ff = ...
+    Function<Genotype<BitGene>, Double> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
 
-    final GeneticAlgorithm<BitGene, Double> 
+    GeneticAlgorithm<BitGene, Double> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -810,12 +810,22 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setAlterer(new SinglePointCrossover<BitGene>(0.1));
+    ga.setAlterers(
 \end_layout
 
 \begin_layout Plain Layout
 
-    ga.addAlterer(new Mutation<BitGene>(0.01));
+        new SinglePointCrossover<BitGene>(0.1),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutation<BitGene>(0.01)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
 \end_layout
 
 \begin_layout Plain Layout
@@ -1088,7 +1098,7 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 
 \begin_layout Plain Layout
 
-    public Float64 apply(final Genotype<Float64Gene> genotype) {
+    public Float64 apply(Genotype<Float64Gene> genotype) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1161,7 +1171,7 @@ class Doubling extends Function<Float64, Float64> {
 
 \begin_layout Plain Layout
 
-    public Float64 apply(final Float64 value) {
+    public Float64 apply(Float64 value) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -2518,7 +2528,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -2607,7 +2617,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -3166,7 +3176,7 @@ class SteadyFitness<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-  public Boolean apply(final Statistics<?, C> stat) {
+  public Boolean apply(Statistics<?, C> stat) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -3943,7 +3953,7 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
-            new SinglePointChrosover<BitGene>(0.06)
+            new SinglePointChrossover<BitGene>(0.06)
 \end_layout
 
 \begin_layout Plain Layout
@@ -3983,10 +3993,96 @@ public class OnesCounting {
 \begin_layout Standard
 The genotype of this example consists of one BitChromosome with a ones probabili
 ty of 0.3333.
+ The altering of the offspring population is performed by mutation, with
+ mutation probability of 0.55, and then by a single-point crossover, with
+ crossover probability of 0.06.
+ After creating the initial population, with the ga.setup() call, 100 generations
+ are evolved.
+ The tournament selector is used for both, the offspring- and the survivor
+ selection---this is the default selector.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+For the other default values (population size, maximal age, ...) see the JavaDoc:
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.sourceforge.net/javadoc/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Subsection
 Real function
+\end_layout
+
+\begin_layout Standard
+In this example we try to find the minimum value of the 2D-function as shown
+ in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Real-function-2D"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/RealFunction2D.eps
+	lyxscale 70
+	width 60text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Real-function-2D"
+
+\end_inset
+
+Real function 2D
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The for find the minimum value of this function will look like this:
 \end_layout
 
 \begin_layout Standard
@@ -4001,7 +4097,7 @@ class RealFunction
 
 \begin_layout Plain Layout
 
-    implements Function<Genotype<Float64Gene>, Double> 
+    implements Function<Genotype<Float64Gene>, Float64> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -4016,17 +4112,17 @@ class RealFunction
 
 \begin_layout Plain Layout
 
-    public Double apply(final Genotype<Float64> genotype) {
+    public Double apply(Genotype<Float64> genotype) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        final double angle = genotype.getGene().doubleValue();
+        final double x = genotype.getGene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-        return cos(sin(angle)*cos(angle));
+        return Float64.valueOf(cos(0.5 + sin(x))*cos(x));
 \end_layout
 
 \begin_layout Plain Layout
@@ -4050,7 +4146,7 @@ public class Real {
 
 \begin_layout Plain Layout
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4080,7 +4176,11 @@ public class Real {
 
 \begin_layout Plain Layout
 
-            new GeneticAlgorithm<>(gtf, ff);
+            new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -4110,12 +4210,22 @@ public class Real {
 
 \begin_layout Plain Layout
 
-        ga.setAlterer(new Mutator<Float64Gene>(0.03));
+        ga.setAlterers(
 \end_layout
 
 \begin_layout Plain Layout
 
-        ga.addAlterer(new MeanAlterer<Float64Gene>(0.6));
+            new Mutator<Float64Gene>(0.03),
+\end_layout
+
+\begin_layout Plain Layout
+
+            new MeanAlterer<Float64Gene>(0.6)
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
 \end_layout
 
 \begin_layout Plain Layout
