@@ -62,6 +62,7 @@ public class GeneticAlgorithmTest {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void setGetAlterer() {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = 

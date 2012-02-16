@@ -93,9 +93,11 @@ public class GATest {
 		@Override
 		protected void beforeTest() {
 			_ga = new GeneticAlgorithm<>(_gtb.build(), new Float64GeneFF());
-			_ga.setAlterer(new MeanAlterer<Float64Gene>());
-			_ga.addAlterer(new SinglePointCrossover<Float64Gene>());
-			_ga.addAlterer(new Mutator<Float64Gene>(0.2));
+			_ga.setAlterers(
+				new MeanAlterer<Float64Gene>(),
+				new SinglePointCrossover<Float64Gene>(),
+				new Mutator<Float64Gene>(0.2)
+			);
 			_ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
 			_ga.setSurvivorSelector(new BoltzmannSelector<Float64Gene, Float64>());
 			_ga.setup();
@@ -123,8 +125,11 @@ public class GATest {
 		@Override
 		protected void beforeTest() {
 			_ga = new GeneticAlgorithm<>(_gt, new CharacterGeneFF());
-			_ga.addAlterer(new SinglePointCrossover<CharacterGene>());
-			_ga.addAlterer(new Mutator<CharacterGene>(0.2));
+			_ga.setAlterers(
+				_ga.getAlterer(),
+				new SinglePointCrossover<CharacterGene>(),
+				new Mutator<CharacterGene>(0.2)
+			);
 			_ga.setOffspringSelector(new RouletteWheelSelector<CharacterGene, Float64>());
 			_ga.setSurvivorSelector(new BoltzmannSelector<CharacterGene, Float64>());
 			_ga.setup();
