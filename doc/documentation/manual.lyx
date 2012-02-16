@@ -2523,17 +2523,27 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        final int parallelism = 10;
+        // Using 10 threads for evolving.
 \end_layout
 
 \begin_layout Plain Layout
 
-        Concurrency.setConcurrency(parallelism);
+        Concurrency.setConcurrency(9);
 \end_layout
 
 \begin_layout Plain Layout
 
-        // ...
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Forces the GA to use only one thread.
+\end_layout
+
+\begin_layout Plain Layout
+
+        Concurrency.setConcurrency(0);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2548,7 +2558,13 @@ public class Main {
 
 \end_inset
 
-The 
+
+\end_layout
+
+\begin_layout Standard
+If you want to disable the concurrent execution you have to set the concurrency
+ to zero.
+ The 
 \family typewriter
 ConcurrentContext
 \family default
@@ -2596,12 +2612,12 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        final int parallelism = 10;
+        final int nthreads = 10;
 \end_layout
 
 \begin_layout Plain Layout
 
-        final ForkJoinPool pool = new ForkJoinPool(parallelism);
+        final ForkJoinPool pool = new ForkJoinPool(nthreads);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2611,7 +2627,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        // ...
+        ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -2640,6 +2656,10 @@ http://javolution.org/
 \end_inset
 
 .
+ 
+\emph on
+Keep in mind, that the number of threads is equal to the concurrency plus
+ one.
 \end_layout
 
 \begin_layout Standard
@@ -3302,7 +3322,16 @@ https://en.wikipedia.org/wiki/Pseudorandom_number_generator
  is an essential part of an GA.
  It is used to create the initial population and new (random) individuals
  for those who died, respectively exceeded the maximal allowed age.
- Jenetics uses the Java 
+ A PRNG is also used in the selection- and mutation classes.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the Java 
 \family typewriter
 Random
 \family default
@@ -3322,8 +3351,9 @@ RandomRegistry
 \family typewriter
 LocalContext
 \family default
- class from the Javolution project, you can easily change the random engine
- only for some parts of the code.
+ class from the Javolution project, the random engine can easily changed
+ only for specific parts of the code.
+ When leaving the local-context, the original PRNG is restored.
 \end_layout
 
 \begin_layout Standard
@@ -3406,10 +3436,11 @@ try {
 \end_layout
 
 \begin_layout Standard
-The example above shows how to create an random, but reproducible, list
- of genotypes.
+The example above shows how to create a random, but reproducible, list of
+ genotypes.
  This might be useful while testing your application or when you want to
- run the GA several times with the same initial population.
+ run the GA several times with the same initial population without reading
+ them from disk.
 \end_layout
 
 \begin_layout Standard
@@ -3453,6 +3484,19 @@ This example uses the generated genotypes to setup the initial population
  The GA is created with the first element of the genotypes, which is used
  as genotype factory.
  This guarantees that the same kind of genotypes are created while evolving.
+ Calling the setup(Collection) method, uses as initial population the given
+ genotypes.
+ This also changes the GA's population size, that means 
+\family typewriter
+ga.getPopulationSize() == genotypes.size()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Setting the PRNG to a Random object with a defined seed has the effect,
+ that every run of the GA produces the same result---in a single threaded
+ environment.
 \end_layout
 
 \begin_layout Subsection
@@ -3720,6 +3764,30 @@ footnotesize}
 When serializing a whole population the fitness function and fitness scaler
  are not serialized.
  
+\end_layout
+
+\begin_layout Section
+Extending 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\end_layout
+
+\begin_layout Standard
+This section describes how you can extend the existing classes.
+\end_layout
+
+\begin_layout Subsection
+Genes and Chromosomes
+\end_layout
+
+\begin_layout Subsection
+Selectors
+\end_layout
+
+\begin_layout Subsection
+Alterers
 \end_layout
 
 \begin_layout Section
