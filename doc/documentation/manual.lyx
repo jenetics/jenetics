@@ -3279,10 +3279,47 @@ Randomness
 \end_layout
 
 \begin_layout Standard
-An essential part of an GA is to create new random individuals.
- By default the Java Random object is used for creating new individuals.
- The user is able to change the Random engine beeing used for the whole
- GA or only parts of it.
+The PRNG
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Pseudorandom_number_generator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is an essential part of an GA.
+ It is used to create the initial population and new (random) individuals
+ for those who died, respectively exeeded the maximal allowed age.
+ Jenetics uses the Java 
+\family typewriter
+Random
+\family default
+ object for generating random numbers.
+ To make the random engine plugable, the 
+\family typewriter
+Random
+\family default
+ object is always fetched from the 
+\family typewriter
+RandomRegistry
+\family default
+.
+ This makes it possible to change the implementation of the random engine
+ without changing the client code.
+ In interaction with the LocalContext class from the Javolution project,
+ you can easily change the random engine only for some parts of the code.
 \end_layout
 
 \begin_layout Standard
@@ -3359,13 +3396,26 @@ try {
 }
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
 
 \end_layout
 
+\begin_layout Standard
+The example above shows how to create an random, but reproduceable, list
+ of genotypes.
+ This might be usefull while testing your application or when you want to
+ run the GA several times with the same initial population.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
-Function<Genotype<Float64Gene>, Float64> ff = ...
+Function<Genotype<Float64Gene>> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -3375,7 +3425,7 @@ GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(
 
 \begin_layout Plain Layout
 
-    factory, ff
+    genotypes.get(0), ff
 \end_layout
 
 \begin_layout Plain Layout
@@ -3385,7 +3435,7 @@ GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(
 
 \begin_layout Plain Layout
 
-ga.setGenotypes(genotypes);
+ga.setup(genotypes);
 \end_layout
 
 \end_inset
@@ -3394,8 +3444,11 @@ ga.setGenotypes(genotypes);
 \end_layout
 
 \begin_layout Standard
-The code above allows you to create exactly the same initial population
- only by creating an defined Random object.
+This example uses the generated genotypes to setup the initial population
+ of the GA.
+ The GA is created with the first element of the geneotyps, which is used
+ as genotype factory.
+ This guarantees that the same kind of genotypes are created while evolving.
 \end_layout
 
 \begin_layout Subsection
