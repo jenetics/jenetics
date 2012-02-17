@@ -14,7 +14,8 @@
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{keyword}{rgb}{0.5,0,0.5}
-\definecolor{background}{rgb}{0.96,0.96,0.96}
+%\definecolor{background}{rgb}{0.96,0.96,0.96}
+\definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
  
 \lstset{ %
@@ -148,7 +149,23 @@ Java Genetic Algorithm Library Manual
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace vfill*
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename graphic/title.svg
+	lyxscale 20
+	height 40pheight%
+
+\end_inset
+
+
+\begin_inset VSpace vfill
 \end_inset
 
 
@@ -172,7 +189,7 @@ Franz Wilhelmstötter
 \family default
 \size default
 
-\begin_inset VSpace 2cm
+\begin_inset VSpace 1cm
 \end_inset
 
 
@@ -3527,7 +3544,7 @@ Randomness
 \end_layout
 
 \begin_layout Standard
-GAs heavily depend on pseudo random number generators (PRNG
+In general, GAs heavily depends on pseudo random number generators (PRNG
 \begin_inset Foot
 status collapsed
 
@@ -3578,7 +3595,11 @@ LocalContext
 \family default
  class from the Javolution project, the random engine can easily changed,
  even for specific parts of the code.
- The following example shows how to change and restore the 
+ 
+\end_layout
+
+\begin_layout Standard
+The following example shows how to change and restore the 
 \family typewriter
 Random
 \family default
@@ -4038,6 +4059,10 @@ Selectors
 Alterers
 \end_layout
 
+\begin_layout Subsection
+Statistics
+\end_layout
+
 \begin_layout Section
 Examples
 \end_layout
@@ -4254,8 +4279,8 @@ ga.setup()
 status collapsed
 
 \begin_layout Plain Layout
-For the other default values (population size, maximal age, ...) see the JavaDoc:
- 
+For the other default values (population size, maximal age, ...) have a look
+ at the JavaDoc: 
 \begin_inset Flex URL
 status collapsed
 
