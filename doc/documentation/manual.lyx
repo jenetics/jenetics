@@ -7,6 +7,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{url}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{cclicenses}
 \usepackage{multicol} 
 
@@ -124,6 +125,22 @@ figs-within-sections
 \begin_body
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagecolor{ProcessBlue} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \align center
 
 \family sans
@@ -182,13 +199,6 @@ Franz Wilhelmstötter
 
 \begin_layout Standard
 \align right
-
-\family sans
-\size small
-@!identifier!@
-\family default
-\size default
-
 \begin_inset VSpace 1cm
 \end_inset
 
@@ -226,17 +236,15 @@ status open
 
 
 \backslash
+pagecolor{white}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
 thispagestyle{empty}
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
 
 \begin_layout Plain Layout
 
@@ -248,6 +256,62 @@ pagenumbering{roman}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 2cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\size small
+Franz Wilhelmstötter
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\size small
+franz.wilhelmstoetter@gmx.at
+\end_layout
+
+\begin_layout Standard
+\begin_inset Phantom VPhantom
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\size small
+http://jenetics.sourceforge.net/
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 1cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align left
+
+\size small
+@!identifier!@
 \end_layout
 
 \begin_layout Standard
@@ -3273,7 +3337,7 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+GeneticAlgorithm<Float64Gene, Float64> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -3283,7 +3347,7 @@ final GeneticAlgorithm<Float64Gene, Float64> ga = ...
 
 \begin_layout Plain Layout
 
-final Function<Statistics<Float64Gene, Float64>, Boolean> until = ...
+Function<Statistics<Float64Gene, Float64>, Boolean> until = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -4367,7 +4431,7 @@ status open
 \begin_inset Graphics
 	filename graphic/RealFunction2D.eps
 	lyxscale 70
-	width 60text%
+	width 100text%
 
 \end_inset
 
