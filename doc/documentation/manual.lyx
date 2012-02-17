@@ -18,7 +18,7 @@
 %\definecolor{background}{rgb}{0.96,0.96,0.96}
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
-\definecolor{covercolor}{RGB}{198,226,255}
+\definecolor{covercolor}{RGB}{220,220,220}
  
 \lstset{ %
   language=java, 
@@ -406,6 +406,18 @@ Population
 .
 \end_layout
 
+\begin_layout Abstract
+This manual describes the concepts implemented in the
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ project and gives you examples and best practice tips.
+\end_layout
+
 \begin_layout Standard
 \noindent
 \begin_inset Newpage pagebreak
@@ -458,7 +470,7 @@ Jenetics
 \shape default
  project is a Java
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The library depends on Java SE 7; 
@@ -485,8 +497,12 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
 \end_inset
 
- (GA) implementation.
- Genetic algorithms was first proposed and analyzed by 
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Genetic algorithms was first proposed and analyzed by 
 \begin_inset CommandInset href
 LatexCommand href
 name "John Holland"
@@ -495,7 +511,64 @@ target "http://en.wikipedia.org/wiki/John_Henry_Holland"
 \end_inset
 
  in 1975.
- This document is not an introduction or a tutorial for genetic algorithms.
+\end_layout
+
+\end_inset
+
+ (GA) implementation.
+ The project depends on the JScience
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jscience.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ library and uses its support for XML-serialization and concurrency.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+This manual is not an introduction or a tutorial for genetic algorithms.
  It is assumed that the reader has a knowledge about the structure and the
  functionality of genetic algorithms.
  A good GA introduction can be found in 
@@ -520,6 +593,44 @@ key "Whitley94agenetic"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The order of the single execution steps of genetic algorithm may slightly
+ differ from implementation to implementation.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Genetic-algorithm"
+
+\end_inset
+
+ shows the pseudo-code of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ genetic algorithm steps.
 \end_layout
 
 \begin_layout Standard
@@ -614,23 +725,7 @@ Genetic algorithm
 \end_layout
 
 \begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "lis:Genetic-algorithm"
-
-\end_inset
-
- shows the steps the 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- genetic algorithm is using.
- The first line creates the initial population and the second line calculates
+The first line creates the initial population and the second line calculates
  the fitness value of the individuals.
  (This is done by the 
 \family typewriter
@@ -1229,8 +1324,16 @@ only
 raw
 \shape default
 -fitness of an individual.
- The Jenetics library allows you to apply an additional scaling function
- on the raw-fitness to form the actual fitness value.
+ The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library allows you to apply an additional scaling function on the raw-fitness
+ to form the actual fitness value.
  This can be useful when using probability selectors (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1248,7 +1351,7 @@ status open
 
 \begin_layout Plain Layout
 
-class Doubling extends Function<Float64, Float64> {
+class Sqrt extends Function<Float64, Float64> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1263,7 +1366,7 @@ class Doubling extends Function<Float64, Float64> {
 
 \begin_layout Plain Layout
 
-        return value.times(Float64.valueOf(2));
+        return Float64.valueOf(sqrt(value.doubleValue()));
 \end_layout
 
 \begin_layout Plain Layout
@@ -1355,12 +1458,16 @@ offspring
 .
  The selectors for 
 \shape italic
+\emph on
 offspring
 \shape default
+\emph default
  and for the 
 \shape italic
+\emph on
 survivors
 \shape default
+\emph default
  can be chosen independently.
  
 \end_layout
@@ -1497,7 +1604,7 @@ reference "fig:Selector-class-diagram"
 
 \end_inset
 
- shows the class hierarchy of the available selectors.
+ shows the class hierarchy of the currently available selectors.
 \end_layout
 
 \begin_layout Paragraph
@@ -1565,18 +1672,20 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \end_layout
 
 \begin_layout Paragraph
-Monte-Carlo selector
+Monte Carlo selector
 \end_layout
 
 \begin_layout Standard
-Select the phenotypes from a given population randomly.
- This class can be used to measure the performance of an other given selector.
+The Monte Carlo selector selects the individuals from a given population
+ randomly.
+ This selector can be used to measure the performance of a other selectors.
  In general, the 
 \shape italic
 performance
 \shape default
  of a selector should be better than the selection performance of the Monte
  Carlo selector.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -1591,7 +1700,7 @@ name "par:Probability-selectors"
 \end_layout
 
 \begin_layout Standard
-The probability selectors are a variation of 
+Probability selectors are a variation of 
 \shape italic
 fitness proportional
 \shape default
@@ -1601,7 +1710,7 @@ fitness proportional
 selection
 \shape default
  probability 
-\begin_inset Formula $p_{i}$
+\begin_inset Formula $P_{i}$
 \end_inset
 
 .
@@ -1659,7 +1768,7 @@ reference "fig:Fitness-proportional-selection"
 \begin_inset Formula $r\in\left[0,F\right)$
 \end_inset
 
- specifies which individual is selected: 
+ specifies which individual is selected by argument maximization: 
 \begin_inset Formula 
 \begin{equation}
 i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
@@ -2172,11 +2281,8 @@ Mutator
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-Mutator
-\family default
- class has to deal with the problem, that the genes are arranged in a
+The mutator has to deal with the problem, that the genes are arranged in
+ a
 \shape italic
  
 \begin_inset Formula $3D$
@@ -2256,11 +2362,7 @@ Gaussian mutator
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-GaussianMutator
-\family default
- class performs the mutation of a 
+The Gaussian mutator performs the mutation of a 
 \family typewriter
 NumberGene
 \family default
@@ -2293,13 +2395,9 @@ Swap mutator
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-SwapMutator
-\family default
- class changes the order of genes in a chromosome, with the hope of bringing
- related genes closer together, thereby facilitating the production of building
- blocks.
+The swap mutator changes the order of genes in a chromosome, with the hope
+ of bringing related genes closer together, thereby facilitating the production
+ of building blocks.
  This mutation operator can also be used for combinatorial problems, where
  no duplicated genes within a chromosome are allowed, e.
 \begin_inset space ~
@@ -2326,12 +2424,57 @@ An enhanced genetic algorithm (EGA) combine elements of existing solutions
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
 \align block
 
+\family sans
 \shape italic
+\emph on
 Because of the possible different chromosome length and/or chromosome constraint
 s within a genotype, only chromosomes with the same genotype position are
  recombined.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2367,12 +2510,8 @@ Single-point crossover
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-SinglePointCrossover
-\family default
- class changes to children chromosomes by taking two chromosomes and cutting
- them at some, randomly chosen, site.
+The single-point crossover changes to children chromosomes by taking two
+ chromosomes and cutting them at some, randomly chosen, site.
 \end_layout
 
 \begin_layout Standard
@@ -2392,11 +2531,8 @@ Partially-matched crossover
 \end_layout
 
 \begin_layout Standard
-The 
-\family typewriter
-PartiallyMatchedCrossover
-\family default
- class guarantees that all genes are found exactly once in each chromosome.
+The partially-matched crossover guarantees that all genes are found exactly
+ once in each chromosome.
  No gene is duplicated by this crossover.
  The partially-matched crossover (PMX) can be applied usefully in the TSP
  or other permutation problem encodings.
@@ -2589,7 +2725,7 @@ Runtime.getRuntime().availableProcessors()
  the GA initialization.
  The configuration is done by the 
 \family typewriter
-org.jenetics.util.Concurrency
+Concurrency
 \family default
  class as shown in the following example.
 \end_layout
@@ -2741,7 +2877,7 @@ public class Main {
 
 The concurrent context from the Javolution project is used in the following
  way.
- A detailed usage description can be found at 
+ A detailed usage description about how to use it can be found at 
 \begin_inset Flex URL
 status collapsed
 
@@ -2755,8 +2891,7 @@ http://javolution.org/
 .
  
 \emph on
-Keep in mind, that the number of threads is equal to the concurrency plus
- one.
+Keep in mind, that the number of threads is equal to the concurrency + 1.
 \end_layout
 
 \begin_layout Standard
@@ -3609,7 +3744,7 @@ Randomness
 \end_layout
 
 \begin_layout Standard
-In general, GAs heavily depends on pseudo random number generators (PRNG
+In general, GAs heavily depends on (pseudo) random number generators (PRNG
 \begin_inset Foot
 status collapsed
 
@@ -3975,18 +4110,10 @@ end{multicols}
 \end_layout
 
 \begin_layout Standard
-Serialization of GA objects.
- 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- allows you to write a population to disk and load it to a GA again and
- start evolving again.
- 
+With the serialization mechanism you can write a population to disk and
+ load it to an GA at a later time.
+ It can also be used to transfer populations to GAs running on different
+ hosts over a network link.
 \end_layout
 
 \begin_layout Standard
@@ -4097,7 +4224,9 @@ footnotesize}
 \begin_layout Standard
 When serializing a whole population the fitness function and fitness scaler
  are not serialized.
- 
+ If a GA is initialized with a previously serialized population the GA's
+ current fitness function and fitness scaler is used for (re-)calculating
+ the (raw-)fitness values.
 \end_layout
 
 \begin_layout Section
