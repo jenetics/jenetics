@@ -3065,6 +3065,10 @@ footnotesize}
 
 \end_layout
 
+\begin_layout Standard
+This is one output of the GA statistics of one generation.
+\end_layout
+
 \begin_layout Subsection
 Termination
 \end_layout
@@ -3354,9 +3358,9 @@ Randomness
 \end_layout
 
 \begin_layout Standard
-The PRNG
+GAs heavily depend on pseudo random number generators (PRNG
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -3374,10 +3378,7 @@ https://en.wikipedia.org/wiki/Pseudorandom_number_generator
 
 \end_inset
 
- is an essential part of an GA.
- It is used to create the initial population and new (random) individuals
- for those who died, respectively exceeded the maximal allowed age.
- A PRNG is also used in the selection- and mutation classes.
+), for creating new individuals and for the selection- and mutation-algorithms.
  
 \family sans
 \series bold
@@ -3406,9 +3407,27 @@ RandomRegistry
 \family typewriter
 LocalContext
 \family default
- class from the Javolution project, the random engine can easily changed
- only for specific parts of the code.
- When leaving the local-context, the original PRNG is restored.
+ class from the Javolution project, the random engine can easily changed,
+ even for specific parts of the code.
+ The following example shows how to change and restore the 
+\family typewriter
+Random
+\family default
+ object.
+ When entering the 
+\family typewriter
+LocalContext
+\family default
+, changes to the 
+\family typewriter
+RandomRegistry
+\family default
+ are only visible within this context.
+ When leaving the context, the original 
+\family typewriter
+Random
+\family default
+ object is restored.
 \end_layout
 
 \begin_layout Standard
@@ -3494,8 +3513,7 @@ try {
 The example above shows how to create a random, but reproducible, list of
  genotypes.
  This might be useful while testing your application or when you want to
- run the GA several times with the same initial population without reading
- them from disk.
+ run the GA several times with the same initial population.
 \end_layout
 
 \begin_layout Standard
@@ -3541,9 +3559,13 @@ This example uses the generated genotypes to setup the initial population
  This guarantees that the same kind of genotypes are created while evolving.
  Calling the setup(Collection) method, uses as initial population the given
  genotypes.
- This also changes the GA's population size, that means 
+ This automatically changes the GA's population size, that means the 
 \family typewriter
-ga.getPopulationSize() == genotypes.size()
+populationSize
+\family default
+ property of the GA is set to 
+\family typewriter
+genotypes.size()
 \family default
 .
 \end_layout
