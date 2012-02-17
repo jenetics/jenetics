@@ -18,7 +18,7 @@
 %\definecolor{background}{rgb}{0.96,0.96,0.96}
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
-\definecolor{covercolor}{RGB}{176,226,255}
+\definecolor{covercolor}{RGB}{198,226,255}
  
 \lstset{ %
   language=java, 
