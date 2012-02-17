@@ -2972,14 +2972,10 @@ Statistics
 
 \begin_layout Standard
 The 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
+\family typewriter
+GeneticAlgorithm
 \family default
-\series default
-\shape default
- library gives you statistics information for every evolved generation.
+ class offers population- and timing-statistics after every evolve step.
  
 \end_layout
 
@@ -2990,7 +2986,7 @@ status open
 
 \begin_layout Plain Layout
 
-final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+GeneticAlgorithm<Float64Gene, Float64> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -3024,9 +3020,11 @@ for (int i = 0; i < 100; ++i) {
 \end_layout
 
 \begin_layout Standard
-The statistics object stores information---among other things---about the
- best- and the worst phenotype and some timing information, for performance
- analysis.
+The statistics object returned by the GA stores information---among other
+ things---about the best- and the worst phenotype and some timing information,
+ for performance analysis.
+ The following listing shows the console output of an actual GA statistics.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3066,7 +3064,178 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-This is one output of the GA statistics of one generation.
+If the fitness value is a number type you can change the statistics calculator
+ of the GA to get more specific statistics information.
+ The listing shows how to set a number-statistics calculator for the GA.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+GeneticAlgorithm<Float64Gene, Float64> ga = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setStatisticsCalculator(
+\end_layout
+
+\begin_layout Plain Layout
+
+    new NumberStatistics.Calculator<Float64Gene, Float64>()
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+ga.setup();
+\end_layout
+
+\begin_layout Plain Layout
+
+for (int i = 0; i < 100; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ga.evolve();
+\end_layout
+
+\begin_layout Plain Layout
+
+    System.out.println(ga.getStatistics());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With this configuration the console output for one statistics object will
+ look like the following listing.
+ This is because instead of an 
+\family typewriter
+Statistics
+\family default
+ object an 
+\family typewriter
+NumberStatistics
+\family default
+ object is returned by the 
+\family typewriter
+getStatistics()
+\family default
+ method.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{code/NumberStatistics.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For performance analysis it might be interesting in with processing steps
+ the computation time is spent.
+ On 
+\emph on
+generation
+\emph default
+ basis this can be accessed via the 
+\family typewriter
+ga.getStatistics().getTime()
+\family default
+ property.
+ The overall calculation time statistics is available over the 
+\family typewriter
+ga.getTimeStatistics()
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{code/TimeStatistics.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The console output of the time statistics looks like listing above and has
+ the same format for the overall- and the generation time statistics.
 \end_layout
 
 \begin_layout Subsection
@@ -4050,7 +4219,7 @@ public class OnesCounting {
 
 \begin_layout Plain Layout
 
-        System.out.println(ga.getTimeStatistics());
+        System.out.println(ga.getBestStatistics());
 \end_layout
 
 \begin_layout Plain Layout
@@ -4142,7 +4311,7 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-The example will print the overall timing statistics onto the console.
+The given example will print the overall timing statistics onto the console.
  The output will look like above.
 \end_layout
 
