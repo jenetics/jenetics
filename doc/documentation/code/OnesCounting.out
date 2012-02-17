@@ -1,10 +1,9 @@
   +---------------------------------------------------------+
-  |  Time Statistics                                        |
+  |  Population Statistics                                  |
   +---------------------------------------------------------+
-  |                  Select time: 0.02847470000             |
-  |                   Alter time: 0.11873813700             |
-  |                 Combine time: 0.01543323400             |
-  |     Fitness calculation time: 0.08967686100             |
-  |  Statistics calculation time: 0.05361279300             |
-  |       Overall execution time: 0.33143056200             |
+  |                     Age mean: 1.22000000000             |
+  |                 Age variance: 2.99142857143             |
+  |                      Samples: 50                        |
+  |                 Best fitness: 18                        |
+  |                Worst fitness: 7                         |
   +---------------------------------------------------------+
