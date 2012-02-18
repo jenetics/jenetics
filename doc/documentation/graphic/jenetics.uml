@@ -26,7 +26,7 @@
       <fontname>Dialog</fontname>
       <fontsize>12</fontsize>
       <defaultstereotypeview>0</defaultstereotypeview>
-      <activediagram>Selector class diagram</activediagram>
+      <activediagram>Genetic operator class diagram</activediagram>
     </settings>
     <searchpath href="PROJECT_DIR" />
     <members>
@@ -62,7 +62,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat Feb 18 20:40:34 CET 2012'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat Feb 18 23:43:22 CET 2012'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -122,7 +122,25 @@
         </UML:Association>
         <UML:Class xmi.id = '127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A'
           name = 'Genotype' visibility = 'public' isSpecification = 'false' isRoot = 'false'
-          isLeaf = 'false' isAbstract = 'false' isActive = 'false'/>
+          isLeaf = 'false' isAbstract = 'false' isActive = 'false'>
+          <UML:Classifier.feature>
+            <UML:Attribute xmi.id = '127-0-1-1-77d0c471:13592957b07:-8000:0000000000000AB2'
+              name = 'newAttr' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+              changeability = 'changeable' targetScope = 'instance'>
+              <UML:StructuralFeature.multiplicity>
+                <UML:Multiplicity xmi.id = '127-0-1-1-77d0c471:13592957b07:-8000:0000000000000AB3'>
+                  <UML:Multiplicity.range>
+                    <UML:MultiplicityRange xmi.id = '127-0-1-1-77d0c471:13592957b07:-8000:0000000000000AB4'
+                      lower = '1' upper = '1'/>
+                  </UML:Multiplicity.range>
+                </UML:Multiplicity>
+              </UML:StructuralFeature.multiplicity>
+              <UML:StructuralFeature.type>
+                <UML:DataType href = 'http://argouml.org/profiles/uml14/default-uml14.xmi#-84-17--56-5-43645a83:11466542d86:-8000:000000000000087C'/>
+              </UML:StructuralFeature.type>
+            </UML:Attribute>
+          </UML:Classifier.feature>
+        </UML:Class>
         <UML:Association xmi.id = '127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7B'
           name = '' isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Association.connection>
@@ -632,7 +650,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigInterface[96, 432, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
        href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A62"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -645,7 +663,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -655,7 +673,7 @@
       width="190"
       height="41"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -669,7 +687,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[97, 433, 190, 19]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A62"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -682,7 +700,7 @@
         width="190"
         height="19"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -692,7 +710,7 @@
         width="190"
         height="17"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -717,7 +735,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[97, 475, 190, 24]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A62"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -740,7 +758,7 @@
         width="190"
         height="22"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -756,7 +774,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigInterface[368, 432, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
        href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A65"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -769,7 +787,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -779,7 +797,7 @@
       width="190"
       height="41"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -793,7 +811,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 433, 190, 19]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A65"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -806,7 +824,7 @@
         width="190"
         height="19"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -816,7 +834,7 @@
         width="190"
         height="17"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -841,7 +859,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 475, 190, 23]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A65"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -918,10 +936,10 @@
     </path>
   </group>
   <group name="Fig3"
-       description="org.argouml.uml.diagram.static_structure.ui.FigClass[368, 304, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[368, 304, 192, 69]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -932,9 +950,9 @@
       x="368"
       y="304"
       width="192"
-      height="67"
+      height="69"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -944,7 +962,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -958,7 +976,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 305, 190, 0]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -972,7 +990,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -988,10 +1006,10 @@
       strokecolor="black"
     />
     <group name="Fig3.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[369, 328, 190, 21]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[369, 328, 190, 24]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1002,16 +1020,32 @@
         x="369"
         y="328"
         width="190"
-        height="21"
+        height="24"
         fill="0"
         fillcolor="white"
         stroke="0"
         strokecolor="black"
       />
+      <text name="Fig3.4.1"
+        x="369"
+        y="328"
+        width="190"
+        height="22"
+        fill="0"
+        fillcolor="135 206 235"
+        stroke="0"
+        strokecolor="black"
+        textcolor="black"
+        font="Dialog"
+        italic="false"
+        bold="false"
+        textsize="12"
+        justification="Left"
+      >newAttr : Integer</text>
     </group>
     <rectangle name="Fig3.5"
       x="368"
-      y="348"
+      y="351"
       width="192"
       height="1"
       fill="1"
@@ -1020,10 +1054,10 @@
       strokecolor="black"
     />
     <group name="Fig3.6"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 349, 190, 21]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 352, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1032,7 +1066,7 @@
       
       <rectangle name="Fig3.6.0"
         x="369"
-        y="349"
+        y="352"
         width="190"
         height="21"
         fill="0"
@@ -1094,7 +1128,7 @@
       strokecolor="black"
     >
       <moveto x="464"
-              y="370" />
+              y="372" />
       <lineto x="464"
               y="432" />
     </path>
@@ -1103,7 +1137,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[368, 176, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A8A"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -1116,7 +1150,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -1126,7 +1160,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -1140,7 +1174,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 177, 190, 0]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A8A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -1154,7 +1188,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -1173,7 +1207,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[369, 200, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A8A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1205,7 +1239,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 221, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A8A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1285,7 +1319,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[368, 48, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A92"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -1298,7 +1332,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -1308,7 +1342,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -1322,7 +1356,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[369, 49, 190, 0]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A92"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -1336,7 +1370,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -1355,7 +1389,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[369, 72, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A92"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1387,7 +1421,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 93, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A92"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1467,7 +1501,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigInterface[96, 176, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
        href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A98"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -1480,7 +1514,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -1490,7 +1524,7 @@
       width="190"
       height="41"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -1504,7 +1538,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[97, 177, 190, 19]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A98"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1517,7 +1551,7 @@
         width="190"
         height="19"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -1527,7 +1561,7 @@
         width="190"
         height="17"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -1552,7 +1586,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[97, 219, 190, 24]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A98"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1575,7 +1609,7 @@
         width="190"
         height="22"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -1652,7 +1686,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigInterface[432, 48, 321, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A83"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -1665,7 +1699,7 @@
       width="321"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -1675,7 +1709,7 @@
       width="319"
       height="41"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -1689,7 +1723,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[433, 49, 319, 19]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A83"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1702,7 +1736,7 @@
         width="319"
         height="19"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -1712,7 +1746,7 @@
         width="319"
         height="17"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -1737,7 +1771,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[433, 91, 319, 24]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A83"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1760,7 +1794,7 @@
         width="319"
         height="22"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -1776,7 +1810,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[304, 160, 215, 69]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A84"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -1789,7 +1823,7 @@
       width="215"
       height="69"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -1799,7 +1833,7 @@
       width="213"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -1813,7 +1847,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[305, 161, 213, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A84"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -1827,7 +1861,7 @@
         width="213"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -1846,7 +1880,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[305, 184, 213, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A84"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1878,7 +1912,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[305, 206, 213, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A84"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -1901,7 +1935,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[640, 160, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A85"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -1914,7 +1948,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -1924,7 +1958,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -1938,7 +1972,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[641, 161, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A85"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -1952,7 +1986,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -1971,7 +2005,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[641, 184, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A85"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2003,7 +2037,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[641, 205, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A85"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2088,7 +2122,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[192, 272, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8A"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -2101,7 +2135,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -2111,7 +2145,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -2125,7 +2159,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[193, 273, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -2139,7 +2173,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -2158,7 +2192,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[193, 296, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2190,7 +2224,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[193, 317, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8A"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2213,7 +2247,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[416, 272, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8B"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -2226,7 +2260,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -2236,7 +2270,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -2250,7 +2284,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[417, 273, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8B"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -2264,7 +2298,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -2283,7 +2317,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[417, 296, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8B"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2315,7 +2349,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[417, 317, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8B"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2400,7 +2434,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[528, 384, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8E"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -2413,7 +2447,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -2423,7 +2457,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -2437,7 +2471,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[529, 385, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8E"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -2451,7 +2485,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -2470,7 +2504,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[529, 408, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8E"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2502,7 +2536,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[529, 429, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8E"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2525,7 +2559,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[752, 384, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8F"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -2538,7 +2572,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -2548,7 +2582,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -2562,7 +2596,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[753, 385, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8F"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -2576,7 +2610,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -2595,7 +2629,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[753, 408, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8F"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2627,7 +2661,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[753, 429, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A8F"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2650,7 +2684,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[416, 496, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A90"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -2663,7 +2697,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -2673,7 +2707,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -2687,7 +2721,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[417, 497, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A90"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -2701,7 +2735,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -2720,7 +2754,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[417, 520, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A90"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2752,7 +2786,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[417, 541, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A90"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2775,7 +2809,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[640, 496, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A91"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -2788,7 +2822,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -2798,7 +2832,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -2812,7 +2846,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[641, 497, 190, 0]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A91"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -2826,7 +2860,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -2845,7 +2879,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[641, 520, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A91"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -2877,7 +2911,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[641, 541, 190, 21]"
          href="127-0-1-1--7861dc86:134aff955dc:-8000:0000000000000A91"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3028,7 +3062,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigInterface[432, 16, 417, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
        href="127-0-1-1--5e58ffe5:134b4952f99:-8000:0000000000000A9B"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3041,7 +3075,7 @@
       width="417"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3051,7 +3085,7 @@
       width="415"
       height="41"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3065,7 +3099,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[433, 17, 415, 19]"
          href="127-0-1-1--5e58ffe5:134b4952f99:-8000:0000000000000A9B"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3078,7 +3112,7 @@
         width="415"
         height="19"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3088,7 +3122,7 @@
         width="415"
         height="17"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -3113,7 +3147,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[433, 59, 415, 24]"
          href="127-0-1-1--5e58ffe5:134b4952f99:-8000:0000000000000A9B"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3136,7 +3170,7 @@
         width="415"
         height="22"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
         textcolor="black"
@@ -3152,7 +3186,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[288, 368, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9C"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3165,7 +3199,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3175,7 +3209,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3189,7 +3223,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[289, 369, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9C"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3203,7 +3237,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3222,7 +3256,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[289, 392, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9C"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3254,7 +3288,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[289, 413, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9C"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3277,7 +3311,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[704, 480, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9D"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3290,7 +3324,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3300,7 +3334,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3314,7 +3348,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[705, 481, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9D"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3328,7 +3362,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3347,7 +3381,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[705, 504, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9D"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3379,7 +3413,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[705, 525, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9D"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3402,7 +3436,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[768, 368, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9E"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3415,7 +3449,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3425,7 +3459,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3439,7 +3473,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[769, 369, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9E"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3453,7 +3487,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3472,7 +3506,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[769, 392, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9E"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3504,7 +3538,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[769, 413, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9E"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3527,7 +3561,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[512, 144, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9F"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3540,7 +3574,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3550,7 +3584,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3564,7 +3598,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[513, 145, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9F"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3578,7 +3612,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3597,7 +3631,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[513, 168, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9F"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3629,7 +3663,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[513, 189, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000A9F"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3652,7 +3686,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[432, 256, 416, 66]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA0"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3665,7 +3699,7 @@
       width="416"
       height="66"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3675,7 +3709,7 @@
       width="414"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3689,7 +3723,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[433, 257, 414, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA0"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3703,7 +3737,7 @@
         width="414"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3722,7 +3756,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[433, 280, 414, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA0"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3754,7 +3788,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[433, 301, 414, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA0"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3777,7 +3811,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[512, 368, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA1"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3790,7 +3824,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3800,7 +3834,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3814,7 +3848,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[513, 369, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA1"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3828,7 +3862,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3847,7 +3881,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[513, 392, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA1"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3879,7 +3913,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[513, 413, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA1"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -3902,7 +3936,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[464, 480, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA2"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -3915,7 +3949,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -3925,7 +3959,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -3939,7 +3973,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[465, 481, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA2"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -3953,7 +3987,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -3972,7 +4006,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[465, 504, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA2"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -4004,7 +4038,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[465, 525, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA2"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -4027,7 +4061,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[768, 144, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA3"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -4040,7 +4074,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -4050,7 +4084,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -4064,7 +4098,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[769, 145, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA3"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -4078,7 +4112,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -4097,7 +4131,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[769, 168, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA3"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -4129,7 +4163,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[769, 189, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA3"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -4152,7 +4186,7 @@
        description="org.argouml.uml.diagram.static_structure.ui.FigClass[288, 144, 192, 67]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA4"
        fill="1"
-       fillcolor="white"
+       fillcolor="135 206 235"
        stroke="1"
        strokecolor="black"
   >
@@ -4165,7 +4199,7 @@
       width="192"
       height="67"
       fill="1"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="1"
       strokecolor="black"
     />
@@ -4175,7 +4209,7 @@
       width="190"
       height="22"
       fill="0"
-      fillcolor="white"
+      fillcolor="135 206 235"
       stroke="0"
       strokecolor="black"
       textcolor="black"
@@ -4189,7 +4223,7 @@
          description="org.argouml.uml.diagram.ui.FigStereotypesGroup[289, 145, 190, 0]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA4"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
          visibility="0"
@@ -4203,7 +4237,7 @@
         width="190"
         height="0"
         fill="0"
-        fillcolor="white"
+        fillcolor="135 206 235"
         stroke="0"
         strokecolor="black"
       />
@@ -4222,7 +4256,7 @@
          description="org.argouml.uml.diagram.ui.FigAttributesCompartment[289, 168, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA4"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >
@@ -4254,7 +4288,7 @@
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[289, 189, 190, 21]"
          href="127-0-1-1-cade721:134f76a7d63:-8000:0000000000000AA4"
          fill="0"
-         fillcolor="white"
+         fillcolor="135 206 235"
          stroke="0"
          strokecolor="black"
     >

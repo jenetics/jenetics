@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg height="559" version="1.1" width="700" xmlns="http://www.w3.org/2000/svg">
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="417" x="158" y="14"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="417" x="158" y="14"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="417" x="158" y="14"/>
 <text font-family="Dialog" font-size="12" x="340" y="46">
 Selector</text>
@@ -10,55 +10,55 @@ Selector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="417" x="158" y="56"/>
 <text font-family="Dialog" font-size="12" x="162" y="70">
 select(population : Population,count : Integer) : Population</text>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="14" y="366"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="14" y="366"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="366"/>
 <text font-family="Dialog" font-size="12" x="52" y="379">
 BoltzmannSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="389"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="410"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="430" y="478"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="430" y="478"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="430" y="478"/>
 <text font-family="Dialog" font-size="12" x="448" y="491">
 ExponentialRankSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="430" y="501"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="430" y="522"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="494" y="366"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="494" y="366"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="494" y="366"/>
 <text font-family="Dialog" font-size="12" x="529" y="379">
 LinearRankSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="389"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="410"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="238" y="142"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="238" y="142"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="238" y="142"/>
 <text font-family="Dialog" font-size="12" x="272" y="155">
 MonteCarloSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="165"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="186"/>
-<rect fill="#ffffff" height="66" stroke="#ffffff" stroke-width="1" width="416" x="158" y="254"/>
+<rect fill="#87ceeb" height="66" stroke="#87ceeb" stroke-width="1" width="416" x="158" y="254"/>
 <rect fill="none" height="66" stroke="#000000" stroke-width="1" width="416" x="158" y="254"/>
 <text font-family="Dialog" font-size="12" x="307" y="267">
 ProbabilitySelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="416" x="158" y="277"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="416" x="158" y="298"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="238" y="366"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="238" y="366"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="238" y="366"/>
 <text font-family="Dialog" font-size="12" x="262" y="379">
 RouletteWheelSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="389"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="238" y="410"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="190" y="478"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="190" y="478"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="190" y="478"/>
 <text font-family="Dialog" font-size="12" x="198" y="491">
 StochasticUniversalSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="190" y="501"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="190" y="522"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="494" y="142"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="494" y="142"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="494" y="142"/>
 <text font-family="Dialog" font-size="12" x="526" y="155">
 TournamentSelector</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="165"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="494" y="186"/>
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="14" y="142"/>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="14" y="142"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="142"/>
 <text font-family="Dialog" font-size="12" x="50" y="155">
 TruncationSelector</text>
