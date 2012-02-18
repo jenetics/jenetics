@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -86,7 +86,7 @@ public class RandomIndexStreamTest {
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 		
 		final Histogram<Long> histogram = Histogram.valueOf(
-					domain.getMin(), domain.getMax(), 10 
+					domain.getMin(), domain.getMax(), 10
 				);	
 		final Variance<Long> variance = new Variance<>();
 		for (int i = 0; i < 1000; ++i) {
@@ -113,11 +113,11 @@ public class RandomIndexStreamTest {
 		
 		int kt = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
-//			final ProbabilityIndexIterator itt = 
+//			final ProbabilityIndexIterator itt =
 //				new ProbabilityIndexIterator(n, p, random);
 //			
 //			for (int j = itt.next(); j != -1; j = itt.next()) {
-//				final ProbabilityIndexIterator ittt = 
+//				final ProbabilityIndexIterator ittt =
 //					new ProbabilityIndexIterator(n, p, random);
 //				
 //				for (int k = ittt.next(); k != -1; k = ittt.next()) {

@@ -50,7 +50,7 @@ import org.jenetics.util.MappableAccumulator;
 public class Quantile<N extends Number> extends MappableAccumulator<N> {
 
 	// The desired quantile.
-	private double _quantile;             
+	private double _quantile;
 
 	// Marker heights.
 	private final double[] _q = {0, 0, 0, 0, 0};

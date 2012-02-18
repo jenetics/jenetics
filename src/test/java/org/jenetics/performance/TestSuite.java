@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.performance;
 
@@ -61,8 +61,8 @@ public final class TestSuite {
 				final List<TestCase> tests = new ArrayList<>();
 
 				for (Field field : suite.getFields()) {
-					if (field.isAnnotationPresent(Test.class) && 
-						field.getType().isAssignableFrom(TestCase.class)) 
+					if (field.isAnnotationPresent(Test.class) &&
+						field.getType().isAssignableFrom(TestCase.class))
 					{
 						final TestCase test = (TestCase)field.get(object);
 						test.setOrdinal(field.getAnnotation(Test.class).value());
@@ -113,13 +113,13 @@ public final class TestSuite {
 	private static Formattable FormattableDuration(final double nanos) {
 		return new Formattable() {
 			
-			private final Measurable<Duration> 
+			private final Measurable<Duration>
 			_duration = Measure.valueOf(nanos, SI.NANO(SI.SECOND));
 			
 			@Override
 			public void formatTo(
-				final Formatter formatter, 
-				final int flags, 
+				final Formatter formatter,
+				final int flags,
 				final int width,
 				final int precision
 			) {
@@ -180,7 +180,7 @@ public final class TestSuite {
 	
 	@Override
 	public String toString() {
-		final int[] columns = new int[]{37, 16, 16, 16}; 
+		final int[] columns = new int[]{37, 16, 16, 16};
 		final String hhline = hline(columns, '=');
 		final String hline = hline(columns, '-');
 		
@@ -202,8 +202,8 @@ public final class TestSuite {
 		
 		for (TestCase test : _tests) {
 			out.append(String.format(
-					row, 
-					String.format("%-20s 1/%s", test.getTimer().getLabel(), nf.format(test.getSize())), 
+					row,
+					String.format("%-20s 1/%s", test.getTimer().getLabel(), nf.format(test.getSize())),
 					FormattableDuration(test.getVariance().getMean()),
 					FormattableDuration(test.getMinMax().getMin()),
 					FormattableDuration(test.getMinMax().getMax())

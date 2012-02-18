@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -40,8 +40,8 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Integer64Gene 
-	extends NumberGene<Integer64, Integer64Gene> 
+public final class Integer64Gene
+	extends NumberGene<Integer64, Integer64Gene>
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -110,7 +110,7 @@ public final class Integer64Gene
 	
 	/**
 	 * Create a new IntegerGene with the same limits and the given value.
-	 * 
+	 *
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 * @throws IllegalArgumentException if the gene value is not in the range
@@ -134,7 +134,7 @@ public final class Integer64Gene
 	 *  Static object creation methods
 	 * ************************************************************************/	
 	
-	private static final ObjectFactory<Integer64Gene> FACTORY = 
+	private static final ObjectFactory<Integer64Gene> FACTORY =
 		new ObjectFactory<Integer64Gene>() {
 				@Override protected Integer64Gene create() {
 					return new Integer64Gene();
@@ -142,34 +142,34 @@ public final class Integer64Gene
 			};
 	
 	/**
-	 * Create a new random Integer64Gene with the given value and the given range. 
-	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()} 
+	 * Create a new random Integer64Gene with the given value and the given range.
+	 * If the {@code value} isn't within the closed interval [min, max], no
+	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()}
 	 * returns {@code false}.
-	 * 
+	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene.
 	 * @param max the maximal valid value of this gene.
 	 * @return the new created gene with the given {@code value}.
 	 */
 	public static Integer64Gene valueOf(
-		final long value, 
-		final long min, 
+		final long value,
+		final long min,
 		final long max
 	) {
 		return valueOf(
-			Integer64.valueOf(value), 
-			Integer64.valueOf(min), 
+			Integer64.valueOf(value),
+			Integer64.valueOf(min),
 			Integer64.valueOf(max)
 		);
 	}
 	
 	/**
-	 * Create a new random IntegerGene with the given value and the given range. 
-	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()} 
+	 * Create a new random IntegerGene with the given value and the given range.
+	 * If the {@code value} isn't within the closed interval [min, max], no
+	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()}
 	 * returns {@code false}.
-	 * 
+	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene.
 	 * @param max the maximal valid value of this gene.
@@ -177,8 +177,8 @@ public final class Integer64Gene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static Integer64Gene valueOf(
-		final Integer64 value, 
-		final Integer64 min, 
+		final Integer64 value,
+		final Integer64 min,
 		final Integer64 max
 	) {
 		Integer64Gene gene = FACTORY.object();
@@ -187,9 +187,9 @@ public final class Integer64Gene
 	}
 	
 	/**
-	 * Create a new random IntegerGene. It is guaranteed that the value of the 
+	 * Create a new random IntegerGene. It is guaranteed that the value of the
 	 * IntegerGene lies in the closed interval [min, max].
-	 * 
+	 *
 	 * @param min the minimal value of the Integer64Gene to create.
 	 * @param max the maximal value of the Integer64Gene to create.
 	 * @return the new created gene.
@@ -199,16 +199,16 @@ public final class Integer64Gene
 	}
 	
 	/**
-	 * Create a new random Integer64Gene. It is guaranteed that the value of the 
+	 * Create a new random Integer64Gene. It is guaranteed that the value of the
 	 * Integer64Gene lies in the closed interval [min, max].
-	 * 
+	 *
 	 * @param min the minimal value of the Integer64Gene to create.
 	 * @param max the maximal value of the Integer64Gene to create.
 	 * @return the new created gene.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static Integer64Gene valueOf(
-		final Integer64 min, 
+		final Integer64 min,
 		final Integer64 max
 	) {
 		final Random random = RandomRegistry.getRandom();
@@ -224,8 +224,8 @@ public final class Integer64Gene
 	 *  XML object serialization
 	 * ************************************************************************/	
 	
-	static final XMLFormat<Integer64Gene> 
-	XML = new XMLFormat<Integer64Gene>(Integer64Gene.class) 
+	static final XMLFormat<Integer64Gene>
+	XML = new XMLFormat<Integer64Gene>(Integer64Gene.class)
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
@@ -242,16 +242,16 @@ public final class Integer64Gene
 			return Integer64Gene.valueOf(value, min, max);
 		}
 		@Override
-		public void write(final Integer64Gene gene, final OutputElement element) 
-			throws XMLStreamException 
+		public void write(final Integer64Gene gene, final OutputElement element)
+			throws XMLStreamException
 		{
 			element.setAttribute(MIN, gene.getMin().longValue());
 			element.setAttribute(MAX, gene.getMax().longValue());
 			element.add(gene.getAllele().longValue());
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Gene gene) 
-			throws XMLStreamException 
+		public void read(final InputElement element, final Integer64Gene gene)
+			throws XMLStreamException
 		{
 		}
 	};
@@ -262,7 +262,7 @@ public final class Integer64Gene
 	 * ************************************************************************/	
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -272,12 +272,12 @@ public final class Integer64Gene
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	
 		set(
-			Integer64.valueOf(in.readLong()), 
+			Integer64.valueOf(in.readLong()),
 			Integer64.valueOf(in.readLong()),
 			Integer64.valueOf(in.readLong())
 		);

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 /**
  * Some helper methods for creating hash codes and comparing values.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -40,11 +40,11 @@ public final class object {
 	
 	/**
 	 * A range checking predicate which can be used to check whether the elements
-	 * of an array are within an given range. If not, an 
+	 * of an array are within an given range. If not, an
 	 * {@link IllegalArgumentException} is thrown. If one value is {@code null},
 	 * an {@link NullPointerException} is thrown.
 	 * <p/>
-	 * 
+	 *
 	 * The following code will throw an {@link IllegalArgumentException} if the
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
@@ -52,8 +52,8 @@ public final class object {
 	 * array.foreach(CheckRange<(0, 10));
 	 * [/code]
 	 */
-	public static final <C extends Comparable<? super C>> Function<C, Boolean> 
-	CheckRange(final C min, final C max) 
+	public static final <C extends Comparable<? super C>> Function<C, Boolean>
+	CheckRange(final C min, final C max)
 	{
 		return new Function<C,Boolean>() {
 			@Override
@@ -61,7 +61,7 @@ public final class object {
 				nonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
 					throw new IllegalArgumentException(String.format(
-							"Given value %s is out of range [%s, %s)", 
+							"Given value %s is out of range [%s, %s)",
 							value, min, max
 						));
 				}
@@ -79,7 +79,7 @@ public final class object {
 	 * [/code]
 	 * is true.
 	 */
-	public static final Function<Verifiable, Boolean> 
+	public static final Function<Verifiable, Boolean>
 	Verify = new Function<Verifiable,Boolean>() {
 		@Override
 		public Boolean apply(final Verifiable object) {
@@ -89,9 +89,9 @@ public final class object {
 	
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
-	 * for null values. The following code will throw an 
+	 * for null values. The following code will throw an
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
-	 * 
+	 *
 	 * [code]
 	 * final Array<String> array = ...
 	 * array.foreach(NonNull("Object"));
@@ -104,9 +104,9 @@ public final class object {
 	
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
-	 * for null values. The following code will throw an 
+	 * for null values. The following code will throw an
 	 * {@link NullPointerException} if one of the array elements is {@code null}.
-	 * 
+	 *
 	 * [code]
 	 * final Array<String> array = ...
 	 * array.foreach(NonNull("Object"));
@@ -126,7 +126,7 @@ public final class object {
 	
 	/**
 	 * Checks that the specified object reference is not {@code null}.
-	 * 
+	 *
 	 * @param obj the object to check.
 	 * @param message the error message.
 	 * @return {@code obj} if not {@code null}.
@@ -141,7 +141,7 @@ public final class object {
 	
 	/**
 	 * Checks that the specified object reference is not {@code null}.
-	 * 
+	 *
 	 * @param obj the object to check.
 	 * @return {@code obj} if not {@code null}.
 	 * @throws NullPointerException if {@code obj} is {@code null}.
@@ -152,7 +152,7 @@ public final class object {
 	
 	/**
 	 * Check if the specified value is not negative.
-	 * 
+	 *
 	 * @param value the value to check.
 	 * @param message the exception message.
 	 * @return the given value.
@@ -169,7 +169,7 @@ public final class object {
 	
 	/**
 	 * Check if the specified value is not negative.
-	 * 
+	 *
 	 * @param value the value to check.
 	 * @return the given value.
 	 * @throws IllegalArgumentException if {@code value < 0}.
@@ -180,7 +180,7 @@ public final class object {
 	
 	/**
 	 * Check if the given integer is negative.
-	 * 
+	 *
 	 * @param length the value to check.
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
 	 * 		  than zero.
@@ -195,7 +195,7 @@ public final class object {
 	
 	/**
 	 * Check if the given double value is within the closed range {@code [0, 1]}.
-	 * 
+	 *
 	 * @param p the probability to check.
 	 * @return p if it is a valid probability.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
@@ -211,7 +211,7 @@ public final class object {
 	
 	/**
 	 * Create a HashCodeBuilder for the given type.
-	 * 
+	 *
 	 * @param type the type the HashCodebuilder is created for.
 	 * @return a new HashCodeBuilder.
 	 */
@@ -221,10 +221,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code boolean} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final boolean a, final boolean b) {
@@ -233,10 +233,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code boolean} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final boolean[] a, final boolean[] b) {
@@ -245,10 +245,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code byte} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final byte a, final byte b) {
@@ -257,10 +257,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code byte} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final byte[] a, final byte[] b) {
@@ -269,10 +269,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code char} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final char a, final char b) {
@@ -281,10 +281,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code char} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final char[] a, final char[] b) {
@@ -293,10 +293,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code short} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final short a, final short b) {
@@ -305,10 +305,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code short} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final short[] a, final short[] b) {
@@ -317,10 +317,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code int} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final int a, final int b) {
@@ -329,10 +329,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code int} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final int[] a, final int[] b) {
@@ -341,10 +341,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code long} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final long a, final long b) {
@@ -353,10 +353,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code long} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final long[] a, final long[] b) {
@@ -365,10 +365,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code float} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final float a, final float b) {
@@ -377,10 +377,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code float} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final float[] a, final float[] b) {
@@ -389,10 +389,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code double} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final double a, final double b) {
@@ -401,10 +401,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code double} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final double[] a, final double[] b) {
@@ -413,10 +413,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code Enum} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final Enum<?> a, final Enum<?> b) {
@@ -425,10 +425,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code Object} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final Object a, final Object b) {
@@ -437,10 +437,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code Object} arrays.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final Object[] a, final Object[] b) {
@@ -449,10 +449,10 @@ public final class object {
 	
 	/**
 	 * Compares the two given {@code Seq} values.
-	 * 
+	 *
 	 * @param a first value to compare.
 	 * @param b second value to compare.
-	 * @return {@code true} if the given values are equal, {@code false} 
+	 * @return {@code true} if the given values are equal, {@code false}
 	 *         otherwise.
 	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
@@ -460,13 +460,13 @@ public final class object {
 	}
 	
 	/**
-	 * Returns the result of calling toString for a non-null argument and "null" 
+	 * Returns the result of calling toString for a non-null argument and "null"
 	 * for a null argument.
-	 * 
+	 *
 	 * @see Objects#toString(Object)
-	 * 
+	 *
 	 * @param a the object.
-	 * @return the result of calling toString for a non-null argument and "null" 
+	 * @return the result of calling toString for a non-null argument and "null"
 	 *         for a null argument
 	 */
 	public static String str(final Object a) {
@@ -477,14 +477,14 @@ public final class object {
 	 * Print a binary representation of the given byte array. The printed string
 	 * has the following format:
 	 * <pre>
-	 *  Byte:       3        2        1        0     
-	 *              |        |        |        |  
+	 *  Byte:       3        2        1        0
+	 *              |        |        |        |
 	 *  Array: "11110011|10011101|01000000|00101010"
 	 *          |                 |        |      |
 	 *  Bit:    23                15       7      0
 	 * </pre>
 	 * <i>Only the array string is printed.</i>
-	 * 
+	 *
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
 	 */

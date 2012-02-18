@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -30,12 +30,12 @@ import static org.jenetics.util.object.nonNull;
  * Abstract implementation of the {@link Accumulator} interface which defines a
  * {@code samples} property which is incremented by the {@link #accumulate(Object)}
  * method.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class MappableAccumulator<T> 
-	implements 
+public abstract class MappableAccumulator<T>
+	implements
 		Accumulator<T>,
 		Cloneable
 {
@@ -50,7 +50,7 @@ public abstract class MappableAccumulator<T>
 	
 	/**
 	 * Return the number of samples accumulated so far.
-	 * 
+	 *
 	 * @return the number of samples accumulated so far.
 	 */
 	public long getSamples() {
@@ -64,7 +64,7 @@ public abstract class MappableAccumulator<T>
 	
 	/**
 	 * Return a view of this adapter with a different type {@code B}.
-	 * 
+	 *
 	 * Usage example:
 	 * [code]
 	 * // Convert a string on the fly into a double value.
@@ -73,16 +73,16 @@ public abstract class MappableAccumulator<T>
 	 *             return Double.valueOf(value);
 	 *         }
 	 *     };
-	 *     
+	 *
 	 * // The values to accumulate
 	 * final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
 	 *
 	 * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
-	 *     
+	 *
 	 * // No pain to accumulate collections of a different type.
 	 * Accumulators.accumulate(values, accumulator.map(converter));
 	 * [/code]
-	 * 
+	 *
 	 * @param <B> the type of the returned adapter (view).
 	 * @param converter the converter needed to map between the type of this
 	 *        adapter and the adapter view type.
@@ -92,7 +92,7 @@ public abstract class MappableAccumulator<T>
 	public <B> MappableAccumulator<B> map(final Function<B, T> converter) {
 		nonNull(converter, "Converter");
 		return new MappableAccumulator<B>() {
-			@Override 
+			@Override
 			public void accumulate(final B value) {
 				MappableAccumulator.this.accumulate(converter.apply(value));
 			}

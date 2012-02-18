@@ -1,30 +1,30 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
 /**
  * Object with mathematical functions.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -37,9 +37,9 @@ public final class math {
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
 	 * overflow.
-	 * 
+	 *
 	 * @param a the first summand.
-	 * @param b the second summand. 
+	 * @param b the second summand.
 	 * @return the sum of the given values.
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
@@ -63,9 +63,9 @@ public final class math {
 	/**
 	 * Subtracts to long values and throws an ArithmeticException in the case of an
 	 * overflow.
-	 * 
+	 *
 	 * @param a the minuend.
-	 * @param b the subtrahend. 
+	 * @param b the subtrahend.
 	 * @return the difference of the given values.
 	 * @throws ArithmeticException if the subtraction would lead to an overflow.
 	 */
@@ -85,7 +85,7 @@ public final class math {
 	/**
 	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
 	 * Kahan summation algorithm</a>.
-	 * 
+	 *
 	 * @param values the values to sum up.
 	 * @return the sum of the given {@code values}.
 	 * @throws NullPointerException if the given array is {@code null}.
@@ -108,7 +108,7 @@ public final class math {
 	
 	/**
 	 * Add the values of the given array.
-	 * 
+	 *
 	 * @param values the values to add.
 	 * @return the values sum.
 	 * @throws NullPointerException if the values are null;
@@ -124,7 +124,7 @@ public final class math {
 	/**
 	 * Normalize the given double array, so that it sum to one. The normalization
 	 * is performed in place and the same {@code values} are returned.
-	 * 
+	 *
 	 * @param values the values to normalize.
 	 * @return the {@code values} array.
 	 * @throws NullPointerException if the given double array is {@code null}.
@@ -140,7 +140,7 @@ public final class math {
 	
 	/**
 	 * Return the minimum value of the given double array.
-	 * 
+	 *
 	 * @param values the double array.
 	 * @return the minimum value or {@link Double#NaN} if the given array is empty.
 	 * @throws NullPointerException if the given array is {@code null}.
@@ -162,7 +162,7 @@ public final class math {
 
 	/**
 	 * Return the maximum value of the given double array.
-	 * 
+	 *
 	 * @param values the double array.
 	 * @return the maximum value or {@link Double#NaN} if the given array is empty.
 	 * @throws NullPointerException if the given array is {@code null}.
@@ -183,8 +183,8 @@ public final class math {
 	}
 	
 	/**
-	 * Component wise multiplication of the given double array. 
-	 * 
+	 * Component wise multiplication of the given double array.
+	 *
 	 * @param values the double values to multiply.
 	 * @param multiplier the multiplier.
 	 * @throws NullPointerException if the given double array is {@code null}.
@@ -196,8 +196,8 @@ public final class math {
 	}
 	
 	/**
-	 * Component wise division of the given double array. 
-	 * 
+	 * Component wise division of the given double array.
+	 *
 	 * @param values the double values to divide.
 	 * @param divisor the divisor.
 	 * @throws NullPointerException if the given double array is {@code null}.
@@ -210,7 +210,7 @@ public final class math {
 	
 	/**
 	 * Binary exponentiation algorithm.
-	 * 
+	 *
 	 * @param b the base number.
 	 * @param e the exponent.
 	 * @return {@code b^e}.
@@ -269,7 +269,7 @@ public final class math {
 	/**
 	 * Return the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * distance of the given two double values.
-	 * 
+	 *
 	 * @param a first double.
 	 * @param b second double.
 	 * @return the ULP distance.
@@ -280,9 +280,9 @@ public final class math {
 	}
 	
 	/**
-	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a> 
+	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
-	 * 
+	 *
 	 * [code]
 	 * double a = 0.0;
 	 * for (int i = 0; i < 10; ++i) {
@@ -296,7 +296,7 @@ public final class math {
 	 *     );
 	 * }
 	 * [/code]
-	 * 
+	 *
 	 * The code fragment above will create the following output:
 	 * <pre>
 	 *   4.4E-323    9  9
@@ -319,7 +319,7 @@ public final class math {
 	 *  -4.0E-323   -8  8
 	 *  -4.4E-323   -9  9
 	 * </pre>
-	 * 
+	 *
 	 * @param a the double number.
 	 * @return the ULP position.
 	 */

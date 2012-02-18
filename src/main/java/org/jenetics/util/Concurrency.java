@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -34,37 +34,37 @@ import javolution.lang.Configurable;
  * Simplify the usage of the {@link ConcurrentContext} usage by using the the
  * Java 'try' for resources capability.
  * <p/>
- * Normally you will write 
- * [code] 
- * ConcurrentContext.enter(); 
+ * Normally you will write
+ * [code]
+ * ConcurrentContext.enter();
  * try {
- *     ConcurrentContext.execute(task1); 
- *     ConcurrentContext.execute(task2); } 
- * finally { 
- *     ConcurrentContext.exit(); 
- * } 
- * [/code] 
- * to execute two tasks. By using this class you can shorten the code to be 
- * written to: 
- * [code] 
- * try (Concurrency c = Concurrency.start()) { 
- *     c.execute(task1); 
- *     c.execute(task2); 
- * } 
+ *     ConcurrentContext.execute(task1);
+ *     ConcurrentContext.execute(task2); }
+ * finally {
+ *     ConcurrentContext.exit();
+ * }
  * [/code]
- * 
+ * to execute two tasks. By using this class you can shorten the code to be
+ * written to:
+ * [code]
+ * try (Concurrency c = Concurrency.start()) {
+ *     c.execute(task1);
+ *     c.execute(task2);
+ * }
+ * [/code]
+ *
  * This is equivalent to
- * 
- * 
+ *
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public final class Concurrency implements AutoCloseable {
 
-	private static final String KEY_CONTEXT = 
+	private static final String KEY_CONTEXT =
 		"javolution.context.ConcurrentContext#DEFAULT";
 
-	private static final String KEY_CONCURRENTCY = 
+	private static final String KEY_CONCURRENTCY =
 		"javolution.context.ConcurrentContext#MAXIMUM_CONCURRENCY";
 
 	private static final Concurrency INSTANCE = new Concurrency();
@@ -74,7 +74,7 @@ public final class Concurrency implements AutoCloseable {
 
 	/**
 	 * Set the number of threads to use by the {@link ConcurrentContext}.
-	 * 
+	 *
 	 * @param concurrency the number of threads to use for the default concurernt
 	 *        context.
 	 */
@@ -90,7 +90,7 @@ public final class Concurrency implements AutoCloseable {
 
 	/**
 	 * Set the concurrent-context to be used by the concurrency.
-	 * 
+	 *
 	 * @param type
 	 *            the concurrent-context type.
 	 * @throws NullPointerException
@@ -105,7 +105,7 @@ public final class Concurrency implements AutoCloseable {
 	/**
 	 * Convenience method for setting the {@link ForkJoinPool} and the concurrent
 	 * context to {@link ForkJoinContext}.
-	 * 
+	 *
 	 * @param pool the {@link ForkJoinPool} to use for concurrency.
 	 */
 	public static void setForkJoinPool(final ForkJoinPool pool) {

@@ -59,7 +59,7 @@ public class QuantileTest extends AbstractAccumulatorTester<Quantile<Double>> {
 	public void quantile() {
 		final Quantile<Integer> quantile = new Quantile<>(0.5);
 		for (int i = 0; i < 1000; ++i) {
-			quantile.accumulate(i); 
+			quantile.accumulate(i);
 			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
 		}
 	}

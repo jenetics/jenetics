@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -34,18 +34,18 @@ import org.jscience.mathematics.number.Float64;
 import org.jenetics.util.Function;
 
 /**
- * Implements an exponential fitness scaling, whereby all fitness values are 
- * modified the following way. 
- * <p/><img src="doc-files/exponential-scaler.gif" 
- *          alt="f_s=\left(a\cdot f+b \rigth)^c" 
+ * Implements an exponential fitness scaling, whereby all fitness values are
+ * modified the following way.
+ * <p/><img src="doc-files/exponential-scaler.gif"
+ *          alt="f_s=\left(a\cdot f+b \rigth)^c"
  *     />.</p>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class ExponentialScaler 
-	implements 
-		Function<Float64, Float64>, 
+public final class ExponentialScaler
+	implements
+		Function<Float64, Float64>,
 		Serializable,
 		Immutable
 {
@@ -60,7 +60,7 @@ public final class ExponentialScaler
 	
 	/**
 	 * Create a new FitnessScaler.
-	 * 
+	 *
 	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
 	 */
 	public ExponentialScaler(final double c) {
@@ -69,7 +69,7 @@ public final class ExponentialScaler
 	
 	/**
 	 * Create a new FitnessScaler.
-	 * 
+	 *
 	 * @param b <pre>fitness = (1 * fitness + <strong>b</strong>) ^ c</pre>
 	 * @param c <pre>fitness = (1 * fitness + b) ^ <strong>c</strong></pre>
 	 */
@@ -79,7 +79,7 @@ public final class ExponentialScaler
 	
 	/**
 	 * Create a new FitnessScaler.
-	 * 
+	 *
 	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ c</pre>
 	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ c</pre>
 	 * @param c <pre>fitness = (a * fitness + b) ^ <strong>c</strong></pre>
@@ -116,7 +116,7 @@ public final class ExponentialScaler
 	@Override
 	public String toString() {
 		return String.format(
-				"%s[a=%f, b=%f, c=%f]", 
+				"%s[a=%f, b=%f, c=%f]",
 				getClass().getSimpleName(), _a, _b, _c
 			);
 	}

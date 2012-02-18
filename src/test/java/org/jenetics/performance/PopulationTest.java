@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.performance;
 
@@ -62,7 +62,7 @@ public class PopulationTest {
 	public TestCase iterable = new TestCase("iterable()", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			for (@SuppressWarnings("unused") Object value : _population); 
+			for (@SuppressWarnings("unused") Object value : _population);
 		}
 	};
 
@@ -81,7 +81,7 @@ public class PopulationTest {
 	};
 	
 
-	private static final class Continous 
+	private static final class Continous
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
@@ -89,15 +89,15 @@ public class PopulationTest {
 		
 		@Override
 		public Float64 apply(Genotype<Float64Gene> genotype) {
-			return genotype.getChromosome().getGene().getAllele(); 
+			return genotype.getChromosome().getGene().getAllele();
 		}
 	}
 
 	private static final Function<Genotype<Float64Gene>, Float64> FF = new Continous();
 	
 	private static final Population<Float64Gene, Float64> newFloat64GenePopulation(
-		final int ngenes, 
-		final int nchromosomes, 
+		final int ngenes,
+		final int nchromosomes,
 		final int npopulation
 	) {
 		final GenotypeBuilder gtb = new GenotypeBuilder();
@@ -106,7 +106,7 @@ public class PopulationTest {
 		gtb.min(0);
 		gtb.max(10);	
 		
-		final Population<Float64Gene, Float64> 
+		final Population<Float64Gene, Float64>
 		population = new Population<>(npopulation);
 		for (int i = 0; i < npopulation; ++i) {
 			population.add(Phenotype.valueOf(gtb.build(), FF, 0));

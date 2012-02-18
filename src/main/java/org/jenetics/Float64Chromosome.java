@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -43,8 +43,8 @@ import org.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64Chromosome 
-	extends NumberChromosome<Float64, Float64Gene> 
+public class Float64Chromosome
+	extends NumberChromosome<Float64, Float64Gene>
 	implements XMLSerializable
 {	
 	private static final long serialVersionUID = 1L;
@@ -56,9 +56,9 @@ public class Float64Chromosome
 	
 	/**
 	 * Create a new chromosome from the given {@code genes}.
-	 * 
+	 *
 	 * @param genes the genes this chromosome consists.
-	 * @throws IllegalArgumentException if the number of genes is smaller than 
+	 * @throws IllegalArgumentException if the number of genes is smaller than
 	 * 		 one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
@@ -68,14 +68,14 @@ public class Float64Chromosome
 	
 	/**
 	 * Create a new random DoubleChromosome.
-	 * 
+	 *
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
 	 */
 	public Float64Chromosome(
-		final Float64 min, 
-		final Float64 max, 
+		final Float64 min,
+		final Float64 max,
 		final int length
 	) {
 		this(
@@ -88,7 +88,7 @@ public class Float64Chromosome
 	
 	/**
 	 * Create a new random chromosome of length one.
-	 * 
+	 *
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
 	 */
@@ -98,7 +98,7 @@ public class Float64Chromosome
 	
 	/**
 	 * Create a new random chromosome of length one.
-	 * 
+	 *
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
@@ -109,11 +109,11 @@ public class Float64Chromosome
 	
 	/**
 	 * Create a new chromosome
-	 * 
+	 *
 	 * @param min the minimal value of this chromosome.
 	 * @param max the maximal value of this chromosome.
 	 * @param length the {@code length} of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
 	public Float64Chromosome(final double min, final double max, final int length) {
@@ -127,7 +127,7 @@ public class Float64Chromosome
 
 	/**
 	 * Return a more specific view of this chromosome factory.
-	 * 
+	 *
 	 * @return a more specific view of thiw chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
@@ -164,22 +164,22 @@ public class Float64Chromosome
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<AbstractChromosome<Float64Gene>, ISeq<Float64Gene>> 
+	public static final Function<AbstractChromosome<Float64Gene>, ISeq<Float64Gene>>
 		Genes = AbstractChromosome.genes();
 	
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene> 
+	public static final Function<Chromosome<Float64Gene>, Float64Gene>
 		Gene = AbstractChromosome.gene();
 	
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene> 
-	Gene(final int index) 
+	public static final Function<Chromosome<Float64Gene>, Float64Gene>
+	Gene(final int index)
 	{
 		return AbstractChromosome.gene(index);
 	}
@@ -188,8 +188,8 @@ public class Float64Chromosome
 	 *  XML object serialization
 	 * ************************************************************************/
 	
-	static final XMLFormat<Float64Chromosome> 
-	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class) 
+	static final XMLFormat<Float64Chromosome>
+	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
@@ -216,8 +216,8 @@ public class Float64Chromosome
 			return chromosome;
 		}
 		@Override
-		public void write(final Float64Chromosome chromosome, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final Float64Chromosome chromosome, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(MIN, chromosome._min.doubleValue());
@@ -227,8 +227,8 @@ public class Float64Chromosome
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Float64Chromosome chromosome) 
-			throws XMLStreamException 
+		public void read(final InputElement element, final Float64Chromosome chromosome)
+			throws XMLStreamException
 		{
 		}
 	};
@@ -238,7 +238,7 @@ public class Float64Chromosome
 	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -252,7 +252,7 @@ public class Float64Chromosome
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	

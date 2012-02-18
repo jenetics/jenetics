@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -41,9 +41,9 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Float64Gene 
-	extends NumberGene<Float64, Float64Gene> 
-	implements GroupMultiplicative<Float64Gene> 
+public final class Float64Gene
+	extends NumberGene<Float64, Float64Gene>
+	implements GroupMultiplicative<Float64Gene>
 {
 	private static final long serialVersionUID = 1L;	
 	
@@ -120,7 +120,7 @@ public final class Float64Gene
 	
 	/**
 	 * Create a new DoubleGene with the same limits and the given value.
-	 * 
+	 *
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 */
@@ -143,7 +143,7 @@ public final class Float64Gene
 	 *  Static object creation methods
 	 * ************************************************************************/
 	
-	private static final ObjectFactory<Float64Gene> FACTORY = 
+	private static final ObjectFactory<Float64Gene> FACTORY =
 		new ObjectFactory<Float64Gene>() {
 				@Override protected Float64Gene create() {
 					return new Float64Gene();
@@ -151,34 +151,34 @@ public final class Float64Gene
 			};
 	
 	/**
-	 * Create a new random Float64Gene with the given value and the given range. 
-	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link Float64Gene#isValid()} 
+	 * Create a new random Float64Gene with the given value and the given range.
+	 * If the {@code value} isn't within the closed interval [min, max], no
+	 * exception is thrown. In this case the method {@link Float64Gene#isValid()}
 	 * returns {@code false}.
-	 * 
+	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene.
 	 * @param max the maximal valid value of this gene.
 	 * @return the new created gene with the given {@code value}.
 	 */
 	public static Float64Gene valueOf(
-		final double value, 
-		final double min, 
+		final double value,
+		final double min,
 		final double max
 	) {
 		return valueOf(
 			Float64.valueOf(value),
-			Float64.valueOf(min), 
+			Float64.valueOf(min),
 			Float64.valueOf(max)
 		);
 	}
 	
 	/**
-	 * Create a new random DoubleGene with the given value and the given range. 
-	 * If the {@code value} isn't within the closed interval [min, max], no 
-	 * exception is thrown. In this case the method {@link Float64Gene#isValid()} 
+	 * Create a new random DoubleGene with the given value and the given range.
+	 * If the {@code value} isn't within the closed interval [min, max], no
+	 * exception is thrown. In this case the method {@link Float64Gene#isValid()}
 	 * returns {@code false}.
-	 * 
+	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene.
 	 * @param max the maximal valid value of this gene.
@@ -186,8 +186,8 @@ public final class Float64Gene
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static Float64Gene valueOf(
-		final Float64 value, 
-		final Float64 min, 
+		final Float64 value,
+		final Float64 min,
 		final Float64 max
 	) {
 		Float64Gene gene = FACTORY.object();
@@ -196,9 +196,9 @@ public final class Float64Gene
 	}
 	
 	/**
-	 * Create a new random DoubleGene. It is guaranteed that the value of the 
+	 * Create a new random DoubleGene. It is guaranteed that the value of the
 	 * DoubleGene lies in the closed interval [min, max].
-	 * 
+	 *
 	 * @param min the minimal value of the Float64Gene to create.
 	 * @param max the maximal value of the Float64Gene to create.
 	 * @return the new created gene.
@@ -208,16 +208,16 @@ public final class Float64Gene
 	}
 	
 	/**
-	 * Create a new random Float64Gene. It is guaranteed that the value of the 
+	 * Create a new random Float64Gene. It is guaranteed that the value of the
 	 * Float64Gene lies in the closed interval [min, max].
-	 * 
+	 *
 	 * @param min the minimal value of the Float64Gene to create.
 	 * @param max the maximal value of the Float64Gene to create.
 	 * @return the new created gene.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static Float64Gene valueOf(
-		final Float64 min, 
+		final Float64 min,
 		final Float64 max
 	) {
 		final Random random = RandomRegistry.getRandom();
@@ -233,8 +233,8 @@ public final class Float64Gene
 	 *  XML object serialization
 	 * ************************************************************************/
 	
-	static final XMLFormat<Float64Gene> 
-	XML = new XMLFormat<Float64Gene>(Float64Gene.class) 
+	static final XMLFormat<Float64Gene>
+	XML = new XMLFormat<Float64Gene>(Float64Gene.class)
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
@@ -251,16 +251,16 @@ public final class Float64Gene
 			return Float64Gene.valueOf(value, min, max);
 		}
 		@Override
-		public void write(final Float64Gene gene, final OutputElement element) 
-			throws XMLStreamException 
+		public void write(final Float64Gene gene, final OutputElement element)
+			throws XMLStreamException
 		{
 			element.setAttribute(MIN, gene.getMin().doubleValue());
 			element.setAttribute(MAX, gene.getMax().doubleValue());
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override
-		public void read(InputElement element, Float64Gene gene) 
-			throws XMLStreamException 
+		public void read(InputElement element, Float64Gene gene)
+			throws XMLStreamException
 		{
 		}
 	};
@@ -270,7 +270,7 @@ public final class Float64Gene
 	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -280,12 +280,12 @@ public final class Float64Gene
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	
 		set(
-			Float64.valueOf(in.readDouble()), 
+			Float64.valueOf(in.readDouble()),
 			Float64.valueOf(in.readDouble()),
 			Float64.valueOf(in.readDouble())
 		);

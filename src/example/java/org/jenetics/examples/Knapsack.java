@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.examples;
 
@@ -58,7 +58,7 @@ class Item implements Serializable {
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class KnappsackFunction 
+class KnappsackFunction
 	implements Function<Genotype<BitGene>, Float64>,
 				Serializable
 {
@@ -66,20 +66,20 @@ class KnappsackFunction
 	
 	private final Item[] _items;
 	private final double _knapsackSize;
-	 
+	
 	public KnappsackFunction(final Item[] items, double knapsackSize) {
 		_items = items;
 		_knapsackSize = knapsackSize;
 	}
-	 
+	
 	public Item[] getItems() {
 		return _items;
 	}
-	 
+	
 	@Override
 	public Float64 apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
-		  
+		
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -88,14 +88,14 @@ class KnappsackFunction
 				value += _items[i].value;
 			}
 		}
-		  
+		
 		if (size > _knapsackSize) {
 			return Float64.ZERO;
 		} else {
 			return Float64.valueOf(value);
 		}
 	}
-	 
+	
 	@Override
 	public String toString() {
 		return "Knapsack";
@@ -115,7 +115,7 @@ public class Knapsack {
 				items[i].size = (Math.random() + 1)*10;
 				items[i].value = (Math.random() + 1)*15;
 		}
-		  
+		
 		return new KnappsackFunction(items, knapsackSize);
 	}
 	
@@ -125,7 +125,7 @@ public class Knapsack {
 		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
 				new BitChromosome(15, 0.5)
 			);
-		 
+		
 		final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(genotype, ff);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setPopulationSize(100);
@@ -139,9 +139,9 @@ public class Knapsack {
 		final int generations = 100;
 		
 		GAUtils.printConfig(
-				"Knapsack", 
-				ga, 
-				generations, 
+				"Knapsack",
+				ga,
+				generations,
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
 		

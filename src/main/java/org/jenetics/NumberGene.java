@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -40,42 +40,42 @@ import org.jenetics.util.Mean;
 
 /**
  * Abstract base class for implementing concrete NumberGenes.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public abstract class NumberGene<
-	N extends Number<N>, 
+	N extends Number<N>,
 	G extends NumberGene<N, G>
-> 
-	extends Number<G> 
-	implements 
-		Gene<N, G>, 
-		Mean<G>, 
+>
+	extends Number<G>
+	implements
+		Gene<N, G>,
+		Mean<G>,
 		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * The minimum value of this <code>NumberGene</code>. This field is marked 
-	 * as transient and must serialized manually by sub classes. 
-	 * 
+	 * The minimum value of this <code>NumberGene</code>. This field is marked
+	 * as transient and must serialized manually by sub classes.
+	 *
 	 * @serial
 	 */
 	protected transient N _min;
 	
 	/**
-	 * The maximum value of this <code>NumberGene</code>. This field is marked 
-	 * as transient and must serialized manually by sub classes. 
-	 * 
+	 * The maximum value of this <code>NumberGene</code>. This field is marked
+	 * as transient and must serialized manually by sub classes.
+	 *
 	 * @serial
 	 */
 	protected transient N _max;
 	
 	/**
-	 * The value of this <code>NumberGene</code>. This field is marked 
-	 * as transient and must serialized manually by sub classes. 
-	 * 
+	 * The value of this <code>NumberGene</code>. This field is marked
+	 * as transient and must serialized manually by sub classes.
+	 *
 	 * @serial
 	 */
 	protected transient N _value;
@@ -92,15 +92,15 @@ public abstract class NumberGene<
 	
 	/**
 	 * Create a new gene from the given {@code value}.
-	 * 
+	 *
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public abstract G newInstance(final N value); 
+	public abstract G newInstance(final N value);
 	
 	/**
 	 * Create a new NumberGene with the same limits and the given value.
-	 * 
+	 *
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
@@ -109,7 +109,7 @@ public abstract class NumberGene<
 		
 	/**
 	 * Set the <code>NumerGene</code>.
-	 * 
+	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
 	 * @param max The allows max value of the gene.
@@ -125,7 +125,7 @@ public abstract class NumberGene<
 	/**
 	 * Test whether this is a valid NumberGene and its value is within the
 	 * interval closed interval [min, max].
-	 * 
+	 *
 	 * @return if this gene is valid, which means the gene value is within the
 	 * 		  closed interval [min, max].
 	 */
@@ -136,7 +136,7 @@ public abstract class NumberGene<
 	
 	/**
 	 * Return the number value of this gene.
-	 * 
+	 *
 	 * @return the number value of this gene.
 	 */
 	public N getNumber() {
@@ -150,7 +150,7 @@ public abstract class NumberGene<
 	
 	/**
 	 * Return the allowed min value.
-	 * 
+	 *
 	 * @return The allowed min value.
 	 */
 	public N getMin() {
@@ -159,7 +159,7 @@ public abstract class NumberGene<
 	
 	/**
 	 * Return the allowed max value.
-	 * 
+	 *
 	 * @return The allowed max value.
 	 */
 	public N getMax() {
@@ -170,12 +170,12 @@ public abstract class NumberGene<
 	public double doubleValue() {
 		return _value.doubleValue();
 	 }
-	 
+	
 	 @Override
 	public long longValue() {
 		return _value.longValue();
 	 }
-	 
+	
 	@Override
 	public boolean isLargerThan(final G that) {
 		return _value.isLargerThan(that._value);
@@ -195,7 +195,7 @@ public abstract class NumberGene<
 	public G times(final G that) {
 		return newInstance(_value.times(that._value));
 	}
-	 
+	
 	@Override
 	public int compareTo(final G that) {
 		return _value.compareTo(that._value);
@@ -203,7 +203,7 @@ public abstract class NumberGene<
 	
 	/**
 	 * Return the {@link Factory} view of this gene.
-	 * 
+	 *
 	 * @return the {@link Factory} view of this gene.
 	 */
 	public Factory<G> asFactory() {
@@ -236,16 +236,16 @@ public abstract class NumberGene<
 	}
 	
 	static long nextLong(
-		final Random random, 
-		final long min, 
+		final Random random,
+		final long min,
 		final long max
 	) {
 		return round(random.nextDouble()*(max - min)) + min;
 	}
 	
 	static double nextDouble(
-		final Random random, 
-		final double min, 
+		final Random random,
+		final double min,
 		final double max
 	) {
 		return random.nextDouble()*(max - min) + min;

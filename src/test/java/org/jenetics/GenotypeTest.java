@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics;
 
@@ -35,12 +35,12 @@ import org.jenetics.util.ObjectTester;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> { 
-    
+public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
+
 	
 	private final Factory<Genotype<Float64Gene>> _factory = Genotype.valueOf(
-			new Float64Chromosome(0, 1, 50), 
-			new Float64Chromosome(0, 1, 500), 
+			new Float64Chromosome(0, 1, 50),
+			new Float64Chromosome(0, 1, 500),
 			new Float64Chromosome(0, 1, 100),
 			new Float64Chromosome(0, 1, 50)
 		);
@@ -57,7 +57,7 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 		Assert.assertEquals(factory.getNumberOfGenes(), gt.getNumberOfGenes());
 		for (int i = 0; i < factory.length(); ++i) {
 			Assert.assertEquals(
-				factory.getChromosome(i).length(), 
+				factory.getChromosome(i).length(),
 				gt.getChromosome(i).length()
 			);
 		}
@@ -70,7 +70,7 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
         BitChromosome c3 = c2.copy();
         Genotype<BitGene> g2 = Genotype.valueOf(c1, c2, c3);
         Genotype<BitGene> g4 = g2;
-        
+
         assertEquals(g2, g4);
         assertEquals(g2.hashCode(), g4.hashCode());
     }
@@ -92,11 +92,11 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
         Integer64Chromosome c2 = new Integer64Chromosome(0, 100, 10);
         Genotype<Integer64Gene> g1 = Genotype.valueOf(c1, c2);
         Genotype<Integer64Gene> g2 = g1.newInstance();
-        
+
         assertFalse(g1 == g2);
         assertFalse(g1.equals(g2));
     }
-    
+
     @Test
     public void numberOfGenes() {
 		final Genotype<Float64Gene> genotype = Genotype.valueOf(
@@ -107,7 +107,7 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 		);
 		Assert.assertEquals(genotype.getNumberOfGenes(), 32);
     }
-    
+
     @Test
     public void newInstance() {
     	final Genotype<Float64Gene> gt1 = Genotype.valueOf(

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.examples;
 
@@ -650,7 +650,7 @@ class GeometryController implements StepListener {
 	private final StepAction _stepAction = new StepAction(this);
 	private final PauseAction _pauseAction = new PauseAction(this);
 	
-	private final PopulationSpinnerModel 
+	private final PopulationSpinnerModel
 		_populationSizeSpinnerModel = new PopulationSpinnerModel(this);
 	private final MaximalPhenotypeAgeSpinnerModel
 		_maximalPhenotypeAgeSpinnerModel = new MaximalPhenotypeAgeSpinnerModel(this);
@@ -858,15 +858,15 @@ class GeometryController implements StepListener {
 
 	@Override
 	public void stepped(EventObject event) {
-		final NumberStatistics<Float64Gene, Float64> statistics = 
+		final NumberStatistics<Float64Gene, Float64> statistics =
 			(NumberStatistics<Float64Gene, Float64>)_ga.getStatistics();
 		final Phenotype<Float64Gene, Float64> populationBest = statistics.getBestPhenotype();
 		final Phenotype<Float64Gene, Float64> gaBest = _ga.getBestPhenotype();
 		final int generation = _ga.getGeneration();
 		
 		
-//		if (_populationBestPhenotype == null || 
-//			_populationBestPhenotype.compareTo(populationBest) < 0) 
+//		if (_populationBestPhenotype == null ||
+//			_populationBestPhenotype.compareTo(populationBest) < 0)
 //		{
 			_populationBestPhenotype = populationBest;
 			_gaBestPhenotype = gaBest;
@@ -1035,8 +1035,8 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel 
-	implements ChangeListener 
+class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel
+	implements ChangeListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -1064,8 +1064,8 @@ interface LabeledBoundedRangeModel extends BoundedRangeModel {
 	
 }
 
-class OffspringFractionRangeModel extends DefaultBoundedRangeModel 
-	implements ChangeListener, LabeledBoundedRangeModel 
+class OffspringFractionRangeModel extends DefaultBoundedRangeModel
+	implements ChangeListener, LabeledBoundedRangeModel
 {
 
 	private static final long serialVersionUID = 1L;
@@ -1109,8 +1109,8 @@ class OffspringFractionRangeModel extends DefaultBoundedRangeModel
 	
 }
 
-class MutationProbabilityRangeModel extends DefaultBoundedRangeModel 
-	implements ChangeListener, LabeledBoundedRangeModel 
+class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
+	implements ChangeListener, LabeledBoundedRangeModel
 {
 	
 	private static final long serialVersionUID = 1L;
@@ -1187,7 +1187,7 @@ class TransformPanel extends javax.swing.JPanel {
 		  _m20 = new javax.swing.JFormattedTextField();
 		  _m21 = new javax.swing.JFormattedTextField();
 		  _m22 = new javax.swing.JFormattedTextField();
-		  
+		
 		  setLayout(new java.awt.GridBagLayout());
 		  gridBagConstraints = new java.awt.GridBagConstraints();
 		  gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -1237,7 +1237,7 @@ class TransformPanel extends javax.swing.JPanel {
 		  gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		  gridBagConstraints.weightx = 1.0;
 		  add(_m22, gridBagConstraints);
-		  
+		
 	 }
 
 
@@ -1255,7 +1255,7 @@ class TransformPanel extends javax.swing.JPanel {
 
 /**
  * The panel which draws the polygons.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -1278,7 +1278,7 @@ class DrawPanel extends JPanel {
 	private Point2D[] _sourcePolygon;
 	private Point2D[] _targetPolygon;
 	
-	private final AtomicReference<AffineTransform> _populationBestTransform = 
+	private final AtomicReference<AffineTransform> _populationBestTransform =
 		new AtomicReference<>();
 	
 	private final AtomicReference<AffineTransform> _alltimeBestTransform =
@@ -1338,7 +1338,7 @@ class DrawPanel extends JPanel {
 	
 	
 	private void paint(
-		final Graphics2D graphics, 
+		final Graphics2D graphics,
 		final Point2D[] polygon,
 		final Color color,
 		final Stroke stroke,
@@ -1359,7 +1359,7 @@ class DrawPanel extends JPanel {
 			final Point2D p2 = transform.transform(polygon[(i + 1)%polygon.length], null);
 			
 			graphics.drawLine(
-				(int)p1.getX() + ox, -(int)p1.getY() + oy, 
+				(int)p1.getX() + ox, -(int)p1.getY() + oy,
 				(int)p2.getX() + ox, -(int)p2.getY() + oy
 			);
 		}
@@ -1520,7 +1520,7 @@ interface StepListener extends EventListener {
  */
 class GA {
 	
-	static class GAFF 
+	static class GAFF
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
@@ -1569,7 +1569,7 @@ class GA {
 			return Float64.valueOf(GeometryUtils.area(_source, points));
 		}
 	
-		public final Function<Genotype<Float64Gene>, AffineTransform> 
+		public final Function<Genotype<Float64Gene>, AffineTransform>
 		_converter = new Function<Genotype<Float64Gene>, AffineTransform>() {
 		
 			@Override
@@ -1657,7 +1657,7 @@ class GA {
 	}
 	
 	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final GAFF function) {
-		final GeneticAlgorithm<Float64Gene, Float64> ga = 
+		final GeneticAlgorithm<Float64Gene, Float64> ga =
 			new GeneticAlgorithm<>(
 				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM
 			);

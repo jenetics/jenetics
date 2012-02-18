@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -30,15 +30,15 @@ import org.jscience.mathematics.number.LargeInteger;
 /**
  * Some bit utils. All operation assume <a href="http://en.wikipedia.org/wiki/Endianness">
  * <b>little-endian</b></a> byte order.
- * 
+ *
  * <pre>
- *  Byte:       3        2        1        0     
- *              |        |        |        |  
+ *  Byte:       3        2        1        0
+ *              |        |        |        |
  *  Array: |11110011|10011101|01000000|00101010|
  *          |                 |        |      |
  *  Bit:    23                15       7      0
  * </pre>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -51,12 +51,12 @@ public final class bit {
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
 	 * within the byte array) to the specified value.
-	 * 
+	 *
 	 * @param data the byte array.
 	 * @param index the bit index within the byte array.
 	 * @param value the value to set.
 	 * @return the given data array.
-	 * @throws IndexOutOfBoundsException if the index is 
+	 * @throws IndexOutOfBoundsException if the index is
 	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
@@ -80,11 +80,11 @@ public final class bit {
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
 	 * within the byte array) to true.
-	 * 
+	 *
 	 * @param data the byte array.
 	 * @param index the bit index within the byte array.
 	 * @return the given data array.
-	 * @throws IndexOutOfBoundsException if the index is 
+	 * @throws IndexOutOfBoundsException if the index is
 	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
@@ -94,11 +94,11 @@ public final class bit {
 	
 	/**
 	 * Return the (boolean) value of the byte array at the given bit index.
-	 * 
+	 *
 	 * @param data the byte array.
 	 * @param index the bit index.
 	 * @return the value at the given bit index.
-	 * @throws IndexOutOfBoundsException if the index is 
+	 * @throws IndexOutOfBoundsException if the index is
 	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
@@ -114,10 +114,10 @@ public final class bit {
 	}
 
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given 
-	 * {@code shift} to the right. The bits on the left side are filled with 
+	 * Shifting all bits in the given <code>data</code> array the given
+	 * {@code shift} to the right. The bits on the left side are filled with
 	 * zeros.
-	 * 
+	 *
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
@@ -156,10 +156,10 @@ public final class bit {
 	}
 	
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given 
-	 * {@code shift} to the left. The bits on the right side are filled with 
+	 * Shifting all bits in the given <code>data</code> array the given
+	 * {@code shift} to the left. The bits on the right side are filled with
 	 * zeros.
-	 * 
+	 *
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
 	 * @return the given <code>data</code> array.
@@ -198,7 +198,7 @@ public final class bit {
 	
 	/**
 	 * Increment the given <code>data</code> array.
-	 * 
+	 *
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
@@ -220,7 +220,7 @@ public final class bit {
 	
 	/**
 	 * Invert the given <code>data</code> array.
-	 * 
+	 *
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
@@ -238,7 +238,7 @@ public final class bit {
 	
 	/**
 	 * Make the two's complement of the given <code>data</code> array.
-	 * 
+	 *
 	 * @param data the given <code>data</code> array.
 	 * @return the given <code>data</code> array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
@@ -249,10 +249,10 @@ public final class bit {
 	
 	/**
 	 * Flip the bit at the given index.
-	 * 
+	 *
 	 * @param data the data array.
 	 * @param index the index of the bit to flip.
-	 * @throws IndexOutOfBoundsException if the index is 
+	 * @throws IndexOutOfBoundsException if the index is
 	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
@@ -275,9 +275,9 @@ public final class bit {
 	
 	/**
 	 * Convert the given {@link LargeInteger} value to an byte array.
-	 * 
+	 *
 	 * @see #toLargeInteger(byte[])
-	 * 
+	 *
 	 * @param value the value to convert.
 	 * @return the byte array representing the given {@link LargeInteger}.
 	 * @throws NullPointerException if the given value is {@code null}.
@@ -292,9 +292,9 @@ public final class bit {
 	
 	/**
 	 * Convert the given byte array into an {@link LargeInteger}.
-	 * 
+	 *
 	 * @see #toByteArray(LargeInteger)
-	 * 
+	 *
 	 * @param array the byte array to convert.
 	 * @return the {@link LargeInteger} built from the given byte array.
 	 */
@@ -340,9 +340,9 @@ public final class bit {
 			throw new IllegalArgumentException("Byte array to short: " + data.length);
 		}
 		
-		return ((data[0 + start] << 24) + 
-				(data[1 + start] << 16) + 
-				(data[2 + start] << 8) + 
+		return ((data[0 + start] << 24) +
+				(data[1 + start] << 16) +
+				(data[2 + start] << 8) +
 				(data[3 + start] << 0));
 	}
 	

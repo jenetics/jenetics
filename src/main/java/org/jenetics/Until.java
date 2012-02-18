@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics;
 
@@ -26,7 +26,7 @@ import org.jenetics.util.Function;
 
 /**
  * Some default GA termination strategies.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -36,8 +36,8 @@ public final class Until {
 		throw new AssertionError("Don't create an 'Until' instance.");
 	}
 	
-	static class SteadyFitness<C extends Comparable<? super C>> 
-		implements Function<Statistics<?, C>, Boolean> 
+	static class SteadyFitness<C extends Comparable<? super C>>
+		implements Function<Statistics<?, C>, Boolean>
 	{
 		private final int _genenerations;
 		
@@ -72,13 +72,13 @@ public final class Until {
 	/**
 	 * Create a <i>terminator</i> which returns {@code false} if the fitness
 	 * hasn't improved for a given number of generations.
-	 * 
+	 *
 	 * @param <C> the fitness type.
 	 * @param generation the number of generations the fitness don't have been
 	 *        improved.
 	 * @return the GA terminator.
 	 */
-	public static <C extends Comparable<? super C>> 
+	public static <C extends Comparable<? super C>>
 	Function<Statistics<?, C>, Boolean> SteadyFitness(final int generation) {
 		return new SteadyFitness<>(generation);
 	}
@@ -90,7 +90,7 @@ public final class Until {
 			_generation = generation;
 		}
 		
-		@Override 
+		@Override
 		public Boolean apply(final Statistics<?, ?> statistics) {
 			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
 		}		
@@ -99,12 +99,12 @@ public final class Until {
 	/**
 	 * Return a <i>termination predicate</i> which returns {@code false} if the
 	 * current GA generation is {@code >=} as the given {@code generation}.
-	 * 
+	 *
 	 * [code]
 	 * final GeneticAlgortihm<Float64Gene, Float64> ga = ...
 	 * ga.evolve(Until.Generation(100));
 	 * [/code]
-	 * 
+	 *
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */

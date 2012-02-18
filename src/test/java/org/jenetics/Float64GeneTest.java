@@ -1,26 +1,26 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
-package org.jenetics;  
+package org.jenetics;
 
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.testng.Assert.assertEquals;
@@ -46,9 +46,9 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> { 
-    
-	private final Factory<Float64Gene> 
+public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
+
+	private final Factory<Float64Gene>
 	_factory = Float64Gene.valueOf(0, Double.MAX_VALUE);
 	@Override protected Factory<Float64Gene> getFactory() {
 		return _factory;
@@ -65,7 +65,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 			final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
 			
 			final Variance<Float64> variance = new Variance<>();
-			 
+			
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
 			
 			final int samples = 100000;
@@ -98,13 +98,13 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
         assertEquals(gene.getAllele().doubleValue(), 1.234);
         assertEquals(gene.getMin().doubleValue(), 0.345);
         assertEquals(gene.getMax().doubleValue(), 2.123);
-        
+
         try {
             gene = Float64Gene.valueOf(0.1, 2.1, 4.1);
             assertFalse(gene.isValid());
         } catch (IllegalArgumentException e) {
             assertTrue(true);
-        } 
+        }
     }
 
 	@Test
@@ -125,7 +125,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 			assertMinMax(gene2, gene3);
 			assertValid(gene3);
 			Assert.assertEquals(
-					gene3.getNumber(), 
+					gene3.getNumber(),
 					gene1.getNumber().divide(gene2.getNumber())
 				);
 		}
@@ -156,7 +156,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
     public void createNumber() {
         Float64Gene gene = Float64Gene.valueOf(1.2345, -1234.1234, 1234.1234);
         Float64Gene g2 = gene.newInstance(5);
-        
+
         assertEquals(g2.getAllele().intValue(), 5);
         assertEquals(g2.getMin().doubleValue(), -1234.1234);
         assertEquals(g2.getMax().doubleValue(), 1234.1234);
@@ -173,7 +173,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
         Float64Gene g1 = Float64Gene.valueOf(3.1, 0.1, 5.1);
         Float64Gene g2 = Float64Gene.valueOf(4.1, 1.1, 7.1);
         Float64Gene g3 = Float64Gene.valueOf(3.1, 0.1, 5.1);
-        
+
         assertEquals(g1.getMin().doubleValue(), 0.1);
         assertEquals(g2.getMin().doubleValue(), 1.1);
         assertEquals(g3.getMin().doubleValue(), 0.1);
@@ -184,7 +184,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
         Float64Gene g1 = Float64Gene.valueOf(3.2, 0.2, 5.2);
         Float64Gene g2 = Float64Gene.valueOf(4.2, 1.2, 7.2);
         Float64Gene g3 = Float64Gene.valueOf(3.2, 0.2, 5.2);
-        
+
         assertEquals(g1.getMax().doubleValue(), 5.2);
         assertEquals(g2.getMax().doubleValue(), 7.2);
         assertEquals(g3.getMax().doubleValue(), 5.2);

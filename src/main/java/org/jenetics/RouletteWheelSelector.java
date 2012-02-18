@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -42,9 +42,9 @@ import javolution.lang.Immutable;
  * @version $Id$
  */
 public class RouletteWheelSelector<
-	G extends Gene<?, G>, 
+	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
-> 
+>
 	extends ProbabilitySelector<G, N>
 	implements Immutable
 {
@@ -56,7 +56,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	protected double[] probabilities(
-		final Population<G, N> population, 
+		final Population<G, N> population,
 		final int count
 	) {
 		assert(population != null) : "Population can not be null. ";

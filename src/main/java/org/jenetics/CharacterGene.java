@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -42,16 +42,16 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * Character gene implementation.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class CharacterGene 
-	implements 
-		Gene<Character, CharacterGene>, 
-		Comparable<CharacterGene>, 
-		Realtime, 
-		XMLSerializable 
+public final class CharacterGene
+	implements
+		Gene<Character, CharacterGene>,
+		Comparable<CharacterGene>,
+		Realtime,
+		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -59,7 +59,7 @@ public final class CharacterGene
 	 * The default character set used by this gene.
 	 */
 	public static final CharSet DEFAULT_CHARACTERS = new CharSet(
-				CharSet.expand("0-9a-zA-Z") +  
+				CharSet.expand("0-9a-zA-Z") +
 				" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 			);
 	
@@ -86,7 +86,7 @@ public final class CharacterGene
 
 	/**
 	 * Test, if the given character is valid.
-	 * 
+	 *
 	 * @param c The character to test.
 	 * @return true if the character is valid, false otherwise.
 	 */
@@ -96,7 +96,7 @@ public final class CharacterGene
 	
 	/**
 	 * Retunr a (unmodifiable) set of valid characters.
-	 * 
+	 *
 	 * @return the {@link CharSet} of valid characters.
 	 */
 	public CharSet getValidCharacters() {
@@ -113,12 +113,12 @@ public final class CharacterGene
 	/**
 	 * @see java.lang.Character#compareTo(java.lang.Character)
 	 * @param that The other gene to compare.
-	 * @return the value 0 if the argument Character is equal to this Character; 
-	 *         a value less than 0 if this Character is numerically less than 
-	 *         the Character argument; and a value greater than 0 if this 
-	 *         Character is numerically greater than the Character argument 
-	 *         (unsigned comparison). Note that this is strictly a numerical 
-	 *         comparison; it is not local-dependent. 
+	 * @return the value 0 if the argument Character is equal to this Character;
+	 *         a value less than 0 if this Character is numerically less than
+	 *         the Character argument; and a value greater than 0 if this
+	 *         Character is numerically greater than the Character argument
+	 *         (unsigned comparison). Note that this is strictly a numerical
+	 *         comparison; it is not local-dependent.
 	 */
 	@Override
 	public int compareTo(final CharacterGene that) {
@@ -127,7 +127,7 @@ public final class CharacterGene
 	
 	/**
 	 * Return the {@link Factory} view of this gene.
-	 * 
+	 *
 	 * @return the {@link Factory} view of this gene.
 	 */
 	Factory<CharacterGene> asFactory() {
@@ -139,7 +139,7 @@ public final class CharacterGene
 		return hashCodeOf(getClass()).and(_character).and(_validCharacters).value();
 	}
 	
-	@Override 
+	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
@@ -201,10 +201,10 @@ public final class CharacterGene
 	 * Create a new character gene from the given character. If the character
 	 * is not within the {@link #getValidCharacters()}, an invalid gene will be
 	 * created.
-	 * 
+	 *
 	 * @param character the character value of the created gene.
 	 * @return a new character gene.
-	 * @throws NullPointerException if the given {@code character} is 
+	 * @throws NullPointerException if the given {@code character} is
 	 *         {@code null}.
 	 */
 	public CharacterGene newInstance(final Character character) {
@@ -216,7 +216,7 @@ public final class CharacterGene
 	 *  Static object creation methods
 	 * ************************************************************************/
 	
-	private static final ObjectFactory<CharacterGene> 
+	private static final ObjectFactory<CharacterGene>
 	FACTORY = new ObjectFactory<CharacterGene>() {
 		@Override
 		protected CharacterGene create() {
@@ -227,10 +227,10 @@ public final class CharacterGene
 	/**
 	 * Create a new CharacterGene with a randomly chosen character from the
 	 * set of valid characters.
-	 * 
+	 *
 	 * @param validCharacters the valid characters for this gene.
 	 * @return a new valid, <em>random</em> gene,
-	 * @throws NullPointerException if the {@code validCharacters} are 
+	 * @throws NullPointerException if the {@code validCharacters} are
 	 *         {@code null}.
 	 */
 	public static CharacterGene valueOf(final CharSet validCharacters) {
@@ -246,10 +246,10 @@ public final class CharacterGene
 	 * Create a new character gene from the given character. If the character
 	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
 	 * created.
-	 * 
+	 *
 	 * @param character the character value of the created gene.
 	 * @return a new character gene.
-	 * @throws NullPointerException if the given {@code character} is 
+	 * @throws NullPointerException if the given {@code character} is
 	 *         {@code null}.
 	 */
 	public static CharacterGene valueOf(final Character character) {
@@ -264,13 +264,13 @@ public final class CharacterGene
 	
 	/**
 	 * Create a new CharacterGene from the give character.
-	 * 
+	 *
 	 * @param character The allele.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code validCharacters} are empty.
 	 */
 	public static CharacterGene valueOf(
-		final Character character, 
+		final Character character,
 		final CharSet validCharacters
 	) {
 		nonNull(character, "Character");
@@ -288,19 +288,19 @@ public final class CharacterGene
 	 *  XML object serialization
 	 * ************************************************************************/
 	
-	static final XMLFormat<CharacterGene> 
-	XML = new XMLFormat<CharacterGene>(CharacterGene.class) 
+	static final XMLFormat<CharacterGene>
+	XML = new XMLFormat<CharacterGene>(CharacterGene.class)
 	{
 		private static final String VALID_CHARS = "valid-characters";
 		
 		@Override
 		public CharacterGene newInstance(
 			final Class<CharacterGene> cls, final InputElement xml
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 			final String validCharacters = xml.getAttribute(
-					VALID_CHARS, 
+					VALID_CHARS,
 					DEFAULT_CHARACTERS.toString()
 				);
 			final String character = xml.getText().toString();
@@ -308,8 +308,8 @@ public final class CharacterGene
 			return CharacterGene.valueOf(character.charAt(0), new CharSet(validCharacters));
 		}
 		@Override
-		public void write(final CharacterGene gene, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final CharacterGene gene, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(VALID_CHARS, gene.getValidCharacters().toString());
 			xml.addText(gene._character.toString());

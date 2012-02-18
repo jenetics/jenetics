@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -39,16 +39,16 @@ import javolution.lang.Reusable;
  * Timer for measure the performance of the GA. The timer uses nano second
  * precision (by using {@link System#nanoTime()}). This timer is not synchronized.
  * It's up to the user to ensure thread safety.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Timer 
-	implements 
-		Comparable<Timer>, 
-		Reusable, 
-		Serializable, 
-		Cloneable 
+public final class Timer
+	implements
+		Comparable<Timer>,
+		Reusable,
+		Serializable,
+		Cloneable
 {
 	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_LABEL = "Timer";
@@ -61,9 +61,9 @@ public final class Timer
 	private transient Accumulator<? super Long> _accumulator = accumulators.NULL;
 	
 	/**
-	 * Create a new time with the given label. The label is use in the 
+	 * Create a new time with the given label. The label is use in the
 	 * {@link #toString()} method.
-	 * 
+	 *
 	 * @param label the timer label.
 	 * @throws NullPointerException if the {@code label} is {@code null}.
 	 */
@@ -80,7 +80,7 @@ public final class Timer
 	
 	/**
 	 * Set the accumulator for the interim results.
-	 * 
+	 *
 	 * @param accumulator the accumulator used for the interim results.
 	 * @throws NullPointerException if the {@code accumulator} is {@code null}.
 	 */
@@ -126,7 +126,7 @@ public final class Timer
 	 *     timer.stop();
 	 * }
 	 * [/code]
-	 * 
+	 *
 	 * @return the measured time so far.
 	 */
 	public Measurable<Duration> getTime() {
@@ -136,7 +136,7 @@ public final class Timer
 	/**
 	 * Return the time between two successive calls of {@link #start()} and
 	 * {@link #stop()}.
-	 * 
+	 *
 	 * @return the interim time measured.
 	 */
 	public Measurable<Duration> getInterimTime() {
@@ -145,7 +145,7 @@ public final class Timer
 	
 	/**
 	 * Return the timer label.
-	 * 
+	 *
 	 * @return the timer label.
 	 */
 	public String getLabel() {
@@ -154,7 +154,7 @@ public final class Timer
 	
 	/**
 	 * Set the timer label.
-	 * 
+	 *
 	 * @param label the new timer label
 	 */
 	public void setLabel(final String label) {
@@ -194,9 +194,9 @@ public final class Timer
 		}
 		
 		final Timer timer = (Timer)object;
-		return eq(_start, timer._start) && 
-				eq(_stop, timer._stop) && 
-				eq(_sum, timer._sum) && 
+		return eq(_start, timer._start) &&
+				eq(_stop, timer._stop) &&
+				eq(_sum, timer._sum) &&
 				eq(_label, timer._label);
 	}
 	
@@ -212,7 +212,7 @@ public final class Timer
 	@Override
 	public String toString() {
 		return String.format(
-					"%s: %11.11f s", _label, 
+					"%s: %11.11f s", _label,
 					getTime().doubleValue(SI.SECOND)
 				);
 	}

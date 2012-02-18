@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -46,22 +46,22 @@ import org.jenetics.util.object;
 
 /**
  * This class is the encoded problem solution with one to many Chromosomes.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Genotype<T extends Gene<?, T>> 
-	implements 
+public final class Genotype<T extends Gene<?, T>>
+	implements
 		Factory<Genotype<T>>,
-		Iterable<Chromosome<T>>, 
-		Verifiable, 
-		XMLSerializable, 
-		Realtime, 
+		Iterable<Chromosome<T>>,
+		Verifiable,
+		XMLSerializable,
+		Realtime,
 		Immutable
 {
 	private static final long serialVersionUID = 2L;
 	
-	private final ISeq<Chromosome<T>> _chromosomes; 
+	private final ISeq<Chromosome<T>> _chromosomes;
 	private final int _ngenes;
 	
 	//Caching isValid value.
@@ -84,9 +84,9 @@ public final class Genotype<T extends Gene<?, T>>
 	}
 	
 	/**
-	 * Return the chromosome at the given index. It is guaranteed, that the 
+	 * Return the chromosome at the given index. It is guaranteed, that the
 	 * returned chromosome is not null.
-	 * 
+	 *
 	 * @param index Chromosome index.
 	 * @return The Chromosome.
 	 * @throws IndexOutOfBoundsException if (index < 0 || index >= _length).
@@ -100,7 +100,7 @@ public final class Genotype<T extends Gene<?, T>>
 	
 	/**
 	 * Return the first chromosome.
-	 * 
+	 *
 	 * @return The first chromosome.
 	 */
 	public Chromosome<T> getChromosome() {
@@ -113,7 +113,7 @@ public final class Genotype<T extends Gene<?, T>>
 	/**
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}.
-	 * 
+	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *         {@code Genotype}.
 	 */
@@ -135,9 +135,9 @@ public final class Genotype<T extends Gene<?, T>>
 	
 	/**
 	 * Getting the number of _chromosomes of this genotype.
-	 * 
+	 *
 	 * @return number of _chromosomes.
-	 */ 
+	 */
 	public int length() {
 		return _chromosomes.length();
 	}
@@ -145,7 +145,7 @@ public final class Genotype<T extends Gene<?, T>>
 	/**
 	 * Return the number of genes this genotype consists of. This is the sum of
 	 * the number of genes of the genotype chromosomes.
-	 * 
+	 *
 	 * @return Return the number of genes this genotype consists of.
 	 */
 	public int getNumberOfGenes() {
@@ -155,7 +155,7 @@ public final class Genotype<T extends Gene<?, T>>
 	/**
 	 * Test if this genotype is valid. A genotype is valid if all its
 	 * {@link Chromosome}s are valid.
-	 * 
+	 *
 	 * @return true if this genotype is valid, false otherwise.
 	 */
 	@Override
@@ -221,7 +221,7 @@ public final class Genotype<T extends Gene<?, T>>
 	/**
 	 * Return a converter which access the chromosome array of this genotype.
 	 */
-	public static <T extends Gene<?, T>> 
+	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
 	{
 		return new Function<Genotype<T>, ISeq<Chromosome<T>>>() {
@@ -235,7 +235,7 @@ public final class Genotype<T extends Gene<?, T>>
 	 * Return a converter which access the chromosome with the given index of
 	 * this genotype.
 	 */
-	public static <T extends Gene<?, T>> 
+	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
 	{
 		return new Function<Genotype<T>, Chromosome<T>>() {
@@ -248,7 +248,7 @@ public final class Genotype<T extends Gene<?, T>>
 	/**
 	 * Return a converter which access the first chromosome of this genotype.
 	 */
-	public static <T extends Gene<?, T>> 
+	public static <T extends Gene<?, T>>
 	Function<Genotype<T>, Chromosome<T>> Chromosome()
 	{
 		return new Function<Genotype<T>, Chromosome<T>>() {
@@ -262,7 +262,7 @@ public final class Genotype<T extends Gene<?, T>>
 	/**
 	 * Create a new Genotype from a given array of <code>Chromosomes</code>.
 	 * The <code>Chromosome</code> array <code>c</code> is cloned.
-	 * 
+	 *
 	 * @param chromosomes The <code>Chromosome</code> array the <code>Genotype</code>
 	 *        consists of.
 	 * @throws NullPointerException if <code>c</code> is null or one of the
@@ -278,14 +278,14 @@ public final class Genotype<T extends Gene<?, T>>
 		}
 		
 		return new Genotype<>(
-				chromosomes.upcast(chromosomes), 
+				chromosomes.upcast(chromosomes),
 				ngenes(chromosomes)
 			);
 	}
 	
 	/**
 	 * Create a new Genotype from a given {@link Chromosome}
-	 * 
+	 *
 	 * @param chromosome The <code>Chromosome</code> array the <code>Genotype</code>
 	 *         consists of.
 	 * @throws NullPointerException if <code>chromosome</code> is null.
@@ -296,27 +296,27 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(chromosome, "Chromosome");
 		
 		return new Genotype<>(
-				new Array<>(chromosome).toISeq(), 
+				new Array<>(chromosome).toISeq(),
 				chromosome.length()
 			);
 	}
 	
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1, 
+		final Chromosome<G> ch1,
 		final Chromosome<G> ch2
 	) {
 		nonNull(ch1, "Chromosome 1");
 		nonNull(ch2, "Chromosome 2");
 		
 		return new Genotype<>(
-				new Array<>(ch1, ch2).toISeq(), 
+				new Array<>(ch1, ch2).toISeq(),
 				ch1.length() + ch2.length()
 			);
 	}
 	
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1, 
-		final Chromosome<G> ch2, 
+		final Chromosome<G> ch1,
+		final Chromosome<G> ch2,
 		final Chromosome<G> ch3
 	) {
 		nonNull(ch1, "Chromosome 1");
@@ -324,14 +324,14 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch3, "Chromosome 3");
 		
 		return new Genotype<>(
-				new Array<>(ch1, ch2, ch3).toISeq(), 
+				new Array<>(ch1, ch2, ch3).toISeq(),
 				ch1.length() + ch2.length() + ch3.length()
 			);		
 	}
 	
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1, 
-		final Chromosome<G> ch2, 
+		final Chromosome<G> ch1,
+		final Chromosome<G> ch2,
 		final Chromosome<G> ch3,
 		final Chromosome<G> ch4
 	) {
@@ -341,7 +341,7 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch4, "Chromosome 4");
 		
 		return new Genotype<>(
-				new Array<>(ch1, ch2, ch3, ch4).toISeq(), 
+				new Array<>(ch1, ch2, ch3, ch4).toISeq(),
 				ch1.length() + ch2.length() + ch3.length() + ch4.length()
 			);
 	}
@@ -363,8 +363,8 @@ public final class Genotype<T extends Gene<?, T>>
 	 * ************************************************************************/
 	
 	@SuppressWarnings({ "unchecked", "rawtypes"})
-	static final XMLFormat<Genotype> 
-	XML = new XMLFormat<Genotype>(Genotype.class) 
+	static final XMLFormat<Genotype>
+	XML = new XMLFormat<Genotype>(Genotype.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String NGENES = "ngenes";
@@ -372,8 +372,8 @@ public final class Genotype<T extends Gene<?, T>>
 		@Override
 		public Genotype newInstance(
 			final Class<Genotype> cls, final InputElement xml
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
 			final int ngenes = xml.getAttribute(NGENES, 0);
@@ -385,9 +385,9 @@ public final class Genotype<T extends Gene<?, T>>
 			
 			return new Genotype(chromosomes.toISeq(), ngenes);
 		}
-		@Override 
-		public void write(final Genotype gt, final OutputElement xml) 
-			throws XMLStreamException 
+		@Override
+		public void write(final Genotype gt, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, gt.length());
 			xml.setAttribute(NGENES, gt.getNumberOfGenes());

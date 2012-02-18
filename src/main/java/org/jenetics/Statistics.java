@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -54,26 +54,26 @@ import org.jenetics.util.FinalReference;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>> 
-	implements 
-		Immutable, 
-		XMLSerializable 
+public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
+	implements
+		Immutable,
+		XMLSerializable
 {
 	
 	/**
 	 * Builder for the Statistics class.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	public static class Builder<
-		G extends Gene<?, G>, 
+		G extends Gene<?, G>,
 		C extends Comparable<? super C>
-	> 
+	>
 	{
 		protected Optimize _optimize = Optimize.MAXIMUM;
 		protected int _generation = 0;
@@ -92,9 +92,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 		
 		/**
-		 * Set the values of this builder with the values of the given 
+		 * Set the values of this builder with the values of the given
 		 * {@code statistics}.
-		 * 
+		 *
 		 * @param statistics the statistics values. If the {@code statistics}
 		 *        is {@code null} nothing is set.
 		 * @return this builder.
@@ -185,7 +185,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		
 		/**
 		 * Return a new Statistics object with the builder values.
-		 * 
+		 *
 		 * @return new Statistics object with the builder values.
 		 */
 		public Statistics<G, C> build() {
@@ -221,14 +221,14 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Evaluates statistic values from a given population. The given phenotypes
 	 * may be {@code null}
-	 */ 
+	 */
 	protected Statistics(
 		final Optimize optimize,
 		final int generation,
-		final Phenotype<G, C> best, 
+		final Phenotype<G, C> best,
 		final Phenotype<G, C> worst,
-		final int samples, 
-		final double ageMean, 
+		final int samples,
+		final double ageMean,
 		final double ageVariance,
 		final int killed,
 		final int invalid
@@ -246,7 +246,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the optimize strategy of the GA.
-	 * 
+	 *
 	 * @return the optimize strategy of the GA.
 	 */
 	public Optimize getOptimize() {
@@ -255,7 +255,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the generation of this statistics.
-	 * 
+	 *
 	 * @return the generation of this statistics.
 	 */
 	public int getGeneration() {
@@ -265,7 +265,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Return the time statistic object which contains the durations of the
 	 * different GA execution steps.
-	 * 
+	 *
 	 * @return the time statistic object.
 	 */
 	public Time getTime() {
@@ -274,7 +274,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the best population Phenotype.
-	 * 
+	 *
 	 * @return The best population Phenotype.
 	 */
 	public Phenotype<G, C> getBestPhenotype() {
@@ -283,7 +283,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the worst population Phenotype.
-	 * 
+	 *
 	 * @return The worst population Phenotype.
 	 */
 	public Phenotype<G, C> getWorstPhenotype() {
@@ -292,7 +292,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the best population fitness.
-	 * 
+	 *
 	 * @return The best population fitness.
 	 */
 	public C getBestFitness() {
@@ -301,7 +301,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the worst population fitness.
-	 * 
+	 *
 	 * @return The worst population fitness.
 	 */
 	public C getWorstFitness() {
@@ -310,7 +310,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the number of samples this statistics has aggregated.
-	 * 
+	 *
 	 * @return the number of samples this statistics has aggregated.
 	 */
 	public int getSamples() {
@@ -318,9 +318,9 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 	
 	/**
-	 * Return the average (mean) age of the individuals of the aggregated 
+	 * Return the average (mean) age of the individuals of the aggregated
 	 * population.
-	 * 
+	 *
 	 * @return the average population age.
 	 */
 	public double getAgeMean() {
@@ -329,7 +329,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the age variance of the individuals of the aggregated population.
-	 * 
+	 *
 	 * @return the age variance of the individuals of the aggregated population.
 	 */
 	public double getAgeVariance() {
@@ -338,7 +338,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the number of invalid individuals.
-	 * 
+	 *
 	 * @return the number of invalid individuals.
 	 */
 	public int getInvalid() {
@@ -347,7 +347,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Return the number of killed individuals.
-	 * 
+	 *
 	 * @return the number of killed individuals.
 	 */
 	public int getKilled() {
@@ -410,8 +410,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Statistics> XML = 
-		new XMLFormat<Statistics>(Statistics.class) 
+	static final XMLFormat<Statistics> XML =
+		new XMLFormat<Statistics>(Statistics.class)
 	{
 		private static final String OPTIMIZE = "optimize";
 		private static final String GENERATION = "generation";
@@ -425,8 +425,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		private static final String KILLED = "killed";
 		
 		@Override
-		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml) 
-			throws XMLStreamException 
+		public Statistics newInstance(final Class<Statistics> cls, final InputElement xml)
+			throws XMLStreamException
 		{
 			final Optimize optimize = Optimize.valueOf(
 						xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
@@ -443,10 +443,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Statistics statistics = new Statistics(
 					optimize,
 					generation,
-					best, 
-					worst, 
-					samples, 
-					meanAge.doubleValue(), 
+					best,
+					worst,
+					samples,
+					meanAge.doubleValue(),
 					varianceAge.doubleValue(),
 					killed.intValue(),
 					invalid.intValue()
@@ -457,8 +457,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 		}
 		@Override
-		public void write(final Statistics s, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final Statistics s, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(OPTIMIZE, s._optimize.name());
 			xml.setAttribute(GENERATION, s._generation);
@@ -472,8 +472,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			xml.add(s._time.get(), STATISITCS_TIME);
 		}
 		@Override
-		public void read(final InputElement xml, final Statistics p) 
-			throws XMLStreamException 
+		public void read(final InputElement xml, final Statistics p)
+			throws XMLStreamException
 		{
 		}
 	};
@@ -481,7 +481,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Class which holds time statistic values.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
@@ -505,7 +505,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>> 
+		public final FinalReference<Measurable<Duration>>
 			execution = new FinalReference<>(ZERO);
 		
 		/**
@@ -513,7 +513,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>> 
+		public final FinalReference<Measurable<Duration>>
 			selection = new FinalReference<>(ZERO);
 		
 		/**
@@ -521,7 +521,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>> 
+		public final FinalReference<Measurable<Duration>>
 			alter = new FinalReference<>(ZERO);
 		
 		/**
@@ -529,7 +529,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>> 
+		public final FinalReference<Measurable<Duration>>
 			combine = new FinalReference<>(ZERO);
 		
 		/**
@@ -537,7 +537,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>> 
+		public final FinalReference<Measurable<Duration>>
 			evaluation = new FinalReference<>(ZERO);
 		
 		/**
@@ -545,7 +545,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>> 
+		public final FinalReference<Measurable<Duration>>
 			statistics = new FinalReference<>(ZERO);
 		
 		
@@ -598,8 +598,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 		
 		@SuppressWarnings("unchecked")
-		static final XMLFormat<Statistics.Time> XML = 
-			new XMLFormat<Statistics.Time>(Statistics.Time.class) 
+		static final XMLFormat<Statistics.Time> XML =
+			new XMLFormat<Statistics.Time>(Statistics.Time.class)
 		{
 			private static final String ALTER_TIME = "alter-time";
 			private static final String COMBINE_TIME = "combine-time";
@@ -611,8 +611,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			@Override
 			public Statistics.Time newInstance(
 				final Class<Statistics.Time> cls, final InputElement xml
-			) 
-				throws XMLStreamException 
+			)
+				throws XMLStreamException
 			{
 				final MeasureFormat format = getMeasureFormat();
 				final Statistics.Time time = new Statistics.Time();
@@ -643,8 +643,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 			}
 			@Override
-			public void write(final Statistics.Time s, final OutputElement xml) 
-				throws XMLStreamException 
+			public void write(final Statistics.Time s, final OutputElement xml)
+				throws XMLStreamException
 			{
 				final MeasureFormat format = getMeasureFormat();
 
@@ -656,8 +656,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				xml.add(format.format(s.statistics.get()), STATISTICS_TIME);
 			}
 			@Override
-			public void read(final InputElement xml, final Statistics.Time p) 
-				throws XMLStreamException 
+			public void read(final InputElement xml, final Statistics.Time p)
+				throws XMLStreamException
 			{
 			}
 			
@@ -675,12 +675,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Class for calculating the statistics. This class serves also as factory
 	 * for the Statistics class.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	public static class Calculator<
-		G extends Gene<?, G>, 
+		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	>
 	{
@@ -694,7 +694,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		/**
 		 * Create a new statistics object from the given {@code population} at
 		 * the given {@code generation}.
-		 * 
+		 *
 		 * @param population the population to aggregate.
 		 * @param generation the current GA generation.
 		 * @param opt the optimization <i>direction</i>.
@@ -713,8 +713,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Variance<Integer> age = new Variance<>();
 							
 			accumulators.<Phenotype<G, C>>accumulate(
-					population, 
-					minMax, 
+					population,
+					minMax,
 					age.map(Phenotype.Age(generation))
 				);
 			

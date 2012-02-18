@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -43,15 +43,15 @@ import org.jenetics.util.Copyable;
 
 /**
  * A population is a collection of Phenotypes.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Population<G extends Gene<?, G>, C extends Comparable<? super C>> 
-	implements 
-		List<Phenotype<G, C>>, 
+public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
+	implements
+		List<Phenotype<G, C>>,
 		Copyable<Population<G, C>>,
-		RandomAccess, 
+		RandomAccess,
 		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
@@ -59,10 +59,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	private final List<Phenotype<G, C>> _population;
 	
 	/**
-	 * Constructs a population containing the elements of the specified collection, 
-	 * in the order they are returned by the collection's iterator.  
+	 * Constructs a population containing the elements of the specified collection,
+	 * in the order they are returned by the collection's iterator.
 	 *
-	 * @param population the collection whose elements are to be placed into 
+	 * @param population the collection whose elements are to be placed into
 	 * 		 this list.
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
@@ -71,11 +71,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 	
 	/**
-	 * Creating a new <code>Population</code> with the preallocated population 
+	 * Creating a new <code>Population</code> with the preallocated population
 	 * size.
-	 * 
+	 *
 	 * @param size Preallocated population size.
-	 * @throws IllegalArgumentException if the specified initial capacity is 
+	 * @throws IllegalArgumentException if the specified initial capacity is
 	 * 		  negative
 	 */
 	public Population(final int size) {
@@ -91,7 +91,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Add <code>Phenotype</code> to the <code>Population</code>.
-	 * 
+	 *
 	 * @param phenotype <code>Phenotype</code> to be add.
 	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
@@ -103,8 +103,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	/**
 	 * Add <code>Phenotype</code> to the <code>Population</code>.
-	 * 
-	 * @param index Index of the 
+	 *
+	 * @param index Index of the
 	 * @param phenotype <code>Phenotype</code> to be add.
 	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
@@ -174,11 +174,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		
 		
 	private void quicksort(
-		final int left, final int right, 
+		final int left, final int right,
 		final Comparator<? super C> comparator
 	) {
 		if (right > left) {
-			final int j = partition(left, right, comparator); 
+			final int j = partition(left, right, comparator);
 			quicksort(left, j - 1, comparator);
 			quicksort(j + 1, right, comparator);
 		}
@@ -186,23 +186,23 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		
 	private int partition(
 		final int left, final int right,
-		final Comparator<? super C> comparator 
+		final Comparator<? super C> comparator
 	) {
 		final C pivot = _population.get(left).getFitness();
 		int i = left;
 		int j = right + 1;
 		while (true) {
-			do { 
-				++i; 
+			do {
+				++i;
 			} while (
-				i < right && 
+				i < right &&
 				comparator.compare(_population.get(i).getFitness(), pivot) < 0
 			);
 			
 			do {
 				--j;
 			} while (
-				j > left && 
+				j > left &&
 				comparator.compare(_population.get(j).getFitness(), pivot) > 0
 			);
 			if (j <= i) {
@@ -335,16 +335,16 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<Population> 
-	XML = new XMLFormat<Population>(Population.class) 
+	static final XMLFormat<Population>
+	XML = new XMLFormat<Population>(Population.class)
 	{
 		private static final String SIZE = "size";
 		
 		@Override
 		public Population newInstance(
 			final Class<Population> cls, final InputElement xml
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 			final int size = xml.getAttribute(SIZE, 10);
 			final Population p = new Population(size);
@@ -354,9 +354,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 			return p;
 		}
-		@Override 
-		public void write(final Population p, final OutputElement xml) 
-			throws XMLStreamException 
+		@Override
+		public void write(final Population p, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(SIZE, p.size());
 			for (Object phenotype : p) {

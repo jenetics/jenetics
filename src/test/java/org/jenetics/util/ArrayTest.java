@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -152,7 +152,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		
 		final Comparator<Integer> comparator = new Comparator<Integer>() {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override 
+			@Override
 			public int compare(final Integer o1, final Integer o2) {
 				return ((Comparable)o1).compareTo(o2);
 			}
@@ -290,7 +290,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 	
 	static <T> void assertEquals(
-		final Seq<T> actual, final int srcPos, 
+		final Seq<T> actual, final int srcPos,
 		final Seq<T> expected, final int desPos, final int length
 	) {
 		for (int i = 0; i < length; ++i) {
@@ -333,7 +333,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> a3 = a1.add(a2);
 		
 		Assert.assertEquals(a3.length(), 11);
-		Assert.assertEquals(a3, 
+		Assert.assertEquals(a3,
 				new Array<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
@@ -344,7 +344,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> a3 = a1.add(Arrays.asList(6, 7, 8, 9, 10));
 		
 		Assert.assertEquals(a3.length(), 11);
-		Assert.assertEquals(a3, 
+		Assert.assertEquals(a3,
 				new Array<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *  
+ *
  */
 package org.jenetics;
 
@@ -42,15 +42,15 @@ import org.jenetics.util.ISeq;
 
 /**
  * CharacterChromosome which represents character sequences.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharacterChromosome 
-	extends 
+public class CharacterChromosome
+	extends
 		AbstractChromosome<CharacterGene>
-	implements 
-		CharSequence, 
+	implements
+		CharSequence,
 		XMLSerializable
 {	
 	private static final long serialVersionUID = 1L;
@@ -60,9 +60,9 @@ public class CharacterChromosome
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
 	 * char set as valid characters.
-	 * 
+	 *
 	 * @param length the {@code length} of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
 	public CharacterChromosome(final int length) {
@@ -76,14 +76,14 @@ public class CharacterChromosome
 	}
 	
 	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as 
+	 * Create a new chromosome with the {@code validCharacters} char set as
 	 * valid characters.
-	 * 
+	 *
 	 * @param validCharacters the valid characters for this chromosome.
 	 * @param length the length of the new chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is 
+	 * @throws NullPointerException if the {@code validCharacters} is
 	 *         {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than 
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
 	public CharacterChromosome(final CharSet validCharacters, final int length) {
@@ -97,10 +97,10 @@ public class CharacterChromosome
 	}
 	
 	/**
-	 * Create a new chromosome from the given {@code genes} array. The genes 
-	 * array is copied, so changes to the given genes array doesn't effect the 
+	 * Create a new chromosome from the given {@code genes} array. The genes
+	 * array is copied, so changes to the given genes array doesn't effect the
 	 * genes of this chromosome.
-	 * 
+	 *
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
@@ -113,7 +113,7 @@ public class CharacterChromosome
 	
 	/**
 	 * Create a new chromosome from the given genes (given as string).
-	 * 
+	 *
 	 * @param genes the character genes.
 	 * @param validCharacters the valid characters.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
@@ -128,7 +128,7 @@ public class CharacterChromosome
 					final char c = genes.charAt(_index++);
 					if (!validCharacters.contains(c)) {
 						throw new IllegalArgumentException(String.format(
-								"Character '%s' not in valid characters %s", 
+								"Character '%s' not in valid characters %s",
 								c, validCharacters
 							));
 					}
@@ -142,7 +142,7 @@ public class CharacterChromosome
 	
 	/**
 	 * Create a new chromosome from the given genes (given as string).
-	 * 
+	 *
 	 * @param genes the character genes.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
 	 *         characters or the genes is an empty string.
@@ -153,7 +153,7 @@ public class CharacterChromosome
 
 	/**
 	 * Return a more specific view of this chromosome factory.
-	 * 
+	 *
 	 * @return a more specific view of this chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
@@ -227,22 +227,22 @@ public class CharacterChromosome
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<AbstractChromosome<CharacterGene>, ISeq<CharacterGene>> 
+	public static final Function<AbstractChromosome<CharacterGene>, ISeq<CharacterGene>>
 		Genes = AbstractChromosome.genes();
 	
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<CharacterGene>, CharacterGene> 
+	public static final Function<Chromosome<CharacterGene>, CharacterGene>
 		Gene = AbstractChromosome.gene();
 	
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<CharacterGene>, CharacterGene> 
-	Gene(final int index) 
+	public static final Function<Chromosome<CharacterGene>, CharacterGene>
+	Gene(final int index)
 	{
 		return AbstractChromosome.gene(index);
 	}
@@ -251,8 +251,8 @@ public class CharacterChromosome
 	 *  XML object serialization
 	 * ************************************************************************/
 	
-	static final XMLFormat<CharacterChromosome> 
-	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class) 
+	static final XMLFormat<CharacterChromosome>
+	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String VALID_CHARS = "valid-characters";
@@ -260,8 +260,8 @@ public class CharacterChromosome
 		@Override
 		public CharacterChromosome newInstance(
 			final Class<CharacterChromosome> cls, final InputElement xml
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
 			final CharSet validCharacters = new CharSet(xml.getAttribute(
@@ -276,8 +276,8 @@ public class CharacterChromosome
 			return new CharacterChromosome(array.toISeq());
 		}
 		@Override
-		public void write(final CharacterChromosome chromosome, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final CharacterChromosome chromosome, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(VALID_CHARS, chromosome._validCharacters.toString());
@@ -298,7 +298,7 @@ public class CharacterChromosome
 	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -311,7 +311,7 @@ public class CharacterChromosome
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -97,14 +97,14 @@ public class PermutationIndexStreamTest {
 		Assert.assertEquals(count, length);
 	}
 	
-	@Test(dataProvider = "lengths") 
+	@Test(dataProvider = "lengths")
 	public void completeness(final int length) {
 		final IndexStream stream = PermutationIndexStream.valueOf(length);
 		
 		final Set<Integer> values = new HashSet<>(length);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			Assert.assertFalse(
-					values.contains(i), 
+					values.contains(i),
 					String.format("Double value %d for stream %s.", i, stream)
 				);
 			

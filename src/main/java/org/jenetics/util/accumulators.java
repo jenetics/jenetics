@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -34,7 +34,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
 /**
  * Collection of some general purpose Accumulators and some static helper classes
  * for accumulating.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -45,19 +45,19 @@ public final class accumulators {
 	}	
 	
 	public static final Accumulator<Object> NULL = new Accumulator<Object>() {
-		@Override 
+		@Override
 		public void accumulate(final Object value) {
 		}
 	};
 	
 	/**
 	 * Calculates min value.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static final class Min<C extends Comparable<? super C>> 
-		extends MappableAccumulator<C> 
+	public static final class Min<C extends Comparable<? super C>>
+		extends MappableAccumulator<C>
 	{
 		private C _min;
 		
@@ -69,7 +69,7 @@ public final class accumulators {
 		
 		/**
 		 * Copy constructor.
-		 * 
+		 *
 		 * @param min the accumulator to copy.
 		 * @throws NullPointerException if {@code min} is {@code null}.
 		 */
@@ -81,7 +81,7 @@ public final class accumulators {
 		
 		/**
 		 * Return the min value, accumulated so far.
-		 * 
+		 *
 		 * @return the min value, accumulated so far.
 		 */
 		public C getMin() {
@@ -125,7 +125,7 @@ public final class accumulators {
 		@Override
 		public String toString() {
 			return String.format(
-					"%s[samples=%d, min=%s]", 
+					"%s[samples=%d, min=%s]",
 					getClass().getSimpleName(), getSamples(), getMin()
 				);
 		}
@@ -139,12 +139,12 @@ public final class accumulators {
 	
 	/**
 	 * Calculates max value.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static final class Max<C extends Comparable<? super C>> 
-		extends MappableAccumulator<C> 
+	public static final class Max<C extends Comparable<? super C>>
+		extends MappableAccumulator<C>
 	{
 		private C _max;
 		
@@ -156,7 +156,7 @@ public final class accumulators {
 		
 		/**
 		 * Copy constructor.
-		 * 
+		 *
 		 * @param max the accumulator to copy.
 		 * @throws NullPointerException if {@code max} is {@code null}.
 		 */
@@ -168,7 +168,7 @@ public final class accumulators {
 		
 		/**
 		 * Return the max value, accumulated so far.
-		 * 
+		 *
 		 * @return the max value, accumulated so far.
 		 */
 		public C getMax() {
@@ -212,7 +212,7 @@ public final class accumulators {
 		@Override
 		public String toString() {
 			return String.format(
-					"%s[samples=%d, max=%s]", 
+					"%s[samples=%d, max=%s]",
 					getClass().getSimpleName(), getSamples(), getMax()
 				);
 		}
@@ -226,12 +226,12 @@ public final class accumulators {
 	
 	/**
 	 * Calculates min and max values.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	public static final class MinMax<C extends Comparable<? super C>> 
-		extends MappableAccumulator<C> 
+	public static final class MinMax<C extends Comparable<? super C>>
+		extends MappableAccumulator<C>
 	{
 		private C _min;
 		private C _max;
@@ -244,7 +244,7 @@ public final class accumulators {
 		
 		/**
 		 * Copy constructor.
-		 * 
+		 *
 		 * @param mm the accumulator to copy.
 		 * @throws NullPointerException if {@code mm} is {@code null}.
 		 */
@@ -257,7 +257,7 @@ public final class accumulators {
 		
 		/**
 		 * Return the min value, accumulated so far.
-		 * 
+		 *
 		 * @return the min value, accumulated so far.
 		 */
 		public C getMin() {
@@ -266,7 +266,7 @@ public final class accumulators {
 		
 		/**
 		 * Return the max value, accumulated so far.
-		 * 
+		 *
 		 * @return the max value, accumulated so far.
 		 */
 		public C getMax() {
@@ -316,7 +316,7 @@ public final class accumulators {
 		@Override
 		public String toString() {
 			return String.format(
-					"%s[samples=%d, min=%s, max=%s]", 
+					"%s[samples=%d, min=%s, max=%s]",
 					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);
 		}
@@ -327,8 +327,8 @@ public final class accumulators {
 		}
 	}
 	
-	public static class Sum<G extends GroupAdditive<G>> 
-		extends MappableAccumulator<G> 
+	public static class Sum<G extends GroupAdditive<G>>
+		extends MappableAccumulator<G>
 	{
 		
 		private G _sum = null;
@@ -355,44 +355,44 @@ public final class accumulators {
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
-	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * {@code accumulators} with each value of the given {@code values}. The
 	 * accumulation is done in parallel.
-	 * 
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param accus the accumulators to apply.
 	 * @throws NullPointerException if one of the given arguments is {@code null}.
 	 */
 	public static <T> void accumulate(
-		final Iterable<? extends T> values, 
+		final Iterable<? extends T> values,
 		final Seq<? extends Accumulator<? super T>> accus
 	) {
 		switch (accus.length()) {
 		case 1:
 			accumulators.<T>accumulate(
-					values, 
+					values,
 					accus.get(0)
-				); 
+				);
 			break;
 		case 2:
 			accumulators.<T>accumulate(
-					values, 
-					accus.get(0), 
+					values,
+					accus.get(0),
 					accus.get(1)
-				); 
+				);
 			break;
 		case 3:
 			accumulators.<T>accumulate(
-					values, 
-					accus.get(0), 
+					values,
+					accus.get(0),
 					accus.get(1),
 					accus.get(2)
-				); 
+				);
 			break;
 		case 4:
 			accumulators.<T>accumulate(
-					values, 
-					accus.get(0), 
+					values,
+					accus.get(0),
 					accus.get(1),
 					accus.get(2),
 					accus.get(3)
@@ -400,27 +400,27 @@ public final class accumulators {
 			break;
 		case 5:
 			accumulators.<T>accumulate(
-					values, 
-					accus.get(0), 
+					values,
+					accus.get(0),
 					accus.get(1),
 					accus.get(2),
 					accus.get(3),
 					accus.get(4)
-				); 
+				);
 			break;
 		default:
 			try (Concurrency c = Concurrency.start()) {
 				for (final Accumulator<? super T> accumulator : accus) {
 					c.execute(new Acc<>(values, accumulator));
 				}
-			} 
+			}
 		}
 	}
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
-	 * {@code accumulator} with each value of the given {@code values}. 
-	 * 
+	 * {@code accumulator} with each value of the given {@code values}.
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param a the accumulator.
@@ -437,8 +437,8 @@ public final class accumulators {
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
-	 * {@code accumulator} with each value of the given {@code values}. 
-	 * 
+	 * {@code accumulator} with each value of the given {@code values}.
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param a the accumulator.
@@ -455,9 +455,9 @@ public final class accumulators {
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
-	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * {@code accumulators} with each value of the given {@code values}. The
 	 * accumulation is done in parallel.
-	 * 
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
@@ -477,9 +477,9 @@ public final class accumulators {
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
-	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * {@code accumulators} with each value of the given {@code values}. The
 	 * accumulation is done in parallel.
-	 * 
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
@@ -502,9 +502,9 @@ public final class accumulators {
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
-	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * {@code accumulators} with each value of the given {@code values}. The
 	 * accumulation is done in parallel.
-	 * 
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.
@@ -530,9 +530,9 @@ public final class accumulators {
 	
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
-	 * {@code accumulators} with each value of the given {@code values}. The 
+	 * {@code accumulators} with each value of the given {@code values}. The
 	 * accumulation is done in parallel.
-	 * 
+	 *
 	 * @param <T> the value type.
 	 * @param values the values to accumulate.
 	 * @param a1 the first accumulator.

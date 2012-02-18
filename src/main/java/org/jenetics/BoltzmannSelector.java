@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *  
+ *
  */
 package org.jenetics;
 
@@ -35,36 +35,36 @@ import javolution.lang.Immutable;
  * <p>
  * In this <code>Selector</code>, the probability for selection is defined as.
  * </p>
- * <p/><img 
- *        src="doc-files/boltzmann-formula1.gif" 
- *        alt="p_i=\frac{\textup{e}^{b\cdot f_i}}{Z}" 
+ * <p/><img
+ *        src="doc-files/boltzmann-formula1.gif"
+ *        alt="p_i=\frac{\textup{e}^{b\cdot f_i}}{Z}"
  *     />
- * </p> 
+ * </p>
  * where <i>b</i> controls the selection intensity, and
- * <p/><img 
- *        src="doc-files/boltzmann-formula2.gif" 
- *        alt="Z=\sum_{j=1}^{n}\textrm{e}^{f_j}" 
+ * <p/><img
+ *        src="doc-files/boltzmann-formula2.gif"
+ *        alt="Z=\sum_{j=1}^{n}\textrm{e}^{f_j}"
  *     />.
- * </p> 
- * 
- * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the 
+ * </p>
+ *
+ * <i>f</i><sub><i>j</i></sub> denotes the fitness value of the
  * <i>j<sup>th</sup></i> individual.
  * <br/>
  * Positive values of <i>b</i> increases the selection probability of the phenotype
  * with high fitness values. Negative values of <i>b</i> increases the selection
  * probability of phenotypes with low fitness values. If <i>b</i> is zero the
  * selection probability of all phenotypes is set to <sup>1</sup>/<sub>N</sub>.
- * 
+ *
  * @param <G> the gene type.
  * @param <N> the BoltzmannSelector requires a number type.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public final class BoltzmannSelector<
-	G extends Gene<?, G>, 
+	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
-> 
+>
 	extends ProbabilitySelector<G, N>
 	implements Immutable
 {
@@ -79,10 +79,10 @@ public final class BoltzmannSelector<
 	}
 	
 	/**
-	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High 
-	 * absolute values of <i>b</i> can create numerical overflows while 
+	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High
+	 * absolute values of <i>b</i> can create numerical overflows while
 	 * calculating the selection probabilities.</b>
-	 * 
+	 *
 	 * @param b the <i>b</i> value of this BolzmanSelector
 	 */
 	public BoltzmannSelector(final double b) {
@@ -91,7 +91,7 @@ public final class BoltzmannSelector<
 
 	@Override
 	protected double[] probabilities(
-		final Population<G, N> population, 
+		final Population<G, N> population,
 		final int count
 	) {
 		assert (population != null) : "Population must not be null. ";
