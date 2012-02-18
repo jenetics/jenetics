@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -36,24 +36,24 @@ import javolution.lang.Immutable;
 
 /**
  * Helper class holding the valid characters.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class CharSet 
+public final class CharSet
 	extends CharISeq
-	implements 
-		CharSequence, 
+	implements
+		CharSequence,
 		ISeq<Character>,
 		Comparable<CharSet>,
-		Immutable, 
-		Serializable 
+		Immutable,
+		Serializable
 {
 	private static final long serialVersionUID = 2L;
 		
 	/**
 	 * Create a new (distinct) CharSet from the given {@code characters}.
-	 * 
+	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
@@ -74,7 +74,7 @@ public final class CharSet
 	
 	/**
 	 * Create a new (distinct) CharSet from the given {@code characters}.
-	 * 
+	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
@@ -122,11 +122,11 @@ public final class CharSet
 	
 	/**
 	 * Test whether this character set contains the given character {@code c}.
-	 * 
+	 *
 	 * @param c the character to test.
 	 * @return {@code true} if this character set contains the given character,
 	 * 		  {@code false} otherwise.
-	 * @throws NullPointerException if the given character {@code c} is 
+	 * @throws NullPointerException if the given character {@code c} is
 	 * 		  {@code null}.
 	 */
 	public boolean contains(final Character c) {
@@ -135,7 +135,7 @@ public final class CharSet
 	
 	/**
 	 * Test whether this character set contains the given character {@code c}.
-	 * 
+	 *
 	 * @param c the character to test.
 	 * @return {@code true} if this character set contains the given character,
 	 * 		  {@code false} otherwise.
@@ -161,8 +161,8 @@ public final class CharSet
 	
 	/**
 	 * Test whether this character set is empty.
-	 * 
-	 * @return {@code true} if this character set is empty, {@code false} 
+	 *
+	 * @return {@code true} if this character set is empty, {@code false}
 	 * 		  otherwise.
 	 */
 	public boolean isEmpty() {
@@ -179,7 +179,7 @@ public final class CharSet
 			@Override public Character next() {
 				if (!hasNext()) {
 					throw new NoSuchElementException(String.format(
-							"Index %s is out of range [0, %s)", 
+							"Index %s is out of range [0, %s)",
 							_pos, _characters.length
 						));
 				}
@@ -230,10 +230,10 @@ public final class CharSet
 	}
 	
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g 
+	 * Expands the character range for the given {@code pattern}. E.g
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
 	 * case characters (from a to z) and all digits form 0 to 9.
-	 * 
+	 *
 	 * @param pattern the {@code pattern} to expand.
 	 * @return the expanded pattern.
 	 * @throws PatternSyntaxException if the pattern could not be expanded.
@@ -258,7 +258,7 @@ public final class CharSet
 				}
 	
 				final String range = expand(
-						pattern.charAt(i - 1), 
+						pattern.charAt(i - 1),
 						pattern.charAt(i + 1)
 					);
 				out.append(range);
@@ -274,7 +274,7 @@ public final class CharSet
 	
 	/**
 	 * Expands the characters between {@code a} and {@code b}.
-	 * 
+	 *
 	 * @param a the start character.
 	 * @param b the stop character.
 	 * @return the expanded characters.
@@ -300,12 +300,12 @@ public final class CharSet
 	}
 	
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g 
+	 * Expands the character range for the given {@code pattern}. E.g
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
 	 * case characters (from a to z) and all digits form 0 to 9.
-	 * 
+	 *
 	 * @see #expand(CharSequence)
-	 * 
+	 *
 	 * @param pattern the {@code pattern} to expand.
 	 * @return the expanded pattern.
 	 * @throws PatternSyntaxException if the pattern could not be expanded.
@@ -317,9 +317,9 @@ public final class CharSet
 	
 	/**
 	 * Expands the characters between {@code a} and {@code b}.
-	 * 
+	 *
 	 * @see #expand(char, char)
-	 * 
+	 *
 	 * @param a the start character.
 	 * @param b the stop character.
 	 * @return the expanded characters.

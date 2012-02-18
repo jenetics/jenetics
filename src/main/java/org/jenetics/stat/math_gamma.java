@@ -1,11 +1,11 @@
 /*
- * Copyright © 1999 CERN - European Organization for Nuclear Research. 
- * Permission to use, copy, modify, distribute and sell this software and 
- * its documentation for any purpose is hereby granted without fee, provided 
- * that the above copyright notice appear in all copies and that both that 
- * copyright notice and this permission notice appear in supporting 
- * documentation. CERN makes no representations about the suitability of 
- * this software for any purpose. It is provided "as is" without expressed 
+ * Copyright © 1999 CERN - European Organization for Nuclear Research.
+ * Permission to use, copy, modify, distribute and sell this software and
+ * its documentation for any purpose is hereby granted without fee, provided
+ * that the above copyright notice appear in all copies and that both that
+ * copyright notice and this permission notice appear in supporting
+ * documentation. CERN makes no representations about the suitability of
+ * this software for any purpose. It is provided "as is" without expressed
  * or implied warranty.
  */
 package org.jenetics.stat;
@@ -79,9 +79,9 @@ abstract class math_gamma {
 	 * Returns the <a
 	 * href="http://mathworld.wolfram.com/IncompleteGammaFunction.html">
 	 * Incomplete Gamma function</a>.
-	 * 
+	 *
 	 * @see #gamma(double, double)
-	 * 
+	 *
 	 * @param a
 	 *            the parameter of the gamma distribution.
 	 * @param x
@@ -127,9 +127,9 @@ abstract class math_gamma {
 	 * Returns the <a
 	 * href="http://mathworld.wolfram.com/IncompleteGammaFunction.html">
 	 * Incomplete Gamma function</a>.
-	 * 
+	 *
 	 * @see #Γ(double, double)
-	 * 
+	 *
 	 * @param a
 	 *            the parameter of the gamma distribution.
 	 * @param x
@@ -142,7 +142,7 @@ abstract class math_gamma {
 	/**
 	 * Returns the Complemented Incomplete Gamma function; formerly named
 	 * <tt>igamc</tt>.
-	 * 
+	 *
 	 * @param a
 	 *            the parameter of the gamma distribution.
 	 * @param x
@@ -212,29 +212,29 @@ abstract class math_gamma {
 	 * <tt>lgamma</tt>.
 	 */
 	static double logGamma(double x) {
-		final double A[] = { 
-			8.11614167470508450300E-4, 
+		final double A[] = {
+			8.11614167470508450300E-4,
 			-5.95061904284301438324E-4,
-			7.93650340457716943945E-4, 
+			7.93650340457716943945E-4,
 			-2.77777777730099687205E-3,
-			8.33333333333331927722E-2 
+			8.33333333333331927722E-2
 		};
-		final double B[] = { 
-			-1.37825152569120859100E3, 
+		final double B[] = {
+			-1.37825152569120859100E3,
 			-3.88016315134637840924E4,
-			-3.31612992738871184744E5, 
+			-3.31612992738871184744E5,
 			-1.16237097492762307383E6,
-			-1.72173700820839662146E6, 
-			-8.53555664245765465627E5 
+			-1.72173700820839662146E6,
+			-8.53555664245765465627E5
 		};
 		final double C[] = {
 			/* 1.00000000000000000000E0, */
-			-3.51815701436523470549E2, 
+			-3.51815701436523470549E2,
 			-1.70642106651881159223E4,
-			-2.20528590553854454839E5, 
+			-2.20528590553854454839E5,
 			-1.13933444367982507207E6,
-			-2.53252307177582951285E6, 
-			-2.01889141433532773231E6 
+			-2.53252307177582951285E6,
+			-2.01889141433532773231E6
 		};
 		
 		double p, q, w, z;

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -34,7 +34,7 @@ import java.util.Random;
 
 /**
  * Static helper methods concerning arrays.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -46,8 +46,8 @@ public final class arrays {
 	
 	/**
 	 * Unified method for calculating the hash code of every Seq implementation.
-	 * The hash code is defined as followed: 
-	 * 
+	 * The hash code is defined as followed:
+	 *
 	 * [code]
 	 * int hashCode = 1;
 	 * final Iterator<E> it = seq.iterator();
@@ -56,9 +56,9 @@ public final class arrays {
 	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
 	 * }
 	 * [/code]
-	 * 
+	 *
 	 * @see Seq#hashCode()
-	 * 
+	 *
 	 * @param seq the sequence to calculate the hash code for.
 	 * @return the hash code of the given sequence.
 	 */
@@ -73,13 +73,13 @@ public final class arrays {
 	
 	/**
 	 * Unified method for compare to sequences for equality.
-	 * 
+	 *
 	 * @see Seq#equals(Object)
-	 * 
+	 *
 	 * @param seq the sequence to test for equality.
 	 * @param obj the object to test for equality with the sequence.
 	 * @return {@code true} if the given objects are sequences and contain the
-	 *         same objects in the same order, {@code false} otherwise. 
+	 *         same objects in the same order, {@code false} otherwise.
 	 */
 	public static boolean equals(final Seq<?> seq, final Object obj) {
 		if (obj == seq) {
@@ -104,7 +104,7 @@ public final class arrays {
 	
 	/**
 	 * Swap two elements of an given array.
-	 * 
+	 *
 	 * @param array the array
 	 * @param i index of the first array element.
 	 * @param j index of the second array element.
@@ -121,7 +121,7 @@ public final class arrays {
 	
 	/**
 	 * Swap two elements of an given array.
-	 * 
+	 *
 	 * @param <T> the array type.
 	 * @param array the array
 	 * @param i index of the first array element.
@@ -139,7 +139,7 @@ public final class arrays {
 	
 	/**
 	 * Swap two elements of an given list.
-	 * 
+	 *
 	 * @param <T> the list type.
 	 * @param list the array
 	 * @param i index of the first list element.
@@ -157,7 +157,7 @@ public final class arrays {
 	
 	/**
 	 * Swap two elements of an given array.
-	 * 
+	 *
 	 * @param <T> the array type.
 	 * @param array the array
 	 * @param i index of the first array element.
@@ -175,27 +175,27 @@ public final class arrays {
 	
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
-	 * 
+	 *
 	 * @throws NullPointerException if the give array is {@code null}.
-	 * @throws UnsupportedOperationException if the array is sealed 
+	 * @throws UnsupportedOperationException if the array is sealed
 	 * 		  ({@code array.isSealed() == true}).
 	 */
-	public static <T extends Object & Comparable<? super T>> void 
-	sort(final MSeq<T> array) 
+	public static <T extends Object & Comparable<? super T>> void
+	sort(final MSeq<T> array)
 	{
 		Collections.sort(array.asList());
 	}
 	
 	/**
 	 * Test whether the given array is sorted in ascending order.
-	 * 
+	 *
 	 * @param seq the array to test.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
 	 * @throws NullPointerException if the given array or one of it's element is
 	 *         {@code null}.
 	 */
-	public static <T extends Object & Comparable<? super T>> boolean 
+	public static <T extends Object & Comparable<? super T>> boolean
 	isSorted(final Seq<T> seq)
 	{
 		boolean sorted = true;
@@ -209,7 +209,7 @@ public final class arrays {
 	/**
 	 * Test whether the given array is sorted in ascending order. The order of
 	 * the array elements is defined by the given comparator.
-	 * 
+	 *
 	 * @param seq the array to test.
 	 * @param comparator the comparator which defines the order.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
@@ -232,7 +232,7 @@ public final class arrays {
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
@@ -244,10 +244,10 @@ public final class arrays {
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
-	 * @throws NullPointerException if the give array or the random object is 
+	 * @throws NullPointerException if the give array or the random object is
 	 * 		  {@code null}.
 	 */
 	public static void shuffle(final int[] array, final Random random) {
@@ -260,7 +260,7 @@ public final class arrays {
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
@@ -272,11 +272,11 @@ public final class arrays {
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give array or the random object is 
+	 * @throws NullPointerException if the give array or the random object is
 	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array, final Random random) {
@@ -289,7 +289,7 @@ public final class arrays {
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
@@ -301,11 +301,11 @@ public final class arrays {
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give array or the random object is 
+	 * @throws NullPointerException if the give array or the random object is
 	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final MSeq<T> array, final Random random) {
@@ -318,7 +318,7 @@ public final class arrays {
 	 * Randomize the {@code list} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param list the {@code array} to randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list is {@code null}.
@@ -331,11 +331,11 @@ public final class arrays {
 	 * Randomize the {@code list} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 * 
+	 *
 	 * @param list the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give list or the random object is 
+	 * @throws NullPointerException if the give list or the random object is
 	 * 		  {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list, final Random random) {
@@ -346,7 +346,7 @@ public final class arrays {
 	
 	/**
 	 * Reverses the part of the array determined by the to indexes.
-	 * 
+	 *
 	 * @param <T> the array type.
 	 * @param array the array to reverse
 	 * @param from the first index (inclusive)
@@ -368,7 +368,7 @@ public final class arrays {
 	
 	/**
 	 * Reverses the given array in place.
-	 * 
+	 *
 	 * @param <T> the array type.
 	 * @param array the array to reverse.
 	 * @throws NullPointerException if the give array is {@code null}.
@@ -392,7 +392,7 @@ public final class arrays {
 	}
 	
 	/**
-	 * Return a array with the indexes of the partitions of an array with the 
+	 * Return a array with the indexes of the partitions of an array with the
 	 * given size. The length of the returned array is {@code min(size, prts) + 1}.
 	 * <p/>
 	 * Some examples:
@@ -401,13 +401,13 @@ public final class arrays {
 	 * 	 partition(15, 6): [0, 2, 4, 6, 9, 12, 15]
 	 * 	 partition(5, 10): [0, 1, 2, 3, 4, 5]
 	 * </pre>
-	 * 
+	 *
 	 * The following examples prints the start index (inclusive) and the end
 	 * index (exclusive) of the {@code partition(15, 6)}.
 	 * [code]
 	 * int[] parts = partition(15, 6);
 	 * for (int i = 0; i < parts.length - 1; ++i) {
-	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]); 
+	 *     System.out.println(i + ": " + parts[i] + "\t" + parts[i + 1]);
 	 * }
 	 * [/code]
 	 * <pre>
@@ -418,7 +418,7 @@ public final class arrays {
 	 * 	 4: 9 	12
 	 * 	 5: 12	15	
 	 * </pre>
-	 * 
+	 *
 	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
 	 * ConcurrentContext.enter();
@@ -439,7 +439,7 @@ public final class arrays {
 	 *      ConcurrentContext.exit();
 	 * }
 	 * [/code]
-	 * 
+	 *
 	 * @param size the size of the array to partition.
 	 * @param parts the number of parts the (virtual) array should be partitioned.
 	 * @return the partition array with the length of {@code min(size, parts) + 1}.
@@ -476,13 +476,13 @@ public final class arrays {
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
-	 * 
+	 *
 	 * @see #subset(int, int[])
-	 * 
+	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
 	 * @throws NullPointerException if {@code sub} is {@code null}.
-	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if 
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 * 		  {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
@@ -492,15 +492,15 @@ public final class arrays {
 	
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
-	 * 
+	 *
 	 * @see #subset(int, int[], Random)
-	 * 
+	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} or {@code sub} is 
+	 * @throws NullPointerException if {@code random} or {@code sub} is
 	 * 		  {@code null}.
-	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if 
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 * 		  {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
@@ -524,16 +524,16 @@ public final class arrays {
 	
 	/**
 	 * <p>
-	 * Selects a random subset of size {@code sub.length} from a set of size 
+	 * Selects a random subset of size {@code sub.length} from a set of size
 	 * {@code n}.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
 	 * 	 version based on the  C++ version by John Burkardt.
 	 * </p>
-	 * 
+	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
 	 * 	 Albert Nijenhuis, Herbert Wilf,
@@ -543,13 +543,13 @@ public final class arrays {
 	 * 	 ISBN: 0-12-519260-6,
 	 * 	 LC: QA164.N54.
 	 * </p>
-	 * 
+	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
-	 * @throws NullPointerException if {@code random} or {@code sub} is 
+	 * @throws NullPointerException if {@code random} or {@code sub} is
 	 * 		  {@code null}.
-	 * @throws IllegalArgumentException if {@code n < sub.length}, 
-	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an 
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 * 		  integer overflow.
 	 */
 	public static void subset(final int n, final int sub[]) {
@@ -558,16 +558,16 @@ public final class arrays {
 	
 	/**
 	 * <p>
-	 * Selects a random subset of size {@code sub.length} from a set of size 
+	 * Selects a random subset of size {@code sub.length} from a set of size
 	 * {@code n}.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
 	 * 	 version based on the  C++ version by John Burkardt.
 	 * </p>
-	 * 
+	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
 	 * 	 Albert Nijenhuis, Herbert Wilf,
@@ -577,13 +577,13 @@ public final class arrays {
 	 * 	 ISBN: 0-12-519260-6,
 	 * 	 LC: QA164.N54.
 	 * </p>
-	 * 
+	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code sub} is {@code null}.
-	 * @throws IllegalArgumentException if {@code n < sub.length}, 
-	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an 
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 * 		  integer overflow.
 	 */
 	public static void subset(final int n, final int sub[], final Random random) {
@@ -603,7 +603,7 @@ public final class arrays {
 		}
 		if (!math.isMultiplicationSave(n, k)) {
 			throw new IllegalArgumentException(String.format(
-				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)", 
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
 				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
 			));
 		}
@@ -693,7 +693,7 @@ public final class arrays {
 	
 	/**
 	 * Calculates a random permutation.
-	 * 
+	 *
 	 * @param p the permutation array.
 	 * @throws NullPointerException if the permutation array is {@code null}.
 	 */
@@ -703,7 +703,7 @@ public final class arrays {
 	
 	/**
 	 * Calculates a random permutation.
-	 * 
+	 *
 	 * @param p the permutation array.
 	 * @param random the random number generator.
 	 * @throws NullPointerException if the permutation array or the random number
@@ -721,13 +721,13 @@ public final class arrays {
 	
 	/**
 	 * Calculates the permutation with the given {@code rank}.
-	 * 
+	 *
 	 * <p>
 	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This 
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
 	 * 	 version based on the  C++ version by John Burkardt.
 	 * </p>
-	 * 
+	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
 	 * 	 Albert Nijenhuis, Herbert Wilf,
@@ -737,7 +737,7 @@ public final class arrays {
 	 * 	 ISBN: 0-12-519260-6,
 	 * 	 LC: QA164.N54.
 	 * </p>
-	 * 
+	 *
 	 * @param p the permutation array.
 	 * @param rank the permutation rank.
 	 * @throws NullPointerException it the permutation array is {@code null}.
@@ -783,8 +783,8 @@ public final class arrays {
 	}
 	
 	/**
-	 * Returns the index of the first occurrence of the specified element in 
-	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
+	 * Returns the index of the first occurrence of the specified element in
+	 * the {@code array}, or -1 if the {@code array} does not contain the element.
 	 * @param array the array to search.
 	 * @param start the start index of the search.
 	 * @param element the element to search for.
@@ -792,11 +792,11 @@ public final class arrays {
 	 * 		  given {@code array}, of -1 if the {@code array} does not contain
 	 * 		  the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 * @throws IndexOutOfBoundsException for an illegal end point index value 
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 * 		 (start < 0 || end > length || start > end)
 	 */
 	public static int indexOf(
-		final Object[] array, final int start, final int end, 
+		final Object[] array, final int start, final int end,
 		final Object element
 	) {
 		nonNull(array, "Array");
@@ -826,8 +826,8 @@ public final class arrays {
 
 	
 	/**
-	 * Returns the index of the first occurrence of the specified element in 
-	 * the {@code array}, or -1 if the {@code array} does not contain the element. 
+	 * Returns the index of the first occurrence of the specified element in
+	 * the {@code array}, or -1 if the {@code array} does not contain the element.
 	 * @param array the array to search.
 	 * @param element the element to search for.
 	 * @return the index of the first occurrence of the specified element in the
@@ -843,7 +843,7 @@ public final class arrays {
 	 * @see #indexOf(Object[], Object)
 	 */
 	public static <T> int indexOf(
-		final T[] array, 
+		final T[] array,
 		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(array, "Array");
@@ -864,7 +864,7 @@ public final class arrays {
 	 * @see #indexOf(Object[], Object)
 	 */
 	public static <T> int indexOf(
-		final Iterable<? extends T> values, 
+		final Iterable<? extends T> values,
 		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(values, "Array");
@@ -872,8 +872,8 @@ public final class arrays {
 		
 		int index = -1;
 		int i = 0;
-		for (Iterator<? extends T> 
-			it = values.iterator(); it.hasNext() && index == -1; ++i) 
+		for (Iterator<? extends T>
+			it = values.iterator(); it.hasNext() && index == -1; ++i)
 		{
 			if (predicate.apply(it.next())) {
 				index = i;
@@ -890,14 +890,14 @@ public final class arrays {
 	 * all elements were visited.
 	 * <p/>
 	 * Can be used to check all array elements for nullness.
-	 * 
+	 *
 	 * [code]
 	 * public void foo(final Integer[] values) {
 	 *     ArrayUtils.foreach(values, new Validator.NonNull());
 	 *     ...
 	 * }
 	 * [/code]
-	 * 
+	 *
 	 * @param array the array to iterate.
 	 * @param predicate the applied predicate.
 	 * @return the index of the last visited element, or -1 if all elements has
@@ -905,7 +905,7 @@ public final class arrays {
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(
-		final T[] array, 
+		final T[] array,
 		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(array, "Array");
@@ -926,7 +926,7 @@ public final class arrays {
 	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
 	 * returns the index the iteration has been interrupted. -1 is returned if
 	 * all elements were visited.
-	 * 
+	 *
 	 * @param values the values to iterate.
 	 * @param predicate the applied predicate.
 	 * @return the index of the last visited element, or -1 if all elements has
@@ -934,7 +934,7 @@ public final class arrays {
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(
-		final Iterable<? extends T> values, 
+		final Iterable<? extends T> values,
 		final Function<? super T, Boolean> predicate
 	) {
 		nonNull(values, "Array");
@@ -942,8 +942,8 @@ public final class arrays {
 		
 		int index = -1;
 		int i = 0;
-		for (Iterator<? extends T> 
-			it = values.iterator(); it.hasNext() && index == -1; ++i) 
+		for (Iterator<? extends T>
+			it = values.iterator(); it.hasNext() && index == -1; ++i)
 		{
 			if (!predicate.apply(it.next())) {
 				index = i;
@@ -956,20 +956,20 @@ public final class arrays {
 
 	/**
 	 * Map the array from type A to an other array of type B.
-	 * 
+	 *
 	 * @param <A> the source type.
 	 * @param <B> the target type.
 	 * @param a the source array.
-	 * @param b the target array. If the given array is to short a new array 
+	 * @param b the target array. If the given array is to short a new array
 	 *        with the right size is created, mapped and returned. If the given
 	 *        array is long enough <i>this</i> array is returned.
 	 * @param converter the converter needed for mapping from type A to type B.
-	 * @return the mapped array. If {@code b} is long enough {@code b} is 
+	 * @return the mapped array. If {@code b} is long enough {@code b} is
 	 *         returned otherwise a new created array.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <A, B> B[] map(
-		final A[] a, 
+		final A[] a,
 		final B[] b,
 		final Function<A, B> converter
 	) {

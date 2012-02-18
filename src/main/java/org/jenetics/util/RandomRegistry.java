@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -36,10 +36,10 @@ import javolution.lang.Reference;
  * the Java {@link Random} engine with the {@link System#currentTimeMillis()} as
  * seed value.
  * <p/>
- * You can temporarily (and locally) change the implementation of the random engine 
- * by using the {@link LocalContext} from the 
+ * You can temporarily (and locally) change the implementation of the random engine
+ * by using the {@link LocalContext} from the
  * <a href="http://javolution.org/">javolution</a> project.
- * 
+ *
  * [code]
  * LocalContext.enter();
  * try {
@@ -49,16 +49,16 @@ import javolution.lang.Reference;
  *     LocalContext.exit(); // Restore the previous random engine.
  * }
  * [/code]
- * 
+ *
  * @see LocalContext
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public final class RandomRegistry {
 	
 	
-	private static final Reference<Random> DEFAULT_RANDOM_ACCESSOR = 
+	private static final Reference<Random> DEFAULT_RANDOM_ACCESSOR =
 	new Reference<Random>() {
 		@Override public Random get() {
 			return ThreadLocalRandom.current();
@@ -67,7 +67,7 @@ public final class RandomRegistry {
 		}
 	};
 	
-	private static final LocalContext.Reference<Reference<Random>> RANDOM = 
+	private static final LocalContext.Reference<Reference<Random>> RANDOM =
 		new LocalContext.Reference<>(DEFAULT_RANDOM_ACCESSOR);
 	
 		
@@ -77,7 +77,7 @@ public final class RandomRegistry {
 	
 	/**
 	 * Return the global {@link Random} object.
-	 * 
+	 *
 	 * @return the global {@link Random} object.
 	 */
 	public static Random getRandom() {
@@ -86,7 +86,7 @@ public final class RandomRegistry {
 	
 	/**
 	 * Set the new global {@link Random} object for the GA.
-	 * 
+	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -39,12 +39,12 @@ import org.jenetics.util.Seq;
  * <p>
  * The order ({@link #getOrder()}) of this Recombination implementation is two.
  * </p>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class MeanAlterer<G extends Gene<?, G> & Mean<G>> 
-	extends Recombinator<G> 
+public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
+	extends Recombinator<G>
 	implements Immutable
 {
 
@@ -54,7 +54,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	
 	/**
 	 * Constructs an alterer with a given recombination probability.
-	 * 
+	 *
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}.
@@ -65,8 +65,8 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	protected <C extends Comparable<? super C>> int recombine(
-		final Population<G, C> population, 
-		final int[] individuals, 
+		final Population<G, C> population,
+		final int[] individuals,
 		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
@@ -82,14 +82,14 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		
 		// Calculate the mean value of the gene array.
 		final MSeq<G> mean = mean(
-				c1.get(cindex).toSeq().copy(), 
+				c1.get(cindex).toSeq().copy(),
 				c2.get(cindex).toSeq()
 			);
 		
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 		
 		population.set(
-				individuals[0], 
+				individuals[0],
 				pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
 			);
 		

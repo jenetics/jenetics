@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -36,10 +36,10 @@ import javolution.util.FastList;
 
 /**
  * Since the parallelization of the library is build on the {@link ConcurrentContext}
- * of the <a href="http://javolution.org/">Javolution</a> project, this class 
- * allows you to share a common {@link ForkJoinPool} for the GA and the rest of 
- * your application. 
- * 
+ * of the <a href="http://javolution.org/">Javolution</a> project, this class
+ * allows you to share a common {@link ForkJoinPool} for the GA and the rest of
+ * your application.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -58,9 +58,9 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 * Set the fork-join-pool used by this context. This method doesn't replace
 	 * an already set {@link ForkJoinPool}. Before the <i>context</i> can be
 	 * used a {@link ForkJoinPool} must be set.
-	 * 
+	 *
 	 * @param pool the fork-join-pool to use.
-	 * @return {@code true} if the given pool has been set, {@code false} 
+	 * @return {@code true} if the given pool has been set, {@code false}
 	 *         otherwise.
 	 * @throws NullPointerException if the pool is {@code null}.
 	 */
@@ -70,8 +70,8 @@ public final class ForkJoinContext extends ConcurrentContext {
 	
 	/**
 	 * Return the current fork-join-pool used by this context.
-	 * 
-	 * @return the current fork-join-pool used by this context. Can be 
+	 *
+	 * @return the current fork-join-pool used by this context. Can be
 	 *         {@code null} if not set jet.
 	 */
 	public static ForkJoinPool getForkJoinPool() {
@@ -96,8 +96,8 @@ public final class ForkJoinContext extends ConcurrentContext {
 	@Override
 	protected void exitAction() {
 		try {
-			for (FastList.Node<Future<?>> n = _futures.head(), 
-				end = _futures.tail(); (n = n.getNext()) != end;) 
+			for (FastList.Node<Future<?>> n = _futures.head(),
+				end = _futures.tail(); (n = n.getNext()) != end;)
 			{
 				n.getValue().get();
 			}
@@ -114,7 +114,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 				@Override protected ForkJoinContext create() {
 					return new ForkJoinContext();
 				}
-			}, 
+			},
 			ForkJoinContext.class
 		);
 	}

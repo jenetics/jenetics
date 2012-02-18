@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.stat;
 
@@ -37,34 +37,34 @@ import org.jenetics.util.Range;
 /**
  * <a href="http://en.wikipedia.org/wiki/Uniform_distribution_%28continuous%29">
  * Uniform distribution</a> class.
- * 
+ *
  * @see LinearDistribution
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
 >
-	implements Distribution<N> 
+	implements Distribution<N>
 {
 
 	/**
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/uniform-pdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
-	 *          \frac{1}{max-min} & for & x \in [min, max] \\ 
+	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
 	 *          \end{matrix}\right."
 	 * />
 	 * </p>
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	static final class PDF<N extends Number & Comparable<? super N>> 
-		implements 
+	static final class PDF<N extends Number & Comparable<? super N>>
+		implements
 			Function<N, Float64>,
 			Serializable
 	{
@@ -101,21 +101,21 @@ public class UniformDistribution<
 	
 	/**
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/uniform-cdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
-	 *         0 & for & x < min \\ 
+	 *         0 & for & x < min \\
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
-	 *         1 & for & x > max  \\ 
+	 *         1 & for & x > max  \\
 	 *         \end{matrix}\right."
 	 * />
 	 * </p>
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	static final class CDF<N extends Number & Comparable<? super N>> 
-		implements 
+	static final class CDF<N extends Number & Comparable<? super N>>
+		implements
 			Function<N, Float64>,
 			Serializable
 	{
@@ -141,7 +141,7 @@ public class UniformDistribution<
 			if (x < _min) {
 				result = Float64.ZERO;
 			} else if (x > _max) {
-				result = Float64.ONE; 
+				result = Float64.ONE;
 			} else {
 				result = Float64.valueOf((x - _min)/_divisor);
 			}
@@ -192,17 +192,17 @@ public class UniformDistribution<
 
 	/**
 	 * Return a new PDF object.
-	 * 
+	 *
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/uniform-pdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
-	 *          \frac{1}{max-min} & for & x \in [min, max] \\ 
+	 *          \frac{1}{max-min} & for & x \in [min, max] \\
 	 *          0 & & otherwise \\
 	 *          \end{matrix}\right."
 	 * />
 	 * </p>
-	 *  
+	 *
 	 */
 	@Override
 	public Function<N, Float64> getPDF() {
@@ -211,18 +211,18 @@ public class UniformDistribution<
 	
 	/**
 	 * Return a new CDF object.
-	 * 
+	 *
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/uniform-cdf.gif"
 	 *     alt="f(x)=\left\{\begin{matrix}
-	 *         0 & for & x < min \\ 
+	 *         0 & for & x < min \\
 	 *         \frac{x-min}{max-min} & for & x \in [min, max] \\
-	 *         1 & for & x > max  \\ 
+	 *         1 & for & x > max  \\
 	 *         \end{matrix}\right."
 	 * />
 	 * </p>
-	 *  
+	 *
 	 */
 	@Override
 	public Function<N, Float64> getCDF() {

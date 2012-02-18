@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -31,7 +31,7 @@ import org.jscience.mathematics.number.Integer64;
 
 /**
  * This class contains some short general purpose functions.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -53,7 +53,7 @@ public final class functions {
 	};
 	
 	/**
-	 * Convert a string to an integer. If the string can't be converted, an 
+	 * Convert a string to an integer. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
 	 */
@@ -65,7 +65,7 @@ public final class functions {
 	};
 	
 	/**
-	 * Convert a string to a long. If the string can't be converted, an 
+	 * Convert a string to a long. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
 	 */
@@ -77,7 +77,7 @@ public final class functions {
 	};
 	
 	/**
-	 * Convert a string to a float. If the string can't be converted, an 
+	 * Convert a string to a float. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
 	 */
@@ -89,7 +89,7 @@ public final class functions {
 	};
 	
 	/**
-	 * Convert a string to a double. If the string can't be converted, an 
+	 * Convert a string to a double. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
 	 */
@@ -103,7 +103,7 @@ public final class functions {
 	/**
 	 * Convert a {@link Float64} value to a {@link Double} value.
 	 */
-	public static final Function<Float64, Double> 
+	public static final Function<Float64, Double>
 	Float64ToDouble = new Function<Float64, Double>() {
 		@Override public Double apply(final Float64 value) {
 			return value.doubleValue();
@@ -113,7 +113,7 @@ public final class functions {
 	/**
 	 * Convert a {@link Double} value to a {@link Float64} value.
 	 */
-	public static final Function<Double, Float64> 
+	public static final Function<Double, Float64>
 	DoubleToFloat64 = new Function<Double, Float64>() {
 		@Override public Float64 apply(final Double value) {
 			return Float64.valueOf(value);
@@ -123,7 +123,7 @@ public final class functions {
 	/**
 	 * Convert a {@link Integer64} value to a {@link Long} value.
 	 */
-	public static final Function<Integer64, Long> 
+	public static final Function<Integer64, Long>
 	Integer64ToLong = new Function<Integer64, Long>() {
 		@Override public Long apply(final Integer64 value) {
 			return value.longValue();
@@ -133,7 +133,7 @@ public final class functions {
 	/**
 	 * Convert a {link Long} value to a {@link Integer64} value.
 	 */
-	public static final Function<Long, Integer64> 
+	public static final Function<Long, Integer64>
 	LongToInteger64 = new Function<Long, Integer64>() {
 		@Override public Integer64 apply(final Long value) {
 			return Integer64.valueOf(value);
@@ -143,7 +143,7 @@ public final class functions {
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
 	 */
-	public static final Function<Object, Boolean> 
+	public static final Function<Object, Boolean>
 	Null = new Function<Object, Boolean>() {
 		@Override public Boolean apply(final Object object) {
 			return object == null ? Boolean.TRUE : Boolean.FALSE;
@@ -155,7 +155,7 @@ public final class functions {
 	
 	/**
 	 * Return a predicate which negates the return value of the given predicate.
-	 * 
+	 *
 	 * @param <T> the value type to check.
 	 * @param a the predicate to negate.
 	 * @return a predicate which negates the return value of the given predicate.
@@ -175,16 +175,16 @@ public final class functions {
 	
 	/**
 	 * Return a {@code and} combination of the given predicates.
-	 * 
+	 *
 	 * @param <T> the value type to check.
 	 * @param a the first predicate
 	 * @param b the second predicate
 	 * @return a {@code and} combination of the given predicates.
-	 * @throws NullPointerException if one of the given predicates is 
+	 * @throws NullPointerException if one of the given predicates is
 	 * 		  {@code null}.
 	 */
 	public static <T> Function<T, Boolean> And(
-		final Function<? super T, Boolean> a, 
+		final Function<? super T, Boolean> a,
 		final Function<? super T, Boolean> b
 	) {
 		nonNull(a);
@@ -201,16 +201,16 @@ public final class functions {
 	
 	/**
 	 * Return a {@code or} combination of the given predicates.
-	 * 
+	 *
 	 * @param <T> the value type to check.
 	 * @param a the first predicate
 	 * @param b the second predicate
 	 * @return a {@code and} combination of the given predicates.
-	 * @throws NullPointerException if one of the given predicates is 
+	 * @throws NullPointerException if one of the given predicates is
 	 * 		  {@code null}.
 	 */
 	public static <T> Function<T, Boolean> Or(
-		final Function<? super T, Boolean> a, 
+		final Function<? super T, Boolean> a,
 		final Function<? super T, Boolean> b
 	) {
 		nonNull(a);

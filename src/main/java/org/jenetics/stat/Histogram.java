@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.stat;
 
@@ -46,31 +46,31 @@ import org.jenetics.util.arrays;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
- * border</i> which define the histogram classes. A value is part of the 
+ * border</i> which define the histogram classes. A value is part of the
  * <i>i</i><sup>th</sup> histogram array element:
  * <p>
- * <img 
- *     src="doc-files/histogram-class.gif" 
- *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\ 
- *         len(c) & when & v \geq c_{len(c)-1} \\ 
- *         j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right." 
+ * <img
+ *     src="doc-files/histogram-class.gif"
+ *     alt="i=\left\{\begin{matrix}  0 & when & v < c_0 \\
+ *         len(c) & when & v \geq c_{len(c)-1} \\
+ *         j & when & c_j< v \leq c_{j-1}  \\  \end{matrix}\right."
  * />
  * </p>
- * 
+ *
  * Example:
  * <pre>
  * Separators:             0    1    2    3    4    5    6    7    8    9
  *                  -------+----+----+----+----+----+----+----+----+----+------
- * Frequencies:        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |  18 
+ * Frequencies:        20  | 12 | 14 | 17 | 12 | 11 | 13 | 11 | 10 | 19 |  18
  *                  -------+----+----+----+----+----+----+----+----+----+------
  * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
  * </pre>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class Histogram<C> extends MappableAccumulator<C> {
-    
+
 	private final C[] _separators;
 	private final Comparator<C> _comparator;
 	private final long[] _histogram;
@@ -79,9 +79,9 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 * Create a new Histogram with the given class separators. The number of
 	 * classes is {@code separators.length + 1}. A valid histogram consists of
 	 * at least two classes (with one separator).
-	 * 
+	 *
 	 * @see #valueOf(Comparable...)
-	 * 
+	 *
 	 * @param comparator the comparator for the separators.
 	 * @param separators the class separators.
 	 * @throws NullPointerException if the classes of one of its elements
@@ -100,8 +100,8 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	@SafeVarargs
 	private Histogram(
-		final long[] histogram, 
-		final Comparator<C> comparator, 
+		final long[] histogram,
+		final Comparator<C> comparator,
 		final C... separators
 	) {
 		_histogram = histogram;
@@ -127,21 +127,21 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Do binary search for the index to use.
-	 * 
+	 *
 	 * @param value the value to search.
 	 * @return the histogram index.
 	 */
-	final int index(final C value) { 
+	final int index(final C value) {
 		int low = 0;
 		int high = _separators.length - 1;
 		
 		while (low <= high) {
 			if (_comparator.compare(value, _separators[low]) < 0) {
 				return low;
-			} 
+			}
 			if (_comparator.compare(value, _separators[high]) >= 0) {
 				return high + 1;
-			} 
+			}
 			
 			final int mid = (low + high) >>> 1;
 			if (_comparator.compare(value, _separators[mid]) < 0) {
@@ -152,18 +152,18 @@ public class Histogram<C> extends MappableAccumulator<C> {
 		}
 		
 		assert (false): "This line will never be reached.";
-		return -1; 
+		return -1;
 	}
 	
 	/**
 	 * Add the given {@code histogram} to this in a newly created one.
-	 * 
+	 *
 	 * @param histogram the histogram to add.
 	 * @return a new histogram with the added values of this and the given one.
-	 * @throws IllegalArgumentException if the {@link #length()} and the 
+	 * @throws IllegalArgumentException if the {@link #length()} and the
 	 *         separators of {@code this} and the given {@code histogram} are
 	 *         not the same.
-	 * @throws NullPointerException if the given {@code histogram} is {@code null}. 
+	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
 	 */
 	public Histogram<C> plus(final Histogram<C> histogram) {
 		if (!_comparator.equals(histogram._comparator)) {
@@ -187,7 +187,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Return the comparator used for class search.
-	 * 
+	 *
 	 * @return the comparator.
 	 */
 	public Comparator<C> getComparator() {
@@ -196,7 +196,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Return a copy of the class separators.
-	 * 
+	 *
 	 * @return the class separators.
 	 */
 	public C[] getSeparators() {
@@ -205,10 +205,10 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Copy the histogram into the given array. If the array is big enough
-	 * the same array is returned, otherwise a new array is created and 
+	 * the same array is returned, otherwise a new array is created and
 	 * returned. The length of the histogram array is the number of separators
 	 * plus one ({@code getSeparators().length + 1}).
-	 * 
+	 *
 	 * @param histogram array to copy the histogram.
 	 * @return the histogram array.
 	 * @throws NullPointerException if the given array is {@code null}.
@@ -228,7 +228,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Return a copy of the current histogram.
-	 * 
+	 *
 	 * @return a copy of the current histogram.
 	 */
 	public long[] getHistogram() {
@@ -237,7 +237,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Return the number of classes of this histogram.
-	 * 
+	 *
 	 * @return the number of classes of this histogram.
 	 */
 	public int length() {
@@ -246,7 +246,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	
 	/**
 	 * Return the <i>histogram</i> as probability array.
-	 * 
+	 *
 	 * @return the class probabilities.
 	 */
 	public double[] getProbabilities() {
@@ -261,13 +261,13 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	}
 	
 	/**
-	 * Calculate the χ2 value of the current histogram for the assumed 
+	 * Calculate the χ2 value of the current histogram for the assumed
 	 * <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">
 	 * Cumulative density function</a> {@code cdf}.
-	 * 
+	 *
 	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_test">χ2-test</a>
 	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_distribution">χ2-distribution</a>
-	 * 
+	 *
 	 * @param cdf the assumed Probability density function-
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
@@ -278,7 +278,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 			final long n0j = n0(j, cdf);
 			χ2 += ((_histogram[j] - n0j)*(_histogram[j] - n0j))/(double)n0j;
 		}
-		return χ2; 
+		return χ2;
 	}
 
 	private long n0(final int j, final Function<C, Float64> cdf) {
@@ -302,7 +302,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 //		}
 //		return e;
 //	}
-    
+
 	/**
 	 * @see #χ2(Function)
 	 */
@@ -347,7 +347,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	/**
 	 * Create a new Histogram with the given class separators. The classes are
 	 * sorted by its natural order.
-	 * 
+	 *
 	 * @param separators the class separators.
 	 * @return a new Histogram.
 	 * @throws NullPointerException if the {@code separators} are {@code null}.
@@ -369,21 +369,21 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	};
 	
 	/**
-	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i> 
+	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
-	 * 
+	 *
 	 * <pre>
 	 *    min                            max
 	 *     +----+----+----+----+  ~  +----+
-	 *     | 1  | 2  | 3  | 4  |     | nc | 
+	 *     | 1  | 2  | 3  | 4  |     | nc |
 	 *     +----+----+----+----+  ~  +----+
 	 * </pre>
-	 * 
+	 *
 	 * The range of all classes will be equal: {@code (max - min)/nclasses}.
-	 * 
+	 *
 	 * @param min the minimum range value of the returned histogram.
 	 * @param max the maximum range value of the returned histogram.
-	 * @param nclasses the number of classes of the returned histogram. The 
+	 * @param nclasses the number of classes of the returned histogram. The
 	 *        number of separators will be {@code nclasses - 1}.
 	 * @return a new <i>histogram</i> for {@link Float64} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
@@ -391,12 +391,12 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 *         {@code nclasses < 2}.
 	 */
 	public static Histogram<Float64> valueOf(
-		final Float64 min, 
-		final Float64 max, 
+		final Float64 min,
+		final Float64 max,
 		final int nclasses
 	) {
 		return valueOf(arrays.map(
-				toSeparators(min.doubleValue(), max.doubleValue(), nclasses), 
+				toSeparators(min.doubleValue(), max.doubleValue(), nclasses),
 				new Float64[nclasses - 1],
 				DoubleToFloat64
 			));
@@ -406,16 +406,16 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 * @see #valueOf(Float64, Float64, int)
 	 */
 	public static Histogram<Double> valueOf(
-		final Double min, 
-		final Double max, 
+		final Double min,
+		final Double max,
 		final int nclasses
 	) {
 		return valueOf(toSeparators(min, max, nclasses));
 	}
 	
 	private static Double[] toSeparators(
-		final Double min, 
-		final Double max, 
+		final Double min,
+		final Double max,
 		final int nclasses
 	) {
 		check(min, max, nclasses);
@@ -430,19 +430,19 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	}
 	
 	/**
-	 * Return a <i>histogram</i> for {@link Integer64} values. The <i>histogram</i> 
+	 * Return a <i>histogram</i> for {@link Integer64} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
-	 * 
+	 *
 	 * <pre>
 	 *    min                            max
 	 *     +----+----+----+----+  ~  +----+
-	 *     | 1  | 2  | 3  | 4  |     | nc | 
+	 *     | 1  | 2  | 3  | 4  |     | nc |
 	 *     +----+----+----+----+  ~  +----+
 	 * </pre>
-	 * 
-	 * The range of all classes are more or less the same. But this is not 
+	 *
+	 * The range of all classes are more or less the same. But this is not
 	 * always possible due to integer rounding issues. Calling this method with
-	 * {@code min = 13} and {@code max = 99} will generate the following class 
+	 * {@code min = 13} and {@code max = 99} will generate the following class
 	 * separators for the given number of classes:
 	 * <pre>
 	 *  nclasses = 2: [56]
@@ -454,10 +454,10 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 *  nclasses = 8: [23, 33, 44, 55, 66, 77, 88]
 	 *  nclasses = 9: [22, 31, 40, 49, 59, 69, 79, 89]
 	 * </pre>
-	 * 
+	 *
 	 * @param min the minimum range value of the returned histogram.
 	 * @param max the maximum range value of the returned histogram.
-	 * @param nclasses the number of classes of the returned histogram. The 
+	 * @param nclasses the number of classes of the returned histogram. The
 	 *        number of separators will be {@code nclasses - 1}.
 	 * @return a new <i>histogram</i> for {@link Integer64} values.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
@@ -465,12 +465,12 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 *         {@code nclasses < 2}.
 	 */
 	public static Histogram<Integer64> valueOf(
-		final Integer64 min, 
-		final Integer64 max, 
+		final Integer64 min,
+		final Integer64 max,
 		final int nclasses
 	) {
 		return valueOf(arrays.map(
-				toSeparators(min.longValue(), max.longValue(), nclasses), 
+				toSeparators(min.longValue(), max.longValue(), nclasses),
 				new Integer64[0],
 				LongToInteger64
 			));
@@ -480,16 +480,16 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 * @see #valueOf(Integer64, Integer64, int)
 	 */
 	public static Histogram<Long> valueOf(
-		final Long min, 
-		final Long max, 
+		final Long min,
+		final Long max,
 		final int nclasses
 	) {
 		return valueOf(toSeparators(min, max, nclasses));
 	}
 	
 	private static Long[] toSeparators(
-		final Long min, 
-		final Long max, 
+		final Long min,
+		final Long max,
 		final int nclasses
 	) {
 		check(min, max, nclasses);
@@ -505,7 +505,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 			separators[i - 1] = i*bulk + min;
 		}
 		for (int i = 0, n = rest; i < n; ++i) {
-			separators[separators.length - rest + i] = 
+			separators[separators.length - rest + i] =
 					(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
 		
@@ -515,8 +515,8 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	/*
 	 * Check the input values of the valueOf methods.
 	 */
-	private static <C extends Comparable<? super C>> void 
-	check(final C min, final C max, final int nclasses) 
+	private static <C extends Comparable<? super C>> void
+	check(final C min, final C max, final int nclasses)
 	{
 	    nonNull(min, "Minimum");
 	    nonNull(max, "Maximum");

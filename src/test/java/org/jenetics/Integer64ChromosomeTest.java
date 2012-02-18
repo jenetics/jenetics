@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics;
 
@@ -43,11 +43,11 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64ChromosomeTest 
-	extends NumberChromosomeTester<Integer64, Integer64Gene> 
-{ 
-    
-	private final Integer64Chromosome 
+public class Integer64ChromosomeTest
+	extends NumberChromosomeTester<Integer64, Integer64Gene>
+{
+
+	private final Integer64Chromosome
 	_factory = new Integer64Chromosome(0, Long.MAX_VALUE, 500);
 	@Override protected Integer64Chromosome getFactory() {
 		return _factory;
@@ -70,7 +70,7 @@ public class Integer64ChromosomeTest
 				final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 500);
 				
 				accumulate(
-						chromosome, 
+						chromosome,
 						mm.map(Integer64Gene.Value),
 						variance.map(Integer64Gene.Value),
 						histogram.map(Integer64Gene.Value)
@@ -98,7 +98,7 @@ public class Integer64ChromosomeTest
 		
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(
-					Integer64Chromosome.Gene(i).apply(c), 
+					Integer64Chromosome.Gene(i).apply(c),
 					c.getGene(i)
 				);
 		}
@@ -108,7 +108,7 @@ public class Integer64ChromosomeTest
 	public void genesConverter() {
 		final Integer64Chromosome c = getFactory().newInstance();
 		Assert.assertEquals(
-				Integer64Chromosome.Genes.apply(c), 
+				Integer64Chromosome.Genes.apply(c),
 				c.toSeq()
 			);
 	}

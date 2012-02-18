@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -41,20 +41,20 @@ import org.jenetics.util.accumulators.MinMax;
  * @version $Id$
  */
 public class NumberStatistics<
-	G extends Gene<?, G>, 
+	G extends Gene<?, G>,
 	R extends Number & Comparable<? super R>
 >
-	extends Statistics<G, R> 
+	extends Statistics<G, R>
 {
 	
 	/**
 	 * Builder for the NumberStatistics class.
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	public static class Builder<
-		G extends Gene<?, G>, 
+		G extends Gene<?, G>,
 		R extends Number & Comparable<? super R>
 	>
 		extends Statistics.Builder<G, R>
@@ -76,9 +76,9 @@ public class NumberStatistics<
 		}
 		
 		/**
-		 * Set the values of this builder with the values of the given 
+		 * Set the values of this builder with the values of the given
 		 * {@code statistics}.
-		 * 
+		 *
 		 * @param statistics the statistics values. If the {@code statistics}
 		 *        is {@code null} nothing is set.
 		 * @return this builder.
@@ -145,12 +145,12 @@ public class NumberStatistics<
 	protected NumberStatistics(
 		final Optimize optimize,
 		final int generation,
-		final Phenotype<G, R> best, 
+		final Phenotype<G, R> best,
 		final Phenotype<G, R> worst,
-		final double fitnessMean, 
+		final double fitnessMean,
 		final double fitnessVariance,
-		final int samples, 
-		final double ageMean, 
+		final int samples,
+		final double ageMean,
 		final double ageVariance,
 		final double errorOfMean,
 		final int killed,
@@ -158,12 +158,12 @@ public class NumberStatistics<
 	) {
 		super(
 				optimize,
-				generation, 
-				best, 
-				worst, 
-				samples, 
-				ageMean, 
-				ageVariance,  
+				generation,
+				best,
+				worst,
+				samples,
+				ageMean,
+				ageVariance,
 				killed,
 				invalid
 			);
@@ -175,7 +175,7 @@ public class NumberStatistics<
 
 	/**
 	 * Return the mean of the fitness values.
-	 * 
+	 *
 	 * @return the mean of the fitness values.
 	 */
 	public double getFitnessMean() {
@@ -184,7 +184,7 @@ public class NumberStatistics<
 
 	/**
 	 * Return the variance of the fitness values.
-	 * 
+	 *
 	 * @return the variance of the fitness values.
 	 */
 	public double getFitnessVariance() {
@@ -195,7 +195,7 @@ public class NumberStatistics<
 	 * Return the <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Standard_error_%28statistics%29">
 	 * Standard error
 	 * </a> of the calculated fitness mean.
-	 * 
+	 *
 	 * @return the standard error of the calculated fitness mean.
 	 */
 	public double getStandardError() {
@@ -245,8 +245,8 @@ public class NumberStatistics<
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	static final XMLFormat<NumberStatistics> XML = 
-		new XMLFormat<NumberStatistics>(NumberStatistics.class) 
+	static final XMLFormat<NumberStatistics> XML =
+		new XMLFormat<NumberStatistics>(NumberStatistics.class)
 	{
 		private static final String FITNESS_MEAN = "fitness-mean";
 		private static final String FITNESS_VARIANCE = "fitness-variance";
@@ -256,8 +256,8 @@ public class NumberStatistics<
 		public NumberStatistics newInstance(
 			final Class<NumberStatistics> type,
 			final InputElement xml
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 			final Statistics stats = Statistics.XML.newInstance(
 					Statistics.class, xml
@@ -276,7 +276,7 @@ public class NumberStatistics<
 
 		@Override
 		public void write(final NumberStatistics s, final OutputElement xml)
-			throws XMLStreamException 
+			throws XMLStreamException
 		{
 			Statistics.XML.write(s, xml);
 			xml.add(Float64.valueOf(s.getFitnessMean()), FITNESS_MEAN);
@@ -286,7 +286,7 @@ public class NumberStatistics<
 
 		@Override
 		public void read(final InputElement xml, final NumberStatistics p)
-			throws XMLStreamException 
+			throws XMLStreamException
 		{
 		}
 	};
@@ -296,10 +296,10 @@ public class NumberStatistics<
 	 * @version $Id$
 	 */
 	public static class Calculator<
-		G extends Gene<?, G>, 
+		G extends Gene<?, G>,
 		R extends Number & Comparable<? super R>
 	>
-		extends Statistics.Calculator<G, R> 
+		extends Statistics.Calculator<G, R>
 	{
 
 		public Calculator() {
@@ -308,7 +308,7 @@ public class NumberStatistics<
 		@Override
 		public NumberStatistics.Builder<G, R> evaluate(
 			final Iterable<? extends Phenotype<G, R>> population,
-			final int generation, 
+			final int generation,
 			final Optimize opt
 		) {
 			final Builder<G, R> builder = new Builder<>();
@@ -320,7 +320,7 @@ public class NumberStatistics<
 			final Variance<R> fitness = new Variance<>();
 
 			accumulators.<Phenotype<G, R>>accumulate(
-					population, 
+					population,
 					minMax,
 					age.map(Phenotype.Age(generation)),
 					fitness.map(Phenotype.<R>Fitness())

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -36,8 +36,8 @@ import org.jenetics.util.Seq;
 
 /**
  * <p>
- * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s 
- * are found exactly once in each chromosome. No gene is duplicated by this 
+ * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s
+ * are found exactly once in each chromosome. No gene is duplicated by this
  * crossover. The PMX can be applied usefully in the TSP or other permutation
  * problem encodings. Permutation encoding is useful for all problems where the
  * fitness only depends on the ordering of the genes within the chromosome. This
@@ -62,21 +62,21 @@ import org.jenetics.util.Seq;
  * 	 C2 = 987|345|3210
  * </pre>
  * Chromosome {@code C1} contains the value 6  twice and misses the value
- * 3. On  the other side chromosome {@code C2} contains the value 3 twice and 
- * misses the value 6. We can observe that this crossover is equivalent 
- * to the exchange of the values 3 -> 6, 4 -> 5 and 5 -> 4. To repair the two 
+ * 3. On  the other side chromosome {@code C2} contains the value 3 twice and
+ * misses the value 6. We can observe that this crossover is equivalent
+ * to the exchange of the values 3 -> 6, 4 -> 5 and 5 -> 4. To repair the two
  * chromosomes we have to apply this exchange outside the crossing region.
  * <pre>
  * 	 C1 = 012|654|3789
  * 	 C2 = 987|345|6210
  * </pre>
- * 
+ *
  * @see PermutationChromosome
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class PartiallyMatchedCrossover<T> 
+public final class PartiallyMatchedCrossover<T>
 	extends Crossover<EnumGene<T>>
 	implements Immutable
 {
@@ -85,9 +85,9 @@ public final class PartiallyMatchedCrossover<T>
 		super(probability);
 	}
 	
-	@Override 
+	@Override
 	protected int crossover(
-		final MSeq<EnumGene<T>> that, 
+		final MSeq<EnumGene<T>> that,
 		final MSeq<EnumGene<T>> other
 	) {
 		final Random random = RandomRegistry.getRandom();
@@ -104,7 +104,7 @@ public final class PartiallyMatchedCrossover<T>
 	}
 	
 	private static <T> void swap(
-		final MSeq<T> that, final MSeq<T> other, 
+		final MSeq<T> that, final MSeq<T> other,
 		final int begin, final int end
 	) {
 		for (int i = begin; i < end; ++i) {
@@ -115,7 +115,7 @@ public final class PartiallyMatchedCrossover<T>
 	}
 	
 	private static <T> void repair(
-		final MSeq<T> that, final MSeq<T> other, 
+		final MSeq<T> that, final MSeq<T> other,
 		final int begin, final int end
 	) {
 		for (int i = 0; i < begin; ++i) {
@@ -135,8 +135,8 @@ public final class PartiallyMatchedCrossover<T>
 	}
 	
 	private static int indexOf(
-		final Seq<?> genes, 
-		final int begin, final int end, 
+		final Seq<?> genes,
+		final int begin, final int end,
 		final Object gene
 	) {
 		int index = -1;

@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.examples;
 
@@ -42,13 +42,13 @@ import org.jenetics.util.Function;
 
 /**
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class TravelingSalesman {
 	
-	private static class FF 
+	private static class FF
 		implements Function<Genotype<EnumGene<Integer>>, Double>,
 					Serializable
 	{
@@ -86,25 +86,25 @@ public class TravelingSalesman {
 		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
 			PermutationChromosome.ofInteger(stops)
 		);
-		final GeneticAlgorithm<EnumGene<Integer>, Double> 
+		final GeneticAlgorithm<EnumGene<Integer>, Double>
 			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 		ga.setPopulationSize(300);
 		ga.setAlterers(
 			new SwapMutator<EnumGene<Integer>>(0.2),
 			new PartiallyMatchedCrossover<Integer>(0.3)
 		);
-        
+
 		final int generations = 500;
 		
 		GAUtils.printConfig(
-				"Traveling salesman", 
-				ga, 
-				generations, 
+				"Traveling salesman",
+				ga,
+				generations,
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
 		
 		GAUtils.execute(ga, generations, 50);
-        
+
 //		try {
 //			XMLSerializer.write(ga.getPopulation(), new FileOutputStream("/home/franzw/population.xml"));
 //			ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("/home/franzw/population.obj"));
@@ -112,11 +112,11 @@ public class TravelingSalesman {
 //			oout.close();
 //		} catch (Exception e) {
 //			e.printStackTrace();
-//		} 
+//		}
 	}
 	
 	/**
-	 * All points in the created adjacency matrix lie on a circle. So it is easy 
+	 * All points in the created adjacency matrix lie on a circle. So it is easy
 	 * to check the quality of the solution found by the GA.
 	 */
 	private static double[][] adjacencyMatrix(int stops) {

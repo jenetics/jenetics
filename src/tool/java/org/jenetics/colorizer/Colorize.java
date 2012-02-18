@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.colorizer;
 
@@ -55,8 +55,8 @@ public final class Colorize {
 			Files.walkFileTree(dir.toPath(), colorizer);
 			
 			System.out.println(String.format(
-					"Colorizer processed %d files and modified %d.", 
-					colorizer.getProcessed(), 
+					"Colorizer processed %d files and modified %d.",
+					colorizer.getProcessed(),
 					colorizer.getModified()
 				));
 		} catch (IOException e) {
@@ -146,9 +146,9 @@ public final class Colorize {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
 				State state = this;
-				if ((read == ']') && 
-					(doc.length() > 5) && 
-					doc.substring(doc.length() - 6).equalsIgnoreCase("[code]")) 
+				if ((read == ']') &&
+					(doc.length() > 5) &&
+					doc.substring(doc.length() - 6).equalsIgnoreCase("[code]"))
 				{
 					doc.setLength(doc.length() - 6);
 					doc.append("<div class=\"code\"><code lang=\"java\">");
@@ -181,8 +181,8 @@ public final class Colorize {
 				} else if (read == '"') {
 					state = STRING_LITERAL;
 					doc.insert(doc.length() - 1, "<font color=\"" + STRING_COLOR + "\">");
-				} else if ((read == '/') && 
-							(doc.charAt(doc.length() - 2) == '/')) 
+				} else if ((read == '/') &&
+							(doc.charAt(doc.length() - 2) == '/'))
 				{
 					state = COMMENT;
 					doc.insert(doc.length() - 2, "<font color=\"" + COMMENT_COLOR + "\">");
@@ -197,7 +197,7 @@ public final class Colorize {
 			public State apply(final int read, final StringBuilder doc) {
 				State state = this;
 				if ((read == ']') && // code identifier.
-					doc.substring(doc.length() - 7).equalsIgnoreCase("[/code]")) 
+					doc.substring(doc.length() - 7).equalsIgnoreCase("[/code]"))
 				{
 					int index = doc.lastIndexOf("\n");
 					doc.setLength(index);
@@ -250,57 +250,57 @@ public final class Colorize {
 		private static final String COMMENT_COLOR = "#3F7F5F";
 		private static final String STRING_COLOR = "#0000FF";
 		
-		private static final String[] KEYWORDS = { 
-			"abstract", 
-			"continue", 
+		private static final String[] KEYWORDS = {
+			"abstract",
+			"continue",
 			"for",
-			"new", 
-			"switch", 
-			"assert", 
-			"default", 
-			"if", 
+			"new",
+			"switch",
+			"assert",
+			"default",
+			"if",
 			"package",
-			"synchronized", 
-			"boolean", 
-			"do", 
-			"goto", 
-			"private", 
+			"synchronized",
+			"boolean",
+			"do",
+			"goto",
+			"private",
 			"this",
-			"break", 
-			"double", 
-			"implements", 
-			"protected", 
-			"throw", 
+			"break",
+			"double",
+			"implements",
+			"protected",
+			"throw",
 			"byte",
-			"else", 
-			"import", 
-			"public", 
-			"throws", 
-			"case", 
-			"enum", 
+			"else",
+			"import",
+			"public",
+			"throws",
+			"case",
+			"enum",
 			"instanceof",
-			"return", 
-			"transient", 
-			"catch", 
-			"extends", 
-			"int", 
-			"short", 
+			"return",
+			"transient",
+			"catch",
+			"extends",
+			"int",
+			"short",
 			"try",
-			"char", 
-			"final", 
-			"interface", 
-			"static", 
-			"void", 
-			"class", 
+			"char",
+			"final",
+			"interface",
+			"static",
+			"void",
+			"class",
 			"finally",
-			"long", 
-			"strictfp", 
-			"volatile", 
-			"const", 
-			"float", 
+			"long",
+			"strictfp",
+			"volatile",
+			"const",
+			"float",
 			"native",
-			"super", 
-			"while" 
+			"super",
+			"while"
 		};
 
 		private static final Set<String> IDENTIFIERS = new HashSet<>();

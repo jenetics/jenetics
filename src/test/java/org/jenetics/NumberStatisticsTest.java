@@ -12,8 +12,8 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class NumberStatisticsTest 
-	extends ObjectTester<NumberStatistics<Float64Gene, Float64>> 
+public class NumberStatisticsTest
+	extends ObjectTester<NumberStatistics<Float64Gene, Float64>>
 {
 
 	final Factory<NumberStatistics<Float64Gene, Float64>>
@@ -22,7 +22,7 @@ public class NumberStatisticsTest
 		public NumberStatistics<Float64Gene, Float64> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final NumberStatistics.Builder<Float64Gene, Float64> 
+			final NumberStatistics.Builder<Float64Gene, Float64>
 			builder = new NumberStatistics.Builder<>();
 			builder.ageMean(random.nextDouble());
 			builder.ageVariance(random.nextDouble());

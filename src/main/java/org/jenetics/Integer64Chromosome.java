@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -44,16 +44,16 @@ import org.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Gene> 
+public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Gene>
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create a new chromosome from the given genes array.
-	 * 
+	 *
 	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller 
+	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller
 	 *         than one.
 	 */
 	protected Integer64Chromosome(final ISeq<Integer64Gene> genes) {
@@ -62,10 +62,10 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	
 	/**
 	 * Create a new chromosome from the given genes array.
-	 * 
+	 *
 	 * @param genes the genes of the new chromosome.
 	 * @throws NullPointerException if the given genes array is {@code null}.
-	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than 
+	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than
 	 *         one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
@@ -74,15 +74,15 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	
 	/**
 	 * Create a new random IntegerChromosome.
-	 * 
+	 *
 	 * @param min the minimum value of the {@link Float64Gene}s.
 	 * @param max the maximum value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 */
 	public Integer64Chromosome(
-		final Integer64 min, 
-		final Integer64 max, 
+		final Integer64 min,
+		final Integer64 max,
 		final int length
 	) {
 		super(
@@ -95,7 +95,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	
 	/**
 	 * Create a new random IntegerChromosome of length one.
-	 * 
+	 *
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 */
@@ -105,7 +105,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	
 	/**
 	 * Create a new random IntegerChromosome with length one.
-	 * 
+	 *
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
@@ -116,7 +116,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	
 	/**
 	 * Create a new random IntegerChromosome.
-	 * 
+	 *
 	 * @param min the min value of the {@link Float64Gene}s.
 	 * @param max the max value of the {@link Float64Gene}s.
 	 * @param length the length of the chromosome.
@@ -132,7 +132,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 
 	/**
 	 * Return a more specific view of this chromosome factory.
-	 * 
+	 *
 	 * @return a more specific view of thiw chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
@@ -156,7 +156,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
-			return true; 
+			return true;
 		}
 		return obj instanceof Integer64Chromosome && super.equals(obj);
 	}
@@ -169,22 +169,22 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>> 
+	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>>
 		Genes = AbstractChromosome.genes();
 	
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<Integer64Gene>, Integer64Gene> 
+	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
 		Gene = AbstractChromosome.gene();
 	
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	public static final Function<Chromosome<Integer64Gene>, Integer64Gene> 
-	Gene(final int index) 
+	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
+	Gene(final int index)
 	{
 		return AbstractChromosome.gene(index);
 	}
@@ -193,7 +193,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 *  XML object serialization
 	 * ************************************************************************/
 	
-	static final XMLFormat<Integer64Chromosome> 
+	static final XMLFormat<Integer64Chromosome>
 	XML = new XMLFormat<Integer64Chromosome>(Integer64Chromosome.class) {
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
@@ -202,7 +202,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 		@Override
 		public Integer64Chromosome newInstance(
 			final Class<Integer64Chromosome> cls, final InputElement xml
-		) throws XMLStreamException 
+		) throws XMLStreamException
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
 			final long min = xml.getAttribute(MIN, 0L);
@@ -221,8 +221,8 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 			return chromosome;
 		}
 		@Override
-		public void write(final Integer64Chromosome chromosome, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final Integer64Chromosome chromosome, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(MIN, chromosome._min.longValue());
@@ -232,8 +232,8 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Chromosome chromosome) 
-			throws XMLStreamException 
+		public void read(final InputElement element, final Integer64Chromosome chromosome)
+			throws XMLStreamException
 		{
 		}
 	};
@@ -243,7 +243,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -257,7 +257,7 @@ public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Ge
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	

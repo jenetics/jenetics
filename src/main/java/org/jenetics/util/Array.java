@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.util;
 
@@ -37,22 +37,22 @@ import java.util.RandomAccess;
 import javolution.context.StackContext;
 import javolution.util.FastList;
 
-/** 
+/**
  * Array class which wraps the the java build in array type T[]. Once the array
- * is created the array length can't be changed (like the build in array). 
+ * is created the array length can't be changed (like the build in array).
  * <strong>This array is not synchronized.</strong> If multiple threads access
  * an {@code Array} concurrently, and at least one of the threads modifies the
  * array, it <strong>must</strong> be synchronized externally.
- * 
+ *
  * @param <T> the element type of the array.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Array<T> 
-	extends ArraySeq<T> 
-	implements 
-		MSeq<T>, 
+public final class Array<T>
+	extends ArraySeq<T>
+	implements
+		MSeq<T>,
 		RandomAccess
 {
 	private static final long serialVersionUID = 2L;
@@ -62,7 +62,7 @@ public final class Array<T>
 	
 	/**
 	 * Return the empty array.
-	 * 
+	 *
 	 * @param <T> the element type.
 	 * @return empty array.
 	 */
@@ -77,9 +77,9 @@ public final class Array<T>
 	
 	/**
 	 * Create a new array with the given length.
-	 * 
+	 *
 	 * @param length the array length.
-	  * @throws NegativeArraySizeException if the specified {@code length} 
+	  * @throws NegativeArraySizeException if the specified {@code length}
 	  *			is negative
 	 */
 	public Array(final int length) {
@@ -87,9 +87,9 @@ public final class Array<T>
 	}
 	
 	/**
-	 * Create a new array with length one. The array will be initialized with 
+	 * Create a new array with length one. The array will be initialized with
 	 * the given value.
-	 * 
+	 *
 	 * @param first the only element of the array.
 	 */
 	public Array(final T first) {
@@ -100,12 +100,12 @@ public final class Array<T>
 	/**
 	 * Create a new array with length two. The array will be initialized with
 	 * the given values.
-	 * 
+	 *
 	 * @param first first array element.
 	 * @param second second array element.
 	 */
 	public Array(
-		final T first, 
+		final T first,
 		final T second
 	) {
 		this(2);
@@ -116,14 +116,14 @@ public final class Array<T>
 	/**
 	 * Create a new array with length three. The array will be initialized with
 	 * the given values.
-	 * 
+	 *
 	 * @param first first array element.
 	 * @param second second array element.
 	 * @param third third array element.
 	 */
 	public Array(
-		final T first, 
-		final T second, 
+		final T first,
+		final T second,
 		final T third
 	) {
 		this(3);
@@ -135,16 +135,16 @@ public final class Array<T>
 	/**
 	 * Create a new array with length four. The array will be initialized with
 	 * the given values.
-	 * 
+	 *
 	 * @param first first array element.
 	 * @param second second array element.
 	 * @param third third array element.
 	 * @param fourth fourth array element.
 	 */
 	public Array(
-		final T first, 
-		final T second, 
-		final T third, 
+		final T first,
+		final T second,
+		final T third,
 		final T fourth
 	) {
 		this(4);
@@ -157,7 +157,7 @@ public final class Array<T>
 	/**
 	 * Create a new array with length five. The array will be initialized with
 	 * the given values.
-	 * 
+	 *
 	 * @param first first array element.
 	 * @param second second array element.
 	 * @param third third array element.
@@ -165,9 +165,9 @@ public final class Array<T>
 	 * @param fifth fifth array element.
 	 */
 	public Array(
-		final T first, 
-		final T second, 
-		final T third, 
+		final T first,
+		final T second,
+		final T third,
 		final T fourth,
 		final T fifth
 	) {
@@ -181,7 +181,7 @@ public final class Array<T>
 	
 	/**
 	 * Create a new array from the given values.
-	 * 
+	 *
 	 * @param first first array element.
 	 * @param second second array element.
 	 * @param third third array element.
@@ -210,7 +210,7 @@ public final class Array<T>
 	
 	/**
 	 * Create a new array from the given values.
-	 * 
+	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
@@ -222,7 +222,7 @@ public final class Array<T>
 	/**
 	 * Create a new Array from the values of the given Collection. The order of
 	 * the elements are determined by the iterator of the Collection.
-	 * 
+	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
@@ -236,14 +236,14 @@ public final class Array<T>
 	}
 	
 	/**
-	 * Selects all elements of this list which satisfy a predicate. 
-	 * 
+	 * Selects all elements of this list which satisfy a predicate.
+	 *
 	 * @param predicate the predicate used to test elements.
-	 * @return a new array consisting of all elements of this list that satisfy 
-	 *         the given {@code predicate}. The order of the elements is 
+	 * @return a new array consisting of all elements of this list that satisfy
+	 *         the given {@code predicate}. The order of the elements is
 	 *         preserved.
-	 * @throws NullPointerException if the given {@code predicate} is 
-	 *         {@code null}. 
+	 * @throws NullPointerException if the given {@code predicate} is
+	 *         {@code null}.
 	 */
 	public Array<T> filter(final Function<? super T, Boolean> predicate) {
 		StackContext.enter();
@@ -260,8 +260,8 @@ public final class Array<T>
 			
 			final Array<T> copy = new Array<>(filtered.size());
 			int index = 0;
-			for (FastList.Node<T> n = filtered.head(), end = filtered.tail(); 
-				(n = n.getNext()) != end;) 
+			for (FastList.Node<T> n = filtered.head(), end = filtered.tail();
+				(n = n.getNext()) != end;)
 			{
 				copy.set(index++, n.getValue());
 			}
@@ -282,18 +282,18 @@ public final class Array<T>
 	
 	/**
 	 * <p>
-	 * Sorts the array of objects into ascending order, according to the natural 
-	 * ordering of its elements. All elements in the array <b>must</b> implement 
-	 * the Comparable interface. Furthermore, all elements in the array must be 
+	 * Sorts the array of objects into ascending order, according to the natural
+	 * ordering of its elements. All elements in the array <b>must</b> implement
+	 * the Comparable interface. Furthermore, all elements in the array must be
 	 * mutually comparable.
 	 * </p>
 	 * The sorting algorithm is the Quicksort.
-	 * 
+	 *
 	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
 	 *          Wikipedia: Quicksort
 	 *      </a>
-	 * 
-	 * @throws ClassCastException if the array contains elements that are not 
+	 *
+	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
 	 */
 	public void sort() {
@@ -302,28 +302,28 @@ public final class Array<T>
 	
 	/**
 	 * <p>
-	 * Sorts the array of objects into ascending order, according to the natural 
-	 * ordering of its elements. All elements in the array <b>must</b> implement 
-	 * the Comparable interface. Furthermore, all elements in the array must be 
+	 * Sorts the array of objects into ascending order, according to the natural
+	 * ordering of its elements. All elements in the array <b>must</b> implement
+	 * the Comparable interface. Furthermore, all elements in the array must be
 	 * mutually comparable.
 	 * </p>
 	 * The sorting algorithm is the Quicksort.
-	 * 
+	 *
 	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
 	 *          Wikipedia: Quicksort
 	 *      </a>
-	 * 
+	 *
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
 	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws ClassCastException if the array contains elements that are not 
+	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
 	 */	
 	public void sort(final int from, final int to) {
 		sort(from, to, new Comparator<T>() {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override 
+			@Override
 			public int compare(final T o1, final T o2) {
 				return ((Comparable)o1).compareTo(o2);
 			}
@@ -332,19 +332,19 @@ public final class Array<T>
 	
 	/**
 	 * <p>
-	 * Sorts the array of objects according to the order induced by the specified 
-	 * comparator. All elements in the array must be mutually comparable by the 
+	 * Sorts the array of objects according to the order induced by the specified
+	 * comparator. All elements in the array must be mutually comparable by the
 	 * specified comparator.
 	 * </p>
 	 * The sorting algorithm is the Quicksort.
-	 * 
+	 *
 	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Quicksort">
 	 *          Wikipedia: Quicksort
 	 *      </a>
-	 * 
-	 * @throws NullPointerException if the given {@code comparator} is 
+	 *
+	 * @throws NullPointerException if the given {@code comparator} is
 	 *         {@code null}.
-	 * @throws ClassCastException if the array contains elements that are not 
+	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
 	 */		
 	public void sort(final Comparator<? super T> comparator) {
@@ -353,28 +353,28 @@ public final class Array<T>
 	
 	/**
 	 * <p>
-	 * Sorts the array of objects according to the order induced by the specified 
-	 * comparator. All elements in the array must be mutually comparable by the 
+	 * Sorts the array of objects according to the order induced by the specified
+	 * comparator. All elements in the array must be mutually comparable by the
 	 * specified comparator.
 	 * </p>
 	 * The sorting algorithm is the <i>Timsort</i>.
-	 * 
+	 *
 	 * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Timsort">
 	 *          Wikipedia: Timsort
 	 *      </a>
 	 * @see Arrays#sort(Object[], int, int, Comparator)
-	 * 
+	 *
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
-	 * @throws NullPointerException if the given {@code comparator} is 
+	 * @throws NullPointerException if the given {@code comparator} is
 	 *         {@code null}.
 	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
 	 * @throws IllegalArgumentException if {@code from > to}
-	 * @throws ClassCastException if the array contains elements that are not 
+	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
 	 */		
 	public void sort(
-		final int from, final int to, 
+		final int from, final int to,
 		final Comparator<? super T> comparator
 	) {
 		checkIndex(from, to);
@@ -395,11 +395,11 @@ public final class Array<T>
 	
 	
 	void quicksort(
-		final int left, final int right, 
+		final int left, final int right,
 		final Comparator<? super T> comparator
 	) {
 		if (right > left) {
-			final int j = partition(left, right, comparator); 
+			final int j = partition(left, right, comparator);
 			quicksort(left, j - 1, comparator);
 			quicksort(j + 1, right, comparator);
 		}
@@ -408,23 +408,23 @@ public final class Array<T>
 	@SuppressWarnings("unchecked")
 	private int partition(
 		final int left, final int right,
-		final Comparator<? super T> comparator 
+		final Comparator<? super T> comparator
 	) {
 		final T pivot = (T)_array.data[left + _start];
 		int i = left;
 		int j = right + 1;
 		while (true) {
-			do { 
-				++i; 
+			do {
+				++i;
 			} while (
-					i < right && 
+					i < right &&
 					comparator.compare((T)_array.data[i + _start], pivot) < 0
 				);
 			
 			do {
 				--j;
 			} while (
-					j > left && 
+					j > left &&
 					comparator.compare((T)_array.data[j + _start], pivot) > 0
 				);
 			if (j <= i) {
@@ -452,7 +452,7 @@ public final class Array<T>
 	
 	/**
 	 * Reverses the part of the array determined by the to indexes.
-	 * 
+	 *
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
@@ -534,9 +534,9 @@ public final class Array<T>
 	
 	/**
 	 * Create a new array which contains the values of {@code this} and the
-	 * given {@code value}. The length of the new array is 
+	 * given {@code value}. The length of the new array is
 	 * {@code this.length() + 1}. The returned array is not sealed.
-	 * 
+	 *
 	 * @param value the value to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
 	 * 		  given {@code value}
@@ -550,9 +550,9 @@ public final class Array<T>
 	
 	/**
 	 * Create a new array which contains the values of {@code this} and the
-	 * given {@code array}. The length of the new array is 
+	 * given {@code array}. The length of the new array is
 	 * {@code this.length() + array.length()}. The returned array is not sealed.
-	 * 
+	 *
 	 * @param array the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
 	 * 		  given {@code array}
@@ -562,11 +562,11 @@ public final class Array<T>
 		final Array<T> appended = new Array<>(length() + array.length());
 		
 		System.arraycopy(
-				_array.data, _start, 
+				_array.data, _start,
 				appended._array.data, 0, length()
 			);
 		System.arraycopy(
-				array._array.data, array._start, 
+				array._array.data, array._start,
 				appended._array.data, length(), array.length()
 			);
 		
@@ -575,9 +575,9 @@ public final class Array<T>
 	
 	/**
 	 * Create a new array which contains the values of {@code this} and the
-	 * given {@code values}. The length of the new array is 
+	 * given {@code values}. The length of the new array is
 	 * {@code this.length() + values.size()}. The returned array is not sealed.
-	 * 
+	 *
 	 * @param values the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
 	 * 		  given {@code array}

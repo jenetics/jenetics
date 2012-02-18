@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *  
+ *
  */
 package org.jenetics;
 
@@ -41,23 +41,23 @@ import org.jenetics.util.Timer;
 
 
 /**
- * Main class. 
+ * Main class.
  * <p/>
- * 
+ *
  * A simple GeneticAlgorithm setup.
  * [code]
  * //Defining a genotype factory.
  * final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
  *     new BitChromosome<>(10, 0.5);
  * );
- *   
+ *
  * // Defining the fitness function.
  * final Function<Genotype<BitGene>, Float64> ff = ...;
- *   
- * // The given fitness function will be maximized. By default 
+ *
+ * // The given fitness function will be maximized. By default
  * // the GA tries to maximize the fitness function.
  * final Optimize opt = Optimize.MINIMUM;
- *   
+ *
  * // Create the GA.
  * final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(gt, ff, opt);
  * [/code]
@@ -68,8 +68,8 @@ import org.jenetics.util.Timer;
  * ga.evolve(100);
  * System.out.println(ga.getStatistics());
  * [/code]
- * 
- * After finishing you can safe the best population to disk and initialize 
+ *
+ * After finishing you can safe the best population to disk and initialize
  * another GA instance with the saved population.
  * [code]
  * // Save the GAs population.
@@ -79,21 +79,21 @@ import org.jenetics.util.Timer;
  * ) {
  *     oout.writeObject(ga.getPopulation());
  * }
- * 
+ *
  * // Restore the GAs population.
  * try (
  *     FileInputStream fin = new FileInputStream("population.pop");
  *     ObjectInputStream oin = new ObjectInputStream(fin)
  * ) {
  *     \@SuppressWarnings("unchecked")
- *     Population<BitGene, Float64> 
+ *     Population<BitGene, Float64>
  *     population = (Population<BitGene, Float64>)oin.readObject();
- *     
+ *
  *     ga.setPopulation(population);
  * }
  * [/code]
- * 
- * It is possible to set an initial population instead an random one. The 
+ *
+ * It is possible to set an initial population instead an random one. The
  * fitness function and the fitness scaler is not initialized by the
  * {@link #setPopulation(Collection)} or {@link #setGenotypes(Collection)} function.
  * [code]
@@ -105,22 +105,22 @@ import org.jenetics.util.Timer;
  * ga.evolve(100);
  * System.out.println(ga.getStatistics());
  * [/code]
- * 
- * 
+ *
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
- * 
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *          Wikipedia: Genetic algorithm
  *      </a>
- * 
+ *
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).
  */
 public class GeneticAlgorithm<
-	G extends Gene<?, G>, 
+	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> 
+>
 {
 	
 	/**
@@ -184,26 +184,26 @@ public class GeneticAlgorithm<
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
 	 * fitness function.
-	 * 
+	 *
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory, 
+		final Factory<Genotype<G>> genotypeFactory,
 		final Function<Genotype<G>, C> fitnessFunction
-	) {	 
+	) {	
 		this(
-				genotypeFactory, 
-				fitnessFunction, 
-				new IdentityScaler<C>(), 
+				genotypeFactory,
+				fitnessFunction,
+				new IdentityScaler<C>(),
 				Optimize.MAXIMUM
 			);
 	}
 	
 	/**
 	 * Create a new genetic algorithm.
-	 * 
+	 *
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param optimization Determine whether this GA maximize or minimize the
@@ -211,14 +211,14 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory, 
+		final Factory<Genotype<G>> genotypeFactory,
 		final Function<Genotype<G>, C> fitnessFunction,
 		final Optimize optimization
-	) {	 
+	) {	
 		this(
-				genotypeFactory, 
-				fitnessFunction, 
-				new IdentityScaler<C>(), 
+				genotypeFactory,
+				fitnessFunction,
+				new IdentityScaler<C>(),
 				optimization
 			);
 	}
@@ -226,28 +226,28 @@ public class GeneticAlgorithm<
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
 	 * fitness function.
-	 * 
+	 *
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory, 
-		final Function<Genotype<G>, C> fitnessFunction, 
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<Genotype<G>, C> fitnessFunction,
 		final Function<C, C> fitnessScaler
-	) {	 
+	) {	
 		this(
-				genotypeFactory, 
-				fitnessFunction, 
-				fitnessScaler, 
+				genotypeFactory,
+				fitnessFunction,
+				fitnessScaler,
 				Optimize.MAXIMUM
 			);
 	}
 	
 	/**
 	 * Create a new genetic algorithm.
-	 * 
+	 *
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param fitnessScaler the fitness scaler this GA is using.
@@ -256,11 +256,11 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory, 
-		final Function<Genotype<G>, C> fitnessFunction, 
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<Genotype<G>, C> fitnessFunction,
 		final Function<C, C> fitnessScaler,
 		final Optimize optimization
-	) {	 
+	) {	
 		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
 		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
 		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
@@ -268,11 +268,11 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Setting up the <code>GeneticAlgorithm</code>. Subsequent calls to this 
-	 * method throw IllegalStateException. If no initial population has been 
-	 * set (with {@link #setPopulation(Collection)} or 
+	 * Setting up the <code>GeneticAlgorithm</code>. Subsequent calls to this
+	 * method throw IllegalStateException. If no initial population has been
+	 * set (with {@link #setPopulation(Collection)} or
 	 * {@link #setGenotypes(Collection)}) a random population is generated.
-	 * 
+	 *
 	 * @throws IllegalStateException if called more than once.
 	 */
 	public void setup() {
@@ -283,9 +283,9 @@ public class GeneticAlgorithm<
 			//Initializing/filling up the Population.
 			for (int i = _population.size(); i < _populationSize; ++i) {
 				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newInstance(), 
-					_fitnessFunction, 
-					_fitnessScaler, 
+					_genotypeFactory.newInstance(),
+					_fitnessFunction,
+					_fitnessScaler,
 					_generation
 				);
 				_population.add(pt);
@@ -298,9 +298,9 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Setting up the <code>GeneticAlgorithm</code> with the given initial 
+	 * Setting up the <code>GeneticAlgorithm</code> with the given initial
 	 * population. Subsequent calls to this method throw IllegalStateException.
-	 * 
+	 *
 	 * @param genotypes the initial population.
 	 * @throws IllegalStateException if called more than once.
 	 */
@@ -346,8 +346,8 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Evolve one generation.
-	 * 
-	 * @throws IllegalStateException if the {@link GeneticAlgorithm#setup()} 
+	 *
+	 * @throws IllegalStateException if the {@link GeneticAlgorithm#setup()}
 	 *         method was not called first.
 	 */
 	public void evolve() {
@@ -379,7 +379,7 @@ public class GeneticAlgorithm<
 			_alterer.alter(offsprings, _generation);
 			_alterTimer.stop();
 			
-			// Combining the new population (containing the survivors and the 
+			// Combining the new population (containing the survivors and the
 			// altered offsprings).
 			_combineTimer.start();
 			final int killed = _killed.get();
@@ -400,7 +400,7 @@ public class GeneticAlgorithm<
 			_statistics = builder.build();
 			
 			final int comp = _optimization.compare(
-					_bestStatistics.getBestPhenotype(), 
+					_bestStatistics.getBestPhenotype(),
 					_statistics.getBestPhenotype()
 				);
 			
@@ -439,7 +439,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Evolve the given number of {@code generations}
-	 * 
+	 *
 	 * @param generations the number of {@code generations} to evolve.
 	 */
 	public void evolve(final int generations) {
@@ -450,9 +450,9 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Evolve the GA as long the given {@link Function} returns {@code true}.
-	 * 
+	 *
 	 * @see Until
-	 * 
+	 *
 	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
@@ -492,7 +492,7 @@ public class GeneticAlgorithm<
 	}
 	
 	private Population<G, C> combine(
-		final Population<G, C> survivors, 
+		final Population<G, C> survivors,
 		final Population<G, C> offsprings
 	) {
 		assert (survivors.size() + offsprings.size() == _populationSize);
@@ -504,7 +504,7 @@ public class GeneticAlgorithm<
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
 					final Phenotype<G, C> survivor = survivors.get(i);
 					
-					final boolean isTooOld = 
+					final boolean isTooOld =
 						survivor.getAge(_generation) > _maximalPhenotypeAge;
 						
 					final boolean isInvalid = isTooOld || !survivor.isValid();
@@ -512,9 +512,9 @@ public class GeneticAlgorithm<
 					// Sorry, too old or not valid.
 					if (isInvalid) {
 						final Phenotype<G, C> newpt = Phenotype.valueOf(
-								_genotypeFactory.newInstance(), 
-								_fitnessFunction, 
-								_fitnessScaler, 
+								_genotypeFactory.newInstance(),
+								_fitnessFunction,
+								_fitnessScaler,
 								_generation
 							);
 						survivors.set(i, newpt);
@@ -552,7 +552,7 @@ public class GeneticAlgorithm<
 	/**
 	 * Return {@code true} if the {@link #setup()} method has already been called,
 	 * {@code false} otherwise.
-	 * 
+	 *
 	 * @return {@code true} if the {@link #setup()} method has already been called,
 	 *         {@code false} otherwise.
 	 */
@@ -576,12 +576,12 @@ public class GeneticAlgorithm<
 	 * [code]
 	 * final GeneticAlgorithm<Float64Gene, Float64> ga = ...
 	 * final Function<GeneticAlgorithm<?, ?>, Boolean> stopCondition = ...
-	 *  
+	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
 	 *     public void run() {
-	 *         while (!Thread.currentThread().isInterrupted() && 
-	 *                !stopCondition.apply(ga)) 
+	 *         while (!Thread.currentThread().isInterrupted() &&
+	 *                !stopCondition.apply(ga))
 	 *         {
 	 *             if (ga.getGeneration() == 0) {
 	 *                 ga.setup();
@@ -592,7 +592,7 @@ public class GeneticAlgorithm<
 	 *     }
 	 * });
 	 * thread.start();
-	 * 
+	 *
 	 *  //Changing the GA parameters outside the evolving thread. All parameters
 	 *  //are changed before the next evolve step.
 	 * ga.getLock().lock();
@@ -604,10 +604,10 @@ public class GeneticAlgorithm<
 	 *     ga.getLock().unlock();
 	 * }
 	 * [/code]
-	 * 
+	 *
 	 * You can use the same lock if you want get a consistent state of the used
 	 * parameters, if they where changed within an other thread.
-	 * 
+	 *
 	 * [code]
 	 * ga.getLock().lock();
 	 * try {
@@ -617,10 +617,10 @@ public class GeneticAlgorithm<
 	 *     ga.getLock().unlock();
 	 * }
 	 * [/code]
-	 * 
-	 * The code above ensures that the returned {@code statistics} and 
+	 *
+	 * The code above ensures that the returned {@code statistics} and
 	 * {@code scaler} where used together within the same {@link #evolve()} step.
-	 * 
+	 *
 	 * @return the lock acquired in the {@link #setup()} and the {@link #evolve()}
 	 * 		  method.
 	 */
@@ -629,18 +629,18 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Return the used genotype {@link Factory} of the GA. 
-	 * 
-	 * @return the used genotype {@link Factory} of the GA. 
+	 * Return the used genotype {@link Factory} of the GA.
+	 *
+	 * @return the used genotype {@link Factory} of the GA.
 	 */
 	public Factory<Genotype<G>> getGenotypeFactory() {
 		return _genotypeFactory;
 	}
 	
 	/**
-	 * Return the used fitness {@link Function} of the GA. 
-	 * 
-	 * @return the used fitness {@link Function} of the GA. 
+	 * Return the used fitness {@link Function} of the GA.
+	 *
+	 * @return the used fitness {@link Function} of the GA.
 	 */
 	public Function<Genotype<G>, C> getFitnessFunction() {
 		return _fitnessFunction;
@@ -648,7 +648,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the currently used fitness scaler.
-	 * 
+	 *
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
@@ -657,45 +657,45 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Return the currently used fitness scaler {@link Function} of the GA. 
-	 * 
-	 * @return the currently used fitness scaler {@link Function} of the GA. 
+	 * Return the currently used fitness scaler {@link Function} of the GA.
+	 *
+	 * @return the currently used fitness scaler {@link Function} of the GA.
 	 */
 	public Function<C, C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
 	
 	/**
-	 * Return the currently used offspring fraction of the GA. 
-	 * 
-	 * @return the currently used offspring fraction of the GA. 
+	 * Return the currently used offspring fraction of the GA.
+	 *
+	 * @return the currently used offspring fraction of the GA.
 	 */
 	public double getOffspringFraction() {
 		return _offspringFraction;
 	}
 	
 	/**
-	 * Return the currently used offspring {@link Selector} of the GA. 
-	 * 
-	 * @return the currently used offspring {@link Selector} of the GA. 
+	 * Return the currently used offspring {@link Selector} of the GA.
+	 *
+	 * @return the currently used offspring {@link Selector} of the GA.
 	 */
 	public Selector<G, C> getOffspringSelector() {
 		return _offspringSelector;
 	}
 
 	/**
-	 * Return the currently used survivor {@link Selector} of the GA. 
-	 * 
-	 * @return the currently used survivor {@link Selector} of the GA. 
+	 * Return the currently used survivor {@link Selector} of the GA.
+	 *
+	 * @return the currently used survivor {@link Selector} of the GA.
 	 */
 	public Selector<G, C> getSurvivorSelector() {
 		return _survivorSelector;
 	}
 
 	/**
-	 * Return the currently used {@link Alterer} of the GA. 
-	 * 
-	 * @return the currently used {@link Alterer} of the GA. 
+	 * Return the currently used {@link Alterer} of the GA.
+	 *
+	 * @return the currently used {@link Alterer} of the GA.
 	 */
 	public Alterer<G> getAlterer() {
 		return _alterer;
@@ -703,7 +703,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return the current overall generation.
-	 * 
+	 *
 	 * @return the current overall generation.
 	 */
 	public int getGeneration() {
@@ -712,7 +712,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return the maximal age of the {@link Phenotype}s.
-	 * 
+	 *
 	 * @return the maximal age of the {@link Phenotype}s.
 	 */
 	public int getMaximalPhenotypeAge() {
@@ -722,7 +722,7 @@ public class GeneticAlgorithm<
 	/**
 	 * Return the best {@link Phenotype} so far or {@code null} if the GA hasn't
 	 * been initialized yet.
-	 * 
+	 *
 	 * @return the best {@link Phenotype} so far or {@code null} if the GA hasn't
 	 *         been initialized yet.
 	 */
@@ -731,10 +731,10 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Return the current {@link Population} {@link Statistics} or {@code null} 
+	 * Return the current {@link Population} {@link Statistics} or {@code null}
 	 * if the GA hasn't been initialized yet.
-	 * 
-	 * @return the current {@link Population} {@link Statistics} or {@code null} 
+	 *
+	 * @return the current {@link Population} {@link Statistics} or {@code null}
 	 *         if the GA hasn't been initialized yet.
 	 */
 	public Statistics<G, C> getStatistics() {
@@ -743,7 +743,7 @@ public class GeneticAlgorithm<
 
 	/**
 	 * Set the offspring selector.
-	 * 
+	 *
 	 * @param selector The offspring selector.
 	 * @throws NullPointerException, if the given selector is null.
 	 */
@@ -753,7 +753,7 @@ public class GeneticAlgorithm<
 
 	/**
 	 * Set the survivor selector.
-	 * 
+	 *
 	 * @param selector The survivor selector.
 	 * @throws NullPointerException, if the given selector is null.
 	 */
@@ -763,7 +763,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set both, the offspring selector and the survivor selector.
-	 * 
+	 *
 	 * @param selector The selector for the offsprings and the survivors.
 	 * @throws NullPointerException if the {@code selector} is {@code null}
 	 */
@@ -774,7 +774,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the offspring fraction.
-	 * 
+	 *
 	 * @param offspringFraction The offspring fraction.
 	 * @throws IllegalArgumentException if the offspring fraction is out of range.
 	 */
@@ -784,7 +784,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the alterer.
-	 * 
+	 *
 	 * @param alterer The alterer.
 	 * @throws NullPointerException if the alterer is null.
 	 */
@@ -794,7 +794,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the given alterers.
-	 * 
+	 *
 	 * @param alterers the alterers to set.
 	 * @throws NullPointerException if the alterers are null.
 	 */
@@ -805,7 +805,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Add a Alterer to the already existing alterers of this GeneticAlgorithm.
-	 * 
+	 *
 	 * @param alterer the {@link Alterer} to add.
 	 * @deprecated use {@link #setAlterers(Alterer...)} instead.
 	 */
@@ -816,7 +816,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the maximum age of the phenotypes in the population.
-	 * 
+	 *
 	 * @param age Maximal phenotype age.
 	 * @throws IllegalArgumentException if the age is smaller then one.
 	 */
@@ -831,7 +831,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the desired population size.
-	 * 
+	 *
 	 * @param size The population size.
 	 * @throws IllegalArgumentException if the population size is smaller than
 	 *         one.
@@ -841,17 +841,17 @@ public class GeneticAlgorithm<
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.", size
 			));
-		}		 
+		}		
 		_populationSize = size;
 	}
 	
 	/**
 	 * Set the (initial) population in form of a list of phenotypes. The fitness
 	 * function and fitness scaler will not be changed.
-	 * 
-	 * @param population The list of phenotypes to set. The population size is 
+	 *
+	 * @param population The list of phenotypes to set. The population size is
 	 *        set to <code>phenotype.size()</code>.
-	 * @throws NullPointerException if the population, or one of its element, is 
+	 * @throws NullPointerException if the population, or one of its element, is
 	 *         {@code null}.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
@@ -879,10 +879,10 @@ public class GeneticAlgorithm<
 	/**
 	 * Set the (initial) population in form of a list of genotypes. The fitness
 	 * function and fitness scaler will not be changed.
-	 * 
-	 * @param genotypes The list of genotypes to set. The population size is set 
+	 *
+	 * @param genotypes The list of genotypes to set. The population size is set
 	 *        to <code>genotypes.size()</code>.
-	 * @throws NullPointerException if the population, or one of its elements, 
+	 * @throws NullPointerException if the population, or one of its elements,
 	 *         is {@code null}s.
 	 * @throws IllegalArgumentException it the population size is smaller than
 	 *         one.
@@ -899,7 +899,7 @@ public class GeneticAlgorithm<
 		final Population<G, C> population = new Population<>(genotypes.size());
 		for (Genotype<G> genotype : genotypes) {
 			population.add(Phenotype.valueOf(
-				genotype, 
+				genotype,
 				_fitnessFunction,
 				_fitnessScaler,
 				_generation
@@ -912,7 +912,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return a copy of the current population.
-	 * 
+	 *
 	 * @return The copy of the current population.
 	 */
 	public Population<G, C> getPopulation() {
@@ -921,7 +921,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return the desired population size of the GA.
-	 * 
+	 *
 	 * @return the desired population size of the GA.
 	 */
 	public int getPopulationSize() {
@@ -929,9 +929,9 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * Return the statistics of the best phenotype. The returned statistics is 
+	 * Return the statistics of the best phenotype. The returned statistics is
 	 * {@code null} if the algorithms hasn't been initialized.
-	 * 
+	 *
 	 * @return the statistics of the best phenotype, or {@code null} if the GA
 	 *         hasn't been initialized yet.
 	 */
@@ -941,7 +941,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return the number of killed phenotypes, so far.
-	 * 
+	 *
 	 * @return the number of killed phenotypes
 	 */
 	public int getNumberOfKilledPhenotypes() {
@@ -950,7 +950,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return the number of invalid phenotypes, so far.
-	 * 
+	 *
 	 * @return the number of invalid phenotypes
 	 */
 	public int getNumberOfInvalidPhenotypes() {
@@ -959,9 +959,9 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Set the statistic calculator for this genetic algorithm instance.
-	 * 
+	 *
 	 * @param calculator the new statistic calculator.
-	 * @throws NullPointerException if the given {@code calculator} is 
+	 * @throws NullPointerException if the given {@code calculator} is
 	 *         {@code null}.
 	 */
 	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
@@ -970,7 +970,7 @@ public class GeneticAlgorithm<
 	
 	/**
 	 * Return the current statistics calculator.
-	 * 
+	 *
 	 * @return the current statistics calculator.
 	 */
 	public Statistics.Calculator<G, C> getStatisticsCalculator() {
@@ -980,7 +980,7 @@ public class GeneticAlgorithm<
 	/**
 	 * Return the current time statistics of the GA. This method acquires the
 	 * lock to ensure that the returned values are consistent.
-	 * 
+	 *
 	 * @return the current time statistics.
 	 */
 	public Statistics.Time getTimeStatistics() {
@@ -1000,7 +1000,7 @@ public class GeneticAlgorithm<
 	}
 	
 	/**
-	 * This method acquires the lock to ensure that the returned value is 
+	 * This method acquires the lock to ensure that the returned value is
 	 * consistent.
 	 */
 	@Override
@@ -1011,7 +1011,7 @@ public class GeneticAlgorithm<
 		_lock.lock();
 		try {
 			generation = _generation;
-			phenotype = getStatistics().getBestPhenotype(); 
+			phenotype = getStatistics().getBestPhenotype();
 		} finally {
 			_lock.unlock();
 		}

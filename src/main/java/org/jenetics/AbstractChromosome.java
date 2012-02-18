@@ -1,17 +1,17 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -38,15 +38,15 @@ import org.jenetics.util.ISeq;
  * The abstract base implementation of the Chromosome interface. The implementors
  * of this class must assure that the protected member <code>_genes</code> is not
  * <code>null</code> and the length of the <code>genes</code> > 0.
- * 
+ *
  * @param <G> the gene type.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public abstract class AbstractChromosome<G extends Gene<?, G>> 
-	implements 
-		Chromosome<G>, 
+public abstract class AbstractChromosome<G extends Gene<?, G>>
+	implements
+		Chromosome<G>,
 		RandomAccess
 {
 	private static final long serialVersionUID = 1;
@@ -65,9 +65,9 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	
 	/**
 	 * Create a new {@code AbstractChromosome} from the given {@code genes}
-	 * array. The genes array is not copied, but sealed, so changes to the given 
+	 * array. The genes array is not copied, but sealed, so changes to the given
 	 * genes array doesn't effect the genes of this chromosome.
-	 * 
+	 *
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
@@ -122,9 +122,9 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	
 	/**
 	 * Return the index of the first occurrence of the given <code>gene</code>.
-	 * 
+	 *
 	 * @param gene the {@link Gene} to search for.
-	 * @return the index of the searched gene, or -1 if the given gene was not 
+	 * @return the index of the searched gene, or -1 if the given gene was not
 	 *         found.
 	 */
 	protected int indexOf(final Object gene) {
@@ -163,7 +163,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>> 
+	static <G extends Gene<?, G>, C extends Chromosome<G>>
 	Function<C, G> gene() {
 		return new Function<C, G>() {
 			@Override public G apply(final C value) {
@@ -176,7 +176,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>> 
+	static <G extends Gene<?, G>, C extends Chromosome<G>>
 	Function<C, G> gene(final int index) {
 		return new Function<C, G>() {
 			@Override public G apply(final C value) {
@@ -189,7 +189,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	static <G extends Gene<?, G>, C extends AbstractChromosome<G>> 
+	static <G extends Gene<?, G>, C extends AbstractChromosome<G>>
 	Function<C, ISeq<G>> genes() {
 		return new Function<C, ISeq<G>>() {
 			@Override public ISeq<G> apply(final C value) {

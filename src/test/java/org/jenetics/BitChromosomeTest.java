@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics;
 
@@ -40,9 +40,9 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitChromosomeTest extends ChromosomeTester<BitGene> { 
-    
-	private final Factory<Chromosome<BitGene>> 
+public class BitChromosomeTest extends ChromosomeTester<BitGene> {
+
+	private final Factory<Chromosome<BitGene>>
 	_factory = new BitChromosome(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
@@ -67,7 +67,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     @Test
     public void numValue() {
         BitChromosome c1 = new BitChromosome(10);
-        
+
         int value = c1.intValue();
         assertEquals((short)value, c1.shortValue());
         assertEquals(value, c1.longValue());
@@ -81,7 +81,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
         for (BitGene g : c) {
             assertFalse(g.getBit());
         }
-        
+
         c = new BitChromosome(10, 1);
         for (BitGene g : c) {
             assertTrue(g.getBit());
@@ -94,7 +94,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
         for (int i = 0; i < 10; ++i) {
             bits.set(i, i % 2 == 0);
         }
-        
+
         BitChromosome c = new BitChromosome(bits);
         for (int i = 0; i < bits.length(); ++i) {
             assertEquals(c.getGene(i).getBit(), i % 2 == 0);
@@ -104,13 +104,13 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     @Test
     public void toBigInteger() {
         BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
-        
+
         LargeInteger i = c.toLargeInteger();
         assertEquals(i, LargeInteger.valueOf(234902));
         assertEquals(i.intValue(), 234902);
         assertEquals(i.longValue(), c.longValue());
         assertEquals(i.intValue(), c.intValue());
-        
+
         byte[] data = new byte[3];
         c.toByteArray(data);
         BitChromosome c2 = new BitChromosome(data);
@@ -122,12 +122,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     public void toBitSet() {
         BitChromosome c1 = new BitChromosome(34);
         BitChromosome c2 = new BitChromosome(34, c1.toBitSet());
-        
+
         for (int i = 0; i < c1.length(); ++i) {
             assertEquals(c1.getGene(i).getBit(), c2.getGene(i).getBit());
         }
     }
-    
+
     @Test
     public void toByteArray() {
     	byte[] data = new byte[16];
@@ -139,7 +139,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     	Assert.assertEquals(bc.toByteArray(), data);
     	
     }
-    
+
     @Test
     public void toCanonicalString() {
     	BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
@@ -148,7 +148,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     	
     	Assert.assertEquals(sc, c);
     }
-    
+
 	@Test
 	public void toStringToByteArray() {
 		byte[] data = new byte[10];

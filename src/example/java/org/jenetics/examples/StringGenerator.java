@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.examples;
 
@@ -45,7 +45,7 @@ import org.jenetics.util.Function;
  */
 public class StringGenerator {
 
-	private static class Gen 
+	private static class Gen
 		implements Function<Genotype<CharacterGene>, Integer64>,
 					Serializable
 	{
@@ -53,7 +53,7 @@ public class StringGenerator {
 		
 		private final String value;
 		
-		public Gen(final String value) { 
+		public Gen(final String value) {
 			this.value = value;
 		}
 		
@@ -73,7 +73,7 @@ public class StringGenerator {
 		final int maxThreads = Runtime.getRuntime().availableProcessors() + 2;
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 		
-		final String value = 
+		final String value =
 			"To be, or not to be:";
 		
 		final CharSet chars = new CharSet(CharSet.expand("a-zA-Z.,:' "));
@@ -81,7 +81,7 @@ public class StringGenerator {
 			new CharacterChromosome(chars, value.length())
 		);
 		final Gen ff = new Gen(value);
-		final GeneticAlgorithm<CharacterGene, Integer64> 
+		final GeneticAlgorithm<CharacterGene, Integer64>
 		ga = new GeneticAlgorithm<>(gtf, ff);
 		
 		ga.setPopulationSize(5000);
@@ -98,9 +98,9 @@ public class StringGenerator {
 		final int generations = 500;
 		
 		GAUtils.printConfig(
-				"String generator", 
-				ga, 
-				generations, 
+				"String generator",
+				ga,
+				generations,
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
 		

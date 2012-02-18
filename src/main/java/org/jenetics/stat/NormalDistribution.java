@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.stat;
 
@@ -38,49 +38,49 @@ import org.jenetics.util.Range;
 
 /**
  * Normal (Gaussian) distribution. With
- * 
+ *
  * <p>
- * <img 
+ * <img
  *     src="doc-files/normal-pdf.gif"
- *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot 
+ *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot
  *          e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
  * />
  * </p>
  * as <i>pdf</i> and
  * <p>
- * <img 
+ * <img
  *     src="doc-files/normal-cdf.gif"
  *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
  *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
  * />
  * </p>
  * as <i>cdf</i>.
- * 
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class NormalDistribution<
 	N extends Number & Comparable<? super N>
 >
-	implements Distribution<N> 
+	implements Distribution<N>
 {
 	
 	/**
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/normal-pdf.gif"
-	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot 
+	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot
 	 *          e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
 	 * />
 	 * </p>
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	static final class PDF<N extends Number & Comparable<? super N>> 
-		implements 
+	static final class PDF<N extends Number & Comparable<? super N>>
+		implements
 			Function<N, Float64>,
 			Serializable
 	{
@@ -119,18 +119,18 @@ public class NormalDistribution<
 	
 	/**
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/normal-cdf.gif"
 	 *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
 	 *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
 	 * />
 	 * </p>
-	 * 
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	static final class CDF<N extends Number & Comparable<? super N>> 
-		implements 
+	static final class CDF<N extends Number & Comparable<? super N>>
+		implements
 			Function<N, Float64>,
 			Serializable
 	{
@@ -158,7 +158,7 @@ public class NormalDistribution<
 			if (x < _min) {
 				result = Float64.ZERO;
 			} else if (x > _max) {
-				result = Float64.ONE; 
+				result = Float64.ONE;
 			} else {
 				result = Float64.valueOf(Φ(x, _mean, _stddev));
 			}
@@ -169,7 +169,7 @@ public class NormalDistribution<
 		@Override
 		public String toString() {
 			return String.format(
-				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))", 
+				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))",
 				_mean, _var
 			);
 		}
@@ -184,7 +184,7 @@ public class NormalDistribution<
 	
 	/**
 	 * Create a new normal distribution object.
-	 * 
+	 *
 	 * @param domain the domain of the distribution.
 	 * @param mean the mean value of the normal distribution.
 	 * @param var the variance of the normal distribution.
@@ -192,8 +192,8 @@ public class NormalDistribution<
 	 * @throws IllegalArgumentException if the variance is negative.
 	 */
 	public NormalDistribution(
-		final Range<N> domain, 
-		final double mean, 
+		final Range<N> domain,
+		final double mean,
 		final double var
 	) {
 		_domain = nonNull(domain, "Domain");
@@ -211,9 +211,9 @@ public class NormalDistribution<
 	
 	/**
 	 * Return a new CDF object.
-	 * 
+	 *
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/normal-cdf.gif"
 	 *     alt="f(x)=\frac{1}{2}\cdot \left [ 1 + \textup{erf} \left(
 	 *          \frac{x - \mu }{\sqrt{2\sigma^{2}}} \right) \right ]"
@@ -227,9 +227,9 @@ public class NormalDistribution<
 	
 	/**
 	 * Return a new PDF object.
-	 * 
+	 *
 	 * <p>
-	 * <img 
+	 * <img
 	 *     src="doc-files/normal-pdf.gif"
 	 *     alt="f(x)=\frac{1}{\sqrt{2\pi \sigma^{2}}}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^{2}}})"
 	 * />

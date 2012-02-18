@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics.examples;
 
@@ -84,26 +84,26 @@ final class GeometryUtils {
 	}
 
 	private void contribution(
-			final int fx, 
-			final int fy, 
-			final int tx, 
-			final int ty, 
+			final int fx,
+			final int fy,
+			final int tx,
+			final int ty,
 			final int w
 	) {
 		_ssss += (long)w*(tx - fx)*(ty + fy)/2;
 	}
 
 	private void fit(
-			final Point2D[] x, 
-			final int cx, 
-			final Vertex[] ix, 
-			final int fudge, 
+			final Point2D[] x,
+			final int cx,
+			final Vertex[] ix,
+			final int fudge,
 			final BoundingBox bbox
 	) {
 		for (int i = 0; i < cx; ++i) {
 			ix[i] = new Vertex();
 			ix[i]._ip = new IntPoint(
-					((int)((x[i].getX() - bbox._min._x)*_sclx - MID) & ~7) | fudge | (i & 1), 
+					((int)((x[i].getX() - bbox._min._x)*_sclx - MID) & ~7) | fudge | (i & 1),
 					((int)((x[i].getY() - bbox._min._y)*_scly - MID) & ~7) | fudge
 				);
 		}
@@ -112,12 +112,12 @@ final class GeometryUtils {
 		ix[cx] = ix[0];
 
 		for (int i = 0; i < cx; ++i) {
-			ix[i]._rx = ix[i]._ip._x < ix[i + 1]._ip._x ? 
-						new Range(ix[i]._ip._x, ix[i + 1]._ip._x) : 
+			ix[i]._rx = ix[i]._ip._x < ix[i + 1]._ip._x ?
+						new Range(ix[i]._ip._x, ix[i + 1]._ip._x) :
 						new Range(ix[i + 1]._ip._x, ix[i]._ip._x);
 					
-			ix[i]._ry = ix[i]._ip._y < ix[i + 1]._ip._y ? 
-						new Range(ix[i]._ip._y, ix[i + 1]._ip._y) : 
+			ix[i]._ry = ix[i]._ip._y < ix[i + 1]._ip._y ?
+						new Range(ix[i]._ip._y, ix[i + 1]._ip._y) :
 						new Range(ix[i + 1]._ip._y, ix[i]._ip._y);
 						
 			ix[i]._in = 0;
@@ -125,29 +125,29 @@ final class GeometryUtils {
 	}
 
 	private void cross(
-			final Vertex a, 
-			final Vertex b, 
-			final Vertex c, 
-			final Vertex d, 
+			final Vertex a,
+			final Vertex b,
+			final Vertex c,
+			final Vertex d,
 			final double a1,
-			final double a2, 
-			final double a3, 
+			final double a2,
+			final double a3,
 			final double a4
 	) {
 		double r1 = a1/(a1 + a2);
 		double r2 = a3/(a3 + a4);
 
 		contribution(
-				(int)(a._ip._x + r1*(b._ip._x - a._ip._x)), 
-				(int)(a._ip._y + r1*(b._ip._y - a._ip._y)), 
-				b._ip._x, b._ip._y, 
+				(int)(a._ip._x + r1*(b._ip._x - a._ip._x)),
+				(int)(a._ip._y + r1*(b._ip._y - a._ip._y)),
+				b._ip._x, b._ip._y,
 				1
 			);
 		contribution(
-				d._ip._x, 
-				d._ip._y, 
+				d._ip._x,
+				d._ip._y,
 				(int)(c._ip._x + r2*(d._ip._x - c._ip._x)),
-				(int)(c._ip._y + r2*(d._ip._y - c._ip._y)), 
+				(int)(c._ip._y + r2*(d._ip._y - c._ip._y)),
 				1
 			);
 		
@@ -217,17 +217,17 @@ final class GeometryUtils {
 						if (a3 < 0 == a4 < 0) {
 							if (o) {
 								cross(
-										ipa[j], 
-										ipa[j + 1], 
-										ipb[k], 
+										ipa[j],
+										ipa[j + 1],
+										ipb[k],
 										ipb[k + 1],
 										a1, a2, a3, a4
 									);
 							} else {
 								cross(
-										ipb[k], 
-										ipb[k + 1], 
-										ipa[j], 
+										ipb[k],
+										ipb[k + 1],
+										ipa[j],
 										ipa[j + 1],
 										a3, a4, a1, a2
 									);
@@ -245,8 +245,8 @@ final class GeometryUtils {
 	}
 
 	private static void range(
-			final Point2D[] points, 
-			final int c, 
+			final Point2D[] points,
+			final int c,
 			final BoundingBox bbox
 	) {
 		for (int i = 0; i < c; ++i) {
@@ -258,9 +258,9 @@ final class GeometryUtils {
 	}
 
 	private static long area(final IntPoint a, final IntPoint p, final IntPoint q) {
-		return (long)p._x*q._y - 
-				(long)p._y*q._x + 
-				(long)a._x*(p._y - q._y) + 
+		return (long)p._x*q._y -
+				(long)p._y*q._x +
+				(long)a._x*(p._y - q._y) +
 				(long)a._y*(q._x - p._x);
 	}
 

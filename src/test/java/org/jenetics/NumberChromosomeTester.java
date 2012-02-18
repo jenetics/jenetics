@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics;
 
@@ -41,11 +41,11 @@ public abstract class NumberChromosomeTester<
 	@Test
 	public void minMax() {
 		@SuppressWarnings("unchecked")
-		final NumberChromosome<N, G> 
+		final NumberChromosome<N, G>
 		c1 = (NumberChromosome<N, G>)getFactory().newInstance();
 		
 		@SuppressWarnings("unchecked")
-		final NumberChromosome<N, G> 
+		final NumberChromosome<N, G>
 		c2 = (NumberChromosome<N, G>)getFactory().newInstance();
 		
 		
@@ -57,7 +57,7 @@ public abstract class NumberChromosomeTester<
 	@Test
 	public void geneMinMax() {
 		@SuppressWarnings("unchecked")
-		final NumberChromosome<N, G> 
+		final NumberChromosome<N, G>
 		c = (NumberChromosome<N, G>)getFactory().newInstance();
 		
 		for (G gene : c) {
@@ -69,7 +69,7 @@ public abstract class NumberChromosomeTester<
 	@Test
 	public void primitiveTypeAccess() {
 		@SuppressWarnings("unchecked")
-		final NumberChromosome<N, G> 
+		final NumberChromosome<N, G>
 		c = (NumberChromosome<N, G>)getFactory().newInstance();
 		
 		Assert.assertEquals(c.byteValue(), c.byteValue(0));
@@ -80,7 +80,7 @@ public abstract class NumberChromosomeTester<
 	}
 	
 	public void assertMinMax(
-		final NumberChromosome<N, G> c1, 
+		final NumberChromosome<N, G> c1,
 		final NumberChromosome<N, G> c2
 	) {
 		Assert.assertEquals(c1.getMin(), c2.getMin());

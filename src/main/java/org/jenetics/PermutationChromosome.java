@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -45,14 +45,14 @@ import org.jenetics.util.bit;
 
 
 /**
- * The mutable methods of the {@link AbstractChromosome} has been overridden so 
+ * The mutable methods of the {@link AbstractChromosome} has been overridden so
  * that no invalid permutation will be created.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class PermutationChromosome<T> 
-	extends AbstractChromosome<EnumGene<T>> 
+public final class PermutationChromosome<T>
+	extends AbstractChromosome<EnumGene<T>>
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
@@ -67,7 +67,7 @@ public final class PermutationChromosome<T>
 	
 	/**
 	 * Create a new, random chromosome with the given valid alleles.
-	 * 
+	 *
 	 * @param validAlleles the valid alleles used for this permutation arrays.
 	 */
 	public PermutationChromosome(final ISeq<T> validAlleles) {
@@ -84,7 +84,7 @@ public final class PermutationChromosome<T>
 	}
 	
 	/**
-	 * Check if this chromosome represents still a valid permutation. 
+	 * Check if this chromosome represents still a valid permutation.
 	 */
 	@Override
 	public boolean isValid() {
@@ -114,7 +114,7 @@ public final class PermutationChromosome<T>
 
 	/**
 	 * Return a more specific view of this chromosome factory.
-	 * 
+	 *
 	 * @return a more specific view of thiw chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
@@ -165,7 +165,7 @@ public final class PermutationChromosome<T>
 	
 	/**
 	 * Create a new PermutationChromosome from the given genes.
-	 * 
+	 *
 	 * @param genes the genes of this chromosome.
 	 * @return a new PermutationChromosome from the given genes.
 	 */
@@ -177,7 +177,7 @@ public final class PermutationChromosome<T>
 	
 	/**
 	 * Create a integer permutation chromosome with the given length.
-	 * 
+	 *
 	 * @param length the chromosome length.
 	 * @return a integer permutation chromosome with the given length.
 	 */
@@ -191,7 +191,7 @@ public final class PermutationChromosome<T>
 	 * ************************************************************************/
 	
 	@SuppressWarnings("rawtypes")
-	static final XMLFormat<PermutationChromosome> 
+	static final XMLFormat<PermutationChromosome>
 	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
 		
 		private static final String LENGTH = "length";
@@ -224,8 +224,8 @@ public final class PermutationChromosome<T>
 		}
 		
 		@Override
-		public void write(final PermutationChromosome chromosome, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final PermutationChromosome chromosome, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
 			for (Object allele : chromosome.getValidAlleles()) {
@@ -243,8 +243,8 @@ public final class PermutationChromosome<T>
 		@Override
 		public void read(
 			final InputElement element, final PermutationChromosome chromosome
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 		}
 	};
@@ -254,7 +254,7 @@ public final class PermutationChromosome<T>
 	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 		
@@ -266,7 +266,7 @@ public final class PermutationChromosome<T>
 	
 	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 		

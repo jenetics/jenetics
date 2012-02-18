@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics;
 
@@ -122,11 +122,11 @@ class TestUtils {
 	 *  Create a population of Float64Genes
 	 */
 	public static final Population<Float64Gene, Float64> newFloat64GenePopulation(
-		final int ngenes, 
-		final int nchromosomes, 
+		final int ngenes,
+		final int nchromosomes,
 		final int npopulation
 	) {
-		final Array<Float64Chromosome> chromosomes = 
+		final Array<Float64Chromosome> chromosomes =
 			new Array<>(nchromosomes);
 		
 		for (int i = 0; i < nchromosomes; ++i) {
@@ -134,7 +134,7 @@ class TestUtils {
 		}	
 		
 		final Genotype<Float64Gene> genotype = Genotype.valueOf(chromosomes.toISeq());
-		final Population<Float64Gene, Float64> population = 
+		final Population<Float64Gene, Float64> population =
 			new Population<>(npopulation);
 		
 		for (int i = 0; i < npopulation; ++i) {
@@ -145,8 +145,8 @@ class TestUtils {
 	}
 	
 	public static final Population<EnumGene<Float64>, Float64> newPermutationFloat64GenePopulation(
-		final int ngenes, 
-		final int nchromosomes, 
+		final int ngenes,
+		final int nchromosomes,
 		final int npopulation
 	) {
 		final Random random = RandomRegistry.getRandom();
@@ -156,7 +156,7 @@ class TestUtils {
 		}
 		final ISeq<Float64> ialleles = alleles.toISeq();
 		
-		final Array<PermutationChromosome<Float64>> chromosomes = 
+		final Array<PermutationChromosome<Float64>> chromosomes =
 			new Array<>(nchromosomes);
 		
 		for (int i = 0; i < nchromosomes; ++i) {
@@ -164,7 +164,7 @@ class TestUtils {
 		}	
 		
 		final Genotype<EnumGene<Float64>> genotype = Genotype.valueOf(chromosomes.toISeq());
-		final Population<EnumGene<Float64>, Float64> population = 
+		final Population<EnumGene<Float64>, Float64> population =
 			new Population<>(npopulation);
 		
 		for (int i = 0; i < npopulation; ++i) {
@@ -174,7 +174,7 @@ class TestUtils {
 		return population;
 	}
 	
-	private static final Function<Genotype<EnumGene<Float64>>, Float64> 
+	private static final Function<Genotype<EnumGene<Float64>>, Float64>
 	PFF = new Function<Genotype<EnumGene<Float64>>, Float64>() {
 		@Override
 		public Float64 apply(Genotype<EnumGene<Float64>> value) {
@@ -186,7 +186,7 @@ class TestUtils {
 	 * Count the number of different genes.
 	 */
 	public static int diff(
-		final Population<Float64Gene, Float64> p1, 
+		final Population<Float64Gene, Float64> p1,
 		final Population<Float64Gene, Float64> p2
 	) {
 		int count = 0;
@@ -212,7 +212,7 @@ class TestUtils {
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
-	private static final class Continous 
+	private static final class Continous
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
@@ -220,7 +220,7 @@ class TestUtils {
 		
 		@Override
 		public Float64 apply(Genotype<Float64Gene> genotype) {
-			return genotype.getChromosome().getGene().getAllele(); 
+			return genotype.getChromosome().getGene().getAllele();
 		}
 	}
 	
@@ -248,7 +248,7 @@ class TestUtils {
 	}
 	
 	public static Population<Float64Gene, Float64> newFloat64Population(final int length) {
-		final Population<Float64Gene, Float64> population = 
+		final Population<Float64Gene, Float64> population =
 			new Population<>(length);
 		
 		for (int i = 0; i < length; ++i) {

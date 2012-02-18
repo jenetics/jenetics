@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -31,14 +31,14 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * Implementation of a BitGene.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public enum BitGene 
-	implements 
-		Gene<Boolean, BitGene>, 
-		XMLSerializable 
+public enum BitGene
+	implements
+		Gene<Boolean, BitGene>,
+		XMLSerializable
 {
 	
 	FALSE(false),
@@ -57,7 +57,7 @@ public enum BitGene
 
 	/**
 	 * Return the value of the BitGene.
-	 * 
+	 *
 	 * @return The value of the BitGene.
 	 */
 	public final boolean getBit() {
@@ -66,9 +66,9 @@ public enum BitGene
 	
 	/**
 	 * Return the {@code boolean} value of this gene.
-	 * 
+	 *
 	 * @see #getAllele()
-	 * 
+	 *
 	 * @return the {@code boolean} value of this gene.
 	 */
 	public boolean booleanValue() {
@@ -82,7 +82,7 @@ public enum BitGene
 	
 	/**
 	 * Return always {@code true}.
-	 * 
+	 *
 	 * @return always {@code true}.
 	 */
 	@Override
@@ -128,21 +128,21 @@ public enum BitGene
 	 *  XML object serialization
 	 * ************************************************************************/
 	
-	static final XMLFormat<BitGene> 
-	XML = new XMLFormat<BitGene>(BitGene.class) 
+	static final XMLFormat<BitGene>
+	XML = new XMLFormat<BitGene>(BitGene.class)
 	{
 		private static final String VALUE = "value";
 		
 		@Override
-		public BitGene newInstance(final Class<BitGene> cls, final InputElement element) 
-			throws XMLStreamException 
+		public BitGene newInstance(final Class<BitGene> cls, final InputElement element)
+			throws XMLStreamException
 		{
 			final boolean value = element.getAttribute(VALUE, true);
 			return value ? BitGene.TRUE : BitGene.FALSE;
 		}
 		@Override
-		public void write(final BitGene gene, final OutputElement element) 
-			throws XMLStreamException 
+		public void write(final BitGene gene, final OutputElement element)
+			throws XMLStreamException
 		{
 			element.setAttribute(VALUE, gene._value);
 		}

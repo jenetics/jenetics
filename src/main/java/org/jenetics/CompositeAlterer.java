@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -39,56 +39,56 @@ import org.jenetics.util.Seq;
 
 /**
  * Combines several alterers to one.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class CompositeAlterer<G extends Gene<?, G>> 
-	extends AbstractAlterer<G> 
+public final class CompositeAlterer<G extends Gene<?, G>>
+	extends AbstractAlterer<G>
 {
 
 	private final ISeq<Alterer<G>> _alterers;
 	
 	/**
 	 * Combine the given alterers.
-	 * 
+	 *
 	 * @param a1 first alterer.
 	 * @param a2 second alterer.
 	 * @throws NullPointerException if one of the alterer is {@code null}.
 	 */
 	public CompositeAlterer(
-		final Alterer<G> a1, 
+		final Alterer<G> a1,
 		final Alterer<G> a2
 	) {
 		this(new Array<>(
-				nonNull(a1), 
+				nonNull(a1),
 				nonNull(a2)
 			));
 	}
 	
 	/**
 	 * Combine the given alterers.
-	 * 
+	 *
 	 * @param a1 first alterer.
 	 * @param a2 second alterer.
 	 * @param a3 third alterer.
 	 * @throws NullPointerException if one of the alterer is {@code null}.
 	 */
 	public CompositeAlterer(
-		final Alterer<G> a1, 
-		final Alterer<G> a2, 
+		final Alterer<G> a1,
+		final Alterer<G> a2,
 		final Alterer<G> a3
 	) {
 		this(new Array<>(
-				nonNull(a1), 
-				nonNull(a2), 
+				nonNull(a1),
+				nonNull(a2),
 				nonNull(a3)
 			));
 	}
 	
 	/**
 	 * Combine the given alterers.
-	 * 
+	 *
 	 * @param a1 first alterer.
 	 * @param a2 second alterer.
 	 * @param a3 third alterer.
@@ -96,22 +96,22 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if one of the alterer is {@code null}.
 	 */
 	public CompositeAlterer(
-		final Alterer<G> a1, 
-		final Alterer<G> a2, 
+		final Alterer<G> a1,
+		final Alterer<G> a2,
 		final Alterer<G> a3,
 		final Alterer<G> a4
 	) {
 		this(new Array<>(
-				nonNull(a1), 
-				nonNull(a2), 
-				nonNull(a3), 
+				nonNull(a1),
+				nonNull(a2),
+				nonNull(a3),
 				nonNull(a4)
 			));
 	}
 	
 	/**
 	 * Combine the given alterers.
-	 * 
+	 *
 	 * @param a1 first alterer.
 	 * @param a2 second alterer.
 	 * @param a3 third alterer.
@@ -120,24 +120,24 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if one of the alterer is {@code null}.
 	 */
 	public CompositeAlterer(
-		final Alterer<G> a1, 
-		final Alterer<G> a2, 
+		final Alterer<G> a1,
+		final Alterer<G> a2,
 		final Alterer<G> a3,
 		final Alterer<G> a4,
 		final Alterer<G> a5
 	) {
 		this(new Array<>(
-				nonNull(a1), 
-				nonNull(a2), 
-				nonNull(a3), 
-				nonNull(a4), 
+				nonNull(a1),
+				nonNull(a2),
+				nonNull(a3),
+				nonNull(a4),
 				nonNull(a5)
 			));
 	}
 	
 	/**
 	 * Combine the given alterers.
-	 * 
+	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
@@ -148,7 +148,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	
 	/**
 	 * Combine the given alterers.
-	 * 
+	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
@@ -183,7 +183,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 
 	@Override
 	public <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population, 
+		final Population<G, C> population,
 		final int generation
 	) {
 		final AtomicInteger alterations = new AtomicInteger(0);
@@ -200,7 +200,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	
 	/**
 	 * Create a new CompositeAlterer with the given alterer appended.
-	 * 
+	 *
 	 * @param alterer the alterer to append.
 	 * @return a new CompositeAlterer.
 	 * @throws NullPointerException if the given alterer is {@code null}.
@@ -212,7 +212,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	/**
 	 * Return the alterers this alterer consists of. The returned array is sealed
 	 * and cannot be changed.
-	 * 
+	 *
 	 * @return the alterers this alterer consists of.
 	 */
 	public Seq<Alterer<G>> getAlterers() {
@@ -246,7 +246,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are
 	 * unpacked and appended to the newly created CompositeAlterer.
-	 * 
+	 *
 	 * @param <T> the gene type of the alterers.
 	 * @param a1 the first alterer.
 	 * @param a2 the second alterer.

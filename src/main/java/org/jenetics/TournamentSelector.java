@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	 
+ * 	
  */
 package org.jenetics;
 
@@ -30,23 +30,23 @@ import java.util.Random;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * In tournament selection the best {@link Phenotype} from a random sample of 
- * <i>s</i> individuals is chosen for the next generation. The samples are drawn 
- * (in this class) without replacement. An individual will win a tournament 
- * only if its fitness is greater than the fitness of the other <i>s-1</i> 
- * competitors. Note that the worst {@link Phenotype} individual never survives, 
- * and the best {@link Phenotype} individual wins in all the tournaments it 
+ * In tournament selection the best {@link Phenotype} from a random sample of
+ * <i>s</i> individuals is chosen for the next generation. The samples are drawn
+ * (in this class) without replacement. An individual will win a tournament
+ * only if its fitness is greater than the fitness of the other <i>s-1</i>
+ * competitors. Note that the worst {@link Phenotype} individual never survives,
+ * and the best {@link Phenotype} individual wins in all the tournaments it
  * participates.
- * 
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
 public class TournamentSelector<
-	G extends Gene<?, G>, 
+	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> 
+>
 	implements Selector<G, C>
 {
 	
@@ -60,9 +60,9 @@ public class TournamentSelector<
 	}
 	
 	/**
-	 * Create a tournament selector with the give sample size. The sample size 
+	 * Create a tournament selector with the give sample size. The sample size
 	 * must be greater than one.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the sample size is smaller than two.
 	 */
 	public TournamentSelector(final int sampleSize) {
@@ -76,13 +76,13 @@ public class TournamentSelector<
 
 	/**
 	 * @throws IllegalArgumentException if the sample size is greater than the
-	 * 		  population size or {@code count} is greater the the population 
+	 * 		  population size or {@code count} is greater the the population
 	 * 		  size or the _sampleSize is greater the the population size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
 	public Population<G, C> select(
-		final Population<G, C> population, 
+		final Population<G, C> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -152,12 +152,12 @@ public class TournamentSelector<
 		return _sampleSize == selector._sampleSize;
 	}
 	
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
 		return new TournamentSelector<>(sampleSize);
 	}
 	
-	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>> 
+	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<>();
 	}

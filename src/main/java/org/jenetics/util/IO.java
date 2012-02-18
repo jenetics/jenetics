@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -38,7 +38,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * Class for object serialization.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
@@ -53,8 +53,8 @@ public abstract class IO {
 	public static final IO xml = new IO() {
 		
 		@Override
-		public void write(final Object object, final OutputStream out) 
-			throws IOException 
+		public void write(final Object object, final OutputStream out)
+			throws IOException
 		{
 			try {
 				final OutputStream nco = new NonClosableOutputStream(out);
@@ -72,8 +72,8 @@ public abstract class IO {
 		}	
 		
 		@Override
-		public <T> T read(final Class<T> type, final InputStream in) 
-			throws IOException 
+		public <T> T read(final Class<T> type, final InputStream in)
+			throws IOException
 		{
 			try {
 				final InputStream nci = new NonClosableInputStream(in);
@@ -95,7 +95,7 @@ public abstract class IO {
 	public static IO object = new IO() {
 		
 		@Override
-		public void write(final Object object, final OutputStream out) 
+		public void write(final Object object, final OutputStream out)
 			throws IOException
 		{
 			final ObjectOutputStream oout = new ObjectOutputStream(out);
@@ -104,7 +104,7 @@ public abstract class IO {
 		}
 		
 		@Override
-		public <T> T read(final Class<T> type, final InputStream in) 
+		public <T> T read(final Class<T> type, final InputStream in)
 			throws IOException
 		{
 			final ObjectInputStream oin = new ObjectInputStream(in);
@@ -119,7 +119,7 @@ public abstract class IO {
 	
 	/**
 	 * Write the (serializable) object to the given path.
-	 * 
+	 *
 	 * @param object the object to serialize.
 	 * @param path the path to write the object to.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
@@ -133,13 +133,13 @@ public abstract class IO {
 	
 	/**
 	 * Write the (serializable) object to the given path.
-	 * 
+	 *
 	 * @param object the object to serialize.
 	 * @param path the path to write the object to.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IOException if the object could not be serialized.
 	 */
-	public void write(final Object object, final Path path) 
+	public void write(final Object object, final Path path)
 		throws IOException
 	{
 		write(object, path.toFile());
@@ -147,7 +147,7 @@ public abstract class IO {
 	
 	/**
 	 * Write the (serializable) object to the given file.
-	 * 
+	 *
 	 * @param object the object to serialize.
 	 * @param file the file to write the object to.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
@@ -163,18 +163,18 @@ public abstract class IO {
 	
 	/**
 	 * Write the (serializable) object to the given output stream.
-	 * 
+	 *
 	 * @param object the object to serialize.
 	 * @param out the output stream to write the object to.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IOException if the object could not be serialized.
 	 */
-	public abstract void write(final Object object, final OutputStream out) 
+	public abstract void write(final Object object, final OutputStream out)
 		throws IOException;	
 	
 	/**
 	 * Reads an object from the given file.
-	 * 
+	 *
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -191,7 +191,7 @@ public abstract class IO {
 	
 	/**
 	 * Reads an object from the given file.
-	 * 
+	 *
 	 * @param path the path to read from.
 	 * @return the de-serialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
@@ -203,7 +203,7 @@ public abstract class IO {
 		
 	/**
 	 * Reads an object from the given file.
-	 * 
+	 *
 	 * @param path the path to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -220,7 +220,7 @@ public abstract class IO {
 	
 	/**
 	 * Reads an object from the given file.
-	 * 
+	 *
 	 * @param path the path to read from.
 	 * @return the de-serialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
@@ -232,7 +232,7 @@ public abstract class IO {
 	
 	/**
 	 * Reads an object from the given file.
-	 * 
+	 *
 	 * @param file the file to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
@@ -249,7 +249,7 @@ public abstract class IO {
 	
 	/**
 	 * Reads an object from the given file.
-	 * 
+	 *
 	 * @param file the file to read from.
 	 * @return the de-serialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
@@ -261,19 +261,19 @@ public abstract class IO {
 	
 	/**
 	 * Reads an object from the given input stream.
-	 * 
+	 *
 	 * @param in the input stream to read from.
 	 * @param type the type of the read object.
 	 * @return the de-serialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.
 	 * @throws IOException if the object could not be read.
 	 */
-	public abstract <T> T read(final Class<T> type, final InputStream in) 
+	public abstract <T> T read(final Class<T> type, final InputStream in)
 		throws IOException;
 	
 	/**
 	 * Reads an object from the given input stream.
-	 * 
+	 *
 	 * @param in the input stream to read from.
 	 * @return the de-serialized object.
 	 * @throws NullPointerException if the input stream {@code in} is {@code null}.

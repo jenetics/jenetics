@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *     
+ *
  */
 package org.jenetics.util;
 
@@ -41,21 +41,21 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		
 	transient ArrayRef _array;
 	transient int _start;
-	transient int _end; 
+	transient int _end;
 	transient int _length;
 	
 	/**
 	 * <i>Universal</i> array constructor.
-	 * 
-	 * @param array the array which holds the elements. The array will not be 
+	 *
+	 * @param array the array which holds the elements. The array will not be
 	 * 		 copied.
 	 * @param start the start index of the given array (exclusively).
 	 * @param end the end index of the given array (exclusively)
-	 * @param sealed the seal status. If {@code true} calls to 
-	 * 		 {@link #set(int, Object)} will throw an 
+	 * @param sealed the seal status. If {@code true} calls to
+	 * 		 {@link #set(int, Object)} will throw an
 	 * 		 {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
-	 * @throws IndexOutOfBoundsException for an illegal start/end point index 
+	 * @throws IndexOutOfBoundsException for an illegal start/end point index
 	 * 		  value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
@@ -280,12 +280,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	
 	@Override
 	public String toString(
-		final String prefix, 
+		final String prefix,
 		final String separator,
 		final String suffix
 	) {
 		  final StringBuilder out = new StringBuilder();
-		  
+		
 		  out.append(prefix);
 		  if (length() > 0) {
 			out.append(_array.data[_start]);
@@ -295,7 +295,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			out.append(_array.data[i]);
 		  }
 		  out.append(suffix);
-		  
+		
 		  return out.toString();		
 	}
 	
@@ -310,7 +310,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -321,7 +321,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	

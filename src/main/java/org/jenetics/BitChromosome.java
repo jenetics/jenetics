@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -50,14 +50,14 @@ import org.jenetics.util.bit;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class BitChromosome extends Number<BitChromosome> 
-	implements 
-		Chromosome<BitGene>, 
-		XMLSerializable 
+public class BitChromosome extends Number<BitChromosome>
+	implements
+		Chromosome<BitGene>,
+		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -78,8 +78,8 @@ public class BitChromosome extends Number<BitChromosome>
 	protected byte[] _genes;
 
 	/**
-	 * Construct a new BitChromosome with the given _length. 
-	 * 
+	 * Construct a new BitChromosome with the given _length.
+	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
@@ -103,7 +103,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Constructing a new BitChromosome with the given _length. The TRUEs and
 	 * FALSE in the {@code Chromosome} are equaly distributed.
-	 * 
+	 *
 	 * @param length Length of the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>_length</code> is smaller
 	 *         than one.
@@ -115,11 +115,11 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Constructing a new BitChromosome from a given BitSet.
 	 * The BitSet is copied while construction. The length of the constructed
-	 * BitChromosome will be <code>bitSet.length()</code> 
+	 * BitChromosome will be <code>bitSet.length()</code>
 	 * (@see BitSet#length).
-	 * 
-	 * @param bits 
-	 * @throws NullPointerException if the <code>bitSet</code> is 
+	 *
+	 * @param bits
+	 * @throws NullPointerException if the <code>bitSet</code> is
 	 *         <code>null</code>.
 	 */
 	public BitChromosome (final BitSet bits) {
@@ -131,7 +131,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @param bits
 	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
 	 *         than one.
-	 * @throws NullPointerException if the <code>bitSet</code> is 
+	 * @throws NullPointerException if the <code>bitSet</code> is
 	 *         <code>null</code>.
 	 */
 	public BitChromosome(final int length, final BitSet bits) {
@@ -166,7 +166,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Create a new {@code BitChromosome} from the given character sequence
 	 * containing '0' and '1'.
-	 * 
+	 *
 	 * @param value the input string.
 	 * @throws NullPointerException if the {@code value} is {@code null}.
 	 * @throws IllegalArgumentException if the length of the character sequence
@@ -260,8 +260,8 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	/**
-	 * Return the long value this BitChromosome represents. 
-	 * 
+	 * Return the long value this BitChromosome represents.
+	 *
 	 * @return Long value this BitChromosome represents.
 	 */
 	@Override
@@ -271,8 +271,8 @@ public class BitChromosome extends Number<BitChromosome>
 
 
 	/**
-	 * Return the double value this BitChromosome represents. 
-	 * 
+	 * Return the double value this BitChromosome represents.
+	 *
 	 * @return Double value this BitChromosome represents.
 	 */
 	@Override
@@ -286,8 +286,8 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	/**
-	 * Return the LargeInteger value this BitChromosome represents. 
-	 * 
+	 * Return the LargeInteger value this BitChromosome represents.
+	 *
 	 * @return LargeInteger value this BitChromosome represents.
 	 */
 	public LargeInteger toLargeInteger() {
@@ -295,24 +295,24 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	/**
-	 * Returns the two's-complement binary representation of this 
+	 * Returns the two's-complement binary representation of this
 	 * large integer. The output array is in <i>big-endian</i>
 	 * byte-order: the most significant byte is at the offset position.
-	 * 
+	 *
 	 * <p>Note: This representation is consistent with <code>java.lang.BigInteger
-	 *          </code> byte array representation and can be used for conversion 
+	 *          </code> byte array representation and can be used for conversion
 	 *          between the two classes.</p>
-	 * 
-	 * @param bytes the bytes to hold the binary representation 
+	 *
+	 * @param bytes the bytes to hold the binary representation
 	 *	       (two's-complement) of this large integer.
 	 * @return the number of bytes written.
-	 * @throws IndexOutOfBoundsException 
-	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}  
+	 * @throws IndexOutOfBoundsException
+	 *         if {@code bytes.length < (int)Math.ceil(length()/8.0)}
 	 * @throws NullPointerException it the give array is {@code null}.
 	 */
 	public int toByteArray(final byte[] bytes) {
 		if (bytes.length < _genes.length) {
-			throw new IndexOutOfBoundsException(); 
+			throw new IndexOutOfBoundsException();
 		}
 		
 		System.arraycopy(_genes, 0, bytes, 0, _genes.length);
@@ -321,7 +321,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	/**
-	 * @return a byte array which represents this {@code BitChromosome}. The 
+	 * @return a byte array which represents this {@code BitChromosome}. The
 	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
 	 * @see #toByteArray(byte[])
 	 */
@@ -332,8 +332,8 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	/**
-	 * Return the corresponding BitSet of this BitChromosome. 
-	 * 
+	 * Return the corresponding BitSet of this BitChromosome.
+	 *
 	 * @return The corresponding BitSet of this BitChromosome.
 	 */
 	public BitSet toBitSet() {
@@ -374,7 +374,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Return the BitChromosome as String. A TRUE is represented by a 1 and
 	 * a FALSE by a 0.
-	 * 
+	 *
 	 * @return String representation (containing only '1' and '0') of the
 	 *         BitChromosome.
 	 */
@@ -412,7 +412,7 @@ public class BitChromosome extends Number<BitChromosome>
 	
 	/**
 	 * Invert the ones and zeros of this bit chromosome.
-	 * 
+	 *
 	 * @return a new BitChromosome with inverted ones and zeros.
 	 */
 	public BitChromosome invert() {
@@ -482,7 +482,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Convert a string which was created with the {@link #toString(byte...)}
 	 * method back to an byte array.
-	 * 
+	 *
 	 * @param data the string to convert.
 	 * @return the byte array.
 	 * @throws IllegalArgumentException if the given data string could not be
@@ -508,14 +508,14 @@ public class BitChromosome extends Number<BitChromosome>
 		
 		return bytes;
 	}
-	 
+	
 	
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/	
 	
-	static final XMLFormat<BitChromosome> 
-	XML = new XMLFormat<BitChromosome>(BitChromosome.class) 
+	static final XMLFormat<BitChromosome>
+	XML = new XMLFormat<BitChromosome>(BitChromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String PROBABILITY = "probability";
@@ -523,8 +523,8 @@ public class BitChromosome extends Number<BitChromosome>
 		@Override
 		public BitChromosome newInstance(
 			final Class<BitChromosome> cls, final InputElement xml
-		) 
-			throws XMLStreamException 
+		)
+			throws XMLStreamException
 		{
 			final int length = xml.getAttribute(LENGTH, 1);
 			final double probability = xml.getAttribute(PROBABILITY, 0.5);
@@ -533,10 +533,10 @@ public class BitChromosome extends Number<BitChromosome>
 			chromosome._p = probability;
 			chromosome._length = length;
 			return chromosome;
-		} 
+		}
 		@Override
-		public void write(final BitChromosome chromosome, final OutputElement xml) 
-			throws XMLStreamException 
+		public void write(final BitChromosome chromosome, final OutputElement xml)
+			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
 			xml.setAttribute(PROBABILITY, chromosome._p);
@@ -552,7 +552,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * ************************************************************************/
 	
 	private void writeObject(final ObjectOutputStream out)
-		throws IOException 
+		throws IOException
 	{
 		out.defaultWriteObject();
 	
@@ -563,7 +563,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 	
 	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException 
+		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
 	

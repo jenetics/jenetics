@@ -1,24 +1,24 @@
 /*
  * Java Genetic Algorithm Library (@!identifier!@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
- *  
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 
+ *
  */
 package org.jenetics;
 
@@ -33,23 +33,23 @@ import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * The GaussianMutator class performs the mutation of a {@link NumberGene}. 
- * This mutator picks a new value based on a Gaussian distribution around the 
+ * The GaussianMutator class performs the mutation of a {@link NumberGene}.
+ * This mutator picks a new value based on a Gaussian distribution around the
  * current value of the gene. The variance of the new value (before clipping to
- * the allowed gene range) will be 
+ * the allowed gene range) will be
  * <p>
- * <img 
- *     src="doc-files/gaussian-mutator-var.gif" 
- *     alt="\hat{\sigma }^2 = \left ( \frac{ G_{max} - G_{min} }{4}\right )^2" 
+ * <img
+ *     src="doc-files/gaussian-mutator-var.gif"
+ *     alt="\hat{\sigma }^2 = \left ( \frac{ G_{max} - G_{min} }{4}\right )^2"
  * />
  * </p>
  * The new value will be cropped to the gene's boundaries.
  *
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class GaussianMutator<G extends NumberGene<?, G>> 
+public final class GaussianMutator<G extends NumberGene<?, G>>
 	extends Mutator<G>
 	implements Immutable
 {
@@ -77,7 +77,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	}
 	
 	G mutate(final G gene, final Random random) {
-		final double std = 
+		final double std =
 			(gene.getMax().doubleValue() - gene.getMin().doubleValue())/4.0;
 		
 		double value = random.nextGaussian()*std + gene.doubleValue();
