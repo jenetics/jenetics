@@ -26,7 +26,7 @@
       <fontname>Dialog</fontname>
       <fontsize>12</fontsize>
       <defaultstereotypeview>0</defaultstereotypeview>
-      <activediagram>Genetic operator class diagram</activediagram>
+      <activediagram>Structure class diagram</activediagram>
     </settings>
     <searchpath href="PROJECT_DIR" />
     <members>
@@ -62,7 +62,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat Feb 18 23:43:22 CET 2012'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat Feb 18 23:51:13 CET 2012'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -122,25 +122,7 @@
         </UML:Association>
         <UML:Class xmi.id = '127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A'
           name = 'Genotype' visibility = 'public' isSpecification = 'false' isRoot = 'false'
-          isLeaf = 'false' isAbstract = 'false' isActive = 'false'>
-          <UML:Classifier.feature>
-            <UML:Attribute xmi.id = '127-0-1-1-77d0c471:13592957b07:-8000:0000000000000AB2'
-              name = 'newAttr' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
-              changeability = 'changeable' targetScope = 'instance'>
-              <UML:StructuralFeature.multiplicity>
-                <UML:Multiplicity xmi.id = '127-0-1-1-77d0c471:13592957b07:-8000:0000000000000AB3'>
-                  <UML:Multiplicity.range>
-                    <UML:MultiplicityRange xmi.id = '127-0-1-1-77d0c471:13592957b07:-8000:0000000000000AB4'
-                      lower = '1' upper = '1'/>
-                  </UML:Multiplicity.range>
-                </UML:Multiplicity>
-              </UML:StructuralFeature.multiplicity>
-              <UML:StructuralFeature.type>
-                <UML:DataType href = 'http://argouml.org/profiles/uml14/default-uml14.xmi#-84-17--56-5-43645a83:11466542d86:-8000:000000000000087C'/>
-              </UML:StructuralFeature.type>
-            </UML:Attribute>
-          </UML:Classifier.feature>
-        </UML:Class>
+          isLeaf = 'false' isAbstract = 'false' isActive = 'false'/>
         <UML:Association xmi.id = '127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7B'
           name = '' isSpecification = 'false' isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Association.connection>
@@ -1006,7 +988,7 @@
       strokecolor="black"
     />
     <group name="Fig3.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[369, 328, 190, 24]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[369, 328, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
          fill="0"
          fillcolor="135 206 235"
@@ -1020,32 +1002,16 @@
         x="369"
         y="328"
         width="190"
-        height="24"
+        height="21"
         fill="0"
         fillcolor="white"
         stroke="0"
         strokecolor="black"
       />
-      <text name="Fig3.4.1"
-        x="369"
-        y="328"
-        width="190"
-        height="22"
-        fill="0"
-        fillcolor="135 206 235"
-        stroke="0"
-        strokecolor="black"
-        textcolor="black"
-        font="Dialog"
-        italic="false"
-        bold="false"
-        textsize="12"
-        justification="Left"
-      >newAttr : Integer</text>
     </group>
     <rectangle name="Fig3.5"
       x="368"
-      y="351"
+      y="349"
       width="192"
       height="1"
       fill="1"
@@ -1054,7 +1020,7 @@
       strokecolor="black"
     />
     <group name="Fig3.6"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 352, 190, 21]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[369, 350, 190, 21]"
          href="127-0-1-1--3cfd4962:1349f59fd96:-8000:0000000000000A7A"
          fill="0"
          fillcolor="135 206 235"
@@ -1066,7 +1032,7 @@
       
       <rectangle name="Fig3.6.0"
         x="369"
-        y="352"
+        y="350"
         width="190"
         height="21"
         fill="0"
