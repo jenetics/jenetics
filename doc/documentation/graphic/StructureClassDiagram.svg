@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg height="607" version="1.1" width="492" xmlns="http://www.w3.org/2000/svg">
-<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="286" y="526"/>
-<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="286" y="526"/>
-<text font-family="Dialog" font-size="12" x="365" y="558">
+<svg height="484" version="1.1" width="492" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="14" y="398"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="398"/>
+<text font-family="Dialog" font-size="12" x="93" y="430">
 Gene</text>
-<text font-family="Dialog" font-size="12" x="334" y="540">
+<text font-family="Dialog" font-size="12" x="62" y="412">
 &lt;&lt;interface&gt;&gt;</text>
-<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="286" y="568"/>
-<text font-family="Dialog" font-size="12" x="290" y="582">
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="440"/>
+<text font-family="Dialog" font-size="12" x="18" y="454">
 getAllele()</text>
 <rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="286" y="398"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="286" y="398"/>
@@ -17,12 +17,12 @@ Chromosome</text>
 <text font-family="Dialog" font-size="12" x="334" y="412">
 &lt;&lt;interface&gt;&gt;</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="286" y="440"/>
-<polyline fill="none" points="382,464 382,526" stroke="#000000" stroke-width="1"/>
-<polygon fill="#ffffff" points="382,464 387,474 382,484 377,474" stroke="#ffffff" stroke-width="1"/>
-<polygon fill="none" points="382,464 387,474 382,484 377,474" stroke="#000000" stroke-width="1"/>
-<line fill="#000000" stroke="#000000" stroke-width="1" x1="375" x2="382" y1="514" y2="526"/>
-<line fill="#000000" stroke="#000000" stroke-width="1" x1="389" x2="382" y1="514" y2="526"/>
-<text font-family="Dialog" font-size="12" x="388" y="508">
+<polyline fill="none" points="286,430 205,430" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="286,430 276,435 266,430 276,425" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="286,430 276,435 266,430 276,425" stroke="#000000" stroke-width="1"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="217" x2="205" y1="423" y2="430"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="217" x2="205" y1="437" y2="430"/>
+<text font-family="Dialog" font-size="12" x="215" y="420">
 1..*</text>
 <rect fill="#ffffff" height="67" stroke="#ffffff" stroke-width="1" width="192" x="286" y="270"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="286" y="270"/>
