@@ -1509,7 +1509,7 @@ Jenetics
 \end_layout
 
 \begin_layout Section
-Genetic operators
+Genetic Operators
 \end_layout
 
 \begin_layout Standard
@@ -2765,7 +2765,7 @@ C2 = 987|345|6210
 \end_layout
 
 \begin_layout Section
-Practice
+Nuts and Bolts
 \end_layout
 
 \begin_layout Subsection
@@ -4428,7 +4428,7 @@ Jenetics
 \end_layout
 
 \begin_layout Subsection
-Ones counting
+Ones Counting
 \end_layout
 
 \begin_layout Standard
@@ -4443,165 +4443,14 @@ real
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-class OneCounter implements Function<Genotype<BitGene>, Integer> {
-\end_layout
 
-\begin_layout Plain Layout
-
-    @Override 		
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Integer apply(Genotype<BitGene> genotype) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        int count = 0;
-\end_layout
-
-\begin_layout Plain Layout
-
-        for (BitGene gene : genotype.getChromosome()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-            if (gene.getBit()) {
-\end_layout
-
-\begin_layout Plain Layout
-
-                ++count;
-\end_layout
-
-\begin_layout Plain Layout
-
-            }
-\end_layout
-
-\begin_layout Plain Layout
-
-        }
-\end_layout
-
-\begin_layout Plain Layout
-
-        return count;
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-public class OnesCounting {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-\end_layout
-
-\begin_layout Plain Layout
-
-            new BitChromosome(20, 0.3333)
-\end_layout
-
-\begin_layout Plain Layout
-
-        );
-\end_layout
-
-\begin_layout Plain Layout
-
-        final OneCounter ff = new OneCounter();
-\end_layout
-
-\begin_layout Plain Layout
-
-        final GeneticAlgorithm<BitGene, Integer> ga = 
-\end_layout
-
-\begin_layout Plain Layout
-
-            new GeneticAlgorithm<>(gtf, ff);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setAlterers(
-\end_layout
-
-\begin_layout Plain Layout
-
-            new Mutator<BitGene>(0.55),
-\end_layout
-
-\begin_layout Plain Layout
-
-            new SinglePointChrossover<BitGene>(0.06)
-\end_layout
-
-\begin_layout Plain Layout
-
-        );
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.evolve(100);
-\end_layout
-
-\begin_layout Plain Layout
-
-        System.out.println(ga.getBestStatistics());
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+\backslash
+lstinputlisting{code/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -4688,7 +4537,7 @@ The given example will print the overall timing statistics onto the console.
 \end_layout
 
 \begin_layout Subsection
-Real function
+Real Function
 \end_layout
 
 \begin_layout Standard
@@ -4745,174 +4594,58 @@ Real function 2D
 \end_layout
 
 \begin_layout Standard
-The for find the minimum value of this function will look like this:
+For find the minimum value of this function will look like this:
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-class RealFunction 
+
+\backslash
+lstinputlisting{code/RealFunction.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And the generated console output will be:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
 \end_layout
 
 \begin_layout Plain Layout
 
-    implements Function<Genotype<Float64Gene>, Float64> 
+
+\backslash
+lstinputlisting{code/RealFunction.out}
 \end_layout
 
 \begin_layout Plain Layout
 
-{
-\end_layout
 
-\begin_layout Plain Layout
-
-    @Override
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Double apply(Genotype<Float64> genotype) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        final double x = genotype.getGene().doubleValue();
-\end_layout
-
-\begin_layout Plain Layout
-
-        return Float64.valueOf(cos(0.5 + sin(x))*cos(x));
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-public class Real {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        Factory<Genotype<Float64Gene>> gtf = Genotype.valueOf(
-\end_layout
-
-\begin_layout Plain Layout
-
-            new Float64Chromosome(0.0, 2.0*PI)
-\end_layout
-
-\begin_layout Plain Layout
-
-        );
-\end_layout
-
-\begin_layout Plain Layout
-
-        RealFunction ff = new RealFunction();
-\end_layout
-
-\begin_layout Plain Layout
-
-        GeneticAlgorithm<Float64Gene, Double> ga =
-\end_layout
-
-\begin_layout Plain Layout
-
-            new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setStatisticsCalculator(
-\end_layout
-
-\begin_layout Plain Layout
-
-            new NumberStatistics.Calculator<Float64Gene, Double>()
-\end_layout
-
-\begin_layout Plain Layout
-
-        );
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setFitnessScaler(SQR_SCALER);
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setPopulationSize(20);
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setAlterers(
-\end_layout
-
-\begin_layout Plain Layout
-
-            new Mutator<Float64Gene>(0.03),
-\end_layout
-
-\begin_layout Plain Layout
-
-            new MeanAlterer<Float64Gene>(0.6)
-\end_layout
-
-\begin_layout Plain Layout
-
-        );
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.setup();
-\end_layout
-
-\begin_layout Plain Layout
-
-        ga.evolve(100);
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
 \end_layout
 
 \end_inset
