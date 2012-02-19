@@ -18,81 +18,63 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.examples;
 
-import java.io.Serializable;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.CompositeAlterer;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
+import org.jenetics.Optimize;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
-public class OnesCounting {
-
-	private static class OneCounter
-		implements Function<Genotype<BitGene>, Integer>,
-					Serializable
-	{
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Integer apply(Genotype<BitGene> genotype) {
-			int count = 0;
-			for (BitGene gene : genotype.getChromosome()) {
-				if (gene.getBit()) {
-					++count;
-				}
+final class OneCounter
+	implements Function<Genotype<BitGene>, Integer>
+{
+	@Override
+	public Integer apply(Genotype<BitGene> genotype) {
+		int count = 0;
+		for (BitGene gene : genotype.getChromosome()) {
+			if (gene.getBit()) {
+				++count;
 			}
-			return count;
 		}
-		
-		@Override
-		public String toString() {
-			return "OneCounter";
-		}
-		
+		return count;
 	}
-	
+}
 
+public class OnesCounting {
 	public static void main(String[] args) {
-		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
-				new BitChromosome(20, 0.15)
+		Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+			new BitChromosome(20, 0.15)
 		);
-		final OneCounter ff = new OneCounter();
-		final GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<>(gtf, ff);
-		
-		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Integer>());
+		Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+		GeneticAlgorithm<BitGene, Integer> ga =
+		new GeneticAlgorithm<>(
+			gtf, ff, Optimize.MAXIMUM
+		);
+
+		ga.setStatisticsCalculator(
+			new NumberStatistics.Calculator<BitGene, Integer>()
+		);
 		ga.setPopulationSize(50);
-		ga.setSelectors(new RouletteWheelSelector<BitGene, Integer>());
+		ga.setSelectors(
+			new RouletteWheelSelector<BitGene, Integer>()
+		);
 		ga.setAlterers(
 			new Mutator<BitGene>(0.55),
 			new SinglePointCrossover<BitGene>(0.06)
 		);
-		
-		final int generations = 100;
-		
-		GAUtils.printConfig(
-				"Ones counting",
-				ga,
-				generations,
-				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
-			);
-		
-		GAUtils.execute(ga, generations, 10);
+
+		ga.setup();
+		ga.evolve(100);
+		System.out.println(ga.getBestStatistics());
 	}
 
 }
