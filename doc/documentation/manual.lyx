@@ -133,7 +133,7 @@ status open
 
 
 \backslash
-pagecolor{covercolor} 
+pagecolor{white} 
 \end_layout
 
 \end_inset
@@ -1881,7 +1881,7 @@ reference "fig:Fitness-proportional-selection"
 \begin_inset Formula $r\in\left[0,F\right)$
 \end_inset
 
- specifies which individual is selected by argument maximization: 
+ specifies which individual is selected by argument minimization: 
 \begin_inset Formula 
 \begin{equation}
 i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
