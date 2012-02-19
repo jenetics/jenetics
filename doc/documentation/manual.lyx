@@ -4380,19 +4380,266 @@ Jenetics
 \end_layout
 
 \begin_layout Standard
-This section describes how you can extend the existing classes.
+I you are missing some functionality to solve your problem, this section
+ describes how you can extend the existing classes.
 \end_layout
 
 \begin_layout Subsection
-Genes and Chromosomes
+Genes
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Gene<A, G extends Gene<A, G>>
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Factory<G>, Serializable, ValueType, Verifiable
+\end_layout
+
+\begin_layout Plain Layout
+
+{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+    public A getAllele();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public G newInstance();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean isValid();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Chromosomes
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Chromosome<T extends Gene<?, T>>
+\end_layout
+
+\begin_layout Plain Layout
+
+	extends Factory<Chromosome<T>>, Iterable<T>, Verifiable, 
+\end_layout
+
+\begin_layout Plain Layout
+
+            Immutable, Serializable
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Chromosome<T> newInstance(final ISeq<T> genes);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T getGene();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T getGene(final int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ISeq<T> toSeq();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int length();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Selectors
 \end_layout
 
+\begin_layout Standard
+If you want to implement your own selection strategy you only have to implement
+ the 
+\family typewriter
+Selector
+\family default
+ interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Selector<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C> >
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Population<G, C> select(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Population<G, C> population,
+\end_layout
+
+\begin_layout Plain Layout
+
+        int count,
+\end_layout
+
+\begin_layout Plain Layout
+
+        Optimize opt
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first parameter is the original 
+\family typewriter
+population
+\family default
+ from which to select the sub-population.
+ The second parameter, 
+\family typewriter
+count
+\family default
+, is the number of individuals to select from the population.
+ The last parameter, 
+\family typewriter
+opt
+\family default
+, determines the optimization strategy to use for this selection call.
+ Consider to extend your selector from the 
+\family typewriter
+ProbabilitySelector
+\family default
+ if you can express your selection strategy in terms of selection property
+ 
+\begin_inset Formula $P(i)$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsection
 Alterers
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Alterer<G extends Gene<?, G>> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public <C extends Comparable<? super C>> int alter(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> population,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final int generation
+\end_layout
+
+\begin_layout Plain Layout
+
+    ); 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
