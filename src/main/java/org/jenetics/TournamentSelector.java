@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -49,7 +49,7 @@ public class TournamentSelector<
 >
 	implements Selector<G, C>
 {
-	
+
 	private final int _sampleSize;
 
 	/**
@@ -58,7 +58,7 @@ public class TournamentSelector<
 	public TournamentSelector() {
 		this(2);
 	}
-	
+
 	/**
 	 * Create a tournament selector with the give sample size. The sample size
 	 * must be greater than one.
@@ -106,39 +106,39 @@ public class TournamentSelector<
 				 _sampleSize, population.size()
 			));
 		}
-		
+
 		final Population<G, C> pop = new Population<>(count);
 		if (count == 0) {
 			return pop;
 		}
-		
+
 		Phenotype<G, C> winner = null;
-		
+
 		final int N = population.size();
 		final Random random = RandomRegistry.getRandom();
-		
+
 		for (int i = 0; i < count; ++i) {
 			winner = population.get(random.nextInt(N));
-			
+
 			for (int j = 0; j < _sampleSize; ++j) {
 				final Phenotype<G, C> selection = population.get(random.nextInt(N));
 				if (opt.compare(selection, winner) > 0) {
 					winner = selection;
 				}
 			}
-			
+
 			assert (winner != null);
 			pop.add(winner);
 		}
-		
+
 		return pop;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_sampleSize).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -147,21 +147,21 @@ public class TournamentSelector<
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final TournamentSelector<?, ?> selector = (TournamentSelector<?, ?>)obj;
 		return _sampleSize == selector._sampleSize;
 	}
-	
+
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf(final int sampleSize) {
 		return new TournamentSelector<>(sampleSize);
 	}
-	
+
 	public static <SG extends Gene<?, SG>, SC extends Comparable<SC>>
 	TournamentSelector<SG, SC> valueOf() {
 		return new TournamentSelector<>();
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);

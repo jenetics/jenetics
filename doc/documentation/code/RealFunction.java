@@ -38,7 +38,6 @@ public class RealFunction {
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<Float64Gene, Float64>()
 		);
-		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(20);
 		ga.setAlterers(
 			new Mutator<Float64Gene>(0.03),
