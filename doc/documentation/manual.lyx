@@ -295,9 +295,17 @@ status open
 
 \begin_layout Standard
 \noindent
+\begin_inset Flex URL
+status open
 
-\size small
+\begin_layout Plain Layout
+
 http://jenetics.sourceforge.net/
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -404,10 +412,16 @@ Population
  Function
 \family default
 .
-\end_layout
-
-\begin_layout Abstract
-This manual describes the concepts implemented in the
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ lets you minimize and maximize the given fitness function.
+ This manual describes the concepts implemented in the
 \family sans
 \series bold
 \shape smallcaps
@@ -499,7 +513,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Genetic algorithms was first proposed and analyzed by 
@@ -516,9 +530,14 @@ target "http://en.wikipedia.org/wiki/John_Henry_Holland"
 \end_inset
 
  (GA) implementation.
- The project depends on the JScience
+ The project has very few dependencies to other libraries.
+ At runtime it only depends on the 
+\emph on
+JScience
+\emph default
+
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -536,7 +555,53 @@ http://jscience.org/
 
 \end_inset
 
- library and uses its support for XML-serialization and concurrency.
+ library.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Jenetics uses the XML-serialization support and the concurrent capability.
+\end_layout
+
+\end_inset
+
+ For building the library from the sources you only need 
+\emph on
+Ant
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://ant.apache.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to be installed, all other dependencies available in the package which
+ you can download from 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://sourceforge.net/projects/jenetics/files/jenetics/
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -725,26 +790,27 @@ Genetic algorithm
 \end_layout
 
 \begin_layout Standard
-The first line creates the initial population and the second line calculates
- the fitness value of the individuals.
+Line (1) creates the initial population and the line (2) calculates the
+ fitness value of the individuals.
  (This is done by the 
 \family typewriter
 GeneticAlgorithm.setup()
 \family default
- method.) Line 4 increases the generation number and line 5 and 6 selects
+ method.) Line (4) increases the generation number and line (5) and (6) selects
  the survivor and the offspring population.
- (The survivor/offspring fraction is set with the 
+ The survivor/offspring fraction is determined by the 
 \family typewriter
-GeneticAlgorithm.setOffspringFraction(double)
+offspringFraction
 \family default
- method.) The selected off-springs are altered in line 7.
+ property.
+ The selected offspring are altered in line (7).
  The next line combines the survivor population and the altered offspring
  population, after removing the 
 \shape italic
 died
 \shape default
  individuals, to the new population.
- The steps from line 4 to 9 are repeated until a given termination criterion
+ The steps from line (4) to (9 )are repeated until a given termination criterion
  is fulfilled.
 \end_layout
 
@@ -799,12 +865,47 @@ reference "fig:Structure-diagram"
 
 \end_inset
 
- shows the main data structures of the GA.
- The Gene is the base of the class structure.
- Genes are aggregated in Chromosomes.
- One to n Chromosomes are aggregated in Genotypes.
- A Genotype and a fitness function from the Phenotype are collected into
- a Population.
+ shows the class-diagram of the main structures of the GA.
+ The 
+\family typewriter
+Gene
+\family default
+ is the base of the class structure.
+ 
+\family typewriter
+Gene
+\family default
+s are aggregated in 
+\family typewriter
+Chromosome
+\family default
+s.
+ One to n 
+\family typewriter
+Chromosome
+\family default
+s are aggregated in 
+\family typewriter
+Genotype
+\family default
+s.
+ A 
+\family typewriter
+Genotype
+\family default
+ and a fitness 
+\family typewriter
+Function
+\family default
+ from the 
+\family typewriter
+Phenotype
+\family default
+ are collected into a 
+\family typewriter
+Population
+\family default
+.
 \end_layout
 
 \begin_layout Section
@@ -812,7 +913,7 @@ Getting started
 \end_layout
 
 \begin_layout Standard
-The minimum GA setup needs a genotype-factory, 
+The minimum GA setup needs a genotype factory, 
 \family typewriter
 Factory<Genotype<?>>
 \family default
@@ -833,7 +934,7 @@ Factory
 \family typewriter
 Population
 \family default
- and for creating new, random 
+ and for creating new random 
 \family typewriter
 Genotype
 \family default
@@ -868,7 +969,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    Function<Genotype<BitGene>, Double> ff = ...
+    Function<Genotype<BitGene>, Float64> ff = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -878,7 +979,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    ga = new GeneticAlgorithm<>(gtf, ff)
+    ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
 \end_layout
 
 \begin_layout Plain Layout
@@ -922,22 +1023,22 @@ BitChromosome
 \family default
  with length 10.
  The one to zero probability of the newly created genotypes is set to 0.5.
- The fitness-function is parameterized with a 
+ The fitness function is parameterized with a 
 \family typewriter
 BitGene
 \family default
  and a 
 \family typewriter
-Double
+Float64
 \family default
 .
- That means that the fitness-function is calculating the fitness value as
+ That means that the fitness function is calculating the fitness value as
  
 \family typewriter
-Double
+Float64
 \family default
 .
- The return value of the fitness-function must be at least 
+ The return value of the fitness function must be at least 
 \family typewriter
 Comparable
 \family default
@@ -946,23 +1047,24 @@ Comparable
 \family typewriter
 GeneticAlgorithm
 \family default
- object is then created with the genotype-factory and the fitness-function.
- For starting the evolution just call 
+ object is then created with the genotype factory and the fitness function.
+ In this example the GA tries to maximize the fitness function.
+ If you want to find the minimal value you have to change this parameter
+ to 
 \family typewriter
-ga.setup()
-\family default
- and 
-\family typewriter
-ga.evolve(100)
+Optimize.MINIMUM
 \family default
 .
  The 
 \family typewriter
 ga.setup()
 \family default
- call creates the initial population and calculates its fitness.
- Then the GA evolves 100 generations an prints the best phenotype found
- so far.
+ call creates the initial population and calculates it fitness value.
+ Then the GA evolves 100 generations (
+\family typewriter
+ga.evolve(100))
+\family default
+ an prints the best phenotype found so far.
  
 \end_layout
 
@@ -1052,8 +1154,8 @@ Base classes
 \end_layout
 
 \begin_layout Standard
-This chapter describes the base classes which enables you transform your
- actual problem into a structure so that it is solvable by 
+This chapter describes the base classes which enables you to transform your
+ actual problem into a structure that can be used by 
 \family sans
 \series bold
 \shape smallcaps
@@ -1088,7 +1190,12 @@ Genotype
 Phenotype
 \family default
  class is the actual representative of an individual, but only consists
- of the genotype and the fitness-function and doesn't change the basic structure.
+ of the genotype and the fitness function and doesn't change the basic structure.
+ The phenotype 
+\emph on
+only
+\emph default
+ forms the environment of the genotype.
 \end_layout
 
 \begin_layout Standard
@@ -1146,7 +1253,7 @@ reference "fig:Genotype-structure"
 \begin_inset Formula $N_{C[i]}$
 \end_inset
 
- genes (depends of the chromosome).
+ genes (depending of the chromosome).
  The overall number of genes of a genotype is therefore given by the sum
  of the chromosomes genes: 
 \begin_inset Formula 
@@ -1163,7 +1270,7 @@ The chromosomes doesn't have to have the same size.
 \end_inset
 
 g.
- the same min- and max values for number-genes.
+ the same min- and max values for number genes.
 \end_layout
 
 \begin_layout Standard
@@ -1173,7 +1280,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Genotype<Float64Gene> genotype = Genotype.valueOf(
+Genotype<Float64Gene> genotype = Genotype.valueOf(
 \end_layout
 
 \begin_layout Plain Layout
@@ -1221,13 +1328,6 @@ reference "fig:Genotype-structure"
 Float64Gene
 \family default
  has been chosen as gene type.
- A single gene can be accessed as followed via 
-\family typewriter
-\size small
-genotype.getChromosome(2).getGene(8)
-\family default
-\size default
-.
 \end_layout
 
 \begin_layout Paragraph
@@ -1235,7 +1335,7 @@ Fitness function
 \end_layout
 
 \begin_layout Standard
-The fitness function is also an essential part when modeling the GA.
+The fitness function is also another important part when modeling the GA.
  It takes a genotype as argument and returns, at least, a 
 \family typewriter
 Comparable
@@ -1247,7 +1347,8 @@ Comparable
 \family typewriter
 Comparable
 \family default
-, but this constraints is checked by the type system at compile time.
+, but this constraints can be checked by the Java type system at compile
+ time.
 \end_layout
 
 \begin_layout Standard
@@ -1300,6 +1401,10 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The first type parameter defines the kind of genotype from which the fitness
  value is calculated and the second type parameter determines the return
  type.
@@ -1345,6 +1450,8 @@ reference "par:Probability-selectors"
  probability.
  In such cases, the fitness scaler gives you additional flexibility when
  selecting offspring and survivors.
+ In the default configuration the raw-fitness is equal to the actual fitness
+ value, that means the used fitness scaler is the identity function.
 \begin_inset listings
 inline false
 status open
@@ -1436,8 +1543,9 @@ Jenetics
 \series default
 \shape default
  library.
- It also contains some theoretical information, which should help to choose
- the right combination of operators for your problem you want to solve.
+ It also contains some theoretical information, which should help you to
+ choose the right combination of operators, for your problem you want to
+ solve.
 \end_layout
 
 \begin_layout Subsection
@@ -1523,15 +1631,15 @@ ga.setOffspringSelector(
 \end_layout
 
 \begin_layout Standard
-With the property 
+The 
 \family typewriter
 offspringFraction
 \family default
-, 
+ property, 
 \begin_inset Formula $o_{f}$
 \end_inset
 
-, it is possible to control the number of selected offspring 
+, determines the number of selected offspring 
 \begin_inset Formula 
 \begin{equation}
 \left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot o_{f}\right)
@@ -1624,12 +1732,12 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \begin_inset Formula $s$
 \end_inset
 
- individuals is chosen for the population 
+ individuals is chosen from the population 
 \begin_inset Formula $Pg$
 \end_inset
 
 .
- The samples are drawn (in this class) with replacement.
+ The samples are drawn with replacement.
  An individual will win a tournament only if its fitness is greater than
  the fitness of the other 
 \begin_inset Formula $s-1$
@@ -1669,6 +1777,9 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \end_inset
 
  best individuals are selected.
+ The truncation selector is sorting the population before selecting the
+ individuals.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -1681,8 +1792,10 @@ The Monte Carlo selector selects the individuals from a given population
  This selector can be used to measure the performance of a other selectors.
  In general, the 
 \shape italic
+\emph on
 performance
 \shape default
+\emph default
  of a selector should be better than the selection performance of the Monte
  Carlo selector.
  
@@ -1710,7 +1823,7 @@ fitness proportional
 selection
 \shape default
  probability 
-\begin_inset Formula $P_{i}$
+\begin_inset Formula $P(i)$
 \end_inset
 
 .
@@ -1794,7 +1907,7 @@ where
 \end_inset
 
  is replaced by the individual's selection probability 
-\begin_inset Formula $P_{i}$
+\begin_inset Formula $P(i)$
 \end_inset
 
 .
@@ -1806,10 +1919,10 @@ where
  follows a binomial distribution 
 \begin_inset Formula 
 \begin{equation}
-P_{i}(k)=\left(\begin{array}{c}
+P(i,k)=\left(\begin{array}{c}
 n\\
 k
-\end{array}\right)P_{i}^{k}\left(1-P_{i}\right)^{n-k}
+\end{array}\right)P(i)^{k}\left(1-P(i)\right)^{n-k}
 \end{equation}
 
 \end_inset
@@ -1829,7 +1942,7 @@ where
  in the set of selected individuals.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subparagraph
 Roulette-wheel selector
 \end_layout
 
@@ -1847,7 +1960,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
  
 \begin_inset Formula 
 \begin{equation}
-P_{i}=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
+P(i)=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
 \end{equation}
 
 \end_inset
@@ -1861,10 +1974,10 @@ Selecting
 \end_inset
 
  times on the roulette-wheel.
- The population must not be sorted when selecting.
+ The population must not be sorted before selecting the individuals.
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subparagraph
 Linear-rank selector
 \end_layout
 
@@ -1877,7 +1990,7 @@ In linear-ranking selection the individuals are sorted according to their
 
  is assignee to the best individual and the rank 1 to the worst individual.
  The selection probability 
-\begin_inset Formula $p_{i}$
+\begin_inset Formula $P(i)$
 \end_inset
 
  of individual 
@@ -1890,7 +2003,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P_{i}=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
+P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
 
 \end_inset
@@ -1914,7 +2027,7 @@ Here
 
  must be fulfilled.
  Note that all individuals get a different rank, respectively, a different
- selection probability, even they have the same fitness value.
+ selection probability, even if they have the same fitness value.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Blickle97acomparison"
@@ -1924,7 +2037,7 @@ key "Blickle97acomparison"
 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subparagraph
 Exponential-rank selector
 \end_layout
 
@@ -1934,13 +2047,13 @@ An alternative to the
 weak
 \shape default
  linear-rank selector is to assign survival probabilities to the sorted
- individuals using an exponential function 
+ individuals using an exponential function: 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P_{i}=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
+P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
 
 \end_inset
@@ -1967,12 +2080,12 @@ where
  to one.
  The selection probability of all other individuals is zero.
  A value near one equalizes the selection probabilities.
- This selector sorts the population in descending order while calculating
+ This selector sorts the population in descending order before calculating
  the selection probabilities.
  
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subparagraph
 Boltzmann selector
 \end_layout
 
@@ -1980,7 +2093,7 @@ Boltzmann selector
 The selection probability of the Boltzmann selector is defined as 
 \begin_inset Formula 
 \begin{equation}
-P_{i}=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
+P(i)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
 
 \end_inset
@@ -1989,7 +2102,11 @@ where
 \begin_inset Formula $b$
 \end_inset
 
- controls the selection intensity and 
+ is a parameter which controls the selection intensity and 
+\begin_inset Formula $Z$
+\end_inset
+
+ is defined as 
 \begin_inset Formula 
 \begin{equation}
 Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}},
@@ -2027,7 +2144,7 @@ Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}},
 .
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subparagraph
 Stochastic-universal selector
 \end_layout
 
@@ -2042,7 +2159,7 @@ key "back1996evolutionary"
  (SUS) is a method for selecting individuals according to some given probability
  in a way that minimizes the chance of fluctuations.
  It can be viewed as a type of roulette game where we now have 
-\begin_inset Formula $P$
+\begin_inset Formula $p$
 \end_inset
 
  equally spaced points which we spin.
@@ -2694,6 +2811,8 @@ target "http://javolution.org/target/site/apidocs/javolution/context/ConcurrentC
  
 \family default
 from the 
+\emph on
+
 \begin_inset CommandInset href
 LatexCommand href
 name "Javolution"
@@ -2701,6 +2820,8 @@ target "http://javolution.org/"
 
 \end_inset
 
+
+\emph default
  project for concurrent task execution.
  In the default configuration the 
 \family typewriter
@@ -2875,8 +2996,11 @@ public class Main {
 
 \end_inset
 
-The concurrent context from the Javolution project is used in the following
- way.
+The concurrent context from the 
+\emph on
+Javolution
+\emph default
+ project is used in the following way.
  A detailed usage description about how to use it can be found at 
 \begin_inset Flex URL
 status collapsed
@@ -3979,8 +4103,8 @@ Jenetics
 \family default
 \series default
 \shape default
- has build-in XML serialization for a number of classes, all located in
- the 
+ supports serialization for a number of classes, most of them are located
+ in the 
 \family typewriter
 org.jenetics
 \family default
@@ -4114,6 +4238,24 @@ With the serialization mechanism you can write a population to disk and
  load it to an GA at a later time.
  It can also be used to transfer populations to GAs running on different
  hosts over a network link.
+ The 
+\family typewriter
+IO
+\family default
+ class, located in the 
+\family typewriter
+org.jenetics.util
+\family default
+ package, supports native Java serialization and XML serialization.
+ For XML marshaling 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ internally uses the classes from the Javolution project.
 \end_layout
 
 \begin_layout Standard
@@ -4255,6 +4397,17 @@ Alterers
 
 \begin_layout Subsection
 Statistics
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
+Appendix
 \end_layout
 
 \begin_layout Section
@@ -4474,7 +4627,7 @@ status collapsed
 
 \begin_layout Plain Layout
 For the other default values (population size, maximal age, ...) have a look
- at the JavaDoc: 
+ at the Javadoc: 
 \begin_inset Flex URL
 status collapsed
 
