@@ -4563,7 +4563,7 @@ status open
 \begin_inset Graphics
 	filename graphic/RealFunction2D.eps
 	lyxscale 70
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -4590,10 +4590,6 @@ Real function 2D
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 For find the minimum value of this function will look like this:
 \end_layout
 
@@ -4614,7 +4610,15 @@ lstinputlisting{code/RealFunction.java}
 \end_layout
 
 \begin_layout Standard
-And the generated console output will be:
+The GA in this example works with a number gene.
+ To narrow the search space the valid number range of the Float64Gene must
+ be defined.
+ In our example we restrict the values to the closed range 
+\begin_inset Formula $[0,2\pi]$
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4653,8 +4657,30 @@ footnotesize}
 
 \end_layout
 
+\begin_layout Standard
+The generated console output will be like the listing above.
+\end_layout
+
 \begin_layout Subsection
-Knapsack
+0/1 Knapsack
+\end_layout
+
+\begin_layout Standard
+In the knapsack problem a set of items, together with their size and value,
+ is given.
+ The task is to select a disjoint subset so that the total size does not
+ exceed the knapsack size.
+ For solving the 0/1 knapsack problem we define a BitChromosome, one bit
+ for each item.
+ If the 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ bit is set to one the 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ item is selected.
 \end_layout
 
 \begin_layout Standard
