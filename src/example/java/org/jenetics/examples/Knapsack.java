@@ -18,16 +18,15 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.examples;
 
-import java.io.Serializable;
+import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Chromosome;
-import org.jenetics.CompositeAlterer;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -37,49 +36,30 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-import org.jscience.mathematics.number.Float64;
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
-class Item implements Serializable {
-	private static final long serialVersionUID = 1L;
+final class Item {
 	public double size;
 	public double value;
-	
-	@Override
-	public String toString() {
-		return size + "=>" + value;
-	}
 }
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
-class KnappsackFunction
-	implements Function<Genotype<BitGene>, Float64>,
-				Serializable
+final class KnappsackFunction
+	implements Function<Genotype<BitGene>, Float64>
 {
-	private static final long serialVersionUID = -924756568100918419L;
-	
 	private final Item[] _items;
-	private final double _knapsackSize;
-	
-	public KnappsackFunction(final Item[] items, double knapsackSize) {
+	private final double _size;
+
+	public KnappsackFunction(final Item[] items, double size) {
 		_items = items;
-		_knapsackSize = knapsackSize;
+		_size = size;
 	}
-	
+
 	public Item[] getItems() {
 		return _items;
 	}
-	
+
 	@Override
 	public Float64 apply(final Genotype<BitGene> genotype) {
 		final Chromosome<BitGene> ch = genotype.getChromosome();
-		
+
 		double size = 0;
 		double value = 0;
 		for (int i = 0, n = ch.length(); i < n; ++i) {
@@ -88,67 +68,53 @@ class KnappsackFunction
 				value += _items[i].value;
 			}
 		}
-		
-		if (size > _knapsackSize) {
+
+		if (size > _size) {
 			return Float64.ZERO;
 		} else {
 			return Float64.valueOf(value);
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return "Knapsack";
-	}
 }
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
 public class Knapsack {
-	
-	private static KnappsackFunction newFitnessFuntion(int n, double knapsackSize) {
+
+	private static KnappsackFunction FF(int n, double size) {
 		Item[] items = new Item[n];
 		for (int i = 0; i < items.length; ++i) {
-				items[i] = new Item();
-				items[i].size = (Math.random() + 1)*10;
-				items[i].value = (Math.random() + 1)*15;
+			items[i] = new Item();
+			items[i].size = (Math.random() + 1)*10;
+			items[i].value = (Math.random() + 1)*15;
 		}
-		
-		return new KnappsackFunction(items, knapsackSize);
+
+		return new KnappsackFunction(items, size);
 	}
-	
-	public static void main(String[] argv) throws Exception {		
-		//Defining the fitness function and the genotype.
-		final KnappsackFunction ff = newFitnessFuntion(15, 100);
-		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
-				new BitChromosome(15, 0.5)
-			);
-		
-		final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(genotype, ff);
+
+	public static void main(String[] argv) throws Exception {
+		KnappsackFunction ff = FF(15, 100);
+		Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
+			new BitChromosome(15, 0.5)
+		);
+
+		GeneticAlgorithm<BitGene, Float64> ga =
+		new GeneticAlgorithm<>(
+			genotype, ff
+		);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setPopulationSize(100);
-		ga.setStatisticsCalculator(new NumberStatistics.Calculator<BitGene, Float64>());
-		ga.setSelectors(new RouletteWheelSelector<BitGene, Float64>());
-		ga.setAlterer(new CompositeAlterer<>(
-				 new Mutator<BitGene>(0.115),
-				 new SinglePointCrossover<BitGene>(0.16)
-		 	));
-		
-		final int generations = 100;
-		
-		GAUtils.printConfig(
-				"Knapsack",
-				ga,
-				generations,
-				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
-			);
-		
-		GAUtils.execute(ga, generations, 10);
+		ga.setStatisticsCalculator(
+			new NumberStatistics.Calculator<BitGene, Float64>()
+		);
+		ga.setSelectors(
+			new RouletteWheelSelector<BitGene, Float64>()
+		);
+		ga.setAlterers(
+			 new Mutator<BitGene>(0.115),
+			 new SinglePointCrossover<BitGene>(0.16)
+		);
+
+		ga.setup();
+		ga.evolve(100);
+		System.out.println(ga.getBestStatistics());
 	}
-
 }
-
-
-
