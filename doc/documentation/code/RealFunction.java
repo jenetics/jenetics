@@ -33,9 +33,7 @@ public class RealFunction {
 		);
 		Function<Genotype<Float64Gene>, Float64> ff = new Real();
 		GeneticAlgorithm<Float64Gene, Float64> ga = 
-		new GeneticAlgorithm<>(
-			gtf, ff, Optimize.MINIMUM
-		);
+			new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
 
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<Float64Gene, Float64>()
