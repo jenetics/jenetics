@@ -826,7 +826,7 @@ status open
 \begin_inset Graphics
 	filename graphic/StructureClassDiagram.svg
 	lyxscale 70
-	height 45theight%
+	width 85text%
 
 \end_inset
 
