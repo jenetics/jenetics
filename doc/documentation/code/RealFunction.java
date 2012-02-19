@@ -1,7 +1,6 @@
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static org.jenetics.ExponentialScaler.SQR_SCALER;
 
 import org.jscience.mathematics.number.Float64;
 
