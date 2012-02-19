@@ -32,9 +32,7 @@ public class OnesCounting {
 		);
 		Function<Genotype<BitGene>, Integer> ff = new OneCounter();
 		GeneticAlgorithm<BitGene, Integer> ga = 
-		new GeneticAlgorithm<>(
-			gtf, ff, Optimize.MAXIMUM
-		);
+			new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
 
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<BitGene, Integer>()

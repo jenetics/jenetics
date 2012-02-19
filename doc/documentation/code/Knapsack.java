@@ -73,9 +73,8 @@ public class Knapsack {
 		);
 
 		GeneticAlgorithm<BitGene, Float64> ga = 
-		new GeneticAlgorithm<>(
-			genotype, ff
-		);
+			new GeneticAlgorithm<>(genotype, ff);
+		
 		ga.setMaximalPhenotypeAge(30);
 		ga.setPopulationSize(100);
 		ga.setStatisticsCalculator(
