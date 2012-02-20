@@ -4380,12 +4380,53 @@ Jenetics
 \end_layout
 
 \begin_layout Standard
-I you are missing some functionality to solve your problem, this section
+The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library was designed to give you a big flexibility in expressing your problem
+ in a structure that can be solved by GAs.
+ If you are missing some functionality to solve your problem, this section
  describes how you can extend the existing classes.
+ All of the classes that can be extended are defined by an interface and
+ most of them have an abstract implementation for most of the defined methods.
+ This gives you a greater flexibility when extending the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
 \end_layout
 
 \begin_layout Subsection
 Genes
+\end_layout
+
+\begin_layout Standard
+Genes are the beginning in the class hierarchy.
+ It holds the actual information, the alleles, of your problem domain.
+ Beside the 
+\emph on
+classical
+\emph default
+ bit-gene, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with gene implementations for numbers (double- and long values),
+ characters and enumeration types.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -4433,8 +4474,96 @@ public interface Gene<A, G extends Gene<A, G>>
 
 \end_layout
 
+\begin_layout Standard
+For implementing your own gene type you have to implement the 
+\family typewriter
+Gene
+\family default
+ interface and implement three methods.
+ the 
+\family typewriter
+getAllele
+\family default
+ method return the wrapped data, the 
+\family typewriter
+newInstance
+\family default
+ method will create a new, random instance of the gene from the same type
+ and the same constraint.
+ The 
+\family typewriter
+isValid
+\family default
+ method checks if the gene fulfill the expected constraints.
+ The gene constraint might be violated after mutation and/or recombination.
+\end_layout
+
+\begin_layout Standard
+If you want to implement a new number-gene, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ a gene which holds complex values, you should extend this from the abstract
+ 
+\family typewriter
+NumberGene
+\family default
+ class.
+\end_layout
+
+\begin_layout Standard
+Every gene extends the 
+\family typewriter
+Serializable
+\family default
+ interface.
+ For 
+\emph on
+normal
+\emph default
+ genes there is no more work to do for using the Java serialization mechanism.
+ If you want to serialize your gene in XML format, you have to extend the
+ 
+\family typewriter
+XMLSerializable
+\family default
+ interface from the 
+\emph on
+Javolution
+\emph default
+ project.
+ For information how to make your gene XML serializable read the instructions
+ on the 
+\emph on
+Javolution
+\emph default
+ site: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://javolution.org/target/site/apidocs/javolution/xml/XMLSerializable.html
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsection
 Chromosomes
+\end_layout
+
+\begin_layout Standard
+Normally, a new gene implementation needs a corresponding chromosome implementat
+ion.
+ The following listing shows the 
+\family typewriter
+Chromosome
+\family default
+ interface and the methods that must be implemented.
 \end_layout
 
 \begin_layout Standard
@@ -4497,6 +4626,17 @@ public interface Chromosome<T extends Gene<?, T>>
 
 \end_layout
 
+\begin_layout Standard
+The most important part of a chromosome is the factory method 
+\family typewriter
+newInstance
+\family default
+, which lets the GA create a new chromosome instance from a sequence of
+ genes.
+ This method is used by the alterers when creating new, combined chromosomes.
+ The other methods should be self-explanatory.
+\end_layout
+
 \begin_layout Subsection
 Selectors
 \end_layout
@@ -4507,7 +4647,11 @@ If you want to implement your own selection strategy you only have to implement
 \family typewriter
 Selector
 \family default
- interface.
+ interface and implement the 
+\family typewriter
+select
+\family default
+ method.
 \end_layout
 
 \begin_layout Standard
@@ -4586,12 +4730,14 @@ count
 opt
 \family default
 , determines the optimization strategy to use for this selection call.
- Consider to extend your selector from the 
+ Before implement your selector from scratch, consider to extend your selector
+ from the 
 \family typewriter
 ProbabilitySelector
 \family default
- if you can express your selection strategy in terms of selection property
- 
+.
+ It is worth the effort to try express your selection strategy in terms
+ of selection property 
 \begin_inset Formula $P(i)$
 \end_inset
 
@@ -4993,8 +5139,8 @@ Traveling Salesman
 \begin_layout Standard
 The Traveling Salesman problem is one of the classical problems in computational
  mathematics and it is the most notorious NP-complete problem.
- The goal is to find the shortest distance, or the path with the least costs,
- between 
+ The goal is to find the shortest distance, or the path, with the least
+ costs, between 
 \begin_inset Formula $N$
 \end_inset
 
