@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.examples;
 
@@ -29,13 +29,13 @@ import static java.lang.Math.sin;
 import java.io.Serializable;
 
 import org.jenetics.Chromosome;
-import org.jenetics.CompositeAlterer;
+import org.jenetics.EnumGene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
+import org.jenetics.NumberStatistics.Calculator;
 import org.jenetics.Optimize;
 import org.jenetics.PartiallyMatchedCrossover;
 import org.jenetics.PermutationChromosome;
-import org.jenetics.EnumGene;
 import org.jenetics.SwapMutator;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -47,23 +47,23 @@ import org.jenetics.util.Function;
  * @version $Id$
  */
 public class TravelingSalesman {
-	
+
 	private static class FF
 		implements Function<Genotype<EnumGene<Integer>>, Double>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final double[][] _adjacence;
-		
+
 		public FF(final double[][] adjacence) {
 			_adjacence = adjacence;
 		}
-		
+
 		@Override
 		public Double apply(final Genotype<EnumGene<Integer>> genotype) {
 			final Chromosome<EnumGene<Integer>> path = genotype.getChromosome();
-			
+
 			double length = 0.0;
 			for (int i = 0, n = path.length(); i < n; ++i) {
 				final int from = path.getGene(i).getAllele();
@@ -72,49 +72,37 @@ public class TravelingSalesman {
 			}
 			return length;
 		}
-		
+
 		@Override
 		public String toString() {
 			return "Point distance";
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		final int stops = 20;
-		
+
 		final Function<Genotype<EnumGene<Integer>>, Double> ff = new FF(adjacencyMatrix(stops));
 		final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
 			PermutationChromosome.ofInteger(stops)
 		);
 		final GeneticAlgorithm<EnumGene<Integer>, Double>
 			ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MINIMUM);
+		ga.setStatisticsCalculator(
+				new Calculator<EnumGene<Integer>, Double>()
+			);
 		ga.setPopulationSize(300);
 		ga.setAlterers(
 			new SwapMutator<EnumGene<Integer>>(0.2),
 			new PartiallyMatchedCrossover<Integer>(0.3)
 		);
 
-		final int generations = 500;
-		
-		GAUtils.printConfig(
-				"Traveling salesman",
-				ga,
-				generations,
-				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
-			);
-		
-		GAUtils.execute(ga, generations, 50);
-
-//		try {
-//			XMLSerializer.write(ga.getPopulation(), new FileOutputStream("/home/franzw/population.xml"));
-//			ObjectOutputStream oout = new ObjectOutputStream(new FileOutputStream("/home/franzw/population.obj"));
-//			oout.writeObject(ga.getPopulation());
-//			oout.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		ga.setup();
+		ga.evolve(700);
+		System.out.println(ga.getBestStatistics());
+		System.out.println(ga.getBestPhenotype());
 	}
-	
+
 	/**
 	 * All points in the created adjacency matrix lie on a circle. So it is easy
 	 * to check the quality of the solution found by the GA.
