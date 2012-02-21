@@ -4671,7 +4671,12 @@ public interface Selector<
 
 \begin_layout Plain Layout
 
-    C extends Comparable<? super C> >
+    C extends Comparable<? super C> 
+\end_layout
+
+\begin_layout Plain Layout
+
+>
 \end_layout
 
 \begin_layout Plain Layout
@@ -4749,6 +4754,25 @@ Alterers
 \end_layout
 
 \begin_layout Standard
+For implementing a new alterer class it is only necessary to implement the
+ 
+\family typewriter
+Alterer
+\family default
+ interface.
+ You might do this if your new gene type needs a special kind of alterer
+ not available in the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ project.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -4765,12 +4789,12 @@ public interface Alterer<G extends Gene<?, G>> {
 
 \begin_layout Plain Layout
 
-        final Population<G, C> population,
+        Population<G, C> population,
 \end_layout
 
 \begin_layout Plain Layout
 
-        final int generation
+        int generation
 \end_layout
 
 \begin_layout Plain Layout
@@ -4788,8 +4812,209 @@ public interface Alterer<G extends Gene<?, G>> {
 
 \end_layout
 
+\begin_layout Standard
+The first parameter is the population you have to alter and the second is
+ the current generation.
+ New created individuals will have this generation assigned.
+ The return value is the number of genes that has been alterer.
+\end_layout
+
 \begin_layout Subsection
 Statistics
+\end_layout
+
+\begin_layout Standard
+To let the GA an extended statistics object you have to set a different
+ statistics-calculator to the GA.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class Statistics {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static class Calculator<
+\end_layout
+
+\begin_layout Plain Layout
+
+        G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+        C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    >
+\end_layout
+
+\begin_layout Plain Layout
+
+    {
+\end_layout
+
+\begin_layout Plain Layout
+
+        public Statistics.Builder<G, C> evaluate(
+\end_layout
+
+\begin_layout Plain Layout
+
+            Iterable<? extends Phenotype<G, C>> population,
+\end_layout
+
+\begin_layout Plain Layout
+
+            int generation,
+\end_layout
+
+\begin_layout Plain Layout
+
+            Optimize opt
+\end_layout
+
+\begin_layout Plain Layout
+
+        ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Statistics.Calculator
+\family default
+ class doesn't return directly an 
+\family typewriter
+Statistics
+\family default
+ object.
+ Instead it is required, that the calculator returns a 
+\family typewriter
+Statistics.Builder
+\family default
+.
+ This is because the GA is setting additionally information about the killed
+ and invalid individuals to the statistics object.
+\end_layout
+
+\begin_layout Standard
+The Statistics.Builder is responsible for building your statistics object.
+ The builder returned by the calculator is 
+\emph on
+pre-configured 
+\emph default
+with your actual statistics values.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class Statistics {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static class Builder<
+\end_layout
+
+\begin_layout Plain Layout
+
+        G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+        C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    >
+\end_layout
+
+\begin_layout Plain Layout
+
+    {
+\end_layout
+
+\begin_layout Plain Layout
+
+        public Builder<G, C> invalid(int invalid);
+\end_layout
+
+\begin_layout Plain Layout
+
+        public Builder<G, C> killed(int killed);
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+        public Statistics<G, C> builder();
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The GA always creates statistics object from the type returned by the statistics
+ builder.
+ The GA is not aware about the actual created statistics object.
+ If you want to access specific values from your special statistics type,
+ you have to cast it to your type.
 \end_layout
 
 \begin_layout Standard
