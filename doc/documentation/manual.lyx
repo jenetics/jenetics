@@ -380,7 +380,7 @@ Genetic Algorithm
 \series bold
 Evolutionary Algorithm
 \series default
-, Library written in Java.
+, library written in Java.
  It is designed with a clear separation of the several concepts of the algorithm
 , e.
 \begin_inset space ~
@@ -420,7 +420,8 @@ Jenetics
 \family default
 \series default
 \shape default
- lets you minimize and maximize the given fitness function.
+ allows you minimize and maximize the given fitness function without tweaking
+ it.
  This manual describes the concepts implemented in the
 \family sans
 \series bold
@@ -487,7 +488,7 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library depends on Java SE 7; 
+The library is build with and depends on Java SE 7: 
 \begin_inset Flex URL
 status collapsed
 
@@ -508,24 +509,6 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 LatexCommand href
 name "genetic algorithm"
 target "http://en.wikipedia.org/wiki/Genetic_algorithm"
-
-\end_inset
-
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Genetic algorithms was first proposed and analyzed by 
-\begin_inset CommandInset href
-LatexCommand href
-name "John Holland"
-target "http://en.wikipedia.org/wiki/John_Henry_Holland"
-
-\end_inset
-
- in 1975.
-\end_layout
 
 \end_inset
 
@@ -560,12 +543,25 @@ http://jscience.org/
 status collapsed
 
 \begin_layout Plain Layout
-Jenetics uses the XML-serialization support and the concurrent capability.
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the XML-serialization support and the concurrent capability of the
+ 
+\emph on
+JScience
+\emph default
+ library.
 \end_layout
 
 \end_inset
 
- For building the library from the sources you only need 
+ For building the library from the sources you only have 
 \emph on
 Ant
 \emph default
@@ -798,19 +794,19 @@ GeneticAlgorithm.setup()
 \family default
  method.) Line (4) increases the generation number and line (5) and (6) selects
  the survivor and the offspring population.
- The survivor/offspring fraction is determined by the 
+ The offspring/survivor fraction is determined by the 
 \family typewriter
 offspringFraction
 \family default
- property.
+ property of the GA.
  The selected offspring are altered in line (7).
  The next line combines the survivor population and the altered offspring
- population, after removing the 
+ population---after removing the 
 \shape italic
 died
 \shape default
- individuals, to the new population.
- The steps from line (4) to (9 )are repeated until a given termination criterion
+ individuals---to the new population.
+ The steps from line (4) to (9) are repeated until a given termination criterion
  is fulfilled.
 \end_layout
 
@@ -930,7 +926,11 @@ Genotype
 \family typewriter
 Factory
 \family default
- interface and can be used as prototype for creating the initial 
+ interface and can therefore be used as 
+\emph on
+prototype
+\emph default
+ for creating the initial 
 \family typewriter
 Population
 \family default
@@ -1013,11 +1013,11 @@ public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Standard
-The genotype-factory 
+The genotype factory, 
 \family typewriter
 gtf
 \family default
- in the example above will create genotypes which consists of one 
+, in the example above will create genotypes which consists of one 
 \family typewriter
 BitChromosome
 \family default
@@ -1038,7 +1038,7 @@ Float64
 Float64
 \family default
 .
- The return value of the fitness function must be at least 
+ The return type of the fitness function must be at least a 
 \family typewriter
 Comparable
 \family default
@@ -1049,7 +1049,14 @@ GeneticAlgorithm
 \family default
  object is then created with the genotype factory and the fitness function.
  In this example the GA tries to maximize the fitness function.
- If you want to find the minimal value you have to change this parameter
+ If you want to find the minimal value you have to change the 
+\family typewriter
+optimize
+\family default
+ parameter from 
+\family typewriter
+Optimize.MAXIMUM
+\family default
  to 
 \family typewriter
 Optimize.MINIMUM
@@ -1059,17 +1066,18 @@ Optimize.MINIMUM
 \family typewriter
 ga.setup()
 \family default
- call creates the initial population and calculates it fitness value.
+ call creates the initial population and calculates its fitness value.
  Then the GA evolves 100 generations (
 \family typewriter
 ga.evolve(100))
 \family default
- an prints the best phenotype found so far.
+ an prints the best phenotype found so far onto the console.
  
 \end_layout
 
 \begin_layout Standard
-In a more advanced setup you want to define mutation and/or selection strategies.
+In a more advanced setup you may want to change the default mutation and/or
+ selection strategies.
 \end_layout
 
 \begin_layout Standard
@@ -1089,7 +1097,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    ga.setSelectors(new TournamentSelector<BitGene>(5));
+    ga.setSelectors(new RouletteWheelSelector<BitGene>());
 \end_layout
 
 \begin_layout Plain Layout
@@ -1104,7 +1112,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-        new Mutation<BitGene>(0.01)
+        new Mutator<BitGene>(0.01)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1142,15 +1150,41 @@ public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Standard
-The alterers are concatenated, first the crossover (with corsage probability
+The selection strategy for offspring and survivors are set to the roulette-wheel
+ selector.
+ It is also possible to set the selector for offspring and survivors independent
+ly with the 
+\family typewriter
+setOffspringSelector
+\family default
+ and 
+\family typewriter
+setSurvivorSelector
+\family default
+ methods.
+ The alterers are concatenated, at first the crossover (with probability
  0.1) is performed and then the chromosomes are mutated (with probability
  0.01).
- For a detailed description of the available genetic operators revere the
- next section.
+ For a detailed description of the available genetic operators revere to
+ section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-Operators"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
 Base classes
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Base-classes"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1510,6 +1544,13 @@ Jenetics
 
 \begin_layout Section
 Genetic Operators
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Genetic-Operators"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
