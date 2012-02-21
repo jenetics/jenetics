@@ -1177,7 +1177,7 @@ reference "sec:Genetic-Operators"
 \end_layout
 
 \begin_layout Section
-Base classes
+Base Classes
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Base-classes"
