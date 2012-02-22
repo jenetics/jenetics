@@ -1166,7 +1166,7 @@ setSurvivorSelector
  0.1) is performed and then the chromosomes are mutated (with probability
  0.01).
  For a detailed description of the available genetic operators revere to
- section 
+ chapter 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Genetic-Operators"
@@ -1188,8 +1188,8 @@ name "sec:Base-classes"
 \end_layout
 
 \begin_layout Standard
-This chapter describes the base classes which enables you to transform your
- actual problem into a structure that can be used by 
+This chapter describes the classes which are used to transform the actual
+ problem into a structure that can be used by 
 \family sans
 \series bold
 \shape smallcaps
@@ -1225,11 +1225,11 @@ Phenotype
 \family default
  class is the actual representative of an individual, but only consists
  of the genotype and the fitness function and doesn't change the basic structure.
- The phenotype 
+ The phenotype is 
 \emph on
 only
 \emph default
- forms the environment of the genotype.
+ a container for a genotype which forms the environment of the genotype.
 \end_layout
 
 \begin_layout Standard
@@ -1287,9 +1287,9 @@ reference "fig:Genotype-structure"
 \begin_inset Formula $N_{C[i]}$
 \end_inset
 
- genes (depending of the chromosome).
- The overall number of genes of a genotype is therefore given by the sum
- of the chromosomes genes: 
+ genes (depending on the chromosome).
+ The overall number of genes of a genotype is given by the sum of the chromosome
+s genes: 
 \begin_inset Formula 
 \begin{equation}
 N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
@@ -1297,7 +1297,8 @@ N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 
 \end_inset
 
-The chromosomes doesn't have to have the same size.
+The chromosomes of a genotype doesn't have to have necessarily the same
+ size.
  It is only required that all genes are from the same type and the genes
  within a chromosome have the same constraints; e.
 \begin_inset space ~
@@ -1357,7 +1358,7 @@ reference "fig:Genotype-structure"
 \end_inset
 
 .
- In this example a 
+ In this example the 
 \family typewriter
 Float64Gene
 \family default
@@ -1369,7 +1370,7 @@ Fitness function
 \end_layout
 
 \begin_layout Standard
-The fitness function is also another important part when modeling the GA.
+The fitness function is also an important part when modeling the GA.
  It takes a genotype as argument and returns, at least, a 
 \family typewriter
 Comparable
@@ -1381,13 +1382,12 @@ Comparable
 \family typewriter
 Comparable
 \family default
-, but this constraints can be checked by the Java type system at compile
- time.
+, but this constraints is checked by the Java type system at compile time.
 \end_layout
 
 \begin_layout Standard
 The following example shows the simplest possible fitness function.
- It returns the allele of an 
+ It's the identity function and returns the allele of an 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -1439,10 +1439,13 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 \end_layout
 
 \begin_layout Standard
-The first type parameter defines the kind of genotype from which the fitness
- value is calculated and the second type parameter determines the return
- type.
- As already mentioned, return type must implement the 
+The first type parameter of the 
+\family typewriter
+Function
+\family default
+ defines the kind of genotype from which the fitness value is calculated
+ and the second type parameter determines the return type.
+ As already mentioned, the return type must implement the 
 \family typewriter
 Comparable
 \family default
@@ -1454,11 +1457,7 @@ Fitness scaler
 \end_layout
 
 \begin_layout Standard
-The fitness value, calculated by the fitness function, is 
-\shape italic
-only
-\shape default
- the 
+The fitness value, calculated by the fitness function, is the 
 \shape italic
 raw
 \shape default
@@ -1472,10 +1471,10 @@ Jenetics
 \series default
 \shape default
  library allows you to apply an additional scaling function on the raw-fitness
- to form the actual fitness value.
+ to form the fitness value which is used by the selectors.
  This can be useful when using probability selectors (see chapter 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "par:Probability-selectors"
 
 \end_inset
@@ -1485,7 +1484,7 @@ reference "par:Probability-selectors"
  In such cases, the fitness scaler gives you additional flexibility when
  selecting offspring and survivors.
  In the default configuration the raw-fitness is equal to the actual fitness
- value, that means the used fitness scaler is the identity function.
+ value, that means, the used fitness scaler is the identity function.
 \begin_inset listings
 inline false
 status open
@@ -1525,6 +1524,74 @@ class Sqrt extends Function<Float64, Float64> {
 
 \end_layout
 
+\begin_layout Standard
+The listing above shows a fitness scaler which reduces the the raw-fitness
+ to its square root.
+ This gives weaker individuals a greater changes being selected and weakens
+ the influence of 
+\emph on
+super
+\emph default
+-individuals.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+When using a fitness scaler you have to take care, that your scaler doesn't
+ 
+\emph on
+destroy
+\emph default
+ your fitness value.
+ This can be the case when your fitness value is negative and your fitness
+ scaler squares the value.
+ Trying to find the minimum will not work in this configuration.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Paragraph
 Genes
 \end_layout
@@ -1540,6 +1607,16 @@ Jenetics
 \shape default
  library.
  They contain the actual information (alleles) of the encoded solution.
+ The available Gene implementations should be sufficient for a very wide
+ range of problem domains.
+ Revere to chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Genes"
+
+\end_inset
+
+ for how to implement your own gene types.
 \end_layout
 
 \begin_layout Section
@@ -4448,6 +4525,13 @@ Jenetics
 
 \begin_layout Subsection
 Genes
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Genes"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
