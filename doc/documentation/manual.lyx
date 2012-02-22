@@ -1662,8 +1662,8 @@ Jenetics
 \shape default
  library.
  It also contains some theoretical information, which should help you to
- choose the right combination of operators, for your problem you want to
- solve.
+ choose the right combination of operators and parameters, for your problem
+ you want to solve.
 \end_layout
 
 \begin_layout Subsection
@@ -1705,7 +1705,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Double> ga = ...
+GeneticAlgorithm<Float64Gene, Float64> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -1720,7 +1720,7 @@ ga.setSurvivorSelector(
 
 \begin_layout Plain Layout
 
-    new RouletteWheelSelector<Float64Gene, Double>()
+    new RouletteWheelSelector<Float64Gene, Float64>()
 \end_layout
 
 \begin_layout Plain Layout
@@ -1735,7 +1735,7 @@ ga.setOffspringSelector(
 
 \begin_layout Plain Layout
 
-    new TournamentSelector<Float64Gene, Double>()
+    new TournamentSelector<Float64Gene, Float64>()
 \end_layout
 
 \begin_layout Plain Layout
@@ -1754,22 +1754,22 @@ The
 offspringFraction
 \family default
  property, 
-\begin_inset Formula $o_{f}$
+\begin_inset Formula $f_{O}\in[0,1]$
 \end_inset
 
 , determines the number of selected offspring 
 \begin_inset Formula 
 \begin{equation}
-\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot o_{f}\right)
+N_{O_{g}}=\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot f_{O}\right)
 \end{equation}
 
 \end_inset
 
 and the number of selected survivors 
 \begin_inset Formula 
-\begin{eqnarray}
-\left\Vert S_{g}\right\Vert  & = & \left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
-\end{eqnarray}
+\begin{equation}
+N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
+\end{equation}
 
 \end_inset
 
@@ -1830,7 +1830,21 @@ reference "fig:Selector-class-diagram"
 
 \end_inset
 
- shows the class hierarchy of the currently available selectors.
+ shows the whole class hierarchy of the currently available selectors.
+ On the top the hierarchy is the 
+\family typewriter
+Selector
+\family default
+ interface with the 
+\family typewriter
+select
+\family default
+ method.
+ Beside the well known standard selector implementation the 
+\family typewriter
+ProbabilitySelector
+\family default
+ is the base of a set of fitness proportional selectors.
 \end_layout
 
 \begin_layout Paragraph
@@ -1895,8 +1909,9 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \end_inset
 
  best individuals are selected.
- The truncation selector is sorting the population before selecting the
- individuals.
+ The truncation selection is a very basic selection algorithm.
+ It has it's strength in fast selecting individuals in large populations,
+ but is not very often used in practice.
  
 \end_layout
 
@@ -1983,10 +1998,6 @@ Fitness proportional selection
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Fitness proportional selection works as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2065,7 +2076,20 @@ Roulette-wheel selector
 \end_layout
 
 \begin_layout Standard
-The roulette-wheel selector is also known as fitness proportional selector.
+The roulette-wheel selector is also known as fitness proportional selector,
+ but in the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library it is implemented as 
+\emph on
+probability
+\emph default
+ selector.
  The fitness value 
 \begin_inset Formula $f_{i}$
 \end_inset
@@ -2092,7 +2116,7 @@ Selecting
 \end_inset
 
  times on the roulette-wheel.
- The population must not be sorted before selecting the individuals.
+ The population don't have to be sorted before selecting the individuals.
 \end_layout
 
 \begin_layout Subparagraph
@@ -2165,7 +2189,8 @@ An alternative to the
 weak
 \shape default
  linear-rank selector is to assign survival probabilities to the sorted
- individuals using an exponential function: 
+ individuals using an exponential function.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2454,7 +2479,7 @@ mutation
 
 \begin_layout Enumerate
 Exploring the search space.
- By making small moves mutation allows a population to explore the search
+ By making small moves, mutation allows a population to explore the search
  space.
  This exploration is often slow compared to crossover, but in problems where
  crossover is disruptive this can be an important way to explore the landscape.
@@ -2500,9 +2525,10 @@ where
 \begin_inset Formula $N_{g}$
 \end_inset
 
- is the number of available genes of the population (see equation 
+ is the number of available genes of the population (revere to equation
+ 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "eq:Number of genes"
 
 \end_inset
@@ -2525,7 +2551,7 @@ The mutator has to deal with the problem, that the genes are arranged in
 
 
 \shape default
- structure (see section 
+ structure (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "par:Genotype"
@@ -2581,10 +2607,14 @@ select a gene
 \end_layout
 
 \begin_layout Standard
-The needed sub-selection probabilities are set to 
+The needed 
+\emph on
+sub
+\emph default
+-selection probabilities are set to 
 \begin_inset Formula 
 \begin{equation}
-P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}
+P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
 \end{equation}
 
 \end_inset
@@ -2597,11 +2627,7 @@ Gaussian mutator
 \end_layout
 
 \begin_layout Standard
-The Gaussian mutator performs the mutation of a 
-\family typewriter
-NumberGene
-\family default
-.
+The Gaussian mutator performs the mutation of number genes.
  This mutator picks a new value based on a Gaussian distribution around
  the current value of the gene.
  The variance of the new value (before clipping to the allowed gene range)
@@ -2721,11 +2747,11 @@ The recombination probability
  is selected for recombination.
  The (mean) number of changed individuals depend on the concrete implementation
  and can be vary from 
-\begin_inset Formula $P(r)\cdot N_{g}$
+\begin_inset Formula $P(r)\cdot N_{G}$
 \end_inset
 
  to 
-\begin_inset Formula $P(r)\cdot N_{g}\cdot O_{R}$
+\begin_inset Formula $P(r)\cdot N_{G}\cdot O_{R}$
 \end_inset
 
  , where 
@@ -2745,18 +2771,15 @@ Single-point crossover
 \end_layout
 
 \begin_layout Standard
-The single-point crossover changes to children chromosomes by taking two
+The single-point crossover changes two children chromosomes by taking two
  chromosomes and cutting them at some, randomly chosen, site.
-\end_layout
-
-\begin_layout Standard
-If we create a child and its complement we preserving the total number of
- genes in the population, preventing any genetic drift.
+ If we create a child and its complement we preserving the total number
+ of genes in the population, preventing any genetic drift.
  Single-point crossover is the classic form of crossover.
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
  For problems where the site position has some intrinsic meaning to the
- problem single-point crossover can lead to small disruption than multi-point
+ problem single-point crossover can lead to smaller disruption than multi-point
  or uniform crossover.
  
 \end_layout
@@ -2768,7 +2791,7 @@ Partially-matched crossover
 \begin_layout Standard
 The partially-matched crossover guarantees that all genes are found exactly
  once in each chromosome.
- No gene is duplicated by this crossover.
+ No gene is duplicated by this crossover strategy.
  The partially-matched crossover (PMX) can be applied usefully in the TSP
  or other permutation problem encodings.
  Permutation encoding is useful for all problems where the fitness only
