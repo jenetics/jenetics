@@ -3447,8 +3447,7 @@ try {
 \end_inset
 
 The listing above shows two examples how to use the lock.
- In the first example the lock is used to updated the configuration of the
- GA.
+ In the first one uses the lock for updating the configuration of the GA.
  The second example fetches the statistics and fitness scaler in a guaranteed
  consistent way.
 \end_layout
@@ -3463,7 +3462,20 @@ The
 GeneticAlgorithm
 \family default
  class offers population- and timing-statistics after every evolve step.
- 
+ This information can be used to measure the performance of the GA or to
+ implement a more sophisticated termination strategy than 
+\family typewriter
+evolve(100)
+\family default
+.
+ Have a look at chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Termination"
+
+\end_inset
+
+ for more information about GA termination.
 \end_layout
 
 \begin_layout Standard
@@ -3553,7 +3565,7 @@ footnotesize}
 \begin_layout Standard
 If the fitness value is a number type you can change the statistics calculator
  of the GA to get more specific statistics information.
- The listing shows how to set a number-statistics calculator for the GA.
+ The listing shows how to set the number-statistics calculator for the GA.
 \end_layout
 
 \begin_layout Standard
@@ -3612,8 +3624,8 @@ for (int i = 0; i < 100; ++i) {
 \end_layout
 
 \begin_layout Standard
-With this configuration the console output for one statistics object will
- look like the following listing.
+With the new statistics calculator the console output for an statistics
+ object will look like the following listing.
  This is because instead of an 
 \family typewriter
 Statistics
@@ -3666,8 +3678,8 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-For performance analysis it might be interesting in with processing steps
- the computation time is spent.
+For computation-performance analysis it might be interesting in which processing
+ steps the computation time is spent.
  On 
 \emph on
 generation
@@ -3677,11 +3689,11 @@ generation
 ga.getStatistics().getTime()
 \family default
  property.
- The overall calculation time statistics is available over the 
+ The overall calculation time statistics is available via the 
 \family typewriter
 ga.getTimeStatistics()
 \family default
-.
+ method.
 \end_layout
 
 \begin_layout Standard
@@ -3727,13 +3739,20 @@ The console output of the time statistics looks like listing above and has
 
 \begin_layout Subsection
 Termination
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Termination"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 The easiest way to terminate an GA is to evolve a specific number of generations.
  This works well for most problems and termination is guaranteed.
- With the statistics object you can access after every generation you can
- define a more advanced termination strategy using this information.
+ With the statistics object, which is available for every generation, you
+ can define a more advanced termination strategy.
 \end_layout
 
 \begin_layout Standard
@@ -3808,7 +3827,7 @@ Until
 org.jenetics
 \family default
  package.
- the Steady-fitness terminator for example finishes the 
+ The steady-fitness terminator for example finishes the 
 \emph on
 evolution
 \emph default
@@ -3881,7 +3900,7 @@ class SteadyFitness<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-  public Boolean apply(Statistics<?, C> stat) {
+  public Boolean apply(Statistics<?, C> statistics) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4005,7 +4024,7 @@ reference "lis:Steady-state-termination"
 \family typewriter
 Until
 \family default
- class and should give you an idea you to implement your own termination
+ class and should give you an idea how to implement your own termination
  function.
 \end_layout
 
@@ -4014,27 +4033,12 @@ Randomness
 \end_layout
 
 \begin_layout Standard
-In general, GAs heavily depends on (pseudo) random number generators (PRNG
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Pseudorandom_number_generator
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-), for creating new individuals and for the selection- and mutation-algorithms.
+In general, GAs heavily depends on 
+\emph on
+pseudo
+\emph default
+ random number generators (PRNG) for creating new individuals and for the
+ selection- and mutation-algorithms.
  
 \family sans
 \series bold
@@ -4063,8 +4067,12 @@ RandomRegistry
 \family typewriter
 LocalContext
 \family default
- class from the Javolution project, the random engine can easily changed,
- even for specific parts of the code.
+ class from the 
+\emph on
+Javolution
+\emph default
+ project, the random engine can easily changed, even for specific parts
+ of the code.
  
 \end_layout
 
@@ -4170,8 +4178,7 @@ try {
 \end_layout
 
 \begin_layout Standard
-The example above shows how to create a random, but reproducible, list of
- genotypes.
+In the listing above a random, but reproducible, list of genotypes is created.
  This might be useful while testing your application or when you want to
  run the GA several times with the same initial population.
 \end_layout
@@ -4217,13 +4224,17 @@ This example uses the generated genotypes to setup the initial population
  The GA is created with the first element of the genotypes, which is used
  as genotype factory.
  This guarantees that the same kind of genotypes are created while evolving.
- Calling the setup(Collection) method, uses as initial population the given
- genotypes.
- This automatically changes the GA's population size, that means the 
+ Calling the 
+\family typewriter
+setup(Collection)
+\family default
+ method, the given collection of genotypes is used as initial population.
+ This method also automatically sets the GA's population size, that means
+ the 
 \family typewriter
 populationSize
 \family default
- property of the GA is set to 
+ property of the GA is changed to 
 \family typewriter
 genotypes.size()
 \family default
@@ -4231,9 +4242,54 @@ genotypes.size()
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
 Setting the PRNG to a Random object with a defined seed has the effect,
  that every run of the GA produces the same result---in a single threaded
  environment.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -4381,9 +4437,9 @@ end{multicols}
 
 \begin_layout Standard
 With the serialization mechanism you can write a population to disk and
- load it to an GA at a later time.
- It can also be used to transfer populations to GAs running on different
- hosts over a network link.
+ load it into an GA at a later time.
+ It can also be used to transfer populations to GAs, running on different
+ hosts, over a network link.
  The 
 \family typewriter
 IO
@@ -4401,7 +4457,11 @@ Jenetics
 \family default
 \series default
 \shape default
- internally uses the classes from the Javolution project.
+ internally uses the XML support from the 
+\emph on
+Javolution
+\emph default
+ project.
 \end_layout
 
 \begin_layout Standard
@@ -4462,15 +4522,14 @@ reference "fig:Genotype-structure"
 
 \end_inset
 
- in section 
+ on page 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand pageref
 reference "par:Genotype"
 
 \end_inset
 
-.
- Only the first phenotype is shown.
+; only the first phenotype is shown.
 \end_layout
 
 \begin_layout Standard
@@ -4512,9 +4571,9 @@ footnotesize}
 \begin_layout Standard
 When serializing a whole population the fitness function and fitness scaler
  are not serialized.
- If a GA is initialized with a previously serialized population the GA's
- current fitness function and fitness scaler is used for (re-)calculating
- the (raw-)fitness values.
+ If a GA is initialized with a previously serialized population, the GA's
+ current fitness function and fitness scaler are used for re-calculating
+ the fitness values.
 \end_layout
 
 \begin_layout Section
