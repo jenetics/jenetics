@@ -2923,19 +2923,16 @@ Jenetics
 \series default
 \shape default
  library parallelizes independent task whenever possible.
- Especially the evaluation of the fitness-function is done concurrently.
+ Especially the evaluation of the fitness function is done concurrently.
  That means that the GA's fitness-function must be thread safe, because
- the fitness-function is shared by all phenotypes of a population.
- The easiest way for achieving thread-safety is to make the fitness-function
+ it is shared by all phenotypes of a population.
+ The easiest way for achieving thread-safety is to make the fitness function
  re-entrant.
-\end_layout
-
-\begin_layout Standard
 
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -2983,7 +2980,7 @@ Runtime.getRuntime().availableProcessors()
 \end_inset
 
  cores of the target machine.
- If you want to change the number of used cores you must do this before
+ If you want to change the number of used cores you have to do this before
  the GA initialization.
  The configuration is done by the 
 \family typewriter
@@ -3141,8 +3138,12 @@ The concurrent context from the
 \emph on
 Javolution
 \emph default
- project is used in the following way.
- A detailed usage description about how to use it can be found at 
+ project is used as shown in the following listing.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A detailed usage description about how to use it can be found at 
 \begin_inset Flex URL
 status collapsed
 
@@ -3157,6 +3158,11 @@ http://javolution.org/
  
 \emph on
 Keep in mind, that the number of threads is equal to the concurrency + 1.
+\end_layout
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3226,12 +3232,12 @@ The example above executes the two tasks in parallel.
 \family typewriter
 exit()
 \family default
- call in the finally block waits until the two tasks finishes execution.
+ call in the finally block waits until all tasks finishes execution.
  Using the 
 \family typewriter
 Concurrency
 \family default
- class, this can be written more compactly.
+ class this can be written more compactly.
 \end_layout
 
 \begin_layout Standard
@@ -3440,12 +3446,11 @@ try {
 
 \end_inset
 
-The code above ensures that the returned statistics and fitness-scaler where
- used within the same 
-\family typewriter
-evolve()
-\family default
- step.
+The listing above shows two examples how to use the lock.
+ In the first example the lock is used to updated the configuration of the
+ GA.
+ The second example fetches the statistics and fitness scaler in a guaranteed
+ consistent way.
 \end_layout
 
 \begin_layout Subsection
