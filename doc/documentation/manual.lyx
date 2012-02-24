@@ -5380,6 +5380,8 @@ Jenetics
 \series default
 \shape default
  library.
+ The given examples are complete, in the sense that they will compile and
+ run and produce the given example output.
 \end_layout
 
 \begin_layout Subsection
@@ -5388,11 +5390,19 @@ Ones Counting
 
 \begin_layout Standard
 Ones counting is one of the simplest model-problem.
- It uses binary chromosome and forms a 
-\emph on
-real
-\emph default
- genetic algorithm, in the classical sense.
+ It uses a binary chromosome and forms a classic genetic algorithm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+In the classic genetic algorithm the problem is a maximization problem and
+ the fitness function is positive.
+ The domain of the fitness function is a bit-chromosome.
+\end_layout
+
+\end_inset
+
+.
  The fitness of a Genotype is proportional to the number of ones.
  
 \end_layout
@@ -5414,8 +5424,8 @@ lstinputlisting{code/OnesCounting.java}
 \end_layout
 
 \begin_layout Standard
-The genotype of this example consists of one BitChromosome with a ones probabili
-ty of 0.3333.
+The genotype in this example consists of one BitChromosome with a ones probabili
+ty of 0.15.
  The altering of the offspring population is performed by mutation, with
  mutation probability of 0.55, and then by a single-point crossover, with
  crossover probability of 0.06.
@@ -5545,7 +5555,8 @@ Real function 2D
 
 \end_inset
 
-For find the minimum value of this function will look like this:
+For minimizing the given function we might create code like given in the
+ listing beneath.
 \end_layout
 
 \begin_layout Standard
