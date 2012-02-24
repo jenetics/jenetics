@@ -4593,21 +4593,19 @@ Jenetics
 \family default
 \series default
 \shape default
- library was designed to give you a big flexibility in expressing your problem
- in a structure that can be solved by GAs.
- If you are missing some functionality to solve your problem, this section
- describes how you can extend the existing classes.
- All of the classes that can be extended are defined by an interface and
- most of them have an abstract implementation for most of the defined methods.
- This gives you a greater flexibility when extending the 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
+ library was designed to give you a great flexibility in transforming your
+ problem into a structure that can be solved by an GA.
+ It also comes with different implementations for the base data-types (genes
+ and chromosomes) and genetic operators (alterers and selectors).
+ If it is still some functionality missing, this section describes how you
+ can extend the existing classes.
+ Most of the 
+\shape italic
+extendable
 \shape default
- library.
+ classes are defined by an interface and have an abstract implementation
+ which makes it easier to extend it.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -4622,8 +4620,8 @@ name "sub:Genes"
 \end_layout
 
 \begin_layout Standard
-Genes are the beginning in the class hierarchy.
- It holds the actual information, the alleles, of your problem domain.
+Genes are the starting point in the class hierarchy.
+ They hold the actual information, the alleles, of your problem domain.
  Beside the 
 \emph on
 classical
@@ -4691,22 +4689,20 @@ For implementing your own gene type you have to implement the
 \family typewriter
 Gene
 \family default
- interface and implement three methods.
- the 
+ interface with three methods: (1) the 
 \family typewriter
 getAllele
 \family default
- method return the wrapped data, the 
+ method which will return the wrapped data, (2) the 
 \family typewriter
 newInstance
 \family default
- method will create a new, random instance of the gene from the same type
- and the same constraint.
- The 
+ method for creating new, random instances of the gene---must be of the
+ same type and have the same constraint---and (3) the 
 \family typewriter
 isValid
 \family default
- method checks if the gene fulfill the expected constraints.
+ method which checks if the gene fulfill the expected constraints.
  The gene constraint might be violated after mutation and/or recombination.
 \end_layout
 
@@ -4716,7 +4712,7 @@ If you want to implement a new number-gene, e.
 \end_inset
 
 g.
- a gene which holds complex values, you should extend this from the abstract
+ a gene which holds complex values, you may want extend it from the abstract
  
 \family typewriter
 NumberGene
