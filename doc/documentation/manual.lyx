@@ -4294,6 +4294,13 @@ height "1pt"
 
 \begin_layout Subsection
 Serialization
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Serialization"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4738,7 +4745,11 @@ XMLSerializable
 Javolution
 \emph default
  project.
- For information how to make your gene XML serializable read the instructions
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For information how to make your gene XML serializable read the instructions
  on the 
 \emph on
 Javolution
@@ -4755,6 +4766,18 @@ http://javolution.org/target/site/apidocs/javolution/xml/XMLSerializable.html
 \end_inset
 
 .
+\end_layout
+
+\end_inset
+
+ Have a look at chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Serialization"
+
+\end_inset
+
+ for detailed information about serialization.
 \end_layout
 
 \begin_layout Subsection
