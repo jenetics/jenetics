@@ -345,7 +345,7 @@ http://jenetics.sourceforge.net/
 \align center
 
 \size footnotesize
-This manual is licensed under a 
+This document is licensed under a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
@@ -4704,10 +4704,7 @@ isValid
 \family default
  method which checks if the gene fulfill the expected constraints.
  The gene constraint might be violated after mutation and/or recombination.
-\end_layout
-
-\begin_layout Standard
-If you want to implement a new number-gene, e.
+ If you want to implement a new number-gene, e.
 \begin_inset space ~
 \end_inset
 
