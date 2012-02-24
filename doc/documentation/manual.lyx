@@ -4608,7 +4608,7 @@ Jenetics
  can extend the existing classes.
  Most of the 
 \shape italic
-extendable
+extensible
 \shape default
  classes are defined by an interface and have an abstract implementation
  which makes it easier to extend it.
@@ -4785,8 +4785,7 @@ Chromosomes
 \end_layout
 
 \begin_layout Standard
-Normally, a new gene implementation needs a corresponding chromosome implementat
-ion.
+A new gene type normally needs a corresponding chromosome implementation.
  The following listing shows the 
 \family typewriter
 Chromosome
@@ -4821,7 +4820,7 @@ public interface Chromosome<T extends Gene<?, T>>
 
 \begin_layout Plain Layout
 
-    public Chromosome<T> newInstance(final ISeq<T> genes);
+    public Chromosome<T> newInstance(ISeq<T> genes);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4831,7 +4830,7 @@ public interface Chromosome<T extends Gene<?, T>>
 
 \begin_layout Plain Layout
 
-    public T getGene(final int index);
+    public T getGene(int index);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4865,6 +4864,20 @@ newInstance
  The other methods should be self-explanatory.
 \end_layout
 
+\begin_layout Standard
+The chromosome has the same serialization mechanism as the gene.
+ For the minimal case it extends the 
+\family typewriter
+Serializable
+\family default
+ interface.
+ For XML serialization you have to extend the 
+\family typewriter
+XMLSerializable
+\family default
+, which may rely on XML serialization of the genes.
+\end_layout
+
 \begin_layout Subsection
 Selectors
 \end_layout
@@ -4875,7 +4888,7 @@ If you want to implement your own selection strategy you only have to implement
 \family typewriter
 Selector
 \family default
- interface and implement the 
+ interface with the 
 \family typewriter
 select
 \family default
@@ -4952,24 +4965,35 @@ The first parameter is the original
 \family typewriter
 population
 \family default
- from which to select the sub-population.
+ from which the 
+\emph on
+sub
+\emph default
+-population is selected.
  The second parameter, 
 \family typewriter
 count
 \family default
-, is the number of individuals to select from the population.
+, is the number of individuals of the returned sub-population.
+ Depending on the selection algorithm, it is possible that the sub-population
+ contains more elements than the original one.
  The last parameter, 
 \family typewriter
 opt
 \family default
-, determines the optimization strategy to use for this selection call.
- Before implement your selector from scratch, consider to extend your selector
+, determines the optimization strategy which must be used by the selector.
+ This is exactly the point where it is decided whether the GA minimizes
+ or maximizes the fitness function.
+\end_layout
+
+\begin_layout Standard
+Before implementing a selector from scratch, consider to extend your selector
  from the 
 \family typewriter
 ProbabilitySelector
 \family default
-.
- It is worth the effort to try express your selection strategy in terms
+ (or any other available selector implementation).
+ It is worth the effort to try to express your selection strategy in terms
  of selection property 
 \begin_inset Formula $P(i)$
 \end_inset
@@ -4982,8 +5006,7 @@ Alterers
 \end_layout
 
 \begin_layout Standard
-For implementing a new alterer class it is only necessary to implement the
- 
+For implementing a new alterer class it is necessary to implement the 
 \family typewriter
 Alterer
 \family default
@@ -5041,10 +5064,26 @@ public interface Alterer<G extends Gene<?, G>> {
 \end_layout
 
 \begin_layout Standard
-The first parameter is the population you have to alter and the second is
- the current generation.
- New created individuals will have this generation assigned.
- The return value is the number of genes that has been alterer.
+The first parameter of the 
+\family typewriter
+alter
+\family default
+ method is the 
+\family typewriter
+population
+\family default
+ which has to be altered.
+ Since the the 
+\family typewriter
+Population
+\family default
+ class is mutable, the altering is performed in place.
+ The second parameter is the 
+\family typewriter
+generation
+\family default
+ of the newly created individuals and the return value is the number of
+ genes that has been altered.
 \end_layout
 
 \begin_layout Subsection
@@ -5052,8 +5091,78 @@ Statistics
 \end_layout
 
 \begin_layout Standard
-To let the GA an extended statistics object you have to set a different
- statistics-calculator to the GA.
+The GA statistics is the only object which doesn't define an interface which
+ must be implemented.
+ For extending the GA statistics you have to implement three classes.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+\series bold
+Statistics
+\family default
+\series default
+: Contains the actual statistics information and is an immutable 
+\emph on
+value
+\emph default
+ class.
+ It is not required that derived classes are also immutable, but strongly
+ recommended.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+\series bold
+Statistics.Builder
+\family default
+\series default
+: Is a classical object builder
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Builder_pattern
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ which is building 
+\family typewriter
+Statistics
+\family default
+ objects.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+\series bold
+Statistics.Calculator
+\family default
+\series default
+: Changing the statistics calculator lets the GA create an instance of your
+ statistics object.
+ The statistics object is not created directly but via the builder indirection.
+ This is necessary because the GA also adds some statistical information
+ to the statistics object.
+\end_layout
+
+\begin_layout Standard
+The following listing shows an excerpt of the statistics calculator which
+ must be extended.
 \end_layout
 
 \begin_layout Standard
@@ -5144,30 +5253,31 @@ public class Statistics {
 \begin_layout Standard
 The 
 \family typewriter
+evaluate
+\family default
+ method of the 
+\family typewriter
 Statistics.Calculator
 \family default
- class doesn't return directly an 
-\family typewriter
-Statistics
-\family default
- object.
- Instead it is required, that the calculator returns a 
-\family typewriter
-Statistics.Builder
-\family default
-.
- This is because the GA is setting additionally information about the killed
- and invalid individuals to the statistics object.
+ class return a builder, preconfigured with your actual statistics values,
+ which will create the actual statistics object.
+ This indirection is necessary because the GA is setting additional statistical
+ information about killed and invalid individuals to the statistics object.
 \end_layout
 
 \begin_layout Standard
-The Statistics.Builder is responsible for building your statistics object.
- The builder returned by the calculator is 
-\emph on
-pre-configured 
-\emph default
-with your actual statistics values.
- 
+The listing beneath shows the 
+\family typewriter
+Statistics.Builder
+\family default
+ class with some of its properties and the 
+\family typewriter
+build
+\family default
+ method.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -5238,9 +5348,8 @@ public class Statistics {
 \end_layout
 
 \begin_layout Standard
-The GA always creates statistics object from the type returned by the statistics
- builder.
- The GA is not aware about the actual created statistics object.
+The type of the statistics object returned by the GA is the same type as
+ returned by the statistics builder.
  If you want to access specific values from your special statistics type,
  you have to cast it to your type.
 \end_layout
