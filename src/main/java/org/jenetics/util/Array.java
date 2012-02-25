@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -56,10 +56,10 @@ public final class Array<T>
 		RandomAccess
 {
 	private static final long serialVersionUID = 2L;
-			
+
 	@SuppressWarnings("rawtypes")
 	private static final Array EMPTY = new Array(0);
-	
+
 	/**
 	 * Return the empty array.
 	 *
@@ -69,12 +69,12 @@ public final class Array<T>
 	@SuppressWarnings("unchecked")
 	public static <T> Array<T> empty() {
 		return (Array<T>)EMPTY;
-	}	
-	
+	}
+
 	Array(final ArrayRef array, final int start, final int end) {
 		super(array, start, end);
 	}
-	
+
 	/**
 	 * Create a new array with the given length.
 	 *
@@ -85,7 +85,7 @@ public final class Array<T>
 	public Array(final int length) {
 		super(length);
 	}
-	
+
 	/**
 	 * Create a new array with length one. The array will be initialized with
 	 * the given value.
@@ -96,7 +96,7 @@ public final class Array<T>
 		this(1);
 		_array.data[0] = first;
 	}
-	
+
 	/**
 	 * Create a new array with length two. The array will be initialized with
 	 * the given values.
@@ -112,7 +112,7 @@ public final class Array<T>
 		_array.data[0] = first;
 		_array.data[1] = second;
 	}
-	
+
 	/**
 	 * Create a new array with length three. The array will be initialized with
 	 * the given values.
@@ -131,7 +131,7 @@ public final class Array<T>
 		_array.data[1] = second;
 		_array.data[2] = third;
 	}
-	
+
 	/**
 	 * Create a new array with length four. The array will be initialized with
 	 * the given values.
@@ -153,7 +153,7 @@ public final class Array<T>
 		_array.data[2] = third;
 		_array.data[3] = fourth;
 	}
-	
+
 	/**
 	 * Create a new array with length five. The array will be initialized with
 	 * the given values.
@@ -178,7 +178,7 @@ public final class Array<T>
 		_array.data[3] = fourth;
 		_array.data[4] = fifth;
 	}
-	
+
 	/**
 	 * Create a new array from the given values.
 	 *
@@ -207,7 +207,7 @@ public final class Array<T>
 		_array.data[4] = fifth;
 		System.arraycopy(rest, 0, _array.data, 5, rest.length);
 	}
-	
+
 	/**
 	 * Create a new array from the given values.
 	 *
@@ -218,7 +218,7 @@ public final class Array<T>
 		this(values.length);
 		System.arraycopy(values, 0, _array.data, 0, values.length);
 	}
-	
+
 	/**
 	 * Create a new Array from the values of the given Collection. The order of
 	 * the elements are determined by the iterator of the Collection.
@@ -228,13 +228,13 @@ public final class Array<T>
 	 */
 	public Array(final Collection<? extends T> values) {
 		this(values.size());
-		
+
 		int index = 0;
 		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
 			_array.data[index] = it.next();
 		}
 	}
-	
+
 	/**
 	 * Selects all elements of this list which satisfy a predicate.
 	 *
@@ -252,12 +252,12 @@ public final class Array<T>
 			for (int i = 0, n = length(); i < n; ++i) {
 				@SuppressWarnings("unchecked")
 				final T value = (T)_array.data[i + _start];
-				
+
 				if (predicate.apply((T)value) == Boolean.TRUE) {
 					filtered.add(value);
 				}
 			}
-			
+
 			final Array<T> copy = new Array<>(filtered.size());
 			int index = 0;
 			for (FastList.Node<T> n = filtered.head(), end = filtered.tail();
@@ -265,21 +265,21 @@ public final class Array<T>
 			{
 				copy.set(index++, n.getValue());
 			}
-			
+
 			return copy;
 		} finally {
 			StackContext.exit();
 		}
 	}
-	
+
 	@Override
 	public void set(final int index, final T value) {
 		checkIndex(index);
-		
+
 		_array.cloneIfSealed();
 		_array.data[index + _start] = value;
 	}
-	
+
 	/**
 	 * <p>
 	 * Sorts the array of objects into ascending order, according to the natural
@@ -299,7 +299,7 @@ public final class Array<T>
 	public void sort() {
 		sort(0, length());
 	}
-	
+
 	/**
 	 * <p>
 	 * Sorts the array of objects into ascending order, according to the natural
@@ -319,7 +319,7 @@ public final class Array<T>
 	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
-	 */	
+	 */
 	public void sort(final int from, final int to) {
 		sort(from, to, new Comparator<T>() {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -329,7 +329,7 @@ public final class Array<T>
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>
 	 * Sorts the array of objects according to the order induced by the specified
@@ -346,11 +346,11 @@ public final class Array<T>
 	 *         {@code null}.
 	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
-	 */		
+	 */
 	public void sort(final Comparator<? super T> comparator) {
 		sort(0, length(), comparator);
 	}
-	
+
 	/**
 	 * <p>
 	 * Sorts the array of objects according to the order induced by the specified
@@ -372,7 +372,7 @@ public final class Array<T>
 	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
-	 */		
+	 */
 	public void sort(
 		final int from, final int to,
 		final Comparator<? super T> comparator
@@ -384,16 +384,16 @@ public final class Array<T>
 				));
 		}
 		nonNull(comparator, "Comparator");
-		
+
 		_array.cloneIfSealed();
-		
+
 		@SuppressWarnings("unchecked")
 		final T[] data = (T[])_array.data;
 		Arrays.sort(data, from + _start, to + _start, comparator);
 //		quicksort(from, to - 1, comparator);
 	}
-	
-	
+
+
 	void quicksort(
 		final int left, final int right,
 		final Comparator<? super T> comparator
@@ -404,7 +404,7 @@ public final class Array<T>
 			quicksort(j + 1, right, comparator);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private int partition(
 		final int left, final int right,
@@ -420,7 +420,7 @@ public final class Array<T>
 					i < right &&
 					comparator.compare((T)_array.data[i + _start], pivot) < 0
 				);
-			
+
 			do {
 				--j;
 			} while (
@@ -433,28 +433,32 @@ public final class Array<T>
 			uncheckedSwap(i, j);
 		}
 		uncheckedSwap(left, j);
-		
+
 		return j;
-	}	
-	
+	}
+
 	private void uncheckedSwap(final int i, final int j) {
 		final Object temp = _array.data[i + _start];
 		_array.data[i + _start] = _array.data[j + _start];
 		_array.data[j + _start] = temp;
 	}
-	
+
 	/**
 	 * Reverses the given array in place.
+	 *
+	 * @return this (reversed) array.
 	 */
 	public Array<T> reverse() {
 		return reverse(0, length());
 	}
-	
+
 	/**
-	 * Reverses the part of the array determined by the to indexes.
+	 * Reverses the part of the array determined by the to indexes. The reverse
+	 * method is performed in place.
 	 *
 	 * @param from the first index (inclusive)
 	 * @param to the second index (exclusive)
+	 * @return this (reversed) array.
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
 	 *			<tt>to &gt; a.length</tt>
@@ -462,34 +466,34 @@ public final class Array<T>
 	public Array<T> reverse(final int from, final int to) {
 		checkIndex(from, to);
 		_array.cloneIfSealed();
-		
+
 		int i = from;
 		int j = to;
 		while (i < j) {
 			uncheckedSwap(i++, --j);
 		}
-		
+
 		return this;
 	}
-	
+
 	public void swap(final int i, final int j) {
 		checkIndex(i);
 		checkIndex(j);
-		
+
 		_array.cloneIfSealed();
 		uncheckedSwap(i, j);
 	}
-	
+
 	public Array<T> shuffle(final Random random) {
 		_array.cloneIfSealed();
-		
+
 		for (int j = length() - 1; j > 0; --j) {
 			uncheckedSwap(j, random.nextInt(j + 1));
 		}
-		
+
 		return this;
 	}
-	
+
 	@Override
 	public Array<T> fill(final T value) {
 		_array.cloneIfSealed();
@@ -498,7 +502,7 @@ public final class Array<T>
 		}
 		return this;
 	}
-	
+
 	@Override
 	public Array<T> fill(final Iterator<? extends T> it) {
 		_array.cloneIfSealed();
@@ -507,31 +511,31 @@ public final class Array<T>
 		}
 		return this;
 	}
-	
+
 	@Override
 	public Array<T> fill(final T[] values) {
 		_array.cloneIfSealed();
 		System.arraycopy(values, 0, _array.data, _start, min(length(), values.length));
 		return this;
 	}
-	
+
 	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
 		nonNull(factory);
-		
+
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array.data[i] = factory.newInstance();
 		}
 		return this;
 	}
-	
+
 	@Override
 	public ISeq<T> toISeq() {
 		_array._sealed = true;
 		return new ArrayISeq<>(new ArrayRef(_array.data), _start, _end);
 	}
-	
+
 	/**
 	 * Create a new array which contains the values of {@code this} and the
 	 * given {@code value}. The length of the new array is
@@ -547,7 +551,7 @@ public final class Array<T>
 		array._array.data[array.length() - 1] = value;
 		return array;
 	}
-	
+
 	/**
 	 * Create a new array which contains the values of {@code this} and the
 	 * given {@code array}. The length of the new array is
@@ -560,7 +564,7 @@ public final class Array<T>
 	 */
 	public Array<T> add(final Array<? extends T> array) {
 		final Array<T> appended = new Array<>(length() + array.length());
-		
+
 		System.arraycopy(
 				_array.data, _start,
 				appended._array.data, 0, length()
@@ -569,10 +573,10 @@ public final class Array<T>
 				array._array.data, array._start,
 				appended._array.data, length(), array.length()
 			);
-		
+
 		return appended;
 	}
-	
+
 	/**
 	 * Create a new array which contains the values of {@code this} and the
 	 * given {@code values}. The length of the new array is
@@ -586,24 +590,24 @@ public final class Array<T>
 	public Array<T> add(final Collection<? extends T> values) {
 		nonNull(values, "Values");
 		final Array<T> array = new Array<>(length() + values.size());
-		
+
 		System.arraycopy(_array.data, _start, array._array.data, 0, length());
 		int index = length();
 		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
 			array._array.data[index] = it.next();
 		}
-		
+
 		return array;
 	}
-	
+
 	@Override
 	public <B> Array<B> map(final Function<? super T, ? extends B> converter) {
 		nonNull(converter, "Converter");
-		
+
 		final int length = length();
 		final Array<B> result = new Array<>(length);
 		assert (result._array.data.length == length);
-		
+
 		for (int i = length; --i >= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
@@ -611,7 +615,7 @@ public final class Array<T>
 		}
 		return result;
 	}
-	
+
 	@Override
 	public Array<T> copy() {
 		return new Array<>(new ArrayRef(toArray()), 0, length());
@@ -622,20 +626,20 @@ public final class Array<T>
 		checkIndex(start, end);
 		return new Array<>(_array, start + _start, end + _start);
 	}
-		
+
 	@Override
 	public Array<T> subSeq(final int start) {
 		return subSeq(start, length());
 	}
-	
+
 	@Override
 	public List<T> asList() {
 		return new ArrayMSeqList<>(this);
 	}
-	
+
 	@Override
 	public ListIterator<T> listIterator() {
 		return new ArrayMSeqIterator<>(this);
 	}
-	
+
 }
