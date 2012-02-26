@@ -420,8 +420,8 @@ Jenetics
 \family default
 \series default
 \shape default
- allows you minimize and maximize the given fitness function without tweaking
- it.
+ allows you to minimize and maximize the given fitness function without
+ tweaking it.
  This manual describes the concepts implemented in the
 \family sans
 \series bold
