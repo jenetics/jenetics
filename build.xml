@@ -163,7 +163,7 @@
 		 # Build with the library dependencies.
 		-->
 		<jar
-			destfile="${build.dir}/${identifier}-all.jar"
+			destfile="${build.dir}/jenetics-all-${version}.jar"
 			filesetmanifest="mergewithoutmain"
 			index="true"
 			update="true"
