@@ -28,8 +28,9 @@
  ###############################################################################
 -->
 <project default="jar">
+	<property name="name" value="jenetics" />
 	<property name="version" value="0.9.0.0" />
-	<property name="identifier" value="jenetics-${version}" />
+	<property name="identifier" value="${name}-${version}" />
 	<property name="year" value="2007-2012" />
 
 	<property name="basedir" value="." />
@@ -149,7 +150,7 @@
 				<include name="**/*.class" />
 			</fileset>
 			<manifest>
-				<attribute name="ProjectName" value="jenetics" />
+				<attribute name="ProjectName" value="${name}" />
 				<attribute name="Version" value="${version}" />
 				<attribute name="Vendor" value="Franz Wilhelmstötter" />
 				<attribute name="Maintainer" value="Franz Wilhelmstötter" />
@@ -163,7 +164,7 @@
 		 # Build with the library dependencies.
 		-->
 		<jar
-			destfile="${build.dir}/jenetics-all-${version}.jar"
+			destfile="${build.dir}/${name}-all-${version}.jar"
 			filesetmanifest="mergewithoutmain"
 			index="true"
 			update="true"
@@ -192,7 +193,7 @@
 		 # Build the examples
 		-->
 		<jar
-			destfile="${build.dir}/${identifier}-examples.jar"
+			destfile="${build.dir}/${name}-examples-${version}.jar"
 			filesetmanifest="mergewithoutmain"
 			index="true"
 			update="true"
