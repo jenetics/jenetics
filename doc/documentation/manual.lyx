@@ -949,7 +949,7 @@ status open
 
 \begin_layout Plain Layout
 
-public static void main(final String[] args) {
+public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -974,7 +974,7 @@ public static void main(final String[] args) {
 
 \begin_layout Plain Layout
 
-    GeneticAlgorithm<BitGene, Double> 
+    GeneticAlgorithm<BitGene, Float64> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1087,7 +1087,7 @@ status open
 
 \begin_layout Plain Layout
 
-public static void main(final String[] args) {
+public static void main(String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
