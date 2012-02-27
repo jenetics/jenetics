@@ -33,6 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.jscience.mathematics.number.Float64;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
@@ -41,71 +43,87 @@ import org.jenetics.util.Timer;
 
 
 /**
- * Main class.
+ * <h3>Getting started</h3>
+ *
+ * The minimum GA setup needs a genotype factory, {@code Factory<Genotype<?>>},
+ * and a fitness {@link Function}. The {@link Genotype} implements the
+ * {@link Factory} interface and can therefore be used as prototype for creating
+ * the initial Population and for creating new random Genotypes.
+ *
+ * [code]
+ * public static void main(final String[] args) {
+ *     Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *         BitChromosome.valueOf(10, 0.5)
+ *     );
+ *     Function<Genotype<BitGene> Float64> ff = ...
+ *     GeneticAlgorithm<BitGene, Float64>
+ *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
+ *
+ *     ga.setup();
+ *     ga.evolve(100);
+ *     System.out.println(ga.getBestPhenotype());
+ * }
+ * [/code]
+ *
+ * The genotype factory, {@code gtf}, in the example above will create genotypes
+ * which consists of one {@link BitChromosome} with length 10. The one to zero
+ * probability of the newly created genotypes is set to 0.5. The fitness function
+ * is parameterized with a {@link BitGene} and a {@link Float64}. That means
+ * that the fitness function is calculating the fitness value as {@link Float64}.
+ * The return type of the fitness function must be at least a {@link Comparable}.
+ * The {@code GeneticAlgorithm} object is then created with the genotype factory
+ * and the fitness function. In this example the GA tries to maximize the fitness
+ * function. If you want to find the minimal value you have to change the optimize
+ * parameter from {@code Optimize.MAXIMUM} to {@code Optimize.MINIMUM}. The
+ * {@code ga.setup()} call creates the initial population and calculates its
+ * fitness value. Then the GA evolves 100 generations ({@code ga.evolve(100)})
+ * an prints the best phenotype found so far onto the console.
+ * <p/>
+ * In a more advanced setup you may want to change the default mutation and/or
+ * selection strategies.
+ *
+ * [code]
+ * public static void main(final String[] args) {
+ *     ...
+ *     ga.setSelectors(new RouletteWheelSelector<BitGene>());
+ *     ga.setAlterers(
+ *         new SinglePointCrossover<BitGene>(0.1),
+ *         new Mutator<BitGene>(0.01)
+ *     );
+ *
+ *     ga.setup();
+ *     ga.evolve(100);
+ *     System.out.println(ga.getBestPhenotype());
+ * }
+ * [/code]
+ *
+ * The selection strategy for offspring and survivors are set to the
+ * roulette-wheel selector. It is also possible to set the selector for
+ * offspring and survivors independently with the {@code setOffspringSelector}
+ * and {@code setSurvivorSelector} methods. The alterers are concatenated, at
+ * first the crossover (with probability 0.1) is performed and then the
+ * chromosomes are mutated (with probability 0.01).
  * <p/>
  *
- * A simple GeneticAlgorithm setup.
+ * <h3>Serialization</h3>
+ *
+ * With the serialization mechanism you can write a population to disk and load
+ * it into an GA at a later time. It can also be used to transfer populations to
+ * GAs, running on different hosts, over a network link. The IO class, located
+ * in the {@code org.jenetics.util} package, supports native Java serialization
+ * and XML serialization. For XML marshaling <em>Jenetics</em> internally uses
+ * the XML support from the Javolution project.
+ *
  * [code]
- * //Defining a genotype factory.
- * final Factory<Genotype<BitGene>> gt = Genotype.valueOf(
- *     new BitChromosome<>(10, 0.5);
- * );
+ * // Writing the population to disk.
+ * final File file = new File("population.xml");
+ * IO.xml.write(ga.getPopulation(), file);
  *
- * // Defining the fitness function.
- * final Function<Genotype<BitGene>, Float64> ff = ...;
- *
- * // The given fitness function will be maximized. By default
- * // the GA tries to maximize the fitness function.
- * final Optimize opt = Optimize.MINIMUM;
- *
- * // Create the GA.
- * final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(gt, ff, opt);
- * [/code]
- * All other needed GA parameters are initialized with default values. Therefore
- * the GA is ready for use now.
- * [code]
- * ga.setup();
- * ga.evolve(100);
- * System.out.println(ga.getStatistics());
- * [/code]
- *
- * After finishing you can safe the best population to disk and initialize
- * another GA instance with the saved population.
- * [code]
- * // Save the GAs population.
- * try (
- *     FileOutputStream fout = new FileOutputStream("population.pop");
- *     ObjectOutputStream oout = new ObjectOutputStream(fout)
- * ) {
- *     oout.writeObject(ga.getPopulation());
- * }
- *
- * // Restore the GAs population.
- * try (
- *     FileInputStream fin = new FileInputStream("population.pop");
- *     ObjectInputStream oin = new ObjectInputStream(fin)
- * ) {
- *     \@SuppressWarnings("unchecked")
- *     Population<BitGene, Float64>
- *     population = (Population<BitGene, Float64>)oin.readObject();
- *
- *     ga.setPopulation(population);
- * }
- * [/code]
- *
- * It is possible to set an initial population instead an random one. The
- * fitness function and the fitness scaler is not initialized by the
- * {@link #setPopulation(Collection)} or {@link #setGenotypes(Collection)} function.
- * [code]
- * final Population<BitGene, Float64> population = (Population<Bitgene, Float64>)
- *     IOUtils.readXML(Population.class, new FileInputStream("population.xml");
+ * // Reading the population from disk.
+ * Population<Float64Gene,Float64> population =
+ *     (Population<Float64Gene, Float64)IO.xml.read(file);
  * ga.setPopulation(population);
- * //ga.setGenotypes(genotypes); //Or initialize the GA with genotypes.
- * ga.setup();
- * ga.evolve(100);
- * System.out.println(ga.getStatistics());
  * [/code]
- *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -268,7 +286,7 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Setting up the <code>GeneticAlgorithm</code>. Subsequent calls to this
+	 * Create the initial population of the GA. Subsequent calls to this
 	 * method throw IllegalStateException. If no initial population has been
 	 * set (with {@link #setPopulation(Collection)} or
 	 * {@link #setGenotypes(Collection)}) a random population is generated.
@@ -575,13 +593,13 @@ public class GeneticAlgorithm<
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
 	 * final GeneticAlgorithm<Float64Gene, Float64> ga = ...
-	 * final Function<GeneticAlgorithm<?, ?>, Boolean> stopCondition = ...
+	 * final Function<GeneticAlgorithm<?, ?>, Boolean> until = ...
 	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
 	 *     public void run() {
 	 *         while (!Thread.currentThread().isInterrupted() &&
-	 *                !stopCondition.apply(ga))
+	 *                !until.apply(ga))
 	 *         {
 	 *             if (ga.getGeneration() == 0) {
 	 *                 ga.setup();
