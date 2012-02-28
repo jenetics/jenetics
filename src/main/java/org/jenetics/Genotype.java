@@ -45,7 +45,15 @@ import org.jenetics.util.Verifiable;
 import org.jenetics.util.object;
 
 /**
- * This class is the encoded problem solution with one to many Chromosomes.
+ * The central class the GA is working with, is the {@code Genotype}. It is the
+ * structural representative of an individual. This class is the encoded problem
+ * solution with one to many {@link Chromosome}.
+ * <img src="doc-files/Genotype.svg" width="400" height="252" />
+ * <p/>
+ * The chromosomes of a genotype doesn't have to have necessarily the same size.
+ * It is only required that all genes are from the same type and the genes within
+ * a chromosome have the same constraints; e. g. the same min- and max values
+ * for number genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -60,21 +68,21 @@ public final class Genotype<T extends Gene<?, T>>
 		Immutable
 {
 	private static final long serialVersionUID = 2L;
-	
+
 	private final ISeq<Chromosome<T>> _chromosomes;
 	private final int _ngenes;
-	
+
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
-	
+
 	private Genotype(final ISeq<Chromosome<T>> chromosomes, final int ngenes) {
 		assert(chromosomes != null);
 		assert(ngenes(chromosomes) == ngenes);
-		
+
 		_chromosomes = chromosomes;
 		_ngenes = ngenes;
 	}
-	
+
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
 		int ngenes = 0;
 		for (int i = chromosomes.length(); --i >= 0;) {
@@ -82,7 +90,7 @@ public final class Genotype<T extends Gene<?, T>>
 		}
 		return ngenes;
 	}
-	
+
 	/**
 	 * Return the chromosome at the given index. It is guaranteed, that the
 	 * returned chromosome is not null.
@@ -94,10 +102,10 @@ public final class Genotype<T extends Gene<?, T>>
 	public Chromosome<T> getChromosome(final int index) {
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(index) != null);
-		
+
 		return _chromosomes.get(index);
 	}
-	
+
 	/**
 	 * Return the first chromosome.
 	 *
@@ -106,10 +114,10 @@ public final class Genotype<T extends Gene<?, T>>
 	public Chromosome<T> getChromosome() {
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(0) != null);
-		
+
 		return _chromosomes.get(0);
 	}
-	
+
 	/**
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}.
@@ -120,19 +128,19 @@ public final class Genotype<T extends Gene<?, T>>
 	public T getGene() {
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(0) != null);
-		
+
 		return _chromosomes.get(0).getGene();
 	}
-	
+
 	public ISeq<Chromosome<T>> toSeq() {
 		return _chromosomes;
 	}
-	
+
 	@Override
 	public Iterator<Chromosome<T>> iterator() {
 		return _chromosomes.iterator();
 	}
-	
+
 	/**
 	 * Getting the number of _chromosomes of this genotype.
 	 *
@@ -141,7 +149,7 @@ public final class Genotype<T extends Gene<?, T>>
 	public int length() {
 		return _chromosomes.length();
 	}
-	
+
 	/**
 	 * Return the number of genes this genotype consists of. This is the sum of
 	 * the number of genes of the genotype chromosomes.
@@ -151,7 +159,7 @@ public final class Genotype<T extends Gene<?, T>>
 	public int getNumberOfGenes() {
 		return _ngenes;
 	}
-	
+
 	/**
 	 * Test if this genotype is valid. A genotype is valid if all its
 	 * {@link Chromosome}s are valid.
@@ -165,7 +173,7 @@ public final class Genotype<T extends Gene<?, T>>
 		}
 		return _valid;
 	}
-	
+
 	/**
 	 * Return a new, random genotype by creating new, random chromosomes (calling
 	 * the {@link Chromosome#newInstance()} method) from the chromosomes of this
@@ -173,23 +181,23 @@ public final class Genotype<T extends Gene<?, T>>
 	 */
 	@Override
 	public Genotype<T> newInstance() {
-		final Array<Chromosome<T>> chromosomes = new Array<>(length());		
+		final Array<Chromosome<T>> chromosomes = new Array<>(length());
 		for (int i = 0; i < length(); ++i) {
 			chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
-		
+
 		return new Genotype<>(chromosomes.toISeq(), _ngenes);
 	}
-	
+
 	Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
 		return new Genotype<>(chromosomes, _ngenes);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_chromosomes).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object o) {
 		if (o == this) {
@@ -198,7 +206,7 @@ public final class Genotype<T extends Gene<?, T>>
 		if (!(o instanceof Genotype<?>)) {
 			return false;
 		}
-		
+
 		final Genotype<?> gt = (Genotype<?>)o;
 		return eq(_chromosomes, gt._chromosomes);
 	}
@@ -207,17 +215,17 @@ public final class Genotype<T extends Gene<?, T>>
 	public Text toText() {
 		return new Text(_chromosomes.toString());
 	}
-	
+
 	@Override
 	public String toString() {
 		return _chromosomes.toString();
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Return a converter which access the chromosome array of this genotype.
 	 */
@@ -230,7 +238,7 @@ public final class Genotype<T extends Gene<?, T>>
 			}
 		};
 	}
-	
+
 	/**
 	 * Return a converter which access the chromosome with the given index of
 	 * this genotype.
@@ -244,7 +252,7 @@ public final class Genotype<T extends Gene<?, T>>
 			}
 		};
 	}
-	
+
 	/**
 	 * Return a converter which access the first chromosome of this genotype.
 	 */
@@ -257,8 +265,8 @@ public final class Genotype<T extends Gene<?, T>>
 			}
 		};
 	}
-	
-	
+
+
 	/**
 	 * Create a new Genotype from a given array of <code>Chromosomes</code>.
 	 * The <code>Chromosome</code> array <code>c</code> is cloned.
@@ -276,13 +284,13 @@ public final class Genotype<T extends Gene<?, T>>
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
-		
+
 		return new Genotype<>(
 				chromosomes.upcast(chromosomes),
 				ngenes(chromosomes)
 			);
 	}
-	
+
 	/**
 	 * Create a new Genotype from a given {@link Chromosome}
 	 *
@@ -294,26 +302,26 @@ public final class Genotype<T extends Gene<?, T>>
 		final Chromosome<G> chromosome
 	) {
 		nonNull(chromosome, "Chromosome");
-		
+
 		return new Genotype<>(
 				new Array<>(chromosome).toISeq(),
 				chromosome.length()
 			);
 	}
-	
+
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> ch1,
 		final Chromosome<G> ch2
 	) {
 		nonNull(ch1, "Chromosome 1");
 		nonNull(ch2, "Chromosome 2");
-		
+
 		return new Genotype<>(
 				new Array<>(ch1, ch2).toISeq(),
 				ch1.length() + ch2.length()
 			);
 	}
-	
+
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> ch1,
 		final Chromosome<G> ch2,
@@ -322,13 +330,13 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch1, "Chromosome 1");
 		nonNull(ch2, "Chromosome 2");
 		nonNull(ch3, "Chromosome 3");
-		
+
 		return new Genotype<>(
 				new Array<>(ch1, ch2, ch3).toISeq(),
 				ch1.length() + ch2.length() + ch3.length()
-			);		
+			);
 	}
-	
+
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G> ch1,
 		final Chromosome<G> ch2,
@@ -339,13 +347,13 @@ public final class Genotype<T extends Gene<?, T>>
 		nonNull(ch2, "Chromosome 2");
 		nonNull(ch3, "Chromosome 3");
 		nonNull(ch4, "Chromosome 4");
-		
+
 		return new Genotype<>(
 				new Array<>(ch1, ch2, ch3, ch4).toISeq(),
 				ch1.length() + ch2.length() + ch3.length() + ch4.length()
 			);
 	}
-	
+
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
@@ -354,21 +362,21 @@ public final class Genotype<T extends Gene<?, T>>
 		if (array.foreach(object.NonNull) != -1) {
 			throw new NullPointerException("One of the given chromosomes is null.");
 		}
-		
+
 		return valueOf(array.toISeq());
 	}
-	
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes"})
 	static final XMLFormat<Genotype>
 	XML = new XMLFormat<Genotype>(Genotype.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String NGENES = "ngenes";
-		
+
 		@Override
 		public Genotype newInstance(
 			final Class<Genotype> cls, final InputElement xml
@@ -382,7 +390,7 @@ public final class Genotype<T extends Gene<?, T>>
 				final Chromosome<?> c = xml.getNext();
 				chromosomes.set(i, c);
 			}
-			
+
 			return new Genotype(chromosomes.toISeq(), ngenes);
 		}
 		@Override
@@ -396,7 +404,7 @@ public final class Genotype<T extends Gene<?, T>>
 			}
 		}
 		@Override
-		public void read(final InputElement xml, final Genotype gt) {	
+		public void read(final InputElement xml, final Genotype gt) {
 		}
 	};
 }
