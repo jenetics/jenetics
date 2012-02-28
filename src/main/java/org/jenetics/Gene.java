@@ -30,8 +30,8 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Verifiable;
 
 /**
- * The <code>Gene</code> is the base of this genetic algorithm implementation.
- * A common interface for Genes.
+ * Genes are the atoms of the <em>Jenetics</em> library. They contain the actual
+ * information (alleles) of the encoded solution.
  *
  * @param <A> the <a href="http://en.wikipedia.org/wiki/Allele">Allele</a> type
  *        of this gene.
@@ -46,14 +46,14 @@ public interface Gene<A, G extends Gene<A, G>>
 		ValueType,
 		Verifiable
 {
-	
+
 	/**
 	 * Return the allele of this gene.
 	 *
 	 * @return the allele of this gene.
 	 */
 	public A getAllele();
-	
+
 	/**
 	 * Return a new, random gene of the same type than this gene. For all genes
 	 * returned by this method holds {@code gene.getClass() ==
@@ -61,5 +61,5 @@ public interface Gene<A, G extends Gene<A, G>>
 	 */
 	@Override
 	public G newInstance();
-	
+
 }
