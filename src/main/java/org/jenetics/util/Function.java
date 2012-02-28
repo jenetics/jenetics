@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -31,11 +31,11 @@ package org.jenetics.util;
 public interface Function<T, R> {
 
 	/**
-	 * Convert a type {@code A} to type {@code B}.
+	 * Apply the body of this function to the argument.
 	 *
-	 * @param value the value to convert.
-	 * @return the converted value.
+	 * @param value the function argument.
+	 * @return the result of function application.
 	 */
-	public R apply(T value);
-	
+	public R apply(final T value);
+
 }
