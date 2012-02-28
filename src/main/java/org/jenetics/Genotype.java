@@ -48,8 +48,9 @@ import org.jenetics.util.object;
  * The central class the GA is working with, is the {@code Genotype}. It is the
  * structural representative of an individual. This class is the encoded problem
  * solution with one to many {@link Chromosome}.
+ * <p>
  * <img src="doc-files/Genotype.svg" width="400" height="252" />
- * <p/>
+ * </p>
  * The chromosomes of a genotype doesn't have to have necessarily the same size.
  * It is only required that all genes are from the same type and the genes within
  * a chromosome have the same constraints; e. g. the same min- and max values
