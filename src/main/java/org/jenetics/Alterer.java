@@ -33,9 +33,11 @@ package org.jenetics;
  *
  * [code]
  * GeneticAlgorithm<Float64Gene, Double> ga = ...
- * ga.setAlterer(new Crossover<Float64Gene>(0.1));
- * ga.addAlterer(new Mutator<Float64Gene>(0.05))
- * ga.addAlterer(new MeanAlterer<Float64eGene>(0.2));
+ * ga.setAlterers(
+ *     new Crossover<Float64Gene>(0.1),
+ *     new Mutator<Float64Gene>(0.05),
+ *     new MeanAlterer<Float64eGene>(0.2)
+ * );
  * [/code]
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
@@ -49,7 +51,7 @@ public interface Alterer<G extends Gene<?, G>> {
 
 	/**
 	 * Alters (recombine) a given population. If the <code>population</code>
-	 * is <code>null</code> or empty, nothing is altered.
+	 * is empty, nothing is altered.
 	 *
 	 * @param population The Population to be altered. If the
 	 * 		 <code>population</code> is <code>null</code> or empty, nothing is
@@ -63,5 +65,5 @@ public interface Alterer<G extends Gene<?, G>> {
 			final Population<G, C> population,
 			final int generation
 		);
-	
+
 }

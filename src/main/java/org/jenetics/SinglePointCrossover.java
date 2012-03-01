@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -38,7 +38,7 @@ import org.jenetics.util.RandomRegistry;
  * them at some randomly chosen site. E.g.
  * </p>
  * <div align="center">
- *	<img src="doc-files/SinglePointCrossover.gif" >
+ *	<img src="doc-files/SinglePointCrossover.svg" width="500" >
  * </div>
  * <p>
  * If we create a child and its complement we preserving the total number of
@@ -62,7 +62,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	public SinglePointCrossover() {
 		this(0.05);
 	}
-	
+
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
@@ -73,15 +73,15 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	public SinglePointCrossover(final double probability) {
 		super(probability);
 	}
-	
+
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());
-		
+
 		final Random random = RandomRegistry.getRandom();
 		final int length = that.length();
 		final int index = random.nextInt(length);
-		
+
 		for (int j = 0; j < index; ++j) {
 			final G temp = that.get(j);
 			that.set(j, other.get(j));
@@ -92,15 +92,15 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			other.set(j, that.get(j));
 			that.set(j, temp);
 		}
-		
+
 		return 2;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -109,14 +109,14 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
-	
+
 }
 

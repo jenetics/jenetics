@@ -2516,7 +2516,7 @@ The mutation probability
  That means, the (average) number of genes mutated by an mutator is
 \begin_inset Formula 
 \begin{equation}
-\hat{\mu}=N_{g}\cdot P(m)
+\hat{\mu}=N_{P}N_{g}\cdot P(m)
 \end{equation}
 
 \end_inset
@@ -2525,8 +2525,11 @@ where
 \begin_inset Formula $N_{g}$
 \end_inset
 
- is the number of available genes of the population (revere to equation
- 
+ is the number of available genes of a genotype and 
+\begin_inset Formula $N_{P}$
+\end_inset
+
+ the population size (revere to equation 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "eq:Number of genes"
@@ -2754,7 +2757,7 @@ The recombination probability
 \begin_inset Formula $P(r)\cdot N_{G}\cdot O_{R}$
 \end_inset
 
- , where 
+, where 
 \begin_inset Formula $O_{R}$
 \end_inset
 
@@ -2782,6 +2785,44 @@ The single-point crossover changes two children chromosomes by taking two
  problem single-point crossover can lead to smaller disruption than multi-point
  or uniform crossover.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/SinglePointCrossover.eps
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Single-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph

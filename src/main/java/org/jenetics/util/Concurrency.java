@@ -40,7 +40,7 @@ import javolution.lang.Configurable;
  * try {
  *     ConcurrentContext.execute(task1);
  *     ConcurrentContext.execute(task2); }
- * finally {
+ * } finally {
  *     ConcurrentContext.exit();
  * }
  * [/code]
@@ -53,8 +53,35 @@ import javolution.lang.Configurable;
  * }
  * [/code]
  *
- * This is equivalent to
+ * The configuration is performed as followed, before executing any concurrent
+ * code.
+ * [code]
+ * public class Main {
+ *     public static void main(final String[] args) {
+ *         // Using 10 threads for evolving.
+ *         Concurrency.setConcurrency(9);
  *
+ *         // Forces the application only to use one thread.
+ *         Concurrency.setConcurrency(0);
+ *     }
+ * }
+ * [/code]
+ *
+ * The {@code ConcurrentContext} from the <i>JScience</i> project uses it's
+ * own--optimized--thread-pool implementation. If you need to have a single
+ * executor service, for the GA and your own classes, you can initialize the
+ * {@code Concurrency} class with the {@link ForkJoinPool} from the JDK.
+ *
+ * [code]
+ * public class Main {
+ *     public static void main(final String[] args) {
+ *         final int nthreads = 10;
+ *         final ForkJoinPool pool = new ForkJoinPool(nthreads);
+ *         Concurrency.setForkJoinPool(pool);
+ *         ...
+ *     }
+ * }
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -52,32 +52,31 @@ import org.jenetics.util.RandomRegistry;
  * the only source of exploration (if there is no crossover) then the mutation
  * rate should be set so that a reasonable neighborhood of solutions is explored.
  * </p>
- * The mutation probability <i>p</i> is the probability that a specific gene
+ * The mutation probability <i>P(m)</i> is the probability that a specific gene
  * over the whole population is mutated. The number of available genes of an
  * population is
  * <p>
- * <img src="doc-files/mutator-N_G.gif" alt="N_G=n_P \cdot n_C \cdot n_G" />
+ * <img src="doc-files/mutator-N_G.gif" alt="N_P N_{g}=N_P \sum_{i=0}^{N_{G}-1}N_{C[i]}" />
  * </p>
- * where <i>n<sub>P</sub></i>  is the population size, <i>n<sub>C</sub></i> the
- * number of chromosomes of the genotypes and <i>n<sub>G</sub></i>
- * the number of genes in the chromosomes. So the (average) number of genes
+ * where <i>N<sub>P</sub></i>  is the population size, <i>N<sub>g</sub></i> the
+ * number of genes of a genotype. So the (average) number of genes
  * mutated by the mutation is
  * <p>
- * <img src="doc-files/mutator-mean_m.gif" alt="\hat{\mu}_m=N_G \cdot p" />
+ * <img src="doc-files/mutator-mean_m.gif" alt="\hat{\mu}=N_{P}N_{g}\cdot P(m)" />
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {	
-	
+public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
+
 	/**
 	 * Default constructor, with probability = 0.01.
 	 */
 	public Mutator() {
 		this(0.01);
 	}
-	
+
 	/**
 	 * Construct a Mutation object which a given mutation probability.
 	 *
@@ -100,25 +99,25 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final int generation
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
-		
+
 		final double p = Math.pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
-		
+
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(population.size(), p, random); 		
+		final IndexStream stream = IndexStream.Random(population.size(), p, random);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final Phenotype<G, C> pt = population.get(i);
-			
+
 			final Genotype<G> gt = pt.getGenotype();
 			final Genotype<G> mgt = mutate(gt, p, alterations);
-			
+
 			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
 			population.set(i, mpt);
 		}
-		
+
 		return alterations.get();
 	}
-	
+
 	private Genotype<G> mutate(
 		final Genotype<G> genotype,
 		final double p,
@@ -131,24 +130,24 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		int start = stream.next();
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
-			
+
 			for (int i = start; i != -1; i = stream.next()) {
 				final Chromosome<G> chromosome = chromosomes.get(i);
 				final MSeq<G> genes = chromosome.toSeq().copy();
-				
+
 				final int mutations = mutate(genes, p);
 				if (mutations > 0) {
 					alterations.addAndGet(mutations);
 					chromosomes.set(i, chromosome.newInstance(genes.toISeq()));
 				}
 			}
-				
+
 			gt = genotype.newInstance(chromosomes.toISeq());
 		}
-		
+
 		return gt;
 	}
-	
+
 	/**
 	 * Template method which gives an (re)implementation of the mutation class the
 	 * possibility to perform its own mutation operation, based on a writable
@@ -160,7 +159,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 *     final Random random = RandomRegistry.getRandom();
 	 *     final ProbabilityIndexIterator it =
 	 *         new ProbabilityIndexIterator(genes.length(), p, random);
-	 *	
+	 *
 	 *     int alterations = 0;
 	 *     for (int i = it.next(); i != -1; i = it.next()) {
 	 *         genes.set(i, genes.get(i).newInstance());
@@ -176,21 +175,21 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
 		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
-		
+
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			genes.set(i, genes.get(i).newInstance());
 			++alterations;
 		}
-		
+
 		return alterations;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -198,7 +197,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		}
 		return obj instanceof Mutator<?>;
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);

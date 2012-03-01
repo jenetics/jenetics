@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -33,6 +33,13 @@ import org.jenetics.util.RandomRegistry;
  * population according to some given probability in a way that minimize chance
  * fluctuations. It can be viewed as a type of roulette game where now we have
  * P equally spaced points which we spin.
+ *
+ * <p><div align="center">
+ * <img src="doc-files/StochasticUniversalSelection.svg" width="400" />
+ * </p></div>
+ *
+ * The figure above shows how the stochastic-universal selection works; <i>n</i>
+ * is the number of individuals to select.
  *
  * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Stochastic_universal_sampling">
  * 		Wikipedia: Stochastic universal sampling
@@ -68,15 +75,15 @@ public class StochasticUniversalSelector<
 				"Selection count must be greater or equal then zero, but was " + count
 			);
 		}
-		
+
 		final Population<G, N> selection = new Population<>(count);
 		if (count == 0) {
 			return selection;
 		}
-		
+
 		final double[] probabilities = probabilities(population, count, opt);
 		assert (population.size() == probabilities.length);
-		
+
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;
 		final double[] points = new double[count];
@@ -84,7 +91,7 @@ public class StochasticUniversalSelector<
 		for (int i = 1; i < count; ++i) {
 			points[i] = delta*i;
 		}
-		
+
 		int j = 0;
 		double prop = 0;
 		for (int i = 0; i < count; ++i) {
@@ -97,7 +104,7 @@ public class StochasticUniversalSelector<
 
 		return selection;
 	}
-	
+
 	@Override
 	protected double[] probabilities(
 		final Population<G, N> population,
@@ -106,12 +113,12 @@ public class StochasticUniversalSelector<
 		population.sort();
 		return super.probabilities(population, count);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -120,10 +127,10 @@ public class StochasticUniversalSelector<
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s", getClass().getSimpleName());
