@@ -30,13 +30,14 @@ import java.util.Random;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * In tournament selection the best {@link Phenotype} from a random sample of
- * <i>s</i> individuals is chosen for the next generation. The samples are drawn
- * (in this class) without replacement. An individual will win a tournament
- * only if its fitness is greater than the fitness of the other <i>s-1</i>
- * competitors. Note that the worst {@link Phenotype} individual never survives,
- * and the best {@link Phenotype} individual wins in all the tournaments it
- * participates.
+ * In tournament selection the best individual from a random sample of <i>s</i>
+ * individuals is chosen from the population <i>P<sub>g</sub></i>. The samples
+ * are drawn with replacement. An individual will win a tournament only if its
+ * fitness is greater than the fitness of the other <i>s-1</i>  competitors.
+ * Note that the worst individual never survives, and the best individual wins
+ * in all the tournaments it participates. The selection pressure can be varied
+ * by changing the tournament size <i>s</i> . For large values of <i>s</i>, weak
+ * individuals have less chance being selected.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Tournament_selection">Tournament selection</a>
  *
