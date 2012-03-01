@@ -707,6 +707,7 @@ public class GeneticAlgorithm<
 	 * The listing above shows a fitness scaler which reduces the the raw-fitness
 	 * to its square root. This gives weaker individuals a greater changes being
 	 * selected and weakens the influence of super-individuals.
+	 * <p/>
 	 * <b>When using a fitness scaler you have to take care, that your scaler
 	 * doesn't destroy your fitness value. This can be the case when your
 	 * fitness value is negative and your fitness scaler squares the value.
