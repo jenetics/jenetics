@@ -56,6 +56,18 @@ import org.jenetics.util.object;
  * a chromosome have the same constraints; e. g. the same min- and max values
  * for number genes.
  *
+ * [code]
+ * Genotype<Float64Gene> genotype = Genotype.valueOf(
+ *     new Float64Chromosome(0.0, 1.0, 8),
+ *     new Float64Chromosome(1.0, 2.0, 10),
+ *     new Float64Chromosome(0.0, 10.0, 9),
+ *     new Float64Chromosome(0.1, 0.9, 5)
+ * );
+ * [/code]
+ * The code snipped above creates a genotypw with the same structure as shown in
+ * the figure above. In this example the {@link Float64Gene} has been chosen as
+ * gene type.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
