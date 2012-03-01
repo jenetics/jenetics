@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -58,13 +58,13 @@ public final class PermutationChromosome<T>
 	private static final long serialVersionUID = 1L;
 
 	private ISeq<T> _validAlleles;
-	
+
 	PermutationChromosome(final int length, final ISeq<EnumGene<T>> genes) {
 		super(genes);
 		_validAlleles = genes.get(0).getValidAlleles();
 		_valid = true;
 	}
-	
+
 	/**
 	 * Create a new, random chromosome with the given valid alleles.
 	 *
@@ -82,7 +82,7 @@ public final class PermutationChromosome<T>
 	public ISeq<T> getValidAlleles() {
 		return _validAlleles;
 	}
-	
+
 	/**
 	 * Check if this chromosome represents still a valid permutation.
 	 */
@@ -91,7 +91,7 @@ public final class PermutationChromosome<T>
 		if (_valid == null) {
 			byte[] check = new byte[length()/8 + 1];
 			Arrays.fill(check, (byte)0);
-			
+
 			boolean valid = super.isValid();
 			for (int i = 0; i < length() && valid; ++i) {
 				final int value = _genes.get(i).getAlleleIndex();
@@ -105,10 +105,10 @@ public final class PermutationChromosome<T>
 					valid = false;
 				}
 			}
-			
+
 			_valid = valid;
 		}
-		
+
 		return _valid;
 	}
 
@@ -121,7 +121,7 @@ public final class PermutationChromosome<T>
 	public Factory<PermutationChromosome<T>> asFactory() {
 		return (Factory<PermutationChromosome<T>>)(Object)this;
 	}
-	
+
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
@@ -129,19 +129,19 @@ public final class PermutationChromosome<T>
 	public PermutationChromosome<T> newInstance() {
 		return new PermutationChromosome<>(_validAlleles);
 	}
-	
+
 	@Override
 	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
 		return new PermutationChromosome<>(genes.length(), genes);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass())
 				.and(super.hashCode())
 				.value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -152,7 +152,7 @@ public final class PermutationChromosome<T>
 		}
 		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
@@ -162,7 +162,7 @@ public final class PermutationChromosome<T>
 		}
 		return out.toString();
 	}
-	
+
 	/**
 	 * Create a new PermutationChromosome from the given genes.
 	 *
@@ -174,7 +174,7 @@ public final class PermutationChromosome<T>
 	) {
 		return new PermutationChromosome<>(genes.length(), genes);
 	}
-	
+
 	/**
 	 * Create a integer permutation chromosome with the given length.
 	 *
@@ -185,18 +185,18 @@ public final class PermutationChromosome<T>
 		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
 		return new PermutationChromosome<>(alleles);
 	}
-	
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	@SuppressWarnings("rawtypes")
 	static final XMLFormat<PermutationChromosome>
 	XML = new XMLFormat<PermutationChromosome>(PermutationChromosome.class) {
-		
+
 		private static final String LENGTH = "length";
 		private static final String ALLELE_INDEXES = "allele-indexes";
-		
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public PermutationChromosome newInstance(
@@ -208,21 +208,21 @@ public final class PermutationChromosome<T>
 			for (int i = 0; i < length; ++i) {
 				alleles.set(i, xml.getNext());
 			}
-			
+
 			final ISeq<Object> ialleles = alleles.toISeq();
-			
+
 			final Array<Integer> indexes = new Array<>(
 				xml.get(ALLELE_INDEXES, String.class
 			).split(",")).map(StringToInteger);
-			
+
 			final Array<Object> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
 				genes.set(i, EnumGene.valueOf(ialleles, indexes.get(i)));
 			}
-			
+
 			return new PermutationChromosome(genes.length(), genes.toISeq());
 		}
-		
+
 		@Override
 		public void write(final PermutationChromosome chromosome, final OutputElement xml)
 			throws XMLStreamException
@@ -248,38 +248,38 @@ public final class PermutationChromosome<T>
 		{
 		}
 	};
-	
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
-	
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
 		out.defaultWriteObject();
-		
+
 		out.writeObject(_validAlleles);
 		for (EnumGene<?> gene : _genes) {
 			out.writeInt(gene.getAlleleIndex());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-		
+
 		_validAlleles = (ISeq<T>)in.readObject();
-		
+
 		final Array<EnumGene<T>> genes = new Array<>(_validAlleles.length());
 		for (int i = 0; i < _validAlleles.length(); ++i) {
 			genes.set(i, EnumGene.valueOf(_validAlleles, in.readInt()));
 		}
-		
+
 		_genes = genes.toISeq();
 	}
-	
+
 }
 
 
