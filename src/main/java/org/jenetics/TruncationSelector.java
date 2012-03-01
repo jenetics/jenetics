@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -27,7 +27,9 @@ import static org.jenetics.util.object.nonNull;
 
 /**
  * In truncation selection individuals are sorted according to their fitness.
- * Only the best individuals are selected.
+ * Only the n  best individuals are selected. The truncation selection is a very
+ * basic selection algorithm. It has it's strength in fast selecting individuals
+ * in large populations, but is not very often used in practice.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Truncation_selection">
  * 			Wikipedia: Truncation selection
@@ -48,7 +50,7 @@ public final class TruncationSelector<
 	 */
 	public TruncationSelector() {
 	}
-	
+
 	/**
 	 * This method sorts the population in descending order while calculating the
 	 * selection probabilities. (The method {@link Population#sort()} is called
@@ -64,7 +66,7 @@ public final class TruncationSelector<
 		final Population<G, C> population,
 		final int count,
 		final Optimize opt
-	) {		
+	) {
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
 		if (count < 0) {
@@ -79,16 +81,16 @@ public final class TruncationSelector<
 				count, population.size()
 			));
 		}
-		
+
 		population.sort(opt.<C>descending());
 		return new Population<>(population.subList(0, count));
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -96,7 +98,7 @@ public final class TruncationSelector<
 		}
 		return obj instanceof TruncationSelector<?, ?>;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getClass().getName();

@@ -18,12 +18,25 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
 /**
- * A Selector selects a given number of Chromosomes from the Population.
+ * Selectors are responsible for selecting a given number of individuals from
+ * the population. The selectors are used to divide the population into
+ * survivors and offspring. The selectors for offspring and for the survivors
+ * can be chosen independently.
+ * [code]
+ * GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ * ga.setOffspringFraction(0.7);
+ * ga.setSurvivorSelector(
+ *     new RouletteWheelSelector<Float64Gene, Float64>()
+ * );
+ * ga.setOffspringSelector(
+ *     new TournamentSelector<Float64Gene, Float64>()
+ * );
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$

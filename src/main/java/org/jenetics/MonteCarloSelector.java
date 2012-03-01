@@ -32,8 +32,10 @@ import javolution.lang.Immutable;
 import org.jenetics.util.RandomRegistry;
 
 /**
- * Select the phenotypes from a given population randomly. This class can be
- * used to measure the performance of an other given selector.
+ * The Monte Carlo selector selects the individuals from a given population
+ * randomly. This selector can be used to measure the performance of a other
+ * selectors. In general, the performance of a selector should be better than
+ * the selection performance of the Monte Carlo selector.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -47,9 +49,9 @@ public final class MonteCarloSelector<
 		Immutable
 {
 
-	public MonteCarloSelector() {	
+	public MonteCarloSelector() {
 	}
-	
+
 	@Override
 	public Population<G, C> select(
 		final Population<G, C> population,
@@ -64,9 +66,9 @@ public final class MonteCarloSelector<
 				count
 			));
 		}
-		
+
 		final Population<G, C> selection = new Population<>(count);
-		
+
 		if (count > 0) {
 			final Random random = RandomRegistry.getRandom();
 			final int size = population.size();
@@ -75,15 +77,15 @@ public final class MonteCarloSelector<
 				selection.add(population.get(pos));
 			}
 		}
-		
+
 		return selection;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -91,7 +93,7 @@ public final class MonteCarloSelector<
 		}
 		return obj instanceof MonteCarloSelector<?, ?>;
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s", getClass().getSimpleName());
