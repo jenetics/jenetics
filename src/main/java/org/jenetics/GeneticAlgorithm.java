@@ -40,6 +40,7 @@ import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
+import org.jenetics.util.functions;
 
 
 /**
@@ -214,7 +215,7 @@ public class GeneticAlgorithm<
 		this(
 				genotypeFactory,
 				fitnessFunction,
-				new IdentityScaler<C>(),
+				functions.<C>Identity(),
 				Optimize.MAXIMUM
 			);
 	}
@@ -236,7 +237,7 @@ public class GeneticAlgorithm<
 		this(
 				genotypeFactory,
 				fitnessFunction,
-				new IdentityScaler<C>(),
+				functions.<C>Identity(),
 				optimization
 			);
 	}

@@ -32,6 +32,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ObjectTester;
+import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -48,8 +49,8 @@ public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>>
 			final Float64Gene gene = genotype.getChromosome().getGene(0);
 			return Float64.valueOf(sin(toRadians(gene.doubleValue())));
 		}
-	}	
-	
+	}
+
 	private final Factory<Genotype<Float64Gene>> _genotype = Genotype.valueOf(
 			new Float64Chromosome(0, 1, 50),
 			new Float64Chromosome(0, 1, 500),
@@ -57,16 +58,16 @@ public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>>
 			new Float64Chromosome(0, 1, 50)
 		);
 	private final Function<Genotype<Float64Gene>, Float64> _ff = new FF();
-	private final Function<Float64, Float64> _scaler = new IdentityScaler<>();
+	private final Function<Float64, Float64> _scaler = functions.Identity();
 	private final Factory<Phenotype<Float64Gene, Float64>>
 	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {
 		@Override public Phenotype<Float64Gene, Float64> newInstance() {
 			return Phenotype.valueOf(_genotype.newInstance(), _ff, _scaler, 0);
 		}
 	};
-	
+
 	@Override protected Factory<Phenotype<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-	
+
 }
