@@ -26,33 +26,29 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
-import java.io.Serializable;
-
 import javolution.lang.Immutable;
 
 import org.jenetics.util.Function;
 
 /**
- *  A fitness {@link Function} which always returns a given constant value.
+ *  A {@link Function} which always returns a given constant value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  *
  * @param <G> the gene type.
  */
-public final class ConstantFitnessFunction<
+public final class ConstantFunction<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements
 		Function<Genotype<G>, C>,
-		Immutable,
-		Serializable
+		Immutable
 {
-	private static final long serialVersionUID = 1L;
-	
+
 	private final C _value;
-	
+
 	/**
 	 * Create a new <i>constant</i> fitness function with the given value. This
 	 * value is returned for every {@link #apply(Genotype)} call.
@@ -60,10 +56,10 @@ public final class ConstantFitnessFunction<
 	 * @param value the constant value.
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
-	public ConstantFitnessFunction(final C value) {
+	public ConstantFunction(final C value) {
 		_value = nonNull(value, "Constant value");
 	}
-	
+
 	/**
 	 * Always return the given constant value.
 	 */
@@ -71,28 +67,28 @@ public final class ConstantFitnessFunction<
 	public C apply(final Genotype<G> genotype) {
 		return _value;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_value).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		}
-		if (!(obj instanceof ConstantFitnessFunction<?, ?>)) {
+		if (!(obj instanceof ConstantFunction<?, ?>)) {
 			return false;
 		}
-		
-		final ConstantFitnessFunction<?, ?> f = (ConstantFitnessFunction<?, ?>)obj;
+
+		final ConstantFunction<?, ?> f = (ConstantFunction<?, ?>)obj;
 		return eq(_value, f._value);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[%s]", getClass().getSimpleName(), _value);
 	}
-	
+
 }
