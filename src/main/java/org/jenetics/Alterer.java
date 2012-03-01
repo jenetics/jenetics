@@ -36,7 +36,7 @@ package org.jenetics;
  * ga.setAlterers(
  *     new Crossover<Float64Gene>(0.1),
  *     new Mutator<Float64Gene>(0.05),
- *     new MeanAlterer<Float64eGene>(0.2)
+ *     new MeanAlterer<Float64Gene>(0.2)
  * );
  * [/code]
  *
