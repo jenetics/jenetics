@@ -20,7 +20,7 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics;
+package org.jenetics.util;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -28,7 +28,8 @@ import static org.jenetics.util.object.nonNull;
 
 import javolution.lang.Immutable;
 
-import org.jenetics.util.Function;
+import org.jenetics.Gene;
+import org.jenetics.Genotype;
 
 /**
  *  A {@link Function} which always returns a given constant value.
