@@ -647,7 +647,9 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Return the used genotype {@link Factory} of the GA.
+	 * Return the used genotype {@link Factory} of the GA. The genotype factory
+	 * is used for creating the initial population and new, random individuals
+	 * when needed (as replacement for invalid and/or died genotypes).
 	 *
 	 * @return the used genotype {@link Factory} of the GA.
 	 */
@@ -656,7 +658,27 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Return the used fitness {@link Function} of the GA.
+	 * Return the used fitness {@link Function} of the GA. The fitness function
+	 * is also an important part when modeling the GA. It takes a genotype as
+	 * argument and returns, at least, a Comparable object as result---the
+	 * fitness value. This allows the GA, respectively the selection operators,
+	 * to select the offspring- and survivor population. Some selectors have
+	 * stronger requirements to the fitness value than a Comparable, but this
+	 * constraints is checked by the Java type system at compile time.
+	 * <p/>
+	 * The following example shows the simplest possible fitness function. It's
+	 * the identity function and returns the allele of an 1x1  float genotype.
+	 * [code]
+	 * class Id implements Function<Genotype<Float64Gene>, Float64> {
+	 *     public Float64 apply(final Genotype<Float64Gene> genotype) {
+	 *         return genotype.getGene().getAllele();
+	 *     }
+	 * }
+	 * [/code]
+	 * The first type parameter of the {@link Function} defines the kind of
+	 * genotype from which the fitness value is calculated and the second type
+	 * parameter determines the return type. As already mentioned, the return
+	 * type must implement the {@link Comparable} interface.
 	 *
 	 * @return the used fitness {@link Function} of the GA.
 	 */
@@ -665,7 +687,30 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Set the currently used fitness scaler.
+	 * Set the currently used fitness scaler. The fitness value, calculated by
+	 * the fitness function, is the raw-fitness of an individual. The
+	 * <em>Jenetics</em> library allows you to apply an additional scaling
+	 * function on the raw-fitness to form the fitness value which is used by
+	 * the selectors. This can be useful when using probability selectors, where
+	 * the actual amount of the fitness value influences the selection
+	 * probability. In such cases, the fitness scaler gives you additional
+	 * flexibility when selecting offspring and survivors. In the default
+	 * configuration the raw-fitness is equal to the actual fitness value, that
+	 * means, the used fitness scaler is the identity function.
+	 * [code]
+	 * class Sqrt extends Function<Float64, Float64> {
+	 *     public Float64 apply(final Float64 value) {
+	 *         return Float64.valueOf(sqrt(value.doubleValue()));
+	 *     }
+	 * }
+	 * [/code]
+	 * The listing above shows a fitness scaler which reduces the the raw-fitness
+	 * to its square root. This gives weaker individuals a greater changes being
+	 * selected and weakens the influence of super-individuals.
+	 * <b>When using a fitness scaler you have to take care, that your scaler
+	 * doesn't destroy your fitness value. This can be the case when your
+	 * fitness value is negative and your fitness scaler squares the value.
+	 * Trying to find the minimum will not work in this configuration.</b>
 	 *
 	 * @param scaler The fitness scaler.
 	 * @throws NullPointerException if the scaler is {@code null}.
