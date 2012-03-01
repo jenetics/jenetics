@@ -4553,7 +4553,7 @@ Population<Float64Gene,Float64> population =
 
 \begin_layout Plain Layout
 
-ga.setPopulation(population);
+    ga.setPopulation(population);
 \end_layout
 
 \end_inset
