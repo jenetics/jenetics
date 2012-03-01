@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -36,6 +36,7 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.Verifiable;
+import org.jenetics.util.functions;
 
 
 /**
@@ -65,20 +66,20 @@ public final class Phenotype<
 		Runnable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Genotype<G> _genotype;
 	private Function<Genotype<G>, C> _fitnessFunction;
 	private Function<C, C> _fitnessScaler;
-	
+
 	private int _generation = 0;
-	
+
 	//Storing the fitness value for lazy evaluation.
 	private C _rawFitness = null;
 	private C _fitness = null;
-	
+
 	private Phenotype() {
 	}
-	
+
 	/**
 	 * This method returns a copy of the <code>Genotype</code>, to guarantee a
 	 * immutable class.
@@ -89,7 +90,7 @@ public final class Phenotype<
 	public Genotype<G> getGenotype() {
 		return _genotype;
 	}
-	
+
 	/**
 	 * Evaluates the (raw) fitness values and caches it so the fitness calculation
 	 * is performed only once.
@@ -100,7 +101,7 @@ public final class Phenotype<
 			_fitness = _fitnessScaler.apply(_rawFitness);
 		}
 	}
-	
+
 	/**
 	 * This method simply calls the {@link #evaluate()} method. The purpose of
 	 * this method is to have a simple way for concurrent fitness calculation
@@ -110,7 +111,7 @@ public final class Phenotype<
 	public void run() {
 		evaluate();
 	}
-	
+
 	/**
 	 * Return the fitness function used by this phenotype to calculate the
 	 * (raw) fitness value.
@@ -120,7 +121,7 @@ public final class Phenotype<
 	public Function<Genotype<G>, C> getFitnessFunction() {
 		return _fitnessFunction;
 	}
-	
+
 	/**
 	 * Return the fitness scaler used by this phenotype to scale the <i>raw</i>
 	 * fitness.
@@ -130,7 +131,7 @@ public final class Phenotype<
 	public Function<C, C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
-	
+
 	/**
 	 * Return the fitness value of this <code>Phenotype</code>.
 	 *
@@ -140,7 +141,7 @@ public final class Phenotype<
 		evaluate();
 		return _fitness;
 	}
-	
+
 	/**
 	 * Return the raw fitness (before scaling) of the phenotype.
 	 *
@@ -150,7 +151,7 @@ public final class Phenotype<
 		evaluate();
 		return _rawFitness;
 	}
-	
+
 	/**
 	 * Return the generation this {@link Phenotype} was created.
 	 *
@@ -159,7 +160,7 @@ public final class Phenotype<
 	public int getGeneration() {
 		return _generation;
 	}
-	
+
 	/**
 	 * Return the age of this phenotype depending on the given current generation.
 	 *
@@ -170,7 +171,7 @@ public final class Phenotype<
 	public int getAge(final int currentGeneration) {
 		return currentGeneration - _generation;
 	}
-	
+
 	/**
 	 * Test whether this phenotype is valid. The phenotype is valid if its
 	 * {@link Genotype} is valid.
@@ -181,12 +182,12 @@ public final class Phenotype<
 	public boolean isValid() {
 		return _genotype.isValid();
 	}
-	
+
 	@Override
 	public int compareTo(final Phenotype<G, C> pt) {
 		return getFitness().compareTo(pt.getFitness());
-	}	
-	
+	}
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
@@ -204,7 +205,7 @@ public final class Phenotype<
 		if (!(obj instanceof Phenotype<?, ?>)) {
 			return false;
 		}
-		
+
 		final Phenotype<?, ?> pt = (Phenotype<?, ?>)obj;
 		return eq(getFitness(), pt.getFitness()) &&
 				eq(getRawFitness(), pt.getRawFitness()) &&
@@ -221,14 +222,14 @@ public final class Phenotype<
 	public String toString() {
 		return toText().toString() + " --> " + getFitness();
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private static final ObjectFactory FACTORY = new ObjectFactory() {
 		@Override protected Object create() {
 			return new Phenotype();
 		}
 	};
-	
+
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
 	 * {@link FitnessFunction} and age as this {@link Phenotype}.
@@ -244,7 +245,7 @@ public final class Phenotype<
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
 	}
-	
+
 	/**
 	 * Return a new phenotype with the the genotype of this and with new
 	 * fitness function, fitness scaler and generation.
@@ -263,7 +264,7 @@ public final class Phenotype<
 	) {
 		return valueOf(_genotype, function, scaler, generation);
 	}
-	
+
 	/**
 	 * Return a new phenotype with the the genotype of this and with new
 	 * fitness function and generation.
@@ -278,14 +279,14 @@ public final class Phenotype<
 			final Function<Genotype<G>, C> function,
 			final int generation
 	) {
-		return valueOf(_genotype, function, new IdentityScaler<C>(), generation);
+		return valueOf(_genotype, function, functions.<C>Identity(), generation);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Create a {@link Function} which return the phenotype age when calling
 	 * {@code converter.convert(phenotype)}.
@@ -302,7 +303,7 @@ public final class Phenotype<
 			}
 		};
 	}
-	
+
 	/**
 	 * Create a {@link Function} which return the phenotype generation when
 	 * calling {@code converter.convert(phenotype)}.
@@ -316,7 +317,7 @@ public final class Phenotype<
 			}
 		};
 	}
-	
+
 	/**
 	 * Create a {@link Function} which return the phenotype fitness when
 	 * calling {@code converter.convert(phenotype)}.
@@ -333,7 +334,7 @@ public final class Phenotype<
 			}
 		};
 	}
-	
+
 	/**
 	 * Create a {@link Function} which return the phenotype raw fitness when
 	 * calling {@code converter.convert(phenotype)}.
@@ -350,7 +351,7 @@ public final class Phenotype<
 			}
 		};
 	}
-	
+
 	/**
 	 * Create a {@link Function} which return the phenotype genotype when
 	 * calling {@code converter.convert(phenotype)}.
@@ -367,7 +368,7 @@ public final class Phenotype<
 			}
 		};
 	}
-	
+
 	/**
 	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only
 	 * the age of the <code>Phenotype</code> can be incremented.
@@ -384,9 +385,9 @@ public final class Phenotype<
 		final Function<Genotype<SG>, SC> fitnessFunction,
 		final int generation
 	) {
-		return valueOf(genotype, fitnessFunction, new IdentityScaler<SC>(), generation);
+		return valueOf(genotype, fitnessFunction, functions.<SC>Identity(), generation);
 	}
-	
+
 	/**
 	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only
 	 * the age of the <code>Phenotype</code> can be incremented.
@@ -411,14 +412,14 @@ public final class Phenotype<
 		if (generation < 0) {
 			throw new IllegalArgumentException("Generation must not < 0: " + generation);
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		final Phenotype<SG, SC> pt = (Phenotype<SG, SC>)FACTORY.object();
 		pt._genotype = genotype;
 		pt._fitnessFunction = fitnessFunction;
 		pt._fitnessScaler = fitnessScaler;
 		pt._generation = generation;
-		
+
 		pt._rawFitness = null;
 		pt._fitness = null;
 		return pt;
@@ -427,7 +428,7 @@ public final class Phenotype<
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<Phenotype>
 	XML = new XMLFormat<Phenotype>(Phenotype.class)
@@ -435,7 +436,7 @@ public final class Phenotype<
 		private static final String GENERATION = "generation";
 		private static final String FITNESS = "fitness";
 		private static final String RAW_FITNESS = "raw-fitness";
-		
+
 		@Override
 		public Phenotype newInstance(
 			final Class<Phenotype> cls, final InputElement xml
@@ -459,14 +460,14 @@ public final class Phenotype<
 			xml.add(pt.getRawFitness(), RAW_FITNESS);
 		}
 		@Override
-		public void read(final InputElement xml, final Phenotype gt) {	
+		public void read(final InputElement xml, final Phenotype gt) {
 		}
 	};
-	
+
 	static String toString(final Object value) {
 		return value != null ? value.toString() : "null";
 	}
-	
+
 }
 
 

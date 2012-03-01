@@ -18,12 +18,13 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
 import static org.jenetics.util.object.nonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.jscience.mathematics.number.Float64;
@@ -40,7 +41,7 @@ public final class functions {
 	private functions() {
 		throw new AssertionError("Don't create an 'functions' instance.");
 	}
-	
+
 	/**
 	 * Convert an object to a string by calling the objects {@link Object#toString()}
 	 * method.
@@ -51,7 +52,7 @@ public final class functions {
 			return Objects.toString(value);
 		}
 	};
-	
+
 	/**
 	 * Convert a string to an integer. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
@@ -63,7 +64,7 @@ public final class functions {
 			return Integer.parseInt(value);
 		}
 	};
-	
+
 	/**
 	 * Convert a string to a long. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
@@ -75,7 +76,7 @@ public final class functions {
 			return Long.parseLong(value);
 		}
 	};
-	
+
 	/**
 	 * Convert a string to a float. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
@@ -87,7 +88,7 @@ public final class functions {
 			return Float.parseFloat(value);
 		}
 	};
-	
+
 	/**
 	 * Convert a string to a double. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
@@ -99,7 +100,7 @@ public final class functions {
 			return Double.parseDouble(value);
 		}
 	};
-	
+
 	/**
 	 * Convert a {@link Float64} value to a {@link Double} value.
 	 */
@@ -109,7 +110,7 @@ public final class functions {
 			return value.doubleValue();
 		}
 	};
-	
+
 	/**
 	 * Convert a {@link Double} value to a {@link Float64} value.
 	 */
@@ -119,7 +120,7 @@ public final class functions {
 			return Float64.valueOf(value);
 		}
 	};
-	
+
 	/**
 	 * Convert a {@link Integer64} value to a {@link Long} value.
 	 */
@@ -129,7 +130,7 @@ public final class functions {
 			return value.longValue();
 		}
 	};
-	
+
 	/**
 	 * Convert a {link Long} value to a {@link Integer64} value.
 	 */
@@ -139,7 +140,7 @@ public final class functions {
 			return Integer64.valueOf(value);
 		}
 	};
-	
+
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
 	 */
@@ -152,7 +153,7 @@ public final class functions {
 			return String.format("%s", getClass().getSimpleName());
 		}
 	};
-	
+
 	/**
 	 * Return a predicate which negates the return value of the given predicate.
 	 *
@@ -172,7 +173,7 @@ public final class functions {
 			}
 		};
 	}
-	
+
 	/**
 	 * Return a {@code and} combination of the given predicates.
 	 *
@@ -198,7 +199,7 @@ public final class functions {
 			}
 		};
 	}
-	
+
 	/**
 	 * Return a {@code or} combination of the given predicates.
 	 *
@@ -224,7 +225,32 @@ public final class functions {
 			}
 		};
 	}
-	
+
+
+	private static final class Identity
+		implements Function<Object, Object>, Serializable
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Object apply(final Object value) {
+			return value;
+		}
+	}
+
+	private static Function<Object, Object> IDENTITY = new Identity();
+
+	/**
+	 * Return the identity function for the given type.
+	 *
+	 * @return the identity function for the given type.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Function<T, T> Identity() {
+		return (Function<T, T>)IDENTITY;
+	}
+
+
 }
 
 

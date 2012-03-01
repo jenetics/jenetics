@@ -58,11 +58,6 @@
 			<class name="org.jenetics.CompositeAltererTest" />
 		</classes>
 	</test>
-	<test name="org.jenetics.ConstantFitnessFunction">
-		<classes>
-			<class name="org.jenetics.ConstantFitnessFunctionTest" />
-		</classes>
-	</test>	
 	<test name="org.jenetics.Float64Chromosome">
 		<classes>
 			<class name="org.jenetics.Float64ChromosomeTest" />
