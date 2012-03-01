@@ -1,4 +1,5 @@
 Jenetics-0.9.0.0
+- Remove ConstantFitnessFunction.
 - Mark GeneticAlgorithm.addAlterer(Alterer<G>) method as deprecated.
 - Add GeneticAlgorithm.setAlterers(final Alterer<G>) method.
 - Add GeneticAlgorithm.setup(Collection<Genotype<G>>) method.
