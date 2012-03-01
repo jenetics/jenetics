@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -35,6 +35,11 @@ import javolution.lang.Immutable;
 
 
 /**
+ * The roulette-wheel selector is also known as fitness proportional selector,
+ * but in the <em>Jenetics</em> library it is implemented as probability selector.
+ * The fitness value <i>f<sub>i</sub></i>  is used to calculate the selection
+ * probability of individual <i>i</i>.
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
  *          Wikipedia: Roulette wheel selection
  *      </a>
@@ -48,7 +53,7 @@ public class RouletteWheelSelector<
 	extends ProbabilitySelector<G, N>
 	implements Immutable
 {
-	
+
 	private static final long MAX_ULP_DISTANCE = pow(10, 9);
 
 	public RouletteWheelSelector() {
@@ -61,16 +66,16 @@ public class RouletteWheelSelector<
 	) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count > 0) : "Population to select must be greater than zero. ";
-		
+
 		// Copy the fitness values to probabilities arrays.
 		final double[] probabilities = new double[population.size()];
 		for (int i = population.size(); --i >= 0;) {
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
-		
+
 		final double worst = min(probabilities);
 		final double sum = sum(probabilities) - worst*population.size();
-		
+
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
 			for (int i = population.size(); --i >= 0;) {
 				probabilities[i] = (probabilities[i] - worst)/sum;
@@ -78,16 +83,16 @@ public class RouletteWheelSelector<
 		} else {
 			Arrays.fill(probabilities, 1.0/population.size());
 		}
-		
+
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -96,15 +101,15 @@ public class RouletteWheelSelector<
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s", getClass().getSimpleName());
 	}
-	
+
 }
 
 

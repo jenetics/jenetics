@@ -37,7 +37,7 @@ import javolution.lang.Immutable;
  * </p>
  * <p/><img
  *        src="doc-files/boltzmann-formula1.gif"
- *        alt="p_i=\frac{\textup{e}^{b\cdot f_i}}{Z}"
+ *        alt="P(i)=\frac{\textup{e}^{b\cdot f_i}}{Z}"
  *     />
  * </p>
  * where <i>b</i> controls the selection intensity, and
@@ -68,7 +68,7 @@ public final class BoltzmannSelector<
 	extends ProbabilitySelector<G, N>
 	implements Immutable
 {
-	
+
 	private final double _b;
 
 	/**
@@ -77,7 +77,7 @@ public final class BoltzmannSelector<
 	public BoltzmannSelector() {
 		this(0.2);
 	}
-	
+
 	/**
 	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High
 	 * absolute values of <i>b</i> can create numerical overflows while
@@ -96,31 +96,31 @@ public final class BoltzmannSelector<
 	) {
 		assert (population != null) : "Population must not be null. ";
 		assert (count > 0) : "Population to select must be greater than zero. ";
-		
+
 		// Copy the fitness values to probabilities arrays.
 		final double[] probabilities = new double[population.size()];
 		for (int i = population.size(); --i >= 0;) {
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
-		
+
 		// Scale the fitness values to avoid overflows.
 		divide(probabilities, max(probabilities));
-		
+
 		for (int i = probabilities.length; --i >= 0;) {
 			probabilities[i] = exp(_b*probabilities[i]);
 		}
-		
+
 		normalize(probabilities);
-		
+
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_b).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -129,16 +129,16 @@ public final class BoltzmannSelector<
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final BoltzmannSelector<?, ?> selector = (BoltzmannSelector<?, ?>)obj;
 		return eq(_b, selector._b);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("BoltzmannSelector[b=%f]", _b);
 	}
-	
+
 }
 
 

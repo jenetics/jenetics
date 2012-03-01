@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -39,11 +39,13 @@ import org.jenetics.util.RandomRegistry;
  * points, and merge those portions of different chromosomes to form new ones.
  * </p>
  * <p>
- * The recombination probability <i>p</i> determines the probability that a given
+ * The recombination probability <i>P)r)</i> determines the probability that a given
  * individual (genotype, not gene) of a population is selected for recombination.
  * The (<i>mean</i>) number of changed individuals depend on the concrete
- * implementation and can be vary from <i>p</i>&middot;<i>N</i> to
- * <i>p</i>&middot;<i>N</i>&middot;<i>order</i>.
+ * implementation and can be vary from <i>P(r)</i>&middot;<i>N<sub>G</sub></i> to
+ * <i>P(r)</i>&middot;<i>N<sub>G</sub></i>&middot;<i>O<sub>R</sub></i>, where
+ * <i>O<sub>R</sub></i> is the order of the recombination, which is the number
+ * of individuals involved int the {@link #recombine} method.
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -52,9 +54,9 @@ import org.jenetics.util.RandomRegistry;
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
 {
-	
+
 	private final int _order;
-	
+
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
@@ -72,7 +74,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 		}
 		_order = order;
 	}
-	
+
 	/**
 	 * Return the number of individuals involved in the
 	 * {@link #recombine(Population, int[], int)} step.
@@ -92,18 +94,18 @@ public abstract class Recombinator<G extends Gene<?, G>>
 		final IndexStream stream = IndexStream.Random(
 			population.size(), _probability, random
 		);
-		
+
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
-			
+
 			alterations += recombine(population, individuals, generation);
 		}
 
 		return alterations;
 	}
-	
+
 	/**
 	 * Recombination template method.
 	 *
@@ -121,8 +123,8 @@ public abstract class Recombinator<G extends Gene<?, G>>
 			final int[] individuals,
 			final int generation
 		);
-	
-	
+
+
 }
 
 

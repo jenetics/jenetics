@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  * <p>
  * <img
  *     src="doc-files/gaussian-mutator-var.gif"
- *     alt="\hat{\sigma }^2 = \left ( \frac{ G_{max} - G_{min} }{4}\right )^2"
+ *     alt="\hat{\sigma }^2 = \left ( \frac{ g_{max} - g_{min} }{4}\right )^2"
  * />
  * </p>
  * The new value will be cropped to the gene's boundaries.
@@ -53,7 +53,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	extends Mutator<G>
 	implements Immutable
 {
-	
+
 	public GaussianMutator() {
 	}
 
@@ -65,33 +65,33 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
 		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
-		
+
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			genes.set(i, mutate(genes.get(i), random));
-			
+
 			++alterations;
 		}
-		
+
 		return alterations;
 	}
-	
+
 	G mutate(final G gene, final Random random) {
 		final double std =
 			(gene.getMax().doubleValue() - gene.getMin().doubleValue())/4.0;
-		
+
 		double value = random.nextGaussian()*std + gene.doubleValue();
 		value = Math.min(value, gene.getMax().doubleValue());
 		value = Math.max(value, gene.getMin().doubleValue());
-		
+
 		return gene.newInstance(value);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -100,15 +100,15 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
-		return super.equals(obj);		
+
+		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
-	
+
 }
 
 

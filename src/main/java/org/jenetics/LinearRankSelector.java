@@ -30,22 +30,23 @@ import javolution.lang.Immutable;
 
 /**
  * <p>
- * In linear ranking selection, individuals (phenotypes) are sorted according
- * to their fitness values and the rank N is assignee to the best Phenotype
- * individual and the rank 1 to the worst Phenotype. The selection probability
- * is linearly assigned to the individuals according to their rank.
+ * In linear-ranking selection the individuals are sorted according to their
+ * fitness values. The rank <i>N</i> is assignee to the best individual and the
+ * rank 1 to the worst individual. The selection probability <i>P(i)</i>  of
+ * individual <i>i</i> is linearly assigned to the individuals according to
+ * their rank.
  * </p>
  * <p/><img
  *        src="doc-files/linear-rank-selector.gif"
- *        alt="p_i=\frac{1}{N}(n_m+(n_p-n_m)\frac{i-1}{N-1})"
+ *        alt="P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right)"
  *     />
  * </p>
  *
- * Here <i>n</i><sub><i>m</i></sub>/<i>N</i> is the probability of the worst Phenotype
- * individual to be	selected and <i>n</i><sub><i>p</i></sub>/<i>N</i> the probability
- * of the best Phenotype individual to be selected. As the population size is
- * held constant, the conditions <i>n</i><sub><i>p</i></sub> = 2 - <i>n</i><sub><i>m</i></sub>
- * and <i>n</i><sub><i>m</i></sub> >= 0 must be fulfilled. Note that all individuals
+ * Here <i>n</i><sup><i>-</i></sup>/<i>N</i> is the probability of the worst
+ * individual to be	selected and <i>n</i><sup><i>+</i></sup>/<i>N</i> the
+ * probability of the best individual to be selected. As the population size is
+ * held constant, the conditions <i>n</i><sup><i>+</i></sup> = 2 - <i>n</i><sup><i>-</i></sup>
+ * and <i>n</i><sup><i>-</i></sup> >= 0 must be fulfilled. Note that all individuals
  * get a different rank, i.e., a different selection probability, even if the
  * have the same fitness value. <p/>
  *
@@ -76,7 +77,7 @@ public final class LinearRankSelector<
 	public LinearRankSelector() {
 		this(0.5);
 	}
-	
+
 	/**
 	 * Create a new LinearRankSelector with the given values for {@code nminus}.
 	 *
@@ -90,7 +91,7 @@ public final class LinearRankSelector<
 					"nminus is smaller than zero: %s", nminus
 				));
 		}
-		
+
 		_nminus = nminus;
 		_nplus = 2 - _nminus;
 	}
@@ -107,10 +108,10 @@ public final class LinearRankSelector<
 	) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count > 0) : "Population to select must be greater than zero. ";
-		
+
 		//Sort the population.
 		population.sort();
-		
+
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
 
@@ -118,16 +119,16 @@ public final class LinearRankSelector<
 			probabilities[probabilities.length - i - 1] =
 				(_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
 		}
-		
+
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_nminus).and(_nplus).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -136,11 +137,11 @@ public final class LinearRankSelector<
 		if (!(obj instanceof LinearRankSelector<?, ?>)) {
 			return false;
 		}
-		
+
 		final LinearRankSelector<?, ?> selector = (LinearRankSelector<?, ?>)obj;
 		return eq(_nminus, selector._nminus) && eq(_nplus, selector._nplus);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(

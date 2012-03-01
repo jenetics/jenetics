@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -34,10 +34,13 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
- * The ProbabilitySelector selects the new population according the
- * Probability array the method {@link #probabilities(Population, int)} returns.
- * The size of the Probability array and the size of the population must be the
- * same. The order of the population and the probabilities has to be the same too.
+ * Probability selectors are a variation of fitness proportional selectors and
+ * selects individuals from a given population based on it's selection
+ * probability <i>P(i)</i>.
+ * <p><div align="center">
+ * <img src="doc-files/FitnessProportionalSelection.svg" width="400" />
+ * </p></div>
+ * Fitness proportional selection works as shown in the figure above.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -47,7 +50,7 @@ public abstract class ProbabilitySelector<
 	C extends Comparable<? super C>
 >
 	implements Selector<G, C>
-{	
+{
 	private static final long MAX_ULP_DISTANCE = (long)pow(10, 10);
 
 	protected ProbabilitySelector() {
@@ -67,27 +70,27 @@ public abstract class ProbabilitySelector<
 				count
 			));
 		}
-		
+
 		final Population<G, C> selection = new Population<>(count);
-		
+
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count, opt);
-			
+
 			assert (population.size() == probabilities.length) :
 				"Population size and probability length are not equal.";
 			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
-			
+
 			final Random random = RandomRegistry.getRandom();
 			for (int i = 0; i < count; ++i) {
 				selection.add(population.get(nextIndex(probabilities, random)));
 			}
-			
+
 			assert (count == selection.size());
 		}
-		
+
 		return selection;
 	}
-	
+
 	/**
 	 * This method takes the probabilities from the
 	 * {@link #probabilities(Population, int)} method and inverts it if needed.
@@ -110,13 +113,13 @@ public abstract class ProbabilitySelector<
 		}
 		return probabilities;
 	}
-	
+
 	private static void invert(final double[] probabilities) {
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = 1.0 - probabilities[i];
 		}
 	}
-	
+
 	/**
 	 * Return an Probability array, which corresponds to the given Population.
 	 * The probability array and the population must have the same size. The
@@ -140,7 +143,7 @@ public abstract class ProbabilitySelector<
 			final Population<G, C> population,
 			final int count
 		);
-	
+
 	/**
 	 * Check if the given probabilities sum to one.
 	 *
@@ -152,7 +155,7 @@ public abstract class ProbabilitySelector<
 		final double sum = sum(probabilities);
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 	}
-		
+
 	/**
 	 * Return the next random index. The index probability is given by the
 	 * {@code probabilities} array. The values of the {@code probabilities} array
@@ -164,14 +167,14 @@ public abstract class ProbabilitySelector<
 	 */
 	protected static int nextIndex(final double[] probabilities, final Random random) {
 		final double prop = random.nextDouble();
-		
+
 		int j = 0;
 		double sum = 0;
 		for (int i = 0; sum < prop && i < probabilities.length; ++i) {
 			sum += probabilities[i];
 			j = i;
 		}
-		
+
 		return j;
 	}
 

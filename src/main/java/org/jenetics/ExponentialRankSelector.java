@@ -36,7 +36,7 @@ import javolution.lang.Immutable;
  * </p>
  * <p/><img
  *        src="doc-files/exponential-rank-selector.gif"
- *        alt="p_i=(c-1)\frac{c^{i-1}}{c^N-1}"
+ *        alt="P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1}"
  *     />,
  * </p>
  * where <i>c</i> must within the range {@code [0..1)}.
@@ -62,9 +62,9 @@ public final class ExponentialRankSelector<
 	extends ProbabilitySelector<G, C>
 	implements Immutable
 {
-	
+
 	private final double _c;
-	
+
 	/**
 	 * Create a new exponential rank selector.
 	 *
@@ -93,27 +93,27 @@ public final class ExponentialRankSelector<
 	) {
 		assert(population != null) : "Population can not be null. ";
 		assert(count > 0) : "Population to select must be greater than zero. ";
-		
+
 		//Sorted population required.
 		population.sort();
-		
+
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
-		
+
 		final double b = pow(_c, N) - 1;
 		for (int i = probabilities.length; --i >= 0;) {
 			probabilities[i] = ((_c - 1)*pow(_c, i))/b;
 		}
-	
+
 		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_c).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -122,11 +122,11 @@ public final class ExponentialRankSelector<
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final ExponentialRankSelector<?, ?> selector = (ExponentialRankSelector<?, ?>)obj;
 		return eq(_c, selector._c);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[c=%f]", getClass().getSimpleName(), _c);
