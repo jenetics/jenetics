@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="357"
+   version="1.1"
+   width="492"
+   id="svg2"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="StructureClassDiagram.svg">
+  <metadata
+     id="metadata128">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs126" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview124"
+     showgrid="false"
+     inkscape:zoom="0.60365854"
+     inkscape:cx="246"
+     inkscape:cy="160.27778"
+     inkscape:window-x="153"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <rect
+     fill="#87ceeb"
+     height="67"
+     stroke="#87ceeb"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="271"
+     id="rect4" />
+  <rect
+     fill="none"
+     height="67"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="271"
+     id="rect6" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="93"
+     y="303"
+     id="text8">
+Gene</text>
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="62"
+     y="285"
+     id="text10">
+&lt;&lt;interface&gt;&gt;</text>
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="313"
+     id="rect12" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="18"
+     y="327"
+     id="text14">
+getAllele()</text>
+  <rect
+     fill="#87ceeb"
+     height="67"
+     stroke="#87ceeb"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="271"
+     id="rect16" />
+  <rect
+     fill="none"
+     height="67"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="271"
+     id="rect18" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="341"
+     y="303"
+     id="text20">
+Chromosome</text>
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="334"
+     y="285"
+     id="text22">
+&lt;&lt;interface&gt;&gt;</text>
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="313"
+     id="rect24" />
+  <polyline
+     fill="none"
+     points="286,303 205,303"
+     stroke="#000000"
+     stroke-width="1"
+     id="polyline26" />
+  <polygon
+     fill="#ffffff"
+     points="286,303 276,308 266,303 276,298"
+     stroke="#ffffff"
+     stroke-width="1"
+     id="polygon28" />
+  <polygon
+     fill="none"
+     points="286,303 276,308 266,303 276,298"
+     stroke="#000000"
+     stroke-width="1"
+     id="polygon30" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="217"
+     x2="205"
+     y1="296"
+     y2="303"
+     id="line32" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="217"
+     x2="205"
+     y1="310"
+     y2="303"
+     id="line34" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="215"
+     y="293"
+     id="text36">
+1..*</text>
+  <rect
+     fill="#87ceeb"
+     height="69"
+     stroke="#87ceeb"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="143"
+     id="rect38" />
+  <rect
+     fill="none"
+     height="69"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="143"
+     id="rect40" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="352"
+     y="156"
+     id="text42">
+Genotype</text>
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="166"
+     id="rect44" />
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="188"
+     id="rect46" />
+  <polyline
+     fill="none"
+     points="382,211 382,271"
+     stroke="#000000"
+     stroke-width="1"
+     id="polyline48" />
+  <polygon
+     fill="#ffffff"
+     points="382,211 387,221 382,231 377,221"
+     stroke="#ffffff"
+     stroke-width="1"
+     id="polygon50" />
+  <polygon
+     fill="none"
+     points="382,211 387,221 382,231 377,221"
+     stroke="#000000"
+     stroke-width="1"
+     id="polygon52" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="375"
+     x2="382"
+     y1="259"
+     y2="271"
+     id="line54" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="389"
+     x2="382"
+     y1="259"
+     y2="271"
+     id="line56" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="388"
+     y="254"
+     id="text58">
+1..*</text>
+  <rect
+     fill="#87ceeb"
+     height="67"
+     stroke="#87ceeb"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="15"
+     id="rect60" />
+  <rect
+     fill="none"
+     height="67"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="15"
+     id="rect62" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="348"
+     y="28"
+     id="text64">
+Phenotype</text>
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="38"
+     id="rect66" />
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="286"
+     y="59"
+     id="rect68" />
+  <polyline
+     fill="none"
+     points="382,81 382,143"
+     stroke="#000000"
+     stroke-width="1"
+     id="polyline70" />
+  <polygon
+     fill="#ffffff"
+     points="382,81 387,91 382,101 377,91"
+     stroke="#ffffff"
+     stroke-width="1"
+     id="polygon72" />
+  <polygon
+     fill="none"
+     points="382,81 387,91 382,101 377,91"
+     stroke="#000000"
+     stroke-width="1"
+     id="polygon74" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="375"
+     x2="382"
+     y1="131"
+     y2="143"
+     id="line76" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="389"
+     x2="382"
+     y1="131"
+     y2="143"
+     id="line78" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="395"
+     y="126"
+     id="text80">
+1</text>
+  <rect
+     fill="#87ceeb"
+     height="67"
+     stroke="#87ceeb"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="15"
+     id="rect82" />
+  <rect
+     fill="none"
+     height="67"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="15"
+     id="rect84" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="76"
+     y="28"
+     id="text86">
+Population</text>
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="38"
+     id="rect88" />
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="59"
+     id="rect90" />
+  <polyline
+     fill="none"
+     points="205,47 286,47"
+     stroke="#000000"
+     stroke-width="1"
+     id="polyline92" />
+  <polygon
+     fill="#ffffff"
+     points="205,47 215,42 225,47 215,52"
+     stroke="#ffffff"
+     stroke-width="1"
+     id="polygon94" />
+  <polygon
+     fill="none"
+     points="205,47 215,42 225,47 215,52"
+     stroke="#000000"
+     stroke-width="1"
+     id="polygon96" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="274"
+     x2="286"
+     y1="54"
+     y2="47"
+     id="line98" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="274"
+     x2="286"
+     y1="40"
+     y2="47"
+     id="line100" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="260"
+     y="42"
+     id="text102">
+1..*</text>
+  <rect
+     fill="#87ceeb"
+     height="67"
+     stroke="#87ceeb"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="143"
+     id="rect104" />
+  <rect
+     fill="none"
+     height="67"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="143"
+     id="rect106" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="55"
+     y="175"
+     id="text108">
+(Fitness)Function</text>
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="62"
+     y="157"
+     id="text110">
+&lt;&lt;interface&gt;&gt;</text>
+  <rect
+     fill="#000000"
+     height="1"
+     stroke="#000000"
+     stroke-width="1"
+     width="192"
+     x="14"
+     y="185"
+     id="rect112" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="18"
+     y="199"
+     id="text114">
+apply(genotype : Genotype)</text>
+  <polyline
+     fill="none"
+     points="286,81 205,143"
+     stroke="#000000"
+     stroke-width="1"
+     id="polyline116" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="210"
+     x2="205"
+     y1="130"
+     y2="143"
+     id="line118" />
+  <line
+     fill="#000000"
+     stroke="#000000"
+     stroke-width="1"
+     x1="218"
+     x2="205"
+     y1="141"
+     y2="143"
+     id="line120" />
+  <text
+     font-family="Dialog"
+     font-size="12"
+     x="207"
+     y="121"
+     id="text122">
+1</text>
+</svg>

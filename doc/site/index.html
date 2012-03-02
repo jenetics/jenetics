@@ -1,177 +1,152 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD html 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
 <html>
-  <head>
-    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-    <title>Jenetics: Java Genetic Algorithm library</title>
-    <meta name="AUTHOR" content="Franz Wilhelmstötter">
-    <meta name="CREATED" content="0;0">
-    <meta name="CHANGED" content="20080923;20455500">
-    <meta name="KEYWORDS" content="Java, GA, Genetic Algorithm,
-      Jenetics, LGPL, optimization, Artificial Intelligence, software,
-      source, algorithm">
-    <meta name="copyright" content="Franz Wilhelmstötter">
-    <meta name="robots" content="all">
-    <meta name="robots" content="index">
-    <link rel="stylesheet" href="styletext.css" type="text/css">
-    <link rel="stylesheet" href="stylelayout.css" type="text/css">
-    <link rel="stylesheet" href="stylecolor.css" type="text/css">
-    <link href="shCore.css" rel="stylesheet" type="text/css">
-    <link href="shThemeEclipse.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <!-- Scripts for syntax highlighter -->
-    <script type="text/javascript" src="shCore.js"></script>
-    <script type="text/javascript" src="shBrushJava.js"></script>
-    <script type="text/javascript" src="shBrushPlain.js"></script>
-    <div id="bodywrap-top">
-      <div id="bodywrap-btm">
-        <div id="bodywrap-r">
-          <div id="bodywrap-l">
-            <div id="bodywrap-tl">
-              <div id="bodywrap-tr">
-                <div id="bodywrap-br">
-                  <div id="bodywrap-bl">
-                    <div id="bodywrap-in">
-                      <div id="pageframe">
-                        <div id="titlearea">
-                          <h1>Jenetics — Java Genetic Algorithm</h1>
-                        </div>
-                        <!-- titlearea close -->
-                        <div id="topmenuback"><!--@topmenu.content--></div>
-                        <!-- topmenuback close -->
-                        <!-- XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX -->
-                        <div id="leftarea">
-                          <div class="menubox"><a
-                              class="sidemenutextlive" title="Side menu
-                              access to Home" tabindex="1"
-                              href="index.html">Home</a>
-                          </div>
-                          <div class="submenubox"><a
-                              class="sidesubmenutext" title="Examples"
-                              tabindex="3" href="examples.html">Examples</a></div>
-                          <div class="submenubox"><a
-                              class="sidesubmenutext" title="Javadoc"
-                              tabindex="4" href="javadoc/index.html">Javadoc</a></div>
-                          <div class="submenubox"><a
-                              class="sidesubmenutext" title="download"
-                              tabindex="5"
-                              href="https://sourceforge.net/project/showfiles.php?group_id=206158">Download</a>
-                          </div>
-                        </div>
-                        <!-- sidearea close -->
-                        <!--XXXXXXXXXXXXXXXXThe main center region starts hereXXXXXXXXXXXXXXXXXXX-->
-                        <div id="column3"><!--@column3.content--></div>
-                        <!-- column3 close -->
-                        <div id="centerarea">
-                          <h2>Description</h2>
-                          <p><i> Jenetics is an Genetic Algorithm
-                              Library written in Java. It is designed
-                              with a clear separation of the several
-                              concepts of the algorithm, e.g. Gene,
-                              Chromosome, Genotype, Phenotype,
-                              Population and FitnessFunction. </i></p>
-                          <h2>Design</h2>
-                          <p>This project provides an <a
-                              href="http://en.wikipedia.org/wiki/Genetic_algorithm">Genetic
-                              Algorithm</a> (GA) implementation. Genetic
-                            Algorithms was first proposed and
-                            analyzed by <a
-                              href="http://en.wikipedia.org/wiki/John_Henry_Holland">John
-                              Holland</a> in 1975. </p>
-                          <h3>Data structures</h3>
-                          <p><img src="doc-files/structure.png"
-                              alt="Structure Diagram" align="bottom"
-                              border="0" height="417" width="473"></p>
-                          <p>The diagram above shows the main data
-                            structures of the GA
-                            implementation. The Gene is the base of the
-                            building block. Genes are
-                            aggregated in Chromosomes. One to n
-                            Chromosomes are aggregated in
-                            Genotypes. A <em>Genptype</em> and a <em>FitnessFunction</em>
-                            form the <em>Phenotype</em>.
-                            <em><phenotypes></phenotypes></em> are
-                            collected into a <em>Population</em>.
-                          </p>
-                          <h3>Simple GA Setup</h3>
-                          <p>The minimum GA setup needs a <em>GenotypeFactory</em>
-                            and an <em>FitnessFunction</em>.
-                            The <em>Genotype</em> implements the <em>GenotypeFactory</em>
-                            interface and can be used as <em>prototype.</em></p>
-                          <div style="font-size: .75em">
-                            <pre class="brush: java; toolbar: false;">final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.valueOf(
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="generator" content="Bluefish 2.0.3" >
+<title>Jenetics: Java Genetic Algorithm library</title>
+<meta name="author" content="Franz Wilhelmstötter" >
+<meta name="CREATED" content="0;0">
+<meta name="CHANGED" content="20080923;20455500">
+<meta name="KEYWORDS" content=
+"Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
+<meta name="copyright" content="Franz Wilhelmst&Atilde;&para;tter">
+<meta name="robots" content="all">
+<meta name="robots" content="index">
+<link rel="stylesheet" href="styletext.css" type="text/css">
+<link rel="stylesheet" href="stylelayout.css" type="text/css">
+<link rel="stylesheet" href="stylecolor.css" type="text/css">
+<link href="shCore.css" rel="stylesheet" type="text/css">
+<link href="shThemeEclipse.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!-- Scripts for syntax highlighter -->
+<script type="text/javascript" src="shCore.js">
+</script><script type="text/javascript" src="shBrushJava.js">
+</script><script type="text/javascript" src="shBrushPlain.js">
+</script>
+<div id="bodywrap-top">
+<div id="bodywrap-btm">
+<div id="bodywrap-r">
+<div id="bodywrap-l">
+<div id="bodywrap-tl">
+<div id="bodywrap-tr">
+<div id="bodywrap-br">
+<div id="bodywrap-bl">
+<div id="bodywrap-in">
+<div id="pageframe">
+<div id="titlearea">
+<h1>Jenetics - Java Genetic Algorithm</h1>
+</div>
+<!-- titlearea close -->
+<div id="topmenuback"><!--@topmenu.content--></div>
+<!-- topmenuback close -->
+<!-- XXXXXXXXXXXXXXXXThe side bar region starts hereXXXXXXXXXXXXXXXXXXX -->
+<div id="leftarea">
+<div class="menubox"><a class="sidemenutextlive" title=
+"Side menu access to Home" tabindex="1" href=
+"index.html">Home</a></div>
+<div class="submenubox"><a class="sidesubmenutext" title="Examples"
+tabindex="3" href="examples.html">Examples</a></div>
+<div class="submenubox"><a class="sidesubmenutext" title="Javadoc"
+tabindex="4" href="javadoc/index.html">Javadoc</a></div>
+<div class="submenubox"><a class="sidesubmenutext" title="download"
+tabindex="5" href=
+"https://sourceforge.net/project/showfiles.php?group_id=206158">Download</a></div>
+</div>
+<!-- sidearea close -->
+<!--XXXXXXXXXXXXXXXXThe main center region starts hereXXXXXXXXXXXXXXXXXXX-->
+<div id="column3"><!--@column3.content--></div>
+<!-- column3 close -->
+<div id="centerarea">
+<h2>Abstract</h2>
+<p><i>Jenetics is an Genetic Algorithm Library written in Java. It
+is designed with a clear separation of the several concepts of the
+algorithm, e.g. Gene, Chromosome, Genotype, Phenotype, Population
+and FitnessFunction.</i></p>
+<h2>Design</h2>
+<p>This project provides an <a href=
+"http://en.wikipedia.org/wiki/Genetic_algorithm">Genetic
+Algorithm</a> (GA) implementation. Genetic Algorithms was first
+proposed and analyzed by <a href=
+"http://en.wikipedia.org/wiki/John_Henry_Holland">John Holland</a>
+in 1975.</p>
+<h3>Data structures</h3>
+<p><img src="doc-files/StructureClassDiagram.svg" alt="Structure Diagram"
+align="bottom" border="0" height="417" width="473"></p>
+<p>The diagram above shows the main data structures of the GA
+implementation. The Gene is the base of the building block. Genes
+are aggregated in Chromosomes. One to n Chromosomes are aggregated
+in Genotypes. A <em>Genptype</em> and a <em>FitnessFunction</em>
+form the <em>Phenotype</em></p>
+<h3>Simple GA Setup</h3>
+<p>The minimum GA setup needs a <em>GenotypeFactory</em> and an
+<em>FitnessFunction</em>. The <em>Genotype</em> implements the
+<em>GenotypeFactory</em> interface and can be used as
+<em>prototype.</em></p>
+<div style="font-size: .75em">
+<pre class="brush: java; toolbar: false;">
+final Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf = Genotype.valueOf(
         BitChromosome.valueOf(10, 0.5);
     );
-    
 final FitnessFunction&lt;BitGene, Float64&gt; ff = ...
-
 final GeneticAlgorithm&lt;BitGene, Float64&gt; ga = 
-	GeneticAlgorithm.valueOf(gtf, ff);
-</pre>
-                          </div>
-                          <p>The genotype-factory <em>gtf</em> in this
-                            example will create genotypes which consits
-                            of a bit-chromosome of length 10. The one to
-                            zero probability of the
-                            newly created genotypes are set to 0.5. The
-                            fitness-function is parameterized
-                            with <em>BitGene</em> and <em>Float64</em>.
-                            That means that the function is
-                            calculating the fitness value, which is a <em>Float64</em>,
-                            from a bit-chromosome.
-                            The calculated fitness value must be at
-                            least a <em>Comparable</em>. Now we
-                            are done! A new GA instance can be created
-                            with the genotype-factory and the
-                            fitness-function. For starting the <em>evolution</em>
-                            just call <em>ga.setup()</em>
-                            and <em>ga.evolve(100)</em>.</p>
-                          <div style="font-size: .75em">
-                            <pre class="brush: java; toolbar:false;">ga.setup(); 
+        GeneticAlgorithm.valueOf(gtf, ff);
+</pre></div>
+<p>The genotype-factory <em>gtf</em> in this example will create
+genotypes which consits of a bit-chromosome of length 10. The one
+to zero probability of the newly created genotypes are set to 0.5.
+The fitness-function is parameterized with <em>BitGene</em> and
+<em>Float64</em>. That means that the function is calculating the
+fitness value, which is a <em>Float64</em>, from a bit-chromosome.
+The calculated fitness value must be at least a
+<em>Comparable</em>. Now we are done! A new GA instance can be
+created with the genotype-factory and the fitness-function. For
+starting the <em>evolution</em> just call <em>ga.setup()</em> and
+<em>ga.evolve(100)</em>.</p>
+<div style="font-size: .75em">
+<pre class="brush: java; toolbar:false;">
+ga.setup(); 
 ga.evolve(100); 
-System.out.println(ga); </pre>
-                          </div>
-                          <p>The <em>GeneticAlgorithm.setup()</em> call
-                            creates the initial population
-                            and calculates its fitness. Then the GA
-                            evolves 100 generations and
-                            prints the (last) populations statistics.</p>
-                          <p>In a more advanced setup you
-                            want to define mutation and/or selection
-                            strategies.</p>
-                          <div style="font-size: .75em">
-                            <pre class="brush: java; toolbar: false;">ga.setSelectors(new TournamentSelector&lt;BitGene&gt;(5));
+System.out.println(ga); 
+</pre></div>
+<p>The <em>GeneticAlgorithm.setup()</em> call creates the initial
+population and calculates its fitness. Then the GA evolves 100
+generations and prints the (last) populations statistics.</p>
+<p>In a more advanced setup you want to define mutation and/or
+selection strategies.</p>
+<div style="font-size: .75em">
+<pre class="brush: java; toolbar: false;">
+ga.setSelectors(new TournamentSelector&lt;BitGene&gt;(5));
 ga.setAlterer(new SinglePointCrossover&lt;BitGene&gt;(0.1));
 ga.addAlterer(new Mutation&lt;BitGene&gt;(0.01))
-</pre>
-                          </div>
-                          <p>The Alterers are concatenated, first the
-                            crossover (with
-                            crossover probability 0.1) is performed and
-                            than the chromosomes are
-                            mutated (with a probability 0.01).</p>
-                        </div>
-                        <!-- centerarea close -->
-                        <div id="bottombar">
-                          <h6>© Copyright Franz Wilhelmstötter</h6>
-                          <h6>
-                            <script type="text/javascript" src="http://www.ohloh.net/p/89791/widgets/project_thin_badge.js"></script></h6>
-                        </div>
-                        <!-- bottombar close -->
-                        <div class="spacer"></div>
-                      </div>
-                      <!-- frame close --></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- bodywrap close -->
-    <script type="text/javascript">
+</pre></div>
+<p>The Alterers are concatenated, first the crossover (with
+crossover probability 0.1) is performed and than the chromosomes
+are mutated (with a probability 0.01).</p>
+</div>
+<!-- centerarea close -->
+<div id="bottombar">
+<h6>&copy; Copyright Franz Wilhelmstötter</h6>
+<h6><script type="text/javascript" src=
+"http://www.ohloh.net/p/89791/widgets/project_thin_badge.js">
+</script></h6>
+</div>
+<!-- bottombar close -->
+<div class="spacer"></div>
+</div>
+<!-- frame close --></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- bodywrap close -->
+<script type="text/javascript">
      SyntaxHighlighter.all()
 </script>
-  </body>
+</body>
 </html>
