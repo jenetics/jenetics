@@ -24,10 +24,6 @@ package org.jenetics;
 
 
 /**
- * Population based methods provide the possibility of incorporating a new set
- * of moves based on combining solutions. This is referred to as crossover or
- * recombination.
- *
  * The Alterer is responsible for the recombination of a Population. Alterers can
  * be chained by appending an new (component) alterers.
  *

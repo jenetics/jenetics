@@ -31,7 +31,8 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.Verifiable;
 
 /**
- * A chromosome is an array of genes.
+ * A chromosome consists of one or more genes. It also provides a factory
+ * method for creating new, random chromosome instances of the same type.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  *
@@ -46,7 +47,7 @@ public interface Chromosome<T extends Gene<?, T>>
 		Factory<Chromosome<T>>,
 		Serializable
 {
-	
+
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type
 	 * and the given {@code genes}.
@@ -57,7 +58,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
 	public Chromosome<T> newInstance(final ISeq<T> genes);
-	
+
 	/**
 	 * Return the first gene of this chromosome.  Each chromosome must contain
 	 * at least one gene.
@@ -65,7 +66,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @return the first gene of this chromosome.
 	 */
 	public T getGene();
-	
+
 	/**
 	 * Return the gene on the specified index.
 	 *
@@ -83,7 +84,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @return Length of the Chromosome
 	 */
 	public int length();
-	
+
 	/**
 	 * Return a unmodifiable sequence of the genes of this chromosome.
 	 *
