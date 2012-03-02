@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<meta name="generator" content="Bluefish 2.0.3" >
 <meta http-equiv="content-type" content=
 "text/html; charset=utf-8">
 <meta name="generator" content="Bluefish 2.0.3" >
@@ -11,7 +10,7 @@
 <meta name="CHANGED" content="20080923;20455500">
 <meta name="KEYWORDS" content=
 "Java, GA, Genetic Algorithm, Jenetics, LGPL, optimization, Artificial Intelligence, software, source, algorithm">
-<meta name="copyright" content="Franz Wilhelmstötter">
+<meta name="copyright" content="Franz Wilhelmst&ouml;tter">
 <meta name="robots" content="all">
 <meta name="robots" content="index">
 <link rel="stylesheet" href="styletext.css" type="text/css">
@@ -61,22 +60,28 @@ tabindex="5" href=
 <!-- column3 close -->
 <div id="centerarea">
 <h2>Introduction</h2>
-<p><strong>Jenetics</strong> is an <strong>Genetic Algorithm</strong>, respectively an <strong>Evolutionary Algorithm</strong>, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.&nbsp;g. Gene, Chromosome, Genotype, Phenotype, Population and fitness Function. <strong>Jenetics</strong> allows you to minimize and maximize the given fitness function without tweaking it.</p>
+<p><strong>Jenetics</strong> is an <strong>Genetic
+Algorithm</strong>, respectively an <strong>Evolutionary
+Algorithm</strong>, library written in Java. It is designed with a
+clear separation of the several concepts of the algorithm,
+e.&nbsp;g. Gene, Chromosome, Genotype, Phenotype, Population and
+fitness Function. <strong>Jenetics</strong> allows you to minimize
+and maximize the given fitness function without tweaking it.</p>
 <h3>Data Structures</h3>
 <p><img src="doc-files/StructureClassDiagram.svg" alt=
 "Structure Diagram" align="bottom" border="0" height="417" width=
 "473"></p>
-<p>The diagram above shows the class-diagram of the main structures of the GA. 
-The Gene is the base of the class structure. Genes are aggregated in 
-Chromosomes. One to n Chromosomes are aggregated in Genotypes. A 
-Genotype and a fitness Function from the Phenotype are collected into a Population.</p>
-
+<p>The diagram above shows the class-diagram of the main structures
+of the GA. The Gene is the base of the class structure. Genes are
+aggregated in Chromosomes. One to n Chromosomes are aggregated in
+Genotypes. A Genotype and a fitness Function from the Phenotype are
+collected into a Population.</p>
 <h3>Getting Started</h3>
-<p>The minimum GA setup needs a genotype factory, Factory&lt;Genotype&lt;?&gt;&gt;, 
-and a fitness Function. The Genotype implements the Factory interface and can 
-therefore be used as prototype for creating the initial Population and for 
-creating new random Genotypes.</p>
-
+<p>The minimum GA setup needs a genotype factory,
+Factory&lt;Genotype&lt;?&gt;&gt;, and a fitness Function. The
+Genotype implements the Factory interface and can therefore be used
+as prototype for creating the initial Population and for creating
+new random Genotypes.</p>
 <div style="font-size: .75em">
 <pre class="brush: java; toolbar: false;">
 public static void main(String[] args) {
@@ -92,12 +97,22 @@ public static void main(String[] args) {
     System.out.println(ga.getBestPhenotype());
 }
 </pre></div>
-
-<p>The genotype factory, gtf, in the example above will create genotypes which consists of one BitChromosome with length 10. The one to zero probability of the newly created genotypes is set to 0.5. The fitness function is parameterized with a BitGene and a Float64. That means that the fitness function is calculating the fitness value as Float64. The return type of the fitness function must be at least a Comparable. The GeneticAlgorithm object is then created with the genotype factory and the fitness function. In this example the GA tries to maximize the fitness function. If you want to find the minimal value you have to change the optimize parameter from Optimize.MAXIMUM to Optimize.MINIMUM. The ga.setup() call creates the initial population and calculates its fitness value. Then the GA evolves 100 generations (ga.evolve(100)) an prints the best phenotype found so far onto the console.
-
-<p>In a more advanced setup you may want to change the default mutation and/or selection strategies.</p>
-
-
+<p>The genotype factory, gtf, in the example above will create
+genotypes which consists of one BitChromosome with length 10. The
+one to zero probability of the newly created genotypes is set to
+0.5. The fitness function is parameterized with a BitGene and a
+Float64. That means that the fitness function is calculating the
+fitness value as Float64. The return type of the fitness function
+must be at least a Comparable. The GeneticAlgorithm object is then
+created with the genotype factory and the fitness function. In this
+example the GA tries to maximize the fitness function. If you want
+to find the minimal value you have to change the optimize parameter
+from Optimize.MAXIMUM to Optimize.MINIMUM. The ga.setup() call
+creates the initial population and calculates its fitness value.
+Then the GA evolves 100 generations (ga.evolve(100)) an prints the
+best phenotype found so far onto the console.</p>
+<p>In a more advanced setup you may want to change the default
+mutation and/or selection strategies.</p>
 <div style="font-size: .75em">
 <pre class="brush: java; toolbar:false;">
 public static void main(String[] args) {
@@ -113,14 +128,17 @@ public static void main(String[] args) {
     System.out.println(ga.getBestPhenotype());
 }
 </pre></div>
-<p>
-The selection strategy for offspring and survivors are set to the roulette-wheel selector. It is also possible to set the selector for offspring and survivors independently with the setOffspringSelector and setSurvivorSelector methods. The alterers are concatenated, at first the crossover (with probability 0.1) is performed and then the chromosomes are mutated (with probability 0.01).
-</p>
-
+<p>The selection strategy for offspring and survivors are set to
+the roulette-wheel selector. It is also possible to set the
+selector for offspring and survivors independently with the
+setOffspringSelector and setSurvivorSelector methods. The alterers
+are concatenated, at first the crossover (with probability 0.1) is
+performed and then the chromosomes are mutated (with probability
+0.01).</p>
 </div>
 <!-- centerarea close -->
 <div id="bottombar">
-<h6>&copy; Copyright Franz Wilhelmstötter</h6>
+<h6>&copy; Copyright Franz Wilhelmst&ouml;tter</h6>
 <h6><script type="text/javascript" src=
 "http://www.ohloh.net/p/89791/widgets/project_thin_badge.js">
 </script></h6>
