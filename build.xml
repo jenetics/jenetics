@@ -339,8 +339,6 @@
 				<param name="-inferdep" />
 				<param name="-hide" value="java.*" />
 				<param name="-hide" value="javolution.*" />
-				<param name="-collpackages" value="java.util.*" />
-				<param name="-collpackages" value="org.jenetics.util.*" />
 				<param name="-qualify" />
 				<param name="-postfixpackage" />
 				<param name="-nodefontsize" value="9" />
@@ -360,13 +358,13 @@
 			</fileset>
 			<doctitle>&lt;h1&gt;Jenetics API (Version ${version})&lt;/h1&gt;</doctitle>
 			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
-			<link offline="false" href="http://download.oracle.com/javase/6/docs/api/" />
+			<link offline="false" href="http://download.oracle.com/javase/7/docs/api/" />
 			<link offline="false" href="http://jscience.org/api/" />
 			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
 		</javadoc>
 
 		<!-- Formats/colarizes code between [code]...[/code] -->
-		<java classname="Colapi" classpath="${colorizer.classpath}" >
+		<java jar="${colorizer.jar}" fork="true">
 			<arg value="${javadoc.dir}" />
 		</java>
 
