@@ -579,9 +579,9 @@
 		<copy todir="${export.dir}" file="run-examples.sh"/>
 		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
 		<copy todir="${export.dir}" file="${basedir}/perftest-report.txt"/>
-		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}.jar"/>
-		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-all.jar"/>
-		<copy todir="${export.dir}/build" file="${build.dir}/${identifier}-examples.jar"/>
+		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-${version}.jar"/>
+		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-all-${version}.jar"/>
+		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-examples-${version}.jar"/>
 
 		<replace file="${export.dir}/BUILD.txt" token="@!identifier!@" value="${identifier}" />
 		<replace file="${export.dir}/BUILD.txt" token="@!year!@" value="${year}" />
