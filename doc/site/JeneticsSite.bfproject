@@ -13,7 +13,7 @@ adv_open_recursive: 0
 e2c.convert_special: 0
 snippets_show_as_menu: 1
 bookmarks_show_mode: 0
-outputb_show_all_output: 0
+outputb_show_all_output: 1
 autocomplete: 1
 spell_lang: en_CA
 last_filefilter: 
@@ -21,11 +21,13 @@ spell_insert_entities: 0
 spell_check_default: 1
 savedir: file:///home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site
 files: /home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site/index.html
-recent_files: file:///home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site/stylelayout.css
+files: /home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site/examples.html
+recent_files: file:///home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site/examples.html
 recent_files: file:///home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site/index.html
+recent_files: file:///home/fwilhelm/Workspace/Development/Projects/Jenetics/doc/site/stylelayout.css
 charmap_block: 1
 e2c.convert_iso: 0
-outputb_scroll_mode: 0
+outputb_scroll_mode: 1
 leftpanel_active_tab: 0
 c2e.IE_apos_workaround: 0
 display_right_margin: 0
