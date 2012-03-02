@@ -58,6 +58,9 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 
 			@Override
 			public boolean equals(final Object obj) {
+				if (obj == this) {
+					return true;
+				}
 				if (obj == null) {
 					return false;
 				}
