@@ -35,6 +35,42 @@ import static org.jenetics.util.object.hashCodeOf;
 public abstract class AbstractAlterer<G extends Gene<?, G>>
 	implements Alterer<G>
 {
+
+	/**
+	 * Return an alterer which does nothing.
+	 *
+	 * @return an alterer which does nothing.
+	 */
+	public static final <G extends Gene<?, G>> Alterer<G> Null() {
+		return new Alterer<G>() {
+			@Override
+			public <C extends Comparable<? super C>> int alter(
+				final Population<G, C> population,
+				final int generation
+			) {
+				return 0;
+			}
+
+			@Override
+			public int hashCode() {
+				return hashCodeOf(getClass()).value();
+			}
+
+			@Override
+			public boolean equals(final Object obj) {
+				if (obj == null) {
+					return false;
+				}
+				return obj.getClass() == getClass();
+			}
+
+			@Override
+			public String toString() {
+				return "AbstractAlterer.Null";
+			}
+		};
+	}
+
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**

@@ -853,7 +853,7 @@ public class GeneticAlgorithm<
 	 * @param alterer The alterer.
 	 * @throws NullPointerException if the alterer is null.
 	 */
-	public void setAlterer(final Alterer<G> alterer) {
+	public <SG extends Gene<?, ? extends G>> void setAlterer(final Alterer<G> alterer) {
 		_alterer = nonNull(alterer, "Alterer");
 	}
 
