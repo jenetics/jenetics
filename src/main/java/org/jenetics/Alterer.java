@@ -45,6 +45,7 @@ package org.jenetics;
  */
 public interface Alterer<G extends Gene<?, G>> {
 
+
 	/**
 	 * Alters (recombine) a given population. If the <code>population</code>
 	 * is empty, nothing is altered.
@@ -63,3 +64,6 @@ public interface Alterer<G extends Gene<?, G>> {
 		);
 
 }
+
+
+
