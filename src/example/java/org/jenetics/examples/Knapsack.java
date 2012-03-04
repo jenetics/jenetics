@@ -41,13 +41,13 @@ final class Item {
 	public double value;
 }
 
-final class KnappsackFunction
+final class KnapsackFunction
 	implements Function<Genotype<BitGene>, Float64>
 {
 	private final Item[] _items;
 	private final double _size;
 
-	public KnappsackFunction(final Item[] items, double size) {
+	public KnapsackFunction(final Item[] items, double size) {
 		_items = items;
 		_size = size;
 	}
@@ -79,7 +79,7 @@ final class KnappsackFunction
 
 public class Knapsack {
 
-	private static KnappsackFunction FF(int n, double size) {
+	private static KnapsackFunction FF(int n, double size) {
 		Item[] items = new Item[n];
 		for (int i = 0; i < items.length; ++i) {
 			items[i] = new Item();
@@ -87,11 +87,11 @@ public class Knapsack {
 			items[i].value = (Math.random() + 1)*15;
 		}
 
-		return new KnappsackFunction(items, size);
+		return new KnapsackFunction(items, size);
 	}
 
 	public static void main(String[] argv) throws Exception {
-		KnappsackFunction ff = FF(15, 100);
+		KnapsackFunction ff = FF(15, 100);
 		Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
 			new BitChromosome(15, 0.5)
 		);
