@@ -35,21 +35,21 @@ import org.jenetics.util.Function;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class UntilTest {
+public class terminationTest {
 
 	@Test
 	public void generation() {
 		final GeneticAlgorithm<Float64Gene, Float64> ga = TestUtils.GA();
 		ga.setup();
-		ga.evolve(Until.Generation(10));
+		ga.evolve(termination.Generation(10));
 		Assert.assertEquals(ga.getGeneration(), 10);
 		
 		ga.evolve(5);
-		ga.evolve(Until.Generation(10));
+		ga.evolve(termination.Generation(10));
 		Assert.assertEquals(ga.getGeneration(), 15);
 		
 		ga.evolve(6);
-		ga.evolve(Until.Generation(50));
+		ga.evolve(termination.Generation(50));
 		Assert.assertEquals(ga.getGeneration(), 50);
 	}
 	
@@ -85,7 +85,7 @@ public class UntilTest {
 		values.addFirst(ga.getBestPhenotype().getFitness());
 		
 		final Function<Statistics<?, Float64>, Boolean> until =
-			Until.<Float64>SteadyFitness(steadyGenerations);
+			termination.<Float64>SteadyFitness(steadyGenerations);
 		
 		while (until.apply(ga.getStatistics())) {
 			ga.evolve();

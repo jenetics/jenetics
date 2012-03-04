@@ -191,6 +191,11 @@
 			<class name="org.jenetics.SwapMutatorTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.termination">
+		<classes>
+			<class name="org.jenetics.terminationTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.TournamentSelector">
 		<classes>
 			<class name="org.jenetics.TournamentSelectorTest" />
@@ -200,12 +205,7 @@
 		<classes>
 			<class name="org.jenetics.TruncationSelectorTest" />
 		</classes>
-	</test>		
-	<test name="org.jenetics.Until">
-		<classes>
-			<class name="org.jenetics.UntilTest" />
-		</classes>
-	</test>		
+	</test>			
 	<test name="org.jenetics.stat.Accumulators">
 		<classes>
 			<class name="org.jenetics.stat.MeanTest" />

@@ -143,10 +143,10 @@ public class GeneticAlgorithmTest {
 		GeneticAlgorithm<Float64Gene, Derived> ga = null;
 		
 		ga.evolve(until);
-		ga.evolve(Until.Generation(1));
+		ga.evolve(termination.Generation(1));
 		
 		GeneticAlgorithm<Float64Gene, Float64> ga2 = null;
-		ga2.evolve(Until.<Float64>SteadyFitness(10));
+		ga2.evolve(termination.<Float64>SteadyFitness(10));
 	}
 	
 	@Test(invocationCount = 10)
