@@ -3836,7 +3836,7 @@ ga.evolve(until);
 
 \begin_layout Plain Layout
 
-// Using the 'Until.SteadyFitness' terminator.
+// Using the 'termination.SteadyFitness' terminator.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5715,11 +5715,11 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://en.wikipedia.org/wiki/Knapsack_problem
+https://en.wikipedia.org/wiki/Knapsack_problem
 \end_layout
 
 \end_inset
@@ -5815,11 +5815,11 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://en.wikipedia.org/wiki/Travelling_salesman_problem
+https://en.wikipedia.org/wiki/Travelling_salesman_problem
 \end_layout
 
 \end_inset
