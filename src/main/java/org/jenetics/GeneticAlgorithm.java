@@ -470,7 +470,7 @@ public class GeneticAlgorithm<
 	/**
 	 * Evolve the GA as long the given {@link Function} returns {@code true}.
 	 *
-	 * @see Until
+	 * @see termination
 	 *
 	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.

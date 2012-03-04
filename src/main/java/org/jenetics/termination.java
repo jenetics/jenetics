@@ -30,9 +30,9 @@ import org.jenetics.util.Function;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class Until {
+public final class termination {
 
-	private Until() {
+	private termination() {
 		throw new AssertionError("Don't create an 'Until' instance.");
 	}
 	
