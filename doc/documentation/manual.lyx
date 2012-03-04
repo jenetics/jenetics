@@ -376,13 +376,13 @@ Jenetics
 \series bold
 Genetic Algorithm
 \series default
-, respectively an 
+, therefore an 
 \series bold
 Evolutionary Algorithm
 \series default
 , library written in Java.
- It is designed with a clear separation of the several concepts of the algorithm
-, e.
+ It is designed with a clear separation of the several algorithm concepts,
+ e.
 \begin_inset space ~
 \end_inset
 
@@ -420,8 +420,8 @@ Jenetics
 \family default
 \series default
 \shape default
- allows you to minimize and maximize the given fitness function without
- tweaking it.
+ allows you to minimize or maximize the given fitness function without tweaking
+ it.
  This manual describes the concepts implemented in the
 \family sans
 \series bold
@@ -1038,7 +1038,7 @@ Float64
 Float64
 \family default
 .
- The return type of the fitness function must be at least a 
+ The return type of the fitness function must be at least of the type 
 \family typewriter
 Comparable
 \family default
@@ -1213,7 +1213,7 @@ name "par:Genotype"
 \end_layout
 
 \begin_layout Standard
-The central class the GA is working with, is the 
+The central class the GA is working with is the 
 \family typewriter
 Genotype
 \family default
@@ -1229,7 +1229,7 @@ Phenotype
 \emph on
 only
 \emph default
- a container for a genotype which forms the environment of the genotype.
+ a container which forms the environment of the genotype.
 \end_layout
 
 \begin_layout Standard
@@ -1305,7 +1305,7 @@ The chromosomes of a genotype doesn't have to have necessarily the same
 \end_inset
 
 g.
- the same min- and max values for number genes.
+ the same min- and max values for numerical genes.
 \end_layout
 
 \begin_layout Standard
@@ -1564,7 +1564,7 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-When using a fitness scaler you have to take care, that your scaler doesn't
+When using a fitness scaler you have to take care that your scaler doesn't
  
 \emph on
 destroy
@@ -1597,7 +1597,7 @@ Genes
 \end_layout
 
 \begin_layout Standard
-Genes are the atoms of the 
+Genes are the basic building blocks of the 
 \family sans
 \series bold
 \shape smallcaps
@@ -1609,7 +1609,7 @@ Jenetics
  They contain the actual information (alleles) of the encoded solution.
  The available Gene implementations should be sufficient for a very wide
  range of problem domains.
- Revere to chapter 
+ Refer to chapter 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sub:Genes"
@@ -1662,8 +1662,8 @@ Jenetics
 \shape default
  library.
  It also contains some theoretical information, which should help you to
- choose the right combination of operators and parameters, for your problem
- you want to solve.
+ choose the right combination of operators and parameters, for the problem
+ to be solved.
 \end_layout
 
 \begin_layout Subsection
@@ -1870,7 +1870,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 
 .
  The samples are drawn with replacement.
- An individual will win a tournament only if its fitness is greater than
+ An individual will win a tournament only if the fitness is greater than
  the fitness of the other 
 \begin_inset Formula $s-1$
 \end_inset
@@ -2968,7 +2968,7 @@ Jenetics
  That means that the GA's fitness-function must be thread safe, because
  it is shared by all phenotypes of a population.
  The easiest way for achieving thread-safety is to make the fitness function
- re-entrant.
+ immutable and re-entrant.
 
 \family sans
 \series bold
@@ -3841,7 +3841,7 @@ ga.evolve(until);
 
 \begin_layout Plain Layout
 
-ga.evolve(Until.SteadyFitness(5));
+ga.evolve(termination.SteadyFitness(5));
 \end_layout
 
 \end_inset
@@ -3861,7 +3861,7 @@ Jenetics
 \shape default
  comes with some default terminations functions implemented in the 
 \family typewriter
-Until
+termination
 \family default
  class in the 
 \family typewriter
@@ -4063,7 +4063,7 @@ reference "lis:Steady-state-termination"
  shows the (shortened) code for the steady-state termination function which
  you can find in the 
 \family typewriter
-Until
+termination
 \family default
  class and should give you an idea how to implement your own termination
  function.
@@ -5709,8 +5709,27 @@ The GA will generated an console output like above.
 \end_layout
 
 \begin_layout Standard
-In the knapsack problem a set of items, together with it's size and value,
- is given.
+In the knapsack problem
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/Knapsack_problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ a set of items, together with it's size and value, is given.
  The task is to select a disjoint subset so that the total size does not
  exceed the knapsack size.
  For solving the 0/1 knapsack problem we define a 
@@ -5790,8 +5809,28 @@ Traveling Salesman
 \end_layout
 
 \begin_layout Standard
-The Traveling Salesman problem is one of the classical problems in computational
- mathematics and it is the most notorious NP-complete problem.
+The Traveling Salesman problem
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://en.wikipedia.org/wiki/Travelling_salesman_problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is one of the classical problems in computational mathematics and it is
+ the most notorious NP-complete problem.
  The goal is to find the shortest distance, or the path, with the least
  costs, between 
 \begin_inset Formula $N$
