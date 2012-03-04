@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -31,11 +31,11 @@ import static org.jenetics.util.object.nonNull;
 class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
 
-	
+
 	ArrayISeq(final ArrayRef array, final int start, final int end) {
 		super(array, start, end);
 	}
-	
+
 	@Override
 	public ISeq<T> subSeq(final int start, final int end) {
 		checkIndex(start, end);
@@ -46,15 +46,15 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	public ISeq<T> subSeq(final int start) {
 		return subSeq(start, length());
 	}
-	
+
 	@Override
-	public <B> ArrayISeq<B> map(final Function<? super T, ? extends B> converter) {
+	public <B> ISeq<B> map(final Function<? super T, ? extends B> converter) {
 		nonNull(converter, "Converter");
-		
+
 		final int length = length();
 		final ArrayISeq<B> result = new ArrayISeq<>(new ArrayRef(length), 0, length);
 		assert (result._array.data.length == length);
-		
+
 		for (int i = length; --i >= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
@@ -62,7 +62,7 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		}
 		return result;
 	}
-	
+
 	@Override
 	public MSeq<T> copy() {
 		return new Array<>(new ArrayRef(toArray()), 0, length());
@@ -72,7 +72,7 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	@SuppressWarnings("unchecked")
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq) {
 		return (ISeq<A>)seq;
-	}	
-	
+	}
+
 }
 
