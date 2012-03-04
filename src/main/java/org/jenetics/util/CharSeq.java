@@ -40,12 +40,12 @@ import javolution.lang.Immutable;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public final class CharSet
-	extends CharISeq
+public final class CharSeq
+	extends AbstractCharSeq
 	implements
 		CharSequence,
 		ISeq<Character>,
-		Comparable<CharSet>,
+		Comparable<CharSeq>,
 		Immutable,
 		Serializable
 {
@@ -57,7 +57,7 @@ public final class CharSet
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
-	public CharSet(final CharSequence characters) {
+	public CharSeq(final CharSequence characters) {
 		super(toCharArray(characters));
 	}
 	
@@ -78,7 +78,7 @@ public final class CharSet
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
-	public CharSet(final char[] characters) {
+	public CharSeq(final char[] characters) {
 		super(distinct(characters.clone()));
 	}
 	
@@ -155,8 +155,8 @@ public final class CharSet
 	}
 
 	@Override
-	public CharSet subSequence(int start, int end) {
-		return new CharSet(new String(_characters, start, end - start));
+	public CharSeq subSequence(int start, int end) {
+		return new CharSeq(new String(_characters, start, end - start));
 	}
 	
 	/**
@@ -201,16 +201,16 @@ public final class CharSet
 		if (object == this) {
 			return true;
 		}
-		if (!(object instanceof CharSet)) {
+		if (!(object instanceof CharSeq)) {
 			return false;
 		}
 		
-		final CharSet ch = (CharSet)object;
+		final CharSeq ch = (CharSeq)object;
 		return eq(_characters, ch._characters);
 	}
 	
 	@Override
-	public int compareTo(final CharSet set) {
+	public int compareTo(final CharSeq set) {
 		int result = 0;
 		
 		final int n = Math.min(_characters.length, set._characters.length);
@@ -311,8 +311,8 @@ public final class CharSet
 	 * @throws PatternSyntaxException if the pattern could not be expanded.
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
-	public static CharSet valueOf(final CharSequence pattern) {
-		return new CharSet(expand(pattern));
+	public static CharSeq valueOf(final CharSequence pattern) {
+		return new CharSeq(expand(pattern));
 	}
 	
 	/**
@@ -324,8 +324,8 @@ public final class CharSet
 	 * @param b the stop character.
 	 * @return the expanded characters.
 	 */
-	public static CharSet valueOf(final char a, final char b) {
-		return new CharSet(expand(a, b));
+	public static CharSeq valueOf(final char a, final char b) {
+		return new CharSeq(expand(a, b));
 	}
 
 }

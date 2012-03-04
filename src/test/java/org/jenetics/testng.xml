@@ -260,9 +260,9 @@
 			<class name="org.jenetics.util.bitTest" />
 		</classes>
 	</test>	
-	<test name="org.jenetics.util.CharSet">
+	<test name="org.jenetics.util.CharSeq">
 		<classes>
-			<class name="org.jenetics.util.CharSetTest" />
+			<class name="org.jenetics.util.CharSeqTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.ForkJoinContext">

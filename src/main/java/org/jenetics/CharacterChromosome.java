@@ -35,7 +35,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
@@ -55,7 +55,7 @@ public class CharacterChromosome
 {	
 	private static final long serialVersionUID = 1L;
 
-	private transient CharSet _validCharacters;
+	private transient CharSeq _validCharacters;
 	
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
@@ -86,7 +86,7 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	public CharacterChromosome(final CharSet validCharacters, final int length) {
+	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
 					CharacterGene.valueOf(validCharacters).asFactory()
@@ -119,7 +119,7 @@ public class CharacterChromosome
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
 	 *         characters or the genes string is empty.
 	 */
-	public CharacterChromosome(final String genes, final CharSet validCharacters) {
+	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
 		super(
 			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
 				private int _index = 0;
@@ -264,7 +264,7 @@ public class CharacterChromosome
 			throws XMLStreamException
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
-			final CharSet validCharacters = new CharSet(xml.getAttribute(
+			final CharSeq validCharacters = new CharSeq(xml.getAttribute(
 					VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
 				));
 			
@@ -316,7 +316,7 @@ public class CharacterChromosome
 		in.defaultReadObject();
 	
 		final int length = in.readInt();
-		_validCharacters = (CharSet)in.readObject();
+		_validCharacters = (CharSeq)in.readObject();
 		
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {

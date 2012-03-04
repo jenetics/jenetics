@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 
 /**
@@ -35,7 +35,7 @@ public class PermutationChromosomeCharacterTest
 	
 	private final Factory<Chromosome<EnumGene<Character>>>
 	_factory = new Factory<Chromosome<EnumGene<Character>>>() {		
-		private final CharSet _alleles = CharSet.valueOf("a-zA-Z");
+		private final CharSeq _alleles = CharSeq.valueOf("a-zA-Z");
 		
 		@Override
 		public PermutationChromosome<Character> newInstance() {
