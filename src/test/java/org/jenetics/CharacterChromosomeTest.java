@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -57,7 +57,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		try {
 			RandomRegistry.setRandom(new Random(12345));
 			
-			final CharSet characters = new CharSet("0123456789");
+			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
 			
 			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
@@ -74,7 +74,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	
 	@Test(dataProvider = "genes")
 	public void newCharacterChromosome(final String genes) {
-		final CharSet characters = new CharSet("0123456789");
+		final CharSeq characters = new CharSeq("0123456789");
 		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
 		
 		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);
@@ -82,7 +82,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	
 	@Test(dataProvider = "genes", expectedExceptions = IllegalArgumentException.class)
 	public void newIllegalCharacterChromosome(final String genes) {
-		final CharSet characters = new CharSet("012356789");
+		final CharSeq characters = new CharSeq("012356789");
 		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
 		
 		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);		

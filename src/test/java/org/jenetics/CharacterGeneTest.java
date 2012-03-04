@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -58,7 +58,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 		try {
 			RandomRegistry.setRandom(new Random(12345));
 			
-			final CharSet characters = new CharSet("0123456789");
+			final CharSeq characters = new CharSeq("0123456789");
 			
 			final Factory<CharacterGene> factory = CharacterGene.valueOf(characters);
 			
@@ -121,7 +121,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
     @Test
     public void testGetValidCharacters() {
-        CharSet cset = CharacterGene.DEFAULT_CHARACTERS;
+        CharSeq cset = CharacterGene.DEFAULT_CHARACTERS;
         assertNotNull(cset);
         assertFalse(cset.isEmpty());
     }

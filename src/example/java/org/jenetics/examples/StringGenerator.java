@@ -35,7 +35,7 @@ import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.SinglePointCrossover;
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
@@ -76,7 +76,7 @@ public class StringGenerator {
 		final String value =
 			"To be, or not to be:";
 		
-		final CharSet chars = new CharSet(CharSet.expand("a-zA-Z.,:' "));
+		final CharSeq chars = new CharSeq(CharSeq.expand("a-zA-Z.,:' "));
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
 			new CharacterChromosome(chars, value.length())
 		);

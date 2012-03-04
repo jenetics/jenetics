@@ -35,7 +35,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -58,12 +58,12 @@ public final class CharacterGene
 	/**
 	 * The default character set used by this gene.
 	 */
-	public static final CharSet DEFAULT_CHARACTERS = new CharSet(
-				CharSet.expand("0-9a-zA-Z") +
+	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq(
+				CharSeq.expand("0-9a-zA-Z") +
 				" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 			);
 	
-	private CharSet _validCharacters;
+	private CharSeq _validCharacters;
 	private Character _character;
 	
 	private Boolean _valid;
@@ -97,9 +97,9 @@ public final class CharacterGene
 	/**
 	 * Retunr a (unmodifiable) set of valid characters.
 	 *
-	 * @return the {@link CharSet} of valid characters.
+	 * @return the {@link CharSeq} of valid characters.
 	 */
-	public CharSet getValidCharacters() {
+	public CharSeq getValidCharacters() {
 		return _validCharacters;
 	}
 	
@@ -180,9 +180,9 @@ public final class CharacterGene
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
-	public static final Function<CharacterGene, CharSet> ValidCharacters =
-		new Function<CharacterGene, CharSet>() {
-				@Override public CharSet apply(final CharacterGene value) {
+	public static final Function<CharacterGene, CharSeq> ValidCharacters =
+		new Function<CharacterGene, CharSeq>() {
+				@Override public CharSeq apply(final CharacterGene value) {
 					return value._validCharacters;
 				}
 			};
@@ -233,7 +233,7 @@ public final class CharacterGene
 	 * @throws NullPointerException if the {@code validCharacters} are
 	 *         {@code null}.
 	 */
-	public static CharacterGene valueOf(final CharSet validCharacters) {
+	public static CharacterGene valueOf(final CharSeq validCharacters) {
 		final Random random = RandomRegistry.getRandom();
 		int pos = random.nextInt(validCharacters.length());
 		
@@ -271,7 +271,7 @@ public final class CharacterGene
 	 */
 	public static CharacterGene valueOf(
 		final Character character,
-		final CharSet validCharacters
+		final CharSeq validCharacters
 	) {
 		nonNull(character, "Character");
 		nonNull(validCharacters, "Valid characters");
@@ -305,7 +305,7 @@ public final class CharacterGene
 				);
 			final String character = xml.getText().toString();
 			
-			return CharacterGene.valueOf(character.charAt(0), new CharSet(validCharacters));
+			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml)

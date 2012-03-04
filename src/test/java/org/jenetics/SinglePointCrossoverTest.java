@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.CharSet;
+import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
@@ -71,7 +71,7 @@ public class SinglePointCrossoverTest {
 	
 	@Test
 	public void crossover() {		
-		final CharSet chars = CharSet.valueOf("a-zA-Z");
+		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
 		
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();

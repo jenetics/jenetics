@@ -27,12 +27,12 @@ package org.jenetics.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-abstract class CharISeq extends ArrayISeq<Character> {
+abstract class AbstractCharSeq extends ArrayISeq<Character> {
 	private static final long serialVersionUID = 1L;
 
 	final char[] _characters;
 
-	CharISeq(final char[] characters) {
+	AbstractCharSeq(final char[] characters) {
 		super(toArrayRef(characters), 0, characters.length);
 		_characters = characters;
 	}

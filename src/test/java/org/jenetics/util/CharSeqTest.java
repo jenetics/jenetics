@@ -33,139 +33,139 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class CharSetTest extends ObjectTester<CharSet> {
+public class CharSeqTest extends ObjectTester<CharSeq> {
 
-	private final Factory<CharSet> _factory = new Factory<CharSet>() {
+	private final Factory<CharSeq> _factory = new Factory<CharSeq>() {
 		@Override
-		public CharSet newInstance() {
+		public CharSeq newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			return new CharSet(RandomUtils.nextString(random.nextInt(200) + 100));
+			return new CharSeq(RandomUtils.nextString(random.nextInt(200) + 100));
 		}
 	};
 	@Override
-	protected Factory<CharSet> getFactory() {
+	protected Factory<CharSeq> getFactory() {
 		return _factory;
 	}
 	
 	@Test
 	public void distinct1() {
-		CharSet set = new CharSet("".toCharArray());
+		CharSeq set = new CharSeq("".toCharArray());
 		Assert.assertEquals(set.toString(), "");
 		
-		set = new CharSet("1".toCharArray());
+		set = new CharSeq("1".toCharArray());
 		Assert.assertEquals(set.toString(), "1");
 		
-		set = new CharSet("11".toCharArray());
+		set = new CharSeq("11".toCharArray());
 		Assert.assertEquals(set.toString(), "1");
 		
-		set = new CharSet("123456789".toCharArray());
+		set = new CharSeq("123456789".toCharArray());
 		Assert.assertEquals(set.toString(), "123456789");
 		
-		set = new CharSet("0000000000000000000000000".toCharArray());
+		set = new CharSeq("0000000000000000000000000".toCharArray());
 		Assert.assertEquals(set.toString(), "0");
 		
-		set = new CharSet("0111111111111111111111111112".toCharArray());
+		set = new CharSeq("0111111111111111111111111112".toCharArray());
 		Assert.assertEquals(set.toString(), "012");
 		
-		set = new CharSet("111111111111111112".toCharArray());
+		set = new CharSeq("111111111111111112".toCharArray());
 		Assert.assertEquals(set.toString(), "12");
 		
-		set = new CharSet("1222222222222222222".toCharArray());
+		set = new CharSeq("1222222222222222222".toCharArray());
 		Assert.assertEquals(set.toString(), "12");
 		
-		set = new CharSet("000000987654321111111111".toCharArray());
+		set = new CharSeq("000000987654321111111111".toCharArray());
 		Assert.assertEquals(set.toString(), "0123456789");
 	}
 
 	@Test
 	public void distinct2() {
-		CharSet set = new CharSet("");
+		CharSeq set = new CharSeq("");
 		Assert.assertEquals(set.toString(), "");
 		
-		set = new CharSet("1");
+		set = new CharSeq("1");
 		Assert.assertEquals(set.toString(), "1");
 		
-		set = new CharSet("11");
+		set = new CharSeq("11");
 		Assert.assertEquals(set.toString(), "1");
 		
-		set = new CharSet("1223345667899");
+		set = new CharSeq("1223345667899");
 		Assert.assertEquals(set.toString(), "123456789");
 		
-		set = new CharSet("0000000000000000000000000");
+		set = new CharSeq("0000000000000000000000000");
 		Assert.assertEquals(set.toString(), "0");
 		
-		set = new CharSet("0111111111111111111111111112");
+		set = new CharSeq("0111111111111111111111111112");
 		Assert.assertEquals(set.toString(), "012");
 		
-		set = new CharSet("111111111111111112");
+		set = new CharSeq("111111111111111112");
 		Assert.assertEquals(set.toString(), "12");
 		
-		set = new CharSet("1222222222222222222");
+		set = new CharSeq("1222222222222222222");
 		Assert.assertEquals(set.toString(), "12");
 		
-		set = new CharSet("000000987654321111111111");
+		set = new CharSeq("000000987654321111111111");
 		Assert.assertEquals(set.toString(), "0123456789");
 	}
 	
 	@Test
 	public void expand1() {
-		String value = CharSet.expand('a', 'z');
+		String value = CharSeq.expand('a', 'z');
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz");
 		
-		value = CharSet.expand('A', 'Z');
+		value = CharSeq.expand('A', 'Z');
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		
-		value = CharSet.expand('0', '9');
+		value = CharSeq.expand('0', '9');
 		Assert.assertEquals(value.length(), 10);
 		Assert.assertEquals(value, "0123456789");
 	}
 	
 	@Test
 	public void expand2() {
-		String value = CharSet.expand("a-z");
+		String value = CharSeq.expand("a-z");
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz");
 		
-		value = CharSet.expand("a-z\\-");
+		value = CharSeq.expand("a-z\\-");
 		Assert.assertEquals(value.length(), 27);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz-");
 		
-		value = CharSet.expand("a-z\\\\xx");
+		value = CharSeq.expand("a-z\\\\xx");
 		Assert.assertEquals(value.length(), 29);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz\\xx");
 		
-		value = CharSet.expand("A-Z");
+		value = CharSeq.expand("A-Z");
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		
-		value = CharSet.expand("0-9");
+		value = CharSeq.expand("0-9");
 		Assert.assertEquals(value.length(), 10);
 		Assert.assertEquals(value, "0123456789");
 		
-		value = CharSet.expand("0-9yxcvba-z");
+		value = CharSeq.expand("0-9yxcvba-z");
 		Assert.assertEquals(value.length(), 41);
 		Assert.assertEquals(value, "0123456789yxcvbabcdefghijklmnopqrstuvwxyz");
 		
-		value = CharSet.expand("0-9a-zA-Z");
+		value = CharSeq.expand("0-9a-zA-Z");
 		Assert.assertEquals(value.length(), 10 + 26 + 26);
 		Assert.assertEquals(value, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	}
 	
 	@Test(expectedExceptions = PatternSyntaxException.class)
 	public void expand3() {
-		CharSet.expand("a-z-");
+		CharSeq.expand("a-z-");
 	}
 	
 	@Test(expectedExceptions = PatternSyntaxException.class)
 	public void expand4() {
-		CharSet.expand("-az");
+		CharSeq.expand("-az");
 	}
 
 	@Test
 	public void contains() {
-		final CharSet set = new CharSet(CharSet.expand("a-z"));
+		final CharSeq set = new CharSeq(CharSeq.expand("a-z"));
 		Assert.assertTrue(set.contains('t'));
 		Assert.assertTrue(set.contains('a'));
 		Assert.assertTrue(set.contains('z'));
@@ -176,8 +176,8 @@ public class CharSetTest extends ObjectTester<CharSet> {
 	
 	@Test
 	public void iterate() {
-		final CharSet set = new CharSet(CharSet.expand("a-z"));
-		final String values = CharSet.expand("a-z");
+		final CharSeq set = new CharSeq(CharSeq.expand("a-z"));
+		final String values = CharSeq.expand("a-z");
 		final Iterator<Character> it = set.iterator();
 		for (int i = 0; i < values.length(); ++i) {
 			Assert.assertTrue(it.hasNext());
@@ -188,8 +188,8 @@ public class CharSetTest extends ObjectTester<CharSet> {
 	
 	@Test
 	public void subSequence() {
-		final CharSet set = new CharSet(CharSet.expand("a-z"));
-		final CharSet sub = set.subSequence(3, 10);
+		final CharSeq set = new CharSeq(CharSeq.expand("a-z"));
+		final CharSeq sub = set.subSequence(3, 10);
 		Assert.assertEquals(sub.length(), 7);
 		Assert.assertEquals(sub.toString(), "defghij");
 	}
