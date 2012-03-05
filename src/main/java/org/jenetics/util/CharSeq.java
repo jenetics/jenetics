@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -35,7 +35,10 @@ import java.util.regex.PatternSyntaxException;
 import javolution.lang.Immutable;
 
 /**
- * Helper class holding the valid characters.
+ * This class is used for holding the valid characters of an
+ * {@link org.jenetics.CharacterGene}. It is not a character sequence in the
+ * classical sense. The characters of this sequence are sorted and doesn't
+ * contain duplicate values, like a set.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
@@ -50,9 +53,10 @@ public final class CharSeq
 		Serializable
 {
 	private static final long serialVersionUID = 2L;
-		
+
 	/**
-	 * Create a new (distinct) CharSet from the given {@code characters}.
+	 * Create a new (distinct) CharSeq from the given {@code characters}. The
+	 * given {@link CharSequence} is sorted and duplicate values are removed
 	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
@@ -60,20 +64,21 @@ public final class CharSeq
 	public CharSeq(final CharSequence characters) {
 		super(toCharArray(characters));
 	}
-	
+
 	private static char[] toCharArray(final CharSequence characters) {
 		nonNull(characters, "Characters");
-		
+
 		final char[] chars = new char[characters.length()];
 		for (int i = 0; i < characters.length(); ++i) {
 			chars[i] = characters.charAt(i);
 		}
-		
+
 		return distinct(chars);
 	}
-	
+
 	/**
-	 * Create a new (distinct) CharSet from the given {@code characters}.
+	 * Create a new (distinct) CharSeq from the given {@code characters}. The
+	 * given {@link CharSequence} is sorted and duplicate values are removed
 	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
@@ -81,17 +86,17 @@ public final class CharSeq
 	public CharSeq(final char[] characters) {
 		super(distinct(characters.clone()));
 	}
-	
+
 	private static char[] distinct(final char[] chars) {
 		char[] result = chars;
-		
+
 		if (chars.length > 0) {
 			Arrays.sort(result);
-			
+
 			int nextIndex = 0;
 			int count = 1;
 			char last = result[0];
-			
+
 			for (int i = 1; i < result.length; ++i) {
 				while (nextIndex < result.length && result[nextIndex] == last) {
 					++nextIndex;
@@ -102,15 +107,15 @@ public final class CharSeq
 					++count;
 				}
 			}
-			
+
 			char[] array = new char[count];
 			System.arraycopy(result, 0, array, 0, count);
 			result = array;
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public boolean contains(final Object object) {
 		if (object instanceof Character) {
@@ -119,7 +124,7 @@ public final class CharSeq
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Test whether this character set contains the given character {@code c}.
 	 *
@@ -132,7 +137,7 @@ public final class CharSeq
 	public boolean contains(final Character c) {
 		return contains(c.charValue());
 	}
-	
+
 	/**
 	 * Test whether this character set contains the given character {@code c}.
 	 *
@@ -158,7 +163,7 @@ public final class CharSeq
 	public CharSeq subSequence(int start, int end) {
 		return new CharSeq(new String(_characters, start, end - start));
 	}
-	
+
 	/**
 	 * Test whether this character set is empty.
 	 *
@@ -168,7 +173,7 @@ public final class CharSeq
 	public boolean isEmpty() {
 		return _characters.length == 0;
 	}
-	
+
 	@Override
 	public Iterator<Character> iterator() {
 		return new Iterator<Character>() {
@@ -190,12 +195,12 @@ public final class CharSeq
 			}
 		};
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_characters).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object object) {
 		if (object == this) {
@@ -204,15 +209,15 @@ public final class CharSeq
 		if (!(object instanceof CharSeq)) {
 			return false;
 		}
-		
+
 		final CharSeq ch = (CharSeq)object;
 		return eq(_characters, ch._characters);
 	}
-	
+
 	@Override
 	public int compareTo(final CharSeq set) {
 		int result = 0;
-		
+
 		final int n = Math.min(_characters.length, set._characters.length);
 		for (int i = 0; i < n && result == 0; ++i) {
 			result = _characters[i] - set._characters[i];
@@ -220,15 +225,15 @@ public final class CharSeq
 		if (result == 0) {
 			result = _characters.length - set._characters.length;
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		return new String(_characters);
 	}
-	
+
 	/**
 	 * Expands the character range for the given {@code pattern}. E.g
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
@@ -242,7 +247,7 @@ public final class CharSeq
 	public static String expand(final CharSequence pattern) {
 		nonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
-	
+
 		for (int i = 0, n = pattern.length(); i < n; ++i) {
 			if (pattern.charAt(i) == '\\') {
 				++i;
@@ -256,22 +261,22 @@ public final class CharSeq
 							pattern.length() - 1
 						);
 				}
-	
+
 				final String range = expand(
 						pattern.charAt(i - 1),
 						pattern.charAt(i + 1)
 					);
 				out.append(range);
-	
+
 				++i;
 			} else if (i + 1 == n || pattern.charAt(i + 1) != '-') {
 				out.append(pattern.charAt(i));
 			}
 		}
-	
+
 		return out.toString();
 	}
-	
+
 	/**
 	 * Expands the characters between {@code a} and {@code b}.
 	 *
@@ -281,7 +286,7 @@ public final class CharSeq
 	 */
 	public static String expand(final char a, final char b) {
 		final StringBuilder out = new StringBuilder();
-	
+
 		if (a < b) {
 			char c = a;
 			while (c <= b) {
@@ -295,10 +300,10 @@ public final class CharSeq
 				c = (char) (c - 1);
 			}
 		}
-	
+
 		return out.toString();
 	}
-	
+
 	/**
 	 * Expands the character range for the given {@code pattern}. E.g
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
@@ -314,7 +319,7 @@ public final class CharSeq
 	public static CharSeq valueOf(final CharSequence pattern) {
 		return new CharSeq(expand(pattern));
 	}
-	
+
 	/**
 	 * Expands the characters between {@code a} and {@code b}.
 	 *
