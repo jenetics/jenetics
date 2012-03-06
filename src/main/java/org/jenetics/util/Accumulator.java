@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -29,9 +29,9 @@ package org.jenetics.util;
  * final MinMax<Double> minMax = new MinMax<Double>();
  * final Variance<Double> variance = new Variance<Double>();
  * final Quantile<Double> quantile = new Quantile<Double>();
- * 	
+ *
  * final List<Double> values = ...;
- * Accumulators.accumulate(values, minMax, variance, quantile);
+ * accumulators.accumulate(values, minMax, variance, quantile);
  * [/code]
  *
  * @see accumulators
@@ -47,5 +47,5 @@ public interface Accumulator<T> {
 	 * @param value the value to accumulate.
 	 */
 	public void accumulate(final T value);
-	
+
 }
