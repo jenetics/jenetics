@@ -52,11 +52,11 @@ public class CharacterChromosome
 	implements
 		CharSequence,
 		XMLSerializable
-{	
+{
 	private static final long serialVersionUID = 1L;
 
 	private transient CharSeq _validCharacters;
-	
+
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
 	 * char set as valid characters.
@@ -74,7 +74,7 @@ public class CharacterChromosome
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
 		_valid = true;
 	}
-	
+
 	/**
 	 * Create a new chromosome with the {@code validCharacters} char set as
 	 * valid characters.
@@ -95,7 +95,7 @@ public class CharacterChromosome
 		_validCharacters = validCharacters;
 		_valid = true;
 	}
-	
+
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
 	 * array is copied, so changes to the given genes array doesn't effect the
@@ -110,7 +110,7 @@ public class CharacterChromosome
 		super(genes);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
-	
+
 	/**
 	 * Create a new chromosome from the given genes (given as string).
 	 *
@@ -136,10 +136,10 @@ public class CharacterChromosome
 				}
 			}).toISeq()
 		);
-		
+
 		_validCharacters = validCharacters;
 	}
-	
+
 	/**
 	 * Create a new chromosome from the given genes (given as string).
 	 *
@@ -160,7 +160,7 @@ public class CharacterChromosome
 	public Factory<CharacterChromosome> asFactory() {
 		return (Factory<CharacterChromosome>)(Object)this;
 	}
-	
+
 	@Override
 	public char charAt(final int index) {
 		return getGene(index).getAllele();
@@ -172,7 +172,7 @@ public class CharacterChromosome
 					(ISeq<CharacterGene>)_genes.subSeq(start, end)
 				);
 	}
-	
+
 	/**
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 */
@@ -180,7 +180,7 @@ public class CharacterChromosome
 	public CharacterChromosome newInstance(final ISeq<CharacterGene> genes) {
 		return new CharacterChromosome(genes);
 	}
-	
+
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
@@ -188,14 +188,14 @@ public class CharacterChromosome
 	public CharacterChromosome newInstance() {
 		return new CharacterChromosome(_validCharacters, length());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
 				and(super.hashCode()).
 				and(_validCharacters).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -204,11 +204,11 @@ public class CharacterChromosome
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final CharacterChromosome cc = (CharacterChromosome)obj;
-		return super.equals(obj) && eq(_validCharacters, cc._validCharacters);	
+		return super.equals(obj) && eq(_validCharacters, cc._validCharacters);
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
@@ -217,26 +217,26 @@ public class CharacterChromosome
 		}
 		return out.toString();
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	public static final Function<AbstractChromosome<CharacterGene>, ISeq<CharacterGene>>
+	public static final Function<Chromosome<CharacterGene>, ISeq<CharacterGene>>
 		Genes = AbstractChromosome.genes();
-	
+
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
 	public static final Function<Chromosome<CharacterGene>, CharacterGene>
 		Gene = AbstractChromosome.gene();
-	
+
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
@@ -246,17 +246,17 @@ public class CharacterChromosome
 	{
 		return AbstractChromosome.gene(index);
 	}
-	
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	static final XMLFormat<CharacterChromosome>
 	XML = new XMLFormat<CharacterChromosome>(CharacterChromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String VALID_CHARS = "valid-characters";
-		
+
 		@Override
 		public CharacterChromosome newInstance(
 			final Class<CharacterChromosome> cls, final InputElement xml
@@ -267,7 +267,7 @@ public class CharacterChromosome
 			final CharSeq validCharacters = new CharSeq(xml.getAttribute(
 					VALID_CHARS, CharacterGene.DEFAULT_CHARACTERS.toString()
 				));
-			
+
 			final Array<CharacterGene> array = new Array<>(length);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
@@ -290,42 +290,42 @@ public class CharacterChromosome
 		@Override
 		public void read(final InputElement element, final CharacterChromosome chromosome) {
 		}
-		
+
 	};
 
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
-	
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
 		out.defaultWriteObject();
-	
+
 		out.writeInt(length());
 		out.writeObject(_validCharacters);
-		
+
 		for (CharacterGene gene : _genes) {
 			out.writeChar(gene.getAllele().charValue());
 		}
 	}
-	
+
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-	
+
 		final int length = in.readInt();
 		_validCharacters = (CharSeq)in.readObject();
-		
+
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
 		}
-		
+
 		_genes = genes.toISeq();
 	}
-	
+
 }
 
 

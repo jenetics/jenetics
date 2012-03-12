@@ -56,13 +56,13 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * be initialized by the derived classes.
 	 */
 	protected transient ISeq<G> _genes = null;
-	
+
 	/**
 	 * Indicates whether this chromosome is valid or not. If the variable is
 	 * {@code null} the validation state hasn't been calculated yet.
 	 */
 	protected transient Boolean _valid = null;
-	
+
 	/**
 	 * Create a new {@code AbstractChromosome} from the given {@code genes}
 	 * array. The genes array is not copied, but sealed, so changes to the given
@@ -76,21 +76,21 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	protected AbstractChromosome(final ISeq<G> genes) {
 		nonNull(genes, "Gene array");
 		assert (genes.indexOf(Null) == -1) : "Found at least on null gene.";
-		
+
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Chromosome length < 1: %d", genes.length()
 			));
 		}
-		
+
 		_genes = genes;
 	}
-		
+
 	@Override
 	public G getGene(final int index) {
 		return _genes.get(index);
 	}
-	
+
 	@Override
 	public G getGene() {
 		return _genes.get(0);
@@ -100,26 +100,26 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	public ISeq<G> toSeq() {
 		return _genes;
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
 			_valid = _genes.foreach(Verify) == -1;
 		}
-		
+
 		return _valid;
 	}
-	
+
 	@Override
 	public Iterator<G> iterator() {
 		return _genes.iterator();
 	}
-	
+
 	@Override
 	public int length() {
 		return _genes.length();
 	}
-	
+
 	/**
 	 * Return the index of the first occurrence of the given <code>gene</code>.
 	 *
@@ -130,12 +130,12 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	protected int indexOf(final Object gene) {
 		return _genes.indexOf(gene);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_genes).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -144,21 +144,21 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final AbstractChromosome<?> chromosome = (AbstractChromosome<?>)obj;
 		return eq(_genes, chromosome._genes);
 	}
-	
+
 	@Override
 	public String toString() {
 		return _genes.toString();
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
@@ -171,7 +171,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 			}
 		};
 	}
-	
+
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
@@ -189,7 +189,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
-	static <G extends Gene<?, G>, C extends AbstractChromosome<G>>
+	static <G extends Gene<?, G>, C extends Chromosome<G>>
 	Function<C, ISeq<G>> genes() {
 		return new Function<C, ISeq<G>>() {
 			@Override public ISeq<G> apply(final C value) {
@@ -197,7 +197,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 			}
 		};
 	}
-	
+
 }
 
 

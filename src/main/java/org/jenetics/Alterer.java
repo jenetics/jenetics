@@ -28,7 +28,7 @@ package org.jenetics;
  * be chained by appending an new (component) alterers.
  *
  * [code]
- * GeneticAlgorithm<Float64Gene, Double> ga = ...
+ * GeneticAlgorithm<Float64Gene, Float64> ga = ...
  * ga.setAlterers(
  *     new Crossover<Float64Gene>(0.1),
  *     new Mutator<Float64Gene>(0.05),
