@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -39,11 +39,11 @@ import java.util.Random;
  * @version $Id$
  */
 public final class arrays {
-	
+
 	private arrays() {
 		throw new AssertionError("Don't create an 'arrays' instance.");
 	}
-	
+
 	/**
 	 * Unified method for calculating the hash code of every Seq implementation.
 	 * The hash code is defined as followed:
@@ -70,7 +70,7 @@ public final class arrays {
 		}
 		return hash;
 	}
-	
+
 	/**
 	 * Unified method for compare to sequences for equality.
 	 *
@@ -88,7 +88,7 @@ public final class arrays {
 		if (!(obj instanceof Seq<?>)) {
 			return false;
 		}
-		
+
 		final Seq<?> other = (Seq<?>)obj;
 		boolean equals = (seq.length() == other.length());
 		for (int i = seq.length(); equals && --i >= 0;) {
@@ -101,7 +101,7 @@ public final class arrays {
 		}
 		return equals;
 	}
-	
+
 	/**
 	 * Swap two elements of an given array.
 	 *
@@ -118,7 +118,7 @@ public final class arrays {
 		array[i] = array[j];
 		array[j] = old;
 	}
-	
+
 	/**
 	 * Swap two elements of an given array.
 	 *
@@ -136,7 +136,7 @@ public final class arrays {
 		array[i] = array[j];
 		array[j] = old;
 	}
-	
+
 	/**
 	 * Swap two elements of an given list.
 	 *
@@ -154,7 +154,7 @@ public final class arrays {
 		list.set(i, list.get(j));
 		list.set(j, old);
 	}
-	
+
 	/**
 	 * Swap two elements of an given array.
 	 *
@@ -172,7 +172,7 @@ public final class arrays {
 		array.set(i, array.get(j));
 		array.set(j, old);
 	}
-	
+
 	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 *
@@ -185,7 +185,7 @@ public final class arrays {
 	{
 		Collections.sort(array.asList());
 	}
-	
+
 	/**
 	 * Test whether the given array is sorted in ascending order.
 	 *
@@ -202,10 +202,10 @@ public final class arrays {
 		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
 			sorted = seq.get(i).compareTo(seq.get(i + 1)) <= 0;
 		}
-		
+
 		return sorted;
 	}
-	
+
 	/**
 	 * Test whether the given array is sorted in ascending order. The order of
 	 * the array elements is defined by the given comparator.
@@ -224,10 +224,10 @@ public final class arrays {
 		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
 			sorted = comparator.compare(seq.get(i), seq.get(i + 1)) <= 0;
 		}
-		
+
 		return sorted;
 	}
-	
+
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -239,7 +239,7 @@ public final class arrays {
 	public static void shuffle(final int[] array) {
 		shuffle(array, new Random());
 	}
-	
+
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -255,7 +255,7 @@ public final class arrays {
 			swap(array, j, random.nextInt(j + 1));
 		}
 	}
-	
+
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -267,7 +267,7 @@ public final class arrays {
 	public static <T> void shuffle(final T[] array) {
 		shuffle(array, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -284,7 +284,7 @@ public final class arrays {
 			swap(array, j, random.nextInt(j + 1));
 		}
 	}
-	
+
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -296,7 +296,7 @@ public final class arrays {
 	public static <T> void shuffle(final MSeq<T> array) {
 		shuffle(array, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -313,7 +313,7 @@ public final class arrays {
 			swap(array, j, random.nextInt(j + 1));
 		}
 	}
-	
+
 	/**
 	 * Randomize the {@code list} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -326,7 +326,7 @@ public final class arrays {
 	public static <T> void shuffle(final List<T> list) {
 		shuffle(list, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * Randomize the {@code list} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
@@ -343,7 +343,7 @@ public final class arrays {
 			swap(list, j, random.nextInt(j + 1));
 		}
 	}
-	
+
 	/**
 	 * Reverses the part of the array determined by the to indexes.
 	 *
@@ -358,14 +358,14 @@ public final class arrays {
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
 		rangeCheck(array.length, from, to);
-		
+
 		int i = from;
 		int j = to;
 		while (i < j) {
 			swap(array, i++, --j);
 		}
 	}
-	
+
 	/**
 	 * Reverses the given array in place.
 	 *
@@ -376,7 +376,7 @@ public final class arrays {
 	public static <T> void reverse(final T[] array) {
 		reverse(array, 0, array.length);
 	}
-	
+
 	private static void rangeCheck(int length, int from, int to) {
 		if (from > to) {
 			throw new IllegalArgumentException(
@@ -390,7 +390,7 @@ public final class arrays {
 			throw new ArrayIndexOutOfBoundsException(to);
 		}
 	}
-	
+
 	/**
 	 * Return a array with the indexes of the partitions of an array with the
 	 * given size. The length of the returned array is {@code min(size, prts) + 1}.
@@ -416,7 +416,7 @@ public final class arrays {
 	 * 	 2: 4 	6
 	 * 	 3: 6 	9
 	 * 	 4: 9 	12
-	 * 	 5: 12	15	
+	 * 	 5: 12	15
 	 * </pre>
 	 *
 	 * This example shows how this can be used in an concurrent environment:
@@ -424,7 +424,7 @@ public final class arrays {
 	 * ConcurrentContext.enter();
 	 * try {
 	 *     final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
-	 *		
+	 *
 	 *     for (int i = 0; i < parts.length - 1; ++i) {
 	 *         final int part = i;
 	 *         ConcurrentContext.execute(new Runnable() {
@@ -456,21 +456,21 @@ public final class arrays {
 				"Number of partitions must greater than zero: " + parts
 			);
 		}
-		
+
 		final int pts = Math.min(size, parts);
 		final int[] partition = new int[pts + 1];
-		
+
 		final int bulk = size/pts;
 		final int rest = size%pts;
 		assert ((bulk*pts + rest) == size);
-		
+
 		for (int i = 0, n = pts - rest; i < n; ++i) {
 			partition[i] = i*bulk;
 		}
 		for (int i = 0, n = rest + 1; i < n; ++i) {
 			partition[pts - rest + i] = (pts - rest)*bulk + i*(bulk + 1);
 		}
-		
+
 		return partition;
 	}
 
@@ -489,7 +489,7 @@ public final class arrays {
 	public static int[] subset(final int n, final int k) {
 		return subset(n, k, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
 	 *
@@ -516,12 +516,12 @@ public final class arrays {
 					"n smaller than k: %s < %s.", n, k
 				));
 		}
-		
+
 		final int[] sub = new int[k];
 		subset(n, sub,random);
 		return sub;
 	}
-	
+
 	/**
 	 * <p>
 	 * Selects a random subset of size {@code sub.length} from a set of size
@@ -555,7 +555,7 @@ public final class arrays {
 	public static void subset(final int n, final int sub[]) {
 		subset(n, sub, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * <p>
 	 * Selects a random subset of size {@code sub.length} from a set of size
@@ -589,7 +589,7 @@ public final class arrays {
 	public static void subset(final int n, final int sub[], final Random random) {
 		nonNull(random, "Random");
 		nonNull(sub, "Sub set array");
-		
+
 		final int k = sub.length;
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
@@ -607,14 +607,14 @@ public final class arrays {
 				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
 			));
 		}
-		
+
 		if (sub.length == n) {
 			for (int i = 0; i < sub.length; ++i) {
 				sub[i] = i;
 			}
 			return;
 		}
-		
+
 		for (int i = 0; i < k; ++i) {
 			sub[i] = (i*n)/k;
 		}
@@ -626,7 +626,7 @@ public final class arrays {
 				ix = nextInt(random, 1, n);
 				l = (ix*k - 1)/n;
 			} while (sub[l] >= ix);
-			
+
 			sub[l] = sub[l] + 1;
 		}
 
@@ -658,7 +658,7 @@ public final class arrays {
 		int m0 = 0;
 		for (int ll = 1; ll <= k; ++ll) {
 			l = k + 1 - ll;
-			
+
 			if (sub[l - 1] != 0) {
 				ir = l;
 				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
@@ -673,24 +673,24 @@ public final class arrays {
 				sub[ i- 2] = sub[i - 1];
 				i = i + 1;
 			}
-			
+
 			sub[i - 2] = ix;
 			--m;
 		}
 	}
-	
+
 	private static int nextInt(final Random random, final int a, final int b) {
 		int value = 0;
-		
+
 		if (a == b) {
 			value = a - 1;
 		} else {
 			value = random.nextInt(b - a) + a;
 		}
-		
+
 		return value;
 	}
-	
+
 	/**
 	 * Calculates a random permutation.
 	 *
@@ -700,7 +700,7 @@ public final class arrays {
 	public static void permutation(final int[] p) {
 		permutation(p, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * Calculates a random permutation.
 	 *
@@ -712,13 +712,13 @@ public final class arrays {
 	public static void permutation(final int[] p, final Random random) {
 		nonNull(p, "Permutation array");
 		nonNull(random, "Random");
-		
+
 		for (int i = 0; i < p.length; ++i) {
 			p[i] = i;
 		}
 		shuffle(p, random);
 	}
-	
+
 	/**
 	 * Calculates the permutation with the given {@code rank}.
 	 *
@@ -750,7 +750,7 @@ public final class arrays {
 					"Rank smaler than 1: %s", rank
 				));
 		}
-		
+
 		Arrays.fill(p, 0);
 
 		long jrank = rank - 1;
@@ -777,11 +777,11 @@ public final class arrays {
 					++icount;
 				}
 			} while (irem >= icount);
-			
+
 			p[j - 1] = iprev;
 		}
 	}
-	
+
 	/**
 	 * Returns the index of the first occurrence of the specified element in
 	 * the {@code array}, or -1 if the {@code array} does not contain the element.
@@ -805,7 +805,7 @@ public final class arrays {
 				"Invalid index range: [%d, %s]", start, end
 			));
 		}
-		
+
 		int index = -1;
 		if (element != null) {
 			for (int i = start; i < end && index == -1; ++i) {
@@ -818,13 +818,13 @@ public final class arrays {
 				if (array[i] == null) {
 					index = i;
 				}
-			}	
+			}
 		}
-		
+
 		return index;
 	}
 
-	
+
 	/**
 	 * Returns the index of the first occurrence of the specified element in
 	 * the {@code array}, or -1 if the {@code array} does not contain the element.
@@ -838,7 +838,7 @@ public final class arrays {
 	public static int indexOf(final Object[] array, final Object element) {
 		return indexOf(array, 0, array.length, element);
 	}
-	
+
 	/**
 	 * @see #indexOf(Object[], Object)
 	 */
@@ -848,18 +848,18 @@ public final class arrays {
 	) {
 		nonNull(array, "Array");
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
-		
+
 		for (int i = 0; i < array.length && index == -1; ++i) {
 			if (predicate.apply(array[i])) {
 				index = i;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 	/**
 	 * @see #indexOf(Object[], Object)
 	 */
@@ -869,7 +869,7 @@ public final class arrays {
 	) {
 		nonNull(values, "Array");
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
 		int i = 0;
 		for (Iterator<? extends T>
@@ -879,10 +879,10 @@ public final class arrays {
 				index = i;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 	/**
 	 * Iterates over all elements of the given {@code array} as long as the
 	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
@@ -893,7 +893,7 @@ public final class arrays {
 	 *
 	 * [code]
 	 * public void foo(final Integer[] values) {
-	 *     ArrayUtils.foreach(values, new Validator.NonNull());
+	 *     arrays.foreach(values, new Validator.NonNull());
 	 *     ...
 	 * }
 	 * [/code]
@@ -910,17 +910,17 @@ public final class arrays {
 	) {
 		nonNull(array, "Array");
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
-		for (int i = 0; i < array.length && index == -1; ++i) {			
+		for (int i = 0; i < array.length && index == -1; ++i) {
 			if (!predicate.apply(array[i])) {
 				index = i;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 	/**
 	 * Iterates over all elements of the given {@code values} as long as the
 	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
@@ -939,7 +939,7 @@ public final class arrays {
 	) {
 		nonNull(values, "Array");
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
 		int i = 0;
 		for (Iterator<? extends T>
@@ -949,10 +949,10 @@ public final class arrays {
 				index = i;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 
 	/**
 	 * Map the array from type A to an other array of type B.
@@ -971,28 +971,28 @@ public final class arrays {
 	public static <A, B> B[] map(
 		final A[] a,
 		final B[] b,
-		final Function<A, B> converter
+		final Function<? super A, ? extends B> converter
 	) {
 		nonNull(a, "Source array");
 		nonNull(b, "Target array");
 		nonNull(converter, "Converter");
-		
+
 		B[] result = b;
 		if (b.length < a.length) {
 			@SuppressWarnings("unchecked")
 			final B[] r = (B[])java.lang.reflect.Array.newInstance(
-									b.getClass().getComponentType(), a.length
-								);
+				b.getClass().getComponentType(), a.length
+			);
 			result = r;
 		}
-		
+
 		for (int i = 0; i < result.length; ++i) {
 			result[i] = converter.apply(a[i]);
 		}
-		
+
 		return result;
 	}
-	
+
 }
 
 
