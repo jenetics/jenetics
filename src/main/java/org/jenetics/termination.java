@@ -33,25 +33,25 @@ import org.jenetics.util.Function;
 public final class termination {
 
 	private termination() {
-		throw new AssertionError("Don't create an 'Until' instance.");
+		throw new AssertionError("Don't create an 'termination' instance.");
 	}
-	
+
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>
 	{
 		private final int _genenerations;
-		
+
 		private C _fitness;
 		private int _stableGenerations = 0;
-		
+
 		public SteadyFitness(final int generations) {
 			_genenerations = generations;
 		}
-		
+
 		@Override
 		public Boolean apply(final Statistics<?, C> statistics) {
 			boolean proceed = true;
-			
+
 			if (_fitness == null) {
 				_fitness = statistics.getBestFitness();
 				_stableGenerations = 1;
@@ -64,11 +64,11 @@ public final class termination {
 					_stableGenerations = 1;
 				}
 			}
-			
+
 			return proceed ? Boolean.TRUE : Boolean.FALSE;
-		}	
+		}
 	}
-	
+
 	/**
 	 * Create a <i>terminator</i> which returns {@code false} if the fitness
 	 * hasn't improved for a given number of generations.
@@ -82,20 +82,20 @@ public final class termination {
 	Function<Statistics<?, C>, Boolean> SteadyFitness(final int generation) {
 		return new SteadyFitness<>(generation);
 	}
-	
+
 	static class Generation implements Function<Statistics<?, ?>, Boolean> {
 		private final int _generation;
-		
+
 		public Generation(final int generation) {
 			_generation = generation;
 		}
-		
+
 		@Override
 		public Boolean apply(final Statistics<?, ?> statistics) {
 			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
-		}		
+		}
 	}
-	
+
 	/**
 	 * Return a <i>termination predicate</i> which returns {@code false} if the
 	 * current GA generation is {@code >=} as the given {@code generation}.
@@ -111,5 +111,5 @@ public final class termination {
 	public static Function<Statistics<?, ?>, Boolean> Generation(final int generation) {
 		return new Generation(generation);
 	}
-	
+
 }
