@@ -213,11 +213,11 @@ public class GeneticAlgorithm<
 		final Function<Genotype<G>, C> fitnessFunction
 	) {
 		this(
-				genotypeFactory,
-				fitnessFunction,
-				functions.<C>Identity(),
-				Optimize.MAXIMUM
-			);
+            genotypeFactory,
+            fitnessFunction,
+            functions.<C>Identity(),
+            Optimize.MAXIMUM
+        );
 	}
 
 	/**
@@ -235,11 +235,11 @@ public class GeneticAlgorithm<
 		final Optimize optimization
 	) {
 		this(
-				genotypeFactory,
-				fitnessFunction,
-				functions.<C>Identity(),
-				optimization
-			);
+            genotypeFactory,
+            fitnessFunction,
+            functions.<C>Identity(),
+            optimization
+        );
 	}
 
 	/**
@@ -257,11 +257,11 @@ public class GeneticAlgorithm<
 		final Function<C, C> fitnessScaler
 	) {
 		this(
-				genotypeFactory,
-				fitnessFunction,
-				fitnessScaler,
-				Optimize.MAXIMUM
-			);
+            genotypeFactory,
+            fitnessFunction,
+            fitnessScaler,
+            Optimize.MAXIMUM
+        );
 	}
 
 	/**
@@ -866,17 +866,6 @@ public class GeneticAlgorithm<
 	@SafeVarargs
 	public final void setAlterers(final Alterer<G>... alterers) {
 		setAlterer(new CompositeAlterer<>(alterers));
-	}
-
-	/**
-	 * Add a Alterer to the already existing alterers of this GeneticAlgorithm.
-	 *
-	 * @param alterer the {@link Alterer} to add.
-	 * @deprecated use {@link #setAlterers(Alterer...)} instead.
-	 */
-	@Deprecated
-	public void addAlterer(final Alterer<G> alterer) {
-		_alterer = CompositeAlterer.join(_alterer, nonNull(alterer, "Alterer"));
 	}
 
 	/**
