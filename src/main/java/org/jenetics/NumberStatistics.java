@@ -52,6 +52,7 @@ public class NumberStatistics<
 	 * Builder for the NumberStatistics class.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static class Builder<
@@ -294,6 +295,7 @@ public class NumberStatistics<
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static class Calculator<

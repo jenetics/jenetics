@@ -69,6 +69,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * Builder for the Statistics class.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static class Builder<
@@ -484,6 +485,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * Class which holds time statistic values.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static final class Time implements XMLSerializable {
@@ -678,6 +680,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * for the Statistics class.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static class Calculator<
