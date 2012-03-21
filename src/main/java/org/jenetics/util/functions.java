@@ -34,6 +34,7 @@ import org.jscience.mathematics.number.Integer64;
  * This class contains some short general purpose functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class functions {

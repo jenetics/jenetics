@@ -41,6 +41,7 @@ import org.jenetics.util.Seq;
  * Combines several alterers to one.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
@@ -48,7 +49,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 {
 
 	private final ISeq<Alterer<G>> _alterers;
-	
+
 	/**
 	 * Combine the given alterers.
 	 *
@@ -65,7 +66,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 				nonNull(a2)
 			));
 	}
-	
+
 	/**
 	 * Combine the given alterers.
 	 *
@@ -85,7 +86,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 				nonNull(a3)
 			));
 	}
-	
+
 	/**
 	 * Combine the given alterers.
 	 *
@@ -108,7 +109,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 				nonNull(a4)
 			));
 	}
-	
+
 	/**
 	 * Combine the given alterers.
 	 *
@@ -134,7 +135,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 				nonNull(a5)
 			));
 	}
-	
+
 	/**
 	 * Combine the given alterers.
 	 *
@@ -145,7 +146,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		this(new Array<>(alterers));
 	}
-	
+
 	/**
 	 * Combine the given alterers.
 	 *
@@ -154,22 +155,22 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 */
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
-		
+
 		alterers.foreach(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
 	}
-	
+
 	private Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
 		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
-		
+
 		final List<Alterer<G>> normalized = new LinkedList<>();
-		
+
 		while (!stack.isEmpty()) {
 			final Alterer<G> alterer = stack.pollFirst();
-			
+
 			if (alterer instanceof CompositeAlterer<?>) {
 				final CompositeAlterer<G> calterer = (CompositeAlterer<G>)alterer;
-				
+
 				for (int i = calterer.getAlterers().length(); --i >= 0;) {
 					stack.addFirst(calterer.getAlterers().get(i));
 				}
@@ -187,17 +188,17 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final int generation
 	) {
 		final AtomicInteger alterations = new AtomicInteger(0);
-		
+
 		_alterers.foreach(new Function<Alterer<G>, Boolean>() {
 			@Override public Boolean apply(final Alterer<G> alterer) {
 				alterations.addAndGet(alterer.alter(population, generation));
 				return Boolean.TRUE;
 			}
 		});
-		
+
 		return alterations.get();
 	}
-	
+
 	/**
 	 * Create a new CompositeAlterer with the given alterer appended.
 	 *
@@ -218,12 +219,12 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public Seq<Alterer<G>> getAlterers() {
 		return _alterers;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_alterers).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -232,16 +233,16 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final CompositeAlterer<?> alterer = (CompositeAlterer<?>)obj;
 		return eq(_alterers, alterer._alterers);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[%s]", getClass().getSimpleName(), _alterers);
 	}
-	
+
 	/**
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are

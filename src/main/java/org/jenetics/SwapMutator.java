@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -39,6 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * allowed, e.g. for the TSP.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
@@ -69,19 +70,19 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	@Override
 	protected int mutate(final MSeq<G> genes, final double p) {
 		int alterations = 0;
-		
+
 		if (genes.length() > 1) {
 			final Random random = RandomRegistry.getRandom();
 			final IndexStream stream = IndexStream.Random(genes.length(), p, random);
-			
+
 			for (int i = stream.next(); i != -1; i = stream.next()) {
-				final int j = random.nextInt(genes.length());				
+				final int j = random.nextInt(genes.length());
 				arrays.swap(genes, i, j);
-				
+
 				++alterations;
 			}
 		}
-		
+
 		return alterations;
 	}
 
@@ -89,7 +90,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -98,13 +99,13 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
-	
+
 }

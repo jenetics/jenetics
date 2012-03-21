@@ -41,6 +41,7 @@ import org.jenetics.util.Seq;
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
@@ -51,7 +52,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	public MeanAlterer() {
 		this(0.05);
 	}
-	
+
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
@@ -70,44 +71,44 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
-		
+
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
-		
+
 		final int cindex = random.nextInt(gt1.length());
 		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
 		final ISeq<Chromosome<G>> c2 = gt2.toSeq();
-		
+
 		// Calculate the mean value of the gene array.
 		final MSeq<G> mean = mean(
 				c1.get(cindex).toSeq().copy(),
 				c2.get(cindex).toSeq()
 			);
-		
+
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
-		
+
 		population.set(
 				individuals[0],
 				pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
 			);
-		
+
 		return 1;
 	}
-	
+
 	private MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
 		for (int i = a.length(); --i >= 0;) {
 			a.set(i, a.get(i).mean(b.get(i)));
 		}
 		return a;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -116,10 +117,10 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		if (!(obj instanceof MeanAlterer<?>)) {
 			return false;
 		}
-		
+
 		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);

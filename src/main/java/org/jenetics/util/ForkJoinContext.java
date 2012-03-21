@@ -41,6 +41,7 @@ import javolution.util.FastList;
  * your application.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class ForkJoinContext extends ConcurrentContext {
@@ -48,12 +49,12 @@ public final class ForkJoinContext extends ConcurrentContext {
 	private static final long serialVersionUID = 1L;
 
 	private final static AtomicReference<ForkJoinPool> _POOL = new AtomicReference<>();
-	
+
 	private final FastList<Future<?>> _futures = new FastList<>(10);
-	
+
 	ForkJoinContext() {
 	}
-	
+
 	/**
 	 * Set the fork-join-pool used by this context. This method doesn't replace
 	 * an already set {@link ForkJoinPool}. Before the <i>context</i> can be
@@ -67,7 +68,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
 		return _POOL.compareAndSet(null, nonNull(pool, "ForkJoinPool"));
 	}
-	
+
 	/**
 	 * Return the current fork-join-pool used by this context.
 	 *
@@ -77,7 +78,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 	public static ForkJoinPool getForkJoinPool() {
 		return _POOL.get();
 	}
-	
+
 	@Override
 	protected void enterAction() {
 		if (_POOL.get() == null) {
@@ -85,7 +86,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 		}
 		_futures.clear();
 	}
-	
+
 	@Override
 	protected void executeAction(final Runnable logic) {
 		_futures.add(_POOL.get().submit(logic));
@@ -118,7 +119,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 			ForkJoinContext.class
 		);
 	}
-	
+
 }
 
 

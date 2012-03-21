@@ -27,6 +27,7 @@ import static org.jenetics.util.object.nonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
@@ -47,7 +48,7 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 				));
 		}
 	}
-	
+
 	public C getMin() {
 		return _1;
 	}
@@ -55,11 +56,11 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 	public C getMax() {
 		return _2;
 	}
-	
+
 	public boolean contains(final C value) {
 		return _1.compareTo(value) <= 0 && _2.compareTo(value) >= 0;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(Range.class).and(super.hashCode()).value();

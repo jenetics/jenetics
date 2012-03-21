@@ -44,6 +44,7 @@ import org.jenetics.util.RandomRegistry;
  * Character gene implementation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class CharacterGene
@@ -54,7 +55,7 @@ public final class CharacterGene
 		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * The default character set used by this gene.
 	 */
@@ -62,15 +63,15 @@ public final class CharacterGene
 				CharSeq.expand("0-9a-zA-Z") +
 				" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 			);
-	
+
 	private CharSeq _validCharacters;
 	private Character _character;
-	
+
 	private Boolean _valid;
-		
+
 	CharacterGene() {
 	}
-		
+
 	@Override
 	public boolean isValid() {
 		if (_valid) {
@@ -78,7 +79,7 @@ public final class CharacterGene
 		}
 		return _valid.booleanValue();
 	}
-	
+
 	@Override
 	public Character getAllele() {
 		return _character;
@@ -93,7 +94,7 @@ public final class CharacterGene
 	public boolean isValidCharacter(final Character c) {
 		return _validCharacters.contains(c);
 	}
-	
+
 	/**
 	 * Retunr a (unmodifiable) set of valid characters.
 	 *
@@ -102,14 +103,14 @@ public final class CharacterGene
 	public CharSeq getValidCharacters() {
 		return _validCharacters;
 	}
-	
+
 	@Override
 	public CharacterGene copy() {
 		final CharacterGene gene = valueOf(_character, _validCharacters);
 		gene._valid = _valid;
 		return gene;
 	}
-	
+
 	/**
 	 * @see java.lang.Character#compareTo(java.lang.Character)
 	 * @param that The other gene to compare.
@@ -124,7 +125,7 @@ public final class CharacterGene
 	public int compareTo(final CharacterGene that) {
 		return getAllele().compareTo(that.getAllele());
 	}
-	
+
 	/**
 	 * Return the {@link Factory} view of this gene.
 	 *
@@ -133,12 +134,12 @@ public final class CharacterGene
 	Factory<CharacterGene> asFactory() {
 		return this;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_character).and(_validCharacters).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -151,22 +152,22 @@ public final class CharacterGene
 		return eq(_character, gene._character) &&
 				eq(_validCharacters, gene._validCharacters);
 	}
-	
+
 	@Override
 	public String toString() {
 		return _character.toString();
 	}
-	
+
 	@Override
 	public Text toText() {
 		return Text.valueOf(_character);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods.
 	 * ************************************************************************/
-	
+
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
@@ -176,7 +177,7 @@ public final class CharacterGene
 					return value._character;
 				}
 			};
-			
+
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
@@ -186,17 +187,17 @@ public final class CharacterGene
 					return value._validCharacters;
 				}
 			};
-			
-	
+
+
 	/* *************************************************************************
 	 *  Factory methods
 	 * ************************************************************************/
-	
+
 	@Override
 	public CharacterGene newInstance() {
 		return valueOf(_validCharacters);
 	}
-	
+
 	/**
 	 * Create a new character gene from the given character. If the character
 	 * is not within the {@link #getValidCharacters()}, an invalid gene will be
@@ -210,12 +211,12 @@ public final class CharacterGene
 	public CharacterGene newInstance(final Character character) {
 		return valueOf(character, _validCharacters);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
-	
+
 	private static final ObjectFactory<CharacterGene>
 	FACTORY = new ObjectFactory<CharacterGene>() {
 		@Override
@@ -223,7 +224,7 @@ public final class CharacterGene
 			return new CharacterGene();
 		}
 	};
-	
+
 	/**
 	 * Create a new CharacterGene with a randomly chosen character from the
 	 * set of valid characters.
@@ -236,12 +237,12 @@ public final class CharacterGene
 	public static CharacterGene valueOf(final CharSeq validCharacters) {
 		final Random random = RandomRegistry.getRandom();
 		int pos = random.nextInt(validCharacters.length());
-		
+
 		final CharacterGene gene = valueOf(validCharacters.charAt(pos), validCharacters);
 		gene._valid = true;
 		return gene;
 	}
-		
+
 	/**
 	 * Create a new character gene from the given character. If the character
 	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
@@ -255,13 +256,13 @@ public final class CharacterGene
 	public static CharacterGene valueOf(final Character character) {
 		return valueOf(character, DEFAULT_CHARACTERS);
 	}
-	
+
 	public static CharacterGene valueOf() {
 		final Random random = RandomRegistry.getRandom();
 		final int index = random.nextInt(DEFAULT_CHARACTERS.length());
 		return valueOf(DEFAULT_CHARACTERS.charAt(index));
 	}
-	
+
 	/**
 	 * Create a new CharacterGene from the give character.
 	 *
@@ -275,24 +276,24 @@ public final class CharacterGene
 	) {
 		nonNull(character, "Character");
 		nonNull(validCharacters, "Valid characters");
-		
+
 		final CharacterGene gene = FACTORY.object();
 		gene._character = character;
 		gene._validCharacters = validCharacters;
-		
+
 		return gene;
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	static final XMLFormat<CharacterGene>
 	XML = new XMLFormat<CharacterGene>(CharacterGene.class)
 	{
 		private static final String VALID_CHARS = "valid-characters";
-		
+
 		@Override
 		public CharacterGene newInstance(
 			final Class<CharacterGene> cls, final InputElement xml
@@ -304,7 +305,7 @@ public final class CharacterGene
 					DEFAULT_CHARACTERS.toString()
 				);
 			final String character = xml.getText().toString();
-			
+
 			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
 		}
 		@Override
@@ -319,7 +320,7 @@ public final class CharacterGene
 		}
 	};
 
-	
+
 }
 
 

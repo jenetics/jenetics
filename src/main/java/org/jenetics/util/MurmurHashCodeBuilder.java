@@ -28,6 +28,7 @@ package org.jenetics.util;
  * http://www.scala-lang.org/api/current/index.html#scala.util.MurmurHash
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 final class MurmurHashCodeBuilder extends HashCodeBuilder {
@@ -35,8 +36,8 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 	MurmurHashCodeBuilder(final Class<?> type) {
 		super(type);
 	}
-	
-	
+
+
 	@Override
 	public HashCodeBuilder and(final boolean value) {
 		_hash = mix(_hash, value ? 1 : 0);
@@ -48,7 +49,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 		for (int i = 0; i < values.length; ++i) {
 			_hash = mix(_hash, values[i] ? 1 : 0);
 		}
-		
+
 		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
@@ -76,7 +77,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 		for (int i = 0; i < values.length; ++i) {
 			_hash = mix(_hash, values[i]);
 		}
-		
+
 		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
@@ -92,7 +93,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 		for (int i = 0; i < values.length; ++i) {
 			_hash = mix(_hash, values[i]);
 		}
-		
+
 		_hash = finalizeHash(_hash, values.length);
 		return this;
 	}
@@ -168,7 +169,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 		}
 		_hash = finalizeHash(_hash, value.length());
 	}
-	
+
 	@Override
 	public HashCodeBuilder and(final Object value) {
 		if (value instanceof String) {
@@ -213,7 +214,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 	/*
 	 * Static hashing methods.
 	 */
-	
+
 	private static int bytesHash(final byte[] data, final int seed) {
 		int len = data.length;
 		int h = seed;
@@ -246,13 +247,13 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 		// Finalization
 		return finalizeHash(h, data.length);
 	}
-	
+
 	private static int mix(final int hash, final int data) {
 		int h = mixLast(hash, data);
 		h = Integer.rotateLeft(h, 13);
 		return h*5 + 0xe6546b64;
 	}
-	
+
 	private static int mixLast(final int hash, final int data) {
 		int k = data;
 
@@ -262,7 +263,7 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 		return hash^k;
 	}
-	
+
 	private static int finalizeHash(final int hash, final int length) {
 		return avalanche(hash^length);
 	}
@@ -278,5 +279,5 @@ final class MurmurHashCodeBuilder extends HashCodeBuilder {
 
 		return h;
 	}
-	
+
 }

@@ -26,6 +26,7 @@ package org.jenetics.util;
  * Contains factory (methods) for some 'primitive' types.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class factories {
@@ -33,7 +34,7 @@ public final class factories {
 	private factories() {
 		throw new AssertionError("Don't create an 'factories' instance.");
 	}
-	
+
 	/**
 	 * Return an integer factory which creates an integer sequence starting with
 	 * zero an with step one.
@@ -43,7 +44,7 @@ public final class factories {
 	public static Factory<Integer> Int() {
 		return Int(1);
 	}
-	
+
 	/**
 	 * Return an integer factory which creates an integer sequence starting with
 	 * zero an with the given {@code step}.
@@ -54,23 +55,23 @@ public final class factories {
 	public static Factory<Integer> Int(final int step) {
 		return Int(0, step);
 	}
-	
+
 	/**
 	 * Return an integer factory which creates an integer sequence starting with
 	 * {@code start} an with the given {@code step}.
 	 *
 	 * @param step the gap between the generated integers.
 	 * @return an integer factory.
-	 */	
+	 */
 	public static Factory<Integer> Int(final int start, final int step) {
 		return new Factory<Integer>() {
 			private int _value = start;
-			
+
 			@Override
 			public Integer newInstance() {
 				return next();
 			}
-			
+
 			private int next() {
 				final int next = _value;
 				_value += step;
@@ -78,5 +79,5 @@ public final class factories {
 			}
 		};
 	}
-	
+
 }

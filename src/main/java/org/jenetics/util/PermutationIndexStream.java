@@ -28,6 +28,7 @@ import java.util.Random;
  * This class creates an index stream for one particular (pseudo) permutation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 abstract class PermutationIndexStream extends IndexStream {
@@ -35,27 +36,27 @@ abstract class PermutationIndexStream extends IndexStream {
 	final Random _random;
 	final int _length;
 	int _pos = 0;
-	
+
 	PermutationIndexStream(final int length, final Random random) {
 		_random = random;
 		_length = length;
 	}
-	
+
 	public int getLength() {
 		return _length;
 	}
-	
+
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	final static class ArrayPermutation extends PermutationIndexStream {
-		
+
 		private final byte[] _array;
-		
+
 		ArrayPermutation(final int length, final Random random) {
 			super(length, random);
-			
+
 			assert(length <= Byte.MAX_VALUE);
 			_array = new byte[length];
 			for (int i = 0; i < length; ++i) {
@@ -65,57 +66,57 @@ abstract class PermutationIndexStream extends IndexStream {
 				swap(_array, j, random.nextInt(j + 1));
 			}
 		}
-		
+
 		private static void swap(final byte[] array, final int i, final int j) {
 			final byte temp = array[i];
 			array[i] = array[j];
 			array[j] = temp;
 		}
-		
+
 		@Override
 		public int next() {
 			int next = -1;
 			if (_pos < _array.length) {
 				next = _array[_pos++];
 			}
-			
+
 			return next;
 		}
 	}
-	
+
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	final static class StridePermutation extends PermutationIndexStream {
-		
+
 		private final int _stride;
 		private final int _start;
 		private int _calls = 0;
-		
+
 		StridePermutation(final int length, final Random random) {
 			super(length, random);
-			
+
 			_stride = stride(_length, _random);
 			_start = _random.nextInt(length);
 			_pos = _start;
-			
+
 			assert(_stride < _length);
 			assert(math.gcd(_stride, _length) == 1);
 			assert(_start < _length);
 		}
-		
+
 		// The stride has to be smaller than length and relative prime to length.
 		private static int stride(final int length, final Random random) {
 			int value = length;
 
 			while (math.gcd(length, value) != 1) {
 				value = random.nextInt(length/2) + length/2;
-			}	
-			
+			}
+
 			return value;
 		}
-		
+
 		@Override
 		public int next() {
 			int next = -1;
@@ -124,10 +125,10 @@ abstract class PermutationIndexStream extends IndexStream {
 				_pos = (_pos + _stride)%_length;
 				++_calls;
 			}
-			
+
 			return next;
 		}
-		
+
 		@Override
 		public String toString() {
 			return String.format(
@@ -135,21 +136,21 @@ abstract class PermutationIndexStream extends IndexStream {
 					_length, _start, _stride
 				);
 		}
-		
+
 	}
-	
-	
+
+
 	public static IndexStream valueOf(final int length) {
 		return valueOf(length, new Random());
 	}
-	
+
 	public static IndexStream valueOf(final int length, final Random random) {
 		if (length < 0) {
 			throw new IllegalArgumentException(
 					"Length must be greater than zero: " + length
 				);
 		}
-		
+
 		PermutationIndexStream stream = null;
 		if (length <= Byte.MAX_VALUE) {
 			stream = new ArrayPermutation(length, random);
@@ -158,7 +159,7 @@ abstract class PermutationIndexStream extends IndexStream {
 		}
 		return stream;
 	}
-	
+
 
 }
 

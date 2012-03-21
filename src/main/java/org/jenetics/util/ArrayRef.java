@@ -24,29 +24,30 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 final class ArrayRef implements Cloneable {
 	Object[] data;
 	final int length;
-	
+
 	boolean _sealed = false;
-	
+
 	ArrayRef(final Object[] data) {
 		this.data = data;
 		length = data.length;
 	}
-	
+
 	ArrayRef(final int length) {
 		data = new Object[length];
 		this.length = length;
 	}
-	
+
 	final void cloneIfSealed() {
 		if (_sealed) {
 			data = data.clone();
 			_sealed = false;
 		}
 	}
-	
+
 }

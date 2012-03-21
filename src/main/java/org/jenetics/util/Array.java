@@ -47,6 +47,7 @@ import javolution.util.FastList;
  * @param <T> the element type of the array.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class Array<T>

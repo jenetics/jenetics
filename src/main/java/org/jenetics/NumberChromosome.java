@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -34,6 +34,7 @@ import org.jenetics.util.ISeq;
  * Abstract number chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class NumberChromosome<
@@ -48,12 +49,12 @@ public abstract class NumberChromosome<
 	 * The minimum value of this <code>NumberChromosome</code>.
 	 */
 	protected transient N _min;
-	
+
 	/**
 	 * The maximum value of this <code>NumberChromosome</code>.
 	 */
 	protected transient N _max;
-	
+
 	/**
 	 * Create a new chromosome from the given genes array.
 	 *
@@ -66,7 +67,7 @@ public abstract class NumberChromosome<
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;
-		
+
 		//TODO: implement
 //		if (!_min.isLessThan(_max)) {
 //			throw new IllegalArgumentException(
@@ -74,7 +75,7 @@ public abstract class NumberChromosome<
 //			);
 //		}
 	}
-	
+
 	/**
 	 * Return the minimum value of this <code>NumberChromosome</code>.
 	 *
@@ -83,7 +84,7 @@ public abstract class NumberChromosome<
 	public N getMin() {
 		return _min;
 	}
-	
+
 	/**
 	 * Return the maximum value of this <code>NumberChromosome</code>.
 	 *
@@ -92,7 +93,7 @@ public abstract class NumberChromosome<
 	public N getMax() {
 		return _max;
 	}
-	
+
 	/**
 	 * Return the byte value of this <code>NumberChromosome</code> at the given
 	 * <code>index</code>.
@@ -105,7 +106,7 @@ public abstract class NumberChromosome<
 	public byte byteValue(final int index) {
 		return getGene(index).getAllele().byteValue();
 	}
-	
+
 	/**
 	 * Return the byte value of this <code>NumberChromosome</code> at the
 	 * <code>index</code> 0.
@@ -115,7 +116,7 @@ public abstract class NumberChromosome<
 	public byte byteValue() {
 		return byteValue(0);
 	}
-	
+
 	/**
 	 * Return the short value of this <code>NumberChromosome</code> at the given
 	 * <code>index</code>.
@@ -128,9 +129,9 @@ public abstract class NumberChromosome<
 	public short shortValue(final int index) {
 		return getGene(index).getAllele().shortValue();
 	}
-	
+
 	/**
-	 * Return the short value of this <code>NumberChromosome</code> at the	
+	 * Return the short value of this <code>NumberChromosome</code> at the
 	 * <code>index</code> 0.
 	 *
 	 * @return the short value of the {@link Gene} with <code>index</code> 0.
@@ -138,7 +139,7 @@ public abstract class NumberChromosome<
 	public short shortValue() {
 		return shortValue(0);
 	}
-	
+
 	/**
 	 * Return the int value of this <code>NumberChromosome</code> at the given
 	 * <code>index</code>.
@@ -151,7 +152,7 @@ public abstract class NumberChromosome<
 	public int intValue(final int index) {
 		return getGene(index).getAllele().intValue();
 	}
-	
+
 	/**
 	 * Return the int value of this <code>NumberChromosome</code> at the
 	 * <code>index</code> 0.
@@ -161,7 +162,7 @@ public abstract class NumberChromosome<
 	public int intValue() {
 		return intValue(0);
 	}
-	
+
 	/**
 	 * Return the long value of this <code>NumberChromosome</code> at the given
 	 * <code>index</code>.
@@ -174,7 +175,7 @@ public abstract class NumberChromosome<
 	public long longValue(final int index) {
 		return getGene(index).getAllele().longValue();
 	}
-	
+
 	/**
 	 * Return the long value of this <code>NumberChromosome</code> at the
 	 * <code>index</code> 0.
@@ -184,7 +185,7 @@ public abstract class NumberChromosome<
 	public long longValue() {
 		return longValue(0);
 	}
-	
+
 	/**
 	 * Return the float value of this <code>NumberChromosome</code> at the given
 	 * <code>index</code>.
@@ -197,9 +198,9 @@ public abstract class NumberChromosome<
 	public float floatValue(final int index) {
 		return getGene(index).getAllele().floatValue();
 	}
-	
+
 	/**
-	 * Return the float value of this <code>NumberChromosome</code> at the	
+	 * Return the float value of this <code>NumberChromosome</code> at the
 	 * <code>index</code> 0.
 	 *
 	 * @return the float value of the {@link Gene} with <code>index</code> 0.
@@ -207,7 +208,7 @@ public abstract class NumberChromosome<
 	public float floatValue() {
 		return floatValue(0);
 	}
-	
+
 	/**
 	 * Return the double value of this <code>NumberChromosome</code> at the given
 	 * <code>index</code>.
@@ -220,7 +221,7 @@ public abstract class NumberChromosome<
 	public double doubleValue(final int index) {
 		return getGene(index).getAllele().doubleValue();
 	}
-	
+
 	/**
 	 * Return the double value of this <code>NumberChromosome</code> at the
 	 * <code>index</code> 0.
@@ -238,7 +239,7 @@ public abstract class NumberChromosome<
 				and(_min).
 				and(_max).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object object) {
 		if (object == this) {
@@ -247,12 +248,12 @@ public abstract class NumberChromosome<
 		if (!(object instanceof NumberChromosome<?, ?>)) {
 			return false;
 		}
-				
+
 		final NumberChromosome<?, ?> nc = (NumberChromosome<?, ?>)object;
 		return eq(_min, nc._min) && eq(_max, nc._max) && super.equals(object);
 	}
 
-	
+
 }
 
 

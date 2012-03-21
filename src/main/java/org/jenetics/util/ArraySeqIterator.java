@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -29,18 +29,19 @@ import java.util.NoSuchElementException;
  * Helper class which iterates over an given array.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 class ArraySeqIterator<T> implements ListIterator<T> {
 	final ArraySeq<T> _array;
-	
+
 	int _pos;
-	
+
 	public ArraySeqIterator(final ArraySeq<T> array) {
 		_array = array;
 		_pos = array._start - 1;
 	}
-	
+
 	@Override
 	public boolean hasNext() {
 		return _pos < _array._end - 1;
@@ -54,17 +55,17 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 		}
 		return (T)_array._array.data[++_pos];
 	}
-	
+
 	@Override
 	public int nextIndex() {
 		return _pos + 1;
 	}
-	
+
 	@Override
 	public boolean hasPrevious() {
 		return _pos > _array._start;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public T previous() {
@@ -78,20 +79,20 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 	public int previousIndex() {
 		return _pos - 1;
 	}
-	
+
 	@Override
 	public void set(final T value) {
 		throw new UnsupportedOperationException("Array is sealed.");
 	}
-	
+
 	@Override
 	public void add(final T o) {
 		throw new UnsupportedOperationException("Can't change array size.");
 	}
-	
+
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException("Can't change array size.");
 	}
-	
+
 }

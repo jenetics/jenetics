@@ -24,6 +24,7 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 class Xor extends Recombinator<BitGene> {
@@ -44,14 +45,14 @@ class Xor extends Recombinator<BitGene> {
 		} else {
 			xor(c, c);
 		}
-		
+
 		return 0;
 	}
-	
+
 	Chromosome<BitGene> xor(final Chromosome<BitGene> a, final Chromosome<BitGene> b) {
 		return a;
 	}
-	
+
 	BitChromosome xor(final BitChromosome a, final BitChromosome b) {
 		return a;
 	}

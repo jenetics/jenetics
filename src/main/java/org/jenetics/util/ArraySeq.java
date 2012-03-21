@@ -34,16 +34,17 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
-		
+
 	transient ArrayRef _array;
 	transient int _start;
 	transient int _end;
 	transient int _length;
-	
+
 	/**
 	 * <i>Universal</i> array constructor.
 	 *
@@ -70,22 +71,22 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		_end = end;
 		_length = _end - _start;
 	}
-	
+
 	ArraySeq(final int length) {
 		this(new ArrayRef(length), 0, length);
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
 		checkIndex(index);
 		return (T)_array.data[index + _start];
 	}
-	
+
 	@Override
 	public int indexOf(final Object element) {
 		int index = -1;
-		
+
 		if (element == null) {
 			index = indexOf(new Function<T, Boolean>() {
 				@Override public Boolean apply(final T object) {
@@ -99,14 +100,14 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				}
 			});
 		}
-		
+
 		return index;
 	}
-	
+
 	@Override
 	public int lastIndexOf(final Object element) {
 		int index = -1;
-		
+
 		if (element == null) {
 			index = lastIndexOf(new Function<T, Boolean>() {
 				@Override public Boolean apply(final T object) {
@@ -120,52 +121,52 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				}
 			});
 		}
-		
+
 		return index;
 	}
-	
+
 	@Override
 	public int indexOf(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
-		
+
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			
+
 			if (predicate.apply(element) == Boolean.TRUE) {
 				index = i - _start;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 	@Override
 	public int foreach(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
-		
+
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			
+
 			if (predicate.apply(element) != Boolean.TRUE) {
 				index = i - _start;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 	@Override
 	public int lastIndexOf(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
-		
+
 		int index = -1;
-		
+
 		for (int i = _end - 1; i >= _start && index == -1; --i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
@@ -173,15 +174,15 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				index = i - _start;
 			}
 		}
-		
+
 		return index;
 	}
-	
+
 	@Override
 	public boolean contains(final Object element) {
 		return indexOf(element) != -1;
-	}	
-	
+	}
+
 	@Override
 	public int length() {
 		return _length;
@@ -191,13 +192,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public Iterator<T> iterator() {
 		return new ArraySeqIterator<>(this);
 	}
-	
+
 	@Override
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> converter
 	) {
 		nonNull(converter, "Converter");
-		
+
 		return new Iterator<B>() {
 			private final Iterator<T> _iterator = iterator();
 			@Override public boolean hasNext() {
@@ -211,7 +212,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			}
 		};
 	}
-	
+
 	@Override
 	public Object[] toArray() {
 		Object[] array = null;
@@ -221,10 +222,10 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			array = new Object[length()];
 			System.arraycopy(_array.data, _start, array, 0, length());
 		}
-		
+
 		return array;
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public T[] toArray(final T[] array) {
@@ -241,12 +242,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 		return result;
 	}
-	
+
 	@Override
 	public List<T> asList() {
 		return new ArraySeqList<>(this);
 	}
-	
+
 	final void checkIndex(final int index) {
 		if (index < 0 || index >= _length) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
@@ -254,7 +255,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			));
 		}
 	}
-	
+
 	final void checkIndex(final int from, final int to) {
 		if (from > to) {
 			throw new IllegalArgumentException(
@@ -267,17 +268,17 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			));
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return arrays.hashCode(this);
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		return arrays.equals(this, obj);
 	}
-	
+
 	@Override
 	public String toString(
 		final String prefix,
@@ -285,7 +286,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		final String suffix
 	) {
 		  final StringBuilder out = new StringBuilder();
-		
+
 		  out.append(prefix);
 		  if (length() > 0) {
 			out.append(_array.data[_start]);
@@ -295,36 +296,36 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			out.append(_array.data[i]);
 		  }
 		  out.append(suffix);
-		
-		  return out.toString();		
+
+		  return out.toString();
 	}
-	
+
 	@Override
 	public String toString(final String separator) {
 		return toString("", separator, "");
 	}
-	
+
 	@Override
 	public String toString() {
 		  return toString("[", ",", "]");
 	}
-	
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
 		out.defaultWriteObject();
-	
+
 		out.writeInt(length());
 		for (int i = _start; i < _end; ++i) {
 			out.writeObject(_array.data[i]);
-		}		
+		}
 	}
-	
+
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-	
+
 		_length = in.readInt();
 		_array = new ArrayRef(_length);
 		_start = 0;
@@ -333,5 +334,5 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			_array.data[i] = in.readObject();
 		}
 	}
-	
+
 }

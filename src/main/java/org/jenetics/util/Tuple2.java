@@ -28,23 +28,24 @@ import static org.jenetics.util.object.hashCodeOf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 class Tuple2<T1, T2> {
-	
+
 	final T1 _1;
 	final T2 _2;
-	
+
 	public Tuple2(final T1 t1, final T2 t2) {
 		_1 = t1;
 		_2 = t2;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(Tuple2.class).and(_1).and(_2).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -53,16 +54,16 @@ class Tuple2<T1, T2> {
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final Tuple2<?, ?> tuple = (Tuple2<?, ?>)obj;
 		return eq(_1, tuple._1) && eq(_2, tuple._2);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "(" + _1 + ", " + _2 + ")";
 	}
-	
+
 }
 
 

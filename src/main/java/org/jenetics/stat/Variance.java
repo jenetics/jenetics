@@ -40,15 +40,16 @@ import static org.jenetics.util.object.hashCodeOf;
  * 		  Wolfram MathWorld: Variance</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Variance<N extends Number> extends Mean<N> {
-	
+
 	private double _m2 = NaN;
-	
+
 	public Variance() {
 	}
-	
+
 	/**
 	 * Return the variance of the accumulated values.
 	 * <p><img src="doc-files/variance.gif" alt="Variance" /></p>
@@ -58,16 +59,16 @@ public class Variance<N extends Number> extends Mean<N> {
 	 */
 	public double getVariance() {
 		double variance = NaN;
-		
+
 		if (_samples == 1) {
 			variance = _m2;
 		} else if (_samples > 1) {
 			variance = _m2/(double)(_samples - 1);
 		}
-		
+
 		return variance;
 	}
-	
+
 	/**
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
@@ -77,19 +78,19 @@ public class Variance<N extends Number> extends Mean<N> {
 			_mean = 0;
 			_m2 = 0;
 		}
-		
+
 		final double data = value.doubleValue();
 		final double delta = data - _mean;
-		
+
 		_mean += delta/(double)(++_samples);
 		_m2 += delta*(data - _mean);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).and(_m2).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -98,11 +99,11 @@ public class Variance<N extends Number> extends Mean<N> {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final Variance<?> variance = (Variance<?>)obj;
 		return eq(_m2, variance._m2) && super.equals(variance);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -114,11 +115,11 @@ public class Variance<N extends Number> extends Mean<N> {
 					getVariance()
 				);
 	}
-	
+
 	@Override
 	public Variance<N> clone() {
 		return (Variance<N>)super.clone();
 	}
-	
+
 }
 

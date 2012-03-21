@@ -42,6 +42,7 @@ import org.jenetics.util.ISeq;
  * @param <G> the gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>

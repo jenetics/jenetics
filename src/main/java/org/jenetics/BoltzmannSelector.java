@@ -59,6 +59,7 @@ import javolution.lang.Immutable;
  * @param <N> the BoltzmannSelector requires a number type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class BoltzmannSelector<

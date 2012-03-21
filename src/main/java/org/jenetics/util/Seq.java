@@ -35,6 +35,7 @@ import java.util.RandomAccess;
  * Java Collection Framework</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public interface Seq<T> extends Iterable<T> {
@@ -48,7 +49,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  {@code (index < 0 || index >= size())}.
 	 */
 	public T get(final int index);
-	
+
 	/**
 	 * Return the length of this sequence. Once the sequence is created, the
 	 * length can't be changed.
@@ -56,7 +57,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return the length of this sequence.
 	 */
 	public int length();
-	
+
 	/**
 	 * Return an iterator with the new type {@code B}.
 	 *
@@ -68,7 +69,7 @@ public interface Seq<T> extends Iterable<T> {
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> converter
 	);
-	
+
 	/**
 	 * Iterates over this sequence as long as the given predicate returns
 	 * {@code true}. This method is more or less an  <i>alias</i> of the
@@ -96,7 +97,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  {@code null}.
 	 */
 	public int foreach(final Function<? super T, Boolean> predicate);
-	
+
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
 	 *
@@ -105,7 +106,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return {@code true} if this sequence contains the specified element
 	 */
 	public boolean contains(final Object element);
-	
+
 	/**
 	 * Returns the index of the first occurrence of the specified element
 	 * in this sequence, or -1 if this sequence does not contain the element.
@@ -115,7 +116,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		   this sequence, or -1 if this sequence does not contain the element
 	 */
 	public int indexOf(final Object element);
-	
+
 	/**
 	 * <p>
 	 * Returns the index of the first element on which the given predicate
@@ -125,7 +126,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * [code]
 	 * // Finding index of first null value.
 	 * final int index = seq.indexOf(new Predicates.Nil());
-	 * 	
+	 *
 	 * // Assert of no null values.
 	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
 	 * [/code]
@@ -137,7 +138,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int indexOf(final Function<? super T, Boolean> predicate);
-	
+
 	/**
 	 * Returns the index of the last occurrence of the specified element
 	 * in this sequence, or -1 if this sequence does not contain the element.
@@ -147,7 +148,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  this sequence, or -1 if this sequence does not contain the element
 	 */
 	public int lastIndexOf(final Object element);
-	
+
 	/**
 	 * Returns the index of the last element on which the given predicate
 	 * returns {@code true}, or -1 if the predicate returns false for every
@@ -160,16 +161,16 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int lastIndexOf(final Function<? super T, Boolean> predicate);
-	
+
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
 	 * the returned list "write through" to the array.) The returned list is
 	 * fixed size, serializable and implements {@link RandomAccess}.
 	 *
 	 * @return a list view of this sequence
-	 */	
+	 */
 	public List<T> asList();
-	
+
 	/**
 	 * Builds a new sequence by applying a function to all elements of this
 	 * sequence.
@@ -183,7 +184,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *         {@code null}.
 	 */
 	public <B> Seq<B> map(final Function<? super T, ? extends B> converter);
-	
+
 	/**
 	 * Return an array containing all of the elements in this sequence in right
 	 * order. The returned array will be "safe" in that no references to it
@@ -196,7 +197,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		   order
 	 */
 	public Object[] toArray();
-	
+
 	/**
 	 * Return an array containing all of the elements in this sequence in right
 	 * order; the runtime type of the returned array is that of the specified
@@ -218,10 +219,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return an array containing the elements of this array
 	 * @throws ArrayStoreException if the runtime type of the specified array is
 	 * 		  not a super type of the runtime type of every element in this array
-	 * @throws NullPointerException if the given array is {@code null}.	
+	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public T[] toArray(final T[] array);
-	
+
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
@@ -240,7 +241,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  ({@code start < 0 || start > length()}).
 	 */
 	public Seq<T> subSeq(final int start);
-	
+
 	/**
 	 * Returns a view of the portion of this sequence between the specified
 	 * {@code start}, inclusive, and {@code end}, exclusive. (If {@code start}
@@ -280,7 +281,7 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	@Override
 	public int hashCode();
-	
+
 	/**
 	 * Compares the specified object with this sequence for equality. Returns
 	 * true if and only if the specified object is also a sequence, both
@@ -298,7 +299,7 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	@Override
 	public boolean equals(final Object object);
-	
+
 	/**
 	 * Create a string representation of the given sequence.
 	 *
@@ -310,7 +311,7 @@ public interface Seq<T> extends Iterable<T> {
 	public String toString(
 			final String prefix, final String separator, final String suffix
 		);
-	
+
 	/**
 	 * Create a string representation of the given sequence.
 	 *
@@ -318,7 +319,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return the string representation of this sequence.
 	 */
 	public String toString(final String separator);
-	
+
 }
 
 

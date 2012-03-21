@@ -67,6 +67,7 @@ import org.jenetics.util.arrays;
  * </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Histogram<C> extends MappableAccumulator<C> {
@@ -74,7 +75,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	private final C[] _separators;
 	private final Comparator<C> _comparator;
 	private final long[] _histogram;
-	
+
 	/**
 	 * Create a new Histogram with the given class separators. The number of
 	 * classes is {@code separators.length + 1}. A valid histogram consists of
@@ -93,11 +94,11 @@ public class Histogram<C> extends MappableAccumulator<C> {
 		_separators = check(separators);
 		_comparator = nonNull(comparator, "Comparator");
 		_histogram = new long[separators.length + 1];
-		
+
 		Arrays.sort(_separators, _comparator);
 		Arrays.fill(_histogram, 0L);
 	}
-	
+
 	@SafeVarargs
 	private Histogram(
 		final long[] histogram,
@@ -108,23 +109,23 @@ public class Histogram<C> extends MappableAccumulator<C> {
 		_comparator = comparator;
 		_separators = separators;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private C[] check(final C... classes) {
 		foreach(classes, NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
-		
+
 		return classes;
 	}
-	
+
 	@Override
 	public void accumulate(final C value) {
 		++_histogram[index(value)];
 		++_samples;
 	}
-	
+
 	/**
 	 * Do binary search for the index to use.
 	 *
@@ -134,7 +135,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	final int index(final C value) {
 		int low = 0;
 		int high = _separators.length - 1;
-		
+
 		while (low <= high) {
 			if (_comparator.compare(value, _separators[low]) < 0) {
 				return low;
@@ -142,7 +143,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 			if (_comparator.compare(value, _separators[high]) >= 0) {
 				return high + 1;
 			}
-			
+
 			final int mid = (low + high) >>> 1;
 			if (_comparator.compare(value, _separators[mid]) < 0) {
 				high = mid;
@@ -150,11 +151,11 @@ public class Histogram<C> extends MappableAccumulator<C> {
 				low = mid + 1;
 			}
 		}
-		
+
 		assert (false): "This line will never be reached.";
 		return -1;
 	}
-	
+
 	/**
 	 * Add the given {@code histogram} to this in a newly created one.
 	 *
@@ -176,15 +177,15 @@ public class Histogram<C> extends MappableAccumulator<C> {
 					"The histogram separators are not equals."
 				);
 		}
-		
+
 		final long[] data = new long[_histogram.length];
 		for (int i = 0; i < data.length; ++i) {
 			data[i] = _histogram[i] + histogram._histogram[i];
 		}
-		
+
 		return new Histogram<>(data, _comparator, _separators);
 	}
-	
+
 	/**
 	 * Return the comparator used for class search.
 	 *
@@ -193,7 +194,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	public Comparator<C> getComparator() {
 		return _comparator;
 	}
-	
+
 	/**
 	 * Return a copy of the class separators.
 	 *
@@ -202,7 +203,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	public C[] getSeparators() {
 		return _separators.clone();
 	}
-	
+
 	/**
 	 * Copy the histogram into the given array. If the array is big enough
 	 * the same array is returned, otherwise a new array is created and
@@ -215,17 +216,17 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 */
 	public long[] getHistogram(final long[] histogram) {
 		nonNull(histogram);
-		
+
 		long[] hist = histogram;
 		if (histogram != null && histogram.length >= _histogram.length) {
 			System.arraycopy(_histogram, 0, hist, 0, _histogram.length);
 		} else {
 			hist = _histogram.clone();
 		}
-		
+
 		return hist;
 	}
-	
+
 	/**
 	 * Return a copy of the current histogram.
 	 *
@@ -234,7 +235,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	public long[] getHistogram() {
 		return getHistogram(new long[_histogram.length]);
 	}
-	
+
 	/**
 	 * Return the number of classes of this histogram.
 	 *
@@ -243,7 +244,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	public int length() {
 		return _histogram.length;
 	}
-	
+
 	/**
 	 * Return the <i>histogram</i> as probability array.
 	 *
@@ -251,15 +252,15 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	 */
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
-		
+
 		assert (sum(_histogram) == _samples);
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = (double)_histogram[i]/(double)_samples;
 		}
-		
+
 		return probabilities;
 	}
-	
+
 	/**
 	 * Calculate the χ2 value of the current histogram for the assumed
 	 * <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">
@@ -290,13 +291,13 @@ public class Histogram<C> extends MappableAccumulator<C> {
 		} else {
 			p0j = cdf.apply(_separators[j]).minus(cdf.apply(_separators[j - 1]));
 		}
-		
+
 		return max(round(p0j.doubleValue()*_samples), 1L);
 	}
-	
+
 //	long[] expection(final Function<C, Float64> cdf) {
 //		final long[] e = new long[_histogram.length];
-//		
+//
 //		for (int j = 0; j < _histogram.length; ++j) {
 //			e[j] = n0(j, cdf);
 //		}
@@ -309,7 +310,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	public double chisqr(final Function<C, Float64> cdf) {
 		return χ2(cdf);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
@@ -317,7 +318,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 				and(_separators).
 				and(_histogram).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -326,24 +327,24 @@ public class Histogram<C> extends MappableAccumulator<C> {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final Histogram<?> histogram = (Histogram<?>)obj;
 		return 	eq(_separators, histogram._separators) &&
 				eq(_histogram, histogram._histogram) &&
 				super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return Arrays.toString(getHistogram());
 	}
-	
+
 	@Override
 	public Histogram<C> clone() {
 		return (Histogram<C>)super.clone();
 	}
 
-	
+
 	/**
 	 * Create a new Histogram with the given class separators. The classes are
 	 * sorted by its natural order.
@@ -359,7 +360,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	) {
 		return new Histogram<>(COMPARATOR, separators);
 	}
-	
+
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	private static final Comparator COMPARATOR = new Comparator() {
 		@Override
@@ -367,7 +368,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 			return ((Comparable)o1).compareTo((Comparable)o2);
 		}
 	};
-	
+
 	/**
 	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
@@ -401,7 +402,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 				DoubleToFloat64
 			));
 	}
-	
+
 	/**
 	 * @see #valueOf(Float64, Float64, int)
 	 */
@@ -412,23 +413,23 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	) {
 		return valueOf(toSeparators(min, max, nclasses));
 	}
-	
+
 	private static Double[] toSeparators(
 		final Double min,
 		final Double max,
 		final int nclasses
 	) {
 		check(min, max, nclasses);
-		
+
 		final double stride = (max - min)/nclasses;
 		final Double[] separators = new Double[nclasses - 1];
 		for (int i = 0; i < separators.length; ++i) {
 		    separators[i] = min + stride*(i + 1);
 		}
-		
+
 		return separators;
 	}
-	
+
 	/**
 	 * Return a <i>histogram</i> for {@link Integer64} values. The <i>histogram</i>
 	 * array of the returned {@link Histogram} will look like this:
@@ -475,7 +476,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 				LongToInteger64
 			));
 	}
-	
+
 	/**
 	 * @see #valueOf(Integer64, Integer64, int)
 	 */
@@ -486,7 +487,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	) {
 		return valueOf(toSeparators(min, max, nclasses));
 	}
-	
+
 	private static Long[] toSeparators(
 		final Long min,
 		final Long max,
@@ -499,7 +500,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 		final int bulk = size/pts;
 		final int rest = size%pts;
 		assert ((bulk*pts + rest) == size);
-		
+
 		final Long[] separators = new Long[pts - 1];
 		for (int i = 1, n = pts - rest; i < n; ++i) {
 			separators[i - 1] = i*bulk + min;
@@ -508,10 +509,10 @@ public class Histogram<C> extends MappableAccumulator<C> {
 			separators[separators.length - rest + i] =
 					(pts - rest)*bulk + i*(bulk + 1) + min;
 		}
-		
+
 		return separators;
 	}
-	
+
 	/*
 	 * Check the input values of the valueOf methods.
 	 */
@@ -532,7 +533,7 @@ public class Histogram<C> extends MappableAccumulator<C> {
 	    }
 	}
 
-	
+
 	public <A extends Appendable> A print(final A out) throws IOException {
 		Object min = "...";
 		Object max = null;
@@ -546,10 +547,10 @@ public class Histogram<C> extends MappableAccumulator<C> {
 			out.append("[" + min + ",...)");
 			out.append(" " + _histogram[length() - 1] + "\n");
 		}
-		
+
 		return out;
 	}
-	
+
 }
 
 

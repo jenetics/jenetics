@@ -38,6 +38,7 @@ import org.jenetics.util.RandomRegistry;
  * the selection performance of the Monte Carlo selector.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class MonteCarloSelector<

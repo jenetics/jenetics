@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -41,6 +41,7 @@ import javolution.lang.Reusable;
  * It's up to the user to ensure thread safety.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class Timer
@@ -52,14 +53,14 @@ public final class Timer
 {
 	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_LABEL = "Timer";
-	
+
 	private String _label;
 	/*private[test]*/ long _start = 0;
 	/*private[test]*/ long _stop = 0;
 	/*private[test]*/ long _sum = 0;
 
 	private transient Accumulator<? super Long> _accumulator = accumulators.NULL;
-	
+
 	/**
 	 * Create a new time with the given label. The label is use in the
 	 * {@link #toString()} method.
@@ -70,14 +71,14 @@ public final class Timer
 	public Timer(final String label) {
 		_label = nonNull(label, "Time label");
 	}
-	
+
 	/**
 	 * Create a new Timer object.
 	 */
 	public Timer() {
 		this(DEFAULT_LABEL);
 	}
-	
+
 	/**
 	 * Set the accumulator for the interim results.
 	 *
@@ -87,14 +88,14 @@ public final class Timer
 	public void setAccumulator(final Accumulator<? super Long> accumulator) {
 		_accumulator = nonNull(accumulator, "Accumulator");
 	}
-	
+
 	/**
 	 * Start the timer.
 	 */
 	public void start() {
 		_start = System.nanoTime();
 	}
-	
+
 	/**
 	 * Stop the timer.
 	 */
@@ -104,7 +105,7 @@ public final class Timer
 		_accumulator.accumulate(time);
 		_sum += time;
 	}
-	
+
 	/**
 	 * Reset the timer.
 	 */
@@ -114,7 +115,7 @@ public final class Timer
 		_start = 0;
 		_stop = 0;
 	}
-	
+
 	/**
 	 * Return the overall time of this timer. The following code snippet would
 	 * return a measured time of 10 s (theoretically).
@@ -132,7 +133,7 @@ public final class Timer
 	public Measurable<Duration> getTime() {
 		return Measure.valueOf(_sum, SI.NANO(SI.SECOND));
 	}
-	
+
 	/**
 	 * Return the time between two successive calls of {@link #start()} and
 	 * {@link #stop()}.
@@ -142,7 +143,7 @@ public final class Timer
 	public Measurable<Duration> getInterimTime() {
 		return Measure.valueOf(_stop - _start, SI.NANO(SI.SECOND));
 	}
-	
+
 	/**
 	 * Return the timer label.
 	 *
@@ -151,7 +152,7 @@ public final class Timer
 	public String getLabel() {
 		return _label;
 	}
-	
+
 	/**
 	 * Set the timer label.
 	 *
@@ -160,11 +161,11 @@ public final class Timer
 	public void setLabel(final String label) {
 		_label = nonNull(label, "Timer label");
 	}
-	
+
 	@Override
 	public int compareTo(final Timer timer) {
 		nonNull(timer, "Timer");
-		
+
 		long diff = _sum - timer._sum;
 		int comp = 0;
 		if (diff < 0) {
@@ -174,7 +175,7 @@ public final class Timer
 		}
 		return comp;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
@@ -183,7 +184,7 @@ public final class Timer
 				and(_stop).
 				and(_sum).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object object) {
 		if (object == this) {
@@ -192,14 +193,14 @@ public final class Timer
 		if (!(object instanceof Timer)) {
 			return false;
 		}
-		
+
 		final Timer timer = (Timer)object;
 		return eq(_start, timer._start) &&
 				eq(_stop, timer._stop) &&
 				eq(_sum, timer._sum) &&
 				eq(_label, timer._label);
 	}
-	
+
 	@Override
 	public Timer clone() {
 		try {
@@ -208,7 +209,7 @@ public final class Timer
 			throw new AssertionError(e);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -216,7 +217,7 @@ public final class Timer
 					getTime().doubleValue(SI.SECOND)
 				);
 	}
-	
+
 }
 
 

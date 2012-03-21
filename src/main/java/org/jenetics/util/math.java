@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -26,6 +26,7 @@ package org.jenetics.util;
  * Object with mathematical functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class math {
@@ -33,7 +34,7 @@ public final class math {
 	private math() {
 		throw new AssertionError("Don't create an 'math' instance.");
 	}
-	
+
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
 	 * overflow.
@@ -47,7 +48,7 @@ public final class math {
 		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
 			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
 		}
-		
+
 		final long z = a + b;
 		if (a > 0) {
 			if (b > 0 && z < 0) {
@@ -56,10 +57,10 @@ public final class math {
 		} else if (b < 0 && z > 0) {
 			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
 		}
-		
+
 		return z;
 	}
-	
+
 	/**
 	 * Subtracts to long values and throws an ArithmeticException in the case of an
 	 * overflow.
@@ -78,10 +79,10 @@ public final class math {
 		} else if (b > 0 && z > 0) {
 			throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
 		}
-		
+
 		return z;
 	}
-	
+
 	/**
 	 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
 	 * Kahan summation algorithm</a>.
@@ -95,17 +96,17 @@ public final class math {
 		double c = 0.0;
 		double y = 0.0;
 		double t = 0.0;
-		
+
 		for (int i = values.length; --i >= 0;) {
 			y = values[i] - c;
 			t = sum + y;
 			c = t - sum - y;
 			sum = t;
 		}
-		
+
 		return sum;
 	}
-	
+
 	/**
 	 * Add the values of the given array.
 	 *
@@ -120,7 +121,7 @@ public final class math {
 		}
 		return sum;
 	}
-	
+
 	/**
 	 * Normalize the given double array, so that it sum to one. The normalization
 	 * is performed in place and the same {@code values} are returned.
@@ -134,10 +135,10 @@ public final class math {
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}
-		
+
 		return values;
 	}
-	
+
 	/**
 	 * Return the minimum value of the given double array.
 	 *
@@ -149,14 +150,14 @@ public final class math {
 		double min = Double.NaN;
 		if (values.length > 0) {
 			min = values[0];
-			
+
 			for (int i = values.length; --i >= 1;) {
 				if (values[i] < min) {
 					min = values[i];
 				}
 			}
 		}
-		
+
 		return min;
 	}
 
@@ -171,17 +172,17 @@ public final class math {
 		double max = Double.NaN;
 		if (values.length > 0) {
 			max = values[0];
-			
+
 			for (int i = values.length; --i >= 1;) {
 				if (values[i] > max) {
 					max = values[i];
 				}
 			}
 		}
-		
+
 		return max;
 	}
-	
+
 	/**
 	 * Component wise multiplication of the given double array.
 	 *
@@ -194,7 +195,7 @@ public final class math {
 			values[i] *= multiplier;
 		}
 	}
-	
+
 	/**
 	 * Component wise division of the given double array.
 	 *
@@ -207,7 +208,7 @@ public final class math {
 			values[i] /= divisor;
 		}
 	}
-	
+
 	/**
 	 * Binary exponentiation algorithm.
 	 *
@@ -221,11 +222,11 @@ public final class math {
 					"Exponent is negative: %d", e
 				));
 		}
-		
+
 		long base = b;
 		int exp = e;
 		long result = 1;
-		
+
 		while (exp != 0) {
 			if ((exp & 1) != 0) {
 				result *= base;
@@ -233,26 +234,26 @@ public final class math {
 			exp >>= 1;
 			base *= base;
 		}
-		
+
 		return result;
 	}
 
-	
+
 	static int gcd(final int a, final int b) {
 		int x = a;
 		int y = b;
 		int mod = x%y;
-		
+
 		while (mod != 0) {
 			x = y;
 			y = mod;
 			mod = x%y;
 		}
-		
+
 		return y;
 	}
-	
-	
+
+
 //	static double plusULPDistance(final double a, final long ulpDistance) {
 //		long t = Double.doubleToLongBits(a) + ulpDistance;
 //		if (t < 0) {
@@ -260,12 +261,12 @@ public final class math {
 //		}
 //		return Double.longBitsToDouble(t);
 //	}
-	
+
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return m >= Integer.MIN_VALUE && m <= Integer.MAX_VALUE;
 	}
-	
+
 	/**
 	 * Return the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * distance of the given two double values.
@@ -278,7 +279,7 @@ public final class math {
 	public static long ulpDistance(final double a, final double b) {
 		return minus(ulpPosition(a), ulpPosition(b));
 	}
-	
+
 	/**
 	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
@@ -330,5 +331,5 @@ public final class math {
 		}
 		return t;
 	}
-	
+
 }

@@ -41,6 +41,7 @@ package org.jenetics;
  * @param <G> the gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public interface Alterer<G extends Gene<?, G>> {

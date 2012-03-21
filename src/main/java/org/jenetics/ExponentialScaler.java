@@ -41,6 +41,7 @@ import org.jenetics.util.Function;
  *     />.</p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class ExponentialScaler
@@ -50,14 +51,14 @@ public final class ExponentialScaler
 		Immutable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final ExponentialScaler SQR_SCALER = new ExponentialScaler(2);
 	public static final ExponentialScaler SQRT_SCALER = new ExponentialScaler(0.5);
 
 	private final double _a;
 	private final double _b;
 	private final double _c;
-	
+
 	/**
 	 * Create a new FitnessScaler.
 	 *
@@ -66,7 +67,7 @@ public final class ExponentialScaler
 	public ExponentialScaler(final double c) {
 		this(0.0, c);
 	}
-	
+
 	/**
 	 * Create a new FitnessScaler.
 	 *
@@ -76,7 +77,7 @@ public final class ExponentialScaler
 	public ExponentialScaler(final double b, final double c) {
 		this(1.0, b, c);
 	}
-	
+
 	/**
 	 * Create a new FitnessScaler.
 	 *
@@ -94,12 +95,12 @@ public final class ExponentialScaler
 	public Float64 apply(final Float64 value) {
 		return Float64.valueOf(Math.pow((_a*value.doubleValue() + _b), _c));
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_a).and(_b).and(_c).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -108,11 +109,11 @@ public final class ExponentialScaler
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final ExponentialScaler selector = (ExponentialScaler)obj;
 		return eq(_a, selector._a) && eq(_b, selector._b) && eq(_c, selector._c);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(

@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -40,6 +40,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * </pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class bit {
@@ -47,7 +48,7 @@ public final class bit {
 	private bit() {
 		throw new AssertionError("Don't create an 'bit' instance.");
 	}
-	
+
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
 	 * within the byte array) to the specified value.
@@ -64,7 +65,7 @@ public final class bit {
 		if (data.length > 0) {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
-			
+
 			int d = data[bytes] & 0xFF;
 			if (value) {
 				d = d | (1 << bits);
@@ -73,10 +74,10 @@ public final class bit {
 			}
 			data[bytes] = (byte)d;
 		}
-		
+
 		return data;
 	}
-	
+
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
 	 * within the byte array) to true.
@@ -91,7 +92,7 @@ public final class bit {
 	public static byte[] set(final byte[] data, final int index) {
 		return set(data, index, true);
 	}
-	
+
 	/**
 	 * Return the (boolean) value of the byte array at the given bit index.
 	 *
@@ -126,7 +127,7 @@ public final class bit {
 	public static byte[] shiftRight(final byte[] data, final int shift) {
 		final int bytes = min(shift >>> 3, data.length);
 		final int bits = shift & 7;
-		
+
 		if (bytes > 0) {
 			for (int i = 0, n = data.length - bytes; i < n; ++i) {
 				data[i] = data[i + bytes];
@@ -138,23 +139,23 @@ public final class bit {
 		if (bits > 0 && bytes < data.length) {
 			int carry = 0;
 			int nextCarry = 0;
-			
+
 			for (int i = data.length; --i >= 0;) {
 				int d = data[i] & 0xFF;
 				nextCarry = (d << (8 - bits));
-				
+
 				d >>>= bits;
 				d |= carry;
 				data[i] = (byte)(d & 0xFF);
-							
+
 				carry = nextCarry;
 			}
 		}
-		
-		
+
+
 		return data;
 	}
-	
+
 	/**
 	 * Shifting all bits in the given <code>data</code> array the given
 	 * {@code shift} to the left. The bits on the right side are filled with
@@ -168,7 +169,7 @@ public final class bit {
 	public static byte[] shiftLeft(final byte[] data, final int shift) {
 		final int bytes = min(shift >>> 3, data.length);
 		final int bits = shift & 7;
-		
+
 		if (bytes > 0) {
 			for (int i = 0, n = data.length - bytes; i < n; ++i) {
 				data[data.length - 1 - i] = data[data.length - 1 - i - bytes];
@@ -180,22 +181,22 @@ public final class bit {
 		if (bits > 0 && bytes < data.length) {
 			int carry = 0;
 			int nextCarry = 0;
-			
+
 			for (int i = bytes; i < data.length; ++i) {
 				int d = data[i] & 0xFF;
 				nextCarry = (d >>> (8 - bits));
-				
+
 				d <<= bits;
 				d |= carry;
 				data[i] = (byte)(d & 0xFF);
-							
+
 				carry = nextCarry;
 			}
 		}
-		
+
 		return data;
 	}
-	
+
 	/**
 	 * Increment the given <code>data</code> array.
 	 *
@@ -206,18 +207,18 @@ public final class bit {
 	public static byte[] increment(final byte[] data) {
 		boolean carry = true;
 		int index = 0;
-		
+
 		while (index < data.length && carry) {
 			int d = data[index] & 0xFF;
 			++d;
 			data[index++] = (byte)d;
-			
+
 			carry = d > 0xFF;
 		}
-		
+
 		return data;
 	}
-	
+
 	/**
 	 * Invert the given <code>data</code> array.
 	 *
@@ -232,10 +233,10 @@ public final class bit {
 			d = ~d;
 			data[i] = (byte)d;
 		}
-		
+
 		return data;
 	}
-	
+
 	/**
 	 * Make the two's complement of the given <code>data</code> array.
 	 *
@@ -246,7 +247,7 @@ public final class bit {
 	public static byte[] complement(final byte[] data) {
 		return increment(invert(data));
 	}
-	
+
 	/**
 	 * Flip the bit at the given index.
 	 *
@@ -261,7 +262,7 @@ public final class bit {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
 			int d = data[bytes] & 0xFF;
-			
+
 			if ((d & (1 << bits)) == 0) {
 				d |= (1 << bits);
 			} else {
@@ -269,10 +270,10 @@ public final class bit {
 			}
 			data[bytes] = (byte)d;
 		}
-		
+
 		return data;
 	}
-	
+
 	/**
 	 * Convert the given {@link LargeInteger} value to an byte array.
 	 *
@@ -284,12 +285,12 @@ public final class bit {
 	 */
 	public static byte[] toByteArray(final LargeInteger value) {
 		final int bytes = (value.bitLength() >>> 3) + 1;
-		
+
 		final byte[] array = new byte[bytes];
 		value.toByteArray(array, 0);
 		return reverse(array);
 	}
-	
+
 	/**
 	 * Convert the given byte array into an {@link LargeInteger}.
 	 *
@@ -304,48 +305,48 @@ public final class bit {
 		reverse(array);
 		return li;
 	}
-	
+
 	private static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
-		
+
 		while (i < j) {
 			swap(array, i++, --j);
 		}
-		
+
 		return array;
 	}
-	
+
 	private static void swap(final byte[] array, final int i, final int j) {
 		final byte temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
 	}
-	
+
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
 		if (data.length < 4 + start) {
 			throw new IllegalArgumentException("Byte array to short: " + data.length);
 		}
-		
+
 		data[0 + start] = (byte)((v >>> 24) & 0xFF);
 		data[1 + start] = (byte)((v >>> 16) & 0xFF);
 		data[2 + start] = (byte)((v >>>  8) & 0xFF);
 		data[3 + start] = (byte)((v >>>  0) & 0xFF);
-		
+
 		return data;
 	}
-	
+
 	static int readInt(final byte[] data, final int start) {
 		if (data.length < 4 + start) {
 			throw new IllegalArgumentException("Byte array to short: " + data.length);
 		}
-		
+
 		return ((data[0 + start] << 24) +
 				(data[1 + start] << 16) +
 				(data[2 + start] << 8) +
 				(data[3 + start] << 0));
 	}
-	
+
 }
 
 

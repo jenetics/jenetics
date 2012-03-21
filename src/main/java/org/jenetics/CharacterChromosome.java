@@ -44,6 +44,7 @@ import org.jenetics.util.ISeq;
  * CharacterChromosome which represents character sequences.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class CharacterChromosome

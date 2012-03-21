@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -74,6 +74,7 @@ import org.jenetics.util.Seq;
  * @see PermutationChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class PartiallyMatchedCrossover<T>
@@ -84,7 +85,7 @@ public final class PartiallyMatchedCrossover<T>
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);
 	}
-	
+
 	@Override
 	protected int crossover(
 		final MSeq<EnumGene<T>> that,
@@ -95,14 +96,14 @@ public final class PartiallyMatchedCrossover<T>
 		int end = random.nextInt(other.length());
 		begin = min(begin, end);
 		end = max(begin, end) + 1;
-		
+
 		swap(that, other, begin, end);
 		repair(that, other, begin, end);
-		repair(other, that, begin, end);		
-		
+		repair(other, that, begin, end);
+
 		return 1;
 	}
-	
+
 	private static <T> void swap(
 		final MSeq<T> that, final MSeq<T> other,
 		final int begin, final int end
@@ -113,7 +114,7 @@ public final class PartiallyMatchedCrossover<T>
 			other.set(i, temp);
 		}
 	}
-	
+
 	private static <T> void repair(
 		final MSeq<T> that, final MSeq<T> other,
 		final int begin, final int end
@@ -133,7 +134,7 @@ public final class PartiallyMatchedCrossover<T>
 			}
 		}
 	}
-	
+
 	private static int indexOf(
 		final Seq<?> genes,
 		final int begin, final int end,
@@ -147,12 +148,12 @@ public final class PartiallyMatchedCrossover<T>
 		}
 		return index;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -161,10 +162,10 @@ public final class PartiallyMatchedCrossover<T>
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		return super.equals(obj);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);

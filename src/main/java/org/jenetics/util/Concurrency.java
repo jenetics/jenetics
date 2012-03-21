@@ -84,6 +84,7 @@ import javolution.lang.Configurable;
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class Concurrency implements AutoCloseable {

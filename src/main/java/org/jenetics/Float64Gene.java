@@ -39,38 +39,39 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
 	implements GroupMultiplicative<Float64Gene>
 {
-	private static final long serialVersionUID = 1L;	
-	
+	private static final long serialVersionUID = 1L;
+
 	Float64Gene() {
 	}
 
 	public Float64Gene divide(final Float64Gene gene) {
 		return newInstance(_value.divide(gene._value));
 	}
-	
+
 	@Override
 	public Float64Gene inverse() {
 		return newInstance(_value.inverse());
 	}
-	
+
 	@Override
 	public Float64Gene mean(final Float64Gene that) {
 		return newInstance(
 				(_value.doubleValue() + that._value.doubleValue())/2.0
 			);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
@@ -80,12 +81,12 @@ public final class Float64Gene
 					return value._value;
 				}
 			};
-			
+
 	/**
 	 * Converter for accessing the allele from a given number gene.
 	 */
 	public static final Function<Float64Gene, Float64> Value = Allele;
-	
+
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
@@ -95,7 +96,7 @@ public final class Float64Gene
 					return value._min;
 				}
 			};
-	
+
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
@@ -105,11 +106,11 @@ public final class Float64Gene
 					return value._max;
 				}
 			};
-	
+
 	/* *************************************************************************
 	 *  Factory methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Create a new valid, <em>random</em> gene.
 	 */
@@ -117,7 +118,7 @@ public final class Float64Gene
 	public Float64Gene newInstance() {
 		return valueOf(_min, _max);
 	}
-	
+
 	/**
 	 * Create a new DoubleGene with the same limits and the given value.
 	 *
@@ -127,29 +128,29 @@ public final class Float64Gene
 	public Float64Gene newInstance(final double value) {
 		return valueOf(Float64.valueOf(value), _min, _max);
 	}
-	
+
 	@Override
 	public Float64Gene newInstance(final java.lang.Number number) {
 		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
-	
+
 	@Override
 	public Float64Gene newInstance(final Float64 value) {
 		return valueOf(value, _min, _max);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
-	
+
 	private static final ObjectFactory<Float64Gene> FACTORY =
 		new ObjectFactory<Float64Gene>() {
 				@Override protected Float64Gene create() {
 					return new Float64Gene();
 				}
 			};
-	
+
 	/**
 	 * Create a new random Float64Gene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
@@ -172,7 +173,7 @@ public final class Float64Gene
 			Float64.valueOf(max)
 		);
 	}
-	
+
 	/**
 	 * Create a new random DoubleGene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
@@ -194,7 +195,7 @@ public final class Float64Gene
 		gene.set(value, min, max);
 		return gene;
 	}
-	
+
 	/**
 	 * Create a new random DoubleGene. It is guaranteed that the value of the
 	 * DoubleGene lies in the closed interval [min, max].
@@ -206,7 +207,7 @@ public final class Float64Gene
 	public static Float64Gene valueOf(final double min, final double max) {
 		return valueOf(Float64.valueOf(min), Float64.valueOf(max));
 	}
-	
+
 	/**
 	 * Create a new random Float64Gene. It is guaranteed that the value of the
 	 * Float64Gene lies in the closed interval [min, max].
@@ -224,21 +225,21 @@ public final class Float64Gene
 		final Float64 value = Float64.valueOf(
 					nextDouble(random, min.doubleValue(), max.doubleValue())
 				);
-		
+
 		return valueOf(value, min, max);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	static final XMLFormat<Float64Gene>
 	XML = new XMLFormat<Float64Gene>(Float64Gene.class)
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
-		
+
 		@Override
 		public Float64Gene newInstance(
 			final Class<Float64Gene> cls, final InputElement element
@@ -264,26 +265,26 @@ public final class Float64Gene
 		{
 		}
 	};
-	
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
-	
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
 		out.defaultWriteObject();
-	
+
 		out.writeDouble(_value.doubleValue());
 		out.writeDouble(_min.doubleValue());
 		out.writeDouble(_max.doubleValue());
 	}
-	
+
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-	
+
 		set(
 			Float64.valueOf(in.readDouble()),
 			Float64.valueOf(in.readDouble()),

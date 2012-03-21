@@ -44,6 +44,7 @@ import javolution.lang.Immutable;
  *          Wikipedia: Roulette wheel selection
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class RouletteWheelSelector<

@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -26,10 +26,11 @@ package org.jenetics.util;
  * A mixin interface for genes which can have a mean value. This mixin is
  * required for the {@link org.jenetics.MeanAlterer}.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- *
  * @see org.jenetics.MeanAlterer
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
+ * @version $Id$
  */
 public interface Mean<T> {
 
@@ -43,5 +44,5 @@ public interface Mean<T> {
 	 * @throws NullPointerException if the argument is {@code null}.
 	 */
 	public T mean(final T that);
-	
+
 }

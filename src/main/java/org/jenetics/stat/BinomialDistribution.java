@@ -36,6 +36,7 @@ import org.jenetics.util.Range;
  * TODO: implement BinomialDistribution
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 class BinomialDistribution<
@@ -50,65 +51,65 @@ class BinomialDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final Range<N> _domain;
-		
+
 		private final long _N;
 		private final double _p;
 		private final double _q;
-		
+
 		public PDF(final Range<N> domain, final double p) {
 			_domain = domain;
 			_N = domain.getMax().longValue() - domain.getMin().longValue();
 			_p = p;
 			_q = 1.0 - p;
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final long x = value.longValue() - _domain.getMin().longValue();
-			
+
 			Float64 result = Float64.ZERO;
 			if (_domain.contains(value)) {
 				result = Float64.valueOf(
 						binomial(_N, x)*Math.pow(_p, x)*Math.pow(_q, _N - x)
 					);
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format("p(x) = %s", "");
 		}
-		
-	}	
-	
+
+	}
+
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
 			Function<N, Float64>,
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final Range<N> _domain;
-		
+
 		private final long _N;
 		private final double _p;
 		private final double _q;
-		
+
 		public CDF(final Range<N> domain, final double p) {
 			_domain = domain;
 			_N = domain.getMax().longValue() - domain.getMin().longValue();
 			_p = p;
 			_q = 1.0 - p;
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			long x = value.longValue();
-			
+
 			Float64 result = null;
 			if (_domain.getMin().longValue() > x) {
 				result = Float64.ZERO;
@@ -122,25 +123,25 @@ class BinomialDistribution<
 				}
 				result = Float64.valueOf(v);
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format("p(x) = %s", "");
 		}
-		
-	}	
-	
+
+	}
+
 	private final Range<N> _domain;
 	private final double _p;
-	
+
 	public BinomialDistribution(final Range<N> domain, final double p) {
 		_domain = nonNull(domain, "Domain");
 		_p = checkProbability(p);
 	}
-	
+
 	@Override
 	public Range<N> getDomain() {
 		return _domain;
@@ -156,7 +157,7 @@ class BinomialDistribution<
 		return new PDF<>(_domain, _p);
 	}
 
-	
+
 	private static double binomial(final long n, final long k) {
 		long b = 1;
 		for (long i = 1; i <= k; ++i) {
@@ -164,5 +165,5 @@ class BinomialDistribution<
 		}
 		return b;
 	}
-	
+
 }

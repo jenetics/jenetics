@@ -40,15 +40,16 @@ import org.jenetics.util.MappableAccumulator;
  * @see <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">Wikipedia: Arithmetic Mean</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Mean<N extends Number> extends MappableAccumulator<N> {
 
 	protected double _mean = Double.NaN;
-	
+
 	public Mean() {
 	}
-	
+
 	/**
 	 * Return the mean value of the accumulated values.
 	 *
@@ -58,7 +59,7 @@ public class Mean<N extends Number> extends MappableAccumulator<N> {
 	public double getMean() {
 		return _mean;
 	}
-	
+
 	/**
 	 * Return the
 	 * <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Standard_error_%28statistics%29">
@@ -74,10 +75,10 @@ public class Mean<N extends Number> extends MappableAccumulator<N> {
 		if (_samples > 0) {
 			sem = _mean/Math.sqrt(_samples);
 		}
-		
+
 		return sem;
 	}
-	
+
 	/**
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
@@ -86,15 +87,15 @@ public class Mean<N extends Number> extends MappableAccumulator<N> {
 		if (_samples == 0) {
 			_mean = 0;
 		}
-		
+
 		_mean += (value.doubleValue() - _mean)/(double)(++_samples);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).and(_mean).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -103,11 +104,11 @@ public class Mean<N extends Number> extends MappableAccumulator<N> {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final Mean<?> mean = (Mean<?>)obj;
 		return eq(_mean, mean._mean) && super.equals(mean);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -118,10 +119,10 @@ public class Mean<N extends Number> extends MappableAccumulator<N> {
 					getStandardError()
 				);
 	}
-	
+
 	@Override
 	public Mean<N> clone() {
 		return (Mean<N>)super.clone();
 	}
-	
+
 }

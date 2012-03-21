@@ -30,6 +30,7 @@ import static org.jenetics.util.object.hashCodeOf;
  * Abstract implementation of the alterer interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>>
