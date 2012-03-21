@@ -41,19 +41,20 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
 	implements XMLSerializable
-{	
+{
 	private static final long serialVersionUID = 1L;
-	
-	
+
+
 	protected Float64Chromosome(final ISeq<Float64Gene> genes) {
 		super(genes);
 	}
-	
+
 	/**
 	 * Create a new chromosome from the given {@code genes}.
 	 *
@@ -65,7 +66,7 @@ public class Float64Chromosome
 	public Float64Chromosome(final Float64Gene... genes) {
 		super(new Array<>(genes).toISeq());
 	}
-	
+
 	/**
 	 * Create a new random DoubleChromosome.
 	 *
@@ -85,7 +86,7 @@ public class Float64Chromosome
 			);
 		_valid = true;
 	}
-	
+
 	/**
 	 * Create a new random chromosome of length one.
 	 *
@@ -95,7 +96,7 @@ public class Float64Chromosome
 	public Float64Chromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
 	}
-	
+
 	/**
 	 * Create a new random chromosome of length one.
 	 *
@@ -106,7 +107,7 @@ public class Float64Chromosome
 	public Float64Chromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);
 	}
-	
+
 	/**
 	 * Create a new chromosome
 	 *
@@ -119,10 +120,10 @@ public class Float64Chromosome
 	public Float64Chromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
 	}
-	
+
 	@Override
 	public Float64Chromosome newInstance(final ISeq<Float64Gene> genes) {
-		return new Float64Chromosome(genes);		
+		return new Float64Chromosome(genes);
 	}
 
 	/**
@@ -134,7 +135,7 @@ public class Float64Chromosome
 	public Factory<Float64Chromosome> asFactory() {
 		return (Factory<Float64Chromosome>)(Object)this;
 	}
-	
+
 	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
@@ -142,12 +143,12 @@ public class Float64Chromosome
 	public Float64Chromosome newInstance() {
 		return new Float64Chromosome(_min, _max, length());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(super.hashCode()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -155,25 +156,25 @@ public class Float64Chromosome
 		}
 		return obj instanceof Float64Chromosome && super.equals(obj);
 	}
-	
+
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Return a {@link Function} which returns the gene array from this
 	 * {@link Chromosome}.
 	 */
 	public static final Function<AbstractChromosome<Float64Gene>, ISeq<Float64Gene>>
 		Genes = AbstractChromosome.genes();
-	
+
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
 	public static final Function<Chromosome<Float64Gene>, Float64Gene>
 		Gene = AbstractChromosome.gene();
-	
+
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
@@ -183,18 +184,18 @@ public class Float64Chromosome
 	{
 		return AbstractChromosome.gene(index);
 	}
-	
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	static final XMLFormat<Float64Chromosome>
 	XML = new XMLFormat<Float64Chromosome>(Float64Chromosome.class)
 	{
 		private static final String LENGTH = "length";
 		private static final String MIN = "min";
 		private static final String MAX = "max";
-		
+
 		@Override
 		public Float64Chromosome newInstance(
 			final Class<Float64Chromosome> cls, final InputElement xml
@@ -202,17 +203,17 @@ public class Float64Chromosome
 			final int length = xml.getAttribute(LENGTH, 0);
 			final double min = xml.getAttribute(MIN, 0.0);
 			final double max = xml.getAttribute(MAX, 1.0);
-			
+
 			final Array<Float64Gene> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {
 				final Float64 value = xml.getNext();
 				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
 			}
-			
+
 			final Float64Chromosome chromosome = new Float64Chromosome(genes.toISeq());
 			chromosome._min = Float64.valueOf(min);
 			chromosome._max = Float64.valueOf(max);
-			
+
 			return chromosome;
 		}
 		@Override
@@ -236,37 +237,37 @@ public class Float64Chromosome
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
-	
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
 		out.defaultWriteObject();
-	
+
 		out.writeInt(length());
 		out.writeDouble(_min.doubleValue());
 		out.writeDouble(_max.doubleValue());
-		
+
 		for (Float64Gene gene : _genes) {
 			out.writeDouble(gene.doubleValue());
 		}
 	}
-	
+
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-	
+
 		final int length = in.readInt();
 		Float64 min = Float64.valueOf(in.readDouble());
 		Float64 max = Float64.valueOf(in.readDouble());
-		
+
 		_min = min;
 		_max = max;
 		final Array<Float64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, Float64Gene.valueOf(Float64.valueOf(in.readDouble()), min, max));
 		}
-		
+
 		_genes = genes.toISeq();
 	}
 

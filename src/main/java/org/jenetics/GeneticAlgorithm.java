@@ -126,15 +126,16 @@ import org.jenetics.util.functions;
  * ga.setPopulation(population);
  * [/code]
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- *
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *          Wikipedia: Genetic algorithm
  *      </a>
  *
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
+ * @version $Id$
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,

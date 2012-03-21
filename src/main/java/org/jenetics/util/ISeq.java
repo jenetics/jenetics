@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -30,6 +30,7 @@ import javolution.lang.Immutable;
  * @see MSeq
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public interface ISeq<T>
@@ -38,16 +39,16 @@ public interface ISeq<T>
 		Copyable<MSeq<T>>,
 		Immutable
 {
-	
+
 	@Override
 	public ISeq<T> subSeq(final int start, final int end);
-	
+
 	@Override
 	public ISeq<T> subSeq(final int start);
-	
+
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> converter);
-			
+
 	/**
 	 * <p>
 	 * Helper method for up-casting an given immutable sequence. This allows you
@@ -65,7 +66,7 @@ public interface ISeq<T>
 	 * @return the up-casted sequence.
 	 */
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
-	
+
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
 	 * cloned.
@@ -74,7 +75,7 @@ public interface ISeq<T>
 	 */
 	@Override
 	public MSeq<T> copy();
-	
+
 }
 
 

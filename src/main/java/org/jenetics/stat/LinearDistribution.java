@@ -66,6 +66,7 @@ import org.jenetics.util.Range;
  *  </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class LinearDistribution<
@@ -73,7 +74,7 @@ public class LinearDistribution<
 >
 	implements Distribution<N>
 {
-	
+
 	/**
 	 * <p>
 	 * <img
@@ -94,12 +95,12 @@ public class LinearDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final double _min;
 		private final double _max;
 		private final double _k;
 		private final double _d;
-		
+
 		public PDF(
 			final double x1, final double y1,
 			final double x2, final double y2
@@ -109,26 +110,26 @@ public class LinearDistribution<
 			_k = (y2 - y1)/(x2 - x1);
 			_d = y1 - _k*x1;
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final double x = value.doubleValue();
-			
+
 			Float64 result = Float64.ZERO;
 			if (x >= _min && x <= _max) {
 				result = Float64.valueOf(_k*x + _d);
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format("p(x) = %f·x + %f", _k, _d);
 		}
-		
+
 	}
-	
+
 	/**
 	 * <p>
 	 * <img
@@ -147,13 +148,13 @@ public class LinearDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final double _x1;
 		private final double _x2;
-		
+
 		private final double _k;
 		private final double _d;
-		
+
 		public CDF(
 			final double x1, final double y1,
 			final double x2, final double y2
@@ -163,11 +164,11 @@ public class LinearDistribution<
 			_k = (y2 - y1)/(x2 - x1);
 			_d = y1 - _k*x1;
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final double x = value.doubleValue();
-			
+
 			Float64 result = null;
 			if (x < _x1) {
 				result = Float64.ZERO;
@@ -180,30 +181,30 @@ public class LinearDistribution<
 //					);
 				result = Float64.valueOf( _k*x*x/2.0 + _d*x);
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format("P(x) = %f·x² - %f·x", _k/2.0, _d);
 		}
-		
+
 	}
-		
-	
+
+
 	private final Range<N> _domain;
 	private final Function<N, Float64> _cdf;
 	private final Function<N, Float64> _pdf;
-	
+
 	private final double _x1;
 	private final double _x2;
 	private final double _y1;
 	private final double _y2;
-	
+
 	public LinearDistribution(final Range<N> domain, final double y1) {
 		_domain = nonNull(domain);
-		
+
 		_y1 = Math.max(y1, 0.0);
 		_x1 = domain.getMin().doubleValue();
 		_y2 = Math.max(y2(_x1, domain.getMax().doubleValue(), y1), 0.0);
@@ -212,15 +213,15 @@ public class LinearDistribution<
 		} else {
 			_x2 = domain.getMax().doubleValue();
 		}
-		
+
 		_cdf = new CDF<>(_x1, _y1, _x2, _y2);
 		_pdf = new PDF<>(_x1, _y1, _x2, _y2);
 	}
-	
+
 	private static double y2(final double x1, final double x2, final double y1) {
 		return -((x2 - x1)*y1 - 2)/(x2 - x1);
 	}
-	
+
 	@Override
 	public Range<N> getDomain() {
 		return _domain;
@@ -261,7 +262,7 @@ public class LinearDistribution<
 	public Function<N, Float64> getPDF() {
 		return _pdf;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
@@ -269,7 +270,7 @@ public class LinearDistribution<
 				and(_x1).and(_x2).
 				and(_y1).and(_y2).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -278,13 +279,13 @@ public class LinearDistribution<
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final LinearDistribution<?> dist = (LinearDistribution<?>)obj;
 		return eq(_domain, dist._domain) &&
 				eq(_x1, dist._x1) && eq(_x2, dist._x2) &&
 				eq(_y1, dist._y1) && eq(_y2, dist._y2);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(

@@ -51,6 +51,7 @@ import org.jenetics.util.RandomRegistry;
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {

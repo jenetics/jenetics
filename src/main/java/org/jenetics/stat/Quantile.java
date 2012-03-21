@@ -45,12 +45,13 @@ import org.jenetics.util.MappableAccumulator;
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Quantile<N extends Number> extends MappableAccumulator<N> {
 
 	// The desired quantile.
-	private double _quantile;
+	private final double _quantile;
 
 	// Marker heights.
 	private final double[] _q = {0, 0, 0, 0, 0};
@@ -251,7 +252,7 @@ public class Quantile<N extends Number> extends MappableAccumulator<N> {
 				and(_nn).
 				and(_q).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -260,7 +261,7 @@ public class Quantile<N extends Number> extends MappableAccumulator<N> {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final Quantile<?> quantile = (Quantile<?>)obj;
 		return super.equals(obj) &&
 				eq(_quantile, quantile._quantile) &&
@@ -269,7 +270,7 @@ public class Quantile<N extends Number> extends MappableAccumulator<N> {
 				eq(_nn, quantile._nn) &&
 				eq(_q, quantile._q);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -277,7 +278,7 @@ public class Quantile<N extends Number> extends MappableAccumulator<N> {
 				getClass().getSimpleName(), getSamples(), getQuantile()
 			);
 	}
-	
+
 	@Override
 	public Quantile<N> clone() {
 		return (Quantile<N>)super.clone();

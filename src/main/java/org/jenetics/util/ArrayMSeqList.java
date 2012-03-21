@@ -25,14 +25,15 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 final class ArrayMSeqList<T> extends ArraySeqList<T> {
-	
+
 	ArrayMSeqList(final Array<T> array) {
 		super(array);
 	}
-	
+
 	@Override
 	public T set(final int index, final T element) {
 		final Array<T> array = (Array<T>)_array;

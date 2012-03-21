@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -36,11 +36,12 @@ import javolution.lang.Reference;
  * value twice an {@link IllegalStateException} is thrown.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class FinalReference<T> implements Reference<T>, Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private T _value = null;
 	private boolean _initialized = false;
 
@@ -49,7 +50,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	 */
 	public FinalReference() {
 	}
-	
+
 	/**
 	 * Create a new FinalReference with the given default value. The value of
 	 * this reference can still be set, that means {@code isFinal() == false}.
@@ -59,7 +60,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	public FinalReference(final T devault) {
 		_value = devault;
 	}
-	
+
 	/**
 	 * Test whether this {@link Reference} can be set without throwing an
 	 * {@link IllegalStateException} or not.
@@ -70,7 +71,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	public synchronized boolean isFinal() {
 		return _initialized;
 	}
-	
+
 	/**
 	 * Set the reference value. If you try to set the reference value twice an
 	 * {@link IllegalStateException} is thrown.
@@ -85,17 +86,17 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 		_value = value;
 		_initialized = true;
 	}
-	
+
 	@Override
 	public synchronized T get() {
 		return _value;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(get()).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object object) {
 		if (object == this) {
@@ -104,16 +105,16 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 		if (!(object instanceof FinalReference<?>)) {
 			return false;
 		}
-		
+
 		final FinalReference<?> f = (FinalReference<?>)object;
 		return eq(get(), f.get());
 	}
-	
+
 	@Override
 	public String toString() {
 		return str(get());
 	}
-	
+
 }
 
 

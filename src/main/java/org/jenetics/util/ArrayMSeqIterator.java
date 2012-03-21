@@ -24,14 +24,15 @@ package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 final class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
-	
+
 	public ArrayMSeqIterator(final Array<T> array) {
 		super(array);
 	}
-	
+
 	@Override
 	public void set(final T value) {
 		final Array<T> array = (Array<T>)_array;

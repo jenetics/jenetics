@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -53,11 +53,12 @@ import javolution.lang.Reference;
  * @see LocalContext
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class RandomRegistry {
-	
-	
+
+
 	private static final Reference<Random> DEFAULT_RANDOM_ACCESSOR =
 	new Reference<Random>() {
 		@Override public Random get() {
@@ -66,15 +67,15 @@ public final class RandomRegistry {
 		@Override public void set(Random random) {
 		}
 	};
-	
+
 	private static final LocalContext.Reference<Reference<Random>> RANDOM =
 		new LocalContext.Reference<>(DEFAULT_RANDOM_ACCESSOR);
-	
-		
+
+
 	private RandomRegistry() {
 		throw new AssertionError("Don't create an 'RandomRegistry' instance.");
 	}
-	
+
 	/**
 	 * Return the global {@link Random} object.
 	 *
@@ -83,7 +84,7 @@ public final class RandomRegistry {
 	public static Random getRandom() {
 		return RANDOM.get().get();
 	}
-	
+
 	/**
 	 * Set the new global {@link Random} object for the GA.
 	 *
@@ -100,7 +101,7 @@ public final class RandomRegistry {
 			}
 		});
 	}
-	
+
 	/**
 	 * Set the random object to it's default value.
 	 */

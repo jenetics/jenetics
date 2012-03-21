@@ -32,6 +32,7 @@ import org.jenetics.util.Range;
  * distribution.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public interface Distribution<C extends Comparable<? super C>> {
@@ -60,5 +61,5 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 * @return the <i>Probability Density Function</i>.
 	 */
 	public Function<C, Float64> getPDF();
-	
+
 }

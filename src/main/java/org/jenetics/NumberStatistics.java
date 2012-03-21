@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -38,6 +38,7 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class NumberStatistics<
@@ -46,7 +47,7 @@ public class NumberStatistics<
 >
 	extends Statistics<G, R>
 {
-	
+
 	/**
 	 * Builder for the NumberStatistics class.
 	 *
@@ -62,19 +63,19 @@ public class NumberStatistics<
 		protected double _fitnessMean = NaN;
 		protected double _fitnessVariance = NaN;
 		protected double _standardError = NaN;
-		
+
 		/**
 		 * Create a new NumberStatistics builder.
 		 */
 		public Builder() {
 		}
-		
+
 		@Override
 		public Builder<G, R> statistics(final Statistics<G, R> statistics) {
 			super.statistics(statistics);
 			return this;
 		}
-		
+
 		/**
 		 * Set the values of this builder with the values of the given
 		 * {@code statistics}.
@@ -92,7 +93,7 @@ public class NumberStatistics<
 			}
 			return this;
 		}
-		
+
 		/**
 		 * @see NumberStatistics#getFitnessMean()
 		 */
@@ -100,7 +101,7 @@ public class NumberStatistics<
 			_fitnessMean = fitnessMean;
 			return this;
 		}
-		
+
 		/**
 		 * @see NumberStatistics#getFitnessVariance()
 		 */
@@ -108,7 +109,7 @@ public class NumberStatistics<
 			_fitnessVariance = fitnessVariance;
 			return this;
 		}
-		
+
 		/**
 		 * @see NumberStatistics#getStandardError()
 		 */
@@ -116,7 +117,7 @@ public class NumberStatistics<
 			_standardError = standardError;
 			return this;
 		}
-		
+
 		@Override
 		public NumberStatistics<G, R> build() {
 			return new NumberStatistics<>(
@@ -135,7 +136,7 @@ public class NumberStatistics<
 				);
 		}
 	}
-	
+
 	private static final long serialVersionUID = 2L;
 
 	protected final double _fitnessMean;
@@ -243,7 +244,7 @@ public class NumberStatistics<
 
 		return out.toString();
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<NumberStatistics> XML =
 		new XMLFormat<NumberStatistics>(NumberStatistics.class)
@@ -270,7 +271,7 @@ public class NumberStatistics<
 			builder.fitnessMean(fitnessMean.doubleValue());
 			builder.fitnessVariance(fitnessVariance.doubleValue());
 			builder.standardError(errorOfMean.doubleValue());
-			
+
 			return builder.build();
 		}
 

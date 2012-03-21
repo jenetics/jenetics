@@ -39,6 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * @param <G> the gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
@@ -53,7 +54,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	public Crossover(final double probability) {
 		super(probability, 2);
 	}
-	
+
 	@Override
 	protected final <C extends Comparable<? super C>> int recombine(
 		final Population<G, C> population,
@@ -61,25 +62,25 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 		final int generation
 	) {
 		final Random random = RandomRegistry.getRandom();
-		
+
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
-		
+
 		//Choosing the Chromosome for crossover.
 		final int chIndex = random.nextInt(gt1.length());
-		
+
 		final MSeq<Chromosome<G>> chromosomes1 = gt1.toSeq().copy();
 		final MSeq<Chromosome<G>> chromosomes2 = gt2.toSeq().copy();
 		final MSeq<G> genes1 = chromosomes1.get(chIndex).toSeq().copy();
 		final MSeq<G> genes2 = chromosomes2.get(chIndex).toSeq().copy();
-		
+
 		crossover(genes1, genes2);
-		
+
 		chromosomes1.set(chIndex, chromosomes1.get(chIndex).newInstance(genes1.toISeq()));
 		chromosomes2.set(chIndex, chromosomes2.get(chIndex).newInstance(genes2.toISeq()));
-		
+
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 				individuals[0],
@@ -89,10 +90,10 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 				individuals[1],
 				pt2.newInstance(Genotype.valueOf(chromosomes2.toISeq()), generation)
 			);
-		
+
 		return getOrder();
 	}
-	
+
 
 	/**
 	 * Template method which performs the crossover. The arguments given are
@@ -100,7 +101,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	 */
 	protected abstract int crossover(final MSeq<G> that, final MSeq<G> other);
 
-	
+
 }
 
 

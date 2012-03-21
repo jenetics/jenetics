@@ -38,16 +38,17 @@ package org.jenetics.util;
  * @see object#hashCodeOf(Class)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class HashCodeBuilder {
 
 	int _hash = 0;
-	
+
 	HashCodeBuilder(final Class<?> type) {
 		_hash = type.hashCode();
 	}
-	
+
 	/**
 	 * Add hash code for a {@code boolean}.
 	 *

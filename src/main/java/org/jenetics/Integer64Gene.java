@@ -38,29 +38,30 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	Integer64Gene() {
 	}
 
 	public Integer64Gene divide(final Integer64Gene gene) {
 		return newInstance(_value.divide(gene._value));
 	}
-	
+
 	@Override
 	public Integer64Gene mean(final Integer64Gene that) {
 		return newInstance((_value.longValue() + that._value.longValue()) >>> 1);
 	}
-	
+
 	/* *************************************************************************
 	 *  Property access methods.
 	 * ************************************************************************/
-	
+
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
@@ -70,12 +71,12 @@ public final class Integer64Gene
 					return value._value;
 				}
 			};
-			
+
 	/**
 	 * Converter for accessing the allele from a given number gene.
 	 */
 	public static final Function<Integer64Gene, Integer64> Value = Allele;
-	
+
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
@@ -85,7 +86,7 @@ public final class Integer64Gene
 					return value._min;
 				}
 			};
-	
+
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
@@ -95,11 +96,11 @@ public final class Integer64Gene
 					return value._value;
 				}
 			};
-	
+
 	/* *************************************************************************
 	 *  Factory methods
-	 * ************************************************************************/	
-	
+	 * ************************************************************************/
+
 	/**
 	 * Create a new valid, <em>random</em> gene.
 	 */
@@ -107,7 +108,7 @@ public final class Integer64Gene
 	public Integer64Gene newInstance() {
 		return valueOf(_min, _max);
 	}
-	
+
 	/**
 	 * Create a new IntegerGene with the same limits and the given value.
 	 *
@@ -119,28 +120,28 @@ public final class Integer64Gene
 	public Integer64Gene newInstance(final long value) {
 		return valueOf(Integer64.valueOf(value), _min, _max);
 	}
-	
+
 	@Override
 	public Integer64Gene newInstance(final java.lang.Number number) {
 		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
 	}
-	
+
 	@Override
 	public Integer64Gene newInstance(final Integer64 value) {
 		return valueOf(value, _min, _max);
 	}
-	
+
 	/* *************************************************************************
 	 *  Static object creation methods
-	 * ************************************************************************/	
-	
+	 * ************************************************************************/
+
 	private static final ObjectFactory<Integer64Gene> FACTORY =
 		new ObjectFactory<Integer64Gene>() {
 				@Override protected Integer64Gene create() {
 					return new Integer64Gene();
 				}
 			};
-	
+
 	/**
 	 * Create a new random Integer64Gene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
@@ -163,7 +164,7 @@ public final class Integer64Gene
 			Integer64.valueOf(max)
 		);
 	}
-	
+
 	/**
 	 * Create a new random IntegerGene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
@@ -185,7 +186,7 @@ public final class Integer64Gene
 		gene.set(value, min, max);
 		return gene;
 	}
-	
+
 	/**
 	 * Create a new random IntegerGene. It is guaranteed that the value of the
 	 * IntegerGene lies in the closed interval [min, max].
@@ -197,7 +198,7 @@ public final class Integer64Gene
 	public static Integer64Gene valueOf(final long min, final long max) {
 		return valueOf(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
-	
+
 	/**
 	 * Create a new random Integer64Gene. It is guaranteed that the value of the
 	 * Integer64Gene lies in the closed interval [min, max].
@@ -215,21 +216,21 @@ public final class Integer64Gene
 		final Integer64 value = Integer64.valueOf(
 					nextLong(random, min.longValue(), max.longValue())
 				);
-		
+
 		return valueOf(value, min, max);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  XML object serialization
-	 * ************************************************************************/	
-	
+	 * ************************************************************************/
+
 	static final XMLFormat<Integer64Gene>
 	XML = new XMLFormat<Integer64Gene>(Integer64Gene.class)
 	{
 		private static final String MIN = "min";
 		private static final String MAX = "max";
-		
+
 		@Override
 		public Integer64Gene newInstance(
 			final Class<Integer64Gene> cls, final InputElement element
@@ -255,27 +256,27 @@ public final class Integer64Gene
 		{
 		}
 	};
-	
-	
+
+
 	/* *************************************************************************
 	 *  Java object serialization
-	 * ************************************************************************/	
-	
+	 * ************************************************************************/
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
 		out.defaultWriteObject();
-	
+
 		out.writeLong(_value.longValue());
 		out.writeLong(_min.longValue());
 		out.writeLong(_max.longValue());
 	}
-	
+
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-	
+
 		set(
 			Integer64.valueOf(in.readLong()),
 			Integer64.valueOf(in.readLong()),
@@ -283,7 +284,7 @@ public final class Integer64Gene
 		);
 	}
 
-	
+
 }
 
 

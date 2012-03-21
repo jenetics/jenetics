@@ -41,6 +41,7 @@ import org.jenetics.util.Range;
  * @see LinearDistribution
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class UniformDistribution<
@@ -69,36 +70,36 @@ public class UniformDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final double _min;
 		private final double _max;
 		private final Float64 _probability;
-		
+
 		public PDF(final Range<N> domain) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_probability = Float64.valueOf(1.0/(_max - _min));
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final double x = value.doubleValue();
-			
+
 			Float64 result = Float64.ZERO;
 			if (x >= _min && x <= _max) {
 				result = _probability;
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format("p(x) = %s", _probability);
 		}
-		
-	}	
-	
+
+	}
+
 	/**
 	 * <p>
 	 * <img
@@ -120,23 +121,23 @@ public class UniformDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
-		
+
+
 		private final double _min;
 		private final double _max;
 		private final double _divisor;
-		
+
 		public CDF(final Range<N> domain) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
 			_divisor = _max - _min;
-			assert (_divisor > 0);			
+			assert (_divisor > 0);
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final double x = value.doubleValue();
-			
+
 			Float64 result = Float64.ZERO;
 			if (x < _min) {
 				result = Float64.ZERO;
@@ -145,7 +146,7 @@ public class UniformDistribution<
 			} else {
 				result = Float64.valueOf((x - _min)/_divisor);
 			}
-			
+
 			return result;
 		}
 
@@ -153,7 +154,7 @@ public class UniformDistribution<
 		public String toString() {
 			return String.format("P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max);
 		}
-		
+
 	}
 
 
@@ -208,7 +209,7 @@ public class UniformDistribution<
 	public Function<N, Float64> getPDF() {
 		return _pdf;
 	}
-	
+
 	/**
 	 * Return a new CDF object.
 	 *
@@ -228,12 +229,12 @@ public class UniformDistribution<
 	public Function<N, Float64> getCDF() {
 		return _cdf;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_domain).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -242,11 +243,11 @@ public class UniformDistribution<
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		
+
 		final UniformDistribution<?> dist = (UniformDistribution<?>)obj;
 		return eq(_domain, dist._domain);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("UniformDistribution[%s]", _domain);

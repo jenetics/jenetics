@@ -18,12 +18,13 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public interface Verifiable {
@@ -34,5 +35,5 @@ public interface Verifiable {
 	 * @return true if this object is valid, false otherwise.
 	 */
 	public boolean isValid();
-	
+
 }

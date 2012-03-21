@@ -28,6 +28,7 @@ import org.jenetics.util.Function;
  * Some default GA termination strategies.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class termination {

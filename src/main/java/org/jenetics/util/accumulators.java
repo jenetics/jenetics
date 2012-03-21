@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -36,37 +36,39 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * for accumulating.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class accumulators {
 
 	private accumulators() {
 		throw new AssertionError("Don't create an 'accumulators' instance.");
-	}	
-	
+	}
+
 	public static final Accumulator<Object> NULL = new Accumulator<Object>() {
 		@Override
 		public void accumulate(final Object value) {
 		}
 	};
-	
+
 	/**
 	 * Calculates min value.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappableAccumulator<C>
 	{
 		private C _min;
-		
+
 		/**
 		 * Create a new Min accumulator.
 		 */
 		public Min() {
 		}
-		
+
 		/**
 		 * Copy constructor.
 		 *
@@ -78,7 +80,7 @@ public final class accumulators {
 			_samples = min._samples;
 			_min = min._min;
 		}
-		
+
 		/**
 		 * Return the min value, accumulated so far.
 		 *
@@ -87,7 +89,7 @@ public final class accumulators {
 		public C getMin() {
 			return _min;
 		}
-		
+
 		/**
 		 * @throws NullPointerException if the given {@code value} is {@code null}.
 		 */
@@ -100,15 +102,15 @@ public final class accumulators {
 					_min = value;
 				}
 			}
-			
+
 			++_samples;
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return hashCodeOf(getClass()).and(super.hashCode()).and(_min).value();
 		}
-		
+
 		@Override
 		public boolean equals(final Object obj) {
 			if (obj == this) {
@@ -117,11 +119,11 @@ public final class accumulators {
 			if (obj == null || obj.getClass() != getClass()) {
 				return false;
 			}
-			
+
 			final Min<?> min = (Min<?>)obj;
 			return super.equals(obj) && eq(_min, min._min);
 		}
-		
+
 		@Override
 		public String toString() {
 			return String.format(
@@ -129,31 +131,32 @@ public final class accumulators {
 					getClass().getSimpleName(), getSamples(), getMin()
 				);
 		}
-		
+
 		@Override
 		public Min<C> clone() {
 			return (Min<C>)super.clone();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Calculates max value.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappableAccumulator<C>
 	{
 		private C _max;
-		
+
 		/**
 		 * Create a new Max accumulator.
 		 */
 		public Max() {
 		}
-		
+
 		/**
 		 * Copy constructor.
 		 *
@@ -165,7 +168,7 @@ public final class accumulators {
 			_samples = max._samples;
 			_max = max._max;
 		}
-		
+
 		/**
 		 * Return the max value, accumulated so far.
 		 *
@@ -174,7 +177,7 @@ public final class accumulators {
 		public C getMax() {
 			return _max;
 		}
-		
+
 		/**
 		 * @throws NullPointerException if the given {@code value} is {@code null}.
 		 */
@@ -187,15 +190,15 @@ public final class accumulators {
 					_max = value;
 				}
 			}
-			
+
 			++_samples;
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return hashCodeOf(getClass()).and(super.hashCode()).and(_max).value();
 		}
-		
+
 		@Override
 		public boolean equals(final Object obj) {
 			if (obj == this) {
@@ -204,11 +207,11 @@ public final class accumulators {
 			if (obj == null || obj.getClass() != getClass()) {
 				return false;
 			}
-			
+
 			final Max<?> max = (Max<?>)obj;
 			return super.equals(obj) && eq(_max, max._max);
 		}
-		
+
 		@Override
 		public String toString() {
 			return String.format(
@@ -216,18 +219,19 @@ public final class accumulators {
 					getClass().getSimpleName(), getSamples(), getMax()
 				);
 		}
-		
+
 		@Override
 		public Max<C> clone() {
 			return (Max<C>)super.clone();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Calculates min and max values.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
 	 * @version $Id$
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
@@ -235,13 +239,13 @@ public final class accumulators {
 	{
 		private C _min;
 		private C _max;
-		
+
 		/**
 		 * Create a new min-max accumulator.
 		 */
 		public MinMax() {
 		}
-		
+
 		/**
 		 * Copy constructor.
 		 *
@@ -254,7 +258,7 @@ public final class accumulators {
 			_min = mm._min;
 			_max = mm._max;
 		}
-		
+
 		/**
 		 * Return the min value, accumulated so far.
 		 *
@@ -263,7 +267,7 @@ public final class accumulators {
 		public C getMin() {
 			return _min;
 		}
-		
+
 		/**
 		 * Return the max value, accumulated so far.
 		 *
@@ -272,7 +276,7 @@ public final class accumulators {
 		public C getMax() {
 			return _max;
 		}
-		
+
 		/**
 		 * @throws NullPointerException if the given {@code value} is {@code null}.
 		 */
@@ -288,10 +292,10 @@ public final class accumulators {
 					_max = value;
 				}
 			}
-			
+
 			++_samples;
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return hashCodeOf(getClass()).
@@ -299,7 +303,7 @@ public final class accumulators {
 					and(_min).
 					and(_max).value();
 		}
-		
+
 		@Override
 		public boolean equals(final Object obj) {
 			if (obj == this) {
@@ -308,11 +312,11 @@ public final class accumulators {
 			if (obj == null || obj.getClass() != getClass()) {
 				return false;
 			}
-			
+
 			final MinMax<?> mm = (MinMax<?>)obj;
 			return super.equals(obj) && eq(_min, mm._min) && eq(_max, mm._max);
 		}
-		
+
 		@Override
 		public String toString() {
 			return String.format(
@@ -320,26 +324,26 @@ public final class accumulators {
 					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);
 		}
-		
+
 		@Override
 		public MinMax<C> clone() {
 			return (MinMax<C>)super.clone();
 		}
 	}
-	
+
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappableAccumulator<G>
 	{
-		
+
 		private G _sum = null;
-		
+
 		public Sum() {
 		}
-		
+
 		public Sum(final G start) {
 			_sum = start;
 		}
-		
+
 		@Override
 		public void accumulate(final G value) {
 			if (_sum == null) {
@@ -347,12 +351,12 @@ public final class accumulators {
 			} else {
 				_sum = _sum.plus(value);
 			}
-			
+
 			++_samples;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
@@ -416,7 +420,7 @@ public final class accumulators {
 			}
 		}
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
 	 * {@code accumulator} with each value of the given {@code values}.
@@ -434,7 +438,7 @@ public final class accumulators {
 			a.accumulate(values.next());
 		}
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
 	 * {@code accumulator} with each value of the given {@code values}.
@@ -452,7 +456,7 @@ public final class accumulators {
 			a.accumulate(value);
 		}
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
@@ -471,10 +475,10 @@ public final class accumulators {
 	) {
 		try (Concurrency c = Concurrency.start()) {
 			c.execute(new Acc<>(values, a1));
-			c.execute(new Acc<>(values, a2));;			
+			c.execute(new Acc<>(values, a2));;
 		}
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
@@ -496,10 +500,10 @@ public final class accumulators {
 		try (Concurrency c = Concurrency.start()) {
 			c.execute(new Acc<>(values, a1));
 			c.execute(new Acc<>(values, a2));
-			c.execute(new Acc<>(values, a3));			
+			c.execute(new Acc<>(values, a3));
 		}
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
@@ -524,10 +528,10 @@ public final class accumulators {
 			c.execute(new Acc<>(values, a1));
 			c.execute(new Acc<>(values, a2));
 			c.execute(new Acc<>(values, a3));
-			c.execute(new Acc<>(values, a4));	
+			c.execute(new Acc<>(values, a4));
 		}
 	}
-	
+
 	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
 	 * {@code accumulators} with each value of the given {@code values}. The
@@ -557,12 +561,12 @@ public final class accumulators {
 			c.execute(new Acc<>(values, a4));
 			c.execute(new Acc<>(values, a5));
 		}
-	}	
-	
+	}
+
 	private static class Acc<T> implements Runnable {
 		private final Iterable<? extends T> _values;
 		private final Accumulator<? super T> _accumulator;
-		
+
 		public Acc(
 			final Iterable<? extends T> values,
 			final Accumulator<? super T> accumulator
@@ -570,7 +574,7 @@ public final class accumulators {
 			_values = values;
 			_accumulator = accumulator;
 		}
-		
+
 		@Override
 		public void run() {
 			for (final T value : _values) {
@@ -578,7 +582,7 @@ public final class accumulators {
 			}
 		}
 	}
-	
+
 }
 
 

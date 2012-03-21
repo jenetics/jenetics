@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -29,17 +29,18 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 class ArraySeqList<T> extends AbstractList<T>
 	implements RandomAccess
 {
 	final ArraySeq<T> _array;
-	
+
 	public ArraySeqList(final ArraySeq<T> array) {
 		_array = nonNull(array, "ArrayBase");
 	}
-	
+
 	@Override
 	public T get(final int index) {
 		return _array.get(index);
@@ -54,17 +55,17 @@ class ArraySeqList<T> extends AbstractList<T>
 	public int indexOf(final Object element) {
 		return _array.indexOf(element);
 	}
-	
+
 	@Override
 	public boolean contains(final Object element) {
 		return indexOf(element) != -1;
 	}
-	
+
 	@Override
 	public Object[] toArray() {
 		return _array.toArray();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E> E[] toArray(final E[] array) {
@@ -75,14 +76,14 @@ class ArraySeqList<T> extends AbstractList<T>
 			for (int i = 0; i < _array.length(); ++i) {
 				copy[i] = (E)_array.get(i);
 			}
-			
+
 			return copy;
 		}
-		
+
 		System.arraycopy(_array._array, _array._start, array, 0, array.length);
 		return array;
 	}
-	
+
 }
 
 

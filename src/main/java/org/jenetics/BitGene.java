@@ -33,6 +33,7 @@ import org.jenetics.util.RandomRegistry;
  * Implementation of a BitGene.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public enum BitGene
@@ -40,17 +41,17 @@ public enum BitGene
 		Gene<Boolean, BitGene>,
 		XMLSerializable
 {
-	
+
 	FALSE(false),
 	TRUE(true);
-	
+
 	private static final long serialVersionUID = 2L;
-	
+
 	public static final BitGene ZERO = FALSE;
 	public static final BitGene ONE = TRUE;
-	
+
 	private final boolean _value;
-	
+
 	private BitGene(final boolean value) {
 		_value = value;
 	}
@@ -63,7 +64,7 @@ public enum BitGene
 	public final boolean getBit() {
 		return _value;
 	}
-	
+
 	/**
 	 * Return the {@code boolean} value of this gene.
 	 *
@@ -74,12 +75,12 @@ public enum BitGene
 	public boolean booleanValue() {
 		return _value;
 	}
-	
+
 	@Override
 	public Boolean getAllele() {
 		return _value;
 	}
-	
+
 	/**
 	 * Return always {@code true}.
 	 *
@@ -89,12 +90,12 @@ public enum BitGene
 	public boolean isValid() {
 		return true;
 	}
-	
+
 	@Override
 	public BitGene copy() {
 		return this;
 	}
-	
+
 	/**
 	 * Create a new, <em>random</em> gene.
 	 */
@@ -107,12 +108,12 @@ public enum BitGene
 	public String toString() {
 		return Boolean.toString(_value);
 	}
-	
-	
+
+
 	/* *************************************************************************
 	 *  Property access methods methods
 	 * ************************************************************************/
-	
+
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
@@ -122,17 +123,17 @@ public enum BitGene
 					return value._value;
 				}
 			};
-	
-			
+
+
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
-	
+
 	static final XMLFormat<BitGene>
 	XML = new XMLFormat<BitGene>(BitGene.class)
 	{
 		private static final String VALUE = "value";
-		
+
 		@Override
 		public BitGene newInstance(final Class<BitGene> cls, final InputElement element)
 			throws XMLStreamException

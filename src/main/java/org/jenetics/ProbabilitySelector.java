@@ -43,6 +43,7 @@ import org.jenetics.util.RandomRegistry;
  * Fitness proportional selection works as shown in the figure above.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class ProbabilitySelector<

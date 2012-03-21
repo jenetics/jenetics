@@ -43,13 +43,14 @@ import java.util.Random;
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class IndexStream {
 
 	protected IndexStream() {
 	}
-	
+
 	/**
 	 * Return the next (positive inclusive zero) index, or -1 if the stream has
 	 * reached its end.
@@ -57,7 +58,7 @@ public abstract class IndexStream {
 	 * @return the next index, or -1 if the stream has reached its end.
 	 */
 	public abstract int next();
-	
+
 	/**
 	 * Create a new random IndexIterator.
 	 * @param n the maximal value (exclusively) of the iterator.
@@ -83,10 +84,10 @@ public abstract class IndexStream {
 					"n must be greate than zero: %d", n
 				));
 		}
-		
+
 		return new IndexStream() {
 			private int _pos = -1;
-			
+
 			@Override
 			public int next() {
 				while (_pos < n && random.nextDouble() >= probability) {
@@ -98,10 +99,10 @@ public abstract class IndexStream {
 
 				return _pos < n ? _pos : -1;
 			}
-			
+
 		};
 	}
-	
+
 }
 
 

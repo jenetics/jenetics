@@ -51,6 +51,7 @@ import org.jenetics.util.functions;
  * creation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class Phenotype<

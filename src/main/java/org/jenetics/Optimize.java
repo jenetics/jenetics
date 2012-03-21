@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -29,10 +29,11 @@ import java.util.Comparator;
  * fitness function.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public enum Optimize {
-	
+
 	/**
 	 * GA minimization
 	 */
@@ -44,7 +45,7 @@ public enum Optimize {
 			return o2.compareTo(o1);
 		}
 	},
-	
+
 	/**
 	 * GA maximization
 	 */
@@ -56,7 +57,7 @@ public enum Optimize {
 			return o1.compareTo(o2);
 		}
 	};
-	
+
 	/**
 	 * Compares two comparable objects. Returns a negative integer, zero, or a
 	 * positive integer as the first argument is better than, equal to, or worse
@@ -71,7 +72,7 @@ public enum Optimize {
 	 */
 	public abstract <T extends Comparable<? super T>>
 	int compare(final T o1, final T o2);
-	
+
 	/**
 	 * Create an appropriate comparator of the given optimization strategy. A
 	 * collection of comparable objects with the returned comparator will be
@@ -98,7 +99,7 @@ public enum Optimize {
 			}
 		};
 	}
-	
+
 	/**
 	 * Create an appropriate comparator of the given optimization strategy. A
 	 * collection of comparable objects with the returned comparator will be
@@ -125,7 +126,7 @@ public enum Optimize {
 			}
 		};
 	}
-	
+
 	/**
 	 * Return the best value, according to this optimization direction.
 	 *
@@ -141,7 +142,7 @@ public enum Optimize {
 		}
 		return best;
 	}
-	
+
 	/**
 	 * Return the worst value, according to this optimization direction.
 	 *
@@ -157,5 +158,5 @@ public enum Optimize {
 		}
 		return worst;
 	}
-	
+
 }

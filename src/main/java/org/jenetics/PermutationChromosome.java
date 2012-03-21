@@ -49,6 +49,7 @@ import org.jenetics.util.bit;
  * that no invalid permutation will be created.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class PermutationChromosome<T>

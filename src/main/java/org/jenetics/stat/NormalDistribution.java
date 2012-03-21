@@ -59,6 +59,7 @@ import org.jenetics.util.Range;
  * @see <a href="http://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class NormalDistribution<
@@ -66,7 +67,7 @@ public class NormalDistribution<
 >
 	implements Distribution<N>
 {
-	
+
 	/**
 	 * <p>
 	 * <img
@@ -85,38 +86,38 @@ public class NormalDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final Range<N> _domain;
 		private final double _mean;
 		private final double _var;
 		private final double _stddev;
-		
+
 		public PDF(final Range<N> domain, final double mean, final double var) {
 			_domain = domain;
 			_mean = mean;
 			_var = var;
 			_stddev = Math.sqrt(var);
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final double x = value.doubleValue();
-			
+
 			Float64 result = Float64.ZERO;
 			if (_domain.contains(value)) {
 				result = Float64.valueOf(φ(x, _mean, _stddev));
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format("p(x) = N[µ=%f, σ²=%f](x)", _mean, _var);
 		}
-		
+
 	}
-	
+
 	/**
 	 * <p>
 	 * <img
@@ -135,13 +136,13 @@ public class NormalDistribution<
 			Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final double _min;
 		private final double _max;
 		private final double _mean;
 		private final double _var;
 		private final double _stddev;
-		
+
 		public CDF(final Range<N> domain, final double mean, final double var) {
 			_min = domain.getMin().doubleValue();
 			_max = domain.getMax().doubleValue();
@@ -149,11 +150,11 @@ public class NormalDistribution<
 			_var = var;
 			_stddev = Math.sqrt(var);
 		}
-		
+
 		@Override
 		public Float64 apply(final N value) {
 			final double x = value.doubleValue();
-			
+
 			Float64 result = null;
 			if (x < _min) {
 				result = Float64.ZERO;
@@ -162,10 +163,10 @@ public class NormalDistribution<
 			} else {
 				result = Float64.valueOf(Φ(x, _mean, _stddev));
 			}
-			
+
 			return result;
 		}
-	
+
 		@Override
 		public String toString() {
 			return String.format(
@@ -173,15 +174,15 @@ public class NormalDistribution<
 				_mean, _var
 			);
 		}
-		
+
 	}
-	
+
 	private final Range<N> _domain;
 	private final Function<N, Float64> _cdf;
 	private final Function<N, Float64> _pdf;
 	private final double _mean;
 	private final double _var;
-	
+
 	/**
 	 * Create a new normal distribution object.
 	 *
@@ -199,16 +200,16 @@ public class NormalDistribution<
 		_domain = nonNull(domain, "Domain");
 		_mean = mean;
 		_var = nonNegative(var, "Variance");
-		
+
 		_pdf = new PDF<>(_domain, _mean, _var);
 		_cdf = new CDF<>(_domain, _mean, _var);
 	}
-	
+
 	@Override
 	public Range<N> getDomain() {
 		return _domain;
 	}
-	
+
 	/**
 	 * Return a new CDF object.
 	 *
@@ -224,7 +225,7 @@ public class NormalDistribution<
 	public Function<N, Float64> getCDF() {
 		return _cdf;
 	}
-	
+
 	/**
 	 * Return a new PDF object.
 	 *
@@ -240,12 +241,12 @@ public class NormalDistribution<
 		return _pdf;
 	}
 
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_domain).and(_mean).and(_var).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == this) {
@@ -254,18 +255,18 @@ public class NormalDistribution<
 		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
-		
+
 		final NormalDistribution<?> dist = (NormalDistribution<?>)obj;
 		return eq(_domain, dist._domain) &&
 				eq(_mean, dist._mean) &&
 				eq(_var, dist._var);
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("N[µ=%f, σ²=%f]", _mean, _var);
 	}
-	
+
 }
 
 

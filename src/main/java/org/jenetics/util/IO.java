@@ -40,18 +40,19 @@ import javolution.xml.stream.XMLStreamException;
  * Class for object serialization.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public abstract class IO {
 
 	protected IO() {
 	}
-	
+
 	/**
 	 * IO implementation for <i>XML</i> serialization.
 	 */
 	public static final IO xml = new IO() {
-		
+
 		@Override
 		public void write(final Object object, final OutputStream out)
 			throws IOException
@@ -69,8 +70,8 @@ public abstract class IO {
 			} catch (XMLStreamException e) {
 				throw new IOException(e);
 			}
-		}	
-		
+		}
+
 		@Override
 		public <T> T read(final Class<T> type, final InputStream in)
 			throws IOException
@@ -86,14 +87,14 @@ public abstract class IO {
 			} catch (XMLStreamException e) {
 				throw new IOException(e);
 			}
-		}		
+		}
 	};
-	
+
 	/**
 	 * IO implementation for "native" <i>Java</i> serialization.
 	 */
 	public static IO object = new IO() {
-		
+
 		@Override
 		public void write(final Object object, final OutputStream out)
 			throws IOException
@@ -102,7 +103,7 @@ public abstract class IO {
 			oout.writeObject(object);
 			out.flush();
 		}
-		
+
 		@Override
 		public <T> T read(final Class<T> type, final InputStream in)
 			throws IOException
@@ -115,8 +116,8 @@ public abstract class IO {
 			}
 		}
 	};
-	
-	
+
+
 	/**
 	 * Write the (serializable) object to the given path.
 	 *
@@ -130,7 +131,7 @@ public abstract class IO {
 	{
 		write(object, new File(path));
 	}
-	
+
 	/**
 	 * Write the (serializable) object to the given path.
 	 *
@@ -144,7 +145,7 @@ public abstract class IO {
 	{
 		write(object, path.toFile());
 	}
-	
+
 	/**
 	 * Write the (serializable) object to the given file.
 	 *
@@ -160,7 +161,7 @@ public abstract class IO {
 			write(object, out);
 		}
 	}
-	
+
 	/**
 	 * Write the (serializable) object to the given output stream.
 	 *
@@ -170,8 +171,8 @@ public abstract class IO {
 	 * @throws IOException if the object could not be serialized.
 	 */
 	public abstract void write(final Object object, final OutputStream out)
-		throws IOException;	
-	
+		throws IOException;
+
 	/**
 	 * Reads an object from the given file.
 	 *
@@ -188,7 +189,7 @@ public abstract class IO {
 			return read(type, in);
 		}
 	}
-	
+
 	/**
 	 * Reads an object from the given file.
 	 *
@@ -200,7 +201,7 @@ public abstract class IO {
 	public Object read(final String path) throws IOException {
 		return read(Object.class, path);
 	}
-		
+
 	/**
 	 * Reads an object from the given file.
 	 *
@@ -217,7 +218,7 @@ public abstract class IO {
 			return read(type, in);
 		}
 	}
-	
+
 	/**
 	 * Reads an object from the given file.
 	 *
@@ -229,7 +230,7 @@ public abstract class IO {
 	public Object read(final Path path) throws IOException {
 		return read(Object.class, path);
 	}
-	
+
 	/**
 	 * Reads an object from the given file.
 	 *
@@ -245,8 +246,8 @@ public abstract class IO {
 		try (final FileInputStream in = new FileInputStream(file)) {
 			return read(type, in);
 		}
-	}	
-	
+	}
+
 	/**
 	 * Reads an object from the given file.
 	 *
@@ -258,7 +259,7 @@ public abstract class IO {
 	public Object read(final File file) throws IOException {
 		return read(Object.class, file);
 	}
-	
+
 	/**
 	 * Reads an object from the given input stream.
 	 *
@@ -270,7 +271,7 @@ public abstract class IO {
 	 */
 	public abstract <T> T read(final Class<T> type, final InputStream in)
 		throws IOException;
-	
+
 	/**
 	 * Reads an object from the given input stream.
 	 *
@@ -283,14 +284,14 @@ public abstract class IO {
 		return read(Object.class, in);
 	}
 
-	
+
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
-		
+
 		public NonClosableOutputStream(final OutputStream adoptee) {
 			_adoptee = adoptee;
 		}
@@ -335,16 +336,16 @@ public abstract class IO {
 		public void write(int b) throws IOException {
 			_adoptee.write(b);
 		}
-		
+
 	}
-	
+
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @version $Id$
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
-		
+
 		public NonClosableInputStream(final InputStream adoptee) {
 			_adoptee = adoptee;
 		}
@@ -391,7 +392,7 @@ public abstract class IO {
 		@Override
 		public long skip(long n) throws IOException {
 			return _adoptee.skip(n);
-		}	
+		}
 	}
-	
+
 }

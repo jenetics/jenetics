@@ -32,15 +32,16 @@ import static java.lang.Math.sqrt;
  * Some statistical special functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 @SuppressWarnings("javadoc")
 final class math extends math_gamma {
-	
+
 	private math() {
 		throw new AssertionError("Don't create an 'math' instance.");
 	}
-	
+
 	/**
 	 * Uses Lanczos approximation formula. See Numerical Recipes 6.1.
 	 *
@@ -55,20 +56,20 @@ final class math extends math_gamma {
 							(x + 3) + 0.00120858003 /
 							(x + 4) - 0.00000536382 /
 							(x + 5);
-		
+
 		return (x - 0.5)*log(x + 4.5) - (x + 4.5) + log(ser*sqrt(2 * PI));
 	}
-	
+
 	public static double gamma(final double x) {
 		return exp(logGamma(x));
 	}
-	
+
 	public static double Γ(final double x) {
 		return gamma(x);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Return the <i>error function</i> of {@code z}. The fractional error of
 	 * this implementation is less than 1.2E-7.
@@ -91,10 +92,10 @@ final class math extends math_gamma {
 				t*( 1.48851587 +
 				t*(-0.82215223 +
 				t*(0.17087277))))))))));
-		
+
 		return z >= 0 ? result : -result;
 	}
-	
+
 	/**
 	 * Return φ(x), the standard Gaussian pdf.
 	 *
@@ -105,7 +106,7 @@ final class math extends math_gamma {
 	public static double phi(final double x) {
 		return Math.exp(-x*x/2.0) / Math.sqrt(2.0*Math.PI);
 	}
-	
+
 	/**
 	 * Return φ(x), the standard Gaussian pdf.
 	 *
@@ -116,7 +117,7 @@ final class math extends math_gamma {
 	public static double φ(final double x) {
 		return phi(x);
 	}
-	
+
 	/**
 	 * Return φ(x, µ, σ), the standard Gaussian pdf with mean µ and stddev σ.
 	 *
@@ -129,7 +130,7 @@ final class math extends math_gamma {
 	public static double phi(final double x, final double mu, final double sigma) {
 		return phi((x - mu)/sigma)/sigma;
 	}
-	
+
 	/**
 	 * Return φ(x, µ, σ), the standard Gaussian pdf with mean µ and stddev σ.
 	 *
@@ -142,7 +143,7 @@ final class math extends math_gamma {
 	public static double φ(final double x, final double µ, final double σ) {
 		return phi(x, µ, σ);
 	}
-	
+
 	/**
 	 * Return Φ(z), the standard Gaussian cdf using Taylor approximation.
 	 *
@@ -156,7 +157,7 @@ final class math extends math_gamma {
 		if (z >  8.0) {
 			return 1.0;
 		}
-		
+
 		double s = 0.0;
 		double t = z;
 		for (int i = 3; s + t != s; i += 2) {
@@ -165,7 +166,7 @@ final class math extends math_gamma {
 		}
 		return 0.5 + s*phi(z);
 	}
-	
+
 	/**
 	 * Return Φ(z), the standard Gaussian cdf using Taylor approximation.
 	 *
@@ -175,7 +176,7 @@ final class math extends math_gamma {
 	public static double Φ(final double z) {
 		return Phi(z);
 	}
-	
+
 	/**
 	 * Return Φ(z, µ, σ), the standard Gaussian cdf with mean µ and stddev σ.
 	 *
@@ -188,7 +189,7 @@ final class math extends math_gamma {
 	public static double Phi(final double z, final double mu, final double sigma) {
 		return Phi((z - mu)/sigma);
 	}
-	
+
 	/**
 	 * Return Φ(z, µ, σ), the standard Gaussian cdf with mean µ and stddev σ.
 	 *
@@ -201,7 +202,7 @@ final class math extends math_gamma {
 	public static double Φ(final double z, final double µ, final double σ) {
 		return Phi(z, µ, σ);
 	}
-	
+
 }
 
 

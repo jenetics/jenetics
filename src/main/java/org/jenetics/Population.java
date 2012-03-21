@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics;
 
@@ -45,6 +45,7 @@ import org.jenetics.util.Copyable;
  * A population is a collection of Phenotypes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -55,9 +56,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final List<Phenotype<G, C>> _population;
-	
+
 	/**
 	 * Constructs a population containing the elements of the specified collection,
 	 * in the order they are returned by the collection's iterator.
@@ -69,7 +70,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public Population(final Collection<? extends Phenotype<G, C>> population) {
 		_population = new ArrayList<>(population);
 	}
-	
+
 	/**
 	 * Creating a new <code>Population</code> with the preallocated population
 	 * size.
@@ -81,14 +82,14 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public Population(final int size) {
 		_population = new ArrayList<>(size + 1);
 	}
-	
+
 	/**
 	 * Creating a new <code>Population</code>.
 	 */
 	public Population() {
 		_population = new ArrayList<>();
 	}
-	
+
 	/**
 	 * Add <code>Phenotype</code> to the <code>Population</code>.
 	 *
@@ -100,7 +101,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		nonNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
-	
+
 	/**
 	 * Add <code>Phenotype</code> to the <code>Population</code>.
 	 *
@@ -113,7 +114,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		nonNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
-	
+
 	@Override
 	public boolean addAll(final Collection<? extends Phenotype<G, C>> c) {
 		return _population.addAll(c);
@@ -128,18 +129,18 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public Phenotype<G, C> get(final int index) {
 		return _population.get(index);
 	}
-	
+
 	@Override
 	public Phenotype<G, C> set(final int index, final Phenotype<G, C> phenotype) {
 		nonNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
-	
+
 	public void remove(final Phenotype<G, C> phenotype) {
 		nonNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
-	
+
 	@Override
 	public boolean remove(final Object o) {
 		return _population.remove(o);
@@ -149,17 +150,17 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public boolean removeAll(final Collection<?> c) {
 		return _population.removeAll(c);
 	}
-	
+
 	@Override
 	public Phenotype<G, C> remove(final int index) {
 		return _population.remove(index);
 	}
-	
+
 	@Override
 	public void clear() {
 		_population.clear();
 	}
-	
+
 	/**
 	 * Sorting the phenotypes in this population according to its fitness
 	 * value in descending order.
@@ -167,12 +168,12 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public void sort() {
 		sort(Optimize.MAXIMUM.<C>descending());
 	}
-	
+
 	public void sort(final Comparator<? super C> comparator) {
 		quicksort(0, size() - 1, comparator);
 	}
-		
-		
+
+
 	private void quicksort(
 		final int left, final int right,
 		final Comparator<? super C> comparator
@@ -183,7 +184,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			quicksort(j + 1, right, comparator);
 		}
 	}
-		
+
 	private int partition(
 		final int left, final int right,
 		final Comparator<? super C> comparator
@@ -198,7 +199,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 				i < right &&
 				comparator.compare(_population.get(i).getFitness(), pivot) < 0
 			);
-			
+
 			do {
 				--j;
 			} while (
@@ -211,31 +212,31 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			swap(i, j);
 		}
 		swap(left, j);
-		
+
 		return j;
-	}	
-	
+	}
+
 	private void swap(final int i, final int j) {
 		_population.set(i, _population.set(j, _population.get(i)));
-	}	
-	
+	}
+
 	/**
 	 * Reverse the order of the population.
 	 */
 	public void reverse() {
 		Collections.reverse(_population);
 	}
-	
+
 	@Override
 	public Iterator<Phenotype<G, C>> iterator() {
 		return _population.iterator();
 	}
-	
+
 	@Override
 	public ListIterator<Phenotype<G, C>> listIterator() {
 		return _population.listIterator();
 	}
-	
+
 	@Override
 	public ListIterator<Phenotype<G, C>> listIterator(final int index) {
 		return _population.listIterator(index);
@@ -250,7 +251,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public boolean isEmpty() {
 		return _population.isEmpty();
 	}
-	
+
 	@Override
 	public boolean contains(final Object o) {
 		return _population.contains(o);
@@ -270,7 +271,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public int lastIndexOf(final Object o) {
 		return _population.lastIndexOf(o);
 	}
-	
+
 	@Override
 	public boolean retainAll(final Collection<?> c) {
 		return _population.retainAll(c);
@@ -290,7 +291,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public <A> A[] toArray(final A[] a) {
 		return _population.toArray(a);
 	}
-	
+
 	public List<Genotype<G>> getGenotypes() {
 		final List<Genotype<G>> genotypes = new ArrayList<>(_population.size());
 		for (Phenotype<G, C> phenotype : _population) {
@@ -298,17 +299,17 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 		return genotypes;
 	}
-	
+
 	@Override
 	public Population<G, C> copy() {
 		return new Population<>(_population);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_population).value();
 	}
-	
+
 	@Override
 	public boolean equals(final Object object) {
 		if (object == this) {
@@ -317,29 +318,29 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		if (!(object instanceof Population<?, ?>)) {
 			return false;
 		}
-		
+
 		final Population<?, ?> population = (Population<?, ?>)object;
 		return eq(_population, population._population);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		
+
 		for (Phenotype<?, ?> pt : this) {
 			out.append(pt.toString()).append("\n");
 		}
-		
+
 		return out.toString();
 	}
-	
-	
+
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static final XMLFormat<Population>
 	XML = new XMLFormat<Population>(Population.class)
 	{
 		private static final String SIZE = "size";
-		
+
 		@Override
 		public Population newInstance(
 			final Class<Population> cls, final InputElement xml
@@ -364,10 +365,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			}
 		}
 		@Override
-		public void read(final InputElement xml, final Population p) {	
+		public void read(final InputElement xml, final Population p) {
 		}
 	};
-	
+
 }
 
 

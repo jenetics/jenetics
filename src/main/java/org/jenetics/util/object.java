@@ -29,6 +29,7 @@ import java.util.Objects;
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public final class object {
@@ -36,8 +37,8 @@ public final class object {
 	private object() {
 		throw new AssertionError("Don't create an 'object' instance.");
 	}
-		
-	
+
+
 	/**
 	 * A range checking predicate which can be used to check whether the elements
 	 * of an array are within an given range. If not, an
@@ -69,8 +70,8 @@ public final class object {
 			}
 		};
 	}
-	
-	
+
+
 	/**
 	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
@@ -86,7 +87,7 @@ public final class object {
 			return object.isValid() ? Boolean.TRUE : Boolean.FALSE;
 		}
 	};
-	
+
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
 	 * for null values. The following code will throw an
@@ -101,7 +102,7 @@ public final class object {
 	 * [/code]
 	 */
 	public static final Function<Object, Boolean> NonNull = NonNull("Object");
-	
+
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
 	 * for null values. The following code will throw an
@@ -123,7 +124,7 @@ public final class object {
 			}
 		};
 	}
-	
+
 	/**
 	 * Checks that the specified object reference is not {@code null}.
 	 *
@@ -138,7 +139,7 @@ public final class object {
 		}
 		return obj;
 	}
-	
+
 	/**
 	 * Checks that the specified object reference is not {@code null}.
 	 *
@@ -149,7 +150,7 @@ public final class object {
 	public static <T> T nonNull(final T obj) {
 		return nonNull(obj, "Object");
 	}
-	
+
 	/**
 	 * Check if the specified value is not negative.
 	 *
@@ -166,7 +167,7 @@ public final class object {
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Check if the specified value is not negative.
 	 *
@@ -177,7 +178,7 @@ public final class object {
 	public static double nonNegative(final double value) {
 		return nonNegative(value, "Value");
 	}
-	
+
 	/**
 	 * Check if the given integer is negative.
 	 *
@@ -192,7 +193,7 @@ public final class object {
 			);
 		}
 	}
-	
+
 	/**
 	 * Check if the given double value is within the closed range {@code [0, 1]}.
 	 *
@@ -208,7 +209,7 @@ public final class object {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Create a HashCodeBuilder for the given type.
 	 *
@@ -218,7 +219,7 @@ public final class object {
 	public static HashCodeBuilder hashCodeOf(final Class<?> type) {
 		return new DefaultHashCodeBuilder(type);
 	}
-	
+
 	/**
 	 * Compares the two given {@code boolean} values.
 	 *
@@ -230,7 +231,7 @@ public final class object {
 	public static boolean eq(final boolean a, final boolean b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code boolean} arrays.
 	 *
@@ -242,7 +243,7 @@ public final class object {
 	public static boolean eq(final boolean[] a, final boolean[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code byte} values.
 	 *
@@ -254,7 +255,7 @@ public final class object {
 	public static boolean eq(final byte a, final byte b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code byte} arrays.
 	 *
@@ -266,7 +267,7 @@ public final class object {
 	public static boolean eq(final byte[] a, final byte[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code char} values.
 	 *
@@ -278,7 +279,7 @@ public final class object {
 	public static boolean eq(final char a, final char b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code char} arrays.
 	 *
@@ -290,7 +291,7 @@ public final class object {
 	public static boolean eq(final char[] a, final char[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code short} values.
 	 *
@@ -302,7 +303,7 @@ public final class object {
 	public static boolean eq(final short a, final short b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code short} arrays.
 	 *
@@ -314,7 +315,7 @@ public final class object {
 	public static boolean eq(final short[] a, final short[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code int} values.
 	 *
@@ -326,7 +327,7 @@ public final class object {
 	public static boolean eq(final int a, final int b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code int} arrays.
 	 *
@@ -338,7 +339,7 @@ public final class object {
 	public static boolean eq(final int[] a, final int[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code long} values.
 	 *
@@ -350,7 +351,7 @@ public final class object {
 	public static boolean eq(final long a, final long b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code long} arrays.
 	 *
@@ -362,7 +363,7 @@ public final class object {
 	public static boolean eq(final long[] a, final long[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code float} values.
 	 *
@@ -374,7 +375,7 @@ public final class object {
 	public static boolean eq(final float a, final float b) {
 		return Float.floatToIntBits(a) == Float.floatToIntBits(b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code float} arrays.
 	 *
@@ -386,7 +387,7 @@ public final class object {
 	public static boolean eq(final float[] a, final float[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code double} values.
 	 *
@@ -398,7 +399,7 @@ public final class object {
 	public static boolean eq(final double a, final double b) {
 		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code double} arrays.
 	 *
@@ -410,7 +411,7 @@ public final class object {
 	public static boolean eq(final double[] a, final double[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code Enum} values.
 	 *
@@ -422,7 +423,7 @@ public final class object {
 	public static boolean eq(final Enum<?> a, final Enum<?> b) {
 		return a == b;
 	}
-	
+
 	/**
 	 * Compares the two given {@code Object} values.
 	 *
@@ -434,7 +435,7 @@ public final class object {
 	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
 	}
-	
+
 	/**
 	 * Compares the two given {@code Object} arrays.
 	 *
@@ -446,7 +447,7 @@ public final class object {
 	public static boolean eq(final Object[] a, final Object[] b) {
 		return Arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Compares the two given {@code Seq} values.
 	 *
@@ -458,7 +459,7 @@ public final class object {
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
 		return arrays.equals(a, b);
 	}
-	
+
 	/**
 	 * Returns the result of calling toString for a non-null argument and "null"
 	 * for a null argument.
@@ -472,7 +473,7 @@ public final class object {
 	public static String str(final Object a) {
 		return Objects.toString(a);
 	}
-	
+
 	/**
 	 * Print a binary representation of the given byte array. The printed string
 	 * has the following format:
@@ -490,7 +491,7 @@ public final class object {
 	 */
 	public static String str(final byte... data) {
 		final StringBuilder out = new StringBuilder();
-		
+
 		if (data.length > 0) {
 			for (int j = 7; j >= 0; --j) {
 				out.append((data[data.length - 1] >>> j) & 1);
@@ -505,7 +506,7 @@ public final class object {
 
 		return out.toString();
 	}
-	
+
 }
 
 

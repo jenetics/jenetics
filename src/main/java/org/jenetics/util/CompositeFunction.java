@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -28,12 +28,13 @@ import static org.jenetics.util.object.nonNull;
  * This class allows to build composite functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public class CompositeFunction<A, B, C> implements Function<A, C> {
 	private final Function<A, B> _first;
 	private final Function<B, C> _second;
-	
+
 	/**
 	 * Create a new transitive converter with the given converters.
 	 *
@@ -48,12 +49,12 @@ public class CompositeFunction<A, B, C> implements Function<A, C> {
 		_first = nonNull(first);
 		_second = nonNull(second);
 	}
-	
+
 	@Override
 	public C apply(final A value) {
 		return _second.apply(_first.apply(value));
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -61,7 +62,7 @@ public class CompositeFunction<A, B, C> implements Function<A, C> {
 				getClass().getSimpleName(), _first, _second
 			);
 	}
-	
+
 	public static <A, B, C> Function<A, C> valueOf(
 		final Function<A, B> c1,
 		final Function<B, C> c2
@@ -76,7 +77,7 @@ public class CompositeFunction<A, B, C> implements Function<A, C> {
 	) {
 		return valueOf(valueOf(c1, c2), c3);
 	}
-	
+
 	public static <A, B, C, D, E> Function<A, E> valueOf(
 		final Function<A, B> c1,
 		final Function<B, C> c2,
@@ -85,7 +86,7 @@ public class CompositeFunction<A, B, C> implements Function<A, C> {
 	) {
 		return valueOf(valueOf(valueOf(c1, c2), c3), c4);
 	}
-	
+
 	public static <A, B, C, D, E, F> Function<A, F> valueOf(
 		final Function<A, B> c1,
 		final Function<B, C> c2,
@@ -95,7 +96,7 @@ public class CompositeFunction<A, B, C> implements Function<A, C> {
 	) {
 		return valueOf(valueOf(valueOf(valueOf(c1, c2), c3), c4), c5);
 	}
-	
+
 }
 
 

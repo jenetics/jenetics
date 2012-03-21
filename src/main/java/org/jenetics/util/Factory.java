@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.util;
 
@@ -26,6 +26,7 @@ package org.jenetics.util;
  * @param <T> the object type this factory creates.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.0
  * @version $Id$
  */
 public interface Factory<T> {
@@ -36,5 +37,5 @@ public interface Factory<T> {
 	 * @return a new instance of type T.
 	 */
 	public T newInstance();
-	
+
 }
