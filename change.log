@@ -1,5 +1,5 @@
 Jenetics-1.0
-
+- Add Ant to build libraries.
 - Rename org.jenetics.util.CharSet to org.jenetics.util.CharSeq.
 
 Jenetics-0.9.0.0
