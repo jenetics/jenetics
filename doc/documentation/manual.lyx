@@ -4,6 +4,14 @@
 \begin_header
 \textclass article
 \begin_preamble
+\usepackage{ifpdf} % part of the hyperref bundle
+\ifpdf % if pdflatex is used
+
+ % set fonts for nicer pdf view
+ \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
+
+\fi % end if pdflatex is used
+
 \usepackage{listings}
 \usepackage{color}
 \usepackage{url}
