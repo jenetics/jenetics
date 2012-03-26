@@ -1,7 +1,7 @@
 REQUIREMENTS
 ---------------------------------------
 
-- JDK 1.6
+- JDK 1.7
   The JAVA_HOME variable must be set to your
   java installation directory.
   
