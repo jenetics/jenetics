@@ -5962,76 +5962,307 @@ name "sec:Build"
 \end_layout
 
 \begin_layout Standard
-Jenetics uses Ant for compiling the sources and the other build steps.
- The most important build steps are
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-compile
+For building the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
 \family default
-: Compiles the sources
+\series default
+\shape default
+ libraries from the sources, download the most recent--stable--package version
+ from 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://sourceforge.net/projects/jenetics/files/latest/download
 \end_layout
 
-\begin_layout Itemize
+\end_inset
 
-\family typewriter
-example-compile
-\family default
-: Compiles the test classes.
+ and extract it to some build directory.
 \end_layout
 
-\begin_layout Itemize
-
-\family typewriter
-jar
-\family default
-: Compiles the sources and creates the jar files.
-\end_layout
-
-\begin_layout Itemize
-clean
-\end_layout
-
-\begin_layout Itemize
-clean-all
-\end_layout
-
-\begin_layout Itemize
-compile
-\end_layout
-
-\begin_layout Itemize
-example-compile
-\end_layout
-
-\begin_layout Itemize
-export
-\end_layout
-
-\begin_layout Itemize
-jar
-\end_layout
-
-\begin_layout Itemize
-javadoc
-\end_layout
-
-\begin_layout Itemize
-perftest-run
-\end_layout
-
-\begin_layout Itemize
-test-compile
-\end_layout
-
-\begin_layout Itemize
-test-run
+\begin_layout LyX-Code
+$ unzip jenetics-<version>.zip -d <build-dir>
 \end_layout
 
 \begin_layout Standard
-All you need for building the Jenetics library from scratch
+
+\family typewriter
+<version>
+\family default
+ denotes the actual Jenetics version and 
+\family typewriter
+<build-dir>
+\family default
+ the actual build directory.
+ Alternatively you can check out the latest--unstable--version from the
+ SVN trunk.
+\end_layout
+
+\begin_layout LyX-Code
+$ svn checkout 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      https://jenetics.svn.sourceforge.net/
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      svnroot/jenetics/trunk 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      <build-dir>
+\end_layout
+
+\begin_layout Standard
+Compiling the sources and building the JAR files is done with the 
+\family typewriter
+jar
+\family default
+ 
+\emph on
+Ant
+\emph default
+ target.
+ Change to the 
+\family typewriter
+<build-dir>
+\family default
+ directory and call
+\end_layout
+
+\begin_layout LyX-Code
+$ ./lib/build/apache-ant/bin/ant jar
+\end_layout
+
+\begin_layout Standard
+The JAR files, and all other build artifacts, are stored in the 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+main
+\family default
+ directory.
+\end_layout
+
+\begin_layout Standard
+The available 
+\emph on
+Ant
+\emph default
+ targets are:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+compile
+\family default
+: Compiles the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ sources and copies the class files to the 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+main
+\family default
+ directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+example-compile
+\family default
+: Compiles the examples and copies the class files to the 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+main
+\family default
+ directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+test-compile
+\family default
+: Compiles the tests and copies the class files to the 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+main
+\family default
+ directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+test-run
+\family default
+: Compiles and executes the unit tests.
+ The test results are printed onto the console and a test-report, created
+ by 
+\emph on
+TestNG
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://testng.org/doc/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, is written to 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+test-report.html
+\family default
+.
+ Since some of the unit-tests are 
+\emph on
+statistical
+\emph default
+ tests it is possible that the number of failed tests is greater than zero
+ and the test run is still successful.
+ E.g.
+\end_layout
+
+\begin_layout LyX-Code
+    ...
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+  [testng] ===============================================
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+  [testng] Jenetics    
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+  [testng] Total tests run: 1435, Failures: 1, Skips: 0    
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+  [testng] ===============================================   
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+  [testng] ...
+      
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+   [copy] Copying 1 file to <build-dir>
+\end_layout
+
+\begin_layout LyX-Code
+ 
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+ BUILD SUCCESSFUL Total time: 1 minute 18 seconds
+\size default
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+perftest-run
+\family default
+: Run som performance tests and stores the result into 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+pertest-report.txt
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+javadoc
+\family default
+: Create the API documentation.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+jar
+\family default
+: Compiles the sources and creates the JAR files.
+ The artifacts are copied to the 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+main
+\family default
+ directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+clean
+\family default
+: Deletes the 
+\family typewriter
+<build-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+main
+\family default
+ directory and removes all other created artifacts.
 \end_layout
 
 \begin_layout Standard
