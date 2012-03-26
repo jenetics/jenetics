@@ -479,11 +479,6 @@
 			<fileset dir="${basedir}" includes="*.pdf"/>
 			<fileset dir="${basedir}" includes="${identifier}*.jar"/>
 			<fileset dir="${basedir}" includes="temp-testng-*"/>
-		</delete>
-	</target>
-
-	<target name="clean-all" depends="clean">
-		<delete>
 			<fileset dir="${basedir}" includes="test-report.html"/>
 		</delete>
 	</target>
@@ -542,7 +537,7 @@
 	    file.
 	-->
 	<target name="export" >
-		<antcall target="clean-all" />
+		<antcall target="clean" />
 		<antcall target="test-run" />
 		<antcall target="clean" />
 		<antcall target="jar" />
