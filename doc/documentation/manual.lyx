@@ -5418,6 +5418,46 @@ Jenetics
  run and produce the given example output.
 \end_layout
 
+\begin_layout Standard
+Running the examples delivered with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library can be started with the 
+\family typewriter
+run-examples.sh
+\family default
+ script.
+\end_layout
+
+\begin_layout LyX-Code
+$ ./run-examples.sh
+\end_layout
+
+\begin_layout Standard
+Since the script uses JARs located in the build directory you have to build
+ it with the 
+\family typewriter
+jar
+\family default
+ 
+\emph on
+Ant
+\emph default
+ target first; see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Build"
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsection
 Ones Counting
 \end_layout
@@ -5970,7 +6010,7 @@ Jenetics
 \family default
 \series default
 \shape default
- libraries from the sources, download the most recent--stable--package version
+ library from source, download the most recent--stable--package version
  from 
 \begin_inset Flex URL
 status collapsed
@@ -5986,7 +6026,8 @@ https://sourceforge.net/projects/jenetics/files/latest/download
 \end_layout
 
 \begin_layout LyX-Code
-$ unzip jenetics-<version>.zip -d <build-dir>
+$ unzip jenetics-<version>.zip -d <build\SpecialChar \-
+dir>
 \end_layout
 
 \begin_layout Standard
@@ -5996,7 +6037,8 @@ $ unzip jenetics-<version>.zip -d <build-dir>
 \family default
  denotes the actual Jenetics version and 
 \family typewriter
-<build-dir>
+<build\SpecialChar \-
+dir>
 \family default
  the actual build directory.
  Alternatively you can check out the latest--unstable--version from the
@@ -6022,7 +6064,7 @@ $ svn checkout
 \end_layout
 
 \begin_layout LyX-Code
-      <build-dir>
+      <builddir>
 \end_layout
 
 \begin_layout Standard
@@ -6037,7 +6079,8 @@ Ant
  target.
  Change to the 
 \family typewriter
-<build-dir>
+<build\SpecialChar \-
+dir>
 \family default
  directory and call
 \end_layout
@@ -6049,7 +6092,8 @@ $ ./lib/build/apache-ant/bin/ant jar
 \begin_layout Standard
 The JAR files, and all other build artifacts, are stored in the 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 main
 \family default
@@ -6079,7 +6123,8 @@ Jenetics
 \shape default
  sources and copies the class files to the 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 main
 \family default
@@ -6093,7 +6138,8 @@ example-compile
 \family default
 : Compiles the examples and copies the class files to the 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 main
 \family default
@@ -6105,9 +6151,10 @@ main
 \family typewriter
 test-compile
 \family default
-: Compiles the tests and copies the class files to the 
+: Compiles the tests and the class files to the 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 main
 \family default
@@ -6147,7 +6194,8 @@ http://testng.org/doc/index.html
 
 , is written to 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 test-report.html
 \family default
 .
@@ -6198,7 +6246,7 @@ statistical
 \begin_layout LyX-Code
 
 \size small
-   [copy] Copying 1 file to <build-dir>
+   [copy] Copying 1 file to <builddir>
 \end_layout
 
 \begin_layout LyX-Code
@@ -6207,12 +6255,8 @@ statistical
 
 \begin_layout LyX-Code
 
-\end_layout
-
-\begin_layout LyX-Code
-
 \size small
- BUILD SUCCESSFUL Total time: 1 minute 18 seconds
+  BUILD SUCCESSFUL Total time: 1 minute 18 seconds
 \size default
  
 \end_layout
@@ -6222,9 +6266,10 @@ statistical
 \family typewriter
 perftest-run
 \family default
-: Run som performance tests and stores the result into 
+: Run some performance tests and stores the result into 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 pertest-report.txt
 \end_layout
 
@@ -6244,7 +6289,8 @@ jar
 : Compiles the sources and creates the JAR files.
  The artifacts are copied to the 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 main
 \family default
@@ -6258,11 +6304,12 @@ clean
 \family default
 : Deletes the 
 \family typewriter
-<build-dir>\SpecialChar \slash{}
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
 main
 \family default
- directory and removes all other created artifacts.
+ directory and removes all other generated artifacts.
 \end_layout
 
 \begin_layout Standard
