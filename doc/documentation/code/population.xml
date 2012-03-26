@@ -51,5 +51,6 @@
             class="org.jscience.mathematics.number.Float64" 
             value="19.979985186009532"
         />
-        ...
+    </org.jenetics.Phenotype>
+    ...
 </org.jenetics.Population>
