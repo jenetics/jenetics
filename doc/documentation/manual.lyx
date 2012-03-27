@@ -546,7 +546,7 @@ http://jscience.org/
 
 \end_inset
 
- library.
+ library,
 \begin_inset Foot
 status collapsed
 
@@ -569,6 +569,7 @@ JScience
 
 \end_inset
 
+ which is part of the download package.
  For building the library from the sources you only have the be the Java
  JDK 7.0 to be installed, all other dependencies are available in the package
  which you can download from 
@@ -6010,8 +6011,8 @@ Jenetics
 \family default
 \series default
 \shape default
- library from source, download the most recent--stable--package version
- from 
+ library from source, download the most recent, stable package version from
+ 
 \begin_inset Flex URL
 status collapsed
 
@@ -6035,7 +6036,15 @@ dir>
 \family typewriter
 <version>
 \family default
- denotes the actual Jenetics version and 
+ denotes the actual 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ version and 
 \family typewriter
 <build\SpecialChar \-
 dir>
@@ -6172,26 +6181,6 @@ test-run
 \emph on
 TestNG
 \emph default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://testng.org/doc/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
 , is written to 
 \family typewriter
 <build\SpecialChar \-
@@ -6204,8 +6193,7 @@ test-report.html
 statistical
 \emph default
  tests it is possible that the number of failed tests is greater than zero
- and the test run is still successful.
- E.g.
+ and the test run is still successful; e.g.
 \end_layout
 
 \begin_layout LyX-Code
@@ -6246,7 +6234,7 @@ statistical
 \begin_layout LyX-Code
 
 \size small
-   [copy] Copying 1 file to <builddir>
+    [copy] Copying 1 file to <builddir>
 \end_layout
 
 \begin_layout LyX-Code
@@ -6278,7 +6266,7 @@ pertest-report.txt
 \family typewriter
 javadoc
 \family default
-: Create the API documentation.
+: Generates the API documentation.
 \end_layout
 
 \begin_layout Itemize
@@ -6310,6 +6298,302 @@ build\SpecialChar \slash{}
 main
 \family default
  directory and removes all other generated artifacts.
+\end_layout
+
+\begin_layout Standard
+Following a list of the external library dependencies:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+JScience
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+: 
+\emph on
+4.3.1
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jscience.org
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://java.net/projects/jscience/downloads
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+: 
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "JScience BSD License"
+target "http://jscience.org/doc/license.txt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+: 
+\emph on
+runtime
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+TestNG
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+: 
+\emph on
+6.4
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://testng.org/doc/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://testng.org/testng-6.4.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+: 
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Apache 2.0"
+target "http://testng.org/license"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+: 
+\emph on
+test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+Java2Html
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+: 
+\emph on
+5.0
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.java2html.de/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.java2html.de/java2html_50.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+: 
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "GPL"
+target "https://www.gnu.org/licenses/gpl.html"
+
+\end_inset
+
+ or 
+\begin_inset CommandInset href
+LatexCommand href
+name "CPL1.0"
+target "http://www.eclipse.org/legal/cpl-v10.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+: 
+\emph on
+javadoc
+\end_layout
+
+\end_deeper
+\begin_layout Section
+License
+\end_layout
+
+\begin_layout Standard
+The library itself is licensed under the 
+\begin_inset CommandInset href
+LatexCommand href
+name "GNU Lesser General Public License"
+target "https://www.gnu.org/licenses/lgpl-2.1.html"
+
+\end_inset
+
+GNU Lesser General Public License as published by the Free Software Foundation;
+ either version 2.1 of the License, or (at your option) any later version.
 \end_layout
 
 \begin_layout Standard
