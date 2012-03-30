@@ -282,6 +282,20 @@
       </item>
     </group>
   </component>
+  <component name="ProjectCodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
+        <codeStyleSettings language="Groovy">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
+      </value>
+    </option>
+  </component>
   <component name="ProjectDetails">
     <option name="projectName" value="Jenetics" />
   </component>
@@ -318,20 +332,6 @@
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://jenetics.svn.sourceforge.net/svnroot/jenetics/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://jenetics.svn.sourceforge.net/svnroot/jenetics/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://jenetics.svn.sourceforge.net/svnroot/jenetics/branches" />
@@ -378,10 +378,12 @@
     </library>
     <library name="lib">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jscience.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/jscience-4.3.1.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/jscience-4.3.1.jar!/" />
+      </SOURCES>
     </library>
   </component>
 </project>
