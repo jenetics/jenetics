@@ -73,7 +73,7 @@ public final class BoltzmannSelector<
 	private final double _b;
 
 	/**
-	 * Create a new BolzmanSelecter with a default beta of 0.2.
+	 * Create a new BoltzmannSelector with a default beta of 0.2.
 	 */
 	public BoltzmannSelector() {
 		this(0.2);
