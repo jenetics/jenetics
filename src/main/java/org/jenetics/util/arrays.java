@@ -424,7 +424,7 @@ public final class arrays {
 	 * [code]
 	 * ConcurrentContext.enter();
 	 * try {
-	 *     final int[] parts = ArrayUtils.partition(population.size(), _maxThreads);
+	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
 	 *
 	 *     for (int i = 0; i < parts.length - 1; ++i) {
 	 *         final int part = i;

@@ -25,7 +25,7 @@ package org.jenetics.util;
 import javolution.lang.Immutable;
 
 /**
- * Immutable sequence view.
+ * Immutable object sequence.
  *
  * @see MSeq
  *

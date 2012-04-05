@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import java.util.Random;
 
 /**
@@ -75,14 +77,14 @@ public abstract class IndexStream {
 		final Random random
 	) {
 		if (n == Integer.MAX_VALUE) {
-			throw new IllegalArgumentException(String.format(
-					"n must be smaller than Integer.MAX_VALUE."
-				));
+			throw new IllegalArgumentException(format(
+				"n must be smaller than Integer.MAX_VALUE."
+			));
 		}
 		if (n <= 0) {
-			throw new IllegalArgumentException(String.format(
-					"n must be greate than zero: %d", n
-				));
+			throw new IllegalArgumentException(format(
+				"n must be greate than zero: %d", n
+			));
 		}
 
 		return new IndexStream() {
