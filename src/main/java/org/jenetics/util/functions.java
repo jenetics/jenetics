@@ -222,7 +222,10 @@ public final class functions {
 				return a.apply(object) || b.apply(object);
 			}
 			@Override public String toString() {
-				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
+				return String.format(
+						"%s[%s, %s]",
+						getClass().getSimpleName(), a, b
+					);
 			}
 		};
 	}

@@ -58,9 +58,9 @@ public class CompositeFunction<A, B, C> implements Function<A, C> {
 	@Override
 	public String toString() {
 		return String.format(
-				"%s[%s, %s]",
-				getClass().getSimpleName(), _first, _second
-			);
+			"%s[%s, %s]",
+			getClass().getSimpleName(), _first, _second
+		);
 	}
 
 	public static <A, B, C> Function<A, C> valueOf(
