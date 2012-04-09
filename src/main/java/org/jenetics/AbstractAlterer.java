@@ -70,7 +70,7 @@ public abstract class AbstractAlterer<G extends Gene<?, G>>
 
 			@Override
 			public String toString() {
-				return "AbstractAlterer.Null";
+				return "Alterer.Null";
 			}
 		};
 	}

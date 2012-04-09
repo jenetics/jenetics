@@ -36,7 +36,7 @@ import static java.lang.Math.sqrt;
  * @version $Id$
  */
 @SuppressWarnings("javadoc")
-final class math extends math_gamma {
+final class math {
 
 	private math() {
 		throw new AssertionError("Don't create an 'math' instance.");

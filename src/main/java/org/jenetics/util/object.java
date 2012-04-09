@@ -62,9 +62,9 @@ public final class object {
 				nonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
 					throw new IllegalArgumentException(String.format(
-							"Given value %s is out of range [%s, %s)",
-							value, min, max
-						));
+						"Given value %s is out of range [%s, %s)",
+						value, min, max
+					));
 				}
 				return Boolean.TRUE;
 			}
@@ -204,8 +204,8 @@ public final class object {
 	public static double checkProbability(final double p) {
 		if (p < 0.0 || p > 1.0) {
 			throw new IllegalArgumentException(String.format(
-					"The given probability is not in the range [0, 1]: %f", p
-				));
+				"The given probability is not in the range [0, 1]: %f", p
+			));
 		}
 		return p;
 	}

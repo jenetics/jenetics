@@ -132,9 +132,9 @@ abstract class PermutationIndexStream extends IndexStream {
 		@Override
 		public String toString() {
 			return String.format(
-					"Length: %d, start: %d, stride: %d",
-					_length, _start, _stride
-				);
+				"Length: %d, start: %d, stride: %d",
+				_length, _start, _stride
+			);
 		}
 
 	}
@@ -147,8 +147,8 @@ abstract class PermutationIndexStream extends IndexStream {
 	public static IndexStream valueOf(final int length, final Random random) {
 		if (length < 0) {
 			throw new IllegalArgumentException(
-					"Length must be greater than zero: " + length
-				);
+				"Length must be greater than zero: " + length
+			);
 		}
 
 		PermutationIndexStream stream = null;

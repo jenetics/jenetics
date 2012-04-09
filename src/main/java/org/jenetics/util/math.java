@@ -253,15 +253,6 @@ public final class math {
 		return y;
 	}
 
-
-//	static double plusULPDistance(final double a, final long ulpDistance) {
-//		long t = Double.doubleToLongBits(a) + ulpDistance;
-//		if (t < 0) {
-//			t = Long.MIN_VALUE - t;
-//		}
-//		return Double.longBitsToDouble(t);
-//	}
-
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
 		return m >= Integer.MIN_VALUE && m <= Integer.MAX_VALUE;
