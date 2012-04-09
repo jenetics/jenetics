@@ -43,7 +43,7 @@ class Tuple2<T1, T2> {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(Tuple2.class).and(_1).and(_2).value();
+		return hashCodeOf(getClass()).and(_1).and(_2).value();
 	}
 
 	@Override
