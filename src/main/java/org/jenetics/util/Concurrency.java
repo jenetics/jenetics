@@ -160,8 +160,8 @@ public final class Concurrency implements AutoCloseable {
 	@SuppressWarnings("unchecked")
 	public static Class<ConcurrentContext> getContext() {
 		final Context context = ConcurrentContext.getCurrent();
-		return (Class<ConcurrentContext>) ConcurrentContext.class.cast(context)
-				.getClass();
+		return (Class<ConcurrentContext>)
+				ConcurrentContext.class.cast(context).getClass();
 	}
 
 	public static Concurrency start() {
