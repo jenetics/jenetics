@@ -103,7 +103,7 @@ public final class termination {
 	 *
 	 * [code]
 	 * final GeneticAlgortihm<Float64Gene, Float64> ga = ...
-	 * ga.evolve(Until.Generation(100));
+	 * ga.evolve(termination.Generation(100));
 	 * [/code]
 	 *
 	 * @param generation the maximal GA generation.
