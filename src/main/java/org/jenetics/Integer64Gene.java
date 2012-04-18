@@ -82,20 +82,20 @@ public final class Integer64Gene
 	 */
 	public static final Function<Integer64Gene, Integer64> Min =
 		new Function<Integer64Gene, Integer64>() {
-				@Override public Integer64 apply(final Integer64Gene value) {
-					return value._min;
-				}
-			};
+			@Override public Integer64 apply(final Integer64Gene value) {
+				return value._min;
+			}
+		};
 
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
 	public static final Function<Integer64Gene, Integer64> Max =
 		new Function<Integer64Gene, Integer64>() {
-				@Override public Integer64 apply(final Integer64Gene value) {
-					return value._value;
-				}
-			};
+			@Override public Integer64 apply(final Integer64Gene value) {
+				return value._value;
+			}
+		};
 
 	/* *************************************************************************
 	 *  Factory methods
@@ -137,10 +137,10 @@ public final class Integer64Gene
 
 	private static final ObjectFactory<Integer64Gene> FACTORY =
 		new ObjectFactory<Integer64Gene>() {
-				@Override protected Integer64Gene create() {
-					return new Integer64Gene();
-				}
-			};
+			@Override protected Integer64Gene create() {
+				return new Integer64Gene();
+			}
+		};
 
 	/**
 	 * Create a new random Integer64Gene with the given value and the given range.

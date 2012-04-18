@@ -77,10 +77,10 @@ public final class Float64Gene
 	 */
 	public static final Function<Float64Gene, Float64> Allele =
 		new Function<Float64Gene, Float64>() {
-				@Override public Float64 apply(final Float64Gene value) {
-					return value._value;
-				}
-			};
+			@Override public Float64 apply(final Float64Gene value) {
+				return value._value;
+			}
+		};
 
 	/**
 	 * Converter for accessing the allele from a given number gene.
@@ -92,20 +92,20 @@ public final class Float64Gene
 	 */
 	public static final Function<Float64Gene, Float64> Min =
 		new Function<Float64Gene, Float64>() {
-				@Override public Float64 apply(final Float64Gene value) {
-					return value._min;
-				}
-			};
+			@Override public Float64 apply(final Float64Gene value) {
+				return value._min;
+			}
+		};
 
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
 	public static final Function<Float64Gene, Float64> Max =
 		new Function<Float64Gene, Float64>() {
-				@Override public Float64 apply(final Float64Gene value) {
-					return value._max;
-				}
-			};
+			@Override public Float64 apply(final Float64Gene value) {
+				return value._max;
+			}
+		};
 
 	/* *************************************************************************
 	 *  Factory methods
@@ -146,10 +146,10 @@ public final class Float64Gene
 
 	private static final ObjectFactory<Float64Gene> FACTORY =
 		new ObjectFactory<Float64Gene>() {
-				@Override protected Float64Gene create() {
-					return new Float64Gene();
-				}
-			};
+			@Override protected Float64Gene create() {
+				return new Float64Gene();
+			}
+		};
 
 	/**
 	 * Create a new random Float64Gene with the given value and the given range.
