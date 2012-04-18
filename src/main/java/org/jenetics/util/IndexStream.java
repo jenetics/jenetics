@@ -40,7 +40,7 @@ import java.util.Random;
  * final IndexStream stream = ...;
  * int index = 0;
  * while ((index = stream.next()) != -1) {
- *     System.out.println(i);
+ *     System.out.println(index);
  * }
  * [/code]
  *
