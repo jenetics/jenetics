@@ -137,7 +137,7 @@ public abstract class ProbabilitySelector<
 	 * @return Probability array. The returned probability array must have the
 	 * 		  length {@code population.size()} and <strong>must</strong> sum to
 	 * 		  one. The returned value is checked with
-	 * 		  {@code assert(Math.abs(arrays.sum(probabilities) - 1.0) < 0.0001)}
+	 * 		  {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
 	 * 		  in the base class.
 	 */
 	protected abstract double[] probabilities(
