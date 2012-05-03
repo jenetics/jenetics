@@ -1,4 +1,6 @@
 Jenetics-1.0
+- Remove org.jenetics.util.CompositeFunction. Functionality moved to 
+  org.jenetics.util.functions object.
 - Add Ant to build libraries.
 - Rename org.jenetics.util.CharSet to org.jenetics.util.CharSeq.
 
