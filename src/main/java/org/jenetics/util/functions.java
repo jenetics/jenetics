@@ -163,7 +163,7 @@ public final class functions {
 	 * @return a predicate which negates the return value of the given predicate.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public static <T> Function<T, Boolean> Not(final Function<? super T, Boolean> a) {
+	public static <T> Function<T, Boolean> not(final Function<? super T, Boolean> a) {
 		nonNull(a);
 		return new Function<T, Boolean>() {
 			@Override public Boolean apply(final T object) {
@@ -185,7 +185,7 @@ public final class functions {
 	 * @throws NullPointerException if one of the given predicates is
 	 * 		  {@code null}.
 	 */
-	public static <T> Function<T, Boolean> And(
+	public static <T> Function<T, Boolean> and(
 		final Function<? super T, Boolean> a,
 		final Function<? super T, Boolean> b
 	) {
@@ -211,7 +211,7 @@ public final class functions {
 	 * @throws NullPointerException if one of the given predicates is
 	 * 		  {@code null}.
 	 */
-	public static <T> Function<T, Boolean> Or(
+	public static <T> Function<T, Boolean> or(
 		final Function<? super T, Boolean> a,
 		final Function<? super T, Boolean> b
 	) {
@@ -254,6 +254,47 @@ public final class functions {
 		return (Function<T, T>)IDENTITY;
 	}
 
+
+	public static <A, B, C> Function<A, C> compose(
+		final Function<A, B> f1,
+		final Function<B, C> f2
+	) {
+		nonNull(f1, "Function 1");
+		nonNull(f2, "Function 2");
+
+		return new Function<A, C>() {
+			@Override public C apply(A value) {
+				return f2.apply(f1.apply(value));
+			}
+		};
+	}
+
+	public static <A, B, C, D> Function<A, D> compose(
+		final Function<A, B> f1,
+		final Function<B, C> f2,
+		final Function<C, D> f3
+	) {
+		return compose(compose(f1, f2), f3);
+	}
+
+	public static <A, B, C, D, E> Function<A, E> compose(
+		final Function<A, B> f1,
+		final Function<B, C> f2,
+		final Function<C, D> f3,
+		final Function<D, E> f4
+	) {
+		return compose(compose(compose(f1, f2), f3), f4);
+	}
+
+	public static <A, B, C, D, E, F> Function<A, F> compose(
+		final Function<A, B> f1,
+		final Function<B, C> f2,
+		final Function<C, D> f3,
+		final Function<D, E> f4,
+		final Function<E, F> f5
+	) {
+		return compose(compose(compose(compose(f1, f2), f3), f4), f5);
+	}
 
 }
 

@@ -25,7 +25,7 @@ package org.jenetics.util;
 import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.ObjectToString;
-import static org.jenetics.util.functions.Not;
+import static org.jenetics.util.functions.not;
 import static org.jenetics.util.functions.Null;
 
 import java.util.Arrays;
@@ -126,7 +126,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		array.set(18, null);
 		array.set(19, null);
 		
-		final Array<Integer> filtered = array.filter(Not(Null));
+		final Array<Integer> filtered = array.filter(not(Null));
 		Assert.assertEquals(filtered.length(), array.length() - 2);
 	}
 	
