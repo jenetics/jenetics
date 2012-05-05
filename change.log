@@ -3,6 +3,7 @@ Jenetics-1.0
   org.jenetics.util.functions object.
 - Add Ant to build libraries.
 - Rename org.jenetics.util.CharSet to org.jenetics.util.CharSeq.
+- Some javadoc fixes.
 
 Jenetics-0.9.0.0
 - Rename org.jenetics.Until class to org.jenetics.termination.
