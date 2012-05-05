@@ -3882,46 +3882,27 @@ class SteadyFitness<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-   implements Function<Statistics<?, C>, Boolean>
+    implements Function<Statistics<?, C>, Boolean>
 \end_layout
 
 \begin_layout Plain Layout
 
- {
+{
 \end_layout
 
 \begin_layout Plain Layout
 
-  private final int _genenerations;
+    private final int _genenerations;
 \end_layout
 
 \begin_layout Plain Layout
 
-  private C _fitness;
+    private C _fitness;
 \end_layout
 
 \begin_layout Plain Layout
 
-  private int _stableGenerations = 0;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  public SteadyFitness(final int generations) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    _genenerations = generations;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
+    private int _stableGenerations = 0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -3930,72 +3911,12 @@ class SteadyFitness<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-  @Override
+    public SteadyFitness(final int generations) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  public Boolean apply(Statistics<?, C> statistics) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    boolean proceed = true;
-\end_layout
-
-\begin_layout Plain Layout
-
-    if (_fitness == null) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      _fitness = stat.getBestFitness();
-\end_layout
-
-\begin_layout Plain Layout
-
-      _stableGenerations = 1;
-\end_layout
-
-\begin_layout Plain Layout
-
-    } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-      final Optimize opt = stat.getOptimize();
-\end_layout
-
-\begin_layout Plain Layout
-
-      if (opt.compare(_fitness, stat.getBestFitness()) >= 0) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        proceed = ++_stableGenerations <= _genenerations;
-\end_layout
-
-\begin_layout Plain Layout
-
-      } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-        _fitness = stat.getBestFitness();
-\end_layout
-
-\begin_layout Plain Layout
-
-        _stableGenerations = 1;
-\end_layout
-
-\begin_layout Plain Layout
-
-      }
+        _genenerations = generations;
 \end_layout
 
 \begin_layout Plain Layout
@@ -4009,12 +3930,91 @@ class SteadyFitness<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-    return proceed ? Boolean.TRUE : Boolean.FALSE;
+    @Override
 \end_layout
 
 \begin_layout Plain Layout
 
-  }
+    public Boolean apply(Statistics<?, C> statistics) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        boolean proceed = true;
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (_fitness == null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            _fitness = stat.getBestFitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+            _stableGenerations = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+        } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+            final Optimize opt = stat.getOptimize();
+\end_layout
+
+\begin_layout Plain Layout
+
+            if (opt.compare(_fitness, stat.getBestFitness()) >= 0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+                proceed = ++_stableGenerations <= _genenerations;
+\end_layout
+
+\begin_layout Plain Layout
+
+            } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+                _fitness = stat.getBestFitness();
+\end_layout
+
+\begin_layout Plain Layout
+
+                _stableGenerations = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+            }
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        return proceed ? Boolean.TRUE : Boolean.FALSE;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -6389,7 +6389,7 @@ Scope
 \series default
 : 
 \emph on
-runtime
+compile, runtime
 \end_layout
 
 \end_deeper
