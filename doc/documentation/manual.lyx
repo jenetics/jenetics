@@ -341,7 +341,7 @@ http://jenetics.sourceforge.net/
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename graphic/by-nc-sa.svg
+	filename graphic/by-sa.svg
 
 \end_inset
 
@@ -357,11 +357,11 @@ This document is licensed under a
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
-target "http://creativecommons.org/licenses/by-nc-sa/3.0/"
+target "http://creativecommons.org/licenses/by-sa/3.0/"
 
 \end_inset
 
- Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+ Attribution-ShareAlike 3.0 Unported License.
 \end_layout
 
 \begin_layout Standard
