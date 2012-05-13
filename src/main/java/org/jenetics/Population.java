@@ -350,8 +350,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final int size = xml.getAttribute(SIZE, 10);
 			final Population p = new Population(size);
 			for (int i = 0; i < size; ++i) {
-				final Phenotype pt = xml.getNext();
-				p.add(pt);
+				p.add(xml.<Phenotype>getNext());
 			}
 			return p;
 		}
