@@ -129,6 +129,8 @@ import org.jenetics.util.functions;
  * @see <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">
  *          Wikipedia: Genetic algorithm
  *      </a>
+ * @see Alterer
+ * @see Selector
  *
  * @param <G> The gene type this GA evaluates,
  * @param <C> The result type (of the fitness function).
