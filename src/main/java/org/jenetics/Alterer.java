@@ -25,7 +25,8 @@ package org.jenetics;
 
 /**
  * The Alterer is responsible for the recombination of a Population. Alterers can
- * be chained by appending an new (component) alterers.
+ * be chained by appending a list of alterers with the
+ * {@link GeneticAlgorithm#setAlterers(Alterer...)} method.
  *
  * [code]
  * GeneticAlgorithm<Float64Gene, Float64> ga = ...
