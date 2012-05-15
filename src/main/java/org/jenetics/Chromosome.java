@@ -32,7 +32,8 @@ import org.jenetics.util.Verifiable;
 
 /**
  * A chromosome consists of one or more genes. It also provides a factory
- * method for creating new, random chromosome instances of the same type.
+ * method for creating new, random chromosome instances of the same type and the
+ * same constraint.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  *
@@ -87,7 +88,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	public int length();
 
 	/**
-	 * Return a unmodifiable sequence of the genes of this chromosome.
+	 * Return an unmodifiable sequence of the genes of this chromosome.
 	 *
 	 * @return an immutable gene sequence.
 	 */
