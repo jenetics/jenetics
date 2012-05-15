@@ -64,7 +64,7 @@ import org.jenetics.util.object;
  *     new Float64Chromosome(0.1, 0.9, 5)
  * );
  * [/code]
- * The code snipped above creates a genotypw with the same structure as shown in
+ * The code snippet above creates a genotype with the same structure as shown in
  * the figure above. In this example the {@link Float64Gene} has been chosen as
  * gene type.
  *
