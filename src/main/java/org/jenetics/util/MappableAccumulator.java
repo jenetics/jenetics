@@ -85,17 +85,17 @@ public abstract class MappableAccumulator<T>
 	 * [/code]
 	 *
 	 * @param <B> the type of the returned adapter (view).
-	 * @param converter the converter needed to map between the type of this
+	 * @param mapper the mapper needed to map between the type of this
 	 *        adapter and the adapter view type.
 	 * @return the adapter view with the different type.
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
-	public <B> MappableAccumulator<B> map(final Function<B, T> converter) {
-		nonNull(converter, "Converter");
+	public <B> MappableAccumulator<B> map(final Function<B, T> mapper) {
+		nonNull(mapper, "Mapper");
 		return new MappableAccumulator<B>() {
 			@Override
 			public void accumulate(final B value) {
-				MappableAccumulator.this.accumulate(converter.apply(value));
+				MappableAccumulator.this.accumulate(mapper.apply(value));
 			}
 		};
 	}
