@@ -176,14 +176,14 @@ public interface Seq<T> extends Iterable<T> {
 	 * sequence.
 	 *
 	 * @param <B> the element type of the returned collection.
-	 * @param converter the function to apply to each element.
+	 * @param mapper the function to apply to each element.
 	 * @return a new sequence of type That resulting from applying the given
 	 *         function f to each element of this sequence and collecting the
 	 *         results.
-	 * @throws NullPointerException if the element {@code converter} is
+	 * @throws NullPointerException if the element {@code mapper} is
 	 *         {@code null}.
 	 */
-	public <B> Seq<B> map(final Function<? super T, ? extends B> converter);
+	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
 	 * Return an array containing all of the elements in this sequence in right

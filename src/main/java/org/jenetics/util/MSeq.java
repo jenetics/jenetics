@@ -95,7 +95,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public MSeq<T> subSeq(final int start);
 
 	@Override
-	public <B> MSeq<B> map(final Function<? super T, ? extends B> converter);
+	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
 	 * Return a read-only projection of this sequence.

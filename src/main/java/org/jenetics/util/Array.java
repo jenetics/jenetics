@@ -602,8 +602,8 @@ public final class Array<T>
 	}
 
 	@Override
-	public <B> Array<B> map(final Function<? super T, ? extends B> converter) {
-		nonNull(converter, "Converter");
+	public <B> Array<B> map(final Function<? super T, ? extends B> mapper) {
+		nonNull(mapper, "Converter");
 
 		final int length = length();
 		final Array<B> result = new Array<>(length);
@@ -612,7 +612,7 @@ public final class Array<T>
 		for (int i = length; --i >= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
-			result._array.data[i] = converter.apply(value);
+			result._array.data[i] = mapper.apply(value);
 		}
 		return result;
 	}
