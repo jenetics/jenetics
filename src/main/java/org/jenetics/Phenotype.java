@@ -323,14 +323,14 @@ public final class Phenotype<
 	 * Create a {@link Function} which return the phenotype fitness when
 	 * calling {@code converter.convert(phenotype)}.
 	 *
-	 * @param <SC> the fitness value type.
+	 * @param <C> the fitness value type.
 	 * @return a fitness {@link Function}.
 	 */
-	public static <SC extends Comparable<? super SC>>
-	Function<Phenotype<?, SC>, SC> Fitness()
+	public static <C extends Comparable<? super C>>
+	Function<Phenotype<?, C>, C> Fitness()
 	{
-		return new Function<Phenotype<?, SC>, SC>() {
-			@Override public SC apply(final Phenotype<?, SC> value) {
+		return new Function<Phenotype<?, C>, C>() {
+			@Override public C apply(final Phenotype<?, C> value) {
 				return value.getFitness();
 			}
 		};
@@ -340,14 +340,14 @@ public final class Phenotype<
 	 * Create a {@link Function} which return the phenotype raw fitness when
 	 * calling {@code converter.convert(phenotype)}.
 	 *
-	 * @param <SC> the fitness value type.
+	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
 	 */
-	public static <SC extends Comparable<? super SC>>
-	Function<Phenotype<?, SC>, SC> RawFitnees()
+	public static <C extends Comparable<? super C>>
+	Function<Phenotype<?, C>, C> RawFitnees()
 	{
-		return new Function<Phenotype<?, SC>, SC>() {
-			@Override public SC apply(final Phenotype<?, SC> value) {
+		return new Function<Phenotype<?, C>, C>() {
+			@Override public C apply(final Phenotype<?, C> value) {
 				return value.getRawFitness();
 			}
 		};
@@ -357,14 +357,14 @@ public final class Phenotype<
 	 * Create a {@link Function} which return the phenotype genotype when
 	 * calling {@code converter.convert(phenotype)}.
 	 *
-	 * @param <SG> the gene type.
+	 * @param <G> the gene type.
 	 * @return a genotype {@link Function}.
 	 */
-	public static <SG extends Gene<?, SG>>
-	Function<Phenotype<SG, ?>, Genotype<SG>> Genotype()
+	public static <G extends Gene<?, G>>
+	Function<Phenotype<G, ?>, Genotype<G>> Genotype()
 	{
-		return new Function<Phenotype<SG, ?>, Genotype<SG>>() {
-			@Override public Genotype<SG> apply(final Phenotype<SG, ?> value) {
+		return new Function<Phenotype<G, ?>, Genotype<G>>() {
+			@Override public Genotype<G> apply(final Phenotype<G, ?> value) {
 				return value.getGenotype();
 			}
 		};
@@ -380,13 +380,13 @@ public final class Phenotype<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Phenotype<SG, SC> valueOf(
-		final Genotype<SG> genotype,
-		final Function<Genotype<SG>, SC> fitnessFunction,
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> valueOf(
+		final Genotype<G> genotype,
+		final Function<Genotype<G>, C> fitnessFunction,
 		final int generation
 	) {
-		return valueOf(genotype, fitnessFunction, functions.<SC>Identity(), generation);
+		return valueOf(genotype, fitnessFunction, functions.<C>Identity(), generation);
 	}
 
 	/**
@@ -400,11 +400,11 @@ public final class Phenotype<
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
-	public static <SG extends Gene<?, SG>, SC extends Comparable<? super SC>>
-	Phenotype<SG, SC> valueOf(
-		final Genotype<SG> genotype,
-		final Function<Genotype<SG>, SC> fitnessFunction,
-		final Function<SC, SC> fitnessScaler,
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> valueOf(
+		final Genotype<G> genotype,
+		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<C, C> fitnessScaler,
 		final int generation
 	) {
 		nonNull(genotype, "Genotype");
@@ -415,7 +415,7 @@ public final class Phenotype<
 		}
 
 		@SuppressWarnings("unchecked")
-		final Phenotype<SG, SC> pt = (Phenotype<SG, SC>)FACTORY.object();
+		final Phenotype<G, C> pt = (Phenotype<G, C>)FACTORY.object();
 		pt._genotype = genotype;
 		pt._fitnessFunction = fitnessFunction;
 		pt._fitnessScaler = fitnessScaler;
