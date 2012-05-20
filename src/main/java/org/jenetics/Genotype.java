@@ -156,9 +156,9 @@ public final class Genotype<T extends Gene<?, T>>
 	}
 
 	/**
-	 * Getting the number of _chromosomes of this genotype.
+	 * Getting the number of chromosomes of this genotype.
 	 *
-	 * @return number of _chromosomes.
+	 * @return number of chromosomes.
 	 */
 	public int length() {
 		return _chromosomes.length();
