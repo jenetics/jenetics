@@ -67,13 +67,6 @@ public abstract class NumberChromosome<
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;
-
-		//TODO: implement
-//		if (!_min.isLessThan(_max)) {
-//			throw new IllegalArgumentException(
-//				"Minumum must be less than maximim: " + min + " not less " + max
-//			);
-//		}
 	}
 
 	/**
