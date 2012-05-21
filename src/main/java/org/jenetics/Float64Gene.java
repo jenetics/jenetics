@@ -62,9 +62,7 @@ public final class Float64Gene
 
 	@Override
 	public Float64Gene mean(final Float64Gene that) {
-		return newInstance(
-				(_value.doubleValue() + that._value.doubleValue())/2.0
-			);
+		return newInstance((_value.doubleValue() + that._value.doubleValue())/2.0);
 	}
 
 
