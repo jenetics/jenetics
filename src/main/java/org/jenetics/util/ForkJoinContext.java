@@ -62,7 +62,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 *
 	 * @param pool the fork-join-pool to use.
 	 * @return {@code true} if the given pool has been set, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 * @throws NullPointerException if the pool is {@code null}.
 	 */
 	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
@@ -73,7 +73,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 * Return the current fork-join-pool used by this context.
 	 *
 	 * @return the current fork-join-pool used by this context. Can be
-	 *         {@code null} if not set jet.
+	 *          {@code null} if not set jet.
 	 */
 	public static ForkJoinPool getForkJoinPool() {
 		return _POOL.get();

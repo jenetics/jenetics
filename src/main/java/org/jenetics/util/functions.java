@@ -183,7 +183,7 @@ public final class functions {
 	 * @param b the second predicate
 	 * @return a {@code and} combination of the given predicates.
 	 * @throws NullPointerException if one of the given predicates is
-	 * 		  {@code null}.
+	 *         {@code null}.
 	 */
 	public static <T> Function<T, Boolean> and(
 		final Function<? super T, Boolean> a,
@@ -209,7 +209,7 @@ public final class functions {
 	 * @param b the second predicate
 	 * @return a {@code and} combination of the given predicates.
 	 * @throws NullPointerException if one of the given predicates is
-	 * 		  {@code null}.
+	 *          {@code null}.
 	 */
 	public static <T> Function<T, Boolean> or(
 		final Function<? super T, Boolean> a,

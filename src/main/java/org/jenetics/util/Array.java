@@ -81,7 +81,7 @@ public final class Array<T>
 	 *
 	 * @param length the array length.
 	  * @throws NegativeArraySizeException if the specified {@code length}
-	  *			is negative
+	  *	         is negative
 	 */
 	public Array(final int length) {
 		super(length);
@@ -462,7 +462,7 @@ public final class Array<T>
 	 * @return this (reversed) array.
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	 *			<tt>to &gt; a.length</tt>
+	 *	        <tt>to &gt; a.length</tt>
 	 */
 	public Array<T> reverse(final int from, final int to) {
 		checkIndex(from, to);
@@ -516,7 +516,9 @@ public final class Array<T>
 	@Override
 	public Array<T> fill(final T[] values) {
 		_array.cloneIfSealed();
-		System.arraycopy(values, 0, _array.data, _start, min(length(), values.length));
+		System.arraycopy(
+			values, 0, _array.data, _start, min(length(), values.length)
+		);
 		return this;
 	}
 
@@ -567,13 +569,13 @@ public final class Array<T>
 		final Array<T> appended = new Array<>(length() + array.length());
 
 		System.arraycopy(
-				_array.data, _start,
-				appended._array.data, 0, length()
-			);
+			_array.data, _start,
+			appended._array.data, 0, length()
+		);
 		System.arraycopy(
-				array._array.data, array._start,
-				appended._array.data, length(), array.length()
-			);
+			array._array.data, array._start,
+			appended._array.data, length(), array.length()
+		);
 
 		return appended;
 	}
