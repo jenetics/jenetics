@@ -63,8 +63,8 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 *
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 * 		  valid range of {@code [0, 1]} or the given {@code order} is smaller
-	 *         than two.
+	 *          valid range of {@code [0, 1]} or the given {@code order} is smaller
+	 *          than two.
 	 */
 	public Recombinator(final double probability, final int order) {
 		super(probability);

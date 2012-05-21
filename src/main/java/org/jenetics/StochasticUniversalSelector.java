@@ -42,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  * is the number of individuals to select.
  *
  * @see <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Stochastic_universal_sampling">
- * 		Wikipedia: Stochastic universal sampling
+ *           Wikipedia: Stochastic universal sampling
  *      </a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

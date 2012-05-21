@@ -63,7 +63,7 @@ public final class MonteCarloSelector<
 		nonNull(opt, "Optimization");
 		if (count < 0) {
 			throw new IllegalArgumentException(String.format(
-				"Selection count must be greater or equal then zero, but was %s.",
+				"Selection count must be greater or equal then zero, but was %d.",
 				count
 			));
 		}
