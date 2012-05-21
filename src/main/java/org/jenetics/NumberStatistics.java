@@ -159,16 +159,16 @@ public class NumberStatistics<
 		final int invalid
 	) {
 		super(
-				optimize,
-				generation,
-				best,
-				worst,
-				samples,
-				ageMean,
-				ageVariance,
-				killed,
-				invalid
-			);
+			optimize,
+			generation,
+			best,
+			worst,
+			samples,
+			ageMean,
+			ageVariance,
+			killed,
+			invalid
+		);
 
 		_fitnessMean = fitnessMean;
 		_fitnessVariance = fitnessVariance;
