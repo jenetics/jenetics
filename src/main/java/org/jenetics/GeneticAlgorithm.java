@@ -216,11 +216,11 @@ public class GeneticAlgorithm<
 		final Function<Genotype<G>, C> fitnessFunction
 	) {
 		this(
-            genotypeFactory,
-            fitnessFunction,
-            functions.<C>Identity(),
-            Optimize.MAXIMUM
-        );
+			genotypeFactory,
+			fitnessFunction,
+			functions.<C>Identity(),
+			Optimize.MAXIMUM
+		);
 	}
 
 	/**
@@ -238,11 +238,11 @@ public class GeneticAlgorithm<
 		final Optimize optimization
 	) {
 		this(
-            genotypeFactory,
-            fitnessFunction,
-            functions.<C>Identity(),
-            optimization
-        );
+			genotypeFactory,
+			fitnessFunction,
+			functions.<C>Identity(),
+			optimization
+		);
 	}
 
 	/**
@@ -260,11 +260,11 @@ public class GeneticAlgorithm<
 		final Function<C, C> fitnessScaler
 	) {
 		this(
-            genotypeFactory,
-            fitnessFunction,
-            fitnessScaler,
-            Optimize.MAXIMUM
-        );
+			genotypeFactory,
+			fitnessFunction,
+			fitnessScaler,
+			Optimize.MAXIMUM
+		);
 	}
 
 	/**
@@ -355,8 +355,8 @@ public class GeneticAlgorithm<
 		//First valuation of the initial population.
 		_statisticTimer.start();
 		_statistics = _calculator.evaluate(
-				_population, _generation, _optimization
-			).build();
+			_population, _generation, _optimization
+		).build();
 
 		_bestStatistics = _statistics;
 		_statisticTimer.stop();
