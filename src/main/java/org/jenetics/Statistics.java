@@ -192,16 +192,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 */
 		public Statistics<G, C> build() {
 			return new Statistics<>(
-					_optimize,
-					_generation,
-					_best,
-					_worst,
-					_samples,
-					_ageMean,
-					_ageVariance,
-					_killed,
-					_invalid
-				);
+				_optimize,
+				_generation,
+				_best,
+				_worst,
+				_samples,
+				_ageMean,
+				_ageVariance,
+				_killed,
+				_invalid
+			);
 		}
 	}
 
@@ -443,16 +443,16 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Phenotype worst = xml.get(WORST_PHENOTYPE);
 
 			final Statistics statistics = new Statistics(
-					optimize,
-					generation,
-					best,
-					worst,
-					samples,
-					meanAge.doubleValue(),
-					varianceAge.doubleValue(),
-					killed.intValue(),
-					invalid.intValue()
-				);
+				optimize,
+				generation,
+				best,
+				worst,
+				samples,
+				meanAge.doubleValue(),
+				varianceAge.doubleValue(),
+				killed.intValue(),
+				invalid.intValue()
+			);
 			statistics._time.set(xml.get(STATISITCS_TIME));
 
 			return statistics;
@@ -492,8 +492,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		private static final long serialVersionUID = 1L;
 
 		private static final Measurable<Duration> ZERO = Measure.valueOf(
-				0, SI.MILLI(SI.SECOND)
-			);
+			0, SI.MILLI(SI.SECOND)
+		);
 
 		/**
 		 * Create a new time object with zero time values. The time references

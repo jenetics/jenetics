@@ -54,16 +54,16 @@ public interface Selector<
 	 * @param population The population to select from.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 * 	      or lower fitness values must be selected. This parameter determines
+	 *        or lower fitness values must be selected. This parameter determines
 	 *        whether the GA maximizes or minimizes the fitness function.
 	 * @return The selected phenotypes (a new Population).
 	 * @throws NullPointerException if the arguments is <code>null</code>.
 	 * @throws IllegalArgumentException if the select count is smaller than zero.
 	 */
 	public Population<G, C> select(
-			final Population<G, C> population,
-			final int count,
-			final Optimize opt
-		);
+		final Population<G, C> population,
+		final int count,
+		final Optimize opt
+	);
 
 }
