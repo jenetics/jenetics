@@ -289,9 +289,9 @@ public class LinearDistribution<
 	@Override
 	public String toString() {
 		return String.format(
-				"LinearDistribution[(%f, %f), (%f, %f)]",
-				_x1, _y1, _x2, _y2
-			) ;
+			"LinearDistribution[(%f, %f), (%f, %f)]",
+			_x1, _y1, _x2, _y2
+		) ;
 	}
 
 }

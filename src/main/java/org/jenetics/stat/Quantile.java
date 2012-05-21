@@ -72,7 +72,7 @@ public class Quantile<N extends Number> extends MappableAccumulator<N> {
 	 *
 	 * @param quantile the wished quantile value.
 	 * @throws IllegalArgumentException if the {@code quantile} is not in the
-	 * 		  range {@code [0, 1]}.
+	 *          range {@code [0, 1]}.
 	 */
 	public Quantile(double quantile) {
 		if (quantile < 0.0 || quantile > 1) {
@@ -274,9 +274,9 @@ public class Quantile<N extends Number> extends MappableAccumulator<N> {
 	@Override
 	public String toString() {
 		return String.format(
-				"%s[samples=%d, qantile=%f]",
-				getClass().getSimpleName(), getSamples(), getQuantile()
-			);
+			"%s[samples=%d, qantile=%f]",
+			getClass().getSimpleName(), getSamples(), getQuantile()
+		);
 	}
 
 	@Override
