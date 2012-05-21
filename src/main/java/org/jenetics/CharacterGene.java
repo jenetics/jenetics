@@ -60,9 +60,9 @@ public final class CharacterGene
 	 * The default character set used by this gene.
 	 */
 	public static final CharSeq DEFAULT_CHARACTERS = new CharSeq(
-				CharSeq.expand("0-9a-zA-Z") +
-				" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
-			);
+		CharSeq.expand("0-9a-zA-Z") +
+		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
+	);
 
 	private CharSeq _validCharacters;
 	private Character _character;
