@@ -119,10 +119,8 @@ public final class Concurrency implements AutoCloseable {
 	/**
 	 * Set the concurrent-context to be used by the concurrency.
 	 *
-	 * @param type
-	 *            the concurrent-context type.
-	 * @throws NullPointerException
-	 *             if the given {@code type} is {@code null}.
+	 * @param type  the concurrent-context type.
+	 * @throws NullPointerException if the given {@code type} is {@code null}.
 	 */
 	public static void setContext(final Class<? extends ConcurrentContext> type) {
 		final Properties properties = new Properties();

@@ -249,7 +249,7 @@ public final class arrays {
 	 * @param array the {@code array} to randomize.
 	 * @param random the {@link Random} object to use for randomize.
 	 * @throws NullPointerException if the give array or the random object is
-	 * 		  {@code null}.
+	 *          {@code null}.
 	 */
 	public static void shuffle(final int[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
@@ -278,7 +278,7 @@ public final class arrays {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is
-	 * 		  {@code null}.
+	 *         {@code null}.
 	 */
 	public static <T> void shuffle(final T[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
@@ -307,7 +307,7 @@ public final class arrays {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is
-	 * 		  {@code null}.
+	 *          {@code null}.
 	 */
 	public static <T> void shuffle(final MSeq<T> array, final Random random) {
 		for (int j = array.length() - 1; j > 0; --j) {
@@ -337,7 +337,7 @@ public final class arrays {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is
-	 * 		  {@code null}.
+	 *          {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list, final Random random) {
 		for (int j = list.size() - 1; j > 0; --j) {
@@ -354,7 +354,7 @@ public final class arrays {
 	 * @param to the second index (exclusive)
 	 * @throws IllegalArgumentException if <tt>from &gt; to</tt>
 	 * @throws IndexOutOfBoundsException if <tt>from &lt; 0</tt> or
-	 *			<tt>to &gt; a.length</tt>
+	 *          <tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
 	public static <T> void reverse(final T[] array, final int from, final int to) {
@@ -484,7 +484,7 @@ public final class arrays {
 	 * @param k the size of the subset.
 	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 * 		  {@code n*k} will cause an integer overflow.
+	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k) {
@@ -500,9 +500,9 @@ public final class arrays {
 	 * @param k the size of the subset.
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code random} or {@code sub} is
-	 * 		  {@code null}.
+	 *          {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
-	 * 		  {@code n*k} will cause an integer overflow.
+	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k, final Random random) {
@@ -548,10 +548,10 @@ public final class arrays {
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @throws NullPointerException if {@code random} or {@code sub} is
-	 * 		  {@code null}.
+	 *          {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
-	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an
-	 * 		  integer overflow.
+	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *          integer overflow.
 	 */
 	public static void subset(final int n, final int sub[]) {
 		subset(n, sub, RandomRegistry.getRandom());
@@ -565,18 +565,18 @@ public final class arrays {
 	 *
 	 * <p>
 	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 * 	 version based on the  C++ version by John Burkardt.
+	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 *      version based on the  C++ version by John Burkardt.
 	 * </p>
 	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
-	 * 	 Albert Nijenhuis, Herbert Wilf,
-	 * 	 Combinatorial Algorithms for Computers and Calculators,
-	 * 	 Second Edition,
-	 * 	 Academic Press, 1978,
-	 * 	 ISBN: 0-12-519260-6,
-	 * 	 LC: QA164.N54.
+	 *      Albert Nijenhuis, Herbert Wilf,
+	 *      Combinatorial Algorithms for Computers and Calculators,
+	 *      Second Edition,
+	 *      Academic Press, 1978,
+	 *      ISBN: 0-12-519260-6,
+	 *      LC: QA164.N54.
 	 * </p>
 	 *
 	 * @param n the size of the set.
@@ -584,8 +584,8 @@ public final class arrays {
 	 * @param random the random number generator used.
 	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
-	 * 		  {@code sub.length == 0} or {@code n*sub.length} will cause an
-	 * 		  integer overflow.
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *         integer overflow.
 	 */
 	public static void subset(final int n, final int sub[], final Random random) {
 		nonNull(random, "Random");
@@ -708,7 +708,7 @@ public final class arrays {
 	 * @param p the permutation array.
 	 * @param random the random number generator.
 	 * @throws NullPointerException if the permutation array or the random number
-	 * 		  generator is {@code null}.
+	 *          generator is {@code null}.
 	 */
 	public static void permutation(final int[] p, final Random random) {
 		nonNull(p, "Permutation array");
@@ -725,18 +725,18 @@ public final class arrays {
 	 *
 	 * <p>
 	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 * 	 version based on the  C++ version by John Burkardt.
+	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 *      version based on the  C++ version by John Burkardt.
 	 * </p>
 	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
-	 * 	 Albert Nijenhuis, Herbert Wilf,
-	 * 	 Combinatorial Algorithms for Computers and Calculators,
-	 * 	 Second Edition,
-	 * 	 Academic Press, 1978,
-	 * 	 ISBN: 0-12-519260-6,
-	 * 	 LC: QA164.N54.
+	 *      Albert Nijenhuis, Herbert Wilf,
+	 *      Combinatorial Algorithms for Computers and Calculators,
+	 *      Second Edition,
+	 *      Academic Press, 1978,
+	 *      ISBN: 0-12-519260-6,
+	 *      LC: QA164.N54.
 	 * </p>
 	 *
 	 * @param p the permutation array.
@@ -790,11 +790,11 @@ public final class arrays {
 	 * @param start the start index of the search.
 	 * @param element the element to search for.
 	 * @return the index of the first occurrence of the specified element in the
-	 * 		  given {@code array}, of -1 if the {@code array} does not contain
-	 * 		  the element.
+	 *          given {@code array}, of -1 if the {@code array} does not contain
+	 *          the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 * 		 (start < 0 || end > length || start > end)
+	 *          (start < 0 || end > length || start > end)
 	 */
 	public static int indexOf(
 		final Object[] array, final int start, final int end,
@@ -832,8 +832,8 @@ public final class arrays {
 	 * @param array the array to search.
 	 * @param element the element to search for.
 	 * @return the index of the first occurrence of the specified element in the
-	 * 		  given {@code array}, of -1 if the {@code array} does not contain
-	 * 		  the element.
+	 *          given {@code array}, of -1 if the {@code array} does not contain
+	 *          the element.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
 	public static int indexOf(final Object[] array, final Object element) {
@@ -902,7 +902,7 @@ public final class arrays {
 	 * @param array the array to iterate.
 	 * @param predicate the applied predicate.
 	 * @return the index of the last visited element, or -1 if all elements has
-	 * 		  been visited.
+	 *          been visited.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> int foreach(

@@ -374,43 +374,43 @@ public final class accumulators {
 		switch (accus.length()) {
 		case 1:
 			accumulators.<T>accumulate(
-					values,
-					accus.get(0)
-				);
+				values,
+				accus.get(0)
+			);
 			break;
 		case 2:
 			accumulators.<T>accumulate(
-					values,
-					accus.get(0),
-					accus.get(1)
-				);
+				values,
+				accus.get(0),
+				accus.get(1)
+			);
 			break;
 		case 3:
 			accumulators.<T>accumulate(
-					values,
-					accus.get(0),
-					accus.get(1),
-					accus.get(2)
-				);
+				values,
+				accus.get(0),
+				accus.get(1),
+				accus.get(2)
+			);
 			break;
 		case 4:
 			accumulators.<T>accumulate(
-					values,
-					accus.get(0),
-					accus.get(1),
-					accus.get(2),
-					accus.get(3)
-				);
+				values,
+				accus.get(0),
+				accus.get(1),
+				accus.get(2),
+				accus.get(3)
+			);
 			break;
 		case 5:
 			accumulators.<T>accumulate(
-					values,
-					accus.get(0),
-					accus.get(1),
-					accus.get(2),
-					accus.get(3),
-					accus.get(4)
-				);
+				values,
+				accus.get(0),
+				accus.get(1),
+				accus.get(2),
+				accus.get(3),
+				accus.get(4)
+			);
 			break;
 		default:
 			try (Concurrency c = Concurrency.start()) {

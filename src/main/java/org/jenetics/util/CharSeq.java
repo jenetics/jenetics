@@ -131,9 +131,9 @@ public final class CharSeq
 	 *
 	 * @param c the character to test.
 	 * @return {@code true} if this character set contains the given character,
-	 * 		  {@code false} otherwise.
+	 *          {@code false} otherwise.
 	 * @throws NullPointerException if the given character {@code c} is
-	 * 		  {@code null}.
+	 *         {@code null}.
 	 */
 	public boolean contains(final Character c) {
 		return contains(c.charValue());
@@ -144,7 +144,7 @@ public final class CharSeq
 	 *
 	 * @param c the character to test.
 	 * @return {@code true} if this character set contains the given character,
-	 * 		  {@code false} otherwise.
+	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
 		return Arrays.binarySearch(_characters, c) >= 0;
@@ -169,7 +169,7 @@ public final class CharSeq
 	 * Test whether this character set is empty.
 	 *
 	 * @return {@code true} if this character set is empty, {@code false}
-	 * 		  otherwise.
+	 *          otherwise.
 	 */
 	public boolean isEmpty() {
 		return _characters.length == 0;
