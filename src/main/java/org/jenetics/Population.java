@@ -64,7 +64,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * in the order they are returned by the collection's iterator.
 	 *
 	 * @param population the collection whose elements are to be placed into
-	 * 		 this list.
+	 *         this list.
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
 	public Population(final Collection<? extends Phenotype<G, C>> population) {
@@ -77,7 +77,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @param size Preallocated population size.
 	 * @throws IllegalArgumentException if the specified initial capacity is
-	 * 		  negative
+	 *         negative
 	 */
 	public Population(final int size) {
 		_population = new ArrayList<>(size + 1);
