@@ -107,13 +107,13 @@ public class Variance<N extends Number> extends Mean<N> {
 	@Override
 	public String toString() {
 		return String.format(
-					"%s[samples=%d, mean=%f, stderr=%f, var=%f]",
-					getClass().getSimpleName(),
-					getSamples(),
-					getMean(),
-					getStandardError(),
-					getVariance()
-				);
+			"%s[samples=%d, mean=%f, stderr=%f, var=%f]",
+			getClass().getSimpleName(),
+			getSamples(),
+			getMean(),
+			getStandardError(),
+			getVariance()
+		);
 	}
 
 	@Override

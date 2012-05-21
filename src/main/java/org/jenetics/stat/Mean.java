@@ -112,12 +112,12 @@ public class Mean<N extends Number> extends MappableAccumulator<N> {
 	@Override
 	public String toString() {
 		return String.format(
-					"%s[samples=%d, mean=%f, stderr=%f]",
-					getClass().getSimpleName(),
-					getSamples(),
-					getMean(),
-					getStandardError()
-				);
+			"%s[samples=%d, mean=%f, stderr=%f]",
+			getClass().getSimpleName(),
+			getSamples(),
+			getMean(),
+			getStandardError()
+		);
 	}
 
 	@Override
