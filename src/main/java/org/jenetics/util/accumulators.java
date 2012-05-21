@@ -563,7 +563,7 @@ public final class accumulators {
 		}
 	}
 
-	private static class Acc<T> implements Runnable {
+	private static final class Acc<T> implements Runnable {
 		private final Iterable<? extends T> _values;
 		private final Accumulator<? super T> _accumulator;
 
