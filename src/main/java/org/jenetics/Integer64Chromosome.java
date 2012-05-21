@@ -45,7 +45,8 @@ import org.jenetics.util.ISeq;
  * @since 1.0
  * @version $Id$
  */
-public class Integer64Chromosome extends NumberChromosome<Integer64, Integer64Gene>
+public class Integer64Chromosome
+	extends NumberChromosome<Integer64, Integer64Gene>
 	implements XMLSerializable
 {
 	private static final long serialVersionUID = 1L;
