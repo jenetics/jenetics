@@ -24,8 +24,8 @@ package org.jenetics;
 
 
 /**
- * The Alterer is responsible for the change/recombine the Population. Alterers
- * can be chained by appending a list of alterers with the
+ * The Alterer is responsible for the changing/recombining the Population.
+ * Alterers can be chained by appending a list of alterers with the
  * {@link GeneticAlgorithm#setAlterers(Alterer...)} method.
  *
  * [code]
