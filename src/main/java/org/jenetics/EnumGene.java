@@ -47,6 +47,15 @@ import org.jenetics.util.object;
  * );
  * [/code]
  *
+ * The following code shows the assurances of the {@code EnumGene}.
+ * [code]
+ * ISeq<Integer> alleles = new Array<>(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * EnumGene<Integer> gene = EnumGene.valueOf(alleles, 5);
+ *
+ * assert(gene.getAlleleIndex() == 5);
+ * assert(gene.getAllele() == gene.getValidAlleles().get(5));
+ * [/code]
+ *
  * @see PermutationChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -63,10 +72,20 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 	EnumGene() {
 	}
 
+	/**
+	 * Return sequence of the valid alleles where this gene is a part of.
+	 *
+	 * @return the sequence of the valid alleles.
+	 */
 	public ISeq<A> getValidAlleles() {
 		return _validAlleles;
 	}
 
+	/**
+	 * Return the index of the allele this gene is representing.
+	 *
+	 * @return the index of the allele this gene is representing.
+	 */
 	public int getAlleleIndex() {
 		return _alleleIndex;
 	}
@@ -164,15 +183,15 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		}
 	};
 
-	public static <T> EnumGene<T> valueOf(
-		final T[] validAlleles,
+	public static <G> EnumGene<G> valueOf(
+		final G[] validAlleles,
 		final int alleleIndex
 	) {
 		return valueOf(new Array<>(validAlleles).toISeq(), alleleIndex);
 	}
 
-	public static <T> EnumGene<T> valueOf(
-		final ISeq<T> validAlleles,
+	public static <G> EnumGene<G> valueOf(
+		final ISeq<G> validAlleles,
 		final int alleleIndex
 	) {
 		if (validAlleles.length() == 0) {
@@ -188,18 +207,18 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		}
 
 		@SuppressWarnings("unchecked")
-		final EnumGene<T> gene = (EnumGene<T>)FACTORY.object();
+		final EnumGene<G> gene = (EnumGene<G>)FACTORY.object();
 
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = alleleIndex;
 		return gene;
 	}
 
-	public static <T> EnumGene<T> valueOf(final T[] validAlleles) {
+	public static <G> EnumGene<G> valueOf(final G[] validAlleles) {
 		return valueOf(new Array<>(validAlleles).toISeq());
 	}
 
-	public static <T> EnumGene<T> valueOf(final ISeq<T> validAlleles) {
+	public static <G> EnumGene<G> valueOf(final ISeq<G> validAlleles) {
 		if (validAlleles.length() == 0) {
 			throw new IllegalArgumentException(
 				"Array of valid alleles must be greater than zero."
@@ -207,7 +226,7 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		}
 
 		@SuppressWarnings("unchecked")
-		final EnumGene<T> gene = (EnumGene<T>)FACTORY.object();
+		final EnumGene<G> gene = (EnumGene<G>)FACTORY.object();
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(validAlleles.length());
 		return gene;
