@@ -72,10 +72,10 @@ import org.jenetics.util.object;
  * @since 1.0
  * @version $Id$
  */
-public final class Genotype<T extends Gene<?, T>>
+public final class Genotype<G extends Gene<?, G>>
 	implements
-		Factory<Genotype<T>>,
-		Iterable<Chromosome<T>>,
+		Factory<Genotype<G>>,
+		Iterable<Chromosome<G>>,
 		Verifiable,
 		XMLSerializable,
 		Realtime,
@@ -83,13 +83,13 @@ public final class Genotype<T extends Gene<?, T>>
 {
 	private static final long serialVersionUID = 2L;
 
-	private final ISeq<Chromosome<T>> _chromosomes;
+	private final ISeq<Chromosome<G>> _chromosomes;
 	private final int _ngenes;
 
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
 
-	private Genotype(final ISeq<Chromosome<T>> chromosomes, final int ngenes) {
+	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
 		assert(chromosomes != null);
 		assert(ngenes(chromosomes) == ngenes);
 
@@ -113,7 +113,7 @@ public final class Genotype<T extends Gene<?, T>>
 	 * @return The Chromosome.
 	 * @throws IndexOutOfBoundsException if (index < 0 || index >= _length).
 	 */
-	public Chromosome<T> getChromosome(final int index) {
+	public Chromosome<G> getChromosome(final int index) {
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(index) != null);
 
@@ -125,7 +125,7 @@ public final class Genotype<T extends Gene<?, T>>
 	 *
 	 * @return The first chromosome.
 	 */
-	public Chromosome<T> getChromosome() {
+	public Chromosome<G> getChromosome() {
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(0) != null);
 
@@ -139,19 +139,19 @@ public final class Genotype<T extends Gene<?, T>>
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *         {@code Genotype}.
 	 */
-	public T getGene() {
+	public G getGene() {
 		assert(_chromosomes != null);
 		assert(_chromosomes.get(0) != null);
 
 		return _chromosomes.get(0).getGene();
 	}
 
-	public ISeq<Chromosome<T>> toSeq() {
+	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
 	}
 
 	@Override
-	public Iterator<Chromosome<T>> iterator() {
+	public Iterator<Chromosome<G>> iterator() {
 		return _chromosomes.iterator();
 	}
 
@@ -194,8 +194,8 @@ public final class Genotype<T extends Gene<?, T>>
 	 * genotype.
 	 */
 	@Override
-	public Genotype<T> newInstance() {
-		final Array<Chromosome<T>> chromosomes = new Array<>(length());
+	public Genotype<G> newInstance() {
+		final Array<Chromosome<G>> chromosomes = new Array<>(length());
 		for (int i = 0; i < length(); ++i) {
 			chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
@@ -203,7 +203,7 @@ public final class Genotype<T extends Gene<?, T>>
 		return new Genotype<>(chromosomes.toISeq(), _ngenes);
 	}
 
-	Genotype<T> newInstance(final ISeq<Chromosome<T>> chromosomes) {
+	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {
 		return new Genotype<>(chromosomes, _ngenes);
 	}
 
