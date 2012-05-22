@@ -53,17 +53,17 @@ import org.jenetics.util.object;
  * @since 1.0
  * @version $Id$
  */
-public final class EnumGene<T> implements Gene<T, EnumGene<T>> {
+public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ISeq<T> _validAlleles;
+	private ISeq<A> _validAlleles;
 	private int _alleleIndex = -1;
 
 	EnumGene() {
 	}
 
-	public ISeq<T> getValidAlleles() {
+	public ISeq<A> getValidAlleles() {
 		return _validAlleles;
 	}
 
@@ -72,13 +72,13 @@ public final class EnumGene<T> implements Gene<T, EnumGene<T>> {
 	}
 
 	@Override
-	public T getAllele() {
+	public A getAllele() {
 		return _validAlleles.get(_alleleIndex);
 	}
 
 	@Override
-	public EnumGene<T> copy() {
-		final EnumGene<T> gene = new EnumGene<>();
+	public EnumGene<A> copy() {
+		final EnumGene<A> gene = new EnumGene<>();
 		gene._validAlleles = _validAlleles;
 		gene._alleleIndex = _alleleIndex;
 		return gene;
@@ -90,16 +90,16 @@ public final class EnumGene<T> implements Gene<T, EnumGene<T>> {
 	}
 
 	@Override
-	public EnumGene<T> newInstance() {
+	public EnumGene<A> newInstance() {
 		@SuppressWarnings("unchecked")
-		final EnumGene<T> gene = (EnumGene<T>)FACTORY.object();
+		final EnumGene<A> gene = (EnumGene<A>)FACTORY.object();
 
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
 		return gene;
 	}
 
-	public Factory<EnumGene<T>> asFactory() {
+	public Factory<EnumGene<A>> asFactory() {
 		return this;
 	}
 
