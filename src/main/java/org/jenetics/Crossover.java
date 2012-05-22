@@ -83,13 +83,13 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
-				individuals[0],
-				pt1.newInstance(Genotype.valueOf(chromosomes1.toISeq()), generation)
-			);
+			individuals[0],
+			pt1.newInstance(Genotype.valueOf(chromosomes1.toISeq()), generation)
+		);
 		population.set(
-				individuals[1],
-				pt2.newInstance(Genotype.valueOf(chromosomes2.toISeq()), generation)
-			);
+			individuals[1],
+			pt2.newInstance(Genotype.valueOf(chromosomes2.toISeq()), generation)
+		);
 
 		return getOrder();
 	}
