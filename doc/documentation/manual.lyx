@@ -570,8 +570,8 @@ JScience
 \end_inset
 
  which is part of the download package.
- For building the library from the sources you only have the be the Java
- JDK 7.0 to be installed, all other dependencies are available in the package
+ For building the library from the sources you only have the be the JDK
+ 1.7 to be installed, all other dependencies are available in the package
  which you can download from 
 \begin_inset Flex URL
 status collapsed
