@@ -41,7 +41,7 @@ import org.jenetics.util.object;
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * ISeq<Integer> alleles = new Array<Integer>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).toISeq();
+ * ISeq<Integer> alleles = new Array<>(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
  * Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
