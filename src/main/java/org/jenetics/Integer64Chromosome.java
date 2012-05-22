@@ -88,10 +88,10 @@ public class Integer64Chromosome
 		final int length
 	) {
 		super(
-				new Array<Integer64Gene>(length).fill(
-						Integer64Gene.valueOf(min, max).asFactory()
-					).toISeq()
-			);
+			new Array<Integer64Gene>(length).fill(
+				Integer64Gene.valueOf(min, max).asFactory()
+			).toISeq()
+		);
 		_valid = true;
 	}
 
