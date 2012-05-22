@@ -80,10 +80,10 @@ public class Float64Chromosome
 		final int length
 	) {
 		this(
-				new Array<Float64Gene>(length).fill(
-						Float64Gene.valueOf(min, max).asFactory()
-					).toISeq()
-			);
+			new Array<Float64Gene>(length).fill(
+				Float64Gene.valueOf(min, max).asFactory()
+			).toISeq()
+		);
 		_valid = true;
 	}
 
