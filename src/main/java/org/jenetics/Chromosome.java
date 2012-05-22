@@ -41,12 +41,12 @@ import org.jenetics.util.Verifiable;
  * @since 1.0
  * @version $Id$
  */
-public interface Chromosome<T extends Gene<?, T>>
+public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
-		Iterable<T>,
+		Iterable<G>,
 		Immutable,
-		Factory<Chromosome<T>>,
+		Factory<Chromosome<G>>,
 		Serializable
 {
 
@@ -59,7 +59,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
-	public Chromosome<T> newInstance(final ISeq<T> genes);
+	public Chromosome<G> newInstance(final ISeq<G> genes);
 
 	/**
 	 * Return the first gene of this chromosome.  Each chromosome must contain
@@ -67,7 +67,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 *
 	 * @return the first gene of this chromosome.
 	 */
-	public T getGene();
+	public G getGene();
 
 	/**
 	 * Return the gene on the specified index.
@@ -77,7 +77,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index < 1 || index >= length()).
 	 */
-	public T getGene(final int index);
+	public G getGene(final int index);
 
 	/**
 	 * Returns the length of the Chromosome. The minimal length of a
@@ -92,7 +92,7 @@ public interface Chromosome<T extends Gene<?, T>>
 	 *
 	 * @return an immutable gene sequence.
 	 */
-	public ISeq<T> toSeq();
+	public ISeq<G> toSeq();
 
 }
 
