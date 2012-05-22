@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.examples;
 
@@ -66,6 +66,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.jenetics.ExponentialRankSelector;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -74,12 +75,14 @@ import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
+import org.jenetics.LinearRankSelector;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
 import org.jenetics.RouletteWheelSelector;
+import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
@@ -95,46 +98,46 @@ public class Geometry extends javax.swing.JFrame {
 
 	public Geometry() {
 		initComponents();
-	}	
-	
+	}
+
 	void setStartAction(final Action action) {
 		_startButton.setAction(action);
 	}
-	
+
 	void setStopAction(final Action action) {
 		_stopButton.setAction(action);
 	}
-	
+
 	void setInitAction(final Action action) {
 		_initButton.setAction(action);
 	}
-	
+
 	void setPauseAction(final Action action) {
 		_pauseButton.setAction(action);
 	}
-	
+
 	void setStepAction(final Action action) {
 		_stepButton.setAction(action);
 	}
-	
+
 	void setPopulationSpinnerModel(final SpinnerModel model) {
 		_populationSizeSpinner.setModel(model);
 	}
-	
+
 	void setMaximalPhenotypeAgeSpinnerModel(final SpinnerModel model) {
 		_maxPTAgeSpinner.setModel(model);
 	}
-	
+
 	void setOffspringFractionRangeModel(final LabeledBoundedRangeModel model) {
 		_offspringFractionSlider.setModel(model);
 		_offspringFractionSlider.setLabelTable(model.getLables());
 	}
-	
+
 	void setMutationProbabilityRangeModel(final LabeledBoundedRangeModel model) {
 		_mutationProbabilitySlider.setModel(model);
 		_mutationProbabilitySlider.setLabelTable(model.getLables());
 	}
-	
+
 	void setSourcePolygon(final Point2D[] polygon) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((DrawPanel)_drawPanel).setSourcePolygon(polygon);
@@ -146,7 +149,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setTargetPolygon(final Point2D[] polygon) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((DrawPanel)_drawPanel).setTargetPolygon(polygon);
@@ -158,7 +161,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setFitnessMean(final double mean) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			_fitnessMeanTextField.setValue(format(mean));
@@ -170,7 +173,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setFitnessVariance(final double variance) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			_fitnessVarianceTextField.setValue(format(variance));
@@ -182,7 +185,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setGeneration(final int generation) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			_generationTextField.setValue(generation);
@@ -194,7 +197,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setTargetTransform(final AffineTransform transform) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((TransformPanel)_targetTransformPanel).setAffineTransform(transform);
@@ -206,7 +209,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setGABestTransform(final AffineTransform transform) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((DrawPanel)_drawPanel).setAlltimeBestTransform(transform);
@@ -220,7 +223,7 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	void setPopulationBestTransform(final AffineTransform transform) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			((DrawPanel)_drawPanel).setPopulationBestTransform(transform);
@@ -234,15 +237,15 @@ public class Geometry extends javax.swing.JFrame {
 			});
 		}
 	}
-	
+
 	private static String format(final double value) {
 		final NumberFormat f = NumberFormat.getNumberInstance();
 		f.setMaximumFractionDigits(2);
 		f.setMinimumFractionDigits(2);
-		
+
 		return f.format(value);
 	}
-	
+
 	@Override
 	public void repaint() {
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -575,7 +578,7 @@ public class Geometry extends javax.swing.JFrame {
         _drawPanel.setLayout(_drawPanelLayout);
         _drawPanelLayout.setHorizontalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 448, Short.MAX_VALUE)
+            .addGap(0, 498, Short.MAX_VALUE)
         );
         _drawPanelLayout.setVerticalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -589,7 +592,7 @@ public class Geometry extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	
+
 	/**
 	 * @param args
 	 * 			  the command line arguments
@@ -644,13 +647,13 @@ public class Geometry extends javax.swing.JFrame {
  */
 class GeometryController implements StepListener {
 	private final Geometry _geometry;
-	
+
 	private final InitAction _initAction = new InitAction(this);
 	private final StartAction _startAction = new StartAction(this);
 	private final StopAction _stopAction = new StopAction(this);
 	private final StepAction _stepAction = new StepAction(this);
 	private final PauseAction _pauseAction = new PauseAction(this);
-	
+
 	private final PopulationSpinnerModel
 		_populationSizeSpinnerModel = new PopulationSpinnerModel(this);
 	private final MaximalPhenotypeAgeSpinnerModel
@@ -659,7 +662,7 @@ class GeometryController implements StepListener {
 		_offspringFractionRangeModel = new OffspringFractionRangeModel(this);
 	private final MutationProbabilityRangeModel
 		_mutationProbabilityRangeModel = new MutationProbabilityRangeModel(this);
-	
+
 	private GeneticAlgorithm<Float64Gene, Float64> _ga;
 	private AffineTransform _transform;
 	private GA.GAFF _function;
@@ -668,42 +671,42 @@ class GeometryController implements StepListener {
 	private Stepable _stepable;
 	private Thread _thread;
 	private ExecutorService _threads;
-	
+
 	private static final long MIN_REPAINT_TIME = 50;
 	private long _lastRepaintTime = 0;
 	private Phenotype<Float64Gene, Float64> _populationBestPhenotype;
 	private Phenotype<Float64Gene, Float64> _gaBestPhenotype;
 	private int _generation = 0;
-	
+
 	GeometryController(final Geometry geometry) {
 		_geometry = geometry;
-		
+
 		_geometry.setInitAction(_initAction);
 		_geometry.setStartAction(_startAction);
 		_geometry.setStopAction(_stopAction);
 		_geometry.setStepAction(_stepAction);
 		_geometry.setPauseAction(_pauseAction);
-		
+
 		_geometry.setPopulationSpinnerModel(_populationSizeSpinnerModel);
 		_geometry.setMaximalPhenotypeAgeSpinnerModel(_maximalPhenotypeAgeSpinnerModel);
 		_geometry.setOffspringFractionRangeModel(_offspringFractionRangeModel);
 		_geometry.setMutationProbabilityRangeModel(_mutationProbabilityRangeModel);
-		
+
 		init();
 	}
-	
+
 	void init() {
 		_source = GA.getSourcePolygon();
 		_transform = GA.getTargetTransform();
 		_target = GA.getTargetPolygon(_transform);
 		_function = new GA.GAFF(_source, _target);
-		
+
 		_ga = GA.getGA(_function);
 		_ga.setPopulationSize(_populationSizeSpinnerModel.getNumber().intValue());
-		
+
 		_geometry.setSourcePolygon(_source);
 		_geometry.setTargetPolygon(_target);
-		
+
 		if (_stepable != null) {
 			_stepable.removeStepListener(this);
 		}
@@ -717,39 +720,39 @@ class GeometryController implements StepListener {
 			}
 		});
 		_stepable.addStepListener(this);
-		
+
 		if (_thread != null) {
 			_thread.interrupt();
 		}
 		_thread = new Thread(_stepable);
 		_thread.setPriority(Thread.MIN_PRIORITY);
 		_thread.start();
-		
+
 		_threads = Executors.newFixedThreadPool(2);
-		
+
 		_geometry.setTargetTransform(_transform);
 		_geometry.setPopulationBestTransform(new AffineTransform());
 		_geometry.setGABestTransform(new AffineTransform());
 		_geometry.setGeneration(0);
 		_geometry.repaint();
-		
+
 		_startAction.setEnabled(true);
 		_stopAction.setEnabled(false);
 		_pauseAction.setEnabled(false);
 		_stepAction.setEnabled(true);
 		_initAction.setEnabled(false);
 	}
-	
+
 	void start() {
 		_stepable.start();
-		
+
 		_startAction.setEnabled(false);
 		_stopAction.setEnabled(true);
 		_pauseAction.setEnabled(true);
 		_stepAction.setEnabled(false);
 		_initAction.setEnabled(false);
 	}
-	
+
 	void stop() {
 		_stepable.stop();
 		_ga.getLock().lock();
@@ -758,34 +761,34 @@ class GeometryController implements StepListener {
 		} finally {
 			_ga.getLock().unlock();
 		}
-		
+
 		_startAction.setEnabled(false);
 		_stopAction.setEnabled(false);
 		_pauseAction.setEnabled(false);
 		_stepAction.setEnabled(false);
 		_initAction.setEnabled(true);
 	}
-	
+
 	void pause() {
 		_stepable.stop();
-		
+
 		_startAction.setEnabled(true);
 		_stopAction.setEnabled(true);
 		_pauseAction.setEnabled(false);
 		_stepAction.setEnabled(true);
 		_initAction.setEnabled(false);
 	}
-	
+
 	void step() {
 		_stepable.step();
-		
+
 		_startAction.setEnabled(true);
 		_stopAction.setEnabled(true);
 		_pauseAction.setEnabled(false);
 		_stepAction.setEnabled(true);
 		_initAction.setEnabled(false);
 	}
-	
+
 	void setPopulationSize(final int size) {
 		if (_ga != null) {
 			_threads.submit(new Runnable() {
@@ -802,7 +805,7 @@ class GeometryController implements StepListener {
 			});
 		}
 	}
-	
+
 	void setMaximalPhenotypeAge(final int age) {
 		if (_ga != null) {
 			_threads.submit(new Runnable() {
@@ -816,10 +819,10 @@ class GeometryController implements StepListener {
 						_ga.getLock().unlock();
 					}
 				}
-			});			
+			});
 		}
 	}
-	
+
 	void setOffspringFraction(final double fraction) {
 		if (_ga != null) {
 			_threads.submit(new Runnable() {
@@ -836,7 +839,7 @@ class GeometryController implements StepListener {
 			});
 		}
 	}
-	
+
 	void setMutationProbability(final double probability) {
 		if (_ga != null) {
 			_threads.submit(new Runnable() {
@@ -864,8 +867,8 @@ class GeometryController implements StepListener {
 		final Phenotype<Float64Gene, Float64> populationBest = statistics.getBestPhenotype();
 		final Phenotype<Float64Gene, Float64> gaBest = _ga.getBestPhenotype();
 		final int generation = _ga.getGeneration();
-		
-		
+
+
 //		if (_populationBestPhenotype == null ||
 //			_populationBestPhenotype.compareTo(populationBest) < 0)
 //		{
@@ -873,7 +876,7 @@ class GeometryController implements StepListener {
 			_gaBestPhenotype = gaBest;
 			_generation = generation;
 //		}
-		
+
 		//Prevent from extensive repainting.
 		final long time = System.currentTimeMillis();
 		if (time - _lastRepaintTime > MIN_REPAINT_TIME) {
@@ -887,7 +890,7 @@ class GeometryController implements StepListener {
 			_geometry.setGeneration(_generation);
 			_geometry.setFitnessMean(statistics.getFitnessMean());
 			_geometry.setFitnessVariance(statistics.getFitnessVariance());
-			
+
 			_lastRepaintTime = time;
 			_populationBestPhenotype = null;
 			_gaBestPhenotype = null;
@@ -899,7 +902,7 @@ class GeometryController implements StepListener {
 	public void finished(EventObject event) {
 		System.out.println("GA finished");
 	}
-	
+
 }
 
 /**
@@ -910,17 +913,17 @@ class InitAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	private final GeometryController _controller;
-	
+
 	public InitAction(final GeometryController controller) {
 		super("Init");
 		_controller = controller;
 	}
-	
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		_controller.init();
 	}
-	
+
 }
 
 /**
@@ -931,17 +934,17 @@ class StartAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	private final GeometryController _controller;
-	
+
 	public StartAction(final GeometryController controller) {
 		super("Start");
 		_controller = controller;
 	}
-	
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		_controller.start();
 	}
-	
+
 }
 
 /**
@@ -952,17 +955,17 @@ class StopAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	private final GeometryController _controller;
-	
+
 	public StopAction(final GeometryController controller) {
 		super("Stop");
 		_controller = controller;
 	}
-	
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		_controller.stop();
 	}
-	
+
 }
 
 /**
@@ -973,17 +976,17 @@ class PauseAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	private final GeometryController _controller;
-	
+
 	public PauseAction(final GeometryController controller) {
 		super("Pause");
 		_controller = controller;
 	}
-	
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		_controller.pause();
 	}
-	
+
 }
 
 /**
@@ -994,17 +997,17 @@ class StepAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	private final GeometryController _controller;
-	
+
 	public StepAction(final GeometryController controller) {
 		super("Step");
 		_controller = controller;
 	}
-	
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		_controller.step();
 	}
-	
+
 }
 
 /**
@@ -1013,15 +1016,15 @@ class StepAction extends AbstractAction {
  */
 class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final GeometryController _controller;
-	
+
 	public PopulationSpinnerModel(final GeometryController controller) {
 		setMinimum(5);
 		setMaximum(Integer.MAX_VALUE);
 		setValue(20);
 		_controller = controller;
-		
+
 		addChangeListener(this);
 	}
 
@@ -1029,7 +1032,7 @@ class PopulationSpinnerModel extends SpinnerNumberModel implements ChangeListene
 	public void stateChanged(ChangeEvent e) {
 		_controller.setPopulationSize(getNumber().intValue());
 	}
-	
+
 }
 
 /**
@@ -1040,15 +1043,15 @@ class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel
 	implements ChangeListener
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final GeometryController _controller;
-	
+
 	public MaximalPhenotypeAgeSpinnerModel(final GeometryController controller) {
 		setMinimum(1);
 		setMaximum(Integer.MAX_VALUE);
 		setValue(35);
 		_controller = controller;
-		
+
 		addChangeListener(this);
 	}
 
@@ -1056,13 +1059,13 @@ class MaximalPhenotypeAgeSpinnerModel extends SpinnerNumberModel
 	public void stateChanged(ChangeEvent e) {
 		_controller.setMaximalPhenotypeAge(getNumber().intValue());
 	}
-	
+
 }
 
 interface LabeledBoundedRangeModel extends BoundedRangeModel {
-	
+
 	public Dictionary<Integer, JComponent> getLables();
-	
+
 }
 
 class OffspringFractionRangeModel extends DefaultBoundedRangeModel
@@ -1070,34 +1073,34 @@ class OffspringFractionRangeModel extends DefaultBoundedRangeModel
 {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final int MIN = 10;
 	private static final int MAX = 90;
 	private static final int VALUE = 20;
 
 	private final GeometryController _controller;
-	
+
 	public OffspringFractionRangeModel(final GeometryController controller) {
 		setMinimum(MIN);
 		setMaximum(MAX);
 		setValue(VALUE);
 		_controller = controller;
-		
+
 		addChangeListener(this);
 	}
-	
+
 	@Override
 	public Dictionary<Integer, JComponent> getLables() {
 		final Dictionary<Integer, JComponent> lables = new Hashtable<>();
-		
+
 		for (int i = MIN; i <= MAX; i += 10) {
 			final JLabel label = new JLabel("." + i/10);
 			lables.put(i, label);
 		}
-		
+
 		return lables;
 	}
-	
+
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		new Thread(new Runnable() {
@@ -1107,42 +1110,42 @@ class OffspringFractionRangeModel extends DefaultBoundedRangeModel
 			}
 		}).start();
 	}
-	
+
 }
 
 class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
 	implements ChangeListener, LabeledBoundedRangeModel
 {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final int MIN = 0;
 	private static final int MAX = 800;
 	private static final int VALUE = 50;
-	
+
 	private final GeometryController _controller;
-	
+
 	public MutationProbabilityRangeModel(final GeometryController controller) {
 		setMinimum(MIN);
 		setMaximum(MAX);
 		setValue(VALUE);
 		_controller = controller;
-		
+
 		addChangeListener(this);
 	}
-	
+
 	@Override
 	public Dictionary<Integer, JComponent> getLables() {
 		final Dictionary<Integer, JComponent> lables = new Hashtable<>();
-		
+
 		for (int i = MIN; i <= MAX; i += 100) {
 			final JLabel label = new JLabel("." + i/100);
 			lables.put(i, label);
 		}
-		
+
 		return lables;
 	}
-	
+
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		_controller.setMutationProbability(getValue()/1000.0);
@@ -1156,9 +1159,9 @@ class MutationProbabilityRangeModel extends DefaultBoundedRangeModel
  */
 class TransformPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
-	
+
 	private AffineTransform _transform;
-	
+
 	 public TransformPanel() {
 		  initComponents();
 	 }
@@ -1167,11 +1170,11 @@ class TransformPanel extends javax.swing.JPanel {
 		if (!transform.equals(_transform)) {
 			final double[] m = new double[6];
 			transform.getMatrix(m);
-			
+
 			_m00.setValue(m[0]); _m01.setValue(m[2]); _m02.setValue(m[4]);
 			_m10.setValue(m[1]); _m11.setValue(m[3]); _m12.setValue(m[5]);
 			_m20.setValue(0); 	_m21.setValue(0); 	_m22.setValue(1);
-			
+
 			_transform = transform;
 		}
 	 }
@@ -1188,7 +1191,7 @@ class TransformPanel extends javax.swing.JPanel {
 		  _m20 = new javax.swing.JFormattedTextField();
 		  _m21 = new javax.swing.JFormattedTextField();
 		  _m22 = new javax.swing.JFormattedTextField();
-		
+
 		  setLayout(new java.awt.GridBagLayout());
 		  gridBagConstraints = new java.awt.GridBagConstraints();
 		  gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -1238,7 +1241,7 @@ class TransformPanel extends javax.swing.JPanel {
 		  gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		  gridBagConstraints.weightx = 1.0;
 		  add(_m22, gridBagConstraints);
-		
+
 	 }
 
 
@@ -1262,63 +1265,63 @@ class TransformPanel extends javax.swing.JPanel {
  */
 class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Stroke THICK = new BasicStroke(
 			3.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER
 		);
 //	private static final Stroke NORMAL = new BasicStroke(
 //			1.8f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER
-//		);	
+//		);
 	private static final Stroke THIN = new BasicStroke(
 			1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER
-		);	
+		);
 	private static final Stroke DASHED = new BasicStroke(
 		1.0f, CAP_BUTT, JOIN_MITER, 1f, new float[]{6, 3}, 0f
-	);	
-	
+	);
+
 	private Point2D[] _sourcePolygon;
 	private Point2D[] _targetPolygon;
-	
+
 	private final AtomicReference<AffineTransform> _populationBestTransform =
 		new AtomicReference<>();
-	
+
 	private final AtomicReference<AffineTransform> _alltimeBestTransform =
 		new AtomicReference<>();
-	
-	public DrawPanel() {	
+
+	public DrawPanel() {
 		addComponentListener(new ComponentAdapter() {
 			@Override public void componentResized(ComponentEvent e) {
 				DrawPanel.this.repaint();
 			}
 		});
 	}
-	
+
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		super.paintComponent(graphics);
-		
+
 		final Graphics2D g2d = (Graphics2D)graphics;
 		g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-		
-		
+
+
 		paintCoordinates(g2d);
-		
+
 		final AffineTransform transform = AffineTransform.getScaleInstance(1.0, 1.0);
-		
+
 		if (_sourcePolygon != null) {
 			paint(g2d, _sourcePolygon, Color.LIGHT_GRAY, THICK, transform);
 		}
-		
+
 		if (_targetPolygon != null) {
 			paint(g2d, _targetPolygon, Color.GREEN, DASHED, transform);
-			
+
 			AffineTransform at = _alltimeBestTransform.get();
 			if (at != null) {
 				paint(g2d, _targetPolygon, Color.GREEN, THICK, at);
 			} else {
 				paint(g2d, _targetPolygon, Color.GREEN, THICK, transform);
 			}
-			
+
 			at = _populationBestTransform.get();
 			if (at != null) {
 				paint(g2d, _targetPolygon, Color.BLUE, THIN,  at);
@@ -1327,17 +1330,17 @@ class DrawPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	private void paintCoordinates(final Graphics2D graphics) {
 		final Dimension size = getSize();
 		final int ox = size.width/2;
 		final int oy = size.height/2;
-		
+
 		graphics.drawLine(ox, 0, ox, size.height);
 		graphics.drawLine(0, oy, size.width, oy);
 	}
-	
-	
+
+
 	private void paint(
 		final Graphics2D graphics,
 		final Point2D[] polygon,
@@ -1347,44 +1350,44 @@ class DrawPanel extends JPanel {
 	) {
 		final Color oldColor = graphics.getColor();
 		final Stroke oldStroke = graphics.getStroke();
-		
+
 		graphics.setColor(color);
 		graphics.setStroke(stroke);
-		
+
 		final Dimension size = getSize();
 		final int ox = size.width/2;
 		final int oy = size.height/2;
-		
+
 		for (int i = 0; i < polygon.length; ++i) {
 			final Point2D p1 = transform.transform(polygon[i], null);
 			final Point2D p2 = transform.transform(polygon[(i + 1)%polygon.length], null);
-			
+
 			graphics.drawLine(
 				(int)p1.getX() + ox, -(int)p1.getY() + oy,
 				(int)p2.getX() + ox, -(int)p2.getY() + oy
 			);
 		}
-		
+
 		graphics.setColor(oldColor);
 		graphics.setStroke(oldStroke);
 	}
-	
+
 	public void setSourcePolygon(final Point2D[] polygon) {
 		_sourcePolygon = polygon;
 	}
-	
+
 	public void setTargetPolygon(final Point2D[] polygon) {
 		_targetPolygon = polygon;
 	}
-	
+
 	public void setPopulationBestTransform(final AffineTransform transform) {
 		_populationBestTransform.set(transform);
 	}
-	
+
 	public void setAlltimeBestTransform(final AffineTransform transform) {
 		_alltimeBestTransform.set(transform);
 	}
-	
+
 }
 
 /**
@@ -1396,7 +1399,7 @@ class Stepable implements Runnable {
 	private final Condition _run = _lock.newCondition();
 
 	private final List<StepListener> _listeners = new CopyOnWriteArrayList<>();
-	
+
 	private volatile int _steps = 0;
 	private final Runnable _stepTask;
 
@@ -1457,14 +1460,14 @@ class Stepable implements Runnable {
 			_lock.unlock();
 		}
 	}
-	
+
 	private void execute() {
 		_stepTask.run();
-		
+
 		_lock.lock();
 		--_steps;
 		_lock.unlock();
-		
+
 		final EventObject event = new EventObject(this);
 		for (StepListener listener : _listeners) {
 			listener.stepped(event);
@@ -1476,7 +1479,7 @@ class Stepable implements Runnable {
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
 				waiting();
-				
+
 				while (canExecute()) {
 					execute();
 				}
@@ -1490,11 +1493,11 @@ class Stepable implements Runnable {
 			}
 		}
 	}
-	
+
 	public void addStepListener(final StepListener listener) {
 		_listeners.add(listener);
 	}
-	
+
 	public void removeStepListener(final StepListener listener) {
 		_listeners.remove(listener);
 	}
@@ -1506,11 +1509,11 @@ class Stepable implements Runnable {
  * @version $Id$
  */
 interface StepListener extends EventListener {
-	
+
 	public void stepped(EventObject event);
-	
+
 	public void finished(EventObject event);
-	
+
 }
 
 
@@ -1520,59 +1523,59 @@ interface StepListener extends EventListener {
  * @version $Id$
  */
 class GA {
-	
+
 	static class GAFF
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
-	
+
 		private final Point2D[] _source;
 		private final Point2D[] _target;
-	
+
 		public GAFF() {
 			this(null, null);
 		}
-		
+
 		public GAFF(final Point2D[] source, final Point2D[] target) {
 			_source = source != null ? source.clone() : source;
 			_target = target != null ? target.clone() : target;
 		}
-	
+
 		@Override
 		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			return distance(genotype);
 			//return area(genotype);
 		}
-		
+
 		Float64 distance(final Genotype<Float64Gene> genotype) {
 			final AffineTransform transform = _converter.apply(genotype);
-	
+
 			double error = 0;
 			Point2D point = new Point2D.Double();
 			for (int i = 0; i < _source.length; ++i) {
 				point = transform.transform(_target[i], point);
-	
-				error += _source[i].distance(point);
+
+				error += Math.abs(_source[i].distance(point));
 			}
-	
+
 			return Float64.valueOf(error);
 		}
-		
+
 		Float64 area(final Genotype<Float64Gene> genotype) {
 			final AffineTransform transform = _converter.apply(genotype);
-						
+
 			final Point2D[] points = new Point2D.Double[_source.length];
 			for (int i = 0; i < _source.length; ++i) {
 				points[i]  = transform.transform(_target[i], null);
 			}
-			
+
 			return Float64.valueOf(GeometryUtils.area(_source, points));
 		}
-	
+
 		public final Function<Genotype<Float64Gene>, AffineTransform>
 		_converter = new Function<Genotype<Float64Gene>, AffineTransform>() {
-		
+
 			@Override
 			public AffineTransform apply(final Genotype<Float64Gene> genotype) {
 				System.out.println(genotype);
@@ -1581,50 +1584,50 @@ class GA {
 				final double ty = genotype.getChromosome(1).getGene(1).doubleValue();
 				final double shx = genotype.getChromosome(2).getGene(0).doubleValue();
 				final double shy = genotype.getChromosome(2).getGene(1).doubleValue();
-		
+
 				final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
 				final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
 				final AffineTransform shear = AffineTransform.getShearInstance(shx,shy);
-		
+
 				final AffineTransform transform = new AffineTransform();
 				transform.concatenate(shear);
 				transform.concatenate(rotate);
 				transform.concatenate(translate);
-		
+
 				return transform;
 			}
 		};
-	
+
 	}
-	
-	
+
+
 	private static final Point2D[] SOURCE_POLYGON = new Point2D[] {
 			new Point2D.Double(-100, -100),
 			new Point2D.Double(100, -100),
 			new Point2D.Double(100, 100),
 			new Point2D.Double(-100, 100)
 		};
-	
+
 	private GA() {
 	}
-	
+
 	public static Factory<Genotype<Float64Gene>> getGenotypeFactory() {
 		return Genotype.valueOf(
 			//Rotation
 			new Float64Chromosome(-Math.PI, Math.PI),
-			
+
 			//Translation
 			new Float64Chromosome(-300.0, 300.0, 2),
-			
+
 			//Shear
 			new Float64Chromosome(-0.5, 0.5, 2)
 		);
 	}
-	
+
 	public static Point2D[] getSourcePolygon() {
 		return SOURCE_POLYGON;
 	}
-	
+
 	public static AffineTransform getTargetTransform() {
 		final Random random = RandomRegistry.getRandom();
 		final double theta = random.nextDouble()*2*Math.PI - Math.PI;
@@ -1632,20 +1635,20 @@ class GA {
 		final double ty = random.nextInt(600) - 300;
 		final double shx = random.nextDouble() - 0.5;
 		final double shy = random.nextDouble() - 0.5;
-		
+
 		final AffineTransform rotate = AffineTransform.getRotateInstance(theta);
 		final AffineTransform translate = AffineTransform.getTranslateInstance(tx, ty);
 		final AffineTransform shear = AffineTransform.getShearInstance(shx, shy);
-		
+
 		final AffineTransform transform = new AffineTransform();
 		transform.concatenate(shear);
 		transform.concatenate(rotate);
 		transform.concatenate(translate);
-		
+
 		return transform;
 	}
-	
-	public static Point2D[] getTargetPolygon(final AffineTransform transform) {	
+
+	public static Point2D[] getTargetPolygon(final AffineTransform transform) {
 		final Point2D[] target = new Point2D[SOURCE_POLYGON.length];
 		try {
 			for (int i = 0; i < SOURCE_POLYGON.length; ++i) {
@@ -1653,25 +1656,25 @@ class GA {
 			}
 		} catch (Exception ignore) {
 		}
-		
+
 		return target;
 	}
-	
+
 	public static GeneticAlgorithm<Float64Gene, Float64> getGA(final GAFF function) {
 		final GeneticAlgorithm<Float64Gene, Float64> ga =
 			new GeneticAlgorithm<>(
 				GA.getGenotypeFactory(), function, new ExponentialScaler(2), Optimize.MINIMUM
 			);
 		ga.setAlterers(
-			ga.getAlterer(),
+			new MeanAlterer<Float64Gene>(),
 			new Mutator<Float64Gene>(0.1)
 		);
-		ga.setSelectors(new RouletteWheelSelector<Float64Gene, Float64>());
+		ga.setSelectors(new TournamentSelector<Float64Gene, Float64>(5));
 		ga.setPopulationSize(25);
 		ga.setMaximalPhenotypeAge(30);
 		ga.setOffspringFraction(0.3);
 		ga.setStatisticsCalculator(new NumberStatistics.Calculator<Float64Gene, Float64>());
-		
+
 		return ga;
 	}
 
