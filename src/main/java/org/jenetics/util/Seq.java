@@ -71,32 +71,13 @@ public interface Seq<T> extends Iterable<T> {
 	);
 
 	/**
-	 * Iterates over this sequence as long as the given predicate returns
-	 * {@code true}. This method is more or less an  <i>alias</i> of the
-	 * {@link #indexWhere(Function)} method. In some cases a call to a
-	 * {@code sequence.foreach()} method can express your intention much better
-	 * than a {@code seq.indexOf()} call.
+	 * Applies a {@code function} to all elements of this sequence.
 	 *
-	 * [code]
-	 * final Seq<Integer> values = new Array<Integer>(1, 2, 3, 4, 5);
-	 * final AtomicInteger sum = new AtomicInteger(0);
-	 * values.foreach(new Predicate<Integer>() {
-	 *     public boolean evaluate(final Integer value) {
-	 *         sum.addAndGet(value);
-	 *         return true;
-	 *     }
-	 * });
-	 * System.out.println("Sum: " + sum);
-	 * [/code]
-	 *
-	 * @param predicate the predicate to apply.
-	 * @return the index of the first element on which the given predicate
-	 *          returns {@code false}, or -1 if the predicate returns {@code true}
-	 *          for every array element.
-	 * @throws NullPointerException if the given {@code predicate} is
+	 * @param function the function to apply to the elements.
+	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public int foreach(final Function<? super T, Boolean> predicate);
+	public <R> void foreach(final Function<? super T, R> function);
 
 	/**
 	 * Tests whether a predicate holds for all elements of this sequence.

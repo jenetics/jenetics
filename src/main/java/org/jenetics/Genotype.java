@@ -183,7 +183,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.foreach(Verify) == -1;
+			_valid = _chromosomes.forall(Verify);
 		}
 		return _valid;
 	}
@@ -373,7 +373,7 @@ public final class Genotype<G extends Gene<?, G>>
 		final Chromosome<G>... chromosomes
 	) {
 		final Array<Chromosome<G>> array = new Array<>(chromosomes);
-		if (array.foreach(object.NonNull) != -1) {
+		if (!array.forall(object.NonNull)) {
 			throw new NullPointerException("One of the given chromosomes is null.");
 		}
 
