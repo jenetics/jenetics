@@ -1,4 +1,6 @@
 Jenetics-1.0
+- Rename org.jenetics.util.Seq.indexOf(Function) to Seq.indexWhere(Function).
+- Rename org.jenetics.util.Seq.lastIndexOf(Function) to Seq.lastIndexWhere(Function).
 - Remove org.jenetics.util.CompositeFunction. Functionality moved to 
   org.jenetics.util.functions object.
 - Add Ant to build libraries.
