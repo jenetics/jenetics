@@ -571,7 +571,6 @@
 		<copy todir="${export.dir}" file="Jenetics.ipr"/>
 		<copy todir="${export.dir}" file="Jenetics.iws"/>
 		<copy todir="${export.dir}" file="run-examples.sh"/>
-		<copy todir="${export.dir}" file="${basedir}/test-report.html"/>
 		<copy todir="${export.dir}" file="${basedir}/perftest-report.txt"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-all-${version}.jar"/>
