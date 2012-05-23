@@ -99,6 +99,17 @@ public interface Seq<T> extends Iterable<T> {
 	public int foreach(final Function<? super T, Boolean> predicate);
 
 	/**
+	 * Tests whether a predicate holds for all elements of this sequence.
+	 *
+	 * @param predicate the predicate to use to test the elements.
+	 * @return {@code true} if the given predicate p holds for all elements of
+	 *          this sequence, {@code false} otherwise.
+	 * @throws NullPointerException if the given {@code predicate} is
+	 *          {@code null}.
+	 */
+	public boolean forall(final Function<? super T, Boolean> predicate);
+
+	/**
 	 * Returns {@code true} if this sequence contains the specified element.
 	 *
 	 * @param element element whose presence in this sequence is to be tested.
