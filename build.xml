@@ -563,7 +563,6 @@
 		</copy>
 
 		<copy todir="${export.dir}" file="manual-${version}.pdf"/>
-		<copy todir="${export.dir}" file="BUILD.txt"/>
 		<copy todir="${export.dir}" file="build.xml"/>
 		<copy todir="${export.dir}" file="change.log"/>
 		<copy todir="${export.dir}" file="LGPL.txt"/>
@@ -578,8 +577,6 @@
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-all-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-examples-${version}.jar"/>
 
-		<replace file="${export.dir}/BUILD.txt" token="@!identifier!@" value="${identifier}" />
-		<replace file="${export.dir}/BUILD.txt" token="@!year!@" value="${year}" />
 		<replace file="${export.dir}/build.xml" token="@!identifier!@" value="${identifier}" />
 		<replace file="${export.dir}/build.xml" token="@!year!@" value="${year}" />
 		<replace file="${export.dir}/change.log" token="@!identifier!@" value="${identifier}" />
