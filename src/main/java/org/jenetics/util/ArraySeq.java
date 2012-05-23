@@ -162,6 +162,19 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
+	public boolean forall(final Function<? super T, Boolean> predicate) {
+		nonNull(predicate, "Predicate");
+
+		boolean valid = true;
+		for (int i = _start; i < _end && valid; ++i) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array.data[i];
+			valid = predicate.apply(element).booleanValue();
+		}
+		return valid;
+	}
+
+	@Override
 	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 
