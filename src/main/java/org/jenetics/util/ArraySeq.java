@@ -88,13 +88,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		int index = -1;
 
 		if (element == null) {
-			index = indexOf(new Function<T, Boolean>() {
+			index = indexWhere(new Function<T, Boolean>() {
 				@Override public Boolean apply(final T object) {
 					return object == null ? Boolean.TRUE : Boolean.FALSE;
 				}
 			});
 		} else {
-			index = indexOf(new Function<T, Boolean>() {
+			index = indexWhere(new Function<T, Boolean>() {
 				@Override public Boolean apply(final T object) {
 					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
 				}
@@ -109,13 +109,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		int index = -1;
 
 		if (element == null) {
-			index = lastIndexOf(new Function<T, Boolean>() {
+			index = lastIndexWhere(new Function<T, Boolean>() {
 				@Override public Boolean apply(final T object) {
 					return object == null ? Boolean.TRUE : Boolean.FALSE;
 				}
 			});
 		} else {
-			index = lastIndexOf(new Function<T, Boolean>() {
+			index = lastIndexWhere(new Function<T, Boolean>() {
 				@Override public Boolean apply(final T object) {
 					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
 				}
@@ -126,7 +126,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexOf(final Function<? super T, Boolean> predicate) {
+	public int indexWhere(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 
 		int index = -1;
@@ -162,7 +162,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int lastIndexOf(final Function<? super T, Boolean> predicate) {
+	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 
 		int index = -1;
