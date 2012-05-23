@@ -76,7 +76,7 @@ public final class object {
 	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
-	 * array.foreach(Verify) == -1
+	 * array.forall(Verify) == true
 	 * [/code]
 	 * is true.
 	 */

@@ -144,21 +144,14 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int foreach(final Function<? super T, Boolean> predicate) {
-		nonNull(predicate, "Predicate");
+	public <R> void foreach(final Function<? super T, R> function) {
+		nonNull(function, "Function");
 
-		int index = -1;
-
-		for (int i = _start; i < _end && index == -1; ++i) {
+		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-
-			if (predicate.apply(element) != Boolean.TRUE) {
-				index = i - _start;
-			}
+			function.apply(element);
 		}
-
-		return index;
 	}
 
 	@Override

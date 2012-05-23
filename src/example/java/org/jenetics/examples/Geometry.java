@@ -66,7 +66,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.jenetics.ExponentialRankSelector;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -75,13 +74,11 @@ import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.LinearRankSelector;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.RouletteWheelSelector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
