@@ -111,7 +111,6 @@ abstract class PermutationIndexStream extends IndexStream {
 		private static int stride(final int length, final Random random) {
 			int value = length;
 
-			// The probability that two numbers are coprime is ~ 61%
 			while (math.gcd(length, value) != 1) {
 				value = random.nextInt(length/2) + length/3;
 			}
