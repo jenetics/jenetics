@@ -52,7 +52,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param value {@code value} to fill this sequence with.
 	 * @return {@code this} array.
 	 */
-	public MSeq<T> fill(final T value);
+	public MSeq<T> setAll(final T value);
 
 	/**
 	 * Fills the sequence with values of the given iterator.
