@@ -115,7 +115,7 @@ public class arraysTest {
 		array.set(10, 5);
 		Assert.assertFalse(isSorted(array));
 		
-		array.fill(-234);
+		array.setAll(-234);
 		Assert.assertTrue(isSorted(array));
 		
 		for (int i = 0; i < array.length(); ++i) {

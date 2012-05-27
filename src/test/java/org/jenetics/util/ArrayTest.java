@@ -122,7 +122,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void filter() {
 		final Array<Integer> array = new Array<>(20);
-		array.fill(100);
+		array.setAll(100);
 		array.set(18, null);
 		array.set(19, null);
 
@@ -222,7 +222,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void fillConstant() {
-		final ISeq<Integer> array = new Array<Integer>(10).fill(10).toISeq();
+		final ISeq<Integer> array = new Array<Integer>(10).setAll(10).toISeq();
 		Assert.assertEquals(array.length(), 10);
 		for (Integer i : array) {
 			Assert.assertEquals(i, new Integer(10));
@@ -231,7 +231,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void fillFactory() {
-		final Array<Integer> array = new Array<Integer>(10).fill(0);
+		final Array<Integer> array = new Array<Integer>(10).setAll(0);
 		Assert.assertEquals(array.length(), 10);
 
 		array.fill(Int());
@@ -300,7 +300,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void foreach() {
-		final Array<Integer> array = new Array<Integer>(10).fill(123);
+		final Array<Integer> array = new Array<Integer>(10).setAll(123);
 		array.toISeq();
 		final AtomicInteger count = new AtomicInteger(0);
 		boolean value = array.forall(new Function<Integer, Boolean>() {

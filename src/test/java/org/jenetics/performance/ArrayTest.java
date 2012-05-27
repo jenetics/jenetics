@@ -100,7 +100,7 @@ public class ArrayTest {
 	public final TestCase fill = new TestCase("fill(1)", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			_array.fill(1);
+			_array.setAll(1);
 		}
 	};
 	

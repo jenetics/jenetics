@@ -496,7 +496,7 @@ public final class Array<T>
 	}
 
 	@Override
-	public Array<T> fill(final T value) {
+	public Array<T> setAll(final T value) {
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array.data[i] = value;
