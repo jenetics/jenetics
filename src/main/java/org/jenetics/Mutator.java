@@ -156,7 +156,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * <p/>
 	 * This implementation, for example, does it in this way:
 	 * [code]
-	 * protected int mutate(final Array<G> genes, final double p) {
+	 * protected int mutate(final MSeq<G> genes, final double p) {
 	 *     final Random random = RandomRegistry.getRandom();
 	 *     final ProbabilityIndexIterator it =
 	 *         new ProbabilityIndexIterator(genes.length(), p, random);
