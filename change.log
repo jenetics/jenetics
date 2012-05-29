@@ -1,4 +1,6 @@
 Jenetics-1.0
+- Rename method MSeq.fill(T[]) to MSeq.setAll(T[]).
+- Rename method MSeq.fill(Iterator<T>) to MSeq.setAll(Iterator<T>).
 - Rename method MSeq.fill(T) to MSeq.setAll(T).
 - Add org.jenetics.util.Seq.forall(Function) method.
 - Rename org.jenetics.util.Seq.indexOf(Function) to Seq.indexWhere(Function).

@@ -505,7 +505,7 @@ public final class Array<T>
 	}
 
 	@Override
-	public Array<T> fill(final Iterator<? extends T> it) {
+	public Array<T> setAll(final Iterator<? extends T> it) {
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end && it.hasNext(); ++i) {
 			_array.data[i] = it.next();
@@ -514,7 +514,7 @@ public final class Array<T>
 	}
 
 	@Override
-	public Array<T> fill(final T[] values) {
+	public Array<T> setAll(final T[] values) {
 		_array.cloneIfSealed();
 		System.arraycopy(
 			values, 0, _array.data, _start, min(length(), values.length)
