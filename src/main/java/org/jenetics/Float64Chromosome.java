@@ -81,7 +81,7 @@ public class Float64Chromosome
 	) {
 		this(
 			new Array<Float64Gene>(length).fill(
-				Float64Gene.valueOf(min, max).asFactory()
+				Float64Gene.valueOf(min, max)
 			).toISeq()
 		);
 		_valid = true;
