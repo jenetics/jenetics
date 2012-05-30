@@ -35,7 +35,6 @@ import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Number;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.Mean;
 
 /**
@@ -200,15 +199,6 @@ public abstract class NumberGene<
 	@Override
 	public int compareTo(final G that) {
 		return _value.compareTo(that._value);
-	}
-
-	/**
-	 * Return the {@link Factory} view of this gene.
-	 *
-	 * @return the {@link Factory} view of this gene.
-	 */
-	public Factory<G> asFactory() {
-		return this;
 	}
 
 	@Override

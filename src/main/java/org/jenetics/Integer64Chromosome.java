@@ -89,7 +89,7 @@ public class Integer64Chromosome
 	) {
 		super(
 			new Array<Integer64Gene>(length).fill(
-				Integer64Gene.valueOf(min, max).asFactory()
+				Integer64Gene.valueOf(min, max)
 			).toISeq()
 		);
 		_valid = true;
