@@ -353,15 +353,28 @@ http://jenetics.sourceforge.net/
 \align center
 
 \size footnotesize
-This document is licensed under a 
+This work is licensed under a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
-target "http://creativecommons.org/licenses/by-sa/3.0/"
+target "http://creativecommons.org/licenses/by-sa/3.0/at/"
 
 \end_inset
 
- Attribution-ShareAlike 3.0 Unported License.
+ Attribution-ShareAlike 3.0 Austria License.
+ To view a copy of this license, visit 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://creativecommons.org/licenses/by-sa/3.0/at/
+\end_layout
+
+\end_inset
+
+ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain
+ View, California, 94041, USA.
 \end_layout
 
 \begin_layout Standard
