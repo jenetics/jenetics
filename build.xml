@@ -255,7 +255,7 @@
 				</and>
 			</fileset>
 			<doctitle>&lt;h1&gt;Jenetics API (Version ${version})&lt;/h1&gt;</doctitle>
-			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
+			<bottom>&amp;copy; ${year} Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
 			<link offline="false" href="http://download.oracle.com/javase/7/docs/api/" />
 			<link offline="false" href="http://jscience.org/api/" />
 			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
@@ -357,7 +357,7 @@
 				</and>
 			</fileset>
 			<doctitle>&lt;h1&gt;Jenetics API (Version ${version})&lt;/h1&gt;</doctitle>
-			<bottom>Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
+			<bottom>&amp;copy; ${year} Franz Wilhelmstötter  &amp;nbsp;&lt;i&gt;(${JAVADOC_TIMESTAMP})&lt;/i&gt;</bottom>
 			<link offline="false" href="http://download.oracle.com/javase/7/docs/api/" />
 			<link offline="false" href="http://jscience.org/api/" />
 			<link offline="false" href="http://javolution.org/target/site/apidocs/" />
