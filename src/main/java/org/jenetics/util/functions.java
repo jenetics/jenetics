@@ -35,7 +35,7 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version $Id$
+ * @version 1.0 &ndash; <em>$Revision$</em>
  */
 public final class functions {
 

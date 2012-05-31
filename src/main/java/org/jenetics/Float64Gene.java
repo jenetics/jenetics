@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version $Id$
+ * @version 1.0 &ndash; <em>$Revision$</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>

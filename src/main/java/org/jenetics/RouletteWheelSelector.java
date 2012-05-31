@@ -45,7 +45,7 @@ import javolution.lang.Immutable;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version $Id$
+ * @version 1.0 &ndash; <em>$Revision$</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,

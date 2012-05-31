@@ -67,7 +67,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version $Id$
+ * @version 1.0 &ndash; <em>$Revision$</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>

@@ -37,7 +37,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version $Id$
+ * @version 1.0 &ndash; <em>$Revision$</em>
  */
 public final class FinalReference<T> implements Reference<T>, Serializable {
 	private static final long serialVersionUID = 1L;
