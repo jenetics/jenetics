@@ -31,7 +31,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 $Date$ - $Author$
+ * @version 1.0 &ndash; $Revision$
  */
 public abstract class AbstractAlterer<G extends Gene<?, G>>
 	implements Alterer<G>
