@@ -80,8 +80,8 @@ public final class Array<T>
 	 * Create a new array with the given length.
 	 *
 	 * @param length the array length.
-	  * @throws NegativeArraySizeException if the specified {@code length}
-	  *	         is negative
+	 * @throws NegativeArraySizeException if the specified {@code length}
+	 *          is negative
 	 */
 	public Array(final int length) {
 		super(length);
