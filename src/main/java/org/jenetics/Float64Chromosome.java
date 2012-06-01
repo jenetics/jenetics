@@ -40,6 +40,8 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 /**
+ * Number chromosome implementation which holds 64 bit floating point numbers.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &ndash; <em>$Revision$</em>
@@ -60,7 +62,7 @@ public class Float64Chromosome
 	 *
 	 * @param genes the genes this chromosome consists.
 	 * @throws IllegalArgumentException if the number of genes is smaller than
-	 * 		 one.
+	 *         one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
