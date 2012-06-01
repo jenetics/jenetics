@@ -53,45 +53,45 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 	@Override protected Factory<Float64Gene> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random(12345));
-			
+
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
 			final Factory<Float64Gene> factory = Float64Gene.valueOf(min, max);
-			
+
 			final Variance<Float64> variance = new Variance<>();
-			
+
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
-			
+
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
 				final Float64Gene g1 = factory.newInstance();
 				final Float64Gene g2 = factory.newInstance();
-				
+
 				assertTrue(g1.getAllele().compareTo(min) >= 0);
 				assertTrue(g1.getAllele().compareTo(max) <= 0);
 				assertTrue(g2.getAllele().compareTo(min) >= 0);
 				assertTrue(g2.getAllele().compareTo(max) <= 0);
 				assertFalse(g1.equals(g2));
 				Assert.assertNotSame(g1, g2);
-				
+
 				variance.accumulate(g1.getAllele());
 				variance.accumulate(g2.getAllele());
 				histogram.accumulate(g1.getAllele());
 				histogram.accumulate(g2.getAllele());
 			}
-			
+
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
 		} finally {
 			LocalContext.exit();
 		}
 	}
-	
+
 	@Test
     public void doubleGeneIntegerIntegerInteger() {
         Float64Gene gene = Float64Gene.valueOf(1.234, 0.345, 2.123);
@@ -113,14 +113,14 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
         assertEquals(gene.getMin().doubleValue(), -10.567);
         assertEquals(gene.getMax().doubleValue(), 10.567);
     }
-	
+
 	@Test
 	public void divide() {
 		for (int i = 0; i < 100; ++i) {
 			final Float64Gene gene1 = getFactory().newInstance();
 			final Float64Gene gene2 = getFactory().newInstance();
 			final Float64Gene gene3 = gene1.divide(gene2);
-			
+
 			assertMinMax(gene1, gene2);
 			assertMinMax(gene2, gene3);
 			assertValid(gene3);
@@ -130,25 +130,25 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 				);
 		}
 	}
-	
+
 	@Test
 	public void mean() {
 		final double min = -Double.MAX_VALUE;
 		final double max = Double.MAX_VALUE;
 		final Float64Gene template = Float64Gene.valueOf(min, max);
-		
+
 		for (int i = 1; i < 500; ++i) {
-			final Float64Gene a = template.newInstance(i);
-			final Float64Gene b = template.newInstance(i + 3);
+			final Float64Gene a = template.newInstance(i - 50);
+			final Float64Gene b = template.newInstance((i - 100)*3);
 			final Float64Gene c = a.mean(b);
-			
+
 			assertEquals(a.getMin().doubleValue(), min);
 			assertEquals(a.getMax().doubleValue(), max);
 			assertEquals(b.getMin().doubleValue(), min);
 			assertEquals(b.getMax().doubleValue(), max);
 			assertEquals(c.getMin().doubleValue(), min);
 			assertEquals(c.getMax().doubleValue(), max);
-			assertEquals(c.getAllele().doubleValue(), (double)((i + (i + 3.0))/2.0));
+			assertEquals(c.getAllele().doubleValue(), (double)(((i - 50) + ((i - 100)*3))/2.0));
 		}
 	}
 
@@ -161,7 +161,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
         assertEquals(g2.getMin().doubleValue(), -1234.1234);
         assertEquals(g2.getMax().doubleValue(), 1234.1234);
     }
-	
+
 	@Test
 	public void createInvalidNumber() {
 		final Float64Gene gene = Float64Gene.valueOf(0, 1, 2);
