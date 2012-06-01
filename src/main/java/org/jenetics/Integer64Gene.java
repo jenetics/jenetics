@@ -57,7 +57,10 @@ public final class Integer64Gene
 
 	@Override
 	public Integer64Gene mean(final Integer64Gene that) {
-		return newInstance((_value.longValue() + that._value.longValue()) >>> 1);
+		return newInstance(
+			_value.longValue()  +
+			(that._value.longValue() - _value.longValue())/2L
+		);
 	}
 
 	/* *************************************************************************
