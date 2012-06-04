@@ -184,7 +184,7 @@ Java Genetic Algorithm Library Manual
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename graphic/title.svg
+	filename graphic/title.png
 	lyxscale 20
 	height 40pheight%
 
@@ -1205,6 +1205,27 @@ Jenetics
 \series default
 \shape default
 .
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The documentation of the whole API is part of the download package or can
+ be viewed online: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jenetics.sourceforge.net/javadoc/index.html
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
  
 \end_layout
 

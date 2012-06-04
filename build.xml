@@ -500,7 +500,7 @@
 
 	<target name="manual-compile">
 		<tstamp>
-			<format property="MANUAL_TIMESTAMP" pattern="yyyyMMdd" />
+			<format property="MANUAL_TIMESTAMP" pattern="yyyy/MM/dd" />
 		</tstamp>
 		<copy
 			file="${doc.basedir}/documentation/manual.lyx"
