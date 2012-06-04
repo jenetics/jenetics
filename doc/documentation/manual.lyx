@@ -304,7 +304,7 @@ status open
 \begin_layout Standard
 \noindent
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -986,7 +986,7 @@ public static void main(String[] args) {
 
 \begin_layout Plain Layout
 
-    ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
+    ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
 \end_layout
 
 \begin_layout Plain Layout
@@ -2544,7 +2544,7 @@ The mutation probability
  That means, the (average) number of genes mutated by an mutator is
 \begin_inset Formula 
 \begin{equation}
-\hat{\mu}=N_{P}N_{g}\cdot P(m)
+\hat{\mu}=N_{P}\cdot N_{g}\cdot P(m)
 \end{equation}
 
 \end_inset
