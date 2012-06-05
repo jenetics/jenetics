@@ -1,4 +1,6 @@
 Jenetics-1.0
+- Optimize ProbabilitySelector. The selection complexity is now O(n*log(n)),
+  instead of O(n^2). 
 - Remove NumberGene.asFactory method; no longer needed.
 - Rename method MSeq.fill(T[]) to MSeq.setAll(T[]).
 - Rename method MSeq.fill(Iterator<T>) to MSeq.setAll(Iterator<T>).

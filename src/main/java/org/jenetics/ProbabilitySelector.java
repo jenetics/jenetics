@@ -76,14 +76,15 @@ public abstract class ProbabilitySelector<
 
 		if (count > 0) {
 			final double[] probabilities = probabilities(population, count, opt);
-
 			assert (population.size() == probabilities.length) :
 				"Population size and probability length are not equal.";
 			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 
+			incremental(probabilities);
 			final Random random = RandomRegistry.getRandom();
 			for (int i = 0; i < count; ++i) {
-				selection.add(population.get(nextIndex(probabilities, random)));
+				final double value = random.nextDouble();
+				selection.add(population.get(indexOf(probabilities, value)));
 			}
 
 			assert (count == selection.size());
@@ -152,38 +153,38 @@ public abstract class ProbabilitySelector<
 	 * @return {@code true} if the sum of the probabilities are within the error
 	 *          range, {@code false} otherwise.
 	 */
-	protected static boolean sum2one(final double[] probabilities) {
+	static boolean sum2one(final double[] probabilities) {
 		final double sum = sum(probabilities);
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 	}
 
-	/**
-	 * Return the next random index. The index probability is given by the
-	 * {@code probabilities} array. The values of the {@code probabilities} array
-	 * must sum to one.
-	 *
-	 * @param probabilities the probabilities array (must sum to one).
-	 * @param random the random number generator.
-	 * @return the random index.
-	 */
-	protected static int nextIndex(final double[] probabilities, final Random random) {
-		final double prop = random.nextDouble();
+	final static int indexOf(final double[] incremental, final double value) {
+		int imin = 0;
+		int imax = incremental.length;
 
-		int j = 0;
-		double sum = 0;
-		for (int i = 0; sum < prop && i < probabilities.length; ++i) {
-			sum += probabilities[i];
-			j = i;
+		while (imax > imin) {
+			int imid = (imin + imax) >>> 1;
+
+			if (imid == 0) {
+				return imid;
+			} else if (incremental[imid] >= value && incremental[imid - 1] < value) {
+				return imid;
+			} else if (incremental[imid] <= value) {
+				imin = imid + 1;
+			} else if (incremental[imid] > value) {
+				imax = imid;
+			}
 		}
 
-		return j;
+		return incremental.length - 1;
+	}
+
+	final static double[] incremental(final double[] values) {
+		for (int i = 1; i < values.length; ++i) {
+			values[i] = values[i - 1] + values[i];
+		}
+		return values;
 	}
 
 }
-
-
-
-
-
-
 
