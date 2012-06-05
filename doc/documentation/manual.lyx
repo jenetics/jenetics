@@ -6155,8 +6155,10 @@ Ant
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 compile
 \family default
+\series default
 : Compiles the 
 \family sans
 \series bold
@@ -6178,8 +6180,10 @@ main
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 example-compile
 \family default
+\series default
 : Compiles the examples and copies the class files to the 
 \family typewriter
 <build\SpecialChar \-
@@ -6193,8 +6197,10 @@ main
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 test-compile
 \family default
+\series default
 : Compiles the tests and the class files to the 
 \family typewriter
 <build\SpecialChar \-
@@ -6208,8 +6214,10 @@ main
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 test-run
 \family default
+\series default
 : Compiles and executes the unit tests.
  The test results are printed onto the console and a test-report, created
  by 
@@ -6226,6 +6234,26 @@ test-report.html
  Since some of the unit-tests are 
 \emph on
 statistical
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Statistical tests run several times with the same parameters and expect
+ only to pass a given percentage of the overall runs.
+ These tests usually check the expected 
+\emph on
+individual
+\emph default
+ distribution of the 
+\family typewriter
+Selector.select(Population, int, Optimize)
+\family default
+ method.
+\end_layout
+
+\end_inset
+
+
 \emph default
  tests it is possible that the number of failed tests is greater than zero
  and the test run is still successful; e.g.
@@ -6287,8 +6315,10 @@ statistical
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 perftest-run
 \family default
+\series default
 : Run some performance tests and stores the result into 
 \family typewriter
 <build\SpecialChar \-
@@ -6299,16 +6329,20 @@ pertest-report.txt
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 javadoc
 \family default
+\series default
 : Generates the API documentation.
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 jar
 \family default
+\series default
 : Compiles the sources and creates the JAR files.
  The artifacts are copied to the 
 \family typewriter
@@ -6323,8 +6357,10 @@ main
 \begin_layout Itemize
 
 \family typewriter
+\series bold
 clean
 \family default
+\series default
 : Deletes the 
 \family typewriter
 <build\SpecialChar \-
