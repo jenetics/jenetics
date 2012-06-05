@@ -2098,6 +2098,17 @@ where
 \end_inset
 
  in the set of selected individuals.
+ The runtime complexity of the implemented probability selectors is 
+\begin_inset Formula $O(n\cdot\log(n))$
+\end_inset
+
+ instead of 
+\begin_inset Formula $O(n^{2})$
+\end_inset
+
+ as for the naive approach: 
+\emph on
+A binary (index) search is performed on the summed probability array.
 \end_layout
 
 \begin_layout Subparagraph
