@@ -2099,7 +2099,7 @@ where
 
  in the set of selected individuals.
  The runtime complexity of the implemented probability selectors is 
-\begin_inset Formula $O(n\cdot\log(n))$
+\begin_inset Formula $O(n+\log(n))$
 \end_inset
 
  instead of 
