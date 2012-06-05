@@ -40,7 +40,11 @@ import org.jenetics.util.RandomRegistry;
  * <p><div align="center">
  * <img src="doc-files/FitnessProportionalSelection.svg" width="400" />
  * </p></div>
- * Fitness proportional selection works as shown in the figure above.
+ * Fitness proportional selection works as shown in the figure above. The
+ * runtime complexity of the implemented probability selectors is
+ * <i>O(n+</i>log<i>(n))</i> instead of <i>O(n<sup>2</sup>)</i> as for the naive
+ * approach: <i>A binary (index) search is performed on the summed probability
+ * array.</i>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
