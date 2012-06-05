@@ -48,58 +48,93 @@ public abstract class ProbabilitySelectorTester<
 {
 
 	protected abstract boolean isSorted();
-	
+
 	@Test
-	public void nextIndex() {
+	public void indexOf() {
 		final Random random = RandomRegistry.getRandom();
-		
+
 		final double[] props = new double[10];
 		double divisor = props.length*(props.length + 1)/2.0;
 		for (int i = 0; i < props.length; ++i) {
 			props[i] = (i + 1)/divisor;
 		}
 		randomize(props, random);
-		
+
+		final double[] incremental = ProbabilitySelector.incremental(props.clone());
+
 		double samples = 1000000;
 		double[] indices = new double[props.length];
 		Arrays.fill(indices, 0);
-		
+
 		for (int i = 0; i < samples; ++i) {
-			indices[ProbabilitySelector.nextIndex(props, random)] += 1;
+			indices[ProbabilitySelector.indexOf(incremental, random.nextDouble())] += 1;
 		}
-		
+
 		for (int i = 0; i < props.length; ++i) {
 			indices[i] /= samples;
 		}
-		
+
 		Reporter.log(toString(props) + String.format(": %6f", sum(props)));
 		Reporter.log(toString(indices) + String.format(": %6f", sum(indices)));
-		
+
 		for (int i = 0; i < props.length; ++i) {
 			Assert.assertEquals(indices[i], props[i], 0.005);
 		}
 	}
-	
+
+	@Test
+	public void indexOf2() {
+		final Random random = RandomRegistry.getRandom();
+
+		final double[] props = new double[100];
+		double divisor = props.length*(props.length + 1)/2.0;
+		for (int i = 0; i < props.length; ++i) {
+			props[i] = (i + 1)/divisor;
+		}
+		randomize(props, random);
+
+		final double[] incremental = ProbabilitySelector.incremental(props.clone());
+
+		final int samples = 100000;
+		for (int i = 0; i < samples; ++i) {
+			final double value = random.nextDouble();
+			final int index1 = ProbabilitySelector.indexOf(incremental, value);
+			final int index2 = indexOf(props, value);
+
+			Assert.assertEquals(index1, index2);
+		}
+	}
+
+	private static int indexOf(final double[] array, final double value) {
+		int j = 0;
+		double sum = 0;
+		for (int i = 0; sum < value && i < array.length; ++i) {
+			sum += array[i];
+			j = i;
+		}
+		return j;
+	}
+
 	@Test
 	public void probabilities() {
 		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
 		arrays.shuffle(population, new Random(System.currentTimeMillis()));
-		
+
 		final S selector = getFactory().newInstance();
 		final double[] props = selector.probabilities(population, 23);
 		Assert.assertEquals(props.length, population.size());
-		
+
 		if (isSorted()) {
 			assertSortedDescending(population);
 			assertSortedDescending(props);
 		}
 		Assert.assertEquals(sum(props), 1.0, 0.000001);
-		assertPositive(props);	
+		assertPositive(props);
 	}
-	
+
 	private static String toString(final double[] array) {
 		StringBuilder out = new StringBuilder();
-		
+
 		out.append("[");
 		if (array.length > 0) {
 			out.append(String.format("%6f", array[0]));
@@ -109,10 +144,10 @@ public abstract class ProbabilitySelectorTester<
 			out.append(String.format("%6f", array[i]));
 		}
 		out.append("]");
-		
+
 		return out.toString();
 	}
-	
+
 	protected static double sum(final double[] array) {
 		double sum = 0;
 		for (int i = 0; i < array.length; ++i) {
@@ -120,36 +155,36 @@ public abstract class ProbabilitySelectorTester<
 		}
 		return sum;
 	}
-	
+
 	protected static void assertPositive(final double[] array) {
 		for (int i = 0; i < array.length; ++i) {
 			Assert.assertTrue(array[i] >= 0.0, "All values must be positive: " + array[i]);
 		}
 	}
-	
+
 	private static void randomize(final double[] array, final Random random) {
 		nonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
 	}
-	
+
 	private static void swap(final double[] array, int i, int j) {
 		double temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
 	}
-	
+
 	protected static void assertSortedDescending(final double[] values) {
 		for (int i = 1; i < values.length; ++i) {
 			Assert.assertTrue(values[i - 1] >= values[i]);
 		}
 	}
-	
+
 	protected static <T extends Comparable<T>> void assertSortedDescending(final List<? extends T> values) {
 		for (int i = 1; i < values.size(); ++i) {
 			Assert.assertTrue(values.get(i - 1).compareTo(values.get(i)) >= 0);
 		}
 	}
-	
+
 }
