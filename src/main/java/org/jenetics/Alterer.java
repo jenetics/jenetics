@@ -61,9 +61,9 @@ public interface Alterer<G extends Gene<?, G>> {
 	 *        {@code null}.
 	 */
 	public <C extends Comparable<? super C>> int alter(
-			final Population<G, C> population,
-			final int generation
-		);
+		final Population<G, C> population,
+		final int generation
+	);
 
 }
 
