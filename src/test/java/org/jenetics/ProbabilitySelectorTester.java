@@ -30,6 +30,7 @@ import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jscience.mathematics.number.Float64;
@@ -82,11 +83,11 @@ public abstract class ProbabilitySelectorTester<
 		}
 	}
 
-	@Test
-	public void indexOf2() {
+	@Test(dataProvider = "propsize")
+	public void indexOf(final Integer size) {
 		final Random random = RandomRegistry.getRandom();
 
-		final double[] props = new double[100];
+		final double[] props = new double[size];
 		double divisor = props.length*(props.length + 1)/2.0;
 		for (int i = 0; i < props.length; ++i) {
 			props[i] = (i + 1)/divisor;
@@ -113,6 +114,13 @@ public abstract class ProbabilitySelectorTester<
 			j = i;
 		}
 		return j;
+	}
+
+	@DataProvider(name = "propsize")
+	public Object[][] propsize() {
+		return new Object[][] {
+			{1}, {2}, {3}, {5}, {9}, {15}, {30}, {99}, {150}
+		};
 	}
 
 	@Test
