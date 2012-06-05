@@ -158,6 +158,9 @@ public abstract class ProbabilitySelector<
 		return abs(ulpDistance(sum, 1.0)) < MAX_ULP_DISTANCE;
 	}
 
+	/**
+	 * Perform a binary-search on the summed probability array.
+	 */
 	final static int indexOf(final double[] incremental, final double value) {
 		int imin = 0;
 		int imax = incremental.length;
@@ -179,6 +182,9 @@ public abstract class ProbabilitySelector<
 		return incremental.length - 1;
 	}
 
+	/**
+	 * In-place summation of the probability array.
+	 */
 	final static double[] incremental(final double[] values) {
 		for (int i = 1; i < values.length; ++i) {
 			values[i] = values[i - 1] + values[i];
