@@ -6661,6 +6661,93 @@ javadoc
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+Ant
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+: 1.8.4
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://ant.apache.org
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://tweedo.com/mirror/apache//ant/binaries/apache-ant-1.8.4-bin.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+: 
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Apache License, Version 2.0"
+target "https://www.apache.org/licenses/LICENSE-2.0.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+: 
+\emph on
+build
+\end_layout
+
+\end_deeper
 \begin_layout Section
 License
 \end_layout
