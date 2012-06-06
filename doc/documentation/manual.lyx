@@ -5891,7 +5891,7 @@ Traveling Salesman
 \begin_layout Standard
 The Traveling Salesman problem
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -6246,7 +6246,7 @@ test-report.html
 \emph on
 statistical
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Statistical tests run several times with the same parameters and expect
@@ -6271,7 +6271,7 @@ Selector.select(Population, int, Optimize)
 \end_layout
 
 \begin_layout LyX-Code
-    ...
+      ...
 \end_layout
 
 \begin_layout LyX-Code
@@ -6289,7 +6289,7 @@ Selector.select(Population, int, Optimize)
 \begin_layout LyX-Code
 
 \size small
-  [testng] Total tests run: 1480, Failures: 1, Skips: 0    
+  [testng] Total tests run: 1479, Failures: 1, Skips: 0    
 \end_layout
 
 \begin_layout LyX-Code
@@ -6301,7 +6301,13 @@ Selector.select(Population, int, Optimize)
 \begin_layout LyX-Code
 
 \size small
-  [testng] ...
+  [testng] 
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+       ...
       
 \end_layout
 
@@ -6318,7 +6324,13 @@ Selector.select(Population, int, Optimize)
 \begin_layout LyX-Code
 
 \size small
-  BUILD SUCCESSFUL Total time: 1 minute 18 seconds
+  BUILD SUCCESSFUL 
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+  Total time: 1 minute 18 seconds
 \size default
  
 \end_layout
