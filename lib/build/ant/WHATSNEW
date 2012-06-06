@@ -1,3 +1,13 @@
+Changes from Ant 1.8.3 TO Ant 1.8.4
+===================================
+
+Fixed bugs:
+-----------
+
+ * Ported libbzip2's fallback sort algorithm to CBZip2OutputStream to
+   speed up compression in certain edge cases.  Merge from Commons
+   Compress.
+
 Changes from Ant 1.8.2 TO Ant 1.8.3
 ===================================
 
