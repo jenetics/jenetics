@@ -391,51 +391,6 @@ public final class Array<T>
 		@SuppressWarnings("unchecked")
 		final T[] data = (T[])_array.data;
 		Arrays.sort(data, from + _start, to + _start, comparator);
-//		quicksort(from, to - 1, comparator);
-	}
-
-
-	void quicksort(
-		final int left, final int right,
-		final Comparator<? super T> comparator
-	) {
-		if (right > left) {
-			final int j = partition(left, right, comparator);
-			quicksort(left, j - 1, comparator);
-			quicksort(j + 1, right, comparator);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private int partition(
-		final int left, final int right,
-		final Comparator<? super T> comparator
-	) {
-		final T pivot = (T)_array.data[left + _start];
-		int i = left;
-		int j = right + 1;
-		while (true) {
-			do {
-				++i;
-			} while (
-					i < right &&
-					comparator.compare((T)_array.data[i + _start], pivot) < 0
-				);
-
-			do {
-				--j;
-			} while (
-					j > left &&
-					comparator.compare((T)_array.data[j + _start], pivot) > 0
-				);
-			if (j <= i) {
-				break;
-			}
-			uncheckedSwap(i, j);
-		}
-		uncheckedSwap(left, j);
-
-		return j;
 	}
 
 	private void uncheckedSwap(final int i, final int j) {
