@@ -6545,7 +6545,7 @@ License
 
 \begin_inset CommandInset href
 LatexCommand href
-name "Apache 2.0"
+name "Apache License, Version 2.0"
 target "http://testng.org/license"
 
 \end_inset
