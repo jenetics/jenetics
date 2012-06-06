@@ -6141,7 +6141,7 @@ dir>
 \end_layout
 
 \begin_layout LyX-Code
-$ ./lib/build/apache-ant/bin/ant jar
+$ ./lib/build/ant/bin/ant jar
 \end_layout
 
 \begin_layout Standard
