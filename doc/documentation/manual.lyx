@@ -6289,7 +6289,7 @@ Selector.select(Population, int, Optimize)
 \begin_layout LyX-Code
 
 \size small
-  [testng] Total tests run: 1435, Failures: 1, Skips: 0    
+  [testng] Total tests run: 1480, Failures: 1, Skips: 0    
 \end_layout
 
 \begin_layout LyX-Code
