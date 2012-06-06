@@ -432,12 +432,50 @@ public final class Array<T>
 		return this;
 	}
 
+	/**
+	 * Swap the elements at the two positions.
+	 *
+	 * @param i the index of the first element.
+	 * @param j the index of the second element.
+	 * @throws IllegalArgumentException if {@code i > j}.
+	 * @throws ArrayIndexOutOfBoundsException if {@code i < 0 || j >= length()}.
+	 */
 	public void swap(final int i, final int j) {
-		checkIndex(i);
-		checkIndex(j);
+		checkIndex(i, j);
 
 		_array.cloneIfSealed();
 		uncheckedSwap(i, j);
+	}
+
+	/**
+	 * Swap a given range with a range of the same size with another array.
+	 *
+	 * @param start the start index of {@code this} range, inclusively.
+	 * @param end the end index of {@code this} range, exclusively.
+	 * @param other the other array to swap the elements with.
+	 * @param otherStart the start index of the {@code other} array.
+	 * @throws IllegalArgumentException if {@code start > end}.
+	 * @throws ArrayIndexOutOfBoundsException if {@code start < 0 ||
+	 *         end >= this.length() || otherStart < 0 ||
+	 *         otherStart + (end - start) >= other.length()}
+	 */
+	public void swap(
+		final int start, final int end,
+		final Array<T> other, final int otherStart
+	) {
+		checkIndex(start, end);
+		other.checkIndex(otherStart, otherStart + (end - start));
+
+		if (start < end) {
+			_array.cloneIfSealed();
+			other._array.cloneIfSealed();
+
+			for (int i = 0; i < (end - start); ++i) {
+				final Object temp = _array.data[_start + start + i];
+				_array.data[_start + start + i] = other._array.data[other._start + otherStart + i];
+				other._array.data[other._start + otherStart + i] = temp;
+			}
+		}
 	}
 
 	public Array<T> shuffle(final Random random) {
