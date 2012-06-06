@@ -186,6 +186,59 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
+	public void swap() {
+		final Array<Integer> array = new Array<Integer>(10).fill(Int());
+		for (int i = 0; i < array.length(); ++i) {
+			for (int j = i; j < array.length(); ++j) {
+				final Array<Integer> copy = array.copy();
+				copy.swap(i, j);
+
+				Assert.assertEquals(copy.get(j), array.get(i));
+			}
+		}
+
+		array.swap(4, 4);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void swap2() {
+		final Array<Integer> array = new Array<Integer>(10).fill(Int());
+		array.swap(5, 4);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void swap3() {
+		final Array<Integer> array = new Array<Integer>(10).fill(Int());
+		array.swap(5, 10);
+	}
+
+	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void swap4() {
+		final Array<Integer> array = new Array<Integer>(10).fill(Int());
+		array.swap(-1, 8);
+	}
+
+	@Test
+	public void swap5() {
+		final Array<Integer> a1 = new Array<Integer>(50).fill(Int());
+		final Array<Integer> a2 = new Array<Integer>(33).fill(Int());
+
+		for (int i = 0; i < a1.length(); ++i) {
+			for (int j = i; j < a1.length(); ++j) {
+				for (int k = 0; k < a2.length() - (j - i); ++k) {
+					final Array<Integer> ca1 = a1.copy();
+					final Array<Integer> ca2 = a2.copy();
+
+					ca1.swap(i, j, ca2, k);
+
+					Assert.assertEquals(ca1.subSeq(i, j), a2.subSeq(k, k + (j - i)));
+					Assert.assertEquals(ca2.subSeq(k, k + (j - i)), a1.subSeq(i, j));
+				}
+			}
+		}
+	}
+
+	@Test
 	public void asList() {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
 		Assert.assertTrue(arrays.isSorted(integers));
