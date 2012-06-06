@@ -24,13 +24,12 @@ package org.jenetics.util;
 
 import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.factories.Int;
+import static org.jenetics.util.functions.Null;
 import static org.jenetics.util.functions.ObjectToString;
 import static org.jenetics.util.functions.not;
-import static org.jenetics.util.functions.Null;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -141,28 +140,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 		arrays.shuffle(integers, new Random());
 		integers.sort();
-		Assert.assertTrue(arrays.isSorted(integers));
-	}
-
-	@Test
-	public void quicksort() {
-		final Array<Integer> integers = new Array<Integer>(10000).fill(Int());
-
-		Assert.assertTrue(arrays.isSorted(integers));
-
-		final Comparator<Integer> comparator = new Comparator<Integer>() {
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public int compare(final Integer o1, final Integer o2) {
-				return ((Comparable)o1).compareTo(o2);
-			}
-		};
-
-		integers.quicksort(0, integers.length() - 1, comparator);
-		Assert.assertTrue(arrays.isSorted(integers));
-
-		arrays.shuffle(integers, new Random());
-		integers.quicksort(0, integers.length() - 1, comparator);
 		Assert.assertTrue(arrays.isSorted(integers));
 	}
 
