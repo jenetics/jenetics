@@ -27,6 +27,7 @@ import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -125,7 +126,7 @@ public class LinearDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("p(x) = %f·x + %f", _k, _d);
+			return String.format(Locale.ENGLISH, "p(x) = %f·x + %f", _k, _d);
 		}
 
 	}
@@ -187,7 +188,7 @@ public class LinearDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("P(x) = %f·x² - %f·x", _k/2.0, _d);
+			return String.format(Locale.ENGLISH, "P(x) = %f·x² - %f·x", _k/2.0, _d);
 		}
 
 	}

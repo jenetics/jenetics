@@ -27,6 +27,7 @@ import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -95,7 +96,7 @@ public class UniformDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("p(x) = %s", _probability);
+			return String.format(Locale.ENGLISH, "p(x) = %s", _probability);
 		}
 
 	}
@@ -152,7 +153,10 @@ public class UniformDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max);
+			return String.format(
+				Locale.ENGLISH,
+				"P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max
+			);
 		}
 
 	}

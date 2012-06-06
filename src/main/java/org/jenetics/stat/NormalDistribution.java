@@ -30,6 +30,7 @@ import static org.jenetics.util.object.nonNegative;
 import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -113,7 +114,10 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("p(x) = N[µ=%f, σ²=%f](x)", _mean, _var);
+			return String.format(
+				Locale.ENGLISH,
+				"p(x) = N[µ=%f, σ²=%f](x)", _mean, _var
+			);
 		}
 
 	}
@@ -170,6 +174,7 @@ public class NormalDistribution<
 		@Override
 		public String toString() {
 			return String.format(
+				Locale.ENGLISH,
 				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))",
 				_mean, _var
 			);
