@@ -472,7 +472,8 @@ public final class Array<T>
 
 			for (int i = 0; i < (end - start); ++i) {
 				final Object temp = _array.data[_start + start + i];
-				_array.data[_start + start + i] = other._array.data[other._start + otherStart + i];
+				_array.data[_start + start + i] =
+					other._array.data[other._start + otherStart + i];
 				other._array.data[other._start + otherStart + i] = temp;
 			}
 		}
