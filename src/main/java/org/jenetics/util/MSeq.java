@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
- * Mutable ordered sequence.
+ * Mutable, ordered, fixed sized sequence.
  *
  * @see ISeq
  *
