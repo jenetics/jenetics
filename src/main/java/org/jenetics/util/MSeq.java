@@ -84,7 +84,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @param i the index of the first element.
 	 * @param j the index of the second element.
-	 * @throws IllegalArgumentException if {@code i > j}.
 	 * @throws IndexOutOfBoundsException if {@code i < 0 || j >= length()}.
 	 */
 	public void swap(final int i, final int j);
