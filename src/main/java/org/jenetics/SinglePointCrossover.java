@@ -80,19 +80,10 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		assert (that.length() == other.length());
 
 		final Random random = RandomRegistry.getRandom();
-		final int length = that.length();
-		final int index = random.nextInt(length);
+		final int index = random.nextInt(that.length());
 
-		for (int j = 0; j < index; ++j) {
-			final G temp = that.get(j);
-			that.set(j, other.get(j));
-			other.set(j, temp);
-		}
-		for (int j = index; j < length; ++j) {
-			final G temp = other.get(j);
-			other.set(j, that.get(j));
-			that.set(j, temp);
-		}
+		that.swap(0, index, other, 0);
+		that.swap(index, that.length(), other, index);
 
 		return 2;
 	}

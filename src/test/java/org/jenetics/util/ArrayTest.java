@@ -200,12 +200,6 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		array.swap(4, 4);
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void swap2() {
-		final Array<Integer> array = new Array<Integer>(10).fill(Int());
-		array.swap(5, 4);
-	}
-
 	@Test(expectedExceptions = ArrayIndexOutOfBoundsException.class)
 	public void swap3() {
 		final Array<Integer> array = new Array<Integer>(10).fill(Int());

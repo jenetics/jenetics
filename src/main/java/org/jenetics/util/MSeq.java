@@ -80,6 +80,33 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public MSeq<T> fill(final Factory<? extends T> factory);
 
 	/**
+	 * Swap the elements at the two positions.
+	 *
+	 * @param i the index of the first element.
+	 * @param j the index of the second element.
+	 * @throws IllegalArgumentException if {@code i > j}.
+	 * @throws IndexOutOfBoundsException if {@code i < 0 || j >= length()}.
+	 */
+	public void swap(final int i, final int j);
+
+	/**
+	 * Swap a given range with a range of the same size with another array.
+	 *
+	 * @param start the start index of {@code this} range, inclusively.
+	 * @param end the end index of {@code this} range, exclusively.
+	 * @param other the other array to swap the elements with.
+	 * @param otherStart the start index of the {@code other} array.
+	 * @throws IllegalArgumentException if {@code start > end}.
+	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
+	 *         end >= this.length() || otherStart < 0 ||
+	 *         otherStart + (end - start) >= other.length()}
+	 */
+	public void swap(
+		final int start, final int end,
+		final MSeq<T> other, final int otherStart
+	);
+
+	/**
 	 * Returns a list iterator over the elements in this sequence (in proper
 	 * sequence).
 	 *
