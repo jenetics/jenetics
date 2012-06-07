@@ -157,24 +157,6 @@ public final class arrays {
 	}
 
 	/**
-	 * Swap two elements of an given array.
-	 *
-	 * @param <T> the array type.
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static <T> void swap(final MSeq<T> array, final int i, final int j) {
-		final T old = array.get(i);
-		array.set(i, array.get(j));
-		array.set(j, old);
-	}
-
-	/**
 	 * Calls the sort method on the {@link Arrays} class.
 	 *
 	 * @throws NullPointerException if the give array is {@code null}.
@@ -311,7 +293,7 @@ public final class arrays {
 	 */
 	public static <T> void shuffle(final MSeq<T> array, final Random random) {
 		for (int j = array.length() - 1; j > 0; --j) {
-			swap(array, j, random.nextInt(j + 1));
+			array.swap(j, random.nextInt(j + 1));
 		}
 	}
 
