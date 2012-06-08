@@ -4974,6 +4974,16 @@ When serializing a whole population the fitness function and fitness scaler
  the fitness values.
 \end_layout
 
+\begin_layout Subsection
+Utils
+\end_layout
+
+\begin_layout Standard
+The Jenetics library also contains some utility classes in the org.jenetics.util
+ package.
+ The most important one are the Seq classes.
+\end_layout
+
 \begin_layout Section
 Extending 
 \family sans
