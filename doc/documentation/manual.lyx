@@ -781,6 +781,16 @@ name "lis:Genetic-algorithm"
 \end_inset
 
 Genetic algorithm
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic algorithm
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -845,6 +855,16 @@ name "fig:Structure-diagram"
 \end_inset
 
 Structure diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Class structure
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1653,6 +1673,16 @@ height "1pt"
 
 \begin_layout Paragraph
 Genes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4968,6 +4998,16 @@ extensible
 
 \begin_layout Subsection
 Genes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genes
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Genes"
@@ -5133,6 +5173,16 @@ reference "sub:Serialization"
 
 \begin_layout Subsection
 Chromosomes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosomes
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5231,6 +5281,16 @@ XMLSerializable
 
 \begin_layout Subsection
 Selectors
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selectors
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5354,6 +5414,16 @@ ProbabilitySelector
 
 \begin_layout Subsection
 Alterers
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Alterers
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5439,6 +5509,16 @@ generation
 
 \begin_layout Subsection
 Statistics
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Statistics
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5718,6 +5798,16 @@ Appendix
 
 \begin_layout Section
 Examples
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Examples
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6440,6 +6530,16 @@ $ svn checkout
 
 \begin_layout LyX-Code
       <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+SVN repository
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6490,7 +6590,17 @@ Ant
 compile
 \family default
 \series default
-: Compiles the 
+:
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+compile
+\end_layout
+
+\end_inset
+
+ Compiles the 
 \family sans
 \series bold
 \shape smallcaps
@@ -7145,20 +7255,6 @@ target "https://www.gnu.org/licenses/lgpl-2.1.html"
 
  as published by the Free Software Foundation; either version 2.1 of the
  License, or (at your option) any later version.
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset index_print
-LatexCommand printindex
-type "idx"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -7173,6 +7269,16 @@ type "idx"
 LatexCommand bibtex
 bibfiles "references"
 options "bibtotoc,plain"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset index_print
+LatexCommand printindex
+type "idx"
 
 \end_inset
 
