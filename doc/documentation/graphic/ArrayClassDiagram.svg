@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg height="351" version="1.1" width="460" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="126" y="14"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="126" y="14"/>
+<text font-family="Dialog" font-size="12" x="196" y="46">
+Seq&lt;T&gt;</text>
+<text font-family="Dialog" font-size="12" x="174" y="28">
+&lt;&lt;interface&gt;&gt;</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="126" y="56"/>
+<text font-family="Dialog" font-size="12" x="130" y="70">
+get(index : Integer) : T</text>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="254" y="126"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="254" y="126"/>
+<text font-family="Dialog" font-size="12" x="323" y="158">
+ISeq&lt;T&gt;</text>
+<text font-family="Dialog" font-size="12" x="302" y="140">
+&lt;&lt;interface&gt;&gt;</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="254" y="168"/>
+<text font-family="Dialog" font-size="12" x="258" y="182">
+copy() : MSeq&lt;T&gt;</text>
+<rect fill="#87ceeb" height="99" stroke="#87ceeb" stroke-width="1" width="192" x="14" y="126"/>
+<rect fill="none" height="99" stroke="#000000" stroke-width="1" width="192" x="14" y="126"/>
+<text font-family="Dialog" font-size="12" x="79" y="158">
+MSeq&lt;T&gt;</text>
+<text font-family="Dialog" font-size="12" x="62" y="140">
+&lt;&lt;interface&gt;&gt;</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="168"/>
+<text font-family="Dialog" font-size="12" x="18" y="182">
+set(index : Integer,value : T)</text>
+<text font-family="Dialog" font-size="12" x="18" y="198">
+swap(i : Integer,j : Integer)</text>
+<text font-family="Dialog" font-size="12" x="18" y="214">
+toISeq(j : Integer) : ISeq&lt;T&gt;</text>
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="14" y="270"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="14" y="270"/>
+<text font-family="Dialog" font-size="12" x="80" y="283">
+Array&lt;T&gt;</text>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="293"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="14" y="314"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="118" x2="118" y1="270" y2="265"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="118" x2="118" y1="260" y2="255"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="118" x2="118" y1="250" y2="245"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="118" x2="118" y1="240" y2="235"/>
+<line fill="#000000" stroke="#000000" stroke-width="1" x1="118" x2="118" y1="230" y2="225"/>
+<polygon fill="#ffffff" points="118,224 125,236 111,236" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="118,224 125,236 111,236" stroke="#000000" stroke-width="1"/>
+<text font-family="Dialog" font-size="12" x="31" y="259">
+&lt;&lt;realize&gt;&gt;</text>
+<polyline fill="none" points="158,126 158,80" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="158,80 165,92 151,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="158,80 165,92 151,92" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="286,126 286,80" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="286,80 293,92 279,92" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="286,80 293,92 279,92" stroke="#000000" stroke-width="1"/>
+</svg>
