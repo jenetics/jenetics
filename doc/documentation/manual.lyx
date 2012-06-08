@@ -1924,7 +1924,11 @@ name "fig:Selector-class-diagram"
 
 \end_inset
 
-Selector class diagram
+
+\family typewriter
+Selector
+\family default
+ class diagram
 \end_layout
 
 \end_inset
@@ -2678,15 +2682,15 @@ name "fig:Alterer-class-diagram"
 
 \end_inset
 
-Alterer class diagram
+
+\family typewriter
+Alterer
+\family default
+ class diagram
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -4975,13 +4979,191 @@ When serializing a whole population the fitness function and fitness scaler
 \end_layout
 
 \begin_layout Subsection
-Utils
+Utility classes
 \end_layout
 
 \begin_layout Standard
-The Jenetics library also contains some utility classes in the org.jenetics.util
- package.
- The most important one are the Seq classes.
+The 
+\family typewriter
+org.jenetics.util
+\family default
+ package of the library contains some utility classes which are also very
+ important for the GA classes.
+ Most notable are the 
+\family typewriter
+Seq
+\family default
+ interfaces and its Implementation.
+ They are used, among others, in the 
+\family typewriter
+Chromosome
+\family default
+ and 
+\family typewriter
+Genotype
+\family default
+ classes and holds the 
+\family typewriter
+Gene
+\family default
+s and 
+\family typewriter
+Chromosome
+\family default
+s, respectively.
+ The Seq interface itself represents a fixed-sized and ordered sequence
+ of elements.
+ It is an abstraction over the Java build-in 
+\emph on
+array
+\emph default
+-type, but much easier to use with 
+\emph on
+generic
+\emph default
+ elements.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename graphic/ArrayClassDiagram.svg
+	lyxscale 75
+	width 80col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Seq-class-diagram"
+
+\end_inset
+
+Seq
+\family default
+ class diagram
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+Seq
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Seq-class-diagram"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Seq
+\family default
+ class diagram with their most important methods.
+ The interfaces 
+\family typewriter
+MSeq
+\family default
+ and 
+\family typewriter
+ISeq
+\family default
+ are mutable, respectively, immutable specializations of the basis interface.
+ Creating instances of the Seq interfaces is possible via the 
+\family typewriter
+Array
+\family default
+ class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Seq<Integer> a1 = new Array<>(1, 2, 3);
+\end_layout
+
+\begin_layout Plain Layout
+
+final MSeq<Integer> a2 = new Array<>(4, 5, 6);
+\end_layout
+
+\begin_layout Plain Layout
+
+final ISeq<Integer> a3 = new Array<>(7, 8, 9).toISeq();
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Seq-creation"
+
+\end_inset
+
+Seq
+\family default
+ creation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ How to create instances of the three 
+\family typewriter
+Seq
+\family default
+ types is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:Seq-creation"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -5780,7 +5962,7 @@ public class Statistics {
 
 \begin_layout Plain Layout
 
-        public Statistics<G, C> builder();
+        public Statistics<G, C> build();
 \end_layout
 
 \begin_layout Plain Layout
@@ -6718,6 +6900,7 @@ Selector.select(Population, int, Optimize)
 \emph default
  tests it is possible that the number of failed tests is greater than zero
  and the test run is still successful; e.g.
+ 
 \end_layout
 
 \begin_layout LyX-Code
@@ -6739,7 +6922,7 @@ Selector.select(Population, int, Optimize)
 \begin_layout LyX-Code
 
 \size small
-  [testng] Total tests run: 1479, Failures: 1, Skips: 0    
+  [testng] Total tests run: 1483, Failures: 1, Skips: 0    
 \end_layout
 
 \begin_layout LyX-Code
