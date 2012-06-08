@@ -4979,7 +4979,7 @@ When serializing a whole population the fitness function and fitness scaler
 \end_layout
 
 \begin_layout Subsection
-Utility classes
+Utility Classes
 \end_layout
 
 \begin_layout Standard
@@ -4993,7 +4993,7 @@ org.jenetics.util
 \family typewriter
 Seq
 \family default
- interfaces and its Implementation.
+ interfaces and its implementation.
  They are used, among others, in the 
 \family typewriter
 Chromosome
@@ -5011,13 +5011,13 @@ s and
 Chromosome
 \family default
 s, respectively.
- The Seq interface itself represents a fixed-sized and ordered sequence
- of elements.
+ The Seq interface itself represents a fixed-sized, ordered sequence of
+ elements.
  It is an abstraction over the Java build-in 
 \emph on
 array
 \emph default
--type, but much easier to use with 
+-type, but much safer to use for 
 \emph on
 generic
 \emph default
@@ -5118,17 +5118,55 @@ status open
 
 \begin_layout Plain Layout
 
+// Create 'different' sequences.
+\end_layout
+
+\begin_layout Plain Layout
+
 final Seq<Integer> a1 = new Array<>(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final MSeq<Integer> a2 = new Array<>(4, 5, 6);
+final MSeq<Integer> a2 = new Array<>(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final ISeq<Integer> a3 = new Array<>(7, 8, 9).toISeq();
+final ISeq<Integer> a3 = new Array<>(1, 2, 3).toISeq();
+\end_layout
+
+\begin_layout Plain Layout
+
+final MSeq<Integer> a4 = a3.copy();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// The 'equals' method performs element-wise comparison.
+\end_layout
+
+\begin_layout Plain Layout
+
+assert(a1.equals(a2));
+\end_layout
+
+\begin_layout Plain Layout
+
+assert(a2.equals(a3));
+\end_layout
+
+\begin_layout Plain Layout
+
+assert(a3.equals(a4));
+\end_layout
+
+\begin_layout Plain Layout
+
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -5164,6 +5202,25 @@ reference "lis:Seq-creation"
 \end_inset
 
 .
+ The 
+\family typewriter
+Seq
+\family default
+ classes also allows a more 
+\emph on
+functional
+\emph default
+ programming style.
+ For a full method description refer to the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Javadoc"
+target "http://jenetics.sourceforge.net/javadoc/index.html"
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Section
@@ -6070,10 +6127,10 @@ reference "sec:Build"
 \begin_layout Subsection
 Ones Counting
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Ones counting
+Examples!Ones counting
 \end_layout
 
 \end_inset
@@ -6197,10 +6254,10 @@ The given example will print the overall timing statistics onto the console.
 \begin_layout Subsection
 Real Function
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Real function
+Examples!Real function
 \end_layout
 
 \end_inset
@@ -6369,10 +6426,10 @@ The GA will generated an console output like above.
 \begin_layout Subsection
 0/1 Knapsack
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-0/1 Knapsack
+Examples!0/1 Knapsack
 \end_layout
 
 \end_inset
@@ -6383,7 +6440,7 @@ status collapsed
 \begin_layout Standard
 In the knapsack problem
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -6479,10 +6536,10 @@ footnotesize}
 \begin_layout Subsection
 Traveling Salesman
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Traveling salesman
+Examples!Traveling salesman
 \end_layout
 
 \end_inset
