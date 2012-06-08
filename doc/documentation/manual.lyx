@@ -1206,6 +1206,16 @@ reference "sec:Genetic-Operators"
 
 \begin_layout Section
 Base Classes
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Base classes
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Base-classes"
@@ -1714,7 +1724,7 @@ Genetic Operators
 status collapsed
 
 \begin_layout Plain Layout
-Genetic Operators
+Genetic operators
 \end_layout
 
 \end_inset
@@ -5871,7 +5881,7 @@ Ones Counting
 status collapsed
 
 \begin_layout Plain Layout
-Ones Counting
+Ones counting
 \end_layout
 
 \end_inset
@@ -5998,7 +6008,7 @@ Real Function
 status collapsed
 
 \begin_layout Plain Layout
-Real Function
+Real function
 \end_layout
 
 \end_inset
@@ -6280,7 +6290,7 @@ Traveling Salesman
 status collapsed
 
 \begin_layout Plain Layout
-Traveling Salesman
+Traveling salesman
 \end_layout
 
 \end_inset
@@ -6595,7 +6605,7 @@ compile
 status collapsed
 
 \begin_layout Plain Layout
-compile
+Compile
 \end_layout
 
 \end_inset
