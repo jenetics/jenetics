@@ -1036,7 +1036,6 @@ public static void main(String[] args) {
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Simple-GA-setup"
@@ -1193,28 +1192,6 @@ public static void main(String[] args) {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:GA-setup-with-Selector/Alterer"
-
-\end_inset
-
-GA setup with 
-\family typewriter
-Selector
-\family default
-/
-\family typewriter
-Alterer
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1455,26 +1432,6 @@ Genotype<Float64Gene> genotype = Genotype.valueOf(
 \begin_layout Plain Layout
 
 );
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Genotype-(factory)-setup"
-
-\end_inset
-
-
-\family typewriter
-Genotype
-\family default
- (factory) setup
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1483,14 +1440,8 @@ Genotype
 \end_layout
 
 \begin_layout Standard
-The code snippet in listing 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "lis:Genotype-(factory)-setup"
-
-\end_inset
-
- creates a genotype with the same structure as shown in figure 
+The code snippet in listing above creates a genotype with the same structure
+ as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Genotype-structure"
@@ -1581,24 +1532,6 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Identity-fitness-Function"
-
-\end_inset
-
-Identity fitness 
-\family typewriter
-Function
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1695,26 +1628,6 @@ class Sqrt extends Function<Float64, Float64> {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:-fitness-scaler"
-
-\end_inset
-
-
-\begin_inset Formula $\sqrt{}$
-\end_inset
-
- fitness scaler
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -1723,15 +1636,8 @@ name "lis:-fitness-scaler"
 \end_layout
 
 \begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "lis:-fitness-scaler"
-
-\end_inset
-
- shows a fitness scaler which reduces the the raw-fitness to its square
- root.
+The previous listing shows a fitness scaler which reduces the the raw-fitness
+ to its square root.
  This gives weaker individuals a greater changes being selected and weakens
  the influence of 
 \emph on
@@ -1976,23 +1882,6 @@ ga.setOffspringSelector(
 \begin_layout Plain Layout
 
 );
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:GA-setup-with"
-
-\end_inset
-
-GA setup with survivor/offspring 
-\family typewriter
-Selector
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -3534,19 +3423,6 @@ public class Main {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\family typewriter
-Concurrency
-\family default
- setup
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -3631,19 +3507,6 @@ public class Main {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\family typewriter
-ForkJoinPool
-\family default
- usage
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -3737,37 +3600,11 @@ try {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:ConcurrentContext-usage"
-
-\end_inset
-
-
-\family typewriter
-ConcurrentContext
-\family default
- usage
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-The example in listing 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "lis:ConcurrentContext-usage"
-
-\end_inset
-
- executes the two tasks in parallel.
+The example in the listing above executes the two tasks in parallel.
  The 
 \family typewriter
 exit()
@@ -3823,19 +3660,6 @@ try (Concurrency c = Concurrency.start()) {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\family typewriter
-Concurrency
-\family default
- usage
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -3995,27 +3819,11 @@ try {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:GA-lock"
-
-\end_inset
-
-GA lock
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-The listing above shows two examples how to use the lock.
+The listing shows two examples how to use the lock.
  In the first one uses the lock for updating the configuration of the GA.
  The second example fetches the statistics and fitness scaler in a guaranteed
  consistent way.
@@ -4090,24 +3898,6 @@ for (int i = 0; i < 100; ++i) {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:GA-Statistics"
-
-\end_inset
-
-GA 
-\family typewriter
-Statistics
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -4213,24 +4003,6 @@ for (int i = 0; i < 100; ++i) {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:GA-with-StatisticsCalculator"
-
-\end_inset
-
-GA setup with 
-\family typewriter
-StatisticsCalculator
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -4426,24 +4198,6 @@ ga.evolve(until);
 \begin_layout Plain Layout
 
 ga.evolve(termination.SteadyFitness(5));
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:termination-usage"
-
-\end_inset
-
-GA setup with 
-\family typewriter
-termination
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -4823,26 +4577,6 @@ try {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:RandomRegistry-usage"
-
-\end_inset
-
-
-\family typewriter
-RandomRegistry
-\family default
- usage
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -4851,14 +4585,8 @@ RandomRegistry
 \end_layout
 
 \begin_layout Standard
-In listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:RandomRegistry-usage"
-
-\end_inset
-
-, a random, but reproducible, list of genotypes is created.
+With the previous listing, a random, but reproducible, list of genotypes
+ is created.
  This might be useful while testing your application or when you want to
  run the GA several times with the same initial population.
 \end_layout
@@ -4891,26 +4619,6 @@ GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(
 \begin_layout Plain Layout
 
 ga.setup(genotypes);
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Population-initialization"
-
-\end_inset
-
-
-\family typewriter
-Population
-\family default
- initialization
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -4919,14 +4627,8 @@ Population
 \end_layout
 
 \begin_layout Standard
-The example in listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Population-initialization"
-
-\end_inset
-
- uses the generated genotypes to setup the initial population of the GA.
+This example uses the generated genotypes to setup the initial population
+ of the GA.
  The GA is created with the first element of the genotypes, which is used
  as genotype factory.
  This guarantees that the same kind of genotypes are created while evolving.
@@ -5229,26 +4931,6 @@ Population<Float64Gene,Float64> population =
 \begin_layout Plain Layout
 
     ga.setPopulation(population);
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Population-I/O"
-
-\end_inset
-
-
-\family typewriter
-Population
-\family default
- I/O
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -5518,25 +5200,6 @@ assert(a3.equals(a4));
 
 \begin_layout Plain Layout
 
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\family typewriter
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Seq-creation"
-
-\end_inset
-
-Seq
-\family default
- creation
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -5545,14 +5208,7 @@ Seq
 \family typewriter
 Seq
 \family default
- types is shown in listing 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "lis:Seq-creation"
-
-\end_inset
-
-.
+ types is shown in listing above.
  The 
 \family typewriter
 Seq
@@ -5615,6 +5271,14 @@ Alterer
 \end_layout
 
 \begin_layout Standard
+The following listing shows the typical usage of the 
+\family typewriter
+IndexStream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -5656,43 +5320,11 @@ for (int i = indices.next(); i != -1; i = indices.next()) {
 \begin_layout Plain Layout
 
 }
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Select-random-elements"
-
-\end_inset
-
-Select random elements
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Select-random-elements"
-
-\end_inset
-
- shows the typical usage of the 
-\family typewriter
-IndexStream
-\family default
-.
- An important property of the random 
+An important property of the random 
 \family typewriter
 IndexStream
 \family default
@@ -5822,7 +5454,6 @@ public interface Gene<A, G extends Gene<A, G>>
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Gene-interface"
@@ -6014,7 +5645,6 @@ public interface Chromosome<T extends Gene<?, T>>
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Chromosome-interface"
@@ -6151,7 +5781,6 @@ public interface Selector<
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Selector-interface"
@@ -6284,7 +5913,6 @@ public interface Alterer<G extends Gene<?, G>> {
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Alterer-interface"
@@ -6501,7 +6129,6 @@ public class Statistics {
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Statistics-class"
@@ -6618,7 +6245,6 @@ public class Statistics {
 \begin_inset Caption
 
 \begin_layout Plain Layout
-
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Statistics.Builder-class"
