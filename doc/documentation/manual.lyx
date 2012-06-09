@@ -26,7 +26,8 @@
 %\definecolor{background}{rgb}{0.96,0.96,0.96}
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
-\definecolor{covercolor}{RGB}{220,220,220}
+%\definecolor{covercolor}{RGB}{220,220,220}
+\definecolor{covercolor}{RGB}{25,200,255}
  
 \lstset{ %
   language=java, 
@@ -151,6 +152,19 @@ pagecolor{covercolor}
 
 \begin_layout Standard
 \align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0page%"
+width "100page%"
+height "3pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
 
 \family sans
 \series bold
@@ -173,6 +187,19 @@ Jenetics
 \size largest
 \emph on
 Java Genetic Algorithm Library Manual
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0page%"
+width "100page%"
+height "3pt"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -205,14 +232,6 @@ Java Genetic Algorithm Library Manual
 \series bold
 \noun on
 Franz Wilhelmstötter
-\end_layout
-
-\begin_layout Standard
-\align right
-\begin_inset VSpace 1cm
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -2323,6 +2342,7 @@ Selecting
 
  times on the roulette-wheel.
  The population don't have to be sorted before selecting the individuals.
+ Roulette-wheel selection is one of the traditional selection strategies.
 \end_layout
 
 \begin_layout Subparagraph
@@ -2629,15 +2649,8 @@ Alterers
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset href
-LatexCommand href
-name "Genetic operators"
-target "https://en.wikipedia.org/wiki/Genetic_operator"
-
-\end_inset
-
- are responsible for the genetic diversity of the genetic algorithm.
- The genetic operator types used in 
+Alterers are responsible for the genetic diversity of the genetic algorithm.
+ The alterer types used in 
 \family sans
 \series bold
 \shape smallcaps
