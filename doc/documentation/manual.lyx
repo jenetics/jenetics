@@ -27,7 +27,8 @@
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
 %\definecolor{covercolor}{RGB}{220,220,220}
-\definecolor{covercolor}{RGB}{25,200,255}
+%\definecolor{covercolor}{RGB}{25,200,255}
+\definecolor{covercolor}{RGB}{202,232,255}
  
 \lstset{ %
   language=java, 
@@ -156,7 +157,7 @@ pagecolor{covercolor}
 LatexCommand rule
 offset "0page%"
 width "100page%"
-height "3pt"
+height "5pt"
 
 \end_inset
 
@@ -195,7 +196,7 @@ Java Genetic Algorithm Library Manual
 LatexCommand rule
 offset "0page%"
 width "100page%"
-height "3pt"
+height "5pt"
 
 \end_inset
 
@@ -2626,12 +2627,20 @@ reference "fig:Stochastic-universal-selection"
 
 \end_inset
 
- shows the function of the stochastic-universal selection; 
+ shows the function of the stochastic-universal selection, where 
 \begin_inset Formula $n$
 \end_inset
 
  is the number of individuals to select.
- 
+ Stochastic universal sampling ensures a selection of offspring, which is
+ closer to what is deserved than roulette wheel selection.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sivanandam2010"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -5032,6 +5041,16 @@ org.jenetics.util
 
 \family typewriter
 org.jenetics.util.Seq
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Seq
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5067,11 +5086,16 @@ array
 \emph on
 generic
 \emph default
- elements.
+ elements, because there are no casts needed when using 
+\emph on
+nested
+\emph default
+ generic types.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement h
 wide false
 sideways false
 status open
@@ -5100,18 +5124,6 @@ name "fig:Seq-class-diagram"
 Seq
 \family default
  class diagram
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-
-\family typewriter
-Seq
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -5246,7 +5258,17 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 \begin_layout Paragraph
 
 \family typewriter
-org.jenetics.util.IndexStream 
+org.jenetics.util.IndexStream
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+IndexStream
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5258,7 +5280,50 @@ IndexStream
 \family typewriter
  int
 \family default
- values.
+ values by calling the 
+\family typewriter
+next()
+\family default
+ method.
+ The end of the stream is reached, when 
+\family typewriter
+next()
+\family default
+ returns -1.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public abstract class IndexStream {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public abstract int next();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+IndexStream
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
  An 
 \emph on
 random
@@ -5350,7 +5415,72 @@ IndexStream
 \end_inset
 
  and differ from run to run.
- The created index stream produces unique values in ascending order.
+ The random 
+\family typewriter
+IndexStream
+\family default
+ produces unique values in ascending order.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+org.jenetics.util.Accumulator
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Accumulator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The accumulator classes are mainly used for (incrementally) calculating
+ statistic values.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Accumulator<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void accumulate(final T value);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family typewriter
+Accumulator
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Implementations of the Accumulator interface have an internal state which
+ is updated when the accumulate method is called.
 \end_layout
 
 \begin_layout Section
