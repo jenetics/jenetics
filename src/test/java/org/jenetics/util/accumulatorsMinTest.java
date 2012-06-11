@@ -38,7 +38,7 @@ import org.jenetics.util.accumulators.Min;
  * @version $Id$
  */
 public class accumulatorsMinTest
-	extends AbstractAccumulatorTester<accumulators.Min<Double>>
+	extends MappedAccumulatorTester<accumulators.Min<Double>>
 {
 
 	final Factory<accumulators.Min<Double>>

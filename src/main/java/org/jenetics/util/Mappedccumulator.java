@@ -35,7 +35,7 @@ import static org.jenetics.util.object.nonNull;
  * @since 1.0
  * @version 1.0 &ndash; <em>$Revision$</em>
  */
-public abstract class MappableAccumulator<T>
+public abstract class Mappedccumulator<T>
 	implements
 		Accumulator<T>,
 		Cloneable
@@ -46,7 +46,7 @@ public abstract class MappableAccumulator<T>
 	 */
 	protected long _samples = 0;
 
-	protected MappableAccumulator() {
+	protected Mappedccumulator() {
 	}
 
 	/**
@@ -90,12 +90,12 @@ public abstract class MappableAccumulator<T>
 	 * @return the adapter view with the different type.
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
-	public <B> MappableAccumulator<B> map(final Function<B, T> mapper) {
+	public <B> Mappedccumulator<B> map(final Function<B, T> mapper) {
 		nonNull(mapper, "Mapper");
-		return new MappableAccumulator<B>() {
+		return new Mappedccumulator<B>() {
 			@Override
 			public void accumulate(final B value) {
-				MappableAccumulator.this.accumulate(mapper.apply(value));
+				Mappedccumulator.this.accumulate(mapper.apply(value));
 			}
 		};
 	}
@@ -114,7 +114,7 @@ public abstract class MappableAccumulator<T>
 			return false;
 		}
 
-		final MappableAccumulator<?> accumulator = (MappableAccumulator<?>)obj;
+		final Mappedccumulator<?> accumulator = (Mappedccumulator<?>)obj;
 		return eq(_samples, accumulator._samples);
 	}
 
@@ -127,9 +127,9 @@ public abstract class MappableAccumulator<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected MappableAccumulator<T> clone() {
+	protected Mappedccumulator<T> clone() {
 		try {
-			return (MappableAccumulator<T>)super.clone();
+			return (Mappedccumulator<T>)super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError(e);
 		}

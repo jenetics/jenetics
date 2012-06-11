@@ -38,7 +38,7 @@ import org.jenetics.util.accumulators.MinMax;
  * @version $Id$
  */
 public class accumulatorsMinMaxTest
-	extends AbstractAccumulatorTester<accumulators.MinMax<Double>>
+	extends MappedAccumulatorTester<accumulators.MinMax<Double>>
 {
 	
 	final Factory<accumulators.MinMax<Double>>

@@ -25,7 +25,7 @@ package org.jenetics.stat;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import org.jenetics.util.MappableAccumulator;
+import org.jenetics.util.Mappedccumulator;
 
 
 /**
@@ -43,7 +43,7 @@ import org.jenetics.util.MappableAccumulator;
  * @since 1.0
  * @version 1.0 &ndash; <em>$Revision$</em>
  */
-public class Mean<N extends Number> extends MappableAccumulator<N> {
+public class Mean<N extends Number> extends Mappedccumulator<N> {
 
 	protected double _mean = Double.NaN;
 
