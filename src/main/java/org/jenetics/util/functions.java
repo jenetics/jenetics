@@ -55,6 +55,16 @@ public final class functions {
 	};
 
 	/**
+	 * Convert a string value to its length.
+	 */
+	public static final Function<String, Integer>
+	StringLength = new Function<String, Integer>() {
+		@Override public Integer apply(final String value) {
+			return value.length();
+		}
+	};
+
+	/**
 	 * Convert a string to an integer. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
@@ -79,6 +89,18 @@ public final class functions {
 	};
 
 	/**
+	 * Convert a string to an Integer64. If the string can't be converted, an
+	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
+	 * method.
+	 */
+	public static final Function<String, Integer64>
+	StringToInteger64 = new Function<String, Integer64>() {
+		@Override public Integer64 apply(final String value) {
+			return Integer64.valueOf(value);
+		}
+	};
+
+	/**
 	 * Convert a string to a float. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
@@ -99,6 +121,18 @@ public final class functions {
 	StringToDouble = new Function<String, Double>() {
 		@Override public Double apply(final String value) {
 			return Double.parseDouble(value);
+		}
+	};
+
+	/**
+	 * Convert a string to a Float64. If the string can't be converted, an
+	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
+	 * method.
+	 */
+	public static final Function<String, Float64>
+	StringToFloat64 = new Function<String, Float64>() {
+		@Override public Float64 apply(final String value) {
+			return Float64.valueOf(value);
 		}
 	};
 
