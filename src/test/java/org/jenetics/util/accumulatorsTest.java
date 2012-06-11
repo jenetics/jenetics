@@ -198,8 +198,9 @@ public class accumulatorsTest {
 			max.map(functions.StringToInteger),
 			min.map(functions.StringLength)
 		);
-		System.out.println("Max: " + max.getMax());
-		System.out.println("Min: " + min.getMin());
+		System.out.println(String.format(
+			"Max value:  %s, min length: %s.", max.getMax(), min.getMin()
+		));
 	}
 
 	@Test
