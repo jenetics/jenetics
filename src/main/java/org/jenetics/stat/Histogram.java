@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Function;
-import org.jenetics.util.MappableAccumulator;
+import org.jenetics.util.Mappedccumulator;
 import org.jenetics.util.arrays;
 
 /**
@@ -70,7 +70,7 @@ import org.jenetics.util.arrays;
  * @since 1.0
  * @version 1.0 &ndash; <em>$Revision$</em>
  */
-public class Histogram<C> extends MappableAccumulator<C> {
+public class Histogram<C> extends Mappedccumulator<C> {
 
 	private final C[] _separators;
 	private final Comparator<C> _comparator;

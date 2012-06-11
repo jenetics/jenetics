@@ -30,7 +30,7 @@ import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.AbstractAccumulatorTester;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * @version $Id$
  */
 public class HistogramTest
-	extends AbstractAccumulatorTester<Histogram<Double>>
+	extends MappedAccumulatorTester<Histogram<Double>>
 {
 
 	private final Factory<Histogram<Double>>

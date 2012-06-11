@@ -28,7 +28,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.AbstractAccumulatorTester;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.TestDataIterator;
@@ -38,7 +38,7 @@ import org.jenetics.util.TestDataIterator.Data;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class VarianceTest extends AbstractAccumulatorTester<Variance<Double>> {
+public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	
 	private final String DATA = "/org/jenetics/util/statistic-moments.txt";	
 

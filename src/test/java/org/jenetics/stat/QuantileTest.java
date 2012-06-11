@@ -27,7 +27,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.AbstractAccumulatorTester;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
@@ -35,7 +35,7 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class QuantileTest extends AbstractAccumulatorTester<Quantile<Double>> {
+public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 
 	private final Factory<Quantile<Double>> _factory = new Factory<Quantile<Double>>() {
 		@Override

@@ -27,7 +27,7 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Arrays;
 
-import org.jenetics.util.MappableAccumulator;
+import org.jenetics.util.Mappedccumulator;
 
 
 /**
@@ -48,7 +48,7 @@ import org.jenetics.util.MappableAccumulator;
  * @since 1.0
  * @version 1.0 &ndash; <em>$Revision$</em>
  */
-public class Quantile<N extends Number> extends MappableAccumulator<N> {
+public class Quantile<N extends Number> extends Mappedccumulator<N> {
 
 	// The desired quantile.
 	private final double _quantile;
