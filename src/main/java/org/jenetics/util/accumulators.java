@@ -355,6 +355,10 @@ public final class accumulators {
 			++_samples;
 		}
 
+		public G getSum() {
+			return _sum;
+		}
+
 	}
 
 	/**

@@ -34,15 +34,15 @@ import org.testng.annotations.Test;
  * @version $Id$
  */
 public class accumulatorsTest {
-	
+
 	static final class IntegerIterator implements Iterator<Integer> {
 		private final int _length;
 		private int _pos = 0;
-		
+
 		IntegerIterator(final int length) {
 			_length = length;
 		}
-		
+
 		@Override
 		public boolean hasNext() {
 			return _pos < _length;
@@ -58,21 +58,21 @@ public class accumulatorsTest {
 			throw new UnsupportedOperationException();
 		}
 	}
-	
+
 	static final class IntegerIterable implements Iterable<Integer> {
 		private final int _length;
-		
+
 		IntegerIterable(final int length) {
 			_length = length;
 		}
-		
+
 		@Override
 		public Iterator<Integer> iterator() {
 			return new IntegerIterator(_length);
 		}
-		
+
 	}
-	
+
 	@Test
 	public void callSpeed() {
 		final Accumulator<Integer> accumulator = new MappableAccumulator<Integer>() {};
@@ -84,63 +84,63 @@ public class accumulatorsTest {
 		timer.stop();
 		System.out.println(accumulator);
 		System.out.println(timer);
-	}	
-	
+	}
 
-	
+
+
 	@Test
 	public void accumulate1() {
 		final int SAMPLES = 1000;
 		final MappableAccumulator<Integer> accumulator = new MappableAccumulator<Integer>(){};
 		accumulate(new IntegerIterator(SAMPLES), accumulator);
-		
+
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 	}
-	
+
 	@Test
 	public void accumulate2() {
 		final int SAMPLES = 1000;
 		final MappableAccumulator<Integer> accumulator = new MappableAccumulator<Integer>(){};
 		accumulate(new IntegerIterable(SAMPLES), accumulator);
-		
+
 		Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 	}
-	
+
 	@Test
 	public void accumulate3() {
 		final int SAMPLES = 1000;
 		final MappableAccumulator<Integer> accumulator1 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
-		
+
 		accumulate(
 				new IntegerIterable(SAMPLES),
 				accumulator1,
 				accumulator2
 			);
-		
+
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
 	}
-	
+
 	@Test
 	public void accumulate4() {
 		final int SAMPLES = 1000;
 		final MappableAccumulator<Integer> accumulator1 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator3 = new MappableAccumulator<Integer>(){};
-		
+
 		accumulate(
 				new IntegerIterable(SAMPLES),
 				accumulator1,
 				accumulator2,
 				accumulator3
 			);
-		
+
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator3.getSamples(), SAMPLES);
 	}
-	
+
 	@Test
 	public void accumulate5() {
 		final int SAMPLES = 1000;
@@ -148,7 +148,7 @@ public class accumulatorsTest {
 		final MappableAccumulator<Integer> accumulator2 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator3 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator4 = new MappableAccumulator<Integer>(){};
-		
+
 		accumulate(
 				new IntegerIterable(SAMPLES),
 				accumulator1,
@@ -156,13 +156,13 @@ public class accumulatorsTest {
 				accumulator3,
 				accumulator4
 			);
-		
+
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator3.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator4.getSamples(), SAMPLES);
 	}
-	
+
 	@Test
 	public void accumulate6() {
 		final int SAMPLES = 1000;
@@ -171,7 +171,7 @@ public class accumulatorsTest {
 		final MappableAccumulator<Integer> accumulator3 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator4 = new MappableAccumulator<Integer>(){};
 		final MappableAccumulator<Integer> accumulator5 = new MappableAccumulator<Integer>(){};
-		
+
 		accumulate(
 				new IntegerIterable(SAMPLES),
 				accumulator1,
@@ -180,14 +180,28 @@ public class accumulatorsTest {
 				accumulator4,
 				accumulator5
 			);
-		
+
 		Assert.assertEquals(accumulator1.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator2.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator3.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator4.getSamples(), SAMPLES);
 		Assert.assertEquals(accumulator5.getSamples(), SAMPLES);
 	}
-	
+
+	@Test
+	public void accumulate7() {
+		final Seq<String> data = new Array<>("-10", "1", "2", "3", "4", "5");
+		final accumulators.Max<Integer> max = new accumulators.Max<>();
+		final accumulators.Min<Integer> min = new accumulators.Min<>();
+		accumulators.accumulate(
+			data,
+			max.map(functions.StringToInteger),
+			min.map(functions.StringLength)
+		);
+		System.out.println("Max: " + max.getMax());
+		System.out.println("Min: " + min.getMin());
+	}
+
 	@Test
 	public void accumulateN() {
 		final int SAMPLES = 1000;
@@ -195,29 +209,29 @@ public class accumulatorsTest {
 		for (int i = 0; i < accumulators.length(); ++i) {
 			accumulators.set(i, new MappableAccumulator<Integer>(){});
 		}
-		
+
 		accumulate(
 				new IntegerIterable(SAMPLES),
 				accumulators
 			);
-		
+
 		for (MappableAccumulator<Integer> accumulator : accumulators) {
 			Assert.assertEquals(accumulator.getSamples(), SAMPLES);
 		}
 	}
-	
+
 //	@Test
 //	public void sum() {
 //		final Integer64[] array = new Integer64[20];
 //		for (int i = 0; i < array.length; ++i) {
 //			array[i] = Integer64.valueOf(i);
 //		}
-//		
+//
 //		final Accumulators.Sum<Integer64> sum = new Accumulators.Sum<Integer64>();
 //		Accumulators.accumulate(Arrays.asList(array), sum);
 //		Assert.assertEquals(sum.getSum(), Integer64.valueOf((20*19/2)));
 //	}
-	
+
 }
 
 
