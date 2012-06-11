@@ -5210,17 +5210,17 @@ final MSeq<Integer> a4 = a3.copy();
 
 \begin_layout Plain Layout
 
-assert(a1.equals(a2));
+assert(a1.equals(a2) && a1 != a2);
 \end_layout
 
 \begin_layout Plain Layout
 
-assert(a2.equals(a3));
+assert(a2.equals(a3) && a2 != a3);
 \end_layout
 
 \begin_layout Plain Layout
 
-assert(a3.equals(a4));
+assert(a3.equals(a4) && a3 != a4);
 \end_layout
 
 \begin_layout Plain Layout
@@ -5530,7 +5530,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = new Array<>("-10", "1", "2", "3", "4", "5");
+final Seq<String> data = new Array<>("-10","1","2","3","4","5");
 \end_layout
 
 \begin_layout Plain Layout
@@ -5596,7 +5596,7 @@ MappedAccumulator.map
 \family default
  method can be used to operate on different data-type then the one given
  in the data array.
- However the example will print 
+ However the example snippet will print 
 \end_layout
 
 \begin_layout LyX-Code
