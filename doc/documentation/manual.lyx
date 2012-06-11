@@ -5032,8 +5032,8 @@ The
 \family typewriter
 org.jenetics.util
 \family default
- package of the library contains some utility classes which are also very
- important for the GA classes.
+ package of the library contains utility classes which are also very important
+ for the GA implementation.
  
 \end_layout
 
@@ -5276,7 +5276,7 @@ The abstract
 \family typewriter
 IndexStream
 \family default
- class generates a stream of positive
+ class is used to generate a stream of positive
 \family typewriter
  int
 \family default
@@ -5289,7 +5289,11 @@ next()
 \family typewriter
 next()
 \family default
- returns -1.
+ returns 
+\family typewriter
+-1
+\family default
+.
 \begin_inset listings
 inline false
 status open
@@ -5306,6 +5310,21 @@ public abstract class IndexStream {
 
 \begin_layout Plain Layout
 
+    public static IndexStream Random(int n, double p, Random r) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
 }
 \begin_inset Caption
 
@@ -5314,7 +5333,7 @@ public abstract class IndexStream {
 \family typewriter
 IndexStream
 \family default
- interface
+ class
 \end_layout
 
 \end_inset
@@ -5345,7 +5364,6 @@ Selector
 Alterer
 \family default
  classes for choosing random genes and/or chromosomes (indices).
- 
 \end_layout
 
 \begin_layout Standard
@@ -5440,7 +5458,11 @@ Accumulator
 
 \begin_layout Standard
 The accumulator classes are mainly used for (incrementally) calculating
- statistic values.
+ statistic values in the 
+\family typewriter
+Statistics
+\family default
+ object.
 \begin_inset listings
 inline false
 status open
@@ -5479,8 +5501,46 @@ Accumulator
 \end_layout
 
 \begin_layout Standard
-Implementations of the Accumulator interface have an internal state which
+Implementations of the Accumulator interface update an internal state which
  is updated when the accumulate method is called.
+ If the values for accumulation are 
+\emph on
+stored
+\emph default
+ in an 
+\family typewriter
+Iterable
+\family default
+ object, the 
+\family typewriter
+accumulate
+\family default
+ helper methods in the 
+\family typewriter
+accumulator
+\family default
+ object can be used for accumulation.
+ The accumulation of two or more accumulators is performed in parallel.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Seq<String> data = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+final accumulators.Sum<Integer> sum = new accumulators.Sum<>();
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section

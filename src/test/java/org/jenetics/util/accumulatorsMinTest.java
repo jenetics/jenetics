@@ -30,47 +30,51 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.accumulators.Max;
+import org.jenetics.util.accumulators.Min;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class AccumulatorsMaxTest
-	extends AbstractAccumulatorTester<accumulators.Max<Double>>
+public class accumulatorsMinTest
+	extends AbstractAccumulatorTester<accumulators.Min<Double>>
 {
 
-	final Factory<accumulators.Max<Double>>
-	_factory = new Factory<accumulators.Max<Double>>() {
+	final Factory<accumulators.Min<Double>>
+	_factory = new Factory<accumulators.Min<Double>>() {
 		@Override
-		public Max<Double> newInstance() {
+		public Min<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
 			
-			final Max<Double> max = new Max<>();
+			final Min<Double> min = new Min<>();
 			for (int i = 0; i < 1000; ++i) {
-				max.accumulate(random.nextGaussian());
+				min.accumulate(random.nextGaussian());
 			}
 			
-			return max;
+			return min;
 		}
 	};
 	@Override
-	protected Factory<Max<Double>> getFactory() {
+	protected Factory<accumulators.Min<Double>> getFactory() {
 		return _factory;
 	}
 	
 	@Test
-	public void max() {
+	public void min() {
 		final Integer[] array = new Integer[20];
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = i;
 		}
 		shuffle(array);
 		
-		final accumulators.Max<Integer> max = new accumulators.Max<>();
-		accumulators.accumulate(Arrays.asList(array), max);
-		Assert.assertEquals(max.getMax(), new Integer(19));
+		final accumulators.Min<Integer> min = new accumulators.Min<>();
+		accumulators.accumulate(Arrays.asList(array), min);
+		Assert.assertEquals(min.getMin(), new Integer(0));
 	}
 	
 }
+
+
+
+
