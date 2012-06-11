@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class AccumulatorsTest {
+public class accumulatorsTest {
 	
 	static final class IntegerIterator implements Iterator<Integer> {
 		private final int _length;

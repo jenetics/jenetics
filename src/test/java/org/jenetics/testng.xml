@@ -237,12 +237,12 @@
             <class name="org.jenetics.stat.UniformDistributionTest" />
         </classes>
     </test>	
-	<test name="org.jenetics.util.AccumulatorsTest">
+	<test name="org.jenetics.util.accumulatorsTest">
 		<classes>
-			<class name="org.jenetics.util.AccumulatorsTest" />
-			<class name="org.jenetics.util.AccumulatorsMaxTest" />
-			<class name="org.jenetics.util.AccumulatorsMinMaxTest" />
-			<class name="org.jenetics.util.AccumulatorsMinTest" />
+			<class name="org.jenetics.util.accumulatorsTest" />
+			<class name="org.jenetics.util.accumulatorsMaxTest" />
+			<class name="org.jenetics.util.accumulatorsMinMaxTest" />
+			<class name="org.jenetics.util.accumulatorsMinTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.Array">
