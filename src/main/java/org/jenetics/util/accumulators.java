@@ -422,6 +422,24 @@ public final class accumulators {
 	}
 
 	/**
+	 * Calls the {@link Accumulator#accumulate(Object)} method of all given
+	 * {@code accumulators} with each value of the given {@code values}. The
+	 * accumulation is done in parallel.
+	 *
+	 * @param <T> the value type.
+	 * @param values the values to accumulate.
+	 * @param accus the accumulators to apply.
+	 * @throws NullPointerException if one of the given arguments is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> void accumulate(
+		final Iterable<? extends T> values,
+		final Accumulator<? super T>... accus
+	) {
+		accumulate(values, new Array<>(accus));
+	}
+
+	/**
 	 * Calls the {@link Accumulator#accumulate(Object)} method of the given
 	 * {@code accumulator} with each value of the given {@code values}.
 	 *
