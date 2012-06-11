@@ -5520,7 +5520,7 @@ accumulate
 accumulator
 \family default
  object can be used for accumulation.
- The accumulation of two or more accumulators is performed in parallel.
+ The accumulation of two or more accumulators is parallelized.
 \end_layout
 
 \begin_layout Standard
@@ -5530,17 +5530,86 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = ...
+final Seq<String> data = new Array<>("-10", "1", "2", "3", "4", "5");
 \end_layout
 
 \begin_layout Plain Layout
 
-final accumulators.Sum<Integer> sum = new accumulators.Sum<>();
+final accumulators.Max<Integer> max = new accumulators.Max<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+final accumulators.Min<Integer> min = new accumulators.Min<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+accumulators.accumulate(
+\end_layout
+
+\begin_layout Plain Layout
+
+    data,
+\end_layout
+
+\begin_layout Plain Layout
+
+    max.map(functions.StringToInteger),
+\end_layout
+
+\begin_layout Plain Layout
+
+    min.map(functions.StringLength)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+System.out.println(String.format(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "Max value: %s, min length: %s.", max.getMax(), min.getMin()
+\end_layout
+
+\begin_layout Plain Layout
+
+));
 \end_layout
 
 \end_inset
 
+The given usage example 
+\emph on
+calculates
+\emph default
+ the maximum value and the minimum string length of the given data values.
+ It also shows how the 
+\family typewriter
+MappedAccumulator.map
+\family default
+ method can be used to operate on different data-type then the one given
+ in the data array.
+ However the example will print 
+\end_layout
 
+\begin_layout LyX-Code
+
+\family typewriter
+$ Max value: 5, min length: 1.
+
+\family default
+ 
+\end_layout
+
+\begin_layout Standard
+onto the console.
 \end_layout
 
 \begin_layout Section
