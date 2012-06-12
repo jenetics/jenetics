@@ -42,7 +42,7 @@ public class RandomRegistryTest {
 		
 		RandomRegistry.setRandom(new Random());
 		Assert.assertNotNull(RandomRegistry.getRandom());
-		RandomRegistry.setDefault();
+		RandomRegistry.reset();
 		
 		Assert.assertSame(RandomRegistry.getRandom(), devault);
 	}

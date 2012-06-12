@@ -105,7 +105,7 @@ public final class RandomRegistry {
 	/**
 	 * Set the random object to it's default value.
 	 */
-	public static void setDefault() {
+	public static void reset() {
 		RANDOM.set(DEFAULT_RANDOM_ACCESSOR);
 	}
 

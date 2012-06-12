@@ -1,4 +1,5 @@
 Jenetics-1.0
+- Rename 'RandomRegistry.setDefault()' method to 'RandomRegistry.reset()'.
 - Rename 'MappableAccumulator' to 'MappedAccumulator'.
 - Optimize ProbabilitySelector. The selection complexity is now O(n + log(n)),
   instead of O(n^2). 
