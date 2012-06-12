@@ -825,7 +825,7 @@ public final class arrays {
 	/**
 	 * @see #indexOf(Object[], Object)
 	 */
-	public static <T> int indexOf(
+	public static <T> int indexWhere(
 		final T[] array,
 		final Function<? super T, Boolean> predicate
 	) {
@@ -846,7 +846,7 @@ public final class arrays {
 	/**
 	 * @see #indexOf(Object[], Object)
 	 */
-	public static <T> int indexOf(
+	public static <T> int indexWhere(
 		final Iterable<? extends T> values,
 		final Function<? super T, Boolean> predicate
 	) {
@@ -882,58 +882,38 @@ public final class arrays {
 	 * [/code]
 	 *
 	 * @param array the array to iterate.
-	 * @param predicate the applied predicate.
-	 * @return the index of the last visited element, or -1 if all elements has
-	 *          been visited.
+	 * @param f the function to apply to every element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T> int foreach(
+	public static <T, R> void foreach(
 		final T[] array,
-		final Function<? super T, Boolean> predicate
+		final Function<? super T, ? extends R> f
 	) {
 		nonNull(array, "Array");
-		nonNull(predicate, "Predicate");
+		nonNull(f, "Predicate");
 
-		int index = -1;
-		for (int i = 0; i < array.length && index == -1; ++i) {
-			if (!predicate.apply(array[i])) {
-				index = i;
-			}
+		for (int i = 0; i < array.length; ++i) {
+			f.apply(array[i]);
 		}
-
-		return index;
 	}
 
 	/**
-	 * Iterates over all elements of the given {@code values} as long as the
-	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
-	 * returns the index the iteration has been interrupted. -1 is returned if
-	 * all elements were visited.
+	 * Iterates over all elements of the given {@code values}
 	 *
 	 * @param values the values to iterate.
-	 * @param predicate the applied predicate.
-	 * @return the index of the last visited element, or -1 if all elements has
-	 *         been visited.
+	 * @param f the function to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T> int foreach(
+	public static <T, R> void foreach(
 		final Iterable<? extends T> values,
-		final Function<? super T, Boolean> predicate
+		final Function<? super T, ? extends R> f
 	) {
 		nonNull(values, "Array");
-		nonNull(predicate, "Predicate");
+		nonNull(f, "Function");
 
-		int index = -1;
-		int i = 0;
-		for (Iterator<? extends T>
-			it = values.iterator(); it.hasNext() && index == -1; ++i)
-		{
-			if (!predicate.apply(it.next())) {
-				index = i;
-			}
+		for (final T value : values) {
+			f.apply(value);
 		}
-
-		return index;
 	}
 
 
