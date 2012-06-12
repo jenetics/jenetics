@@ -77,7 +77,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public <R> void foreach(final Function<? super T, R> function);
+	public <R> void foreach(final Function<? super T, ? extends R> function);
 
 	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
