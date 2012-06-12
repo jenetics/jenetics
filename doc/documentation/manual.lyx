@@ -4354,7 +4354,7 @@ class SteadyFitness<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            if (opt.compare(_fitness, stat.getBestFitness()) >= 0) {
+            if (opt.compare(_fitness,stat.getBestFitness()) >= 0) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4952,7 +4952,7 @@ Population<Float64Gene,Float64> population =
 
 \begin_layout Plain Layout
 
-    ga.setPopulation(population);
+ga.setPopulation(population);
 \end_layout
 
 \end_inset
