@@ -82,6 +82,21 @@ public final class Timer
 	/**
 	 * Set the accumulator for the interim results.
 	 *
+	 * [code]
+	 * final Mean<Long> variance = new Mean<>();
+	 * final Timer timer = new Timer();
+	 * timer.setAccumulator(variance);
+	 *
+	 * for (int i = 0; i < 100; ++I) {
+	 *     timer.start();
+	 *     ... // Do some measurable task.
+	 *     timer.stop();
+	 * }
+	 *
+	 * // Print the average time used for the 'measurable' task.
+	 * System.out.println(mean.getMean());
+	 * [/code]
+	 *
 	 * @param accumulator the accumulator used for the interim results.
 	 * @throws NullPointerException if the {@code accumulator} is {@code null}.
 	 */
