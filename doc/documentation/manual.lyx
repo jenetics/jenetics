@@ -7707,7 +7707,7 @@ Selector.select(Population, int, Optimize)
 perftest-run
 \family default
 \series default
-: Run some performance tests and stores the result into 
+: Runs some performance tests and stores the result into 
 \family typewriter
 <build\SpecialChar \-
 dir>\SpecialChar \slash{}
@@ -7772,7 +7772,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library comes with project files for Eclipse
+ library contains project files for Eclipse
 \begin_inset Foot
 status collapsed
 
@@ -7789,7 +7789,15 @@ target "http://www.eclipse.org/"
 
 \end_inset
 
- and IntelliJ IDEA
+ (
+\family typewriter
+.project
+\family default
+ and 
+\family typewriter
+.classpath
+\family default
+) and IntelliJ IDEA
 \begin_inset Foot
 status collapsed
 
@@ -7806,7 +7814,20 @@ target "http://www.jetbrains.com/idea/"
 
 \end_inset
 
-.
+ (
+\family typewriter
+Jenetics.iml
+\family default
+, 
+\family typewriter
+Jenetics.ipr
+\family default
+ and 
+\family typewriter
+Jenetics.iws
+\family default
+)---all located in the build directory.
+ 
 \end_layout
 
 \begin_layout Paragraph
