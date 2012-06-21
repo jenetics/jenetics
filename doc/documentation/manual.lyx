@@ -418,7 +418,7 @@ Jenetics
 \series bold
 Genetic Algorithm
 \series default
-, therefore an 
+, respectively an 
 \series bold
 Evolutionary Algorithm
 \series default
@@ -618,7 +618,7 @@ https://sourceforge.net/projects/jenetics/files/jenetics/
 \end_inset
 
 .
- Revere to the build instructions at section 
+ Also revere to the build instructions at section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Build"
@@ -742,7 +742,7 @@ $F(P_{0})$
 
 \begin_layout Plain Layout
 
-while !finished:
+while !$finished$ do
 \end_layout
 
 \begin_layout Plain Layout
@@ -824,8 +824,8 @@ Genetic algorithm
 \end_layout
 
 \begin_layout Standard
-Line (1) creates the initial population and the line (2) calculates the
- fitness value of the individuals.
+Line (1) creates the initial population and line (2) calculates the fitness
+ value of the individuals.
  (This is done by the 
 \family typewriter
 GeneticAlgorithm.setup()
@@ -1146,7 +1146,7 @@ ga.evolve(100))
 \end_layout
 
 \begin_layout Standard
-In a more advanced setup you may want to change the default mutation and/or
+In an more advanced setup you may want to change the default mutation and/or
  selection strategies.
 \end_layout
 
@@ -1216,12 +1216,8 @@ public static void main(String[] args) {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-The selection strategy for offspring and survivors are set to the roulette-wheel
- selector.
+The selection strategy for offspring and survivors in the given example
+ are set to the roulette-wheel selector.
  It is also possible to set the selector for offspring and survivors independent
 ly with the 
 \family typewriter
@@ -1329,13 +1325,21 @@ The central class the GA is working with is the
 Genotype
 \family default
 .
- It is the structural representative of an individual.
+ It is the 
+\emph on
+structural
+\emph default
+ representative of an individual.
  The 
 \family typewriter
 Phenotype
 \family default
- class is the actual representative of an individual, but only consists
- of the genotype and the fitness function and doesn't change the basic structure.
+ class is the 
+\emph on
+actual
+\emph default
+ representative of an individual, but only consists of the genotype and
+ the fitness function and doesn't change the basic structure.
  The phenotype is 
 \emph on
 only
@@ -1460,7 +1464,7 @@ Genotype<Float64Gene> genotype = Genotype.valueOf(
 \end_layout
 
 \begin_layout Standard
-The code snippet in listing above creates a genotype with the same structure
+The code snippet in the listing above creates a genotype with the same structure
  as shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1556,10 +1560,6 @@ class Id implements Function<Genotype<Float64Gene>, Float64> {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 The first type parameter of the 
 \family typewriter
 Function
@@ -1652,11 +1652,7 @@ class Sqrt extends Function<Float64, Float64> {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-The previous listing shows a fitness scaler which reduces the the raw-fitness
+The given listing shows a fitness scaler which reduces the the raw-fitness
  to its square root.
  This gives weaker individuals a greater changes being selected and weakens
  the influence of 
@@ -2303,7 +2299,7 @@ Roulette-wheel selector
 
 \begin_layout Standard
 The roulette-wheel selector is also known as fitness proportional selector,
- but in the 
+ In the 
 \family sans
 \series bold
 \shape smallcaps
@@ -2367,7 +2363,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_inset Formula $N$
 \end_inset
 
- is assignee to the best individual and the rank 1 to the worst individual.
+ is assigned to the best individual and the rank 1 to the worst individual.
  The selection probability 
 \begin_inset Formula $P(i)$
 \end_inset
@@ -2436,8 +2432,7 @@ An alternative to the
 weak
 \shape default
  linear-rank selector is to assign survival probabilities to the sorted
- individuals using an exponential function.
- 
+ individuals using an exponential function:
 \end_layout
 
 \begin_layout Standard
@@ -2766,17 +2761,15 @@ mutation
 \end_layout
 
 \begin_layout Enumerate
-Exploring the search space.
- By making small moves, mutation allows a population to explore the search
- space.
+Exploring the search space: By making small moves, mutation allows a population
+ to explore the search space.
  This exploration is often slow compared to crossover, but in problems where
  crossover is disruptive this can be an important way to explore the landscape.
  
 \end_layout
 
 \begin_layout Enumerate
-Maintaining diversity.
- Mutation prevents a population from correlating.
+Maintaining diversity: Mutation prevents a population from correlating.
  Even if most of the search is being performed by crossover, mutation can
  be vital to provide the diversity which crossover needs.
  
@@ -2790,7 +2783,7 @@ The mutation probability
  is the parameter that must be optimized.
  The optimal value of the mutation rate depends on the role mutation plays.
  If mutation is the only source of exploration (if there is no crossover)
- then the mutation rate should be set so that a reasonable neighborhood
+ then the mutation rate should be, set so that a reasonable neighborhood
  of solutions is explored.
 \end_layout
 
@@ -2801,7 +2794,7 @@ The mutation probability
 
  is the probability that a specific gene, over the whole population, is
  mutated.
- That means, the (average) number of genes mutated by an mutator is
+ That means, the (average) number of genes mutated by a mutator is
 \begin_inset Formula 
 \begin{equation}
 \hat{\mu}=N_{P}\cdot N_{g}\cdot P(m)
@@ -3007,7 +3000,7 @@ Recombination
 \begin_layout Standard
 An enhanced genetic algorithm (EGA) combine elements of existing solutions
  in order to create a new solution, with some of the properties of each
- parent.
+ parents.
  Recombination creates a new chromosome by combining parts of two (or more)
  parent chromosomes.
  This combination of chromosomes can be made by selecting one or more crossover
@@ -4603,10 +4596,6 @@ try {
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 With the previous listing, a random, but reproducible, list of genotypes
  is created.
  This might be useful while testing your application or when you want to
@@ -4645,10 +4634,6 @@ ga.setup(genotypes);
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 This example uses the generated genotypes to setup the initial population
  of the GA.
  The GA is created with the first element of the genotypes, which is used
@@ -5019,8 +5004,11 @@ footnotesize}
 When serializing a whole population the fitness function and fitness scaler
  are not serialized.
  If a GA is initialized with a previously serialized population, the GA's
- current fitness function and fitness scaler are used for re-calculating
- the fitness values.
+ current fitness function and fitness scaler are used for 
+\emph on
+re
+\emph default
+-calculating the fitness values.
 \end_layout
 
 \begin_layout Subsection
@@ -5161,7 +5149,7 @@ MSeq
 \family typewriter
 ISeq
 \family default
- are mutable, respectively, immutable specializations of the basis interface.
+ are mutable, respectively immutable specializations of the basis interface.
  Creating instances of the Seq interfaces is possible via the 
 \family typewriter
 Array
@@ -5233,7 +5221,7 @@ assert(a3.equals(a4) && a3 != a4);
 \family typewriter
 Seq
 \family default
- types is shown in listing above.
+ types is shown in the listing above.
  The 
 \family typewriter
 Seq
@@ -6573,7 +6561,7 @@ Examples
 \end_layout
 
 \begin_layout Standard
-In this section contains some coding examples which should give you a feeling
+This section contains some coding examples which should give you a feeling
  of how to use the 
 \family sans
 \series bold
@@ -7587,8 +7575,8 @@ main
  directory and removes all other generated artifacts.
 \end_layout
 
-\begin_layout Standard
-Following a list of the external library dependencies:
+\begin_layout Paragraph
+External library dependencies
 \end_layout
 
 \begin_layout Itemize
