@@ -305,8 +305,16 @@ Franz Wilhelmstötter
 \begin_layout Standard
 \noindent
 
-\size small
-franz.wilhelmstoetter@gmx.at
+\family typewriter
+\begin_inset CommandInset href
+LatexCommand href
+name "franz.wilhelmstoetter@gmx.at"
+target "franz.wilhelmstoetter@gmx.at"
+type "mailto:"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -379,6 +387,16 @@ This work is licensed under a
 LatexCommand href
 name "Creative Commons"
 target "http://creativecommons.org/licenses/by-sa/3.0/at/"
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+License
+\end_layout
 
 \end_inset
 
@@ -604,15 +622,34 @@ JScience
 \end_inset
 
  which is part of the download package.
- For building the library from the sources you only have the JDK 1.7 to be
- installed, all other dependencies are available in the package which you
- can download from 
+ For building the library from the sources you only have the JDK 1.7
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+JDK
+\end_layout
+
+\end_inset
+
+ to be installed, all other dependencies are available in the package which
+ you can download from 
 \begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
 https://sourceforge.net/projects/jenetics/files/jenetics/
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Download
 \end_layout
 
 \end_inset
@@ -1333,6 +1370,16 @@ structural
  The 
 \family typewriter
 Phenotype
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Phenotype
+\end_layout
+
+\end_inset
+
+
 \family default
  class is the 
 \emph on
@@ -1412,8 +1459,17 @@ N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 
 \end_inset
 
-The chromosomes of a genotype doesn't have to have necessarily the same
- size.
+The chromosomes
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Chromosome
+\end_layout
+
+\end_inset
+
+ of a genotype doesn't have to have necessarily the same size.
  It is only required that all genes are from the same type and the genes
  within a chromosome have the same constraints; e.
 \begin_inset space ~
@@ -1722,10 +1778,10 @@ height "1pt"
 \begin_layout Paragraph
 Genes
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Genes
+Gene
 \end_layout
 
 \end_inset
@@ -1743,7 +1799,17 @@ Jenetics
 \series default
 \shape default
  library.
- They contain the actual information (alleles) of the encoded solution.
+ They contain the actual information (alleles)
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Allele
+\end_layout
+
+\end_inset
+
+ of the encoded solution.
  The available Gene implementations should be sufficient for a very wide
  range of problem domains.
  Refer to chapter 
@@ -1759,10 +1825,10 @@ reference "sub:Genes"
 \begin_layout Section
 Genetic operators
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Genetic operators
+Genetic operator
 \end_layout
 
 \end_inset
@@ -1816,10 +1882,10 @@ Jenetics
 \begin_layout Subsection
 Selectors
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Selectors
+Selector
 \end_layout
 
 \end_inset
@@ -2099,7 +2165,7 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \begin_layout Paragraph
 Monte Carlo selector
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Monte Carlo selector
@@ -2128,10 +2194,10 @@ performance
 \begin_layout Paragraph
 Probability selectors
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Probability selectors
+Probability selector
 \end_layout
 
 \end_inset
@@ -2641,10 +2707,10 @@ key "Sivanandam2010"
 \begin_layout Subsection
 Alterers
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Alterers
+Alterer
 \end_layout
 
 \end_inset
@@ -4452,6 +4518,16 @@ Randomness
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4459,8 +4535,17 @@ In general, GAs heavily depends on
 \emph on
 pseudo
 \emph default
- random number generators (PRNG) for creating new individuals and for the
- selection- and mutation-algorithms.
+ random number generators (PRNG)
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+PRNG
+\end_layout
+
+\end_inset
+
+ for creating new individuals and for the selection- and mutation-algorithms.
  
 \family sans
 \series bold
@@ -4482,6 +4567,16 @@ Random
 \family typewriter
 RandomRegistry
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!Registry
+\end_layout
+
+\end_inset
+
 .
  This makes it possible to change the implementation of the random engine
  without changing the client code.
@@ -4493,8 +4588,17 @@ LocalContext
 \emph on
 Javolution
 \emph default
- project, the random engine can easily changed, even for specific parts
- of the code.
+ project, the random engine
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Random!Engine
+\end_layout
+
+\end_inset
+
+ can easily changed, even for specific parts of the code.
  
 \end_layout
 
@@ -5635,10 +5739,10 @@ extensible
 \begin_layout Subsection
 Genes
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Genes
+Gene
 \end_layout
 
 \end_inset
@@ -5746,6 +5850,16 @@ Gene
 \family typewriter
 getAllele
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Allele
+\end_layout
+
+\end_inset
+
  method which will return the wrapped data, (2) the 
 \family typewriter
 newInstance
@@ -5829,10 +5943,10 @@ reference "sub:Serialization"
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Chromosomes
+Chromosome
 \end_layout
 
 \end_inset
@@ -5956,10 +6070,10 @@ XMLSerializable
 \begin_layout Subsection
 Selectors
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Selectors
+Selector
 \end_layout
 
 \end_inset
@@ -6108,10 +6222,10 @@ ProbabilitySelector
 \begin_layout Subsection
 Alterers
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Alterers
+Alterer
 \end_layout
 
 \end_inset
@@ -6627,6 +6741,16 @@ Examples!Ones counting
 \end_inset
 
 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Ones counting
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6749,6 +6873,16 @@ status open
 
 \begin_layout Plain Layout
 Examples!Real function
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Real function
 \end_layout
 
 \end_inset
@@ -6926,6 +7060,16 @@ Examples!0/1 Knapsack
 \end_inset
 
 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+0/1 Knapsack
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7031,6 +7175,16 @@ status open
 
 \begin_layout Plain Layout
 Examples!Traveling salesman
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Traveling salesman
 \end_layout
 
 \end_inset
@@ -7199,6 +7353,26 @@ Build
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Installation
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Download
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Build"
@@ -7285,6 +7459,16 @@ status collapsed
 
 \begin_layout Plain Layout
 SVN repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
 \end_layout
 
 \end_inset
@@ -7576,7 +7760,70 @@ main
 \end_layout
 
 \begin_layout Paragraph
+IDE integration
+\end_layout
+
+\begin_layout Standard
+The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library comes with project files for Eclipse
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.eclipse.org/"
+target "http://www.eclipse.org/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ and IntelliJ IDEA
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.jetbrains.com/idea/"
+target "http://www.jetbrains.com/idea/"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
 External library dependencies
+\end_layout
+
+\begin_layout Standard
+The following external projects are used for running and/or building the
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
 \end_layout
 
 \begin_layout Itemize
