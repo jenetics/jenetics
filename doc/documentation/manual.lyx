@@ -655,7 +655,8 @@ Download
 \end_inset
 
 .
- Also revere to the build instructions at section 
+ For additional informations revere to the build instructions at section
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Build"
@@ -978,9 +979,9 @@ Genotype
 \family typewriter
 Function
 \family default
- from the 
+ form the 
 \family typewriter
-Phenotype
+Phenotype, which
 \family default
  are collected into a 
 \family typewriter
@@ -1357,7 +1358,7 @@ name "par:Genotype"
 \end_layout
 
 \begin_layout Standard
-The central class the GA is working with is the 
+The central class, the GA is working with, is the 
 \family typewriter
 Genotype
 \family default
@@ -1451,7 +1452,11 @@ reference "fig:Genotype-structure"
 
  genes (depending on the chromosome).
  The overall number of genes of a genotype is given by the sum of the chromosome
-s genes: 
+'s genes, which can be accessed via the 
+\family typewriter
+Genotype.getNumberOfGenes()
+\family default
+ method: 
 \begin_inset Formula 
 \begin{equation}
 N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
@@ -1622,11 +1627,7 @@ Function
 \family default
  defines the kind of genotype from which the fitness value is calculated
  and the second type parameter determines the return type.
- As already mentioned, the return type must implement the 
-\family typewriter
-Comparable
-\family default
- interface.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -1644,7 +1645,8 @@ Fitness scaler
 \end_layout
 
 \begin_layout Standard
-The fitness value, calculated by the fitness function, is the 
+The fitness value, calculated by the fitness function, is treated as the
+ 
 \shape italic
 raw
 \shape default
@@ -2124,7 +2126,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \begin_inset Formula $s$
 \end_inset
 
-, weak individuals have less chance being selected.
+, weak individuals have less chance of being selected.
 \end_layout
 
 \begin_layout Paragraph
@@ -2277,7 +2279,7 @@ reference "fig:Fitness-proportional-selection"
 \begin_inset Formula $r\in\left[0,F\right)$
 \end_inset
 
- specifies which individual is selected by argument minimization: 
+ specifies which individual is selected, by argument minimization: 
 \begin_inset Formula 
 \begin{equation}
 i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{minarg}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
@@ -2364,7 +2366,7 @@ Roulette-wheel selector
 \end_layout
 
 \begin_layout Standard
-The roulette-wheel selector is also known as fitness proportional selector,
+The roulette-wheel selector is also known as fitness proportional selector.
  In the 
 \family sans
 \series bold
@@ -2467,7 +2469,7 @@ Here
 \end_inset
 
  must be fulfilled.
- Note that all individuals get a different rank, respectively, a different
+ Note that all individuals get a different rank, respectively a different
  selection probability, even if they have the same fitness value.
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -2570,21 +2572,12 @@ where
  is defined as 
 \begin_inset Formula 
 \begin{equation}
-Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}},
+Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}.
 \end{equation}
 
 \end_inset
 
-
-\begin_inset Formula $f_{i}$
-\end_inset
-
- denotes the fitness of the individual 
-\begin_inset Formula $i$
-\end_inset
-
-.
- Positive values of 
+Positive values of 
 \begin_inset Formula $b$
 \end_inset
 
@@ -2842,24 +2835,24 @@ Maintaining diversity: Mutation prevents a population from correlating.
 \end_layout
 
 \begin_layout Standard
-The mutation probability 
+The mutation probability, 
 \begin_inset Formula $P(m)$
 \end_inset
 
- is the parameter that must be optimized.
+, is the parameter that must be optimized.
  The optimal value of the mutation rate depends on the role mutation plays.
- If mutation is the only source of exploration (if there is no crossover)
- then the mutation rate should be, set so that a reasonable neighborhood
- of solutions is explored.
+ If mutation is the only source of exploration (if there is no crossover),
+ the mutation rate should be set to a value that ensures that a reasonable
+ neighborhood of solutions is explored.
 \end_layout
 
 \begin_layout Standard
-The mutation probability 
+The mutation probability, 
 \begin_inset Formula $P(m)$
 \end_inset
 
- is the probability that a specific gene, over the whole population, is
- mutated.
+, is defined as the probability that a specific gene, over the whole population,
+ is mutated.
  That means, the (average) number of genes mutated by a mutator is
 \begin_inset Formula 
 \begin{equation}
@@ -3129,11 +3122,11 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-The recombination probability 
+The recombination probability, 
 \begin_inset Formula $P(r)$
 \end_inset
 
- determines the probability that a given individual (genotype) of a population
+, determines the probability that a given individual (genotype) of a population
  is selected for recombination.
  The (mean) number of changed individuals depend on the concrete implementation
  and can be vary from 
@@ -3173,8 +3166,8 @@ Single-point crossover
 \begin_layout Standard
 The single-point crossover changes two children chromosomes by taking two
  chromosomes and cutting them at some, randomly chosen, site.
- If we create a child and its complement we preserving the total number
- of genes in the population, preventing any genetic drift.
+ If we create a child and its complement we preserve the total number of
+ genes in the population, preventing any genetic drift.
  Single-point crossover is the classic form of crossover.
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
@@ -3905,7 +3898,7 @@ try {
 \end_inset
 
 The listing shows two examples how to use the lock.
- In the first one uses the lock for updating the configuration of the GA.
+ In the first example, the lock is used for updating the GA configuration.
  The second example fetches the statistics and fitness scaler in a guaranteed
  consistent way.
 \end_layout
@@ -3930,7 +3923,7 @@ The
 GeneticAlgorithm
 \family default
  class offers population- and timing-statistics after every evolve step.
- This information can be used to measure the performance of the GA or to
+ This information can be used to measure the performance of the GA, or to
  implement a more sophisticated termination strategy than 
 \family typewriter
 evolve(100)
@@ -5524,7 +5517,7 @@ IndexStream
 \begin_inset Formula $\mu=n\cdot p$
 \end_inset
 
- and differ from run to run.
+ and may differ from run to run.
  The random 
 \family typewriter
 IndexStream
@@ -5593,7 +5586,7 @@ Accumulator
 \end_layout
 
 \begin_layout Standard
-Implementations of the Accumulator interface update an internal state which
+Implementations of the Accumulator interface have an internal state which
  is updated when the accumulate method is called.
  If the values for accumulation are 
 \emph on
@@ -6658,6 +6651,10 @@ The type of the statistics object returned by the GA is the same type as
 
 \begin_layout Part*
 Appendix
+\end_layout
+
+\begin_layout Section
+Implementation details
 \end_layout
 
 \begin_layout Section
