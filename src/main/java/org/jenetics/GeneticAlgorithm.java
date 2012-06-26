@@ -321,8 +321,15 @@ public class GeneticAlgorithm<
 
 	/**
 	 * Setting up the <code>GeneticAlgorithm</code> with the given initial
-	 * population. Subsequent calls to this method throw IllegalStateException.
+	 * population. Subsequent calls to this method throw an IllegalStateException.
+	 * This method is similar to the {@link #setGenotypes(Collection)} and
+	 * {@link #setPopulation(Collection)} methods, but this method is required
+	 * to be called only once and before starting evaluation. It also calculates
+	 * the timing statistics when (calculating the fitness values for the given
+	 * genotypes.
 	 *
+	 * @see #setGenotypes(Collection)
+	 * @see #setPopulation(Collection)
 	 * @param genotypes the initial population.
 	 * @throws IllegalStateException if called more than once.
 	 */
@@ -904,8 +911,13 @@ public class GeneticAlgorithm<
 
 	/**
 	 * Set the (initial) population in form of a list of phenotypes. The fitness
-	 * function and fitness scaler will not be changed.
+	 * function and fitness scaler of the phenotypes will be changed with the
+	 * current one of this GA. The fitness values are calculated as needed by
+	 * the next <i>evolve</i> step. <em>This method doesn't acquire the GA lock.
+	 * When used from another thread, the lock must be acquired from outside.</em>
 	 *
+	 * @see #setGenotypes(Collection)
+	 * @see #setup(Collection)
 	 * @param population The list of phenotypes to set. The population size is
 	 *        set to <code>phenotype.size()</code>.
 	 * @throws NullPointerException if the population, or one of its element, is
@@ -934,9 +946,14 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Set the (initial) population in form of a list of genotypes. The fitness
-	 * function and fitness scaler will not be changed.
+	 * Set/change the population in form of a list of genotypes. The fitness
+	 * function and fitness scaler will not be changed. The fitness values are
+	 * calculated as needed by the next <i>evolve</i> step. <em>This method
+	 * doesn't acquire the GA lock. When used from another thread, the lock must
+	 * be acquired from outside.</em>
 	 *
+	 * @see #setPopulation(Collection)
+	 * @see #setup(Collection)
 	 * @param genotypes The list of genotypes to set. The population size is set
 	 *        to <code>genotypes.size()</code>.
 	 * @throws NullPointerException if the population, or one of its elements,
