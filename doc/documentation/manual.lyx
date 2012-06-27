@@ -5113,14 +5113,15 @@ The
 \family typewriter
 ga.setPopulation(Collection)
 \family default
- method performs the recalculation of the fitness values on demand, when
- evolving the next generation and it can be called when desired.
- In contrast, a call of the 
+ method doesn't perform a recalculation of the fitness values.
+ This is done on demand, when evolving the next generation.
+ Setting the population can be done whenever desired.
+ In contrast to the 
 \family typewriter
 ga.setup(Collection)
 \family default
- method is only allowed before starting evaluating, as replacement for the
- 
+ method, which can only be called before starting evaluation, as replacement
+ for the 
 \family typewriter
 ga.setup()
 \family default
