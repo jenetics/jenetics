@@ -30,15 +30,24 @@ import org.jenetics.GaussianMutator;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
-import org.jenetics.Mutator;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
- */
+final class Real2D implements Function<Genotype<Float64Gene>, Float64> {
+	@Override
+	public Float64 apply(final Genotype<Float64Gene> gt) {
+		final Float64 x1 = gt.getChromosome(0).getGene().getAllele();
+		final Float64 x2 = gt.getChromosome(1).getGene().getAllele();
+
+		return Float64.valueOf(f(x1.doubleValue(), x2.doubleValue()));
+	}
+
+	private double f(final double x1, final double x2) {
+		return x1+x2;
+	}
+}
+
 public class RealFunction2D {
 
 	private static class FF implements Function<Genotype<Float64Gene>, Double> {
@@ -54,7 +63,6 @@ public class RealFunction2D {
 		private double f(final double x1, final double x2) {
 			return x1+x2;
 		}
-
 	}
 
 	public static void main(final String[] args) {
@@ -70,8 +78,7 @@ public class RealFunction2D {
 		// This are the alterers you can use for this example, in any combination.
 		ga.setAlterers(
 			new MeanAlterer<Float64Gene>(),
-			new GaussianMutator<Float64Gene>(),
-			new Mutator<Float64Gene>()
+			new GaussianMutator<Float64Gene>()
 		);
 
 		ga.setup();
