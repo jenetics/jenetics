@@ -5108,6 +5108,25 @@ re
 -calculating the fitness values.
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+ga.setPopulation(Collection)
+\family default
+ method performs the recalculation of the fitness values on demand, when
+ evolving the next generation and it can be called when desired.
+ In contrast, a call of the 
+\family typewriter
+ga.setup(Collection)
+\family default
+ method is only allowed before starting evaluating, as replacement for the
+ 
+\family typewriter
+ga.setup()
+\family default
+ call.
+\end_layout
+
 \begin_layout Subsection
 Utility classes
 \end_layout
