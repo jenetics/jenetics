@@ -1,4 +1,4 @@
-set VERSION=1.0
+set VERSION=1.0-RC1
 set CLS_PATH=./build/main/jenetics-all-%VERSION%.jar;./build/main/jenetics-examples-%VERSION%.jar;.
 
 java -cp %CLS_PATH% org.jenetics.examples.Knapsack
