@@ -29,7 +29,7 @@
 -->
 <project default="jar">
 	<property name="name" value="jenetics" />
-	<property name="version" value="1.0" />
+	<property name="version" value="1.0-RC1" />
 	<property name="identifier" value="${name}-${version}" />
 	<property name="year" value="2007-2012" />
 
