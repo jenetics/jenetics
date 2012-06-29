@@ -29,7 +29,9 @@
 -->
 <project default="jar">
 	<property name="name" value="jenetics" />
-	<property name="version" value="1.0-RC1" />
+	<loadfile property="version" srcfile="VERSION" >
+		<filterchain><striplinebreaks/></filterchain>
+	</loadfile>
 	<property name="identifier" value="${name}-${version}" />
 	<property name="year" value="2007-2012" />
 
