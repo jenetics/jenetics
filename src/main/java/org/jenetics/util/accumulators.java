@@ -56,7 +56,7 @@ public final class accumulators {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version $Id$
+	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -144,7 +144,7 @@ public final class accumulators {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version $Id$
+	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
@@ -232,7 +232,7 @@ public final class accumulators {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version $Id$
+	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
 		extends MappedAccumulator<C>
