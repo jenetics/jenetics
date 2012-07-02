@@ -37,7 +37,19 @@ import javolution.xml.XMLObjectWriter;
 import javolution.xml.stream.XMLStreamException;
 
 /**
- * Class for object serialization.
+ * Class for object serialization. The following example shows how to write and
+ * reload a given population.
+ *
+ * [code]
+ * // Writing the population to disk.
+ * final File file = new File("population.xml");
+ * IO.xml.write(ga.getPopulation(), file);
+ *
+ * // Reading the population from disk.
+ * final Population<Float64Gene,Float64> population =
+ *     (Population<Float64Gene, Float64)IO.xml.read(file);
+ * ga.setPopulation(population);
+ *[/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -287,7 +299,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 *@version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -341,7 +353,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
