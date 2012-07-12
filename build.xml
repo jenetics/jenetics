@@ -538,42 +538,31 @@
 	    Exports the project. Executes all tests and build a ready to deploy zip
 	    file.
 	-->
-	<target name="export" >
+	<target name="export" >		
 		<antcall target="clean" />
 		<antcall target="test-run" />
+		<move tofile="${basedir}/test-report.html__" file="${basedir}/test-report.html"/>
 		<antcall target="clean" />
 		<antcall target="jar" />
 		<antcall target="javadoc" />
 		<antcall target="perftest-run" />
 		<antcall target="manual-compile" />
-
-		<mkdir dir="${export.dir}/src"/>
-		<copy todir="${export.dir}/src" >
-			<fileset dir="${source.basedir}" />
-		</copy>
-		<replace dir="${export.dir}/src" token="@!identifier!@" value="${identifier}" />
-		<replace dir="${export.dir}/src" token="@!year!@" value="${year}" />
-
-		<mkdir dir="${export.dir}/lib"/>
-		<copy todir="${export.dir}/lib" >
-			<fileset dir="${lib.dir}" />
-		</copy>
-
-		<mkdir dir="${export.dir}/javadoc"/>
-		<copy todir="${export.dir}/javadoc" >
-			<fileset dir="${javadoc.dir}" />
-		</copy>
-
-		<copy todir="${export.dir}" file="manual-${version}.pdf"/>
-		<copy todir="${export.dir}" file="build.xml"/>
-		<copy todir="${export.dir}" file="change.log"/>
-		<copy todir="${export.dir}" file="LGPL.txt"/>
-		<copy todir="${export.dir}" file="README"/>
-		<copy todir="${export.dir}" file="Jenetics.iml"/>
-		<copy todir="${export.dir}" file="Jenetics.ipr"/>
-		<copy todir="${export.dir}" file="Jenetics.iws"/>
-		<copy todir="${export.dir}" file="run-examples.sh"/>
+		
+		<copy todir="${export.dir}/src" ><fileset dir="${source.basedir}" /></copy>
+		<copy todir="${export.dir}/lib" ><fileset dir="${lib.dir}" /></copy>
+		<copy todir="${export.dir}/javadoc" ><fileset dir="${javadoc.dir}" /></copy>
+		<copy todir="${export.dir}" file="${basedir}/manual-${version}.pdf"/>
+		<copy todir="${export.dir}" file="${basedir}/build.xml"/>
+		<copy todir="${export.dir}" file="${basedir}/change.log"/>
+		<copy todir="${export.dir}" file="${basedir}/LGPL.txt"/>
+		<copy todir="${export.dir}" file="${basedir}/README"/>
+		<copy todir="${export.dir}" file="${basedir}/Jenetics.iml"/>
+		<copy todir="${export.dir}" file="${basedir}/Jenetics.ipr"/>
+		<copy todir="${export.dir}" file="${basedir}/Jenetics.iws"/>
+		<copy todir="${export.dir}" file="${basedir}/run-examples.sh"/>
+		<copy todir="${export.dir}" file="${basedir}/run-examples.cmd"/>
 		<copy todir="${export.dir}" file="${basedir}/perftest-report.txt"/>
+		<move tofile="${export.dir}/test-report.html" file="${basedir}/test-report.html__"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-all-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-examples-${version}.jar"/>
@@ -584,6 +573,8 @@
 		<replace file="${export.dir}/change.log" token="@!year!@" value="${year}" />
 		<replace file="${export.dir}/README" token="@!identifier!@" value="${identifier}" />
 		<replace file="${export.dir}/README" token="@!year!@" value="${year}" />
+		<replace dir="${export.dir}/src" token="@!identifier!@" value="${identifier}" />
+		<replace dir="${export.dir}/src" token="@!year!@" value="${year}" />
 
 		<zip destfile="${build.dir}/export/${identifier}.zip" level="9">
 			<fileset dir="${export.dir}"/>
