@@ -82,7 +82,7 @@ public class NumberStatistics<
 		 * {@code statistics}.
 		 *
 		 * @param statistics the statistics values. If the {@code statistics}
-		 *        is {@code null} nothing is set.
+		 *         is {@code null} nothing is set.
 		 * @return this builder.
 		 */
 		public Builder<G, R> statistics(final NumberStatistics<G, R> statistics) {

@@ -53,8 +53,8 @@ public interface Alterer<G extends Gene<?, G>> {
 	 * is empty, nothing is altered.
 	 *
 	 * @param population The Population to be altered. If the
-	 * 		 <code>population</code> is <code>null</code> or empty, nothing is
-	 * 		 altered.
+	 *         <code>population</code> is <code>null</code> or empty, nothing is
+	 *         altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the number of genes that has been altered.
 	 * @throws NullPointerException if the given {@code population} is

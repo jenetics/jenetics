@@ -167,7 +167,7 @@ public final class Phenotype<
 	 *
 	 * @param currentGeneration the current generation evaluated by the GA.
 	 * @return the age of this phenotype:
-	 *         {@code currentGeneration - this.getGeneration()}.
+	 *          {@code currentGeneration - this.getGeneration()}.
 	 */
 	public int getAge(final int currentGeneration) {
 		return currentGeneration - _generation;

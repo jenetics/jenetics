@@ -83,7 +83,7 @@ public final class LinearRankSelector<
 	 * Create a new LinearRankSelector with the given values for {@code nminus}.
 	 *
 	 * @param nminus {@code nminus/N} is the probability of the worst phenotype
-	 *        to be selected.
+	 *         to be selected.
 	 * @throws IllegalArgumentException if {@code nminus < 0}.
 	 */
 	public LinearRankSelector(final double nminus) {

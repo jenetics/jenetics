@@ -137,7 +137,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * {@code Genotype}.
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
-	 *         {@code Genotype}.
+	 *          {@code Genotype}.
 	 */
 	public G getGene() {
 		assert(_chromosomes != null);
@@ -286,9 +286,9 @@ public final class Genotype<G extends Gene<?, G>>
 	 * The <code>Chromosome</code> array <code>c</code> is cloned.
 	 *
 	 * @param chromosomes The <code>Chromosome</code> array the <code>Genotype</code>
-	 *        consists of.
+	 *         consists of.
 	 * @throws NullPointerException if <code>c</code> is null or one of the
-	 *         chromosome.
+	 *          chromosome.
 	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(

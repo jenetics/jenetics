@@ -61,10 +61,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a1,
 		final Alterer<G> a2
 	) {
-		this(new Array<>(
-				nonNull(a1),
-				nonNull(a2)
-			));
+		this(new Array<>(nonNull(a1), nonNull(a2)));
 	}
 
 	/**
@@ -80,11 +77,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a2,
 		final Alterer<G> a3
 	) {
-		this(new Array<>(
-				nonNull(a1),
-				nonNull(a2),
-				nonNull(a3)
-			));
+		this(new Array<>(nonNull(a1), nonNull(a2), nonNull(a3)));
 	}
 
 	/**

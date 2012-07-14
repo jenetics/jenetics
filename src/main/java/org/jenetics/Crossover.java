@@ -49,7 +49,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	 *
 	 * @param probability The recombination probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]}.
+	 *          valid range of {@code [0, 1]}.
 	 */
 	public Crossover(final double probability) {
 		super(probability, 2);

@@ -72,7 +72,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 * 		  smaller than one.
+	 *          smaller than one.
 	 */
 	protected AbstractChromosome(final ISeq<G> genes) {
 		nonNull(genes, "Gene array");

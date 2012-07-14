@@ -119,10 +119,10 @@ public enum BitGene
 	 */
 	public static final Function<BitGene, Boolean> Allele =
 		new Function<BitGene, Boolean>() {
-				@Override public Boolean apply(final BitGene value) {
-					return value._value;
-				}
-			};
+			@Override public Boolean apply(final BitGene value) {
+				return value._value;
+			}
+		};
 
 
 	/* *************************************************************************

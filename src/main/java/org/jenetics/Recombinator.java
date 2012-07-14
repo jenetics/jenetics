@@ -113,9 +113,9 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * @param <C> the fitness result type
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which
-	 *        are involved in the <i>recombination</i> step. The length of the
-	 *        array is {@link #getOrder()}. The first individual is the
-	 *        <i>primary</i> individual.
+	 *         are involved in the <i>recombination</i> step. The length of the
+	 *         array is {@link #getOrder()}. The first individual is the
+	 *         <i>primary</i> individual.
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.
 	 */

@@ -173,20 +173,20 @@ public final class CharacterGene
 	 */
 	public static final Function<CharacterGene, Character> Allele =
 		new Function<CharacterGene, Character>() {
-				@Override public Character apply(final CharacterGene value) {
-					return value._character;
-				}
-			};
+			@Override public Character apply(final CharacterGene value) {
+				return value._character;
+			}
+		};
 
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
 	public static final Function<CharacterGene, CharSeq> ValidCharacters =
 		new Function<CharacterGene, CharSeq>() {
-				@Override public CharSeq apply(final CharacterGene value) {
-					return value._validCharacters;
-				}
-			};
+			@Override public CharSeq apply(final CharacterGene value) {
+				return value._validCharacters;
+			}
+		};
 
 
 	/* *************************************************************************

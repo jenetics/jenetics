@@ -60,7 +60,7 @@ public abstract class NumberChromosome<
 	 *
 	 * @param genes the genes of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code genes.length()} is smaller
-	 * 		  than one.
+	 *          than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	protected NumberChromosome(final ISeq<G> genes) {
@@ -94,7 +94,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the byte value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *			(index < 0 || index >= length()).
+	 *          (index < 0 || index >= length()).
 	 */
 	public byte byteValue(final int index) {
 		return getGene(index).getAllele().byteValue();
@@ -117,7 +117,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the short value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *		(index < 0 || index >= length()).
+	 *          (index < 0 || index >= length()).
 	 */
 	public short shortValue(final int index) {
 		return getGene(index).getAllele().shortValue();
@@ -140,7 +140,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the int value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *		(index < 0 || index >= length()).
+	 *          (index < 0 || index >= length()).
 	 */
 	public int intValue(final int index) {
 		return getGene(index).getAllele().intValue();
@@ -163,7 +163,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the long value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *		(index < 0 || index >= length()).
+	 *          (index < 0 || index >= length()).
 	 */
 	public long longValue(final int index) {
 		return getGene(index).getAllele().longValue();
@@ -186,7 +186,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the float value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *		(index < 0 || index >= length()).
+	 *          (index < 0 || index >= length()).
 	 */
 	public float floatValue(final int index) {
 		return getGene(index).getAllele().floatValue();
@@ -209,7 +209,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the double value of the {@link Gene} with the given <code>index</code>.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *		(index < 0 || index >= length()).
+	 *          (index < 0 || index >= length()).
 	 */
 	public double doubleValue(final int index) {
 		return getGene(index).getAllele().doubleValue();

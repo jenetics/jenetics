@@ -76,7 +76,7 @@ public final class termination {
 	 *
 	 * @param <C> the fitness type.
 	 * @param generation the number of generations the fitness don't have been
-	 *        improved.
+	 *         improved.
 	 * @return the GA terminator.
 	 */
 	public static <C extends Comparable<? super C>>

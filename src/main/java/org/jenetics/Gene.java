@@ -34,7 +34,7 @@ import org.jenetics.util.Verifiable;
  * information (alleles) of the encoded solution.
  *
  * @param <A> the <a href="http://en.wikipedia.org/wiki/Allele">Allele</a> type
- *        of this gene.
+ *         of this gene.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
