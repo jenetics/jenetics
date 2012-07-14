@@ -133,7 +133,7 @@ public final class CharSeq
 	 * @return {@code true} if this character set contains the given character,
 	 *          {@code false} otherwise.
 	 * @throws NullPointerException if the given character {@code c} is
-	 *         {@code null}.
+	 *          {@code null}.
 	 */
 	public boolean contains(final Character c) {
 		return contains(c.charValue());

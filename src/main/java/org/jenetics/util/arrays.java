@@ -80,7 +80,7 @@ public final class arrays {
 	 * @param seq the sequence to test for equality.
 	 * @param obj the object to test for equality with the sequence.
 	 * @return {@code true} if the given objects are sequences and contain the
-	 *         same objects in the same order, {@code false} otherwise.
+	 *          same objects in the same order, {@code false} otherwise.
 	 */
 	public static boolean equals(final Seq<?> seq, final Object obj) {
 		if (obj == seq) {
