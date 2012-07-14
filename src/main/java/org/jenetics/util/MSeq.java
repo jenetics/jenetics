@@ -97,8 +97,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param otherStart the start index of the {@code other} array.
 	 * @throws IllegalArgumentException if {@code start > end}.
 	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *         end >= this.length() || otherStart < 0 ||
-	 *         otherStart + (end - start) >= other.length()}
+	 *          end >= this.length() || otherStart < 0 ||
+	 *          otherStart + (end - start) >= other.length()}
 	 */
 	public void swap(
 		final int start, final int end,

@@ -295,7 +295,7 @@ public final class Array<T>
 	 *      </a>
 	 *
 	 * @throws ClassCastException if the array contains elements that are not
-	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 *          <i>mutually comparable</i> (for example, strings and integers).
 	 */
 	public void sort() {
 		sort(0, length());
@@ -344,9 +344,9 @@ public final class Array<T>
 	 *      </a>
 	 *
 	 * @throws NullPointerException if the given {@code comparator} is
-	 *         {@code null}.
+	 *          {@code null}.
 	 * @throws ClassCastException if the array contains elements that are not
-	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 *          <i>mutually comparable</i> (for example, strings and integers).
 	 */
 	public void sort(final Comparator<? super T> comparator) {
 		sort(0, length(), comparator);
@@ -368,11 +368,11 @@ public final class Array<T>
 	 * @param from the index of the first element (inclusive) to be sorted.
 	 * @param to the index of the last element (exclusive) to be sorted.
 	 * @throws NullPointerException if the given {@code comparator} is
-	 *         {@code null}.
+	 *          {@code null}.
 	 * @throws IndexOutOfBoundsException if {@code from < 0 or to > length()}
 	 * @throws IllegalArgumentException if {@code from > to}
 	 * @throws ClassCastException if the array contains elements that are not
-	 *        <i>mutually comparable</i> (for example, strings and integers).
+	 *          <i>mutually comparable</i> (for example, strings and integers).
 	 */
 	public void sort(
 		final int from, final int to,
@@ -554,7 +554,7 @@ public final class Array<T>
 	 *
 	 * @param value the value to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
-	 * 		  given {@code value}
+	 *          given {@code value}
 	 */
 	public Array<T> add(final T value) {
 		final Array<T> array = new Array<>(length() + 1);
@@ -570,7 +570,7 @@ public final class Array<T>
 	 *
 	 * @param array the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
-	 * 		  given {@code array}
+	 *          given {@code array}
 	 * @throws NullPointerException if the {@code arrays} is {@code null}.
 	 */
 	public Array<T> add(final Array<? extends T> array) {
@@ -595,7 +595,7 @@ public final class Array<T>
 	 *
 	 * @param values the array to append to this array.
 	 * @return a new array which contains the values of {@code this} and the
-	 * 		  given {@code array}
+	 *          given {@code array}
 	 * @throws NullPointerException if the {@code values} is {@code null}.
 	 */
 	public Array<T> add(final Collection<? extends T> values) {

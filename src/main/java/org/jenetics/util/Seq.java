@@ -210,7 +210,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *         runtime type is allocated for this purpose.
 	 * @return an array containing the elements of this array
 	 * @throws ArrayStoreException if the runtime type of the specified array is
-	 *         not a super type of the runtime type of every element in this array
+	 *          not a super type of the runtime type of every element in this array
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public T[] toArray(final T[] array);
@@ -230,7 +230,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param start low end point (inclusive) of the sub array.
 	 * @return a view of the specified range within this array.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || start > length()}).
+	 *          ({@code start < 0 || start > length()}).
 	 */
 	public Seq<T> subSeq(final int start);
 
@@ -250,7 +250,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param end high end point (exclusive) of the sub sequence.
 	 * @return a view of the specified range within this sequence.
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
-	 *         ({@code start < 0 || end > length() || start > end}).
+	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public Seq<T> subSeq(final int start, final int end);
 
@@ -287,7 +287,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @param object the object to be compared for equality with this sequence.
 	 * @return {@code true} if the specified object is equal to this sequence,
-	 *         {@code false} otherwise.
+	 *          {@code false} otherwise.
 	 */
 	@Override
 	public boolean equals(final Object object);

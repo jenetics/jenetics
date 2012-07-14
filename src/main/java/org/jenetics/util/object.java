@@ -226,7 +226,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final boolean a, final boolean b) {
 		return a == b;
@@ -238,7 +238,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final boolean[] a, final boolean[] b) {
 		return Arrays.equals(a, b);
@@ -250,7 +250,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final byte a, final byte b) {
 		return a == b;
@@ -262,7 +262,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final byte[] a, final byte[] b) {
 		return Arrays.equals(a, b);
@@ -274,7 +274,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final char a, final char b) {
 		return a == b;
@@ -286,7 +286,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final char[] a, final char[] b) {
 		return Arrays.equals(a, b);
@@ -298,7 +298,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final short a, final short b) {
 		return a == b;
@@ -310,7 +310,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final short[] a, final short[] b) {
 		return Arrays.equals(a, b);
@@ -322,7 +322,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final int a, final int b) {
 		return a == b;
@@ -334,7 +334,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final int[] a, final int[] b) {
 		return Arrays.equals(a, b);
@@ -346,7 +346,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final long a, final long b) {
 		return a == b;
@@ -358,7 +358,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final long[] a, final long[] b) {
 		return Arrays.equals(a, b);
@@ -370,7 +370,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final float a, final float b) {
 		return Float.floatToIntBits(a) == Float.floatToIntBits(b);
@@ -382,7 +382,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final float[] a, final float[] b) {
 		return Arrays.equals(a, b);
@@ -394,7 +394,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final double a, final double b) {
 		return Double.doubleToLongBits(a) == Double.doubleToLongBits(b);
@@ -406,7 +406,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final double[] a, final double[] b) {
 		return Arrays.equals(a, b);
@@ -418,7 +418,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final Enum<?> a, final Enum<?> b) {
 		return a == b;
@@ -430,7 +430,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final Object a, final Object b) {
 		return (a != null ? a.equals(b) : b == null);
@@ -442,7 +442,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final Object[] a, final Object[] b) {
 		return Arrays.equals(a, b);
@@ -454,7 +454,7 @@ public final class object {
 	 * @param a first value to compare.
 	 * @param b second value to compare.
 	 * @return {@code true} if the given values are equal, {@code false}
-	 *         otherwise.
+	 *          otherwise.
 	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
 		return arrays.equals(a, b);
@@ -468,7 +468,7 @@ public final class object {
 	 *
 	 * @param a the object.
 	 * @return the result of calling toString for a non-null argument and "null"
-	 *         for a null argument
+	 *          for a null argument
 	 */
 	public static String str(final Object a) {
 		return Objects.toString(a);
