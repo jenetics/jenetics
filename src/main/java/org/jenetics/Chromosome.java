@@ -55,7 +55,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * and the given {@code genes}.
 	 *
 	 * @param genes the genes of the new chromosome. The given genes array is
-	 *        not copied.
+	 *         not copied.
 	 * @return A new {@link Chromosome} of the same type with the given genes.
 	 * @throws NullPointerException if the given {@code gene}s are {@code null}.
 	 */
@@ -75,7 +75,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @param index The gene index.
 	 * @return the wanted gene.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index < 1 || index >= length()).
+	 *          (index < 1 || index >= length()).
 	 */
 	public G getGene(final int index);
 

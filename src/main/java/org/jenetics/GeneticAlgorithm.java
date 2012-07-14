@@ -173,9 +173,9 @@ public class GeneticAlgorithm<
 
 	// Alterers
 	private Alterer<G> _alterer = new CompositeAlterer<>(
-			new SinglePointCrossover<G>(0.1),
-			new Mutator<G>(0.05)
-		);
+		new SinglePointCrossover<G>(0.1),
+		new Mutator<G>(0.05)
+	);
 
 	// Selectors
 	private Selector<G, C> _survivorSelector = new TournamentSelector<>(3);

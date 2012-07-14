@@ -72,10 +72,10 @@ public final class Integer64Gene
 	 */
 	public static final Function<Integer64Gene, Integer64> Allele =
 		new Function<Integer64Gene, Integer64>() {
-				@Override public Integer64 apply(final Integer64Gene value) {
-					return value._value;
-				}
-			};
+			@Override public Integer64 apply(final Integer64Gene value) {
+				return value._value;
+			}
+		};
 
 	/**
 	 * Converter for accessing the allele from a given number gene.
@@ -219,8 +219,8 @@ public final class Integer64Gene
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final Integer64 value = Integer64.valueOf(
-					nextLong(random, min.longValue(), max.longValue())
-				);
+			nextLong(random, min.longValue(), max.longValue())
+		);
 
 		return valueOf(value, min, max);
 	}

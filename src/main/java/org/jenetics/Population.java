@@ -77,7 +77,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @param size Preallocated population size.
 	 * @throws IllegalArgumentException if the specified initial capacity is
-	 *         negative
+	 *          negative
 	 */
 	public Population(final int size) {
 		_population = new ArrayList<>(size + 1);

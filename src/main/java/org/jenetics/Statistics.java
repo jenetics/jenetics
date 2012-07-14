@@ -98,7 +98,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * {@code statistics}.
 		 *
 		 * @param statistics the statistics values. If the {@code statistics}
-		 *        is {@code null} nothing is set.
+		 *         is {@code null} nothing is set.
 		 * @return this builder.
 		 */
 		public Builder<G, C> statistics(final Statistics<G, C> statistics) {

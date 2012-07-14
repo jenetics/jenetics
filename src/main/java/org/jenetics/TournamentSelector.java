@@ -78,8 +78,8 @@ public class TournamentSelector<
 
 	/**
 	 * @throws IllegalArgumentException if the sample size is greater than the
-	 * 		  population size or {@code count} is greater the the population
-	 * 		  size or the _sampleSize is greater the the population size.
+	 *          population size or {@code count} is greater the the population
+	 *          size or the _sampleSize is greater the the population size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override

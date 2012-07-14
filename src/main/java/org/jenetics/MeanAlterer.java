@@ -58,7 +58,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	 *
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]}.
+	 *          valid range of {@code [0, 1]}.
 	 */
 	public MeanAlterer(final double probability) {
 		super(probability, 2);
@@ -90,9 +90,9 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 
 		population.set(
-				individuals[0],
-				pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
-			);
+			individuals[0],
+			pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
+		);
 
 		return 1;
 	}

@@ -127,7 +127,7 @@ public abstract class NumberGene<
 	 * interval closed interval [min, max].
 	 *
 	 * @return if this gene is valid, which means the gene value is within the
-	 * 		  closed interval [min, max].
+	 *          closed interval [min, max].
 	 */
 	@Override
 	public boolean isValid() {
