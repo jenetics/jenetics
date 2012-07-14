@@ -35,9 +35,9 @@ import static org.jenetics.util.object.hashCodeOf;
  * </p>
  *
  * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" >
- * 		  Wikipedia: Algorithms for calculating variance</a>
+ *       Wikipedia: Algorithms for calculating variance</a>
  * @see <a href="http://mathworld.wolfram.com/Variance.html">
- * 		  Wolfram MathWorld: Variance</a>
+ *       Wolfram MathWorld: Variance</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -55,7 +55,7 @@ public class Variance<N extends Number> extends Mean<N> {
 	 * <p><img src="doc-files/variance.gif" alt="Variance" /></p>
 	 *
 	 * @return the variance of the accumulated values, or {@link java.lang.Double#NaN}
-	 *         if {@code getSamples() == 0}.
+	 *          if {@code getSamples() == 0}.
 	 */
 	public double getVariance() {
 		double variance = NaN;
