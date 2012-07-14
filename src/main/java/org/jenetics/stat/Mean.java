@@ -54,7 +54,7 @@ public class Mean<N extends Number> extends MappedAccumulator<N> {
 	 * Return the mean value of the accumulated values.
 	 *
 	 * @return the mean value of the accumulated values, or {@link java.lang.Double#NaN}
-	 * 		  if {@code getSamples() == 0}.
+	 *          if {@code getSamples() == 0}.
 	 */
 	public double getMean() {
 		return _mean;
@@ -65,7 +65,6 @@ public class Mean<N extends Number> extends MappedAccumulator<N> {
 	 * <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Standard_error_%28statistics%29">
 	 * Standard error
 	 * </a> of the calculated mean.
-	 *
 	 *
 	 * @return the standard error of the calculated mean.
 	 */
