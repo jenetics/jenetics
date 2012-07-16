@@ -1145,7 +1145,7 @@ Float64
 \family typewriter
 Float64
 \family default
-.
+ values.
  The return type of the fitness function must be at least of the type 
 \family typewriter
 Comparable
@@ -1174,7 +1174,7 @@ Optimize.MINIMUM
 \family typewriter
 ga.setup()
 \family default
- call creates the initial population and calculates its fitness value.
+ call creates the initial population and calculates its fitness values.
  Then the GA evolves 100 generations (
 \family typewriter
 ga.evolve(100))
