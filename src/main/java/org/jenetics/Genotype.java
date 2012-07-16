@@ -154,6 +154,7 @@ public final class Genotype<G extends Gene<?, G>>
 		return _chromosomes.get(0).getGene();
 	}
 
+
 	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
 	}
