@@ -78,6 +78,14 @@ public class BitChromosome extends Number<BitChromosome>
 	 */
 	protected byte[] _genes;
 
+	private BitChromosome(final int length, final boolean internal) {
+		nonNegative(length);
+
+		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
+		_genes = new byte[bytes];
+		_length = length;
+	}
+
 	/**
 	 * Construct a new BitChromosome with the given _length.
 	 *
@@ -88,17 +96,14 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @throws IllegalArgumentException if <code>p</code> is out of range.
 	 */
 	public BitChromosome(final int length, final double p) {
-		nonNegative(length);
+		this(length, true);
 		checkProbability(p);
-
-		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
-		_genes = new byte[bytes];
-		_length = length;
 
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0, n = length(); i < n; ++i) {
 			set(i, random.nextDouble() < p);
 		}
+		_p = p;
 	}
 
 	/**
@@ -349,14 +354,14 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
 		nonNull(genes, "Genes");
 
-		final BitChromosome chromosome = new BitChromosome(genes.length(), _p);
+		final BitChromosome chromosome = new BitChromosome(genes.length(), true);
 
 		int ones = 0;
 		for (int i = 0; i < genes.length(); ++i) {
-			if (genes.get(i) == BitGene.TRUE) {
+			if (genes.get(i).booleanValue()) {
 				++ones;
 			}
-			bit.set(chromosome._genes, i, genes.get(i) == BitGene.TRUE);
+			bit.set(chromosome._genes, i, genes.get(i).booleanValue());
 		}
 		chromosome._p = (double)ones/(double)genes.length();
 		return chromosome;
