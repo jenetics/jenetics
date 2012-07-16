@@ -121,7 +121,11 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the first chromosome.
+	 * Return the first chromosome. This is a shortcut for
+	 * [code]
+	 * final Genotype<Float64Gene> gt = ...
+	 * final Chromosome<Float64Gene> chromosome = gt.getChromosome(0);
+	 * [/code]
 	 *
 	 * @return The first chromosome.
 	 */
@@ -134,7 +138,11 @@ public final class Genotype<G extends Gene<?, G>>
 
 	/**
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
-	 * {@code Genotype}.
+	 * {@code Genotype}. This is a shortcut for
+	 * [code]
+	 * final Genotype<Float64Gene> gt = ...
+	 * final Float64Gene gene = gt.getChromosome(0).getGene(0);
+	 * [/code]
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *          {@code Genotype}.
