@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##
+# Run the examples for profiling, using the JGrind library:
+#     https://bitbucket.org/fwilhelm/jgrind
+# 
+# The created reports can be viewed with the KCachgrind application:
+#    http://kcachegrind.sourceforge.net/html/Home.html
+##
+
 agent_param() {
 	output_file=$1
 	agent=`pwd`/../lib/build/libjgrind-x86_64.so
