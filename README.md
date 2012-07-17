@@ -1,50 +1,75 @@
-REQUIREMENTS
----------------------------------------
+Jenetics
+-------
+
+Jenetics is an Genetic Algorithm, respectively an Evolutionary
+Algorithm, library written in Java. It is designed with a clear separa-
+tion of the several algorithm concepts, e. g. Gene, Chromosome, Genotype,
+Phenotype, Population and fitness Function. Jenetics allows you to min-
+imize or maximize the given fitness function without tweaking it. This
+manual describes the concepts implemented in the Jenetics project and
+gives you examples and best practice tips.
+
+
+Requirements
+-----------
 
 - JDK 1.7
   The JAVA_HOME variable must be set to your
   java installation directory.
   
-- Dependency to the JScience library (http:://jscience.org).
+- Dependency to the JScience library (<http:://jscience.org>).
   This library is included and lies in the lib directory.
 
-BUILD Jenetics
----------------------------------------
+Build Jenetics
+-------------
 
-- cd into the directory containing build.xml
-- execute ./lib/build/apacha-ant/bin/ant
-  This compiles the sources creates two jar files and
-  generates the javadoc. The jar Jenetics-*.jar contains
-  only the "Jenetics" files. The jar Jenetics-all-*jar
-  contains also the depending JScience classe.
+For building the Jenetics library from source, download the most recent, stable
+package version from <https://sourceforge.net/projects/jenetics/files/latest/download> and extract it to some build directory.
 
-
-TEST
----------------------------------------
-
-For running the tests execute
-    ant testng
-
-Additional tests must be stored in the testng sub-directory.
-You must also add the testng.xml file in the testng/org/jenetics
-directory.
-
-Run the examples:
-Befor you can run the examples you must build the
-library. Then you can run the given examples.
-
-- Knapsack:
-    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.Knapsack
+    $ unzip jenetics-<version>.zip -d <builddir>
     
-- OnesCounting:
-    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.OnesCounting
+<version> denotes the actual Jenetics version and ```<builddir>``` the actual build
+directory. Alternatively you can check out the latest-unstable-version from the
+SVN trunk.
+
+    $ svn checkout \
+        https://jenetics.svn.sourceforge.net/\
+        svnroot/jenetics/trunk \
+        <builddir>
+
+Compiling the sources and building the JAR files is done with the jar Ant
+target. Change to the <builddir> directory and call
+
+    $ ./lib/build/ant/bin/ant jar
     
-- RealFunction:
-    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.RealFunction
-    
-- StringGenerator:
-    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.StringGenerator
-    
-- TravelingSalesman:
-    java -cp jenetics-all-<version>.jar:Jenetics-examples-<version>.jar org.jenetics.examples.TravelingSalesman
+The JAR files, and all other build artifacts, are stored in the ```<builddir>/
+build/main``` directory.
+The available Ant targets are:
+
+- **compile**: Compiles the Jenetics sources and copies the class files to the
+  ```<builddir>/build/main``` directory.
+  
+- **example-compile**: Compiles the examples and copies the class files to the
+  ```<builddir>/build/main``` directory.
+  
+- **test-compile**: Compiles the tests and the class files to the ```<builddir>/
+  build/main``` directory.
+  
+- **test-run**: Compiles and executes the unit tests. The test results are
+  printed onto the console and a test-report, created by TestNG, is written
+  to ```<builddir>/test-report.html```. Since some of the unit-tests are sta-
+  tistical 13 tests it is possible that the number of failed tests is greater than
+  zero and the test run is still successful.
+  
+- **perftest-run**: Runs some performance tests and stores the result into
+  ```<builddir>/pertest-report.txt```
+  
+- **javadoc**: Generates the API documentation.
+
+- **jar**: Compiles the sources and creates the JAR files. The artifacts are
+  copied to the ```<builddir>/build/main``` directory.
+  
+- **clean**: Deletes the ```<builddir>/build/main``` directory and removes all
+  other generated artifacts.
+
 
