@@ -1,8 +1,11 @@
 #!/bin/bash
 
-VERSION=`cat ../VERSION`
+SCRIPT_DIR=`readlink -f $0`
+SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
 
-CLS_PATH="../build/main/jenetics-all-${VERSION}.jar:../build/main/jenetics-examples-${VERSION}.jar:."
+VERSION=`cat ${SCRIPT_DIR}/../VERSION`
+CLS_PATH=`readlink -f ${SCRIPT_DIR}/../build/main/jenetics-all-${VERSION}.jar`
+CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../build/main/jenetics-examples-${VERSION}.jar`:.
 
 java -cp $CLS_PATH org.jenetics.examples.Knapsack
 java -cp $CLS_PATH org.jenetics.examples.OnesCounting
