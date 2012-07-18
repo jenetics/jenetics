@@ -71,5 +71,18 @@ The available Ant targets are:
   
 - **clean**: Deletes the ```<builddir>/build/main``` directory and removes all
   other generated artifacts.
+  
+  
+Coding standards
+--------------
+
+Beside the Java coding standards as given in <http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html> the following extensions are used.
+
+- All non-constant variables members start with underscore.
+- Variable name for arrays or collections are plural.
+- All helper classes which only contains static methods are lower-case. This 
+  indicates that the given class can not be used as type, because no instance
+  can be created.
+  
 
 
