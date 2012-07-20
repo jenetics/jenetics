@@ -91,14 +91,14 @@ public class TravelingSalesman {
 		ga.setStatisticsCalculator(
 				new Calculator<EnumGene<Integer>, Double>()
 			);
-		ga.setPopulationSize(300);
+		ga.setPopulationSize(500);
 		ga.setAlterers(
 			new SwapMutator<EnumGene<Integer>>(0.2),
 			new PartiallyMatchedCrossover<Integer>(0.3)
 		);
 
 		ga.setup();
-		ga.evolve(700);
+		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
 		System.out.println(ga.getBestPhenotype());
 	}

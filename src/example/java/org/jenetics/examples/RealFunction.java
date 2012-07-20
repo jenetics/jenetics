@@ -28,7 +28,6 @@ import static java.lang.Math.sin;
 
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.AbstractAlterer;
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
@@ -64,9 +63,8 @@ public class RealFunction {
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<Float64Gene, Float64>()
 		);
-		ga.setPopulationSize(20);
+		ga.setPopulationSize(500);
 		ga.setAlterers(
-			AbstractAlterer.<Float64Gene>Null(),
 			new Mutator<Float64Gene>(0.03),
 			new MeanAlterer<Float64Gene>(0.6)
 		);

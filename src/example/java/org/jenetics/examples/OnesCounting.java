@@ -63,7 +63,7 @@ public class OnesCounting {
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<BitGene, Integer>()
 		);
-		ga.setPopulationSize(50);
+		ga.setPopulationSize(500);
 		ga.setSelectors(
 			new RouletteWheelSelector<BitGene, Integer>()
 		);
@@ -75,6 +75,7 @@ public class OnesCounting {
 		ga.setup();
 		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
+		System.out.println(ga.getBestPhenotype());
 	}
 
 }
