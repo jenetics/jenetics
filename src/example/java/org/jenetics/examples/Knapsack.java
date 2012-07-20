@@ -33,6 +33,7 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 
@@ -100,12 +101,14 @@ public class Knapsack {
 		new GeneticAlgorithm<>(
 			genotype, ff
 		);
-		ga.setMaximalPhenotypeAge(30);
-		ga.setPopulationSize(100);
+		ga.setPopulationSize(500);
 		ga.setStatisticsCalculator(
 			new NumberStatistics.Calculator<BitGene, Float64>()
 		);
-		ga.setSelectors(
+		ga.setSurvivorSelector(
+			new TournamentSelector<BitGene, Float64>(5)
+		);
+		ga.setOffspringSelector(
 			new RouletteWheelSelector<BitGene, Float64>()
 		);
 		ga.setAlterers(
@@ -116,5 +119,6 @@ public class Knapsack {
 		ga.setup();
 		ga.evolve(100);
 		System.out.println(ga.getBestStatistics());
+		System.out.println(ga.getBestPhenotype());
 	}
 }

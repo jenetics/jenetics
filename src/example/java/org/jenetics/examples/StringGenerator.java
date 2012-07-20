@@ -18,7 +18,7 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
 package org.jenetics.examples;
 
@@ -35,6 +35,8 @@ import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.SinglePointCrossover;
+import org.jenetics.StochasticUniversalSelector;
+import org.jenetics.TournamentSelector;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -50,66 +52,67 @@ public class StringGenerator {
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private final String value;
-		
+
 		public Gen(final String value) {
 			this.value = value;
 		}
-		
+
 		@Override
 		public Integer64 apply(final Genotype<CharacterGene> genotype) {
 			final CharacterChromosome chromosome = (CharacterChromosome)genotype.getChromosome();
 			return Integer64.valueOf(value.length() - levenshtein(value, chromosome));
 		}
-		
+
 		@Override
 		public String toString() {
 			return "To be, or not to be.";
 		}
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		final int maxThreads = Runtime.getRuntime().availableProcessors() + 2;
 		final ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
-		
+
 		final String value =
-			"To be, or not to be:";
-		
-		final CharSeq chars = new CharSeq(CharSeq.expand("a-zA-Z.,:' "));
+			"jenetics";
+
+		final CharSeq chars = CharSeq.valueOf("a-z");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.valueOf(
 			new CharacterChromosome(chars, value.length())
 		);
 		final Gen ff = new Gen(value);
 		final GeneticAlgorithm<CharacterGene, Integer64>
 		ga = new GeneticAlgorithm<>(gtf, ff);
-		
-		ga.setPopulationSize(5000);
-		ga.setOffspringFraction(0.7);
-		ga.setMaximalPhenotypeAge(50);
-		ga.setSelectors(new org.jenetics.RouletteWheelSelector<CharacterGene, Integer64>());
-		ga.setSelectors(new org.jenetics.LinearRankSelector<CharacterGene, Integer64>());
-		ga.setSelectors(new org.jenetics.BoltzmannSelector<CharacterGene, Integer64>());
+
+		ga.setPopulationSize(500);
+		ga.setSurvivorSelector(
+			new StochasticUniversalSelector<CharacterGene, Integer64>()
+		);
+		ga.setOffspringSelector(
+			new TournamentSelector<CharacterGene, Integer64>(5)
+		);
 		ga.setAlterer(new CompositeAlterer<>(
-			new Mutator<CharacterGene>(0.05),
-			new SinglePointCrossover<CharacterGene>(0.1)
+			new Mutator<CharacterGene>(0.1),
+			new SinglePointCrossover<CharacterGene>(0.5)
 		));
 
-		final int generations = 500;
-		
+		final int generations = 100;
+
 		GAUtils.printConfig(
 				"String generator",
 				ga,
 				generations,
 				((CompositeAlterer<?>)ga.getAlterer()).getAlterers().toArray()
 			);
-		
-		GAUtils.execute(ga, generations, 50);
-				
+
+		GAUtils.execute(ga, generations, 20);
+
 		pool.shutdown();
 	}
-	
-	
+
+
 	/**
 	 * Return Levenshtein distance of two character sequences.
 	 */
@@ -120,7 +123,7 @@ public class StringGenerator {
 		if (n == 0 || m == 0) {
 			return Math.max(n, m);
 		}
-		
+
 		//Step 2:
 		int d[][] = new int[n + 1][m +1];
 		for (int i = 0; i <= n; ++i) {
@@ -129,15 +132,15 @@ public class StringGenerator {
 		for (int j = 0; j <= m; ++j) {
 			d[0][j] = j;
 		}
-		
+
 		//Step 3:
 		for (int i = 1; i <= n; ++i) {
 			final char si = s.charAt(i - 1);
-			
+
 			//Step 4:
 			for (int j = 1; j <= m; ++j) {
 				final char tj = t.charAt(j - 1);
-				
+
 				//Step 5:
 				int cost = 0;
 				if (si == tj) {
@@ -145,12 +148,12 @@ public class StringGenerator {
 				} else {
 					cost = 1;
 				}
-				
+
 				//Step 6:
 				d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
 			}
 		}
-		
+
 		//Step 7:
 		return d[n][m];
 	}
@@ -165,5 +168,5 @@ public class StringGenerator {
 		}
 		return m;
 	}
-	
+
 }
