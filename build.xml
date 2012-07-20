@@ -555,7 +555,7 @@
 		<copy todir="${export.dir}" file="${basedir}/build.xml"/>
 		<copy todir="${export.dir}" file="${basedir}/change.log"/>
 		<copy todir="${export.dir}" file="${basedir}/LGPL.txt"/>
-		<copy todir="${export.dir}" file="${basedir}/README"/>
+		<copy todir="${export.dir}" file="${basedir}/README.md"/>
 		<copy todir="${export.dir}" file="${basedir}/Jenetics.iml"/>
 		<copy todir="${export.dir}" file="${basedir}/Jenetics.ipr"/>
 		<copy todir="${export.dir}" file="${basedir}/Jenetics.iws"/>
@@ -564,14 +564,14 @@
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-all-${version}.jar"/>
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-examples-${version}.jar"/>
-		<copy todir="${export.dir}/scripts"><fileset dir="${basedir}/scripts" /></copy>
+		<copy todir="${export.dir}/script"><fileset dir="${basedir}/script" /></copy>
 
 		<replace file="${export.dir}/build.xml" token="@!identifier!@" value="${identifier}" />
 		<replace file="${export.dir}/build.xml" token="@!year!@" value="${year}" />
 		<replace file="${export.dir}/change.log" token="@!identifier!@" value="${identifier}" />
 		<replace file="${export.dir}/change.log" token="@!year!@" value="${year}" />
-		<replace file="${export.dir}/README" token="@!identifier!@" value="${identifier}" />
-		<replace file="${export.dir}/README" token="@!year!@" value="${year}" />
+		<replace file="${export.dir}/README.md" token="@!identifier!@" value="${identifier}" />
+		<replace file="${export.dir}/README.md" token="@!year!@" value="${year}" />
 		<replace dir="${export.dir}/src" token="@!identifier!@" value="${identifier}" />
 		<replace dir="${export.dir}/src" token="@!year!@" value="${year}" />
 
