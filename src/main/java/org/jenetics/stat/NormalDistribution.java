@@ -246,6 +246,10 @@ public class NormalDistribution<
 		return _pdf;
 	}
 
+	@Override
+	public double χ2(final Histogram<N> histogram) {
+		return histogram.χ2(getCDF());
+	}
 
 	@Override
 	public int hashCode() {

@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<Float64Gene, Float64>>
 {
-	
+
 	final Factory<TournamentSelector<Float64Gene, Float64>>
 	_factory = new Factory<TournamentSelector<Float64Gene,Float64>>()
 	{
@@ -54,12 +54,12 @@ public class TournamentSelectorTest
 	protected Factory<TournamentSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<>(_domain);
+		return new UniformDistribution<>(getDomain());
 	}
-	
+
 	// TODO: implement select-distribution test.
 	@Override
 	@Test

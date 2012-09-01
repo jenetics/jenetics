@@ -154,6 +154,8 @@
 	<test name="org.jenetics.RouletteWheelSelector">
 		<classes>
 			<class name="org.jenetics.RouletteWheelSelectorTest" />
+			<class name="org.jenetics.RouletteWheelSelector_range_1000_3000_Test" />
+			<class name="org.jenetics.RouletteWheelSelector_range_m1000_3000_Test" />
 		</classes>
 	</test>		
 	<test name="org.jenetics.SinglePointCrossover">

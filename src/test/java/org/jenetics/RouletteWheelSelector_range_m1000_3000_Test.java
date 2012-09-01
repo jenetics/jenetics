@@ -22,49 +22,28 @@
  */
 package org.jenetics;
 
-import org.testng.annotations.Test;
-
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
-import org.jenetics.stat.UniformDistribution;
-import org.jenetics.util.Factory;
+import org.jenetics.stat.LinearDistribution;
+import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class MonteCarloSelectorTest
-	extends SelectorTester<MonteCarloSelector<Float64Gene, Float64>>
-{
+public class RouletteWheelSelector_range_m1000_3000_Test extends RouletteWheelSelectorTest {
 
-	final Factory<MonteCarloSelector<Float64Gene, Float64>>
-	_factory = new Factory<MonteCarloSelector<Float64Gene,Float64>>()
-	{
-		@Override
-		public MonteCarloSelector<Float64Gene, Float64> newInstance() {
-			return new MonteCarloSelector<>();
-		}
-	};
+	private Range<Float64> _domain = new Range<>(Float64.valueOf(-1000), Float64.valueOf(3000));
 
 	@Override
-	protected Factory<MonteCarloSelector<Float64Gene, Float64>> getFactory() {
-		return _factory;
-	}
-
-	@Override
-	protected boolean isCheckEnabled() {
-		return true;
+	protected final Range<Float64> getDomain() {
+		return _domain;
 	}
 
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<>(getDomain());
-	}
-
-	@Test
-	public void foo() {
-
+		return new LinearDistribution<>(getDomain(), 0);
 	}
 
 }

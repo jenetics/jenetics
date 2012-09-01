@@ -74,7 +74,7 @@ public class RouletteWheelSelector<
 			probabilities[i] = population.get(i).getFitness().doubleValue();
 		}
 
-		final double worst = min(probabilities);
+		final double worst = Math.min(min(probabilities), 0.0);
 		final double sum = sum(probabilities) - worst*population.size();
 
 		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {

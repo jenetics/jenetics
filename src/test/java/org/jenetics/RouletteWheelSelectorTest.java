@@ -32,24 +32,24 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class RouletteWheelSelectorTest	
+public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<Float64Gene, Float64>>
 {
 
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new LinearDistribution<>(_domain, 0);
+		return new LinearDistribution<>(getDomain(), 0);
 	}
 
 	@Override
 	protected boolean isSorted() {
 		return false;
 	}
-	
+
 	@Override
 	protected Factory<RouletteWheelSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.RouletteWheelSelector;
 	}
-	
+
 }

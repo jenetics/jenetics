@@ -37,7 +37,7 @@ public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<Float64Gene, Float64>>
 {
 
-	
+
 	final Factory<TruncationSelector<Float64Gene, Float64>>
 	_factory = new Factory<TruncationSelector<Float64Gene,Float64>>()
 	{
@@ -50,16 +50,16 @@ public class TruncationSelectorTest
 	protected Factory<TruncationSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
 		final Range<Float64> domain = new Range<>(
-				_domain.getMax().minus(_domain.getMin()).divide(2),
-				_domain.getMax()
+				getDomain().getMax().minus(getDomain().getMin()).divide(2),
+				getDomain().getMax()
 			);
 		return new UniformDistribution<>(domain);
 	}
-	
+
 	@Override
 	protected boolean isCheckEnabled() {
 		return false;
