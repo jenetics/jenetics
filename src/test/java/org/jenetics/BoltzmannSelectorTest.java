@@ -42,17 +42,17 @@ public class BoltzmannSelectorTest
 	protected boolean isSorted() {
 		return false;
 	}
-	
+
 	@Override
 	protected Factory<BoltzmannSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.BoltzmannSelector;
 	}
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<>(_domain);
+		return new UniformDistribution<>(getDomain());
 	}
-	
+
 	// TODO: implement select-distribution test.
 	@Override
 	@Test

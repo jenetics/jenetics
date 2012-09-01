@@ -273,21 +273,32 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
-	public double χ2(final Function<C, Float64> cdf) {
+	public double χ2(final Function<C, Float64> cdf, final C min, final C max) {
 		double χ2 = 0;
 		for (int j = 0; j < _histogram.length; ++j) {
-			final long n0j = n0(j, cdf);
+			final long n0j = n0(j, cdf, min, max);
 			χ2 += ((_histogram[j] - n0j)*(_histogram[j] - n0j))/(double)n0j;
 		}
 		return χ2;
 	}
 
-	private long n0(final int j, final Function<C, Float64> cdf) {
+	public double χ2(final Function<C, Float64> cdf) {
+		return χ2(cdf, null, null);
+	}
+
+	private long n0(final int j, final Function<C, Float64> cdf, final C min, final C max) {
 		Float64 p0j = Float64.ZERO;
 		if (j == 0) {
 			p0j = cdf.apply(_separators[0]);
+			if (min != null) {
+				p0j = p0j.minus(cdf.apply(min));
+			}
 		} else if (j == _histogram.length - 1) {
-			p0j = Float64.ONE.minus(cdf.apply(_separators[_separators.length - 1]));
+			if (max != null) {
+				p0j = cdf.apply(max).minus(cdf.apply(_separators[_separators.length - 1]));
+			} else {
+				p0j = Float64.ONE.minus(cdf.apply(_separators[_separators.length - 1]));
+			}
 		} else {
 			p0j = cdf.apply(_separators[j]).minus(cdf.apply(_separators[j - 1]));
 		}
@@ -336,7 +347,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(getHistogram());
+		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) + "\nSamples: " + _samples;
 	}
 
 	@Override

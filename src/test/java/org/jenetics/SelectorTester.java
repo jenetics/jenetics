@@ -43,52 +43,54 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S>
 {
 
-	protected final Range<Float64> _domain = new Range<>(
-			Float64.ZERO, Float64.valueOf(100)
-		);
-	
+	private Range<Float64> _domain = new Range<>(Float64.ZERO, Float64.valueOf(100));
+
+	protected Range<Float64> getDomain() {
+		return _domain;
+	}
+
 	protected final int _histogramSize = 37;
-	
-	
+
+
 	protected S getSelector() {
 		return getFactory().newInstance();
 	}
-	
+
 	protected abstract Distribution<Float64> getDistribution();
-	
+
 	protected boolean isCheckEnabled() {
 		return true;
 	}
-	
+
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void selectDistribution() {
 		final int npopulation = 101;
 		final int loops = 500;
-			
-			
-		final Float64 min = _domain.getMin();
-		final Float64 max = _domain.getMax();
+
+
+		final Float64 min = getDomain().getMin();
+		final Float64 max = getDomain().getMax();
 		final Histogram<Float64> histogram = Histogram.valueOf(min, max, _histogramSize);
-		
+
 		final Factory<Genotype<Float64Gene>>
 		gtf = Genotype.valueOf(new Float64Chromosome(min, max));
-		
 
-		
+
+
 		final Population<Float64Gene, Float64>
 		population = new Population<>(npopulation);
-		
+
 		final S selector = getSelector();
-		
-		for (int j = 0; j < loops; ++j) {	
+
+		for (int j = 0; j < loops; ++j) {
 			for (int i = 0; i < npopulation; ++i) {
 				population.add(Phenotype.valueOf(gtf.newInstance(), TestUtils.FF, 12));
 			}
-			
-			
+
+
 			final Population<Float64Gene, Float64> selection =
 				selector.select(population, npopulation, Optimize.MAXIMUM);
-			
+
 			accumulate(
 					selection,
 					histogram
@@ -97,15 +99,22 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 						.map(Genotype.<Float64Gene>Chromosome())
 						.map(Phenotype.<Float64Gene>Genotype())
 				);
-			
+
 			population.clear();
 		}
-		
+
+		check(histogram, getDistribution());
+	}
+
+	protected void check(
+		final Histogram<Float64> histogram,
+		final Distribution<Float64> distribution
+	) {
 		if (isCheckEnabled()) {
-			assertDistribution(histogram, getDistribution());
+			assertDistribution(histogram, distribution);
 		}
 	}
-	
+
 }
 
 

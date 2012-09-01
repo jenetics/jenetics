@@ -32,31 +32,31 @@ import org.jenetics.util.Factory;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version $Id$
  */
-public class LinearRankSelectorTest	
+public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<Float64Gene, Float64>>
 {
-	
+
 	@Override
 	protected boolean isSorted() {
 		return true;
 	}
-	
+
 	@Override
 	protected Factory<LinearRankSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.LinearRankSelector;
 	}
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new LinearDistribution<>(_domain, 0);
+		return new LinearDistribution<>(getDomain(), 0);
 	}
-	
+
 	@Override
 	protected LinearRankSelector<Float64Gene, Float64> getSelector() {
 		return new LinearRankSelector<>(0.0);
 	}
-	
-	
+
+
 }
 
 

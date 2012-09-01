@@ -22,10 +22,6 @@
  */
 package org.jenetics.stat;
 
-import org.jscience.mathematics.number.Float64;
-
-import org.jenetics.util.Function;
-
 import org.testng.Assert;
 
 /**
@@ -36,18 +32,17 @@ public final class StatisticsAssert {
 
 	private StatisticsAssert() {
 	}
-	
+
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,
 		final Distribution<C> distribution
 	) {
-		final Function<C, Float64> cdf = distribution.getCDF();
-		final double χ2 = histogram.χ2(cdf);		
+		final double χ2 =  distribution.χ2(histogram);
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
-		
+
 		final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
-		
+
 		if (χ2 > maxChi) {
 			System.out.println(String.format(
 					"The histogram %s doesn't follow the distribution %s. \n" +
@@ -56,7 +51,7 @@ public final class StatisticsAssert {
 					maxChi, χ2
 				));
 		}
-		
+
 		Assert.assertTrue(
 				χ2 <= maxChi,
 				String.format(
@@ -67,5 +62,5 @@ public final class StatisticsAssert {
 					)
 			);
 	}
-	
+
 }

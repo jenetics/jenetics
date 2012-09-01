@@ -37,22 +37,22 @@ import org.jenetics.util.Factory;
 public class ExponentialRankSelectorTest
 	extends ProbabilitySelectorTester<ExponentialRankSelector<Float64Gene, Float64>>
 {
-	
+
 	@Override
 	protected boolean isSorted() {
 		return true;
 	}
-	
+
 	@Override
 	protected Factory<ExponentialRankSelector<Float64Gene, Float64>> getFactory() {
 		return SelectorFactories.ExponentialRankSelector;
 	}
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<>(_domain);
+		return new UniformDistribution<>(getDomain());
 	}
-	
+
 	// TODO: implement select-distribution test.
 	@Override
 	@Test

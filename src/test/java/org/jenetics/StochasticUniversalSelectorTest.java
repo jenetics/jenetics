@@ -54,12 +54,12 @@ public class StochasticUniversalSelectorTest
 	protected Factory<StochasticUniversalSelector<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Override
 	protected Distribution<Float64> getDistribution() {
-		return new UniformDistribution<>(_domain);
+		return new UniformDistribution<>(getDomain());
 	}
-	
+
 	// TODO: implement select-distribution test.
 	@Override
 	@Test

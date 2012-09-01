@@ -62,4 +62,12 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 */
 	public Function<C, Float64> getPDF();
 
+	/**
+	 * Calculate the χ2 value of the given histogram which this distribution.
+	 *
+	 * @param histogram the histogram to calculate the χ2 value for.
+	 * @return the χ2 value of the given histogram which this distribution.
+	 */
+	public double χ2(final Histogram<C> histogram);
+
 }
