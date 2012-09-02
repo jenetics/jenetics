@@ -269,7 +269,9 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_test">χ2-test</a>
 	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_distribution">χ2-distribution</a>
 	 *
-	 * @param cdf the assumed Probability density function-
+	 * @param cdf the assumed Probability density function.
+	 * @param min the lower limit of the CDF domain.
+	 * @param max the upper limit of the CDF domain.
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
@@ -282,6 +284,18 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return χ2;
 	}
 
+	/**
+	 * Calculate the χ2 value of the current histogram for the assumed
+	 * <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">
+	 * Cumulative density function</a> {@code cdf}.
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_test">χ2-test</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_distribution">χ2-distribution</a>
+	 *
+	 * @param cdf the assumed Probability density function.
+	 * @return the χ2 value of the current histogram.
+	 * @throws NullPointerException if {@code cdf} is {@code null}.
+	 */
 	public double χ2(final Function<C, Float64> cdf) {
 		return χ2(cdf, null, null);
 	}
