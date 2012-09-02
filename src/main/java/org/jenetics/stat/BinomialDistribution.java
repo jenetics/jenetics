@@ -157,11 +157,6 @@ class BinomialDistribution<
 		return new PDF<>(_domain, _p);
 	}
 
-	@Override
-	public double χ2(final Histogram<N> histogram) {
-		return histogram.χ2(getCDF());
-	}
-
 	private static double binomial(final long n, final long k) {
 		long b = 1;
 		for (long i = 1; i <= k; ++i) {

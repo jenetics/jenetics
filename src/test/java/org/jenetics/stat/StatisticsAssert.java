@@ -37,7 +37,7 @@ public final class StatisticsAssert {
 		final Histogram<C> histogram,
 		final Distribution<C> distribution
 	) {
-		final double χ2 =  distribution.χ2(histogram);
+		final double χ2 =  histogram.χ2(distribution.getCDF());
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 
