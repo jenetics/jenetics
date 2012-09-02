@@ -25,6 +25,7 @@ package org.jenetics;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Distribution;
+import org.jenetics.stat.Histogram;
 import org.jenetics.stat.LinearDistribution;
 import org.jenetics.util.Range;
 
@@ -44,6 +45,17 @@ public class RouletteWheelSelector_range_m1000_3000_Test extends RouletteWheelSe
 	@Override
 	protected Distribution<Float64> getDistribution() {
 		return new LinearDistribution<>(getDomain(), 0);
+	}
+
+	@Override
+	protected double χ2(
+		final Histogram<Float64> histogram,
+		final Distribution<Float64> distribution
+	) {
+		return histogram.χ2(
+			distribution.getCDF(),
+			getDomain().getMin(), getDomain().getMax()
+		);
 	}
 
 }

@@ -265,11 +265,6 @@ public class LinearDistribution<
 	}
 
 	@Override
-	public double χ2(final Histogram<N> histogram) {
-		return histogram.χ2(getCDF(), _domain.getMin(), _domain.getMax());
-	}
-
-	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
 				and(_domain).

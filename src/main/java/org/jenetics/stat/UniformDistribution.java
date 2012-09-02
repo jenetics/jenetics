@@ -235,11 +235,6 @@ public class UniformDistribution<
 	}
 
 	@Override
-	public double χ2(final Histogram<N> histogram) {
-		return histogram.χ2(getCDF());
-	}
-
-	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_domain).value();
 	}

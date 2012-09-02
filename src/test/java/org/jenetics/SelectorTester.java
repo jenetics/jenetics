@@ -22,13 +22,14 @@
  */
 package org.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.accumulators.accumulate;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.stat.ChiSquare;
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
@@ -43,20 +44,21 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S>
 {
 
-	private Range<Float64> _domain = new Range<>(Float64.ZERO, Float64.valueOf(100));
-
+	private final Range<Float64> _domain = new Range<>(Float64.ZERO, Float64.valueOf(100));
 	protected Range<Float64> getDomain() {
 		return _domain;
 	}
 
-	protected final int _histogramSize = 37;
+	protected abstract Distribution<Float64> getDistribution();
 
+	private final int _histogramSize = 37;
+	protected int getHistogramSize() {
+		return _histogramSize;
+	}
 
 	protected S getSelector() {
 		return getFactory().newInstance();
 	}
-
-	protected abstract Distribution<Float64> getDistribution();
 
 	protected boolean isCheckEnabled() {
 		return true;
@@ -106,12 +108,42 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 		check(histogram, getDistribution());
 	}
 
+	protected double χ2(
+		final Histogram<Float64> histogram,
+		final Distribution<Float64> distribution
+	) {
+		return histogram.χ2(distribution.getCDF());
+	}
+
 	protected void check(
 		final Histogram<Float64> histogram,
 		final Distribution<Float64> distribution
 	) {
 		if (isCheckEnabled()) {
-			assertDistribution(histogram, distribution);
+			final double χ2 =  χ2(histogram, distribution);
+			final int degreeOfFreedom = histogram.length();
+			assert (degreeOfFreedom > 0);
+
+			final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
+
+			if (χ2 > maxChi) {
+				System.out.println(String.format(
+					"The histogram %s doesn't follow the distribution %s. \n" +
+					"χ2 must be smaller than %f but was %f",
+					histogram, distribution,
+					maxChi, χ2
+				));
+			}
+
+			Assert.assertTrue(
+				χ2 <= maxChi,
+				String.format(
+						"The histogram %s doesn't follow the distribution %s. \n" +
+						"χ2 must be smaller than %f but was %f",
+						histogram, distribution,
+						maxChi, χ2
+					)
+			);
 		}
 	}
 
