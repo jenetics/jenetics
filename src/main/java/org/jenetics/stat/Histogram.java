@@ -270,8 +270,10 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @see <a href="http://en.wikipedia.org/wiki/Chi-square_distribution">χ2-distribution</a>
 	 *
 	 * @param cdf the assumed Probability density function.
-	 * @param min the lower limit of the CDF domain.
-	 * @param max the upper limit of the CDF domain.
+	 * @param min the lower limit of the CDF domain. A {@code null} value means
+	 *         an open interval.
+	 * @param max the upper limit of the CDF domain. A {@code null} value means
+	 *         an open interval.
 	 * @return the χ2 value of the current histogram.
 	 * @throws NullPointerException if {@code cdf} is {@code null}.
 	 */
