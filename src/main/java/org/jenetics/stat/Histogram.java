@@ -336,6 +336,13 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return χ2(cdf);
 	}
 
+	/**
+	 * @see #χ2(Function, Object, Object)
+	 */
+	public double chisqr(final Function<C, Float64> cdf, final C min, final C max) {
+		return χ2(cdf, min, max);
+	}
+
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).
