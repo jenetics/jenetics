@@ -320,15 +320,6 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return max(round(p0j.doubleValue()*_samples), 1L);
 	}
 
-//	long[] expection(final Function<C, Float64> cdf) {
-//		final long[] e = new long[_histogram.length];
-//
-//		for (int j = 0; j < _histogram.length; ++j) {
-//			e[j] = n0(j, cdf);
-//		}
-//		return e;
-//	}
-
 	/**
 	 * @see #χ2(Function)
 	 */
