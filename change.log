@@ -1,3 +1,7 @@
+Jenetics-1.0.1
+- Fix bug in RouletteWheelSelector. The selection probabilities where not 
+  correctly calculated: https://sourceforge.net/apps/trac/jenetics/ticket/50
+
 Jenetics-1.0
 - Rename 'RandomRegistry.setDefault()' method to 'RandomRegistry.reset()'.
 - Rename 'MappableAccumulator' to 'MappedAccumulator'.
