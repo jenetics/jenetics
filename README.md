@@ -17,7 +17,7 @@ Requirements
   The JAVA_HOME variable must be set to your
   java installation directory.
   
-- Dependency to the JScience library (<http:://jscience.org>).
+- Dependency to the JScience library, <http:://jscience.org>.
   This library is included and lies in the lib directory.
 
 Build Jenetics
@@ -33,9 +33,8 @@ directory. Alternatively you can check out the latest-unstable-version from the
 SVN trunk.
 
     $ svn checkout \
-        https://jenetics.svn.sourceforge.net/\
-        svnroot/jenetics/trunk \
-        <builddir>
+        svn://svn.code.sf.net/p/jenetics/\
+        code/trunk <builddir>
 
 Compiling the sources and building the JAR files is done with the jar Ant
 target. Change to the <builddir> directory and call
