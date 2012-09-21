@@ -1,6 +1,5 @@
 Jenetics
 -------
-
   Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, 
   library written in Java. It is designed with a clear separation of the several 
   algorithm concepts, e. g. Gene, Chromosome, Genotype, Phenotype, Population and 
