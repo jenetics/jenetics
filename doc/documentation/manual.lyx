@@ -7454,19 +7454,13 @@ $ svn checkout
 \end_layout
 
 \begin_layout LyX-Code
-      https://jenetics.svn.sourceforge.net/
+      svn://svn.code.sf.net/p/jenetics/
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      svnroot/jenetics/trunk 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      <builddir>
+      code/trunk <builddir>
 \begin_inset Index idx
 status collapsed
 
