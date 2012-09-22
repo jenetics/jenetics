@@ -16,7 +16,7 @@ Requirements
   The JAVA_HOME variable must be set to your
   java installation directory.
   
-- Dependency to the JScience library, <http:://jscience.org>.
+- Dependency to the JScience library, <http://jscience.org>.
   This library is included and lies in the lib directory.
 
 Build Jenetics
