@@ -47,6 +47,6 @@ public interface Accumulator<T> {
 	 *
 	 * @param value the value to accumulate.
 	 */
-	public void accumulate(final T  value);
+	public void accumulate(final T value);
 
 }
