@@ -47,6 +47,7 @@ public class BitGeneTest extends GeneTester<BitGene> {
         assertEquals(BitGene.ONE.getBit(), true);
     }
 
+
     @Test
     public void testCompareTo() {
         assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
