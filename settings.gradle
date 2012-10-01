@@ -1,0 +1,3 @@
+include "org.jenetics",
+		"org.jenetics.example",
+		"org.jenetics.tool"
