@@ -40,6 +40,7 @@ javadoc {
 		windowTitle = "Jenetics API $project.version"
 		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
 		bottom = "&copy; $year Franz Wilhelmst&ouml;tter  &nbsp;<i>($now)</i>"
+		stylesheetFile = file("../project/resources/javadoc/stylesheet.css")
 	}
 }
 
