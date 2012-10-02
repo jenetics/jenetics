@@ -33,7 +33,7 @@ jar {
 
 javadoc {  
 	configure(options) {
-		memberLevel = 'PRIVATE'
+		memberLevel = 'PROTECTED'
 		version = true
 		author = true
 		docEncoding = "UTF-8"
