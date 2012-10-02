@@ -5,18 +5,18 @@ sourceCompatibility = 1.7
 version = "1.1.0"
 jar {
 	manifest {
-		attributes 'Implementation-Title': 'org.jenetics',
-					'Implementation-Version': version
+		attributes 'Implementation-Title': 'org.jenetics', 'Implementation-Version': version
 	}
 }
 
 repositories {
-	flatDir(dirs: 'lib')
+	flatDir(dir: "../project/lib")
 }
 
-/*
 dependencies {
-	compile fileTree(dir: "lib", include: "*.jar")
-	testCompile fileTree(dir: "../project/build/lib", include: "testng*.jar")
+	compile "jscience:jscience:4.3.1"
+	testCompile "testng:testng:6.5.1"
 }
-*7
+
+
+
