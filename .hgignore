@@ -3,3 +3,6 @@ syntax: glob
 
 build
 .gradle
+.settings
+.classpath
+.project
