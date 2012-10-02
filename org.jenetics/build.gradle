@@ -2,10 +2,18 @@ apply plugin: "java"
 apply plugin: "eclipse"
 
 sourceCompatibility = 1.7
+targetCompatibility = 1.7
 version = "1.1.0"
+
 jar {
 	manifest {
-		attributes 'Implementation-Title': 'org.jenetics', 'Implementation-Version': version
+		attributes "Implementation-Title": "org.jenetics", 
+					"Implementation-Version": version,
+					"Implementation-URL": "http://jenetics.sourceforge.net",
+					"Implementation-Vendor": "Jenetics",
+					"ProjectName": "Jenetics",
+					"Version": version,
+					"Maintainer": "Franz Wilhelmstötter"
 	}
 }
 
