@@ -8,7 +8,7 @@ targetCompatibility = 1.7
 version = "1.1.0"
 
 now = new java.util.Date()
-year = now.year
+year = now.year + 1900
 
 jar {
 	manifest {
