@@ -7,6 +7,9 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 version = "1.1.0"
 
+now = new java.util.Date()
+year = now.year
+
 jar {
 	manifest {
 		name = "org.jenetics"
@@ -27,6 +30,19 @@ jar {
 					"Maintainer": "Franz Wilhelmstötter"
 	}
 }
+
+javadoc {  
+	configure(options) {
+		memberLevel = 'PRIVATE'
+		version = true
+		author = true
+		docEncoding = "UTF-8"
+		windowTitle = "Jenetics API $project.version"
+		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
+		bottom = "&copy; $year Franz Wilhelmst&ouml;tter  &nbsp;<i>($now)</i>"
+	}
+}
+
 
 repositories {
 	flatDir(dir: "../project/lib")
