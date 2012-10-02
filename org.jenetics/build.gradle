@@ -62,6 +62,14 @@ javadoc {
 		from "src/main/java/org/jenetics/doc-files"
 		into "${destination}/org/jenetics/doc-files"
 	}
+	copy {
+		from "src/main/java/org/jenetics/stat/doc-files"
+		into "${destination}/org/jenetics/stat/doc-files"
+	}
+	copy {
+		from "src/main/java/org/jenetics/util/doc-files"
+		into "${destination}/org/jenetics/util/doc-files"
+	}
 	
 }
 
