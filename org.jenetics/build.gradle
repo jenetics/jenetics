@@ -37,6 +37,13 @@ javadoc {
 		version = true
 		author = true
 		docEncoding = "UTF-8"
+		charSet = "UTF-8"
+		linkSource = true
+		links = [
+			"http://download.oracle.com/javase/7/docs/api/",
+			"http://jscience.org/api/",
+			"http://javolution.org/target/site/apidocs/"
+		]
 		windowTitle = "Jenetics API $project.version"
 		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
 		bottom = "&copy; $year Franz Wilhelmst&ouml;tter  &nbsp;<i>($now)</i>"
