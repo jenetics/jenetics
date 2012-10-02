@@ -46,7 +46,7 @@ final class math {
 	 * Uses Lanczos approximation formula. See Numerical Recipes 6.1.
 	 *
 	 * @param x
-	 * @return
+	 * @return the log gamma value.
 	 */
 	static double logGamma(final double x) {
 		final double ser = 1.0 + 76.18009173 /
