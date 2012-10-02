@@ -11,11 +11,6 @@ version = "1.1.0"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-
-def now = new Date()
-def year = now.year + 1900
-def dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-
 jar {
 	manifest {
 		name = "org.jenetics"
@@ -38,6 +33,11 @@ jar {
 }
 
 javadoc {
+
+	def now = new Date()
+	def year = now.year + 1900
+	def dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+
 	configure(options) {
 		memberLevel = 'PROTECTED'
 		version = true
@@ -64,6 +64,7 @@ javadoc {
 	}
 	
 }
+
 /*
 		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/doc-files" />
