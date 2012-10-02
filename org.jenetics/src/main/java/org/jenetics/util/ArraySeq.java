@@ -52,9 +52,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 *         copied.
 	 * @param start the start index of the given array (exclusively).
 	 * @param end the end index of the given array (exclusively)
-	 * @param sealed the seal status. If {@code true} calls to
-	 *         {@link #set(int, Object)} will throw an
-	 *         {@link UnsupportedOperationException}.
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal start/end point index
 	 *          value ({@code start < 0 || end > array.lenght || start > end}).
