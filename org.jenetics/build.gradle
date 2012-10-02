@@ -73,18 +73,6 @@ javadoc {
 	
 }
 
-/*
-		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
-			<fileset dir="${source.dir}/org/jenetics/doc-files" />
-		</copy>
-		<copy todir="${javadoc.dir}/org/jenetics/stat/doc-files" >
-			<fileset dir="${source.dir}/org/jenetics/stat/doc-files" />
-		</copy>
-		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
-			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
-		</copy>
-*/
-
 repositories {
 	flatDir(dir: "../project/lib")
 }
