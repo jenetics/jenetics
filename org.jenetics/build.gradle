@@ -1,14 +1,20 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 apply plugin: "java"
 apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 version = "1.1.0"
 
-now = new java.util.Date()
-year = now.year + 1900
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+
+def now = new Date()
+def year = now.year + 1900
+def dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 
 jar {
 	manifest {
@@ -31,7 +37,7 @@ jar {
 	}
 }
 
-javadoc {  
+javadoc {
 	configure(options) {
 		memberLevel = 'PROTECTED'
 		version = true
@@ -46,11 +52,29 @@ javadoc {
 		]
 		windowTitle = "Jenetics API $project.version"
 		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
-		bottom = "&copy; $year Franz Wilhelmst&ouml;tter  &nbsp;<i>($now)</i>"
+		bottom = "&copy; $year Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
 		stylesheetFile = file("../project/resources/javadoc/stylesheet.css")
 	}
+	
+	def destination = destinationDir.path
+	
+	copy {
+		from "src/main/java/org/jenetics/doc-files"
+		into "${destination}/org/jenetics/doc-files"
+	}
+	
 }
-
+/*
+		<copy todir="${javadoc.dir}/org/jenetics/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/doc-files" />
+		</copy>
+		<copy todir="${javadoc.dir}/org/jenetics/stat/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/stat/doc-files" />
+		</copy>
+		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
+			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
+		</copy>
+*/
 
 repositories {
 	flatDir(dir: "../project/lib")
