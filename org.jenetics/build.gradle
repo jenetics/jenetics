@@ -71,6 +71,13 @@ javadoc {
 		into "${destination}/org/jenetics/util/doc-files"
 	}
 	
+	doLast() {
+		javaexec {
+			main = "org.jenetics.colorizer.Colorize"
+			args destination
+			classpath = files("../project/lib/colorizer.jar")
+		}
+	}
 }
 
 repositories {
