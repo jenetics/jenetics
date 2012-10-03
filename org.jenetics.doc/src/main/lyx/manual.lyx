@@ -213,7 +213,7 @@ height "5pt"
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename graphic/title.png
+	filename ../resources/graphic/title.png
 	lyxscale 20
 	height 40pheight%
 
@@ -370,7 +370,7 @@ http://jenetics.sourceforge.net/
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename graphic/by-sa.svg
+	filename ../resources/graphic/by-sa.svg
 
 \end_inset
 
@@ -896,7 +896,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/StructureClassDiagram.svg
+	filename ../resources/graphic/StructureClassDiagram.svg
 	lyxscale 70
 	width 85text%
 
@@ -1404,7 +1404,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/Genotype.eps
+	filename ../resources/graphic/Genotype.eps
 	width 80text%
 	BoundingBox 0bp 50bp 402bp 246bp
 
@@ -2011,7 +2011,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/SelectorClassDiagram.svg
+	filename ../resources/graphic/SelectorClassDiagram.svg
 	lyxscale 70
 	width 95text%
 
@@ -2239,7 +2239,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/FitnessProportionalSelection.eps
+	filename ../resources/graphic/FitnessProportionalSelection.eps
 	width 90text%
 
 \end_inset
@@ -2646,7 +2646,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/StochasticUniversalSelection.eps
+	filename ../resources/graphic/StochasticUniversalSelection.eps
 	width 90text%
 
 \end_inset
@@ -2761,7 +2761,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/GeneticOperatorClassDiagram.svg
+	filename ../resources/graphic/GeneticOperatorClassDiagram.svg
 	lyxscale 70
 	width 100text%
 
@@ -3186,7 +3186,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/SinglePointCrossover.eps
+	filename ../resources/graphic/SinglePointCrossover.eps
 	width 75text%
 
 \end_inset
@@ -4121,7 +4121,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/NumberStatistics.out}
+lstinputlisting{../resources/code/NumberStatistics.out}
 \end_layout
 
 \begin_layout Plain Layout
@@ -4176,7 +4176,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/TimeStatistics.out}
+lstinputlisting{../resources/code/TimeStatistics.out}
 \end_layout
 
 \begin_layout Plain Layout
@@ -5080,7 +5080,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting[language=XML]{code/population.xml}
+lstinputlisting[language=XML]{../resources/code/population.xml}
 \end_layout
 
 \begin_layout Plain Layout
@@ -5208,7 +5208,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/ArrayClassDiagram.svg
+	filename ../resources/graphic/ArrayClassDiagram.svg
 	lyxscale 75
 	width 80col%
 
@@ -6793,7 +6793,7 @@ status open
 
 
 \backslash
-lstinputlisting{code/OnesCounting.java}
+lstinputlisting{../resources/code/OnesCounting.java}
 \end_layout
 
 \end_inset
@@ -6857,7 +6857,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/OnesCounting.out}
+lstinputlisting{../resources/code/OnesCounting.out}
 \end_layout
 
 \begin_layout Plain Layout
@@ -6987,7 +6987,7 @@ status open
 
 
 \backslash
-lstinputlisting{code/RealFunction.java}
+lstinputlisting{../resources/code/RealFunction.java}
 \end_layout
 
 \end_inset
@@ -7040,7 +7040,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/RealFunction.out}
+lstinputlisting{../resources/code/RealFunction.out}
 \end_layout
 
 \begin_layout Plain Layout
@@ -7164,7 +7164,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/Knapsack.out}
+lstinputlisting{../resources/code/Knapsack.out}
 \end_layout
 
 \begin_layout Plain Layout
@@ -7259,7 +7259,7 @@ status open
 
 
 \backslash
-lstinputlisting{code/TravelingSalesman.java}
+lstinputlisting{../resources/code/TravelingSalesman.java}
 \end_layout
 
 \end_inset
@@ -7330,7 +7330,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/TravelingSalesman.out}
+lstinputlisting{../resources/code/TravelingSalesman.out}
 \end_layout
 
 \begin_layout Plain Layout
