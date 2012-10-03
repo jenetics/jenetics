@@ -71,11 +71,21 @@ javadoc {
 		into "${destination}/org/jenetics/util/doc-files"
 	}
 	
+	println( "Source; $source")
+	
 	doLast() {
 		javaexec {
 			main = "org.jenetics.colorizer.Colorize"
 			args destination
 			classpath = files("../project/lib/colorizer.jar")
+		}
+		javaexec {
+			main = "de.java2html.Java2Html"
+			args = [
+				"-srcdir", "src/main/java",
+				"-targetdir", "$destination/src-html"
+			]
+			classpath = files("../project/lib/java2html.jar")
 		}
 	}
 }
