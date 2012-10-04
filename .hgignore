@@ -1,9 +1,12 @@
 # use glob syntax.
 syntax: glob
 
+# Directories
 bin/**
 build/**
-.gradle
-.settings
+.settings/**
+.gradle/**
+
+# Files
 .classpath
 .project
