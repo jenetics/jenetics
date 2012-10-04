@@ -4006,7 +4006,7 @@ ttfamily}
 
 
 \backslash
-lstinputlisting{code/Statistics.out}
+lstinputlisting{../resources/code/Statistics.out}
 \end_layout
 
 \begin_layout Plain Layout
@@ -6919,12 +6919,12 @@ f(x)=\cos\left(\frac{1}{2}+\sin\left(x\right)\right)\cdot\cos\left(x\right).\lab
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename graphic/RealFunction2D.eps
+	filename ../resources/graphic/RealFunction2D.eps
 	lyxscale 70
 	width 90text%
 
@@ -7133,7 +7133,7 @@ status open
 
 
 \backslash
-lstinputlisting{code/Knapsack.java}
+lstinputlisting{../resources/code/Knapsack.java}
 \end_layout
 
 \end_inset
