@@ -1,0 +1,36 @@
+apply plugin: "java"
+apply plugin: "osgi"
+apply plugin: "eclipse"
+apply plugin: "idea"
+
+version = "1.1.0"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+jar {
+	manifest {
+		name = "org.jenetics.example"
+		instruction "Export-Package",
+				"org.jenetics.example"
+		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
+		instruction "Bundle-Description", "Jenetics Algorithm Library"
+		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
+		
+		attributes "Implementation-Title": "org.jenetics.example", 
+					"Implementation-Version": version,
+					"Implementation-URL": "http://jenetics.sourceforge.net",
+					"Implementation-Vendor": "Jenetics",
+					"ProjectName": "Jenetics",
+					"Version": version,
+					"Maintainer": "Franz Wilhelmstötter"
+	}
+}
+
+repositories {
+	flatDir(dir: "../project/lib")
+}
+
+dependencies {
+	compile project(':org.jenetics')
+}
