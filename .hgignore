@@ -1,7 +1,7 @@
 # use glob syntax.
 syntax: glob
 
-build
+build/
 .gradle
 .settings
 .classpath
