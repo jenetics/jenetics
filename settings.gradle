@@ -1,4 +1,3 @@
 include "org.jenetics",
 		"org.jenetics.example",
-		"org.jenetics.tool",
 		"org.jenetics.doc"
