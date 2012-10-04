@@ -13,16 +13,16 @@ task build(dependsOn: "clean") << {
 	buildDoc.mkdirs()
 
 	def identifier = "${version}---" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())
-	def content = new File("src/main/lyx/manual.lyx").getText("UTF-8")
+	def content = new File("${projectDir}/src/main/lyx/manual.lyx").getText("UTF-8")
 	content = content.replaceAll("@!identifier!@", "${identifier}")
 	new File("${buildTempLyx}/manual.lyx").write(content, "UTF-8")
 
 	copy {
-		from "src/main/lyx/references.bib"
+		from "${projectDir}/src/main/lyx/references.bib"
 		into "${buildTempLyx}"
 	}
 	copy {
-		from "src/main/resources"
+		from "${projectDir}/src/main/resources"
 		into "${buildTemp}/resources"
 	}
 
