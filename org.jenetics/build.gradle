@@ -11,6 +11,10 @@ version = "1.1.0"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+task testng << {
+	println("Implement TestNG task.")
+}
+
 jar {
 	manifest {
 		name = "org.jenetics"
