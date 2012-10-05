@@ -2,11 +2,21 @@
 syntax: glob
 
 # Directories
+
 bin/**
 build/**
-.settings/**
 .gradle/**
 
+## Eclipse
+.settings/**
+
 # Files
+
+## Eclipse
 .classpath
 .project
+
+## IDEA
+*.iml
+*.ipr
+*.iws
