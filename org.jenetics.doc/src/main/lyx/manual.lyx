@@ -7444,28 +7444,20 @@ dir>
 \family default
  the actual build directory.
  Alternatively you can check out the latest--unstable--version from the
- SVN trunk.
+ Mercurial 
+\family typewriter
+default
+\family default
+ branch.
 \end_layout
 
 \begin_layout LyX-Code
-$ svn checkout 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      svn://svn.code.sf.net/p/jenetics/
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      code/trunk <builddir>
+$ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-SVN repository
+Mercurial repository
 \end_layout
 
 \end_inset
