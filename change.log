@@ -1,3 +1,6 @@
+Jenetics-1.1.0
+- Switch SCM from Subversion to Mercurial.
+
 Jenetics-1.0.1
 - Fix bug in RouletteWheelSelector. The selection probabilities was not 
   correctly calculated: https://sourceforge.net/apps/trac/jenetics/ticket/50
