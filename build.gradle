@@ -6,7 +6,7 @@ task packaging << {
 	println("Packaging project.")
 }
 
-task export << {
+task export(dependsOn: packaging) << {
 	println("Export project.")
 }
 
