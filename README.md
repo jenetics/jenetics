@@ -29,11 +29,9 @@ package version from <https://sourceforge.net/projects/jenetics/files/latest/dow
 
 <version> denotes the actual Jenetics version and ```<builddir>``` the actual build
 directory. Alternatively you can check out the latest-unstable-version from the
-SVN trunk.
+Mercurial default branch.
 
-    $ svn checkout \
-        svn://svn.code.sf.net/p/jenetics/\
-        code/trunk <builddir>
+    $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
 Compiling the sources and building the JAR files is done with the jar Ant
 target. Change to the <builddir> directory and call
