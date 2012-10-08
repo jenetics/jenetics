@@ -31,7 +31,6 @@ import javolution.context.LocalContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class RandomRegistryTest {
 
