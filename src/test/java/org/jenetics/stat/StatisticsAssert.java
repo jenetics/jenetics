@@ -26,7 +26,6 @@ import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public final class StatisticsAssert {
 
