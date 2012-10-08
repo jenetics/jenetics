@@ -28,7 +28,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public abstract class NumberGeneTester<N extends Number<N>,G extends NumberGene<N,G>>
 	extends GeneTester<G>

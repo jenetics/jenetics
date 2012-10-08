@@ -33,7 +33,6 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 

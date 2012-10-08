@@ -30,7 +30,6 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class RouletteWheelSelectorTest
 	extends ProbabilitySelectorTester<RouletteWheelSelector<Float64Gene, Float64>>

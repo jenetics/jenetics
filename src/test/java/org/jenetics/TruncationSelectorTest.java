@@ -31,7 +31,6 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<Float64Gene, Float64>>

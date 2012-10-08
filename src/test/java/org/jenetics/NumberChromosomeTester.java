@@ -28,7 +28,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public abstract class NumberChromosomeTester<
 	N extends Number<N>,
