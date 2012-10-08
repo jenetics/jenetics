@@ -29,7 +29,6 @@ package org.jenetics.stat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class BinomialDistributionTest {
 
