@@ -44,7 +44,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 

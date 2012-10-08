@@ -26,7 +26,6 @@ import org.jenetics.Float64Chromosome;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 @Suite("Chromosome")
 public class ChromosomeTest {

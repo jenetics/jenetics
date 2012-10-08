@@ -32,7 +32,6 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class BoltzmannSelectorTest
 	extends ProbabilitySelectorTester<BoltzmannSelector<Float64Gene, Float64>>

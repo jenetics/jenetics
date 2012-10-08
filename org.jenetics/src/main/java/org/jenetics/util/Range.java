@@ -28,7 +28,7 @@ import static org.jenetics.util.object.nonNull;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &ndash; <em>$Revision$</em>
+ * @version 1.0
  */
 public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 

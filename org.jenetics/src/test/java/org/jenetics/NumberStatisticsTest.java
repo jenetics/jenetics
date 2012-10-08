@@ -10,7 +10,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class NumberStatisticsTest
 	extends ObjectTester<NumberStatistics<Float64Gene, Float64>>
