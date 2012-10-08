@@ -28,7 +28,6 @@ import javolution.lang.ClassInitializer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public final class PerformanceTests {
 	

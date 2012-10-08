@@ -29,7 +29,6 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 class GenotypeBuilder {
 
