@@ -37,7 +37,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &ndash; <em>$Revision$</em>
+ * @version 1.0
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
