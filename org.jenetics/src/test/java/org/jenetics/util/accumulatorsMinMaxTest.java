@@ -35,7 +35,6 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class accumulatorsMinMaxTest
 	extends MappedAccumulatorTester<accumulators.MinMax<Double>>

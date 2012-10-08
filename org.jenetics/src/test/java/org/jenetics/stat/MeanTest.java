@@ -36,7 +36,6 @@ import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	private final String DATA = "/org/jenetics/util/statistic-moments.txt";

@@ -28,7 +28,6 @@ import org.jenetics.NumberStatistics.Calculator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class NumberStatisticsCalculatorTest extends StatisticsCalculatorTest {
 

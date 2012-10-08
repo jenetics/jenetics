@@ -33,7 +33,7 @@ import static java.lang.Math.sqrt;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &ndash; <em>$Revision$</em>
+ * @version 1.0
  */
 @SuppressWarnings("javadoc")
 final class math {

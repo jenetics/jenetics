@@ -26,7 +26,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 @Test(groups = {"performance"})
 public class ArrayPerformanceTest {

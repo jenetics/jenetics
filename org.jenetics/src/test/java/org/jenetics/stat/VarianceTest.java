@@ -36,7 +36,6 @@ import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	

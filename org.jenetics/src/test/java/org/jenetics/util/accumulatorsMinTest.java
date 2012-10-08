@@ -35,7 +35,6 @@ import org.jenetics.util.accumulators.Min;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class accumulatorsMinTest
 	extends MappedAccumulatorTester<accumulators.Min<Double>>
