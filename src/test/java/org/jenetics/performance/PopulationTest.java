@@ -36,7 +36,6 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 @Suite("Population")
 public class PopulationTest {
