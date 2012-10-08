@@ -29,7 +29,7 @@ import static org.jenetics.util.object.hashCodeOf;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &ndash; <em>$Revision$</em>
+ * @version 1.0
  */
 class Tuple2<T1, T2> {
 
