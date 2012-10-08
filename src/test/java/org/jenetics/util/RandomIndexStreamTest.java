@@ -36,7 +36,6 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class RandomIndexStreamTest {
 

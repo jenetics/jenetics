@@ -35,7 +35,6 @@ import org.jenetics.util.accumulators.Max;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class accumulatorsMaxTest
 	extends MappedAccumulatorTester<accumulators.Max<Double>>
