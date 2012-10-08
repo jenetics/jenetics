@@ -35,7 +35,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class TournamentSelectorTest
 	extends SelectorTester<TournamentSelector<Float64Gene, Float64>>

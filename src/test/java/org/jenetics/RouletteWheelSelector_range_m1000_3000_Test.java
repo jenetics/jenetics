@@ -31,7 +31,6 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
  */
 public class RouletteWheelSelector_range_m1000_3000_Test extends RouletteWheelSelectorTest {
 
