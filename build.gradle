@@ -1,12 +1,31 @@
 apply plugin: "eclipse"
 apply plugin: "idea"
 
+def exportDir = file(".")
+
+allprojects {
+	//group = "org.gradle"
+}
+
+subprojects { subproj ->
+	version = "1.1.0"
+	if (plugins.hasPlugin("java")) {
+		sourceCompatibility = 1.7
+		targetCompatibility = 1.7
+	}
+}
+
+task clean << {
+	buildDir.deleteDir()
+}
 
 task packaging << {
 	println("Packaging project.")
 }
 
+/*
 task export(dependsOn: packaging) << {
 	println("Export project.")
 }
+*/
 
