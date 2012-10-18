@@ -1,5 +1,5 @@
 /*
- * Java Genetic Algorithm Library (@!identifier!@).
+ * Java Genetic Algorithm Library (@identifier@).
  * Copyright (c) @!year!@ Franz Wilhelmstötter
  *
  * This library is free software; you can redistribute it and/or

@@ -1,3 +1,14 @@
-include "org.jenetics",
-		"org.jenetics.example",
-		"org.jenetics.doc"
+include "org.jenetics"
+include "org.jenetics.example"
+include "org.jenetics.doc"
+
+rootProject.name = "jenetics"
+/*
+rootProject.children.each { project ->
+	//project.version = "1.1.0"
+	//project.sourceCompatibility = 1.7
+	//project.targetCompatibility = 1.7
+	println(project)
+}
+*/
+
