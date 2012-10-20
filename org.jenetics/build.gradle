@@ -9,6 +9,11 @@ apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
+def now = new Date()
+def year = now.year + 1900
+def copyrightYear = "2007-${year}".toString()
+def dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+
 task packaging(dependsOn: build) << {
 	def packageDir = new File(buildDir, "package")
 	packageDir.mkdirs()
@@ -23,7 +28,7 @@ task export << {
 	)
 	exportDir.mkdirs()
 	
-	def projectIdentifier = "${rootProject.name}-${version}"
+	def identifier = "${rootProject.name}-${version}".toString()
 	
 	// Copy the sources.
 	copy {
@@ -32,7 +37,10 @@ task export << {
 			include "*.gradle"
 		}
 		into "${exportDir}"
-		filter(ReplaceTokens, tokens: [__identifier__: projectIdentifier.toString()])
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
 	}
 }
 
@@ -59,12 +67,8 @@ jar {
 
 javadoc {
 
-	def now = new Date()
-	def year = now.year + 1900
-	def dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-
 	configure(options) {
-		memberLevel = 'PROTECTED'
+		memberLevel = "PROTECTED"
 		version = true
 		author = true
 		docEncoding = "UTF-8"
@@ -75,9 +79,9 @@ javadoc {
 			"http://jscience.org/api/",
 			"http://javolution.org/target/site/apidocs/"
 		]
-		windowTitle = "Jenetics API $project.version"
+		windowTitle = "Jenetics API ${project.version}"
 		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
-		bottom = "&copy; $year Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
+		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
 		stylesheetFile = file("../project/resources/javadoc/stylesheet.css")
 	}
 	
