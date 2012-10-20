@@ -21,7 +21,6 @@
  *
  */
 
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -37,7 +36,6 @@ task build << {
 	def buildDoc = new File(buildDir, "doc")
 	buildDoc.mkdirs()
 
-	def identifier = "${version}---" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())
 	def content = new File("${projectDir}/src/main/lyx/manual.lyx").getText("UTF-8")
 	content = content.replaceAll("@!identifier!@", "${identifier}")
 	new File("${buildTempLyx}/manual-${version}.lyx").write(content, "UTF-8")
