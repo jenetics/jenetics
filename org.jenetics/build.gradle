@@ -34,13 +34,6 @@ apply plugin: "idea"
 
 apply from: "../build-util.gradle"
 
-task packaging(dependsOn: build) << {
-	def packageDir = new File(buildDir, "package")
-	packageDir.mkdirs()
-	
-	
-	println("Packaging project.")
-}
 
 task export << {
 	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")

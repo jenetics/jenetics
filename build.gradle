@@ -48,11 +48,7 @@ task clean << {
 	buildDir.deleteDir()
 }
 
-task packaging << {
-	println("Packaging project.")
-}
-
-task export/*(dependsOn: packaging)*/ << {
+task export << {
 	def exportBaseDir = new File(buildDir, "export/${identifier}/source")
 	def exportProjectDir = new File(exportBaseDir, "project")
 	
@@ -94,9 +90,20 @@ task export/*(dependsOn: packaging)*/ << {
 			exclude ".hgtags"
 		}
 		into "${exportBaseDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
 	}
 }
 
+// Create zip file.
+task zip(type: Zip) {
+	from("build/export/${identifier}")
+	into("build/export")
+	baseName = rootProject.name
+	version = rootProject.version
+}
 
 /*
 task export(dependsOn: packaging) << {
