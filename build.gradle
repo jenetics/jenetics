@@ -21,22 +21,28 @@
  *
  */
 
+import java.io.File
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: "eclipse"
 apply plugin: "idea"
 
-def exportDir = file(".")
+apply from: "./build-util.gradle"
 
 allprojects {
 	//group = "org.gradle"
 }
 
 subprojects { subproj ->
-	version = "1.1.0"
+	version = jeneticsVersion
 	if (plugins.hasPlugin("java")) {
 		sourceCompatibility = 1.7
 		targetCompatibility = 1.7
 	}
 }
+
+
 
 task clean << {
 	buildDir.deleteDir()
@@ -46,9 +52,61 @@ task packaging << {
 	println("Packaging project.")
 }
 
+task export/*(dependsOn: packaging)*/ << {
+	def exportBaseDir = new File(buildDir, "export/${identifier}/source")
+	def exportProjectDir = new File(exportBaseDir, "project")
+	
+	exportBaseDir.mkdirs()
+	exportProjectDir.mkdirs()
+	
+	
+	// Copy the project directory.
+	copy {
+		from("project") {
+			include "**/*.java"
+			include "**/*.java"
+			include "**/*.xml"
+			include "**/*.gradle"
+		}
+		into "${exportProjectDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from("project") {
+			exclude "**/*.java"
+			exclude "**/*.java"
+			exclude "**/*.xml"
+			exclude "**/*.gradle"
+		}
+		into "${exportProjectDir}"
+	}
+	
+	// Copy the files in the base directory.
+	copy {
+		from(".") {
+			include "*.*"
+			exclude "org.*"
+			exclude ".gradle"
+			exclude ".hgignore"
+			exclude ".hgtags"
+		}
+		into "${exportBaseDir}"
+	}
+}
+
+
 /*
 task export(dependsOn: packaging) << {
 	println("Export project.")
 }
 */
+
+
+
+
+
+
 
