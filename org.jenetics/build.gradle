@@ -86,6 +86,16 @@ task export(dependsOn: [build, javadoc]) << {
 		}
 		into "${exportBaseDir}"
 	}
+	
+	// Copy the test-report.
+	copy {
+		from("${buildDir}/reports") {
+			include "tests/**"
+			include "*.gradle"
+			exclude ".gradle"
+		}
+		into "${exportBaseDir}/reports"
+	}
 }
 
 jar {
@@ -160,14 +170,12 @@ javadoc {
 	}
 }
 
-/*
 test {
 	useTestNG()
 	options {
 		suites "src/test/java/org/jenetics/testng.xml"
 	}
 }
-*/
 
 repositories {
 	flatDir(dir: "../project/lib")

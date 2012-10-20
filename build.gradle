@@ -109,15 +109,6 @@ task pack(type: Zip) {
 	}
 }
 
-/*
-task export(dependsOn: packaging) << {
-	println("Export project.")
-}
-*/
-
-
-
-
 
 
 
