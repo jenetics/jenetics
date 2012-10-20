@@ -61,6 +61,7 @@ task export(dependsOn: [build, javadoc]) << {
 			include "src/**"
 			include "*.gradle"
 			exclude ".gradle"
+			exclude "src/site"
 		}
 		into "${exportSourceDir}"
 		filter(ReplaceTokens, tokens: [
