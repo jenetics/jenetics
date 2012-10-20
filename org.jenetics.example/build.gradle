@@ -21,13 +21,43 @@
  *
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: "java"
 apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+apply from: "../build-util.gradle"
+
+task export(dependsOn: build) << {
+	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	def exportLibDir = new File(exportBaseDir, "lib")
+	
+	exportBaseDir.mkdirs()
+	exportSourceDir.mkdirs()
+	exportLibDir.mkdirs()
+	
+	// Copy the library
+	copy {
+		from("${buildDir}/libs")
+		into "${exportLibDir}"
+	}
+	
+	// Copy the sources.
+	copy {
+		from(".") {
+			include "src/**"
+			include "*.gradle"
+		}
+		into "${exportSourceDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+}
 
 jar {
 	manifest {
