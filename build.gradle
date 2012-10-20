@@ -21,8 +21,6 @@
  *
  */
 
-import java.io.File
-
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "eclipse"
@@ -41,7 +39,6 @@ subprojects { subproj ->
 		targetCompatibility = 1.7
 	}
 }
-
 
 
 task clean << {
@@ -97,12 +94,19 @@ task export << {
 	}
 }
 
-// Create zip file.
-task zip(type: Zip) {
-	from("build/export/${identifier}")
-	into("build/export")
+// Create a zip file from the export directory.
+task pack(type: Zip) {
+	from("build/export/${identifier}") {
+		into identifier
+	}
+	//into("build/export")
 	baseName = rootProject.name
-	version = rootProject.version
+	version = jeneticsVersion
+	
+	doLast {
+		def zip = new File("${identifier}.zip")
+		zip.renameTo(new File("build/export", zip.getName()))
+	}
 }
 
 /*
