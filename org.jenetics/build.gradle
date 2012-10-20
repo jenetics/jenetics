@@ -49,6 +49,12 @@ task export(dependsOn: [build, javadoc]) << {
 		from("${buildDir}/libs")
 		into "${exportLibDir}"
 	}
+	copy {
+		from("../project/lib") {
+			include "jscience-*.jar"
+		}
+		into "${exportLibDir}"
+	}
 	
 	// Copy the sources.
 	copy {
