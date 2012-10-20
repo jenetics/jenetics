@@ -72,7 +72,7 @@ task export(dependsOn: build) << {
 	exportBaseDir.mkdirs()
 	exportSourceDir.mkdirs()
 	
-	// Copy the library
+	// Copy the manual.
 	copy {
 		from("${buildDir}/doc") {
 			include "*.pdf"
