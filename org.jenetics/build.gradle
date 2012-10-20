@@ -35,6 +35,7 @@ apply plugin: "idea"
 def now = new Date()
 def year = now.year + 1900
 def copyrightYear = "2007-${year}".toString()
+def identifier = "${rootProject.name}-${version}".toString()
 def dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 
 task packaging(dependsOn: build) << {
@@ -51,8 +52,6 @@ task export << {
 	)
 	exportDir.mkdirs()
 	
-	def identifier = "${rootProject.name}-${version}".toString()
-	
 	// Copy the sources.
 	copy {
 		from(".") {
@@ -64,6 +63,24 @@ task export << {
 			__identifier__: identifier,
 			__year__: copyrightYear
 		])
+	}
+	
+	// Copy the javadoc
+	copy {
+		from("${buildDir}/docs") {
+			include "javadoc/**/*.html"
+		}
+		into "${rootProject.buildDir}/export"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from("${buildDir}/docs") {
+			exclude "javadoc/**/*.html"
+		}
+		into "${rootProject.buildDir}/export"
 	}
 }
 
