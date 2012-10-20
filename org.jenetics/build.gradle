@@ -35,7 +35,7 @@ apply plugin: "idea"
 apply from: "../build-util.gradle"
 
 
-task export << {
+task export(dependsOn: [build, javadoc]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
