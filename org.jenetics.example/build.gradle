@@ -26,8 +26,6 @@ apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
-version = "1.1.0"
-
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
