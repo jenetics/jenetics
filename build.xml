@@ -2,8 +2,8 @@
 <!--
  ###############################################################################
  #
- # Java Genetic Algorithm Library (@!identifier!@).
- # Copyright (c) @!year!@ Franz Wilhelmstötter
+ # Java Genetic Algorithm Library (@__identifier__@).
+ # Copyright (c) @__year__@ Franz Wilhelmstötter
  #
  # This library is free software; you can redistribute it and/or
  # modify it under the terms of the GNU Lesser General Public
@@ -301,8 +301,8 @@
 		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
 		</copy>
-		<replace dir="${javadoc.dir}" token="@!identifier!@" value="${identifier}" />
-		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
+		<replace dir="${javadoc.dir}" token="@__identifier__@" value="${identifier}" />
+		<replace dir="${javadoc.dir}" token="@__year__@" value="${year}" />
 	</target>
 
 	<!--
@@ -402,8 +402,8 @@
 		<copy todir="${javadoc.dir}/org/jenetics/util/doc-files" >
 			<fileset dir="${source.dir}/org/jenetics/util/doc-files" />
 		</copy>
-		<replace dir="${javadoc.dir}" token="@!identifier!@" value="${identifier}" />
-		<replace dir="${javadoc.dir}" token="@!year!@" value="${year}" />
+		<replace dir="${javadoc.dir}" token="@__identifier__@" value="${identifier}" />
+		<replace dir="${javadoc.dir}" token="@__year__@" value="${year}" />
 	</target>
 
 	<!--
@@ -510,7 +510,7 @@
 		/>
 		<replace
 			file="${doc.basedir}/documentation/__manual.lyx"
-			token="@!identifier!@" value="${version}---${MANUAL_TIMESTAMP}"
+			token="@__identifier__@" value="${version}---${MANUAL_TIMESTAMP}"
 		/>
 		<replace
 			file="${doc.basedir}/documentation/__manual.lyx"
@@ -566,14 +566,14 @@
 		<copy todir="${export.dir}/build" file="${build.dir}/jenetics-examples-${version}.jar"/>
 		<copy todir="${export.dir}/script"><fileset dir="${basedir}/script" /></copy>
 
-		<replace file="${export.dir}/build.xml" token="@!identifier!@" value="${identifier}" />
-		<replace file="${export.dir}/build.xml" token="@!year!@" value="${year}" />
-		<replace file="${export.dir}/change.log" token="@!identifier!@" value="${identifier}" />
-		<replace file="${export.dir}/change.log" token="@!year!@" value="${year}" />
-		<replace file="${export.dir}/README.md" token="@!identifier!@" value="${identifier}" />
-		<replace file="${export.dir}/README.md" token="@!year!@" value="${year}" />
-		<replace dir="${export.dir}/src" token="@!identifier!@" value="${identifier}" />
-		<replace dir="${export.dir}/src" token="@!year!@" value="${year}" />
+		<replace file="${export.dir}/build.xml" token="@__identifier__@" value="${identifier}" />
+		<replace file="${export.dir}/build.xml" token="@__year__@" value="${year}" />
+		<replace file="${export.dir}/change.log" token="@__identifier__@" value="${identifier}" />
+		<replace file="${export.dir}/change.log" token="@__year__@" value="${year}" />
+		<replace file="${export.dir}/README.md" token="@__identifier__@" value="${identifier}" />
+		<replace file="${export.dir}/README.md" token="@__year__@" value="${year}" />
+		<replace dir="${export.dir}/src" token="@__identifier__@" value="${identifier}" />
+		<replace dir="${export.dir}/src" token="@__year__@" value="${year}" />
 
 		<zip destfile="${build.dir}/export/${identifier}.zip" level="9">
 			<fileset dir="${export.dir}"/>
