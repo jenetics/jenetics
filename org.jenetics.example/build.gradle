@@ -50,6 +50,7 @@ task export(dependsOn: build) << {
 		from(".") {
 			include "src/**"
 			include "*.gradle"
+			exclude ".gradle"
 		}
 		into "${exportSourceDir}"
 		filter(ReplaceTokens, tokens: [

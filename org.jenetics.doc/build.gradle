@@ -25,7 +25,11 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 
-task build(dependsOn: "clean") << {
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply from: "../build-util.gradle"
+
+task build << {
 	def buildTemp = new File(buildDir, "tmp")
 	def buildTempLyx = new File(buildTemp, "lyx")
 	buildTempLyx.mkdirs()
@@ -36,7 +40,7 @@ task build(dependsOn: "clean") << {
 	def identifier = "${version}---" + new SimpleDateFormat("yyyy/MM/dd").format(new Date())
 	def content = new File("${projectDir}/src/main/lyx/manual.lyx").getText("UTF-8")
 	content = content.replaceAll("@!identifier!@", "${identifier}")
-	new File("${buildTempLyx}/manual.lyx").write(content, "UTF-8")
+	new File("${buildTempLyx}/manual-${version}.lyx").write(content, "UTF-8")
 
 	copy {
 		from "${projectDir}/src/main/lyx/references.bib"
@@ -50,11 +54,11 @@ task build(dependsOn: "clean") << {
 	exec() {
 		executable = "lyx"
 		workingDir = "${buildTempLyx}"
-		args = ["-e", "pdf2", "manual.lyx"]
+		args = ["-e", "pdf2", "manual-${version}.lyx"]
 	}
 	
 	copy {
-		from "${buildTemp}/lyx/manual.pdf"
+		from "${buildTemp}/lyx/manual-${version}.pdf"
 		into "${buildDoc}"
 		
 		rename { String fileName ->
@@ -63,6 +67,35 @@ task build(dependsOn: "clean") << {
 	}
 }
 
+task export(dependsOn: build) << {
+	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	
+	exportBaseDir.mkdirs()
+	exportSourceDir.mkdirs()
+	
+	// Copy the library
+	copy {
+		from("${buildDir}/doc") {
+			include "*.pdf"
+		}
+		into "${exportBaseDir}"
+	}
+	
+	// Copy the sources.
+	copy {
+		from(".") {
+			include "src/**"
+			include "*.gradle"
+			exclude ".gradle"
+		}
+		into "${exportSourceDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+}
 
 task clean << {
 	buildDir.deleteDir()
