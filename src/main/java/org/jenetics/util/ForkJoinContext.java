@@ -39,6 +39,36 @@ import javolution.util.FastList;
  * of the <a href="http://javolution.org/">Javolution</a> project, this class
  * allows you to share a common {@link ForkJoinPool} for the GA and the rest of
  * your application.
+ * <p/>
+ * The following example shows how to use the {@code ForkJoinContext} directly:
+ * [code]
+ * public class Main {
+ *     public static void main(final String[] args) {
+ *         final int nthreads = 10;
+ *         
+ *         // Create a java ForkJoinPool and initialize the ForkJoinContext.
+ *         final ForkJoinPool pool = new ForkJoinPool(nthreads);
+ *         ForkJoinContext.setForkJoinPool(pool);
+ *         
+ *         // Set the concurrence context to use by the javolution context.
+ *         ConcurentContext.setContext(ForkJoinContext.class);
+ *         
+ *         // Execute some task concurrently.
+ *         ConcurentContext.enter()
+ *         try {
+ *             ConcurrentContext.execute(...);
+ *             ConcurrentContext.execute(...);
+ *         } finally {
+ *             ConcurrentContext.exit();
+ *         }
+ *     }
+ * }
+ * [/code]
+ * 
+ * A more convenient way for using the {@code ForkJoinContext} allows the
+ * {@link Concurrency} class. 
+ *
+ * @see Concurrency
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
