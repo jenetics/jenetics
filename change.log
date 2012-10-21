@@ -1,7 +1,5 @@
 Jenetics-1.1.0
 - Change build system from 'Ant' to 'Gradle'.
-
-Jenetics-1.0.2
 - Switch SCM from Subversion to Mercurial.
 - Update documentation; describing new repository.
 
