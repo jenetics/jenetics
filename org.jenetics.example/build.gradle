@@ -24,7 +24,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "java"
-apply plugin: "osgi"
+//apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
@@ -34,17 +34,17 @@ task export(dependsOn: build) << {
 	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
-	
+
 	exportBaseDir.mkdirs()
 	exportSourceDir.mkdirs()
 	exportLibDir.mkdirs()
-	
+
 	// Copy the library
 	copy {
 		from("${buildDir}/libs")
 		into "${exportLibDir}"
 	}
-	
+
 	// Copy the sources.
 	copy {
 		from(".") {
@@ -62,14 +62,15 @@ task export(dependsOn: build) << {
 
 jar {
 	manifest {
+		/*
 		name = "org.jenetics.example"
 		instruction "Export-Package",
 				"org.jenetics.example"
 		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
 		instruction "Bundle-Description", "Jenetics Algorithm Library"
 		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
-		
-		attributes "Implementation-Title": "org.jenetics.example", 
+		*/
+		attributes "Implementation-Title": "org.jenetics.example",
 					"Implementation-Version": version,
 					"Implementation-URL": "http://jenetics.sourceforge.net",
 					"Implementation-Vendor": "Jenetics",
