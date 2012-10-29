@@ -62,7 +62,6 @@ task export(dependsOn: build) << {
 
 jar {
 	manifest {
-
 		name = "org.jenetics.example"
 		instruction "Export-Package",
 				"org.jenetics.example"
