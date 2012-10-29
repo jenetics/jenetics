@@ -24,7 +24,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "java"
-//apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
@@ -62,14 +61,6 @@ task export(dependsOn: build) << {
 
 jar {
 	manifest {
-		/*
-		name = "org.jenetics.example"
-		instruction "Export-Package",
-				"org.jenetics.example"
-		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
-		instruction "Bundle-Description", "Jenetics Algorithm Library"
-		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
-		*/
 		attributes "Implementation-Title": "org.jenetics.example",
 					"Implementation-Version": version,
 					"Implementation-URL": "http://jenetics.sourceforge.net",
