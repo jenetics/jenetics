@@ -27,7 +27,6 @@ import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "java"
-//apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
@@ -101,16 +100,6 @@ task export(dependsOn: [build, javadoc]) << {
 
 jar {
 	manifest {
-		/*
-		name = "org.jenetics"
-		instruction "Export-Package",
-				"org.jenetics",
-				"org.jenetics.util",
-				"org.jenetics.stat"
-		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
-		instruction "Bundle-Description", "Jenetics Algorithm Library"
-		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
-		*/
 		attributes "Implementation-Title": "org.jenetics",
 					"Implementation-Version": version,
 					"Implementation-URL": "http://jenetics.sourceforge.net",
