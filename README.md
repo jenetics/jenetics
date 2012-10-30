@@ -54,4 +54,4 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 
 ## Licence
 
-The library is licensed under the [GNU Lesser General Public](https://www.gnu.org/licenses/lgpl-2.1.html) License> as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+The library is licensed under the [GNU Lesser General Public License](https://www.gnu.org/licenses/lgpl-2.1.html)  as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
