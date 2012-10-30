@@ -52,5 +52,10 @@ Beside the Java coding standards as given in <http://www.oracle.com/technetwork/
 - Variable name for arrays or collections are plural.
 - All helper classes which only contains static methods are lower-case. This  indicates that the given class can not be used as type, because no instance can be created.
 
+## Licence
 
+The library is licensed under the
+[https://www.gnu.org/licenses/lgpl-2.1.html||GNU Lesser General Public License]
+as published by the Free Software Foundation; either version 2.1 of the License,
+or (at your option) any later version.
 
