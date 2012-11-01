@@ -110,6 +110,15 @@ jar {
 	}
 }
 
+task jarjar(type: Jar) {
+    classifier = 'all'
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
 javadoc {
 
 	configure(options) {
@@ -166,6 +175,10 @@ test {
 	options {
 		suites "src/test/java/org/jenetics/testng.xml"
 	}
+}
+
+configurations {
+    compile
 }
 
 repositories {
