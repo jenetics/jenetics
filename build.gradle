@@ -99,7 +99,7 @@ task pack(type: Zip) {
 	from("build/export/${identifier}") {
 		into identifier
 	}
-	//into("build/export")
+
 	baseName = rootProject.name
 	version = jeneticsVersion
 
