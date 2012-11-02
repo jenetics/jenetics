@@ -7476,6 +7476,15 @@ Source code
 \end_layout
 
 \begin_layout Standard
+To build the library yourself from the sources you have to install Gradle
+ first.
+\end_layout
+
+\begin_layout Standard
+If you want to build the library yourself you need to install Gradle
+\end_layout
+
+\begin_layout Standard
 Compiling the sources and building the JAR files is done with the 
 \family typewriter
 jar
