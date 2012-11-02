@@ -96,8 +96,6 @@ task export << {
 
 // Create a zip file from the export directory.
 task pack(type: Zip) {
-	dependsOn export
-
 	from("build/export/${identifier}") {
 		into identifier
 	}
