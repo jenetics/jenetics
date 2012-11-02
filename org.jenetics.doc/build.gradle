@@ -67,10 +67,7 @@ task build << {
 
 task export(dependsOn: build) << {
 	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-
 	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
 
 	// Copy the manual.
 	copy {
@@ -79,6 +76,11 @@ task export(dependsOn: build) << {
 		}
 		into "${exportBaseDir}"
 	}
+
+	/*
+
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	exportSourceDir.mkdirs()
 
 	// Copy the sources.
 	copy {
@@ -93,6 +95,7 @@ task export(dependsOn: build) << {
 			__year__: copyrightYear
 		])
 	}
+	*/
 }
 
 task clean << {
