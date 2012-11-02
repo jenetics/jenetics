@@ -20,7 +20,7 @@
  *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
- 
+
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -30,4 +30,6 @@ ext.now = new Date()
 ext.year = now.year + 1900
 ext.copyrightYear = "2007-${year}".toString()
 ext.identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+ext.manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+ext.manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
 ext.dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
