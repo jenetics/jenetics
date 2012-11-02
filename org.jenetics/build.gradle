@@ -33,7 +33,17 @@ apply plugin: "idea"
 apply from: "../build-util.gradle"
 
 
-task export(dependsOn: [build, javadoc]) << {
+task jarjar(type: Jar) {
+	classifier = 'all'
+	from files(sourceSets.main.output.classesDir)
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+task export(dependsOn: [build, jarjar, javadoc]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
@@ -107,15 +117,6 @@ jar {
 					"ProjectName": "Jenetics",
 					"Version": version,
 					"Maintainer": "Franz Wilhelmstötter"
-	}
-}
-
-task jarjar(type: Jar) {
-    classifier = 'all'
-	from {
-		configurations.compile.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
 	}
 }
 
