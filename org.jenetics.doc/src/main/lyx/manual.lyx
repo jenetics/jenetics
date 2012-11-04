@@ -7476,12 +7476,7 @@ Source code
 \end_layout
 
 \begin_layout Standard
-To build the library yourself from the sources you have to install Gradle
- first.
-\end_layout
-
-\begin_layout Standard
-If you want to build the library yourself you need to install Gradle
+For building the library form the sources you have to install Gradle first.
 \end_layout
 
 \begin_layout Standard
@@ -8164,12 +8159,12 @@ javadoc
 
 \series bold
 \emph on
-Ant
+Gradle
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Ant
+Gradle
 \end_layout
 
 \end_inset
@@ -8183,7 +8178,7 @@ Ant
 \series bold
 Version
 \series default
-: 1.8.4
+: 1.2
 \end_layout
 
 \begin_layout Itemize
@@ -8199,7 +8194,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://ant.apache.org
+http://gradle.org/
 \end_layout
 
 \end_inset
@@ -8220,7 +8215,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://tweedo.com/mirror/apache//ant/binaries/apache-ant-1.8.4-bin.zip
+http://services.gradle.org/distributions/gradle-1.2-bin.zip
 \end_layout
 
 \end_inset
@@ -8239,7 +8234,7 @@ License
 \begin_inset CommandInset href
 LatexCommand href
 name "Apache License, Version 2.0"
-target "https://www.apache.org/licenses/LICENSE-2.0.html"
+target "http://gradle.org/license"
 
 \end_inset
 
