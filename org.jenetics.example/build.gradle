@@ -29,7 +29,7 @@ apply plugin: "idea"
 
 apply from: "../build-util.gradle"
 
- task packaging(dependsOn: build) << {
+ task pack(dependsOn: build) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
@@ -57,6 +57,9 @@ apply from: "../build-util.gradle"
 			__year__: copyrightYear
 		])
 	}
+}
+
+task export(dependsOn: pack) << {
 }
 
 jar {
