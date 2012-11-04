@@ -46,7 +46,7 @@ task clean << {
 }
 
  task packaging << {
-	def exportBaseDir = new File(buildDir, "packaging/${identifier}/source")
+	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
 	def exportProjectDir = new File(exportBaseDir, "project")
 
 	exportBaseDir.mkdirs()
