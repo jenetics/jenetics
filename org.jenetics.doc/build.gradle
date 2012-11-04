@@ -65,7 +65,7 @@ task buildManual << {
 	}
 }
 
-task packaging(dependsOn: build) << {
+task export(dependsOn: buildManual) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	exportBaseDir.mkdirs()
 
@@ -77,7 +77,6 @@ task packaging(dependsOn: build) << {
 		into "${exportBaseDir}"
 	}
 
-	/*
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	exportSourceDir.mkdirs()
 
@@ -94,7 +93,7 @@ task packaging(dependsOn: build) << {
 			__year__: copyrightYear
 		])
 	}
-	*/
+
 }
 
 task clean << {

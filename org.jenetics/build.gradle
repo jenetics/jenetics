@@ -43,7 +43,7 @@ task jarjar(type: Jar) {
 	}
 }
 
-task packaging(dependsOn: [build, jarjar, javadoc]) << {
+task pack(dependsOn: [build, jarjar, javadoc]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
@@ -176,6 +176,9 @@ test {
 	options {
 		suites "src/test/java/org/jenetics/testng.xml"
 	}
+}
+
+task export(dependsOn: pack) << {
 }
 
 configurations {
