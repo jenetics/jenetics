@@ -7476,6 +7476,68 @@ Source code
 \end_layout
 
 \begin_layout Standard
+The sources is divided into several projects (
+\emph on
+modules
+\emph default
+) which resides in it's own directory:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+org.jenetics
+\family default
+\series default
+: This project contains the source code and tests for the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ 
+\emph on
+core
+\emph default
+-module.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+org.jenetics.example
+\family default
+\series default
+: This project contains example code for the 
+\emph on
+core
+\emph default
+-module.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+org.jenetics.doc
+\family default
+\series default
+: Contains the 
+\emph on
+code
+\emph default
+ of the web-site and 
+\emph on
+this
+\emph default
+ manual.
+\end_layout
+
+\begin_layout Standard
 For building the library form the sources you have to install Gradle
 \begin_inset Foot
 status collapsed
@@ -7496,41 +7558,57 @@ http://gradle.org/downloads
 
 \end_inset
 
- first (see also 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "Gradle"
-
-\end_inset
-
-).
- Then you can call ...
-\end_layout
-
-\begin_layout Standard
-The JAR files, and all other build artifacts, are stored in the 
+ first.
+ Then change into the 
 \family typewriter
 <build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build\SpecialChar \slash{}
-main
+dir>
 \family default
- directory.
+ directory (or one of the 
+\emph on
+module
+\emph default
+ directory) and call one of the available 
+\emph on
+tasks
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
-The available 
+The most important available 
 \emph on
-Ant
+Gradle
 \emph default
- targets are:
+ tasks are:
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
 \series bold
-compile
+pack
+\family default
+\series default
+: This task is only available in the 
+\family typewriter
+<build\SpecialChar \-
+dir>
+\family default
+ directory.
+ It compiles the sources and creates the jar files and the javadoc.
+ The result is copied into the 
+\family typewriter
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
+build/package directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+compileJava
 \family default
 \series default
 :
@@ -7555,8 +7633,8 @@ Jenetics
 \family typewriter
 <build\SpecialChar \-
 dir>\SpecialChar \slash{}
-build\SpecialChar \slash{}
-main
+<module-dir>/build\SpecialChar \slash{}
+classes/main
 \family default
  directory.
 \end_layout
@@ -7582,24 +7660,7 @@ main
 
 \family typewriter
 \series bold
-test-compile
-\family default
-\series default
-: Compiles the tests and the class files to the 
-\family typewriter
-<build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build\SpecialChar \slash{}
-main
-\family default
- directory.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-test-run
+test
 \family default
 \series default
 : Compiles and executes the unit tests.
@@ -7611,116 +7672,10 @@ TestNG
 , is written to 
 \family typewriter
 <build\SpecialChar \-
-dir>\SpecialChar \slash{}
-test-report.html
+dir>/<module-dir>
 \family default
-.
- Since some of the unit-tests are 
-\emph on
-statistical
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Statistical tests run several times with the same parameters and expect
- only to pass a given percentage of the overall runs.
- These tests usually check the expected 
-\emph on
-individual
-\emph default
- distribution of the 
-\family typewriter
-Selector.select(Population, int, Optimize)
-\family default
- method.
-\end_layout
-
-\end_inset
-
-
-\emph default
- tests it is possible that the number of failed tests is greater than zero
- and the test run is still successful; e.g.
+ directory.
  
-\end_layout
-
-\begin_layout LyX-Code
-      ...
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  [testng] ===============================================
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  [testng] Jenetics    
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  [testng] Total tests run: 1483, Failures: 1, Skips: 0    
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  [testng] ===============================================   
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  [testng] 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-       ...
-      
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-    [copy] Copying 1 file to <builddir>
-\end_layout
-
-\begin_layout LyX-Code
- 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  BUILD SUCCESSFUL 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-  Total time: 1 minute 18 seconds
-\size default
- 
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-perftest-run
-\family default
-\series default
-: Runs some performance tests and stores the result into 
-\family typewriter
-<build\SpecialChar \-
-dir>\SpecialChar \slash{}
-pertest-report.txt
 \end_layout
 
 \begin_layout Itemize
@@ -7731,6 +7686,14 @@ javadoc
 \family default
 \series default
 : Generates the API documentation.
+ The Javadoc is stored in the 
+\family typewriter
+<build\SpecialChar \-
+dir>/<module-dir>\SpecialChar \slash{}
+build\SpecialChar \slash{}
+docs
+\family default
+ directory
 \end_layout
 
 \begin_layout Itemize
@@ -7744,9 +7707,9 @@ jar
  The artifacts are copied to the 
 \family typewriter
 <build\SpecialChar \-
-dir>\SpecialChar \slash{}
+dir>/<module-dir>\SpecialChar \slash{}
 build\SpecialChar \slash{}
-main
+libs
 \family default
  directory.
 \end_layout
@@ -7762,10 +7725,9 @@ clean
 \family typewriter
 <build\SpecialChar \-
 dir>\SpecialChar \slash{}
-build\SpecialChar \slash{}
-main
+build/*
 \family default
- directory and removes all other generated artifacts.
+ directories and removes all generated artifacts.
 \end_layout
 
 \begin_layout Paragraph
@@ -7773,15 +7735,7 @@ IDE integration
 \end_layout
 
 \begin_layout Standard
-The 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- library contains project files for Eclipse
+Gradle has tasks which creates the project file for Eclipse
 \begin_inset Foot
 status collapsed
 
@@ -7798,15 +7752,7 @@ target "http://www.eclipse.org/"
 
 \end_inset
 
- (
-\family typewriter
-.project
-\family default
- and 
-\family typewriter
-.classpath
-\family default
-) and IntelliJ IDEA
+ and IntelliJ IDEA
 \begin_inset Foot
 status collapsed
 
@@ -7823,20 +7769,16 @@ target "http://www.jetbrains.com/idea/"
 
 \end_inset
 
- (
-\family typewriter
-Jenetics.iml
-\family default
-, 
-\family typewriter
-Jenetics.ipr
-\family default
- and 
-\family typewriter
-Jenetics.iws
-\family default
-)---all located in the build directory.
- 
+.
+ Call
+\end_layout
+
+\begin_layout LyX-Code
+$ gradle eclipse/idea
+\end_layout
+
+\begin_layout Standard
+For creating the project files for Eclipse or IntelliJ, respectively.
 \end_layout
 
 \begin_layout Paragraph
