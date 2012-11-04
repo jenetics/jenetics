@@ -80,6 +80,7 @@ task export(dependsOn: buildManual) << {
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	exportSourceDir.mkdirs()
 
+/*
 	// Copy the sources.
 	copy {
 		from(".") {
@@ -93,7 +94,7 @@ task export(dependsOn: buildManual) << {
 			__year__: copyrightYear
 		])
 	}
-
+*/
 }
 
 task clean << {
