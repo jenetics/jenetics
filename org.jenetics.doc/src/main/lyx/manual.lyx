@@ -7980,7 +7980,7 @@ Version
 \series default
 : 
 \emph on
-6.5.1
+6.8
 \end_layout
 
 \begin_layout Itemize
@@ -8013,11 +8013,11 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://testng.org/testng-6.5.1.zip
+http://testng.org/testng-6.8.zip
 \end_layout
 
 \end_inset
