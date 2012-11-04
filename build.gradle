@@ -45,8 +45,8 @@ task clean << {
 	buildDir.deleteDir()
 }
 
-task export << {
-	def exportBaseDir = new File(buildDir, "export/${identifier}/source")
+ task packaging << {
+	def exportBaseDir = new File(buildDir, "packaging/${identifier}/source")
 	def exportProjectDir = new File(exportBaseDir, "project")
 
 	exportBaseDir.mkdirs()
@@ -95,8 +95,8 @@ task export << {
 }
 
 // Create a zip file from the export directory.
-task pack(type: Zip) {
-	from("build/export/${identifier}") {
+task zip(type: Zip) {
+	from("build/packaging/${identifier}") {
 		into identifier
 	}
 
