@@ -7454,7 +7454,7 @@ default
 \begin_layout LyX-Code
 $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Mercurial repository
@@ -7476,29 +7476,35 @@ Source code
 \end_layout
 
 \begin_layout Standard
-For building the library form the sources you have to install Gradle first.
+For building the library form the sources you have to install Gradle
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://gradle.org/downloads
 \end_layout
 
-\begin_layout Standard
-Compiling the sources and building the JAR files is done with the 
-\family typewriter
-jar
-\family default
- 
-\emph on
-Ant
-\emph default
- target.
- Change to the 
-\family typewriter
-<build\SpecialChar \-
-dir>
-\family default
- directory and call
+\end_inset
+
+
 \end_layout
 
-\begin_layout LyX-Code
-$ ./lib/build/ant/bin/ant jar
+\end_inset
+
+ first (see also 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "Gradle"
+
+\end_inset
+
+).
+ Then you can call ...
 \end_layout
 
 \begin_layout Standard
@@ -8161,11 +8167,18 @@ javadoc
 \emph on
 Gradle
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gradle
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Gradle"
 
 \end_inset
 
