@@ -65,8 +65,8 @@ task build << {
 	}
 }
 
-task export(dependsOn: build) << {
-	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
+task packaging(dependsOn: build) << {
+	def exportBaseDir = new File(rootProject.buildDir, "packaging/${identifier}")
 	exportBaseDir.mkdirs()
 
 	// Copy the manual.
@@ -78,7 +78,6 @@ task export(dependsOn: build) << {
 	}
 
 	/*
-
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	exportSourceDir.mkdirs()
 

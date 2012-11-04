@@ -43,8 +43,8 @@ task jarjar(type: Jar) {
 	}
 }
 
-task export(dependsOn: [build, jarjar, javadoc]) << {
-	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
+task packaging(dependsOn: [build, jarjar, javadoc]) << {
+	def exportBaseDir = new File(rootProject.buildDir, "packaging/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
 
