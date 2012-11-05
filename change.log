@@ -1,7 +1,7 @@
 Jenetics-1.1.0
 - Preparation for converting Jenetics into OSGi modules.
-- Change build system from 'Ant' to 'Gradle'.
-- Switch SCM from Subversion to Mercurial.
+- Switch build system from 'Ant' to 'Gradle'.
+- Switch SCM from 'Subversion' to 'Mercurial'.
 - Update documentation; describing new repository.
 
 Jenetics-1.0.1
