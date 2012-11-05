@@ -21,27 +21,34 @@ For building the Jenetics library from source, download the most recent, stable 
 
     $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
-Compiling the sources and building the JAR files is done with the jar Ant target. Change to the <builddir> directory and call
+Jenetics uses Gradle13 as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
-    $ ./lib/build/ant/bin/ant jar
 
-The JAR files, and all other build artifacts, are stored in the ```<builddir>/ build/main``` directory. The available Ant targets are:
+* ```org.jenetics```: This project contains the source code and tests for the Jenetics core-module.
+* ```org.jenetics.example```: This project contains example code for the *core*-module.
+* ```org.jenetics.doc```: Contains the code of the web-site and the manual.
 
-- **compile**: Compiles the Jenetics sources and copies the class files to the ```<builddir>/build/main``` directory.
+For building the library change into the ```<builddir>``` directory (or one of the module directory) and call one of the available tasks:
 
-- **example-compile**: Compiles the examples and copies the class files to the ```<builddir>/build/main``` directory.
+* ```pack```: Compiles the sources of all modules, creates the JAR files and the Javadoc. The build artifacts are copied into the ```<builddir>/build/package``` directory. This task is only available in the ```<builddir>``` directory.
+* ```compileJava```: Compiles the Jenetics sources and copies the class files to the ```<builddir>/<module-dir>/build/classes/main``` directory.
+* ```test```: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to ```<builddir>/<module-dir>``` directory.
+* ```javadoc```: Generates the API documentation. The Javadoc is stored in the ```<builddir>/<module-dir>/build/docs``` directory
+* ```jar```: Compiles the sources and creates the JAR files. The artifacts are copied to the ```<builddir>/<module-dir>/build/libs``` directory.
+* ```clean```: Deletes the ```<builddir>/build/*``` directories and removes all generated artifacts.
 
-- **test-compile**: Compiles the tests and the class files to the ```<builddir>/ build/main``` directory.
+For packaging (building) the source call
 
-- **test-run**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to ```<builddir>/test-report.html```. Since some of the unit-tests are sta- tistical 13 tests it is possible that the number of failed tests is greater than zero and the test run is still successful.
+    $ cd <build-dir>
+    $ gradle pack
 
-- **perftest-run**: Runs some performance tests and stores the result into ```<builddir>/pertest-report.txt```
 
-- **javadoc**: Generates the API documentation.
 
-- **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the ```<builddir>/build/main``` directory.
+**IDE Integration**
 
-- **clean**: Deletes the ```<builddir>/build/main``` directory and removes all other generated artifacts.
+Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. Call
+    $ gradle [eclipse|idea]
+for creating the project files for Eclipse or IntelliJ, respectively.
 
 
 ## Coding standards
