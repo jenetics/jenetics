@@ -7476,11 +7476,52 @@ Source code
 \end_layout
 
 \begin_layout Standard
-The sources is divided into several projects (
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses Gradle
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://gradle.org/downloads
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ as build system and organizes the source into 
+\emph on
+sub
+\emph default
+-projects (
 \emph on
 modules
 \emph default
-) which resides in it's own directory:
+).
+ Each 
+\emph on
+sub
+\emph default
+-project is located in it's own 
+\emph on
+sub
+\emph default
+-directory:
 \end_layout
 
 \begin_layout Itemize
@@ -7538,28 +7579,7 @@ this
 \end_layout
 
 \begin_layout Standard
-For building the library form the sources you have to install Gradle
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://gradle.org/downloads
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- first.
- Then change into the 
+For building the library form the sources you have into the 
 \family typewriter
 <build\SpecialChar \-
 dir>
@@ -7572,15 +7592,7 @@ module
 \emph on
 tasks
 \emph default
-.
-\end_layout
-
-\begin_layout Standard
-The most important available 
-\emph on
-Gradle
-\emph default
- tasks are:
+:
 \end_layout
 
 \begin_layout Itemize
@@ -7590,18 +7602,21 @@ Gradle
 pack
 \family default
 \series default
-: This task is only available in the 
+: Compiles the sources of all modules, creates the jar files and the Javadoc.
+ The build artifacts are copied into the 
+\family typewriter
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
+build/package directory.
+ 
+\family default
+\emph on
+This task is only available in the 
 \family typewriter
 <build\SpecialChar \-
 dir>
 \family default
  directory.
- It compiles the sources and creates the jar files and the javadoc.
- The result is copied into the 
-\family typewriter
-<build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build/package directory.
 \end_layout
 
 \begin_layout Itemize
@@ -7635,23 +7650,6 @@ Jenetics
 dir>\SpecialChar \slash{}
 <module-dir>/build\SpecialChar \slash{}
 classes/main
-\family default
- directory.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
-example-compile
-\family default
-\series default
-: Compiles the examples and copies the class files to the 
-\family typewriter
-<build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build\SpecialChar \slash{}
-main
 \family default
  directory.
 \end_layout
@@ -7728,6 +7726,22 @@ dir>\SpecialChar \slash{}
 build/*
 \family default
  directories and removes all generated artifacts.
+\end_layout
+
+\begin_layout Standard
+For 
+\family typewriter
+packaging
+\family default
+ (building) the source call
+\end_layout
+
+\begin_layout LyX-Code
+$ cd <build-dir>
+\end_layout
+
+\begin_layout LyX-Code
+$ gradle pack
 \end_layout
 
 \begin_layout Paragraph
