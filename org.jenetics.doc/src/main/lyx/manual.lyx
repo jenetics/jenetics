@@ -7579,7 +7579,7 @@ this
 \end_layout
 
 \begin_layout Standard
-For building the library form the sources you have into the 
+For building the library change into the 
 \family typewriter
 <build\SpecialChar \-
 dir>
@@ -7602,7 +7602,7 @@ tasks
 pack
 \family default
 \series default
-: Compiles the sources of all modules, creates the jar files and the Javadoc.
+: Compiles the sources of all modules, creates the JAR files and the Javadoc.
  The build artifacts are copied into the 
 \family typewriter
 <build\SpecialChar \-
@@ -7788,11 +7788,11 @@ target "http://www.jetbrains.com/idea/"
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle eclipse/idea
+$ gradle [eclipse|idea]
 \end_layout
 
 \begin_layout Standard
-For creating the project files for Eclipse or IntelliJ, respectively.
+for creating the project files for Eclipse or IntelliJ, respectively.
 \end_layout
 
 \begin_layout Paragraph
