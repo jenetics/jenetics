@@ -1,17 +1,18 @@
 Jenetics-1.1.0
+- Preparation for converting Jenetics into OSGi modules.
 - Change build system from 'Ant' to 'Gradle'.
 - Switch SCM from Subversion to Mercurial.
 - Update documentation; describing new repository.
 
 Jenetics-1.0.1
-- Fix bug in RouletteWheelSelector. The selection probabilities was not 
+- Fix bug in RouletteWheelSelector. The selection probabilities was not
   correctly calculated: https://sourceforge.net/apps/trac/jenetics/ticket/50
 
 Jenetics-1.0
 - Rename 'RandomRegistry.setDefault()' method to 'RandomRegistry.reset()'.
 - Rename 'MappableAccumulator' to 'MappedAccumulator'.
 - Optimize ProbabilitySelector. The selection complexity is now O(n + log(n)),
-  instead of O(n^2). 
+  instead of O(n^2).
 - Remove NumberGene.asFactory method; no longer needed.
 - Rename method MSeq.fill(T[]) to MSeq.setAll(T[]).
 - Rename method MSeq.fill(Iterator<T>) to MSeq.setAll(Iterator<T>).
@@ -19,7 +20,7 @@ Jenetics-1.0
 - Add org.jenetics.util.Seq.forall(Function) method.
 - Rename org.jenetics.util.Seq.indexOf(Function) to Seq.indexWhere(Function).
 - Rename org.jenetics.util.Seq.lastIndexOf(Function) to Seq.lastIndexWhere(Function).
-- Remove org.jenetics.util.CompositeFunction. Functionality moved to 
+- Remove org.jenetics.util.CompositeFunction. Functionality moved to
   org.jenetics.util.functions object.
 - Add Ant to build libraries.
 - Rename org.jenetics.util.CharSet to org.jenetics.util.CharSeq.
@@ -38,19 +39,19 @@ Jenetics-0.9.0.0
 - Add an 'IO' class with IO helper methods.
 - Remove EnumGene, can be replaced by Integer64Gene.
 - Update JScience library from 4.3 to 4.3.1.
-- Simplify 'Accumulator' class hierarchy. Remove 'AdaptableAccumulator' and 
+- Simplify 'Accumulator' class hierarchy. Remove 'AdaptableAccumulator' and
   rename 'AbstractAccumulator' to 'MappableAccumulator'.
 - Convert BitChromosome.valueOf() to constructors.
 - Remove GeneticAlgorithm.valueOf methods. They are no longer needed due to the
   extended type inference capabilities of Java 7 (diamond operator <>).
-- Move the static 'concurrency' methods from the 'GeneticAlgorithm' class to a 
+- Move the static 'concurrency' methods from the 'GeneticAlgorithm' class to a
   new 'Concurrency' class.
 - The new org.jenetics.util.Function interfaces replaces the FitnessFunction,
   Predicate and Converter interface.
 - Convert source to Java 7.
 
 Jenetics-0.8.1.0
-- New name schema for 'utility' classes which only contains static methods. Such 
+- New name schema for 'utility' classes which only contains static methods. Such
   classes are now lower case.
 - Cleanup utility classes is org.jenetics.util package.
 - Remove org.jenetics.util.IOUtils class.
@@ -70,11 +71,11 @@ Jenetics-0.8.0.0
 - Rename the Array.seal() method to Array.toISeq() and remove the Array.isSealed()
   method.
 - Add new TestNG version 6.0.
-- The EvaluatorRegistry is no longer used. Only the GA directly was using it, so 
+- The EvaluatorRegistry is no longer used. Only the GA directly was using it, so
   remove the registry and add the Evaluator as member to the GA.
-- Rename Genotype.toArray to Genotype.toSeq and Chromosome.toArray to 
+- Rename Genotype.toArray to Genotype.toSeq and Chromosome.toArray to
   Chromosome.toSeq.
-- Add interfaces Seq, ISeq and MSeq to make the (im)mutable state of the Array 
+- Add interfaces Seq, ISeq and MSeq to make the (im)mutable state of the Array
   class more explicit.
 - Making org.jenetics.Statisitcs.Builder constructor protected and add static
   factory method which creates an new builder instance.
@@ -97,12 +98,12 @@ Jenetics-0.7.0.0
 - Fix the org.jenetics.Mutator class. The mutation probability is (now) the
   probability that a given gene is mutated. (Should have been always the case.)
 - Add org.jenetics.stat.NormalDistribution class for creating statistical tests
-  for the org.jenetics.Mutator class. 
+  for the org.jenetics.Mutator class.
 - The org.jenetics.Alterer.alter method now returns the number of altered genes.
-- Refactoring: Move Accumulators.Variance and Accumulators.Mean class to 
+- Refactoring: Move Accumulators.Variance and Accumulators.Mean class to
   org.jenetics.stat package.
 - Create org.jenetics.stat package.
-- Change type signature from 'C extends Comparable<C>' to 
+- Change type signature from 'C extends Comparable<C>' to
   'C extends Comparable<? super C>' for all classes.
 - Add histogram accumulator (org.jenetics.util.Accumulators.Histogram).
 - Add the 'mixin' org.util.AdaptableAccumulator class.
@@ -114,7 +115,7 @@ Jenetics-0.7.0.0
 
 Jenetics-0.6.1.0
 - Selectors and Alterers are no longer Serializable.
-- Implement readObject and writeObject methods in gene and chromosome 
+- Implement readObject and writeObject methods in gene and chromosome
   implementations.
 - Making CharSet class final.
 - Fixing bug in the ArrayUtils.sort(Array) method. This method doesn't sort
@@ -123,7 +124,7 @@ Jenetics-0.6.1.0
   performed.
 - Add org.jenetics.util.Array.subArray(int) method.
 - Add org.jenetics.util.Array.map(Converter) method.
-- Change the method signature of the org.jenetics.utils.IOUtils.writeXXX methods. 
+- Change the method signature of the org.jenetics.utils.IOUtils.writeXXX methods.
   Now the parameter order is <object>, <target>.
 - Add org.jenetics.utils.Array.toString(String, String, String) method.
 
@@ -132,7 +133,7 @@ Jenetics-0.6.0.0
 - BitChromosome implements now org.jscience.mathematics.number.Number<BitChromosome>
   instead of org.jscience.mathematics.number.Number<LargeInteger>.
 - Add BitChromosome.invert() method.
-- Fixing bug in CharSet class. The constructor CharSet(String) now creates 
+- Fixing bug in CharSet class. The constructor CharSet(String) now creates
   a distinct CharSet.
 - Fixing bug in Array.equals(Object) method.
 - Add Array.fill(Factory) method.
@@ -146,7 +147,7 @@ Jenetics-0.5.1.0
 - Removed Genotype.chromosomes() method. Use Genotype.length() instead.
 - Add Accumulator classes for statistics calculation.
 - Rename org.jenetics.utils.Serializer to org.jenetics.utils.IOUtils.
-- Change method signature from ArrayUtils.foreach(Collection) to 
+- Change method signature from ArrayUtils.foreach(Collection) to
   ArrayUtils.foreach(Iterable).
 - Add Array.toArray() and Array.toArray(Object[]) methods.
 - Add 'divide' method to Float64Gene and Integer64Gene.
@@ -165,9 +166,9 @@ Jenetics-0.5.0.0
 - Rename org.jenetics.util.XMLSerializer to org.jenetics.util.Serializer.
 - Move Mean class from org.jenetics to org.jenetics.util package.
 - Rename PowerScaler to ExponentialScaler.
-- Add new selector, MonteCarloSelector. This selector can be used to evaluate 
+- Add new selector, MonteCarloSelector. This selector can be used to evaluate
   the performance of an other selector.
-- Rename GeneticAlgorithm.getBestStatistic() method to 
+- Rename GeneticAlgorithm.getBestStatistic() method to
   GeneticAlgorithm.getBestStatistics()
 - Change org.jenetics.util.Timer to nano second resolution.
 - Rename method Statistics.getTimes() to Statistics.getTime().
@@ -181,7 +182,7 @@ Jenetics-0.5.0.0
 - Adding adapter class for jscience Function object.
 - Adding method getParallelTasks to Evaluator interface.
 - The GeneticAlgorithm.getLock() method now returns a fair lock.
-- Make the static helper method ArrayUtils.asList() a member method of the Array 
+- Make the static helper method ArrayUtils.asList() a member method of the Array
   class.
 - Make the Array class Serializable.
 - Making the StatisticsCalculator a static inner class of the Statistics.
@@ -193,7 +194,7 @@ Jenetics-0.4.0.1
 - Some Fixing javadoc.
 
 Jenetics-0.4.0.0
-- Remove the survivor fraction probability from the GA. This can lead to 
+- Remove the survivor fraction probability from the GA. This can lead to
   inconsistencies with the offspring fraction. The survivor fraction is deduced
   from the offspring fraction (sf := 1 - of).
 - Adding additional example.
@@ -201,7 +202,7 @@ Jenetics-0.4.0.0
 - Refactoring GA statistic classes.
 - Adding TruncationSelector.
 - Adding SwapMutation class, needed for TSP (and other combinatorial) problem.
-- Rename NumberGene.getMinValue() to NumberGene.getMaxValue() to 
+- Rename NumberGene.getMinValue() to NumberGene.getMaxValue() to
   NumberGene.getMin() and NumberGene.getMax().
 - Remove the mutation method from the Chromosomes interface. The mutation is
   solely done by the Mutation class. This requires a new method in the Gene
@@ -241,16 +242,16 @@ Jenetics-0.3.2.0
 Jenetics-0.3.1.0
 - Deleting ConcurrentStatisticCalculator
 - Adding concurrence support on the level of the fitness calculation of the
-  phenotypes of the population. This will the job of the 
+  phenotypes of the population. This will the job of the
   (Concurrent)Evaluator.
 - CharacterChromosome implements java.lang.CharSequence interface.
 - Adding method org.jenetics.util.Array.subArray(start, end).
-- Adding timer which measures the time spend for selecting, altering and 
+- Adding timer which measures the time spend for selecting, altering and
   calculating the fitness of a population.
 
 Jenetics-0.3.0.0
 - Adding javadoc to exported zip file.
-- Moving classes 
+- Moving classes
      * Array
      * ArrayIterator
      * ArrayUtils
@@ -263,9 +264,9 @@ Jenetics-0.3.0.0
   generic parameter (C extends Comparable<C>) was therefor introduced in the
   FitnessScaler, Phenotype, Population, Selector and GeneticAlgorithm class.
 - Adding NumericStatistic and NumericStatisticCalculator. Move functionality
-  from old Statistic class into the new NumericStatistic class. 
+  from old Statistic class into the new NumericStatistic class.
 - Some additional helper methods in the ArrayUtils class.
-- Remove method CharacterGene.getCharacter(), use CharacterGene.getAllele() 
+- Remove method CharacterGene.getCharacter(), use CharacterGene.getAllele()
   instead.
 - adding interface org.jenetics.util.Copyable.
 - Streamline XML-Serialization.
@@ -273,7 +274,7 @@ Jenetics-0.3.0.0
 
 Jenetics-0.2.0.0
 - Removing Randomizable interface.
-- Changing the template method return value of the 
+- Changing the template method return value of the
   ProbabilitySelector.probabilities(Population<T>,int) from
   Probabilities[] to double[].
 - Replace array types (e.g. IntegerGene[]) with Array<T> class
