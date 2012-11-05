@@ -6745,7 +6745,7 @@ reference "sec:Build"
 \begin_layout Subsection
 Ones counting
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Ones counting
@@ -6755,7 +6755,7 @@ Examples!Ones counting
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Ones counting
@@ -7969,7 +7969,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
