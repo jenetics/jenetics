@@ -52,7 +52,6 @@ task clean << {
 	exportBaseDir.mkdirs()
 	exportProjectDir.mkdirs()
 
-
 	// Copy the project directory.
 	copy {
 		from("project") {
