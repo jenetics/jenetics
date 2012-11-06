@@ -27,11 +27,11 @@ VERSION="@__version__@"
 CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-all-${VERSION}.jar`
 CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar`:.
 
-java -cp $CLS_PATH org.jenetics.examples.Knapsack
-java -cp $CLS_PATH org.jenetics.examples.OnesCounting
-java -cp $CLS_PATH org.jenetics.examples.RealFunction
-java -cp $CLS_PATH org.jenetics.examples.StringGenerator
-java -cp $CLS_PATH org.jenetics.examples.Transformation
-java -cp $CLS_PATH org.jenetics.examples.TravelingSalesman
+java -cp $CLS_PATH org.jenetics.example.Knapsack
+java -cp $CLS_PATH org.jenetics.example.OnesCounting
+java -cp $CLS_PATH org.jenetics.example.RealFunction
+java -cp $CLS_PATH org.jenetics.example.StringGenerator
+java -cp $CLS_PATH org.jenetics.example.Transformation
+java -cp $CLS_PATH org.jenetics.example.TravelingSalesman
 
 
