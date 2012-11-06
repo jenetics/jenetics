@@ -43,7 +43,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; $Date$
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 public interface Alterer<G extends Gene<?, G>> {
 
