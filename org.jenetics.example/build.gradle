@@ -33,15 +33,31 @@ apply from: "../build-util.gradle"
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
+	def exportScriptDir = new File(exportBaseDir, "scripts")
 
 	exportBaseDir.mkdirs()
 	exportSourceDir.mkdirs()
 	exportLibDir.mkdirs()
+	//exportScriptDir.mkdirs()
 
 	// Copy the library
 	copy {
 		from("${buildDir}/libs")
 		into "${exportLibDir}"
+	}
+
+	// Copy the scripts.
+	copy {
+		from("./src/main") {
+			include "scripts/**"
+			exclude ".gradle"
+		}
+		into "${exportBaseDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear,
+			__version__: version
+		])
 	}
 
 	// Copy the sources.
