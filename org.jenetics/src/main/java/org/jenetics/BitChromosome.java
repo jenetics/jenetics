@@ -53,7 +53,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0
+ * @version 1.0 &mdash; $Date: 2012-11-06 $
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
