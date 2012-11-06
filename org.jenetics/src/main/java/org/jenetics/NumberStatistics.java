@@ -53,7 +53,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version $Id$
+	 * @version 1.0 &mdash; <em>$Date$</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -296,7 +296,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version $Id$
+	 * @version 1.0 &mdash; <em>$Date$</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
