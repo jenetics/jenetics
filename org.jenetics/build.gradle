@@ -34,7 +34,7 @@ apply from: "../build-util.gradle"
 
 
 task jarjar(type: Jar) {
-	classifier = 'all'
+	baseName = project.name + "-all"
 	from files(sourceSets.main.output.classesDir)
 	from {
 		configurations.compile.collect {
