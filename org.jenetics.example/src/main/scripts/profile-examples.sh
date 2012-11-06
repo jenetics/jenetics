@@ -30,20 +30,23 @@
 
 SCRIPT_DIR=`readlink -f $0`
 SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
+REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../reports/performance`
 
-VERSION=`cat ${SCRIPT_DIR}/../VERSION`
-CLS_PATH=`readlink -f ${SCRIPT_DIR}/../build/main/jenetics-all-${VERSION}.jar`
-CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../build/main/jenetics-examples-${VERSION}.jar`:.
+VERSION="@__version__@"
+CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-all-${VERSION}.jar`
+CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar`:.
 
 agent_param() {
 	output_file=$1
-	agent=`readlink -f ${SCRIPT_DIR}/../lib/build/libjgrind-x86_64.so`
-	agent="${agent}=output=${SCRIPT_DIR}/${output_file}:include=org.jenetics"
+	agent=`readlink -f ${SCRIPT_DIR}/../source/project/lib/libjgrind-x86_64.so`
+	agent="${agent}=output=${REPORT_DIR}/${output_file}:include=org.jenetics"
 
 	echo ${agent}
 }
 
 main() {
+	mkdir "${REPORT_DIR}"
+
 	java -agentpath:`agent_param Knapsack.jgrind` -cp $CLS_PATH org.jenetics.examples.Knapsack
 	java -agentpath:`agent_param OnesCounting.jgrind` -cp $CLS_PATH org.jenetics.examples.OnesCounting
 	java -agentpath:`agent_param RealFunction.jgrind` -cp $CLS_PATH org.jenetics.examples.RealFunction
