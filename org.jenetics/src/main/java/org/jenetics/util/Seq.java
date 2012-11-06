@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
