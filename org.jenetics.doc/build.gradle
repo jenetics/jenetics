@@ -77,10 +77,10 @@ task export(dependsOn: buildManual) << {
 		into "${exportBaseDir}"
 	}
 
+/*
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	exportSourceDir.mkdirs()
 
-/*
 	// Copy the sources.
 	copy {
 		from(".") {

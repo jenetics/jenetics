@@ -98,7 +98,7 @@ task export(dependsOn: pack) << {
 
 // Create a zip file from the export directory.
 task zip(type: Zip) {
-	from("build/packaging/${identifier}") {
+	from("build/package/${identifier}") {
 		into identifier
 	}
 
@@ -107,7 +107,7 @@ task zip(type: Zip) {
 
 	doLast {
 		def zip = new File("${identifier}.zip")
-		zip.renameTo(new File("build/export", zip.getName()))
+		zip.renameTo(new File("build/package", zip.getName()))
 	}
 }
 
