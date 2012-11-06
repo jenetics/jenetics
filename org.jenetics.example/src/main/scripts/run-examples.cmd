@@ -18,8 +18,8 @@ rem
 rem Author:
 rem   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
 
-set VERSION=1.0.1
-set CLS_PATH=./build/main/jenetics-all-%VERSION%.jar;./build/main/jenetics-examples-%VERSION%.jar;.
+set VERSION="@__version__@"
+set CLS_PATH=../lib/org.jenetics-all-%VERSION%.jar;../lib/org.jenetics.example-%VERSION%.jar;.
 
 java -cp %CLS_PATH% org.jenetics.examples.Knapsack
 java -cp %CLS_PATH% org.jenetics.examples.OnesCounting
