@@ -44,7 +44,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 public class Transformation {
 
