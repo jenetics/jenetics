@@ -20,7 +20,7 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
