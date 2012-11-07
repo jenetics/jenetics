@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import java.io.File;
 
@@ -36,7 +36,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
  */
 public class Serial {
 
@@ -52,14 +52,14 @@ public class Serial {
 			return Float64.valueOf(result);
 		}
 	}
-	
+
 	static class Scaler implements Function<Float64, Float64> {
 		@Override
 		public Float64 apply(Float64 value) {
 			return value.times(Math.PI);
 		}
 	}
-	
+
 	public static void main(final String[] args) throws Exception {
 		final Genotype<Float64Gene> genotype = Genotype.valueOf(
 			    new Float64Chromosome(0.0, 1.0, 8),
@@ -67,16 +67,16 @@ public class Serial {
 			    new Float64Chromosome(0.0, 10.0, 9),
 			    new Float64Chromosome(0.1, 0.9, 5)
 			);
-		
+
 		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(genotype, new Id(), new Scaler());
 		ga.setPopulationSize(5);
 		ga.setup();
 		ga.evolve(5);
-		
+
 		IO.xml.write(ga.getPopulation(), new File("/home/fwilhelm/population.xml"));
-		
+
 	}
-	
+
 }
 
 

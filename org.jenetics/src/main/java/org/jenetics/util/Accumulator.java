@@ -38,7 +38,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0
+ * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
  */
 public interface Accumulator<T> {
 

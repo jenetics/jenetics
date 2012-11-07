@@ -34,8 +34,18 @@ apply plugin: "idea"
 apply from: "../build-util.gradle"
 
 
-task export(dependsOn: [build, javadoc]) << {
-	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
+task jarjar(type: Jar) {
+	baseName = project.name + "-all"
+	from files(sourceSets.main.output.classesDir)
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+task pack(dependsOn: [build, jarjar, javadoc]) << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
 
@@ -176,6 +186,13 @@ test {
 	options {
 		suites "src/test/java/org/jenetics/testng.xml"
 	}
+}
+
+task export(dependsOn: pack) << {
+}
+
+configurations {
+    compile
 }
 
 repositories {

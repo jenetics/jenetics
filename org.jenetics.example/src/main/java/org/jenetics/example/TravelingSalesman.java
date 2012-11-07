@@ -20,7 +20,7 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
@@ -44,7 +44,7 @@ import org.jenetics.util.Function;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
  */
 public class TravelingSalesman {
 

@@ -18,19 +18,20 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import java.awt.geom.Point2D;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
  */
 final class GeometryUtils {
 	private static final double GAMUT = 500000000;
 	private static final double MID = GAMUT/2;
-	
+
 	private static final class IntPoint {
 		int _x;
 		int _y;
@@ -39,7 +40,7 @@ final class GeometryUtils {
 			_y = y;
 		}
 	}
-	
+
 	static final class DoublePoint {
 		double _x;
 		double _y;
@@ -74,11 +75,11 @@ final class GeometryUtils {
 		int _in;
 	}
 
-	
+
 	private long _ssss;
 	private double _sclx;
 	private double _scly;
-	
+
 	private GeometryUtils() {
 	}
 
@@ -114,11 +115,11 @@ final class GeometryUtils {
 			ix[i]._rx = ix[i]._ip._x < ix[i + 1]._ip._x ?
 						new Range(ix[i]._ip._x, ix[i + 1]._ip._x) :
 						new Range(ix[i + 1]._ip._x, ix[i]._ip._x);
-					
+
 			ix[i]._ry = ix[i]._ip._y < ix[i + 1]._ip._y ?
 						new Range(ix[i]._ip._y, ix[i + 1]._ip._y) :
 						new Range(ix[i + 1]._ip._y, ix[i]._ip._y);
-						
+
 			ix[i]._in = 0;
 		}
 	}
@@ -149,7 +150,7 @@ final class GeometryUtils {
 				(int)(c._ip._y + r2*(d._ip._y - c._ip._y)),
 				1
 			);
-		
+
 		++a._in;
 		--c._in;
 	}
@@ -165,7 +166,7 @@ final class GeometryUtils {
 				s += (sgn != Q[c]._ip._x < Q[c + 1]._ip._x) ? 0 : (sgn ? -1 : 1);
 			}
 		}
-		
+
 		for (int j = 0; j < cP; ++j) {
 			if (s != 0) {
 				contribution(P[j]._ip._x, P[j]._ip._y, P[j + 1]._ip._x, P[j + 1]._ip._y, s);
@@ -194,10 +195,10 @@ final class GeometryUtils {
 
 		final double rngx = bbox._max._x - bbox._min._x;
 		_sclx = GAMUT/rngx;
-		
+
 		final double rngy = bbox._max._y - bbox._min._y;
 		_scly = GAMUT/rngy;
-		
+
 		double ascale = _sclx*_scly;
 
 		fit(a, na, ipa, 0, bbox);
@@ -209,7 +210,7 @@ final class GeometryUtils {
 					long a1 = -area(ipa[j]._ip, ipb[k]._ip, ipb[k + 1]._ip);
 					long a2 = area(ipa[j + 1]._ip, ipb[k]._ip, ipb[k + 1]._ip);
 					boolean o = a1 < 0;
-					
+
 					if (o == a2 < 0) {
 						long a3 = area(ipb[k]._ip, ipa[j]._ip, ipa[j + 1]._ip);
 						long a4 = -area(ipb[k + 1]._ip, ipa[j]._ip, ipa[j + 1]._ip);
@@ -266,7 +267,7 @@ final class GeometryUtils {
 	private static boolean overlap(Range p, Range q) {
 		return p._mn < q._mx && q._mn < p._mx;
 	}
-	
+
 	public static double area(final Point2D[] a, final Point2D[] b) {
 		return new GeometryUtils().intersection(a, b);
 	}

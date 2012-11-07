@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0
+ * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
