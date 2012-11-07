@@ -46,7 +46,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements

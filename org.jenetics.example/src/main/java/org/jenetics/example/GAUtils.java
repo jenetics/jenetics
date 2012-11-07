@@ -18,9 +18,9 @@
  *
  * Author:
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- * 	
+ *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import static java.lang.String.format;
 
@@ -28,27 +28,28 @@ import org.jenetics.GeneticAlgorithm;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 final class GAUtils {
 
 	private GAUtils() {
 	}
-	
+
 	public static void execute(
 		final GeneticAlgorithm<?, ?> ga,
 		final int generations,
 		final int printEveryNthElement
 	) {
-		ga.setup();	
+		ga.setup();
 		System.out.println(ga);
 		for (int i = 1; i < generations; ++i) {
 			ga.evolve();
 			if (i%printEveryNthElement == (printEveryNthElement - 1)) {
 				System.out.println(ga);
-				System.out.flush();	
+				System.out.flush();
 			}
 		}
-		
+
 		System.out.println(ga.getTimeStatistics());
 		System.out.println(ga.getBestStatistics());
 		System.out.flush();
@@ -64,7 +65,7 @@ final class GAUtils {
 		final String spattern = "| %18s: %-36s|\n";
 		final String sspattern = "| %12s %-43s|\n";
 		final String ipattern = "| %18s: %-36d|\n";
-		
+
 		out.append("+---------------------------------------------------------+\n");
 		out.append(format(spattern, "GA", name));
 		out.append("+---------------------------------------------------------+\n");
@@ -76,9 +77,9 @@ final class GAUtils {
 			out.append(format(sspattern, "*", alterer));
 		}
 		out.append("+---------------------------------------------------------+\n");
-		
-		
+
+
 		System.out.print(out);
 	}
-	
+
 }

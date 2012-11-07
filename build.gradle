@@ -45,13 +45,12 @@ task clean << {
 	buildDir.deleteDir()
 }
 
-task export << {
-	def exportBaseDir = new File(buildDir, "export/${identifier}/source")
+ task pack << {
+	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
 	def exportProjectDir = new File(exportBaseDir, "project")
 
 	exportBaseDir.mkdirs()
 	exportProjectDir.mkdirs()
-
 
 	// Copy the project directory.
 	copy {
@@ -94,18 +93,21 @@ task export << {
 	}
 }
 
+task export(dependsOn: pack) << {
+}
+
 // Create a zip file from the export directory.
-task pack(type: Zip) {
-	from("build/export/${identifier}") {
+task zip(type: Zip) {
+	from("build/package/${identifier}") {
 		into identifier
 	}
-	//into("build/export")
+
 	baseName = rootProject.name
 	version = jeneticsVersion
 
 	doLast {
 		def zip = new File("${identifier}.zip")
-		zip.renameTo(new File("build/export", zip.getName()))
+		zip.renameTo(new File("build/package", zip.getName()))
 	}
 }
 

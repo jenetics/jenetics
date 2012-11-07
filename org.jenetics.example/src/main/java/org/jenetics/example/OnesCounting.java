@@ -20,7 +20,7 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;

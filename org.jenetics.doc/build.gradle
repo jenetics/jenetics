@@ -28,16 +28,16 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply from: "../build-util.gradle"
 
-task build << {
+task buildManual << {
 	def buildTemp = new File(buildDir, "tmp")
 	def buildTempLyx = new File(buildTemp, "lyx")
 	buildTempLyx.mkdirs()
-	
+
 	def buildDoc = new File(buildDir, "doc")
 	buildDoc.mkdirs()
 
 	def content = new File("${projectDir}/src/main/lyx/manual.lyx").getText("UTF-8")
-	content = content.replaceAll("@!identifier!@", "${identifier}")
+	content = content.replaceAll("@!identifier!@", "${manualIdentifier}")
 	new File("${buildTempLyx}/manual-${version}.lyx").write(content, "UTF-8")
 
 	copy {
@@ -54,24 +54,21 @@ task build << {
 		workingDir = "${buildTempLyx}"
 		args = ["-e", "pdf2", "manual-${version}.lyx"]
 	}
-	
+
 	copy {
 		from "${buildTemp}/lyx/manual-${version}.pdf"
 		into "${buildDoc}"
-		
+
 		rename { String fileName ->
 			fileName.replace("manual.lyx", "manual-${version}.pdf")
 		}
 	}
 }
 
-task export(dependsOn: build) << {
-	def exportBaseDir = new File(rootProject.buildDir, "export/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	
+task export(dependsOn: buildManual) << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
-	
+
 	// Copy the manual.
 	copy {
 		from("${buildDir}/doc") {
@@ -79,7 +76,11 @@ task export(dependsOn: build) << {
 		}
 		into "${exportBaseDir}"
 	}
-	
+
+/*
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	exportSourceDir.mkdirs()
+
 	// Copy the sources.
 	copy {
 		from(".") {
@@ -93,6 +94,7 @@ task export(dependsOn: build) << {
 			__year__: copyrightYear
 		])
 	}
+*/
 }
 
 task clean << {

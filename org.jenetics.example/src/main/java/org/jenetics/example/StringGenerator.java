@@ -20,7 +20,7 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
@@ -43,7 +43,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 public class StringGenerator {
 

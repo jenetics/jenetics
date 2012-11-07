@@ -20,7 +20,7 @@
  * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.examples;
+package org.jenetics.example;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -44,7 +44,7 @@ import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version $Id$
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
 public class Performance {
 
