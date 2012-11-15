@@ -38,7 +38,7 @@ import org.jenetics.util.TestDataIterator.Data;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
-	private final String DATA = "/org/jenetics/util/statistic-moments.txt";
+	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";
 
 	private final Factory<Mean<Double>> _factory = new Factory<Mean<Double>>() {
 		@Override
@@ -59,12 +59,8 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	}
 	
 	@Test
-	public void mean() throws IOException {
-		final TestDataIterator it = new TestDataIterator(
-				getClass().getResourceAsStream(DATA), "\\s"
-			);
-		
-		try {
+	public void mean() throws IOException {		
+		try (TestDataIterator it = dataIt()) {
 			final Mean<Double> moment = new Mean<>();
 			while (it.hasNext()) {
 				final Data data = it.next();
@@ -72,9 +68,13 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 				
 				Assert.assertEquals(moment.getMean(), data.mean);
 			}
-		} finally {
-			it.close();
 		}
+	}
+	
+	private static TestDataIterator dataIt() throws IOException {
+		return new TestDataIterator(
+			MeanTest.class.getResourceAsStream(DATA), "\\s"
+		);
 	}
 
 }

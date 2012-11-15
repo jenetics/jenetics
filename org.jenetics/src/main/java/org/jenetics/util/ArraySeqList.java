@@ -66,7 +66,6 @@ class ArraySeqList<T> extends AbstractList<T>
 		return _array.toArray();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <E> E[] toArray(final E[] array) {
 		if (array.length < _array.length()) {

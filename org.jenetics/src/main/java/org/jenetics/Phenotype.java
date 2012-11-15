@@ -414,7 +414,6 @@ public final class Phenotype<
 			throw new IllegalArgumentException("Generation must not < 0: " + generation);
 		}
 
-		@SuppressWarnings("unchecked")
 		final Phenotype<G, C> pt = (Phenotype<G, C>)FACTORY.object();
 		pt._genotype = genotype;
 		pt._fitnessFunction = fitnessFunction;

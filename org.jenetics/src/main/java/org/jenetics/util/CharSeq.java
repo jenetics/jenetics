@@ -119,11 +119,12 @@ public final class CharSeq
 
 	@Override
 	public boolean contains(final Object object) {
+		boolean contains = false;
 		if (object instanceof Character) {
-			return contains((Character)object);
-		} else {
-			return false;
+			contains = contains((Character)object);
 		}
+		
+		return contains;
 	}
 
 	/**

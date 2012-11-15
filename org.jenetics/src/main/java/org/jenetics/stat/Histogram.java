@@ -390,7 +390,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	private static final Comparator COMPARATOR = new Comparator() {
 		@Override
 		public int compare(final Object o1, final Object o2) {
-			return ((Comparable)o1).compareTo((Comparable)o2);
+			return ((Comparable)o1).compareTo(o2);
 		}
 	};
 
