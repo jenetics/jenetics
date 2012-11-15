@@ -147,7 +147,7 @@ public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 			assertEquals(b.getMax().doubleValue(), max);
 			assertEquals(c.getMin().doubleValue(), min);
 			assertEquals(c.getMax().doubleValue(), max);
-			assertEquals(c.getAllele().doubleValue(), (double)(((i - 50) + ((i - 100)*3))/2.0));
+			assertEquals(c.getAllele().doubleValue(), ((i - 50) + ((i - 100)*3))/2.0);
 		}
 	}
 

@@ -38,7 +38,7 @@ public class objectTest {
 
 	@Test(dataProvider = "byteStrData")
 	public void byteStr(final byte[] data, final String result) {
-		Assert.assertEquals(object.str((byte[])data), result);
+		Assert.assertEquals(object.str(data), result);
 	}
 
 	@DataProvider(name = "byteStrData")

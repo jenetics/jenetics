@@ -60,7 +60,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 
@@ -111,7 +111,7 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 	@Override
 	public EnumGene<A> newInstance() {
 		@SuppressWarnings("unchecked")
-		final EnumGene<A> gene = (EnumGene<A>)FACTORY.object();
+		final EnumGene<A> gene = FACTORY.object();
 
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
@@ -207,7 +207,7 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		}
 
 		@SuppressWarnings("unchecked")
-		final EnumGene<G> gene = (EnumGene<G>)FACTORY.object();
+		final EnumGene<G> gene = FACTORY.object();
 
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = alleleIndex;
@@ -226,7 +226,7 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		}
 
 		@SuppressWarnings("unchecked")
-		final EnumGene<G> gene = (EnumGene<G>)FACTORY.object();
+		final EnumGene<G> gene = FACTORY.object();
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(validAlleles.length());
 		return gene;

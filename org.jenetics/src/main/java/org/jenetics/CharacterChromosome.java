@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -169,9 +169,7 @@ public class CharacterChromosome
 
 	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
-		return new CharacterChromosome(
-			(ISeq<CharacterGene>)_genes.subSeq(start, end)
-		);
+		return new CharacterChromosome(_genes.subSeq(start, end));
 	}
 
 	/**
