@@ -166,6 +166,7 @@ public final class Concurrency implements AutoCloseable {
 		return INSTANCE;
 	}
 
+	@SuppressWarnings("static-method")
 	public void execute(final Runnable task) {
 		ConcurrentContext.execute(task);
 	}

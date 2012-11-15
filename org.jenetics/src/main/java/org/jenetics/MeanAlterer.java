@@ -42,7 +42,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -97,7 +97,8 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		return 1;
 	}
 
-	private MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
+	private static <G extends Gene<?, G> & Mean<G>>
+	MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
 		for (int i = a.length(); --i >= 0;) {
 			a.set(i, a.get(i).mean(b.get(i)));
 		}
