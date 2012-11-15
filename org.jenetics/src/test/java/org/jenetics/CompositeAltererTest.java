@@ -60,7 +60,7 @@ public class CompositeAltererTest {
 		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
 	}
 	
-	public final Population<Float64Gene, Float64> population(
+	public static Population<Float64Gene, Float64> population(
 		final int ngenes,
 		final int nchromosomes,
 		final int npopulation

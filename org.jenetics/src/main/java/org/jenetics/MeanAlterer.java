@@ -97,7 +97,8 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 		return 1;
 	}
 
-	private MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
+	private static <G extends Gene<?, G> & Mean<G>>
+	MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
 		for (int i = a.length(); --i >= 0;) {
 			a.set(i, a.get(i).mean(b.get(i)));
 		}
