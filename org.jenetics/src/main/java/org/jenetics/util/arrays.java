@@ -59,6 +59,7 @@ public final class arrays {
 	 * [/code]
 	 *
 	 * @see Seq#hashCode()
+	 * @see List#hashCode()
 	 *
 	 * @param seq the sequence to calculate the hash code for.
 	 * @return the hash code of the given sequence.
