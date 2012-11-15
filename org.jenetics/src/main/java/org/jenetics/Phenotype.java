@@ -52,7 +52,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -414,7 +414,6 @@ public final class Phenotype<
 			throw new IllegalArgumentException("Generation must not < 0: " + generation);
 		}
 
-		@SuppressWarnings("unchecked")
 		final Phenotype<G, C> pt = (Phenotype<G, C>)FACTORY.object();
 		pt._genotype = genotype;
 		pt._fitnessFunction = fitnessFunction;

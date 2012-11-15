@@ -39,11 +39,9 @@ public abstract class NumberChromosomeTester<
 	
 	@Test
 	public void minMax() {
-		@SuppressWarnings("unchecked")
 		final NumberChromosome<N, G>
 		c1 = (NumberChromosome<N, G>)getFactory().newInstance();
 		
-		@SuppressWarnings("unchecked")
 		final NumberChromosome<N, G>
 		c2 = (NumberChromosome<N, G>)getFactory().newInstance();
 		
@@ -55,7 +53,6 @@ public abstract class NumberChromosomeTester<
 	
 	@Test
 	public void geneMinMax() {
-		@SuppressWarnings("unchecked")
 		final NumberChromosome<N, G>
 		c = (NumberChromosome<N, G>)getFactory().newInstance();
 		
@@ -67,7 +64,6 @@ public abstract class NumberChromosomeTester<
 	
 	@Test
 	public void primitiveTypeAccess() {
-		@SuppressWarnings("unchecked")
 		final NumberChromosome<N, G>
 		c = (NumberChromosome<N, G>)getFactory().newInstance();
 		

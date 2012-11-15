@@ -110,7 +110,6 @@ public class PopulationTest {
 		
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		
-		@SuppressWarnings("unchecked")
 		final Population<Float64Gene, Float64>
 		copy = ( Population<Float64Gene, Float64>)IO.xml.read(XMLSerializable.class, in);
 		

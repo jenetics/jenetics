@@ -24,8 +24,6 @@ package org.jenetics.util;
 
 import static org.jenetics.util.math.sum;
 
-import java.io.IOException;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -115,7 +113,7 @@ public class mathTest {
 	}
 	
 	@Test
-	public void summarize() throws IOException {
+	public void summarize() {
 		final double[] values = new double[150000];
 		for (int i = 0; i < values.length; ++i) {
 			values[i] = 1.0/values.length;

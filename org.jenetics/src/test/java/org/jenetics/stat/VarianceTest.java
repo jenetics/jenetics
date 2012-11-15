@@ -39,7 +39,7 @@ import org.jenetics.util.TestDataIterator.Data;
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	
-	private final String DATA = "/org/jenetics/util/statistic-moments.txt";	
+	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";	
 
 	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
 		@Override
@@ -61,11 +61,7 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	
 	@Test
 	public void variance() throws IOException {
-		final TestDataIterator it = new TestDataIterator(
-				getClass().getResourceAsStream(DATA), "\\s"
-			);
-		
-		try {
+		try (TestDataIterator it = dataIt()) {
 			final Variance<Double> moment = new Variance<>();
 			while (it.hasNext()) {
 				final Data data = it.next();
@@ -74,9 +70,13 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 				Assert.assertEquals(moment.getMean(), data.mean);
 				Assert.assertEquals(moment.getVariance(), data.variance, 0.000001);
 			}
-		} finally {
-			it.close();
 		}
+	}
+	
+	private static TestDataIterator dataIt() throws IOException {
+		return new TestDataIterator(
+			MeanTest.class.getResourceAsStream(DATA), "\\s"
+		);
 	}
 
 }

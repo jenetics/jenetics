@@ -110,7 +110,6 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 
 	@Override
 	public EnumGene<A> newInstance() {
-		@SuppressWarnings("unchecked")
 		final EnumGene<A> gene = FACTORY.object();
 
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
@@ -206,7 +205,6 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 			));
 		}
 
-		@SuppressWarnings("unchecked")
 		final EnumGene<G> gene = FACTORY.object();
 
 		gene._validAlleles = validAlleles;
@@ -225,7 +223,6 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 			);
 		}
 
-		@SuppressWarnings("unchecked")
 		final EnumGene<G> gene = FACTORY.object();
 		gene._validAlleles = validAlleles;
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(validAlleles.length());

@@ -35,11 +35,11 @@ import org.jenetics.util.Array;
 public class CompositeAltererTest {
 
 	public Alterer<Float64Gene> newAlterer(double p) {
-		p = Math.pow(p, 3);
+		final double p3 = Math.pow(p, 3);
 		return new CompositeAlterer<>(
-					new Mutator<Float64Gene>(p),
-					new Mutator<Float64Gene>(p),
-					new Mutator<Float64Gene>(p)
+					new Mutator<Float64Gene>(p3),
+					new Mutator<Float64Gene>(p3),
+					new Mutator<Float64Gene>(p3)
 				);
 	}
 	

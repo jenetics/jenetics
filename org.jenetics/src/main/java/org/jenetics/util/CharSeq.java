@@ -42,7 +42,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -119,11 +119,12 @@ public final class CharSeq
 
 	@Override
 	public boolean contains(final Object object) {
+		boolean contains = false;
 		if (object instanceof Character) {
-			return contains((Character)object);
-		} else {
-			return false;
+			contains = contains((Character)object);
 		}
+		
+		return contains;
 	}
 
 	/**

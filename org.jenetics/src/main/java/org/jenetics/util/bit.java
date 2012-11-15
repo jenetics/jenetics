@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public final class bit {
 
@@ -104,14 +104,16 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static boolean get(final byte[] data, final int index) {
+		boolean bit = false;
 		if (data.length > 0) {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
 			final int d = data[bytes] & 0xFF;
-			return (d & (1 << bits)) != 0;
-		} else {
-			return false;
+			
+			bit = (d & (1 << bits)) != 0;
 		}
+		
+		return bit;
 	}
 
 	/**
