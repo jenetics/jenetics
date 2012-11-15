@@ -192,7 +192,7 @@ public class HistogramTest
 		
 		final long[] hist = histogram.getHistogram();
 		for (int i = 0; i < hist.length; ++i) {
-			Assert.assertEquals((double)hist[i], 100000.0, 1000.0);
+			Assert.assertEquals(hist[i], 100000.0, 1000.0);
 		}
 	}
 	
