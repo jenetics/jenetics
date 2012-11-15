@@ -8,12 +8,13 @@ syntax: glob
 # Build artifacts
 bin/**
 build/**
+test-output/**
 .gradle/**
 
 ## Eclipse
 .settings/**
 
-## Wiki 
+## Wiki
 wiki/**
 
 ################################################################################
