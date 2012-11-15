@@ -102,13 +102,19 @@ public abstract class IndexStream {
 				"n must be greate than zero: %d", n
 			));
 		}
-
+		
 		return new IndexStream() {
+			private final long 
+			INT_RANGE = (long)Integer.MAX_VALUE - (long)Integer.MIN_VALUE;
+			
+			private final int 
+			MAX = (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE); 
+			
 			private int _pos = -1;
-
+			
 			@Override
 			public int next() {
-				while (_pos < n && random.nextDouble() >= probability) {
+				while (_pos < n && random.nextInt() >= MAX) {
 					++_pos;
 				}
 				if (_pos < n) {
