@@ -43,7 +43,7 @@ final class Real2D implements Function<Genotype<Float64Gene>, Float64> {
 		return Float64.valueOf(f(x1.doubleValue(), x2.doubleValue()));
 	}
 
-	private double f(final double x1, final double x2) {
+	private static double f(final double x1, final double x2) {
 		return x1+x2;
 	}
 }
@@ -60,7 +60,7 @@ public class RealFunction2D {
 		}
 
 		// Function to be optimized.
-		private double f(final double x1, final double x2) {
+		private static double f(final double x1, final double x2) {
 			return x1+x2;
 		}
 	}
