@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 
@@ -46,13 +47,13 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.1 &mdash; <em>$Date$</em>
  */
 public abstract class IndexStream {
 
 	protected IndexStream() {
 	}
-
+	
 	/**
 	 * Return the next (positive inclusive zero) index, or -1 if the stream has
 	 * reached its end.
@@ -60,6 +61,20 @@ public abstract class IndexStream {
 	 * @return the next index, or -1 if the stream has reached its end.
 	 */
 	public abstract int next();
+	
+	/**
+	 * Applies a {@code function} to all elements of this stream.
+	 *
+	 * @param function the function to apply to the elements.
+	 * @throws NullPointerException if the given {@code function} is
+	 *          {@code null}.
+	 */
+	public <R> void foreach(final Function<? super Integer, ? extends R> function) {
+		nonNull(function, "Function");
+		for (int i = next(); i != -1; i = next()) {
+			function.apply(i);
+		}
+	}
 
 	/**
 	 * Create a new random IndexIterator.

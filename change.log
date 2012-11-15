@@ -1,4 +1,5 @@
 Jenetics-1.1.0
+- Add 'IndexStream.foreach' method.
 - Some minor code improvements.
 - Preparation for converting Jenetics into OSGi modules.
 - Switch build system from 'Ant' to 'Gradle'.
