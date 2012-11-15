@@ -65,8 +65,7 @@ public final class arrays {
 	 */
 	public static int hashCode(final Seq<?> seq) {
 		int hash = 1;
-		for (int i = 0, n = seq.length(); i < n; ++i) {
-			final Object element = seq.get(i);
+		for (Object element : seq) {
 			hash = 31*hash + (element == null ? 0: element.hashCode());
 		}
 		return hash;
