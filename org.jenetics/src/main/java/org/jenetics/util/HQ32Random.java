@@ -39,17 +39,27 @@ public class HQ32Random extends Random {
 
 	private static final long serialVersionUID = 1L;
 
-	private int u;
-	private int v = 0x85CA18E3;
-	private int w1 = 0x1F123BB5;
-	private int w2 = 0x159A55E5;
+	private int u = 0;
+	private int v = 0;
+	private int w1 = 0;
+	private int w2 = 0;
 
 	public HQ32Random() {
-		this((int)System.nanoTime());
+		this(System.nanoTime());
 	}
 
-	public HQ32Random(int j) {
-		u = j^v;
+	public HQ32Random(long seed) {
+		init(seed);
+	}
+
+	private void init(final long seed) {
+		final long s = seed == 0 ? 0xdeadbeef : seed;
+
+		v = 0x85CA18E3;
+		w1 = 0x1F123BB5;
+		w2 = 0x159A55E5;
+
+		u = ((int)(s >>> 32)^(int)(s << 32))^v;
 		nextInt();
 		v = u;
 		nextInt();
@@ -57,13 +67,24 @@ public class HQ32Random extends Random {
 
 	@Override
 	public int nextInt() {
-		u = u * 0xAC564B05 + 0x61C88639;
-		v ^= v >> 13; v ^= v << 17; v ^= v >> 5;
-		w1 = 33378 * (w1 & 0xffff) + (w1 >> 16);
-		w2 = 57225 * (w2 & 0xffff) + (w2 >> 16);
-		int x = u ^ (u << 9); x ^= x >> 17; x ^= x << 6;
-		int y = w1 ^ (w1 << 17); y ^= y >> 15; y ^= y << 5;
+		u = u*0xAC564B05 + 0x61C88639;
+		v ^= v >> 13;
+		v ^= v << 17;
+		v ^= v >> 5;
+		w1 = 33378*(w1 & 0xffff) + (w1 >> 16);
+		w2 = 57225*(w2 & 0xffff) + (w2 >> 16);
+		int x = u^(u << 9);
+		x ^= x >> 17;
+		x ^= x << 6;
+		int y = w1^(w1 << 17);
+		y ^= y >> 15;
+		y ^= y << 5;
 		return (x + v) ^ (y + w2);
+	}
+
+	@Override
+	public long nextLong() {
+		return ((long)nextInt() << 32) | ((long)nextInt() >>> 32);
 	}
 
 	@Override
@@ -73,53 +94,22 @@ public class HQ32Random extends Random {
 		);
 	}
 
-	public double nextFloat32() {
-		return 2.32830643653869629E-10*nextInt();
-	}
-
-
-/*
-
 	@Override
-	public long nextLong() {
-		u = u * 2862933555777941757L + 7046029254386353087L;
-		v ^= v >>> 17;
-		v ^= v << 31;
-		v ^= v >>> 8;
-		w = 4294957665L * (w & 0xffffffff) + (w >>> 32);
-		long x = u ^ (u << 21);
-		x ^= x >>> 35;
-		x ^= x << 4;
-		long ret = (x + v) ^ w;
-		return ret;
+	public float nextFloat() {
+		return (float)(2.32830643653869629E-10*nextInt());
 	}
 
 	@Override
-	protected int next(int bits) {
-		return (int) (nextLong() >>> (64 - bits));
+	protected int next(final int bits) {
+		return nextInt() >>> (32 - bits);
 	}
-	*/
+
+	@Override
+	public void setSeed(final long seed) {
+		init(seed);
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
