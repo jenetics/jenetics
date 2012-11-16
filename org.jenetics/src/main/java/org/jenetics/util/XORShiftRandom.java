@@ -27,6 +27,8 @@ import java.util.Random;
 /**
  * This implementation is not thread-safe.
  *
+ * Numerical Recipes: Page 345, third edition, Chapter 7. Random Numbers
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
@@ -66,6 +68,18 @@ public class XORShiftRandom extends Random {
 		return (int)(x >>> 32)^(int)(x << 32);
 	}
 
+	/**
+	 *  21, 35, 4
+	 * 20, 41, 5
+	 * 17, 31, 8
+	 * 11, 29, 14
+	 * 14, 29, 11
+	 * 30, 35, 13
+	 * 21, 37, 4
+	 * 21, 43, 4
+	 * 23, 41, 18
+	 *
+	 */
 	@Override
 	public long nextLong() {
 		_seed ^= (_seed << 21);
