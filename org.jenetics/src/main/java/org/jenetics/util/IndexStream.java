@@ -114,26 +114,37 @@ public abstract class IndexStream {
 			
 			private int _pos = -1;
 			
+			private long x = System.nanoTime();
+			private int nextInt() {
+				x ^= (x << 21);
+				x ^= (x >>> 35);
+				x ^= (x << 4);
+				return (int)(x >>> 32)^(int)(x << 32);
+			}
+			
 			@Override
 			public int next() {
-				return (_pos = next(n, _pos, MAX, random));
-				/*
-				while (_pos < n && random.nextInt() >= MAX) {
+				//return (_pos = next(n, _pos, MAX, random));
+				
+				java.util.concurrent.ThreadLocalRandom r;
+				
+				while (_pos < n && nextInt() >= MAX) {
 					++_pos;
 				}
 				return (_pos < N_MINUS_1) ? ++_pos : -1;
-				*/
+				
 			}
 
 		};
 	}
 	
 	
-	private static int next(int n, int pos, int max, Random random) {
-		while (pos < n && random.nextInt() >= max) {
-			++pos;
+	private static int next(final int n, final int pos, final int max, Random random) {
+		int index = pos;
+		while (index < n && random.nextInt() >= max) {
+			++index;
 		}
-		return (pos < n - 1) ? ++pos : -1;
+		return (index < n - 1) ? (index + 1) : -1;
 	}
 
 }
