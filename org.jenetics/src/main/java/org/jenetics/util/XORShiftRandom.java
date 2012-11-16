@@ -25,35 +25,47 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
+ * This implementation is not thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date: 2012-11-16 $</em>
  */
-class XORShiftRandom extends Random {
+public class XORShiftRandom extends Random {
 	private static final long serialVersionUID = 1L;
-	
-	private static final ThreadLocal<XORShiftRandom> _random = new ThreadLocal<XORShiftRandom>() {
-		@Override
-		protected XORShiftRandom initialValue() {
-			return new XORShiftRandom();
-		}
-	};
-	
-	private long _seed = System.nanoTime();
-	
-	XORShiftRandom() {
+
+	private long _seed;
+
+	public XORShiftRandom() {
+		this(System.nanoTime());
 	}
-	
-	public static XORShiftRandom current() {
-		return _random.get();
+
+	public XORShiftRandom(final long seed) {
+		_seed = seed;
 	}
-	
+
+	public static ThreadLocal<XORShiftRandom> newThreadLocal() {
+		return new ThreadLocal<XORShiftRandom>() {
+			@Override protected XORShiftRandom initialValue() {
+				return new XORShiftRandom();
+			}
+		};
+	}
+
+	public static ThreadLocal<XORShiftRandom> newThreadLocal(final long seed) {
+		return new ThreadLocal<XORShiftRandom>() {
+			@Override protected XORShiftRandom initialValue() {
+				return new XORShiftRandom(seed);
+			}
+		};
+	}
+
 	@Override
 	public int nextInt() {
-		final long x = nextLong();	
+		final long x = nextLong();
 		return (int)(x >>> 32)^(int)(x << 32);
 	}
-	
+
 	@Override
 	public long nextLong() {
 		_seed ^= (_seed << 21);
@@ -61,7 +73,7 @@ class XORShiftRandom extends Random {
 		_seed ^= (_seed << 4);
 		return _seed;
 	}
-	
+
 	@Override
 	protected int next(final int bits) {
 		return (int)(nextLong() >>> (64 - bits));
