@@ -125,6 +125,7 @@ public abstract class MappedAccumulator<T>
 			);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected MappedAccumulator<T> clone() {
 		try {

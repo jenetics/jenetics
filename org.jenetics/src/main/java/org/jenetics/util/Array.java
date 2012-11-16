@@ -67,6 +67,7 @@ public final class Array<T>
 	 * @param <T> the element type.
 	 * @return empty array.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> Array<T> empty() {
 		return EMPTY;
 	}

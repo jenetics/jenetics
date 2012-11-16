@@ -942,6 +942,7 @@ public final class arrays {
 
 		B[] result = b;
 		if (b.length < a.length) {
+			@SuppressWarnings("unchecked")
 			final B[] r = (B[])java.lang.reflect.Array.newInstance(
 				b.getClass().getComponentType(), a.length
 			);

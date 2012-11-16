@@ -610,6 +610,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			private static final String SELECTION_TIME = "selection-time";
 			private static final String STATISTICS_TIME = "statistics-time";
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Statistics.Time newInstance(
 				final Class<Statistics.Time> cls, final InputElement xml

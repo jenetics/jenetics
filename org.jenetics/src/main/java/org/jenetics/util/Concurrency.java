@@ -155,6 +155,7 @@ public final class Concurrency implements AutoCloseable {
 		setContext(ConcurrentContext.DEFAULT.get());
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Class<ConcurrentContext> getContext() {
 		final Context context = ConcurrentContext.getCurrent();
 		return (Class<ConcurrentContext>)

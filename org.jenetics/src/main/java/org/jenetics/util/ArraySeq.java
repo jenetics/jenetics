@@ -255,6 +255,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return array;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T[] toArray(final T[] array) {
 		T[] result = null;
