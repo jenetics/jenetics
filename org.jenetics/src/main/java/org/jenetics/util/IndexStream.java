@@ -114,33 +114,21 @@ public abstract class IndexStream {
 			
 			private int _pos = -1;
 			
-			private long x = System.nanoTime();
-			private int nextInt() {
-				x ^= (x << 21);
-				x ^= (x >>> 35);
-				x ^= (x << 4);
-				return (int)(x >>> 32)^(int)(x << 32);
-			}
-			
 			@Override
 			public int next() {
-				return (_pos = next(n, _pos, MAX, random));
+				//return (_pos = next(n, _pos, MAX, random));
 				//return (_pos = next(n, _pos, MAX));
 				
-				/*
 				while (_pos < n && random.nextInt() >= MAX) {
 					++_pos;
 				}
 				return (_pos < N_MINUS_1) ? ++_pos : -1;
-				*/
-				
 			}
 
 		};
 	}
-	
-	private static native int next(final int n, final int pos, final int max);
-	
+	 
+	/*
 	private static int next(final int n, final int pos, final int max, Random random) {
 		int index = pos;
 		while (index < n && random.nextInt() >= max) {
@@ -149,10 +137,12 @@ public abstract class IndexStream {
 		return (index < n - 1) ? (index + 1) : -1;
 	}
 	
+	private static native int next(final int n, final int pos, final int max);
+	
 	static {
 		System.load("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/main/cpp/libjenetics.so");
 	}
-
+	*/
 }
 
 
