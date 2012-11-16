@@ -58,18 +58,14 @@ import javolution.lang.Reference;
  */
 public final class RandomRegistry {
 
-
-	private static final Reference<Random> DEFAULT_RANDOM_ACCESSOR =
-	new Reference<Random>() {
+	private static final Reference<Random> THREAD_LOCAL_REF = new Ref<Random>() {
 		@Override public Random get() {
 			return ThreadLocalRandom.current();
 		}
-		@Override public void set(Random random) {
-		}
 	};
 
-	private static final LocalContext.Reference<Reference<Random>> RANDOM =
-		new LocalContext.Reference<>(DEFAULT_RANDOM_ACCESSOR);
+	private static final LocalContext.Reference<Reference<? extends Random>>
+	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(THREAD_LOCAL_REF);
 
 
 	private RandomRegistry() {
@@ -86,31 +82,65 @@ public final class RandomRegistry {
 	}
 
 	/**
-	 * Set the new global {@link Random} object for the GA.
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} <b>must</b> be thread-safe, which is the case for the
+	 * default Java {@code Random} implementation.
+	 * <p/>
+	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation.
+	 *
+	 * @see #setRandom(ThreadLocal)
 	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		nonNull(random, "Random object");
-		RANDOM.set(new Reference<Random>() {
-			@Override public Random get() {
-				return random;
-			}
-			@Override public void set(Random random) {
-			}
-		});
+		RANDOM.set(new RRef(random));
+	}
+
+	public static void setRandom(final ThreadLocal<? extends Random> random) {
+		RANDOM.set(new TLRRef<>(random));
 	}
 
 	/**
 	 * Set the random object to it's default value.
 	 */
 	public static void reset() {
-		RANDOM.set(DEFAULT_RANDOM_ACCESSOR);
+		RANDOM.set(THREAD_LOCAL_REF);
+	}
+
+
+	/*
+	 * Some helper Reference classes.
+	 */
+
+	private static abstract class Ref<R> implements Reference<R> {
+		@Override public void set(final R random) {}
+	}
+
+	private final static class RRef extends Ref<Random> {
+		private final Random _random;
+		public RRef(final Random random) {
+			nonNull(random, "Random");
+			_random = random;
+		}
+		@Override public Random get() {
+			return _random;
+		}
+	}
+
+	private final static class TLRRef<R extends Random> extends Ref<R> {
+		private final ThreadLocal<R> _random;
+		public TLRRef(final ThreadLocal<R> random) {
+			nonNull(random, "Random");
+			_random = random;
+		}
+		@Override public R get() {
+			return _random.get();
+		}
 	}
 
 }
-
 
 
 
