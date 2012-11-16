@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -255,6 +255,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return array;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T[] toArray(final T[] array) {
 		T[] result = null;

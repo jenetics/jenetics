@@ -57,7 +57,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,7 +70,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -486,7 +486,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -610,6 +610,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			private static final String SELECTION_TIME = "selection-time";
 			private static final String STATISTICS_TIME = "statistics-time";
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Statistics.Time newInstance(
 				final Class<Statistics.Time> cls, final InputElement xml
@@ -680,7 +681,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

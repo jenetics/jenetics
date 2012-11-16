@@ -48,7 +48,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -67,6 +67,7 @@ public final class Array<T>
 	 * @param <T> the element type.
 	 * @return empty array.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> Array<T> empty() {
 		return EMPTY;
 	}

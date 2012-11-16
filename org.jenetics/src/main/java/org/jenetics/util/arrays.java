@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 public final class arrays {
 
@@ -942,6 +942,7 @@ public final class arrays {
 
 		B[] result = b;
 		if (b.length < a.length) {
+			@SuppressWarnings("unchecked")
 			final B[] r = (B[])java.lang.reflect.Array.newInstance(
 				b.getClass().getComponentType(), a.length
 			);

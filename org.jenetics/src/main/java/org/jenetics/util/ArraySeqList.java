@@ -30,7 +30,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 class ArraySeqList<T> extends AbstractList<T>
 	implements RandomAccess
@@ -66,6 +66,7 @@ class ArraySeqList<T> extends AbstractList<T>
 		return _array.toArray();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <E> E[] toArray(final E[] array) {
 		if (array.length < _array.length()) {

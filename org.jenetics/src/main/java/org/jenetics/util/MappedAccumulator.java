@@ -33,7 +33,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 public abstract class MappedAccumulator<T>
 	implements
@@ -125,6 +125,7 @@ public abstract class MappedAccumulator<T>
 			);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected MappedAccumulator<T> clone() {
 		try {
