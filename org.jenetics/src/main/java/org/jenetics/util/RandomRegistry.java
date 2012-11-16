@@ -31,10 +31,10 @@ import javolution.context.LocalContext;
 import javolution.lang.Reference;
 
 /**
- * This class holds the {@link Random} engine used for the GA. The RandomRegistry
- * is thread safe. The default value for the random engine is an instance of
- * the Java {@link Random} engine with the {@link System#currentTimeMillis()} as
- * seed value.
+ * This class holds the {@link Random} engine used for the GA. The
+ * {@code RandomRegistry} is thread safe. The default value for the random
+ * engine is an instance of the Java {@link Random} engine with the
+ * {@link System#currentTimeMillis()} as seed value.
  * <p/>
  * You can temporarily (and locally) change the implementation of the random engine
  * by using the {@link LocalContext} from the
@@ -49,8 +49,11 @@ import javolution.lang.Reference;
  *     LocalContext.exit(); // Restore the previous random engine.
  * }
  * [/code]
+ * <p/>
+ * The used <i>default</i> PRNG is the {@link ThreadLocalRandom} object.
  *
  * @see LocalContext
+ * @see ThreadLocalRandom
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -87,7 +90,8 @@ public final class RandomRegistry {
 	 * default Java {@code Random} implementation.
 	 * <p/>
 	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
-	 * PRN generation.
+	 * PRN generation, because the given {@code Random} engine don't have to be
+	 * thread-safe.
 	 *
 	 * @see #setRandom(ThreadLocal)
 	 *
@@ -98,12 +102,23 @@ public final class RandomRegistry {
 		RANDOM.set(new RRef(random));
 	}
 
+	/**
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} don't have be thread-safe, because the given
+	 * {@link ThreadLocal} wrapper guarantees thread-safety. Setting a
+	 * <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, when using a non-blocking PRNG.
+	 *
+	 * @param random the thread-local random engine to use.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 */
 	public static void setRandom(final ThreadLocal<? extends Random> random) {
 		RANDOM.set(new TLRRef<>(random));
 	}
 
 	/**
-	 * Set the random object to it's default value.
+	 * Set the random object to it's default value. The <i>default</i> used PRNG
+	 * is the {@link ThreadLocalRandom} PRNG.
 	 */
 	public static void reset() {
 		RANDOM.set(THREAD_LOCAL_REF);
