@@ -124,20 +124,22 @@ public abstract class IndexStream {
 			
 			@Override
 			public int next() {
-				//return (_pos = next(n, _pos, MAX, random));
+				return (_pos = next(n, _pos, MAX, random));
+				//return (_pos = next(n, _pos, MAX));
 				
-				java.util.concurrent.ThreadLocalRandom r;
-				
-				while (_pos < n && nextInt() >= MAX) {
+				/*
+				while (_pos < n && random.nextInt() >= MAX) {
 					++_pos;
 				}
 				return (_pos < N_MINUS_1) ? ++_pos : -1;
+				*/
 				
 			}
 
 		};
 	}
 	
+	private static native int next(final int n, final int pos, final int max);
 	
 	private static int next(final int n, final int pos, final int max, Random random) {
 		int index = pos;
@@ -145,6 +147,10 @@ public abstract class IndexStream {
 			++index;
 		}
 		return (index < n - 1) ? (index + 1) : -1;
+	}
+	
+	static {
+		System.load("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/main/cpp/libjenetics.so");
 	}
 
 }
