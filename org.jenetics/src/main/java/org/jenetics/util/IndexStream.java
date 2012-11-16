@@ -81,6 +81,18 @@ public abstract class IndexStream {
 	 * @param n the maximal value (exclusively) the created index stream will
 	 *         return.
 	 * @param probability the index selection probability.
+	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
+	 *         {@code n <= 0} or the given {@code probability} is not valid.
+	 */
+	public static IndexStream Random(final int n, final double probability) {
+		return Random(n, probability, RandomRegistry.getRandom());
+	}
+	
+	/**
+	 * Create a new random IndexIterator.
+	 * @param n the maximal value (exclusively) the created index stream will
+	 *         return.
+	 * @param probability the index selection probability.
 	 * @param random the random engine used for creating the random indexes.
 	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
 	 *         {@code n <= 0} or the given {@code probability} is not valid.
