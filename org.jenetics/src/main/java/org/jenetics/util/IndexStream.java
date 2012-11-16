@@ -110,21 +110,30 @@ public abstract class IndexStream {
 			private final int 
 			MAX = (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE); 
 			
+			private final int N_MINUS_1 = n - 1;
+			
 			private int _pos = -1;
 			
 			@Override
 			public int next() {
+				return (_pos = next(n, _pos, MAX, random));
+				/*
 				while (_pos < n && random.nextInt() >= MAX) {
 					++_pos;
 				}
-				if (_pos < n) {
-					++_pos;
-				}
-
-				return _pos < n ? _pos : -1;
+				return (_pos < N_MINUS_1) ? ++_pos : -1;
+				*/
 			}
 
 		};
+	}
+	
+	
+	private static int next(int n, int pos, int max, Random random) {
+		while (pos < n && random.nextInt() >= max) {
+			++pos;
+		}
+		return (pos < n - 1) ? ++pos : -1;
 	}
 
 }

@@ -265,6 +265,7 @@ public final class PermutationChromosome<T>
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
