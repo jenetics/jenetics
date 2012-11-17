@@ -52,7 +52,7 @@ public class XORShiftRandom extends Random {
 	private static final long serialVersionUID = 1L;
 
 	public final static ThreadLocal<XORShiftRandom>
-	THREAD_LOCAL = new ThreadLocal<XORShiftRandom>() {
+	INSTANCE = new ThreadLocal<XORShiftRandom>() {
 		@Override protected XORShiftRandom initialValue() {
 			return new XORShiftRandom();
 		}
