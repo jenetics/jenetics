@@ -25,7 +25,6 @@ package org.jenetics.util;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -82,7 +81,7 @@ public class RandomIndexStreamTest {
 		final double mean = n*p;
 		final double var = n*p*(1 - p);
 
-		final Random random = ThreadLocalRandom.current();
+		final Random random = new XORShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
 		final Histogram<Long> histogram = Histogram.valueOf(

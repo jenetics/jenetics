@@ -36,14 +36,14 @@ import java.util.Random;
 public class XORShiftRandom extends Random {
 	private static final long serialVersionUID = 1L;
 
-	private long _seed;
+	private long _x;
 
 	public XORShiftRandom() {
 		this(System.nanoTime());
 	}
 
 	public XORShiftRandom(final long seed) {
-		_seed = seed;
+		_x = seed;
 	}
 
 	public static ThreadLocal<XORShiftRandom> newThreadLocal() {
@@ -64,8 +64,9 @@ public class XORShiftRandom extends Random {
 
 	@Override
 	public int nextInt() {
-		final long x = nextLong();
-		return (int)(x >>> 32)^(int)(x << 32);
+		//final long x = nextLong();
+		//return (int)(x >>> 32)^(int)(x << 32);
+		return (int)(nextLong() >>> 32);
 	}
 
 	/**
@@ -82,10 +83,20 @@ public class XORShiftRandom extends Random {
 	 */
 	@Override
 	public long nextLong() {
-		_seed ^= (_seed << 21);
-		_seed ^= (_seed >>> 35);
-		_seed ^= (_seed << 4);
-		return _seed;
+		_x ^= (_x << 21);
+		_x ^= (_x >>> 35);
+		_x ^= (_x << 4);
+		return _x;
+	}
+
+	@Override
+	public float nextFloat() {
+		return (float)(2.32830643653869629E-10*nextInt());
+	}
+
+	@Override
+	public double nextDouble() {
+		return 5.42101086242752217E-20*nextLong();
 	}
 
 	@Override
