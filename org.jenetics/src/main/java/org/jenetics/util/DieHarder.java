@@ -27,6 +27,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -51,7 +53,7 @@ final class DieHarder {
 			try {
 				while (!Thread.currentThread().isInterrupted()) {
 					for (int i = 0; i < 1000; ++i) {
-						_out.writeLong(_random.nextLong());
+						_out.writeInt(_random.nextInt());
 					}
 				}
 			} catch (IOException ignore) {
@@ -70,16 +72,23 @@ final class DieHarder {
 		Random random = null;
 		try {
 			random = (Random)Class.forName(randomName).newInstance();
-			System.out.println("#=============================================================================#");
-			System.out.println("#            Testing: " + randomName);
-			System.out.println("#=============================================================================#");
+			printt("Testing: %s", randomName);
 		} catch (Exception e) {
 			System.out.println("Can't create random class " + randomName);
 			return;
 		}
 
+		final List<String> dieharderArgs = new ArrayList<>();
+		dieharderArgs.add("dieharder");
+		for (int i  = 1; i < args.length; ++i) {
+			dieharderArgs.add(args[i]);
+		}
+		dieharderArgs.add("-g");
+		dieharderArgs.add("200");
+
 		final long start = System.currentTimeMillis();
-		final ProcessBuilder builder = new ProcessBuilder("dieharder", "-a", "-g", "200");
+		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
+		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-a", "-g", "200");
 		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-d", "1", "-g", "200");
 		final Process dieharder = builder.start();
 
@@ -99,17 +108,17 @@ final class DieHarder {
 
 		dieharder.waitFor();
 		randomizer.interrupt();
-		final long stop = System.currentTimeMillis();
+		final long sec = (System.currentTimeMillis() - start)/1000;
 
-		System.out.println("#=============================================================================#");
-		System.out.println("#            Runtime: " + (stop - start)/1000 + "s");
-		System.out.println("#=============================================================================#");
+		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, (sec%60));
 
 	}
 
-	private static void printt(final String title) {
+	private static void printt(final String title, final Object... args) {
 		System.out.println("#=============================================================================#");
-		System.out.println("#            Runtime: " + (stop - start)/1000 + "s");
+		System.out.println(String.format(
+			"# %-76s#", String.format(title, args)
+		));
 		System.out.println("#=============================================================================#");
 	}
 
