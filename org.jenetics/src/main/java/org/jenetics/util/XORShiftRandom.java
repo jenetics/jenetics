@@ -25,9 +25,23 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
- * This implementation is not thread-safe.
- *
- * Numerical Recipes: Page 345, third edition, Chapter 7. Random Numbers
+ * <blockquote align="justified"><p><em>
+ * This generator was discovered and characterized by Marsaglia [10]. In just
+ * three XORs and three shifts (generally fast operations) it produces a full
+ * period of 2<sup>64</sup> - 1 on 64 bits. (The missing value is zero, which
+ * perpetuates itself and must be avoided.) High and low bits pass Diehard.
+ * </em></p></blockquote>
+ * <p align="left">
+ * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
+ * <br/>
+ * <em>Chapter 7. Random Numbers; Page 345</em>
+ * <br/>
+ * <small>Cambridge University Press New York, NY, USA ©2007</small>
+ * <br/>
+ * ISBN:0521880688 9780521880688
+ * <br/>
+ * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
+ * <p/>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
@@ -35,6 +49,13 @@ import java.util.Random;
  */
 public class XORShiftRandom extends Random {
 	private static final long serialVersionUID = 1L;
+
+	public final static ThreadLocal<XORShiftRandom>
+	THREAD_LOCAL = new ThreadLocal<XORShiftRandom>() {
+		@Override protected XORShiftRandom initialValue() {
+			return new XORShiftRandom();
+		}
+	};
 
 	private long _x;
 
@@ -69,20 +90,19 @@ public class XORShiftRandom extends Random {
 		return (int)(nextLong() >>> 32);
 	}
 
-	/**
-	 *  21, 35, 4
-	 * 20, 41, 5
-	 * 17, 31, 8
-	 * 11, 29, 14
-	 * 14, 29, 11
-	 * 30, 35, 13
-	 * 21, 37, 4
-	 * 21, 43, 4
-	 * 23, 41, 18
-	 *
-	 */
 	@Override
 	public long nextLong() {
+		// The other suggested shift values are:
+		// 21, 35, 4
+		// 20, 41, 5
+		// 17, 31, 8
+		// 11, 29, 14
+		// 14, 29, 11
+		// 30, 35, 13
+		// 21, 37, 4
+		// 21, 43, 4
+		// 23, 41, 18
+
 		_x ^= (_x << 21);
 		_x ^= (_x >>> 35);
 		_x ^= (_x << 4);
