@@ -43,9 +43,10 @@ public class HQ64Random extends Random {
 
 	private static final long serialVersionUID = 1L;
 
-	private long u = 0L;
-	private long v = 0L;
-	private long w = 0L;
+	private long _u = 0L;
+	private long _v = 0L;
+	private long _w = 0L;
+
 
 	public HQ64Random() {
 		this(System.nanoTime());
@@ -58,13 +59,13 @@ public class HQ64Random extends Random {
 	private void init(final long seed) {
 		final long s = seed == 0 ? 0xdeadbeef : seed;
 
-		u = s^v;
-		v = 4101842887655102017L;
-		w  = 1L;
+		_u = s^_v;
+		_v = 4101842887655102017L;
+		_w  = 1L;
 		nextLong();
-		v = u;
+		_v = _u;
 		nextLong();
-		w = v;
+		_w = _v;
 		nextLong();
 	}
 
@@ -77,17 +78,17 @@ public class HQ64Random extends Random {
 
 	@Override
 	public long nextLong() {
-		u = u*2862933555777941757L + 7046029254386353087L;
-		v ^= v >> 17;
-		v ^= v << 31;
-		v ^= v >> 8;
-		w = 0xFFFFDA61*(w & 0xFFFFFFFF) + (w >> 32);
+		_u = _u*2862933555777941757L + 7046029254386353087L;
+		_v ^= _v >> 17;
+		_v ^= _v << 31;
+		_v ^= _v >> 8;
+		_w = 0xFFFFDA61*(_w & 0xFFFFFFFF) + (_w >> 32);
 
-		long x = u^(u << 21);
+		long x = _u^(_u << 21);
 		x ^= x >> 35;
 		x ^= x << 4;
 
-		return (x + v) ^ w;
+		return (x + _v) ^ _w;
 	}
 
 	@Override
