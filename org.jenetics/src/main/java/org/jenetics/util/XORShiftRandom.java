@@ -25,12 +25,13 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
- * <blockquote align="justified"><p><em>
- * This generator was discovered and characterized by Marsaglia [10]. In just
+ * <q align="justified" cite="http://www.nr.com/"><em>
+ * This generator was discovered and characterized by George Marsaglia
+ * [<a href="http://www.jstatsoft.org/v08/i14/paper">Xorshift RNGs</a>]. In just
  * three XORs and three shifts (generally fast operations) it produces a full
  * period of 2<sup>64</sup> - 1 on 64 bits. (The missing value is zero, which
  * perpetuates itself and must be avoided.) High and low bits pass Diehard.
- * </em></p></blockquote>
+ * </em></q>
  * <p align="left">
  * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
  * <br/>
@@ -64,15 +65,7 @@ public class XORShiftRandom extends Random {
 	}
 
 	public XORShiftRandom(final long seed) {
-		_x = seed;
-	}
-
-	public static ThreadLocal<XORShiftRandom> newThreadLocal() {
-		return new ThreadLocal<XORShiftRandom>() {
-			@Override protected XORShiftRandom initialValue() {
-				return new XORShiftRandom();
-			}
-		};
+		_x = seed == 0 ? 0xdeadbeef : seed;
 	}
 
 	public static ThreadLocal<XORShiftRandom> newThreadLocal(final long seed) {
@@ -92,16 +85,18 @@ public class XORShiftRandom extends Random {
 
 	@Override
 	public long nextLong() {
-		// The other suggested shift values are:
-		// 21, 35, 4
-		// 20, 41, 5
-		// 17, 31, 8
-		// 11, 29, 14
-		// 14, 29, 11
-		// 30, 35, 13
-		// 21, 37, 4
-		// 21, 43, 4
-		// 23, 41, 18
+		/*
+		The other suggested shift values are:
+			21, 35, 4
+			20, 41, 5
+			17, 31, 8
+			11, 29, 14
+			14, 29, 11
+			30, 35, 13
+			21, 37, 4
+			21, 43, 4
+			23, 41, 18
+		*/
 
 		_x ^= (_x << 21);
 		_x ^= (_x >>> 35);
