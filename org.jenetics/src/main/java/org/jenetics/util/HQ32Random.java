@@ -39,10 +39,10 @@ public class HQ32Random extends Random {
 
 	private static final long serialVersionUID = 1L;
 
-	private int u = 0;
-	private int v = 0;
-	private int w1 = 0;
-	private int w2 = 0;
+	private int _u = 0;
+	private int _v = 0;
+	private int _w1 = 0;
+	private int _w2 = 0;
 
 	public HQ32Random() {
 		this(System.nanoTime());
@@ -55,31 +55,31 @@ public class HQ32Random extends Random {
 	private void init(final long seed) {
 		final long s = seed == 0 ? 0xdeadbeef : seed;
 
-		v = 0x85CA18E3;
-		w1 = 0x1F123BB5;
-		w2 = 0x159A55E5;
+		_v = 0x85CA18E3;
+		_w1 = 0x1F123BB5;
+		_w2 = 0x159A55E5;
 
-		u = ((int)(s >>> 32)^(int)(s << 32))^v;
+		_u = ((int)(s >>> 32)^(int)(s << 32))^_v;
 		nextInt();
-		v = u;
+		_v = _u;
 		nextInt();
 	}
 
 	@Override
 	public int nextInt() {
-		u = u*0xAC564B05 + 0x61C88639;
-		v ^= v >> 13;
-		v ^= v << 17;
-		v ^= v >> 5;
-		w1 = 33378*(w1 & 0xffff) + (w1 >> 16);
-		w2 = 57225*(w2 & 0xffff) + (w2 >> 16);
-		int x = u^(u << 9);
+		_u = _u*0xAC564B05 + 0x61C88639;
+		_v ^= _v >> 13;
+		_v ^= _v << 17;
+		_v ^= _v >> 5;
+		_w1 = 33378*(_w1 & 0xffff) + (_w1 >> 16);
+		_w2 = 57225*(_w2 & 0xffff) + (_w2 >> 16);
+		int x = _u^(_u << 9);
 		x ^= x >> 17;
 		x ^= x << 6;
-		int y = w1^(w1 << 17);
+		int y = _w1^(_w1 << 17);
 		y ^= y >> 15;
 		y ^= y << 5;
-		return (x + v) ^ (y + w2);
+		return (x + _v) ^ (y + _w2);
 	}
 
 	@Override
