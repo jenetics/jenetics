@@ -25,15 +25,21 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
- * This implementation is not thread-safe.
- *
- *Implementation of the highest quality recommended generator. The constructor is called with
-an integer seed and creates an instance of the generator. The member functions int64, doub,
-and int32 return the next values in the random sequence, as a variable type indicated by their
-names. The period of the generator is
- 3.138 * 10^57.
-
- Seite 342
+ * This is the implementation of the <i>highest quality recommended generator,</i>
+ * suggested in
+ * <p>
+ * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
+ * <br/>
+ * <em>Chapter 7. Random Numbers; Page 342</em>
+ * <br/>
+ * <small>Cambridge University Press New York, NY, USA ©2007</small>
+ * <br/>
+ * ISBN:0521880688 9780521880688
+ * <br/>
+ * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
+ * <p/>
+ * The period of the generator is &asymp;3.138&sdot;10<sup>57</sup>. This
+ * implementation is not thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
