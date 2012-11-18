@@ -90,16 +90,6 @@ public class HQ64Random extends Random {
 		return (x + _v) ^ _w;
 	}
 
-//	@Override
-//	public float nextFloat() {
-//		return (float)(2.32830643653869629E-10*nextInt());
-//	}
-
-//	@Override
-//	public double nextDouble() {
-//		return 5.42101086242752217E-20*nextLong();
-//	}
-
 	@Override
 	protected int next(int bits) {
 		return (int)(nextLong() >>> (64 - bits));

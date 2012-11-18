@@ -97,16 +97,6 @@ public class XORShiftRandom extends Random {
 		return _x;
 	}
 
-//	@Override
-//	public float nextFloat() {
-//		return (float)(2.32830643653869629E-10*nextInt());
-//	}
-
-//	@Override
-//	public double nextDouble() {
-//		return 5.42101086242752217E-20*nextLong();
-//	}
-
 	@Override
 	protected int next(final int bits) {
 		return (int)(nextLong() >>> (64 - bits));
