@@ -87,17 +87,17 @@ public class HQ32Random extends Random {
 		return ((long)nextInt() << 32) | ((long)nextInt() >>> 32);
 	}
 
-	@Override
-	public double nextDouble() {
-		return 2.32830643653869629E-10*(
-			nextInt() + 2.32830643653869629E-10*nextInt()
-		);
-	}
+//	@Override
+//	public double nextDouble() {
+//		return 2.32830643653869629E-10*(
+//			nextInt() + 2.32830643653869629E-10*nextInt()
+//		);
+//	}
 
-	@Override
-	public float nextFloat() {
-		return (float)(2.32830643653869629E-10*nextInt());
-	}
+//	@Override
+//	public float nextFloat() {
+//		return (float)(2.32830643653869629E-10*nextInt());
+//	}
 
 	@Override
 	protected int next(final int bits) {
