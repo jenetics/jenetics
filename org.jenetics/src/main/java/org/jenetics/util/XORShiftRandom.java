@@ -91,17 +91,17 @@ public class XORShiftRandom extends Random {
 //			21, 43, 4
 //			23, 41, 18
 
-//		_x ^= (_x << 21);
-//		_x ^= (_x >>> 35);
-//		_x ^= (_x << 4);
-//		return _x;
-		return _rand.nextLong();
+		_x ^= (_x << 21);
+		_x ^= (_x >>> 35);
+		_x ^= (_x << 4);
+		return _x;
+		//return _rand.nextLong();
 	}
 
 	@Override
-	protected synchronized int next(final int bits) {
-		//return (int)(nextLong() >>> (64 - bits));
-		return _rand.next(bits);
+	protected int next(final int bits) {
+		return (int)(nextLong() >>> (64 - bits));
+		//return _rand.next(bits);
 	}
 
 	private static final class Rand {
