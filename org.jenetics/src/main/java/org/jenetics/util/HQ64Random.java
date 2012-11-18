@@ -43,7 +43,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-17 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-18 $</em>
  */
 public class HQ64Random extends Random {
 
@@ -97,15 +97,15 @@ public class HQ64Random extends Random {
 		return (x + _v) ^ _w;
 	}
 
-	@Override
-	public float nextFloat() {
-		return (float)(2.32830643653869629E-10*nextInt());
-	}
+//	@Override
+//	public float nextFloat() {
+//		return (float)(2.32830643653869629E-10*nextInt());
+//	}
 
-	@Override
-	public double nextDouble() {
-		return 5.42101086242752217E-20*nextLong();
-	}
+//	@Override
+//	public double nextDouble() {
+//		return 5.42101086242752217E-20*nextLong();
+//	}
 
 	@Override
 	protected int next(int bits) {

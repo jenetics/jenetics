@@ -46,7 +46,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-17 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-18 $</em>
  */
 public class XORShiftRandom extends Random {
 	private static final long serialVersionUID = 1L;
@@ -104,15 +104,15 @@ public class XORShiftRandom extends Random {
 		return _x;
 	}
 
-	@Override
-	public float nextFloat() {
-		return (float)(2.32830643653869629E-10*nextInt());
-	}
+//	@Override
+//	public float nextFloat() {
+//		return (float)(2.32830643653869629E-10*nextInt());
+//	}
 
-	@Override
-	public double nextDouble() {
-		return 5.42101086242752217E-20*nextLong();
-	}
+//	@Override
+//	public double nextDouble() {
+//		return 5.42101086242752217E-20*nextLong();
+//	}
 
 	@Override
 	protected int next(final int bits) {
