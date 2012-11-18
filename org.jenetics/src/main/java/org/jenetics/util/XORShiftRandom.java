@@ -60,6 +60,8 @@ public class XORShiftRandom extends Random {
 
 	private long _x;
 
+	private final Rand _rand = new Rand();
+
 	public XORShiftRandom() {
 		this(System.nanoTime());
 	}
@@ -78,29 +80,65 @@ public class XORShiftRandom extends Random {
 
 	@Override
 	public long nextLong() {
-		/*
-		The other suggested shift values are:
-			21, 35, 4
-			20, 41, 5
-			17, 31, 8
-			11, 29, 14
-			14, 29, 11
-			30, 35, 13
-			21, 37, 4
-			21, 43, 4
-			23, 41, 18
-		*/
+//		The other suggested shift values are:
+//			21, 35, 4
+//			20, 41, 5
+//			17, 31, 8
+//			11, 29, 14
+//			14, 29, 11
+//			30, 35, 13
+//			21, 37, 4
+//			21, 43, 4
+//			23, 41, 18
 
-		_x ^= (_x << 21);
-		_x ^= (_x >>> 35);
-		_x ^= (_x << 4);
-		return _x;
+//		_x ^= (_x << 21);
+//		_x ^= (_x >>> 35);
+//		_x ^= (_x << 4);
+//		return _x;
+		return _rand.nextLong();
 	}
 
 	@Override
-	protected int next(final int bits) {
-		return (int)(nextLong() >>> (64 - bits));
+	protected synchronized int next(final int bits) {
+		//return (int)(nextLong() >>> (64 - bits));
+		return _rand.next(bits);
 	}
+
+	private static final class Rand {
+		private long _x;
+
+		public Rand() {
+			init(System.nanoTime());
+		}
+
+		void init(final long seed) {
+			_x = seed == 0 ? 0xdeadbeef : seed;
+		}
+
+		long nextLong() {
+//			The other suggested shift values are:
+//				21, 35, 4
+//				20, 41, 5
+//				17, 31, 8
+//				11, 29, 14
+//				14, 29, 11
+//				30, 35, 13
+//				21, 37, 4
+//				21, 43, 4
+//				23, 41, 18
+
+			_x ^= (_x << 21);
+			_x ^= (_x >>> 35);
+			_x ^= (_x << 4);
+			return _x;
+		}
+
+		int next(final int bits) {
+			return (int)(nextLong() >>> (64 - bits));
+		}
+
+	}
+
 }
 
 
