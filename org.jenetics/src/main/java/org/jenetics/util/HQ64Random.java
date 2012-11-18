@@ -76,13 +76,6 @@ public class HQ64Random extends Random {
 	}
 
 	@Override
-	public int nextInt() {
-		//final long x = nextLong();
-		//return (int)(x >>> 32)^(int)(x << 32);
-		return (int)(nextLong() >>> 32);
-	}
-
-	@Override
 	public long nextLong() {
 		_u = _u*2862933555777941757L + 7046029254386353087L;
 		_v ^= _v >> 17;
