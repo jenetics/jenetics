@@ -32,7 +32,7 @@ public class XORShiftRandomTest {
 
 	@Test
 	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
-		final XORShiftRandom rand1 = XORShiftRandom.ThreadSafe();
+		final XORShiftRandom rand1 = new XORShiftRandom.ThreadSafe();
 		for (int i = 0; i < 100; ++i) {
 			rand1.nextLong();
 		}
@@ -68,7 +68,7 @@ public class XORShiftRandomTest {
 		final Random xorrand = new XORShiftRandom(); //.INSTANCE.get();
 		final Random sxorrand = new random.XORShiftRandom(new ReentrantLock());
 		final Random esxorrand = new random.XORShiftRandom(random.NULL);
-		final Random axorrand = XORShiftRandom.ThreadSafe();
+		final Random axorrand = new XORShiftRandom.ThreadSafe();
 
 		final int loops = 100000000;
 
