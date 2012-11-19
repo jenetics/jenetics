@@ -22,9 +22,15 @@
  */
 package org.jenetics.util;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 /**
+ * <p>
+ * The given implementation of the {@link Random} class is not thread safe.
+ * </p>
  * <q align="justified" cite="http://www.nr.com/"><em>
  * This generator was discovered and characterized by George Marsaglia
  * [<a href="http://www.jstatsoft.org/v08/i14/paper">Xorshift RNGs</a>]. In just
@@ -46,12 +52,21 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-18 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-19 $</em>
  */
-public class XORShiftRandom extends Random {
+public class XORShiftRandom extends Random implements Cloneable {
 	private static final long serialVersionUID = 1L;
 
-	public final static ThreadLocal<XORShiftRandom>
+	/**
+	 * This field can be used to initial the {@link RandomRegistry} with a fast
+	 * and thread safe random engine of this type; each thread gets a <i>local</i>
+	 * copy of the {@code XORShiftRandom} engine.
+	 * 
+	 * [code]
+	 * RandomRegistry.setRandom(XORShiftRandom.INSTANCE);
+	 * [/code]
+	 */
+	public static final ThreadLocal<XORShiftRandom>
 	INSTANCE = new ThreadLocal<XORShiftRandom>() {
 		@Override protected XORShiftRandom initialValue() {
 			return new XORShiftRandom();
@@ -60,22 +75,12 @@ public class XORShiftRandom extends Random {
 
 	private long _x;
 
-	private final Rand _rand = new Rand();
-
 	public XORShiftRandom() {
 		this(System.nanoTime());
 	}
 
 	public XORShiftRandom(final long seed) {
 		_x = seed == 0 ? 0xdeadbeef : seed;
-	}
-
-	public static ThreadLocal<XORShiftRandom> newThreadLocal(final long seed) {
-		return new ThreadLocal<XORShiftRandom>() {
-			@Override protected XORShiftRandom initialValue() {
-				return new XORShiftRandom(seed);
-			}
-		};
 	}
 
 	@Override
@@ -95,55 +100,48 @@ public class XORShiftRandom extends Random {
 		_x ^= (_x >>> 35);
 		_x ^= (_x << 4);
 		return _x;
-		//return _rand.nextLong();
 	}
 
 	@Override
 	protected int next(final int bits) {
 		return (int)(nextLong() >>> (64 - bits));
-		//return _rand.next(bits);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[%d]", getClass().getName(), _x);
+	}
+	
+	@Override
+	public XORShiftRandom clone() {
+		try {
+			return (XORShiftRandom)super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError(String.format(
+				"Cloning of %s not supported.", getClass()
+			));
+		}
+	}
+	
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeLong(_x);
 	}
 
-	private static final class Rand {
-		private long _x;
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
 
-		public Rand() {
-			init(System.nanoTime());
-		}
-
-		void init(final long seed) {
-			_x = seed == 0 ? 0xdeadbeef : seed;
-		}
-
-		long nextLong() {
-//			The other suggested shift values are:
-//				21, 35, 4
-//				20, 41, 5
-//				17, 31, 8
-//				11, 29, 14
-//				14, 29, 11
-//				30, 35, 13
-//				21, 37, 4
-//				21, 43, 4
-//				23, 41, 18
-
-			_x ^= (_x << 21);
-			_x ^= (_x >>> 35);
-			_x ^= (_x << 4);
-			return _x;
-		}
-
-		int next(final int bits) {
-			return (int)(nextLong() >>> (64 - bits));
-		}
-
+		_x = in.readLong();
 	}
-
+	
 }
-
-
-
-
-
-
 
