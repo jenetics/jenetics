@@ -23,6 +23,8 @@
 package org.jenetics.util;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+
 
 /**
  * <p>
@@ -71,14 +73,18 @@ public class XORShiftRandom extends Random implements Cloneable {
 		}
 	};
 
-	long _x;
+	private long _x;
 
 	public XORShiftRandom() {
 		this(System.nanoTime());
 	}
 
 	public XORShiftRandom(final long seed) {
-		_x = seed == 0 ? 0xdeadbeef : seed;
+		_x = init(seed);
+	}
+
+	private static long init(final long seed) {
+		return seed == 0 ? 0xdeadbeef : seed;
 	}
 
 	@Override
@@ -105,12 +111,33 @@ public class XORShiftRandom extends Random implements Cloneable {
 		return (int)(nextLong() >>> (64 - bits));
 	}
 
-	public static Random ThreadSafe() {
-		return new XORShiftRandom();
+	/**
+	 * Return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
+	 *
+	 * @return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
+	 */
+	public static XORShiftRandom ThreadSafe() {
+		return ThreadSafe(System.nanoTime());
 	}
 
-	public static Random ThreadSafe(final long seed) {
-		return new XORShiftRandom(seed);
+	/**
+	 * Return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
+	 * Instances of the thread safe and non-thread safe variante, with the same
+	 * seed, will generate the same sequence of random numbers.
+	 * [code]
+	 * final XORShiftRandom a = new XORShiftRandom(123);
+	 * final XORShiftRandom b = XORShiftRandom.ThreadSafe(123);
+	 * for (int i = 0; i < 1000;  ++i) {
+	 *     assert(a.nextLong() == b.nextLong());
+	 *     assert(a.nextDouble() == b.nextDouble());
+	 * }
+	 * [/code]
+	 *
+	 * @param seed the seed of the created PRNG.
+	 * @return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
+	 */
+	public static XORShiftRandom ThreadSafe(final long seed) {
+		return new ThreadSafe(seed);
 	}
 
 	@Override
@@ -128,6 +155,39 @@ public class XORShiftRandom extends Random implements Cloneable {
 			));
 		}
 	}
+
+	private static final class ThreadSafe extends XORShiftRandom {
+		private static final long serialVersionUID = 1L;
+
+		private AtomicLong _x = new AtomicLong();
+
+		ThreadSafe(final long seed) {
+			_x.set(init(seed));
+		}
+
+		@Override
+		public final long nextLong() {
+			long oldseed;
+			long nextseed;
+
+			do {
+				oldseed = _x.get();
+				nextseed = oldseed;
+				nextseed ^= (nextseed << 21);
+				nextseed ^= (nextseed >>> 35);
+				nextseed ^= (nextseed << 4);
+			} while (!_x.compareAndSet(oldseed, nextseed));
+
+			return nextseed;
+		}
+
+		@Override
+		public ThreadSafe clone() {
+			 final ThreadSafe random = (ThreadSafe)super.clone();
+			 random._x = new AtomicLong(_x.get());
+			 return random;
+		}
+	};
 
 }
 
