@@ -57,11 +57,20 @@ import java.util.Random;
 public class XORShiftRandom extends Random implements Cloneable {
 	private static final long serialVersionUID = 1L;
 
+
+	public static final class ThreadSafe extends XORShiftRandom {
+
+		private static final long serialVersionUID = 1L;
+
+
+
+	}
+
 	/**
 	 * This field can be used to initial the {@link RandomRegistry} with a fast
 	 * and thread safe random engine of this type; each thread gets a <i>local</i>
 	 * copy of the {@code XORShiftRandom} engine.
-	 * 
+	 *
 	 * [code]
 	 * RandomRegistry.setRandom(XORShiftRandom.INSTANCE);
 	 * [/code]
@@ -73,7 +82,7 @@ public class XORShiftRandom extends Random implements Cloneable {
 		}
 	};
 
-	private long _x;
+	long _x;
 
 	public XORShiftRandom() {
 		this(System.nanoTime());
@@ -85,12 +94,15 @@ public class XORShiftRandom extends Random implements Cloneable {
 
 	@Override
 	public long nextLong() {
-		return (_x = nextLong(_x));
+		_x ^= (_x << 21);
+		_x ^= (_x >>> 35);
+		_x ^= (_x << 4);
+		return _x;
 	}
-	
+
 	private static long nextLong(final long seed) {
 		long x = seed;
-		
+
 //		The other suggested shift values are:
 //		21, 35, 4
 //		20, 41, 5
@@ -100,8 +112,8 @@ public class XORShiftRandom extends Random implements Cloneable {
 //		30, 35, 13
 //		21, 37, 4
 //		21, 43, 4
-//		23, 41, 18		
-		
+//		23, 41, 18
+
 		x ^= (x << 21);
 		x ^= (x >>> 35);
 		x ^= (x << 4);
@@ -112,16 +124,20 @@ public class XORShiftRandom extends Random implements Cloneable {
 	protected int next(final int bits) {
 		return (int)(nextLong() >>> (64 - bits));
 	}
-	
-	public static Random synchronizedRandom() {
+
+	public static Random ThreadSafe() {
 		return new XORShiftRandom();
 	}
-	
+
+	public static Random ThreadSafe(final long seed) {
+		return new XORShiftRandom(seed);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s[%d]", getClass().getName(), _x);
 	}
-	
+
 	@Override
 	public XORShiftRandom clone() {
 		try {
@@ -132,7 +148,7 @@ public class XORShiftRandom extends Random implements Cloneable {
 			));
 		}
 	}
-	
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
@@ -152,6 +168,6 @@ public class XORShiftRandom extends Random implements Cloneable {
 
 		_x = in.readLong();
 	}
-	
+
 }
 
