@@ -85,26 +85,36 @@ public class XORShiftRandom extends Random implements Cloneable {
 
 	@Override
 	public long nextLong() {
+		return (_x = nextLong(_x));
+	}
+	
+	private static long nextLong(final long seed) {
+		long x = seed;
+		
 //		The other suggested shift values are:
-//			21, 35, 4
-//			20, 41, 5
-//			17, 31, 8
-//			11, 29, 14
-//			14, 29, 11
-//			30, 35, 13
-//			21, 37, 4
-//			21, 43, 4
-//			23, 41, 18
-
-		_x ^= (_x << 21);
-		_x ^= (_x >>> 35);
-		_x ^= (_x << 4);
-		return _x;
+//		21, 35, 4
+//		20, 41, 5
+//		17, 31, 8
+//		11, 29, 14
+//		14, 29, 11
+//		30, 35, 13
+//		21, 37, 4
+//		21, 43, 4
+//		23, 41, 18		
+		
+		x ^= (x << 21);
+		x ^= (x >>> 35);
+		x ^= (x << 4);
+		return x;
 	}
 
 	@Override
 	protected int next(final int bits) {
 		return (int)(nextLong() >>> (64 - bits));
+	}
+	
+	public static Random synchronizedRandom() {
+		return new XORShiftRandom();
 	}
 	
 	@Override
