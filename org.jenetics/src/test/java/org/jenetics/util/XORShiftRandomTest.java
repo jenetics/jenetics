@@ -16,36 +16,6 @@ public class XORShiftRandomTest {
 
 
 	@Test
-	public void testClone() {
-		final XORShiftRandom rand1 = new XORShiftRandom();
-		for (int i = 0; i < 100; ++i) {
-			rand1.nextLong();
-		}
-
-		final XORShiftRandom rand2 = rand1.clone();
-		Assert.assertNotSame(rand2, rand1);
-
-		for (int i = 0; i < 1000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
-
-	@Test
-	public void testCloneThreadSafe() {
-		final XORShiftRandom rand1 = XORShiftRandom.ThreadSafe();
-		for (int i = 0; i < 100; ++i) {
-			rand1.nextLong();
-		}
-
-		final XORShiftRandom rand2 = rand1.clone();
-		Assert.assertNotSame(rand2, rand1);
-
-		for (int i = 0; i < 1000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
-
-	@Test
 	public void serialize() throws IOException, ClassNotFoundException {
 		final XORShiftRandom rand1 = new XORShiftRandom();
 		for (int i = 0; i < 100; ++i) {
