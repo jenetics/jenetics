@@ -22,9 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Random;
 
 /**
@@ -58,14 +55,6 @@ public class XORShiftRandom extends Random implements Cloneable {
 	private static final long serialVersionUID = 1L;
 
 
-	public static final class ThreadSafe extends XORShiftRandom {
-
-		private static final long serialVersionUID = 1L;
-
-
-
-	}
-
 	/**
 	 * This field can be used to initial the {@link RandomRegistry} with a fast
 	 * and thread safe random engine of this type; each thread gets a <i>local</i>
@@ -94,15 +83,6 @@ public class XORShiftRandom extends Random implements Cloneable {
 
 	@Override
 	public long nextLong() {
-		_x ^= (_x << 21);
-		_x ^= (_x >>> 35);
-		_x ^= (_x << 4);
-		return _x;
-	}
-
-	private static long nextLong(final long seed) {
-		long x = seed;
-
 //		The other suggested shift values are:
 //		21, 35, 4
 //		20, 41, 5
@@ -114,10 +94,10 @@ public class XORShiftRandom extends Random implements Cloneable {
 //		21, 43, 4
 //		23, 41, 18
 
-		x ^= (x << 21);
-		x ^= (x >>> 35);
-		x ^= (x << 4);
-		return x;
+		_x ^= (_x << 21);
+		_x ^= (_x >>> 35);
+		_x ^= (_x << 4);
+		return _x;
 	}
 
 	@Override
@@ -148,27 +128,6 @@ public class XORShiftRandom extends Random implements Cloneable {
 			));
 		}
 	}
-
-	/* *************************************************************************
-	 *  Java object serialization
-	 * ************************************************************************/
-/*
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-
-		out.writeLong(_x);
-	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		_x = in.readLong();
-	}
-	*/
 
 }
 
