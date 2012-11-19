@@ -27,9 +27,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
- * <p>
- * The given implementation of the {@link Random} class is not thread safe.
- * </p>
  * <q align="justified" cite="http://www.nr.com/"><em>
  * This generator was discovered and characterized by George Marsaglia
  * [<a href="http://www.jstatsoft.org/v08/i14/paper">Xorshift RNGs</a>]. In just
@@ -48,6 +45,12 @@ import java.util.concurrent.atomic.AtomicLong;
  * <br/>
  * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
  * <p/>
+ *
+ * <p><b>
+ * The <i>outer</i> class of this PRNG implementation is not thread safe. To
+ * create thread safe instances of this PRNG, create instances of the
+ * {@link XORShiftRandom.ThreadSafe} class.
+ * </b></p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
@@ -121,6 +124,11 @@ public class XORShiftRandom extends Random {
 	}
 
 	@Override
+	public void setSeed(final long seed) {
+		_x = init(seed);
+	}
+
+	@Override
 	public String toString() {
 		return String.format("%s[%d]", getClass().getName(), _x);
 	}
@@ -138,9 +146,6 @@ public class XORShiftRandom extends Random {
 	 *     assert(a.nextDouble() == b.nextDouble());
 	 * }
 	 * [/code]
-	 *
-	 * @param seed the seed of the created PRNG.
-	 * @return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
 	 */
 	public static final class ThreadSafe extends XORShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -158,17 +163,18 @@ public class XORShiftRandom extends Random {
 		@Override
 		public final long nextLong() {
 			long oldseed;
-			long nextseed;
+			long x;
 
 			do {
 				oldseed = _x.get();
-				nextseed = oldseed;
-				nextseed ^= (nextseed << 21);
-				nextseed ^= (nextseed >>> 35);
-				nextseed ^= (nextseed << 4);
-			} while (!_x.compareAndSet(oldseed, nextseed));
+				x = oldseed;
 
-			return nextseed;
+				x ^= (x << 21);
+				x ^= (x >>> 35);
+				x ^= (x << 4);
+			} while (!_x.compareAndSet(oldseed, x));
+
+			return x;
 		}
 
 	};
