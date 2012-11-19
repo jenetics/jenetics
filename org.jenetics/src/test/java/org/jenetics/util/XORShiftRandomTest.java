@@ -10,7 +10,7 @@ public class XORShiftRandomTest {
 
 	@Test
 	public void nextDouble() {
-		final Random jrand = new Random(); //ThreadLocalRandom.current();
+		final Random jrand = ThreadLocalRandom.current();
 		final Random xorrand = new XORShiftRandom(); //.INSTANCE.get();
 
 		final int loops = 100000000;
@@ -29,6 +29,10 @@ public class XORShiftRandomTest {
 		stop = System.currentTimeMillis();
 		System.out.println("XORRand: " + (stop - start) + "ms");
 
+	}
+
+	public static void main(final String[] args) {
+		new XORShiftRandomTest().nextDouble();
 	}
 
 }
