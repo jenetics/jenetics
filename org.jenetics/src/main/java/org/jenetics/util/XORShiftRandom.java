@@ -65,11 +65,20 @@ public class XORShiftRandom extends Random {
 	 * [code]
 	 * RandomRegistry.setRandom(XORShiftRandom.INSTANCE);
 	 * [/code]
+	 *
+	 * Calling the {@link XORShiftRandom#setSeed(long)} method on the returned
+	 * instance will throw an {@link UnsupportedOperationException}.
 	 */
 	public static final ThreadLocal<XORShiftRandom>
 	INSTANCE = new ThreadLocal<XORShiftRandom>() {
 		@Override protected XORShiftRandom initialValue() {
-			return new XORShiftRandom();
+			return new XORShiftRandom() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public void setSeed(final long seed) {
+					throw new UnsupportedOperationException();
+				}
+			};
 		}
 	};
 
@@ -111,19 +120,16 @@ public class XORShiftRandom extends Random {
 		return (int)(nextLong() >>> (64 - bits));
 	}
 
-	/**
-	 * Return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
-	 *
-	 * @return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
-	 */
-	public static XORShiftRandom ThreadSafe() {
-		return ThreadSafe(System.nanoTime());
+	@Override
+	public String toString() {
+		return String.format("%s[%d]", getClass().getName(), _x);
 	}
 
 	/**
-	 * Return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
-	 * Instances of the thread safe and non-thread safe variante, with the same
-	 * seed, will generate the same sequence of random numbers.
+	 * This class is a <i>thread safe</i> version of the {@code XORShiftRandom}
+	 * engine. Instances of <i>this</i> class and instances of the non-thread
+	 * safe variants, with the same seed, will generate the same sequence of
+	 * random numbers.
 	 * [code]
 	 * final XORShiftRandom a = new XORShiftRandom(123);
 	 * final XORShiftRandom b = XORShiftRandom.ThreadSafe(123);
@@ -136,44 +142,36 @@ public class XORShiftRandom extends Random {
 	 * @param seed the seed of the created PRNG.
 	 * @return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
 	 */
-	public static XORShiftRandom ThreadSafe(final long seed) {
-		return new XORShiftRandom() {
-			private static final long serialVersionUID = 1L;
+	public static final class ThreadSafe extends XORShiftRandom {
+		private static final long serialVersionUID = 1L;
 
-			private AtomicLong _x = new AtomicLong();
+		private final AtomicLong _x = new AtomicLong();
 
-			@Override
-			public final long nextLong() {
-				long oldseed;
-				long nextseed;
-
-				do {
-					oldseed = _x.get();
-					nextseed = oldseed;
-					nextseed ^= (nextseed << 21);
-					nextseed ^= (nextseed >>> 35);
-					nextseed ^= (nextseed << 4);
-				} while (!_x.compareAndSet(oldseed, nextseed));
-
-				return nextseed;
-			}
-		};
-	}
-
-	@Override
-	public String toString() {
-		return String.format("%s[%d]", getClass().getName(), _x);
-	}
-
-	@Override
-	public XORShiftRandom clone() {
-		try {
-			return (XORShiftRandom)super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError(String.format(
-				"Cloning of %s not supported.", getClass()
-			));
+		public ThreadSafe() {
+			this(System.nanoTime());
 		}
-	}
+
+		public ThreadSafe(final long seed) {
+			_x.set(init(seed));
+		}
+
+		@Override
+		public final long nextLong() {
+			long oldseed;
+			long nextseed;
+
+			do {
+				oldseed = _x.get();
+				nextseed = oldseed;
+				nextseed ^= (nextseed << 21);
+				nextseed ^= (nextseed >>> 35);
+				nextseed ^= (nextseed << 4);
+			} while (!_x.compareAndSet(oldseed, nextseed));
+
+			return nextseed;
+		}
+
+	};
+
 }
 
