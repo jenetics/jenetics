@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class XORShiftRandom extends Random implements Cloneable {
+public class XORShiftRandom extends Random {
 	private static final long serialVersionUID = 1L;
 
 
@@ -137,7 +137,27 @@ public class XORShiftRandom extends Random implements Cloneable {
 	 * @return a <i>thread safe</i> version of the {@code XORShiftRandom} engine.
 	 */
 	public static XORShiftRandom ThreadSafe(final long seed) {
-		return new ThreadSafe(seed);
+		return new XORShiftRandom() {
+			private static final long serialVersionUID = 1L;
+
+			private AtomicLong _x = new AtomicLong();
+
+			@Override
+			public final long nextLong() {
+				long oldseed;
+				long nextseed;
+
+				do {
+					oldseed = _x.get();
+					nextseed = oldseed;
+					nextseed ^= (nextseed << 21);
+					nextseed ^= (nextseed >>> 35);
+					nextseed ^= (nextseed << 4);
+				} while (!_x.compareAndSet(oldseed, nextseed));
+
+				return nextseed;
+			}
+		};
 	}
 
 	@Override
@@ -155,39 +175,5 @@ public class XORShiftRandom extends Random implements Cloneable {
 			));
 		}
 	}
-
-	private static final class ThreadSafe extends XORShiftRandom {
-		private static final long serialVersionUID = 1L;
-
-		private AtomicLong _x = new AtomicLong();
-
-		ThreadSafe(final long seed) {
-			_x.set(init(seed));
-		}
-
-		@Override
-		public final long nextLong() {
-			long oldseed;
-			long nextseed;
-
-			do {
-				oldseed = _x.get();
-				nextseed = oldseed;
-				nextseed ^= (nextseed << 21);
-				nextseed ^= (nextseed >>> 35);
-				nextseed ^= (nextseed << 4);
-			} while (!_x.compareAndSet(oldseed, nextseed));
-
-			return nextseed;
-		}
-
-		@Override
-		public ThreadSafe clone() {
-			 final ThreadSafe random = (ThreadSafe)super.clone();
-			 random._x = new AtomicLong(_x.get());
-			 return random;
-		}
-	};
-
 }
 
