@@ -307,5 +307,10 @@
 			<class name="org.jenetics.util.objectTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.util.XORShiftRandom">
+		<classes>
+			<class name="org.jenetics.util.XORShiftRandomTest" />
+		</classes>
+	</test>	
 </suite>
 
