@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p align="left">
  * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
  * <br/>
- * <em>Chapter 7. Random Numbers; Page 345</em>
+ * <em>Chapter 7. Random Numbers, Section 7.1.2, Page 345</em>
  * <br/>
  * <small>Cambridge University Press New York, NY, USA ©2007</small>
  * <br/>
@@ -87,10 +87,19 @@ public class XORShiftRandom extends Random {
 
 	private long _x;
 
+	/**
+	 * Create a new <i>non-thread safe</i> instance of the XOR-Shift PRNG, with
+	 * an seed of {@link System#nanoTime()}.
+	 */
 	public XORShiftRandom() {
 		this(System.nanoTime());
 	}
 
+	/**
+	 * Create a new <i>non-thread safe</i> instance of the XOR-Shift PRNG.
+	 *
+	 * @param seed the seed of the PRNG.
+	 */
 	public XORShiftRandom(final long seed) {
 		_x = init(seed);
 	}
@@ -101,7 +110,7 @@ public class XORShiftRandom extends Random {
 
 	@Override
 	public long nextLong() {
-//		The other suggested shift values are:
+//		The list of the suggested shift values:
 //		21, 35, 4
 //		20, 41, 5
 //		17, 31, 8
@@ -128,6 +137,15 @@ public class XORShiftRandom extends Random {
 		_x = init(seed);
 	}
 
+	/**
+	 * Return the current seed value.
+	 *
+	 * @return the current seed value.
+	 */
+	public long getSeed() {
+		return _x;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s[%d]", getClass().getName(), _x);
@@ -152,10 +170,19 @@ public class XORShiftRandom extends Random {
 
 		private final AtomicLong _x = new AtomicLong();
 
+		/**
+		 * Create a new <i>thread safe</i> instance of the XOR-Shift PRNG, with
+		 * an seed of {@link System#nanoTime()}.
+		 */
 		public ThreadSafe() {
 			this(System.nanoTime());
 		}
 
+		/**
+		 * Create a new <i>thread safe</i> instance of the XOR-Shift PRNG.
+		 *
+		 * @param seed the seed of the PRNG.
+		 */
 		public ThreadSafe(final long seed) {
 			_x.set(init(seed));
 		}
@@ -175,6 +202,11 @@ public class XORShiftRandom extends Random {
 			} while (!_x.compareAndSet(oldseed, x));
 
 			return x;
+		}
+
+		@Override
+		public long getSeed() {
+			return _x.get();
 		}
 
 	};
