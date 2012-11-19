@@ -152,7 +152,7 @@ public class XORShiftRandom extends Random implements Cloneable {
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
-
+/*
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
@@ -168,6 +168,7 @@ public class XORShiftRandom extends Random implements Cloneable {
 
 		_x = in.readLong();
 	}
+	*/
 
 }
 
