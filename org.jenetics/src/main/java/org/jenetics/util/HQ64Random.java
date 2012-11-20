@@ -27,10 +27,11 @@ import java.util.Random;
 /**
  * This is the implementation of the <i>highest quality recommended generator,</i>
  * suggested in
- * <p>
+ *
+ * <p align="left">
  * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
  * <br/>
- * <em>Chapter 7. Random Numbers; Page 342</em>
+ * <em>Chapter 7. Random Numbers, Section 7.1.2, Page 345</em>
  * <br/>
  * <small>Cambridge University Press New York, NY, USA ©2007</small>
  * <br/>
@@ -38,8 +39,13 @@ import java.util.Random;
  * <br/>
  * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
  * <p/>
- * The period of the generator is &asymp;3.138&sdot;10<sup>57</sup>. This
- * implementation is not thread-safe.
+ *
+ * The period of the generator is &asymp;3.138&sdot;10<sup>57</sup>.
+ *
+ * <p><b>
+ * The <i>main</i> class of this PRNG is not thread safe. To create an thread
+ * safe instances of this PRNG, use the {@link XORShiftRandom.ThreadSafe} class.
+ * </b></p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
