@@ -140,8 +140,8 @@ public class HQ64Random extends Random {
 	 * final HQ64Random a = new HQ64Random(123);
 	 * final HQ64Random b = HQ64Random.ThreadSafe(123);
 	 * for (int i = 0; i < 1000;  ++i) {
-	 *     assert(a.nextLong() == b.nextLong());
-	 *     assert(a.nextDouble() == b.nextDouble());
+	 *     assert (a.nextLong() == b.nextLong());
+	 *     assert (a.nextDouble() == b.nextDouble());
 	 * }
 	 * [/code]
 	 */
