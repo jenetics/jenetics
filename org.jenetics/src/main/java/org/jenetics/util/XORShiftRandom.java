@@ -57,6 +57,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version 1.1 &mdash; <em>$Date: 2012-11-20 $</em>
  */
 public class XORShiftRandom extends Random {
+
 	private static final long serialVersionUID = 1L;
 
 
@@ -74,7 +75,8 @@ public class XORShiftRandom extends Random {
 	 */
 	public static final ThreadLocal<XORShiftRandom>
 	INSTANCE = new ThreadLocal<XORShiftRandom>() {
-		@Override protected XORShiftRandom initialValue() {
+		@Override
+		protected XORShiftRandom initialValue() {
 			return new XORShiftRandom() {
 				private static final long serialVersionUID = 1L;
 				@Override
@@ -211,6 +213,11 @@ public class XORShiftRandom extends Random {
 		@Override
 		public long getSeed() {
 			return _x.get();
+		}
+
+		@Override
+		public void setSeed(final long seed) {
+			_x.set(init(seed));
 		}
 
 	};
