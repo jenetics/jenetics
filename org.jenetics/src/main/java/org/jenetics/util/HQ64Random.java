@@ -31,7 +31,7 @@ import java.util.Random;
  * <p align="left">
  * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
  * <br/>
- * <em>Chapter 7. Random Numbers, Section 7.1.2, Page 345</em>
+ * <em>Chapter 7. Random Numbers, Section 7.1, Page 342</em>
  * <br/>
  * <small>Cambridge University Press New York, NY, USA ©2007</small>
  * <br/>
@@ -44,7 +44,7 @@ import java.util.Random;
  *
  * <p><b>
  * The <i>main</i> class of this PRNG is not thread safe. To create an thread
- * safe instances of this PRNG, use the {@link XORShiftRandom.ThreadSafe} class.
+ * safe instances of this PRNG, use the {@link HQ64Random.ThreadSafe} class.
  * </b></p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -54,6 +54,32 @@ import java.util.Random;
 public class HQ64Random extends Random {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * This field can be used to initial the {@link RandomRegistry} with a fast
+	 * and thread safe random engine of this type; each thread gets a <i>local</i>
+	 * copy of the {@code HQ64Random} engine.
+	 *
+	 * [code]
+	 * RandomRegistry.setRandom(HQ64Random.INSTANCE);
+	 * [/code]
+	 *
+	 * Calling the {@link HQ64Random#setSeed(long)} method on the returned
+	 * instance will throw an {@link UnsupportedOperationException}.
+	 */
+	public static final ThreadLocal<HQ64Random>
+	INSTANCE = new ThreadLocal<HQ64Random>() {
+		@Override
+		protected HQ64Random initialValue() {
+			return new HQ64Random() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public void setSeed(final long seed) {
+					throw new UnsupportedOperationException();
+				}
+			};
+		}
+	};
 
 	private long _u = 0L;
 	private long _v = 0L;
@@ -69,10 +95,9 @@ public class HQ64Random extends Random {
 	}
 
 	private void init(final long seed) {
-		final long s = seed == 0 ? 0xdeadbeef : seed;
-
-		_u = s^_v;
 		_v = 4101842887655102017L;
+		_w = 1;
+		_u = seed^_v;
 		_w  = 1L;
 		nextLong();
 		_v = _u;
@@ -106,4 +131,11 @@ public class HQ64Random extends Random {
 		init(seed);
 	}
 
+	public static final class ThreadSafe extends HQ64Random {
+		private static final long serialVersionUID = 1L;
+
+	}
+
 }
+
+
