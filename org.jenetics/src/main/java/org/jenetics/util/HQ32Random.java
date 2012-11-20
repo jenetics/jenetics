@@ -33,9 +33,9 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-18 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-20 $</em>
  */
-public class HQ32Random extends Random {
+class HQ32Random extends Random {
 
 	private static final long serialVersionUID = 1L;
 
