@@ -166,8 +166,8 @@ public class XORShiftRandom extends Random {
 	 * final XORShiftRandom a = new XORShiftRandom(123);
 	 * final XORShiftRandom b = XORShiftRandom.ThreadSafe(123);
 	 * for (int i = 0; i < 1000;  ++i) {
-	 *     assert(a.nextLong() == b.nextLong());
-	 *     assert(a.nextDouble() == b.nextDouble());
+	 *     assert (a.nextLong() == b.nextLong());
+	 *     assert (a.nextDouble() == b.nextDouble());
 	 * }
 	 * [/code]
 	 */
