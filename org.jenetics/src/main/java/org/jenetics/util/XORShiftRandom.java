@@ -47,9 +47,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p/>
  *
  * <p><b>
- * The <i>outer</i> class of this PRNG implementation is not thread safe. To
- * create thread safe instances of this PRNG, create instances of the
- * {@link XORShiftRandom.ThreadSafe} class.
+ * The <i>main</i> class of this PRNG is not thread safe. To create an thread 
+ * safe instances of this PRNG, use the {@link XORShiftRandom.ThreadSafe} class.
  * </b></p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -92,7 +91,7 @@ public class XORShiftRandom extends Random {
 	 * an seed of {@link System#nanoTime()}.
 	 */
 	public XORShiftRandom() {
-		this(System.nanoTime());
+		this(seed());
 	}
 
 	/**
@@ -106,6 +105,10 @@ public class XORShiftRandom extends Random {
 
 	private static long init(final long seed) {
 		return seed == 0 ? 0xdeadbeef : seed;
+	}
+	
+	private static long seed() {
+		return System.nanoTime();
 	}
 
 	@Override
@@ -175,7 +178,7 @@ public class XORShiftRandom extends Random {
 		 * an seed of {@link System#nanoTime()}.
 		 */
 		public ThreadSafe() {
-			this(System.nanoTime());
+			this(seed());
 		}
 
 		/**
