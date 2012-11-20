@@ -39,6 +39,13 @@ class random {
 		throw new AssertionError("Don't create an 'random' instance.");
 	}
 
+	public static void main(final String[] args) {
+		final Random random = new org.jenetics.util.HQ64Random(12345);
+		for (int i = 0; i < 2000; ++i) {
+			System.out.println(random.nextLong());
+		}
+	}
+
 	static final class NullLock implements Lock {
 		@Override public void lock() {}
 		@Override public void lockInterruptibly() {}
