@@ -22,8 +22,14 @@
  */
 package org.jenetics.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -45,8 +51,59 @@ public class HQ64RandomTest extends RandomTestBase {
 	}
 
 	@Test
-	public void foo() {
+	public void serialize() throws IOException, ClassNotFoundException {
+		final HQ64Random rand1 = new HQ64Random();
+		for (int i = 0; i < 100; ++i) {
+			rand1.nextLong();
+		}
 
+		final Random rand2 = serialize(rand1);
+		Assert.assertNotSame(rand2, rand1);
+
+		for (int i = 0; i < 1000; ++i) {
+			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
+		}
+	}
+
+	@Test
+	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
+		final HQ64Random rand1 = new HQ64Random.ThreadSafe();
+		for (int i = 0; i < 100; ++i) {
+			rand1.nextLong();
+		}
+
+		final Random rand2 = serialize(rand1);
+		Assert.assertNotSame(rand2, rand1);
+
+		for (int i = 0; i < 1000; ++i) {
+			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
+		}
+	}
+
+	@Test
+	public void sameRandomSequence() {
+		final HQ64Random rand1 = new HQ64Random(12341234);
+		final HQ64Random rand2 = new HQ64Random.ThreadSafe(12341234);
+
+		for (int i = 0; i < 10000; ++i) {
+			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
+		}
+	}
+
+	private static Random serialize(final Random random)
+		throws IOException, ClassNotFoundException
+	{
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		final ObjectOutputStream out = new ObjectOutputStream(bytes);
+		out.writeObject(random);
+		out.flush();
+
+		final ObjectInputStream in = new ObjectInputStream(
+			new ByteArrayInputStream(bytes.toByteArray())
+		);
+
+
+		return (Random)in.readObject();
 	}
 
 }
