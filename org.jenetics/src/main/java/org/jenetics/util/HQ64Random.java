@@ -94,7 +94,7 @@ public class HQ64Random extends Random {
 		init(seed);
 	}
 
-	private void init(final long seed) {
+	void init(final long seed) {
 		_v = 4101842887655102017L;
 		_w = 1;
 		_u = seed^_v;
@@ -131,8 +131,48 @@ public class HQ64Random extends Random {
 		init(seed);
 	}
 
+	/**
+	 * This class is a <i>thread safe</i> version of the {@code HQ64Random}
+	 * engine. Instances of <i>this</i> class and instances of the non-thread
+	 * safe variants, with the same seed, will generate the same sequence of
+	 * random numbers.
+	 * [code]
+	 * final HQ64Random a = new HQ64Random(123);
+	 * final HQ64Random b = HQ64Random.ThreadSafe(123);
+	 * for (int i = 0; i < 1000;  ++i) {
+	 *     assert(a.nextLong() == b.nextLong());
+	 *     assert(a.nextDouble() == b.nextDouble());
+	 * }
+	 * [/code]
+	 */
 	public static final class ThreadSafe extends HQ64Random {
 		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Create a new <i>thread safe</i> instance of the HQ64Random PRNG, with
+		 * an seed of {@link System#nanoTime()}.
+		 */
+		public ThreadSafe() {
+		}
+
+		/**
+		 * Create a new <i>thread safe</i> instance of the HQ64Random PRNG.
+		 *
+		 * @param seed the seed of the PRNG.
+		 */
+		public ThreadSafe(final long seed) {
+			super.init(seed);
+		}
+
+		@Override
+		synchronized void init(final long seed) {
+			super.init(seed);
+		}
+
+		@Override
+		public synchronized long nextLong() {
+			return super.nextLong();
+		}
 
 	}
 
