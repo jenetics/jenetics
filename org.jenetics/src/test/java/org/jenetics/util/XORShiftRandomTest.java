@@ -37,7 +37,20 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class XORShiftRandomTest {
+public class XORShiftRandomTest extends RandomTestBase {
+
+	@Override
+	protected String getDataResource() {
+		return String.format(
+			"/org/jenetics/util/%s_%d",
+			XORShiftRandom.class.getName(), 12345
+		);
+	}
+
+	@Override
+	protected Random getRandom() {
+		return new XORShiftRandom(12345);
+	}
 
 	@Test
 	public void serialize() throws IOException, ClassNotFoundException {

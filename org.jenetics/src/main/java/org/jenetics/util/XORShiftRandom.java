@@ -217,7 +217,9 @@ public class XORShiftRandom extends Random {
 
 		@Override
 		public void setSeed(final long seed) {
-			_x.set(init(seed));
+			if (_x != null) {
+				_x.set(init(seed));
+			}
 		}
 
 	};

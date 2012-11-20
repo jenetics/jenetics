@@ -287,6 +287,12 @@
 			<class name="org.jenetics.util.PermutationIndexStreamTest" />
 		</classes>
 	</test>		
+	<test name="org.jenetics.util.Random">
+		<classes>
+			<class name="org.jenetics.util.XORShiftRandomTest" />
+			<class name="org.jenetics.util.HQ64RandomTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.util.RandomIndexStream">
 		<classes>
 			<class name="org.jenetics.util.RandomIndexStreamTest" />
@@ -305,11 +311,6 @@
 	<test name="org.jenetics.util.object">
 		<classes>
 			<class name="org.jenetics.util.objectTest" />
-		</classes>
-	</test>	
-	<test name="org.jenetics.util.XORShiftRandom">
-		<classes>
-			<class name="org.jenetics.util.XORShiftRandomTest" />
 		</classes>
 	</test>	
 </suite>
