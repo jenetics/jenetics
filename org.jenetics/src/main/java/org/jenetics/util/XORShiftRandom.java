@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * period of 2<sup>64</sup> - 1 on 64 bits. (The missing value is zero, which
  * perpetuates itself and must be avoided.) High and low bits pass Diehard.
  * </em></q>
+ *
  * <p align="left">
  * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
  * <br/>
@@ -47,7 +48,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p/>
  *
  * <p><b>
- * The <i>main</i> class of this PRNG is not thread safe. To create an thread 
+ * The <i>main</i> class of this PRNG is not thread safe. To create an thread
  * safe instances of this PRNG, use the {@link XORShiftRandom.ThreadSafe} class.
  * </b></p>
  *
@@ -106,7 +107,7 @@ public class XORShiftRandom extends Random {
 	private static long init(final long seed) {
 		return seed == 0 ? 0xdeadbeef : seed;
 	}
-	
+
 	private static long seed() {
 		return System.nanoTime();
 	}
