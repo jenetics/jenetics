@@ -30,10 +30,10 @@ package org.jenetics.util;
  * @version 1.1 &mdash; <em>$Date: 2012-11-21 $</em>
  */
 public final class math {
-
 	private math() {
 		throw new AssertionError("Don't create an 'math' instance.");
 	}
+
 
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
@@ -342,4 +342,35 @@ public final class math {
 		return t;
 	}
 
+
+	/**
+	 * Mathematical functions regarding probabilities.
+	 */
+	static final class probability {
+		private probability() {
+			throw new AssertionError("Don't create an 'probability' instance.");
+		}
+
+		static final long INT_RANGE = pow(2, 32) - 1;
+
+
+		/**
+		 * Maps the probability, given in the range {@code [0, 1]}, to an
+		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
+		 *
+		 * @param probability the probability to widen.
+		 * @return the widened probability.
+		 */
+		static int toInt(final double probability) {
+			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		}
+
+	}
+
+
 }
+
+
+
+
+

@@ -47,13 +47,13 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-21 $</em>
  */
 public abstract class IndexStream {
 
 	protected IndexStream() {
 	}
-	
+
 	/**
 	 * Return the next (positive inclusive zero) index, or -1 if the stream has
 	 * reached its end.
@@ -61,7 +61,7 @@ public abstract class IndexStream {
 	 * @return the next index, or -1 if the stream has reached its end.
 	 */
 	public abstract int next();
-	
+
 	/**
 	 * Applies a {@code function} to all elements of this stream.
 	 *
@@ -87,7 +87,7 @@ public abstract class IndexStream {
 	public static IndexStream Random(final int n, final double probability) {
 		return Random(n, probability, RandomRegistry.getRandom());
 	}
-	
+
 	/**
 	 * Create a new random IndexIterator.
 	 * @param n the maximal value (exclusively) the created index stream will
@@ -114,32 +114,26 @@ public abstract class IndexStream {
 				"n must be greate than zero: %d", n
 			));
 		}
-		
+
 		return new IndexStream() {
-			private final long 
-			INT_RANGE = (long)Integer.MAX_VALUE - (long)Integer.MIN_VALUE;
-			
-			private final int 
-			MAX = (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE); 
-			
-			private final int N_MINUS_1 = n - 1;
-			
+			private final int P = math.probability.toInt(probability);
+
 			private int _pos = -1;
-			
+
 			@Override
 			public int next() {
 				//return (_pos = next(n, _pos, MAX, random));
 				//return (_pos = next(n, _pos, MAX));
-				
-				while (_pos < n && random.nextInt() >= MAX) {
+
+				while (_pos < n && random.nextInt() >= P) {
 					++_pos;
 				}
-				return (_pos < N_MINUS_1) ? ++_pos : -1;
+				return (_pos < n - 1) ? ++_pos : -1;
 			}
 
 		};
 	}
-	 
+
 	/*
 	private static int next(final int n, final int pos, final int max, Random random) {
 		int index = pos;
@@ -148,9 +142,9 @@ public abstract class IndexStream {
 		}
 		return (index < n - 1) ? (index + 1) : -1;
 	}
-	
+
 	private static native int next(final int n, final int pos, final int max);
-	
+
 	static {
 		System.load("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/main/cpp/libjenetics.so");
 	}
