@@ -31,6 +31,7 @@ import javolution.lang.Immutable;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.math;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumberGene}.
@@ -78,14 +79,15 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	}
 
 	G mutate(final G gene, final Random random) {
-		final double std =
-			(gene.getMax().doubleValue() - gene.getMin().doubleValue())/4.0;
+		final double std = (
+			gene.getMax().doubleValue() - gene.getMin().doubleValue()
+		)*0.25;
 
-		double value = random.nextGaussian()*std + gene.doubleValue();
-		value = Math.min(value, gene.getMax().doubleValue());
-		value = Math.max(value, gene.getMin().doubleValue());
-
-		return gene.newInstance(value);
+		return gene.newInstance(math.clamp(
+			random.nextGaussian()*std + gene.doubleValue(),
+			gene.getMin().doubleValue(),
+			gene.getMax().doubleValue()
+		));
 	}
 
 	@Override

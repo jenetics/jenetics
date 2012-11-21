@@ -184,6 +184,25 @@ public final class math {
 	}
 
 	/**
+	 * <i>Clamping</i> a value between a pair of boundary values.
+	 * <i>Note: using clamp with floating point numbers may give unexpected
+	 * results if one of the values is {@code NaN}.</i>
+	 *
+	 * @param v the value to <i>clamp</i>
+	 * @param lo the lower bound.
+	 * @param hi the upper bound.
+	 * @return The clamped value:
+	 *        <ul>
+	 *            <li>{@code lo if v < lo}</li>
+	 *            <li>{@code hi if hi < v}</li>
+	 *            <li>{@code otherwise, v}</li>
+	 *        </ul>
+	 */
+	public static double clamp(final double v, final double lo, final double hi) {
+		return v < lo ? lo : (v > hi ? hi : v);
+	}
+
+	/**
 	 * Component wise multiplication of the given double array.
 	 *
 	 * @param values the double values to multiply.
