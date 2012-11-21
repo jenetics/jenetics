@@ -30,27 +30,27 @@ import javolution.lang.ClassInitializer;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public final class PerformanceTests {
-	
+
 	private PerformanceTests() {
 	}
-	
+
 	public static void main(final String[] args) {
 		LogContext.enter(LogContext.NULL);
 		try {
-			ClassInitializer.initializeClassPath();			
+			ClassInitializer.initializeClassPath();
 		} finally {
 			LogContext.exit();
 		}
-		
+
 		//ForkJoinContext.setForkkJoinPool(new ForkJoinPool(10));
 		//Concurrency.setContext(ForkJoinContext.class);
-				
+
 		new TestSuite(ArrayTest.class).run().print();
 		new TestSuite(ChromosomeTest.class).run().print();
 		new TestSuite(PopulationTest.class).run().print();
 		new TestSuite(GATest.class).run().print();
 	}
-	
+
 }
 
 

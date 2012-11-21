@@ -153,7 +153,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		_alterers = normalize(alterers).toISeq();
 	}
 
-	private static <G extends Gene<?, G>> 
+	private static <G extends Gene<?, G>>
 	Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
 		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
 

@@ -38,22 +38,22 @@ public class BinomialDistributionTest {
 //		final double probability = 0.5;
 //		final Distribution<Long> dist = new BinomialDistribution<Long>(domain, probability);
 //		final Function<Long, Float64> pdf = dist.pdf();
-//		
+//
 //		for (long i = 0; i < 22; ++i) {
 //			System.out.println(i + "->" + pdf.evaluate(i));
 //		}
 //	}
-//	
+//
 //	@Test
 //	public void cdf() {
 //		final Range<Long> domain = new Range<Long>(0L, 20L);
 //		final double probability = 0.5;
 //		final Distribution<Long> dist = new BinomialDistribution<Long>(domain, probability);
 //		final Function<Long, Float64> cdf = dist.cdf();
-//		
+//
 //		for (long i = 0; i < 22; ++i) {
 //			System.out.println(i + "->" + cdf.evaluate(i));
 //		}
 //	}
-	
+
 }

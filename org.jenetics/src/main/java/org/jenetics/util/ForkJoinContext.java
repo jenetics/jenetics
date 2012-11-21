@@ -45,14 +45,14 @@ import javolution.util.FastList;
  * public class Main {
  *     public static void main(final String[] args) {
  *         final int nthreads = 10;
- *         
+ *
  *         // Create a java ForkJoinPool and initialize the ForkJoinContext.
  *         final ForkJoinPool pool = new ForkJoinPool(nthreads);
  *         ForkJoinContext.setForkJoinPool(pool);
- *         
+ *
  *         // Set the concurrence context to use by the javolution context.
  *         ConcurentContext.setContext(ForkJoinContext.class);
- *         
+ *
  *         // Execute some task concurrently.
  *         ConcurentContext.enter()
  *         try {
@@ -64,9 +64,9 @@ import javolution.util.FastList;
  *     }
  * }
  * [/code]
- * 
+ *
  * A more convenient way for using the {@code ForkJoinContext} allows the
- * {@link Concurrency} class. 
+ * {@link Concurrency} class.
  *
  * @see Concurrency
  *

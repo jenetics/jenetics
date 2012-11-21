@@ -123,7 +123,7 @@ public final class CharSeq
 		if (object instanceof Character) {
 			contains = contains((Character)object);
 		}
-		
+
 		return contains;
 	}
 

@@ -53,12 +53,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		BitChromosome c2 = c1.copy();
 		Assert.assertNotSame(c2, c1);
 		Assert.assertEquals(c2, c1);
-		
+
 		BitChromosome c3 = c1.invert();
 		for (int i = 0; i < c1.length(); ++i) {
 			Assert.assertTrue(c1.getGene(i).getBit() != c3.getGene(i).getBit());
 		}
-		
+
 		BitChromosome c4 = c3.invert();
 		Assert.assertEquals(c4, c1);
 	}
@@ -134,9 +134,9 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			data[i] = (byte)(Math.random()*256);
 		}
     	BitChromosome bc = new BitChromosome(data);
-    	
+
     	Assert.assertEquals(bc.toByteArray(), data);
-    	
+
     }
 
     @Test
@@ -144,7 +144,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
     	BitChromosome c = new BitChromosome(LargeInteger.valueOf(234902));
     	String value = c.toCanonicalString();
     	BitChromosome sc = new BitChromosome(value);
-    	
+
     	Assert.assertEquals(sc, c);
     }
 
@@ -154,10 +154,10 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		for (int i = 0; i < data.length; ++i) {
 			data[i] = (byte)(Math.random()*256);
 		}
-		
+
 		final String dataString = BitChromosome.toString(data);
 		Reporter.log(dataString);
-		
+
 		final byte[] sdata = BitChromosome.toByteArray(dataString);
 		Assert.assertEquals(sdata, data);
 	}

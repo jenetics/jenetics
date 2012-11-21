@@ -45,11 +45,11 @@ public enum PermutationEnum implements XMLSerializable {
 	_13,
 	_14,
 	_15;
-	
-	
+
+
 	static final XMLFormat<PermutationEnum>
 	XML = new XMLFormat<PermutationEnum>(PermutationEnum.class)
-	{		
+	{
 		@Override
 		public PermutationEnum newInstance(
 			final Class<PermutationEnum> cls, final InputElement xml
@@ -68,5 +68,5 @@ public enum PermutationEnum implements XMLSerializable {
 		public void read(final InputElement element, final PermutationEnum gene) {
 		}
 	};
-	
+
 }

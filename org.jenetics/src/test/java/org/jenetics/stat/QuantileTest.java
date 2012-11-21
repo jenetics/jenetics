@@ -40,12 +40,12 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 		@Override
 		public Quantile<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Quantile<Double> quantile = new Quantile<>(random.nextDouble());
 			for (int i = 0; i < 1000; ++i) {
 				quantile.accumulate(random.nextGaussian());
 			}
-			
+
 			return quantile;
 		}
 	};

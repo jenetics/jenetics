@@ -39,65 +39,65 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	public void getGene() {
 		final Chromosome<G> c = getFactory().newInstance();
 		final ISeq<G> genes = c.toSeq();
-		
+
 		Assert.assertEquals(c.getGene(), genes.get(0));
 		for (int i = 0; i < genes.length(); ++i) {
 			Assert.assertSame(c.getGene(i), genes.get(i));
 		}
 	}
-	
+
 	@Test
 	public void newInstanceFromArray() {
 		for (int i = 0; i < 100; ++i) {
 			final Chromosome<G> c1 = getFactory().newInstance();
 			final ISeq<G> genes = c1.toSeq();
 			final Chromosome<G> c2 = c1.newInstance(genes);
-			
+
 			Assert.assertEquals(c2, c1);
 		}
 	}
-	
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void newInstanceFromNullArray() {
 		final Chromosome<G> c = getFactory().newInstance();
 		c.newInstance(null);
 	}
-	
+
 	@Test
 	public void newInstanceFromRandom() {
 		for (int i = 0; i < 100; ++i) {
 			final Chromosome<G> c1 = getFactory().newInstance();
 			final Chromosome<G> c2 = c1.newInstance();
-			
+
 			Assert.assertEquals(c2.length(), c1.length());
 			if (c1.equals(c2)) {
 				Assert.assertEquals(c2.toSeq(), c1.toSeq());
 			}
 		}
 	}
-	
+
 	@Test
 	public void iterator(){
 		final Chromosome<G> c = getFactory().newInstance();
 		final ISeq<G> a = c.toSeq();
-		
+
 		int index = 0;
 		for (G gene : c) {
 			Assert.assertEquals(gene, a.get(index));
 			Assert.assertEquals(gene, c.getGene(index));
-			
+
 			++index;
 		}
 	}
-	
+
 	@Test
 	public void length() {
 		final Chromosome<G> c = getFactory().newInstance();
 		final ISeq<G> a = c.toSeq();
-		
+
 		Assert.assertEquals(c.length(), a.length());
 	}
-	
+
 }
 
 

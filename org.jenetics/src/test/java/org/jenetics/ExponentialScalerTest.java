@@ -40,7 +40,7 @@ public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 			final double a = random.nextInt(100) + 10;
 			final double b = random.nextInt(100) + 10;
 			final double c = random.nextInt(100) + 10;
-			
+
 			return new ExponentialScaler(a, b, c);
 		}
 	};
@@ -48,5 +48,5 @@ public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 	protected Factory<ExponentialScaler> getFactory() {
 		return _factory;
 	}
-	
+
 }

@@ -32,7 +32,7 @@ import java.io.InputStreamReader;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class TestDataIterator implements Closeable {
-	
+
 	public static class Data {
 		public final Double number;
 		public final Double m1;
@@ -44,7 +44,7 @@ public class TestDataIterator implements Closeable {
 		public final Double std;
 		public final Double kurtosis;
 		public final Double skewness;
-		
+
 		private Data(final Double[] data) {
 			number = data[0];
 			m1 = data[1];
@@ -58,14 +58,14 @@ public class TestDataIterator implements Closeable {
 			skewness = data[9];
 		}
 	}
-	
-	
+
+
 	private final InputStream _input;
 	private final String _separator;
-	
+
 	private BufferedReader _reader = null;
 	private String _line = null;
-	
+
 	public TestDataIterator(final InputStream input, final String separator)
 		throws IOException
 	{
@@ -73,14 +73,14 @@ public class TestDataIterator implements Closeable {
 		_separator = separator;
 		init();
 	}
-	
+
 	private void init() throws IOException {
 		if (_reader == null) {
 			_reader = new BufferedReader(new InputStreamReader(_input));
 			readLine();
 		}
 	}
-	
+
 	private void readLine() throws IOException {
 		_line = _reader.readLine();
 		while (_line != null && _line.startsWith("#")) {
@@ -94,7 +94,7 @@ public class TestDataIterator implements Closeable {
 
 	public TestDataIterator.Data next() throws IOException {
 		init();
-		
+
 		Double[] values = new Double[0];
 		if (_line != null) {
 			final String[] parts = _line.split(_separator);
@@ -103,9 +103,9 @@ public class TestDataIterator implements Closeable {
 				values[j] = Double.parseDouble(parts[j]);
 			}
 		}
-		
+
 		readLine();
-		
+
 		return new Data(values);
 	}
 
@@ -113,8 +113,8 @@ public class TestDataIterator implements Closeable {
 	public void close() throws IOException {
 		_reader.close();
 	}
-	
-	
+
+
 }
 
 

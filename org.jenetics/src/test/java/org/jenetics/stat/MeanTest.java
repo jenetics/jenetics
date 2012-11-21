@@ -44,12 +44,12 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 		@Override
 		public Mean<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Mean<Double> mean = new Mean<>();
 			for (int i = 0; i < 1000; ++i) {
 				mean.accumulate(random.nextDouble());
 			}
-			
+
 			return mean;
 		}
 	};
@@ -57,20 +57,20 @@ public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	protected Factory<Mean<Double>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
-	public void mean() throws IOException {		
+	public void mean() throws IOException {
 		try (TestDataIterator it = dataIt()) {
 			final Mean<Double> moment = new Mean<>();
 			while (it.hasNext()) {
 				final Data data = it.next();
 				moment.accumulate(data.number);
-				
+
 				Assert.assertEquals(moment.getMean(), data.mean);
 			}
 		}
 	}
-	
+
 	private static TestDataIterator dataIt() throws IOException {
 		return new TestDataIterator(
 			MeanTest.class.getResourceAsStream(DATA), "\\s"

@@ -38,18 +38,18 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class StatisticsBuilderTest {
-	
+
 	public Object newBuilder() {
 		return new Statistics.Builder<Float64Gene, Float64>();
 	}
-	
+
 	@DataProvider(name = "properties")
 	public Object[][] builderProperties() {
 		LocalContext.enter();
 		try {
 			final Random random = new Random(123456);
 			RandomRegistry.setRandom(random);
-			
+
 			return new Object[][] {
 					{"generation", Integer.TYPE, random.nextInt(1000)},
 					{"invalid", Integer.TYPE, random.nextInt(1000)},
@@ -66,7 +66,7 @@ public class StatisticsBuilderTest {
 			LocalContext.exit();
 		}
 	}
-	
+
 	@Test(dataProvider = "properties")
 	public void build(final String name, final Class<?> valueType, final Object value)
 		throws Exception
@@ -74,15 +74,15 @@ public class StatisticsBuilderTest {
 		final Object builder = newBuilder();
 		final Method setter = builder.getClass().getMethod(name, valueType);
 		final Method build = builder.getClass().getMethod("build");
-		
+
 		setter.invoke(builder, value);
 		final Object statistics = build.invoke(builder);
 		final Method getter = statistics.getClass().getMethod(toGetter(name));
 		final Object result = getter.invoke(statistics);
-		
+
 		Assert.assertEquals(result, value);
 	}
-	
+
 	private static String toGetter(final String name) {
 		return "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
 	}

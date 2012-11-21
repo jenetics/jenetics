@@ -503,8 +503,8 @@ public class BitChromosome extends Number<BitChromosome>
 				throw new IllegalArgumentException(
 					"Byte value doesn't contain 8 bit: " + parts[i]
 				);
-			} 
-			
+			}
+
 			try {
 				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
 			} catch (NumberFormatException e) {

@@ -198,19 +198,19 @@ public abstract class NumberGene<
 
 	/**
 	 * Remind that this method is not consistent with the {@link #equals(Object)}
-	 * method. Since this method only compairs the {@code value} and the 
-	 * {@code equals} method also takes the {@code min} and {@code max} value 
+	 * method. Since this method only compairs the {@code value} and the
+	 * {@code equals} method also takes the {@code min} and {@code max} value
 	 * into account.
 	 * [code]
 	 * final NumberGene<?, ?> ng1 = ...
 	 * final NumberGene<?, ?> ng2 = ...
-	 * 
+	 *
 	 * if (ng1.equals(ng2) {
 	 *     // Holds for every ng1 and ng2.
 	 *     assert(ng1.compareTo(ng2) == 0);
 	 * }
 	 * if (ng1.compareTo(ng2) == 0) {
-	 *     // Doesn't hold for every ng1 and ng2. 
+	 *     // Doesn't hold for every ng1 and ng2.
 	 *     assert(ng1.equals(ng2));
 	 * }
 	 * [/code]

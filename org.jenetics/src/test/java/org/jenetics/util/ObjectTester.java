@@ -44,12 +44,12 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public abstract class ObjectTester<T> {
-	
+
 	protected abstract Factory<T> getFactory();
-	
+
 	protected Array<T> newSameObjects(final int nobjects) {
 		final Array<T> objects = new Array<>(nobjects);
-			
+
 		for (int i = 0; i < nobjects; ++i) {
 			LocalContext.enter();
 			try {
@@ -59,31 +59,31 @@ public abstract class ObjectTester<T> {
 				LocalContext.exit();
 			}
 		}
-		
+
 		return objects;
 	}
-	
+
 	@Test
 	public void equals() {
 		final Array<T> same = newSameObjects(5);
-		
+
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
 			final Object other = same.get(i);
-			
+
 			Assert.assertEquals(other, other);
 			Assert.assertEquals(other, that);
 			Assert.assertEquals(that, other);
 			Assert.assertFalse(other.equals(null));
 		}
 	}
-	
+
 	@Test
 	public void notEquals() {
 		for (int i = 0; i < 10; ++i) {
 			final Object that = getFactory().newInstance();
 			final Object other = getFactory().newInstance();
-			
+
 			if (that.equals(other)) {
 				Assert.assertTrue(other.equals(that));
 				Assert.assertEquals(that.hashCode(), other.hashCode());
@@ -92,7 +92,7 @@ public abstract class ObjectTester<T> {
 			}
 		}
 	}
-	
+
 	@Test
 	public void notEqualsDifferentType() {
 		final Object that = getFactory().newInstance();
@@ -104,15 +104,15 @@ public abstract class ObjectTester<T> {
 	@Test
 	public void hashcode() {
 		final Array<T> same = newSameObjects(5);
-		
+
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
 			final Object other = same.get(i);
-			
+
 			Assert.assertEquals(that.hashCode(), other.hashCode());
 		}
 	}
-	
+
 	@Test
 	public void cloning() {
 		final Object that = getFactory().newInstance();
@@ -121,12 +121,12 @@ public abstract class ObjectTester<T> {
 				"%s.clone()", that.getClass().getName()
 			));
 			final Object other = clone.invoke(that);
-			
+
 			Assert.assertEquals(other, that);
 			Assert.assertNotSame(other, that);
 		}
 	}
-	
+
 	@Test
 	public void copying() {
 		final Object that = getFactory().newInstance();
@@ -138,20 +138,20 @@ public abstract class ObjectTester<T> {
 			}
 		}
 	}
-	
+
 	@Test
 	public void tostring() {
 		final Array<T> same = newSameObjects(5);
-		
+
 		final Object that = same.get(0);
 		for (int i = 1; i < same.length(); ++i) {
 			final Object other = same.get(i);
-			
+
 			Assert.assertEquals(that.toString(), other.toString());
 			Assert.assertNotNull(other.toString());
 		}
 	}
-	
+
 	@Test
 	public void isValid() {
 		final T a = getFactory().newInstance();
@@ -159,11 +159,11 @@ public abstract class ObjectTester<T> {
 			Assert.assertTrue(((Verifiable)a).isValid());
 		}
 	}
-	
+
 	@Test
 	public void typeConsistency() throws Exception {
 		final T a = getFactory().newInstance();
-		
+
 		Assert.assertFalse(a instanceof Cloneable && a instanceof Immutable);
 		if (a instanceof Copyable<?>) {
 			final Object b = ((Copyable<?>)a).copy();
@@ -171,8 +171,8 @@ public abstract class ObjectTester<T> {
 				Assert.assertFalse(a instanceof Copyable<?> && a instanceof Immutable);
 			}
 		}
-		
-		
+
+
 		if (a instanceof Immutable) {
 			final BeanInfo info = Introspector.getBeanInfo(a.getClass());
 			for (PropertyDescriptor prop : info.getPropertyDescriptors()) {
@@ -181,35 +181,35 @@ public abstract class ObjectTester<T> {
 		}
 	}
 
-	
+
 	@Test
 	public void xmlSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
-		
+
 		if (object instanceof XMLSerializable) {
 			for (int i = 0; i < 10; ++i) {
 				final XMLSerializable serializable =
 					(XMLSerializable)getFactory().newInstance();
-				
+
 				Serialize.xml.test(serializable);
 			}
 		}
 	}
-	
+
 	@Test
 	public void objectSerialize() throws Exception {
 		final Object object = getFactory().newInstance();
-		
+
 		if (object instanceof Serializable) {
 			for (int i = 0; i < 10; ++i) {
 				final Serializable serializable =
 					(Serializable)getFactory().newInstance();
-				
+
 				Serialize.object.test(serializable);
 			}
 		}
 	}
-	
+
 }
 
 
