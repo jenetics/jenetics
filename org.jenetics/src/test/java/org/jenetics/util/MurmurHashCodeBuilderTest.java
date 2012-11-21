@@ -31,7 +31,7 @@ public class MurmurHashCodeBuilderTest {
 
 	@Test
 	public void intHashCode() {
-		
+
 	}
-	
+
 }

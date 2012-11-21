@@ -39,18 +39,18 @@ import org.jenetics.util.accumulators.MinMax;
 public class accumulatorsMinMaxTest
 	extends MappedAccumulatorTester<accumulators.MinMax<Double>>
 {
-	
+
 	final Factory<accumulators.MinMax<Double>>
 	_factory = new Factory<accumulators.MinMax<Double>>() {
 		@Override
 		public accumulators.MinMax<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final MinMax<Double> minMax = new MinMax<>();
 			for (int i = 0; i < 1000; ++i) {
 				minMax.accumulate(random.nextGaussian());
 			}
-			
+
 			return minMax;
 		}
 	};
@@ -58,7 +58,7 @@ public class accumulatorsMinMaxTest
 	protected Factory<accumulators.MinMax<Double>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
 	public void minMax() {
 		final Integer[] array = new Integer[20];
@@ -66,11 +66,11 @@ public class accumulatorsMinMaxTest
 			array[i] = i;
 		}
 		shuffle(array);
-		
+
 		final accumulators.MinMax<Integer> minMax = new accumulators.MinMax<>();
 		accumulators.accumulate(Arrays.asList(array), minMax);
 		Assert.assertEquals(minMax.getMin(), new Integer(0));
 		Assert.assertEquals(minMax.getMax(), new Integer(19));
 	}
-	
+
 }

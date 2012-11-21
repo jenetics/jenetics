@@ -45,12 +45,12 @@ public class accumulatorsMinTest
 		@Override
 		public Min<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Min<Double> min = new Min<>();
 			for (int i = 0; i < 1000; ++i) {
 				min.accumulate(random.nextGaussian());
 			}
-			
+
 			return min;
 		}
 	};
@@ -58,7 +58,7 @@ public class accumulatorsMinTest
 	protected Factory<accumulators.Min<Double>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
 	public void min() {
 		final Integer[] array = new Integer[20];
@@ -66,12 +66,12 @@ public class accumulatorsMinTest
 			array[i] = i;
 		}
 		shuffle(array);
-		
+
 		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(Arrays.asList(array), min);
 		Assert.assertEquals(min.getMin(), new Integer(0));
 	}
-	
+
 }
 
 

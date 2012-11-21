@@ -33,50 +33,50 @@ import org.testng.annotations.Test;
 public abstract class MappedAccumulatorTester<A extends MappedAccumulator<Double>>
 	extends ObjectTester<A>
 {
-	
+
 	@Test
 	public void accumulatedSamples() {
 		final int SAMPLES = 12345;
 		final Random random = new Random(123456);
 		final MappedAccumulator<Double> accu = getFactory().newInstance();
-		
+
 		final long samples = accu.getSamples();
-		
+
 		for (int i = 0; i < SAMPLES; ++i) {
 			accu.accumulate(random.nextDouble()*6);
 		}
-		
+
 		Assert.assertEquals(accu._samples, SAMPLES + samples);
 		Assert.assertEquals(accu.getSamples(), SAMPLES + samples);
 	}
-	
+
 	@Test
 	public void testClone() {
 		MappedAccumulator<Double> accu1 = getFactory().newInstance();
 		for (int i = 0; i < 1000; ++i) {
 			accu1.accumulate(Double.valueOf(i));
 		}
-		
+
 		Accumulator<Double> accu2 = accu1.clone();
-		
+
 		Assert.assertNotSame(accu1, accu2);
 		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
 		Assert.assertEquals(accu1, accu2);
-		
+
 		accu1.accumulate(4.5);
 		Assert.assertFalse(accu1.equals(accu2));
 		Assert.assertFalse(accu1.hashCode() == accu2.hashCode());
-		
+
 		accu2.accumulate(4.5);
 		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
 		Assert.assertEquals(accu1, accu2);
-		
+
 		accu1 = getFactory().newInstance();
 		accu2 = accu1.clone();
-		
+
 		Assert.assertNotSame(accu1, accu2);
 		Assert.assertEquals(accu1.hashCode(), accu2.hashCode());
 		Assert.assertEquals(accu1, accu2);
 	}
-	
+
 }

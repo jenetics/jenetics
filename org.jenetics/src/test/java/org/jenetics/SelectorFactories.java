@@ -36,7 +36,7 @@ public class SelectorFactories {
 
 	private SelectorFactories() {
 	}
-	
+
 	public static Factory<BoltzmannSelector<Float64Gene, Float64>>
 	BoltzmannSelector = new Factory<BoltzmannSelector<Float64Gene, Float64>>() {
 		@Override
@@ -45,7 +45,7 @@ public class SelectorFactories {
 			return new BoltzmannSelector<>(random.nextDouble());
 		}
 	};
-	
+
 	public static Factory<ExponentialRankSelector<Float64Gene, Float64>>
 	ExponentialRankSelector = new Factory<ExponentialRankSelector<Float64Gene, Float64>>() {
 		@Override
@@ -54,7 +54,7 @@ public class SelectorFactories {
 			return new ExponentialRankSelector<>(random.nextDouble());
 		}
 	};
-	
+
 	public static Factory<LinearRankSelector<Float64Gene, Float64>>
 	LinearRankSelector = new Factory<LinearRankSelector<Float64Gene, Float64>>() {
 		@Override
@@ -63,7 +63,7 @@ public class SelectorFactories {
 			return new LinearRankSelector<>(random.nextDouble());
 		}
 	};
-	
+
 	public static Factory<RouletteWheelSelector<Float64Gene, Float64>>
 	RouletteWheelSelector = new Factory<RouletteWheelSelector<Float64Gene, Float64>>() {
 		@Override

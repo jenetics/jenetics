@@ -36,39 +36,39 @@ class GenotypeBuilder {
 	private int _nchromosomes = 1;
 	private double _min = 0;
 	private double _max = 1;
-	
+
 	public GenotypeBuilder() {
 	}
-	
+
 	public GenotypeBuilder ngenes(final int ngenes) {
 		_ngenes = ngenes;
 		return this;
 	}
-	
+
 	public GenotypeBuilder nchromosomes(final int nchromosomes) {
 		_nchromosomes = nchromosomes;
 		return this;
 	}
-	
+
 	public GenotypeBuilder min(final double min) {
 		_min = min;
 		return this;
 	}
-	
+
 	public GenotypeBuilder max(final double max) {
 		_max = max;
 		return this;
 	}
-	
+
 	public Genotype<Float64Gene> build() {
 		final Array<Float64Chromosome> chromosomes =
 			new Array<>(_nchromosomes);
-		
+
 		for (int i = 0; i < _nchromosomes; ++i) {
 			chromosomes.set(i, new Float64Chromosome(_min, _max, _ngenes));
-		}	
-		
+		}
+
 		return Genotype.valueOf(chromosomes.toISeq());
 	}
-	
+
 }

@@ -35,40 +35,40 @@ import org.jscience.mathematics.number.LargeInteger;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class bitTest {
-	
+
 	@Test
 	public void flip() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[4];
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		final byte[] cdata = data.clone();
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.flip(cdata, i);
 		}
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
 		}
 	}
-	
-	
+
+
 	@Test(dataProvider = "shiftBits")
 	public void shiftLeft(final Integer shift, final Integer bytes) {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[bytes];
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		bit.shiftLeft(data, shift);
-		
+
 		random.setSeed(seed);
 		for (int i = 0; i < shift; ++i) {
 			Assert.assertEquals(bit.get(data, i), false);
@@ -77,36 +77,36 @@ public class bitTest {
 			Assert.assertEquals(bit.get(data, i), random.nextBoolean(), "Index: " + i);
 		}
 	}
-	
+
 	@Test
 	public void bigShiftLeft() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[10];
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		bit.shiftLeft(data, 100);
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(data, i), false);
 		}
 	}
-	
+
 	@Test(dataProvider = "shiftBits")
 	public void shiftRight(final Integer shift, final Integer bytes) {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[bytes];
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		bit.shiftRight(data, shift);
-		
+
 		random.setSeed(seed);
 		for (int i = 0; i < shift; ++i) {
 			random.nextBoolean();
@@ -116,24 +116,24 @@ public class bitTest {
 			Assert.assertEquals(bit.get(data, i), random.nextBoolean(), "Index: " + i);
 		}
 	}
-	
+
 	@Test
 	public void bigShiftRight() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[10];
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		bit.shiftRight(data, 100);
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(data, i), false, "Index: " + i);
 		}
 	}
-	
+
 	@DataProvider(name = "shiftBits")
 	public Object[][] shiftBits() {
 		return new Object[][] {
@@ -156,97 +156,97 @@ public class bitTest {
 				{799, 100}
 		};
 	}
-	
+
 	@Test
 	public void setGetBit() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[10000];
-				
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		random.setSeed(seed);
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(data, i), random.nextBoolean());
 		}
 	}
-	
+
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void setOutOfIndex() {
 		final byte[] data = new byte[3];
 		bit.set(data, 100, false);
 	}
-	
+
 	@Test(expectedExceptions = IndexOutOfBoundsException.class)
 	public void getOutOfIndex() {
 		final byte[] data = new byte[3];
 		bit.get(data, 100);
 	}
-	
+
 	@Test
 	public void increment() {
 		final int min = -128;
 		final int max = 127;
-		
+
 		for (int i = min; i < -2; ++i) {
 			final LargeInteger li1 = LargeInteger.valueOf(i);
 			final byte[] data = bit.toByteArray(li1);
-			
+
 			bit.increment(data);
-			
+
 			final LargeInteger li2 = bit.toLargeInteger(data);
 			Assert.assertEquals(li2, li1.plus(1));
 		}
 		for (int i = 0; i < max; ++i) {
 			final LargeInteger li1 = LargeInteger.valueOf(i);
 			final byte[] data = bit.toByteArray(li1);
-			
+
 			bit.increment(data);
-			
+
 			final LargeInteger li2 = bit.toLargeInteger(data);
 			Assert.assertEquals(li2, li1.plus(1));
 		}
 	}
-	
+
 	@Test
 	public void invert() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[1000];
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			bit.set(data, i, random.nextBoolean());
 		}
-		
+
 		final byte[] cdata = data.clone();
 		bit.invert(cdata);
-		
+
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
 		}
 	}
-	
+
 	@Test(dataProvider = "toByteArrayData")
 	public void toByteArray(final LargeInteger value) {
 		final byte[] data = bit.toByteArray(value);
 		final LargeInteger i = bit.toLargeInteger(data);
 		final byte[] idata = bit.toByteArray(i);
-		
+
 		Assert.assertEquals(idata, data);
 		Assert.assertEquals(i, value);
 	}
-	
+
 	@DataProvider(name = "toByteArrayData")
 	public Iterator<Object[]> toByteArrayData() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final int length = 20;
-		
+
 		return new Iterator<Object[]>() {
 			private int _pos = 0;
-			
+
 			@Override
 			public boolean hasNext() {
 				return _pos < length;
@@ -258,7 +258,7 @@ public class bitTest {
 				final byte[] data = new byte[size];
 				random.nextBytes(data);
 				_pos += 1;
-				
+
 				return new Object[]{ LargeInteger.valueOf(data, 0, data.length) };
 			}
 
@@ -268,32 +268,32 @@ public class bitTest {
 			}
 		};
 	}
-	
+
 	@Test(dataProvider = "toLargeIntegerData")
 	public void toLargeInteger(final byte[] data) {
 		final LargeInteger i = bit.toLargeInteger(data);
-		
+
 		final byte[] idata = bit.toByteArray(i);
 		final LargeInteger j = bit.toLargeInteger(idata);
-		
+
 		for (int k = 0, n = Math.min(idata.length, data.length); k < n; ++k) {
 			if (idata[idata.length - k - 1] != data[data.length - k - 1]) {
 				Assert.assertEquals(idata[k], data[k]);
 			}
-			
+
 		}
 		Assert.assertEquals(j, i);
 	}
-	
+
 	@DataProvider(name = "toLargeIntegerData")
 	public Iterator<Object[]> toLargeIntegerData() {
 		final long seed = System.currentTimeMillis();
 		final Random random = new Random(seed);
 		final int length = 20;
-		
+
 		return new Iterator<Object[]>() {
 			private int _pos = 0;
-			
+
 			@Override
 			public boolean hasNext() {
 				return _pos < length;
@@ -305,7 +305,7 @@ public class bitTest {
 				final byte[] data = new byte[size];
 				random.nextBytes(data);
 				_pos += 1;
-				
+
 				return new Object[]{ data };
 			}
 
@@ -315,7 +315,7 @@ public class bitTest {
 			}
 		};
 	}
-	
+
 }
 
 

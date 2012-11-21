@@ -38,11 +38,11 @@ public class PermutationChromosomeTest
 			return PermutationChromosome.ofInteger(100);
 		}
 	};
-	
+
 	@Override
 	protected Factory<Chromosome<EnumGene<Integer>>> getFactory() {
 		return _factory;
 	}
-	
-	
+
+
 }

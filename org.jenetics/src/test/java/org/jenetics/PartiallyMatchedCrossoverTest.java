@@ -46,95 +46,95 @@ import org.jenetics.util.arrays;
  */
 public class PartiallyMatchedCrossoverTest {
 
-	
+
 	@Test(invocationCount = 10)
 	public void crossover() {
 		final PartiallyMatchedCrossover<Integer> pmco =
 			new PartiallyMatchedCrossover<>(1);
-		
+
 		final int length = 1000;
 		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
-		
+
 		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
 		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
-		
+
 		arrays.shuffle(that);
 		arrays.shuffle(other);
-		
+
 		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.valueOf(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
-		
+
 		final PermutationChromosome<Integer> otherChrom1 = PermutationChromosome.valueOf(other.toISeq());
 		Assert.assertTrue(otherChrom1.isValid(), "otherChrom1 not valid");
-		
+
 		pmco.crossover(that, other);
-		
+
 		final PermutationChromosome<Integer> thatChrom2 = PermutationChromosome.valueOf(that.toISeq());
 		Assert.assertTrue(thatChrom2.isValid(), "thatChrom2 not valid: " + thatChrom2.toSeq());
-		
+
 		final PermutationChromosome<Integer> otherChrom2 = PermutationChromosome.valueOf(other.toISeq());
 		Assert.assertTrue(otherChrom2.isValid(), "otherChrom2 not valid: " + otherChrom2.toSeq());
-		
+
 		Assert.assertFalse(thatChrom1.equals(thatChrom2), "That chromosome must not be equal");
 		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
 	}
-	
+
 	//@Test
 	public void corssoverWithIllegalChromosome() {
 		final PartiallyMatchedCrossover<Integer> pmco = new PartiallyMatchedCrossover<>(1);
-			
+
 		final int length = 1000;
 		final Array<Integer> alleles = new Array<Integer>(length).fill(Int());
 		final ISeq<Integer> ialleles = alleles.toISeq();
-		
+
 		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
 		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
-		
+
 		pmco.crossover(that, other);
-		
+
 	}
-	
+
 	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
 		final Integer npopulation,
 		final Double p
-	) {		
+	) {
 		final Population<EnumGene<Float64>, Float64> population = newPermutationFloat64GenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
-		
+
 		// The mutator to test.
 		final PartiallyMatchedCrossover<Float64> crossover = new PartiallyMatchedCrossover<>(p);
-		
+
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
 		final double mean = crossover.getOrder()*npopulation*p;
-		
+
 		final long min = 0;
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
-		
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
+
+		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
-		
+
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
 			histogram.accumulate(alterations);
-			variance.accumulate(alterations);	
+			variance.accumulate(alterations);
 		}
-				
+
 		// Normal distribution as approximation for binomial distribution.
 		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
-	
+
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
 		return TestUtils.alterProbabilityParameters();
 	}
-	
+
 }
 
 

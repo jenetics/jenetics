@@ -49,44 +49,44 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 		return _factory;
 	}
 
-	
+
 	@Test(invocationCount = 20, successPercentage = 95)
     public void newInstanceDistribution() {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random(12345));
-			
+
 			final CharSeq characters = new CharSeq("0123456789");
 			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
-			
+
 			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
-			
+
 			for (CharacterGene gene : chromosome) {
 				histogram.accumulate(Long.valueOf(gene.getAllele().toString()));
 			}
-			
+
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
 		} finally {
 			LocalContext.exit();
 		}
     }
-	
+
 	@Test(dataProvider = "genes")
 	public void newCharacterChromosome(final String genes) {
 		final CharSeq characters = new CharSeq("0123456789");
 		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
-		
+
 		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);
 	}
-	
+
 	@Test(dataProvider = "genes", expectedExceptions = IllegalArgumentException.class)
 	public void newIllegalCharacterChromosome(final String genes) {
 		final CharSeq characters = new CharSeq("012356789");
 		CharacterChromosome chromosome = new CharacterChromosome(genes, characters);
-		
-		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);		
+
+		Assert.assertEquals(new String(new StringBuilder(chromosome)), genes);
 	}
-	
+
 	@DataProvider(name = "genes")
 	public Object[][] genes() {
 		return new Object[][] {

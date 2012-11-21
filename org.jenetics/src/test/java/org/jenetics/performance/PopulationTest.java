@@ -46,7 +46,7 @@ public class PopulationTest {
 	private final Population<Float64Gene, Float64> _population = newFloat64GenePopulation(
 			1, 1, SIZE
 		);
-	
+
 	@Test(1)
 	public TestCase iterator = new TestCase("iterator()", LOOPS, SIZE) {
 		@Override
@@ -67,25 +67,25 @@ public class PopulationTest {
 
 	@Test(3)
 	public TestCase sort = new TestCase("sort()", LOOPS, SIZE) {
-		
+
 		@Override
 		protected void test() {
 			_population.sort();
 		}
-		
+
 		@Override
 		protected void afterTest() {
 			arrays.shuffle(_population);
 		}
 	};
-	
+
 
 	private static final class Continous
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		@Override
 		public Float64 apply(Genotype<Float64Gene> genotype) {
 			return genotype.getChromosome().getGene().getAllele();
@@ -93,7 +93,7 @@ public class PopulationTest {
 	}
 
 	private static final Function<Genotype<Float64Gene>, Float64> FF = new Continous();
-	
+
 	private static final Population<Float64Gene, Float64> newFloat64GenePopulation(
 		final int ngenes,
 		final int nchromosomes,
@@ -103,14 +103,14 @@ public class PopulationTest {
 		gtb.ngenes(ngenes);
 		gtb.nchromosomes(nchromosomes);
 		gtb.min(0);
-		gtb.max(10);	
-		
+		gtb.max(10);
+
 		final Population<Float64Gene, Float64>
 		population = new Population<>(npopulation);
 		for (int i = 0; i < npopulation; ++i) {
 			population.add(Phenotype.valueOf(gtb.build(), FF, 0));
-		}	
-		
+		}
+
 		return population;
 	}
 

@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-20 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
  */
 public final class bit {
 
@@ -109,10 +109,10 @@ public final class bit {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
 			final int d = data[bytes] & 0xFF;
-			
+
 			bit = (d & (1 << bits)) != 0;
 		}
-		
+
 		return bit;
 	}
 
@@ -307,7 +307,7 @@ public final class bit {
 		reverse(array);
 		return li;
 	}
-	
+
 
 	private static byte[] reverse(final byte[] array) {
 		int i = 0;
@@ -327,7 +327,7 @@ public final class bit {
 	}
 
 	static long toLong(final byte[] data) {
-		return 
+		return
 			(((long)data[0] << 56) +
 			((long)(data[1] & 255) << 48) +
 			((long)(data[2] & 255) << 40) +
@@ -337,7 +337,7 @@ public final class bit {
 			((data[6] & 255) <<  8) +
 			((data[7] & 255) <<  0));
 	}
-	
+
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
 		if (data.length < 4 + start) {
 			throw new IllegalArgumentException("Byte array to short: " + data.length);
