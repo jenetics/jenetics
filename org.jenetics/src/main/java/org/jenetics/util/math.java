@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
  */
 public final class math {
 
@@ -181,6 +181,25 @@ public final class math {
 		}
 
 		return max;
+	}
+
+	/**
+	 * <i>Clamping</i> a value between a pair of boundary values.
+	 * <i>Note: using clamp with floating point numbers may give unexpected
+	 * results if one of the values is {@code NaN}.</i>
+	 *
+	 * @param v the value to <i>clamp</i>
+	 * @param lo the lower bound.
+	 * @param hi the upper bound.
+	 * @return The clamped value:
+	 *        <ul>
+	 *            <li>{@code lo if v < lo}</li>
+	 *            <li>{@code hi if hi < v}</li>
+	 *            <li>{@code otherwise, v}</li>
+	 *        </ul>
+	 */
+	public static double clamp(final double v, final double lo, final double hi) {
+		return v < lo ? lo : (v > hi ? hi : v);
 	}
 
 	/**
