@@ -37,7 +37,7 @@ public class mathTest {
 	public void validAdd(final Long a, final Long b) {
 		math.plus(a, b);
 	}
-	
+
 	@DataProvider(name = "validSum")
 	public Object[][] validSum() {
 		return new Object[][] {
@@ -45,14 +45,14 @@ public class mathTest {
 			{Long.MAX_VALUE - 1, 1L},
 			{Long.MAX_VALUE - 100, 100L},
 			{Long.MAX_VALUE, Long.MIN_VALUE},
-			
+
 			{Long.MIN_VALUE, 10L},
 			{Long.MIN_VALUE + 10, -10L},
 			{Long.MIN_VALUE + 100, -100L},
 			{Long.MIN_VALUE, Long.MAX_VALUE}
 		};
 	}
-	
+
 	@Test(dataProvider = "invalidSum", expectedExceptions = ArithmeticException.class)
 	public void invalidAdd(final Long a, final Long b) {
 		math.plus(a, b);
@@ -65,19 +65,19 @@ public class mathTest {
 			{Long.MAX_VALUE - 1, 2L},
 			{Long.MAX_VALUE - 100, 101L},
 			{Long.MAX_VALUE, Long.MAX_VALUE},
-			
+
 			{Long.MIN_VALUE, -1L},
 			{Long.MIN_VALUE, -10L},
 			{Long.MIN_VALUE + 100, Long.MIN_VALUE},
 			{Long.MIN_VALUE, Long.MIN_VALUE}
 		};
-	}	
-	
+	}
+
 	@Test(dataProvider = "validDifference")
 	public void validSub(final Long a, final Long b) {
 		math.minus(a, b);
 	}
-	
+
 	@DataProvider(name = "validDifference")
 	public Object[][] validDifference() {
 		return new Object[][]{
@@ -85,43 +85,52 @@ public class mathTest {
 			{Long.MIN_VALUE + 1, 1L},
 			{Long.MIN_VALUE + 100, 100L},
 			{Long.MIN_VALUE, Long.MIN_VALUE},
-			
+
 			{Long.MAX_VALUE, 0L},
 			{Long.MAX_VALUE, 1L},
 			{Long.MAX_VALUE, 100L},
 			{Long.MAX_VALUE, Long.MAX_VALUE}
 		};
 	}
-	
+
 	@Test(dataProvider = "invalidDifference", expectedExceptions = ArithmeticException.class)
 	public void invalidSub(final Long a, final Long b) {
 		math.minus(a, b);
 	}
-	
+
 	@DataProvider(name = "invalidDifference")
 	public Object[][] invalidDifference() {
 		return new Object[][]{
 			{Long.MIN_VALUE, 1L},
 			{Long.MIN_VALUE + 1, 2L},
 			{Long.MIN_VALUE + 100, 101L},
-			
+
 			{Long.MAX_VALUE - 1, Long.MAX_VALUE + 1},
 			{Long.MAX_VALUE - 100, Long.MAX_VALUE + 100},
 			{Long.MAX_VALUE, Long.MIN_VALUE + 1},
 			{Long.MAX_VALUE, Long.MIN_VALUE}
 		};
 	}
-	
+
 	@Test
 	public void summarize() {
 		final double[] values = new double[150000];
 		for (int i = 0; i < values.length; ++i) {
 			values[i] = 1.0/values.length;
 		}
-		
+
 		Assert.assertEquals(sum(values), 1.0);
 	}
-	
+
+	@Test
+	public void probabilityToInt() {
+		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
+		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
+		Assert.assertEquals(math.probability.toInt(0.5), 0);
+		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
+		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
+	}
+
 }
 
 
