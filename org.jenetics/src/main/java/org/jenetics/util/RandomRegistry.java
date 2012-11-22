@@ -32,32 +32,67 @@ import javolution.lang.Reference;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The
- * {@code RandomRegistry} is thread safe. The default value for the random
- * engine is an instance of the Java {@link Random} engine with the
- * {@link System#currentTimeMillis()} as seed value.
+ * {@code RandomRegistry} is thread safe. The registry is initialized with the
+ * {@link ThreadLocalRandom} PRNG, which has a much better performance behavior
+ * than an instance of the {@code Random} class.
  * <p/>
- * You can temporarily (and locally) change the implementation of the random engine
- * by using the {@link LocalContext} from the
- * <a href="http://javolution.org/">javolution</a> project.
+ *
+ * <b>Setup of a <i>global</i> PRNG</b>
  *
  * [code]
- * LocalContext.enter();
- * try {
- *     RandomRegistry.setRandom(new MyRandom());
- *     ...
- * } finally {
- *     LocalContext.exit(); // Restore the previous random engine.
+ * public class GA {
+ *     public static void main(final String[] args) {
+ *         // Initialize the registry with a ThreadLocal instance of the PRGN.
+ *         // This is the preferred way setting a new PRGN.
+ *         RandomRegistry.setRandom(XORShiftRandom.INSTANCE);
+ *
+ *         // Using a thread safe variant of the PRGN. Leads to slower PRN
+ *         // generation, but gives you the possibility to set a PRNG seed.
+ *         RandomRegistry.setRandom(new XORShiftRandom.ThreadSafe(1234));
+ *
+ *         ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         ga.evolve(100);
+ *     }
  * }
  * [/code]
  * <p/>
- * The used <i>default</i> PRNG is the {@link ThreadLocalRandom} object.
+ *
+ * <b>Setup of a <i>local</i> PRNG</b><br/>
+ *
+ * With the help of the {@link LocalContext} from the <a href="http://javolution.org/">
+ * javolution</a> projectyou can temporarily (and locally) change the
+ * implementation of the PRNG
+ *
+ * [code]
+ * public class GA {
+ *     public static void main(final String[] args) {
+ *         ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *
+ *         LocalContext.enter();
+ *         try {
+ *             RandomRegistry.setRandom(HQ64Random.INSTANCE);
+ *             // Only the 'setup' step uses the new PRGN.
+ *             ga.setup();
+ *         } finally {
+ *             LocalContext.exit(); // Restore the previous random engine.
+ *         }
+ *
+ *         ga.evolve(100);
+ *     }
+ * }
+ * [/code]
+ * <p/>
  *
  * @see LocalContext
  * @see ThreadLocalRandom
+ * @see XORShiftRandom
+ * @see HQ64Random
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-22 $</em>
  */
 public final class RandomRegistry {
 
@@ -86,7 +121,7 @@ public final class RandomRegistry {
 
 	/**
 	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} <b>must</b> be thread-safe, which is the case for the
+	 * {@link Random} <b>must</b> be thread safe, which is the case for the
 	 * default Java {@code Random} implementation.
 	 * <p/>
 	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
@@ -104,10 +139,11 @@ public final class RandomRegistry {
 
 	/**
 	 * Set the new global {@link Random} object for the GA. The given
-	 * {@link Random} don't have be thread-safe, because the given
-	 * {@link ThreadLocal} wrapper guarantees thread-safety. Setting a
+	 * {@link Random} don't have be thread safe, because the given
+	 * {@link ThreadLocal} wrapper guarantees thread safety. Setting a
 	 * <i>thread-local</i> random object leads, in general, to a faster
-	 * PRN generation, when using a non-blocking PRNG.
+	 * PRN generation, when using a non-blocking PRNG. This is the preferred
+	 * way for changing the PRNG.
 	 *
 	 * @param random the thread-local random engine to use.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
