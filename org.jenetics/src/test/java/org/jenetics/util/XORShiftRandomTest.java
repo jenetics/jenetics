@@ -29,7 +29,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -113,8 +112,8 @@ public class XORShiftRandomTest extends RandomTestBase {
 		final Random jrand = new Random();
 		final Random tljrand = ThreadLocalRandom.current();
 		final Random xorrand = new XORShiftRandom(); //.INSTANCE.get();
-		final Random sxorrand = new random.XORShiftRandom(new ReentrantLock());
-		final Random esxorrand = new random.XORShiftRandom(random.NULL);
+		final Random hq64rand = new HQ64Random();
+		final Random tshq64rand = new HQ64Random.ThreadSafe();
 		final Random axorrand = new XORShiftRandom.ThreadSafe();
 
 		final int loops = 100000000;
@@ -151,21 +150,22 @@ public class XORShiftRandomTest extends RandomTestBase {
 		stop = System.currentTimeMillis();
 		System.out.println("XORRand: " + (stop - start) + "ms");
 
-		// SXORShiftRandom
+		// HQ64Random
 		start = System.currentTimeMillis();
 		for (int i = 0; i < loops; ++i) {
-			sxorrand.nextDouble();
+			hq64rand.nextDouble();
 		}
 		stop = System.currentTimeMillis();
-		System.out.println("SXORRand: " + (stop - start) + "ms");
+		System.out.println("HQRand: " + (stop - start) + "ms");
 
-		// ESXORShiftRandom
+		// TSHQ64Random
 		start = System.currentTimeMillis();
 		for (int i = 0; i < loops; ++i) {
-			esxorrand.nextDouble();
+			tshq64rand.nextDouble();
 		}
 		stop = System.currentTimeMillis();
-		System.out.println("ESXORRand: " + (stop - start) + "ms");
+		System.out.println("TSHQRand: " + (stop - start) + "ms");
+
 
 		// AXORShiftRandom
 		start = System.currentTimeMillis();
