@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.Random;
 
 /**
  * This is the implementation of the <i>highest quality recommended generator,</i>
@@ -51,7 +50,7 @@ import java.util.Random;
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class HQ64Random extends Random {
+public class HQ64Random extends Random64{
 
 	private static final long serialVersionUID = 1L;
 

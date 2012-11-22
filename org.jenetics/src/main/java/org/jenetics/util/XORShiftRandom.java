@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -56,7 +55,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class XORShiftRandom extends Random {
+public class XORShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
