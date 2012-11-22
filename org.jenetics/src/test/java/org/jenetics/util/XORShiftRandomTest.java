@@ -108,7 +108,7 @@ public class XORShiftRandomTest extends RandomTestBase {
 		return (Random)in.readObject();
 	}
 
-	//@Test
+	@Test
 	public void nextDouble() {
 		final Random jrand = new Random();
 		final Random tljrand = ThreadLocalRandom.current();
@@ -174,6 +174,7 @@ public class XORShiftRandomTest extends RandomTestBase {
 		}
 		stop = System.currentTimeMillis();
 		System.out.println("AXORRand: " + (stop - start) + "ms");
+
 
 	}
 
