@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-22 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-23 $</em>
  */
 public class XORShiftRandom extends Random64 {
 
@@ -130,11 +130,6 @@ public class XORShiftRandom extends Random64 {
 		_x ^= (_x >>> 35);
 		_x ^= (_x << 4);
 		return _x;
-	}
-
-	@Override
-	protected int next(final int bits) {
-		return (int)(nextLong() >>> (64 - bits));
 	}
 
 	@Override
