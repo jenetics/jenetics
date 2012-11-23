@@ -48,9 +48,9 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-22 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-23 $</em>
  */
-public class HQ64Random extends Random64{
+public class HQ64Random extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
