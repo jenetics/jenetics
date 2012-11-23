@@ -22,59 +22,30 @@
  */
 package org.jenetics.util;
 
-import java.util.Random;
-
 /**
+ * <p align="left">
+ * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
+ * <br/>
+ * <em>Chapter 7. Random Numbers, Section 7.1, Page 342</em>
+ * <br/>
+ * <small>Cambridge University Press New York, NY, USA ©2007</small>
+ * <br/>
+ * ISBN:0521880688 9780521880688
+ * <br/>
+ * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
+ * <p/>
+ * 
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-abstract class Random64 extends Random {
-
+public class SQ64Random extends Random64 {
 	private static final long serialVersionUID = 1L;
 
-	protected Random64() {
-	}
-
-	protected Random64(long seed) {
-		super(seed);
-	}
-
-	// Force to explicitly override the Random.nextLong() method.
-	@Override
-	public abstract long nextLong();
 	
 	@Override
-	protected int next(final int bits) {
-		return (int)(nextLong() >>> (64 - bits));
+	public long nextLong() {
+		return System.nanoTime();
 	}
 	
-	/**
-	 * Optimized version of the {@link Random#nextBytes(byte[])} method for
-	 * 64-bit random engines.
-	 */
-	@Override
-	public void nextBytes(final byte[] bytes) {
-		for (int i = 0, len = bytes.length; i < len;) {
-			int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
-
-			for (long x = nextLong(); n-- > 0; x >>= Byte.SIZE) {
-				bytes[i++] = (byte)x;
-			}
-		}
-	}
-
-	/**
-	 * Optimized version of the {@link Random#nextDouble()} method for 64-bit
-	 * random engines.
-	 */
-	@Override
-	public double nextDouble() {
-		return toDouble(nextLong());
-	}
-
-	static double toDouble(final long x) {
-		return (((x >>> 38) << 27) + (((int)x) >>> 5))/(double)(1L << 53);
-	}
-
 }

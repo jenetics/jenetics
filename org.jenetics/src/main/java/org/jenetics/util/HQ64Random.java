@@ -121,11 +121,6 @@ public class HQ64Random extends Random64 {
 	}
 
 	@Override
-	protected int next(int bits) {
-		return (int)(nextLong() >>> (64 - bits));
-	}
-
-	@Override
 	public void setSeed(final long seed) {
 		init(seed);
 	}

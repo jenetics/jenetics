@@ -133,11 +133,6 @@ public class XORShiftRandom extends Random64 {
 	}
 
 	@Override
-	protected int next(final int bits) {
-		return (int)(nextLong() >>> (64 - bits));
-	}
-
-	@Override
 	public void setSeed(final long seed) {
 		_x = init(seed);
 	}
