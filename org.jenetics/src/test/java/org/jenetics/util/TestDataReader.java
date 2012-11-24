@@ -22,65 +22,53 @@
  */
 package org.jenetics.util;
 
-import java.util.Random;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
- * https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.1
- * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class LGC64ShiftRandom extends Random64 {
+public class TestDataReader implements Closeable {
 
-	private static final long serialVersionUID = 1L;
+	private final BufferedReader _reader;
 
-	public static final class Parameter {
-		public final long a;
-		public final long b;
-		public Parameter(final long a, final long b) {
-			this.a = a;
-			this.b = b;
+	public TestDataReader(final InputStream in) {
+		_reader = new BufferedReader(new InputStreamReader(in));
+	}
+
+	public TestDataReader(final String resource) {
+		this(TestDataReader.class.getResourceAsStream(resource));
+	}
+
+	public <R> void foreach(final Function<String[], R> f) {
+		String[] data = null;
+		try {
+			while ((data = read()) != null) {
+				f.apply(data);
+			}
+		} catch (IOException e) {
+			throw new AssertionError(e);
 		}
 	}
 
-	public static final Parameter DEFAULT = new Parameter(0xFBD19FBBC5C07FF5L, 1L);
+	public String[] read() throws IOException {
+		String line = null;
+		while ((line = _reader.readLine()) != null &&
+				(line.trim().startsWith("#") ||
+				line.trim().isEmpty()))
+		{
+		}
 
-	private long _a = DEFAULT.a;
-	private long _b = DEFAULT.b;
-	private long _r = 0;
-
-	public LGC64ShiftRandom() {
-	}
-
-	public LGC64ShiftRandom(final long seed) {
-		_r = seed;
-	}
-
-	@Override
-	public long nextLong() {
-		step();
-
-		long t = _r;
-		t ^= t >>> 17;
-		t ^= t << 31;
-		t ^= t >>> 8;
-		return t;
-	}
-
-	void step() {
-		_r = _a*_r + _b;
+		return line != null ? line.split(",") : null;
 	}
 
 	@Override
-	public void setSeed(final long seed) {
-		_r = seed;
-	}
-
-	public static void main(final String[] args) {
-		final Random random = new LGC64ShiftRandom();
-		for (int i = 0; i < 15; ++i) {
-			System.out.println(random.nextLong());
+	public void close() throws IOException {
+		if (_reader != null) {
+			_reader.close();
 		}
 	}
 
