@@ -22,65 +22,48 @@
  */
 package org.jenetics.util;
 
+import java.io.IOException;
 import java.util.Random;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 /**
- * https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-25 $</em>
  */
-public class LGC64ShiftRandom extends Random64 {
+public class LGC64ShiftRandomTest {
+	private static final String TEST_DATA = "/org/jenetics/util/LGC64ShiftRandom.dat";
 
-	private static final long serialVersionUID = 1L;
 
-	public static final class Parameter {
-		public final long a;
-		public final long b;
-		public Parameter(final long a, final long b) {
-			this.a = a;
-			this.b = b;
+	@Test
+	public void defaultPRN() throws IOException {
+		final Random random = new LGC64ShiftRandom();
+
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					final long expected = Long.parseLong(value[0]);
+					Assert.assertEquals(random.nextLong(), expected);
+					return null;
+				}
+
+			});
 		}
 	}
 
-	public static final Parameter DEFAULT = new Parameter(0xFBD19FBBC5C07FF5L, 1L);
+	@Test
+	public void seed111PRN() throws IOException {
+		final Random random = new LGC64ShiftRandom(111);
 
-	private long _a = DEFAULT.a;
-	private long _b = DEFAULT.b;
-	private long _r = 0;
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					final long expected = Long.parseLong(value[1]);
+					Assert.assertEquals(random.nextLong(), expected);
+					return null;
+				}
 
-	public LGC64ShiftRandom() {
-	}
-
-	public LGC64ShiftRandom(final long seed) {
-		_r = seed;
-	}
-
-	@Override
-	public long nextLong() {
-		step();
-
-		long t = _r;
-		t ^= t >>> 17;
-		t ^= t << 31;
-		t ^= t >>> 8;
-		return t;
-	}
-
-	void step() {
-		_r = _a*_r + _b;
-	}
-
-	@Override
-	public void setSeed(final long seed) {
-		_r = seed;
-	}
-
-	public static void main(final String[] args) {
-		final Random random = new LGC64ShiftRandom();
-		for (int i = 0; i < 15; ++i) {
-			System.out.println(random.nextLong());
+			});
 		}
 	}
 
