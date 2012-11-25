@@ -68,9 +68,88 @@ public class LGC64ShiftRandom extends Random64 {
 		return t;
 	}
 
-	void step() {
+	private void step() {
 		_r = _a*_r + _b;
 	}
+
+	public void split(final int s, final int n) {
+		if (s < 1 || n >= s) {
+			throw new IllegalArgumentException();
+		}
+
+		if (s > 1) {
+			jump(n + 1);
+			_b *= f(s, _a);
+			_a = math.pow(_a, s);
+			backward();
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		}
+	}
+
+	public void jump2(final int s) {
+		_r = _r*math.pow(_a, 1L << s) + f(1L << s, _a)*_b;
+	}
+
+	public void jump(final long step) {
+		if (step < 16) {
+			for (int i = 0; i < step; ++i) {
+				step();
+			}
+		} else {
+			long s = step;
+			int i = 0;
+			while (s > 0) {
+				if (s%2 == 1) {
+					jump2(i);
+				}
+				++i;
+				s >>>= 1;
+			}
+		}
+	}
+
+	public void backward() {
+		for (int i = 0; i < 64; ++i) {
+			jump2(i);
+		}
+	}
+
+	/**
+	 * compute prod(1+a^(2^i), i=0..l-1)
+	 */
+	private static long g(final int l, final long a) {
+		long p = a;
+		long res = 1;
+		for (int i = 0; i < l; ++i) {
+			res *= 1 + p;
+			p *= p;
+		}
+
+		return res;
+	}
+
+	/**
+	 * compute sum(a^i, i=0..s-1)
+	 */
+	private static long f(final long s, final long a) {
+		if (s == 0) {
+			return 0;
+		}
+
+		long e = math.log2Floor(s);
+		long y = 0;
+		long p = a;
+
+		for (int l = 0; l <= e; ++l) {
+			if (((1L << l) & s) > 0) {
+				y = g(l, a) + p*y;
+			}
+			p *= p;
+		}
+
+		return y;
+	}
+
 
 	@Override
 	public void setSeed(final long seed) {
@@ -85,3 +164,9 @@ public class LGC64ShiftRandom extends Random64 {
 	}
 
 }
+
+
+
+
+
+

@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-25 $</em>
  */
 public final class math {
 	private math() {
@@ -235,28 +235,40 @@ public final class math {
 	 * @param e the exponent.
 	 * @return {@code b^e}.
 	 */
-	public static long pow(final int b, final int e) {
+	public static long pow(final long b, final long e) {
+		long base = b;
+		long exp = e;
+		long result = 1;
 		if (e < 0) {
-			throw new IllegalArgumentException(String.format(
-					"Exponent is negative: %d", e
-				));
+			exp = Math.abs(e);
+//			throw new IllegalArgumentException(String.format(
+//					"Exponent is negative: %d", e
+//				));
 		}
 
-		long base = b;
-		int exp = e;
-		long result = 1;
 
-		while (exp != 0) {
-			if ((exp & 1) != 0) {
+		while (exp > 0) {
+			if ((exp & 1) > 0) {
 				result *= base;
 			}
-			exp >>= 1;
+			exp >>>= 1;
 			base *= base;
 		}
 
 		return result;
 	}
 
+	static long log2Floor(final long s) {
+		long x = s;
+		long y = 0;
+
+		while (x > 0) {
+			x >>>= 1;
+			++y;
+		}
+
+		return y - 1;
+	}
 
 	static int gcd(final int a, final int b) {
 		int x = a;
