@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.Random;
 
 /**
  * https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
@@ -36,24 +35,39 @@ public class LGC64ShiftRandom extends Random64 {
 	private static final long serialVersionUID = 1L;
 
 	public static final class Parameter {
-		public final long a;
-		public final long b;
-		public Parameter(final long a, final long b) {
+		final long a;
+		final long b;
+		Parameter(final long a, final long b) {
 			this.a = a;
 			this.b = b;
 		}
 	}
 
 	public static final Parameter DEFAULT = new Parameter(0xFBD19FBBC5C07FF5L, 1L);
+	public static final Parameter LEcuyer1 = new Parameter(0x27BB2EE687B0B0FDL, 1L);
+	public static final Parameter LEcuyer2 = new Parameter(0x2C6FE96EE78B6955L, 1L);
+	public static final Parameter LEcuyer3 = new Parameter(0x369DEA0F31A53F85L, 1L);
 
 	private long _a = DEFAULT.a;
 	private long _b = DEFAULT.b;
 	private long _r = 0;
 
 	public LGC64ShiftRandom() {
+		this(0);
 	}
 
 	public LGC64ShiftRandom(final long seed) {
+		this(seed, DEFAULT);
+	}
+
+	public LGC64ShiftRandom(final long seed, final Parameter parameter) {
+		_r = seed;
+		_a = parameter.a;
+		_b = parameter.b;
+	}
+
+	@Override
+	public void setSeed(final long seed) {
 		_r = seed;
 	}
 
@@ -86,9 +100,13 @@ public class LGC64ShiftRandom extends Random64 {
 	}
 
 	public void jump2(final int s) {
-		//System.out.println(String.format("'jump2(%d)': 1L << %d = %d", s, s, 1L << s));
-		if (s >= 64) throw new IllegalArgumentException();
-		//System.out.println("A: " + _a);
+		if (s >= Long.SIZE) {
+			throw new IllegalArgumentException(String.format(
+				"The 'jump2' size must be smaller than %d but was %d.",
+				Long.SIZE, s
+			));
+		}
+
 		_r = _r*pow(_a, 1L << s) + f(1L << s, _a)*_b;
 	}
 
@@ -110,8 +128,8 @@ public class LGC64ShiftRandom extends Random64 {
 		}
 	}
 
-	public void backward() {
-		for (int i = 0; i < 64; ++i) {
+	private void backward() {
+		for (int i = 0; i < Long.SIZE; ++i) {
 			jump2(i);
 		}
 	}
@@ -134,22 +152,18 @@ public class LGC64ShiftRandom extends Random64 {
 	 * compute sum(a^i, i=0..s-1)
 	 */
 	private static long f(final long s, final long a) {
-		if (s == 0) {
-			return 0;
-		}
-
-		long e = log2Floor(s);
 		long y = 0;
-		long p = a;
 
-		if (e < 0) throw new IllegalArgumentException();
-		if (e >= 64) throw new IllegalArgumentException();
+		if (s != 0) {
+			long e = log2Floor(s);
+			long p = a;
 
-		for (int l = 0; l <= e; ++l) {
-			if (((1L << l) & s) != 0) {
-				y = g(l, a) + p*y;
+			for (int l = 0; l <= e; ++l) {
+				if (((1L << l) & s) != 0) {
+					y = g(l, a) + p*y;
+				}
+				p *= p;
 			}
-			p *= p;
 		}
 
 		return y;
@@ -181,11 +195,6 @@ public class LGC64ShiftRandom extends Random64 {
 		}
 
 		return y - 1;
-	}
-
-	@Override
-	public void setSeed(final long seed) {
-		_r = seed;
 	}
 
 	public static void main(final String[] args) {
