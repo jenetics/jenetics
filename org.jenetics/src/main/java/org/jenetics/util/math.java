@@ -236,19 +236,18 @@ public final class math {
 	 * @return {@code b^e}.
 	 */
 	public static long pow(final long b, final long e) {
+		if (e < 0) {
+			throw new IllegalArgumentException(String.format(
+					"Exponent is negative: %d", e
+				));
+		}
+
 		long base = b;
 		long exp = e;
 		long result = 1;
-		if (e < 0) {
-			exp = Math.abs(e);
-//			throw new IllegalArgumentException(String.format(
-//					"Exponent is negative: %d", e
-//				));
-		}
 
-
-		while (exp > 0) {
-			if ((exp & 1) > 0) {
+		while (exp != 0) {
+			if ((exp & 1) != 0) {
 				result *= base;
 			}
 			exp >>>= 1;
@@ -256,18 +255,6 @@ public final class math {
 		}
 
 		return result;
-	}
-
-	static long log2Floor(final long s) {
-		long x = s;
-		long y = 0;
-
-		while (x > 0) {
-			x >>>= 1;
-			++y;
-		}
-
-		return y - 1;
 	}
 
 	static int gcd(final int a, final int b) {
