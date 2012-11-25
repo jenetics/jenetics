@@ -36,7 +36,7 @@ public class LGC64ShiftRandomTest {
 
 
 	@Test
-	public void defaultPRN() throws IOException {
+	public void default_PRN() throws IOException {
 		final Random random = new LGC64ShiftRandom();
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -52,7 +52,7 @@ public class LGC64ShiftRandomTest {
 	}
 
 	@Test
-	public void seed111PRN() throws IOException {
+	public void seed111_PRN() throws IOException {
 		final Random random = new LGC64ShiftRandom(111);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -67,4 +67,80 @@ public class LGC64ShiftRandomTest {
 		}
 	}
 
+	@Test
+	public void split_3_0_PRN() throws IOException {
+		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		random.split(3, 0);
+
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					final long expected = Long.parseLong(value[2]);
+					final long actuall = random.nextLong();
+					System.out.println(actuall);
+
+					Assert.assertEquals(actuall, expected);
+					return null;
+				}
+
+			});
+		}
+	}
+
+	@Test
+	public void jump_6361_PRN() throws IOException {
+		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					random.jump(6361);
+
+					final long expected = Long.parseLong(value[5]);
+					Assert.assertEquals(random.nextLong(), expected);
+					return null;
+				}
+
+			});
+		}
+	}
+
+	@Test
+	public void jump2_5667_PRN() throws IOException {
+		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					random.jump2(5667);
+
+					final long expected = Long.parseLong(value[6]);
+					Assert.assertEquals(random.nextLong(), expected);
+					return null;
+				}
+
+			});
+		}
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
