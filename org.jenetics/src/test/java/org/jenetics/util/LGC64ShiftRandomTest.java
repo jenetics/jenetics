@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -67,6 +68,7 @@ public class LGC64ShiftRandomTest {
 		}
 	}
 
+
 	@Test
 	public void split_3_0_PRN() throws IOException {
 		final LGC64ShiftRandom random = new LGC64ShiftRandom();
@@ -77,7 +79,7 @@ public class LGC64ShiftRandomTest {
 				@Override public Void apply(String[] value) {
 					final long expected = Long.parseLong(value[2]);
 					final long actuall = random.nextLong();
-					System.out.println(actuall);
+					//System.out.println(actuall);
 
 					Assert.assertEquals(actuall, expected);
 					return null;
@@ -88,13 +90,55 @@ public class LGC64ShiftRandomTest {
 	}
 
 	@Test
-	public void jump_6361_PRN() throws IOException {
+	public void split_3_1_PRN() throws IOException {
 		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		random.split(3, 1);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			reader.foreach(new Function<String[], Void>() {
 				@Override public Void apply(String[] value) {
-					random.jump(6361);
+					final long expected = Long.parseLong(value[3]);
+					final long actuall = random.nextLong();
+					//System.out.println(actuall);
+
+					Assert.assertEquals(actuall, expected);
+					return null;
+				}
+
+			});
+		}
+	}
+
+	@Test
+	public void split_3_2_PRN() throws IOException {
+		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		random.split(3, 2);
+
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					final long expected = Long.parseLong(value[4]);
+					final long actuall = random.nextLong();
+					//System.out.println(actuall);
+
+					Assert.assertEquals(actuall, expected);
+					return null;
+				}
+
+			});
+		}
+	}
+
+
+	@Test
+	public void jump_PRN() throws IOException {
+		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+
+		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			final AtomicInteger i = new AtomicInteger(0);
+			reader.foreach(new Function<String[], Void>() {
+				@Override public Void apply(String[] value) {
+					random.jump(i.getAndIncrement());
 
 					final long expected = Long.parseLong(value[5]);
 					Assert.assertEquals(random.nextLong(), expected);
@@ -105,23 +149,32 @@ public class LGC64ShiftRandomTest {
 		}
 	}
 
+
 	@Test
-	public void jump2_5667_PRN() throws IOException {
+	public void jump2_PRN() throws IOException {
 		final LGC64ShiftRandom random = new LGC64ShiftRandom();
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
+			final AtomicInteger i = new AtomicInteger(0);
 			reader.foreach(new Function<String[], Void>() {
 				@Override public Void apply(String[] value) {
-					random.jump2(5667);
 
-					final long expected = Long.parseLong(value[6]);
-					Assert.assertEquals(random.nextLong(), expected);
+					if (i.get() < 64) {
+						random.jump2(i.get());
+						final long expected = Long.parseLong(value[6]);
+						final long actuall = random.nextLong();
+						//System.out.println(i.get() + " =====> " + actuall);
+
+						Assert.assertEquals(actuall, expected);
+					}
+					i.getAndIncrement();
 					return null;
 				}
 
 			});
 		}
 	}
+
 
 }
 

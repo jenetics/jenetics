@@ -80,14 +80,16 @@ public class LGC64ShiftRandom extends Random64 {
 		if (s > 1) {
 			jump(n + 1);
 			_b *= f(s, _a);
-			_a = math.pow(_a, s);
+			_a = pow(_a, s);
 			backward();
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
 	}
 
 	public void jump2(final int s) {
-		_r = _r*math.pow(_a, 1L << s) + f(1L << s, _a)*_b;
+		//System.out.println(String.format("'jump2(%d)': 1L << %d = %d", s, s, 1L << s));
+		if (s >= 64) throw new IllegalArgumentException();
+		//System.out.println("A: " + _a);
+		_r = _r*pow(_a, 1L << s) + f(1L << s, _a)*_b;
 	}
 
 	public void jump(final long step) {
@@ -103,7 +105,7 @@ public class LGC64ShiftRandom extends Random64 {
 					jump2(i);
 				}
 				++i;
-				s >>>= 1;
+				s >>= 1;
 			}
 		}
 	}
@@ -136,12 +138,15 @@ public class LGC64ShiftRandom extends Random64 {
 			return 0;
 		}
 
-		long e = math.log2Floor(s);
+		long e = log2Floor(s);
 		long y = 0;
 		long p = a;
 
+		if (e < 0) throw new IllegalArgumentException();
+		if (e >= 64) throw new IllegalArgumentException();
+
 		for (int l = 0; l <= e; ++l) {
-			if (((1L << l) & s) > 0) {
+			if (((1L << l) & s) != 0) {
 				y = g(l, a) + p*y;
 			}
 			p *= p;
@@ -150,6 +155,33 @@ public class LGC64ShiftRandom extends Random64 {
 		return y;
 	}
 
+	private static long pow(final long b, final long e) {
+		long base = b;
+		long exp = e;
+		long result = 1;
+
+		while (exp != 0) {
+			if ((exp & 1) != 0) {
+				result *= base;
+			}
+			base *= base;
+			exp >>>= 1;
+		}
+
+		return result;
+	}
+
+	private static long log2Floor(final long s) {
+		long x = s;
+		long y = 0;
+
+		while (x != 0) {
+			x >>>= 1;
+			++y;
+		}
+
+		return y - 1;
+	}
 
 	@Override
 	public void setSeed(final long seed) {
@@ -157,10 +189,20 @@ public class LGC64ShiftRandom extends Random64 {
 	}
 
 	public static void main(final String[] args) {
-		final Random random = new LGC64ShiftRandom();
-		for (int i = 0; i < 15; ++i) {
-			System.out.println(random.nextLong());
-		}
+//		final Random random = new LGC64ShiftRandom();
+//		for (int i = 0; i < 15; ++i) {
+//			System.out.println(random.nextLong());
+//		}
+
+		System.out.println(pow(-2795537707992371L, 1L << 63));
+		System.out.println(log2Floor(1L << 63));
+
+//		for (int i = 0; i < 100; ++i) {
+//			System.out.println(String.format(
+//				"1L << %d = %d", i,  1L << i
+//			));
+//		}
+
 	}
 
 }
