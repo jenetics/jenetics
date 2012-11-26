@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class LGC64ShiftRandomTest {
+public class LCG64ShiftRandomTest {
 	private static final String TEST_DATA = "/org/jenetics/util/LGC64ShiftRandom.dat";
 
 
