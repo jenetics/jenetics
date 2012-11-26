@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-23 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-26 $</em>
  */
 abstract class Random64 extends Random {
 
@@ -43,12 +43,32 @@ abstract class Random64 extends Random {
 	// Force to explicitly override the Random.nextLong() method.
 	@Override
 	public abstract long nextLong();
-	
+
 	@Override
 	protected int next(final int bits) {
 		return (int)(nextLong() >>> (64 - bits));
 	}
-	
+
+
+	private boolean _cached = false;
+	private int _cache = 0;
+
+	@Override
+	public int nextInt() {
+		/*
+		if (_cached) {
+			_cached = false;
+			return _cache;
+		}
+
+		final long next = nextLong();
+		_cache = (int)(next >>> 32);
+		_cached = true;
+		return (int)next;
+		*/
+		return (int)nextLong();
+	}
+
 	/**
 	 * Optimized version of the {@link Random#nextBytes(byte[])} method for
 	 * 64-bit random engines.
