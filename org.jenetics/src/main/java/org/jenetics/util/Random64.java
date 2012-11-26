@@ -49,24 +49,9 @@ abstract class Random64 extends Random {
 		return (int)(nextLong() >>> (64 - bits));
 	}
 
-
-	private boolean _cached = false;
-	private int _cache = 0;
-
 	@Override
 	public int nextInt() {
-		/*
-		if (_cached) {
-			_cached = false;
-			return _cache;
-		}
-
-		final long next = nextLong();
-		_cache = (int)(next >>> 32);
-		_cached = true;
-		return (int)next;
-		*/
-		return (int)nextLong();
+		return (int)(nextLong() >>> 32);
 	}
 
 	/**
