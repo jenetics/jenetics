@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 /**
  * Linear congruential generators with modulus 2<sup>64</sup> with additional
@@ -37,29 +39,38 @@ package org.jenetics.util;
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class LGC64ShiftRandom extends Random64 {
+public class LCG64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final class Parameter {
+	static final class Param {
 		final long a;
 		final long b;
-		Parameter(final long a, final long b) {
+		Param(final long a, final long b) {
 			this.a = a;
 			this.b = b;
 		}
 	}
 
-	public static final Parameter DEFAULT = new Parameter(0xFBD19FBBC5C07FF5L, 1L);
-	public static final Parameter LEcuyer1 = new Parameter(0x27BB2EE687B0B0FDL, 1L);
-	public static final Parameter LEcuyer2 = new Parameter(0x2C6FE96EE78B6955L, 1L);
-	public static final Parameter LEcuyer3 = new Parameter(0x369DEA0F31A53F85L, 1L);
+	static final Param DEFAULT = new Param(0xFBD19FBBC5C07FF5L, 1L);
+	static final Param LEcuyer1 = new Param(0x27BB2EE687B0B0FDL, 1L);
+	static final Param LEcuyer2 = new Param(0x2C6FE96EE78B6955L, 1L);
+	static final Param LEcuyer3 = new Param(0x369DEA0F31A53F85L, 1L);
 
-	public static final ThreadLocal<LGC64ShiftRandom>
-	INSTANCE = new ThreadLocal<LGC64ShiftRandom>() {
+	/**
+	 * This <i>thread local</i> instance creates a new PRNG for every thread
+	 * which are parallelized by <i>block splitting</i>.
+	 */
+	public static final ThreadLocal<LCG64ShiftRandom>
+	INSTANCE = new ThreadLocal<LCG64ShiftRandom>() {
+		private final long STEP_BASE = 1 << 57;
+		private final AtomicInteger _thread = new AtomicInteger(0);
+
 		@Override
-		protected LGC64ShiftRandom initialValue() {
-			return null;
+		protected LCG64ShiftRandom initialValue() {
+			final LCG64ShiftRandom random = new LCG64ShiftRandom(STEP_BASE);
+			random.jump(_thread.getAndIncrement()*STEP_BASE);
+			return random;
 		}
 	};
 
@@ -67,15 +78,15 @@ public class LGC64ShiftRandom extends Random64 {
 	private long _b = DEFAULT.b;
 	private long _r = 0;
 
-	public LGC64ShiftRandom() {
+	public LCG64ShiftRandom() {
 		this(0);
 	}
 
-	public LGC64ShiftRandom(final long seed) {
+	public LCG64ShiftRandom(final long seed) {
 		this(seed, DEFAULT);
 	}
 
-	public LGC64ShiftRandom(final long seed, final Parameter parameter) {
+	public LCG64ShiftRandom(final long seed, final Param parameter) {
 		_r = seed;
 		_a = parameter.a;
 		_b = parameter.b;

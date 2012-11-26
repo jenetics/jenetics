@@ -26,7 +26,7 @@ import java.text.NumberFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.jenetics.util.LGC64ShiftRandom;
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.XORShiftRandom;
 
 /**
@@ -41,7 +41,7 @@ public class RandomPerformanceTests {
 		test(new Random(), loops);
 		test(ThreadLocalRandom.current(), loops);
 		test(new XORShiftRandom(), loops);
-		test(new LGC64ShiftRandom(), loops);
+		test(new LCG64ShiftRandom(), loops);
 	}
 
 	private static void test(final Random random, final int loops) {

@@ -38,7 +38,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void default_PRN() throws IOException {
-		final Random random = new LGC64ShiftRandom();
+		final Random random = new LCG64ShiftRandom();
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			reader.foreach(new Function<String[], Void>() {
@@ -54,7 +54,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void seed111_PRN() throws IOException {
-		final Random random = new LGC64ShiftRandom(111);
+		final Random random = new LCG64ShiftRandom(111);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			reader.foreach(new Function<String[], Void>() {
@@ -71,7 +71,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void split_3_0_PRN() throws IOException {
-		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
 		random.split(3, 0);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -91,7 +91,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void split_3_1_PRN() throws IOException {
-		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
 		random.split(3, 1);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -111,7 +111,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void split_3_2_PRN() throws IOException {
-		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
 		random.split(3, 2);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -132,7 +132,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void jump_PRN() throws IOException {
-		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			final AtomicInteger i = new AtomicInteger(0);
@@ -152,7 +152,7 @@ public class LGC64ShiftRandomTest {
 
 	@Test
 	public void jump2_PRN() throws IOException {
-		final LGC64ShiftRandom random = new LGC64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom();
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			final AtomicInteger i = new AtomicInteger(0);
