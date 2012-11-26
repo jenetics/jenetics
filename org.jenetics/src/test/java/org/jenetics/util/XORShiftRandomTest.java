@@ -117,7 +117,7 @@ public class XORShiftRandomTest extends RandomTestBase {
 		final Random tshq64rand = new HQ64Random.ThreadSafe();
 		final Random axorrand = new XORShiftRandom.ThreadSafe();
 
-		final int loops = 100000000;
+		final int loops = 100_000_000;
 
 		// Random
 		long start = System.currentTimeMillis();
