@@ -119,7 +119,6 @@ public class LCG64ShiftRandomTest {
 				@Override public Void apply(String[] value) {
 					final long expected = Long.parseLong(value[4]);
 					final long actuall = random.nextLong();
-					//System.out.println(actuall);
 
 					Assert.assertEquals(actuall, expected);
 					return null;
@@ -163,7 +162,6 @@ public class LCG64ShiftRandomTest {
 						random.jump2(i.get());
 						final long expected = Long.parseLong(value[6]);
 						final long actuall = random.nextLong();
-						//System.out.println(i.get() + " =====> " + actuall);
 
 						Assert.assertEquals(actuall, expected);
 					}
