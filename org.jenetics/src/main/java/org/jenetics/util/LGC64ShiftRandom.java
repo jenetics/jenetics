@@ -24,7 +24,14 @@ package org.jenetics.util;
 
 
 /**
- * https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
+ * Linear congruential generators with modulus 2<sup>64</sup> with additional
+ * bit-shift transformation.
+ * <p/>
+ * This is an re-implementation of the
+ * <a href="https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp">
+ * trng::lcg64_shift</a> PRNG class of the
+ * <a href="http://numbercrunch.de/trng/">TRNG</a> library and produces exactly
+ * the same sequence of PRNs.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
@@ -47,6 +54,14 @@ public class LGC64ShiftRandom extends Random64 {
 	public static final Parameter LEcuyer1 = new Parameter(0x27BB2EE687B0B0FDL, 1L);
 	public static final Parameter LEcuyer2 = new Parameter(0x2C6FE96EE78B6955L, 1L);
 	public static final Parameter LEcuyer3 = new Parameter(0x369DEA0F31A53F85L, 1L);
+
+	public static final ThreadLocal<LGC64ShiftRandom>
+	INSTANCE = new ThreadLocal<LGC64ShiftRandom>() {
+		@Override
+		protected LGC64ShiftRandom initialValue() {
+			return null;
+		}
+	};
 
 	private long _a = DEFAULT.a;
 	private long _b = DEFAULT.b;
@@ -86,20 +101,50 @@ public class LGC64ShiftRandom extends Random64 {
 		_r = _a*_r + _b;
 	}
 
-	public void split(final int s, final int n) {
-		if (s < 1 || n >= s) {
-			throw new IllegalArgumentException();
+	/**
+	 * Changes the internal state of the PRNG in a way that future calls to
+	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
+	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
+	 * {@code [0, n)}.
+	 *
+	 * @param p the overall number of sub-streams
+	 * @param s the s<sup>th</sup> sub-stream
+	 * @throws IllegalArgumentException if {@code p < 1 || s >= p}.
+	 */
+	public void split(final int p, final int s) {
+		if (p < 1) {
+			throw new IllegalArgumentException(String.format(
+				"p must be >= 1 but was %d.", p
+			));
+		}
+		if (s >= p) {
+			throw new IllegalArgumentException(String.format(
+				"s must be < %d but was %d.", p, s
+			));
 		}
 
-		if (s > 1) {
-			jump(n + 1);
-			_b *= f(s, _a);
-			_a = pow(_a, s);
+		if (p > 1) {
+			jump(s + 1);
+			_b *= f(p, _a);
+			_a = pow(_a, p);
 			backward();
 		}
 	}
 
+	/**
+	 * Changes the internal state of the PRNG in such a way that the engine
+	 * <i>jumps</i> 2<sup>s</sup> steps ahead.
+	 *
+	 * @param s the 2<sup>s</sup> steps to jump ahead.
+	 * @throws IllegalArgumentException if {@code s < 0}.
+	 */
 	public void jump2(final int s) {
+		if (s < 0) {
+			throw new IllegalArgumentException(String.format(
+				"s must be positive but was %d.", s
+			));
+		}
+
 		if (s >= Long.SIZE) {
 			throw new IllegalArgumentException(String.format(
 				"The 'jump2' size must be smaller than %d but was %d.",
@@ -110,7 +155,20 @@ public class LGC64ShiftRandom extends Random64 {
 		_r = _r*pow(_a, 1L << s) + f(1L << s, _a)*_b;
 	}
 
+	/**
+	 * Changes the internal state of the PRNG in such a way that the engine
+	 * <i>jumps</i> s steps ahead.
+	 *
+	 * @param s the steps to jump ahead.
+	 * @throws IllegalArgumentException if {@code s < 0}.
+	 */
 	public void jump(final long step) {
+		if (step < 0) {
+			throw new IllegalArgumentException(String.format(
+				"step must be positive but was %d", step
+			));
+		}
+
 		if (step < 16) {
 			for (int i = 0; i < step; ++i) {
 				step();
@@ -135,7 +193,7 @@ public class LGC64ShiftRandom extends Random64 {
 	}
 
 	/**
-	 * compute prod(1+a^(2^i), i=0..l-1)
+	 * Compute prod(1+a^(2^i), i=0..l-1).
 	 */
 	private static long g(final int l, final long a) {
 		long p = a;
@@ -149,7 +207,7 @@ public class LGC64ShiftRandom extends Random64 {
 	}
 
 	/**
-	 * compute sum(a^i, i=0..s-1)
+	 * Compute sum(a^i, i=0..s-1).
 	 */
 	private static long f(final long s, final long a) {
 		long y = 0;
@@ -195,23 +253,6 @@ public class LGC64ShiftRandom extends Random64 {
 		}
 
 		return y - 1;
-	}
-
-	public static void main(final String[] args) {
-//		final Random random = new LGC64ShiftRandom();
-//		for (int i = 0; i < 15; ++i) {
-//			System.out.println(random.nextLong());
-//		}
-
-		System.out.println(pow(-2795537707992371L, 1L << 63));
-		System.out.println(log2Floor(1L << 63));
-
-//		for (int i = 0; i < 100; ++i) {
-//			System.out.println(String.format(
-//				"1L << %d = %d", i,  1L << i
-//			));
-//		}
-
 	}
 
 }
