@@ -37,45 +37,68 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date$</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-26 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
-	static final class Param {
-		final long a;
-		final long b;
-		Param(final long a, final long b) {
+	/**
+	 * Parameter class for the {@code LCG64ShiftRandom} generator, for the
+	 * parameters <i>a</i> and <i>b</i> of the LC formula:
+	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>
+	 */
+	public static final class Param {
+		public final long a;
+		public final long b;
+		public Param(final long a, final long b) {
 			this.a = a;
 			this.b = b;
 		}
 	}
 
-	static final Param DEFAULT = new Param(0xFBD19FBBC5C07FF5L, 1L);
-	static final Param LEcuyer1 = new Param(0x27BB2EE687B0B0FDL, 1L);
-	static final Param LEcuyer2 = new Param(0x2C6FE96EE78B6955L, 1L);
-	static final Param LEcuyer3 = new Param(0x369DEA0F31A53F85L, 1L);
+	/**
+	 * The default PRNG parameters: a = 18,145,460,002,477,866,997; b = 1
+	 */
+	public static final Param DEFAULT = new Param(0xFBD19FBBC5C07FF5L, 1L);
+
+	/**
+	 * LEcuyer 1 parameters: a = 2,862,933,555,777,941,757; b = 1
+	 */
+	public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
+
+	/**
+	 * LEcuyer 2 parameters: a = 3,202,034,522,624,059,733; b = 1
+	 */
+	public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
+
+	/**
+	 * LEcuyer 3 parameters: a = 3,935,559,000,370,003,845; b = 1
+	 */
+	public static final Param LECUYER3 = new Param(0x369DEA0F31A53F85L, 1L);
 
 	/**
 	 * This <i>thread local</i> instance creates a new PRNG for every thread
 	 * which are parallelized by <i>block splitting</i>.
 	 */
-	public static final ThreadLocal<LCG64ShiftRandom>
-	INSTANCE = new ThreadLocal<LCG64ShiftRandom>() {
-		private final long STEP_BASE = 1 << 57;
-		private final AtomicInteger _thread = new AtomicInteger(0);
+	public static final ThreadLocal<LCG64ShiftRandom> INSTANCE = INSTANCE(DEFAULT);
 
-		@Override
-		protected LCG64ShiftRandom initialValue() {
-			final LCG64ShiftRandom random = new LCG64ShiftRandom(STEP_BASE);
-			random.jump(_thread.getAndIncrement()*STEP_BASE);
-			return random;
-		}
-	};
+	public static ThreadLocal<LCG64ShiftRandom> INSTANCE(final Param param) {
+		return new ThreadLocal<LCG64ShiftRandom>() {
+			private final long STEP_BASE = 1 << 57;
+			private final AtomicInteger _thread = new AtomicInteger(0);
 
-	private long _a = DEFAULT.a;
-	private long _b = DEFAULT.b;
+			@Override
+			protected LCG64ShiftRandom initialValue() {
+				final LCG64ShiftRandom random = new LCG64ShiftRandom(STEP_BASE, param);
+				random.jump(_thread.getAndIncrement()*STEP_BASE);
+				return random;
+			}
+		};
+	}
+
+	private long _a = 0;
+	private long _b = 0;
 	private long _r = 0;
 
 	public LCG64ShiftRandom() {
@@ -86,10 +109,14 @@ public class LCG64ShiftRandom extends Random64 {
 		this(seed, DEFAULT);
 	}
 
-	public LCG64ShiftRandom(final long seed, final Param parameter) {
+	public LCG64ShiftRandom(final long seed, final Param param) {
 		_r = seed;
-		_a = parameter.a;
-		_b = parameter.b;
+		_a = param.a;
+		_b = param.b;
+	}
+
+	public static LCG64ShiftRandom standard() {
+		return null;
 	}
 
 	@Override
@@ -170,7 +197,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * Changes the internal state of the PRNG in such a way that the engine
 	 * <i>jumps</i> s steps ahead.
 	 *
-	 * @param s the steps to jump ahead.
+	 * @param step the steps to jump ahead.
 	 * @throws IllegalArgumentException if {@code s < 0}.
 	 */
 	public void jump(final long step) {
