@@ -81,20 +81,29 @@ public class LCG64ShiftRandom extends Random64 {
 	 * This <i>thread local</i> instance creates a new PRNG for every thread
 	 * which are parallelized by <i>block splitting</i>.
 	 */
-	public static final ThreadLocal<LCG64ShiftRandom> INSTANCE = INSTANCE(DEFAULT);
+	public static final ThreadLocal INSTANCE = new ThreadLocal(DEFAULT);
 
-	public static ThreadLocal<LCG64ShiftRandom> INSTANCE(final Param param) {
-		return new ThreadLocal<LCG64ShiftRandom>() {
-			private final long STEP_BASE = 1 << 57;
-			private final AtomicInteger _thread = new AtomicInteger(0);
+	
+	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
+		private static final long STEP_BASE = 1 << 57;
+		private final AtomicInteger _thread = new AtomicInteger(0);
 
-			@Override
-			protected LCG64ShiftRandom initialValue() {
-				final LCG64ShiftRandom random = new LCG64ShiftRandom(STEP_BASE, param);
-				random.jump(_thread.getAndIncrement()*STEP_BASE);
-				return random;
-			}
-		};
+		private final Param _param;
+		
+		public ThreadLocal(final Param param) {
+			_param = param;
+		}
+		
+		@Override
+		protected LCG64ShiftRandom initialValue() {
+			final LCG64ShiftRandom random = new LCG64ShiftRandom(STEP_BASE, _param);
+			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
+			return random;
+		}
+	}
+	
+	public static class ThreadSafe extends LCG64ShiftRandom {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private long _a = 0;
