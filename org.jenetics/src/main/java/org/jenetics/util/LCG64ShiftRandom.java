@@ -26,18 +26,40 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
- * Linear congruential generators with modulus 2<sup>64</sup> with additional
- * bit-shift transformation.
- * <p/>
+ * This class implements a linear congruental PRNG with additional bit-shift
+ * transition. The base recursion
+ * <p><div align="center">
+ * <img
+ *     alt="r_{i+1} = (a\cdot r_i + b) \mod 2^{64}"
+ *     src="doc-files/lcg-recursion.gif"
+ * />
+ * </p></div>
+ * is followed by a non-linear transformation
+ * <p><div align="center">
+ * <img
+ *     alt="\begin{eqnarray*}
+ *           t &=& r_i                \\
+ *           t &=& t \oplus (t >> 17) \\
+ *           t &=& t \oplus (t << 31) \\
+ *           t &=& t \oplus (t >> 8)
+ *         \end{eqnarray*}"
+ *     src="doc-files/lcg-non-linear.gif"
+ * />
+ * </p></div>
+ * which destroys the lattice structure created by the recursion. The period of
+ * this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
+ * {@code mod} 4 = 1.
+ *
+ * <p/><em>
  * This is an re-implementation of the
  * <a href="https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp">
  * trng::lcg64_shift</a> PRNG class of the
- * <a href="http://numbercrunch.de/trng/">TRNG</a> library and produces exactly
- * the same sequence of PRNs.
+ * <a href="http://numbercrunch.de/trng/">TRNG</a> library creaated by Heiko
+ * Bauke.</em>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-27 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-28 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -54,6 +76,101 @@ public class LCG64ShiftRandom extends Random64 {
 		public Param(final long a, final long b) {
 			this.a = a;
 			this.b = b;
+		}
+	}
+
+	/**
+	 * This class represents a <i>thread local</i> implementation of the
+	 * {@code LCG64ShiftRandom} PRNG. Each thread will  and it's recommended to initialize the
+	 * {@code RandomRegistry} the following way:
+	 *
+	 * [code]
+	 * // Register the PRGN with the default parameters.
+	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+	 *
+	 * // Register the PRNG with the {@code LECUYER3} parameters.
+	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal(LCG64ShiftRandom.LECUYER3));
+	 * [/code]
+	 *
+	 * Be aware, that calls of the {@code setSeed(long)} method will throw an
+	 * {@code UnsupportedOperationException} for <i>thread local</i> instances.
+	 * [code]
+	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+	 *
+	 * // Will throw 'UnsupportedOperationException'.
+	 * RandomRegistry.getRandom().setSeed(1234);
+	 * [/code]
+	 */
+	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
+		private static final long STEP_BASE = 1L << 57;
+		private final AtomicInteger _thread = new AtomicInteger(0);
+
+		private final Param _param;
+
+		/**
+		 * Create a new <i>thread local</i> instance of the
+		 * {@code LCG64ShiftRandom} PRGN with the {@code DEFAULT} parameters.
+		 */
+		public ThreadLocal() {
+			this(DEFAULT);
+		}
+
+		public ThreadLocal(final Param param) {
+			_param = object.nonNull(param, "PRNG param must not be null.");
+		}
+
+		/**
+		 * Block splitting
+		 */
+		@Override
+		protected LCG64ShiftRandom initialValue() {
+			final LCG64ShiftRandom
+			random = new LCG64ShiftRandom(System.nanoTime(), _param) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void setSeed(final long seed) {
+					throw new UnsupportedOperationException(
+						"The 'setSeed(long)' method is not supported " +
+						"for thread local instances."
+					);
+				}
+			};
+
+			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
+			System.out.println("CREATED LCG: " + _thread.get() + ":" + STEP_BASE);
+			return random;
+		}
+
+
+	}
+
+	/**
+	 * This is a <i>thread safe</i> variant of the this PRGN.
+	 */
+	public static class ThreadSafe extends LCG64ShiftRandom {
+		private static final long serialVersionUID = 1L;
+
+		public ThreadSafe(final long seed) {
+			super(seed);
+		}
+
+		public ThreadSafe(final Param param) {
+			super(param);
+		}
+
+		public ThreadSafe(final long seed, final Param param) {
+			super(seed, param);
+		}
+
+		@Override
+		public synchronized void setSeed(final long seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
+		public synchronized long nextLong() {
+			return super.nextLong();
 		}
 	}
 
@@ -77,48 +194,26 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public static final Param LECUYER3 = new Param(0x369DEA0F31A53F85L, 1L);
 
-	/**
-	 * This <i>thread local</i> instance creates a new PRNG for every thread
-	 * which are parallelized by <i>block splitting</i>.
-	 */
-	public static final ThreadLocal INSTANCE = new ThreadLocal(DEFAULT);
-
-	
-	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
-		private static final long STEP_BASE = 1 << 57;
-		private final AtomicInteger _thread = new AtomicInteger(0);
-
-		private final Param _param;
-		
-		public ThreadLocal(final Param param) {
-			_param = param;
-		}
-		
-		@Override
-		protected LCG64ShiftRandom initialValue() {
-			final LCG64ShiftRandom random = new LCG64ShiftRandom(STEP_BASE, _param);
-			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
-			return random;
-		}
-	}
-	
-	public static class ThreadSafe extends LCG64ShiftRandom {
-		private static final long serialVersionUID = 1L;
-	}
 
 	private long _a = 0;
 	private long _b = 0;
 	private long _r = 0;
 
 	public LCG64ShiftRandom() {
-		this(0);
+		this(System.nanoTime());
 	}
 
 	public LCG64ShiftRandom(final long seed) {
 		this(seed, DEFAULT);
 	}
 
+	public LCG64ShiftRandom(final Param param) {
+		this(System.nanoTime(), param);
+	}
+
 	public LCG64ShiftRandom(final long seed, final Param param) {
+		object.nonNull(param, "PRNG param must not be null.");
+
 		_r = seed;
 		_a = param.a;
 		_b = param.b;
