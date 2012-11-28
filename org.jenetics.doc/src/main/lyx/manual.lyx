@@ -4813,6 +4813,36 @@ Performance measures
 \end_layout
 
 \begin_layout Standard
+The following table shows the number random 
+\family typewriter
+int
+\family default
+, 
+\family typewriter
+long
+\family default
+, 
+\family typewriter
+float
+\family default
+ and 
+\family typewriter
+double
+\family default
+ values, the different PRNG implementations are able to generate per second.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="5">
 <features tabularvalignment="middle">
@@ -4826,7 +4856,7 @@ Performance measures
 \begin_inset Text
 
 \begin_layout Plain Layout
-PRGN
+PRNG
 \end_layout
 
 \end_inset
