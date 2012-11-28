@@ -46,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *     src="doc-files/lcg-non-linear.gif"
  * />
  * </p></div>
- * which destroys the lattice structure created by the recursion. The period of
+ * which destroys the lattice structure introduced by the recursion. The period of
  * this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
  * {@code mod} 4 = 1.
  *
@@ -67,22 +67,62 @@ public class LCG64ShiftRandom extends Random64 {
 
 	/**
 	 * Parameter class for the {@code LCG64ShiftRandom} generator, for the
-	 * parameters <i>a</i> and <i>b</i> of the LC formula:
-	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>
+	 * parameters <i>a</i> and <i>b</i> of the LC recursion
+	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
 	 */
 	public static final class Param {
+
+		/**
+		 * The parameter <i>a</i> of the LC recursion.
+		 */
 		public final long a;
+
+		/**
+		 * The parameter <i>b</i> of the LC recursion.
+		 */
 		public final long b;
+
+		/**
+		 * Create a new parameter object.
+		 *
+		 * @param a the parameter <i>a</i> of the LC recursion.
+		 * @param b the parameter <i>b</i> of the LC recursion.
+		 */
 		public Param(final long a, final long b) {
 			this.a = a;
 			this.b = b;
+		}
+
+		@Override
+		public int hashCode() {
+			return (int)(a ^ b);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) {
+				return true;
+			}
+			if (!(obj instanceof Param)) {
+				return false;
+			}
+
+			final Param param = (Param)obj;
+			return a == param.a && b == param.b;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s[a=%d, b=%d]", getClass().getName(), a, b);
 		}
 	}
 
 	/**
 	 * This class represents a <i>thread local</i> implementation of the
-	 * {@code LCG64ShiftRandom} PRNG. Each thread will  and it's recommended to initialize the
-	 * {@code RandomRegistry} the following way:
+	 * {@code LCG64ShiftRandom} PRNG.
+	 *
+	 * It's recommended to initialize the {@code RandomRegistry} the following
+	 * way:
 	 *
 	 * [code]
 	 * // Register the PRGN with the default parameters.
@@ -103,7 +143,9 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 57;
+
 		private final AtomicInteger _thread = new AtomicInteger(0);
+		private final long _now = System.currentTimeMillis();
 
 		private final Param _param;
 
@@ -115,17 +157,39 @@ public class LCG64ShiftRandom extends Random64 {
 			this(DEFAULT);
 		}
 
+		/**
+		 * Create a new <i>thread local</i> instance of the
+		 * {@code LCG64ShiftRandom} PRGN with the given parameters.
+		 *
+		 * @param param the LC parameters.
+		 * @throws NullPointerException if the given parameters are null.
+		 */
 		public ThreadLocal(final Param param) {
 			_param = object.nonNull(param, "PRNG param must not be null.");
 		}
 
 		/**
-		 * Block splitting
+		 * Create a new PRNG using <i>block splitting</i> for guaranteeing well
+		 * distributed PRN for every thread.
+		 *
+		 * <p align="left">
+		 * <strong>Tina’s Random Number Generator Library</strong>
+		 * <br/>
+		 * <em>Chapter 2. Pseudo-random numbers for parallel Monte Carlo
+		 *     simulations, Page 7</em>
+		 * <br/>
+		 * <small>Heiko Bauke</small>
+		 * <br/>
+		 * [<a href="http://numbercrunch.de/trng/trng.pdf">
+		 *  http://numbercrunch.de/trng/trng.pdf
+		 *  </a>].
+		 * <p/>
 		 */
 		@Override
 		protected LCG64ShiftRandom initialValue() {
-			final LCG64ShiftRandom
-			random = new LCG64ShiftRandom(System.nanoTime(), _param) {
+			final long seed = (_now << _thread.get())^System.nanoTime();
+			final LCG64ShiftRandom random = new LCG64ShiftRandom(seed, _param) {
+
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -138,7 +202,6 @@ public class LCG64ShiftRandom extends Random64 {
 			};
 
 			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
-			System.out.println("CREATED LCG: " + _thread.get() + ":" + STEP_BASE);
 			return random;
 		}
 
@@ -199,28 +262,48 @@ public class LCG64ShiftRandom extends Random64 {
 	private long _b = 0;
 	private long _r = 0;
 
+	/**
+	 * Create a new PRNG instance with {@link #DEFAULT} parameter and seed
+	 * {@link System#nanoTime()}.
+	 */
 	public LCG64ShiftRandom() {
 		this(System.nanoTime());
 	}
 
+	/**
+	 * Create a new PRNG instance with {@link #DEFAULT} parameter and the given
+	 * seed.
+	 *
+	 * @param seed the seed of the PRNG
+	 */
 	public LCG64ShiftRandom(final long seed) {
 		this(seed, DEFAULT);
 	}
 
+	/**
+	 * Create a new PRNG instance with the given parameter and a seed of
+	 * {@link System#nanoTime()}.
+	 *
+	 * @param param the PRNG parameter.
+	 * @throws NullPointerException if the given {@code param} is null.
+	 */
 	public LCG64ShiftRandom(final Param param) {
 		this(System.nanoTime(), param);
 	}
 
+	/**
+	 * Create a new PRNG instance with the given parameter and seed.
+	 *
+	 * @param seed the seed of the PRNG.
+	 * @param param the parameter of the PRNG.
+	 * @throws NullPointerException if the given {@code param} is null.
+	 */
 	public LCG64ShiftRandom(final long seed, final Param param) {
 		object.nonNull(param, "PRNG param must not be null.");
 
 		_r = seed;
 		_a = param.a;
 		_b = param.b;
-	}
-
-	public static LCG64ShiftRandom standard() {
-		return null;
 	}
 
 	@Override
@@ -247,7 +330,8 @@ public class LCG64ShiftRandom extends Random64 {
 	 * Changes the internal state of the PRNG in a way that future calls to
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
-	 * {@code [0, n)}.
+	 * {@code [0, n)}. This method is mainly used for <i>parallelization</i>
+	 * via <i>leapfrogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
