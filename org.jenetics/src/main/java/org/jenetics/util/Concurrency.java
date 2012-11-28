@@ -103,7 +103,7 @@ public final class Concurrency implements AutoCloseable {
 	/**
 	 * Set the number of threads to use by the {@link ConcurrentContext}.
 	 *
-	 * @param concurrency the number of threads to use for the default concurernt
+	 * @param concurrency the number of threads to use for the default concurrent
 	 *        context.
 	 */
 	public static void setConcurrency(final int concurrency) {
