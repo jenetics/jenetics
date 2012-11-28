@@ -4806,6 +4806,13 @@ height "1pt"
 
 \begin_layout Subsubsection
 org.jenetics.util.LCG64ShiftRandom
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Tina2011"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
