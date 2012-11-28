@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This is an re-implementation of the
  * <a href="https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp">
  * trng::lcg64_shift</a> PRNG class of the
- * <a href="http://numbercrunch.de/trng/">TRNG</a> library creaated by Heiko
+ * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -129,7 +129,9 @@ public class LCG64ShiftRandom extends Random64 {
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 	 *
 	 * // Register the PRNG with the {@code LECUYER3} parameters.
-	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal(LCG64ShiftRandom.LECUYER3));
+	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal(
+	 *     LCG64ShiftRandom.LECUYER3
+	 * ));
 	 * [/code]
 	 *
 	 * Be aware, that calls of the {@code setSeed(long)} method will throw an
@@ -188,19 +190,7 @@ public class LCG64ShiftRandom extends Random64 {
 		@Override
 		protected LCG64ShiftRandom initialValue() {
 			final long seed = (_now << _thread.get())^System.nanoTime();
-			final LCG64ShiftRandom random = new LCG64ShiftRandom(seed, _param) {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void setSeed(final long seed) {
-					throw new UnsupportedOperationException(
-						"The 'setSeed(long)' method is not supported " +
-						"for thread local instances."
-					);
-				}
-			};
-
+			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(seed, _param);
 			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
 			return random;
 		}
@@ -208,20 +198,69 @@ public class LCG64ShiftRandom extends Random64 {
 
 	}
 
+	private static final class TLLCG64ShiftRandom extends LCG64ShiftRandom {
+
+		private static final long serialVersionUID = 1L;
+
+		private final Boolean _sentinel = false;
+
+		private TLLCG64ShiftRandom(final long seed, final Param param) {
+			super(seed, param);
+		}
+
+		@Override
+		public void setSeed(final long seed) {
+			if (_sentinel != null) {
+				throw new UnsupportedOperationException(
+					"The 'setSeed(long)' method is not supported " +
+					"for thread local instances."
+				);
+			}
+		}
+
+	}
+
 	/**
-	 * This is a <i>thread safe</i> variant of the this PRGN.
+	 * This is a <i>thread safe</i> variation of the this PRGN.
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * Create a new PRNG instance with {@link #DEFAULT} parameter and seed
+		 * {@link System#nanoTime()}.
+		 */
+		public ThreadSafe() {
+		}
+
+		/**
+		 * Create a new PRNG instance with {@link #DEFAULT} parameter and the
+		 * given seed.
+		 *
+		 * @param seed the seed of the PRNG
+		 */
 		public ThreadSafe(final long seed) {
 			super(seed);
 		}
 
+		/**
+		 * Create a new PRNG instance with the given parameter and a seed of
+		 * {@link System#nanoTime()}.
+		 *
+		 * @param param the PRNG parameter.
+		 * @throws NullPointerException if the given {@code param} is null.
+		 */
 		public ThreadSafe(final Param param) {
 			super(param);
 		}
 
+		/**
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code param} is null.
+		 */
 		public ThreadSafe(final long seed, final Param param) {
 			super(seed, param);
 		}
@@ -482,9 +521,5 @@ public class LCG64ShiftRandom extends Random64 {
 	}
 
 }
-
-
-
-
 
 

@@ -23,8 +23,12 @@
 package org.jenetics.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -54,6 +58,22 @@ public abstract class RandomTestBase {
 		return new BufferedReader(new InputStreamReader(
 			getClass().getResourceAsStream(getDataResource())
 		));
+	}
+
+	public static Random serialize(final Random random)
+		throws IOException, ClassNotFoundException
+	{
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		final ObjectOutputStream out = new ObjectOutputStream(bytes);
+		out.writeObject(random);
+		out.flush();
+
+		final ObjectInputStream in = new ObjectInputStream(
+			new ByteArrayInputStream(bytes.toByteArray())
+		);
+
+
+		return (Random)in.readObject();
 	}
 
 

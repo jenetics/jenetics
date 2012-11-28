@@ -22,11 +22,7 @@
  */
 package org.jenetics.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -89,22 +85,6 @@ public class XORShiftRandomTest extends RandomTestBase {
 		for (int i = 0; i < 10000; ++i) {
 			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
 		}
-	}
-
-	private static Random serialize(final Random random)
-		throws IOException, ClassNotFoundException
-	{
-		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		final ObjectOutputStream out = new ObjectOutputStream(bytes);
-		out.writeObject(random);
-		out.flush();
-
-		final ObjectInputStream in = new ObjectInputStream(
-			new ByteArrayInputStream(bytes.toByteArray())
-		);
-
-
-		return (Random)in.readObject();
 	}
 
 	@Test
