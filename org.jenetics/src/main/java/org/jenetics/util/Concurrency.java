@@ -85,7 +85,7 @@ import javolution.lang.Configurable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-28 $</em>
  */
 public final class Concurrency implements AutoCloseable {
 
@@ -103,7 +103,7 @@ public final class Concurrency implements AutoCloseable {
 	/**
 	 * Set the number of threads to use by the {@link ConcurrentContext}.
 	 *
-	 * @param concurrency the number of threads to use for the default concurernt
+	 * @param concurrency the number of threads to use for the default concurrent
 	 *        context.
 	 */
 	public static void setConcurrency(final int concurrency) {
