@@ -4813,7 +4813,14 @@ Performance measures
 \end_layout
 
 \begin_layout Standard
-The following table shows the number random 
+Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:PRNG-performance"
+
+\end_inset
+
+ shows the number random 
 \family typewriter
 int
 \family default
@@ -4829,7 +4836,7 @@ float
 \family typewriter
 double
 \family default
- values, the different PRNG implementations are able to generate per second.
+ values, the different PRNG implementations are able to generate.
 \begin_inset Foot
 status collapsed
 
@@ -4843,6 +4850,13 @@ Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="5">
 <features tabularvalignment="middle">
@@ -4856,7 +4870,7 @@ Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz
 \begin_inset Text
 
 \begin_layout Plain Layout
-PRNG
+
 \end_layout
 
 \end_inset
@@ -5098,6 +5112,33 @@ LCG64ShiftRandom
 </cell>
 </row>
 </lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:PRNG-performance"
+
+\end_inset
+
+PRNG performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
