@@ -38,7 +38,7 @@ public class LCG64ShiftRandomTest {
 
 	@Test
 	public void default_PRN() throws IOException {
-		final Random random = new LCG64ShiftRandom();
+		final Random random = new LCG64ShiftRandom(0);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			reader.foreach(new Function<String[], Void>() {
@@ -71,7 +71,7 @@ public class LCG64ShiftRandomTest {
 
 	@Test
 	public void split_3_0_PRN() throws IOException {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 		random.split(3, 0);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -91,7 +91,7 @@ public class LCG64ShiftRandomTest {
 
 	@Test
 	public void split_3_1_PRN() throws IOException {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 		random.split(3, 1);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -111,7 +111,7 @@ public class LCG64ShiftRandomTest {
 
 	@Test
 	public void split_3_2_PRN() throws IOException {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 		random.split(3, 2);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
@@ -131,7 +131,7 @@ public class LCG64ShiftRandomTest {
 
 	@Test
 	public void jump_PRN() throws IOException {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			final AtomicInteger i = new AtomicInteger(0);
@@ -151,7 +151,7 @@ public class LCG64ShiftRandomTest {
 
 	@Test
 	public void jump2_PRN() throws IOException {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 
 		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
 			final AtomicInteger i = new AtomicInteger(0);
@@ -171,6 +171,65 @@ public class LCG64ShiftRandomTest {
 
 			});
 		}
+	}
+
+	@Test
+	public void serializeDefault() throws IOException, ClassNotFoundException {
+		final Random rand1 = new LCG64ShiftRandom();
+		for (int i = 0; i < 12734; ++i) {
+			rand1.nextLong();
+		}
+
+		final Random rand2 = RandomTestBase.serialize(rand1);
+		Assert.assertNotSame(rand2, rand1);
+		Assert.assertTrue(
+			rand2 instanceof LCG64ShiftRandom,
+			"Must be of type LCG64ShiftRandom."
+		);
+
+		for (int i = 0; i < 2489248; ++i) {
+			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
+		}
+	}
+
+	@Test
+	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
+		final Random rand1 = new LCG64ShiftRandom.ThreadSafe();
+		for (int i = 0; i < 12734; ++i) {
+			rand1.nextLong();
+		}
+
+		final Random rand2 = RandomTestBase.serialize(rand1);
+		Assert.assertNotSame(rand2, rand1);
+		Assert.assertTrue(
+			rand2 instanceof LCG64ShiftRandom.ThreadSafe,
+			"Must be of type LCG64ShiftRandom.ThreadSafe."
+		);
+
+		for (int i = 0; i < 2489248; ++i) {
+			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
+		}
+	}
+
+	@Test
+	public void serializeThreadLocal() throws IOException, ClassNotFoundException {
+		final Random rand1 = new LCG64ShiftRandom.ThreadLocal().get();
+
+		for (int i = 0; i < 12734; ++i) {
+			rand1.nextLong();
+		}
+
+		final Random rand2 = RandomTestBase.serialize(rand1);
+		Assert.assertNotSame(rand2, rand1);
+		Assert.assertTrue(
+			rand2 instanceof LCG64ShiftRandom,
+			"Must be of type LCG64ShiftRandom."
+		);
+
+		for (int i = 0; i < 2489248; ++i) {
+			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
+		}
+
 	}
 
 
