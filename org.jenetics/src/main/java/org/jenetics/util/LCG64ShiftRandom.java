@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.object.hashCodeOf;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -455,6 +457,26 @@ public class LCG64ShiftRandom extends Random64 {
 		for (int i = 0; i < Long.SIZE; ++i) {
 			jump2(i);
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		return hashCodeOf(getClass()).and(_a).and(_b).and(_r).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof LCG64ShiftRandom)) {
+			return false;
+		}
+
+		final LCG64ShiftRandom random = (LCG64ShiftRandom)obj;
+		return _a == random._a &&
+				_b == random._b &&
+				_r == random._r;
 	}
 
 	/**
