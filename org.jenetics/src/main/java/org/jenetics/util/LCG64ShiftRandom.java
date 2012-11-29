@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-28 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-29 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -202,7 +202,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		private static final long serialVersionUID = 1L;
 
-		private final Boolean _sentinel = false;
+		private final Object _sentry = new Object();
 
 		private TLLCG64ShiftRandom(final long seed, final Param param) {
 			super(seed, param);
@@ -210,7 +210,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public void setSeed(final long seed) {
-			if (_sentinel != null) {
+			if (_sentry != null) {
 				throw new UnsupportedOperationException(
 					"The 'setSeed(long)' method is not supported " +
 					"for thread local instances."
