@@ -4805,7 +4805,11 @@ height "1pt"
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 org.jenetics.util.LCG64ShiftRandom
+\family default
+
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Tina2011"
