@@ -44,11 +44,11 @@ import javolution.lang.Reference;
  *     public static void main(final String[] args) {
  *         // Initialize the registry with a ThreadLocal instance of the PRGN.
  *         // This is the preferred way setting a new PRGN.
- *         RandomRegistry.setRandom(XORShiftRandom.INSTANCE);
+ *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
  *
  *         // Using a thread safe variant of the PRGN. Leads to slower PRN
  *         // generation, but gives you the possibility to set a PRNG seed.
- *         RandomRegistry.setRandom(new XORShiftRandom.ThreadSafe(1234));
+ *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
  *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
