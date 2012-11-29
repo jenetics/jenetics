@@ -202,7 +202,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		private static final long serialVersionUID = 1L;
 
-		private final Boolean _sentinel = false;
+		private final Object _sentry = new Object();
 
 		private TLLCG64ShiftRandom(final long seed, final Param param) {
 			super(seed, param);
@@ -210,7 +210,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public void setSeed(final long seed) {
-			if (_sentinel != null) {
+			if (_sentry != null) {
 				throw new UnsupportedOperationException(
 					"The 'setSeed(long)' method is not supported " +
 					"for thread local instances."
