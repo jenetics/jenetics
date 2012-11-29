@@ -69,7 +69,7 @@ public abstract class IndexStream {
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public <R> void foreach(final Function<? super Integer, ? extends R> function) {
+	<R> void foreach(final Function<? super Integer, ? extends R> function) {
 		nonNull(function, "Function");
 		for (int i = next(); i != -1; i = next()) {
 			function.apply(i);
@@ -122,9 +122,6 @@ public abstract class IndexStream {
 
 			@Override
 			public int next() {
-				//return (_pos = next(n, _pos, MAX, random));
-				//return (_pos = next(n, _pos, MAX));
-
 				while (_pos < n && random.nextInt() >= P) {
 					++_pos;
 				}
@@ -134,21 +131,6 @@ public abstract class IndexStream {
 		};
 	}
 
-	/*
-	private static int next(final int n, final int pos, final int max, Random random) {
-		int index = pos;
-		while (index < n && random.nextInt() >= max) {
-			++index;
-		}
-		return (index < n - 1) ? (index + 1) : -1;
-	}
-
-	private static native int next(final int n, final int pos, final int max);
-
-	static {
-		System.load("/home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics/src/main/cpp/libjenetics.so");
-	}
-	*/
 }
 
 
