@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -72,7 +73,9 @@ public class LCG64ShiftRandom extends Random64 {
 	 * parameters <i>a</i> and <i>b</i> of the LC recursion
 	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
 	 */
-	public static final class Param {
+	public static final class Param implements Serializable {
+
+		private static final long serialVersionUID = 1L;
 
 		/**
 		 * The parameter <i>a</i> of the LC recursion.
@@ -299,6 +302,9 @@ public class LCG64ShiftRandom extends Random64 {
 	public static final Param LECUYER3 = new Param(0x369DEA0F31A53F85L, 1L);
 
 
+	private final Param _param;
+	private final long _seed;
+
 	private long _a = 0;
 	private long _b = 0;
 	private long _r = 0;
@@ -340,11 +346,21 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final long seed, final Param param) {
-		object.nonNull(param, "PRNG param must not be null.");
+		_param = object.nonNull(param, "PRNG param must not be null.");
+		_seed = seed;
 
 		_r = seed;
 		_a = param.a;
 		_b = param.b;
+	}
+
+	/**
+	 * Resets the PRNG back to the construction state.
+	 */
+	public void reset() {
+		_r = _seed;
+		_a = _param.a;
+		_b = _param.b;
 	}
 
 	@Override
@@ -461,7 +477,9 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return hashCodeOf(getClass()).and(_a).and(_b).and(_r).value();
+		return hashCodeOf(getClass())
+				.and(_a).and(_b).and(_r)
+				.and(_seed).and(_param).value();
 	}
 
 	@Override
@@ -476,7 +494,9 @@ public class LCG64ShiftRandom extends Random64 {
 		final LCG64ShiftRandom random = (LCG64ShiftRandom)obj;
 		return _a == random._a &&
 				_b == random._b &&
-				_r == random._r;
+				_r == random._r &&
+				_seed == random._seed &&
+				_param.equals(random._param);
 	}
 
 	/**
