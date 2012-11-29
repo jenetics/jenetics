@@ -355,7 +355,7 @@ public class LCG64ShiftRandom extends Random64 {
 	}
 
 	/**
-	 * Resets the PRNG back to the construction state.
+	 * Resets the PRNG back to the creation state.
 	 */
 	public void reset() {
 		_r = _seed;
