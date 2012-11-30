@@ -102,7 +102,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public int hashCode() {
-			return (int)(a ^ b);
+			return 31*(int)(a^(a >>> 32)) + 31*(int)(b^(b >>> 32));
 		}
 
 		@Override
@@ -153,8 +153,9 @@ public class LCG64ShiftRandom extends Random64 {
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 57;
 
+		private final long _seed = System.currentTimeMillis()^System.nanoTime();
+
 		private final AtomicInteger _thread = new AtomicInteger(0);
-		private final long _now = System.currentTimeMillis();
 
 		private final Param _param;
 
@@ -196,8 +197,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 */
 		@Override
 		protected LCG64ShiftRandom initialValue() {
-			final long seed = (_now << _thread.get())^System.nanoTime();
-			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(seed, _param);
+			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
 			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
 			return random;
 		}
