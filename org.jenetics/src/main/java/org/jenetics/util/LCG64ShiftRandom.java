@@ -209,7 +209,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		private static final long serialVersionUID = 1L;
 
-		private final Object _sentry = new Object();
+		private final Boolean _sentry = Boolean.TRUE;
 
 		private TLLCG64ShiftRandom(final long seed, final Param param) {
 			super(seed, param);
@@ -475,6 +475,14 @@ public class LCG64ShiftRandom extends Random64 {
 		for (int i = 0; i < Long.SIZE; ++i) {
 			jump2(i);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return String.format(
+			"%s[a=%d, b=%d, r=%d",
+			getClass().getName(), _a, _b, _r
+		);
 	}
 
 	@Override
