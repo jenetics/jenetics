@@ -60,9 +60,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
+ * @see RandomRegistry
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-29 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-30 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
