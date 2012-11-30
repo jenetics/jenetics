@@ -4530,7 +4530,7 @@ pseudo
 \emph default
  random number generators (PRNG)
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG
@@ -4551,7 +4551,7 @@ Jenetics
 \family typewriter
 Random
 \family default
- object for generating random numbers.
+ object, respectively sub-types from it, for generating random numbers.
  To make the random engine pluggable, the 
 \family typewriter
 Random
@@ -4583,7 +4583,7 @@ Javolution
 \emph default
  project, the random engine
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!Engine
@@ -4658,7 +4658,17 @@ try {
 
 \begin_layout Plain Layout
 
-    RandomRegistry.setRandom(new Random(12345));
+    RandomRegistry.setRandom(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new LCG64ShiftRandom.ThreadSafe(12345)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
 \end_layout
 
 \begin_layout Plain Layout
@@ -4765,7 +4775,7 @@ width "90text%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -4804,6 +4814,148 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Standard
+The parallel nature of the GA implementation requires the creation of a
+ stream 
+\begin_inset Formula $t_{i,j}$
+\end_inset
+
+ of random numbers which are statistically independent.
+ A stream is numbered with 
+\begin_inset Formula $j=1,2,3,...,p$
+\end_inset
+
+, where 
+\begin_inset Formula $p$
+\end_inset
+
+ denotes the number of processes.
+ We expect statistical independence between the streams as well.
+ The used PRNG should enable the GA to 
+\emph on
+play fair
+\emph default
+, which means that the outcome of the GA is strictly independent from the
+ underlying hardware and the number of parallel processes.
+ This is essential for reproducing results in parallel environments where
+ the number of parallel tasks may vary from run to run.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The 
+\emph on
+Fair Play
+\emph default
+ property of a PRNG guarantees that the quality of the GA does not depend
+ on the degree of parallelization.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are essentially four different parallelizations techniques used in
+ practice:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Random seeding
+\series default
+: Every thread uses the same kind of PRNG but with a different seed.
+ This is default strategy used by the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+ The 
+\family typewriter
+RandomRegistry
+\family default
+ is initialized with the 
+\family typewriter
+ThreadLocalRandom
+\family default
+ class from the 
+\family typewriter
+java.util.concurrent
+\family default
+ package.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Parameterization
+\series default
+:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Block splitting
+\series default
+:
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Leapfrog
+\series default
+:
+\end_layout
+
 \begin_layout Paragraph
 
 \family typewriter
@@ -4817,51 +4969,6 @@ key "Tina2011"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Monte Carlo methods are a class of computational algorithms for simulating
- the behavior of various physical and mathematical systems by a stochastic
- process.
- While simulating such a process on a computer, large amounts of random
- numbers are consumed.
- Actually, a computer as a deterministic machine is not able to generate
- random digits.
-\end_layout
-
-\begin_layout Standard
-In parallel applications, we need to generate streams t_ij of random numbers.
- Streams are numbered by j = 0,1,2,3..., where p is the number of processes.
- We require statistical independence of the t_i,j within each stream and
- between streams as well, Four different parallelization techniques are
- used in practice: Random seeding, Parameterization, Block splitting and
- leapfrog.
-\end_layout
-
-\begin_layout Standard
-
-\series bold
-Playing fair:
-\series default
- We say that a parallel Monte Carlo simulation plays fair, if its outcome
- is strictly independent of the underlying hardware.
- Fair play implies the use of the same PRNs in the same context, independently
- of the number of parallel processes.
- It is mandatory for debugging, especially in parallel environments where
- the number of parallel processes varies from run to run, but another benefit
- of playing fair is even more important: Fair play guarantees that the quality
- of a PRNG with respect to an application does not depend on the degree
- of parallelization.
- 
-\end_layout
-
-\begin_layout Standard
-Obviously the use of parameterization or random seeding prevent a simulation
- from playing fair.
- Leapfrog and block splitting, on the other hand, do allow the use of the
- same PRNs within the same context independently of the number of parallel
- streams.
- 
 \end_layout
 
 \begin_layout Paragraph
