@@ -8574,6 +8574,46 @@ build
 
 \end_deeper
 \begin_layout Section
+Random distribution test
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/LCG64ShiftRandom.dieharder}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 License
 \begin_inset Index idx
 status collapsed
