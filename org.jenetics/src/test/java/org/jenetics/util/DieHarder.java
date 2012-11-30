@@ -35,9 +35,9 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date$</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-11-30 $</em>
  */
-final class DieHarder {
+public final class DieHarder {
 
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
