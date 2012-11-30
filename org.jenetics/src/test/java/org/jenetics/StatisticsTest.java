@@ -32,6 +32,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64>> {
 

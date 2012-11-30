@@ -41,6 +41,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class Integer64ChromosomeTest
 	extends NumberChromosomeTester<Integer64, Integer64Gene>

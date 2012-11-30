@@ -34,6 +34,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class NormalDistributionTest {
 

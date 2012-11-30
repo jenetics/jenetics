@@ -30,6 +30,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public abstract class ChromosomeTester<G extends Gene<?, G>>
 	extends ObjectTester<Chromosome<G>>

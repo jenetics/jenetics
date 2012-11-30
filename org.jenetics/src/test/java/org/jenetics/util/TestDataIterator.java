@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class TestDataIterator implements Closeable {
 

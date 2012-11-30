@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 @Documented
 @Inherited
