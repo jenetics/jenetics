@@ -40,9 +40,9 @@ public class LCG64ShiftRandomTest {
 		"/org/jenetics/util/LGC64ShiftRandom.dat"
 	);
 
-	@Test
-	public void default_PRN() {
-		final Random random = new LCG64ShiftRandom(0);
+	@Test(dataProvider = "PRNG2")
+	public void seed0(final LCG64ShiftRandom random) {
+		random.setSeed(0);
 
 		for (final String[] value : _data) {
 			final long expected = Long.parseLong(value[0]);
@@ -50,9 +50,9 @@ public class LCG64ShiftRandomTest {
 		}
 	}
 
-	@Test
-	public void seed111_PRN() {
-		final Random random = new LCG64ShiftRandom(111);
+	@Test(dataProvider = "PRNG2")
+	public void seed111(final LCG64ShiftRandom random) {
+		random.setSeed(111);
 
 		for (final String[] value : _data) {
 			final long expected = Long.parseLong(value[1]);
@@ -61,9 +61,9 @@ public class LCG64ShiftRandomTest {
 	}
 
 
-	@Test
-	public void split_3_0_PRN() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
+	@Test(dataProvider = "PRNG2")
+	public void split3_0(final LCG64ShiftRandom random) {
+		random.setSeed(0);
 		random.split(3, 0);
 
 		for (final String[] value : _data) {
@@ -73,9 +73,9 @@ public class LCG64ShiftRandomTest {
 		}
 	}
 
-	@Test
-	public void split_3_1_PRN() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
+	@Test(dataProvider = "PRNG2")
+	public void split3_1(final LCG64ShiftRandom random) {
+		random.setSeed(0);
 		random.split(3, 1);
 
 		for (final String[] value : _data) {
@@ -85,9 +85,9 @@ public class LCG64ShiftRandomTest {
 		}
 	}
 
-	@Test
-	public void split_3_2_PRN() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
+	@Test(dataProvider = "PRNG2")
+	public void split3_2(final LCG64ShiftRandom random) {
+		random.setSeed(0);
 		random.split(3, 2);
 
 		for (final String[] value : _data) {
@@ -98,9 +98,9 @@ public class LCG64ShiftRandomTest {
 	}
 
 
-	@Test
-	public void jump_PRN() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
+	@Test(dataProvider = "PRNG2")
+	public void jump(final LCG64ShiftRandom random) {
+		random.setSeed(0);
 
 		final AtomicInteger i = new AtomicInteger(0);
 		for (final String[] value : _data) {
@@ -112,24 +112,32 @@ public class LCG64ShiftRandomTest {
 	}
 
 
-	@Test
-	public void jump2_PRN() {
-		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
+	@Test(dataProvider = "PRNG2")
+	public void jump2(final LCG64ShiftRandom random) {
+		random.setSeed(0);
 
-		final AtomicInteger i = new AtomicInteger(0);
+		int index = 0;
 		for (final String[] value : _data) {
-			if (i.get() < 64) {
-				random.jump2(i.get());
+			if (index < 64) {
+				random.jump2(index);
 				final long expected = Long.parseLong(value[6]);
 				final long actuall = random.nextLong();
 
 				Assert.assertEquals(actuall, expected);
 			}
-			i.getAndIncrement();
+			++index;
 		}
 	}
 
-	@Test(dataProvider = "PRNG-equals-hashcode")
+	@DataProvider(name = "PRNG2")
+	Object[][] getPRNG2() {
+		return new Object[][]{
+			{new LCG64ShiftRandom(666)},
+			{new LCG64ShiftRandom.ThreadSafe(666)}
+		};
+	}
+
+	@Test(dataProvider = "PRNG22")
 	public void equals(final Random rand1, final Random rand2) {
 		Assert.assertNotSame(rand2, rand1);
 		Assert.assertEquals(rand2, rand1);
@@ -145,7 +153,7 @@ public class LCG64ShiftRandomTest {
 		Assert.assertEquals(rand2, rand1);
 	}
 
-	@Test(dataProvider = "PRNG-equals-hashcode")
+	@Test(dataProvider = "PRNG22")
 	public void hashCode(final Random rand1, final Random rand2) {
 		Assert.assertNotSame(rand2, rand1);
 		Assert.assertEquals(rand2, rand1);
@@ -164,15 +172,15 @@ public class LCG64ShiftRandomTest {
 		Assert.assertEquals(rand2.hashCode(), rand1.hashCode());
 	}
 
-	@DataProvider(name = "PRNG-equals-hashcode")
-	Object[][] getRandomEnginesForHashCodeAndEquals() {
+	@DataProvider(name = "PRNG22")
+	Object[][] getPRNG22() {
 		return new Object[][]{
 			{new LCG64ShiftRandom(666), new LCG64ShiftRandom(666)},
 			{new LCG64ShiftRandom.ThreadSafe(666), new LCG64ShiftRandom.ThreadSafe(666)}
 		};
 	}
 
-	@Test(dataProvider = "PRNG-serialization")
+	@Test(dataProvider = "PRNG3")
 	public void serialize(final Random rand1)
 		throws IOException, ClassNotFoundException
 	{
@@ -193,8 +201,8 @@ public class LCG64ShiftRandomTest {
 
 	}
 
-	@DataProvider(name = "PRNG-serialization")
-	Object[][] getRandomEnginesForSerialization() {
+	@DataProvider(name = "PRNG3")
+	Object[][] getPRNG3() {
 		return new Object[][]{
 			{new LCG64ShiftRandom(666)},
 			{new LCG64ShiftRandom.ThreadSafe(666)},
