@@ -4804,7 +4804,7 @@ height "1pt"
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Paragraph
 
 \family typewriter
 org.jenetics.util.LCG64ShiftRandom
@@ -4819,7 +4819,52 @@ key "Tina2011"
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+Monte Carlo methods are a class of computational algorithms for simulating
+ the behavior of various physical and mathematical systems by a stochastic
+ process.
+ While simulating such a process on a computer, large amounts of random
+ numbers are consumed.
+ Actually, a computer as a deterministic machine is not able to generate
+ random digits.
+\end_layout
+
+\begin_layout Standard
+In parallel applications, we need to generate streams t_ij of random numbers.
+ Streams are numbered by j = 0,1,2,3..., where p is the number of processes.
+ We require statistical independence of the t_i,j within each stream and
+ between streams as well, Four different parallelization techniques are
+ used in practice: Random seeding, Parameterization, Block splitting and
+ leapfrog.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Playing fair:
+\series default
+ We say that a parallel Monte Carlo simulation plays fair, if its outcome
+ is strictly independent of the underlying hardware.
+ Fair play implies the use of the same PRNs in the same context, independently
+ of the number of parallel processes.
+ It is mandatory for debugging, especially in parallel environments where
+ the number of parallel processes varies from run to run, but another benefit
+ of playing fair is even more important: Fair play guarantees that the quality
+ of a PRNG with respect to an application does not depend on the degree
+ of parallelization.
+ 
+\end_layout
+
+\begin_layout Standard
+Obviously the use of parameterization or random seeding prevent a simulation
+ from playing fair.
+ Leapfrog and block splitting, on the other hand, do allow the use of the
+ same PRNs within the same context independently of the number of parallel
+ streams.
+ 
+\end_layout
+
+\begin_layout Paragraph
 Performance measures
 \end_layout
 
@@ -4871,13 +4916,13 @@ status open
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="5">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top" width="0pt">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4886,7 +4931,7 @@ status open
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4899,7 +4944,7 @@ int
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4912,7 +4957,7 @@ long
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4925,7 +4970,7 @@ float
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4940,7 +4985,7 @@ double
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4951,7 +4996,7 @@ Random
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4963,7 +5008,7 @@ Random
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4975,7 +5020,7 @@ Random
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -4987,7 +5032,7 @@ Random
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5001,7 +5046,7 @@ Random
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5012,7 +5057,7 @@ ThreadLocalRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5024,7 +5069,7 @@ ThreadLocalRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5036,7 +5081,7 @@ ThreadLocalRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5048,7 +5093,7 @@ ThreadLocalRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5062,7 +5107,7 @@ ThreadLocalRandom
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5073,7 +5118,7 @@ LCG64ShiftRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5085,7 +5130,7 @@ LCG64ShiftRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5097,7 +5142,7 @@ LCG64ShiftRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5109,7 +5154,7 @@ LCG64ShiftRandom
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -5139,7 +5184,7 @@ name "tab:PRNG-performance"
 
 \end_inset
 
-PRNG performance
+Performance of various PRNG implementations.
 \end_layout
 
 \end_inset
