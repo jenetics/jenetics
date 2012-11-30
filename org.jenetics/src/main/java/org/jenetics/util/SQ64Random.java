@@ -34,18 +34,18 @@ package org.jenetics.util;
  * <br/>
  * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
  * <p/>
- * 
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class SQ64Random extends Random64 {
+class SQ64Random extends Random64 {
 	private static final long serialVersionUID = 1L;
 
-	
+
 	@Override
 	public long nextLong() {
 		return System.nanoTime();
 	}
-	
+
 }

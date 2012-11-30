@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.XORShiftRandom;
+//import org.jenetics.util.XORShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,7 +40,7 @@ public class RandomPerformanceTests {
 
 		test(new Random(), loops);
 		test(ThreadLocalRandom.current(), loops);
-		test(new XORShiftRandom(), loops);
+		//test(new XORShiftRandom(), loops);
 		test(new LCG64ShiftRandom(), loops);
 	}
 

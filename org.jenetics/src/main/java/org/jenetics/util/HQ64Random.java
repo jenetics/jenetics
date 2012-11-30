@@ -50,7 +50,7 @@ package org.jenetics.util;
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-public class HQ64Random extends Random64 {
+class HQ64Random extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 

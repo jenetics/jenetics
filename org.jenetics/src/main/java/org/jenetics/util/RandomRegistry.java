@@ -34,7 +34,9 @@ import javolution.lang.Reference;
  * This class holds the {@link Random} engine used for the GA. The
  * {@code RandomRegistry} is thread safe. The registry is initialized with the
  * {@link ThreadLocalRandom} PRNG, which has a much better performance behavior
- * than an instance of the {@code Random} class.
+ * than an instance of the {@code Random} class. Alternatively, you can
+ * initialize the registry with one of the PRNG, which are being part of the
+ * library.
  * <p/>
  *
  * <b>Setup of a <i>global</i> PRNG</b>
@@ -61,7 +63,7 @@ import javolution.lang.Reference;
  * <b>Setup of a <i>local</i> PRNG</b><br/>
  *
  * With the help of the {@link LocalContext} from the <a href="http://javolution.org/">
- * javolution</a> projectyou can temporarily (and locally) change the
+ * javolution</a> project you can temporarily (and locally) change the
  * implementation of the PRNG
  *
  * [code]
@@ -86,9 +88,9 @@ import javolution.lang.Reference;
  * <p/>
  *
  * @see LocalContext
+ * @see Random
  * @see ThreadLocalRandom
- * @see XORShiftRandom
- * @see HQ64Random
+ * @see LCG64ShiftRandom
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
