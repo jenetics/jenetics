@@ -35,141 +35,97 @@ import org.testng.annotations.Test;
  * @version <em>$Date$</em>
  */
 public class LCG64ShiftRandomTest {
-	private static final String TEST_DATA = "/org/jenetics/util/LGC64ShiftRandom.dat";
 
+	private final TestData _data = new TestData(
+		"/org/jenetics/util/LGC64ShiftRandom.dat"
+	);
 
 	@Test
-	public void default_PRN() throws IOException {
+	public void default_PRN() {
 		final Random random = new LCG64ShiftRandom(0);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
-					final long expected = Long.parseLong(value[0]);
-					Assert.assertEquals(random.nextLong(), expected);
-					return null;
-				}
-
-			});
+		for (final String[] value : _data) {
+			final long expected = Long.parseLong(value[0]);
+			Assert.assertEquals(random.nextLong(), expected);
 		}
 	}
 
 	@Test
-	public void seed111_PRN() throws IOException {
+	public void seed111_PRN() {
 		final Random random = new LCG64ShiftRandom(111);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
-					final long expected = Long.parseLong(value[1]);
-					Assert.assertEquals(random.nextLong(), expected);
-					return null;
-				}
-
-			});
+		for (final String[] value : _data) {
+			final long expected = Long.parseLong(value[1]);
+			Assert.assertEquals(random.nextLong(), expected);
 		}
 	}
 
 
 	@Test
-	public void split_3_0_PRN() throws IOException {
+	public void split_3_0_PRN() {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 		random.split(3, 0);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
-					final long expected = Long.parseLong(value[2]);
-					final long actuall = random.nextLong();
-
-					Assert.assertEquals(actuall, expected);
-					return null;
-				}
-
-			});
+		for (final String[] value : _data) {
+			final long expected = Long.parseLong(value[2]);
+			final long actuall = random.nextLong();
+			Assert.assertEquals(actuall, expected);
 		}
 	}
 
 	@Test
-	public void split_3_1_PRN() throws IOException {
+	public void split_3_1_PRN() {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 		random.split(3, 1);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
-					final long expected = Long.parseLong(value[3]);
-					final long actuall = random.nextLong();
-
-					Assert.assertEquals(actuall, expected);
-					return null;
-				}
-
-			});
+		for (final String[] value : _data) {
+			final long expected = Long.parseLong(value[3]);
+			final long actuall = random.nextLong();
+			Assert.assertEquals(actuall, expected);
 		}
 	}
 
 	@Test
-	public void split_3_2_PRN() throws IOException {
+	public void split_3_2_PRN() {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 		random.split(3, 2);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
-					final long expected = Long.parseLong(value[4]);
-					final long actuall = random.nextLong();
-
-					Assert.assertEquals(actuall, expected);
-					return null;
-				}
-
-			});
+		for (final String[] value : _data) {
+			final long expected = Long.parseLong(value[4]);
+			final long actuall = random.nextLong();
+			Assert.assertEquals(actuall, expected);
 		}
 	}
 
 
 	@Test
-	public void jump_PRN() throws IOException {
+	public void jump_PRN() {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			final AtomicInteger i = new AtomicInteger(0);
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
-					random.jump(i.getAndIncrement());
+		final AtomicInteger i = new AtomicInteger(0);
+		for (final String[] value : _data) {
+			random.jump(i.getAndIncrement());
 
-					final long expected = Long.parseLong(value[5]);
-					Assert.assertEquals(random.nextLong(), expected);
-					return null;
-				}
-
-			});
+			final long expected = Long.parseLong(value[5]);
+			Assert.assertEquals(random.nextLong(), expected);
 		}
 	}
 
 
 	@Test
-	public void jump2_PRN() throws IOException {
+	public void jump2_PRN() {
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(0);
 
-		try (TestDataReader reader = new TestDataReader(TEST_DATA)) {
-			final AtomicInteger i = new AtomicInteger(0);
-			reader.foreach(new Function<String[], Void>() {
-				@Override public Void apply(String[] value) {
+		final AtomicInteger i = new AtomicInteger(0);
+		for (final String[] value : _data) {
+			if (i.get() < 64) {
+				random.jump2(i.get());
+				final long expected = Long.parseLong(value[6]);
+				final long actuall = random.nextLong();
 
-					if (i.get() < 64) {
-						random.jump2(i.get());
-						final long expected = Long.parseLong(value[6]);
-						final long actuall = random.nextLong();
-
-						Assert.assertEquals(actuall, expected);
-					}
-					i.getAndIncrement();
-					return null;
-				}
-
-			});
+				Assert.assertEquals(actuall, expected);
+			}
+			i.getAndIncrement();
 		}
 	}
 
