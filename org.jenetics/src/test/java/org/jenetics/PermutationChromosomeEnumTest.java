@@ -28,6 +28,7 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class PermutationChromosomeEnumTest
 	extends ChromosomeTester<EnumGene<PermutationEnum>>
