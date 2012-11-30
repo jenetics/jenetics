@@ -27,6 +27,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -79,7 +80,6 @@ public class LCG64ShiftRandomTest {
 				@Override public Void apply(String[] value) {
 					final long expected = Long.parseLong(value[2]);
 					final long actuall = random.nextLong();
-					//System.out.println(actuall);
 
 					Assert.assertEquals(actuall, expected);
 					return null;
@@ -99,7 +99,6 @@ public class LCG64ShiftRandomTest {
 				@Override public Void apply(String[] value) {
 					final long expected = Long.parseLong(value[3]);
 					final long actuall = random.nextLong();
-					//System.out.println(actuall);
 
 					Assert.assertEquals(actuall, expected);
 					return null;
@@ -173,9 +172,53 @@ public class LCG64ShiftRandomTest {
 		}
 	}
 
-	@Test
-	public void serializeDefault() throws IOException, ClassNotFoundException {
-		final Random rand1 = new LCG64ShiftRandom();
+	@Test(dataProvider = "PRNG-equals-hashcode")
+	public void equals(final Random rand1, final Random rand2) {
+		Assert.assertNotSame(rand2, rand1);
+		Assert.assertEquals(rand2, rand1);
+
+		for (int i = 0; i < 666; ++i) {
+			rand1.nextLong();
+		}
+		Assert.assertNotEquals(rand1, rand2);
+
+		for (int i = 0; i < 666; ++i) {
+			rand2.nextLong();
+		}
+		Assert.assertEquals(rand2, rand1);
+	}
+
+	@Test(dataProvider = "PRNG-equals-hashcode")
+	public void hashCode(final Random rand1, final Random rand2) {
+		Assert.assertNotSame(rand2, rand1);
+		Assert.assertEquals(rand2, rand1);
+		Assert.assertEquals(rand2.hashCode(), rand1.hashCode());
+
+		for (int i = 0; i < 666; ++i) {
+			rand1.nextLong();
+		}
+		Assert.assertNotEquals(rand1, rand2);
+		Assert.assertNotEquals(rand2.hashCode(), rand1.hashCode());
+
+		for (int i = 0; i < 666; ++i) {
+			rand2.nextLong();
+		}
+		Assert.assertEquals(rand2, rand1);
+		Assert.assertEquals(rand2.hashCode(), rand1.hashCode());
+	}
+
+	@DataProvider(name = "PRNG-equals-hashcode")
+	Object[][] getRandomEnginesForHashCodeAndEquals() {
+		return new Object[][]{
+			{new LCG64ShiftRandom(666), new LCG64ShiftRandom(666)},
+			{new LCG64ShiftRandom.ThreadSafe(666), new LCG64ShiftRandom.ThreadSafe(666)}
+		};
+	}
+
+	@Test(dataProvider = "PRNG-serialization")
+	public void serialize(final Random rand1)
+		throws IOException, ClassNotFoundException
+	{
 		for (int i = 0; i < 12734; ++i) {
 			rand1.nextLong();
 		}
@@ -190,48 +233,17 @@ public class LCG64ShiftRandomTest {
 		for (int i = 0; i < 2489248; ++i) {
 			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
 		}
-	}
-
-	@Test
-	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
-		final Random rand1 = new LCG64ShiftRandom.ThreadSafe();
-		for (int i = 0; i < 12734; ++i) {
-			rand1.nextLong();
-		}
-
-		final Random rand2 = RandomTestBase.serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-		Assert.assertTrue(
-			rand2 instanceof LCG64ShiftRandom.ThreadSafe,
-			"Must be of type LCG64ShiftRandom.ThreadSafe."
-		);
-
-		for (int i = 0; i < 2489248; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
-
-	@Test
-	public void serializeThreadLocal() throws IOException, ClassNotFoundException {
-		final Random rand1 = new LCG64ShiftRandom.ThreadLocal().get();
-
-		for (int i = 0; i < 12734; ++i) {
-			rand1.nextLong();
-		}
-
-		final Random rand2 = RandomTestBase.serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-		Assert.assertTrue(
-			rand2 instanceof LCG64ShiftRandom,
-			"Must be of type LCG64ShiftRandom."
-		);
-
-		for (int i = 0; i < 2489248; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
 
 	}
 
+	@DataProvider(name = "PRNG-serialization")
+	Object[][] getRandomEnginesForSerialization() {
+		return new Object[][]{
+			{new LCG64ShiftRandom(666)},
+			{new LCG64ShiftRandom.ThreadSafe(666)},
+			{new LCG64ShiftRandom.ThreadLocal().get()}
+		};
+	}
 
 }
 
