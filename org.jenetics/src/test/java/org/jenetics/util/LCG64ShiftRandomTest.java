@@ -118,13 +118,11 @@ public class LCG64ShiftRandomTest {
 
 		int index = 0;
 		for (final String[] value : _data) {
-			if (index < 64) {
-				random.jump2(index);
-				final long expected = Long.parseLong(value[6]);
-				final long actuall = random.nextLong();
+			random.jump2(index%64);
+			final long expected = Long.parseLong(value[6]);
+			final long actuall = random.nextLong();
 
-				Assert.assertEquals(actuall, expected);
-			}
+			Assert.assertEquals(actuall, expected);
 			++index;
 		}
 	}
