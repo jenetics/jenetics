@@ -4964,6 +4964,20 @@ Parameterization
 LCG64ShiftRandom
 \family default
  if you want to use this strategy.
+ 
+\emph on
+The theoretical foundation of these method is weak and empirical tests have
+ revealed serious correlation between streams.
+ On massive parallel system you may need thousands of parallel streams and
+ it is not trivial to find a type of PRNG with thousands of 
+\begin_inset Quotes ald
+\end_inset
+
+well tested
+\begin_inset Quotes ard
+\end_inset
+
+ parameter sets.
 \end_layout
 
 \begin_layout Itemize
@@ -4978,6 +4992,12 @@ Block splitting
 LCG64ShiftRandom.ThreadLocal
 \family default
  class.
+ 
+\emph on
+This method only works if we know the maximal needed threads in advance.
+ To apply block splitting it is necessary to jump from the ith random number
+ to the i+Mth random number without calculating all the numbers in between.
+ 
 \end_layout
 
 \begin_layout Itemize
