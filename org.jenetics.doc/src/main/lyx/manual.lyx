@@ -4930,6 +4930,25 @@ ThreadLocalRandom
 java.util.concurrent
 \family default
  package.
+ Random seeding works well for the most problems but without theoretical
+ foundation.
+ If you assume that this strategy is responsible for some non-reproducible
+ results, consider using the 
+\family typewriter
+LCG64ShiftRandom
+\family default
+ PRNG instead.
+ 
+\emph on
+Donald Knuth’s advice 
+\begin_inset Quotes ald
+\end_inset
+
+Random number generators should not be chosen at random.
+\begin_inset Quotes ard
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -4937,7 +4956,14 @@ java.util.concurrent
 \series bold
 Parameterization
 \series default
-:
+: All threads uses the same kind of PRNG but with different parameters.
+ This requires that the PRNG to be parameterizable, which is not the case
+ for the Random object of the JDK.
+ Use the 
+\family typewriter
+LCG64ShiftRandom
+\family default
+ if you want to use this strategy.
 \end_layout
 
 \begin_layout Itemize
@@ -4945,7 +4971,13 @@ Parameterization
 \series bold
 Block splitting
 \series default
-:
+: Each thread is assigned a block of random numbers, which should not be
+ enough for the whole runtime of the process.
+ This strategy is used when using the 
+\family typewriter
+LCG64ShiftRandom.ThreadLocal
+\family default
+ class.
 \end_layout
 
 \begin_layout Itemize
@@ -4953,7 +4985,8 @@ Block splitting
 \series bold
 Leapfrog
 \series default
-:
+: Each thread consumes only p^th random number, where p denotes the maximal
+ number of processes.
 \end_layout
 
 \begin_layout Paragraph
