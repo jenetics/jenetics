@@ -74,7 +74,7 @@ import javolution.lang.Reference;
  *
  *         LocalContext.enter();
  *         try {
- *             RandomRegistry.setRandom(HQ64Random.INSTANCE);
+ *             RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *             // Only the 'setup' step uses the new PRGN.
  *             ga.setup();
  *         } finally {
