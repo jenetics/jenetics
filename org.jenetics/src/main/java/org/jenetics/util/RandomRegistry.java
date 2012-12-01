@@ -174,8 +174,7 @@ public final class RandomRegistry {
 	private final static class RRef extends Ref<Random> {
 		private final Random _random;
 		public RRef(final Random random) {
-			nonNull(random, "Random");
-			_random = random;
+			_random = nonNull(random, "Random");
 		}
 		@Override public Random get() {
 			return _random;
@@ -185,8 +184,7 @@ public final class RandomRegistry {
 	private final static class TLRRef<R extends Random> extends Ref<R> {
 		private final ThreadLocal<R> _random;
 		public TLRRef(final ThreadLocal<R> random) {
-			nonNull(random, "Random");
-			_random = random;
+			_random = nonNull(random, "Random");
 		}
 		@Override public R get() {
 			return _random.get();
