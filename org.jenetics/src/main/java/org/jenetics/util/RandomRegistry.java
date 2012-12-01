@@ -74,7 +74,7 @@ import javolution.lang.Reference;
  *
  *         LocalContext.enter();
  *         try {
- *             RandomRegistry.setRandom(HQ64Random.INSTANCE);
+ *             RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
  *             // Only the 'setup' step uses the new PRGN.
  *             ga.setup();
  *         } finally {
@@ -94,7 +94,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-11-30 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-01 $</em>
  */
 public final class RandomRegistry {
 
