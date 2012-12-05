@@ -36,6 +36,18 @@ class random {
 		throw new AssertionError("Don't create an 'random' instance.");
 	}
 
+	static byte[] seed(final byte[] seed) {
+		for (int i = 0, len = seed.length; i < len;) {
+			int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
+
+			for (long x = seed(); n-- > 0; x >>= Byte.SIZE) {
+				seed[i++] = (byte)x;
+			}
+		}
+
+		return seed;
+	}
+
 	static long seed(final long seed) {
 		long s = seed^nanoTimeSeed();
 		s ^= s << 21;
@@ -60,13 +72,13 @@ class random {
 	private static long nanoTimeSeed() {
 		return
 		((System.nanoTime() & 255) << 56) |
-		((System.nanoTime() & 255) << 48) |
-		((System.nanoTime() & 255) << 40) |
+		((System.nanoTime() & 255) <<  0) |
 		((System.nanoTime() & 255) << 32) |
-		((System.nanoTime() & 255) << 24) |
 		((System.nanoTime() & 255) << 16) |
+		((System.nanoTime() & 255) << 24) |
+		((System.nanoTime() & 255) << 40) |
 		((System.nanoTime() & 255) <<  8) |
-		((System.nanoTime() & 255) <<  0);
+		((System.nanoTime() & 255) << 48);
 	}
 
 }
