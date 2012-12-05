@@ -22,11 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,99 +34,32 @@ class random {
 		throw new AssertionError("Don't create an 'random' instance.");
 	}
 
-	public static void main(final String[] args) {
-		final Random random = new org.jenetics.util.XOR64ShiftRandom(12345);
-		for (int i = 0; i < 5000; ++i) {
-			System.out.println(random.nextLong());
-		}
+	static long seed(final long seed) {
+		long s = seed^_seed();
+		s ^= s << 21;
+		s ^= s >>> 35;
+		s ^= s << 4;
+		return s;
 	}
 
-	static final class NullLock implements Lock {
-		@Override public void lock() {}
-		@Override public void lockInterruptibly() {}
-		@Override public boolean tryLock() {
-			return false;
+	static long seed() {
+		long seed = _seed();
+		for (int i = 0; i < 3; ++i) {
+			seed = seed(_seed());
 		}
-		@Override public boolean tryLock(long time, TimeUnit unit) {
-			return false;
-		}
-		@Override public void unlock() {}
-		@Override public Condition newCondition() {
-			throw new UnsupportedOperationException();
-		}
+		return seed;
 	}
 
-	public static final Lock NULL = new NullLock();
-
-
-	static class XORShiftRandom extends Random {
-		private static final long serialVersionUID = 1L;
-
-		private final Lock _lock;
-
-		private long _x;
-
-		public XORShiftRandom(final Lock lock) {
-			this(lock, System.nanoTime());
-		}
-
-		public XORShiftRandom(final Lock lock, final long seed) {
-			_lock = lock;
-			_x = seed == 0 ? 0xdeadbeef : seed;
-		}
-
-		@Override
-		public long nextLong() {
-			if (_lock != NULL) _lock.lock();
-			try {
-				_x ^= (_x << 21);
-				_x ^= (_x >>> 35);
-				_x ^= (_x << 4);
-				return _x;
-			} finally {
-				if (_lock != NULL) _lock.unlock();
-			}
-		}
-
-		@Override
-		protected int next(final int bits) {
-			return (int)(nextLong() >>> (64 - bits));
-		}
+	private static long _seed() {
+		return
+		((System.nanoTime() & 255) << 56) +
+		((System.nanoTime() & 255) << 48) +
+		((System.nanoTime() & 255) << 40) +
+		((System.nanoTime() & 255) << 32) +
+		((System.nanoTime() & 255) << 24) +
+		((System.nanoTime() & 255) << 16) +
+		((System.nanoTime() & 255) <<  8) +
+		((System.nanoTime() & 255) <<  0);
 	}
-
-	static class AXORShiftRandom extends Random {
-		private static final long serialVersionUID = 1L;
-
-
-		private final AtomicLong _x = new AtomicLong();
-
-		public AXORShiftRandom() {
-			this(System.nanoTime());
-		}
-
-		public AXORShiftRandom(final long seed) {
-			_x.set(seed == 0 ? 0xdeadbeef : seed);
-		}
-
-		@Override
-		public long nextLong() {
-			long oldseed;
-			long nextseed;
-			do {
-				oldseed = _x.get();
-				nextseed = oldseed;
-				nextseed ^= (nextseed << 21);
-				nextseed ^= (nextseed >>> 35);
-				nextseed ^= (nextseed << 4);
-			} while (!_x.compareAndSet(oldseed, nextseed));
-			return nextseed;
-		}
-
-		@Override
-		protected int next(final int bits) {
-			return (int)(nextLong() >>> (64 - bits));
-		}
-	}
-
 
 }

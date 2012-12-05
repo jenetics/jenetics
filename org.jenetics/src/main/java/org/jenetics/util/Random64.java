@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-26 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-05 $</em>
  */
 abstract class Random64 extends Random {
 
@@ -82,4 +82,9 @@ abstract class Random64 extends Random {
 		return (((x >>> 38) << 27) + (((int)x) >>> 5))/(double)(1L << 53);
 	}
 
+
+
 }
+
+
+
