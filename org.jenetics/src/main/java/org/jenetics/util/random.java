@@ -40,7 +40,7 @@ class random {
 	}
 
 	public static void main(final String[] args) {
-		final Random random = new org.jenetics.util.XORShiftRandom(12345);
+		final Random random = new org.jenetics.util.XOR64ShiftRandom(12345);
 		for (int i = 0; i < 5000; ++i) {
 			System.out.println(random.nextLong());
 		}

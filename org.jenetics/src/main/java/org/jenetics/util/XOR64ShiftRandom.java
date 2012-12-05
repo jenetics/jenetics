@@ -48,14 +48,14 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * <p><b>
  * The <i>main</i> class of this PRNG is not thread safe. To create an thread
- * safe instances of this PRNG, use the {@link XORShiftRandom.ThreadSafe} class.
+ * safe instances of this PRNG, use the {@link XOR64ShiftRandom.ThreadSafe} class.
  * </b></p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
  */
-class XORShiftRandom extends Random64 {
+class XOR64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,14 +69,14 @@ class XORShiftRandom extends Random64 {
 	 * RandomRegistry.setRandom(XORShiftRandom.INSTANCE);
 	 * [/code]
 	 *
-	 * Calling the {@link XORShiftRandom#setSeed(long)} method on the returned
+	 * Calling the {@link XOR64ShiftRandom#setSeed(long)} method on the returned
 	 * instance will throw an {@link UnsupportedOperationException}.
 	 */
-	public static final ThreadLocal<XORShiftRandom>
-	INSTANCE = new ThreadLocal<XORShiftRandom>() {
+	public static final ThreadLocal<XOR64ShiftRandom>
+	INSTANCE = new ThreadLocal<XOR64ShiftRandom>() {
 		@Override
-		protected XORShiftRandom initialValue() {
-			return new XORShiftRandom() {
+		protected XOR64ShiftRandom initialValue() {
+			return new XOR64ShiftRandom() {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void setSeed(final long seed) {
@@ -92,7 +92,7 @@ class XORShiftRandom extends Random64 {
 	 * Create a new <i>non-thread safe</i> instance of the XOR-Shift PRNG, with
 	 * an seed of {@link System#nanoTime()}.
 	 */
-	public XORShiftRandom() {
+	public XOR64ShiftRandom() {
 		this(seed());
 	}
 
@@ -101,7 +101,7 @@ class XORShiftRandom extends Random64 {
 	 *
 	 * @param seed the seed of the PRNG.
 	 */
-	public XORShiftRandom(final long seed) {
+	public XOR64ShiftRandom(final long seed) {
 		_x = init(seed);
 	}
 
@@ -165,7 +165,7 @@ class XORShiftRandom extends Random64 {
 	 * }
 	 * [/code]
 	 */
-	public static final class ThreadSafe extends XORShiftRandom {
+	public static final class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
 		private final AtomicLong _x = new AtomicLong();

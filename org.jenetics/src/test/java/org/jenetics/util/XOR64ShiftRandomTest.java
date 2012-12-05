@@ -33,24 +33,24 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public class XORShiftRandomTest extends RandomTestBase {
+public class XOR64ShiftRandomTest extends RandomTestBase {
 
 	@Override
 	protected String getDataResource() {
 		return String.format(
 			"/org/jenetics/util/%s_%d",
-			XORShiftRandom.class.getName(), 12345
+			XOR64ShiftRandom.class.getName(), 12345
 		);
 	}
 
 	@Override
 	protected Random getRandom() {
-		return new XORShiftRandom(12345);
+		return new XOR64ShiftRandom(12345);
 	}
 
 	@Test
 	public void serialize() throws IOException, ClassNotFoundException {
-		final XORShiftRandom rand1 = new XORShiftRandom();
+		final XOR64ShiftRandom rand1 = new XOR64ShiftRandom();
 		for (int i = 0; i < 100; ++i) {
 			rand1.nextLong();
 		}
@@ -65,7 +65,7 @@ public class XORShiftRandomTest extends RandomTestBase {
 
 	@Test
 	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
-		final XORShiftRandom rand1 = new XORShiftRandom.ThreadSafe();
+		final XOR64ShiftRandom rand1 = new XOR64ShiftRandom.ThreadSafe();
 		for (int i = 0; i < 100; ++i) {
 			rand1.nextLong();
 		}
@@ -80,8 +80,8 @@ public class XORShiftRandomTest extends RandomTestBase {
 
 	@Test
 	public void sameRandomSequence() {
-		final XORShiftRandom rand1 = new XORShiftRandom();
-		final XORShiftRandom rand2 = new XORShiftRandom.ThreadSafe(rand1.getSeed());
+		final XOR64ShiftRandom rand1 = new XOR64ShiftRandom();
+		final XOR64ShiftRandom rand2 = new XOR64ShiftRandom.ThreadSafe(rand1.getSeed());
 
 		for (int i = 0; i < 10000; ++i) {
 			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
@@ -92,11 +92,11 @@ public class XORShiftRandomTest extends RandomTestBase {
 	public void nextDouble() {
 		final Random jrand = new Random();
 		final Random tljrand = ThreadLocalRandom.current();
-		final Random xorrand = new XORShiftRandom(); //.INSTANCE.get();
+		final Random xorrand = new XOR64ShiftRandom(); //.INSTANCE.get();
 		final Random hq64rand = new HQ64Random();
 		final Random lgc64shift = new LCG64ShiftRandom(System.nanoTime());
 		final Random tshq64rand = new HQ64Random.ThreadSafe();
-		final Random axorrand = new XORShiftRandom.ThreadSafe();
+		final Random axorrand = new XOR64ShiftRandom.ThreadSafe();
 
 		final int loops = 100_000_000;
 
@@ -169,7 +169,7 @@ public class XORShiftRandomTest extends RandomTestBase {
 	}
 
 	public static void main(final String[] args) {
-		new XORShiftRandomTest().nextDouble();
+		new XOR64ShiftRandomTest().nextDouble();
 	}
 
 }
