@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-05 $</em>
  */
 public final class arrays {
 
@@ -116,6 +116,12 @@ public final class arrays {
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		final int old = array[i];
+		array[i] = array[j];
+		array[j] = old;
+	}
+
+	static void swap(final byte[] array, final int i, final int j) {
+		final byte old = array[i];
 		array[i] = array[j];
 		array[j] = old;
 	}
@@ -358,6 +364,14 @@ public final class arrays {
 	 */
 	public static <T> void reverse(final T[] array) {
 		reverse(array, 0, array.length);
+	}
+
+	static void reverse(final byte[] array) {
+		int i = 0;
+		int j = array.length;
+		while (i < j) {
+			swap(array, i++, --j);
+		}
 	}
 
 	private static void rangeCheck(int length, int from, int to) {
