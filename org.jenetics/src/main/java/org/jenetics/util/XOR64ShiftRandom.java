@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static org.jenetics.util.object.hashCodeOf;
+
 
 /**
  * <q align="justified" cite="http://www.nr.com/"><em>
@@ -192,6 +194,24 @@ class XOR64ShiftRandom extends Random64 {
 	@Override
 	public void setSeed(final long seed) {
 		_x = init(seed);
+	}
+
+	@Override
+	public int hashCode() {
+		return hashCodeOf(getClass()).and(_x).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof XOR64ShiftRandom)) {
+			return false;
+		}
+
+		final XOR64ShiftRandom random = (XOR64ShiftRandom)obj;
+		return _x == random._x;
 	}
 
 	@Override
