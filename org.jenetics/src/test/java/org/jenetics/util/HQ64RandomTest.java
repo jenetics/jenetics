@@ -32,60 +32,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public class HQ64RandomTest extends RandomTestBase {
-
-	@Override
-	protected String getDataResource() {
-		return String.format(
-			"/org/jenetics/util/%s_%d",
-			HQ64Random.class.getName(), 12345
-		);
-	}
-
-	@Override
-	protected Random getRandom() {
-		return new HQ64Random(12345);
-	}
-
-	@Test
-	public void serialize() throws IOException, ClassNotFoundException {
-		final HQ64Random rand1 = new HQ64Random();
-		for (int i = 0; i < 100; ++i) {
-			rand1.nextLong();
-		}
-
-		final Random rand2 = serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-
-		for (int i = 0; i < 1000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
-
-	@Test
-	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
-		final HQ64Random rand1 = new HQ64Random.ThreadSafe();
-		for (int i = 0; i < 100; ++i) {
-			rand1.nextLong();
-		}
-
-		final Random rand2 = serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-
-		for (int i = 0; i < 1000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
-
-	@Test
-	public void sameRandomSequence() {
-		final HQ64Random rand1 = new HQ64Random(12341234);
-		final HQ64Random rand2 = new HQ64Random.ThreadSafe(12341234);
-
-		for (int i = 0; i < 10000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
+public class HQ64RandomTest {
 
 
 }
