@@ -31,7 +31,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-11-20 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-05 $</em>
  */
 class random {
 
@@ -40,7 +40,7 @@ class random {
 	}
 
 	public static void main(final String[] args) {
-		final Random random = new org.jenetics.util.XORShiftRandom(12345);
+		final Random random = new org.jenetics.util.XOR64ShiftRandom(12345);
 		for (int i = 0; i < 5000; ++i) {
 			System.out.println(random.nextLong());
 		}

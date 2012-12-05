@@ -289,7 +289,7 @@
 	</test>		
 	<test name="org.jenetics.util.Random">
 		<classes>
-			<class name="org.jenetics.util.XORShiftRandomTest" />
+			<class name="org.jenetics.util.XOR64ShiftRandomTest" />
 			<class name="org.jenetics.util.HQ64RandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
 		</classes>
