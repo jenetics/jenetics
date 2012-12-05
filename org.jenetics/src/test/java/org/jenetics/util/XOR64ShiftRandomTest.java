@@ -22,63 +22,39 @@
  */
 package org.jenetics.util;
 
-import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.DataProvider;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date: 2012-12-05 $</em>
  */
-public class XOR64ShiftRandomTest /*extends RandomTestBase*/ {
+public class XOR64ShiftRandomTest extends RandomTestBase {
 
-	//@Override
-	protected String getDataResource() {
-		return String.format(
-			"/org/jenetics/util/%s_%d",
-			XOR64ShiftRandom.class.getName(), 12345
-		);
+
+	@Override @DataProvider(name = "PRNG22")
+	protected Object[][] getPRNG22() {
+		final long seed = random.seed();
+		return new Object[][]{
+			{new XOR64ShiftRandom(seed), new XOR64ShiftRandom(seed)},
+			{new XOR64ShiftRandom.ThreadSafe(seed), new XOR64ShiftRandom.ThreadSafe(seed)}
+		};
 	}
 
-	//@Override
-	protected Random getRandom() {
-		return new XOR64ShiftRandom(12345);
-	}
-/*
-	@Test
-	public void serialize() throws IOException, ClassNotFoundException {
-		final XOR64ShiftRandom rand1 = new XOR64ShiftRandom();
-		for (int i = 0; i < 100; ++i) {
-			rand1.nextLong();
-		}
-
-		final Random rand2 = serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-
-		for (int i = 0; i < 1000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
+	@Override @DataProvider(name = "PRNG3")
+	protected Object[][] getPRNG3() {
+		final long seed = random.seed();
+		return new Object[][]{
+			{new XOR64ShiftRandom(seed)},
+			{new XOR64ShiftRandom.ThreadSafe(seed)},
+			{new XOR64ShiftRandom.ThreadLocal().get()}
+		};
 	}
 
-	@Test
-	public void serializeThreadSafe() throws IOException, ClassNotFoundException {
-		final XOR64ShiftRandom rand1 = new XOR64ShiftRandom.ThreadSafe();
-		for (int i = 0; i < 100; ++i) {
-			rand1.nextLong();
-		}
 
-		final Random rand2 = serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-
-		for (int i = 0; i < 1000; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-	}
-*/
-	@Test
+	//@Test
 	public void sameRandomSequence() {
 		//final XOR64ShiftRandom rand1 = new XOR64ShiftRandom();
 		//final XOR64ShiftRandom rand2 = new XOR64ShiftRandom.ThreadSafe(rand1.getSeed());

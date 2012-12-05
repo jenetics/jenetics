@@ -22,8 +22,6 @@
  */
 package org.jenetics.util;
 
-import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
@@ -32,9 +30,9 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-01 $</em>
+ * @version <em>$Date: 2012-12-05 $</em>
  */
-public class LCG64ShiftRandomTest {
+public class LCG64ShiftRandomTest extends RandomTestBase {
 
 	private final TestData _data = new TestData(
 		"/org/jenetics/util/LGC64ShiftRandom.dat"
@@ -135,75 +133,21 @@ public class LCG64ShiftRandomTest {
 		};
 	}
 
-	@Test(dataProvider = "PRNG22")
-	public void equals(final Random rand1, final Random rand2) {
-		Assert.assertNotSame(rand2, rand1);
-		Assert.assertEquals(rand2, rand1);
-
-		for (int i = 0; i < 666; ++i) {
-			rand1.nextLong();
-		}
-		Assert.assertNotEquals(rand1, rand2);
-
-		for (int i = 0; i < 666; ++i) {
-			rand2.nextLong();
-		}
-		Assert.assertEquals(rand2, rand1);
-	}
-
-	@Test(dataProvider = "PRNG22")
-	public void hashCode(final Random rand1, final Random rand2) {
-		Assert.assertNotSame(rand2, rand1);
-		Assert.assertEquals(rand2, rand1);
-		Assert.assertEquals(rand2.hashCode(), rand1.hashCode());
-
-		for (int i = 0; i < 666; ++i) {
-			rand1.nextLong();
-		}
-		Assert.assertNotEquals(rand1, rand2);
-		Assert.assertNotEquals(rand2.hashCode(), rand1.hashCode());
-
-		for (int i = 0; i < 666; ++i) {
-			rand2.nextLong();
-		}
-		Assert.assertEquals(rand2, rand1);
-		Assert.assertEquals(rand2.hashCode(), rand1.hashCode());
-	}
-
-	@DataProvider(name = "PRNG22")
-	Object[][] getPRNG22() {
+	@Override @DataProvider(name = "PRNG22")
+	protected Object[][] getPRNG22() {
+		final long seed = random.seed();
 		return new Object[][]{
-			{new LCG64ShiftRandom(666), new LCG64ShiftRandom(666)},
-			{new LCG64ShiftRandom.ThreadSafe(666), new LCG64ShiftRandom.ThreadSafe(666)}
+			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
+			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
 		};
 	}
 
-	@Test(dataProvider = "PRNG3")
-	public void serialize(final Random rand1)
-		throws IOException, ClassNotFoundException
-	{
-		for (int i = 0; i < 12734; ++i) {
-			rand1.nextLong();
-		}
-
-		final Random rand2 = RandomTestBase.serialize(rand1);
-		Assert.assertNotSame(rand2, rand1);
-		Assert.assertTrue(
-			rand2 instanceof LCG64ShiftRandom,
-			"Must be of type LCG64ShiftRandom."
-		);
-
-		for (int i = 0; i < 2489248; ++i) {
-			Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
-		}
-
-	}
-
-	@DataProvider(name = "PRNG3")
-	Object[][] getPRNG3() {
+	@Override @DataProvider(name = "PRNG3")
+	protected Object[][] getPRNG3() {
+		final long seed = random.seed();
 		return new Object[][]{
-			{new LCG64ShiftRandom(666)},
-			{new LCG64ShiftRandom.ThreadSafe(666)},
+			{new LCG64ShiftRandom(seed)},
+			{new LCG64ShiftRandom.ThreadSafe(seed)},
 			{new LCG64ShiftRandom.ThreadLocal().get()}
 		};
 	}
