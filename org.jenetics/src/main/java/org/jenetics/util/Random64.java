@@ -82,4 +82,9 @@ abstract class Random64 extends Random {
 		return (((x >>> 38) << 27) + (((int)x) >>> 5))/(double)(1L << 53);
 	}
 
+
+
 }
+
+
+
