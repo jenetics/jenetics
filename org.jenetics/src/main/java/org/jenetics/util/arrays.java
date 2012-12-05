@@ -120,6 +120,12 @@ public final class arrays {
 		array[j] = old;
 	}
 
+	static void swap(final byte[] array, final int i, final int j) {
+		final byte old = array[i];
+		array[i] = array[j];
+		array[j] = old;
+	}
+
 	/**
 	 * Swap two elements of an given array.
 	 *
@@ -358,6 +364,14 @@ public final class arrays {
 	 */
 	public static <T> void reverse(final T[] array) {
 		reverse(array, 0, array.length);
+	}
+
+	static void reverse(final byte[] array) {
+		int i = 0;
+		int j = array.length;
+		while (i < j) {
+			swap(array, i++, --j);
+		}
 	}
 
 	private static void rangeCheck(int length, int from, int to) {
