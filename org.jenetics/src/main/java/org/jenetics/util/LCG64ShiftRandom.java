@@ -52,8 +52,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * which destroys the lattice structure introduced by the recursion. The period of
  * this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
  * {@code mod} 4 = 1.
+ * <p/>
  *
- * <p/><em>
+ * <p><b>
+ * The <i>main</i> class of this PRNG is not thread safe. To create an thread
+ * safe instances of this PRNG, use the {@link LCG64ShiftRandom.ThreadSafe} or
+ * {@link LCG64ShiftRandom.ThreadLocal} class.
+ * </b></p>
+ *
+ * <em>
  * This is an re-implementation of the
  * <a href="https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp">
  * trng::lcg64_shift</a> PRNG class of the
