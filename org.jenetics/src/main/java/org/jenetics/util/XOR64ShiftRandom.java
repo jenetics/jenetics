@@ -76,11 +76,7 @@ class XOR64ShiftRandom extends Random64 {
 
 		@Override
 		protected XOR64ShiftRandom initialValue() {
-			long seed = _seed;
-			seed ^= random.seed();
-			seed ^= seed*Thread.currentThread().getId();
-
-			return new TLXOR64ShiftRandom(seed);
+			return new TLXOR64ShiftRandom(random.seed(_seed));
 		}
 	};
 

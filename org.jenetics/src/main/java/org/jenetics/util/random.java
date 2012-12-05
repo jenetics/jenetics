@@ -24,6 +24,8 @@ package org.jenetics.util;
 
 
 /**
+ * Some helper method concerning random number generation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
@@ -35,31 +37,39 @@ class random {
 	}
 
 	static long seed(final long seed) {
-		long s = seed^_seed();
+		long s = seed^nanoTimeSeed();
 		s ^= s << 21;
 		s ^= s >>> 35;
 		s ^= s << 4;
 		return s;
 	}
 
+	/**
+	 * Calculating a 64 bit seed value which can be used for initializing PRNGs.
+	 *
+	 * @return the random seed value.
+	 */
 	static long seed() {
-		long seed = _seed();
-		for (int i = 0; i < 3; ++i) {
-			seed = seed(_seed());
-		}
+		long seed = nanoTimeSeed();
+		seed ^= seed(seed);
+		seed ^= seed(seed);
+		seed ^= seed(seed);
 		return seed;
 	}
 
-	private static long _seed() {
+	private static long nanoTimeSeed() {
 		return
-		((System.nanoTime() & 255) << 56) +
-		((System.nanoTime() & 255) << 48) +
-		((System.nanoTime() & 255) << 40) +
-		((System.nanoTime() & 255) << 32) +
-		((System.nanoTime() & 255) << 24) +
-		((System.nanoTime() & 255) << 16) +
-		((System.nanoTime() & 255) <<  8) +
+		((System.nanoTime() & 255) << 56) |
+		((System.nanoTime() & 255) << 48) |
+		((System.nanoTime() & 255) << 40) |
+		((System.nanoTime() & 255) << 32) |
+		((System.nanoTime() & 255) << 24) |
+		((System.nanoTime() & 255) << 16) |
+		((System.nanoTime() & 255) <<  8) |
 		((System.nanoTime() & 255) <<  0);
 	}
 
 }
+
+
+
