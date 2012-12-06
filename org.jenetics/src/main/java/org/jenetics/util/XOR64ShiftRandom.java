@@ -53,7 +53,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-05 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-06 $</em>
  */
 class XOR64ShiftRandom extends Random64 {
 
@@ -80,7 +80,7 @@ class XOR64ShiftRandom extends Random64 {
 		protected XOR64ShiftRandom initialValue() {
 			return new TLXOR64ShiftRandom(random.seed(_seed));
 		}
-	};
+	}
 
 	private static final class TLXOR64ShiftRandom extends XOR64ShiftRandom {
 
