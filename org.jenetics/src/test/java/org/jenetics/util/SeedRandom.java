@@ -32,7 +32,7 @@ public class SeedRandom extends Random64 {
 
 	@Override
 	public long nextLong() {
-		return random.seed();
+		return math.random.seed();
 	}
 
 }

@@ -36,7 +36,7 @@ public class XOR64ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "PRNG22")
 	protected Object[][] getPRNG22() {
-		final long seed = random.seed();
+		final long seed = math.random.seed();
 		return new Object[][]{
 			{new XOR64ShiftRandom(seed), new XOR64ShiftRandom(seed)},
 			{new XOR64ShiftRandom.ThreadSafe(seed), new XOR64ShiftRandom.ThreadSafe(seed)}
@@ -45,7 +45,7 @@ public class XOR64ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "PRNG3")
 	protected Object[][] getPRNG3() {
-		final long seed = random.seed();
+		final long seed = math.random.seed();
 		return new Object[][]{
 			{new XOR64ShiftRandom(seed)},
 			{new XOR64ShiftRandom.ThreadSafe(seed)},
@@ -60,7 +60,7 @@ public class XOR64ShiftRandomTest extends RandomTestBase {
 		//final XOR64ShiftRandom rand2 = new XOR64ShiftRandom.ThreadSafe(rand1.getSeed());
 
 		for (int i = 0; i < 100; ++i) {
-			System.out.println(random.seed());
+			System.out.println(math.random.seed());
 			//Assert.assertEquals(rand2.nextLong(), rand1.nextLong());
 		}
 	}

@@ -161,7 +161,7 @@ public class LCG64ShiftRandom extends Random64 {
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 57;
 
-		private final long _seed = random.seed();
+		private final long _seed = math.random.seed();
 		private final AtomicInteger _thread = new AtomicInteger(0);
 
 		private final Param _param;
@@ -322,7 +322,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * {@link System#nanoTime()}.
 	 */
 	public LCG64ShiftRandom() {
-		this(random.seed());
+		this(math.random.seed());
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final Param param) {
-		this(random.seed(), param);
+		this(math.random.seed(), param);
 	}
 
 	/**

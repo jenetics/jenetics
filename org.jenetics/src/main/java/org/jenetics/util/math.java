@@ -344,6 +344,10 @@ public final class math {
 
 	/**
 	 * Mathematical functions regarding probabilities.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	static final class probability {
 		private probability() {
@@ -362,6 +366,81 @@ public final class math {
 		 */
 		static int toInt(final double probability) {
 			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		}
+
+	}
+
+	/**
+	 * Some helper method concerning random number generation.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
+	 */
+	static class random {
+
+		private random() {
+			throw new AssertionError("Don't create an 'random' instance.");
+		}
+
+		static byte[] seedBytes(final int length) {
+			return seed(new byte[length]);
+		}
+
+		static byte[] seed(final byte[] seed) {
+			for (int i = 0, len = seed.length; i < len;) {
+				int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
+
+				for (long x = seed(); n-- > 0; x >>= Byte.SIZE) {
+					seed[i++] = (byte)x;
+				}
+			}
+
+			return seed;
+		}
+
+		/**
+		 * Calculating a 64 bit seed value which can be used for initializing PRNGs.
+		 * This method uses a combination of {@code System.nanoTime()} and
+		 * {@code new Object().hashCode()} calls to create a reasonable safe seed
+		 * value.
+		 *
+		 * @return the random seed value.
+		 */
+		static long seed() {
+			return seed(nanoTimeSeed());
+		}
+
+		/**
+		 * Uses the given {@code base} value to create a reasonable safe seed value
+		 * by combining it with values of {@code new Object().hashCode()}
+		 *
+		 * @param base the base value of the seed to create
+		 * @return the created seed value.
+		 */
+		static long seed(final long base) {
+			long seed = base ^ objectHashSeed();
+			seed ^= seed << 17;
+			seed ^= seed >>> 31;
+			seed ^= seed << 8;
+			return seed;
+		}
+
+
+		private static long objectHashSeed() {
+			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
+		}
+
+		private static long nanoTimeSeed() {
+			return
+			((System.nanoTime() & 255) << 56) |
+			((System.nanoTime() & 255) << 24) |
+			((System.nanoTime() & 255) << 48) |
+			((System.nanoTime() & 255) << 16) |
+			((System.nanoTime() & 255) << 40) |
+			((System.nanoTime() & 255) <<  8) |
+			((System.nanoTime() & 255) << 32) |
+			((System.nanoTime() & 255) <<  0);
 		}
 
 	}
