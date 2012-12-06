@@ -74,11 +74,11 @@ class XOR64ShiftRandom extends Random64 {
 	 */
 	public static final class ThreadLocal extends java.lang.ThreadLocal<XOR64ShiftRandom> {
 
-		private final long _seed = random.seed();
+		private final long _seed = math.random.seed();
 
 		@Override
 		protected XOR64ShiftRandom initialValue() {
-			return new TLXOR64ShiftRandom(random.seed(_seed));
+			return new TLXOR64ShiftRandom(math.random.seed(_seed));
 		}
 	}
 
@@ -156,7 +156,7 @@ class XOR64ShiftRandom extends Random64 {
 	 * an seed of {@link System#nanoTime()}.
 	 */
 	public XOR64ShiftRandom() {
-		this(random.seed());
+		this(math.random.seed());
 	}
 
 	/**

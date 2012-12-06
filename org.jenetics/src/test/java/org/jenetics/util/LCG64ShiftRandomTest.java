@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-05 $</em>
+ * @version <em>$Date: 2012-12-06 $</em>
  */
 public class LCG64ShiftRandomTest extends RandomTestBase {
 
@@ -135,7 +135,7 @@ public class LCG64ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "PRNG22")
 	protected Object[][] getPRNG22() {
-		final long seed = random.seed();
+		final long seed = math.random.seed();
 		return new Object[][]{
 			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
 			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
@@ -144,7 +144,7 @@ public class LCG64ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "PRNG3")
 	protected Object[][] getPRNG3() {
-		final long seed = random.seed();
+		final long seed = math.random.seed();
 		return new Object[][]{
 			{new LCG64ShiftRandom(seed)},
 			{new LCG64ShiftRandom.ThreadSafe(seed)},
