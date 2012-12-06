@@ -36,6 +36,10 @@ class random {
 		throw new AssertionError("Don't create an 'random' instance.");
 	}
 
+	static byte[] seedBytes(final int length) {
+		return seed(new byte[length]);
+	}
+	
 	static byte[] seed(final byte[] seed) {
 		for (int i = 0, len = seed.length; i < len;) {
 			int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
@@ -50,6 +54,9 @@ class random {
 
 	/**
 	 * Calculating a 64 bit seed value which can be used for initializing PRNGs.
+	 * This method uses a combination of {@code System.nanoTime()} and
+	 * {@code new Object().hashCode()} calls to create a reasonable safe seed
+	 * value.
 	 *
 	 * @return the random seed value.
 	 */
@@ -57,6 +64,13 @@ class random {
 		return seed(nanoTimeSeed());
 	}
 	
+	/**
+	 * Uses the given {@code base} value to create a reasonable safe seed value
+	 * by combining it with values of {@code new Object().hashCode()}
+	 * 
+	 * @param base the base value of the seed to create
+	 * @return the created seed value.
+	 */
 	static long seed(final long base) {
 		long seed = base^objectHashSeed();
 		seed ^= seed << 17;
@@ -65,10 +79,10 @@ class random {
 		return seed;
 	}
 
+	
 	private static long objectHashSeed() {
 		return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
 	}
-	
 	
 	private static long nanoTimeSeed() {
 		return
