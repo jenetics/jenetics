@@ -48,49 +48,38 @@ class random {
 		return seed;
 	}
 
-	static long seed(final long seed) {
-		long s = seed^nanoTimeSeed2();
-		s ^= s << 21;
-		s ^= s >>> 35;
-		s ^= s << 4;
-		return s;
-	}
-
 	/**
 	 * Calculating a 64 bit seed value which can be used for initializing PRNGs.
 	 *
 	 * @return the random seed value.
 	 */
 	static long seed() {
-		long seed = seed(nanoTimeSeed());
+		return seed(nanoTimeSeed());
+	}
+	
+	static long seed(final long base) {
+		long seed = base^objectHashSeed();
 		seed ^= seed << 17;
 		seed ^= seed >>> 31;
 		seed ^= seed << 8;
-		return seed(seed);
+		return seed;
 	}
 
+	private static long objectHashSeed() {
+		return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
+	}
+	
+	
 	private static long nanoTimeSeed() {
 		return
 		((System.nanoTime() & 255) << 56) |
+		((System.nanoTime() & 255) << 24) |
 		((System.nanoTime() & 255) << 48) |
-		((System.nanoTime() & 255) << 40) |
-		((System.nanoTime() & 255) << 32) |
-		((System.nanoTime() & 255) << 24) |
 		((System.nanoTime() & 255) << 16) |
+		((System.nanoTime() & 255) << 40) |
 		((System.nanoTime() & 255) <<  8) |
+		((System.nanoTime() & 255) << 32) |
 		((System.nanoTime() & 255) <<  0);
-	}
-	
-	private static long nanoTimeSeed2() {
-		return
-		((System.nanoTime() & 255) << 56) |
-		((System.nanoTime() & 255) <<  0) |
-		((System.nanoTime() & 255) << 32) |
-		((System.nanoTime() & 255) << 16) |
-		((System.nanoTime() & 255) << 24) |
-		((System.nanoTime() & 255) << 40) |
-		((System.nanoTime() & 255) <<  8) |
-		((System.nanoTime() & 255) << 48);
 	}
 
 }
