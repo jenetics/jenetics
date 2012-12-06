@@ -70,9 +70,7 @@ public class XOR64ShiftRandomTest extends RandomTestBase {
 		final Random jrand = new Random();
 		final Random tljrand = ThreadLocalRandom.current();
 		final Random xorrand = new XOR64ShiftRandom(); //.INSTANCE.get();
-		final Random hq64rand = new HQ64Random();
 		final Random lgc64shift = new LCG64ShiftRandom(System.nanoTime());
-		final Random tshq64rand = new HQ64Random.ThreadSafe();
 		final Random axorrand = new XOR64ShiftRandom.ThreadSafe();
 
 		final int loops = 100_000_000;
@@ -108,23 +106,6 @@ public class XOR64ShiftRandomTest extends RandomTestBase {
 		}
 		stop = System.currentTimeMillis();
 		System.out.println("XORRand: " + (stop - start) + "ms");
-
-		// HQ64Random
-		start = System.currentTimeMillis();
-		for (int i = 0; i < loops; ++i) {
-			hq64rand.nextDouble();
-		}
-		stop = System.currentTimeMillis();
-		System.out.println("HQRand: " + (stop - start) + "ms");
-
-		// TSHQ64Random
-		start = System.currentTimeMillis();
-		for (int i = 0; i < loops; ++i) {
-			tshq64rand.nextDouble();
-		}
-		stop = System.currentTimeMillis();
-		System.out.println("TSHQRand: " + (stop - start) + "ms");
-
 
 		// AXORShiftRandom
 		start = System.currentTimeMillis();
