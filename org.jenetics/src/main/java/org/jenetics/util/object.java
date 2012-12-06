@@ -194,6 +194,12 @@ public final class object {
 		}
 	}
 
+	public static void noInstanceOf(final Object obj) {
+		throw new AssertionError(String.format(
+			"Don't create an '%s' instance.", obj.getClass().getName()
+		));
+	}
+
 	/**
 	 * Check if the given double value is within the closed range {@code [0, 1]}.
 	 *

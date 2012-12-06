@@ -30,9 +30,7 @@ package org.jenetics.util;
  * @version 1.1 &mdash; <em>$Date$</em>
  */
 public final class math {
-	private math() {
-		throw new AssertionError("Don't create an 'math' instance.");
-	}
+	private math() { object.noInstanceOf(this); }
 
 
 	/**
@@ -377,7 +375,7 @@ public final class math {
 	 * @since 1.1
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
-	static class random {
+	static final class random {
 
 		private random() {
 			throw new AssertionError("Don't create an 'random' instance.");
