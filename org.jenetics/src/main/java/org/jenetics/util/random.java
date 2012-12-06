@@ -28,7 +28,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-05 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-06 $</em>
  */
 class random {
 
@@ -49,7 +49,7 @@ class random {
 	}
 
 	static long seed(final long seed) {
-		long s = seed^nanoTimeSeed();
+		long s = seed^nanoTimeSeed2();
 		s ^= s << 21;
 		s ^= s >>> 35;
 		s ^= s << 4;
@@ -62,14 +62,26 @@ class random {
 	 * @return the random seed value.
 	 */
 	static long seed() {
-		long seed = nanoTimeSeed();
-		seed ^= seed(seed);
-		seed ^= seed(seed);
-		seed ^= seed(seed);
-		return seed;
+		long seed = seed(nanoTimeSeed());
+		seed ^= seed << 17;
+		seed ^= seed >>> 31;
+		seed ^= seed << 8;
+		return seed(seed);
 	}
 
 	private static long nanoTimeSeed() {
+		return
+		((System.nanoTime() & 255) << 56) |
+		((System.nanoTime() & 255) << 48) |
+		((System.nanoTime() & 255) << 40) |
+		((System.nanoTime() & 255) << 32) |
+		((System.nanoTime() & 255) << 24) |
+		((System.nanoTime() & 255) << 16) |
+		((System.nanoTime() & 255) <<  8) |
+		((System.nanoTime() & 255) <<  0);
+	}
+	
+	private static long nanoTimeSeed2() {
 		return
 		((System.nanoTime() & 255) << 56) |
 		((System.nanoTime() & 255) <<  0) |
