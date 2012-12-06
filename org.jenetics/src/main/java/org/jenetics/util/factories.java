@@ -27,13 +27,10 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-06 $</em>
  */
 public final class factories {
-
-	private factories() {
-		throw new AssertionError("Don't create an 'factories' instance.");
-	}
+	private factories() { object.noInstanceOf(factories.class); }
 
 	/**
 	 * Return an integer factory which creates an integer sequence starting with

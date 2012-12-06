@@ -41,13 +41,10 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-06 $</em>
  */
 public final class bit {
-
-	private bit() {
-		throw new AssertionError("Don't create an 'bit' instance.");
-	}
+	private bit() { object.noInstanceOf(bit.class); }
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
