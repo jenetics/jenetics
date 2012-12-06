@@ -33,10 +33,7 @@ import java.util.Objects;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class object {
-
-	private object() {
-		throw new AssertionError("Don't create an 'object' instance.");
-	}
+	private object() { object.noInstanceOf(object.class); }
 
 
 	/**
@@ -194,9 +191,9 @@ public final class object {
 		}
 	}
 
-	public static void noInstanceOf(final Object obj) {
+	public static void noInstanceOf(final Class<?> cls) {
 		throw new AssertionError(String.format(
-			"Don't create an '%s' instance.", obj.getClass().getName()
+			"Don't create an '%s' instance.", cls.getName()
 		));
 	}
 

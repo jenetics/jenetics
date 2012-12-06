@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import org.jenetics.util.Function;
+import org.jenetics.util.object;
 
 /**
  * Some default GA termination strategies.
@@ -32,10 +33,7 @@ import org.jenetics.util.Function;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class termination {
-
-	private termination() {
-		throw new AssertionError("Don't create an 'termination' instance.");
-	}
+	private termination() { object.noInstanceOf(termination.class); }
 
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>

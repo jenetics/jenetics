@@ -30,7 +30,7 @@ package org.jenetics.util;
  * @version 1.1 &mdash; <em>$Date$</em>
  */
 public final class math {
-	private math() { object.noInstanceOf(this); }
+	private math() { object.noInstanceOf(math.class); }
 
 
 	/**
@@ -348,9 +348,7 @@ public final class math {
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	static final class probability {
-		private probability() {
-			throw new AssertionError("Don't create an 'probability' instance.");
-		}
+		private probability() { object.noInstanceOf(probability.class); }
 
 		static final long INT_RANGE = pow(2, 32) - 1;
 
@@ -376,10 +374,7 @@ public final class math {
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	static final class random {
-
-		private random() {
-			throw new AssertionError("Don't create an 'random' instance.");
-		}
+		private random() { object.noInstanceOf(random.class); }
 
 		static byte[] seedBytes(final int length) {
 			return seed(new byte[length]);
