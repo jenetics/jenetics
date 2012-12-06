@@ -80,7 +80,7 @@ class XOR64ShiftRandom extends Random64 {
 		protected XOR64ShiftRandom initialValue() {
 			return new TLXOR64ShiftRandom(random.seed(_seed));
 		}
-	};
+	}
 
 	private static final class TLXOR64ShiftRandom extends XOR64ShiftRandom {
 
