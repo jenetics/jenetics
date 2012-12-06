@@ -39,7 +39,7 @@ class random {
 	static byte[] seedBytes(final int length) {
 		return seed(new byte[length]);
 	}
-	
+
 	static byte[] seed(final byte[] seed) {
 		for (int i = 0, len = seed.length; i < len;) {
 			int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
@@ -63,27 +63,27 @@ class random {
 	static long seed() {
 		return seed(nanoTimeSeed());
 	}
-	
+
 	/**
 	 * Uses the given {@code base} value to create a reasonable safe seed value
 	 * by combining it with values of {@code new Object().hashCode()}
-	 * 
+	 *
 	 * @param base the base value of the seed to create
 	 * @return the created seed value.
 	 */
 	static long seed(final long base) {
-		long seed = base^objectHashSeed();
+		long seed = base ^ objectHashSeed();
 		seed ^= seed << 17;
 		seed ^= seed >>> 31;
 		seed ^= seed << 8;
 		return seed;
 	}
 
-	
+
 	private static long objectHashSeed() {
 		return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
 	}
-	
+
 	private static long nanoTimeSeed() {
 		return
 		((System.nanoTime() & 255) << 56) |
