@@ -48,7 +48,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -69,7 +69,7 @@ public final class Array<T>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Array<T> empty() {
-		return (Array<T>)EMPTY;
+		return EMPTY;
 	}
 
 	Array(final ArrayRef array, final int start, final int end) {
@@ -254,7 +254,7 @@ public final class Array<T>
 				@SuppressWarnings("unchecked")
 				final T value = (T)_array.data[i + _start];
 
-				if (predicate.apply((T)value) == Boolean.TRUE) {
+				if (predicate.apply(value) == Boolean.TRUE) {
 					filtered.add(value);
 				}
 			}

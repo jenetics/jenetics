@@ -33,6 +33,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 
@@ -40,7 +41,7 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 	public Object newBuilder() {
 		return new NumberStatistics.Builder<Float64Gene, Float64>();
 	}
-	
+
 	@Override
 	@DataProvider(name = "properties")
 	public Object[][] builderProperties() {
@@ -48,7 +49,7 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 		try {
 			final Random random = new Random(12345678);
 			RandomRegistry.setRandom(random);
-			
+
 			return new Object[][] {
 					{"generation", Integer.TYPE, random.nextInt(1000)},
 					{"invalid", Integer.TYPE, random.nextInt(1000)},
@@ -68,5 +69,5 @@ public class NumberStatisticsBuilderTest extends StatisticsBuilderTest {
 			LocalContext.exit();
 		}
 	}
-	
+
 }

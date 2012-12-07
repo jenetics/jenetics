@@ -41,13 +41,10 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-06 $</em>
  */
 public final class bit {
-
-	private bit() {
-		throw new AssertionError("Don't create an 'bit' instance.");
-	}
+	private bit() { object.noInstanceOf(bit.class); }
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
@@ -104,14 +101,16 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static boolean get(final byte[] data, final int index) {
+		boolean bit = false;
 		if (data.length > 0) {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
 			final int d = data[bytes] & 0xFF;
-			return (d & (1 << bits)) != 0;
-		} else {
-			return false;
+
+			bit = (d & (1 << bits)) != 0;
 		}
+
+		return bit;
 	}
 
 	/**
@@ -306,6 +305,7 @@ public final class bit {
 		return li;
 	}
 
+
 	private static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
@@ -321,6 +321,18 @@ public final class bit {
 		final byte temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
+	}
+
+	static long toLong(final byte[] data) {
+		return
+			(((long)data[0] << 56) +
+			((long)(data[1] & 255) << 48) +
+			((long)(data[2] & 255) << 40) +
+			((long)(data[3] & 255) << 32) +
+			((long)(data[4] & 255) << 24) +
+			((data[5] & 255) << 16) +
+			((data[6] & 255) <<  8) +
+			((data[7] & 255) <<  0));
 	}
 
 	static byte[] writeInt(final int v, final byte[] data, final int start) {

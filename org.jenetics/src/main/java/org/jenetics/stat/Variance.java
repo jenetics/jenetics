@@ -41,7 +41,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -63,7 +63,7 @@ public class Variance<N extends Number> extends Mean<N> {
 		if (_samples == 1) {
 			variance = _m2;
 		} else if (_samples > 1) {
-			variance = _m2/(double)(_samples - 1);
+			variance = _m2/(_samples - 1);
 		}
 
 		return variance;
@@ -82,7 +82,7 @@ public class Variance<N extends Number> extends Mean<N> {
 		final double data = value.doubleValue();
 		final double delta = data - _mean;
 
-		_mean += delta/(double)(++_samples);
+		_mean += delta/(++_samples);
 		_m2 += delta*(data - _mean);
 	}
 

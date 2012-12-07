@@ -30,13 +30,10 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
  */
 public final class object {
-
-	private object() {
-		throw new AssertionError("Don't create an 'object' instance.");
-	}
+	private object() { object.noInstanceOf(object.class); }
 
 
 	/**
@@ -192,6 +189,28 @@ public final class object {
 				"Length must be greater than zero, but was " + length + ". "
 			);
 		}
+	}
+
+	/**
+	 * This method is used for preventing class with static methods only from
+	 * being instantiated. Use the following <i>pattern</i> when creating such
+	 * helper classes:
+	 * [code]
+	 * public final class utils {
+	 *     private utils() { object.noInstanceOf(utils.class); }
+	 *
+	 *     // Here comes the static helper methods.
+	 *     ...
+	 * }
+	 * [/code]
+	 *
+	 * @param cls the class which don't should be instantiated.
+	 * @throws AssertionError always
+	 */
+	public static void noInstanceOf(final Class<?> cls) {
+		throw new AssertionError(String.format(
+			"Creation of '%s' not allowed.", cls.getName()
+		));
 	}
 
 	/**

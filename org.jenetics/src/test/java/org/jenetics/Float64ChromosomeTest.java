@@ -41,6 +41,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class Float64ChromosomeTest
 	extends NumberChromosomeTester<Float64, Float64Gene>
@@ -57,18 +58,18 @@ public class Float64ChromosomeTest
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random(12345));
-			
+
 			final Float64 min = Float64.ZERO;
 			final Float64 max = Float64.valueOf(100);
-			
-			
+
+
 			final MinMax<Float64> mm = new MinMax<>();
 			final Histogram<Float64> histogram = Histogram.valueOf(min, max, 10);
 			final Variance<Float64> variance = new Variance<>();
-			
+
 			for (int i = 0; i < 1000; ++i) {
 				final Float64Chromosome chromosome = new Float64Chromosome(min, max, 500);
-				
+
 				accumulate(
 						chromosome,
 						mm.map(Float64Gene.Value),
@@ -76,7 +77,7 @@ public class Float64ChromosomeTest
 						variance.map(Float64Gene.Value)
 					);
 			}
-			
+
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
@@ -88,14 +89,14 @@ public class Float64ChromosomeTest
 	@Test
 	public void firstGeneConverter() {
 		final Float64Chromosome c = getFactory().newInstance();
-		
+
 		Assert.assertEquals(Float64Chromosome.Gene.apply(c), c.getGene(0));
 	}
-	
+
 	@Test
 	public void geneConverter() {
 		final Float64Chromosome c = getFactory().newInstance();
-		
+
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(
 					Float64Chromosome.Gene(i).apply(c),
@@ -103,7 +104,7 @@ public class Float64ChromosomeTest
 				);
 		}
 	}
-	
+
 	@Test
 	public void genesConverter() {
 		final Float64Chromosome c = getFactory().newInstance();
@@ -112,7 +113,7 @@ public class Float64ChromosomeTest
 				c.toSeq()
 			);
 	}
-	
+
 }
 
 

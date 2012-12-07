@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class TimerTest extends ObjectTester<Timer> {
 
@@ -36,7 +37,7 @@ public class TimerTest extends ObjectTester<Timer> {
 		@Override
 		public Timer newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Timer timer = new Timer(RandomUtils.nextString(random.nextInt(10) + 10));
 			timer._start = random.nextLong();
 			timer._stop = timer._start + random.nextInt(1000) + 1000;
@@ -48,26 +49,26 @@ public class TimerTest extends ObjectTester<Timer> {
 	protected Factory<Timer> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
 	public void label() {
 		final Timer timer = new Timer("New Timer");
 		Assert.assertEquals(timer.getLabel(), "New Timer");
 	}
-	
+
 	@Test
 	void timerClone() throws InterruptedException {
 		final Timer timer = new Timer("ASDFASDF");
 		timer.start();
 		Thread.sleep(100);
 		timer.stop();
-				
+
 		final Timer clone = timer.clone();
 		Assert.assertEquals(clone, timer);
 		Assert.assertNotSame(clone, timer);
 		Assert.assertEquals(clone.compareTo(timer), 0);
 	}
-	
+
 }
 
 

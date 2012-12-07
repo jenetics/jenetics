@@ -28,23 +28,24 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class PermutationChromosomeEnumTest
 	extends ChromosomeTester<EnumGene<PermutationEnum>>
 {
-	
-	
+
+
 	private final Factory<Chromosome<EnumGene<PermutationEnum>>>
 	_factory = new Factory<Chromosome<EnumGene<PermutationEnum>>>() {
 		private final ISeq<PermutationEnum> _alleles =
 			new Array<>(PermutationEnum.values()).toISeq();
-		
+
 		@Override
 		public PermutationChromosome<PermutationEnum> newInstance() {
 			return new PermutationChromosome<>(_alleles);
 		}
 	};
-	
+
 	@Override
 	protected Factory<Chromosome<EnumGene<PermutationEnum>>> getFactory() {
 		return _factory;

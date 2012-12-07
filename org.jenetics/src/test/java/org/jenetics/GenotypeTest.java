@@ -33,10 +33,11 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 
-	
+
 	private final Factory<Genotype<Float64Gene>> _factory = Genotype.valueOf(
 			new Float64Chromosome(0, 1, 50),
 			new Float64Chromosome(0, 1, 500),
@@ -51,7 +52,7 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 	public void factory() {
 		final Genotype<Float64Gene> factory = (Genotype<Float64Gene>)_factory;
 		final Genotype<Float64Gene> gt = _factory.newInstance();
-		
+
 		Assert.assertEquals(factory.length(), gt.length());
 		Assert.assertEquals(factory.getNumberOfGenes(), gt.getNumberOfGenes());
 		for (int i = 0; i < factory.length(); ++i) {
@@ -61,7 +62,7 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
 			);
 		}
 	}
-	
+
     @Test
     public void testGenotypeGenotypeOfT() {
         BitChromosome c1 = new BitChromosome(12);
@@ -112,16 +113,16 @@ public class GenotypeTest extends ObjectTester<Genotype<Float64Gene>> {
     	final Genotype<Float64Gene> gt1 = Genotype.valueOf(
     			//Rotation
     			new Float64Chromosome(Float64Gene.valueOf(-Math.PI, Math.PI)),
-    			
+
     			//Translation
     			new Float64Chromosome(Float64Gene.valueOf(-300, 300), Float64Gene.valueOf(-300, 300)),
-    			
+
     			//Shear
     			new Float64Chromosome(Float64Gene.valueOf(-0.5, 0.5), Float64Gene.valueOf(-0.5, 0.5))
     		);
-    	
+
     	final Genotype<Float64Gene> gt2 = gt1.newInstance();
-    	
+
     	Assert.assertEquals(gt1.length(), gt2.length());
     	for (int i = 0; i < gt1.length(); ++i) {
     		Chromosome<Float64Gene> ch1 = gt1.getChromosome(i);

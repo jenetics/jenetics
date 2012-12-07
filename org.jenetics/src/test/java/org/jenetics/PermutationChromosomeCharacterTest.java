@@ -27,21 +27,22 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class PermutationChromosomeCharacterTest
 	extends ChromosomeTester<EnumGene<Character>>
 	{
-	
+
 	private final Factory<Chromosome<EnumGene<Character>>>
-	_factory = new Factory<Chromosome<EnumGene<Character>>>() {		
+	_factory = new Factory<Chromosome<EnumGene<Character>>>() {
 		private final CharSeq _alleles = CharSeq.valueOf("a-zA-Z");
-		
+
 		@Override
 		public PermutationChromosome<Character> newInstance() {
 			return new PermutationChromosome<>(_alleles);
 		}
 	};
-	
+
 	@Override
 	protected Factory<Chromosome<EnumGene<Character>>> getFactory() {
 		return _factory;

@@ -23,19 +23,17 @@
 package org.jenetics;
 
 import org.jenetics.util.Function;
+import org.jenetics.util.object;
 
 /**
  * Some default GA termination strategies.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-06 $</em>
  */
 public final class termination {
-
-	private termination() {
-		throw new AssertionError("Don't create an 'termination' instance.");
-	}
+	private termination() { object.noInstanceOf(termination.class); }
 
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>

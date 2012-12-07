@@ -35,6 +35,7 @@ import org.jenetics.util.accumulators.Max;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class accumulatorsMaxTest
 	extends MappedAccumulatorTester<accumulators.Max<Double>>
@@ -45,12 +46,12 @@ public class accumulatorsMaxTest
 		@Override
 		public Max<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Max<Double> max = new Max<>();
 			for (int i = 0; i < 1000; ++i) {
 				max.accumulate(random.nextGaussian());
 			}
-			
+
 			return max;
 		}
 	};
@@ -58,7 +59,7 @@ public class accumulatorsMaxTest
 	protected Factory<Max<Double>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
 	public void max() {
 		final Integer[] array = new Integer[20];
@@ -66,10 +67,10 @@ public class accumulatorsMaxTest
 			array[i] = i;
 		}
 		shuffle(array);
-		
+
 		final accumulators.Max<Integer> max = new accumulators.Max<>();
 		accumulators.accumulate(Arrays.asList(array), max);
 		Assert.assertEquals(max.getMax(), new Integer(19));
 	}
-	
+
 }

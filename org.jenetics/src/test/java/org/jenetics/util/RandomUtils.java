@@ -26,21 +26,22 @@ import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class RandomUtils {
 
 	private RandomUtils() {
 	}
-	
+
 	public static String nextString(final int length) {
 		final Random random = RandomRegistry.getRandom();
-		
+
 		final StringBuilder chars = new StringBuilder(length);
 		for (int i = 0; i < length; ++i) {
 			chars.append((char)random.nextInt(Short.MAX_VALUE));
 		}
-		
+
 		return chars.toString();
 	}
-	
+
 }

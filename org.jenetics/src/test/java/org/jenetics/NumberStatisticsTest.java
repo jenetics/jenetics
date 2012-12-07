@@ -10,6 +10,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class NumberStatisticsTest
 	extends ObjectTester<NumberStatistics<Float64Gene, Float64>>
@@ -20,7 +21,7 @@ public class NumberStatisticsTest
 		@Override
 		public NumberStatistics<Float64Gene, Float64> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final NumberStatistics.Builder<Float64Gene, Float64>
 			builder = new NumberStatistics.Builder<>();
 			builder.ageMean(random.nextDouble());
@@ -34,7 +35,7 @@ public class NumberStatisticsTest
 			builder.standardError(random.nextDouble());
 			builder.bestPhenotype(TestUtils.newFloat64Phenotype());
 			builder.worstPhenotype(TestUtils.newFloat64Phenotype());
-			
+
 			return builder.build();
 		}
 	};
@@ -42,7 +43,7 @@ public class NumberStatisticsTest
 	protected Factory<NumberStatistics<Float64Gene, Float64>> getFactory() {
 		return _factory;
 	}
-	
+
 }
 
 

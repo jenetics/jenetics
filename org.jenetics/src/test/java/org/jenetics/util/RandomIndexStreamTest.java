@@ -36,6 +36,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-12-05 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -81,7 +82,7 @@ public class RandomIndexStreamTest {
 		final double mean = n*p;
 		final double var = n*p*(1 - p);
 
-		final Random random = new Random();
+		final Random random = new XOR64ShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
 		final Histogram<Long> histogram = Histogram.valueOf(

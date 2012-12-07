@@ -42,7 +42,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -153,7 +153,8 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		_alterers = normalize(alterers).toISeq();
 	}
 
-	private Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
+	private static <G extends Gene<?, G>>
+	Array<Alterer<G>> normalize(final Seq<Alterer<G>> alterers) {
 		final Deque<Alterer<G>> stack = new LinkedList<>(alterers.asList());
 
 		final List<Alterer<G>> normalized = new LinkedList<>();

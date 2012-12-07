@@ -53,7 +53,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -503,12 +503,12 @@ public class BitChromosome extends Number<BitChromosome>
 				throw new IllegalArgumentException(
 					"Byte value doesn't contain 8 bit: " + parts[i]
 				);
-			} else {
-				try {
-					bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
-				} catch (NumberFormatException e) {
-					throw new IllegalArgumentException(e);
-				}
+			}
+
+			try {
+				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(e);
 			}
 		}
 

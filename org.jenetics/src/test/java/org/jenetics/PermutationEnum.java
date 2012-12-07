@@ -28,6 +28,7 @@ import javolution.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public enum PermutationEnum implements XMLSerializable {
 	_1,
@@ -45,11 +46,11 @@ public enum PermutationEnum implements XMLSerializable {
 	_13,
 	_14,
 	_15;
-	
-	
+
+
 	static final XMLFormat<PermutationEnum>
 	XML = new XMLFormat<PermutationEnum>(PermutationEnum.class)
-	{		
+	{
 		@Override
 		public PermutationEnum newInstance(
 			final Class<PermutationEnum> cls, final InputElement xml
@@ -68,5 +69,5 @@ public enum PermutationEnum implements XMLSerializable {
 		public void read(final InputElement element, final PermutationEnum gene) {
 		}
 	};
-	
+
 }

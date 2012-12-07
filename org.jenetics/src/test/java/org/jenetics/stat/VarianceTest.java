@@ -36,21 +36,22 @@ import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
-	
-	private final String DATA = "/org/jenetics/util/statistic-moments.txt";	
+
+	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";
 
 	private final Factory<Variance<Double>> _factory = new Factory<Variance<Double>>() {
 		@Override
 		public Variance<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Variance<Double> variance = new Variance<>();
 			for (int i = 0; i < 1000; ++i) {
 				variance.accumulate(random.nextGaussian());
 			}
-			
+
 			return variance;
 		}
 	};
@@ -58,25 +59,25 @@ public class VarianceTest extends MappedAccumulatorTester<Variance<Double>> {
 	protected Factory<Variance<Double>> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
 	public void variance() throws IOException {
-		final TestDataIterator it = new TestDataIterator(
-				getClass().getResourceAsStream(DATA), "\\s"
-			);
-		
-		try {
+		try (TestDataIterator it = dataIt()) {
 			final Variance<Double> moment = new Variance<>();
 			while (it.hasNext()) {
 				final Data data = it.next();
 				moment.accumulate(data.number);
-				
+
 				Assert.assertEquals(moment.getMean(), data.mean);
 				Assert.assertEquals(moment.getVariance(), data.variance, 0.000001);
 			}
-		} finally {
-			it.close();
 		}
+	}
+
+	private static TestDataIterator dataIt() throws IOException {
+		return new TestDataIterator(
+			MeanTest.class.getResourceAsStream(DATA), "\\s"
+		);
 	}
 
 }

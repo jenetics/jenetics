@@ -70,11 +70,11 @@ final class KnapsackFunction
 			}
 		}
 
-		if (size > _size) {
-			return Float64.ZERO;
-		} else {
-			return Float64.valueOf(value);
+		Float64 result = Float64.ZERO;
+		if (size <= _size) {
+			result = Float64.valueOf(value);
 		}
+		return result;
 	}
 }
 

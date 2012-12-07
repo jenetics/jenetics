@@ -31,6 +31,7 @@ import org.jenetics.util.Timer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public abstract class TestCase
 	implements
@@ -42,35 +43,35 @@ public abstract class TestCase
 	private final String _name;
 	private final int _loops;
 	private final int _size;
-	
+
 	private int _ordinal = 1;
-	
+
 	protected Timer _timer;
 	private Variance<Long> _variance;
 	private MinMax<Long> _minmax;
-	
+
 	public TestCase(final String name, final int loops, final int size) {
 		_name = name;
 		_loops = loops;
 		_size = size;
-		
+
 		reset();
 	}
-	
+
 	public TestCase(final String name, final int loops) {
 		this(name, loops, 1);
 	}
-	
+
 	public TestCase(final String name) {
 		this(name, 1000);
 	}
-	
+
 	@Override
 	public void reset() {
 		_timer = new Timer(_name);
 		_variance = new Variance<>();
 		_minmax = new MinMax<>();
-		
+
 		_timer.setAccumulator(new Accumulator<Long>() {
 			@Override public void accumulate(final Long value) {
 				_variance.accumulate(value);
@@ -78,7 +79,7 @@ public abstract class TestCase
 			}
 		});
 	}
-	
+
 	@Override
 	public final void run() {
 		reset();
@@ -90,42 +91,42 @@ public abstract class TestCase
 			afterTest();
 		}
 	}
-	
+
 	protected void beforeTest() {
 	}
-	
+
 	protected abstract void test();
-	
+
 	protected void afterTest() {
 	}
-	
+
 	public void setOrdinal(final int ordinal) {
 		_ordinal = ordinal;
 	}
-	
+
 	public int getOrdinal() {
 		return _ordinal;
 	}
-	
+
 	public int getSize() {
 		return _size;
 	}
-	
+
 	public Timer getTimer() {
 		return _timer;
 	}
-	
+
 	public Variance<Long> getVariance() {
 		return _variance;
 	}
-	
+
 	public MinMax<Long> getMinMax() {
 		return _minmax;
 	}
-	
+
 	@Override
 	public int compareTo(final TestCase test) {
 		return _ordinal - test._ordinal;
 	}
-	
+
 }

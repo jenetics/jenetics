@@ -33,6 +33,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class terminationTest {
 
@@ -42,16 +43,16 @@ public class terminationTest {
 		ga.setup();
 		ga.evolve(termination.Generation(10));
 		Assert.assertEquals(ga.getGeneration(), 10);
-		
+
 		ga.evolve(5);
 		ga.evolve(termination.Generation(10));
 		Assert.assertEquals(ga.getGeneration(), 15);
-		
+
 		ga.evolve(6);
 		ga.evolve(termination.Generation(50));
 		Assert.assertEquals(ga.getGeneration(), 50);
 	}
-	
+
 	static final Function<Genotype<Float64Gene>, Float64> FF =
 		new Function<Genotype<Float64Gene>, Float64>()
 	{
@@ -61,19 +62,19 @@ public class terminationTest {
 			return Float64.valueOf(Math.sin(value));
 		}
 	};
-	
+
 	static GeneticAlgorithm<Float64Gene, Float64> GA() {
 		return new GeneticAlgorithm<>(
 				Genotype.valueOf(new Float64Chromosome(0, 10)), FF
 			);
 	}
-	
+
 	@Test
 	public void steadyState() {
 		final int steadyGenerations = 11;
 		final LinkedList<Float64> values = new LinkedList<>();
 		values.addFirst(Float64.valueOf(-100));
-		
+
 		final GeneticAlgorithm<Float64Gene, Float64> ga = GA();
 		ga.setPopulationSize(20);
 		ga.setAlterers(
@@ -82,28 +83,28 @@ public class terminationTest {
 		);
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
-		
+
 		final Function<Statistics<?, Float64>, Boolean> until =
 			termination.<Float64>SteadyFitness(steadyGenerations);
-		
+
 		while (until.apply(ga.getStatistics())) {
 			ga.evolve();
 			values.addFirst(ga.getBestPhenotype().getFitness());
-			
+
 			if (values.size() > steadyGenerations) {
 				values.removeLast();
-			}			
+			}
 		}
-		
+
 		Assert.assertEquals(values.size(), steadyGenerations);
 		Assert.assertTrue(ga.getGeneration() > steadyGenerations);
-		
+
 		Collections.sort(values);
 		Float64 value = values.removeFirst();
 		for (Float64 f : values) {
 			Assert.assertEquals(f, value);
 		}
-		
+
 	}
-	
+
 }

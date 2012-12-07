@@ -30,30 +30,31 @@ import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class Serialize {
 
 	private final IO _io;
-	
+
 	Serialize(final IO io) {
 		_io = io;
 	}
 
 	public static Serialize xml = new Serialize(IO.xml);
-	
+
 	public static Serialize object = new Serialize(IO.object);
-	
+
 	public void test(final Object object) throws IOException {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		_io.write(object, out);
-		
+
 		final byte[] data = out.toByteArray();
 		final ByteArrayInputStream in = new ByteArrayInputStream(data);
 		final Object copy = _io.read(Object.class, in);
-		
+
 		Assert.assertEquals(copy, object);
 	}
-	
+
 }
 
 

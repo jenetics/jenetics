@@ -37,40 +37,41 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 public class GaussianMutatorTest extends MutatorTestBase {
-	
+
 	@Override
 	public Alterer<Float64Gene> newAlterer(double p) {
 		return new GaussianMutator<>(p);
 	}
-	
+
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void mutate() {
 		final Random random = RandomRegistry.getRandom();
-		
+
 		final double min = 0;
 		final double max = 10;
 		final double mean = 5;
 		final double var = Math.pow((max - min)/4.0, 2);
-		
+
 		final Float64Gene gene = Float64Gene.valueOf(mean, min, max);
 		final GaussianMutator<Float64Gene> mutator = new GaussianMutator<>();
-		
+
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 10.0, 10);
 		final Variance<Double> variance = new Variance<>();
-		
+
 		for (int i = 0; i < 10000; ++i) {
 			final double value = mutator.mutate(gene, random).doubleValue();
-		
+
 			histogram.accumulate(value);
 			variance.accumulate(value);
 		}
-		
+
 		final Range<Double> domain = new Range<>(min, max);
 		assertDistribution(histogram, new NormalDistribution<>(domain, mean, var));
 	}
-	
+
 }
 
 

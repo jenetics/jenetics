@@ -33,6 +33,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-11-30 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -44,22 +45,22 @@ public class ArrayTest {
 			return Boolean.TRUE;
 		}
 	};
-	
+
 	private static final Factory<Integer> INTEGER_FACTORY = new Factory<Integer>() {
 		@Override
 		public Integer newInstance() {
 			return 1;
 		}
 	};
-	
+
 	private static final int LOOPS = 20;
 	private static int SIZE = 1000000;
-	
+
 	private final Array<Integer> _array = new Array<>(SIZE);
-	
+
 	public ArrayTest() {
 	}
-	
+
 	@Test(1)
 	public final TestCase forLoopGetter = new TestCase("for-loop (getter)", LOOPS, SIZE) {
 		{
@@ -68,7 +69,7 @@ public class ArrayTest {
 				_array.get(i);
 			}
 		}
-		
+
 		@Override
 		protected void test() {
 			for (int i = _array.length(); --i >= 0;) {
@@ -76,7 +77,7 @@ public class ArrayTest {
 			}
 		}
 	};
-	
+
 	@Test(2)
 	public final TestCase foreachLoopGetter = new TestCase("foreach(GETTER)", LOOPS, SIZE) {
 		@Override
@@ -84,7 +85,7 @@ public class ArrayTest {
 			_array.foreach(GETTER);
 		}
 	};
-	
+
 	@Test(3)
 	public final TestCase foreachLoopSetter = new TestCase("for-loop (setter)", LOOPS, SIZE) {
 		@Override
@@ -94,7 +95,7 @@ public class ArrayTest {
 			}
 		}
 	};
-	
+
 	@Test(4)
 	public final TestCase fill = new TestCase("fill(1)", LOOPS, SIZE) {
 		@Override
@@ -102,7 +103,7 @@ public class ArrayTest {
 			_array.setAll(1);
 		}
 	};
-	
+
 	@Test(5)
 	public final TestCase fillFactory = new TestCase("fill(Factory)", LOOPS, SIZE) {
 		@Override
@@ -110,7 +111,7 @@ public class ArrayTest {
 			_array.fill(INTEGER_FACTORY);
 		}
 	};
-	
+
 	@Test(6)
 	public final TestCase iterator = new TestCase("iterator()", LOOPS, SIZE) {
 		@Override
@@ -120,7 +121,7 @@ public class ArrayTest {
 			}
 		}
 	};
-	
+
 	@Test(7)
 	public final TestCase listIterator = new TestCase("listIterator()", LOOPS, SIZE) {
 		@Override
@@ -131,7 +132,7 @@ public class ArrayTest {
 			}
 		}
 	};
-	
+
 	@Test(8)
 	public final TestCase sort = new TestCase("sort()", 50, SIZE) {
 		private final Comparator<Integer> _comparator = new Comparator<Integer>() {
@@ -140,7 +141,7 @@ public class ArrayTest {
 				return o1.compareTo(o2);
 			}
 		};
-		
+
 		@Override
 		protected void beforeTest() {
 			for (int i = _array.length(); --i >= 0;) {
@@ -148,12 +149,12 @@ public class ArrayTest {
 			}
 			arrays.shuffle(_array);
 		}
-		
+
 		@Override
 		protected void test() {
 			_array.sort(_comparator);
 		}
-		
+
 		@Override
 		protected void afterTest() {
 			if (!arrays.isSorted(_array)) {
@@ -161,7 +162,7 @@ public class ArrayTest {
 			}
 		}
 	};
-	
+
 	@Test(9)
 	public final TestCase quicksort = new TestCase("quicksort()", 50, SIZE) {
 		@Override
@@ -171,20 +172,20 @@ public class ArrayTest {
 			}
 			arrays.shuffle(_array);
 		}
-		
+
 		@Override
 		protected void test() {
 			_array.sort();
 		}
-		
+
 		@Override
 		protected void afterTest() {
 			if (!arrays.isSorted(_array)) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}
-	};	
-	
+	};
+
 	@Test(10)
 	public final TestCase copy = new TestCase("copy()", LOOPS, SIZE) {
 		@Override
@@ -192,5 +193,5 @@ public class ArrayTest {
 			_array.copy();
 		}
 	};
-	
+
 }
