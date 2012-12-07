@@ -4908,7 +4908,7 @@ There are essentially four different parallelizations techniques used in
 Random seeding
 \series default
 : Every thread uses the same kind of PRNG but with a different seed.
- This is default strategy used by the 
+ This is the default strategy used by the 
 \family sans
 \series bold
 \shape smallcaps
@@ -4932,15 +4932,15 @@ java.util.concurrent
  package.
  Random seeding works well for the most problems but without theoretical
  foundation.
- If you assume that this strategy is responsible for some non-reproducible
- results, consider using the 
-\family typewriter
-LCG64ShiftRandom
-\family default
- PRNG instead.
- 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This is also expressed by Donald Knuth’s advice:
 \emph on
-Donald Knuth’s advice 
+ 
+\emph default
+
 \begin_inset Quotes ald
 \end_inset
 
@@ -4951,33 +4951,52 @@ Random number generators should not be chosen at random.
 
 \end_layout
 
+\end_inset
+
+ If you assume that this strategy is responsible for some 
+\emph on
+non
+\emph default
+-reproducible results, consider using the 
+\family typewriter
+LCG64ShiftRandom
+\family default
+ PRNG instead, which uses 
+\emph on
+block splitting
+\emph default
+ as parallelization strategy.
+ 
+\end_layout
+
 \begin_layout Itemize
 
 \series bold
 Parameterization
 \series default
 : All threads uses the same kind of PRNG but with different parameters.
- This requires that the PRNG to be parameterizable, which is not the case
- for the Random object of the JDK.
- Use the 
+ This requires the PRNG to be parameterizable, which is not the case for
+ the Random object of the JDK.
+ You can use the 
 \family typewriter
-LCG64ShiftRandom
+LCG64\SpecialChar \-
+ShiftRandom
 \family default
- if you want to use this strategy.
- 
+ class if you want to use this strategy, although it is recommended to use
+ the 
+\family typewriter
+LCG64\SpecialChar \-
+ShiftRandom
+\family default
+ PRNG with 
 \emph on
-The theoretical foundation of these method is weak and empirical tests have
- revealed serious correlation between streams.
- On massive parallel system you may need thousands of parallel streams and
- it is not trivial to find a type of PRNG with thousands of 
-\begin_inset Quotes ald
-\end_inset
-
-well tested
-\begin_inset Quotes ard
-\end_inset
-
- parameter sets.
+block splitting
+\emph default
+.
+ The theoretical foundation for these method is weak.
+ In a massive parallel environment you will need a reliable set of parameters
+ for every random stream, which are not trivial to find.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -8780,42 +8799,6 @@ build
 \end_deeper
 \begin_layout Section
 Random distribution test
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-scriptsize
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting{../resources/code/LCG64ShiftRandom.dieharder}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
