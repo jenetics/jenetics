@@ -451,7 +451,7 @@ public final class math {
 		/**
 		 * Uses the given {@code base} value to create a reasonable safe seed
 		 * value. This is done by combining it with values of
-		 * {@code new Object().hashCode()}:
+		 *  {@code new Object().hashCode()}:
 		 * <p/>
 		 * [code]
 		 * public static long seed(final long base) {
