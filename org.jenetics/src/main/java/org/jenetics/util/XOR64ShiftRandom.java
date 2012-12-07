@@ -71,6 +71,10 @@ class XOR64ShiftRandom extends Random64 {
 	 *
 	 * Calling the {@link XOR64ShiftRandom#setSeed(long)} method on the returned
 	 * instance will throw an {@link UnsupportedOperationException}.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static final class ThreadLocal extends java.lang.ThreadLocal<XOR64ShiftRandom> {
 
@@ -117,6 +121,10 @@ class XOR64ShiftRandom extends Random64 {
 	 *     assert (a.nextDouble() == b.nextDouble());
 	 * }
 	 * [/code]
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static final class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;

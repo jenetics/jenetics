@@ -83,10 +83,9 @@ public class LCG64ShiftRandom extends Random64 {
 	 * parameters <i>a</i> and <i>b</i> of the LC recursion
 	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
 	 *
-	 * @see LCG64ShiftRandom#DEFAULT
-	 * @see LCG64ShiftRandom#LECUYER1
-	 * @see LCG64ShiftRandom#LECUYER2
-	 * @see LCG64ShiftRandom#LECUYER3
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -162,6 +161,10 @@ public class LCG64ShiftRandom extends Random64 {
 	 * // Will throw 'UnsupportedOperationException'.
 	 * RandomRegistry.getRandom().setSeed(1234);
 	 * [/code]
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 57;
@@ -240,6 +243,10 @@ public class LCG64ShiftRandom extends Random64 {
 
 	/**
 	 * This is a <i>thread safe</i> variation of the this PRGN.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
