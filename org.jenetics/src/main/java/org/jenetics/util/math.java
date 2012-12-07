@@ -376,10 +376,31 @@ public final class math {
 	public static final class random {
 		private random() { object.noInstanceOf(random.class); }
 
+		/**
+		 * Create a new <em>seed</em> byte array of the given length.
+		 *
+		 * @see #seed(byte[])
+		 * @see #seed()
+		 *
+		 * @param length the length of the returned byte array.
+		 * @return a new <em>seed</em> byte array of the given length
+		 * @throws NegativeArraySizeException if the given length is smaller
+		 *         than zero.
+		 */
 		public static byte[] seedBytes(final int length) {
 			return seed(new byte[length]);
 		}
 
+		/**
+		 * Fills the given byte array with random bytes, created by successive
+		 * calls of the {@link #seed()} method.
+		 *
+		 * @see #seed()
+		 *
+		 * @param seed the byte array seed to fill with random bytes.
+		 * @return the given byte array, for method chaining.
+		 * @throws NullPointerException if the {@code seed} array is {@code null}.
+		 */
 		public static byte[] seed(final byte[] seed) {
 			for (int i = 0, len = seed.length; i < len;) {
 				int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
@@ -393,10 +414,37 @@ public final class math {
 		}
 
 		/**
-		 * Calculating a 64 bit seed value which can be used for initializing PRNGs.
-		 * This method uses a combination of {@code System.nanoTime()} and
-		 * {@code new Object().hashCode()} calls to create a reasonable safe seed
-		 * value.
+		 * Calculating a 64 bit seed value which can be used for initializing
+		 * PRNGs. This method uses a combination of {@code System.nanoTime()}
+		 * and {@code new Object().hashCode()} calls to create a reasonable safe
+		 * seed value:
+		 * <p/>
+		 * [code]
+		 * public static long seed() {
+		 *     final long hashSeed = ((long)(new Object().hashCode()) << 32) |
+		 *                                   new Object().hashCode();
+		 *     final long nanoTimeSeed = ((System.nanoTime() & 255) << 56) |
+		 *                               ((System.nanoTime() & 255) << 24) |
+		 *                               ((System.nanoTime() & 255) << 48) |
+		 *                               ((System.nanoTime() & 255) << 16) |
+		 *                               ((System.nanoTime() & 255) << 40) |
+		 *                               ((System.nanoTime() & 255) <<  8) |
+		 *                               ((System.nanoTime() & 255) << 32) |
+		 *                               ((System.nanoTime() & 255) <<  0) |;
+		 *     long seed = nanoTimeSeed ^ hashSeed;
+		 *     seed ^= seed << 17;
+		 *     seed ^= seed >>> 31;
+		 *     seed ^= seed << 8;
+		 *     return seed;
+		 * }
+		 * [/code]
+		 * <p/>
+		 * This method passes all of the statistical tests of the
+		 * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">
+		 * dieharder</a> test suite&mdash;executed on a linux machine with
+		 * JDK version 1.7. <em>Since there is no prove that this will the case
+		 * for every Java version and OS, it is recommended to only use this
+		 * method for seeding other PRNGs.</em>
 		 *
 		 * @return the random seed value.
 		 */
@@ -406,7 +454,19 @@ public final class math {
 
 		/**
 		 * Uses the given {@code base} value to create a reasonable safe seed value
-		 * by combining it with values of {@code new Object().hashCode()}
+		 * by combining it with values of {@code new Object().hashCode()}:
+		 * <p/>
+		 * [code]
+		 * public static long seed(final long base) {
+		 *     final long hashSeed = ((long)(new Object().hashCode()) << 32) |
+		 *                                   new Object().hashCode();
+		 *     long seed = base ^ hashSeed;
+		 *     seed ^= seed << 17;
+		 *     seed ^= seed >>> 31;
+		 *     seed ^= seed << 8;
+		 *     return seed;
+		 * }
+		 * [/code]
 		 *
 		 * @param base the base value of the seed to create
 		 * @return the created seed value.
