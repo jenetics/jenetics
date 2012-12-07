@@ -26,6 +26,7 @@ import javolution.context.ConcurrentContext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public final class TestContext extends ConcurrentContext {
 
@@ -46,5 +47,5 @@ public final class TestContext extends ConcurrentContext {
 	protected void exitAction() {
 		System.out.println("exitAction");
 	}
-	
+
 }

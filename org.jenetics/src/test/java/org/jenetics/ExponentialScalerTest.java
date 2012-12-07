@@ -30,6 +30,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 
@@ -40,7 +41,7 @@ public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 			final double a = random.nextInt(100) + 10;
 			final double b = random.nextInt(100) + 10;
 			final double c = random.nextInt(100) + 10;
-			
+
 			return new ExponentialScaler(a, b, c);
 		}
 	};
@@ -48,5 +49,5 @@ public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
 	protected Factory<ExponentialScaler> getFactory() {
 		return _factory;
 	}
-	
+
 }

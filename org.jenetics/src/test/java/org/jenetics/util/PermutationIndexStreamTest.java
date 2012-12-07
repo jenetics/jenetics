@@ -34,24 +34,21 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class PermutationIndexStreamTest {
 
 
 	@Test
 	public void constantSequence100() throws Exception {
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
 			getClass().getResourceAsStream("/org/jenetics/util/123456_100.permutation"))
-		);
-
-		try {
+		)) {
 			final IndexStream stream = PermutationIndexStream.valueOf(100, new Random(123456));
 			String line = null;
 			while((line = reader.readLine()) != null) {
 				Assert.assertEquals(stream.next(), Integer.parseInt(line));
 			}
-		} finally {
-			reader.close();
 		}
 	}
 

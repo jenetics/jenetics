@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
+import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 
@@ -46,7 +47,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.1 &mdash; <em>$Date$</em>
  */
 public abstract class IndexStream {
 
@@ -60,6 +61,32 @@ public abstract class IndexStream {
 	 * @return the next index, or -1 if the stream has reached its end.
 	 */
 	public abstract int next();
+
+	/**
+	 * Applies a {@code function} to all elements of this stream.
+	 *
+	 * @param function the function to apply to the elements.
+	 * @throws NullPointerException if the given {@code function} is
+	 *          {@code null}.
+	 */
+	<R> void foreach(final Function<? super Integer, ? extends R> function) {
+		nonNull(function, "Function");
+		for (int i = next(); i != -1; i = next()) {
+			function.apply(i);
+		}
+	}
+
+	/**
+	 * Create a new random IndexIterator.
+	 * @param n the maximal value (exclusively) the created index stream will
+	 *         return.
+	 * @param probability the index selection probability.
+	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
+	 *         {@code n <= 0} or the given {@code probability} is not valid.
+	 */
+	public static IndexStream Random(final int n, final double probability) {
+		return Random(n, probability, RandomRegistry.getRandom());
+	}
 
 	/**
 	 * Create a new random IndexIterator.
@@ -89,18 +116,16 @@ public abstract class IndexStream {
 		}
 
 		return new IndexStream() {
+			private final int P = math.probability.toInt(probability);
+
 			private int _pos = -1;
 
 			@Override
 			public int next() {
-				while (_pos < n && random.nextDouble() >= probability) {
+				while (_pos < n && random.nextInt() >= P) {
 					++_pos;
 				}
-				if (_pos < n) {
-					++_pos;
-				}
-
-				return _pos < n ? _pos : -1;
+				return (_pos < n - 1) ? ++_pos : -1;
 			}
 
 		};

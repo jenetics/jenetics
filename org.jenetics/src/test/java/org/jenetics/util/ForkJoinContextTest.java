@@ -31,26 +31,27 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class ForkJoinContextTest {
 
 	static {
 		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(3));
 	}
-	
+
 	@SuppressWarnings("unused")
 	private static class Task implements Runnable {
 		private int _id;
-		
+
 		public Task(final int id) {
 			_id = id;
 		}
-		
+
 		@Override
 		public void run() {
 			try (Concurrency c = Concurrency.start()) {
 				for (int i = 0; i < 10; ++i) {
-					
+
 					final int id = i;
 					c.execute(new Runnable() { @Override public void run() {
 						try {
@@ -64,7 +65,7 @@ public class ForkJoinContextTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void potentialDeadLock() {
 		try (Concurrency c = Concurrency.start()) {
@@ -73,7 +74,7 @@ public class ForkJoinContextTest {
 			}
 		}
 	}
-	
+
 	@Test(dataProvider = "levels")
 	public void execute(final Integer level) {
 		try {
@@ -83,10 +84,10 @@ public class ForkJoinContextTest {
 			Concurrency.setDefaultContext();
 		}
 	}
-	
+
 	private long _execute(final Integer level) {
 		final AtomicLong counter = new AtomicLong(1);
-		
+
 		try (Concurrency c = Concurrency.start()) {
 			c.execute(new Runnable() {
 				@Override public void run() {
@@ -94,7 +95,7 @@ public class ForkJoinContextTest {
 						//System.out.println("READY");
 					} else {
 						counter.addAndGet(_execute(level - 1));
-					}	
+					}
 				}
 			});
 			c.execute(new Runnable() {
@@ -109,10 +110,10 @@ public class ForkJoinContextTest {
 				}
 			});
 		}
-		
+
 		return counter.longValue();
 	}
-	
+
 	private static void exec() {
 		try (Concurrency c = Concurrency.start()) {
 			for (int i = 0; i < 5; ++i) {
@@ -127,17 +128,17 @@ public class ForkJoinContextTest {
 					}
 				});
 				}
-		}		
+		}
 	}
-	
+
 	@DataProvider(name = "levels")
 	public Object[][] levels() {
 		return new Object[][] {
 			{ 1 }, { 2 }, { 5 }, { 7 }, { 10 }, { 15 }, { 21 }, { 50 }, { 100 }
 		};
 	}
-	
-	
+
+
 }
 
 

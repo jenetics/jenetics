@@ -33,6 +33,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 
@@ -40,12 +41,12 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 		@Override
 		public Quantile<Double> newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Quantile<Double> quantile = new Quantile<>(random.nextDouble());
 			for (int i = 0; i < 1000; ++i) {
 				quantile.accumulate(random.nextGaussian());
 			}
-			
+
 			return quantile;
 		}
 	};

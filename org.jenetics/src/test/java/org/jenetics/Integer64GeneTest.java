@@ -41,6 +41,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene> {
 
@@ -137,7 +138,7 @@ public class Integer64GeneTest extends NumberGeneTester<Integer64, Integer64Gene
 			assertEquals(b.getMax().longValue(), max);
 			assertEquals(c.getMin().longValue(), min);
 			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), (long)(((i - 50) + ((i - 100)*3))/2));
+			assertEquals(c.getAllele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
 	}
 

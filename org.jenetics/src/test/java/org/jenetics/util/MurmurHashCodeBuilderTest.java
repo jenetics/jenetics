@@ -26,12 +26,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class MurmurHashCodeBuilderTest {
 
 	@Test
 	public void intHashCode() {
-		
+
 	}
-	
+
 }

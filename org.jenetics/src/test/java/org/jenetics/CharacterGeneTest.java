@@ -43,6 +43,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class CharacterGeneTest extends GeneTester<CharacterGene> {
 
@@ -56,23 +57,23 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random(12345));
-			
+
 			final CharSeq characters = new CharSeq("0123456789");
-			
+
 			final Factory<CharacterGene> factory = CharacterGene.valueOf(characters);
-			
+
 			final Histogram<Long> histogram = Histogram.valueOf(0L, 10L, 10);
-			
+
 			final int samples = 100000;
 			for (int i = 0; i < samples; ++i) {
 				final CharacterGene g1 = factory.newInstance();
-				final CharacterGene g2 = factory.newInstance();				
+				final CharacterGene g2 = factory.newInstance();
 				Assert.assertNotSame(g1, g2);
-								
+
 				histogram.accumulate(Long.valueOf(g1.getAllele().toString()));
 				histogram.accumulate(Long.valueOf(g2.getAllele().toString()));
 			}
-			
+
 			assertDistribution(histogram, new UniformDistribution<>(0L, 10L));
 		} finally {
 			LocalContext.exit();

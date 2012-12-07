@@ -87,7 +87,7 @@ public class Mean<N extends Number> extends MappedAccumulator<N> {
 			_mean = 0;
 		}
 
-		_mean += (value.doubleValue() - _mean)/(double)(++_samples);
+		_mean += (value.doubleValue() - _mean)/(++_samples);
 	}
 
 	@Override

@@ -41,6 +41,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 @Suite("GA")
 public class GATest {
@@ -48,20 +49,20 @@ public class GATest {
 	private static final int LOOPS = 20;
 	private static final int NGENES = 5;
 	private static final int NCHROMOSOMES = 50;
-	
-	
+
+
 	private static final class Float64GeneFF
 		implements Function<Genotype<Float64Gene>, Float64>,
 					Serializable
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		@Override
 		public Float64 apply(final Genotype<Float64Gene> genotype) {
 			return genotype.getChromosome().getGene().getAllele();
 		}
 	}
-	
+
 	private static final class CharacterGeneFF
 		implements Function<Genotype<CharacterGene>, Float64>,
 					Serializable
@@ -74,9 +75,9 @@ public class GATest {
 					genotype.getChromosome().getGene().getAllele().hashCode()
 				);
 		}
-		
+
 	}
-	
+
 	@Test(1)
 	public TestCase float64Gene = new TestCase(
 		String.format("Float64Gene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
@@ -86,9 +87,9 @@ public class GATest {
 			_gtb.ngenes(NGENES);
 			_gtb.nchromosomes(NCHROMOSOMES);
 		}
-		
+
 		private GeneticAlgorithm<Float64Gene, Float64> _ga;
-		
+
 		@Override
 		protected void beforeTest() {
 			_ga = new GeneticAlgorithm<>(_gtb.build(), new Float64GeneFF());
@@ -101,13 +102,13 @@ public class GATest {
 			_ga.setSurvivorSelector(new BoltzmannSelector<Float64Gene, Float64>());
 			_ga.setup();
 		}
-		
+
 		@Override
 		protected void test() {
 			_ga.evolve(200);
 		}
 	};
-	
+
 	@Test(2)
 	public TestCase characterGene = new TestCase(
 		String.format("CharacterGene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
@@ -118,9 +119,9 @@ public class GATest {
 			_chromosomes.fill(new CharacterChromosome(NGENES).asFactory());
 		}
 		private final Genotype<CharacterGene> _gt = Genotype.valueOf(_chromosomes.toISeq());
-		
+
 		private GeneticAlgorithm<CharacterGene, Float64> _ga;
-		
+
 		@Override
 		protected void beforeTest() {
 			_ga = new GeneticAlgorithm<>(_gt, new CharacterGeneFF());
@@ -133,14 +134,14 @@ public class GATest {
 			_ga.setSurvivorSelector(new BoltzmannSelector<CharacterGene, Float64>());
 			_ga.setup();
 		}
-		
+
 		@Override
 		protected void test() {
 			_ga.evolve(200);
 		}
-		
+
 	};
-	
+
 }
 
 

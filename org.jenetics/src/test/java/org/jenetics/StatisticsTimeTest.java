@@ -34,6 +34,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class StatisticsTimeTest extends ObjectTester<Time> {
 
@@ -41,7 +42,7 @@ public class StatisticsTimeTest extends ObjectTester<Time> {
 		@Override
 		public Time newInstance() {
 			final Random random = RandomRegistry.getRandom();
-			
+
 			final Time time = new Time();
 			time.alter.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
 			time.combine.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
@@ -49,7 +50,7 @@ public class StatisticsTimeTest extends ObjectTester<Time> {
 			time.execution.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
 			time.selection.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
 			time.statistics.set(Measure.valueOf(random.nextDouble()*1000, SI.SECOND));
-			
+
 			return time;
 		}
 	};
@@ -57,5 +58,5 @@ public class StatisticsTimeTest extends ObjectTester<Time> {
 	protected Factory<Time> getFactory() {
 		return _factory;
 	}
-	
+
 }

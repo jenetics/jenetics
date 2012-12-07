@@ -40,10 +40,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class accumulators {
-
-	private accumulators() {
-		throw new AssertionError("Don't create an 'accumulators' instance.");
-	}
+	private accumulators() { object.noInstanceOf(accumulators.class); }
 
 	public static final Accumulator<Object> NULL = new Accumulator<Object>() {
 		@Override

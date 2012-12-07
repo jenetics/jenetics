@@ -31,45 +31,81 @@ import javolution.context.LocalContext;
 import javolution.lang.Reference;
 
 /**
- * This class holds the {@link Random} engine used for the GA. The RandomRegistry
- * is thread safe. The default value for the random engine is an instance of
- * the Java {@link Random} engine with the {@link System#currentTimeMillis()} as
- * seed value.
+ * This class holds the {@link Random} engine used for the GA. The
+ * {@code RandomRegistry} is thread safe. The registry is initialized with the
+ * {@link ThreadLocalRandom} PRNG, which has a much better performance behavior
+ * than an instance of the {@code Random} class. Alternatively, you can
+ * initialize the registry with one of the PRNG, which are being part of the
+ * library.
  * <p/>
- * You can temporarily (and locally) change the implementation of the random engine
- * by using the {@link LocalContext} from the
- * <a href="http://javolution.org/">javolution</a> project.
+ *
+ * <b>Setup of a <i>global</i> PRNG</b>
  *
  * [code]
- * LocalContext.enter();
- * try {
- *     RandomRegistry.setRandom(new MyRandom());
- *     ...
- * } finally {
- *     LocalContext.exit(); // Restore the previous random engine.
+ * public class GA {
+ *     public static void main(final String[] args) {
+ *         // Initialize the registry with a ThreadLocal instance of the PRGN.
+ *         // This is the preferred way setting a new PRGN.
+ *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+ *
+ *         // Using a thread safe variant of the PRGN. Leads to slower PRN
+ *         // generation, but gives you the possibility to set a PRNG seed.
+ *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
+ *
+ *         ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *         ga.evolve(100);
+ *     }
  * }
  * [/code]
+ * <p/>
+ *
+ * <b>Setup of a <i>local</i> PRNG</b><br/>
+ *
+ * With the help of the {@link LocalContext} from the <a href="http://javolution.org/">
+ * javolution</a> project you can temporarily (and locally) change the
+ * implementation of the PRNG
+ *
+ * [code]
+ * public class GA {
+ *     public static void main(final String[] args) {
+ *         ...
+ *         final GeneticAlgorithm<Float64Gene, Float64> ga = ...
+ *
+ *         LocalContext.enter();
+ *         try {
+ *             RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
+ *             // Only the 'setup' step uses the new PRGN.
+ *             ga.setup();
+ *         } finally {
+ *             LocalContext.exit(); // Restore the previous random engine.
+ *         }
+ *
+ *         ga.evolve(100);
+ *     }
+ * }
+ * [/code]
+ * <p/>
  *
  * @see LocalContext
+ * @see Random
+ * @see ThreadLocalRandom
+ * @see LCG64ShiftRandom
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.1 &mdash; <em>$Date$</em>
  */
 public final class RandomRegistry {
 
-
-	private static final Reference<Random> DEFAULT_RANDOM_ACCESSOR =
-	new Reference<Random>() {
+	private static final Reference<Random> THREAD_LOCAL_REF = new Ref<Random>() {
 		@Override public Random get() {
 			return ThreadLocalRandom.current();
 		}
-		@Override public void set(Random random) {
-		}
 	};
 
-	private static final LocalContext.Reference<Reference<Random>> RANDOM =
-		new LocalContext.Reference<>(DEFAULT_RANDOM_ACCESSOR);
+	private static final LocalContext.Reference<Reference<? extends Random>>
+	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(THREAD_LOCAL_REF);
 
 
 	private RandomRegistry() {
@@ -86,31 +122,76 @@ public final class RandomRegistry {
 	}
 
 	/**
-	 * Set the new global {@link Random} object for the GA.
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} <b>must</b> be thread safe, which is the case for the
+	 * default Java {@code Random} implementation.
+	 * <p/>
+	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, because the given {@code Random} engine don't have to be
+	 * thread-safe.
+	 *
+	 * @see #setRandom(ThreadLocal)
 	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	public static void setRandom(final Random random) {
-		nonNull(random, "Random object");
-		RANDOM.set(new Reference<Random>() {
-			@Override public Random get() {
-				return random;
-			}
-			@Override public void set(Random random) {
-			}
-		});
+		RANDOM.set(new RRef(random));
 	}
 
 	/**
-	 * Set the random object to it's default value.
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} don't have be thread safe, because the given
+	 * {@link ThreadLocal} wrapper guarantees thread safety. Setting a
+	 * <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, when using a non-blocking PRNG. This is the preferred
+	 * way for changing the PRNG.
+	 *
+	 * @param random the thread-local random engine to use.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 */
+	public static void setRandom(final ThreadLocal<? extends Random> random) {
+		RANDOM.set(new TLRRef<>(random));
+	}
+
+	/**
+	 * Set the random object to it's default value. The <i>default</i> used PRNG
+	 * is the {@link ThreadLocalRandom} PRNG.
 	 */
 	public static void reset() {
-		RANDOM.set(DEFAULT_RANDOM_ACCESSOR);
+		RANDOM.set(THREAD_LOCAL_REF);
+	}
+
+
+	/*
+	 * Some helper Reference classes.
+	 */
+
+	private static abstract class Ref<R> implements Reference<R> {
+		@Override public void set(final R random) {}
+	}
+
+	private final static class RRef extends Ref<Random> {
+		private final Random _random;
+		public RRef(final Random random) {
+			_random = nonNull(random, "Random");
+		}
+		@Override public Random get() {
+			return _random;
+		}
+	}
+
+	private final static class TLRRef<R extends Random> extends Ref<R> {
+		private final ThreadLocal<R> _random;
+		public TLRRef(final ThreadLocal<R> random) {
+			_random = nonNull(random, "Random");
+		}
+		@Override public R get() {
+			return _random.get();
+		}
 	}
 
 }
-
 
 
 

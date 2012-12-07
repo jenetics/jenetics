@@ -38,10 +38,11 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class MeanAltererTest {
-	
-	
+
+
 	@Test
 	public void recombinate() {
 		final int ngenes = 11;
@@ -52,48 +53,48 @@ public class MeanAltererTest {
 			);
 		final Population<Float64Gene, Float64> p2 = p1.copy();
 		final int[] selected = new int[]{3, 34};
-		
+
 		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(0.1);
 		crossover.recombine(p1, selected, 3);
-		
+
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
-	
+
 	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
 		final Integer npopulation,
 		final Double p
-	) {		
+	) {
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
-		
+
 		// The mutator to test.
 		final MeanAlterer<Float64Gene> crossover = new MeanAlterer<>(p);
-		
+
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
 		final double mean = npopulation*p;
-		
+
 		final long min = 0;
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
-		
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
+
+		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
-		
+
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover.alter(population, 1);
 			histogram.accumulate(alterations);
-			variance.accumulate(alterations);	
+			variance.accumulate(alterations);
 		}
-				
+
 		// Normal distribution as approximation for binomial distribution.
 		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
-	
+
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
 		return TestUtils.alterProbabilityParameters();

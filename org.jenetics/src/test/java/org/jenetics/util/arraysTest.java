@@ -34,67 +34,68 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class arraysTest {
-	
+
 	@Test
 	public void swapInt() {
 		final int[] array = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 		arrays.swap(array, 2, 6);
-		
+
 		Assert.assertEquals(array[2], 6);
 		Assert.assertEquals(array[6], 2);
 	}
-	
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void swapIntNull() {
 		final int[] array = null;
 		arrays.swap(array, 2, 5);
 	}
-	
+
 	@Test
 	public void swapObjectArray() {
 		final Integer[] array = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-		
+
 		arrays.swap(array, 2, 6);
-		
+
 		Assert.assertEquals(array[2], new Integer(6));
 		Assert.assertEquals(array[6], new Integer(2));
 	}
-	
+
 	@Test(expectedExceptions = NullPointerException.class)
 	public void swapObjectArrayNull() {
 		final Integer[] array = null;
 		arrays.swap(array, 2, 5);
 	}
-	
+
 	@Test
 	public void subset() {
 		final Random random = new Random();
-		
+
 		for (int i = 1; i < 100; ++i) {
 			int[] sub = new int[i];
 			arrays.subset(1000, sub, random);
-			
+
 			Assert.assertTrue(isSortedd(sub));
 		}
-		
+
 	}
-	
+
 	@Test
 	public void iselect() {
 		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		
+
 		for (int i = 0; i < array.length(); ++i) {
 			//System.out.println(ArrayUtils.iselect(array, i));
 			//Assert.assertEquals(ArrayUtils.iselect(array, i), i);
 		}
 		//System.out.println(ArrayUtils.iselect(array, 2));
 	}
-	
+
 	private static boolean isSortedd(int[] array) {
 		boolean sorted = true;
 		for (int i = 0; i < array.length - 1 && sorted; ++i) {
@@ -102,7 +103,7 @@ public class arraysTest {
 		}
 		return sorted;
 	}
-	
+
 	@Test
 	public void sorted() {
 		final Array<Integer> array = new Array<>(100);
@@ -110,19 +111,19 @@ public class arraysTest {
 			array.set(i, i);
 		}
 		Assert.assertTrue(isSorted(array));
-		
+
 		array.set(10, 5);
 		Assert.assertFalse(isSorted(array));
-		
+
 		array.setAll(-234);
 		Assert.assertTrue(isSorted(array));
-		
+
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, array.length() - i);
 		}
 		Assert.assertFalse(isSorted(array));
 	}
-	
+
 	@Test
 	public void sorted2() {
 		final Array<Integer> array = new Array<>(100);
@@ -136,7 +137,7 @@ public class arraysTest {
 			}
 		}));
 	}
-	
+
 	@Test
 	public void sort1() {
 		final Random random = new Random();
@@ -145,18 +146,18 @@ public class arraysTest {
 				return random.nextInt(10000);
 			}
 		};
-		
+
 		final Array<Integer> array = new Array<>(100);
 		array.fill(factory);
 		Assert.assertFalse(isSorted(array));
-		
+
 		final Array<Integer> clonedArray = array.copy();
 		org.jenetics.util.arrays.sort(array.subSeq(30, 40));
 		Assert.assertTrue(isSorted(array.subSeq(30, 40)));
 		Assert.assertEquals(array.subSeq(0, 30), clonedArray.subSeq(0, 30));
 		Assert.assertEquals(array.subSeq(40), clonedArray.subSeq(40));
 	}
-	
+
 //	@Test
 //	public void performance() {
 //		final int SIZE = 1000;
@@ -172,7 +173,7 @@ public class arraysTest {
 //						}
 //					}, i));
 //		}
-//		
+//
 //		final Timer timer = new Timer();
 //		timer.start();
 //		for (int j = 0; j < 10000; ++j) {
@@ -182,7 +183,7 @@ public class arraysTest {
 //		}
 //		timer.stop();
 //		System.out.println(timer.toString());
-//		
+//
 //		timer.reset();
 //		timer.start();
 //		for (int i = 0; i < 10000; ++i) {
@@ -190,23 +191,23 @@ public class arraysTest {
 //		}
 //		timer.stop();
 //		System.out.println(timer);
-//		
+//
 //	}
-	
+
 	public static void main(String[] args) {
 		Array<Integer> array = new Array<>(10000000);
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, (int)(Math.random()*1000));
 		}
-		
+
 		Timer timer = new Timer();
 		timer.start();
 		sort(array);
 		timer.stop();
 		Reporter.log(timer.toString());
 	}
-	
-	
+
+
 }
 
 

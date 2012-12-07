@@ -35,13 +35,14 @@ import org.jenetics.util.accumulators;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class StatisticsCalculatorTest {
 
 	public Calculator<Float64Gene, Float64> newCalculator() {
 		return new Calculator<>();
 	}
-	
+
 	public Iterable<Phenotype<Float64Gene, Float64>> population(final int size) {
 		return new Iterable<Phenotype<Float64Gene,Float64>>() {
 			@Override
@@ -49,14 +50,14 @@ public class StatisticsCalculatorTest {
 				return new Iterator<Phenotype<Float64Gene,Float64>>() {
 					private final Float64 MIN = Float64.valueOf(0);
 					private final Float64 MAX = Float64.valueOf(size);
-					
+
 					private int _pos = -1;
-					
+
 					@Override
 					public boolean hasNext() {
 						return _pos < size - 1;
 					}
-					
+
 					@Override
 					public Phenotype<Float64Gene, Float64> next() {
 						++_pos;
@@ -68,7 +69,7 @@ public class StatisticsCalculatorTest {
 								TestUtils.FF, 0
 							);
 					}
-					
+
 					@Override
 					public void remove() {
 					}
@@ -76,7 +77,7 @@ public class StatisticsCalculatorTest {
 			}
 		};
 	}
-	
+
 	@Test(dataProvider = "size_gen")
 	public void evaluate(final Integer size, final Integer gen) {
 		final Calculator<Float64Gene, Float64> calculator = newCalculator();
@@ -86,7 +87,7 @@ public class StatisticsCalculatorTest {
 
 		final Variance<Integer> ageVariance = new Variance<>();
 		accumulators.accumulate(population(size), ageVariance.map(Phenotype.Age(gen)));
-		
+
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());
 		Assert.assertEquals(statistics.getAgeVariance(), ageVariance.getVariance());
 		Assert.assertEquals(statistics.getSamples(), size.intValue());
@@ -94,7 +95,7 @@ public class StatisticsCalculatorTest {
 		Assert.assertEquals(statistics.getBestFitness(), Float64.valueOf(size - 1));
 		Assert.assertEquals(statistics.getWorstFitness(), Float64.ZERO);
 	}
-	
+
 	@DataProvider(name = "size_gen")
 	public Object[][] sizeGen() {
 		return new Object[][] {
@@ -103,7 +104,7 @@ public class StatisticsCalculatorTest {
 				{1000, 312}
 		};
 	}
-	
+
 }
 
 

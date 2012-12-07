@@ -41,6 +41,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class Integer64ChromosomeTest
 	extends NumberChromosomeTester<Integer64, Integer64Gene>
@@ -57,17 +58,17 @@ public class Integer64ChromosomeTest
 		LocalContext.enter();
 		try {
 			RandomRegistry.setRandom(new Random(12345));
-			
+
 			final Integer64 min = Integer64.ZERO;
 			final Integer64 max = Integer64.valueOf(10000000);
-			
-			final MinMax<Integer64> mm = new MinMax<>();			
+
+			final MinMax<Integer64> mm = new MinMax<>();
 			final Variance<Integer64> variance = new Variance<>();
 			final Histogram<Integer64> histogram = Histogram.valueOf(min, max, 10);
-			
+
 			for (int i = 0; i < 1000; ++i) {
 				final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 500);
-				
+
 				accumulate(
 						chromosome,
 						mm.map(Integer64Gene.Value),
@@ -75,7 +76,7 @@ public class Integer64ChromosomeTest
 						histogram.map(Integer64Gene.Value)
 					);
 			}
-			
+
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertDistribution(histogram, new UniformDistribution<>(min, max));
@@ -83,18 +84,18 @@ public class Integer64ChromosomeTest
 			LocalContext.exit();
 		}
     }
-	
+
 	@Test
 	public void firstGeneConverter() {
 		final Integer64Chromosome c = getFactory().newInstance();
-		
+
 		Assert.assertEquals(Integer64Chromosome.Gene.apply(c), c.getGene(0));
 	}
-	
+
 	@Test
 	public void geneConverter() {
 		final Integer64Chromosome c = getFactory().newInstance();
-		
+
 		for (int i = 0; i < c.length(); ++i) {
 			Assert.assertEquals(
 					Integer64Chromosome.Gene(i).apply(c),
@@ -102,7 +103,7 @@ public class Integer64ChromosomeTest
 				);
 		}
 	}
-	
+
 	@Test
 	public void genesConverter() {
 		final Integer64Chromosome c = getFactory().newInstance();
@@ -111,7 +112,7 @@ public class Integer64ChromosomeTest
 				c.toSeq()
 			);
 	}
-	
+
 }
 
 

@@ -32,6 +32,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64>> {
 
@@ -39,7 +40,7 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 	_factory = new Factory<Statistics<Float64Gene,Float64>>() {
 		private final Phenotype<Float64Gene, Float64> _best = TestUtils.newFloat64Phenotype();
 		private final Phenotype<Float64Gene, Float64> _worst = _best;
-		
+
 		@Override
 		public Statistics<Float64Gene, Float64> newInstance() {
 			final Random random = RandomRegistry.getRandom();
@@ -50,7 +51,7 @@ public class StatisticsTest extends ObjectTester<Statistics<Float64Gene, Float64
 			final double ageVariance = random.nextDouble();
 			final int killed = random.nextInt(1000);
 			final int invalid = random.nextInt(10000);
-			
+
 			return new Statistics<>(
 					Optimize.MAXIMUM, generation, _best, _worst,
 					samples, ageMean, ageVariance, killed, invalid

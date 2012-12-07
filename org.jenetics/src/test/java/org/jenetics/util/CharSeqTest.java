@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
@@ -45,33 +46,33 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	protected Factory<CharSeq> getFactory() {
 		return _factory;
 	}
-	
+
 	@Test
 	public void distinct1() {
 		CharSeq set = new CharSeq("".toCharArray());
 		Assert.assertEquals(set.toString(), "");
-		
+
 		set = new CharSeq("1".toCharArray());
 		Assert.assertEquals(set.toString(), "1");
-		
+
 		set = new CharSeq("11".toCharArray());
 		Assert.assertEquals(set.toString(), "1");
-		
+
 		set = new CharSeq("123456789".toCharArray());
 		Assert.assertEquals(set.toString(), "123456789");
-		
+
 		set = new CharSeq("0000000000000000000000000".toCharArray());
 		Assert.assertEquals(set.toString(), "0");
-		
+
 		set = new CharSeq("0111111111111111111111111112".toCharArray());
 		Assert.assertEquals(set.toString(), "012");
-		
+
 		set = new CharSeq("111111111111111112".toCharArray());
 		Assert.assertEquals(set.toString(), "12");
-		
+
 		set = new CharSeq("1222222222222222222".toCharArray());
 		Assert.assertEquals(set.toString(), "12");
-		
+
 		set = new CharSeq("000000987654321111111111".toCharArray());
 		Assert.assertEquals(set.toString(), "0123456789");
 	}
@@ -80,83 +81,83 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	public void distinct2() {
 		CharSeq set = new CharSeq("");
 		Assert.assertEquals(set.toString(), "");
-		
+
 		set = new CharSeq("1");
 		Assert.assertEquals(set.toString(), "1");
-		
+
 		set = new CharSeq("11");
 		Assert.assertEquals(set.toString(), "1");
-		
+
 		set = new CharSeq("1223345667899");
 		Assert.assertEquals(set.toString(), "123456789");
-		
+
 		set = new CharSeq("0000000000000000000000000");
 		Assert.assertEquals(set.toString(), "0");
-		
+
 		set = new CharSeq("0111111111111111111111111112");
 		Assert.assertEquals(set.toString(), "012");
-		
+
 		set = new CharSeq("111111111111111112");
 		Assert.assertEquals(set.toString(), "12");
-		
+
 		set = new CharSeq("1222222222222222222");
 		Assert.assertEquals(set.toString(), "12");
-		
+
 		set = new CharSeq("000000987654321111111111");
 		Assert.assertEquals(set.toString(), "0123456789");
 	}
-	
+
 	@Test
 	public void expand1() {
 		String value = CharSeq.expand('a', 'z');
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz");
-		
+
 		value = CharSeq.expand('A', 'Z');
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		
+
 		value = CharSeq.expand('0', '9');
 		Assert.assertEquals(value.length(), 10);
 		Assert.assertEquals(value, "0123456789");
 	}
-	
+
 	@Test
 	public void expand2() {
 		String value = CharSeq.expand("a-z");
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz");
-		
+
 		value = CharSeq.expand("a-z\\-");
 		Assert.assertEquals(value.length(), 27);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz-");
-		
+
 		value = CharSeq.expand("a-z\\\\xx");
 		Assert.assertEquals(value.length(), 29);
 		Assert.assertEquals(value, "abcdefghijklmnopqrstuvwxyz\\xx");
-		
+
 		value = CharSeq.expand("A-Z");
 		Assert.assertEquals(value.length(), 26);
 		Assert.assertEquals(value, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		
+
 		value = CharSeq.expand("0-9");
 		Assert.assertEquals(value.length(), 10);
 		Assert.assertEquals(value, "0123456789");
-		
+
 		value = CharSeq.expand("0-9yxcvba-z");
 		Assert.assertEquals(value.length(), 41);
 		Assert.assertEquals(value, "0123456789yxcvbabcdefghijklmnopqrstuvwxyz");
-		
+
 		value = CharSeq.expand("0-9a-zA-Z");
 		Assert.assertEquals(value.length(), 10 + 26 + 26);
 		Assert.assertEquals(value, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	}
-	
+
 	@Test(expectedExceptions = PatternSyntaxException.class)
 	public void expand3() {
 		CharSeq.expand("a-z-");
 	}
-	
+
 	@Test(expectedExceptions = PatternSyntaxException.class)
 	public void expand4() {
 		CharSeq.expand("-az");
@@ -172,7 +173,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		Assert.assertFalse(set.contains('1'));
 		Assert.assertFalse(set.contains('Z'));
 	}
-	
+
 	@Test
 	public void iterate() {
 		final CharSeq set = new CharSeq(CharSeq.expand("a-z"));
@@ -184,7 +185,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		}
 		Assert.assertFalse(it.hasNext());
 	}
-	
+
 	@Test
 	public void subSequence() {
 		final CharSeq set = new CharSeq(CharSeq.expand("a-z"));
@@ -192,7 +193,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		Assert.assertEquals(sub.length(), 7);
 		Assert.assertEquals(sub.toString(), "defghij");
 	}
-	
+
 }
 
 

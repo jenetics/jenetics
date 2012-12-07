@@ -111,7 +111,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private C[] check(final C... classes) {
+	private static <C> C[] check(final C... classes) {
 		foreach(classes, NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
@@ -390,7 +390,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	private static final Comparator COMPARATOR = new Comparator() {
 		@Override
 		public int compare(final Object o1, final Object o2) {
-			return ((Comparable)o1).compareTo((Comparable)o2);
+			return ((Comparable)o1).compareTo(o2);
 		}
 	};
 

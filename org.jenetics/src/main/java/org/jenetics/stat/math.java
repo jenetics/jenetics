@@ -28,6 +28,8 @@ import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.sqrt;
 
+import org.jenetics.util.object;
+
 /**
  * Some statistical special functions.
  *
@@ -37,10 +39,8 @@ import static java.lang.Math.sqrt;
  */
 @SuppressWarnings("javadoc")
 final class math {
+	private math(){ object.noInstanceOf(math.class); }
 
-	private math() {
-		throw new AssertionError("Don't create an 'math' instance.");
-	}
 
 	/**
 	 * Uses Lanczos approximation formula. See Numerical Recipes 6.1.

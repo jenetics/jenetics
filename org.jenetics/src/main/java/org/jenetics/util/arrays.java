@@ -59,14 +59,14 @@ public final class arrays {
 	 * [/code]
 	 *
 	 * @see Seq#hashCode()
+	 * @see List#hashCode()
 	 *
 	 * @param seq the sequence to calculate the hash code for.
 	 * @return the hash code of the given sequence.
 	 */
 	public static int hashCode(final Seq<?> seq) {
 		int hash = 1;
-		for (int i = 0, n = seq.length(); i < n; ++i) {
-			final Object element = seq.get(i);
+		for (Object element : seq) {
 			hash = 31*hash + (element == null ? 0: element.hashCode());
 		}
 		return hash;
@@ -116,6 +116,12 @@ public final class arrays {
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		final int old = array[i];
+		array[i] = array[j];
+		array[j] = old;
+	}
+
+	static void swap(final byte[] array, final int i, final int j) {
+		final byte old = array[i];
 		array[i] = array[j];
 		array[j] = old;
 	}
@@ -358,6 +364,14 @@ public final class arrays {
 	 */
 	public static <T> void reverse(final T[] array) {
 		reverse(array, 0, array.length);
+	}
+
+	static void reverse(final byte[] array) {
+		int i = 0;
+		int j = array.length;
+		while (i < j) {
+			swap(array, i++, --j);
+		}
 	}
 
 	private static void rangeCheck(int length, int from, int to) {

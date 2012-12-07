@@ -41,22 +41,23 @@ import javax.measure.unit.SI;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public final class TestSuite {
 	private final String _name;
 	private final TestCase[] _tests;
-	
+
 	public TestSuite(final String name, final TestCase[] tests) {
 		_name = name;
 		_tests = tests;
 	}
-	
+
 	public TestSuite(final Class<?> suite) {
 		try {
 			if (suite.isAnnotationPresent(Suite.class)) {
 				_name = suite.getAnnotation(Suite.class).value();
 				final Object object = suite.newInstance();
-				
+
 				final List<TestCase> tests = new ArrayList<>();
 
 				for (Field field : suite.getFields()) {
@@ -65,11 +66,11 @@ public final class TestSuite {
 					{
 						final TestCase test = (TestCase)field.get(object);
 						test.setOrdinal(field.getAnnotation(Test.class).value());
-						
+
 						tests.add(test);
 					}
 				}
-				
+
 				Collections.sort(tests);
 				_tests = tests.toArray(new TestCase[0]);
 			} else {
@@ -84,18 +85,18 @@ public final class TestSuite {
 	public String getName() {
 		return _name;
 	}
-	
+
 	public TestCase[] getTests() {
 		return _tests;
 	}
-	
+
 	public TestSuite run() {
 		for (TestCase test : _tests) {
 			test.run();
 		}
 		return this;
 	}
-	
+
 	private static String hline(final int[] columns, final char c) {
 		final StringBuilder out = new StringBuilder();
 		out.append('+');
@@ -105,16 +106,16 @@ public final class TestSuite {
 			}
 			out.append('+');
 		}
-		
+
 		return out.toString();
 	}
-	
+
 	private static Formattable FormattableDuration(final double nanos) {
 		return new Formattable() {
-			
+
 			private final Measurable<Duration>
 			_duration = Measure.valueOf(nanos, SI.NANO(SI.SECOND));
-			
+
 			@Override
 			public void formatTo(
 				final Formatter formatter,
@@ -126,11 +127,11 @@ public final class TestSuite {
 				final double micros = _duration.doubleValue(SI.MICRO(SI.SECOND));
 				final double millis = _duration.doubleValue(SI.MILLI(SI.SECOND));
 				final double seconds = _duration.doubleValue(SI.SECOND);
-				
+
 				final NumberFormat nf = NumberFormat.getNumberInstance();
 				nf.setMinimumFractionDigits(precision);
 				nf.setMaximumFractionDigits(precision);
-				
+
 				String unit = "";
 				String value = "";
 				if ((long)seconds > 0) {
@@ -146,7 +147,7 @@ public final class TestSuite {
 					unit = "ns";
 					value = nf.format(nanos);
 				}
-			
+
 				String result = value + " " + unit;
 				if (result.length() < width) {
 					if ((flags & LEFT_JUSTIFY) == LEFT_JUSTIFY) {
@@ -155,34 +156,34 @@ public final class TestSuite {
 						result = padding(width - result.length()) + result;
 					}
 				}
-				
+
 				formatter.format(result);
-				
+
 			}
-			
+
 			private String padding(final int width) {
 				final char[] chars = new char[width];
 				Arrays.fill(chars, ' ');
 				return new String(chars);
 			}
-			
+
 		};
 	}
-	
+
 	public void print() {
 		System.out.println(toString());
 	}
-	
+
 	public void print(final Appendable appendable) throws IOException {
 		appendable.append(toString());
 	}
-	
+
 	@Override
 	public String toString() {
 		final int[] columns = new int[]{37, 16, 16, 16};
 		final String hhline = hline(columns, '=');
 		final String hline = hline(columns, '-');
-		
+
 		final String header = String.format(
 				"| %%-%ds | %%-%ds | %%-%ds | %%-%ds |",
 				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
@@ -191,14 +192,14 @@ public final class TestSuite {
 				"| %%-%ds | %%%d.5s | %%%d.5s | %%%d.5s |",
 				columns[0] - 2, columns[1] - 2, columns[2] - 2, columns[3] - 2
 			);
-		
+
 		final NumberFormat nf = NumberFormat.getNumberInstance();
-		
+
 		final StringBuilder out = new StringBuilder();
 		out.append(hhline).append('\n');
 		out.append(String.format(header, _name, "Mean", "Min", "Max")).append("\n");
 		out.append(hhline).append('\n');
-		
+
 		for (TestCase test : _tests) {
 			out.append(String.format(
 					row,
@@ -208,13 +209,13 @@ public final class TestSuite {
 					FormattableDuration(test.getMinMax().getMax())
 				));
 			out.append("\n");
-			out.append(hline).append('\n');	
+			out.append(hline).append('\n');
 		}
 		out.deleteCharAt(out.length() - 1);
 
 		return out.toString();
 	}
-	
+
 }
 
 

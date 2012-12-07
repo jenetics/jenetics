@@ -24,14 +24,15 @@ package org.jenetics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public class MutatorTest extends MutatorTestBase {
 
 	@Override
 	public Alterer<Float64Gene> newAlterer(double p) {
 		return new Mutator<>(p);
-	}	
-	
+	}
+
 }
 
 

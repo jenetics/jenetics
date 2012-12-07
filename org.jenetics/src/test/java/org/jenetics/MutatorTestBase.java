@@ -38,12 +38,13 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date$</em>
  */
 public abstract class MutatorTestBase {
-	
+
 	public abstract Alterer<Float64Gene> newAlterer(final double p);
-	
-	
+
+
 	@Test(dataProvider = "alterCountParameters")
 	public void alterCount(
 		final Integer ngenes,
@@ -55,66 +56,66 @@ public abstract class MutatorTestBase {
 				);
 		final Population<Float64Gene, Float64> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
-		
+
 		final Alterer<Float64Gene> mutator = newAlterer(0.01);
-		
+
 		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
 	}
-	
+
 	@Test(dataProvider = "alterProbabilityParameters")
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
 		final Integer npopulation,
 		final Double p
-	) {		
+	) {
 		final Population<Float64Gene, Float64> population = newFloat64GenePopulation(
 				ngenes, nchromosomes, npopulation
 			);
-		
+
 		// The mutator to test.
 		final Alterer<Float64Gene> mutator = newAlterer(p);
-		
+
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
 		final double mean = nallgenes*p;
-		
+
 		final long min = 0;
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
-		
-		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);	
+
+		final Histogram<Long> histogram = Histogram.valueOf(min, max, 10);
 		final Variance<Long> variance = new Variance<>();
-		
+
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator.alter(population, 1);
 			histogram.accumulate(alterations);
-			variance.accumulate(alterations);	
+			variance.accumulate(alterations);
 		}
-				
+
 		// Normal distribution as approximation for binomial distribution.
 		assertDistribution(
 				histogram,
 				new NormalDistribution<>(domain, mean, variance.getVariance())
 			);
 	}
-	
+
 	public double var(final double p, final long N) {
 		return N*p*(1.0 - p);
 	}
-	
+
 	public double mean(final double p, final long N) {
 		return N*p;
 	}
-	
+
 	@DataProvider(name = "alterCountParameters")
 	public Object[][] alterCountParameters() {
 		return TestUtils.alterCountParameters();
-	}	
-	
+	}
+
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
 		return TestUtils.alterProbabilityParameters();
 	}
-	
+
 }

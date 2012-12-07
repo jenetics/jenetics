@@ -30,10 +30,7 @@ package org.jenetics.util;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class factories {
-
-	private factories() {
-		throw new AssertionError("Don't create an 'factories' instance.");
-	}
+	private factories() { object.noInstanceOf(factories.class); }
 
 	/**
 	 * Return an integer factory which creates an integer sequence starting with
