@@ -45,16 +45,16 @@ public class objectTest {
 	@DataProvider(name = "byteStrData")
 	public Object[][] byteStrData() {
 		return new Object[][] {
-				{ new byte[]{(byte)0}, "00000000" },
-				{ new byte[]{(byte)1}, "00000001" },
-				{ new byte[]{(byte)2}, "00000010" },
-				{ new byte[]{(byte)4}, "00000100" },
-				{ new byte[]{(byte)0xFF}, "11111111" },
+			{ new byte[]{(byte)0}, "00000000" },
+			{ new byte[]{(byte)1}, "00000001" },
+			{ new byte[]{(byte)2}, "00000010" },
+			{ new byte[]{(byte)4}, "00000100" },
+			{ new byte[]{(byte)0xFF}, "11111111" },
 
-				{ new byte[]{(byte)0, (byte)0}, "00000000|00000000" },
-				{ new byte[]{(byte)1, (byte)0}, "00000000|00000001" },
-				{ new byte[]{(byte)0, (byte)1}, "00000001|00000000" },
-				{ new byte[]{(byte)1, (byte)1}, "00000001|00000001" }
+			{ new byte[]{(byte)0, (byte)0}, "00000000|00000000" },
+			{ new byte[]{(byte)1, (byte)0}, "00000000|00000001" },
+			{ new byte[]{(byte)0, (byte)1}, "00000001|00000000" },
+			{ new byte[]{(byte)1, (byte)1}, "00000001|00000001" }
 		};
 	}
 
