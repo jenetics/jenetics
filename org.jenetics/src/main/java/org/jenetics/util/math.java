@@ -421,8 +421,6 @@ public final class math {
 		 * <p/>
 		 * [code]
 		 * public static long seed() {
-		 *     final long hashSeed = ((long)(new Object().hashCode()) << 32) |
-		 *                                   new Object().hashCode();
 		 *     final long nanoTimeSeed = ((System.nanoTime() & 255) << 56) |
 		 *                               ((System.nanoTime() & 255) << 24) |
 		 *                               ((System.nanoTime() & 255) << 48) |
@@ -431,11 +429,7 @@ public final class math {
 		 *                               ((System.nanoTime() & 255) <<  8) |
 		 *                               ((System.nanoTime() & 255) << 32) |
 		 *                               ((System.nanoTime() & 255) <<  0) |;
-		 *     long seed = nanoTimeSeed ^ hashSeed;
-		 *     seed ^= seed << 17;
-		 *     seed ^= seed >>> 31;
-		 *     seed ^= seed << 8;
-		 *     return seed;
+		 *     return seed(nanoTimeSeed);
 		 * }
 		 * [/code]
 		 * <p/>
@@ -446,6 +440,8 @@ public final class math {
 		 * for every Java version and OS, it is recommended to only use this
 		 * method for seeding other PRNGs.</em>
 		 *
+		 * @see #seed(long)
+		 *
 		 * @return the random seed value.
 		 */
 		public static long seed() {
@@ -453,8 +449,9 @@ public final class math {
 		}
 
 		/**
-		 * Uses the given {@code base} value to create a reasonable safe seed value
-		 * by combining it with values of {@code new Object().hashCode()}:
+		 * Uses the given {@code base} value to create a reasonable safe seed
+		 * value. This is done by combining it with values of
+		 * {@code new Object().hashCode()}:
 		 * <p/>
 		 * [code]
 		 * public static long seed(final long base) {
