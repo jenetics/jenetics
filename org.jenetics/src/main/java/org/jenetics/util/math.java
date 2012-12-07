@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-06 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
  */
 public final class math {
 	private math() { object.noInstanceOf(math.class); }
@@ -345,7 +345,7 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-06 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
 	 */
 	static final class probability {
 		private probability() { object.noInstanceOf(probability.class); }
@@ -371,16 +371,16 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-06 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
 	 */
-	static final class random {
+	public static final class random {
 		private random() { object.noInstanceOf(random.class); }
 
-		static byte[] seedBytes(final int length) {
+		public static byte[] seedBytes(final int length) {
 			return seed(new byte[length]);
 		}
 
-		static byte[] seed(final byte[] seed) {
+		public static byte[] seed(final byte[] seed) {
 			for (int i = 0, len = seed.length; i < len;) {
 				int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
 
@@ -400,7 +400,7 @@ public final class math {
 		 *
 		 * @return the random seed value.
 		 */
-		static long seed() {
+		public static long seed() {
 			return seed(nanoTimeSeed());
 		}
 
@@ -411,7 +411,7 @@ public final class math {
 		 * @param base the base value of the seed to create
 		 * @return the created seed value.
 		 */
-		static long seed(final long base) {
+		public static long seed(final long base) {
 			long seed = base ^ objectHashSeed();
 			seed ^= seed << 17;
 			seed ^= seed >>> 31;
