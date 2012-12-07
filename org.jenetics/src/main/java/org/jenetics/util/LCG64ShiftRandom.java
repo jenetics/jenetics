@@ -82,6 +82,11 @@ public class LCG64ShiftRandom extends Random64 {
 	 * Parameter class for the {@code LCG64ShiftRandom} generator, for the
 	 * parameters <i>a</i> and <i>b</i> of the LC recursion
 	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
+	 *
+	 * @see LCG64ShiftRandom#DEFAULT
+	 * @see LCG64ShiftRandom#LECUYER1
+	 * @see LCG64ShiftRandom#LECUYER2
+	 * @see LCG64ShiftRandom#LECUYER3
 	 */
 	public static final class Param implements Serializable {
 
