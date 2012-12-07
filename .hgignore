@@ -8,6 +8,7 @@ syntax: glob
 # Build artifacts
 bin/**
 build/**
+out/**
 test-output/**
 .gradle/**
 
