@@ -5004,8 +5004,8 @@ block splitting
 \series bold
 Block splitting
 \series default
-: Each thread is assigned a block of random numbers, which should not be
- enough for the whole runtime of the process.
+: Each thread is assigned a block of random numbers, which should be enough
+ for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
 LCG64ShiftRandom.ThreadLocal
