@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-09 $</em>
  */
 public final class math {
 	private math() { object.noInstanceOf(math.class); }
@@ -345,7 +345,7 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-09 $</em>
 	 */
 	static final class probability {
 		private probability() { object.noInstanceOf(probability.class); }
@@ -367,11 +367,11 @@ public final class math {
 	}
 
 	/**
-	 * Some helper method concerning random number generation.
+	 * Some helper method concerning random number and random seed generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-09 $</em>
 	 */
 	public static final class random {
 		private random() { object.noInstanceOf(random.class); }
@@ -455,9 +455,9 @@ public final class math {
 		 * <p/>
 		 * [code]
 		 * public static long seed(final long base) {
-		 *     final long hashSeed = ((long)(new Object().hashCode()) << 32) |
-		 *                                   new Object().hashCode();
-		 *     long seed = base ^ hashSeed;
+		 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
+		 *                                         new Object().hashCode();
+		 *     long seed = base ^ objectHashSeed;
 		 *     seed ^= seed << 17;
 		 *     seed ^= seed >>> 31;
 		 *     seed ^= seed << 8;
