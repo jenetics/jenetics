@@ -421,15 +421,7 @@ public final class math {
 		 * <p/>
 		 * [code]
 		 * public static long seed() {
-		 *     final long nanoTimeSeed = ((System.nanoTime() & 255) << 56) |
-		 *                               ((System.nanoTime() & 255) << 24) |
-		 *                               ((System.nanoTime() & 255) << 48) |
-		 *                               ((System.nanoTime() & 255) << 16) |
-		 *                               ((System.nanoTime() & 255) << 40) |
-		 *                               ((System.nanoTime() & 255) <<  8) |
-		 *                               ((System.nanoTime() & 255) << 32) |
-		 *                               ((System.nanoTime() & 255) <<  0) |;
-		 *     return seed(nanoTimeSeed);
+		 *     return seed(System.nanoTime());
 		 * }
 		 * [/code]
 		 * <p/>
@@ -445,7 +437,7 @@ public final class math {
 		 * @return the random seed value.
 		 */
 		public static long seed() {
-			return seed(nanoTimeSeed());
+			return seed(System.nanoTime());
 		}
 
 		/**
