@@ -473,18 +473,6 @@ public final class math {
 			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
 		}
 
-		private static long nanoTimeSeed() {
-			return
-			((System.nanoTime() & 255) << 56) |
-			((System.nanoTime() & 255) << 24) |
-			((System.nanoTime() & 255) << 48) |
-			((System.nanoTime() & 255) << 16) |
-			((System.nanoTime() & 255) << 40) |
-			((System.nanoTime() & 255) <<  8) |
-			((System.nanoTime() & 255) << 32) |
-			((System.nanoTime() & 255) <<  0);
-		}
-
 	}
 
 
