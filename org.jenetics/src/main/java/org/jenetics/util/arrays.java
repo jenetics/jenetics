@@ -157,40 +157,6 @@ public final class arrays {
 	}
 
 	/**
-	 * Swap two char elements of the given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static void swap(final char[] array, final int i, final int j) {
-		final char old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
-	 * Swap two short elements of the given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static void swap(final short[] array, final int i, final int j) {
-		final short old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
 	 * Swap two elements of an given array.
 	 *
 	 * @param array the array
@@ -203,57 +169,6 @@ public final class arrays {
 	 */
 	public static void swap(final int[] array, final int i, final int j) {
 		final int old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
-	 * Swap two long elements of the given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static void swap(final long[] array, final int i, final int j) {
-		final long old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
-	 * Swap two float elements of the given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static void swap(final float[] array, final int i, final int j) {
-		final float old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
-	 * Swap two double elements of the given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static void swap(final double[] array, final int i, final int j) {
-		final double old = array[i];
 		array[i] = array[j];
 		array[j] = old;
 	}
