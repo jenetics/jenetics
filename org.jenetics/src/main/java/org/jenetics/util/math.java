@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-09 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
  */
 public final class math {
 	private math() { object.noInstanceOf(math.class); }
@@ -234,12 +234,6 @@ public final class math {
 	 * @return {@code b^e}.
 	 */
 	public static long pow(final long b, final long e) {
-		if (e < 0) {
-			throw new IllegalArgumentException(String.format(
-					"Exponent is negative: %d", e
-				));
-		}
-
 		long base = b;
 		long exp = e;
 		long result = 1;
@@ -345,7 +339,7 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-09 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
 	 */
 	static final class probability {
 		private probability() { object.noInstanceOf(probability.class); }
@@ -371,7 +365,7 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-09 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
 	 */
 	public static final class random {
 		private random() { object.noInstanceOf(random.class); }

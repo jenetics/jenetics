@@ -72,7 +72,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +85,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,7 +185,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 57;
@@ -267,7 +267,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -430,7 +430,7 @@ public class LCG64ShiftRandom extends Random64 {
 		if (p > 1) {
 			jump(s + 1);
 			_b *= f(p, _a);
-			_a = pow(_a, p);
+			_a = math.pow(_a, p);
 			backward();
 		}
 	}
@@ -456,7 +456,7 @@ public class LCG64ShiftRandom extends Random64 {
 			));
 		}
 
-		_r = _r*pow(_a, 1L << s) + f(1L << s, _a)*_b;
+		_r = _r*math.pow(_a, 1L << s) + f(1L << s, _a)*_b;
 	}
 
 	/**
@@ -561,22 +561,6 @@ public class LCG64ShiftRandom extends Random64 {
 		}
 
 		return y;
-	}
-
-	private static long pow(final long b, final long e) {
-		long base = b;
-		long exp = e;
-		long result = 1;
-
-		while (exp != 0) {
-			if ((exp & 1) != 0) {
-				result *= base;
-			}
-			base *= base;
-			exp >>>= 1;
-		}
-
-		return result;
 	}
 
 	private static long log2Floor(final long s) {
