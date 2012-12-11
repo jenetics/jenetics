@@ -234,12 +234,6 @@ public final class math {
 	 * @return {@code b^e}.
 	 */
 	public static long pow(final long b, final long e) {
-		if (e < 0) {
-			throw new IllegalArgumentException(String.format(
-					"Exponent is negative: %d", e
-				));
-		}
-
 		long base = b;
 		long exp = e;
 		long result = 1;
