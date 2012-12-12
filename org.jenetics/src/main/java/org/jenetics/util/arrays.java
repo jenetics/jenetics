@@ -40,14 +40,12 @@ import java.util.Random;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class arrays {
+	private arrays() { object.noInstanceOf(arrays.class); }
 
-	private arrays() {
-		throw new AssertionError("Don't create an 'arrays' instance.");
-	}
 
 	/**
-	 * Unified method for calculating the hash code of every Seq implementation.
-	 * The hash code is defined as followed:
+	 * Unified method for calculating the hash code of every {@link Seq}
+	 * implementation. The hash code is defined as followed:
 	 *
 	 * [code]
 	 * int hashCode = 1;
