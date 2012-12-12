@@ -4512,7 +4512,7 @@ Randomness
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random
@@ -4907,7 +4907,27 @@ There are essentially four different parallelizations techniques used in
 \series bold
 Random seeding
 \series default
-: Every thread uses the same kind of PRNG but with a different seed.
+:
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG!Random seeding
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random seeding
+\end_layout
+
+\end_inset
+
+ Every thread uses the same kind of PRNG but with a different seed.
  This is the default strategy used by the 
 \family sans
 \series bold
@@ -4974,7 +4994,17 @@ block splitting
 \series bold
 Parameterization
 \series default
-: All threads uses the same kind of PRNG but with different parameters.
+:
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG!Parameterization
+\end_layout
+
+\end_inset
+
+ All threads uses the same kind of PRNG but with different parameters.
  This requires the PRNG to be parameterizable, which is not the case for
  the Random object of the JDK.
  You can use the 
@@ -5004,7 +5034,27 @@ block splitting
 \series bold
 Block splitting
 \series default
-: Each thread is assigned a block of random numbers, which should be enough
+:
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG!Block splitting
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Block splitting
+\end_layout
+
+\end_inset
+
+ Each thread is assigned a block of random numbers, which should be enough
  for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
@@ -5036,7 +5086,27 @@ This class can assigns every thread a block of
 \series bold
 Leapfrog
 \series default
-: Each thread consumes only p^th random number, where p denotes the maximal
+:
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG!Leapfrog
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Leapfrog
+\end_layout
+
+\end_inset
+
+ Each thread consumes only p^th random number, where p denotes the maximal
  number of processes.
 \end_layout
 
@@ -5057,6 +5127,16 @@ key "Tina2011"
 
 \begin_layout Paragraph
 Performance measures
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+PRNG!Performance
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8088,6 +8168,26 @@ http://gradle.org/downloads
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Build!Gradle
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Gradle
 \end_layout
 
 \end_inset
