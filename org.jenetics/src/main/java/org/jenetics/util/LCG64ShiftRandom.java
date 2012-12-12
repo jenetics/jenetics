@@ -25,7 +25,6 @@ package org.jenetics.util;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -72,7 +71,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-12 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +84,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-12 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,13 +184,13 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-12 $</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
-		private static final long STEP_BASE = 1L << 57;
+		private static final long STEP_BASE = 1L << 56;
 
-		private final long _seed = math.random.seed();
-		private final AtomicInteger _thread = new AtomicInteger(0);
+		private int _block = 0;
+		private long _seed = math.random.seed();
 
 		private final Param _param;
 
@@ -232,9 +231,14 @@ public class LCG64ShiftRandom extends Random64 {
 		 * <p/>
 		 */
 		@Override
-		protected LCG64ShiftRandom initialValue() {
+		protected synchronized LCG64ShiftRandom initialValue() {
+			if (_block > 127) {
+				_block = 0;
+				_seed = math.random.seed();
+			}
+
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
-			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
+			random.jump((_block++)*STEP_BASE);
 			return random;
 		}
 
@@ -267,7 +271,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-12 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
