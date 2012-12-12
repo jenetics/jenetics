@@ -5010,13 +5010,25 @@ Block splitting
 \family typewriter
 LCG64ShiftRandom.ThreadLocal
 \family default
- class.
- 
+ class
 \emph on
-This method only works if we know the maximal needed threads in advance.
- To apply block splitting it is necessary to jump from the ith random number
- to the i+Mth random number without calculating all the numbers in between.
+.
  
+\emph default
+This class can assigns every thread a block of 
+\begin_inset Formula $2^{56}\thickapprox7,2\cdot10^{16}$
+\end_inset
+
+ random numbers
+\emph on
+.
+
+\emph default
+ After 
+\begin_inset Formula $128$
+\end_inset
+
+ threads, the blocks are recycled, but with changed seed.
 \end_layout
 
 \begin_layout Itemize
