@@ -91,22 +91,22 @@ public class LCG64ShiftRandom extends Random64 {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * The default PRNG parameters: a = 18,145,460,002,477,866,997; b = 1
+		 * The default PRNG parameters: a = 0xFBD19FBBC5C07FF5L; b = 1
 		 */
 		public static final Param DEFAULT = new Param(0xFBD19FBBC5C07FF5L, 1L);
 
 		/**
-		 * LEcuyer 1 parameters: a = 2,862,933,555,777,941,757; b = 1
+		 * LEcuyer 1 parameters: a = 0x27BB2EE687B0B0FDL; b = 1
 		 */
 		public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
 
 		/**
-		 * LEcuyer 2 parameters: a = 3,202,034,522,624,059,733; b = 1
+		 * LEcuyer 2 parameters: a = 0x369DEA0F31A53F85L; b = 1
 		 */
 		public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
 
 		/**
-		 * LEcuyer 3 parameters: a = 3,935,559,000,370,003,845; b = 1
+		 * LEcuyer 3 parameters: a = 0x369DEA0F31A53F85L; b = 1
 		 */
 		public static final Param LECUYER3 = new Param(0x369DEA0F31A53F85L, 1L);
 
