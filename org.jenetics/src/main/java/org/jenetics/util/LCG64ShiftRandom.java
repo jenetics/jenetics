@@ -25,7 +25,6 @@ package org.jenetics.util;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -188,10 +187,10 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
-		private static final long STEP_BASE = 1L << 57;
+		private static final long STEP_BASE = 1L << 56;
 
-		private final long _seed = math.random.seed();
-		private final AtomicInteger _thread = new AtomicInteger(0);
+		private int _block = 0;
+		private long _seed = math.random.seed();
 
 		private final Param _param;
 
@@ -232,9 +231,14 @@ public class LCG64ShiftRandom extends Random64 {
 		 * <p/>
 		 */
 		@Override
-		protected LCG64ShiftRandom initialValue() {
+		protected synchronized LCG64ShiftRandom initialValue() {
+			if (_block > 127) {
+				_block = 0;
+				_seed = math.random.seed();
+			}
+
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
-			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
+			random.jump((_block++)*STEP_BASE);
 			return random;
 		}
 
