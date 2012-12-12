@@ -37,17 +37,15 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-09 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-12 $</em>
  */
 public final class arrays {
+	private arrays() { object.noInstanceOf(arrays.class); }
 
-	private arrays() {
-		throw new AssertionError("Don't create an 'arrays' instance.");
-	}
 
 	/**
-	 * Unified method for calculating the hash code of every Seq implementation.
-	 * The hash code is defined as followed:
+	 * Unified method for calculating the hash code of every {@link Seq}
+	 * implementation. The hash code is defined as followed:
 	 *
 	 * [code]
 	 * int hashCode = 1;
