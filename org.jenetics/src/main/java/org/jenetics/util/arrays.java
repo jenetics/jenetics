@@ -40,7 +40,7 @@ import java.util.Random;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class arrays {
-	private arrays() { object.noInstanceOf(arrays.class); }
+	private arrays() { object.nonInstanceable(); }
 
 
 	/**

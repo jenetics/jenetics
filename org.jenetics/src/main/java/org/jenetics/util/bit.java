@@ -44,7 +44,7 @@ import org.jscience.mathematics.number.LargeInteger;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class bit {
-	private bit() { object.noInstanceOf(bit.class); }
+	private bit() { object.nonInstanceable(); }
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index

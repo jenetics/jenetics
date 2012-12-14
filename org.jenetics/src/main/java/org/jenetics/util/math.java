@@ -30,7 +30,7 @@ package org.jenetics.util;
  * @version 1.1 &mdash; <em>$Date$</em>
  */
 public final class math {
-	private math() { object.noInstanceOf(math.class); }
+	public math() { object.nonInstanceable(); }
 
 
 	/**
@@ -342,7 +342,7 @@ public final class math {
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	static final class probability {
-		private probability() { object.noInstanceOf(probability.class); }
+		private probability() { object.nonInstanceable(); }
 
 		static final long INT_RANGE = pow(2, 32) - 1;
 
@@ -368,7 +368,7 @@ public final class math {
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static final class random {
-		private random() { object.noInstanceOf(random.class); }
+		private random() { object.nonInstanceable(); }
 
 		/**
 		 * Create a new <em>seed</em> byte array of the given length.

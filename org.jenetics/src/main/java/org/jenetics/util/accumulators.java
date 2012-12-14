@@ -40,7 +40,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class accumulators {
-	private accumulators() { object.noInstanceOf(accumulators.class); }
+	private accumulators() { object.nonInstanceable(); }
 
 	public static final Accumulator<Object> NULL = new Accumulator<Object>() {
 		@Override

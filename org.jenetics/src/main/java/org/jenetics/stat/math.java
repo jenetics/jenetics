@@ -39,7 +39,7 @@ import org.jenetics.util.object;
  */
 @SuppressWarnings("javadoc")
 final class math {
-	private math(){ object.noInstanceOf(math.class); }
+	private math() { object.nonInstanceable(); }
 
 
 	/**

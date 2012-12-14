@@ -33,7 +33,7 @@ import org.jenetics.util.object;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class termination {
-	private termination() { object.noInstanceOf(termination.class); }
+	private termination() { object.nonInstanceable(); }
 
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>

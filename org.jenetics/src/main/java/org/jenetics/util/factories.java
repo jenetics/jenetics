@@ -30,7 +30,7 @@ package org.jenetics.util;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 public final class factories {
-	private factories() { object.noInstanceOf(factories.class); }
+	private factories() { object.nonInstanceable(); }
 
 	/**
 	 * Return an integer factory which creates an integer sequence starting with
