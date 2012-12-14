@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import org.jenetics.util.Function;
-import org.jenetics.util.object;
+import org.jenetics.util.StaticObject;
 
 /**
  * Some default GA termination strategies.
@@ -32,8 +32,8 @@ import org.jenetics.util.object;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class termination {
-	private termination() { object.nonInstanceable(); }
+public final class termination extends StaticObject {
+	private termination() {}
 
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>

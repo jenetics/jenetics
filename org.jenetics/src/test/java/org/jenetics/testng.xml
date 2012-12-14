@@ -303,6 +303,11 @@
 			<class name="org.jenetics.util.RandomRegistryTest" />
 		</classes>
 	</test>			
+	<test name="org.jenetics.util.StaticObject">
+		<classes>
+			<class name="org.jenetics.util.StaticObjectTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.Timer">
 		<classes>
 			<class name="org.jenetics.util.TimerTest" />

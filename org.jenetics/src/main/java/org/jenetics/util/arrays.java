@@ -39,8 +39,8 @@ import java.util.Random;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class arrays {
-	private arrays() { object.nonInstanceable(); }
+public final class arrays extends StaticObject {
+	private arrays() {}
 
 
 	/**

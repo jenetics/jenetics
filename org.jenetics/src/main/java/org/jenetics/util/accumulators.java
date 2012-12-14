@@ -39,8 +39,8 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class accumulators {
-	private accumulators() { object.nonInstanceable(); }
+public final class accumulators extends StaticObject {
+	private accumulators() {}
 
 	public static final Accumulator<Object> NULL = new Accumulator<Object>() {
 		@Override

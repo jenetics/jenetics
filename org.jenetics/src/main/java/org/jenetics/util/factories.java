@@ -29,8 +29,8 @@ package org.jenetics.util;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class factories {
-	private factories() { object.nonInstanceable(); }
+public final class factories extends StaticObject {
+	private factories() {}
 
 	/**
 	 * Return an integer factory which creates an integer sequence starting with
