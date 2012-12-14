@@ -30,10 +30,10 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-14 $</em>
  */
 public final class object {
-	private object() { object.noInstanceOf(object.class); }
+	private object() { object.nonInstanceable(); }
 
 
 	/**
@@ -190,14 +190,14 @@ public final class object {
 			);
 		}
 	}
-
+	
 	/**
 	 * This method is used for preventing class with static methods only from
 	 * being instantiated. Use the following <i>pattern</i> when creating such
 	 * helper classes:
 	 * [code]
 	 * public final class utils {
-	 *     private utils() { object.noInstanceOf(utils.class); }
+	 *     private utils() { object.nonInstanceable(); }
 	 *
 	 *     // Here comes the static helper methods.
 	 *     ...
@@ -207,10 +207,20 @@ public final class object {
 	 * @param cls the class which don't should be instantiated.
 	 * @throws AssertionError always
 	 */
-	public static void noInstanceOf(final Class<?> cls) {
-		throw new AssertionError(String.format(
-			"Creation of '%s' not allowed.", cls.getName()
-		));
+	public static void nonInstanceable() {
+		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		
+		for (StackTraceElement e : trace) {
+			System.out.println(e);
+		}
+		
+		String message = "Object instantiation is not allowed";
+		if (trace.length >= 3) {
+			final StackTraceElement element = trace[2];
+			message = String.format("Instantiation of '%s' is not allowed.", element.getClassName());
+		}
+		
+		throw new AssertionError(message);
 	}
 
 	/**

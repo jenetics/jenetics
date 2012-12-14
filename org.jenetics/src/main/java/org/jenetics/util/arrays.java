@@ -37,10 +37,10 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-14 $</em>
  */
 public final class arrays {
-	private arrays() { object.noInstanceOf(arrays.class); }
+	private arrays() { object.nonInstanceable(); }
 
 
 	/**

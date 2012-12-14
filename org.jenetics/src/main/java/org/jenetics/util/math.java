@@ -27,10 +27,10 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-14 $</em>
  */
 public final class math {
-	private math() { object.noInstanceOf(math.class); }
+	public math() { object.nonInstanceable(); }
 
 
 	/**
@@ -339,10 +339,10 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-14 $</em>
 	 */
 	static final class probability {
-		private probability() { object.noInstanceOf(probability.class); }
+		private probability() { object.nonInstanceable(); }
 
 		static final long INT_RANGE = pow(2, 32) - 1;
 
@@ -365,10 +365,10 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-14 $</em>
 	 */
 	public static final class random {
-		private random() { object.noInstanceOf(random.class); }
+		private random() { object.nonInstanceable(); }
 
 		/**
 		 * Create a new <em>seed</em> byte array of the given length.
