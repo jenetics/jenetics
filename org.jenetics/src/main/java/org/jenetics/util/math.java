@@ -30,7 +30,7 @@ package org.jenetics.util;
  * @version 1.1 &mdash; <em>$Date$</em>
  */
 public final class math extends StaticObject {
-	public math() {}
+	private math() {}
 
 
 	/**
