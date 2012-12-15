@@ -23,12 +23,14 @@
 package org.jenetics.util;
 
 /**
- * This method is used for preventing class with static methods only from
- * being instantiated. Use the following <i>pattern</i> when creating such
- * helper classes:
+ * This object is used to <i>tag</i> a class as object with has only static
+ * methods. The protected constructor always throws an {@link AssertionError}
+ * and prevents the <i>static object</i> from being instantiated.
+ *
+ * Use the following <i>pattern</i> when creating such static helper classes:
  * [code]
- * public final class utils {
- *     private utils() { object.nonInstanceable(); }
+ * public final class utils extends StaticObject {
+ *     private utils() {}
  *
  *     // Here comes the static helper methods.
  *     ...
@@ -37,7 +39,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-15 $</em>
  */
 public abstract class StaticObject {
 
