@@ -5137,6 +5137,40 @@ Leapfrog
 
 \family typewriter
 org.jenetics.util.LCG64ShiftRandom
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!LCG64ShiftRandom
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG!
+\family typewriter
+LCG64ShiftRandom
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+LCG64ShiftRandom
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8747,7 +8781,7 @@ target "http://www.jetbrains.com/idea/"
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle [eclipse|idea]
+$ gradle <eclipse|idea>
 \end_layout
 
 \begin_layout Standard
@@ -9180,10 +9214,6 @@ build
 \end_layout
 
 \end_deeper
-\begin_layout Section
-Random distribution test
-\end_layout
-
 \begin_layout Section
 License
 \begin_inset Index idx
