@@ -1467,7 +1467,7 @@ N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 
 The chromosomes
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Chromosome
@@ -1784,7 +1784,7 @@ height "1pt"
 \begin_layout Paragraph
 Genes
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gene
@@ -1807,7 +1807,7 @@ Jenetics
  library.
  They contain the actual information (alleles)
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Allele
@@ -1831,7 +1831,7 @@ reference "sub:Genes"
 \begin_layout Section
 Genetic operators
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Genetic operator
@@ -1888,7 +1888,7 @@ Jenetics
 \begin_layout Subsection
 Selectors
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Selector
@@ -2172,7 +2172,7 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \begin_layout Paragraph
 Monte Carlo selector
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Monte Carlo selector
@@ -2201,7 +2201,7 @@ performance
 \begin_layout Paragraph
 Probability selectors
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Probability selector
@@ -2705,7 +2705,7 @@ key "Sivanandam2010"
 \begin_layout Subsection
 Alterers
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Alterer
@@ -4525,7 +4525,7 @@ Randomness
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random
@@ -4917,7 +4917,7 @@ There are essentially four different parallelizations techniques used in
  practice:
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 
 \series bold
 Random seeding
@@ -5004,7 +5004,7 @@ block splitting
  
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 
 \series bold
 Parameterization
@@ -5044,7 +5044,7 @@ block splitting
  
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 
 \series bold
 Block splitting
@@ -5096,7 +5096,7 @@ This class can assign every thread a block of
  threads, the blocks are recycled, but with changed seed.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Enumerate
 
 \series bold
 Leapfrog
@@ -5176,7 +5176,7 @@ http://numbercrunch.de/trng/
 
 \end_inset
 
- library.
+ C++ library.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Tina2011"
@@ -5217,12 +5217,11 @@ public class LCG64ShiftRandom extends Random {
 
 \begin_layout Plain Layout
 
-    public void jump2(final int s);
+    public void jump2(final int s);ss
 \end_layout
 
 \begin_layout Plain Layout
 
-    // Methods from the 'Random' class.
 \end_layout
 
 \begin_layout Plain Layout
@@ -5317,6 +5316,11 @@ jump
 \end_inset
 
  steps ahead.
+ This method is used for parallelization via 
+\emph on
+block splitting
+\emph default
+.
 \end_layout
 
 \begin_layout Description
@@ -5330,12 +5334,17 @@ jump2
 \end_inset
 
  steps ahead.
+ This method is used for parallelization via 
+\emph on
+block splitting
+\emph default
+.
 \end_layout
 
 \begin_layout Paragraph
-Performance measures
+Runtime performance
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!Performance
@@ -5354,9 +5363,9 @@ reference "tab:PRNG-performance"
 
 \end_inset
 
- shows the number random 
+ shows the random number 
 \family typewriter
-int
+(int
 \family default
 , 
 \family typewriter
@@ -5370,7 +5379,7 @@ float
 \family typewriter
 double
 \family default
- values, the different PRNG implementations are able to generate.
+) generation speed for the different PRNG implementations.
 \begin_inset Foot
 status collapsed
 
@@ -5676,7 +5685,50 @@ Performance of various PRNG implementations.
 
 \end_inset
 
+The default PRNG used by the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ has the best runtime performance behavior (for generating 
+\family typewriter
+int
+\family default
+ values)
+\begin_inset Foot
+status collapsed
 
+\begin_layout Plain Layout
+The 
+\emph on
+random
+\emph default
+ 
+\family typewriter
+IndexStream
+\family default
+ implementation uses random 
+\family typewriter
+int
+\family default
+ values for creating the 
+\emph on
+random
+\emph default
+ indexes and this 
+\family typewriter
+IndexStream
+\family default
+ is used for selecting the genes, chromosomes and genotpyes.
+\end_layout
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Subsection
