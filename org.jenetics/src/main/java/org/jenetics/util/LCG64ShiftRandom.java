@@ -412,7 +412,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * Changes the internal state of the PRNG in a way that future calls to
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
-	 * {@code [0, n)}. This method is mainly used for <i>parallelization</i>
+	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
 	 * via <i>leapfrogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
