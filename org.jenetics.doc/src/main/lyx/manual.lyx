@@ -55,7 +55,7 @@
   commentstyle=\color{dkgreen}, 
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},  
-  morekeywords={*,...} 
+  morekeywords={*,...,public,extends} 
 }
 \end_preamble
 \use_default_options true
@@ -1190,6 +1190,7 @@ In an more advanced setup you may want to change the default mutation and/or
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -1486,6 +1487,7 @@ g.
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -1586,6 +1588,7 @@ The following example shows the simplest possible fitness function.
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -1675,6 +1678,7 @@ reference "par:Probability-selectors"
  In the default configuration the raw-fitness is equal to the actual fitness
  value, that means, the used fitness scaler is the identity function.
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -1925,6 +1929,7 @@ survivors
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -3442,6 +3447,7 @@ Concurrency
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -3526,6 +3532,7 @@ ForkJoinPool
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -3618,6 +3625,7 @@ Keep in mind, that the number of threads is equal to the concurrency + 1.
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -3693,6 +3701,7 @@ Concurrency
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -3750,6 +3759,7 @@ ion of the GA while running you have to acquire the GA's lock to do this
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -3941,6 +3951,7 @@ reference "sub:Termination"
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -4031,6 +4042,7 @@ If the fitness value is a number type you can change the statistics calculator
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -4228,6 +4240,7 @@ The easiest way to terminate an GA is to evolve a specific number of generations
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -4307,7 +4320,7 @@ evolution
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "extendedchars=true,language=C,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+lstparams "extendedchars=true,language=Java,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
 inline false
 status open
 
@@ -4619,6 +4632,7 @@ Random
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -4711,6 +4725,7 @@ With the previous listing, a random, but reproducible, list of genotypes
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -5054,8 +5069,8 @@ Block splitting
 
 \end_inset
 
- Each thread is assigned a block of random numbers, which should be enough
- for the whole runtime of the process.
+ Each thread will be assigned a block of random numbers, which should be
+ enough for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
 LCG64ShiftRandom.ThreadLocal
@@ -5065,7 +5080,7 @@ LCG64ShiftRandom.ThreadLocal
 .
  
 \emph default
-This class can assigns every thread a block of 
+This class can assign every thread a block of 
 \begin_inset Formula $2^{56}\thickapprox7,2\cdot10^{16}$
 \end_inset
 
@@ -5106,23 +5121,215 @@ Leapfrog
 
 \end_inset
 
- Each thread consumes only p^th random number, where p denotes the maximal
- number of processes.
+ Each thread 
+\begin_inset Formula $t\in\left[0,P\right)$
+\end_inset
+
+ only consumes the 
+\begin_inset Formula $P^{th}$
+\end_inset
+
+ random number.
+ 
 \end_layout
 
 \begin_layout Paragraph
 
 \family typewriter
 org.jenetics.util.LCG64ShiftRandom
-\family default
+\end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+LCG64ShiftRandom
+\family default
+ class is a Java port of the 
+\family typewriter
+trng::lcg64_shift
+\family default
+ PRNG of the 
+\begin_inset CommandInset href
+LatexCommand href
+name "TRNG"
+target "http://numbercrunch.de/trng/"
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://numbercrunch.de/trng/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ library.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Tina2011"
 
 \end_inset
 
+ It implements additional methods, which allows to implement the 
+\emph on
+block splitting
+\emph default
+--and also the 
+\emph on
+leapfrog
+\emph default
+--method.
+\end_layout
 
+\begin_layout Standard
+\begin_inset listings
+lstparams "extendedchars=true,language=Java,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class LCG64ShiftRandom extends Random {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void split(final int p, final int s);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void jump(final long step);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void jump2(final int s);
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Methods from the 'Random' class.
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:LCG64ShiftRandom-class"
+
+\end_inset
+
+LCG64ShiftRandom class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:LCG64ShiftRandom-class"
+
+\end_inset
+
+ shows the interface used for implementing the block splitting and leapfrog
+ parallelizations technique.
+ The methods has the following meaning:
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+split
+\family default
+: Changes the internal state of the PRNG in a way that future calls to 
+\family typewriter
+nextLong()
+\family default
+ will generated the 
+\begin_inset Formula $s^{th}$
+\end_inset
+
+ sub-stream of 
+\begin_inset Formula $p^{th}$
+\end_inset
+
+ sub-streams.
+ 
+\begin_inset Formula $s$
+\end_inset
+
+ must be within the range of 
+\begin_inset Formula $\left[0,p-1\right)$
+\end_inset
+
+.
+ This method is used for parallelization via 
+\emph on
+leapfrogging
+\emph default
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+jump
+\family default
+: Changes the internal state of the PRNG in such a way that the engine jumps
+ 
+\begin_inset Formula $s$
+\end_inset
+
+ steps ahead.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+jump2
+\family default
+: Changes the internal state of the PRNG in such a way that the engine jumps
+ 
+\begin_inset Formula $2^{s}$
+\end_inset
+
+ steps ahead.
 \end_layout
 
 \begin_layout Paragraph
@@ -5663,6 +5870,7 @@ Javolution
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -5944,6 +6152,7 @@ Array
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6068,6 +6277,7 @@ next()
 \family default
 .
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6149,6 +6359,7 @@ IndexStream
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6237,6 +6448,7 @@ Statistics
 \family default
  object.
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6298,6 +6510,7 @@ accumulator
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6460,6 +6673,7 @@ Jenetics
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6646,6 +6860,7 @@ Chromosome
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6777,6 +6992,7 @@ select
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -6934,6 +7150,7 @@ Jenetics
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -7105,6 +7322,7 @@ The following listing shows an excerpt of the statistics calculator which
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
@@ -7236,6 +7454,7 @@ build
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "language=Java"
 inline false
 status open
 
