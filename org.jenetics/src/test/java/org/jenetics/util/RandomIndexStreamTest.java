@@ -82,7 +82,7 @@ public class RandomIndexStreamTest {
 		final double mean = n*p;
 		final double var = n*p*(1 - p);
 
-		final Random random = new XOR64ShiftRandom();
+		final Random random = new LCG64ShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
 		final Histogram<Long> histogram = Histogram.valueOf(
