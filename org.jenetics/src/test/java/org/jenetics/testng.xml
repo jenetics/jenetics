@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ###############################################################################
+ #
+ # Java Genetic Algorithm Library (@__identifier__@).
+ # Copyright (c) @__year__@ Franz Wilhelmstötter
+ #
+ # This library is free software; you can redistribute it and/or
+ # modify it under the terms of the GNU Lesser General Public
+ # License as published by the Free Software Foundation; either
+ # version 2.1 of the License, or (at your option) any later version.
+ #
+ # This library is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ # Lesser General Public License for more details.
+ #
+ # You should have received a copy of the GNU Lesser General Public
+ # License along with this library; if not, write to the Free Software
+ # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ #
+ # Author:
+ #     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ #
+ # Version:
+ #     $Id$
+ #
+ ###############################################################################
+-->
+<suite name="Jenetics" verbose="2" parallel="tests" thread-count="5" >
+	<test name="org.jenetics.BitChromosome">
+		<classes>
+			<class name="org.jenetics.BitChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.BitGene">
+		<classes>
+			<class name="org.jenetics.BitGeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.BoltzmannSelector">
+		<classes>
+			<class name="org.jenetics.BoltzmannSelectorTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.CharacterChromosome">
+		<classes>
+			<class name="org.jenetics.CharacterChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.CharacterGene">
+		<classes>
+			<class name="org.jenetics.CharacterGeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.CompositeAlterer">
+		<classes>
+			<class name="org.jenetics.CompositeAltererTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Float64Chromosome">
+		<classes>
+			<class name="org.jenetics.Float64ChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Float64Gene">
+		<classes>
+			<class name="org.jenetics.Float64GeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.GaussianMutator">
+		<classes>
+			<class name="org.jenetics.GaussianMutatorTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.GeneticAlgorithm">
+		<classes>
+			<class name="org.jenetics.GeneticAlgorithmTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.ExponentialRankSelector">
+		<classes>
+			<class name="org.jenetics.ExponentialRankSelectorTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.ExponentialScaler">
+		<classes>
+			<class name="org.jenetics.ExponentialScalerTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.Genotype">
+		<classes>
+			<class name="org.jenetics.GenotypeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Integer64Chromosome">
+		<classes>
+			<class name="org.jenetics.Integer64ChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Integer64Gene">
+		<classes>
+			<class name="org.jenetics.Integer64GeneTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.LinearRankSelector">
+		<classes>
+			<class name="org.jenetics.LinearRankSelectorTest" />
+		</classes>
+	</test>	
+    <test name="org.jenetics.MeanAlterer">
+        <classes>
+            <class name="org.jenetics.MeanAltererTest" />
+        </classes>
+    </test>
+	<test name="org.jenetics.MonteCarloSelector">
+        <classes>
+            <class name="org.jenetics.MonteCarloSelectorTest" />
+        </classes>
+    </test> 	
+    <test name="org.jenetics.Mutator">
+        <classes>
+            <class name="org.jenetics.MutatorTest" />
+        </classes>
+    </test> 	
+	<test name="org.jenetics.PartiallyMatchedCrossover">
+		<classes>
+			<class name="org.jenetics.PartiallyMatchedCrossoverTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.PermutationChromosome">
+		<classes>
+			<class name="org.jenetics.PermutationChromosomeTest" />
+			<class name="org.jenetics.PermutationChromosomeFloat64Test" />
+			<class name="org.jenetics.PermutationChromosomeEnumTest" />
+			<class name="org.jenetics.PermutationChromosomeCharacterTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.EnumGene">
+		<classes>
+			<class name="org.jenetics.EnumGeneTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.Phenotype">
+		<classes>
+			<class name="org.jenetics.PhenotypeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.Population">
+		<classes>
+			<class name="org.jenetics.PopulationTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.RouletteWheelSelector">
+		<classes>
+			<class name="org.jenetics.RouletteWheelSelectorTest" />
+			<class name="org.jenetics.RouletteWheelSelector_range_1000_3000_Test" />
+			<class name="org.jenetics.RouletteWheelSelector_range_m1000_3000_Test" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.SinglePointCrossover">
+		<classes>
+			<class name="org.jenetics.SinglePointCrossoverTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.Statistics">
+		<classes>
+			<class name="org.jenetics.StatisticsTest" />
+			<class name="org.jenetics.StatisticsBuilderTest" />
+			<class name="org.jenetics.StatisticsCalculatorTest" />
+			<class name="org.jenetics.StatisticsTimeTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.NumberStatistics">
+		<classes>
+			<class name="org.jenetics.NumberStatisticsTest" />
+			<class name="org.jenetics.NumberStatisticsCalculatorTest" />
+			<class name="org.jenetics.NumberStatisticsBuilderTest" />
+		</classes>
+	</test>			
+	<test name="org.jenetics.Optimize">
+		<classes>
+			<class name="org.jenetics.OptimizeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.StochasticUniversalSelector">
+		<classes>
+			<class name="org.jenetics.StochasticUniversalSelectorTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.SwapMutator">
+		<classes>
+			<class name="org.jenetics.SwapMutatorTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.termination">
+		<classes>
+			<class name="org.jenetics.terminationTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.TournamentSelector">
+		<classes>
+			<class name="org.jenetics.TournamentSelectorTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.TruncationSelector">
+		<classes>
+			<class name="org.jenetics.TruncationSelectorTest" />
+		</classes>
+	</test>			
+	<test name="org.jenetics.stat.Accumulators">
+		<classes>
+			<class name="org.jenetics.stat.MeanTest" />
+			<class name="org.jenetics.stat.VarianceTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.stat.Histogram">
+		<classes>
+			<class name="org.jenetics.stat.HistogramTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.stat.LinearDistribution">
+		<classes>
+			<class name="org.jenetics.stat.LinearDistributionTest" />
+		</classes>
+	</test>		
+    <test name="org.jenetics.stat.NormalDistribution">
+        <classes>
+            <class name="org.jenetics.stat.NormalDistributionTest" />
+        </classes>
+    </test> 	
+	<test name="org.jenetics.stat.Quantile">
+		<classes>
+			<class name="org.jenetics.stat.QuantileTest" />
+		</classes>
+	</test>
+    <test name="org.jenetics.stat.UniformDistribution">
+        <classes>
+            <class name="org.jenetics.stat.UniformDistributionTest" />
+        </classes>
+    </test>	
+	<test name="org.jenetics.util.accumulatorsTest">
+		<classes>
+			<class name="org.jenetics.util.accumulatorsTest" />
+			<class name="org.jenetics.util.accumulatorsMaxTest" />
+			<class name="org.jenetics.util.accumulatorsMinMaxTest" />
+			<class name="org.jenetics.util.accumulatorsMinTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.Array">
+		<classes>
+			<class name="org.jenetics.util.ArrayTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.util.arrays">
+		<classes>
+			<class name="org.jenetics.util.arraysTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.bit">
+		<classes>
+			<class name="org.jenetics.util.bitTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.CharSeq">
+		<classes>
+			<class name="org.jenetics.util.CharSeqTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.ForkJoinContext">
+		<classes>
+			<class name="org.jenetics.util.ForkJoinContextTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.util.math">
+		<classes>
+			<class name="org.jenetics.util.mathTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.MurmurHashCodeBuilder">
+		<classes>
+			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
+		</classes>
+	</test>			
+	<test name="org.jenetics.util.PermutationIndexStream">
+		<classes>
+			<class name="org.jenetics.util.PermutationIndexStreamTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.util.Random">
+		<classes>
+			<class name="org.jenetics.util.XOR64ShiftRandomTest" />
+			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.RandomIndexStream">
+		<classes>
+			<class name="org.jenetics.util.RandomIndexStreamTest" />
+		</classes>
+	</test>	
+	<test name="org.jenetics.util.RandomRegistry">
+		<classes>
+			<class name="org.jenetics.util.RandomRegistryTest" />
+		</classes>
+	</test>			
+	<test name="org.jenetics.util.StaticObject">
+		<classes>
+			<class name="org.jenetics.util.StaticObjectTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.util.Timer">
+		<classes>
+			<class name="org.jenetics.util.TimerTest" />
+		</classes>
+	</test>		
+	<test name="org.jenetics.util.object">
+		<classes>
+			<class name="org.jenetics.util.objectTest" />
+		</classes>
+	</test>	
+</suite>
+
