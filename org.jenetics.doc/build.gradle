@@ -1,0 +1,103 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+
+import java.text.SimpleDateFormat
+import java.util.Date
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply from: "../build-util.gradle"
+
+task buildManual << {
+	def buildTemp = new File(buildDir, "tmp")
+	def buildTempLyx = new File(buildTemp, "lyx")
+	buildTempLyx.mkdirs()
+
+	def buildDoc = new File(buildDir, "doc")
+	buildDoc.mkdirs()
+
+	def content = new File("${projectDir}/src/main/lyx/manual.lyx").getText("UTF-8")
+	content = content.replaceAll("@!identifier!@", "${manualIdentifier}")
+	new File("${buildTempLyx}/manual-${version}.lyx").write(content, "UTF-8")
+
+	copy {
+		from "${projectDir}/src/main/lyx/references.bib"
+		into "${buildTempLyx}"
+	}
+	copy {
+		from "${projectDir}/src/main/resources"
+		into "${buildTemp}/resources"
+	}
+
+	exec() {
+		executable = "lyx"
+		workingDir = "${buildTempLyx}"
+		args = ["-e", "pdf2", "manual-${version}.lyx"]
+	}
+
+	copy {
+		from "${buildTemp}/lyx/manual-${version}.pdf"
+		into "${buildDoc}"
+
+		rename { String fileName ->
+			fileName.replace("manual.lyx", "manual-${version}.pdf")
+		}
+	}
+}
+
+task export(dependsOn: buildManual) << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
+	exportBaseDir.mkdirs()
+
+	// Copy the manual.
+	copy {
+		from("${buildDir}/doc") {
+			include "*.pdf"
+		}
+		into "${exportBaseDir}"
+	}
+
+/*
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	exportSourceDir.mkdirs()
+
+	// Copy the sources.
+	copy {
+		from(".") {
+			include "src/**"
+			include "*.gradle"
+			exclude ".gradle"
+		}
+		into "${exportSourceDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+*/
+}
+
+task clean << {
+	buildDir.deleteDir()
+}
+

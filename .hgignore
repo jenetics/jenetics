@@ -8,14 +8,21 @@ syntax: glob
 # Build artifacts
 bin/**
 build/**
+out/**
+test-output/**
 .gradle/**
 
 ## Eclipse
 .settings/**
 
+## Wiki
+wiki/**
+
 ################################################################################
 # Files
 ################################################################################
+
+*.so
 
 ## Eclipse
 .classpath

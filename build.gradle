@@ -1,0 +1,115 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: "eclipse"
+apply plugin: "idea"
+
+apply from: "./build-util.gradle"
+
+allprojects {
+	//group = "org.gradle"
+}
+
+subprojects { subproj ->
+	version = jeneticsVersion
+	if (plugins.hasPlugin("java")) {
+		sourceCompatibility = 1.7
+		targetCompatibility = 1.7
+	}
+}
+
+
+task clean << {
+	buildDir.deleteDir()
+}
+
+ task pack << {
+	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
+	def exportProjectDir = new File(exportBaseDir, 'project')
+
+	exportBaseDir.mkdirs()
+	exportProjectDir.mkdirs()
+
+	// Copy the project directory.
+	copy {
+		from('project') {
+			include '**/*.java'
+			include '**/*.xml'
+			include '**/*.gradle'
+		}
+		into "${exportProjectDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from("project") {
+			exclude "**/*.java"
+			exclude "**/*.java"
+			exclude "**/*.xml"
+			exclude "**/*.gradle"
+		}
+		into "${exportProjectDir}"
+	}
+
+	// Copy the files in the base directory.
+	copy {
+		from(".") {
+			include "*.*"
+			exclude "org.*"
+			exclude ".gradle"
+			exclude ".hgignore"
+			exclude ".hgtags"
+		}
+		into "${exportBaseDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+}
+
+task export(dependsOn: pack) << {
+}
+
+// Create a zip file from the export directory.
+task zip(type: Zip) {
+	from("build/package/${identifier}") {
+		into identifier
+	}
+
+	baseName = rootProject.name
+	version = jeneticsVersion
+
+	doLast {
+		def zip = new File("${identifier}.zip")
+		zip.renameTo(new File("build/package", zip.getName()))
+	}
+}
+
+
+
+
