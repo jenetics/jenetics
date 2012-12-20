@@ -1,3 +1,26 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
@@ -6,7 +29,10 @@
 #include <vector>
 #include <trng/lcg64_shift.hpp>
 
-
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version <em>$Date: 2012-12-19 $</em>
+ */
 template<class Random>
 class TRNGRandomOutput {
 public:
@@ -49,6 +75,20 @@ private:
 	std::string _fileName;
 };
 
+template<class Random>
+void write(const std::string& dir, TRNGRandomOutput<Random>& random, std::size_t numbers) {
+	std::string file = dir + "/" + random.fileName();
+	std::fstream out(file.c_str(), std::fstream::out);
+
+	for (std::size_t i = 0; i < numbers; ++i) {
+		out << random.next() << std::endl;
+	}
+
+	out.close();
+}
+
+
+
 int main(void) {
 
 	int count = 0;
@@ -58,12 +98,21 @@ int main(void) {
 			for (unsigned int splits = 0; splits < splitp; splits += 2) {
 				for (unsigned long long jump = 0; jump < 2; ++jump) {
 					for (unsigned int jump2 = 0; jump2 < 64; jump2 += 23) {
+
+						std::cout <<
+							"{new Long(" << static_cast<long long>(seed*74236788222246L) << "L), " <<
+							"new Integer(" << static_cast<long long>(splitp) << "), " <<
+							"new Integer(" << static_cast<long long>(splits) << "), " <<
+							"new Long(" << static_cast<long long>(jump*948392782247324L) << "L), " <<
+							"new Integer(" << static_cast<long long>(jump2) << ")}," << std::endl;
+
+
 						TRNGRandomOutput<trng::lcg64_shift> random(
 							seed*74236788222246L,
 							splitp, splits,
 							jump*948392782247324L, jump2
 						);
-						std::cout << (++count) << ": " << random.fileName() << std::endl;
+						write<trng::lcg64_shift>("output", random, 150);
 					}
 				}
 			}
