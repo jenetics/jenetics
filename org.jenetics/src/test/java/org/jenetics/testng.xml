@@ -290,6 +290,7 @@
 	<test name="org.jenetics.util.Random">
 		<classes>
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
+			<class name="org.jenetics.util.LCG64ShiftRandomCompatibilityTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.RandomIndexStream">

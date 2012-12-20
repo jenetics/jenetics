@@ -22,108 +22,13 @@
  */
 package org.jenetics.util;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-06 $</em>
+ * @version <em>$Date: 2012-12-20 $</em>
  */
 public class LCG64ShiftRandomTest extends RandomTestBase {
-
-	private final TestData _data = new TestData(
-		"/org/jenetics/util/LGC64ShiftRandom.dat"
-	);
-
-	@Test(dataProvider = "PRNG2")
-	public void seed0(final LCG64ShiftRandom random) {
-		random.setSeed(0);
-
-		for (final String[] value : _data) {
-			final long expected = Long.parseLong(value[0]);
-			Assert.assertEquals(random.nextLong(), expected);
-		}
-	}
-
-	@Test(dataProvider = "PRNG2")
-	public void seed111(final LCG64ShiftRandom random) {
-		random.setSeed(111);
-
-		for (final String[] value : _data) {
-			final long expected = Long.parseLong(value[1]);
-			Assert.assertEquals(random.nextLong(), expected);
-		}
-	}
-
-
-	@Test(dataProvider = "PRNG2")
-	public void split3_0(final LCG64ShiftRandom random) {
-		random.setSeed(0);
-		random.split(3, 0);
-
-		for (final String[] value : _data) {
-			final long expected = Long.parseLong(value[2]);
-			final long actuall = random.nextLong();
-			Assert.assertEquals(actuall, expected);
-		}
-	}
-
-	@Test(dataProvider = "PRNG2")
-	public void split3_1(final LCG64ShiftRandom random) {
-		random.setSeed(0);
-		random.split(3, 1);
-
-		for (final String[] value : _data) {
-			final long expected = Long.parseLong(value[3]);
-			final long actuall = random.nextLong();
-			Assert.assertEquals(actuall, expected);
-		}
-	}
-
-	@Test(dataProvider = "PRNG2")
-	public void split3_2(final LCG64ShiftRandom random) {
-		random.setSeed(0);
-		random.split(3, 2);
-
-		for (final String[] value : _data) {
-			final long expected = Long.parseLong(value[4]);
-			final long actuall = random.nextLong();
-			Assert.assertEquals(actuall, expected);
-		}
-	}
-
-
-	@Test(dataProvider = "PRNG2")
-	public void jump(final LCG64ShiftRandom random) {
-		random.setSeed(0);
-
-		final AtomicInteger i = new AtomicInteger(0);
-		for (final String[] value : _data) {
-			random.jump(i.getAndIncrement());
-
-			final long expected = Long.parseLong(value[5]);
-			Assert.assertEquals(random.nextLong(), expected);
-		}
-	}
-
-
-	@Test(dataProvider = "PRNG2")
-	public void jump2(final LCG64ShiftRandom random) {
-		random.setSeed(0);
-
-		int index = 0;
-		for (final String[] value : _data) {
-			random.jump2(index%64);
-			final long expected = Long.parseLong(value[6]);
-			final long actuall = random.nextLong();
-
-			Assert.assertEquals(actuall, expected);
-			++index;
-		}
-	}
 
 	@DataProvider(name = "PRNG2")
 	Object[][] getPRNG2() {
