@@ -1,61 +1,73 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
+#include <fstream>
 #include <vector>
 #include <trng/lcg64_shift.hpp>
 
-unsigned long long pow(unsigned long long x, unsigned long long n) {
-	unsigned long long result=1;
-	while (n > 0) {
-		if ((n&1) > 0) {
-			result=result*x;
-		}
-		x = x*x;
-		n >>= 1;
-	}
-	return result;
-}
 
-unsigned int log2_floor(unsigned long long x) {
-    unsigned int y(0);
-    while (x>0) {
-      x>>=1;
-      ++y;
-    };
-    --y;
-    return y;
-  }
+template<class Random>
+class TRNGRandomOutput {
+public:
+
+	TRNGRandomOutput(
+		unsigned long long seed,
+		unsigned int splitp,
+		unsigned int splits,
+		unsigned long long jump,
+		unsigned int jump2
+	) {
+		_random.seed(seed);
+		_random.split(splitp, splits);
+		_random.jump(jump);
+		_random.jump2(jump2);
+
+		std::stringstream name;
+		name << seed << "-";
+		name << splitp << "-" << splits << "-";
+		name << jump << "-";
+		name << jump2;
+		_fileName = name.str();
+	}
+
+	~TRNGRandomOutput() {
+	}
+
+	std::string next() {
+		std::stringstream out;
+		out << static_cast<long long>(_random());
+		return out.str();
+	}
+
+	std::string fileName() {
+		return _fileName;
+	}
+
+private:
+	Random _random;
+	std::string _fileName;
+};
 
 int main(void) {
 
-	trng::lcg64_shift random_default;
-	trng::lcg64_shift random_seed_111(111);
-	trng::lcg64_shift random_split_3_0;
-	random_split_3_0.split(3, 0);
+	int count = 0;
 
-	trng::lcg64_shift random_split_3_1;
-	random_split_3_1.split(3, 1);
-
-	trng::lcg64_shift random_split_3_2;
-	random_split_3_2.split(3, 2);
-
-	trng::lcg64_shift random_jump_6361;
-	trng::lcg64_shift random_jump2_5667;
-
-
-	std::cout << "# default, seed 111, split 3-0, split 3-1, split 3-2, jump-6361, jump2-5657" << std::endl;
-	for (int i = 0; i < 1009; ++i) {
-		std::cout << static_cast<long long>(random_default()) << ',';
-		std::cout << static_cast<long long>(random_seed_111()) << ',';
-		std::cout << static_cast<long long>(random_split_3_0()) << ',';
-		std::cout << static_cast<long long>(random_split_3_1()) << ',';
-		std::cout << static_cast<long long>(random_split_3_2()) << ',';
-
-		random_jump_6361.jump(i);
-		std::cout << static_cast<long long>(random_jump_6361()) << ',';
-
-		random_jump2_5667.jump2(i%64);
-		std::cout << static_cast<long long>(random_jump2_5667()) << '\n';
+	for (unsigned long long seed = 0; seed < 2; ++seed) {
+		for (unsigned int splitp = 5; splitp < 10; splitp += 3) {
+			for (unsigned int splits = 0; splits < splitp; splits += 2) {
+				for (unsigned long long jump = 0; jump < 2; ++jump) {
+					for (unsigned int jump2 = 0; jump2 < 64; jump2 += 23) {
+						TRNGRandomOutput<trng::lcg64_shift> random(
+							seed*74236788222246L,
+							splitp, splits,
+							jump*948392782247324L, jump2
+						);
+						std::cout << (++count) << ": " << random.fileName() << std::endl;
+					}
+				}
+			}
+		}
 	}
 
 	return 0;
