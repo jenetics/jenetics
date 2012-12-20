@@ -24,6 +24,7 @@ wiki/**
 
 *.so
 *.dblite
+random-x86_64
 
 ## Eclipse
 .classpath
