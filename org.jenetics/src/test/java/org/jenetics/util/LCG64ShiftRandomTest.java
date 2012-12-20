@@ -30,16 +30,8 @@ import org.testng.annotations.DataProvider;
  */
 public class LCG64ShiftRandomTest extends RandomTestBase {
 
-	@DataProvider(name = "PRNG2")
-	Object[][] getPRNG2() {
-		return new Object[][]{
-			{new LCG64ShiftRandom(666)},
-			{new LCG64ShiftRandom.ThreadSafe(666)}
-		};
-	}
-
-	@Override @DataProvider(name = "PRNG22")
-	protected Object[][] getPRNG22() {
+	@Override @DataProvider(name = "seededPRNGPair")
+	protected Object[][] getSeededPRNGPair() {
 		final long seed = math.random.seed();
 		return new Object[][]{
 			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
@@ -47,8 +39,8 @@ public class LCG64ShiftRandomTest extends RandomTestBase {
 		};
 	}
 
-	@Override @DataProvider(name = "PRNG3")
-	protected Object[][] getPRNG3() {
+	@Override @DataProvider(name = "PRNG")
+	protected Object[][] getPRNG() {
 		final long seed = math.random.seed();
 		return new Object[][]{
 			{new LCG64ShiftRandom(seed)},
