@@ -282,11 +282,6 @@
 			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
 		</classes>
 	</test>			
-	<test name="org.jenetics.util.PermutationIndexStream">
-		<classes>
-			<class name="org.jenetics.util.PermutationIndexStreamTest" />
-		</classes>
-	</test>		
 	<test name="org.jenetics.util.Random">
 		<classes>
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
