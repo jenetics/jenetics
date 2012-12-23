@@ -45,6 +45,7 @@ import org.jscience.mathematics.number.Number;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
@@ -53,7 +54,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-24 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -100,8 +101,9 @@ public class BitChromosome extends Number<BitChromosome>
 		checkProbability(p);
 
 		final Random random = RandomRegistry.getRandom();
-		for (int i = 0, n = length(); i < n; ++i) {
-			set(i, random.nextDouble() < p);
+		final IndexStream stream = IndexStream.Random(length, p, random);
+		for (int i = stream.next(); i != -1; i = stream.next()) {
+			set(i, true);
 		}
 		_p = p;
 	}
