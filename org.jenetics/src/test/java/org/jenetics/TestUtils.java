@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2012-12-23 $</em>
  */
 class TestUtils {
 
@@ -46,36 +46,36 @@ class TestUtils {
 	 */
 	public static Object[][] alterCountParameters() {
 		return new Object[][] {
-				//    ngenes,       nchromosomes     npopulation
-				{ new Integer(1),   new Integer(1),  new Integer(100) },
-				{ new Integer(5),   new Integer(1),  new Integer(100) },
-				{ new Integer(80),  new Integer(1),  new Integer(100) },
-				{ new Integer(1),   new Integer(2),  new Integer(100) },
-				{ new Integer(5),   new Integer(2),  new Integer(100) },
-				{ new Integer(80),  new Integer(2),  new Integer(100) },
-				{ new Integer(1),   new Integer(15), new Integer(100) },
-				{ new Integer(5),   new Integer(15), new Integer(100) },
-				{ new Integer(80),  new Integer(15), new Integer(100) },
+			//    ngenes,       nchromosomes     npopulation
+			{ new Integer(1),   new Integer(1),  new Integer(100) },
+			{ new Integer(5),   new Integer(1),  new Integer(100) },
+			{ new Integer(80),  new Integer(1),  new Integer(100) },
+			{ new Integer(1),   new Integer(2),  new Integer(100) },
+			{ new Integer(5),   new Integer(2),  new Integer(100) },
+			{ new Integer(80),  new Integer(2),  new Integer(100) },
+			{ new Integer(1),   new Integer(15), new Integer(100) },
+			{ new Integer(5),   new Integer(15), new Integer(100) },
+			{ new Integer(80),  new Integer(15), new Integer(100) },
 
-				{ new Integer(1),   new Integer(1),  new Integer(150) },
-				{ new Integer(5),   new Integer(1),  new Integer(150) },
-				{ new Integer(80),  new Integer(1),  new Integer(150) },
-				{ new Integer(1),   new Integer(2),  new Integer(150) },
-				{ new Integer(5),   new Integer(2),  new Integer(150) },
-				{ new Integer(80),  new Integer(2),  new Integer(150) },
-				{ new Integer(1),   new Integer(15), new Integer(150) },
-				{ new Integer(5),   new Integer(15), new Integer(150) },
-				{ new Integer(80),  new Integer(15), new Integer(150) },
+			{ new Integer(1),   new Integer(1),  new Integer(150) },
+			{ new Integer(5),   new Integer(1),  new Integer(150) },
+			{ new Integer(80),  new Integer(1),  new Integer(150) },
+			{ new Integer(1),   new Integer(2),  new Integer(150) },
+			{ new Integer(5),   new Integer(2),  new Integer(150) },
+			{ new Integer(80),  new Integer(2),  new Integer(150) },
+			{ new Integer(1),   new Integer(15), new Integer(150) },
+			{ new Integer(5),   new Integer(15), new Integer(150) },
+			{ new Integer(80),  new Integer(15), new Integer(150) },
 
-				{ new Integer(1),   new Integer(1),  new Integer(500) },
-				{ new Integer(5),   new Integer(1),  new Integer(500) },
-				{ new Integer(80),  new Integer(1),  new Integer(500) },
-				{ new Integer(1),   new Integer(2),  new Integer(500) },
-				{ new Integer(5),   new Integer(2),  new Integer(500) },
-				{ new Integer(80),  new Integer(2),  new Integer(500) },
-				{ new Integer(1),   new Integer(15), new Integer(500) },
-				{ new Integer(5),   new Integer(15), new Integer(500) },
-				{ new Integer(80),  new Integer(15), new Integer(500) }
+			{ new Integer(1),   new Integer(1),  new Integer(500) },
+			{ new Integer(5),   new Integer(1),  new Integer(500) },
+			{ new Integer(80),  new Integer(1),  new Integer(500) },
+			{ new Integer(1),   new Integer(2),  new Integer(500) },
+			{ new Integer(5),   new Integer(2),  new Integer(500) },
+			{ new Integer(80),  new Integer(2),  new Integer(500) },
+			{ new Integer(1),   new Integer(15), new Integer(500) },
+			{ new Integer(5),   new Integer(15), new Integer(500) },
+			{ new Integer(80),  new Integer(15), new Integer(500) }
 		};
 	}
 
@@ -84,37 +84,37 @@ class TestUtils {
 	 */
 	public static Object[][] alterProbabilityParameters() {
 		return new Object[][] {
-				//    ngenes,       nchromosomes     npopulation
-				{ new Integer(20),   new Integer(20),  new Integer(20), new Double(0.5) },
-				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.15) },
-				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.15) },
-				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.15) },
-				{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.15) },
-				{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.15) },
-				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.15) },
-				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.15) },
-				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.15) },
-				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.15) },
+			//    ngenes,       nchromosomes     npopulation
+			{ new Integer(20),   new Integer(20),  new Integer(20), new Double(0.5) },
+			{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.15) },
+			{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.15) },
+			{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.15) },
+			{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.15) },
+			{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.15) },
+			{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.15) },
+			{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.15) },
+			{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.15) },
+			{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.15) },
 
-				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.5) },
-				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.5) },
-				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.5) },
-				{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.5) },
-				{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.5) },
-				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.5) },
-				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.5) },
-				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.5) },
-				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.5) },
+			{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.5) },
+			{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.5) },
+			{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.5) },
+			{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.5) },
+			{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.5) },
+			{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.5) },
+			{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.5) },
+			{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.5) },
+			{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.5) },
 
-				{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.85) },
-				{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.85) },
-				{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.85) },
-				{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.85) },
-				{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.85) },
-				{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.85) },
-				{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.85) },
-				{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.85) },
-				{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.85) }
+			{ new Integer(1),   new Integer(1),  new Integer(150), new Double(0.85) },
+			{ new Integer(5),   new Integer(1),  new Integer(150), new Double(0.85) },
+			{ new Integer(80),  new Integer(1),  new Integer(150), new Double(0.85) },
+			{ new Integer(1),   new Integer(2),  new Integer(150), new Double(0.85) },
+			{ new Integer(5),   new Integer(2),  new Integer(150), new Double(0.85) },
+			{ new Integer(80),  new Integer(2),  new Integer(150), new Double(0.85) },
+			{ new Integer(1),   new Integer(15), new Integer(150), new Double(0.85) },
+			{ new Integer(5),   new Integer(15), new Integer(150), new Double(0.85) },
+			{ new Integer(80),  new Integer(15), new Integer(150), new Double(0.85) }
 		};
 	}
 
