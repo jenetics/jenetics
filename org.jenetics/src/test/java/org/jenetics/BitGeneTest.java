@@ -39,19 +39,19 @@ public class BitGeneTest extends GeneTester<BitGene> {
 		return BitGene.FALSE;
 	}
 
-    @Test
-    public void testGetValue() {
-        assertEquals(BitGene.FALSE.getBit(), false);
-        assertEquals(BitGene.ZERO.getBit(), false);
-        assertEquals(BitGene.TRUE.getBit(), true);
-        assertEquals(BitGene.ONE.getBit(), true);
-    }
+	@Test
+	public void testGetValue() {
+		assertEquals(BitGene.FALSE.getBit(), false);
+		assertEquals(BitGene.ZERO.getBit(), false);
+		assertEquals(BitGene.TRUE.getBit(), true);
+		assertEquals(BitGene.ONE.getBit(), true);
+	}
 
-    @Test
-    public void testCompareTo() {
-        assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
-        assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
-        assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
-    }
+	@Test
+	public void testCompareTo() {
+		assertEquals(BitGene.ZERO.compareTo(BitGene.FALSE), 0);
+		assertTrue(BitGene.FALSE.compareTo(BitGene.ONE) < 0);
+		assertTrue(BitGene.TRUE.compareTo(BitGene.ZERO) > 0);
+	}
 
 }
