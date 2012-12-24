@@ -26,15 +26,21 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.BitSet;
+import java.util.Random;
 
+import javolution.context.LocalContext;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.IO;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
+import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
-
-import org.jscience.mathematics.number.LargeInteger;
-
-import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -161,6 +167,44 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		final byte[] sdata = BitChromosome.toByteArray(dataString);
 		Assert.assertEquals(sdata, data);
+	}
+
+	@Test
+	public void objectSerializationCompatibility() throws IOException {
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
+
+			final String resource = "/org/jenetics/BitChromosome.object";
+			try (InputStream in = getClass().getResourceAsStream(resource)) {
+				final Object object = IO.object.read(in);
+
+				Assert.assertEquals(object, chromosome);
+			}
+		} finally {
+			LocalContext.exit();
+		}
+	}
+
+	@Test
+	public void xmlSerializationCompatibility() throws IOException {
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			final BitChromosome chromosome = new BitChromosome(5000, 0.5);
+
+			final String resource = "/org/jenetics/BitChromosome.xml";
+			try (InputStream in = getClass().getResourceAsStream(resource)) {
+				final Object object = IO.xml.read(in);
+
+				Assert.assertEquals(object, chromosome);
+			}
+		} finally {
+			LocalContext.exit();
+		}
 	}
 
 
