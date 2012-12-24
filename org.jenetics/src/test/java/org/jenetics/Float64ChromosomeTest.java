@@ -156,24 +156,6 @@ public class Float64ChromosomeTest
 		}
 	}
 
-	private static String Source = "/home/fwilhelm/Workspace/Development/Projects/Jenetics/" +
-			"org.jenetics/src/test/resources/org/jenetics/";
-
-	public static void main(final String[] args) throws Exception {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
-
-		LocalContext.enter();
-		try {
-			RandomRegistry.setRandom(random);
-			Object c = new Float64Chromosome(-1000.0, 1000.0, 500);
-
-			IO.xml.write(c, Source + "Float64Chromosome.xml");
-			IO.object.write(c, Source + "Float64Chromosome.object");
-		} finally {
-			LocalContext.exit();
-		}
-	}
-
 }
 
 
