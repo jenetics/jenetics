@@ -39,14 +39,14 @@ import org.testng.annotations.Test;
  */
 public abstract class RandomTestBase {
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameBooleanSequence(final Random rand1, final Random rand2) {
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextBoolean(), rand2.nextBoolean());
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameByteLongSequence(final Random rand1, final Random rand2) {
 		final int size = 123*8;
 		final byte[] bytes1 = new byte[size];
@@ -65,7 +65,7 @@ public abstract class RandomTestBase {
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameByteLongValueSequence(final Random rand1, final Random rand2) {
 		final byte[] bytes = new byte[8];
 		for (int i = 0; i < 1234; ++i) {
@@ -76,7 +76,7 @@ public abstract class RandomTestBase {
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameByteSequence(final Random rand1, final Random rand2) {
 		final int size = 3413;
 		final byte[] bytes1 = new byte[size];
@@ -90,14 +90,14 @@ public abstract class RandomTestBase {
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameIntSequence(final Random rand1, final Random rand2) {
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextInt(), rand2.nextInt());
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameIntRangeSequence(final Random rand1, final Random rand2) {
 		final int range = 8282828;
 		for (int i = 0; i < 1234; ++i) {
@@ -105,35 +105,35 @@ public abstract class RandomTestBase {
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameLongSequence(final Random rand1, final Random rand2) {
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextLong(), rand2.nextLong());
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameFloatSequence(final Random rand1, final Random rand2) {
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextFloat(), rand2.nextFloat());
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameDoubleSequence(final Random rand1, final Random rand2) {
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextDouble(), rand2.nextDouble());
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void sameGaussianSequence(final Random rand1, final Random rand2) {
 		for (int i = 0; i < 1234; ++i) {
 			Assert.assertEquals(rand1.nextGaussian(), rand2.nextGaussian());
 		}
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void equals(final Random rand1, final Random rand2) {
 		Assert.assertNotSame(rand2, rand1);
 		Assert.assertEquals(rand2, rand1);
@@ -149,7 +149,7 @@ public abstract class RandomTestBase {
 		Assert.assertEquals(rand2, rand1);
 	}
 
-	@Test(dataProvider = "PRNG22")
+	@Test(dataProvider = "seededPRNGPair")
 	public void hashCode(final Random rand1, final Random rand2) {
 		Assert.assertNotSame(rand2, rand1);
 		Assert.assertEquals(rand2, rand1);
@@ -168,10 +168,10 @@ public abstract class RandomTestBase {
 		Assert.assertEquals(rand2.hashCode(), rand1.hashCode());
 	}
 
-	@DataProvider(name = "PRNG22")
-	protected abstract Object[][] getPRNG22();
+	@DataProvider(name = "seededPRNGPair")
+	protected abstract Object[][] getSeededPRNGPair();
 
-	@Test(dataProvider = "PRNG3")
+	@Test(dataProvider = "PRNG")
 	public void serialize(final Random rand1)
 		throws IOException, ClassNotFoundException
 	{
@@ -192,8 +192,8 @@ public abstract class RandomTestBase {
 
 	}
 
-	@DataProvider(name = "PRNG3")
-	protected abstract Object[][] getPRNG3();
+	@DataProvider(name = "PRNG")
+	protected abstract Object[][] getPRNG();
 
 
 	public static Random toSerialized(final Random random)

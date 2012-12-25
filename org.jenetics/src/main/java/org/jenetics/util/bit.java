@@ -43,8 +43,8 @@ import org.jscience.mathematics.number.LargeInteger;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class bit {
-	private bit() { object.noInstanceOf(bit.class); }
+public final class bit extends StaticObject {
+	private bit() {}
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index

@@ -28,7 +28,7 @@ import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.sqrt;
 
-import org.jenetics.util.object;
+import org.jenetics.util.StaticObject;
 
 /**
  * Some statistical special functions.
@@ -38,8 +38,8 @@ import org.jenetics.util.object;
  * @version 1.0 &mdash; <em>$Date$</em>
  */
 @SuppressWarnings("javadoc")
-final class math {
-	private math(){ object.noInstanceOf(math.class); }
+final class math extends StaticObject {
+	private math() {}
 
 
 	/**

@@ -25,7 +25,6 @@ package org.jenetics.util;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -92,22 +91,22 @@ public class LCG64ShiftRandom extends Random64 {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * The default PRNG parameters: a = 18,145,460,002,477,866,997; b = 1
+		 * The default PRNG parameters: a = 0xFBD19FBBC5C07FF5L; b = 1
 		 */
 		public static final Param DEFAULT = new Param(0xFBD19FBBC5C07FF5L, 1L);
 
 		/**
-		 * LEcuyer 1 parameters: a = 2,862,933,555,777,941,757; b = 1
+		 * LEcuyer 1 parameters: a = 0x27BB2EE687B0B0FDL; b = 1
 		 */
 		public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
 
 		/**
-		 * LEcuyer 2 parameters: a = 3,202,034,522,624,059,733; b = 1
+		 * LEcuyer 2 parameters: a = 0x369DEA0F31A53F85L; b = 1
 		 */
 		public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
 
 		/**
-		 * LEcuyer 3 parameters: a = 3,935,559,000,370,003,845; b = 1
+		 * LEcuyer 3 parameters: a = 0x369DEA0F31A53F85L; b = 1
 		 */
 		public static final Param LECUYER3 = new Param(0x369DEA0F31A53F85L, 1L);
 
@@ -188,10 +187,10 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
-		private static final long STEP_BASE = 1L << 57;
+		private static final long STEP_BASE = 1L << 56;
 
-		private final long _seed = math.random.seed();
-		private final AtomicInteger _thread = new AtomicInteger(0);
+		private int _block = 0;
+		private long _seed = math.random.seed();
 
 		private final Param _param;
 
@@ -232,9 +231,14 @@ public class LCG64ShiftRandom extends Random64 {
 		 * <p/>
 		 */
 		@Override
-		protected LCG64ShiftRandom initialValue() {
+		protected synchronized LCG64ShiftRandom initialValue() {
+			if (_block > 127) {
+				_block = 0;
+				_seed = math.random.seed();
+			}
+
 			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
-			random.jump((_thread.getAndIncrement()%64)*STEP_BASE);
+			random.jump((_block++)*STEP_BASE);
 			return random;
 		}
 
@@ -263,7 +267,8 @@ public class LCG64ShiftRandom extends Random64 {
 	}
 
 	/**
-	 * This is a <i>thread safe</i> variation of the this PRGN.
+	 * This is a <i>thread safe</i> variation of the this PRGN&mdash;by
+	 * synchronizing the random number generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
@@ -408,7 +413,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * Changes the internal state of the PRNG in a way that future calls to
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
-	 * {@code [0, n)}. This method is mainly used for <i>parallelization</i>
+	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
 	 * via <i>leapfrogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
@@ -430,7 +435,7 @@ public class LCG64ShiftRandom extends Random64 {
 		if (p > 1) {
 			jump(s + 1);
 			_b *= f(p, _a);
-			_a = pow(_a, p);
+			_a = math.pow(_a, p);
 			backward();
 		}
 	}
@@ -456,7 +461,7 @@ public class LCG64ShiftRandom extends Random64 {
 			));
 		}
 
-		_r = _r*pow(_a, 1L << s) + f(1L << s, _a)*_b;
+		_r = _r*math.pow(_a, 1L << s) + f(1L << s, _a)*_b;
 	}
 
 	/**
@@ -561,22 +566,6 @@ public class LCG64ShiftRandom extends Random64 {
 		}
 
 		return y;
-	}
-
-	private static long pow(final long b, final long e) {
-		long base = b;
-		long exp = e;
-		long result = 1;
-
-		while (exp != 0) {
-			if ((exp & 1) != 0) {
-				result *= base;
-			}
-			base *= base;
-			exp >>>= 1;
-		}
-
-		return result;
 	}
 
 	private static long log2Floor(final long s) {

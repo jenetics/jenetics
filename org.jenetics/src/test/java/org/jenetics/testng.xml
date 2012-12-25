@@ -282,15 +282,10 @@
 			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
 		</classes>
 	</test>			
-	<test name="org.jenetics.util.PermutationIndexStream">
-		<classes>
-			<class name="org.jenetics.util.PermutationIndexStreamTest" />
-		</classes>
-	</test>		
 	<test name="org.jenetics.util.Random">
 		<classes>
-			<class name="org.jenetics.util.XOR64ShiftRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
+			<class name="org.jenetics.util.LCG64ShiftRandomCompatibilityTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.RandomIndexStream">
@@ -303,6 +298,11 @@
 			<class name="org.jenetics.util.RandomRegistryTest" />
 		</classes>
 	</test>			
+	<test name="org.jenetics.util.StaticObject">
+		<classes>
+			<class name="org.jenetics.util.StaticObjectTest" />
+		</classes>
+	</test>		
 	<test name="org.jenetics.util.Timer">
 		<classes>
 			<class name="org.jenetics.util.TimerTest" />

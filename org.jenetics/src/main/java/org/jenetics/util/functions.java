@@ -37,11 +37,8 @@ import org.jscience.mathematics.number.Integer64;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class functions {
-
-	private functions() {
-		throw new AssertionError("Don't create an 'functions' instance.");
-	}
+public final class functions extends StaticObject {
+	private functions() {}
 
 	/**
 	 * Convert an object to a string by calling the objects {@link Object#toString()}

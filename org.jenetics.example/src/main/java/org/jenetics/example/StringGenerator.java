@@ -67,7 +67,7 @@ public class StringGenerator {
 
 		@Override
 		public String toString() {
-			return "To be, or not to be.";
+			return value;
 		}
 	}
 

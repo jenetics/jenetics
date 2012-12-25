@@ -39,15 +39,13 @@ import java.util.Random;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class arrays {
+public final class arrays extends StaticObject {
+	private arrays() {}
 
-	private arrays() {
-		throw new AssertionError("Don't create an 'arrays' instance.");
-	}
 
 	/**
-	 * Unified method for calculating the hash code of every Seq implementation.
-	 * The hash code is defined as followed:
+	 * Unified method for calculating the hash code of every {@link Seq}
+	 * implementation. The hash code is defined as followed:
 	 *
 	 * [code]
 	 * int hashCode = 1;
@@ -104,26 +102,21 @@ public final class arrays {
 	}
 
 	/**
-	 * Swap two elements of an given array.
+	 * Swap two elements of an given list.
 	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
+	 * @param <T> the list type.
+	 * @param list the array
+	 * @param i index of the first list element.
+	 * @param j index of the second list element.
 	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
+	 * @throws NullPointerException if the give list is {@code null}.
 	 */
-	public static void swap(final int[] array, final int i, final int j) {
-		final int old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	static void swap(final byte[] array, final int i, final int j) {
-		final byte old = array[i];
-		array[i] = array[j];
-		array[j] = old;
+	public static <T> void swap(final List<T> list, final int i, final int j) {
+		final T old = list.get(i);
+		list.set(i, list.get(j));
+		list.set(j, old);
 	}
 
 	/**
@@ -145,21 +138,37 @@ public final class arrays {
 	}
 
 	/**
-	 * Swap two elements of an given list.
+	 * Swap two byte elements of the given array.
 	 *
-	 * @param <T> the list type.
-	 * @param list the array
-	 * @param i index of the first list element.
-	 * @param j index of the second list element.
+	 * @param array the array
+	 * @param i index of the first array element.
+	 * @param j index of the second array element.
 	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give list is {@code null}.
+	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void swap(final List<T> list, final int i, final int j) {
-		final T old = list.get(i);
-		list.set(i, list.get(j));
-		list.set(j, old);
+	public static void swap(final byte[] array, final int i, final int j) {
+		final byte old = array[i];
+		array[i] = array[j];
+		array[j] = old;
+	}
+
+	/**
+	 * Swap two elements of an given array.
+	 *
+	 * @param array the array
+	 * @param i index of the first array element.
+	 * @param j index of the second array element.
+	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
+	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
+	 *			<tt>j &gt; a.length</tt>
+	 * @throws NullPointerException if the give array is {@code null}.
+	 */
+	public static void swap(final int[] array, final int i, final int j) {
+		final int old = array[i];
+		array[i] = array[j];
+		array[j] = old;
 	}
 
 	/**
@@ -215,34 +224,6 @@ public final class arrays {
 		}
 
 		return sorted;
-	}
-
-	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param array the {@code array} to randomize.
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static void shuffle(final int[] array) {
-		shuffle(array, new Random());
-	}
-
-	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param array the {@code array} to randomize.
-	 * @param random the {@link Random} object to use for randomize.
-	 * @throws NullPointerException if the give array or the random object is
-	 *          {@code null}.
-	 */
-	public static void shuffle(final int[] array, final Random random) {
-		for (int j = array.length - 1; j > 0; --j) {
-			swap(array, j, random.nextInt(j + 1));
-		}
 	}
 
 	/**
@@ -330,6 +311,34 @@ public final class arrays {
 	public static <T> void shuffle(final List<T> list, final Random random) {
 		for (int j = list.size() - 1; j > 0; --j) {
 			swap(list, j, random.nextInt(j + 1));
+		}
+	}
+
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param array the {@code array} to randomize.
+	 * @throws NullPointerException if the give array is {@code null}.
+	 */
+	public static void shuffle(final int[] array) {
+		shuffle(array, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param array the {@code array} to randomize.
+	 * @param random the {@link Random} object to use for randomize.
+	 * @throws NullPointerException if the give array or the random object is
+	 *          {@code null}.
+	 */
+	public static void shuffle(final int[] array, final Random random) {
+		for (int j = array.length - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
 		}
 	}
 
