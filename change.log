@@ -1,4 +1,5 @@
 Jenetics-1.1.0
+- Add 'LCG64ShiftRandom' PRNG.
 - Speedup of 'IndexStream.Random' class. Uses internally now int values instead of doubles.
 - Add 'IndexStream.foreach' method.
 - Some minor code improvements.
