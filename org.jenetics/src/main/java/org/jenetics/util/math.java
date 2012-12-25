@@ -361,7 +361,7 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Some helper method concerning random number and random seed generation.
+	 * Some helper method concerning random numbers and random seed generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1

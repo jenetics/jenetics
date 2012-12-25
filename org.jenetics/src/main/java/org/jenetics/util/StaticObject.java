@@ -23,8 +23,8 @@
 package org.jenetics.util;
 
 /**
- * This object is used to <i>tag</i> a class as object with has only static
- * methods. The protected constructor always throws an {@link AssertionError}
+ * This object is used to <i>tag</i> a class as <i>object</i> with static
+ * methods only. The protected constructor always throws an {@link AssertionError}
  * and prevents the <i>static object</i> from being instantiated.
  *
  * Use the following <i>pattern</i> when creating such static helper classes:
