@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-15 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -339,7 +339,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-15 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -361,11 +361,11 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Some helper method concerning random number and random seed generation.
+	 * Some helper method concerning random numbers and random seed generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-15 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
