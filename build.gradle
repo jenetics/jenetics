@@ -47,18 +47,17 @@ task clean << {
 
  task pack << {
 	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
-	def exportProjectDir = new File(exportBaseDir, "project")
+	def exportProjectDir = new File(exportBaseDir, 'project')
 
 	exportBaseDir.mkdirs()
 	exportProjectDir.mkdirs()
 
 	// Copy the project directory.
 	copy {
-		from("project") {
-			include "**/*.java"
-			include "**/*.java"
-			include "**/*.xml"
-			include "**/*.gradle"
+		from('project') {
+			include '**/*.java'
+			include '**/*.xml'
+			include '**/*.gradle'
 		}
 		into "${exportProjectDir}"
 		filter(ReplaceTokens, tokens: [

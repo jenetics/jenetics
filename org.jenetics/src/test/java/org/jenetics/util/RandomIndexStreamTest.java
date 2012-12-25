@@ -36,7 +36,7 @@ import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-05 $</em>
+ * @version <em>$Date: 2012-12-24 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -49,6 +49,26 @@ public class RandomIndexStreamTest {
 			Assert.assertEquals(i, stream2.next());
 		}
 		Assert.assertEquals(stream2.next(), -1);
+	}
+
+	@Test
+	public void compatibility() {
+		final TestData data = new TestData(
+			"/org/jenetics/util/IndexStream.Random.dat"
+		);
+
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+		for (String[] line : data) {
+			final double p = Double.parseDouble(line[0]);
+			final IndexStream stream = IndexStream.Random(1000, p, random);
+
+			for (int i = 1; i < line.length; ++i) {
+				final int index = Integer.parseInt(line[i]);
+				Assert.assertEquals(stream.next(), index);
+			}
+
+			Assert.assertEquals(stream.next(), -1);
+		}
 	}
 
 	@Test
@@ -82,7 +102,7 @@ public class RandomIndexStreamTest {
 		final double mean = n*p;
 		final double var = n*p*(1 - p);
 
-		final Random random = new XOR64ShiftRandom();
+		final Random random = new LCG64ShiftRandom();
 		final Range<Long> domain = new Range<>(0L, n.longValue());
 
 		final Histogram<Long> histogram = Histogram.valueOf(
@@ -113,17 +133,6 @@ public class RandomIndexStreamTest {
 
 		int kt = 0;
 		for (int i = it.next(); i != -1; i = it.next()) {
-//			final ProbabilityIndexIterator itt =
-//				new ProbabilityIndexIterator(n, p, random);
-//
-//			for (int j = itt.next(); j != -1; j = itt.next()) {
-//				final ProbabilityIndexIterator ittt =
-//					new ProbabilityIndexIterator(n, p, random);
-//
-//				for (int k = ittt.next(); k != -1; k = ittt.next()) {
-//					++kt;
-//				}
-//			}
 			++kt;
 		}
 		return kt;

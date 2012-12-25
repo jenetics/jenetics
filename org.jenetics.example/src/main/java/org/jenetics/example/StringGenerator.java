@@ -43,7 +43,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2012-12-21 $</em>
  */
 public class StringGenerator {
 
@@ -67,7 +67,7 @@ public class StringGenerator {
 
 		@Override
 		public String toString() {
-			return "To be, or not to be.";
+			return value;
 		}
 	}
 

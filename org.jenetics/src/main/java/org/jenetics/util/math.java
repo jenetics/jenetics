@@ -27,10 +27,10 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
  */
-public final class math {
-	private math() { object.noInstanceOf(math.class); }
+public final class math extends StaticObject {
+	private math() {}
 
 
 	/**
@@ -234,12 +234,6 @@ public final class math {
 	 * @return {@code b^e}.
 	 */
 	public static long pow(final long b, final long e) {
-		if (e < 0) {
-			throw new IllegalArgumentException(String.format(
-					"Exponent is negative: %d", e
-				));
-		}
-
 		long base = b;
 		long exp = e;
 		long result = 1;
@@ -345,10 +339,10 @@ public final class math {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
 	 */
-	static final class probability {
-		private probability() { object.noInstanceOf(probability.class); }
+	static final class probability extends StaticObject {
+		private probability() {}
 
 		static final long INT_RANGE = pow(2, 32) - 1;
 
@@ -367,14 +361,14 @@ public final class math {
 	}
 
 	/**
-	 * Some helper method concerning random number generation.
+	 * Some helper method concerning random numbers and random seed generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-07 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
 	 */
-	public static final class random {
-		private random() { object.noInstanceOf(random.class); }
+	public static final class random extends StaticObject {
+		private random() {}
 
 		/**
 		 * Create a new <em>seed</em> byte array of the given length.
@@ -421,15 +415,7 @@ public final class math {
 		 * <p/>
 		 * [code]
 		 * public static long seed() {
-		 *     final long nanoTimeSeed = ((System.nanoTime() & 255) << 56) |
-		 *                               ((System.nanoTime() & 255) << 24) |
-		 *                               ((System.nanoTime() & 255) << 48) |
-		 *                               ((System.nanoTime() & 255) << 16) |
-		 *                               ((System.nanoTime() & 255) << 40) |
-		 *                               ((System.nanoTime() & 255) <<  8) |
-		 *                               ((System.nanoTime() & 255) << 32) |
-		 *                               ((System.nanoTime() & 255) <<  0) |;
-		 *     return seed(nanoTimeSeed);
+		 *     return seed(System.nanoTime());
 		 * }
 		 * [/code]
 		 * <p/>
@@ -445,7 +431,7 @@ public final class math {
 		 * @return the random seed value.
 		 */
 		public static long seed() {
-			return seed(nanoTimeSeed());
+			return seed(System.nanoTime());
 		}
 
 		/**
@@ -455,9 +441,9 @@ public final class math {
 		 * <p/>
 		 * [code]
 		 * public static long seed(final long base) {
-		 *     final long hashSeed = ((long)(new Object().hashCode()) << 32) |
-		 *                                   new Object().hashCode();
-		 *     long seed = base ^ hashSeed;
+		 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
+		 *                                         new Object().hashCode();
+		 *     long seed = base ^ objectHashSeed;
 		 *     seed ^= seed << 17;
 		 *     seed ^= seed >>> 31;
 		 *     seed ^= seed << 8;
@@ -479,18 +465,6 @@ public final class math {
 
 		private static long objectHashSeed() {
 			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
-		}
-
-		private static long nanoTimeSeed() {
-			return
-			((System.nanoTime() & 255) << 56) |
-			((System.nanoTime() & 255) << 24) |
-			((System.nanoTime() & 255) << 48) |
-			((System.nanoTime() & 255) << 16) |
-			((System.nanoTime() & 255) << 40) |
-			((System.nanoTime() & 255) <<  8) |
-			((System.nanoTime() & 255) << 32) |
-			((System.nanoTime() & 255) <<  0);
 		}
 
 	}
