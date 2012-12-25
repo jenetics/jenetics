@@ -5060,7 +5060,7 @@ Block splitting
 
 \end_inset
 
- With this method each thread will be assigned a block of random numbers,
+ With this method esach thread will be assigned a block of random numbers,
  which should be enough for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
@@ -5071,7 +5071,7 @@ LCG64ShiftRandom.ThreadLocal
 .
  
 \emph default
-This class can assign every thread a block of 
+This class assigns every thread a block of 
 \begin_inset Formula $2^{56}\thickapprox7,2\cdot10^{16}$
 \end_inset
 
