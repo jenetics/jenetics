@@ -4830,17 +4830,18 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-The parallel nature of the GA implementation requires the creation of a
- stream 
+The parallel nature of the GA implementation requires the creation of streams
+ 
 \begin_inset Formula $t_{i,j}$
 \end_inset
 
- of random numbers which are statistically independent.
- A stream is numbered with 
+ of random numbers which are statistically independent, where the streams
+ are numbered with 
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
-, where 
+.
+ 
 \begin_inset Formula $p$
 \end_inset
 
@@ -5027,17 +5028,7 @@ PRNG!Parameterization
 LCG64\SpecialChar \-
 ShiftRandom
 \family default
- class if you want to use this strategy, although it is recommended to use
- the 
-\family typewriter
-LCG64\SpecialChar \-
-ShiftRandom
-\family default
- PRNG with 
-\emph on
-block splitting
-\emph default
-.
+ class if you want to use this strategy.
  The theoretical foundation for these method is weak.
  In a massive parallel environment you will need a reliable set of parameters
  for every random stream, which are not trivial to find.
@@ -5069,8 +5060,8 @@ Block splitting
 
 \end_inset
 
- Each thread will be assigned a block of random numbers, which should be
- enough for the whole runtime of the process.
+ With this method each thread will be assigned a block of random numbers,
+ which should be enough for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
 LCG64ShiftRandom.ThreadLocal
