@@ -267,7 +267,8 @@ public class LCG64ShiftRandom extends Random64 {
 	}
 
 	/**
-	 * This is a <i>thread safe</i> variation of the this PRGN.
+	 * This is a <i>thread safe</i> variation of the this PRGN&mdash;by
+	 * synchronizing the random number generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
