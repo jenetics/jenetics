@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg version="1.2" baseProfile="tiny" viewBox="0 0 21590 27940" preserveAspectRatio="xMidYMid" fill-rule="evenodd" clip-path="url(#presentation_clip_path)" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" xmlns:smil="urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xml:space="preserve">
+ <defs>
+  <clipPath id="presentation_clip_path" clipPathUnits="userSpaceOnUse">
+   <rect x="0" y="0" width="21590" height="27940"/>
+  </clipPath>
+ </defs>
+ <defs>
+  <font id="EmbeddedFont_1" horiz-adv-x="2048">
+   <font-face font-family="Liberation Serif embedded" units-per-em="2048" font-weight="normal" font-style="normal" ascent="1826" descent="450"/>
+   <missing-glyph horiz-adv-x="2048" d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z"/>
+   <glyph unicode="j" horiz-adv-x="424" d="M 393,1247 C 393,1232 390,1219 385,1206 379,1193 371,1181 361,1171 351,1161 340,1153 327,1148 314,1142 300,1139 285,1139 270,1139 256,1142 243,1148 230,1153 218,1161 208,1171 198,1181 190,1193 185,1206 179,1219 176,1232 176,1247 176,1262 179,1276 185,1289 190,1302 198,1314 208,1324 218,1334 230,1342 243,1348 256,1353 270,1356 285,1356 300,1356 314,1353 327,1348 340,1342 351,1334 361,1324 371,1314 379,1302 385,1289 390,1276 393,1262 393,1247 Z M 383,-39 C 383,-110 376,-170 362,-221 347,-271 327,-312 301,-344 274,-376 243,-399 207,-414 170,-429 130,-436 86,-436 57,-436 31,-434 10,-431 -11,-428 -34,-423 -59,-418 L -59,-219 -12,-219 15,-328 C 37,-347 65,-356 98,-356 137,-356 167,-335 187,-293 207,-251 217,-183 217,-90 L 217,870 76,895 76,940 383,940 383,-39 Z"/>
+   <glyph unicode="3" horiz-adv-x="848" d="M 944,365 C 944,304 933,250 912,203 891,155 860,115 820,82 779,49 730,23 671,6 612,-11 544,-20 469,-20 403,-20 339,-16 277,-8 215,0 159,10 109,23 L 98,305 164,305 209,117 C 221,110 237,104 256,97 275,90 296,85 319,80 341,75 364,71 388,68 411,65 433,63 453,63 515,63 566,71 606,86 645,102 677,123 700,151 723,179 738,212 747,251 756,290 760,332 760,378 760,430 753,474 738,508 723,543 703,571 678,592 652,613 622,629 588,638 553,648 516,653 477,653 L 334,653 334,748 477,748 C 552,748 608,770 644,813 680,856 698,922 698,1010 698,1054 694,1092 685,1125 676,1158 661,1185 642,1207 623,1229 598,1245 567,1256 536,1267 498,1272 453,1272 433,1272 413,1271 393,1268 372,1265 353,1261 334,1256 315,1251 298,1245 282,1239 266,1232 252,1226 240,1219 L 205,1055 139,1055 139,1313 C 162,1319 186,1325 209,1330 232,1335 257,1340 282,1344 307,1347 334,1350 362,1353 390,1355 420,1356 453,1356 594,1356 701,1329 774,1275 847,1221 883,1138 883,1026 883,984 877,945 866,909 855,872 837,840 813,812 789,784 759,761 722,742 685,723 641,709 590,702 711,688 801,653 858,598 915,542 944,464 944,365 Z"/>
+   <glyph unicode="2" horiz-adv-x="848" d="M 911,0 L 90,0 90,147 C 157,210 219,266 276,316 332,365 383,412 428,455 473,498 512,539 546,578 579,617 607,658 630,701 652,744 669,790 680,839 691,888 696,944 696,1006 696,1093 676,1159 637,1204 598,1249 533,1272 444,1272 424,1272 404,1271 385,1268 365,1265 346,1261 328,1256 310,1251 293,1245 278,1239 262,1232 248,1226 236,1219 L 201,1055 135,1055 135,1313 C 186,1325 236,1335 285,1344 334,1352 387,1356 444,1356 591,1356 701,1326 775,1265 848,1204 885,1117 885,1006 885,951 878,901 864,854 849,807 829,763 802,720 775,677 743,634 704,593 665,551 621,508 572,463 523,418 469,371 410,321 351,270 288,215 221,154 L 911,154 911,0 Z"/>
+   <glyph unicode="1" horiz-adv-x="742" d="M 627,80 L 901,53 901,0 180,0 180,53 455,80 455,1174 184,1077 184,1130 575,1352 627,1352 627,80 Z"/>
+   <glyph unicode="0" horiz-adv-x="875" d="M 946,676 C 946,564 937,465 920,378 902,291 875,219 839,160 803,101 757,56 702,26 647,-5 581,-20 506,-20 365,-20 258,39 186,158 114,277 78,449 78,676 78,898 114,1068 186,1186 258,1303 367,1362 514,1362 655,1362 763,1304 836,1188 909,1071 946,901 946,676 Z M 762,676 C 762,772 758,858 750,933 741,1008 727,1072 708,1124 688,1175 662,1215 629,1242 596,1269 555,1282 506,1282 457,1282 416,1269 385,1242 353,1215 328,1175 310,1124 292,1072 280,1008 273,933 266,858 262,772 262,676 262,580 266,494 273,418 280,341 292,277 310,224 328,171 353,130 385,102 416,73 457,59 506,59 555,59 596,73 629,102 662,130 688,171 708,224 727,277 741,341 750,418 758,494 762,580 762,676 Z"/>
+  </font>
+ </defs>
+ <defs>
+  <font id="EmbeddedFont_2" horiz-adv-x="2048">
+   <font-face font-family="Liberation Serif embedded" units-per-em="2048" font-weight="normal" font-style="italic" ascent="1826" descent="450"/>
+   <missing-glyph horiz-adv-x="2048" d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z"/>
+   <glyph unicode="t" horiz-adv-x="504" d="M 264,174 C 264,144 272,122 287,107 302,92 321,84 344,84 373,84 399,87 423,92 447,97 471,105 496,114 L 517,67 C 483,43 446,23 406,6 365,-11 319,-20 268,-20 240,-20 215,-15 194,-7 173,3 155,15 141,31 126,47 116,66 109,89 102,111 98,135 98,162 98,181 100,203 103,228 106,253 110,276 114,299 L 213,856 90,856 98,901 231,940 368,1153 432,1153 395,940 610,940 594,856 379,856 282,307 C 277,280 272,254 269,231 266,208 264,189 264,174 Z"/>
+   <glyph unicode="r" horiz-adv-x="716" d="M 724,965 C 737,965 752,964 768,963 784,961 796,959 803,957 L 759,711 716,711 678,838 C 649,838 619,832 590,820 561,808 532,792 505,772 478,751 451,728 426,701 401,674 377,646 356,616 L 249,0 83,0 236,870 118,895 126,940 403,940 372,728 C 399,768 427,803 457,833 486,863 516,888 546,907 576,926 606,941 637,951 667,960 696,965 724,965 Z"/>
+   <glyph unicode="i" horiz-adv-x="398" d="M 292,70 L 449,45 441,0 114,0 267,870 138,895 146,940 445,940 292,70 Z M 507,1247 C 507,1232 504,1219 499,1206 493,1193 485,1181 475,1171 465,1161 453,1153 440,1148 427,1142 413,1139 398,1139 383,1139 370,1142 357,1148 344,1153 332,1161 322,1171 312,1181 304,1193 299,1206 293,1219 290,1232 290,1247 290,1262 293,1276 299,1289 304,1302 312,1314 322,1324 332,1334 344,1342 357,1348 370,1353 383,1356 398,1356 413,1356 427,1353 440,1348 453,1342 465,1334 475,1324 485,1314 493,1302 499,1289 504,1276 507,1262 507,1247 Z"/>
+  </font>
+ </defs>
+ <g id="id2" class="Master_Slide" clip-path="url(#presentation_clip_path)">
+  <g id="bg-id2" visibility="visible" class="Background">
+   <rect fill="none" stroke="none" x="0" y="0" width="21590" height="27940"/>
+  </g>
+  <g id="bo-id2" visibility="visible" class="BackgroundObjects"/>
+ </g>
+ <g id="id1" class="Slide" visibility="visible" clip-path="url(#presentation_clip_path)">
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 3984,3158 L 3539,3158 3539,2269 4428,2269 4428,3158 3984,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 3984,3158 L 3539,3158 3539,2269 4428,2269 4428,3158 3984,3158"/>
+    <rect fill="none" stroke="none" x="3540" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 4873,3158 L 4428,3158 4428,2269 5317,2269 5317,3158 4873,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 4873,3158 L 4428,3158 4428,2269 5317,2269 5317,3158 4873,3158"/>
+    <rect fill="none" stroke="none" x="4429" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 5762,3158 L 5317,3158 5317,2269 6206,2269 6206,3158 5762,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 5762,3158 L 5317,3158 5317,2269 6206,2269 6206,3158 5762,3158"/>
+    <rect fill="none" stroke="none" x="5318" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 6651,3158 L 6206,3158 6206,2269 7095,2269 7095,3158 6651,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 6651,3158 L 6206,3158 6206,2269 7095,2269 7095,3158 6651,3158"/>
+    <rect fill="none" stroke="none" x="6207" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 8048,3158 L 7603,3158 7603,2269 8492,2269 8492,3158 8048,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 8048,3158 L 7603,3158 7603,2269 8492,2269 8492,3158 8048,3158"/>
+    <rect fill="none" stroke="none" x="7604" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 8937,3158 L 8492,3158 8492,2269 9381,2269 9381,3158 8937,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 8937,3158 L 8492,3158 8492,2269 9381,2269 9381,3158 8937,3158"/>
+    <rect fill="none" stroke="none" x="8493" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 9826,3158 L 9381,3158 9381,2269 10270,2269 10270,3158 9826,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 9826,3158 L 9381,3158 9381,2269 10270,2269 10270,3158 9826,3158"/>
+    <rect fill="none" stroke="none" x="9382" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 10715,3158 L 10270,3158 10270,2269 11159,2269 11159,3158 10715,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 10715,3158 L 10270,3158 10270,2269 11159,2269 11159,3158 10715,3158"/>
+    <rect fill="none" stroke="none" x="10271" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 12112,3158 L 11667,3158 11667,2269 12556,2269 12556,3158 12112,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 12112,3158 L 11667,3158 11667,2269 12556,2269 12556,3158 12112,3158"/>
+    <rect fill="none" stroke="none" x="11668" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 13001,3158 L 12556,3158 12556,2269 13445,2269 13445,3158 13001,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 13001,3158 L 12556,3158 12556,2269 13445,2269 13445,3158 13001,3158"/>
+    <rect fill="none" stroke="none" x="12557" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 13890,3158 L 13445,3158 13445,2269 14334,2269 14334,3158 13890,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 13890,3158 L 13445,3158 13445,2269 14334,2269 14334,3158 13890,3158"/>
+    <rect fill="none" stroke="none" x="13446" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 14779,3158 L 14334,3158 14334,2269 15223,2269 15223,3158 14779,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 14779,3158 L 14334,3158 14334,2269 15223,2269 15223,3158 14779,3158"/>
+    <rect fill="none" stroke="none" x="14335" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 16176,3158 L 15731,3158 15731,2269 16620,2269 16620,3158 16176,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 16176,3158 L 15731,3158 15731,2269 16620,2269 16620,3158 16176,3158"/>
+    <rect fill="none" stroke="none" x="15732" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 17065,3158 L 16620,3158 16620,2269 17509,2269 17509,3158 17065,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 17065,3158 L 16620,3158 16620,2269 17509,2269 17509,3158 17065,3158"/>
+    <rect fill="none" stroke="none" x="16621" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 17954,3158 L 17509,3158 17509,2269 18398,2269 18398,3158 17954,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 17954,3158 L 17509,3158 17509,2269 18398,2269 18398,3158 17954,3158"/>
+    <rect fill="none" stroke="none" x="17510" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 18843,3158 L 18398,3158 18398,2269 19287,2269 19287,3158 18843,3158 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 18843,3158 L 18398,3158 18398,2269 19287,2269 19287,3158 18843,3158"/>
+    <rect fill="none" stroke="none" x="18399" y="2270" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 3984,4809 L 3539,4809 3539,3920 4428,3920 4428,4809 3984,4809 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 3984,4809 L 3539,4809 3539,3920 4428,3920 4428,4809 3984,4809"/>
+    <rect fill="none" stroke="none" x="3540" y="3921" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 4873,4809 L 4428,4809 4428,3920 5317,3920 5317,4809 4873,4809 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 4873,4809 L 4428,4809 4428,3920 5317,3920 5317,4809 4873,4809"/>
+    <rect fill="none" stroke="none" x="4429" y="3921" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 5762,4809 L 5317,4809 5317,3920 6206,3920 6206,4809 5762,4809 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 5762,4809 L 5317,4809 5317,3920 6206,3920 6206,4809 5762,4809"/>
+    <rect fill="none" stroke="none" x="5318" y="3921" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(207,231,245)" stroke="none" d="M 6651,4809 L 6206,4809 6206,3920 7095,3920 7095,4809 6651,4809 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 6651,4809 L 6206,4809 6206,3920 7095,3920 7095,4809 6651,4809"/>
+    <rect fill="none" stroke="none" x="6207" y="3921" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 3984,5952 L 3539,5952 3539,5063 4428,5063 4428,5952 3984,5952 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 3984,5952 L 3539,5952 3539,5063 4428,5063 4428,5952 3984,5952"/>
+    <rect fill="none" stroke="none" x="3540" y="5064" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 4873,5952 L 4428,5952 4428,5063 5317,5063 5317,5952 4873,5952 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 4873,5952 L 4428,5952 4428,5063 5317,5063 5317,5952 4873,5952"/>
+    <rect fill="none" stroke="none" x="4429" y="5064" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 5762,5952 L 5317,5952 5317,5063 6206,5063 6206,5952 5762,5952 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 5762,5952 L 5317,5952 5317,5063 6206,5063 6206,5952 5762,5952"/>
+    <rect fill="none" stroke="none" x="5318" y="5064" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(153,204,255)" stroke="none" d="M 6651,5952 L 6206,5952 6206,5063 7095,5063 7095,5952 6651,5952 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 6651,5952 L 6206,5952 6206,5063 7095,5063 7095,5952 6651,5952"/>
+    <rect fill="none" stroke="none" x="6207" y="5064" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 3984,7095 L 3539,7095 3539,6206 4428,6206 4428,7095 3984,7095 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 3984,7095 L 3539,7095 3539,6206 4428,6206 4428,7095 3984,7095"/>
+    <rect fill="none" stroke="none" x="3540" y="6207" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 4873,7095 L 4428,7095 4428,6206 5317,6206 5317,7095 4873,7095 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 4873,7095 L 4428,7095 4428,6206 5317,6206 5317,7095 4873,7095"/>
+    <rect fill="none" stroke="none" x="4429" y="6207" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 5762,7095 L 5317,7095 5317,6206 6206,6206 6206,7095 5762,7095 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 5762,7095 L 5317,7095 5317,6206 6206,6206 6206,7095 5762,7095"/>
+    <rect fill="none" stroke="none" x="5318" y="6207" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,184,255)" stroke="none" d="M 6651,7095 L 6206,7095 6206,6206 7095,6206 7095,7095 6651,7095 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 6651,7095 L 6206,7095 6206,6206 7095,6206 7095,7095 6651,7095"/>
+    <rect fill="none" stroke="none" x="6207" y="6207" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 3984,8238 L 3539,8238 3539,7349 4428,7349 4428,8238 3984,8238 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 3984,8238 L 3539,8238 3539,7349 4428,7349 4428,8238 3984,8238"/>
+    <rect fill="none" stroke="none" x="3540" y="7350" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 4873,8238 L 4428,8238 4428,7349 5317,7349 5317,8238 4873,8238 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 4873,8238 L 4428,8238 4428,7349 5317,7349 5317,8238 4873,8238"/>
+    <rect fill="none" stroke="none" x="4429" y="7350" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 5762,8238 L 5317,8238 5317,7349 6206,7349 6206,8238 5762,8238 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 5762,8238 L 5317,8238 5317,7349 6206,7349 6206,8238 5762,8238"/>
+    <rect fill="none" stroke="none" x="5318" y="7350" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.CustomShape">
+   <g>
+    <path fill="rgb(0,153,255)" stroke="none" d="M 6651,8238 L 6206,8238 6206,7349 7095,7349 7095,8238 6651,8238 Z"/>
+    <path fill="none" stroke="rgb(128,128,128)" d="M 6651,8238 L 6206,8238 6206,7349 7095,7349 7095,8238 6651,8238"/>
+    <rect fill="none" stroke="none" x="6207" y="7350" width="890" height="890"/>
+   </g>
+  </g>
+  <g class="OLE2">
+   <g>
+    <g font-family="Liberation Serif embedded" font-size="422px" font-style="italic" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none">
+      <text x="2590" y="4421">t</text></g>
+    </g>
+    <g font-family="Liberation Serif embedded" font-size="253px" font-style="normal" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none"/>
+    </g>
+   </g>
+  </g>
+  <g class="OLE2">
+   <g>
+    <g font-family="Liberation Serif embedded" font-size="423px" font-style="italic" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none">
+      <text x="2591" y="5688">t</text></g>
+    </g>
+    <g font-family="Liberation Serif embedded" font-size="253px" font-style="normal" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none"/>
+    </g>
+   </g>
+  </g>
+  <g class="OLE2">
+   <g>
+    <g font-family="Liberation Serif embedded" font-size="423px" font-style="italic" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none">
+      <text x="2591" y="6831">t</text></g>
+    </g>
+    <g font-family="Liberation Serif embedded" font-size="253px" font-style="normal" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none"/>
+    </g>
+   </g>
+  </g>
+  <g class="OLE2">
+   <g>
+    <g font-family="Liberation Serif embedded" font-size="423px" font-style="italic" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none">
+      <text x="2591" y="7974">t</text></g>
+    </g>
+    <g font-family="Liberation Serif embedded" font-size="253px" font-style="normal" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none"/>
+    </g>
+   </g>
+  </g>
+  <g class="OLE2">
+   <g>
+    <g font-family="Liberation Serif embedded" font-size="423px" font-style="italic" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none">
+      <text x="2587" y="2767">r</text></g>
+    </g>
+    <g font-family="Liberation Serif embedded" font-size="253px" font-style="italic" font-weight="400">
+     <g fill="rgb(31,28,27)" stroke="none">
+      <text x="2767" y="2873">i</text></g>
+    </g>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.ConnectorShape">
+   <g>
+    <path fill="none" stroke="rgb(0,0,0)" d="M 7096,2714 C 7483,2714 7452,3567 7331,4047"/>
+    <path fill="rgb(0,0,0)" stroke="none" d="M 7096,4365 L 7478,4084 7233,3911 7096,4365 Z"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.ConnectorShape">
+   <g>
+    <path fill="none" stroke="rgb(0,0,0)" d="M 11160,2714 C 11166,2714 13094,5364 7556,5502"/>
+    <path fill="rgb(0,0,0)" stroke="none" d="M 7096,5508 L 7548,5652 7544,5352 7096,5508 Z"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.ConnectorShape">
+   <g>
+    <path fill="none" stroke="rgb(0,0,0)" d="M 15224,2714 C 15040,2714 19000,6552 7546,6649"/>
+    <path fill="rgb(0,0,0)" stroke="none" d="M 7096,6651 L 7547,6799 7545,6499 7096,6651 Z"/>
+   </g>
+  </g>
+  <g class="com.sun.star.drawing.ConnectorShape">
+   <g>
+    <path fill="none" stroke="rgb(0,0,0)" d="M 19288,2714 C 18723,2714 24722,7714 7512,7793"/>
+    <path fill="rgb(0,0,0)" stroke="none" d="M 7096,7794 L 7546,7943 7546,7643 7096,7794 Z"/>
+   </g>
+  </g>
+ </g>
+</svg>
