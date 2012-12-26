@@ -27,12 +27,13 @@ package org.jenetics.util;
  * methods only. The protected constructor always throws an {@link AssertionError}
  * and prevents the <i>static object</i> from being instantiated.
  *
- * Use the following <i>pattern</i> when creating such static helper classes:
+ * The following <i>pattern</i> is used for creating such static helper
+ * classes&mdash;the only constructors is declared private to gain the wished
+ * compile-time safety:
  * [code]
  * public final class utils extends StaticObject {
  *     private utils() {}
  *
- *     // Here comes the static helper methods.
  *     ...
  * }
  * [/code]
