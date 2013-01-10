@@ -62,7 +62,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	public Chromosome<G> newInstance(final ISeq<G> genes);
 
 	/**
-	 * Return the first gene of this chromosome.  Each chromosome must contain
+	 * Return the first gene of this chromosome. Each chromosome must contain
 	 * at least one gene.
 	 *
 	 * @return the first gene of this chromosome.
