@@ -39,7 +39,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-10 $</em>
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
@@ -62,7 +62,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	public Chromosome<G> newInstance(final ISeq<G> genes);
 
 	/**
-	 * Return the first gene of this chromosome.  Each chromosome must contain
+	 * Return the first gene of this chromosome. Each chromosome must contain
 	 * at least one gene.
 	 *
 	 * @return the first gene of this chromosome.
