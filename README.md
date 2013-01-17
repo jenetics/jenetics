@@ -7,9 +7,9 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Requirements
 
 * Build time
-** **JDK 1.7**: The `JAVA_HOME` variable must be set to your java installation directory.
++ **JDK 1.7**: The `JAVA_HOME` variable must be set to your java installation directory.
 * Run time
-** **JScience** library, <http://jscience.org>: This library is included and lies in the `project/lib` directory.
++ **JScience** library, <http://jscience.org>: This library is included and lies in the `project/lib` directory.
 
 ## Build Jenetics
 
