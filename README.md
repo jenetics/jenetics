@@ -57,7 +57,7 @@ for creating the project files for Eclipse or IntelliJ, respectively.
 
 ### Ones Counting
 
-Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a Genotype is proportional to the number of ones. The fitness `Function` looks like this:
+Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a `Genotype` is proportional to the number of ones. The fitness `Function` looks like this:
 
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
@@ -114,7 +114,7 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 	}
 
 
-The genotype in this example consists of one BitChromosome with a ones probability of 0.15. The altering of the offspring population is performed by mutation, with mutation probability of 0.55, and then by a single-point crossover, with crossover probability of 0.06. After creating the initial population, with the ga.setup() call, 100 generations are evolved. The tournament selector is used for both, the offspring- and the survivor selection---this is the default selector.
+The genotype in this example consists of one `BitChromosome` with a ones probability of 0.15. The altering of the offspring population is performed by mutation, with mutation probability of 0.55, and then by a single-point crossover, with crossover probability of 0.06. After creating the initial population, with the ga.setup() call, 100 generations are evolved. The tournament selector is used for both, the offspring- and the survivor selection&dash;this is the default selector.
 
 	+---------------------------------------------------------+
 	|  Population Statistics                                  |
