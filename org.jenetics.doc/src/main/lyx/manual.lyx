@@ -4915,15 +4915,31 @@ height "1pt"
 
 \begin_layout Standard
 There are essentially four different parallelizations techniques used in
- practice:
+ practice: 
+\emph on
+Random seeding
+\emph default
+, 
+\emph on
+Parameterization
+\emph default
+, 
+\emph on
+Block splitting
+\emph default
+ and 
+\emph on
+Leapfrogging
+\emph default
+.
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Paragraph
 
 \series bold
 Random seeding
 \series default
-:
+
 \begin_inset Index idx
 status collapsed
 
@@ -4943,7 +4959,11 @@ Random seeding
 
 \end_inset
 
- Every thread uses the same kind of PRNG but with a different seed.
+ 
+\end_layout
+
+\begin_layout Standard
+Every thread uses the same kind of PRNG but with a different seed.
  This is the default strategy used by the 
 \family sans
 \series bold
@@ -4955,11 +4975,14 @@ Jenetics
  library.
  The 
 \family typewriter
-RandomRegistry
+Random\SpecialChar \-
+Registry
 \family default
  is initialized with the 
 \family typewriter
-ThreadLocalRandom
+Thread\SpecialChar \-
+Local\SpecialChar \-
+Random
 \family default
  class from the 
 \family typewriter
@@ -4995,7 +5018,9 @@ non
 \emph default
 -reproducible results, consider using the 
 \family typewriter
-LCG64ShiftRandom
+LCG64\SpecialChar \-
+Shift\SpecialChar \-
+Random
 \family default
  PRNG instead, which uses 
 \emph on
@@ -5005,12 +5030,12 @@ block splitting
  
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Paragraph
 
 \series bold
 Parameterization
 \series default
-:
+
 \begin_inset Index idx
 status collapsed
 
@@ -5020,13 +5045,18 @@ PRNG!Parameterization
 
 \end_inset
 
- All threads uses the same kind of PRNG but with different parameters.
+ 
+\end_layout
+
+\begin_layout Standard
+All threads uses the same kind of PRNG but with different parameters.
  This requires the PRNG to be parameterizable, which is not the case for
  the Random object of the JDK.
  You can use the 
 \family typewriter
 LCG64\SpecialChar \-
-ShiftRandom
+Shift\SpecialChar \-
+Random
 \family default
  class if you want to use this strategy.
  The theoretical foundation for these method is weak.
@@ -5035,12 +5065,12 @@ ShiftRandom
  
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Paragraph
 
 \series bold
 Block splitting
 \series default
-:
+
 \begin_inset Index idx
 status collapsed
 
@@ -5060,11 +5090,19 @@ Block splitting
 
 \end_inset
 
- With this method esach thread will be assigned a block of random numbers,
+ 
+\end_layout
+
+\begin_layout Standard
+With this method esach thread will be assigned a block of random numbers,
  which should be enough for the whole runtime of the process.
  This strategy is used when using the 
 \family typewriter
-LCG64ShiftRandom.ThreadLocal
+LCG64\SpecialChar \-
+Shift\SpecialChar \-
+Random.\SpecialChar \-
+Thread\SpecialChar \-
+Local
 \family default
  class
 \emph on
@@ -5087,12 +5125,59 @@ This class assigns every thread a block of
  threads, the blocks are recycled, but with changed seed.
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/BlockSplitting.eps
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parallelization-via-block"
+
+\end_inset
+
+Parallelization via 
+\emph on
+block splitting
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
 
 \series bold
 Leapfrog
 \series default
-:
+
 \begin_inset Index idx
 status collapsed
 
@@ -5112,7 +5197,11 @@ Leapfrog
 
 \end_inset
 
- Each thread 
+ 
+\end_layout
+
+\begin_layout Standard
+Each thread 
 \begin_inset Formula $t\in\left[0,P\right)$
 \end_inset
 
@@ -5121,7 +5210,61 @@ Leapfrog
 \end_inset
 
  random number.
- 
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Parallelization-via-leapfrogging"
+
+\end_inset
+
+ shows the concept of the 
+\emph on
+leapfrog
+\emph default
+ method.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/Leapfrog.eps
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parallelization-via-leapfrogging"
+
+\end_inset
+
+Parallelization via 
+\emph on
+leapfrogging
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
