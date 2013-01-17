@@ -53,6 +53,88 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
 
 for creating the project files for Eclipse or IntelliJ, respectively.
 
+## Example
+
+### Ones Counting
+
+Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a Genotype is proportional to the number of ones. The FitnessFunction looks like this:
+
+	import org.jenetics.BitChromosome;
+	import org.jenetics.BitGene;
+	import org.jenetics.GeneticAlgorithm;
+	import org.jenetics.Genotype;
+	import org.jenetics.Mutator;
+	import org.jenetics.NumberStatistics;
+	import org.jenetics.Optimize;
+	import org.jenetics.RouletteWheelSelector;
+	import org.jenetics.SinglePointCrossover;
+	import org.jenetics.util.Factory;
+	import org.jenetics.util.Function;
+
+	final class OneCounter
+		implements Function<Genotype<BitGene>, Integer>
+	{
+		@Override
+		public Integer apply(Genotype<BitGene> genotype) {
+			int count = 0;
+			for (BitGene gene : genotype.getChromosome()) {
+				if (gene.getBit()) {
+					++count;
+				}
+			}
+			return count;
+		}
+	}
+
+	public class OnesCounting {
+		public static void main(String[] args) {
+			Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+				new BitChromosome(20, 0.15)
+			);
+			Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+			GeneticAlgorithm<BitGene, Integer> ga =
+				new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
+
+			ga.setStatisticsCalculator(
+				new NumberStatistics.Calculator<BitGene, Integer>()
+			);
+			ga.setPopulationSize(50);
+			ga.setSelectors(
+				new RouletteWheelSelector<BitGene, Integer>()
+			);
+			ga.setAlterers(
+				new Mutator<BitGene>(0.55),
+				new SinglePointCrossover<BitGene>(0.06)
+			);
+
+			ga.setup();
+			ga.evolve(100);
+			System.out.println(ga.getBestStatistics());
+		}
+	}
+
+
+The genotype in this example consists of one BitChromosome with a ones probability of 0.15. The altering of the offspring population is performed by mutation, with mutation probability of 0.55, and then by a single-point crossover, with crossover probability of 0.06. After creating the initial population, with the ga.setup() call, 100 generations are evolved. The tournament selector is used for both, the offspring- and the survivor selection---this is the default selector.
+
+	+---------------------------------------------------------+
+	|  Population Statistics                                  |
+	+---------------------------------------------------------+
+	|                     Age mean: 1.36000000000             |
+	|                 Age variance: 3.74530612245             |
+	|                      Samples: 50                        |
+	|                 Best fitness: 18                        |
+	|                Worst fitness: 5                         |
+	+---------------------------------------------------------+
+	+---------------------------------------------------------+
+	|  Fitness Statistics                                     |
+	+---------------------------------------------------------+
+	|                 Fitness mean: 12.30000000000            |
+	|             Fitness variance: 8.25510204082             |
+	|        Fitness error of mean: 1.73948268172             |
+	+---------------------------------------------------------+
+
+
+The given example will print the overall timing statistics onto the console.
 
 ## Coding standards
 
