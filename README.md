@@ -1,14 +1,15 @@
 # Jenetics
 
 
-Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. ```Gene```, ```Chromosome```, ```Genotype```, ```Phenotype```, ```Population``` and  fitness ```Function```. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it. `asdf`
+Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, library written in Java. It is designed with a clear separation of the several  algorithm concepts, e. g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and  fitness `Function`. Jenetics allows you to minimize or maximize the given fitness  function without tweaking it.
 
 
 ## Requirements
 
-
-* **JDK 1.7**: The JAVA_HOME variable must be set to your java installation directory.
-* **JScience** library, <http://jscience.org>: This library is included and lies in the ```project/lib``` directory.
+* Build time
+** **JDK 1.7**: The `JAVA_HOME` variable must be set to your java installation directory.
+* Run time
+** **JScience** library, <http://jscience.org>: This library is included and lies in the `project/lib` directory.
 
 ## Build Jenetics
 
@@ -17,7 +18,7 @@ For building the Jenetics library from source, download the most recent, stable 
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
-<version> denotes the actual Jenetics version and ```<builddir>``` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
+<version> denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
 
     $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
@@ -28,14 +29,14 @@ Jenetics uses Gradle13 as build system and organizes the source into *sub*-proje
 * **org.jenetics.example**: This project contains example code for the *core*-module.
 * **org.jenetics.doc**: Contains the code of the web-site and the manual.
 
-For building the library change into the ```<builddir>``` directory (or one of the module directory) and call one of the available tasks:
+For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
 
-* **pack**: Compiles the sources of all modules, creates the JAR files and the Javadoc. The build artifacts are copied into the ```<builddir>/build/package``` directory. This task is only available in the ```<builddir>``` directory.
-* **compileJava**: Compiles the Jenetics sources and copies the class files to the ```<builddir>/<module-dir>/build/classes/main``` directory.
-* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to ```<builddir>/<module-dir>``` directory.
-* **javadoc**: Generates the API documentation. The Javadoc is stored in the ```<builddir>/<module-dir>/build/docs``` directory
-* **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the ```<builddir>/<module-dir>/build/libs``` directory.
-* **clean**: Deletes the ```<builddir>/build/*``` directories and removes all generated artifacts.
+* **pack**: Compiles the sources of all modules, creates the JAR files and the Javadoc. The build artifacts are copied into the `<builddir>/build/package` directory. This task is only available in the `<builddir>` directory.
+* **compileJava**: Compiles the Jenetics sources and copies the class files to the `<builddir>/<module-dir>/build/classes/main` directory.
+* **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
+* **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
+* **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
+* **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
 For packaging (building) the source call
 
