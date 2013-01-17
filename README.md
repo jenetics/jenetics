@@ -18,7 +18,7 @@ For building the Jenetics library from source, download the most recent, stable 
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
-<version> denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
+`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
 
     $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
@@ -53,11 +53,11 @@ Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. C
 
 for creating the project files for Eclipse or IntelliJ, respectively.
 
-## Example
+## Examples
 
 ### Ones Counting
 
-Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a Genotype is proportional to the number of ones. The FitnessFunction looks like this:
+Ones counting is one of the simplest model-problem and consists of a binary chromosome. The fitness of a Genotype is proportional to the number of ones. The fitness `Function` looks like this:
 
 	import org.jenetics.BitChromosome;
 	import org.jenetics.BitGene;
@@ -135,6 +135,127 @@ The genotype in this example consists of one BitChromosome with a ones probabili
 
 
 The given example will print the overall timing statistics onto the console.
+
+### 0/1 Knapsack Problem
+
+In the knapsack problem a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size.  ([Wikipedia: Knapsack problem][http://en.wikipedia.org/wiki/Knapsack_problem|Wikipedia: Knapsack problem]) For the 0/1 knapsack problem we define a BitChromosome, one bit for each item. If the ith BitGene is set to one the ith item is selected.
+
+	import org.jscience.mathematics.number.Float64;
+
+	import org.jenetics.BitChromosome;
+	import org.jenetics.BitGene;
+	import org.jenetics.Chromosome;
+	import org.jenetics.GeneticAlgorithm;
+	import org.jenetics.Genotype;
+	import org.jenetics.Mutator;
+	import org.jenetics.NumberStatistics;
+	import org.jenetics.RouletteWheelSelector;
+	import org.jenetics.SinglePointCrossover;
+	import org.jenetics.util.Factory;
+	import org.jenetics.util.Function;
+
+	final class Item {
+		public double size;
+		public double value;
+	}
+
+	final class KnappsackFunction
+		implements Function<Genotype<BitGene>, Float64>
+	{
+		private final Item[] _items;
+		private final double _size;
+
+		public KnappsackFunction(final Item[] items, double size) {
+			_items = items;
+			_size = size;
+		}
+
+		public Item[] getItems() {
+			return _items;
+		}
+
+		@Override
+		public Float64 apply(final Genotype<BitGene> genotype) {
+			final Chromosome<BitGene> ch = genotype.getChromosome();
+
+			double size = 0;
+			double value = 0;
+			for (int i = 0, n = ch.length(); i < n; ++i) {
+				if (ch.getGene(i).getBit()) {
+					size += _items[i].size;
+					value += _items[i].value;
+				}
+			}
+
+			if (size > _size) {
+				return Float64.ZERO;
+			} else {
+				return Float64.valueOf(value);
+			}
+		}
+	}
+
+	public class Knapsack {
+
+		private static KnappsackFunction FF(int n, double size) {
+			Item[] items = new Item[n];
+			for (int i = 0; i < items.length; ++i) {
+				items[i] = new Item();
+				items[i].size = (Math.random() + 1)*10;
+				items[i].value = (Math.random() + 1)*15;
+			}
+
+			return new KnappsackFunction(items, size);
+		}
+
+		public static void main(String[] argv) throws Exception {
+			KnappsackFunction ff = FF(15, 100);
+			Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
+				new BitChromosome(15, 0.5)
+			);
+
+			GeneticAlgorithm<BitGene, Float64> ga =
+				new GeneticAlgorithm<>(genotype, ff);
+
+			ga.setMaximalPhenotypeAge(30);
+			ga.setPopulationSize(100);
+			ga.setStatisticsCalculator(
+				new NumberStatistics.Calculator<BitGene, Float64>()
+			);
+			ga.setSelectors(
+				new RouletteWheelSelector<BitGene, Float64>()
+			);
+			ga.setAlterers(
+				new Mutator<BitGene>(0.115),
+				new SinglePointCrossover<BitGene>(0.16)
+			);
+
+			ga.setup();
+			ga.evolve(100);
+			System.out.println(ga.getBestStatistics());
+		}
+	}
+
+
+The console out put for the Knapsack GA will look like the listing beneath.
+
+	+---------------------------------------------------------+
+	|  Population Statistics                                  |
+	+---------------------------------------------------------+
+	|                     Age mean: 1.55000000000             |
+	|                 Age variance: 2.69444444444             |
+	|                      Samples: 100                       |
+	|                 Best fitness: 188.57227213871303        |
+	|                Worst fitness: 0.0                       |
+	+---------------------------------------------------------+
+	+---------------------------------------------------------+
+	|  Fitness Statistics                                     |
+	+---------------------------------------------------------+
+	|                 Fitness mean: 157.60654768894           |
+	|             Fitness variance: 1486.23455609328          |
+	|        Fitness error of mean: 15.76065476889            |
+	+---------------------------------------------------------+
+
 
 ## Coding standards
 
