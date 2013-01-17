@@ -138,7 +138,7 @@ The given example will print the overall timing statistics onto the console.
 
 ### 0/1 Knapsack Problem
 
-In the knapsack problem a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size.  ([Wikipedia: Knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem])) For the 0/1 knapsack problem we define a `BitChromosome`, one bit for each item. If the ith BitGene is set to one the ith item is selected.
+In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set of items, together with their size and value, is given. The task is to select a disjoint subset so that the total size does not exeed the knapsacks size. For the 0/1 knapsack problem we define a `BitChromosome`, one bit for each item. If the ith `BitGene` is set to one the ith item is selected.
 
 	import org.jscience.mathematics.number.Float64;
 
