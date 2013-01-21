@@ -37,7 +37,7 @@ For building the library change into the `<builddir>` directory (or one of the m
 * **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
 * **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
-For packaging (building) the source call
+For packaging (building)  the source call
 
     $ cd <build-dir>
     $ gradle pack
