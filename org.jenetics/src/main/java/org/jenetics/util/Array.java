@@ -48,7 +48,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-21 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -519,6 +519,11 @@ public final class Array<T>
 			_array.data[i] = it.next();
 		}
 		return this;
+	}
+
+	@Override
+	public Array<T> setAll(final Iterable<? extends T> values) {
+		return setAll(values.iterator());
 	}
 
 	@Override

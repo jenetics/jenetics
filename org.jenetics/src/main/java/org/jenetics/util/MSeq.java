@@ -32,7 +32,7 @@ import java.util.ListIterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-21 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -61,6 +61,14 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} sequence.
 	 */
 	public MSeq<T> setAll(final Iterator<? extends T> it);
+
+	/**
+	 * Fills the sequence with values of the given iterable.
+	 *
+	 * @param values the values to fill this sequence.
+	 * @return {@code this} sequence.
+	 */
+	public MSeq<T> setAll(final Iterable<? extends T> values);
 
 	/**
 	 * Fill the sequence with the given values.
