@@ -522,6 +522,11 @@ public final class Array<T>
 	}
 
 	@Override
+	public Array<T> setAll(final Iterable<? extends T> values) {
+		return setAll(values.iterator());
+	}
+
+	@Override
 	public Array<T> setAll(final T[] values) {
 		_array.cloneIfSealed();
 		System.arraycopy(

@@ -63,6 +63,14 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public MSeq<T> setAll(final Iterator<? extends T> it);
 
 	/**
+	 * Fills the sequence with values of the given iterable.
+	 *
+	 * @param values the values to fill this sequence.
+	 * @return {@code this} sequence.
+	 */
+	public MSeq<T> setAll(final Iterable<? extends T> values);
+
+	/**
 	 * Fill the sequence with the given values.
 	 *
 	 * @param values the first initial values of this sequence
