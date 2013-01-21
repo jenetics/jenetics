@@ -114,26 +114,36 @@ public class TournamentSelector<
 			return pop;
 		}
 
-		Phenotype<G, C> winner = null;
-
-		final int N = population.size();
 		final Random random = RandomRegistry.getRandom();
-
 		for (int i = 0; i < count; ++i) {
-			winner = population.get(random.nextInt(N));
-
-			for (int j = 0; j < _sampleSize; ++j) {
-				final Phenotype<G, C> selection = population.get(random.nextInt(N));
-				if (opt.compare(selection, winner) > 0) {
-					winner = selection;
-				}
-			}
-
-			assert (winner != null);
-			pop.add(winner);
+			pop.add(select(population, opt, _sampleSize, random));
 		}
 
 		return pop;
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Phenotype<G, C> select(
+		final Population<G, C> population,
+		final Optimize opt,
+		final int sampleSize,
+		final Random random
+	) {
+		final int N = population.size();
+		Phenotype<G, C> winner = population.get(random.nextInt(N));
+
+		for (int j = 0; j < sampleSize; ++j) {
+			final Phenotype<G, C> selection = population.get(random.nextInt(N));
+			if (opt.compare(selection, winner) > 0) {
+				winner = selection;
+			}
+		}
+		assert (winner != null);
+
+		return winner;
 	}
 
 	@Override
