@@ -37,12 +37,33 @@ public class MSeqListAdapterTest {
 
 	private final Random _random = RandomRegistry.getRandom();
 
-	private final Factory<Double> _factory = new Factory<Double>() {
-		@Override
-		public Double newInstance() {
-			return _random.nextDouble();
+	private final Factory<Double> _factory = factory(_random);
+
+	private static Factory<Double> factory(final Random random) {
+		return new Factory<Double>() {
+			@Override
+			public Double newInstance() {
+				return random.nextDouble();
+			}
+		};
+	}
+
+	@Test
+	public void add() {
+		final MSeq<Double> seq = new Array<>(100);
+		final List<Double> list = new MSeqListAdapter<>(seq);
+
+		final Random random = new Random(123);
+		for (int i = 0; i < seq.length(); ++i) {
+			list.add(random.nextDouble());
 		}
-	};
+
+		final MSeq<Double> expect = new Array<>(seq.length());
+		expect.fill(factory(new Random(123)));
+
+		assertSameElements(expect, list);
+		assertSameElements(expect, seq);
+	}
 
 	@Test
 	public void equals() {
