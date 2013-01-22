@@ -277,6 +277,11 @@
 			<class name="org.jenetics.util.mathTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.util.Seq">
+		<classes>
+			<class name="org.jenetics.util.MSeqListAdapterTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.util.MurmurHashCodeBuilder">
 		<classes>
 			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
