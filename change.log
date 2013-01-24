@@ -1,3 +1,6 @@
+Jenetics-1.2.0
+- Prepare Selectors for parallelization.
+
 Jenetics-1.1.0
 - Add 'LCG64ShiftRandom' PRNG.
 - Speedup of 'IndexStream.Random' class. Uses internally now int values instead of doubles.

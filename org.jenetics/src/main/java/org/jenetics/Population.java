@@ -40,13 +40,14 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Copyable;
+import org.jenetics.util.Factory;
 
 /**
  * A population is a collection of Phenotypes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-24 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -88,6 +89,23 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	public Population() {
 		_population = new ArrayList<>();
+	}
+
+	/**
+	 * Fills the population with individuals created by the given factory.
+	 *
+	 * @param factory the {@code Phenotype} factory.
+	 * @param count the number of individuals to add to this population.
+	 * @return return this population, for command chanining.
+	 */
+	public Population<G, C> fill(
+		final Factory<? extends Phenotype<G, C>> factory,
+		final int count
+	) {
+		for (int i = 0; i < count; ++i) {
+			_population.add(factory.newInstance());
+		}
+		return this;
 	}
 
 	/**
