@@ -427,22 +427,17 @@ public final class arrays extends StaticObject {
 	 *
 	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
-	 * ConcurrentContext.enter();
-	 * try {
+	 * try (final Concurrency c = Concurrency.start()) {
 	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
 	 *
 	 *     for (int i = 0; i < parts.length - 1; ++i) {
 	 *         final int part = i;
-	 *         ConcurrentContext.execute(new Runnable() {
-	 *             public void run() {
-	 *                 for (int j = parts[part + 1]; --j >= parts[part];) {
-	 *                     population.get(j).evaluate();
-	 *                 }
+	 *         c.execute(new Runnable() { @Override public void run() {
+	 *             for (int j = parts[part + 1]; --j >= parts[part];) {
+	 *                 population.get(j).evaluate();
 	 *             }
-	 *         });
+	 *         }});
 	 *     }
-	 * } finally {
-	 *      ConcurrentContext.exit();
 	 * }
 	 * [/code]
 	 *
