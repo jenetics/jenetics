@@ -128,7 +128,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 		final Random random = RandomRegistry.getRandom();
 		final IndexStream stream = IndexStream.Random(genotype.length(), p, random);
-		int start = stream.next();
+		final int start = stream.next();
+
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
