@@ -166,6 +166,7 @@ public class GeneticAlgorithm<
 	private final Optimize _optimization;
 
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Factory<Phenotype<G, C>> _phenotypeFactory;
 	private final Function<Genotype<G>, C> _fitnessFunction;
 	private Function<C, C> _fitnessScaler;
 
@@ -287,6 +288,17 @@ public class GeneticAlgorithm<
 		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
 		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
 		_optimization = nonNull(optimization, "Optimization");
+
+		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
+			@Override public Phenotype<G, C> newInstance() {
+				return Phenotype.valueOf(
+					_genotypeFactory.newInstance(),
+					_fitnessFunction,
+					_fitnessScaler,
+					_generation
+				);
+			}
+		};
 	}
 
 	/**
@@ -301,18 +313,7 @@ public class GeneticAlgorithm<
 		_lock.lock();
 		try {
 			prepareSetup();
-
-			//Initializing/filling up the Population.
-			for (int i = _population.size(); i < _populationSize; ++i) {
-				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-				_population.add(pt);
-			}
-
+			_population.fill(_phenotypeFactory, _populationSize - _population.size());
 			finishSetup();
 		} finally {
 			_lock.unlock();
@@ -507,14 +508,13 @@ public class GeneticAlgorithm<
 				assert (survivors.size() == numberOfSurvivors);
 				selection.set(0, survivors);
 			}});
-			c.execute(new Runnable() { @Override public void run() {
-				final Population<G, C> offsprings = _offspringSelector.select(
-					_population, numberOfOffspring, _optimization
-				);
 
-				assert (offsprings.size() == numberOfOffspring);
-				selection.set(1, offsprings);
-			}});
+			final Population<G, C> offsprings = _offspringSelector.select(
+				_population, numberOfOffspring, _optimization
+			);
+
+			assert (offsprings.size() == numberOfOffspring);
+			selection.set(1, offsprings);
 		}
 
 		return selection;
@@ -540,13 +540,7 @@ public class GeneticAlgorithm<
 
 					// Sorry, too old or not valid.
 					if (isInvalid) {
-						final Phenotype<G, C> newpt = Phenotype.valueOf(
-								_genotypeFactory.newInstance(),
-								_fitnessFunction,
-								_fitnessScaler,
-								_generation
-							);
-						survivors.set(i, newpt);
+						survivors.set(i, _phenotypeFactory.newInstance());
 					}
 
 					if (isTooOld) {
@@ -558,9 +552,7 @@ public class GeneticAlgorithm<
 			}});
 
 			// In the mean time we can add the offsprings.
-			c.execute(new Runnable() { @Override public void run() {
-				population.addAll(offsprings);
-			}});
+			population.addAll(offsprings);
 		}
 
 		population.addAll(survivors);
