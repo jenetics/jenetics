@@ -26,7 +26,9 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,12 +37,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Concurrency;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.arrays;
 
 /**
  * A population is a collection of Phenotypes.
@@ -106,10 +111,44 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		for (int i = 0; i < count; ++i) {
-			_population.add(factory.newInstance());
+		// Serial version.
+		if (ConcurrentContext.getConcurrency() == 0) {
+			for (int i = 0; i < count; ++i) {
+				_population.add(factory.newInstance());
+			}
+
+		// Parallel version.
+		} else {
+			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
+			fill(factory, array._array);
+			_population.addAll(array);
 		}
+
 		return this;
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	void fill(
+		final Factory<? extends Phenotype<G, C>> factory,
+		final Object[] array
+	) {
+		try (final Concurrency c = Concurrency.start()) {
+			final int concurrency = ConcurrentContext.getConcurrency() + 1;
+			final int[] parts = arrays.partition(array.length, concurrency);
+
+			for (int i = 0; i < parts.length - 1; ++i) {
+				final int part = i;
+
+				c.execute(new Runnable() { @Override public void run() {
+					for (int j = parts[part + 1]; --j >= parts[part];) {
+						array[j] = factory.newInstance();
+					}
+				}});
+			}
+		}
 	}
 
 	/**
@@ -389,6 +428,39 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public void read(final InputElement xml, final Population p) {
 		}
 	};
+
+
+	private static final class PhenotypeArray<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+		extends AbstractCollection<Phenotype<G, C>>
+	{
+
+		final Object[] _array;
+
+		PhenotypeArray(final int size) {
+			_array = new Object[size];
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Iterator<Phenotype<G, C>> iterator() {
+			return Arrays.asList((Phenotype<G, C>[])_array).iterator();
+		}
+
+		@Override
+		public int size() {
+			return _array.length;
+		}
+
+		@Override
+		public Object[] toArray() {
+			return _array;
+		}
+
+	}
+
 
 }
 
