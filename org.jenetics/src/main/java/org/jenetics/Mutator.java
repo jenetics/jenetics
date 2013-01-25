@@ -67,7 +67,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-26 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -128,7 +128,8 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 		final Random random = RandomRegistry.getRandom();
 		final IndexStream stream = IndexStream.Random(genotype.length(), p, random);
-		int start = stream.next();
+		final int start = stream.next();
+
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
