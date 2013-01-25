@@ -45,9 +45,13 @@ import org.jenetics.util.Factory;
 /**
  * A population is a collection of Phenotypes.
  *
+ * <strong>This class is not synchronized.</strong> If multiple threads access
+ * a {@code Population} concurrently, and at least one of the threads modifies
+ * it, it <strong>must</strong> be synchronized externally.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-24 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
