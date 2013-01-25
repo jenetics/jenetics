@@ -42,13 +42,13 @@ import javolution.util.FastList;
  * is created the array length can't be changed (like the build in array).
  * <strong>This array is not synchronized.</strong> If multiple threads access
  * an {@code Array} concurrently, and at least one of the threads modifies the
- * array, it <strong>must</strong> be synchronized externally.
+ * array, it <strong>must</strong>  be synchronized externally.
  *
  * @param <T> the element type of the array.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-01-22 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-01-25 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
