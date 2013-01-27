@@ -23,7 +23,7 @@ For building the Jenetics library from source, download the most recent, stable 
 
     $ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
 
-Jenetics uses Gradle13 as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
+Jenetics uses [Gradle 1.3](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
 * **org.jenetics**: This project contains the source code and tests for the Jenetics core-module.
 * **org.jenetics.example**: This project contains example code for the *core*-module.
