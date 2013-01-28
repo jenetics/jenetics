@@ -137,7 +137,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-28 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -527,9 +527,9 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Concurrency c = Concurrency.start()) {
+		try (final Concurrency concurrency = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() { @Override public void run() {
+			concurrency.execute(new Runnable() { @Override public void run() {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
 					final Phenotype<G, C> survivor = survivors.get(i);
 
