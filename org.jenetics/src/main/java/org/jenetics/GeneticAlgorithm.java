@@ -527,9 +527,9 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Concurrency c = Concurrency.start()) {
+		try (final Concurrency concurrency = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() { @Override public void run() {
+			concurrency.execute(new Runnable() { @Override public void run() {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
 					final Phenotype<G, C> survivor = survivors.get(i);
 
