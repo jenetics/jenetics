@@ -259,9 +259,9 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final Function<Genotype<G>, C> function,
-			final Function<C, C> scaler,
-			final int generation
+		final Function<Genotype<G>, C> function,
+		final Function<C, C> scaler,
+		final int generation
 	) {
 		return valueOf(_genotype, function, scaler, generation);
 	}
@@ -277,8 +277,8 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final Function<Genotype<G>, C> function,
-			final int generation
+		final Function<Genotype<G>, C> function,
+		final int generation
 	) {
 		return valueOf(_genotype, function, functions.<C>Identity(), generation);
 	}

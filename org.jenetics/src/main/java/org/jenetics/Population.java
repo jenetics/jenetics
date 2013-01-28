@@ -136,8 +136,8 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Object[] array
 	) {
 		try (final Concurrency c = Concurrency.start()) {
-			final int concurrency = ConcurrentContext.getConcurrency() + 1;
-			final int[] parts = arrays.partition(array.length, concurrency);
+			final int threads = ConcurrentContext.getConcurrency() + 1;
+			final int[] parts = arrays.partition(array.length, threads);
 
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;
