@@ -5138,7 +5138,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/BlockSplitting.eps
+	filename ../resources/graphic/BlockSplitting.eps
 	width 80text%
 
 \end_inset
@@ -5233,7 +5233,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/Leapfrog.eps
+	filename ../resources/graphic/Leapfrog.eps
 	width 80text%
 
 \end_inset
