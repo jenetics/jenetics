@@ -9270,7 +9270,11 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.2
+: 1.2 (
+\emph on
+or later
+\emph default
+)
 \end_layout
 
 \begin_layout Itemize
@@ -9303,7 +9307,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
