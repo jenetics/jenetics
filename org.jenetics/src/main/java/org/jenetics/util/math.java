@@ -27,11 +27,10 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
-
 
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
@@ -339,7 +338,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-01-30 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -365,7 +364,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-01-30 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}

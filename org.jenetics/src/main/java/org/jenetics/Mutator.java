@@ -67,16 +67,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
-
-	/**
-	 * Default constructor, with probability = 0.01.
-	 */
-	public Mutator() {
-		this(0.01);
-	}
 
 	/**
 	 * Construct a Mutation object which a given mutation probability.
@@ -89,6 +82,13 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 */
 	public Mutator(final double probability) {
 		super(probability);
+	}
+
+	/**
+	 * Default constructor, with probability = 0.01.
+	 */
+	public Mutator() {
+		this(0.01);
 	}
 
 	/**
