@@ -198,7 +198,7 @@ public abstract class NumberGene<
 
 	/**
 	 * Remind that this method is not consistent with the {@link #equals(Object)}
-	 * method. Since this method only compairs the {@code value} and the
+	 * method. Since this method only compares the {@code value} and the
 	 * {@code equals} method also takes the {@code min} and {@code max} value
 	 * into account.
 	 * [code]

@@ -79,7 +79,8 @@ public class NormalDistribution<
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @since 1.0
+	 * @version 1.0 &mdash; <em>$Date$</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -132,7 +133,8 @@ public class NormalDistribution<
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @since 1.0
+	 * @version 1.0 &mdash; <em>$Date$</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
