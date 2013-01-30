@@ -56,7 +56,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-01-28 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,6 +70,13 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	private final List<Phenotype<G, C>> _population;
 
 	/**
+	 * @PrimaryConstructor
+	 */
+	private Population(final List<Phenotype<G, C>> population) {
+		_population = population;
+	}
+
+	/**
 	 * Constructs a population containing the elements of the specified collection,
 	 * in the order they are returned by the collection's iterator.
 	 *
@@ -78,7 +85,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
 	public Population(final Collection<? extends Phenotype<G, C>> population) {
-		_population = new ArrayList<>(population);
+		this(new ArrayList<>(population));
 	}
 
 	/**
@@ -90,14 +97,14 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *          negative
 	 */
 	public Population(final int size) {
-		_population = new ArrayList<>(size + 1);
+		this(new ArrayList<Phenotype<G, C>>(size + 1));
 	}
 
 	/**
 	 * Creating a new <code>Population</code>.
 	 */
 	public Population() {
-		_population = new ArrayList<>();
+		this(new ArrayList<Phenotype<G, C>>());
 	}
 
 	/**
