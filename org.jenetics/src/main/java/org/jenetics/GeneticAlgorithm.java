@@ -205,6 +205,39 @@ public class GeneticAlgorithm<
 
 
 	/**
+	 * Create a new genetic algorithm.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<C, C> fitnessScaler,
+		final Optimize optimization
+	) {
+		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
+		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
+		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
+		_optimization = nonNull(optimization, "Optimization");
+
+		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
+			@Override public Phenotype<G, C> newInstance() {
+				return Phenotype.valueOf(
+					_genotypeFactory.newInstance(),
+					_fitnessFunction,
+					_fitnessScaler,
+					_generation
+				);
+			}
+		};
+	}
+
+	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
 	 * fitness function.
 	 *
@@ -266,39 +299,6 @@ public class GeneticAlgorithm<
 			fitnessScaler,
 			Optimize.MAXIMUM
 		);
-	}
-
-	/**
-	 * Create a new genetic algorithm.
-	 *
-	 * @param genotypeFactory the genotype factory this GA is working with.
-	 * @param fitnessFunction the fitness function this GA is using.
-	 * @param fitnessScaler the fitness scaler this GA is using.
-	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler,
-		final Optimize optimization
-	) {
-		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
-		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
-		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
-		_optimization = nonNull(optimization, "Optimization");
-
-		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
-			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.valueOf(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-			}
-		};
 	}
 
 	/**

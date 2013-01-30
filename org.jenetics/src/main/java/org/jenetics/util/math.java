@@ -32,7 +32,6 @@ package org.jenetics.util;
 public final class math extends StaticObject {
 	private math() {}
 
-
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
 	 * overflow.

@@ -42,7 +42,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          {@code (index < 0 || index >= size())}.
+	 *         {@code (index < 0 || index >= size())}.
 	 */
 	public void set(final int index, final T value);
 
@@ -105,8 +105,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param otherStart the start index of the {@code other} array.
 	 * @throws IllegalArgumentException if {@code start > end}.
 	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *          end >= this.length() || otherStart < 0 ||
-	 *          otherStart + (end - start) >= other.length()}
+	 *         end >= this.length() || otherStart < 0 ||
+	 *         otherStart + (end - start) >= other.length()}
 	 */
 	public void swap(
 		final int start, final int end,
@@ -118,7 +118,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * sequence).
 	 *
 	 * @return a list iterator over the elements in this list (in proper
-	 *           sequence)
+	 *         sequence)
 	 */
 	public ListIterator<T> listIterator();
 
