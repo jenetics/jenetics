@@ -37,7 +37,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -58,8 +58,8 @@ public final class TruncationSelector<
 	 * by this method.)
 	 *
 	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *          population size or {@code count} is greater the the population
-	 *          size.
+	 *         population size or {@code count} is greater the the population
+	 *         size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
