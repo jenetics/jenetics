@@ -159,7 +159,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate);
+	public int lastIndexWhere(final Predicate<? super T> predicate);
 
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
