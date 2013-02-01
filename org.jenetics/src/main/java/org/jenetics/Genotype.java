@@ -22,7 +22,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
@@ -192,7 +191,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forall(Verify);
+			_valid = _chromosomes.forall(c -> c.isValid());
 		}
 		return _valid;
 	}

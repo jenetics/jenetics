@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Block;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -152,14 +153,14 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public boolean forall(final Function<? super T, Boolean> predicate) {
+	public boolean forall(final Predicate<? super T> predicate) {
 		nonNull(predicate, "Predicate");
 
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			valid = predicate.apply(element).booleanValue();
+			valid = predicate.test(element);
 		}
 		return valid;
 	}

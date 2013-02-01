@@ -73,6 +73,7 @@ public final class object extends StaticObject {
 	 * [/code]
 	 * is true.
 	 */
+	/*
 	public static final Function<Verifiable, Boolean>
 	Verify = new Function<Verifiable,Boolean>() {
 		@Override
@@ -80,6 +81,7 @@ public final class object extends StaticObject {
 			return object.isValid() ? Boolean.TRUE : Boolean.FALSE;
 		}
 	};
+	*/
 
 	/**
 	 * A {@code null} checking predicate which can be used to check an array

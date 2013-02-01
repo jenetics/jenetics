@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.function.Block;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 
 /**
@@ -94,7 +95,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *          {@code null}.
 	 */
-	public boolean forall(final Function<? super T, Boolean> predicate);
+	public boolean forall(final Predicate<? super T> predicate);
 
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
