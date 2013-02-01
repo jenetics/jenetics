@@ -274,6 +274,15 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	@Override
 	public int hashCode();
+	/*
+	{
+		int hash = 1;
+		for (Object element : this) {
+			hash = 31*hash + (element == null ? 0: element.hashCode());
+		}
+		return hash;
+	}
+	*/
 
 	/**
 	 * Compares the specified object with this sequence for equality. Returns
@@ -292,6 +301,28 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	@Override
 	public boolean equals(final Object object);
+	/*
+	{
+		if (object == this) {
+			return true;
+		}
+		if (!(object instanceof Seq<?>)) {
+			return false;
+		}
+
+		final Seq<?> other = (Seq<?>)object;
+		boolean equals = (length() == other.length());
+		for (int i = length(); equals && --i >= 0;) {
+			final Object element = get(i);
+			if (element != null) {
+				equals = element.equals(other.get(i));
+			} else {
+				equals = other.get(i) == null;
+			}
+		}
+		return equals;
+	}
+	*/
 
 	/**
 	 * Create a string representation of the given sequence.
