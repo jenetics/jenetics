@@ -15,15 +15,15 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Build Jenetics
 
 
-For building the Jenetics library from source, download the most recent, stable package version from <https://sourceforge.net/projects/jenetics/files/latest/download> and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) or [Bitbucket](https://bitbucket.org/fwilhelm/jenetics/downloads) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
 `<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
 
-    $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
+    $ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
 
-Jenetics uses Gradle13 as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
+Jenetics uses [Gradle 1.3](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
 * **org.jenetics**: This project contains the source code and tests for the Jenetics core-module.
 * **org.jenetics.example**: This project contains example code for the *core*-module.

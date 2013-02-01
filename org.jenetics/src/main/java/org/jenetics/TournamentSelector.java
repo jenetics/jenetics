@@ -27,6 +27,7 @@ import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -43,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-24 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -110,30 +111,53 @@ public class TournamentSelector<
 		}
 
 		final Population<G, C> pop = new Population<>(count);
-		if (count == 0) {
-			return pop;
-		}
+		final Factory<Phenotype<G, C>> factory = factory(
+			population, opt, _sampleSize, RandomRegistry.getRandom()
+		);
 
-		Phenotype<G, C> winner = null;
+		return pop.fill(factory, count);
+	}
 
-		final int N = population.size();
-		final Random random = RandomRegistry.getRandom();
-
-		for (int i = 0; i < count; ++i) {
-			winner = population.get(random.nextInt(N));
-
-			for (int j = 0; j < _sampleSize; ++j) {
-				final Phenotype<G, C> selection = population.get(random.nextInt(N));
-				if (opt.compare(selection, winner) > 0) {
-					winner = selection;
-				}
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Factory<Phenotype<G, C>> factory(
+		final Population<G, C> population,
+		final Optimize opt,
+		final int sampleSize,
+		final Random random
+	) {
+		return new Factory<Phenotype<G, C>>() {
+			@Override
+			public Phenotype<G, C> newInstance() {
+				return select(population, opt, sampleSize, random);
 			}
+		};
+	}
 
-			assert (winner != null);
-			pop.add(winner);
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Phenotype<G, C> select(
+		final Population<G, C> population,
+		final Optimize opt,
+		final int sampleSize,
+		final Random random
+	) {
+		final int N = population.size();
+		Phenotype<G, C> winner = population.get(random.nextInt(N));
+
+		for (int j = 0; j < sampleSize; ++j) {
+			final Phenotype<G, C> selection = population.get(random.nextInt(N));
+			if (opt.compare(selection, winner) > 0) {
+				winner = selection;
+			}
 		}
+		assert (winner != null);
 
-		return pop;
+		return winner;
 	}
 
 	@Override

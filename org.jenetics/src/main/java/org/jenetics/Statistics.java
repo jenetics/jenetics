@@ -57,7 +57,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,7 +70,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -431,8 +431,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			throws XMLStreamException
 		{
 			final Optimize optimize = Optimize.valueOf(
-						xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
-					);
+				xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
+			);
 			final int generation = xml.getAttribute(GENERATION, 0);
 			final int samples = xml.getAttribute(SAMPLES, 1);
 			final Float64 meanAge = xml.get(AGE_MEAN);
@@ -486,7 +486,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -681,7 +681,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
