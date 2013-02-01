@@ -76,10 +76,10 @@ public class GeneticAlgorithmTest {
 
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(200);
-			ga.setAlterer(new MeanAlterer<Float64Gene>());
+			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-			ga.setSurvivorSelector(new TournamentSelector<Float64Gene, Float64>());
+			ga.setOffspringSelector(new RouletteWheelSelector<>());
+			ga.setSurvivorSelector(new TournamentSelector<>());
 
 			ga.setup();
 			ga.evolve(100);
@@ -144,10 +144,10 @@ public class GeneticAlgorithmTest {
 
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<Float64Gene>());
+			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-			ga.setSurvivorSelector(new StochasticUniversalSelector<Float64Gene, Float64>());
+			ga.setOffspringSelector(new RouletteWheelSelector<>());
+			ga.setSurvivorSelector(new StochasticUniversalSelector<>());
 
 			ga.setup();
 			for (int i = 0; i < 10; ++i) {
@@ -168,10 +168,10 @@ public class GeneticAlgorithmTest {
 
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 			ga.setPopulationSize(1000);
-			ga.setAlterer(new MeanAlterer<Float64Gene>());
+			ga.setAlterer(new MeanAlterer<>());
 			ga.setOffspringFraction(0.3);
-			ga.setOffspringSelector(new BoltzmannSelector<Float64Gene, Float64>(0.001));
-			ga.setSurvivorSelector(new ExponentialRankSelector<Float64Gene, Float64>(0.675));
+			ga.setOffspringSelector(new BoltzmannSelector<>(0.001));
+			ga.setSurvivorSelector(new ExponentialRankSelector<>(0.675));
 
 			ga.setup();
 			for (int i = 0; i < 10; ++i) {
@@ -189,10 +189,10 @@ public class GeneticAlgorithmTest {
 
 		final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);
 		ga.setPopulationSize(1000);
-		ga.setAlterer(new MeanAlterer<Float64Gene>());
+		ga.setAlterer(new MeanAlterer<>());
 		ga.setOffspringFraction(0.3);
-		ga.setOffspringSelector(new RouletteWheelSelector<Float64Gene, Float64>());
-		ga.setSurvivorSelector(new LinearRankSelector<Float64Gene, Float64>());
+		ga.setOffspringSelector(new RouletteWheelSelector<>());
+		ga.setSurvivorSelector(new LinearRankSelector<>());
 
 		ga.setup();
 		for (int i = 0; i < 10; ++i) {
