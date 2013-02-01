@@ -138,8 +138,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public boolean forall(final Predicate<? super T> predicate) {
-		nonNull(predicate, "Predicate");
-
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
 			@SuppressWarnings("unchecked")

@@ -25,7 +25,6 @@ package org.jenetics.util;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Block;
-import java.util.function.Function;
 
 /**
  * Some helper methods for creating hash codes and comparing values.
@@ -64,25 +63,6 @@ public final class object extends StaticObject {
 		};
 	}
 
-
-	/**
-	 * Verifies {@link Verifiable} array elements. All elements are valid if the
-	 * condition
-	 * [code]
-	 * array.forall(Verify) == true
-	 * [/code]
-	 * is true.
-	 */
-	/*
-	public static final Function<Verifiable, Boolean>
-	Verify = new Function<Verifiable,Boolean>() {
-		@Override
-		public Boolean apply(final Verifiable object) {
-			return object.isValid() ? Boolean.TRUE : Boolean.FALSE;
-		}
-	};
-	*/
-
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
 	 * for null values. The following code will throw an
@@ -96,7 +76,7 @@ public final class object extends StaticObject {
 	 * arrays.foreach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Block<Object> NonNull = NonNull("Object");
+	public static final Block<Object> NonNull = o -> { nonNull(o, "Object"); };
 
 	/**
 	 * A {@code null} checking predicate which can be used to check an array

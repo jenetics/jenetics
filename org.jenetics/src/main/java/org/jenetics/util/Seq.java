@@ -81,8 +81,14 @@ public interface Seq<T> extends Iterable<T> {
 	 *          {@code null}.
 	 */
 	public default void foreach(final Block<? super T> block) {
-		for (final T value : this) {
-			block.accept(value);
+		if (this instanceof RandomAccess) {
+			for (int i = 0, n = length(); i < n; ++i) {
+				block.accept(get(i));
+			}
+		} else {
+			for (final T value : this) {
+				block.accept(value);
+			}
 		}
 	}
 
@@ -95,7 +101,23 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *          {@code null}.
 	 */
-	public boolean forall(final Predicate<? super T> predicate);
+	public default boolean forall(final Predicate<? super T> predicate) {
+		boolean valid = true;
+
+		if (this instanceof RandomAccess) {
+			for (int i = 0, n = length(); i < n && valid; ++i) {
+				valid = predicate.test(get(i));
+			}
+			return valid;
+		} else {
+			final Iterator<T> it = iterator();
+			while (it.hasNext() && valid) {
+				valid = predicate.test(it.next());
+			}
+		}
+
+		return valid;
+	}
 
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
