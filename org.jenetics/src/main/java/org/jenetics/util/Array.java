@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
+import java.util.function.Function;
 
 import javolution.context.StackContext;
 import javolution.util.FastList;
@@ -48,7 +49,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-01-25 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>

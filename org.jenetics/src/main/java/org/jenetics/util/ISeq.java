@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.function.Function;
+
 import javolution.lang.Immutable;
 
 /**
@@ -31,7 +33,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-14 $</em>
  */
 public interface ISeq<T>
 	extends

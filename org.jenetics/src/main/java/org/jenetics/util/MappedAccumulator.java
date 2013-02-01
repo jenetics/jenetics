@@ -26,6 +26,8 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
+import java.util.function.Function;
+
 /**
  * Abstract implementation of the {@link Accumulator} interface which defines a
  * {@code samples} property which is incremented by the {@link #accumulate(Object)}
@@ -33,7 +35,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public abstract class MappedAccumulator<T>
 	implements

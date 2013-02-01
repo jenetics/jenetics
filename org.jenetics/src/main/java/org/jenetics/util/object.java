@@ -24,13 +24,14 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}

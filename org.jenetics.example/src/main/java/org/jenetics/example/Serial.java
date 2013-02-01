@@ -23,6 +23,7 @@
 package org.jenetics.example;
 
 import java.io.File;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -31,12 +32,11 @@ import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
-import org.jenetics.util.Function;
 import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public class Serial {
 

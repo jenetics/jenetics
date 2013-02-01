@@ -28,6 +28,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,7 +37,6 @@ import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.IO;
 import org.jenetics.util.arrays;
 import org.jenetics.util.Serialize;

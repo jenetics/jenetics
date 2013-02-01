@@ -28,6 +28,7 @@ import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
+import java.util.function.Function;
 
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -37,7 +38,6 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
@@ -70,7 +70,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-13 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements

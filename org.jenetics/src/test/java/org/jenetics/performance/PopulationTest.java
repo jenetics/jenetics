@@ -24,6 +24,7 @@ package org.jenetics.performance;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -31,7 +32,6 @@ import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
-import org.jenetics.util.Function;
 import org.jenetics.util.arrays;
 
 /**

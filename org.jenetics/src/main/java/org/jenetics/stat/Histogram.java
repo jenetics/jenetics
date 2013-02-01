@@ -36,11 +36,11 @@ import static org.jenetics.util.object.nonNull;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.MappedAccumulator;
 import org.jenetics.util.arrays;
 
@@ -68,7 +68,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 

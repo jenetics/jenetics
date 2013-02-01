@@ -28,10 +28,10 @@ import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 
@@ -68,7 +68,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -89,7 +89,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -143,7 +143,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements

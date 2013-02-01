@@ -26,6 +26,8 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import java.util.function.Function;
+
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.Float64Chromosome;
@@ -37,7 +39,6 @@ import org.jenetics.Mutator;
 import org.jenetics.NumberStatistics;
 import org.jenetics.Optimize;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 final class Real
 	implements Function<Genotype<Float64Gene>, Float64>

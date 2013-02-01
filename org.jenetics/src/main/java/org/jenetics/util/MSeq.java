@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.function.Function;
 
 /**
  * Mutable, ordered, fixed sized sequence.
@@ -32,7 +33,7 @@ import java.util.ListIterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 

@@ -26,10 +26,10 @@ import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Range;
 
 /**
@@ -37,7 +37,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 class BinomialDistribution<
 	N extends Number & Comparable<? super N>

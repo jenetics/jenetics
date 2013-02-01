@@ -27,6 +27,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import javax.measure.Measure;
 import javax.measure.unit.SI;
@@ -39,12 +40,11 @@ import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public class Performance {
 

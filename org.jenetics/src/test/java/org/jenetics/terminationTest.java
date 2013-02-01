@@ -24,16 +24,15 @@ package org.jenetics;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Function;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-01 $</em>
  */
 public class terminationTest {
 

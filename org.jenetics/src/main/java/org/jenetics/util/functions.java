@@ -26,6 +26,7 @@ import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
@@ -35,7 +36,7 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}

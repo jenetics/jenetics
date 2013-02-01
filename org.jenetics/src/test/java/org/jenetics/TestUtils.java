@@ -24,17 +24,17 @@ package org.jenetics;
 
 import java.io.Serializable;
 import java.util.Random;
+import java.util.function.Function;
 
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-23 $</em>
+ * @version <em>$Date: 2013-02-01 $</em>
  */
 class TestUtils {
 
