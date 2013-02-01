@@ -383,16 +383,12 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
 		final C... separators
 	) {
-		return new Histogram<>(COMPARATOR, separators);
+		return new Histogram<C>(COMPARATOR, separators);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private static final Comparator COMPARATOR = new Comparator() {
-		@Override
-		public int compare(final Object o1, final Object o2) {
-			return ((Comparable)o1).compareTo(o2);
-		}
-	};
+	private static final Comparator COMPARATOR = (a, b) -> ((Comparable)a).compareTo(b);
+
 
 	/**
 	 * Return a <i>histogram</i> for {@link Float64} values. The <i>histogram</i>

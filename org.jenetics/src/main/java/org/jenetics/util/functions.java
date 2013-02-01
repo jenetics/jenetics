@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import static org.jenetics.util.object.nonNull;
+import static org.jenetics.util.object.str;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -46,21 +47,13 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<Object, String>
-	ObjectToString = new Function<Object, String>() {
-		@Override public String apply(final Object value) {
-			return Objects.toString(value);
-		}
-	};
+	ObjectToString = o -> Objects.toString(o);
 
 	/**
 	 * Convert a string value to its length.
 	 */
 	public static final Function<String, Integer>
-	StringLength = new Function<String, Integer>() {
-		@Override public Integer apply(final String value) {
-			return value.length();
-		}
-	};
+	StringLength = s -> s.length();
 
 	/**
 	 * Convert a string to an integer. If the string can't be converted, an
@@ -68,11 +61,7 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<String, Integer>
-	StringToInteger = new Function<String, Integer>() {
-		@Override public Integer apply(final String value) {
-			return Integer.parseInt(value);
-		}
-	};
+	StringToInteger = s -> Integer.parseInt(s);
 
 	/**
 	 * Convert a string to a long. If the string can't be converted, an
@@ -80,11 +69,7 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<String, Long>
-	StringToLong = new Function<String, Long>() {
-		@Override public Long apply(final String value) {
-			return Long.parseLong(value);
-		}
-	};
+	StringToLong = s -> Long.parseLong(s);
 
 	/**
 	 * Convert a string to an Integer64. If the string can't be converted, an
@@ -92,11 +77,7 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<String, Integer64>
-	StringToInteger64 = new Function<String, Integer64>() {
-		@Override public Integer64 apply(final String value) {
-			return Integer64.valueOf(value);
-		}
-	};
+	StringToInteger64 = s -> Integer64.valueOf(s);
 
 	/**
 	 * Convert a string to a float. If the string can't be converted, an
@@ -104,11 +85,7 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<String, Float>
-	StringToFloat = new Function<String, Float>() {
-		@Override public Float apply(final String value) {
-			return Float.parseFloat(value);
-		}
-	};
+	StringToFloat = s -> Float.parseFloat(s);
 
 	/**
 	 * Convert a string to a double. If the string can't be converted, an
@@ -116,11 +93,7 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<String, Double>
-	StringToDouble = new Function<String, Double>() {
-		@Override public Double apply(final String value) {
-			return Double.parseDouble(value);
-		}
-	};
+	StringToDouble = s -> Double.parseDouble(s);
 
 	/**
 	 * Convert a string to a Float64. If the string can't be converted, an
@@ -128,51 +101,31 @@ public final class functions extends StaticObject {
 	 * method.
 	 */
 	public static final Function<String, Float64>
-	StringToFloat64 = new Function<String, Float64>() {
-		@Override public Float64 apply(final String value) {
-			return Float64.valueOf(value);
-		}
-	};
+	StringToFloat64 = s -> Float64.valueOf(s);
 
 	/**
 	 * Convert a {@link Float64} value to a {@link Double} value.
 	 */
 	public static final Function<Float64, Double>
-	Float64ToDouble = new Function<Float64, Double>() {
-		@Override public Double apply(final Float64 value) {
-			return value.doubleValue();
-		}
-	};
+	Float64ToDouble = f -> f.doubleValue();
 
 	/**
 	 * Convert a {@link Double} value to a {@link Float64} value.
 	 */
 	public static final Function<Double, Float64>
-	DoubleToFloat64 = new Function<Double, Float64>() {
-		@Override public Float64 apply(final Double value) {
-			return Float64.valueOf(value);
-		}
-	};
+	DoubleToFloat64 = d -> Float64.valueOf(d);
 
 	/**
 	 * Convert a {@link Integer64} value to a {@link Long} value.
 	 */
 	public static final Function<Integer64, Long>
-	Integer64ToLong = new Function<Integer64, Long>() {
-		@Override public Long apply(final Integer64 value) {
-			return value.longValue();
-		}
-	};
+	Integer64ToLong = i -> i.longValue();
 
 	/**
 	 * Convert a {link Long} value to a {@link Integer64} value.
 	 */
 	public static final Function<Long, Integer64>
-	LongToInteger64 = new Function<Long, Integer64>() {
-		@Override public Integer64 apply(final Long value) {
-			return Integer64.valueOf(value);
-		}
-	};
+	LongToInteger64 = l -> Integer64.valueOf(l);
 
 	/**
 	 * A predicate which return {@code true} if an given value is {@code null}.
@@ -262,20 +215,6 @@ public final class functions extends StaticObject {
 		};
 	}
 
-
-	private static final class Identity
-		implements Function<Object, Object>, Serializable
-	{
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Object apply(final Object value) {
-			return value;
-		}
-	}
-
-	private static Function<Object, Object> IDENTITY = new Identity();
-
 	/**
 	 * Return the identity function for the given type.
 	 *
@@ -283,7 +222,7 @@ public final class functions extends StaticObject {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Function<T, T> Identity() {
-		return (Function<T, T>)IDENTITY;
+		return o -> o;
 	}
 
 
