@@ -88,17 +88,9 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		int index = -1;
 
 		if (element == null) {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
-				}
-			});
+			index = indexWhere(o -> o == null);
 		} else {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
-				}
-			});
+			index = indexWhere(o -> element.equals(o));
 		}
 
 		return index;
@@ -126,7 +118,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexWhere(final Function<? super T, Boolean> predicate) {
+	public int indexWhere(final Predicate<? super T> predicate) {
 		nonNull(predicate, "Predicate");
 
 		int index = -1;
@@ -135,7 +127,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
-			if (predicate.apply(element) == Boolean.TRUE) {
+			if (predicate.test(element)) {
 				index = i - _start;
 			}
 		}

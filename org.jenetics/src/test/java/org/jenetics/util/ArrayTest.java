@@ -337,11 +337,9 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		Assert.assertEquals(count.get(), 10);
 
 		count.set(0);
-		int result = array.indexWhere(new Function<Integer, Boolean>() {
-			@Override public Boolean apply(Integer object) {
-				Assert.assertEquals(object, new Integer(123));
-				return count.addAndGet(1) == 5;
-			}
+		int result = array.indexWhere(o -> {
+			Assert.assertEquals(o, new Integer(123));
+			return count.addAndGet(1) == 5;
 		});
 
 		Assert.assertEquals(count.get(), 5);

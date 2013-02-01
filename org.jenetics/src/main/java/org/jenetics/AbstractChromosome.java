@@ -75,7 +75,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	protected AbstractChromosome(final ISeq<G> genes) {
 		nonNull(genes, "Gene array");
-		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
+		assert (genes.indexWhere(g -> g == null) == -1) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(
