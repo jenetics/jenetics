@@ -84,41 +84,28 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexOf(final Object element) {
-		int index = -1;
-
-		if (element == null) {
-			index = indexWhere(o -> o == null);
-		} else {
-			index = indexWhere(o -> element.equals(o));
-		}
-
-		return index;
-	}
-
-	@Override
-	public int lastIndexOf(final Object element) {
-		int index = -1;
-
-		if (element == null) {
-			index = lastIndexWhere(o -> o == null);
-		} else {
-			index = lastIndexWhere(o -> element.equals(o));
-		}
-
-		return index;
-	}
-
-	@Override
 	public int indexWhere(final Predicate<? super T> predicate) {
-		nonNull(predicate, "Predicate");
-
 		int index = -1;
 
 		for (int i = _start; i < _end && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
+			if (predicate.test(element)) {
+				index = i - _start;
+			}
+		}
+
+		return index;
+	}
+
+	@Override
+	public int lastIndexWhere(final Predicate<? super T> predicate) {
+		int index = -1;
+
+		for (int i = _end - 1; i >= _start && index == -1; --i) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array.data[i];
 			if (predicate.test(element)) {
 				index = i - _start;
 			}
@@ -174,26 +161,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	*/
 
 	@Override
-	public int lastIndexWhere(final Predicate<? super T> predicate) {
-		int index = -1;
-
-		for (int i = _end - 1; i >= _start && index == -1; --i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array.data[i];
-			if (predicate.test(element)) {
-				index = i - _start;
-			}
-		}
-
-		return index;
-	}
-
-	@Override
-	public boolean contains(final Object element) {
-		return indexOf(element) != -1;
-	}
-
-	@Override
 	public int length() {
 		return _length;
 	}
@@ -207,8 +174,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> converter
 	) {
-		nonNull(converter, "Converter");
-
 		return new Iterator<B>() {
 			private final Iterator<T> _iterator = iterator();
 			@Override public boolean hasNext() {

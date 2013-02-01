@@ -523,11 +523,6 @@ public final class Array<T>
 	}
 
 	@Override
-	public Array<T> setAll(final Iterable<? extends T> values) {
-		return setAll(values.iterator());
-	}
-
-	@Override
 	public Array<T> setAll(final T[] values) {
 		_array.cloneIfSealed();
 		System.arraycopy(
@@ -538,8 +533,6 @@ public final class Array<T>
 
 	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
-		nonNull(factory);
-
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
 			_array.data[i] = factory.newInstance();

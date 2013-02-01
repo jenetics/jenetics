@@ -126,7 +126,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *        The tested element can be {@code null}.
 	 * @return {@code true} if this sequence contains the specified element
 	 */
-	public boolean contains(final Object element);
+	public default boolean contains(final Object element) {
+		return indexOf(element) != -1;
+	}
 
 	/**
 	 * Returns the index of the first occurrence of the specified element
@@ -136,7 +138,17 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return the index of the first occurrence of the specified element in
 	 *          this sequence, or -1 if this sequence does not contain the element
 	 */
-	public int indexOf(final Object element);
+	public default int indexOf(final Object element) {
+		int index = -1;
+
+		if (element == null) {
+			index = indexWhere(o -> o == null);
+		} else {
+			index = indexWhere(o -> element.equals(o));
+		}
+
+		return index;
+	}
 
 	/**
 	 * <p>
@@ -168,7 +180,17 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return the index of the last occurrence of the specified element in
 	 * 		  this sequence, or -1 if this sequence does not contain the element
 	 */
-	public int lastIndexOf(final Object element);
+	public default int lastIndexOf(final Object element) {
+		int index = -1;
+
+		if (element == null) {
+			index = lastIndexWhere(o -> o == null);
+		} else {
+			index = lastIndexWhere(o -> element.equals(o));
+		}
+
+		return index;
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
