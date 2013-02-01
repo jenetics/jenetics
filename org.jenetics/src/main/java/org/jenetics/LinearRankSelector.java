@@ -60,7 +60,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -99,7 +99,7 @@ public final class LinearRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -111,7 +111,7 @@ public final class LinearRankSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		//Sort the population.
-		population.sort();
+		population.populationSort();
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];

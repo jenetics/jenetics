@@ -44,7 +44,7 @@ import org.jenetics.util.Serialize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-01 $</em>
  */
 public class PopulationTest {
 
@@ -71,7 +71,7 @@ public class PopulationTest {
 			population.add(pt(Math.random()*9.0));
 		}
 
-		population.sort();
+		population.populationSort();
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.apply(population.get(i).getGenotype());
 			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
@@ -79,7 +79,7 @@ public class PopulationTest {
 		}
 
 		arrays.shuffle(population);
-		population.sort(Optimize.MAXIMUM.<Float64>descending());
+		population.populationSort(Optimize.MAXIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.apply(population.get(i).getGenotype());
 			Float64 second = _cf.apply(population.get(i + 1).getGenotype());
@@ -87,7 +87,7 @@ public class PopulationTest {
 		}
 
 		arrays.shuffle(population);
-		population.sort(Optimize.MINIMUM.<Float64>descending());
+		population.populationSort(Optimize.MINIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.apply(population.get(i).getGenotype());
 			Float64 second = _cf.apply(population.get(i + 1).getGenotype());

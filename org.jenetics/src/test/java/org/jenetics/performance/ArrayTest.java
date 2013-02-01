@@ -33,7 +33,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-01 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -134,7 +134,7 @@ public class ArrayTest {
 	};
 
 	@Test(8)
-	public final TestCase sort = new TestCase("sort()", 50, SIZE) {
+	public final TestCase sort = new TestCase("populationSort()", 50, SIZE) {
 		private final Comparator<Integer> _comparator = new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {

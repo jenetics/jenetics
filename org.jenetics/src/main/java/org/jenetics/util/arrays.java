@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -172,7 +172,7 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
-	 * Calls the sort method on the {@link Arrays} class.
+	 * Calls the populationSort method on the {@link Arrays} class.
 	 *
 	 * @throws NullPointerException if the give array is {@code null}.
 	 * @throws UnsupportedOperationException if the array is sealed

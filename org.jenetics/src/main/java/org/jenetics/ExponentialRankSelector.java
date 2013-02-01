@@ -54,7 +54,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -84,7 +84,7 @@ public final class ExponentialRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -96,7 +96,7 @@ public final class ExponentialRankSelector<
 		assert(count > 0) : "Population to select must be greater than zero. ";
 
 		//Sorted population required.
-		population.sort();
+		population.populationSort();
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];

@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -223,7 +223,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * in the returned sequence are reflected in this sequence, and vice-versa.
 	 * <p/>
 	 * This method eliminates the need for explicit range operations (of the
-	 * sort that commonly exist for arrays). Any operation that expects an sequence
+	 * populationSort that commonly exist for arrays). Any operation that expects an sequence
 	 * can be used as a range operation by passing an sub sequence view instead of
 	 * an whole sequence.
 	 *
@@ -242,7 +242,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * returned sequence are reflected in this array, and vice-versa.
 	 * <p/>
 	 * This method eliminates the need for explicit range operations (of the
-	 * sort that commonly exist for arrays). Any operation that expects an array
+	 * populationSort that commonly exist for arrays). Any operation that expects an array
 	 * can be used as a range operation by passing an sub sequence view instead of
 	 * an whole sequence.
 	 *

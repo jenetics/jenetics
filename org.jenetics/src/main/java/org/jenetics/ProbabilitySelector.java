@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-24 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -160,7 +160,7 @@ public abstract class ProbabilitySelector<
 	 * Return an Probability array, which corresponds to the given Population.
 	 * The probability array and the population must have the same size. The
 	 * population is not sorted. If a subclass needs a sorted population, the
-	 * subclass is responsible to sort the population.
+	 * subclass is responsible to populationSort the population.
 	 * <p/>
 	 * The implementor always assumes that higher fitness values are better. The
 	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is

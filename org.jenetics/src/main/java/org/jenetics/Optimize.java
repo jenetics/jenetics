@@ -30,7 +30,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public enum Optimize {
 
@@ -81,10 +81,10 @@ public enum Optimize {
 	 *
 	 * [code]
 	 * Population<Float64Gene, Float64> population = ...
-	 * population.sort(Optimize.MINIMUM.<Float64>descending());
+	 * population.populationSort(Optimize.MINIMUM.<Float64>descending());
 	 * [/code]
 	 *
-	 * The code example above will sort the population according it's fitness
+	 * The code example above will populationSort the population according it's fitness
 	 * values in ascending order, since lower values are <i>better</i> in this
 	 * case.
 	 *
@@ -108,10 +108,10 @@ public enum Optimize {
 	 *
 	 * [code]
 	 * Population<Float64Gene, Float64> population = ...
-	 * population.sort(Optimize.MINIMUM.<Float64>ascending());
+	 * population.populationSort(Optimize.MINIMUM.<Float64>ascending());
 	 * [/code]
 	 *
-	 * The code example above will sort the population according it's fitness
+	 * The code example above will populationSort the population according it's fitness
 	 * values in descending order, since lower values are <i>better</i> in this
 	 * case.
 	 *

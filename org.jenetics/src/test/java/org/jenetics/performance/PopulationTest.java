@@ -36,7 +36,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-01 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
@@ -67,11 +67,11 @@ public class PopulationTest {
 	};
 
 	@Test(3)
-	public TestCase sort = new TestCase("sort()", LOOPS, SIZE) {
+	public TestCase sort = new TestCase("populationSort()", LOOPS, SIZE) {
 
 		@Override
 		protected void test() {
-			_population.sort();
+			_population.populationSort();
 		}
 
 		@Override

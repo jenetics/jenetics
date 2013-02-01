@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -61,7 +61,7 @@ public class StochasticUniversalSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#sort()} is called
+	 * selection probabilities. (The method {@link Population#populationSort()} is called
 	 * by this method.)
 	 */
 	@Override
@@ -111,7 +111,7 @@ public class StochasticUniversalSelector<
 		final Population<G, N> population,
 		final int count
 	) {
-		population.sort();
+		population.populationSort();
 		return super.probabilities(population, count);
 	}
 
