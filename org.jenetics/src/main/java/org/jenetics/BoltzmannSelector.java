@@ -60,7 +60,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
@@ -73,11 +73,11 @@ public final class BoltzmannSelector<
 	private final double _b;
 
 	/**
-	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High
+	 * Create a new BoltzmanSelector with the given <i>b</i> value. <b>High
 	 * absolute values of <i>b</i> can create numerical overflows while
 	 * calculating the selection probabilities.</b>
 	 *
-	 * @param b the <i>b</i> value of this BolzmanSelector
+	 * @param b the <i>b</i> value of this BoltzmanSelector
 	 */
 	public BoltzmannSelector(final double b) {
 		_b = b;

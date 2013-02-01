@@ -75,12 +75,7 @@ public final class Float64Gene
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
-	public static final Function<Float64Gene, Float64> Allele =
-		new Function<Float64Gene, Float64>() {
-			@Override public Float64 apply(final Float64Gene value) {
-				return value._value;
-			}
-		};
+	public static final Function<Float64Gene, Float64> Allele = g -> g._value;
 
 	/**
 	 * Converter for accessing the allele from a given number gene.
@@ -90,22 +85,12 @@ public final class Float64Gene
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Function<Float64Gene, Float64> Min =
-		new Function<Float64Gene, Float64>() {
-			@Override public Float64 apply(final Float64Gene value) {
-				return value._min;
-			}
-		};
+	public static final Function<Float64Gene, Float64> Min = g -> g._min;
 
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Function<Float64Gene, Float64> Max =
-		new Function<Float64Gene, Float64>() {
-			@Override public Float64 apply(final Float64Gene value) {
-				return value._max;
-			}
-		};
+	public static final Function<Float64Gene, Float64> Max = g -> g._max;
 
 	/* *************************************************************************
 	 *  Factory methods

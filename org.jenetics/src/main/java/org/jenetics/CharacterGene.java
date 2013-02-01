@@ -126,15 +126,6 @@ public final class CharacterGene
 		return getAllele().compareTo(that.getAllele());
 	}
 
-	/**
-	 * Return the {@link Factory} view of this gene.
-	 *
-	 * @return the {@link Factory} view of this gene.
-	 */
-	Factory<CharacterGene> asFactory() {
-		return this;
-	}
-
 	@Override
 	public int hashCode() {
 		return hashCodeOf(getClass()).and(_character).and(_validCharacters).value();
@@ -171,22 +162,14 @@ public final class CharacterGene
 	/**
 	 * Converter for accessing the allele from a given gene.
 	 */
-	public static final Function<CharacterGene, Character> Allele =
-		new Function<CharacterGene, Character>() {
-			@Override public Character apply(final CharacterGene value) {
-				return value._character;
-			}
-		};
+	public static final Function<CharacterGene, Character>
+	Allele = value -> value._character;
 
 	/**
 	 * Converter for accessing the valid characters from a given gene.
 	 */
-	public static final Function<CharacterGene, CharSeq> ValidCharacters =
-		new Function<CharacterGene, CharSeq>() {
-			@Override public CharSeq apply(final CharacterGene value) {
-				return value._validCharacters;
-			}
-		};
+	public static final Function<CharacterGene, CharSeq>
+	ValidCharacters = value -> value._validCharacters;
 
 
 	/* *************************************************************************

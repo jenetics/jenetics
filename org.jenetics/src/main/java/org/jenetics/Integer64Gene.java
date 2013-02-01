@@ -70,12 +70,7 @@ public final class Integer64Gene
 	/**
 	 * Converter for accessing the value from a given number gene.
 	 */
-	public static final Function<Integer64Gene, Integer64> Allele =
-		new Function<Integer64Gene, Integer64>() {
-			@Override public Integer64 apply(final Integer64Gene value) {
-				return value._value;
-			}
-		};
+	public static final Function<Integer64Gene, Integer64> Allele = g -> g._value;
 
 	/**
 	 * Converter for accessing the allele from a given number gene.
@@ -85,22 +80,13 @@ public final class Integer64Gene
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Function<Integer64Gene, Integer64> Min =
-		new Function<Integer64Gene, Integer64>() {
-			@Override public Integer64 apply(final Integer64Gene value) {
-				return value._min;
-			}
-		};
+	public static final Function<Integer64Gene, Integer64> Min = g -> g._min;
 
 	/**
 	 * Converter for accessing the allowed minimum from a given number gene.
 	 */
-	public static final Function<Integer64Gene, Integer64> Max =
-		new Function<Integer64Gene, Integer64>() {
-			@Override public Integer64 apply(final Integer64Gene value) {
-				return value._value;
-			}
-		};
+	public static final Function<Integer64Gene, Integer64> Max = g -> g._max;
+
 
 	/* *************************************************************************
 	 *  Factory methods

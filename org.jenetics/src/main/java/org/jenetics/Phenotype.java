@@ -234,7 +234,7 @@ public final class Phenotype<
 
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
-	 * {@link FitnessFunction} and age as this {@link Phenotype}.
+	 * {@link Function} and age as this {@link Phenotype}.
 	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.
@@ -297,13 +297,8 @@ public final class Phenotype<
 	 * @return an age {@link Function}.
 	 */
 	public static Function<Phenotype<?, ?>, Integer>
-	Age(final int currentGeneration)
-	{
-		return new Function<Phenotype<?, ?>, Integer>() {
-			@Override public Integer apply(final Phenotype<?, ?> value) {
-				return value.getAge(currentGeneration);
-			}
-		};
+	Age(final int currentGeneration) {
+		return pt -> pt.getAge(currentGeneration);
 	}
 
 	/**
@@ -313,11 +308,7 @@ public final class Phenotype<
 	 * @return a generation {@link Function}.
 	 */
 	public static Function<Phenotype<?, ?>, Integer> Generation() {
-		return new Function<Phenotype<?, ?>, Integer>() {
-			@Override public Integer apply(final Phenotype<?, ?> value) {
-				return value.getGeneration();
-			}
-		};
+		return pt -> pt.getGeneration();
 	}
 
 	/**
@@ -328,13 +319,8 @@ public final class Phenotype<
 	 * @return a fitness {@link Function}.
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> Fitness()
-	{
-		return new Function<Phenotype<?, C>, C>() {
-			@Override public C apply(final Phenotype<?, C> value) {
-				return value.getFitness();
-			}
-		};
+	Function<Phenotype<?, C>, C> Fitness() {
+		return pt -> pt.getFitness();
 	}
 
 	/**
@@ -345,13 +331,8 @@ public final class Phenotype<
 	 * @return a raw fitness {@link Function}.
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> RawFitnees()
-	{
-		return new Function<Phenotype<?, C>, C>() {
-			@Override public C apply(final Phenotype<?, C> value) {
-				return value.getRawFitness();
-			}
-		};
+	Function<Phenotype<?, C>, C> RawFitnees() {
+		return pt -> pt.getRawFitness();
 	}
 
 	/**
@@ -362,13 +343,8 @@ public final class Phenotype<
 	 * @return a genotype {@link Function}.
 	 */
 	public static <G extends Gene<?, G>>
-	Function<Phenotype<G, ?>, Genotype<G>> Genotype()
-	{
-		return new Function<Phenotype<G, ?>, Genotype<G>>() {
-			@Override public Genotype<G> apply(final Phenotype<G, ?> value) {
-				return value.getGenotype();
-			}
-		};
+	Function<Phenotype<G, ?>, Genotype<G>> Genotype() {
+		return pt -> pt.getGenotype();
 	}
 
 	/**

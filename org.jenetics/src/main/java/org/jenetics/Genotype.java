@@ -252,13 +252,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return a converter which access the chromosome array of this genotype.
 	 */
 	public static <T extends Gene<?, T>>
-	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes()
-	{
-		return new Function<Genotype<T>, ISeq<Chromosome<T>>>() {
-			@Override public ISeq<Chromosome<T>> apply(final Genotype<T> value) {
-				return value.toSeq();
-			}
-		};
+	Function<Genotype<T>, ISeq<Chromosome<T>>> Chromosomes() {
+		return gt -> gt.toSeq();
 	}
 
 	/**
@@ -266,26 +261,16 @@ public final class Genotype<G extends Gene<?, G>>
 	 * this genotype.
 	 */
 	public static <T extends Gene<?, T>>
-	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index)
-	{
-		return new Function<Genotype<T>, Chromosome<T>>() {
-			@Override public Chromosome<T> apply(final Genotype<T> value) {
-				return value.getChromosome(index);
-			}
-		};
+	Function<Genotype<T>, Chromosome<T>> Chromosome(final int index) {
+		return gt -> gt.getChromosome(index);
 	}
 
 	/**
 	 * Return a converter which access the first chromosome of this genotype.
 	 */
 	public static <T extends Gene<?, T>>
-	Function<Genotype<T>, Chromosome<T>> Chromosome()
-	{
-		return new Function<Genotype<T>, Chromosome<T>>() {
-			@Override public Chromosome<T> apply(final Genotype<T> value) {
-				return value.getChromosome();
-			}
-		};
+	Function<Genotype<T>, Chromosome<T>> Chromosome() {
+		return gt -> gt.getChromosome();
 	}
 
 

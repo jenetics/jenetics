@@ -174,22 +174,21 @@ public class Integer64Chromosome
 	 * {@link Chromosome}.
 	 */
 	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>>
-		Genes = AbstractChromosome.genes();
+	Genes = AbstractChromosome.genes();
 
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
 	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-		Gene = AbstractChromosome.gene();
+	Gene = AbstractChromosome.gene();
 
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
 	 * {@code index} from this {@link Chromosome}.
 	 */
 	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-	Gene(final int index)
-	{
+	Gene(final int index) {
 		return AbstractChromosome.gene(index);
 	}
 
