@@ -160,11 +160,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	static <G extends Gene<?, G>, C extends Chromosome<G>>
 	Function<C, G> gene() {
-		return new Function<C, G>() {
-			@Override public G apply(final C value) {
-				return value.getGene();
-			}
-		};
+		return value -> value.getGene();
 	}
 
 	/**
@@ -173,11 +169,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	static <G extends Gene<?, G>, C extends Chromosome<G>>
 	Function<C, G> gene(final int index) {
-		return new Function<C, G>() {
-			@Override public G apply(final C value) {
-				return value.getGene(index);
-			}
-		};
+		return value -> value.getGene(index);
 	}
 
 	/**
@@ -186,11 +178,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 */
 	static <G extends Gene<?, G>, C extends Chromosome<G>>
 	Function<C, ISeq<G>> genes() {
-		return new Function<C, ISeq<G>>() {
-			@Override public ISeq<G> apply(final C value) {
-				return value.toSeq();
-			}
-		};
+		return value -> value.toSeq();
 	}
 
 }
