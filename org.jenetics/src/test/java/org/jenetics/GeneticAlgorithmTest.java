@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
@@ -123,7 +124,7 @@ public class GeneticAlgorithmTest {
 
 	@SuppressWarnings("null")
 	public void evolve() {
-		Function<Statistics<? extends Float64Gene, ? extends Base>, Boolean> until = null;
+		Predicate<Statistics<? extends Float64Gene, ? extends Base>> until = null;
 		GeneticAlgorithm<Float64Gene, Derived> ga = null;
 
 		ga.evolve(until);

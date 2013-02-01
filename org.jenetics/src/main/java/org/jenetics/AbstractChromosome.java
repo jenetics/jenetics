@@ -92,11 +92,6 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	@Override
-	public G getGene() {
-		return _genes.get(0);
-	}
-
-	@Override
 	public ISeq<G> toSeq() {
 		return _genes;
 	}

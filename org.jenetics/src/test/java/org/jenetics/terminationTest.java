@@ -25,6 +25,7 @@ package org.jenetics;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
@@ -83,10 +84,10 @@ public class terminationTest {
 		ga.setup();
 		values.addFirst(ga.getBestPhenotype().getFitness());
 
-		final Function<Statistics<?, Float64>, Boolean> until =
-			termination.<Float64>SteadyFitness(steadyGenerations);
+		final Predicate<Statistics<?, Float64>> until =
+			termination.SteadyFitness(steadyGenerations);
 
-		while (until.apply(ga.getStatistics())) {
+		while (until.test(ga.getStatistics())) {
 			ga.evolve();
 			values.addFirst(ga.getBestPhenotype().getFitness());
 

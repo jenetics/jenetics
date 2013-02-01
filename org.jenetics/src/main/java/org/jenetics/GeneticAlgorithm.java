@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jscience.mathematics.number.Float64;
 
@@ -486,9 +487,8 @@ public class GeneticAlgorithm<
 	 * @param until the predicate which defines the termination condition.
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public void evolve(final Function<? super Statistics<G, C>, Boolean> until) {
-		nonNull(until, "Termination condition");
-		while (until.apply(getStatistics())) {
+	public void evolve(final Predicate<? super Statistics<G, C>> until) {
+		while (until.test(getStatistics())) {
 			evolve();
 		}
 	}

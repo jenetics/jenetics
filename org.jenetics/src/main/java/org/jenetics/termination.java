@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jenetics.util.StaticObject;
 
@@ -31,13 +31,13 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
 
-	static class SteadyFitness<C extends Comparable<? super C>>
-		implements Function<Statistics<?, C>, Boolean>
+	static final class SteadyFitness<C extends Comparable<? super C>>
+		implements Predicate<Statistics<?, C>>
 	{
 		private final int _genenerations;
 
@@ -49,7 +49,7 @@ public final class termination extends StaticObject {
 		}
 
 		@Override
-		public Boolean apply(final Statistics<?, C> statistics) {
+		public boolean test(final Statistics<?, C> statistics) {
 			boolean proceed = true;
 
 			if (_fitness == null) {
@@ -65,7 +65,7 @@ public final class termination extends StaticObject {
 				}
 			}
 
-			return proceed ? Boolean.TRUE : Boolean.FALSE;
+			return proceed;
 		}
 	}
 
@@ -79,11 +79,11 @@ public final class termination extends StaticObject {
 	 * @return the GA terminator.
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<Statistics<?, C>, Boolean> SteadyFitness(final int generation) {
+	Predicate<Statistics<?, C>> SteadyFitness(final int generation) {
 		return new SteadyFitness<>(generation);
 	}
 
-	static class Generation implements Function<Statistics<?, ?>, Boolean> {
+	static final class Generation implements Predicate<Statistics<?, ?>> {
 		private final int _generation;
 
 		public Generation(final int generation) {
@@ -91,8 +91,8 @@ public final class termination extends StaticObject {
 		}
 
 		@Override
-		public Boolean apply(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
+		public boolean test(final Statistics<?, ?> statistics) {
+			return statistics.getGeneration() < _generation;
 		}
 	}
 
@@ -108,7 +108,7 @@ public final class termination extends StaticObject {
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
-	public static Function<Statistics<?, ?>, Boolean> Generation(final int generation) {
+	public static Predicate<Statistics<?, ?>> Generation(final int generation) {
 		return new Generation(generation);
 	}
 
