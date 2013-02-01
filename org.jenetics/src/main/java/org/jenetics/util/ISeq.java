@@ -33,7 +33,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -67,7 +67,10 @@ public interface ISeq<T>
 	 * @param seq the sequence to cast.
 	 * @return the up-casted sequence.
 	 */
-	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
+	@SuppressWarnings("unchecked")
+	public default <A> ISeq<A> upcast(final ISeq<? extends A> seq) {
+		return (ISeq<A>)seq;
+	}
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
