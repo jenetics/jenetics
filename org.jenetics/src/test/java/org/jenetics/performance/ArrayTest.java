@@ -83,7 +83,7 @@ public class ArrayTest {
 	public final TestCase foreachLoopGetter = new TestCase("foreach(GETTER)", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			_array.foreach(GETTER);
+			_array.foreach(o -> {o.intValue();});
 		}
 	};
 

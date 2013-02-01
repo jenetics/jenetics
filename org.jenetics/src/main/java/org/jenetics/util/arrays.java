@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Block;
 import java.util.function.Function;
 
 
@@ -895,24 +896,21 @@ public final class arrays extends StaticObject {
 	 *
 	 * [code]
 	 * public void foo(final Integer[] values) {
-	 *     arrays.foreach(values, new Validator.NonNull());
+	 *     arrays.foreach(values, object.NonNull);
 	 *     ...
 	 * }
 	 * [/code]
 	 *
 	 * @param array the array to iterate.
-	 * @param f the function to apply to every element.
+	 * @param block the code to apply to every element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T, R> void foreach(
+	public static <T> void foreach(
 		final T[] array,
-		final Function<? super T, ? extends R> f
+		final Block<? super T> block
 	) {
-		nonNull(array, "Array");
-		nonNull(f, "Predicate");
-
 		for (int i = 0; i < array.length; ++i) {
-			f.apply(array[i]);
+			block.accept(array[i]);
 		}
 	}
 
@@ -920,18 +918,15 @@ public final class arrays extends StaticObject {
 	 * Iterates over all elements of the given {@code values}
 	 *
 	 * @param values the values to iterate.
-	 * @param f the function to apply to each element.
+	 * @param block the code to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T, R> void foreach(
 		final Iterable<? extends T> values,
-		final Function<? super T, ? extends R> f
+		final Block<? super T> block
 	) {
-		nonNull(values, "Array");
-		nonNull(f, "Function");
-
 		for (final T value : values) {
-			f.apply(value);
+			block.accept(value);
 		}
 	}
 

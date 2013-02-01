@@ -149,7 +149,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 
-		alterers.forall(NonNull("Alterer"));
+		alterers.foreach(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
 	}
 
@@ -182,14 +182,9 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final int generation
 	) {
 		final AtomicInteger alterations = new AtomicInteger(0);
-
-		_alterers.foreach(new Function<Alterer<G>, Void>() {
-			@Override public Void apply(final Alterer<G> alterer) {
-				alterations.addAndGet(alterer.alter(population, generation));
-				return null;
-			}
+		_alterers.foreach(a -> {
+			alterations.addAndGet(a.alter(population, generation));
 		});
-
 		return alterations.get();
 	}
 

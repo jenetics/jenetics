@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Block;
 import java.util.function.Function;
 
 /**
@@ -142,13 +143,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public <R> void foreach(final Function<? super T, ? extends R> function) {
-		nonNull(function, "Function");
-
+	public void foreach(final Block<? super T> block) {
 		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			function.apply(element);
+			block.accept(element);
 		}
 	}
 

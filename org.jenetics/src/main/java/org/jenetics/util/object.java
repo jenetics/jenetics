@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Block;
 import java.util.function.Function;
 
 /**
@@ -51,20 +52,14 @@ public final class object extends StaticObject {
 	 * array.foreach(CheckRange<(0, 10));
 	 * [/code]
 	 */
-	public static final <C extends Comparable<? super C>> Function<C, Boolean>
-	CheckRange(final C min, final C max)
-	{
-		return new Function<C,Boolean>() {
-			@Override
-			public Boolean apply(final C value) {
-				nonNull(value);
-				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
-					throw new IllegalArgumentException(String.format(
-						"Given value %s is out of range [%s, %s)",
-						value, min, max
-					));
-				}
-				return Boolean.TRUE;
+	public static final <C extends Comparable<? super C>> Block<C>
+	CheckRange(final C min, final C max) {
+		return value -> {
+			if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
+				throw new IllegalArgumentException(String.format(
+					"Given value %s is out of range [%s, %s)",
+					value, min, max
+				));
 			}
 		};
 	}
@@ -96,10 +91,10 @@ public final class object extends StaticObject {
 	 * array.foreach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
-	 * ArrayUtils.foreach(array, NonNull);
+	 * arrays.foreach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Function<Object, Boolean> NonNull = NonNull("Object");
+	public static final Block<Object> NonNull = NonNull("Object");
 
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
@@ -114,13 +109,8 @@ public final class object extends StaticObject {
 	 * ArrayUtils.foreach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Function<Object, Boolean> NonNull(final String message) {
-		return new Function<Object,Boolean>() {
-			@Override public Boolean apply(final Object object) {
-				nonNull(object, message );
-				return Boolean.TRUE;
-			}
-		};
+	public static final Block<Object> NonNull(final String message) {
+		return object -> { nonNull(object, message); };
 	}
 
 	/**

@@ -25,6 +25,7 @@ package org.jenetics.util;
 import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
+import java.util.function.Block;
 import java.util.function.Function;
 
 
@@ -74,11 +75,15 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
-	 * @param function the function to apply to the elements.
+	 * @param block the code to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public <R> void foreach(final Function<? super T, ? extends R> function);
+	public default void foreach(final Block<? super T> block) {
+		for (final T value : this) {
+			block.accept(value);
+		}
+	}
 
 	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
