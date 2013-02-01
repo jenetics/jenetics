@@ -24,7 +24,6 @@ package org.jenetics;
 
 import static org.jenetics.EnumGene.Gene;
 import static org.jenetics.util.factories.Int;
-import static org.jenetics.util.functions.StringToInteger;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.IOException;
@@ -214,7 +213,7 @@ public final class PermutationChromosome<T>
 
 			final Array<Integer> indexes = new Array<>(
 				xml.get(ALLELE_INDEXES, String.class
-			).split(",")).map(StringToInteger);
+			).split(",")).map(s -> Integer.parseInt(s));
 
 			final Array<Object> genes = new Array<>(length);
 			for (int i = 0; i < length; ++i) {

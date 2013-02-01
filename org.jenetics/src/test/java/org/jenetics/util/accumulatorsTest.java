@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-01 $</em>
  */
 public class accumulatorsTest {
 
@@ -195,8 +195,8 @@ public class accumulatorsTest {
 		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(
 			data,
-			max.map(functions.StringToInteger),
-			min.map(functions.StringLength)
+			max.<String>map(s -> Integer.parseInt(s)),
+			min.<String>map(s -> s.length())
 		);
 		System.out.println(String.format(
 			"Max value:  %s, min length: %s.", max.getMax(), min.getMin()

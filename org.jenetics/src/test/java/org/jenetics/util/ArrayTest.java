@@ -25,7 +25,6 @@ package org.jenetics.util;
 import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.factories.Int;
 import static org.jenetics.util.functions.Null;
-import static org.jenetics.util.functions.ObjectToString;
 import static org.jenetics.util.functions.not;
 
 import java.util.Arrays;
@@ -169,7 +168,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void map() {
 		final Array<Integer> integers = new Array<Integer>(20).fill(Int());
 
-		final Array<String> strings = integers.map(ObjectToString);
+		final Array<String> strings = integers.map(o -> o.toString());
 
 		Assert.assertEquals(strings.length(), integers.length());
 		for (int i = 0; i < strings.length(); ++i) {

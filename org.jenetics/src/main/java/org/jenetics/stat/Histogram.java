@@ -25,8 +25,6 @@ package org.jenetics.stat;
 import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static org.jenetics.util.arrays.foreach;
-import static org.jenetics.util.functions.DoubleToFloat64;
-import static org.jenetics.util.functions.LongToInteger64;
 import static org.jenetics.util.math.sum;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
@@ -420,7 +418,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return valueOf(arrays.map(
 			toSeparators(min.doubleValue(), max.doubleValue(), nclasses),
 			new Float64[nclasses - 1],
-			DoubleToFloat64
+			d -> Float64.valueOf(d)
 		));
 	}
 
@@ -494,7 +492,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		return valueOf(arrays.map(
 			toSeparators(min.longValue(), max.longValue(), nclasses),
 			new Integer64[0],
-			LongToInteger64
+			l -> Integer64.valueOf(l)
 		));
 	}
 
