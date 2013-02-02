@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -147,38 +147,6 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public String toString() {
 		return _genes.toString();
-	}
-
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>>
-	Function<C, G> gene() {
-		return value -> value.getGene();
-	}
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>>
-	Function<C, G> gene(final int index) {
-		return value -> value.getGene(index);
-	}
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	static <G extends Gene<?, G>, C extends Chromosome<G>>
-	Function<C, ISeq<G>> genes() {
-		return value -> value.toSeq();
 	}
 
 }

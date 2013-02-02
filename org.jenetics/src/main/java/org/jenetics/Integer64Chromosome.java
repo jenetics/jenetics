@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
@@ -174,14 +174,14 @@ public class Integer64Chromosome
 	 * {@link Chromosome}.
 	 */
 	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>>
-	Genes = AbstractChromosome.genes();
+	Genes = ch -> ch.toSeq();
 
 	/**
 	 * Return a {@link Function} which returns the first {@link Gene} from this
 	 * {@link Chromosome}.
 	 */
 	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-	Gene = AbstractChromosome.gene();
+	Gene = ch -> ch.getGene();
 
 	/**
 	 * Return a {@link Function} which returns the {@link Gene} with the given
@@ -189,7 +189,7 @@ public class Integer64Chromosome
 	 */
 	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
 	Gene(final int index) {
-		return AbstractChromosome.gene(index);
+		return ch -> ch.getGene(index);
 	}
 
 	/* *************************************************************************
