@@ -98,7 +98,7 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 				histogram
 					.map(Float64Gene.Allele)
 					.map(Float64Chromosome.Gene)
-					.map(Genotype.<Float64Gene>Chromosome())
+					.<Genotype<Float64Gene>>map(gt -> gt.getChromosome())
 					.<Phenotype<Float64Gene, Float64>>map(pt -> pt.getGenotype())
 			);
 
