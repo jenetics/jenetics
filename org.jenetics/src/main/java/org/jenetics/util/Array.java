@@ -49,7 +49,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -322,14 +322,9 @@ public final class Array<T>
 	 * @throws ClassCastException if the array contains elements that are not
 	 *        <i>mutually comparable</i> (for example, strings and integers).
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void sort(final int from, final int to) {
-		sort(from, to, new Comparator<T>() {
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public int compare(final T o1, final T o2) {
-				return ((Comparable)o1).compareTo(o2);
-			}
-		});
+		sort(from, to, (a, b) -> ((Comparable)a).compareTo(b));
 	}
 
 	/**
