@@ -166,33 +166,6 @@ public class Integer64Chromosome
 	}
 
 	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<AbstractChromosome<Integer64Gene>, ISeq<Integer64Gene>>
-	Genes = ch -> ch.toSeq();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-	Gene = ch -> ch.getGene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Integer64Gene>, Integer64Gene>
-	Gene(final int index) {
-		return ch -> ch.getGene(index);
-	}
-
-	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
