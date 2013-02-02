@@ -286,54 +286,8 @@ public final class Phenotype<
 
 
 	/* *************************************************************************
-	 *  Property access methods
+	 *  Static factory methods.
 	 * ************************************************************************/
-
-	/**
-	 * Create a {@link Function} which return the phenotype generation when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @return a generation {@link Function}.
-	 */
-	public static Function<Phenotype<?, ?>, Integer> Generation() {
-		return pt -> pt.getGeneration();
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype fitness when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <C> the fitness value type.
-	 * @return a fitness {@link Function}.
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> Fitness() {
-		return pt -> pt.getFitness();
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype raw fitness when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <C> the fitness value type.
-	 * @return a raw fitness {@link Function}.
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<Phenotype<?, C>, C> RawFitnees() {
-		return pt -> pt.getRawFitness();
-	}
-
-	/**
-	 * Create a {@link Function} which return the phenotype genotype when
-	 * calling {@code converter.convert(phenotype)}.
-	 *
-	 * @param <G> the gene type.
-	 * @return a genotype {@link Function}.
-	 */
-	public static <G extends Gene<?, G>>
-	Function<Phenotype<G, ?>, Genotype<G>> Genotype() {
-		return pt -> pt.getGenotype();
-	}
 
 	/**
 	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only

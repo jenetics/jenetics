@@ -326,7 +326,7 @@ public class NumberStatistics<
 					population,
 					minMax,
 					age.<Phenotype<G, R>>map(pt -> pt.getAge(generation)),
-					fitness.map(Phenotype.<R>Fitness())
+					fitness.<Phenotype<G, R>>map(pt -> pt.getFitness())
 				);
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));

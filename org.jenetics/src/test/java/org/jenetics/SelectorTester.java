@@ -38,7 +38,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-02 $</em>
  */
 public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S>
@@ -94,13 +94,13 @@ public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 				selector.select(population, npopulation, Optimize.MAXIMUM);
 
 			accumulate(
-					selection,
-					histogram
-						.map(Float64Gene.Allele)
-						.map(Float64Chromosome.Gene)
-						.map(Genotype.<Float64Gene>Chromosome())
-						.map(Phenotype.<Float64Gene>Genotype())
-				);
+				selection,
+				histogram
+					.map(Float64Gene.Allele)
+					.map(Float64Chromosome.Gene)
+					.map(Genotype.<Float64Gene>Chromosome())
+					.<Phenotype<Float64Gene, Float64>>map(pt -> pt.getGenotype())
+			);
 
 			population.clear();
 		}
