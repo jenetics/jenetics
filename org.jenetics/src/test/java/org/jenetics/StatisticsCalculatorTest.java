@@ -35,7 +35,7 @@ import org.jenetics.util.accumulators;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-02 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -86,7 +86,10 @@ public class StatisticsCalculatorTest {
 		final Statistics<Float64Gene, Float64> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<>();
-		accumulators.accumulate(population(size), ageVariance.map(Phenotype.Age(gen)));
+		accumulators.accumulate(
+			population(size),
+			ageVariance.<Phenotype<Float64Gene, Float64>>map(pt -> pt.getAge(gen))
+		);
 
 		Assert.assertEquals(statistics.getAgeMean(), ageVariance.getMean());
 		Assert.assertEquals(statistics.getAgeVariance(), ageVariance.getVariance());

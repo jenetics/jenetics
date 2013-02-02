@@ -39,7 +39,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -53,7 +53,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -296,7 +296,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -322,10 +322,10 @@ public class NumberStatistics<
 			final Variance<Integer> age = new Variance<>();
 			final Variance<R> fitness = new Variance<>();
 
-			accumulators.<Phenotype<G, R>>accumulate(
+			accumulators.accumulate(
 					population,
 					minMax,
-					age.map(Phenotype.Age(generation)),
+					age.<Phenotype<G, R>>map(pt -> pt.getAge(generation)),
 					fitness.map(Phenotype.<R>Fitness())
 				);
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));

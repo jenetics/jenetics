@@ -53,7 +53,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -288,18 +288,6 @@ public final class Phenotype<
 	/* *************************************************************************
 	 *  Property access methods
 	 * ************************************************************************/
-
-	/**
-	 * Create a {@link Function} which return the phenotype age when calling
-	 * {@code converter.convert(phenotype)}.
-	 *
-	 * @param currentGeneration the current generation.
-	 * @return an age {@link Function}.
-	 */
-	public static Function<Phenotype<?, ?>, Integer>
-	Age(final int currentGeneration) {
-		return pt -> pt.getAge(currentGeneration);
-	}
 
 	/**
 	 * Create a {@link Function} which return the phenotype generation when

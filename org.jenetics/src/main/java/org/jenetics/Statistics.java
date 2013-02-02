@@ -57,7 +57,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,7 +70,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -486,7 +486,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -681,7 +681,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-25 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -716,10 +716,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<>();
 			final Variance<Integer> age = new Variance<>();
 
-			accumulators.<Phenotype<G, C>>accumulate(
+			accumulators.accumulate(
 					population,
 					minMax,
-					age.map(Phenotype.Age(generation))
+					age.<Phenotype<G, C>>map(pt -> pt.getAge(generation))
 				);
 
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
