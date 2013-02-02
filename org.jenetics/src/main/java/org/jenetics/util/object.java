@@ -47,7 +47,7 @@ public final class object extends StaticObject {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * final Array<Integer> array = ...
-	 * array.foreach(CheckRange<(0, 10));
+	 * arrays.foreach(CheckRange<(0, 10));
 	 * [/code]
 	 */
 	public static final <C extends Comparable<? super C>> Function<C, Boolean>
@@ -73,7 +73,7 @@ public final class object extends StaticObject {
 	 * Verifies {@link Verifiable} array elements. All elements are valid if the
 	 * condition
 	 * [code]
-	 * array.forall(Verify) == true
+	 * arrays.forall(Verify) == true
 	 * [/code]
 	 * is true.
 	 */
@@ -95,7 +95,7 @@ public final class object extends StaticObject {
 	 * array.foreach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
-	 * ArrayUtils.foreach(array, NonNull);
+	 * arrays.foreach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Function<Object, Boolean> NonNull = NonNull("Object");
@@ -110,7 +110,7 @@ public final class object extends StaticObject {
 	 * array.foreach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
-	 * ArrayUtils.foreach(array, NonNull);
+	 * arrays.foreach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Function<Object, Boolean> NonNull(final String message) {
