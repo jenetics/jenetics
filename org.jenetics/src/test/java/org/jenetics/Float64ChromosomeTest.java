@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-24 $</em>
+ * @version <em>$Date: 2013-02-02 $</em>
  */
 public class Float64ChromosomeTest
 	extends NumberChromosomeTester<Float64, Float64Gene>
@@ -89,34 +89,6 @@ public class Float64ChromosomeTest
 			LocalContext.exit();
 		}
     }
-
-	@Test
-	public void firstGeneConverter() {
-		final Float64Chromosome c = getFactory().newInstance();
-
-		Assert.assertEquals(Float64Chromosome.Gene.apply(c), c.getGene(0));
-	}
-
-	@Test
-	public void geneConverter() {
-		final Float64Chromosome c = getFactory().newInstance();
-
-		for (int i = 0; i < c.length(); ++i) {
-			Assert.assertEquals(
-					Float64Chromosome.Gene(i).apply(c),
-					c.getGene(i)
-				);
-		}
-	}
-
-	@Test
-	public void genesConverter() {
-		final Float64Chromosome c = getFactory().newInstance();
-		Assert.assertEquals(
-				Float64Chromosome.Genes.apply(c),
-				c.toSeq()
-			);
-	}
 
 	@Test
 	public void objectSerializationCompatibility() throws IOException {

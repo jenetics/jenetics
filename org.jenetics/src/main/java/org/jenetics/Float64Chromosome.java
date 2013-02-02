@@ -160,33 +160,6 @@ public class Float64Chromosome
 	}
 
 	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<AbstractChromosome<Float64Gene>, ISeq<Float64Gene>>
-		Genes = ch -> ch.toSeq();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene>
-		Gene = ch -> ch.getGene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<Float64Gene>, Float64Gene>
-	Gene(final int index) {
-		return ch -> ch.getGene(index);
-	}
-
-	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 

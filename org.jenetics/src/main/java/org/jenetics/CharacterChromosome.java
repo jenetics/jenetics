@@ -217,34 +217,6 @@ public class CharacterChromosome
 		return out.toString();
 	}
 
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Return a {@link Function} which returns the gene array from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, ISeq<CharacterGene>>
-		Genes = ch -> ch.toSeq();
-
-	/**
-	 * Return a {@link Function} which returns the first {@link Gene} from this
-	 * {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, CharacterGene>
-		Gene = ch -> ch.getGene();
-
-	/**
-	 * Return a {@link Function} which returns the {@link Gene} with the given
-	 * {@code index} from this {@link Chromosome}.
-	 */
-	public static final Function<Chromosome<CharacterGene>, CharacterGene>
-	Gene(final int index) {
-		return ch -> ch.getGene(index);
-	}
-
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
