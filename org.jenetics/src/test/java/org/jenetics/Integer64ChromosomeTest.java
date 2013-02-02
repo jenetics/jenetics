@@ -74,11 +74,11 @@ public class Integer64ChromosomeTest
 				final Integer64Chromosome chromosome = new Integer64Chromosome(min, max, 500);
 
 				accumulate(
-						chromosome,
-						mm.map(Integer64Gene.Value),
-						variance.map(Integer64Gene.Value),
-						histogram.map(Integer64Gene.Value)
-					);
+					chromosome,
+					mm.<Gene<Integer64, Integer64Gene>>map(g -> g.getAllele()),
+					variance.<Gene<Integer64, Integer64Gene>>map(g -> g.getAllele()),
+					histogram.<Gene<Integer64, Integer64Gene>>map(g -> g.getAllele())
+				);
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);

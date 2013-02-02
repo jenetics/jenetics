@@ -42,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -66,31 +66,6 @@ public final class Float64Gene
 	public Float64Gene mean(final Float64Gene that) {
 		return newInstance((_value.doubleValue() + that._value.doubleValue())/2.0);
 	}
-
-
-	/* *************************************************************************
-	 *  Property access methods
-	 * ************************************************************************/
-
-	/**
-	 * Converter for accessing the value from a given number gene.
-	 */
-	public static final Function<Float64Gene, Float64> Allele = g -> g._value;
-
-	/**
-	 * Converter for accessing the allele from a given number gene.
-	 */
-	public static final Function<Float64Gene, Float64> Value = Allele;
-
-	/**
-	 * Converter for accessing the allowed minimum from a given number gene.
-	 */
-	public static final Function<Float64Gene, Float64> Min = g -> g._min;
-
-	/**
-	 * Converter for accessing the allowed minimum from a given number gene.
-	 */
-	public static final Function<Float64Gene, Float64> Max = g -> g._max;
 
 	/* *************************************************************************
 	 *  Factory methods

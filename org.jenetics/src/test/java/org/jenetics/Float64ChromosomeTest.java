@@ -75,11 +75,11 @@ public class Float64ChromosomeTest
 				final Float64Chromosome chromosome = new Float64Chromosome(min, max, 500);
 
 				accumulate(
-						chromosome,
-						mm.map(Float64Gene.Value),
-						histogram.map(Float64Gene.Value),
-						variance.map(Float64Gene.Value)
-					);
+					chromosome,
+					mm.<Gene<Float64, Float64Gene>>map(g -> g.getAllele()),
+					histogram.<Gene<Float64, Float64Gene>>map(g -> g.getAllele()),
+					variance.<Gene<Float64, Float64Gene>>map(g -> g.getAllele())
+				);
 			}
 
 			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);

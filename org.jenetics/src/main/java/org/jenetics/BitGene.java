@@ -35,7 +35,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public enum BitGene
 	implements
@@ -109,22 +109,6 @@ public enum BitGene
 	public String toString() {
 		return Boolean.toString(_value);
 	}
-
-
-	/* *************************************************************************
-	 *  Property access methods methods
-	 * ************************************************************************/
-
-	/**
-	 * Converter for accessing the allele from a given gene.
-	 */
-	public static final Function<BitGene, Boolean> Allele =
-		new Function<BitGene, Boolean>() {
-			@Override public Boolean apply(final BitGene value) {
-				return value._value;
-			}
-		};
-
 
 	/* *************************************************************************
 	 *  XML object serialization

@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -62,31 +62,6 @@ public final class Integer64Gene
 			(that._value.longValue() - _value.longValue())/2L
 		);
 	}
-
-	/* *************************************************************************
-	 *  Property access methods.
-	 * ************************************************************************/
-
-	/**
-	 * Converter for accessing the value from a given number gene.
-	 */
-	public static final Function<Integer64Gene, Integer64> Allele = g -> g._value;
-
-	/**
-	 * Converter for accessing the allele from a given number gene.
-	 */
-	public static final Function<Integer64Gene, Integer64> Value = Allele;
-
-	/**
-	 * Converter for accessing the allowed minimum from a given number gene.
-	 */
-	public static final Function<Integer64Gene, Integer64> Min = g -> g._min;
-
-	/**
-	 * Converter for accessing the allowed minimum from a given number gene.
-	 */
-	public static final Function<Integer64Gene, Integer64> Max = g -> g._max;
-
 
 	/* *************************************************************************
 	 *  Factory methods
