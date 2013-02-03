@@ -8555,7 +8555,7 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
 \begin_inset Index idx
 status collapsed
 
