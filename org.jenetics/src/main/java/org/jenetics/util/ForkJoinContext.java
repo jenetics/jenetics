@@ -132,9 +132,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 			{
 				n.getValue().get();
 			}
-		} catch (InterruptedException e) {
-			throw (CancellationException)new CancellationException().initCause(e);
-		} catch (ExecutionException e) {
+		} catch (InterruptedException | ExecutionException e) {
 			throw (CancellationException)new CancellationException().initCause(e);
 		}
 	}
