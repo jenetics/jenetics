@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-07 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
@@ -73,7 +73,7 @@ public class Integer64Chromosome
 	 *         one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		super(new Array<>(genes).toISeq());
+		this(new Array<>(genes).toISeq());
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Integer64Chromosome
 		final Integer64 max,
 		final int length
 	) {
-		super(
+		this(
 			new Array<Integer64Gene>(length).fill(
 				Integer64Gene.valueOf(min, max)
 			).toISeq()
