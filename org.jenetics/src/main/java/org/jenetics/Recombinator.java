@@ -93,7 +93,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
 		final IndexStream stream = IndexStream.Random(
-			population.size(), _probability, random
+			population.size(), _probability
 		);
 
 		int alterations = 0;
