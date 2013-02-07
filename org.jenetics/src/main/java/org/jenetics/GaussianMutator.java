@@ -49,7 +49,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-07 $</em>
  */
 public final class GaussianMutator<G extends NumberGene<?, G>>
 	extends Mutator<G>
@@ -66,7 +66,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 	@Override
 	protected int mutate(final MSeq<G> genes, final double p) {
 		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
+		final IndexStream stream = IndexStream.Random(genes.length(), p);
 
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
