@@ -73,7 +73,7 @@ public class Integer64Chromosome
 	 *         one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		super(new Array<>(genes).toISeq());
+		this(new Array<>(genes).toISeq());
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Integer64Chromosome
 		final Integer64 max,
 		final int length
 	) {
-		super(
+		this(
 			new Array<Integer64Gene>(length).fill(
 				Integer64Gene.valueOf(min, max)
 			).toISeq()

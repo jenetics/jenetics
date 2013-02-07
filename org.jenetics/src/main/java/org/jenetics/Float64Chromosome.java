@@ -66,7 +66,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		super(new Array<>(genes).toISeq());
+		this(new Array<>(genes).toISeq());
 	}
 
 	/**
