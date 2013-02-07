@@ -195,7 +195,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	final static int indexOf(final double[] incremental, final double value) {
+	final static int indexOf(final double[] incremental, final double v) {
 		int imin = 0;
 		int imax = incremental.length;
 
@@ -204,11 +204,11 @@ public abstract class ProbabilitySelector<
 
 			if (imid == 0) {
 				return imid;
-			} else if (incremental[imid] >= value && incremental[imid - 1] < value) {
+			} else if (incremental[imid] >= v && incremental[imid - 1] < v) {
 				return imid;
-			} else if (incremental[imid] <= value) {
+			} else if (incremental[imid] <= v) {
 				imin = imid + 1;
-			} else if (incremental[imid] > value) {
+			} else if (incremental[imid] > v) {
 				imax = imid;
 			}
 		}
