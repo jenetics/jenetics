@@ -68,7 +68,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-09 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -361,7 +361,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) + "\nSamples: " + _samples;
+		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
+				"\nSamples: " + _samples;
 	}
 
 	@Override
