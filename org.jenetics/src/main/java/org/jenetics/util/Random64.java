@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-02-09 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-10 $</em>
  */
 abstract class Random64 extends Random {
 
@@ -74,13 +74,18 @@ abstract class Random64 extends Random {
 		}
 	}
 
+	@Override
+	public float nextFloat() {
+		return toFloat2(nextLong());
+	}
+
 	/**
 	 * Optimized version of the {@link Random#nextDouble()} method for 64-bit
 	 * random engines.
 	 */
 	@Override
 	public double nextDouble() {
-		return toDouble(nextLong());
+		return toDouble2(nextLong());
 	}
 
 	/*
