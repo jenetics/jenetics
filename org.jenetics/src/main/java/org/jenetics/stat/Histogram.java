@@ -361,7 +361,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) + "\nSamples: " + _samples;
+		return Arrays.toString(_separators) + "\n" + Arrays.toString(getHistogram()) +
+				"\nSamples: " + _samples;
 	}
 
 	@Override
