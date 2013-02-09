@@ -56,7 +56,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-09 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -69,9 +69,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	private final List<Phenotype<G, C>> _population;
 
-	/**
-	 * @PrimaryConstructor
-	 */
 	private Population(final List<Phenotype<G, C>> population) {
 		_population = population;
 	}
@@ -370,7 +367,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public Population<G, C> copy() {
-		return new Population<>(_population);
+		return new Population<>(new ArrayList<>(_population));
 	}
 
 	@Override
