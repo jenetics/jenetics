@@ -69,9 +69,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	private final List<Phenotype<G, C>> _population;
 
-	/**
-	 * @PrimaryConstructor
-	 */
 	private Population(final List<Phenotype<G, C>> population) {
 		_population = population;
 	}
@@ -370,7 +367,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public Population<G, C> copy() {
-		return new Population<>(_population);
+		return new Population<>(new ArrayList<>(_population));
 	}
 
 	@Override
