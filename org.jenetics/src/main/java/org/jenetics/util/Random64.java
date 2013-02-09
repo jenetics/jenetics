@@ -74,13 +74,18 @@ abstract class Random64 extends Random {
 		}
 	}
 
+	@Override
+	public float nextFloat() {
+		return toFloat2(nextLong());
+	}
+
 	/**
 	 * Optimized version of the {@link Random#nextDouble()} method for 64-bit
 	 * random engines.
 	 */
 	@Override
 	public double nextDouble() {
-		return toDouble(nextLong());
+		return toDouble2(nextLong());
 	}
 
 	/*
