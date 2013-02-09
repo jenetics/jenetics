@@ -109,7 +109,7 @@ abstract class Random64 extends Random {
 	}
 
 	/*
-	 * This method is used by the Apache Commons BitStreamGenerator.
+	 * Conversion methods used by the Apache Commons BitStreamGenerator.
 	 */
 
 	static float toFloat2(final int a) {
