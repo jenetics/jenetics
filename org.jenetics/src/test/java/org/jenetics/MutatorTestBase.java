@@ -59,7 +59,13 @@ public abstract class MutatorTestBase {
 
 		final Alterer<Float64Gene> mutator = newAlterer(0.01);
 
-		Assert.assertEquals(mutator.alter(p1, 1), diff(p1, p2));
+		int mutations = mutator.alter(p1, 1);
+		int difference = diff(p1, p2);
+
+		Assert.assertEquals(
+			mutations, difference,
+			String.format("diff=%s, mutations=%s", difference, mutations)
+		);
 	}
 
 	@Test(dataProvider = "alterProbabilityParameters")
