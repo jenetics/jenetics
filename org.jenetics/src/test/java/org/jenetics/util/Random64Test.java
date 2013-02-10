@@ -81,7 +81,8 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate(Random64.toDouble(random.nextInt(), random.nextInt()));
+			final long value = random.nextLong();
+			histogram.accumulate(Random64.toDouble((int)(value >>> 32), (int)value));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -133,7 +134,8 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate(Random64.toDouble2(random.nextInt(), random.nextInt()));
+			final long value = random.nextLong();
+			histogram.accumulate(Random64.toDouble2((int)(value >>> 32), (int)value));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
