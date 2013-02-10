@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-02-10 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-10 $</em>
  */
 abstract class Random64 extends Random {
 
