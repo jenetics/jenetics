@@ -466,6 +466,7 @@ public final class math extends StaticObject {
 			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
 		}
 
+
 		/*
 		 * Conversion methods used by the 'Random' engine from the JDK.
 		 */
