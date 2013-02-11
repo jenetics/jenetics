@@ -76,7 +76,7 @@ abstract class Random64 extends Random {
 
 	@Override
 	public float nextFloat() {
-		return toFloat2(nextLong());
+		return math.random.toFloat2(nextLong());
 	}
 
 	/**
@@ -85,47 +85,7 @@ abstract class Random64 extends Random {
 	 */
 	@Override
 	public double nextDouble() {
-		return toDouble2(nextLong());
-	}
-
-	/*
-	 * Conversion methods used by the 'Random' engine from the JDK.
-	 */
-
-	static float toFloat(final int a) {
-		return (a >>> 8)/((float)(1 << 24));
-	}
-
-	static float toFloat(final long a) {
-		return (int)(a >>> 40)/((float)(1 << 24));
-	}
-
-	static double toDouble(final long a) {
-		return (((a >>> 38) << 27) + (((int)a) >>> 5))/(double)(1L << 53);
-	}
-
-	static double toDouble(final int a, final int b) {
-		return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
-	}
-
-	/*
-	 * Conversion methods used by the Apache Commons BitStreamGenerator.
-	 */
-
-	static float toFloat2(final int a) {
-		return (a >>> 9)*0x1.0p-23f;
-	}
-
-	static float toFloat2(final long a) {
-		return (int)(a >>> 41)*0x1.0p-23f;
-	}
-
-	static double toDouble2(final long a) {
-		return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
-	}
-
-	static double toDouble2(final int a, final int b) {
-		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
+		return math.random.toDouble2(nextLong());
 	}
 
 }
