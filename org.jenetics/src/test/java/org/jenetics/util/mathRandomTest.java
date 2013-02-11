@@ -32,9 +32,9 @@ import org.jenetics.stat.UniformDistribution;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2013-02-11 $</em>
  */
-public class Random64Test {
+public class mathRandomTest {
 
 	@Test(invocationCount = 5)
 	public void toFloat_int() {
@@ -42,7 +42,7 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)Random64.toFloat(random.nextInt()));
+			histogram.accumulate((double)math.random.toFloat(random.nextInt()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -55,7 +55,7 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)Random64.toFloat(random.nextLong()));
+			histogram.accumulate((double)math.random.toFloat(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -68,7 +68,7 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate(Random64.toDouble(random.nextLong()));
+			histogram.accumulate(math.random.toDouble(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -82,7 +82,7 @@ public class Random64Test {
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
-			histogram.accumulate(Random64.toDouble((int)(value >>> 32), (int)value));
+			histogram.accumulate(math.random.toDouble((int)(value >>> 32), (int)value));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -95,7 +95,7 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)Random64.toFloat2(random.nextInt()));
+			histogram.accumulate((double)math.random.toFloat2(random.nextInt()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -108,7 +108,7 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate((double)Random64.toFloat2(random.nextLong()));
+			histogram.accumulate((double)math.random.toFloat2(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -121,7 +121,7 @@ public class Random64Test {
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
-			histogram.accumulate(Random64.toDouble2(random.nextLong()));
+			histogram.accumulate(math.random.toDouble2(random.nextLong()));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
@@ -135,7 +135,7 @@ public class Random64Test {
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
-			histogram.accumulate(Random64.toDouble2((int)(value >>> 32), (int)value));
+			histogram.accumulate(math.random.toDouble2((int)(value >>> 32), (int)value));
 		}
 
 		final UniformDistribution<Double> distribution = new UniformDistribution<>(0.0, 1.0);
