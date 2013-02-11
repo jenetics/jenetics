@@ -36,7 +36,7 @@ import org.jenetics.stat.UniformDistribution;
  */
 public class Random64Test {
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toFloat_int() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -49,7 +49,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toFloat_long() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -62,7 +62,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 209)
+	@Test(invocationCount = 5)
 	public void toDouble_long() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -75,7 +75,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toDouble_int_int() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -89,7 +89,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toFloat2_int() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -102,7 +102,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toFloat2_long() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -115,7 +115,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toDouble2_long() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
@@ -128,7 +128,7 @@ public class Random64Test {
 		StatisticsAssert.assertDistribution(histogram, distribution);
 	}
 
-	@Test(invocationCount = 20)
+	@Test(invocationCount = 5)
 	public void toDouble2_int_int() {
 		final Random random = new LCG64ShiftRandom();
 		final Histogram<Double> histogram = Histogram.valueOf(0.0, 1.0, 15);
