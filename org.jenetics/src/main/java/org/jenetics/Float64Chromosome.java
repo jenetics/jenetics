@@ -131,7 +131,7 @@ public class Float64Chromosome
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
 	public Factory<Float64Chromosome> asFactory() {
