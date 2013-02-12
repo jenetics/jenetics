@@ -33,7 +33,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-12 $</em>
  */
 public class PermutationChromosomeFloat64Test
 	extends ChromosomeTester<EnumGene<Float64>>
@@ -41,14 +41,10 @@ public class PermutationChromosomeFloat64Test
 
 	private final Factory<Chromosome<EnumGene<Float64>>>
 	_factory = new Factory<Chromosome<EnumGene<Float64>>>() {
-		private final ISeq<Float64> _alleles = new Array<Float64>(100).fill(new Factory<Float64>() {
-			private final Random _random = RandomRegistry.getRandom();
-			@Override
-			public Float64 newInstance() {
-				return Float64.valueOf(_random.nextGaussian()*1000);
-			}
-
-		}).toISeq();
+		private final Random random = RandomRegistry.getRandom();
+		private final ISeq<Float64> _alleles = new Array<Float64>(100).fill(
+			() -> Float64.valueOf(random.nextGaussian()*1000)
+		).toISeq();
 
 		@Override
 		public PermutationChromosome<Float64> newInstance() {

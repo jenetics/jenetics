@@ -31,6 +31,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
@@ -49,7 +50,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -182,7 +183,8 @@ public final class PermutationChromosome<T>
 	 * @return a integer permutation chromosome with the given length.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		final ISeq<Integer> alleles = new Array<Integer>(length).fill(Int()).toISeq();
+		final Supplier<Integer> supplier = Int();
+		final ISeq<Integer> alleles = new Array<Integer>(length).fill(() -> supplier.get()).toISeq();
 		return new PermutationChromosome<>(alleles);
 	}
 

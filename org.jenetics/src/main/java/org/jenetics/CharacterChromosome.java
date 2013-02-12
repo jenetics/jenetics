@@ -28,7 +28,7 @@ import static org.jenetics.util.object.hashCodeOf;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javolution.text.CharArray;
 import javolution.xml.XMLFormat;
@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -69,7 +69,7 @@ public class CharacterChromosome
 	public CharacterChromosome(final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
+					() -> CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
 				).toISeq()
 		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
@@ -90,7 +90,7 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(validCharacters)
+					() -> CharacterGene.valueOf(validCharacters)
 				).toISeq()
 		);
 		_validCharacters = validCharacters;
@@ -122,10 +122,10 @@ public class CharacterChromosome
 	 */
 	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
 		super(
-			new Array<CharacterGene>(genes.length()).fill(new Factory<CharacterGene>() {
+			new Array<CharacterGene>(genes.length()).fill(new Supplier<CharacterGene>() {
 				private int _index = 0;
 				@Override
-				public CharacterGene newInstance() {
+				public CharacterGene get() {
 					final char c = genes.charAt(_index++);
 					if (!validCharacters.contains(c)) {
 						throw new IllegalArgumentException(String.format(

@@ -25,6 +25,7 @@ package org.jenetics.util;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,22 +33,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-01 $</em>
+ * @version <em>$Date: 2013-02-12 $</em>
  */
 public class MSeqListAdapterTest {
 
 	private final Random _random = RandomRegistry.getRandom();
 
-	private final Factory<Double> _factory = factory(_random);
-
-	private static Factory<Double> factory(final Random random) {
-		return new Factory<Double>() {
-			@Override
-			public Double newInstance() {
-				return random.nextDouble();
-			}
-		};
-	}
+	private final Supplier<Double> _factory = () -> _random.nextDouble();
 
 	@Test
 	public void add() {
@@ -60,7 +52,8 @@ public class MSeqListAdapterTest {
 		}
 
 		final MSeq<Double> expect = new Array<>(seq.length());
-		expect.fill(factory(new Random(123)));
+		random.setSeed(123);
+		expect.fill(() -> random.nextDouble());
 
 		assertSameElements(expect, list);
 		assertSameElements(expect, seq);

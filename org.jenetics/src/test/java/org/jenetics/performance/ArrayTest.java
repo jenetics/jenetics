@@ -34,7 +34,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-01 $</em>
+ * @version <em>$Date: 2013-02-12 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -44,13 +44,6 @@ public class ArrayTest {
 		@Override
 		public Boolean apply(final Integer value) {
 			return Boolean.TRUE;
-		}
-	};
-
-	private static final Factory<Integer> INTEGER_FACTORY = new Factory<Integer>() {
-		@Override
-		public Integer newInstance() {
-			return 1;
 		}
 	};
 
@@ -65,7 +58,7 @@ public class ArrayTest {
 	@Test(1)
 	public final TestCase forLoopGetter = new TestCase("for-loop (getter)", LOOPS, SIZE) {
 		{
-			_array.fill(INTEGER_FACTORY);
+			_array.fill(() -> 1);
 			for (int i = _array.length(); --i >= 0;) {
 				_array.get(i);
 			}
@@ -109,7 +102,7 @@ public class ArrayTest {
 	public final TestCase fillFactory = new TestCase("fill(Factory)", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			_array.fill(INTEGER_FACTORY);
+			_array.fill(() -> 1);
 		}
 	};
 

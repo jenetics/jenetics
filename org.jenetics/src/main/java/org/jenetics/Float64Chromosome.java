@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
@@ -83,7 +83,7 @@ public class Float64Chromosome
 	) {
 		this(
 			new Array<Float64Gene>(length).fill(
-				Float64Gene.valueOf(min, max)
+				() -> Float64Gene.valueOf(min, max)
 			).toISeq()
 		);
 		_valid = true;

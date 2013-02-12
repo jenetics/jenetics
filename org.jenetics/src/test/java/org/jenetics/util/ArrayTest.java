@@ -41,18 +41,11 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-01 $</em>
+ * @version <em>$Date: 2013-02-12 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
-	static Factory<Double> RANDOM = new Factory<Double>() {
-		private final Random random = new Random();
-		@Override
-		public Double newInstance() {
-			return random.nextDouble();
-		}
-
-	};
+	private final Random _random = new Random();
 
 	final Factory<Array<Double>> _factory = new Factory<Array<Double>>() {
 		@Override
@@ -146,14 +139,9 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void sort2() {
 		final Random random = new Random();
-		final Factory<Integer> factory = new Factory<Integer>() {
-			@Override public Integer newInstance() {
-				return random.nextInt(10000);
-			}
-		};
 
 		final Array<Integer> array = new Array<>(100);
-		array.fill(factory);
+		array.fill(() -> random.nextInt(10000));
 		Assert.assertFalse(isSorted(array));
 
 		final Array<Integer> clonedArray = array.copy();
@@ -273,7 +261,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	void immutableFill() {
 		immutable(new ArrayAlterer() {
 			@Override public void alter(final MSeq<Double> seq) {
-				seq.fill(RANDOM);
+				seq.fill(() -> _random.nextDouble());
 			}
 		});
 	}

@@ -26,6 +26,7 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javolution.context.ObjectFactory;
 
@@ -61,7 +62,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 
@@ -156,19 +157,14 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 	static <T> Function<Integer, EnumGene<T>> ToGene(
 		final ISeq<T> validAlleles
 	) {
-		return new Function<Integer, EnumGene<T>>() {
-			@Override
-			public EnumGene<T> apply(final Integer index) {
-				return valueOf(validAlleles, index);
-			}
-		};
+		return index -> valueOf(validAlleles, index);
 	}
 
-	static <T> Factory<EnumGene<T>> Gene(final ISeq<T> validAlleles) {
-		return new Factory<EnumGene<T>>() {
+	static <T> Supplier<EnumGene<T>> Gene(final ISeq<T> validAlleles) {
+		return new Supplier<EnumGene<T>>() {
 			private int _index = 0;
 			@Override
-			public EnumGene<T> newInstance() {
+			public EnumGene<T> get() {
 				return EnumGene.valueOf(validAlleles, _index++);
 			}
 		};

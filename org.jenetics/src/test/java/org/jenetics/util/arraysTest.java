@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-12 $</em>
  */
 public class arraysTest {
 
@@ -141,14 +141,8 @@ public class arraysTest {
 	@Test
 	public void sort1() {
 		final Random random = new Random();
-		final Factory<Integer> factory = new Factory<Integer>() {
-			@Override public Integer newInstance() {
-				return random.nextInt(10000);
-			}
-		};
-
 		final Array<Integer> array = new Array<>(100);
-		array.fill(factory);
+		array.fill(() -> random.nextInt(10000));
 		Assert.assertFalse(isSorted(array));
 
 		final Array<Integer> clonedArray = array.copy();
