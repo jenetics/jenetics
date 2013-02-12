@@ -200,7 +200,7 @@ public class GeneticAlgorithm<
 	private final Timer _executionTimer = new Timer("Execution time");
 	private final Timer _selectTimer = new Timer("Select time");
 	private final Timer _alterTimer = new Timer("Alter time");
-	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
+	private final Timer _combineTimer = new Timer("Combine survivors and offspring time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 
@@ -226,16 +226,12 @@ public class GeneticAlgorithm<
 		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
 		_optimization = nonNull(optimization, "Optimization");
 
-		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
-			@Override public Phenotype<G, C> newInstance() {
-				return Phenotype.valueOf(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-			}
-		};
+		_phenotypeFactory = () -> Phenotype.valueOf(
+			_genotypeFactory.newInstance(),
+			_fitnessFunction,
+			_fitnessScaler,
+			_generation
+		);
 	}
 
 	/**
@@ -398,24 +394,24 @@ public class GeneticAlgorithm<
 			//Increment the generation and the generation.
 			++_generation;
 
-			//Select the survivors and the offsprings.
+			//Select the survivors and the offspring.
 			_selectTimer.start();
 			final Array<Population<G, C>> selection = select();
 			final Population<G, C> survivors = selection.get(0);
-			final Population<G, C> offsprings = selection.get(1);
+			final Population<G, C> offspring = selection.get(1);
 			_selectTimer.stop();
 
-			//Alter the offsprings (Recombination, Mutation ...).
+			//Alter the offspring (Recombination, Mutation ...).
 			_alterTimer.start();
-			_alterer.alter(offsprings, _generation);
+			_alterer.alter(offspring, _generation);
 			_alterTimer.stop();
 
 			// Combining the new population (containing the survivors and the
-			// altered offsprings).
+			// altered offspring).
 			_combineTimer.start();
 			final int killed = _killed.get();
 			final int invalid = _invalid.get();
-			_population = combine(survivors, offsprings);
+			_population = combine(survivors, offspring);
 			_combineTimer.stop();
 
 			//Evaluate the fitness
@@ -496,7 +492,7 @@ public class GeneticAlgorithm<
 	private Array<Population<G, C>> select() {
 		final Array<Population<G, C>> selection = new Array<>(2);
 		final int numberOfSurvivors = getNumberOfSurvivors();
-		final int numberOfOffspring = getNumberOfOffsprings();
+		final int numberOfOffspring = getNumberOfOffspring();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
 		try (Concurrency c = Concurrency.start()) {
@@ -509,12 +505,12 @@ public class GeneticAlgorithm<
 				selection.set(0, survivors);
 			});
 
-			final Population<G, C> offsprings = _offspringSelector.select(
+			final Population<G, C> offspring = _offspringSelector.select(
 				_population, numberOfOffspring, _optimization
 			);
 
-			assert (offsprings.size() == numberOfOffspring);
-			selection.set(1, offsprings);
+			assert (offspring.size() == numberOfOffspring);
+			selection.set(1, offspring);
 		}
 
 		return selection;
@@ -522,14 +518,14 @@ public class GeneticAlgorithm<
 
 	private Population<G, C> combine(
 		final Population<G, C> survivors,
-		final Population<G, C> offsprings
+		final Population<G, C> offspring
 	) {
-		assert (survivors.size() + offsprings.size() == _populationSize);
+		assert (survivors.size() + offspring.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
 		try (final Concurrency concurrency = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			concurrency.execute(new Runnable() { @Override public void run() {
+			concurrency.execute(() -> {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
 					final Phenotype<G, C> survivor = survivors.get(i);
 
@@ -549,10 +545,10 @@ public class GeneticAlgorithm<
 						_invalid.incrementAndGet();
 					}
 				}
-			}});
+			});
 
-			// In the mean time we can add the offsprings.
-			population.addAll(offsprings);
+			// In the mean time we can add the offspring.
+			population.addAll(offspring);
 		}
 
 		population.addAll(survivors);
@@ -561,10 +557,10 @@ public class GeneticAlgorithm<
 	}
 
 	private int getNumberOfSurvivors() {
-		return _populationSize - getNumberOfOffsprings();
+		return _populationSize - getNumberOfOffspring();
 	}
 
-	private int getNumberOfOffsprings() {
+	private int getNumberOfOffspring() {
 		return (int)round(
 			_offspringFraction*_populationSize
 		);
