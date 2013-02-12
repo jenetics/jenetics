@@ -31,7 +31,7 @@ import java.util.function.Block;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -48,7 +48,7 @@ public final class object extends StaticObject {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * final Array<Integer> array = ...
-	 * array.foreach(CheckRange<(0, 10));
+	 * arrays.foreach(CheckRange<(0, 10));
 	 * [/code]
 	 */
 	public static final <C extends Comparable<? super C>> Block<C>
@@ -88,7 +88,7 @@ public final class object extends StaticObject {
 	 * array.foreach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
-	 * ArrayUtils.foreach(array, NonNull);
+	 * arrays.foreach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Block<Object> NonNull(final String message) {

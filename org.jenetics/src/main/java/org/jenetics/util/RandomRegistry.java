@@ -94,9 +94,10 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-01 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-11 $</em>
  */
-public final class RandomRegistry {
+public final class RandomRegistry extends StaticObject {
+	private RandomRegistry() {}
 
 	private static final Reference<Random> THREAD_LOCAL_REF = new Ref<Random>() {
 		@Override public Random get() {
@@ -106,11 +107,6 @@ public final class RandomRegistry {
 
 	private static final LocalContext.Reference<Reference<? extends Random>>
 	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(THREAD_LOCAL_REF);
-
-
-	private RandomRegistry() {
-		throw new AssertionError("Don't create an 'RandomRegistry' instance.");
-	}
 
 	/**
 	 * Return the global {@link Random} object.

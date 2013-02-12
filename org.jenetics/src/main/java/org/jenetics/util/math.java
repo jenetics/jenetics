@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-11 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -338,7 +338,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-11 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -364,7 +364,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-11 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -464,6 +464,47 @@ public final class math extends StaticObject {
 
 		private static long objectHashSeed() {
 			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
+		}
+
+
+		/*
+		 * Conversion methods used by the 'Random' engine from the JDK.
+		 */
+
+		static float toFloat(final int a) {
+			return (a >>> 8)/((float)(1 << 24));
+		}
+
+		static float toFloat(final long a) {
+			return (int)(a >>> 40)/((float)(1 << 24));
+		}
+
+		static double toDouble(final long a) {
+			return (((a >>> 38) << 27) + (((int)a) >>> 5))/(double)(1L << 53);
+		}
+
+		static double toDouble(final int a, final int b) {
+			return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
+		}
+
+		/*
+		 * Conversion methods used by the Apache Commons BitStreamGenerator.
+		 */
+
+		static float toFloat2(final int a) {
+			return (a >>> 9)*0x1.0p-23f;
+		}
+
+		static float toFloat2(final long a) {
+			return (int)(a >>> 41)*0x1.0p-23f;
+		}
+
+		static double toDouble2(final long a) {
+			return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
+		}
+
+		static double toDouble2(final int a, final int b) {
+			return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 		}
 
 	}
