@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-07 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
@@ -131,7 +131,7 @@ public class Float64Chromosome
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
 	 */
 	@SuppressWarnings("unchecked")
 	public Factory<Float64Chromosome> asFactory() {
