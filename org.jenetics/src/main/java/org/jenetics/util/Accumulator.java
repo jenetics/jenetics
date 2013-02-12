@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.function.Function;
+
 /**
  * Interface for accumulating values of a given type. Here an usage example:
  *
@@ -38,7 +40,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public interface Accumulator<T> {
 
@@ -48,5 +50,40 @@ public interface Accumulator<T> {
 	 * @param value the value to accumulate.
 	 */
 	public void accumulate(final T value);
+
+	/**
+	 * Return a view of this adapter with a different type {@code B}.
+	 *
+	 * Usage example:
+	 * [code]
+	 * // Convert a string on the fly into a double value.
+	 * final Converter<String, Double> converter = new Converter<String, Double>() {
+	 *         public Double convert(final String value) {
+	 *             return Double.valueOf(value);
+	 *         }
+	 *     };
+	 *
+	 * // The values to accumulate
+	 * final List<String> values = Arrays.asList("0", "1", "2", "3", "4", "5");
+	 *
+	 * final Accumulators.Min<Double> accumulator = new Accumulators.Min<Double>();
+	 *
+	 * // No pain to accumulate collections of a different type.
+	 * Accumulators.accumulate(values, accumulator.map(converter));
+	 * [/code]
+	 *
+	 * @param <B> the type of the returned adapter (view).
+	 * @param mapper the mapper needed to map between the type of this
+	 *        adapter and the adapter view type.
+	 * @return the adapter view with the different type.
+	 * @throws NullPointerException if the given {@code converter} is {@code null}.
+	 */
+	public default <B> Accumulator<B> map(final Function<? super B, ? extends T> mapper) {
+		return new Accumulator<B>() {
+			@Override public void accumulate(final B value) {
+				Accumulator.this.accumulate(mapper.apply(value));
+			}
+		};
+	}
 
 }
