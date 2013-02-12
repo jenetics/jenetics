@@ -37,7 +37,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -56,7 +56,7 @@ public final class accumulators extends StaticObject {
 	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	public static final class Min<C extends Comparable<? super C>>
-		extends MappedAccumulator<C>
+		extends AbstractAccumulator<C>
 	{
 		private C _min;
 
@@ -144,7 +144,7 @@ public final class accumulators extends StaticObject {
 	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	public static final class Max<C extends Comparable<? super C>>
-		extends MappedAccumulator<C>
+		extends AbstractAccumulator<C>
 	{
 		private C _max;
 
@@ -232,7 +232,7 @@ public final class accumulators extends StaticObject {
 	 * @version 1.0 &ndash; <em>$Revision$</em>
 	 */
 	public static final class MinMax<C extends Comparable<? super C>>
-		extends MappedAccumulator<C>
+		extends AbstractAccumulator<C>
 	{
 		private C _min;
 		private C _max;
@@ -329,7 +329,7 @@ public final class accumulators extends StaticObject {
 	}
 
 	public static class Sum<G extends GroupAdditive<G>>
-		extends MappedAccumulator<G>
+		extends AbstractAccumulator<G>
 	{
 
 		private G _sum = null;

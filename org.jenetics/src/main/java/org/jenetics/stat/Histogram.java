@@ -36,10 +36,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 
+import org.jenetics.util.AbstractAccumulator;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
-import org.jenetics.util.MappedAccumulator;
 import org.jenetics.util.arrays;
 
 /**
@@ -66,9 +66,9 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
-public class Histogram<C> extends MappedAccumulator<C> {
+public class Histogram<C> extends AbstractAccumulator<C> {
 
 	private final C[] _separators;
 	private final Comparator<C> _comparator;

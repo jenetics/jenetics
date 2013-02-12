@@ -26,8 +26,6 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
-import java.util.function.Function;
-
 /**
  * Abstract implementation of the {@link Accumulator} interface which defines a
  * {@code samples} property which is incremented by the {@link #accumulate(Object)}
@@ -35,9 +33,9 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date$</em>
  */
-public abstract class MappedAccumulator<T>
+public abstract class AbstractAccumulator<T>
 	implements
 		Accumulator<T>,
 		Cloneable
@@ -48,7 +46,7 @@ public abstract class MappedAccumulator<T>
 	 */
 	protected long _samples = 0;
 
-	protected MappedAccumulator() {
+	protected AbstractAccumulator() {
 	}
 
 	/**
@@ -79,7 +77,7 @@ public abstract class MappedAccumulator<T>
 			return false;
 		}
 
-		final MappedAccumulator<?> accumulator = (MappedAccumulator<?>)obj;
+		final AbstractAccumulator<?> accumulator = (AbstractAccumulator<?>)obj;
 		return eq(_samples, accumulator._samples);
 	}
 
@@ -92,9 +90,9 @@ public abstract class MappedAccumulator<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected MappedAccumulator<T> clone() {
+	protected AbstractAccumulator<T> clone() {
 		try {
-			return (MappedAccumulator<T>)super.clone();
+			return (AbstractAccumulator<T>)super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError(e);
 		}

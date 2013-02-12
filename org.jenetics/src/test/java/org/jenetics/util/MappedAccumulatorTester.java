@@ -29,9 +29,9 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-12 $</em>
  */
-public abstract class MappedAccumulatorTester<A extends MappedAccumulator<Double>>
+public abstract class MappedAccumulatorTester<A extends AbstractAccumulator<Double>>
 	extends ObjectTester<A>
 {
 
@@ -39,7 +39,7 @@ public abstract class MappedAccumulatorTester<A extends MappedAccumulator<Double
 	public void accumulatedSamples() {
 		final int SAMPLES = 12345;
 		final Random random = new Random(123456);
-		final MappedAccumulator<Double> accu = getFactory().newInstance();
+		final AbstractAccumulator<Double> accu = getFactory().newInstance();
 
 		final long samples = accu.getSamples();
 
@@ -53,7 +53,7 @@ public abstract class MappedAccumulatorTester<A extends MappedAccumulator<Double
 
 	@Test
 	public void testClone() {
-		MappedAccumulator<Double> accu1 = getFactory().newInstance();
+		AbstractAccumulator<Double> accu1 = getFactory().newInstance();
 		for (int i = 0; i < 1000; ++i) {
 			accu1.accumulate(Double.valueOf(i));
 		}
