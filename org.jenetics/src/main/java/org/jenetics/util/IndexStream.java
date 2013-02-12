@@ -26,6 +26,7 @@ import static java.lang.String.format;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * Interface which delivers a stream of (positive) indexes ({@code int}s)s. The
