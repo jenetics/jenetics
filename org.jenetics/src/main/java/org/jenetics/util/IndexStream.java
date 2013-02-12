@@ -27,6 +27,7 @@ import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.IntBlock;
 
 /**
  * Interface which delivers a stream of (positive) indexes ({@code int}s)s. The
@@ -74,6 +75,12 @@ public abstract class IndexStream {
 		nonNull(function, "Function");
 		for (int i = next(); i != -1; i = next()) {
 			function.apply(i);
+		}
+	}
+
+	void foreach(final IntBlock block) {
+		for (int i = next(); i != -1; i = next()) {
+			block.accept(i);
 		}
 	}
 
