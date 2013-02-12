@@ -47,7 +47,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-11-29 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public abstract class IndexStream {
 
@@ -111,7 +111,7 @@ public abstract class IndexStream {
 		}
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
-				"n must be greate than zero: %d", n
+				"n must be greater than zero: %d", n
 			));
 		}
 
