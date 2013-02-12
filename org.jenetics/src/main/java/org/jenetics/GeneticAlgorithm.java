@@ -138,7 +138,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -500,14 +500,14 @@ public class GeneticAlgorithm<
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
 		try (Concurrency c = Concurrency.start()) {
-			c.execute(new Runnable() { @Override public void run() {
+			c.execute(() -> {
 				final Population<G, C> survivors = _survivorSelector.select(
 					_population, numberOfSurvivors, _optimization
 				);
 
 				assert (survivors.size() == numberOfSurvivors);
 				selection.set(0, survivors);
-			}});
+			});
 
 			final Population<G, C> offsprings = _offspringSelector.select(
 				_population, numberOfOffspring, _optimization
