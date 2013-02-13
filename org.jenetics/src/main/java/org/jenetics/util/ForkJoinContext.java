@@ -51,10 +51,10 @@ import javolution.util.FastList;
  *         ForkJoinContext.setForkJoinPool(pool);
  *
  *         // Set the concurrence context to use by the javolution context.
- *         ConcurentContext.setContext(ForkJoinContext.class);
+ *         ConcurrentContext.setContext(ForkJoinContext.class);
  *
  *         // Execute some task concurrently.
- *         ConcurentContext.enter()
+ *         ConcurrentContext.enter()
  *         try {
  *             ConcurrentContext.execute(...);
  *             ConcurrentContext.execute(...);
