@@ -750,7 +750,7 @@ public final class arrays extends StaticObject {
 		nonNull(p, "Permutation array");
 		if (rank < 1) {
 			throw new IllegalArgumentException(String.format(
-					"Rank smaler than 1: %s", rank
+					"Rank smaller than 1: %s", rank
 				));
 		}
 
