@@ -135,7 +135,7 @@ public final class Concurrency implements AutoCloseable {
 	 * @param pool the {@link ForkJoinPool} to use for concurrency.
 	 */
 	public static void setForkJoinPool(final ForkJoinPool pool) {
-		ForkJoinContext.setForkkJoinPool(pool);
+		ForkJoinContext.setForkJoinPool(pool);
 		setContext(ForkJoinContext.class);
 	}
 
