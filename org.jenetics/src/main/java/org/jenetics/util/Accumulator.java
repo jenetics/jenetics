@@ -40,7 +40,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public interface Accumulator<T> {
 
@@ -79,11 +79,7 @@ public interface Accumulator<T> {
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
 	public default <B> Accumulator<B> map(final Function<? super B, ? extends T> mapper) {
-		return new Accumulator<B>() {
-			@Override public void accumulate(final B value) {
-				Accumulator.this.accumulate(mapper.apply(value));
-			}
-		};
+		return value -> accumulate(mapper.apply(value));
 	}
 
 }
