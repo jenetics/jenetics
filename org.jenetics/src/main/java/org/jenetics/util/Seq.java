@@ -64,6 +64,13 @@ public interface Seq<T> extends Iterable<T> {
 	public int length();
 
 	/**
+	 * @see #length()
+	 */
+	public default int size() {
+		return length();
+	}
+
+	/**
 	 * Return an iterator with the new type {@code B}.
 	 *
 	 * @param <B> the component type of the returned type.
