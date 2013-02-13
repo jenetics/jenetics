@@ -31,7 +31,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
@@ -39,13 +39,13 @@ public final class termination extends StaticObject {
 	static final class SteadyFitness<C extends Comparable<? super C>>
 		implements Predicate<Statistics<?, C>>
 	{
-		private final int _genenerations;
+		private final int _generations;
 
 		private C _fitness;
 		private int _stableGenerations = 0;
 
 		public SteadyFitness(final int generations) {
-			_genenerations = generations;
+			_generations = generations;
 		}
 
 		@Override
@@ -58,7 +58,7 @@ public final class termination extends StaticObject {
 			} else {
 				final Optimize opt = statistics.getOptimize();
 				if (opt.compare(_fitness, statistics.getBestFitness()) >= 0) {
-					proceed = ++_stableGenerations <= _genenerations;
+					proceed = ++_stableGenerations <= _generations;
 				} else {
 					_fitness = statistics.getBestFitness();
 					_stableGenerations = 1;
