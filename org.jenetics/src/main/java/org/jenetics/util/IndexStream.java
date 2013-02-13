@@ -67,7 +67,7 @@ public abstract class IndexStream {
 	/**
 	 * Applies a {@code function} to all elements of this stream.
 	 *
-	 * @param function the function to apply to the elements.
+	 * @param consumer the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
