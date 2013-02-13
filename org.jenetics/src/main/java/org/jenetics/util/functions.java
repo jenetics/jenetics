@@ -37,7 +37,7 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
@@ -129,17 +129,6 @@ public final class functions extends StaticObject {
 			}
 		};
 	}
-
-	/**
-	 * Return the identity function for the given type.
-	 *
-	 * @return the identity function for the given type.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Function<T, T> Identity() {
-		return o -> o;
-	}
-
 
 	public static <A, B, C> Function<A, C> compose(
 		final Function<A, B> f1,
