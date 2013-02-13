@@ -23,12 +23,13 @@
 package org.jenetics.util;
 
 import static org.jenetics.util.object.hashCodeOf;
+import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 
 
 /**
- * This class implements a linear congruental PRNG with additional bit-shift
+ * This class implements a linear congruential PRNG with additional bit-shift
  * transition. The base recursion
  * <p><div align="center">
  * <img
@@ -164,7 +165,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * way:
 	 *
 	 * [code]
-	 * // Register the PRGN with the default parameters.
+	 * // Register the PRNG with the default parameters.
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 	 *
 	 * // Register the PRNG with the {@code LECUYER3} parameters.
@@ -210,7 +211,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given parameters are null.
 		 */
 		public ThreadLocal(final Param param) {
-			_param = object.nonNull(param, "PRNG param must not be null.");
+			_param = nonNull(param, "PRNG param must not be null.");
 		}
 
 		/**
