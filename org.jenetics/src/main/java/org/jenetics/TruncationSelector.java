@@ -37,7 +37,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -54,8 +54,8 @@ public final class TruncationSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#populationSort()} is called
-	 * by this method.)
+	 * selection probabilities. (The method {@link Population#populationSort()}
+	 * is called by this method.)
 	 *
 	 * @throws IllegalArgumentException if the sample size is greater than the
 	 *         population size or {@code count} is greater the the population
