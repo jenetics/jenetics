@@ -42,8 +42,6 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Timer;
-import org.jenetics.util.functions;
-
 
 /**
  * <h3>Getting started</h3>

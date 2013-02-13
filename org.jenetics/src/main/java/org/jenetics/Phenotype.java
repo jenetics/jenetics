@@ -38,8 +38,6 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.functions;
-
 
 /**
  * The <code>Phenotype</code> consists of a {@link Genotype} plus a
