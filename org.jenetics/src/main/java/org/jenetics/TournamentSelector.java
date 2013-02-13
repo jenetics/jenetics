@@ -44,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -79,8 +79,8 @@ public class TournamentSelector<
 
 	/**
 	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *          population size or {@code count} is greater the the population
-	 *          size or the _sampleSize is greater the the population size.
+	 *         population size or {@code count} is greater the the population
+	 *         size or the _sampleSize is greater the the population size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override

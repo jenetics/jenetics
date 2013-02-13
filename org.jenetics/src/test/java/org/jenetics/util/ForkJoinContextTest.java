@@ -31,12 +31,12 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-13 $</em>
  */
 public class ForkJoinContextTest {
 
 	static {
-		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(3));
+		ForkJoinContext.setForkJoinPool(new ForkJoinPool(3));
 	}
 
 	@SuppressWarnings("unused")

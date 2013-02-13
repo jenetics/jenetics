@@ -85,7 +85,7 @@ import javolution.lang.Configurable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public final class Concurrency implements AutoCloseable {
 
@@ -135,7 +135,7 @@ public final class Concurrency implements AutoCloseable {
 	 * @param pool the {@link ForkJoinPool} to use for concurrency.
 	 */
 	public static void setForkJoinPool(final ForkJoinPool pool) {
-		ForkJoinContext.setForkkJoinPool(pool);
+		ForkJoinContext.setForkJoinPool(pool);
 		setContext(ForkJoinContext.class);
 	}
 
