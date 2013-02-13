@@ -921,7 +921,7 @@ public final class arrays extends StaticObject {
 	 * @param consumer the code to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T, R> void foreach(
+	public static <T> void foreach(
 		final Iterable<? extends T> values,
 		final Consumer<? super T> consumer
 	) {
