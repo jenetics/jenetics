@@ -42,7 +42,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -108,7 +108,7 @@ public abstract class NumberGene<
 	public abstract G newInstance(final java.lang.Number value);
 
 	/**
-	 * Set the <code>NumerGene</code>.
+	 * Set the <code>NumberGene</code>.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
