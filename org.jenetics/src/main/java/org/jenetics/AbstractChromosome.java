@@ -25,7 +25,6 @@ package org.jenetics;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.functions.Null;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
@@ -42,7 +41,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements

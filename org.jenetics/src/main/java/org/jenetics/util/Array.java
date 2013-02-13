@@ -34,6 +34,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.RandomAccess;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javolution.context.StackContext;
@@ -50,7 +51,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -248,7 +249,7 @@ public final class Array<T>
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *         {@code null}.
 	 */
-	public Array<T> filter(final Function<? super T, Boolean> predicate) {
+	public Array<T> filter(final Predicate<? super T> predicate) {
 		StackContext.enter();
 		try {
 			final FastList<T> filtered = FastList.newInstance();
@@ -256,7 +257,7 @@ public final class Array<T>
 				@SuppressWarnings("unchecked")
 				final T value = (T)_array.data[i + _start];
 
-				if (predicate.apply(value) == Boolean.TRUE) {
+				if (predicate.test(value)) {
 					filtered.add(value);
 				}
 			}

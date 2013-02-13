@@ -23,14 +23,9 @@
 package org.jenetics.util;
 
 import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.object.str;
 
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.function.Function;
-
-import org.jscience.mathematics.number.Float64;
-import org.jscience.mathematics.number.Integer64;
+import java.util.function.Predicate;
 
 /**
  * This class contains some short general purpose functions.
@@ -41,94 +36,6 @@ import org.jscience.mathematics.number.Integer64;
  */
 public final class functions extends StaticObject {
 	private functions() {}
-
-	/**
-	 * A predicate which return {@code true} if an given value is {@code null}.
-	 */
-	public static final Function<Object, Boolean>
-	Null = new Function<Object, Boolean>() {
-		@Override public Boolean apply(final Object object) {
-			return object == null ? Boolean.TRUE : Boolean.FALSE;
-		}
-		@Override public String toString() {
-			return String.format("%s", getClass().getSimpleName());
-		}
-	};
-
-	/**
-	 * Return a predicate which negates the return value of the given predicate.
-	 *
-	 * @param <T> the value type to check.
-	 * @param a the predicate to negate.
-	 * @return a predicate which negates the return value of the given predicate.
-	 * @throws NullPointerException if the given predicate is {@code null}.
-	 */
-	public static <T> Function<T, Boolean> not(final Function<? super T, Boolean> a) {
-		nonNull(a);
-		return new Function<T, Boolean>() {
-			@Override public Boolean apply(final T object) {
-				return a.apply(object) ? Boolean.FALSE : Boolean.TRUE;
-			}
-			@Override public String toString() {
-				return String.format("%s[%s]", getClass().getSimpleName(), a);
-			}
-		};
-	}
-
-	/**
-	 * Return a {@code and} combination of the given predicates.
-	 *
-	 * @param <T> the value type to check.
-	 * @param a the first predicate
-	 * @param b the second predicate
-	 * @return a {@code and} combination of the given predicates.
-	 * @throws NullPointerException if one of the given predicates is
-	 *         {@code null}.
-	 */
-	public static <T> Function<T, Boolean> and(
-		final Function<? super T, Boolean> a,
-		final Function<? super T, Boolean> b
-	) {
-		nonNull(a);
-		nonNull(b);
-		return new Function<T, Boolean>() {
-			@Override public Boolean apply(final T object) {
-				return a.apply(object) && b.apply(object);
-			}
-			@Override public String toString() {
-				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
-			}
-		};
-	}
-
-	/**
-	 * Return a {@code or} combination of the given predicates.
-	 *
-	 * @param <T> the value type to check.
-	 * @param a the first predicate
-	 * @param b the second predicate
-	 * @return a {@code and} combination of the given predicates.
-	 * @throws NullPointerException if one of the given predicates is
-	 *          {@code null}.
-	 */
-	public static <T> Function<T, Boolean> or(
-		final Function<? super T, Boolean> a,
-		final Function<? super T, Boolean> b
-	) {
-		nonNull(a);
-		nonNull(b);
-		return new Function<T, Boolean>() {
-			@Override public Boolean apply(final T object) {
-				return a.apply(object) || b.apply(object);
-			}
-			@Override public String toString() {
-				return String.format(
-						"%s[%s, %s]",
-						getClass().getSimpleName(), a, b
-					);
-			}
-		};
-	}
 
 	public static <A, B, C> Function<A, C> compose(
 		final Function<A, B> f1,

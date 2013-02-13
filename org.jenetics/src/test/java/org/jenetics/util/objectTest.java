@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.functions.not;
 import static org.jenetics.util.object.CheckRange;
 import static org.jenetics.util.object.NonNull;
 
@@ -32,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-01 $</em>
+ * @version <em>$Date: 2013-02-13 $</em>
  */
 public class objectTest {
 
