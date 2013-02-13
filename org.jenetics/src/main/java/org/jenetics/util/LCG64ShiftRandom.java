@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 
 /**
- * This class implements a linear congruental PRNG with additional bit-shift
+ * This class implements a linear congruential PRNG with additional bit-shift
  * transition. The base recursion
  * <p><div align="center">
  * <img
@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -84,7 +84,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -164,7 +164,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * way:
 	 *
 	 * [code]
-	 * // Register the PRGN with the default parameters.
+	 * // Register the PRNG with the default parameters.
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 	 *
 	 * // Register the PRNG with the {@code LECUYER3} parameters.
@@ -184,7 +184,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 56;
@@ -272,7 +272,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
