@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.function.Predicates.isNull;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
@@ -142,7 +144,7 @@ public interface Seq<T> extends Iterable<T> {
 		int index = -1;
 
 		if (element == null) {
-			index = indexWhere(o -> o == null);
+			index = indexWhere(isNull());
 		} else {
 			index = indexWhere(o -> element.equals(o));
 		}
@@ -184,7 +186,7 @@ public interface Seq<T> extends Iterable<T> {
 		int index = -1;
 
 		if (element == null) {
-			index = lastIndexWhere(o -> o == null);
+			index = lastIndexWhere(isNull());
 		} else {
 			index = lastIndexWhere(o -> element.equals(o));
 		}
