@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -134,8 +135,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return valid;
 	}
 
-	/*
-	<B> B foldLeft(final B z, final Function2<? super B, ? super T, ? extends B> op) {
+
+	public <B> B foldLeft(final B z, final BiFunction<? super B, ? super T, ? extends B> op) {
 		B result = z;
 		for (int i = 0, n = length(); i < n; ++i) {
 			@SuppressWarnings("unchecked")
@@ -145,7 +146,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return z;
 	}
 
-	<B> B foldRight(final B z, final Function2<? super T, ? super B, ? extends B> op) {
+	public <B> B foldRight(final B z, final BiFunction<? super T, ? super B, ? extends B> op) {
 		B result = z;
 		for (int i = length(); --i >= 0;) {
 			@SuppressWarnings("unchecked")
@@ -154,11 +155,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		}
 		return z;
 	}
-
-	interface Function2<T1, T2, R> {
-		R apply(T1 t1, T2 t2);
-	}
-	*/
 
 	@Override
 	public int length() {
