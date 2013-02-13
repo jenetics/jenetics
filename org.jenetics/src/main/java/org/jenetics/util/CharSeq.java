@@ -42,7 +42,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -109,7 +109,7 @@ public final class CharSeq
 				}
 			}
 
-			char[] array = new char[count];
+			final char[] array = new char[count];
 			System.arraycopy(result, 0, array, 0, count);
 			result = array;
 		}
