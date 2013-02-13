@@ -27,7 +27,7 @@ import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.IntBlock;
+import java.util.function.IntConsumer;
 
 /**
  * Interface which delivers a stream of (positive) indexes ({@code int}s)s. The
@@ -49,7 +49,7 @@ import java.util.function.IntBlock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
  */
 public abstract class IndexStream {
 
@@ -71,7 +71,7 @@ public abstract class IndexStream {
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public void foreach(final IntBlock block) {
+	public void foreach(final IntConsumer block) {
 		for (int i = next(); i != -1; i = next()) {
 			block.accept(i);
 		}
