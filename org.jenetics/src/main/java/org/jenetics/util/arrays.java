@@ -902,15 +902,15 @@ public final class arrays extends StaticObject {
 	 * [/code]
 	 *
 	 * @param array the array to iterate.
-	 * @param block the code to apply to every element.
+	 * @param consumer the code to apply to every element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T> void foreach(
 		final T[] array,
-		final Consumer<? super T> block
+		final Consumer<? super T> consumer
 	) {
 		for (int i = 0; i < array.length; ++i) {
-			block.accept(array[i]);
+			consumer.accept(array[i]);
 		}
 	}
 
@@ -918,15 +918,15 @@ public final class arrays extends StaticObject {
 	 * Iterates over all elements of the given {@code values}
 	 *
 	 * @param values the values to iterate.
-	 * @param block the code to apply to each element.
+	 * @param consumer the code to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
 	public static <T, R> void foreach(
 		final Iterable<? extends T> values,
-		final Consumer<? super T> block
+		final Consumer<? super T> consumer
 	) {
 		for (final T value : values) {
-			block.accept(value);
+			consumer.accept(value);
 		}
 	}
 

@@ -115,11 +115,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public void foreach(final Consumer<? super T> block) {
+	public void foreach(final Consumer<? super T> consumer) {
 		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			block.accept(element);
+			consumer.accept(element);
 		}
 	}
 

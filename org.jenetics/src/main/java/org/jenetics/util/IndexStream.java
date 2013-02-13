@@ -71,9 +71,9 @@ public abstract class IndexStream {
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public void foreach(final IntConsumer block) {
+	public void foreach(final IntConsumer consumer) {
 		for (int i = next(); i != -1; i = next()) {
-			block.accept(i);
+			consumer.accept(i);
 		}
 	}
 

@@ -76,18 +76,18 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
-	 * @param block the code to apply to the elements.
+	 * @param consumer the code to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public default void foreach(final Consumer<? super T> block) {
+	public default void foreach(final Consumer<? super T> consumer) {
 		if (this instanceof RandomAccess) {
 			for (int i = 0, n = length(); i < n; ++i) {
-				block.accept(get(i));
+				consumer.accept(get(i));
 			}
 		} else {
 			for (final T value : this) {
-				block.accept(value);
+				consumer.accept(value);
 			}
 		}
 	}
