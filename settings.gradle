@@ -22,8 +22,9 @@
  */
 
 include "org.jenetics"
-include "org.jenetics.example"
 include "org.jenetics.doc"
+include "org.jenetics.example"
+include "org.jenetics.programming"
 
 rootProject.name = "jenetics"
 /*

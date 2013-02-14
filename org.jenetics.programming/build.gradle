@@ -1,0 +1,196 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "idea"
+
+apply from: "../build-util.gradle"
+
+
+task jarjar(type: Jar) {
+	baseName = project.name + "-all"
+	from files(sourceSets.main.output.classesDir)
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+task pack(dependsOn: [build, jarjar, javadoc]) << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	def exportLibDir = new File(exportBaseDir, "lib")
+
+	exportBaseDir.mkdirs()
+	exportSourceDir.mkdirs()
+	exportLibDir.mkdirs()
+
+	// Copy the library
+	copy {
+		from("${buildDir}/libs")
+		into "${exportLibDir}"
+	}
+	copy {
+		from("../project/lib") {
+			include "jscience-*.jar"
+		}
+		into "${exportLibDir}"
+	}
+
+	// Copy the sources.
+	copy {
+		from(".") {
+			include "src/**"
+			include "*.gradle"
+			exclude ".gradle"
+			exclude "src/site"
+		}
+		into "${exportSourceDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+
+	// Copy the javadoc
+	copy {
+		from("${buildDir}/docs") {
+			include "javadoc/**/*.html"
+		}
+		into "${exportBaseDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from("${buildDir}/docs") {
+			exclude "javadoc/**/*.html"
+		}
+		into "${exportBaseDir}"
+	}
+
+	// Copy the test-report.
+	copy {
+		from("${buildDir}/reports") {
+			include "tests/**"
+			include "*.gradle"
+			exclude ".gradle"
+		}
+		into "${exportBaseDir}/reports"
+	}
+}
+
+jar {
+	manifest {
+		attributes "Implementation-Title": "org.jenetics.programming",
+					"Implementation-Version": version,
+					"Implementation-URL": "http://jenetics.sourceforge.net",
+					"Implementation-Vendor": "Jenetics",
+					"ProjectName": "Jenetics",
+					"Version": version,
+					"Maintainer": "Franz Wilhelmstötter"
+	}
+}
+
+javadoc {
+
+	configure(options) {
+		memberLevel = "PROTECTED"
+		version = true
+		author = true
+		docEncoding = "UTF-8"
+		charSet = "UTF-8"
+		linkSource = true
+		links = [
+			"http://download.oracle.com/javase/7/docs/api/",
+			"http://jscience.org/api/",
+			"http://javolution.org/target/site/apidocs/"
+		]
+		windowTitle = "Jenetics API ${project.version}"
+		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
+		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
+		stylesheetFile = file("../project/resources/javadoc/stylesheet.css")
+	}
+
+	def destination = destinationDir.path
+
+	doLast() {
+		javaexec {
+			main = "org.jenetics.colorizer.Colorize"
+			args destination
+			classpath = files("../project/lib/colorizer.jar")
+		}
+		javaexec {
+			main = "de.java2html.Java2Html"
+			args = [
+				"-srcdir", "src/main/java",
+				"-targetdir", "$destination/src-html"
+			]
+			classpath = files("../project/lib/java2html.jar")
+		}
+		copy {
+			from "src/main/java/org/jenetics/doc-files"
+			into "${destination}/org/jenetics/doc-files"
+		}
+		copy {
+			from "src/main/java/org/jenetics/stat/doc-files"
+			into "${destination}/org/jenetics/stat/doc-files"
+		}
+		copy {
+			from "src/main/java/org/jenetics/util/doc-files"
+			into "${destination}/org/jenetics/util/doc-files"
+		}
+	}
+}
+
+test {
+	useTestNG()
+	options {
+		suites "src/test/java/org/jenetics/programming/testng.xml"
+	}
+}
+
+task export(dependsOn: pack) << {
+}
+
+configurations {
+    compile
+}
+
+repositories {
+	flatDir(dir: "../project/lib")
+}
+
+dependencies {
+	compile project(':org.jenetics')
+	compile "jscience:jscience:4.3.1"
+	testCompile "testng:testng:6.8"
+}
+
+
+
