@@ -24,12 +24,10 @@ package org.jenetics;
 
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
 
 
 /**
@@ -67,16 +65,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-07 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
-
-	/**
-	 * Default constructor, with probability = 0.01.
-	 */
-	public Mutator() {
-		this(0.01);
-	}
 
 	/**
 	 * Construct a Mutation object which a given mutation probability.
@@ -92,6 +83,13 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 	/**
+	 * Default constructor, with probability = 0.01.
+	 */
+	public Mutator() {
+		this(0.01);
+	}
+
+	/**
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
@@ -104,8 +102,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 		final double p = Math.pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(population.size(), p, random);
+		final IndexStream stream = IndexStream.Random(population.size(), p);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final Phenotype<G, C> pt = population.get(i);
 
@@ -126,9 +123,9 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		Genotype<G> gt = genotype;
 
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(genotype.length(), p, random);
-		int start = stream.next();
+		final IndexStream stream = IndexStream.Random(genotype.length(), p);
+		final int start = stream.next();
+
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
@@ -174,8 +171,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param p the gene mutation probability.
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
+		final IndexStream stream = IndexStream.Random(genes.length(), p);
 
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {

@@ -277,6 +277,11 @@
 			<class name="org.jenetics.util.mathTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.util.Seq">
+		<classes>
+			<class name="org.jenetics.util.MSeqListAdapterTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.util.MurmurHashCodeBuilder">
 		<classes>
 			<class name="org.jenetics.util.MurmurHashCodeBuilderTest" />
@@ -284,6 +289,7 @@
 	</test>			
 	<test name="org.jenetics.util.Random">
 		<classes>
+			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomCompatibilityTest" />
 		</classes>

@@ -5138,7 +5138,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/BlockSplitting.eps
+	filename ../resources/graphic/BlockSplitting.eps
 	width 80text%
 
 \end_inset
@@ -5233,7 +5233,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/Leapfrog.eps
+	filename ../resources/graphic/Leapfrog.eps
 	width 80text%
 
 \end_inset
@@ -8555,7 +8555,7 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
 \begin_inset Index idx
 status collapsed
 
@@ -9270,7 +9270,11 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.2
+: 1.2 (
+\emph on
+or later
+\emph default
+)
 \end_layout
 
 \begin_layout Itemize
@@ -9303,7 +9307,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 

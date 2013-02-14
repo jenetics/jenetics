@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-24 $</em>
+ * @version <em>$Date: 2013-02-10 $</em>
  */
 public class Float64ChromosomeTest
 	extends NumberChromosomeTester<Float64, Float64Gene>
@@ -151,6 +151,24 @@ public class Float64ChromosomeTest
 
 				Assert.assertEquals(object, chromosome);
 			}
+		} finally {
+			LocalContext.exit();
+		}
+	}
+
+	private static String Source = "/home/fwilhelm/Workspace/Development/Projects/Jenetics/" +
+			"org.jenetics/src/test/resources/org/jenetics/";
+
+	public static void main(final String[] args) throws Exception {
+		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
+
+		LocalContext.enter();
+		try {
+			RandomRegistry.setRandom(random);
+			Object c = new Float64Chromosome(-1000.0, 1000.0, 500);
+
+			IO.xml.write(c, Source + "Float64Chromosome.xml");
+			IO.object.write(c, Source + "Float64Chromosome.object");
 		} finally {
 			LocalContext.exit();
 		}

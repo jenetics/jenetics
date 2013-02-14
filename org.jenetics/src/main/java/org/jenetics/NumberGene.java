@@ -42,7 +42,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -198,7 +198,7 @@ public abstract class NumberGene<
 
 	/**
 	 * Remind that this method is not consistent with the {@link #equals(Object)}
-	 * method. Since this method only compairs the {@code value} and the
+	 * method. Since this method only compares the {@code value} and the
 	 * {@code equals} method also takes the {@code min} and {@code max} value
 	 * into account.
 	 * [code]

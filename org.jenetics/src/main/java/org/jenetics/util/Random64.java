@@ -27,17 +27,17 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-05 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-11 $</em>
  */
 abstract class Random64 extends Random {
 
 	private static final long serialVersionUID = 1L;
 
-	protected Random64() {
-	}
-
 	protected Random64(long seed) {
 		super(seed);
+	}
+
+	protected Random64() {
 	}
 
 	// Force to explicitly override the Random.nextLong() method.
@@ -45,13 +45,18 @@ abstract class Random64 extends Random {
 	public abstract long nextLong();
 
 	@Override
-	protected int next(final int bits) {
-		return (int)(nextLong() >>> (64 - bits));
+	public boolean nextBoolean() {
+		return (nextLong() & 0x8000000000000000L) != 0L;
 	}
 
 	@Override
 	public int nextInt() {
 		return (int)(nextLong() >>> 32);
+	}
+
+	@Override
+	protected int next(final int bits) {
+		return (int)(nextLong() >>> (64 - bits));
 	}
 
 	/**
@@ -69,20 +74,19 @@ abstract class Random64 extends Random {
 		}
 	}
 
+	@Override
+	public float nextFloat() {
+		return math.random.toFloat2(nextLong());
+	}
+
 	/**
 	 * Optimized version of the {@link Random#nextDouble()} method for 64-bit
 	 * random engines.
 	 */
 	@Override
 	public double nextDouble() {
-		return toDouble(nextLong());
+		return math.random.toDouble2(nextLong());
 	}
-
-	static double toDouble(final long x) {
-		return (((x >>> 38) << 27) + (((int)x) >>> 5))/(double)(1L << 53);
-	}
-
-
 
 }
 

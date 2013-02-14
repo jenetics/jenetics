@@ -30,6 +30,7 @@ import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 
@@ -48,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-07 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -85,16 +86,45 @@ public abstract class ProbabilitySelector<
 			assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 
 			incremental(probabilities);
-			final Random random = RandomRegistry.getRandom();
-			for (int i = 0; i < count; ++i) {
-				final double value = random.nextDouble();
-				selection.add(population.get(indexOf(probabilities, value)));
-			}
+			final Factory<Phenotype<G, C>> factory = factory(
+				population, probabilities, RandomRegistry.getRandom()
+			);
 
+			selection.fill(factory, count);
 			assert (count == selection.size());
 		}
 
 		return selection;
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Factory<Phenotype<G, C>> factory(
+		final Population<G, C> population,
+		final double[] probabilities,
+		final Random random
+	) {
+		return new Factory<Phenotype<G, C>>() {
+			@Override
+			public Phenotype<G, C> newInstance() {
+				return select(population, probabilities, random);
+			}
+		};
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Phenotype<G, C> select(
+		final Population<G, C> population,
+		final double[] probabilities,
+		final Random random
+	) {
+		final double value = random.nextDouble();
+		return population.get(indexOf(probabilities, value));
 	}
 
 	/**
@@ -165,7 +195,7 @@ public abstract class ProbabilitySelector<
 	/**
 	 * Perform a binary-search on the summed probability array.
 	 */
-	final static int indexOf(final double[] incremental, final double value) {
+	final static int indexOf(final double[] incremental, final double v) {
 		int imin = 0;
 		int imax = incremental.length;
 
@@ -174,11 +204,11 @@ public abstract class ProbabilitySelector<
 
 			if (imid == 0) {
 				return imid;
-			} else if (incremental[imid] >= value && incremental[imid - 1] < value) {
+			} else if (incremental[imid] >= v && incremental[imid - 1] < v) {
 				return imid;
-			} else if (incremental[imid] <= value) {
+			} else if (incremental[imid] <= v) {
 				imin = imid + 1;
-			} else if (incremental[imid] > value) {
+			} else if (incremental[imid] > v) {
 				imax = imid;
 			}
 		}
