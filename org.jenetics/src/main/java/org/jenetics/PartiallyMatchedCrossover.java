@@ -92,27 +92,16 @@ public final class PartiallyMatchedCrossover<T>
 		final MSeq<EnumGene<T>> other
 	) {
 		final Random random = RandomRegistry.getRandom();
-		int begin = random.nextInt(that.length());
+		int start = random.nextInt(that.length());
 		int end = random.nextInt(other.length());
-		begin = min(begin, end);
-		end = max(begin, end) + 1;
+		start = min(start, end);
+		end = max(start, end) + 1;
 
-		swap(that, other, begin, end);
-		repair(that, other, begin, end);
-		repair(other, that, begin, end);
+		that.swap(start, end, other, start);
+		repair(that, other, start, end);
+		repair(other, that, start, end);
 
 		return 1;
-	}
-
-	private static <T> void swap(
-		final MSeq<T> that, final MSeq<T> other,
-		final int begin, final int end
-	) {
-		for (int i = begin; i < end; ++i) {
-			final T temp = that.get(i);
-			that.set(i, other.get(i));
-			other.set(i, temp);
-		}
 	}
 
 	private static <T> void repair(
