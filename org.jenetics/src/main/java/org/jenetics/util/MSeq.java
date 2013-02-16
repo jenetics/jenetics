@@ -99,6 +99,17 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Swap a given range with a range of the same size with another array.
 	 *
+	 * <pre>
+	 *            start                end
+	 *              |                   |
+	 * this:  +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *              +---------------+
+	 *                          +---------------+
+	 * other: +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *                          |
+	 *                      otherStart
+	 * </pre>
+	 *
 	 * @param start the start index of {@code this} range, inclusively.
 	 * @param end the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
