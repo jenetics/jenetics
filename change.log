@@ -1,4 +1,5 @@
-Fix bug in SinglePointCrossover, will just swap the whole Genotypes.
+Jenetics-1.1.1
+- Fix bug in SinglePointCrossover, will just swap the whole Genotypes.
 
 Jenetics-1.1.0
 - Add 'LCG64ShiftRandom' PRNG.
