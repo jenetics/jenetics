@@ -86,8 +86,11 @@ public class SinglePointCrossoverTest {
 			MSeq<CharacterGene> g1c = g1.copy();
 			MSeq<CharacterGene> g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+
+			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
 			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
+			Assert.assertNotEquals(g1c, g2);
+			Assert.assertNotEquals(g2c, g1);
 
 			rv = 0;
 			RandomRegistry.setRandom(new ConstRandom(rv));
@@ -96,7 +99,7 @@ public class SinglePointCrossoverTest {
 			crossover.crossover(g1c, g2c);
 			Assert.assertEquals(g1c, g2);
 			Assert.assertEquals(g2c, g1);
-			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
 			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
 			rv = 1;
@@ -104,7 +107,7 @@ public class SinglePointCrossoverTest {
 			g1c = g1.copy();
 			g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
 			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 
 			rv = g1.length();
@@ -112,9 +115,9 @@ public class SinglePointCrossoverTest {
 			g1c = g1.copy();
 			g2c = g2.copy();
 			crossover.crossover(g1c, g2c);
-			Assert.assertEquals(g1c, g2);
-			Assert.assertEquals(g2c, g1);
-			Assert.assertEquals(g1c.subSeq(0, rv), g2.subSeq(0, rv));
+			Assert.assertEquals(g1c, g1);
+			Assert.assertEquals(g2c, g2);
+			Assert.assertEquals(g1c.subSeq(0, rv), g1.subSeq(0, rv));
 			Assert.assertEquals(g1c.subSeq(rv), g2.subSeq(rv));
 		} finally {
 			LocalContext.exit();
@@ -155,6 +158,7 @@ public class SinglePointCrossoverTest {
 		// Normal distribution as approximation for binomial distribution.
 		assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
 	}
+
 
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {

@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -82,7 +83,6 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		final Random random = RandomRegistry.getRandom();
 		final int index = random.nextInt(that.length());
 
-		that.swap(0, index, other, 0);
 		that.swap(index, that.length(), other, index);
 
 		return 2;
@@ -107,7 +107,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }
