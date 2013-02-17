@@ -24,7 +24,7 @@
 import java.text.SimpleDateFormat
 import java.util.Date
 
-ext.jeneticsVersion = "1.1.0"
+ext.jeneticsVersion = "1.1.1"
 
 ext.now = new Date()
 ext.year = now.year + 1900
