@@ -1,5 +1,5 @@
 Jenetics-1.2.0
-- Fix bug in SinglePointCrossover, will just swap the whole Genotypes.
+- Implement NPointCrossover class.
 - Some code streamlining.
 - Prepare Selectors for parallelization.
 - The 'org.jenetics' project is now an OSGi module.
