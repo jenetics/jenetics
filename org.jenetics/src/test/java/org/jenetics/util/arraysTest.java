@@ -79,7 +79,6 @@ public class arraysTest {
 
 			Assert.assertTrue(isSortedd(sub));
 		}
-
 	}
 
 	@Test

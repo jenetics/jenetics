@@ -22,10 +22,13 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
+
 import java.util.Random;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -58,9 +61,19 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		assert (that.length() == other.length());
 
 		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(that.length());
+		final int[] points = arrays.subset(
+			that.length(), min(that.length(), _n), random
+		);
 
-		that.swap(index, that.length(), other, index);
+		for (int i = 1; i < points.length; i += 2) {
+			final int start = points[i - 1];
+			final int end = points[i];
+			that.swap(start, end, other, start);
+		}
+		if (points.length%2 == 1) {
+			final int index = points[points.length - 1];
+			that.swap(index, that.length(), other, index);
+		}
 
 		return 2;
 	}
