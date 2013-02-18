@@ -56,6 +56,10 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		this(0.05, 2);
 	}
 
+	public int getN() {
+		return _n;
+	}
+
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());

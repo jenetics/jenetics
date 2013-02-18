@@ -53,17 +53,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-17 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-18 $</em>
  */
-public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
-
-	/**
-	 * Create a new single point crossover object with crossover probability of
-	 * {@code 0.05}.
-	 */
-	public SinglePointCrossover() {
-		this(0.05);
-	}
+public class SinglePointCrossover<G extends Gene<?, G>> extends NPointCrossover<G> {
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
@@ -73,8 +65,18 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 *          valid range of {@code [0, 1]}.
 	 */
 	public SinglePointCrossover(final double probability) {
-		super(probability);
+		super(probability, 1);
 	}
+
+	/**
+	 * Create a new single point crossover object with crossover probability of
+	 * {@code 0.05}.
+	 */
+	public SinglePointCrossover() {
+		this(0.05);
+	}
+
+
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
