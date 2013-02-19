@@ -102,7 +102,7 @@ public class LCG64ShiftRandom extends Random64 {
 		public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
 
 		/**
-		 * LEcuyer 2 parameters: a = 0x369DEA0F31A53F85L; b = 1
+		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 1
 		 */
 		public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
 
