@@ -72,7 +72,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-20 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +85,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-20 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -102,7 +102,7 @@ public class LCG64ShiftRandom extends Random64 {
 		public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
 
 		/**
-		 * LEcuyer 2 parameters: a = 0x369DEA0F31A53F85L; b = 1
+		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 1
 		 */
 		public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
 
@@ -185,7 +185,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-20 $</em>
 	 */
 	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
 		private static final long STEP_BASE = 1L << 56;
@@ -273,7 +273,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-20 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
