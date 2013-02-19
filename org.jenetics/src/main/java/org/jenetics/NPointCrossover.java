@@ -39,8 +39,20 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	private final int _n;
 
+	/**
+	 *
+	 * @param probability
+	 * @param n
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]} or {@code n < 1} .
+	 */
 	public NPointCrossover(final double probability, final int n) {
 		super(probability);
+		if (n < 1) {
+			throw new IllegalArgumentException(String.format(
+				"n must be at least 1 but was %d.", n
+			));
+		}
 		_n = n;
 	}
 
@@ -69,6 +81,12 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			that.length(), min(that.length(), _n), random
 		);
 
+		crossover(that, other, points);
+
+		return 2;
+	}
+
+	void crossover(final MSeq<G> that, final MSeq<G> other, final int[] points) {
 		for (int i = 1; i < points.length; i += 2) {
 			final int start = points[i - 1];
 			final int end = points[i];
@@ -78,8 +96,6 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			final int index = points[points.length - 1];
 			that.swap(index, that.length(), other, index);
 		}
-
-		return 2;
 	}
 
 }

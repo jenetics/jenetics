@@ -62,7 +62,7 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends NPointCrossover<
 	 *
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
+	 *         valid range of {@code [0, 1]}.
 	 */
 	public SinglePointCrossover(final double probability) {
 		super(probability, 1);
@@ -83,11 +83,13 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends NPointCrossover<
 		assert (that.length() == other.length());
 
 		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(that.length());
-
-		that.swap(index, that.length(), other, index);
+		crossover(that, other, random.nextInt(that.length()));
 
 		return 2;
+	}
+
+	void crossover(final MSeq<G> that, final MSeq<G> other, final int point) {
+		that.swap(point, that.length(), other, point);
 	}
 
 	@Override
