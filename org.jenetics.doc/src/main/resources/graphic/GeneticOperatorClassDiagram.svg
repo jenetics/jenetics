@@ -64,33 +64,33 @@ SwapMutator</text>
 Crossover</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="350" y="373"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="350" y="394"/>
-<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="574" y="350"/>
-<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="574" y="350"/>
-<text font-family="Dialog" font-size="12" x="632" y="363">
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="574" y="238"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="574" y="238"/>
+<text font-family="Dialog" font-size="12" x="632" y="251">
 MeanAlterer</text>
-<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="373"/>
-<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="394"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="261"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="282"/>
 <rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="126" y="462"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="126" y="462"/>
 <text font-family="Dialog" font-size="12" x="156" y="475">
 SinglePointCrossover</text>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="126" y="485"/>
 <rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="126" y="506"/>
-<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="350" y="462"/>
-<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="350" y="462"/>
-<text font-family="Dialog" font-size="12" x="363" y="475">
+<rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="574" y="350"/>
+<rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="574" y="350"/>
+<text font-family="Dialog" font-size="12" x="587" y="363">
 PartiallyMatchedCrossover</text>
-<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="350" y="485"/>
-<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="350" y="506"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="373"/>
+<rect fill="#000000" height="1" stroke="#000000" stroke-width="1" width="192" x="574" y="394"/>
 <polyline fill="none" points="478,350 478,192" stroke="#000000" stroke-width="1"/>
 <polygon fill="#ffffff" points="478,192 485,204 471,204" stroke="#ffffff" stroke-width="1"/>
 <polygon fill="none" points="478,192 485,204 471,204" stroke="#000000" stroke-width="1"/>
-<polyline fill="none" points="637,350 637,192" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="637,238 637,192" stroke="#000000" stroke-width="1"/>
 <polygon fill="#ffffff" points="637,192 644,204 630,204" stroke="#ffffff" stroke-width="1"/>
 <polygon fill="none" points="637,192 644,204 630,204" stroke="#000000" stroke-width="1"/>
-<polyline fill="none" points="446,462 446,416" stroke="#000000" stroke-width="1"/>
-<polygon fill="#ffffff" points="446,416 453,428 439,428" stroke="#ffffff" stroke-width="1"/>
-<polygon fill="none" points="446,416 453,428 439,428" stroke="#000000" stroke-width="1"/>
+<polyline fill="none" points="574,382 541,382" stroke="#000000" stroke-width="1"/>
+<polygon fill="#ffffff" points="541,382 553,375 553,389" stroke="#ffffff" stroke-width="1"/>
+<polygon fill="none" points="541,382 553,375 553,389" stroke="#000000" stroke-width="1"/>
 <rect fill="#87ceeb" height="67" stroke="#87ceeb" stroke-width="1" width="192" x="126" y="350"/>
 <rect fill="none" height="67" stroke="#000000" stroke-width="1" width="192" x="126" y="350"/>
 <text font-family="Dialog" font-size="12" x="151" y="363">
