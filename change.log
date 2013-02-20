@@ -1,5 +1,5 @@
 Jenetics-1.2.0
-- Implement NPointCrossover class.
+- Implement MultiplePointCrossover class.
 - Some code streamlining.
 - Prepare Selectors for parallelization.
 - The 'org.jenetics' project is now an OSGi module.

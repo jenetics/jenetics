@@ -161,7 +161,7 @@
 	<test name="org.jenetics.Crossover">
 		<classes>
 			<class name="org.jenetics.SinglePointCrossoverTest" />
-			<class name="org.jenetics.NPointCrossoverTest" />
+			<class name="org.jenetics.MultiplePointCrossoverTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.Statistics">

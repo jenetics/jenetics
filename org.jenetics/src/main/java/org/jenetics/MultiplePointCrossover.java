@@ -33,9 +33,9 @@ import org.jenetics.util.arrays;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-19 $</em>
+ * @version 1.2 &mdash; <em>$Date$</em>
  */
-public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
+public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	private final int _n;
 
@@ -46,7 +46,7 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or {@code n < 1} .
 	 */
-	public NPointCrossover(final double probability, final int n) {
+	public MultiplePointCrossover(final double probability, final int n) {
 		super(probability);
 		if (n < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -56,15 +56,15 @@ public class NPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		_n = n;
 	}
 
-	public NPointCrossover(final double probability) {
+	public MultiplePointCrossover(final double probability) {
 		this(probability, 2);
 	}
 
-	public NPointCrossover(final int n) {
+	public MultiplePointCrossover(final int n) {
 		this(0.05, n);
 	}
 
-	public NPointCrossover() {
+	public MultiplePointCrossover() {
 		this(0.05, 2);
 	}
 
