@@ -55,7 +55,9 @@ import org.jenetics.util.RandomRegistry;
  * @since 1.0
  * @version 1.2 &mdash; <em>$Date: 2013-02-20 $</em>
  */
-public class SinglePointCrossover<G extends Gene<?, G>> extends MultiplePointCrossover<G> {
+public class SinglePointCrossover<G extends Gene<?, G>>
+	extends MultiplePointCrossover<G>
+{
 
 	/**
 	 * Constructs an alterer with a given recombination probability.
