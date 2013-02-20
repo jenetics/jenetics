@@ -42,7 +42,7 @@ import org.jenetics.util.arrays;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public class NPointCrossoverTest {
+public class MultiplePointCrossoverTest {
 
 	@Test
 	public void crossover1() {
@@ -51,7 +51,7 @@ public class NPointCrossoverTest {
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
 		final SinglePointCrossover<CharacterGene> spco = new SinglePointCrossover<>();
-		final NPointCrossover<CharacterGene> nco = new NPointCrossover<>(1);
+		final MultiplePointCrossover<CharacterGene> nco = new MultiplePointCrossover<>(1);
 
 		for (int i = 0; i < g1.length(); ++i) {
 			final MSeq<CharacterGene> m11 = g1.copy();
@@ -73,7 +73,7 @@ public class NPointCrossoverTest {
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
-		final NPointCrossover<CharacterGene> crossover = new NPointCrossover<>(2);
+		final MultiplePointCrossover<CharacterGene> crossover = new MultiplePointCrossover<>(2);
 		final int[] points = new int[g1.length()];
 		for (int i = 0; i < points.length; ++i) {
 			points[i] = i;
@@ -101,7 +101,7 @@ public class NPointCrossoverTest {
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
-		final NPointCrossover<CharacterGene> crossover = new NPointCrossover<>(2);
+		final MultiplePointCrossover<CharacterGene> crossover = new MultiplePointCrossover<>(2);
 
 		final MSeq<CharacterGene> ms1 = g1.copy();
 		final MSeq<CharacterGene> ms2 = g2.copy();
