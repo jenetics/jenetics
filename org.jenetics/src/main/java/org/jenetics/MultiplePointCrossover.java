@@ -31,6 +31,8 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.arrays;
 
 /**
+ * <strong><p>Multiple point crossover</p></strong>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
  * @version 1.2 &mdash; <em>$Date$</em>
@@ -40,11 +42,12 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	private final int _n;
 
 	/**
+	 * Create a new crossover instance.
 	 *
-	 * @param probability
-	 * @param n
+	 * @param probability the recombination probability.
+	 * @param n the number of crossover points.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]} or {@code n < 1} .
+	 *         valid range of {@code [0, 1]} or {@code n < 1}.
 	 */
 	public MultiplePointCrossover(final double probability, final int n) {
 		super(probability);
@@ -56,18 +59,41 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		_n = n;
 	}
 
+	/**
+	 * Create a new crossover instance with two crossover points.
+	 *
+	 * @param probability the recombination probability.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
+	 */
 	public MultiplePointCrossover(final double probability) {
 		this(probability, 2);
 	}
 
+	/**
+	 * Create a new crossover instance with default crossover probability of
+	 * 0.05.
+	 *
+	 * @param n the number of crossover points.
+	 * @throws IllegalArgumentException if {@code n < 1}.
+	 */
 	public MultiplePointCrossover(final int n) {
 		this(0.05, n);
 	}
 
+	/**
+	 * Create a new crossover instance with two crossover points and crossover
+	 * probability 0.05.
+	 */
 	public MultiplePointCrossover() {
 		this(0.05, 2);
 	}
 
+	/**
+	 * Return the number of crossover points.
+	 *
+	 * @return the number of crossover points.
+	 */
 	public int getN() {
 		return _n;
 	}
@@ -86,6 +112,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		return 2;
 	}
 
+	// Package private for testing purpose.
 	void crossover(final MSeq<G> that, final MSeq<G> other, final int[] points) {
 		for (int i = 1; i < points.length; i += 2) {
 			final int start = points[i - 1];
