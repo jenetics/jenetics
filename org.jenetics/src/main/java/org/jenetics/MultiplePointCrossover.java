@@ -58,7 +58,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-21 $ </em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-22 $ </em>
  */
 public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
@@ -125,21 +125,25 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());
 
+		final int n = that.length() + 1;
+		final int k = min(n, _n);
+
 		final Random random = RandomRegistry.getRandom();
-		final int[] points = arrays.subset(
-			that.length(), min(that.length(), _n), random
-		);
+		final int[] points = k > 0 ? arrays.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
-
 		return 2;
 	}
 
 	// Package private for testing purpose.
-	void crossover(final MSeq<G> that, final MSeq<G> other, final int[] points) {
-		for (int i = 1; i < points.length; i += 2) {
-			final int start = points[i - 1];
-			final int end = points[i];
+	static <T> void crossover(
+		final MSeq<T> that,
+		final MSeq<T> other,
+		final int[] points
+	) {
+		for (int i = 0; i < points.length - 1; i += 2) {
+			final int start = points[i];
+			final int end = points[i + 1];
 			that.swap(start, end, other, start);
 		}
 		if (points.length%2 == 1) {
