@@ -33,9 +33,32 @@ import org.jenetics.util.arrays;
 /**
  * <strong><p>Multiple point crossover</p></strong>
  *
+ * If the {@code MultiplePointCrossover} is created with one crossover point, it
+ * behaves exactly like the {@link SinglePointCrossover}. The following picture
+ * shows how the {@code MultiplePointCrossover} works with two crossover points,
+ * defined at index 1 and 4.
+ * <p><div align="center">
+ *	<img src="doc-files/2PointCrossover.svg" width="500" >
+ * </div></p>
+ *
+ * If you want to <i>zip</i> the two chromosomes, the number of crossover points
+ * must be equal, or greater, than the number of genes in the chromosome minus
+ * one. If you are not sure about the chromosome length you can set the number
+ * of crossover points to {@code Integer.MAX_VALUE}.
+ * [code]
+ * final MultiplePointCrossover<Float64Gene> crossover =
+ *     new MultiplePointCrossover<>(Integer.MAX_VALUE);
+ * [/code]
+ *
+ * <p><div align="center">
+ *	<img src="doc-files/NPointCrossover.svg" width="500" >
+ * </div></p>
+ *
+ * The graph above shows the <i>zip</i> result of two chromosomes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-20 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-21 $ </em>
  */
 public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
