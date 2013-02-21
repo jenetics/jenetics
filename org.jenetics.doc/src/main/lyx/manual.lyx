@@ -3337,8 +3337,20 @@ zip
  the two chromosomes, the number of crossover points must be equal, or greater,
  than the number of genes in the chromosome minus one.
  If you are not sure about the chromosome length you can set the number
- of crossover points to Integer.MAX_VALUE.
- 
+ of crossover points to 
+\family typewriter
+Integer.MAX_VALUE
+\family default
+.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:n-point-(zip)-crossover"
+
+\end_inset
+
+ shows how the multiple-point crossover operator is working with this configurat
+ion.
 \end_layout
 
 \begin_layout Standard
@@ -3365,6 +3377,12 @@ status open
 \begin_layout Plain Layout
 
 \emph on
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:n-point-(zip)-crossover"
+
+\end_inset
+
 n
 \emph default
 -point (zip) crossover
@@ -3379,7 +3397,7 @@ n-point crossover
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Zip crossover
@@ -3423,7 +3441,7 @@ Crossover!Zip crossover
 \begin_layout Paragraph
 Partially-matched crossover
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Partially-matched crossover
@@ -3433,7 +3451,7 @@ Partially-matched crossover
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Crossover!Partially-matched crossover
