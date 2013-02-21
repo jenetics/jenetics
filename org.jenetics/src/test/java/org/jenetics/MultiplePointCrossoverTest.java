@@ -98,8 +98,8 @@ public class MultiplePointCrossoverTest {
 	@Test
 	public void crossoverAll2() {
 		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
-		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
-		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
+		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 21).toSeq();
+		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 21).toSeq();
 
 		final MultiplePointCrossover<CharacterGene> crossover =
 				new MultiplePointCrossover<>(Integer.MAX_VALUE);
