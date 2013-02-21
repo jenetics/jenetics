@@ -40,7 +40,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2013-02-21 $</em>
  */
 public class MultiplePointCrossoverTest {
 
@@ -68,7 +68,7 @@ public class MultiplePointCrossoverTest {
 	}
 
 	@Test
-	public void crossoverAll() {
+	public void crossoverAll1() {
 		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
@@ -95,6 +95,31 @@ public class MultiplePointCrossoverTest {
 		}
 	}
 
+	@Test
+	public void crossoverAll2() {
+		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
+		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
+		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
+
+		final MultiplePointCrossover<CharacterGene> crossover =
+				new MultiplePointCrossover<>(Integer.MAX_VALUE);
+
+		final MSeq<CharacterGene> ms1 = g1.copy();
+		final MSeq<CharacterGene> ms2 = g2.copy();
+
+		crossover.crossover(ms1, ms2);
+
+		for (int i = 1; i < g1.length(); i += 2) {
+			final int start = i - 1;
+			final int end = i;
+
+			Seq<CharacterGene> actual = ms2.subSeq(start, end);
+			Seq<CharacterGene> expected = g1.subSeq(start, end);
+
+			Assert.assertEquals(actual, expected);
+		}
+	}
+
 	@Test(dataProvider = "points")
 	public void crossover(final Points points) {
 		final CharSeq chars = CharSeq.valueOf("a-zA-Z");
@@ -106,18 +131,18 @@ public class MultiplePointCrossoverTest {
 		final MSeq<CharacterGene> ms1 = g1.copy();
 		final MSeq<CharacterGene> ms2 = g2.copy();
 
-		System.out.println(points);
+		//System.out.println(points);
 
-		System.out.println(ms1);
-		System.out.println(ms2);
+		//System.out.println(ms1);
+		//System.out.println(ms2);
 
 		crossover.crossover(ms1, ms2, points.points);
-		System.out.println("--------------------------------");
+		//System.out.println("--------------------------------");
 
-		System.out.println(ms1);
-		System.out.println(ms2);
+		//System.out.println(ms1);
+		//System.out.println(ms2);
 
-		System.out.println();
+		//ssSystem.out.println();
 
 		for (int i = 1; i < points.points.length; i += 2) {
 			final int start = points.points[i - 1];
@@ -159,7 +184,28 @@ public class MultiplePointCrossoverTest {
 		}
 	}
 
+	static void print(final Seq<CharacterGene> genes, final int[] points) {
+
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
