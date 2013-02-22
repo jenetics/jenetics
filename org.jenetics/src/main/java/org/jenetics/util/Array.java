@@ -48,7 +48,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-01-25 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-22 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -92,7 +92,10 @@ public final class Array<T>
 	 * the given value.
 	 *
 	 * @param first the only element of the array.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	public Array(final T first) {
 		this(1);
 		_array.data[0] = first;
@@ -104,7 +107,10 @@ public final class Array<T>
 	 *
 	 * @param first first array element.
 	 * @param second second array element.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	public Array(
 		final T first,
 		final T second
@@ -121,7 +127,10 @@ public final class Array<T>
 	 * @param first first array element.
 	 * @param second second array element.
 	 * @param third third array element.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	public Array(
 		final T first,
 		final T second,
@@ -141,7 +150,10 @@ public final class Array<T>
 	 * @param second second array element.
 	 * @param third third array element.
 	 * @param fourth fourth array element.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	public Array(
 		final T first,
 		final T second,
@@ -164,7 +176,10 @@ public final class Array<T>
 	 * @param third third array element.
 	 * @param fourth fourth array element.
 	 * @param fifth fifth array element.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	public Array(
 		final T first,
 		final T second,
@@ -190,7 +205,10 @@ public final class Array<T>
 	 * @param fifth fifth array element.
 	 * @param rest the rest of the array element.
 	 * @throws NullPointerException if the {@code rest} array is {@code null}.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	@SafeVarargs
 	public Array(
 		final T first,
@@ -214,7 +232,10 @@ public final class Array<T>
 	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 *
+	 * @deprecated use {@link #valueOf(Object...)} instead.
 	 */
+	@Deprecated
 	public Array(final T[] values) {
 		this(values.length);
 		System.arraycopy(values, 0, _array.data, 0, values.length);
@@ -226,7 +247,10 @@ public final class Array<T>
 	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 *
+	 * @deprecated use {@link #valueOf(Collection)} instead.
 	 */
+	@Deprecated
 	public Array(final Collection<? extends T> values) {
 		this(values.size());
 
@@ -658,4 +682,45 @@ public final class Array<T>
 		return new ArrayMSeqIterator<>(this);
 	}
 
+	/* *************************************************************************
+	 * Static factory methods.
+	 **************************************************************************/
+
+	/**
+	 * Create a new array from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> Array<T> valueOf(final T... values) {
+		final ArrayRef ref = new ArrayRef(values.length);
+		System.arraycopy(values, 0, ref.data, 0, values.length);
+
+		return new Array<>(ref, 0, ref.data.length);
+	}
+
+	/**
+	 * Create a new Array from the values of the given Collection. The order of
+	 * the elements are determined by the iterator of the Collection.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
+		final ArrayRef ref = new ArrayRef(values.size());
+
+		int index = 0;
+		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+			ref.data[index] = it.next();
+		}
+
+		return new Array<>(ref, 0, ref.data.length);
+	}
+
 }
+
+
+
+
+

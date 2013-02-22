@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-22 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -72,8 +72,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void newFromCollection() {
-		final Array<Integer> a1 = new Array<>(1, 2, 3, 4, 5);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.valueOf(1, 2, 3, 4, 5);
+		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length());
@@ -84,8 +84,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void newFromSubArray() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.subSeq(0, 6).add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 2);
@@ -96,8 +96,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void newFromOtherSubArray() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.subSeq(1, 6).add(a2);
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
@@ -108,8 +108,8 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void create4() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5, 6, 7);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10, 11, 12, 13);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7);
+		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10, 11, 12, 13);
 		final Array<Integer> a3 = a1.add(a2.subSeq(2, 7));
 
 		Assert.assertEquals(a3.length(), a1.length() + a2.length() - 3);
@@ -352,30 +352,30 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 	@Test
 	public void append1() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
-		final Array<Integer> a2 = new Array<>(6, 7, 8, 9, 10);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a2 = Array.valueOf(6, 7, 8, 9, 10);
 		final Array<Integer> a3 = a1.add(a2);
 
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3,
-				new Array<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+				Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 
 	@Test
 	public void append2() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a3 = a1.add(Arrays.asList(6, 7, 8, 9, 10));
 
 		Assert.assertEquals(a3.length(), 11);
 		Assert.assertEquals(a3,
-				new Array<>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+				Array.valueOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 			);
 	}
 
 	@Test
 	public void append3() {
-		final Array<Integer> a1 = new Array<>(0, 1, 2, 3, 4, 5);
+		final Array<Integer> a1 = Array.valueOf(0, 1, 2, 3, 4, 5);
 		final Array<Integer> a2 = a1.add(6);
 		final Array<Integer> a3 = a1.add(6);
 
@@ -463,7 +463,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void iterator() {
 		final List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-		final Array<Integer> array = new Array<>(list);
+		final Array<Integer> array = Array.valueOf(list);
 
 		final Iterator<Integer> ai = array.iterator();
 		for (Integer i : list) {
@@ -500,7 +500,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		for (int i = 0; i < oa.length; ++i) {
 			Assert.assertEquals(oa[i], array.get(i));
 		}
-		Assert.assertEquals(new Array<>(oa), array);
+		Assert.assertEquals(Array.valueOf(oa), array);
 	}
 
 }

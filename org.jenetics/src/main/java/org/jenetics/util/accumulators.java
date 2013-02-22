@@ -37,7 +37,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-22 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -437,7 +437,7 @@ public final class accumulators extends StaticObject {
 		final Iterable<? extends T> values,
 		final Accumulator<? super T>... accus
 	) {
-		accumulate(values, new Array<>(accus));
+		accumulate(values, Array.valueOf(accus));
 	}
 
 	/**
