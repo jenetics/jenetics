@@ -38,7 +38,7 @@ import org.jenetics.util.arrays;
  * shows how the {@code MultiplePointCrossover} works with two crossover points,
  * defined at index 1 and 4.
  * <p><div align="center">
- *	<img src="doc-files/2PointCrossover.svg" width="500" >
+ *	<img src="doc-files/2PointCrossover.svg" width="400" >
  * </div></p>
  *
  * If you want to <i>zip</i> the two chromosomes, the number of crossover points
@@ -51,7 +51,7 @@ import org.jenetics.util.arrays;
  * [/code]
  *
  * <p><div align="center">
- *	<img src="doc-files/NPointCrossover.svg" width="500" >
+ *	<img src="doc-files/NPointCrossover.svg" width="400" >
  * </div></p>
  *
  * The graph above shows the <i>zip</i> result of two chromosomes.

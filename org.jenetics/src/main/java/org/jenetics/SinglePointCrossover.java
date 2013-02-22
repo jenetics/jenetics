@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * them at some randomly chosen site. E.g.
  * </p>
  * <div align="center">
- *	<img src="doc-files/SinglePointCrossover.svg" width="500" >
+ *	<img src="doc-files/SinglePointCrossover.svg" width="400" >
  * </div>
  * <p>
  * If we create a child and its complement we preserving the total number of
