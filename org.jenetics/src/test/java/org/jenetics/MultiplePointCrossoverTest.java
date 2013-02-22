@@ -292,18 +292,23 @@ public class MultiplePointCrossoverTest {
 	}
 
 	public static void main(final String[] args) {
-		final ISeq<Character> a = CharSeq.toISeq("1234567890");
-		final ISeq<Character> b = CharSeq.toISeq("ABCDEFGHIJ");
+		final ISeq<Character> a = CharSeq.toISeq("12345678");
+		final ISeq<Character> b = CharSeq.toISeq("ABCDEFGH");
 
-		for (int i = 0; i < a.length() + 1; ++i) {
+		final int[][] indexes = new int[][] {
+			{0, 4},
+			{3, 6},
+			{0, 8}
+		};
+
+		for (int i = 0; i < indexes.length; ++i) {
 			final MSeq<Character> ma = a.copy();
 			final MSeq<Character> mb = b.copy();
 
-			//MultiplePointCrossover.crossover(ma1, mb1, new int[]{i});
-			SinglePointCrossover.crossover(ma, mb, i);
+			MultiplePointCrossover.crossover(ma, mb, indexes[i]);
 
-			final String l1 = String.format( "%2d: %s  %s", i, a, ma);
-			final String l2 = String.format( "    %s  %s",    b, mb);
+			final String l1 = String.format( "%6s: %s  %s", Array.box(indexes[i]), a, ma);
+			final String l2 = String.format( "        %s  %s",    b, mb);
 
 			System.out.println(l1);
 			System.out.println(l2);

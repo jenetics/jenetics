@@ -125,7 +125,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());
 
-		final int n = that.length() + 1;
+		final int n = that.length();
 		final int k = min(n, _n);
 
 		final Random random = RandomRegistry.getRandom();
@@ -139,15 +139,16 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	static <T> void crossover(
 		final MSeq<T> that,
 		final MSeq<T> other,
-		final int[] points
+		final int[] indexes
 	) {
-		for (int i = 0; i < points.length - 1; i += 2) {
-			final int start = points[i];
-			final int end = points[i + 1];
+
+		for (int i = 0; i < indexes.length - 1; i += 2) {
+			final int start = indexes[i];
+			final int end = indexes[i + 1];
 			that.swap(start, end, other, start);
 		}
-		if (points.length%2 == 1) {
-			final int index = points[points.length - 1];
+		if (indexes.length%2 == 1) {
+			final int index = indexes[indexes.length - 1];
 			that.swap(index, that.length(), other, index);
 		}
 	}
