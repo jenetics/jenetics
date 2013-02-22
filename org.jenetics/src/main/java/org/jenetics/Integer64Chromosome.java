@@ -73,7 +73,7 @@ public class Integer64Chromosome
 	 *         one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		this(new Array<>(genes).toISeq());
+		this(Array.valueOf(genes).toISeq());
 	}
 
 	/**
