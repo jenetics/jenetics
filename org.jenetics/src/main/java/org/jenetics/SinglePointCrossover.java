@@ -86,11 +86,15 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 
 		final Random random = RandomRegistry.getRandom();
 		crossover(that, other, random.nextInt(that.length()));
-
 		return 2;
 	}
 
-	void crossover(final MSeq<G> that, final MSeq<G> other, final int point) {
+	// Package private for testing purpose.
+	static <T> void crossover(
+		final MSeq<T> that,
+		final MSeq<T> other,
+		final int point
+	) {
 		that.swap(point, that.length(), other, point);
 	}
 
