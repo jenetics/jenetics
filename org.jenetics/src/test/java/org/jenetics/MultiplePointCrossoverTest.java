@@ -291,6 +291,26 @@ public class MultiplePointCrossoverTest {
 		crossover.crossover(ms1, ms2);
 	}
 
+	public static void main(final String[] args) {
+		final ISeq<Character> a = CharSeq.toISeq("1234567890");
+		final ISeq<Character> b = CharSeq.toISeq("ABCDEFGHIJ");
+
+		for (int i = 0; i < a.length() + 1; ++i) {
+			final MSeq<Character> ma = a.copy();
+			final MSeq<Character> mb = b.copy();
+
+			//MultiplePointCrossover.crossover(ma1, mb1, new int[]{i});
+			SinglePointCrossover.crossover(ma, mb, i);
+
+			final String l1 = String.format( "%2d: %s  %s", i, a, ma);
+			final String l2 = String.format( "    %s  %s",    b, mb);
+
+			System.out.println(l1);
+			System.out.println(l2);
+			System.out.println();
+		}
+	}
+
 }
 
 
