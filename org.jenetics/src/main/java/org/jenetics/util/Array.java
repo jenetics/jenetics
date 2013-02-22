@@ -769,24 +769,6 @@ public final class Array<T>
 	}
 
 	/**
-	 * Boxes the given native array into an {@code Array<Byte>}.
-	 *
-	 * @param values the native array to box.
-	 * @return the boxed array.
-	 */
-	public static Array<Byte> box(final byte... values) {
-		Array<Byte> array = empty();
-		if (values.length > 0) {
-			array = new Array<>(values.length);
-			for (int i = values.length; --i >= 0;) {
-				array._array.data[i] = values[i];
-			}
-		}
-
-		return array;
-	}
-
-	/**
 	 * Boxes the given native array into an {@code Array<Char>}.
 	 *
 	 * @param values the native array to box.
@@ -794,24 +776,6 @@ public final class Array<T>
 	 */
 	public static Array<Character> box(final char... values) {
 		Array<Character> array = empty();
-		if (values.length > 0) {
-			array = new Array<>(values.length);
-			for (int i = values.length; --i >= 0;) {
-				array._array.data[i] = values[i];
-			}
-		}
-
-		return array;
-	}
-
-	/**
-	 * Boxes the given native array into an {@code Array<Short>}.
-	 *
-	 * @param values the native array to box.
-	 * @return the boxed array.
-	 */
-	public static Array<Short> box(final short... values) {
-		Array<Short> array = empty();
 		if (values.length > 0) {
 			array = new Array<>(values.length);
 			for (int i = values.length; --i >= 0;) {
@@ -915,40 +879,10 @@ public final class Array<T>
 	 * @param values the {@code Array} to unbox.
 	 * @return the unboxed native array.
 	 */
-	public static byte[] unboxByte(final Array<Byte> values) {
-		final byte[] array = new byte[values.length()];
-		for (int i = values._start; i < values._end; ++i) {
-			array[i - values._start] = (Byte)values._array.data[i];
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes the given array to the corresponding native version.
-	 *
-	 * @param values the {@code Array} to unbox.
-	 * @return the unboxed native array.
-	 */
 	public static char[] unboxChar(final Array<Character> values) {
 		final char[] array = new char[values.length()];
 		for (int i = values._start; i < values._end; ++i) {
 			array[i - values._start] = (Character)values._array.data[i];
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes the given array to the corresponding native version.
-	 *
-	 * @param values the {@code Array} to unbox.
-	 * @return the unboxed native array.
-	 */
-	public static short[] unboxShort(final Array<Short> values) {
-		final short[] array = new short[values.length()];
-		for (int i = values._start; i < values._end; ++i) {
-			array[i - values._start] = (Short)values._array.data[i];
 		}
 
 		return array;
