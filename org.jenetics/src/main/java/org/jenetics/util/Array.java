@@ -682,6 +682,8 @@ public final class Array<T>
 		return new ArrayMSeqIterator<>(this);
 	}
 
+
+
 	/* *************************************************************************
 	 * Static factory methods.
 	 **************************************************************************/
@@ -694,31 +696,331 @@ public final class Array<T>
 	 */
 	@SafeVarargs
 	public static <T> Array<T> valueOf(final T... values) {
-		final ArrayRef ref = new ArrayRef(values.length);
-		System.arraycopy(values, 0, ref.data, 0, values.length);
+		Array<T> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			System.arraycopy(values, 0, array._array.data, 0, values.length);
+		}
 
-		return new Array<>(ref, 0, ref.data.length);
+		return array;
 	}
 
 	/**
-	 * Create a new Array from the values of the given Collection. The order of
-	 * the elements are determined by the iterator of the Collection.
+	 * Create a new Array from the values of the given {@code Collection}. The
+	 * order of the elements are determined by the iterator of the Collection.
 	 *
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
-		final ArrayRef ref = new ArrayRef(values.size());
-
-		int index = 0;
-		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
-			ref.data[index] = it.next();
+		Array<T> array = empty();
+		if (values.size() > 0) {
+			array = new Array<>(values.size());
+			int index = 0;
+			for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+				array._array.data[index] = it.next();
+			}
 		}
 
-		return new Array<>(ref, 0, ref.data.length);
+		return array;
+	}
+
+	/**
+	 * Create a new Array from the values of the given {@code Seq}.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> Array<T> valueOf(final Seq<T> values) {
+		Array<T> array = empty();
+		if (values.length() > 0) {
+			if (values instanceof Array<?>) {
+				array = ((Array<T>)values).copy();
+			} else {
+				array = new Array<>(values.length());
+				int index = 0;
+				for (Iterator<? extends T>
+					it = values.iterator(); it.hasNext(); ++index)
+				{
+					array._array.data[index] = it.next();
+				}
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Boolean>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Boolean> box(final boolean... values) {
+		Array<Boolean> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Byte>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Byte> box(final byte... values) {
+		Array<Byte> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Char>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Character> box(final char... values) {
+		Array<Character> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Short>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Short> box(final short... values) {
+		Array<Short> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Integer>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Integer> box(final int... values) {
+		Array<Integer> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Long>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Long> box(final long... values) {
+		Array<Long> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Float>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Float> box(final float... values) {
+		Array<Float> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Double>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Double> box(final double... values) {
+		Array<Double> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static boolean[] unboxBoolean(final Array<Boolean> values) {
+		final boolean[] array = new boolean[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Boolean)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static byte[] unboxByte(final Array<Byte> values) {
+		final byte[] array = new byte[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Byte)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static char[] unboxChar(final Array<Character> values) {
+		final char[] array = new char[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Character)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static short[] unboxShort(final Array<Short> values) {
+		final short[] array = new short[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Short)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static int[] unboxInt(final Array<Integer> values) {
+		final int[] array = new int[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Integer)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static long[] unboxLong(final Array<Long> values) {
+		final long[] array = new long[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Long)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static float[] unboxFloat(final Array<Float> values) {
+		final float[] array = new float[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Float)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static double[] unboxDouble(final Array<Double> values) {
+		final double[] array = new double[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Double)values._array.data[i];
+		}
+
+		return array;
 	}
 
 }
+
+
+
+
+
+
 
 
 
