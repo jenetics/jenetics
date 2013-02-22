@@ -53,7 +53,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-20 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-22 $</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
 	extends MultiplePointCrossover<G>
@@ -86,11 +86,15 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 
 		final Random random = RandomRegistry.getRandom();
 		crossover(that, other, random.nextInt(that.length()));
-
 		return 2;
 	}
 
-	void crossover(final MSeq<G> that, final MSeq<G> other, final int point) {
+	// Package private for testing purpose.
+	static <T> void crossover(
+		final MSeq<T> that,
+		final MSeq<T> other,
+		final int point
+	) {
 		that.swap(point, that.length(), other, point);
 	}
 
