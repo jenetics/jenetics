@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-22 $</em>
+ * @version <em>$Date: 2013-02-24 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -127,6 +127,186 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 		final Array<Integer> filtered = array.filter(not(Null));
 		Assert.assertEquals(filtered.length(), array.length() - 2);
+	}
+
+	@Test
+	public void boxBoolean() {
+		final Random random = RandomRegistry.getRandom();
+		final boolean[] array = new boolean[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextBoolean();
+		}
+
+		final Array<Boolean> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).booleanValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxChar() {
+		final Random random = RandomRegistry.getRandom();
+		final char[] array = new char[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = (char)random.nextInt();
+		}
+
+		final Array<Character> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).charValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxInt() {
+		final Random random = RandomRegistry.getRandom();
+		final int[] array = new int[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextInt();
+		}
+
+		final Array<Integer> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).intValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxLong() {
+		final Random random = RandomRegistry.getRandom();
+		final long[] array = new long[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextLong();
+		}
+
+		final Array<Long> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).longValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxFloat() {
+		final Random random = RandomRegistry.getRandom();
+		final float[] array = new float[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextFloat();
+		}
+
+		final Array<Float> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).floatValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void boxDouble() {
+		final Random random = RandomRegistry.getRandom();
+		final double[] array = new double[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = random.nextDouble();
+		}
+
+		final Array<Double> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).doubleValue(), array[i]);
+		}
+	}
+
+	@Test
+	public void unboxBoolean() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Boolean> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextBoolean());
+		}
+
+		final boolean[] unboxed = Array.unboxBoolean(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).booleanValue());
+		}
+	}
+
+	@Test
+	public void unboxCharacter() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Character> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, (char)random.nextInt());
+		}
+
+		final char[] unboxed = Array.unboxChar(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).charValue());
+		}
+	}
+
+	@Test
+	public void unboxInteger() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Integer> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextInt());
+		}
+
+		final int[] unboxed = Array.unboxInt(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).intValue());
+		}
+	}
+
+	@Test
+	public void unboxLong() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Long> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextLong());
+		}
+
+		final long[] unboxed = Array.unboxLong(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).longValue());
+		}
+	}
+
+	@Test
+	public void unboxFloat() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Float> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextFloat());
+		}
+
+		final float[] unboxed = Array.unboxFloat(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).floatValue());
+		}
+	}
+
+	@Test
+	public void unboxDouble() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Double> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, random.nextDouble());
+		}
+
+		final double[] unboxed = Array.unboxDouble(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).doubleValue());
+		}
 	}
 
 	@Test
