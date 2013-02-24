@@ -32,7 +32,7 @@ import java.util.ListIterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-17 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-24 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -143,7 +143,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
-	 * Return a read-only projection of this sequence.
+	 * Return a read-only projection of this sequence. Changes to the original
+	 * sequence will not influence the returned {@code ISeq}.
 	 *
 	 * @return a read-only projection of this sequence
 	 */
