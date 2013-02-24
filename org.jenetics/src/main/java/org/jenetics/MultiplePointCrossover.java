@@ -23,6 +23,8 @@
 package org.jenetics;
 
 import static java.lang.Math.min;
+import static java.lang.String.format;
+import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
 
@@ -58,7 +60,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-22 $ </em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-24 $ </em>
  */
 public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
@@ -151,6 +153,34 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			final int index = indexes[indexes.length - 1];
 			that.swap(index, that.length(), other, index);
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		return hashCodeOf(getClass()).
+				and(super.hashCode()).
+				and(_n).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != getClass()) {
+			return false;
+		}
+
+		final MultiplePointCrossover<?> mpc = (MultiplePointCrossover<?>)obj;
+		return _n == mpc._n && super.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return format(
+			"%s[p=%f, n=%d]",
+			getClass().getSimpleName(), _probability, _n
+		);
 	}
 
 }
