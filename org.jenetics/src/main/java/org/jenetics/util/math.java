@@ -27,7 +27,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-02-11 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-02-25 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -338,7 +338,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-02-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-25 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -364,7 +364,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-02-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-02-25 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -435,35 +435,34 @@ public final class math extends StaticObject {
 
 		/**
 		 * Uses the given {@code base} value to create a reasonable safe seed
-		 * value. This is done by combining it with values of
-		 * {@code new Object().hashCode()}:
+		 * value. This is done by
+		 * (<a href="https://code.google.com/p/smhasher/source/browse/trunk/MurmurHash3.cpp">Murmur3</a>)
+		 * hashing it with values of {@code new Object().hashCode()}:
 		 * <p/>
 		 * [code]
-		 * public static long seed(final long base) {
-		 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
-		 *                                         new Object().hashCode();
-		 *     long seed = base ^ objectHashSeed;
-		 *     seed ^= seed << 17;
-		 *     seed ^= seed >>> 31;
-		 *     seed ^= seed << 8;
-		 *     return seed;
+		 * public static long seed(final long seed) {
+		 *     final long key1 = ((long)(new Object().hashCode()) << 32) |
+		 *                               new Object().hashCode();
+		 *     final long key2 = ((long)(new Object().hashCode()) << 32) |
+		 *                               new Object().hashCode();
+		 *
+		 *     return murmurHash3_64(key1, key2, seed);
 		 * }
 		 * [/code]
 		 *
-		 * @param base the base value of the seed to create
-		 * @return the created seed value.
+		 * @see <a href="http://code.google.com/p/smhasher/wiki/MurmurHash3">MurmurHash3<a/>
+		 *
+		 * @param seed the hashing seed
+		 * @return the created random seed value.
 		 */
-		public static long seed(final long base) {
-			long seed = base ^ objectHashSeed();
-			seed ^= seed << 17;
-			seed ^= seed >>> 31;
-			seed ^= seed << 8;
-			return seed;
+		public static long seed(final long seed) {
+			return murmur3.hash64(objectHashSeed(), objectHashSeed(), seed);
 		}
 
 
 		private static long objectHashSeed() {
-			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
+			return ((long)(new Object().hashCode()) << 32) |
+							new Object().hashCode();
 		}
 
 
