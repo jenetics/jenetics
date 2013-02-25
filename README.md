@@ -13,8 +13,8 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 *  **JScience** library, <http://jscience.org>: This library is included and lies in the `project/lib` directory.
 
 ## Download
-*  **Sourceforge**: [https://sourceforge.net/projects/jenetics/files/latest/download]
-*  **Bitbucket**: [https://bitbucket.org/fwilhelm/jenetics/downloads]
+*  **Sourceforge**: <https://sourceforge.net/projects/jenetics/files/latest/download>
+*  **Bitbucket**: <https://bitbucket.org/fwilhelm/jenetics/downloads>
 
 ## Build Jenetics
 
