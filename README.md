@@ -8,6 +8,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 
 ### Build time
 *  **JDK 1.7**: The `JAVA_HOME` variable must be set to your java installation directory.
+*  **Gradle 1.3**: [Gradle](http://www.gradle.org/) is used for building the library.
 
 ### Run time
 *  **JScience** library, <http://jscience.org>: This library is included and lies in the `project/lib` directory.
@@ -27,7 +28,7 @@ For building the Jenetics library from source, download the most recent, stable 
 
     $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
 
-Jenetics uses Gradle13 as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
+Jenetics uses Gradle 1.3 as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
 * **org.jenetics**: This project contains the source code and tests for the Jenetics core-module.
 * **org.jenetics.example**: This project contains example code for the *core*-module.
