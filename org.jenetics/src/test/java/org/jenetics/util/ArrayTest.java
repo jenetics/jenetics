@@ -257,6 +257,11 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextInt());
 		}
 
+		final int[] bbbbbbb = array.unbox(TypeBound.Integer);
+
+		final Array<Double> da = new Array<>(0);
+		final int[] aaggggg = array.unbox(TypeBound.Integer);
+
 		final int[] unboxed = Array.unboxInt(array);
 
 		for (int i = 0; i < array.length(); ++i) {

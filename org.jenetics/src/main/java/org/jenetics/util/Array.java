@@ -683,6 +683,15 @@ public final class Array<T>
 		return new ArrayMSeqIterator<>(this);
 	}
 
+	@SuppressWarnings("unchecked")
+	public int[] unbox(final TypeBound.Integer<T> bound) {
+		final int[] array = new int[length()];
+		for (int i = _start; i < _end; ++i) {
+			array[i - _start] = bound.apply((T)_array.data[i]);
+		}
+
+		return array;
+	}
 
 
 	/* *************************************************************************
