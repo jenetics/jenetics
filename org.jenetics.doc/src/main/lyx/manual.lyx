@@ -3364,14 +3364,14 @@ Crossover!2-point crossover
 
 \end_inset
 
-In figure 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:3-point-crossover"
 
 \end_inset
 
- you can see the crossover for three crossover points.
+ shows the crossover for an odd number of crossover points.
 \end_layout
 
 \begin_layout Standard
