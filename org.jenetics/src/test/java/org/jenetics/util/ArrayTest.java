@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-24 $</em>
+ * @version <em>$Date: 2013-02-26 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -256,6 +256,11 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, random.nextInt());
 		}
+
+		final int[] bbbbbbb = array.unbox(TypeBound.Integer);
+
+		final Array<Double> da = new Array<>(0);
+		final int[] aaggggg = array.unbox(TypeBound.Integer);
 
 		final int[] unboxed = Array.unboxInt(array);
 
