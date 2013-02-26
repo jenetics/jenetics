@@ -43,6 +43,13 @@ import org.jenetics.util.arrays;
  *	<img src="doc-files/2PointCrossover.svg" width="400" >
  * </div></p>
  *
+ * If the number of crossover points is odd, the crossover looks like in the
+ * following figure.
+ *
+ * <p><div align="center">
+ *	<img src="doc-files/3PointCrossover.svg" width="400" >
+ * </div></p>
+ *
  * If you want to <i>zip</i> the two chromosomes, the number of crossover points
  * must be equal, or greater, than the number of genes in the chromosome minus
  * one. If you are not sure about the chromosome length you can set the number
