@@ -484,7 +484,7 @@ public final class Array<T>
 			if (start < end) {
 				_array.cloneIfSealed();
 
-				for (int i = 0; i < (end - start); ++i) {
+				for (int i = (end - start); --i >= 0;) {
 					@SuppressWarnings("unchecked")
 					final T temp = (T)_array.data[_start + start + i];
 					_array.data[_start + start + i] = other.get(otherStart + i);
@@ -508,10 +508,11 @@ public final class Array<T>
 			_array.cloneIfSealed();
 			other._array.cloneIfSealed();
 
-			for (int i = 0; i < (end - start); ++i) {
+			for (int i = (end - start); --i >= 0;) {
 				final Object temp = _array.data[_start + start + i];
-				_array.data[_start + start + i] =
-					other._array.data[other._start + otherStart + i];
+				_array.data[_start + start + i] = (
+					other._array.data[other._start + otherStart + i]
+				);
 				other._array.data[other._start + otherStart + i] = temp;
 			}
 		}
