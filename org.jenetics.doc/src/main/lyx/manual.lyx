@@ -3364,7 +3364,14 @@ Crossover!2-point crossover
 
 \end_inset
 
+In figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3-point-crossover"
 
+\end_inset
+
+ you can see the crossover for three crossover points.
 \end_layout
 
 \begin_layout Standard
@@ -3389,6 +3396,12 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3-point-crossover"
+
+\end_inset
+
 3-point crossover
 \begin_inset Index idx
 status collapsed
