@@ -227,7 +227,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextBoolean());
 		}
 
-		final boolean[] unboxed = Array.unboxBoolean(array);
+		final boolean[] unboxed = array.unbox(TypeBound.Boolean);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).booleanValue());
@@ -242,7 +242,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, (char)random.nextInt());
 		}
 
-		final char[] unboxed = Array.unboxChar(array);
+		final char[] unboxed = array.unbox(TypeBound.Character);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).charValue());
@@ -257,12 +257,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextInt());
 		}
 
-		final int[] bbbbbbb = array.unbox(TypeBound.Integer);
-
-		final Array<Double> da = new Array<>(0);
-		final int[] aaggggg = array.unbox(TypeBound.Integer);
-
-		final int[] unboxed = Array.unboxInt(array);
+		final int[] unboxed = array.unbox(TypeBound.Integer);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).intValue());
@@ -277,7 +272,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextLong());
 		}
 
-		final long[] unboxed = Array.unboxLong(array);
+		final long[] unboxed = array.unbox(TypeBound.Long);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).longValue());
@@ -292,7 +287,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextFloat());
 		}
 
-		final float[] unboxed = Array.unboxFloat(array);
+		final float[] unboxed = array.unbox(TypeBound.Float);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).floatValue());
@@ -307,7 +302,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextDouble());
 		}
 
-		final double[] unboxed = Array.unboxDouble(array);
+		final double[] unboxed = array.unbox(TypeBound.Double);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).doubleValue());
