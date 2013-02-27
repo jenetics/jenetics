@@ -25,60 +25,68 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-26 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public interface TypeBound<A, B> extends Function<A, B> {
 
-	public static final Boolean<java.lang.Boolean> Boolean = new Boolean<java.lang.Boolean>() {
+	public static final Boolean<java.lang.Boolean>
+	Boolean = new Boolean<java.lang.Boolean>() {
 		@Override
 		public java.lang.Boolean apply(final java.lang.Boolean value) {
 			return value;
 		}
 	};
 
-	public static final Byte<java.lang.Byte> Byte = new Byte<java.lang.Byte>() {
+	public static final Byte<java.lang.Byte>
+	Byte = new Byte<java.lang.Byte>() {
 		@Override
 		public java.lang.Byte apply(final java.lang.Byte value) {
 			return value;
 		}
 	};
 
-	public static final Character<java.lang.Character> Character = new Character<java.lang.Character>() {
+	public static final Character<java.lang.Character>
+	Character = new Character<java.lang.Character>() {
 		@Override
 		public java.lang.Character apply(final java.lang.Character value) {
 			return value;
 		}
 	};
 
-	public static final Short<java.lang.Short> Short = new Short<java.lang.Short>() {
+	public static final Short<java.lang.Short>
+	Short = new Short<java.lang.Short>() {
 		@Override
 		public java.lang.Short apply(final java.lang.Short value) {
 			return value;
 		}
 	};
 
-	public static final Integer<java.lang.Integer> Integer = new Integer<java.lang.Integer>() {
+	public static final Integer<java.lang.Integer>
+	Integer = new Integer<java.lang.Integer>() {
 		@Override
 		public java.lang.Integer apply(final java.lang.Integer value) {
 			return value;
 		}
 	};
 
-	public static final Long<java.lang.Long> Long = new Long<java.lang.Long>() {
+	public static final Long<java.lang.Long>
+	Long = new Long<java.lang.Long>() {
 		@Override
 		public java.lang.Long apply(final java.lang.Long value) {
 			return value;
 		}
 	};
 
-	public static final Float<java.lang.Float> Float = new Float<java.lang.Float>() {
+	public static final Float<java.lang.Float>
+	Float = new Float<java.lang.Float>() {
 		@Override
 		public java.lang.Float apply(final java.lang.Float value) {
 			return value;
 		}
 	};
 
-	public static final Double<java.lang.Double> Double = new Double<java.lang.Double>() {
+	public static final Double<java.lang.Double>
+	Double = new Double<java.lang.Double>() {
 		@Override
 		public java.lang.Double apply(final java.lang.Double value) {
 			return value;
@@ -94,5 +102,11 @@ public interface TypeBound<A, B> extends Function<A, B> {
 	public static interface Float<T> extends TypeBound<T, java.lang.Float> {}
 	public static interface Double<T> extends TypeBound<T, java.lang.Double> {}
 
+	public static final class Identity<T> implements TypeBound<T, T> {
+		@Override
+		public T apply(final T value) {
+			return value;
+		}
+	}
 
 }
