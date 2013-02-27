@@ -87,6 +87,13 @@ public interface TypeBound<A, B> extends Function<A, B> {
 		}
 	};
 
+	public static final String<java.lang.String> String = new String<java.lang.String>() {
+		@Override
+		public java.lang.String apply(final java.lang.String value) {
+			return value;
+		}
+	};
+
 	public static interface Boolean<T> extends TypeBound<T, java.lang.Boolean> {}
 	public static interface Byte<T> extends TypeBound<T, java.lang.Byte> {}
 	public static interface Character<T> extends TypeBound<T, java.lang.Character> {}
@@ -95,6 +102,14 @@ public interface TypeBound<A, B> extends Function<A, B> {
 	public static interface Long<T> extends TypeBound<T, java.lang.Long> {}
 	public static interface Float<T> extends TypeBound<T, java.lang.Float> {}
 	public static interface Double<T> extends TypeBound<T, java.lang.Double> {}
+	public static interface String<T> extends TypeBound<T, T> {}
 
+
+	public static final class Identity<T> implements TypeBound<T, T> {
+		@Override
+		public T apply(final T value) {
+			return value;
+		}
+	}
 
 }

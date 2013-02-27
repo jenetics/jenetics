@@ -220,7 +220,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextBoolean());
 		}
 
-		final boolean[] unboxed = array.unbox(TypeBound.Boolean);
+		final boolean[] unboxed = array.unbox(b -> b);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).booleanValue());
