@@ -27,7 +27,44 @@ package org.jenetics.util;
  * @since 1.2
  * @version 1.2 &mdash; <em>$Date$</em>
  */
-public interface TypeBound<A, B> extends Function<A, B> {
+public final class TypeBound {
+
+	public static abstract class Extends<A, B> implements Function<A, B> {
+		private Extends() {
+		}
+	}
+
+	public static abstract class Identity<A> extends Extends<A, A> {
+		private Identity() {
+		}
+	}
+
+	public static <B, A extends B> Extends<A, B> Extends() {
+		return new Extends<A, B>() {
+			@Override
+			public B apply(final A value) {
+				return value;
+			}
+		};
+	}
+
+	public static <A> Identity<A> Identity() {
+		return new Identity<A>() {
+			@Override
+			public A apply(A value) {
+				return value;
+			}
+		};
+	}
+
+	public static <B, A extends B> Extends<A, B> Extends(Class<A> a, Class<B> b) {
+		return new Extends<A, B>() {
+			@Override
+			public B apply(final A value) {
+				return value;
+			}
+		};
+	}
 
 	public static final Boolean<java.lang.Boolean>
 	Boolean = new Boolean<java.lang.Boolean>() {
@@ -93,20 +130,30 @@ public interface TypeBound<A, B> extends Function<A, B> {
 		}
 	};
 
-	public static interface Boolean<T> extends TypeBound<T, java.lang.Boolean> {}
-	public static interface Byte<T> extends TypeBound<T, java.lang.Byte> {}
-	public static interface Character<T> extends TypeBound<T, java.lang.Character> {}
-	public static interface Short<T> extends TypeBound<T, java.lang.Short> {}
-	public static interface Integer<T> extends TypeBound<T, java.lang.Integer> {}
-	public static interface Long<T> extends TypeBound<T, java.lang.Long> {}
-	public static interface Float<T> extends TypeBound<T, java.lang.Float> {}
-	public static interface Double<T> extends TypeBound<T, java.lang.Double> {}
+	public static abstract class Boolean<T> extends Extends<T, java.lang.Boolean> {}
+	public static abstract class Byte<T> extends Extends<T, java.lang.Byte> {}
+	public static abstract class Character<T> extends Extends<T, java.lang.Character> {}
+	public static abstract class Short<T> extends Extends<T, java.lang.Short> {}
+	public static abstract class Integer<T> extends Extends<T, java.lang.Integer> {}
+	public static abstract class Long<T> extends Extends<T, java.lang.Long> {}
+	public static abstract class Float<T> extends Extends<T, java.lang.Float> {}
+	public static abstract class Double<T> extends Extends<T, java.lang.Double> {}
 
-	public static final class Identity<T> implements TypeBound<T, T> {
-		@Override
-		public T apply(final T value) {
-			return value;
-		}
-	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -41,6 +41,7 @@ import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
+import org.jenetics.util.TypeBound;
 import org.jenetics.util.Verifiable;
 import org.jenetics.util.object;
 
