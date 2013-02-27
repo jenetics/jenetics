@@ -22,10 +22,12 @@
  */
 package org.jenetics.util;
 
+import java.util.function.Function;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-26 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public interface TypeBound<A, B> extends Function<A, B> {
 

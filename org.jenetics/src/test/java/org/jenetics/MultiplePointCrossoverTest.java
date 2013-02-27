@@ -26,6 +26,7 @@ import static java.lang.Math.min;
 
 import java.util.Iterator;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -264,9 +265,9 @@ public class MultiplePointCrossoverTest {
 
 	@DataProvider(name = "numberOfCrossoverPoints")
 	public Iterator<Object[]> getNumberOfCrossoverPoints() {
-		return new Array<Object[]>(11).fill(new Factory<Object[]>() {
+		return new Array<Object[]>(11).fill(new Supplier<Object[]>() {
 			private int point = 0;
-			@Override public Object[] newInstance() {
+			@Override public Object[] get() {
 				return new Object[]{++point};
 			}
 
