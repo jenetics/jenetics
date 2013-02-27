@@ -69,7 +69,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -284,7 +284,7 @@ public final class Genotype<G extends Gene<?, G>>
 		nonNull(chromosome, "Chromosome");
 
 		return new Genotype<>(
-				new Array<>(chromosome).toISeq(),
+				Array.valueOf(chromosome).toISeq(),
 				chromosome.length()
 			);
 	}
@@ -297,7 +297,7 @@ public final class Genotype<G extends Gene<?, G>>
 		nonNull(ch2, "Chromosome 2");
 
 		return new Genotype<>(
-				new Array<>(ch1, ch2).toISeq(),
+				Array.valueOf(ch1, ch2).toISeq(),
 				ch1.length() + ch2.length()
 			);
 	}
@@ -312,7 +312,7 @@ public final class Genotype<G extends Gene<?, G>>
 		nonNull(ch3, "Chromosome 3");
 
 		return new Genotype<>(
-				new Array<>(ch1, ch2, ch3).toISeq(),
+				Array.valueOf(ch1, ch2, ch3).toISeq(),
 				ch1.length() + ch2.length() + ch3.length()
 			);
 	}
@@ -329,7 +329,7 @@ public final class Genotype<G extends Gene<?, G>>
 		nonNull(ch4, "Chromosome 4");
 
 		return new Genotype<>(
-				new Array<>(ch1, ch2, ch3, ch4).toISeq(),
+				Array.valueOf(ch1, ch2, ch3, ch4).toISeq(),
 				ch1.length() + ch2.length() + ch3.length() + ch4.length()
 			);
 	}
@@ -338,7 +338,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
 	) {
-		final Array<Chromosome<G>> array = new Array<>(chromosomes);
+		final Array<Chromosome<G>> array = Array.valueOf(chromosomes);
 		if (!array.forall(o -> o != null)) {
 			throw new NullPointerException("One of the given chromosomes is null.");
 		}

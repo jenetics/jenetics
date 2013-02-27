@@ -42,7 +42,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -333,6 +333,24 @@ public final class CharSeq
 	 */
 	public static CharSeq valueOf(final char a, final char b) {
 		return new CharSeq(expand(a, b));
+	}
+
+	/**
+	 * Helper method for creating a sequence of characters from the given
+	 * {@code CharSequence}. The returned sequence will contain all characters
+	 * in the original order.
+	 *
+	 * @param chars the char sequence to convert.
+	 * @return a sequence which will contain all given chars in the original
+	 *         order.
+	 */
+	public static ISeq<Character> toISeq(final CharSequence chars) {
+		final Array<Character> seq = new Array<>(chars.length());
+		for (int i = 0; i < chars.length(); ++i) {
+			seq.set(i, chars.charAt(i));
+		}
+
+		return seq.toISeq();
 	}
 
 }

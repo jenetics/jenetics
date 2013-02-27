@@ -50,7 +50,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -213,7 +213,7 @@ public final class PermutationChromosome<T>
 
 			final ISeq<Object> ialleles = alleles.toISeq();
 
-			final Array<Integer> indexes = new Array<>(
+			final Array<Integer> indexes = Array.valueOf(
 				xml.get(ALLELE_INDEXES, String.class
 			).split(",")).map(s -> Integer.parseInt(s));
 

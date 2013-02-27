@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -484,7 +484,6 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
-	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
@@ -501,8 +500,7 @@ public final class arrays extends StaticObject {
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} or {@code sub} is
-	 *          {@code null}.
+	 * @throws NullPointerException if {@code random} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
@@ -549,8 +547,7 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
-	 * @throws NullPointerException if {@code random} or {@code sub} is
-	 *          {@code null}.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *          integer overflow.
@@ -584,7 +581,8 @@ public final class arrays extends StaticObject {
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code sub} is {@code null}.
+	 * @throws NullPointerException if {@code sub} or {@code random} is
+	 *         {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.

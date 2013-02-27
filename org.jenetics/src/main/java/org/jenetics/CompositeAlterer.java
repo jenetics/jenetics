@@ -42,7 +42,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -61,7 +61,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a1,
 		final Alterer<G> a2
 	) {
-		this(new Array<>(nonNull(a1), nonNull(a2)));
+		this(Array.valueOf(nonNull(a1), nonNull(a2)));
 	}
 
 	/**
@@ -77,7 +77,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a2,
 		final Alterer<G> a3
 	) {
-		this(new Array<>(nonNull(a1), nonNull(a2), nonNull(a3)));
+		this(Array.valueOf(nonNull(a1), nonNull(a2), nonNull(a3)));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a3,
 		final Alterer<G> a4
 	) {
-		this(new Array<>(
+		this(Array.valueOf(
 				nonNull(a1),
 				nonNull(a2),
 				nonNull(a3),
@@ -120,7 +120,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<G> a4,
 		final Alterer<G> a5
 	) {
-		this(new Array<>(
+		this(Array.valueOf(
 				nonNull(a1),
 				nonNull(a2),
 				nonNull(a3),
@@ -137,7 +137,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 */
 	@SafeVarargs
 	public CompositeAlterer(final Alterer<G>... alterers) {
-		this(new Array<>(alterers));
+		this(Array.valueOf(alterers));
 	}
 
 	/**
@@ -173,7 +173,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 			}
 		}
 
-		return new Array<>(normalized);
+		return Array.valueOf(normalized);
 	}
 
 	@Override
