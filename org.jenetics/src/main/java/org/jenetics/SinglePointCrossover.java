@@ -56,7 +56,7 @@ import org.jenetics.util.RandomRegistry;
  * @version 1.2 &mdash; <em>$Date$</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
-	extends MultiplePointCrossover<G>
+	extends MultiPointCrossover<G>
 {
 
 	/**
