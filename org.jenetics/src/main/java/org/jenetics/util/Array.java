@@ -51,7 +51,7 @@ import org.jenetics.util.TypeBound;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-27 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-02-28 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -801,7 +801,7 @@ public final class Array<T>
 		Array<Number> na = ia.upcast(TypeBound.<Number, Integer>Extends());
 		Array<Object> oa = ia.upcast(Extends(Integer.class, Object.class));
 		Array<Object> oa2 = na.upcast(Extends(Number.class, Object.class));
-		//Array<String> sa = ia.upcast(Extends(Integer.class, String.class));
+		//Array<String> sa = ia.upcast(type.Extends(Integer.class, String.class));
 	}
 
 
