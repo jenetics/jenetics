@@ -801,7 +801,7 @@ public final class Array<T>
 		Array<Number> na = ia.upcast(TypeBound.<Number, Integer>Extends());
 		Array<Object> oa = ia.upcast(Extends(Integer.class, Object.class));
 		Array<Object> oa2 = na.upcast(Extends(Number.class, Object.class));
-		//Array<String> sa = ia.upcast(Extends(Integer.class, String.class));
+		//Array<String> sa = ia.upcast(type.Extends(Integer.class, String.class));
 	}
 
 
