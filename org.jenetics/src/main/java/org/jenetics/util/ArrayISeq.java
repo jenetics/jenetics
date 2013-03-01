@@ -69,12 +69,6 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		return new Array<>(new ArrayRef(toArray()), 0, length());
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <A> ISeq<A> upcast(final TypeBound.Extends<T, A> bound) {
-		return (ISeq<A>)this;
-	}
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq) {

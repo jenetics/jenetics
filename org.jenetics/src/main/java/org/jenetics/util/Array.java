@@ -23,7 +23,6 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.TypeBound.Extends;
 import static org.jenetics.util.object.nonNull;
 
 import java.util.Arrays;
@@ -37,8 +36,6 @@ import java.util.RandomAccess;
 
 import javolution.context.StackContext;
 import javolution.util.FastList;
-
-import org.jenetics.util.TypeBound;
 
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
@@ -795,15 +792,6 @@ public final class Array<T>
 	public <A> Array<A> upcast(final TypeBound.Extends<T, A> bound) {
 		return (Array<A>)this;
 	}
-
-	public static void main(String[] args) {
-		Array<Integer> ia = Array.empty();
-		Array<Number> na = ia.upcast(TypeBound.<Number, Integer>Extends());
-		Array<Object> oa = ia.upcast(Extends(Integer.class, Object.class));
-		Array<Object> oa2 = na.upcast(Extends(Number.class, Object.class));
-		//Array<String> sa = ia.upcast(type.Extends(Integer.class, String.class));
-	}
-
 
 	/* *************************************************************************
 	 * Static factory methods.
