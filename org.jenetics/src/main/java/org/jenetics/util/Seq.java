@@ -110,6 +110,33 @@ public interface Seq<T> extends Iterable<T> {
 	public int indexOf(final Object element);
 
 	/**
+	 * Returns the index of the first occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @param start the start index (inclusively) for the element search.
+	 * @return the index of the first occurrence of the specified element in
+	 *          this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || start > length()}).
+	 */
+	public int indexOf(final Object element, final int start);
+
+	/**
+	 * Returns the index of the first occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @param start the start index (inclusively) for the element search.
+	 * @param end the end index (exclusively) for the element search.
+	 * @return the index of the first occurrence of the specified element in
+	 *          this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public int indexOf(final Object element, final int start, final int end);
+
+	/**
 	 * <p>
 	 * Returns the index of the first element on which the given predicate
 	 * returns {@code true}, or -1 if the predicate returns false for every
