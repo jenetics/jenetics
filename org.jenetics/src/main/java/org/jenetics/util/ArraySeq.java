@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-01 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -82,20 +82,32 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexOf(final Object element) {
-		int index = -1;
+		return indexOf(element, 0, length());
+	}
 
+	@Override
+	public int indexOf(final Object element, final int start) {
+		return indexOf(element, start, length());
+	}
+
+	@Override
+	public int indexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
+
+		final int n = end + _start;
+		int index = -1;
 		if (element == null) {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = start + _start; i < n && index == -1; ++i) {
+				if (_array.data[i] == null) {
+					index = i - _start;
 				}
-			});
+			}
 		} else {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = _start + start; i < n && index == -1; ++i) {
+				if (element.equals(_array.data[i])) {
+					index = i - _start;
 				}
-			});
+			}
 		}
 
 		return index;
@@ -287,11 +299,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	final void checkIndex(final int from, final int to) {
 		if (from > to) {
-			throw new IllegalArgumentException(
+			throw new ArrayIndexOutOfBoundsException(
 				"fromIndex(" + from + ") > toIndex(" + to+ ")"
 			);
 		}
-		if (from < 0 || to > _length) {
+		if (from < 0 || to > length()) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", from, to
 			));

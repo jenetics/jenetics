@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-01 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -108,6 +108,33 @@ public interface Seq<T> extends Iterable<T> {
 	 *          this sequence, or -1 if this sequence does not contain the element
 	 */
 	public int indexOf(final Object element);
+
+	/**
+	 * Returns the index of the first occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @param start the start index (inclusively) for the element search.
+	 * @return the index of the first occurrence of the specified element in
+	 *          this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || start > length()}).
+	 */
+	public int indexOf(final Object element, final int start);
+
+	/**
+	 * Returns the index of the first occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @param start the start index (inclusively) for the element search.
+	 * @param end the end index (exclusively) for the element search.
+	 * @return the index of the first occurrence of the specified element in
+	 *          this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public int indexOf(final Object element, final int start, final int end);
 
 	/**
 	 * <p>
