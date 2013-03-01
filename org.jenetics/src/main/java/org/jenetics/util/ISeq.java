@@ -31,7 +31,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-01 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -64,27 +64,10 @@ public interface ISeq<T>
 	 * @param seq the sequence to cast.
 	 * @return the up-casted sequence.
 	 *
-	 * @deprecated use {@link #upcast(org.jenetics.util.TypeBound.Extends)} instead.
+	 * @deprecated Will be removed in the next version.
 	 */
 	@Deprecated
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
-
-	/**
-	 * <p>
-	 * Helper method for up-casting an given immutable sequence. This allows you
-	 * to assign this sequence to an sequence where the element type is a super
-	 * type of {@code T}.
-	 * </p>
-	 * [code]
-	 * ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
-	 * ISeq<Number> na = da.upcast(TypeBound.Extends(Double.class, Number.class);
-	 * ISeq<Object> oa = na.upcast(TypeBound.Extends(Number.class, Object.class);
-	 * [/code]
-	 *
-	 * @param bound
-	 * @return
-	 */
-	public <A> ISeq<A> upcast(final TypeBound.Extends<T, A> bound);
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not

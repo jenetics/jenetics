@@ -27,7 +27,7 @@ import static org.jenetics.util.object.nonNull;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-01 $</em>
  */
 class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
@@ -67,12 +67,6 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	@Override
 	public MSeq<T> copy() {
 		return new Array<>(new ArrayRef(toArray()), 0, length());
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <A> ISeq<A> upcast(final TypeBound.Extends<T, A> bound) {
-		return (ISeq<A>)this;
 	}
 
 	@Override

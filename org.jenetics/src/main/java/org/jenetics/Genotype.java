@@ -37,11 +37,10 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
-import org.jenetics.util.TypeBound;
 import org.jenetics.util.Verifiable;
 import org.jenetics.util.object;
 
@@ -71,7 +70,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-01 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -309,10 +308,9 @@ public final class Genotype<G extends Gene<?, G>>
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 
-		return new Genotype<>(
-				chromosomes.upcast(chromosomes),
-				ngenes(chromosomes)
-			);
+		@SuppressWarnings("unchecked")
+		ISeq<Chromosome<G>> c = (ISeq<Chromosome<G>>)chromosomes;
+		return new Genotype<>(c, ngenes(chromosomes));
 	}
 
 	/**
