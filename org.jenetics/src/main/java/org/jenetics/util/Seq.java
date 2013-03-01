@@ -180,7 +180,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
 	 */
-	public int indexWhere(final Function<? super T, Boolean> predicate, final int start);
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start
+	);
 
 	/**
 	 * <p>
@@ -204,7 +207,11 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int indexWhere(final Function<? super T, Boolean> predicate, final int start, final int end);
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start,
+		final int end
+	);
 
 	/**
 	 * Returns the index of the last occurrence of the specified element
@@ -252,6 +259,43 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
 	public int lastIndexWhere(final Function<? super T, Boolean> predicate);
+
+	/**
+	 * Returns the index of the last element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 *
+	 * @param predicate the search predicate.
+	 * @return the index of the last element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns false for
+	 *          every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code end < 0 || end > length()}).
+	 */
+	public int lastIndexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int end
+	);
+
+	/**
+	 * Returns the index of the last element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 *
+	 * @param predicate the search predicate.
+	 * @return the index of the last element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns false for
+	 *          every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public int lastIndexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start,
+		final int end
+	);
 
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
