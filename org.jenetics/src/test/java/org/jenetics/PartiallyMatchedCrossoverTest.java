@@ -81,7 +81,7 @@ public class PartiallyMatchedCrossoverTest {
 		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
 	}
 
-	//@Test
+	@Test
 	public void corssoverWithIllegalChromosome() {
 		final PartiallyMatchedCrossover<Integer> pmco = new PartiallyMatchedCrossover<>(1);
 
