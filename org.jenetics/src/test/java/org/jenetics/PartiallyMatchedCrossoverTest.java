@@ -43,7 +43,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-03-01 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -81,7 +81,7 @@ public class PartiallyMatchedCrossoverTest {
 		Assert.assertFalse(otherChrom1.equals(otherChrom2), "That chromosome must not be equal");
 	}
 
-	//@Test
+	@Test
 	public void corssoverWithIllegalChromosome() {
 		final PartiallyMatchedCrossover<Integer> pmco = new PartiallyMatchedCrossover<>(1);
 
