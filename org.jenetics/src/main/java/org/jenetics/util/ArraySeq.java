@@ -115,20 +115,32 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int lastIndexOf(final Object element) {
+		return lastIndexOf(element, 0, length());
+	}
+
+	@Override
+	public int lastIndexOf(final Object element, final int end) {
+		return lastIndexOf(element, 0, end);
+	}
+
+	@Override
+	public int lastIndexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
+
 		int index = -1;
 
 		if (element == null) {
-			index = lastIndexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
+				if (_array.data[i] == null) {
+					index = i - _start;
 				}
-			});
+			}
 		} else {
-			index = lastIndexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
+				if (element.equals(_array.data[i])) {
+					index = i - _start;
 				}
-			});
+			}
 		}
 
 		return index;
@@ -136,11 +148,27 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexWhere(final Function<? super T, Boolean> predicate) {
+		return indexWhere(predicate, 0, length());
+	}
+
+	@Override
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start
+	) {
+		return indexWhere(predicate, start, length());
+	}
+
+	@Override
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start, final int end
+	) {
 		nonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = _start; i < _end && index == -1; ++i) {
+		for (int i = start + _start, n = end + _start; i < n && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
