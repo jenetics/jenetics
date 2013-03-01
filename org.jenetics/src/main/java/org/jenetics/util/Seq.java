@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.2 &mdash; <em>$Date$</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -159,6 +159,54 @@ public interface Seq<T> extends Iterable<T> {
 	public int indexWhere(final Function<? super T, Boolean> predicate);
 
 	/**
+	 * <p>
+	 * Returns the index of the first element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 * </p>
+	 * [code]
+	 * // Finding index of first null value.
+	 * final int index = seq.indexOf(new Predicates.Nil());
+	 *
+	 * // Assert of no null values.
+	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
+	 * [/code]
+	 *
+	 * @param predicate the search predicate.
+	 * @return the index of the first element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns {@code false}
+	 *          for every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || start > length()}).
+	 */
+	public int indexWhere(final Function<? super T, Boolean> predicate, final int start);
+
+	/**
+	 * <p>
+	 * Returns the index of the first element on which the given predicate
+	 * returns {@code true}, or -1 if the predicate returns false for every
+	 * sequence element.
+	 * </p>
+	 * [code]
+	 * // Finding index of first null value.
+	 * final int index = seq.indexOf(new Predicates.Nil());
+	 *
+	 * // Assert of no null values.
+	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
+	 * [/code]
+	 *
+	 * @param predicate the search predicate.
+	 * @return the index of the first element on which the given predicate
+	 *          returns {@code true}, or -1 if the predicate returns {@code false}
+	 *          for every sequence element.
+	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public int indexWhere(final Function<? super T, Boolean> predicate, final int start, final int end);
+
+	/**
 	 * Returns the index of the last occurrence of the specified element
 	 * in this sequence, or -1 if this sequence does not contain the element.
 	 *
@@ -167,6 +215,30 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  this sequence, or -1 if this sequence does not contain the element
 	 */
 	public int lastIndexOf(final Object element);
+
+	/**
+	 * Returns the index of the last occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @return the index of the last occurrence of the specified element in
+	 * 		  this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code end < 0 || end > length()}).
+	 */
+	public int lastIndexOf(final Object element, final int end);
+
+	/**
+	 * Returns the index of the last occurrence of the specified element
+	 * in this sequence, or -1 if this sequence does not contain the element.
+	 *
+	 * @param element element to search for, can be {@code null}
+	 * @return the index of the last occurrence of the specified element in
+	 * 		  this sequence, or -1 if this sequence does not contain the element
+	 * @throws IndexOutOfBoundsException for an illegal end point index value
+	 *          ({@code start < 0 || end > length() || start > end}).
+	 */
+	public int lastIndexOf(final Object element, final int start, final int end);
 
 	/**
 	 * Returns the index of the last element on which the given predicate
