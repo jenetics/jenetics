@@ -42,7 +42,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-22 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-06 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -59,11 +59,31 @@ public final class CharSeq
 	 * Create a new (distinct) CharSeq from the given {@code characters}. The
 	 * given {@link CharSequence} is sorted and duplicate values are removed
 	 *
+	 * @see #CharSeq(CharSequence)
+	 *
+	 * @param characters the characters.
+	 * @throws NullPointerException if the {@code characters} are {@code null}.
+	 */
+	public CharSeq(final char[] characters) {
+		super(distinct(characters.clone()));
+	}
+
+	/**
+	 * Create a new (distinct) CharSeq from the given {@code characters}. The
+	 * given {@link CharSequence} is sorted and duplicate values are removed.
+	 * This means, that the assertion in the following code will hold.
+	 *
+	 * [code]
+	 * final CharSeq cs1 = new CharSeq("abcdeaafg");
+	 * final CharSeq cs2 = new CharSeq("gfedcbabb");
+	 * assert(cs1.equals(cs2));
+	 * [/code]
+	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final CharSequence characters) {
-		super(toCharArray(characters));
+		this(toCharArray(characters));
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {
@@ -74,18 +94,7 @@ public final class CharSeq
 			chars[i] = characters.charAt(i);
 		}
 
-		return distinct(chars);
-	}
-
-	/**
-	 * Create a new (distinct) CharSeq from the given {@code characters}. The
-	 * given {@link CharSequence} is sorted and duplicate values are removed
-	 *
-	 * @param characters the characters.
-	 * @throws NullPointerException if the {@code characters} are {@code null}.
-	 */
-	public CharSeq(final char[] characters) {
-		super(distinct(characters.clone()));
+		return chars;
 	}
 
 	private static char[] distinct(final char[] chars) {
