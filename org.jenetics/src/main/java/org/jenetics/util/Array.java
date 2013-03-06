@@ -683,115 +683,6 @@ public final class Array<T>
 		return new ArrayMSeqIterator<>(this);
 	}
 
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean[] unbox(final TypeBound.Boolean<T> bound) {
-		final boolean[] array = new boolean[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public char[] unbox(final TypeBound.Character<T> bound) {
-		final char[] array = new char[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public int[] unbox(final TypeBound.Integer<T> bound) {
-		final int[] array = new int[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public long[] unbox(final TypeBound.Long<T> bound) {
-		final long[] array = new long[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public float[] unbox(final TypeBound.Float<T> bound) {
-		final float[] array = new float[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public double[] unbox(final TypeBound.Double<T> bound) {
-		final double[] array = new double[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	public String toString(final TypeBound.Extends<T, Character> bound) {
-		final StringBuilder builder = new StringBuilder(length());
-		for (int i = 0, n = length(); i < n; ++i) {
-			builder.append(bound.apply(get(i)).charValue());
-		}
-
-		return builder.toString();
-	}
-
-	@SuppressWarnings("unchecked")
-	public <A> Array<A> upcast(final TypeBound.Extends<T, A> bound) {
-		return (Array<A>)this;
-	}
 
 	/* *************************************************************************
 	 * Static factory methods.
@@ -962,6 +853,96 @@ public final class Array<T>
 			for (int i = values.length; --i >= 0;) {
 				array._array.data[i] = values[i];
 			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static boolean[] unboxBoolean(final Array<Boolean> values) {
+		final boolean[] array = new boolean[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Boolean)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static char[] unboxChar(final Array<Character> values) {
+		final char[] array = new char[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Character)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static int[] unboxInt(final Array<Integer> values) {
+		final int[] array = new int[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Integer)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static long[] unboxLong(final Array<Long> values) {
+		final long[] array = new long[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Long)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static float[] unboxFloat(final Array<Float> values) {
+		final float[] array = new float[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Float)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static double[] unboxDouble(final Array<Double> values) {
+		final double[] array = new double[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Double)values._array.data[i];
 		}
 
 		return array;
