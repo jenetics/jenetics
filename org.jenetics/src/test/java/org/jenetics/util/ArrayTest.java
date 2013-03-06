@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-27 $</em>
+ * @version <em>$Date: 2013-03-06 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -227,7 +227,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextBoolean());
 		}
 
-		final boolean[] unboxed = array.unbox(TypeBound.Boolean);
+		final boolean[] unboxed = Array.unboxBoolean(array);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).booleanValue());
@@ -242,7 +242,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, (char)random.nextInt());
 		}
 
-		final char[] unboxed = array.unbox(TypeBound.Character);
+		final char[] unboxed = Array.unboxChar(array);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).charValue());
@@ -257,7 +257,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextInt());
 		}
 
-		final int[] unboxed = array.unbox(TypeBound.Integer);
+		final int[] unboxed = Array.unboxInt(array);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).intValue());
@@ -272,7 +272,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextLong());
 		}
 
-		final long[] unboxed = array.unbox(TypeBound.Long);
+		final long[] unboxed = Array.unboxLong(array);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).longValue());
@@ -287,7 +287,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextFloat());
 		}
 
-		final float[] unboxed = array.unbox(TypeBound.Float);
+		final float[] unboxed = Array.unboxFloat(array);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).floatValue());
@@ -302,7 +302,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 			array.set(i, random.nextDouble());
 		}
 
-		final double[] unboxed = array.unbox(TypeBound.Double);
+		final double[] unboxed = Array.unboxDouble(array);
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).doubleValue());

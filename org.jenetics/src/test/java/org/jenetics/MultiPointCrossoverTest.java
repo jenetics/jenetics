@@ -36,12 +36,11 @@ import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.TypeBound;
 import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2013-03-06 $</em>
  */
 public class MultiPointCrossoverTest {
 
@@ -59,7 +58,7 @@ public class MultiPointCrossoverTest {
 		final MSeq<Character> ma = a.copy();
 		final MSeq<Character> mb = b.copy();
 
-		MultiPointCrossover.crossover(ma, mb, points.unbox(TypeBound.Integer));
+		MultiPointCrossover.crossover(ma, mb, Array.unboxInt(points));
 		Assert.assertEquals(ma, CharSeq.toISeq(expectedA));
 		Assert.assertEquals(mb, CharSeq.toISeq(expectedB));
 	}
