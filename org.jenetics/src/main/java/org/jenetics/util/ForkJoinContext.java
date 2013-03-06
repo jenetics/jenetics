@@ -72,7 +72,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-06 $</em>
  */
 public final class ForkJoinContext extends ConcurrentContext {
 
@@ -89,6 +89,9 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 * Deprecated for fixing typo in method name.
 	 *
 	 * @see #setForkJoinPool(ForkJoinPool)
+	 *
+	 * @deprecated Fixing typo, use {@link #setForkJoinPool(ForkJoinPool)}
+	 *             instead.
 	 */
 	@Deprecated
 	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
