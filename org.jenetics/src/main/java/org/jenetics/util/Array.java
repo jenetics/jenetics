@@ -93,7 +93,7 @@ public final class Array<T>
 	 *
 	 * @param first the only element of the array.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(final T first) {
@@ -108,7 +108,7 @@ public final class Array<T>
 	 * @param first first array element.
 	 * @param second second array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -128,7 +128,7 @@ public final class Array<T>
 	 * @param second second array element.
 	 * @param third third array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -151,7 +151,7 @@ public final class Array<T>
 	 * @param third third array element.
 	 * @param fourth fourth array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -177,7 +177,7 @@ public final class Array<T>
 	 * @param fourth fourth array element.
 	 * @param fifth fifth array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -206,7 +206,7 @@ public final class Array<T>
 	 * @param rest the rest of the array element.
 	 * @throws NullPointerException if the {@code rest} array is {@code null}.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	@SafeVarargs
@@ -233,7 +233,7 @@ public final class Array<T>
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(final T[] values) {
@@ -248,7 +248,7 @@ public final class Array<T>
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 *
-	 * @deprecated use {@link #valueOf(Collection)} instead.
+	 * @deprecated Use {@link #valueOf(Collection)} instead.
 	 */
 	@Deprecated
 	public Array(final Collection<? extends T> values) {
