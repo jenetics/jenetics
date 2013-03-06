@@ -3269,7 +3269,7 @@ SinglePointCrossover
 \end_layout
 
 \begin_layout Paragraph
-Multiple-point crossover
+Multi-point crossover
 \begin_inset Index idx
 status collapsed
 
@@ -3295,11 +3295,11 @@ Crossover!Multiple-point crossover
 \begin_layout Standard
 If the 
 \family typewriter
-MultiplePointCrossover
+MultiPointCrossover
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the MultiplePointCrossover works with two
+ The following picture shows how the Multi-point crossover works with two
  crossover points, defined at index 
 \begin_inset Formula $1$
 \end_inset
