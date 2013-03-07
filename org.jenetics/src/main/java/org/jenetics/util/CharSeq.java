@@ -40,9 +40,15 @@ import javolution.lang.Immutable;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
+ * [code]
+ * final CharSeq cs1 = new CharSeq("abcdeaafg");
+ * final CharSeq cs2 = new CharSeq("gfedcbabb");
+ * assert(cs1.equals(cs2));
+ * [/code]
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-06 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-07 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -71,13 +77,6 @@ public final class CharSeq
 	/**
 	 * Create a new (distinct) CharSeq from the given {@code characters}. The
 	 * given {@link CharSequence} is sorted and duplicate values are removed.
-	 * This means, that the assertion in the following code will hold.
-	 *
-	 * [code]
-	 * final CharSeq cs1 = new CharSeq("abcdeaafg");
-	 * final CharSeq cs2 = new CharSeq("gfedcbabb");
-	 * assert(cs1.equals(cs2));
-	 * [/code]
 	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
