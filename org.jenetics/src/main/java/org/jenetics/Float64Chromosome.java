@@ -132,7 +132,11 @@ public class Float64Chromosome
 	 * Return a more specific view of this chromosome factory.
 	 *
 	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<Float64Chromosome> asFactory() {
 		return (Factory<Float64Chromosome>)(Object)this;

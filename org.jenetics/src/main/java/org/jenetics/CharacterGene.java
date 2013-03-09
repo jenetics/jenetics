@@ -35,6 +35,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Array;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
@@ -130,7 +131,11 @@ public final class CharacterGene
 	 * Return the {@link Factory} view of this gene.
 	 *
 	 * @return the {@link Factory} view of this gene.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	Factory<CharacterGene> asFactory() {
 		return this;
 	}
