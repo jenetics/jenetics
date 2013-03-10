@@ -67,7 +67,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 *          valid range of {@code [0, 1]} or the given {@code order} is smaller
 	 *          than two.
 	 */
-	public Recombinator(final double probability, final int order) {
+	protected Recombinator(final double probability, final int order) {
 		super(probability);
 		if (order < 2) {
 			throw new IllegalArgumentException(String.format(
