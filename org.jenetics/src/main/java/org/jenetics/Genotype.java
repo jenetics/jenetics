@@ -42,7 +42,6 @@ import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.object;
 
 /**
  * The central class the GA is working with, is the {@code Genotype}. It is the
@@ -145,7 +144,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * [/code]
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
-	 *          {@code Genotype}.
+	 *         {@code Genotype}.
 	 */
 	public G getGene() {
 		assert(_chromosomes != null);
@@ -291,14 +290,13 @@ public final class Genotype<G extends Gene<?, G>>
 
 
 	/**
-	 * Create a new Genotype from a given array of <code>Chromosomes</code>.
-	 * The <code>Chromosome</code> array <code>c</code> is cloned.
+	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
-	 * @param chromosomes The <code>Chromosome</code> array the <code>Genotype</code>
+	 * @param chromosomes The <code>Chromosome</code> array the {@code Genotype}
 	 *         consists of.
-	 * @throws NullPointerException if <code>c</code> is null or one of the
-	 *          chromosome.
-	 * @throws IllegalArgumentException if <code>chromosome.length == 0</code>.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
@@ -314,25 +312,19 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Create a new {@code Genotype} with the given chromosomes.
+	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
-	 * @param chromosomes the chromosomes of the genotype.
-	 * @return a new genotype with the given chromosome.
-	 * @throws NullPointerException if one of the given chromosomes is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the given number of chromosomes is
-	 *         smaller than zero.
+	 * @param chromosomes The <code>Chromosome</code> array the {@code Genotype}
+	 *         consists of.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
 	) {
-		final Array<Chromosome<G>> array = Array.valueOf(chromosomes);
-		if (!array.forall(object.NonNull)) {
-			throw new NullPointerException("One of the given chromosomes is null.");
-		}
-
-		return valueOf(array.toISeq());
+		return valueOf(Array.valueOf(chromosomes).toISeq());
 	}
 
 	/* *************************************************************************
