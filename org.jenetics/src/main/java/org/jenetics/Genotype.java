@@ -70,7 +70,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-11 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -298,7 +298,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *         consists of.
 	 * @throws NullPointerException if <code>c</code> is null or one of the
 	 *          chromosome.
-	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
+	 * @throws IllegalArgumentException if <code>chromosome.length == 0</code>.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
@@ -314,68 +314,15 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Create a new Genotype from a given {@link Chromosome}
+	 * Create a new {@code Genotype} with the given chromosomes.
 	 *
-	 * @param chromosome The <code>Chromosome</code> array the <code>Genotype</code>
-	 *         consists of.
-	 * @throws NullPointerException if <code>chromosome</code> is null.
+	 * @param chromosomes the chromosomes of the genotype.
+	 * @return a new genotype with the given chromosome.
+	 * @throws NullPointerException if one of the given chromosomes is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given number of chromosomes is
+	 *         smaller than zero.
 	 */
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> chromosome
-	) {
-		nonNull(chromosome, "Chromosome");
-
-		return new Genotype<>(
-				Array.valueOf(chromosome).toISeq(),
-				chromosome.length()
-			);
-	}
-
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1,
-		final Chromosome<G> ch2
-	) {
-		nonNull(ch1, "Chromosome 1");
-		nonNull(ch2, "Chromosome 2");
-
-		return new Genotype<>(
-				Array.valueOf(ch1, ch2).toISeq(),
-				ch1.length() + ch2.length()
-			);
-	}
-
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1,
-		final Chromosome<G> ch2,
-		final Chromosome<G> ch3
-	) {
-		nonNull(ch1, "Chromosome 1");
-		nonNull(ch2, "Chromosome 2");
-		nonNull(ch3, "Chromosome 3");
-
-		return new Genotype<>(
-				Array.valueOf(ch1, ch2, ch3).toISeq(),
-				ch1.length() + ch2.length() + ch3.length()
-			);
-	}
-
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1,
-		final Chromosome<G> ch2,
-		final Chromosome<G> ch3,
-		final Chromosome<G> ch4
-	) {
-		nonNull(ch1, "Chromosome 1");
-		nonNull(ch2, "Chromosome 2");
-		nonNull(ch3, "Chromosome 3");
-		nonNull(ch4, "Chromosome 4");
-
-		return new Genotype<>(
-				Array.valueOf(ch1, ch2, ch3, ch4).toISeq(),
-				ch1.length() + ch2.length() + ch3.length() + ch4.length()
-			);
-	}
-
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
