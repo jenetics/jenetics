@@ -50,24 +50,11 @@ import org.jenetics.util.arrays;
  *	<img src="doc-files/3PointCrossover.svg" width="400" >
  * </div></p>
  *
- * If you want to <i>zip</i> the two chromosomes, the number of crossover points
- * must be equal, or greater, than the number of genes in the chromosome minus
- * one. If you are not sure about the chromosome length you can set the number
- * of crossover points to {@code Integer.MAX_VALUE}.
- * [code]
- * final MultiPointCrossover<Float64Gene> crossover =
- *     new MultiPointCrossover<>(Integer.MAX_VALUE);
- * [/code]
- *
- * <p><div align="center">
- *	<img src="doc-files/NPointCrossover.svg" width="400" >
- * </div></p>
- *
- * The graph above shows the <i>zip</i> result of two chromosomes.
+ * @see SinglePointCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date$ </em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-13 $ </em>
  */
 public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
@@ -189,6 +176,10 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			getClass().getSimpleName(), _probability, _n
 		);
 	}
+
+	//public static <G extends Gene<?, G>> MultiPointCrossover<G> zip() {
+	//	return new MultiPointCrossover<>(Integer.MAX_VALUE);
+	//}
 
 }
 
