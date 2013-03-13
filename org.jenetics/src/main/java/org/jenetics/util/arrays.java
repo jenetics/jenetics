@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.2 &mdash; <em>$Date$</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -696,8 +696,8 @@ public final class arrays extends StaticObject {
 	 * @param p the permutation array.
 	 * @throws NullPointerException if the permutation array is {@code null}.
 	 */
-	public static void permutation(final int[] p) {
-		permutation(p, RandomRegistry.getRandom());
+	public static int[] permutation(final int[] p) {
+		return permutation(p, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -708,7 +708,7 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the permutation array or the random number
 	 *          generator is {@code null}.
 	 */
-	public static void permutation(final int[] p, final Random random) {
+	public static int[] permutation(final int[] p, final Random random) {
 		nonNull(p, "Permutation array");
 		nonNull(random, "Random");
 
@@ -716,6 +716,8 @@ public final class arrays extends StaticObject {
 			p[i] = i;
 		}
 		shuffle(p, random);
+
+		return p;
 	}
 
 	/**
@@ -742,7 +744,7 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException it the permutation array is {@code null}.
 	 * @throws IllegalArgumentException if {@code rank < 1}.
 	 */
-	public static void permutation(final int[] p, final long rank) {
+	public static int[] permutation(final int[] p, final long rank) {
 		nonNull(p, "Permutation array");
 		if (rank < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -779,6 +781,8 @@ public final class arrays extends StaticObject {
 
 			p[j - 1] = iprev;
 		}
+
+		return p;
 	}
 
 	/**
