@@ -51,6 +51,8 @@ import org.jenetics.util.RandomRegistry;
  * or uniform crossover.
  * </p>
  *
+ * @see MultiPointCrossover
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.2 &mdash; <em>$Date$</em>
