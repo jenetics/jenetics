@@ -51,9 +51,11 @@ import org.jenetics.util.RandomRegistry;
  * or uniform crossover.
  * </p>
  *
+ * @see MultiPointCrossover
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-28 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-13 $</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
 	extends MultiPointCrossover<G>
