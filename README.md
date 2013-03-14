@@ -26,7 +26,11 @@ For building the Jenetics library from source, download the most recent, stable 
 
 `<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the latest-unstable-version from the Mercurial default branch.
 
-    $ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
+    $ hg clone https://bitbucket.org/fwilhelm/jenetics <builddir>
+    # or
+    $ hg clone http://hg.code.sf.net/p/jenetics/main <builddir>
+    # or
+    $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
 Jenetics uses [Gradle 1.3](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
