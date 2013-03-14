@@ -24,6 +24,7 @@
 include "org.jenetics"
 include "org.jenetics.example"
 include "org.jenetics.doc"
+include "org.jenetix"
 
 rootProject.name = "jenetics"
 /*
