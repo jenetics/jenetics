@@ -25,11 +25,13 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
+ * Base class for random generators which create 64 bit random values natively.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-05 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-03-14 $</em>
  */
-abstract class Random64 extends Random {
+public abstract class Random64 extends Random {
 
 	private static final long serialVersionUID = 1L;
 
