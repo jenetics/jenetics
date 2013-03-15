@@ -42,7 +42,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-15 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -85,10 +85,13 @@ public abstract class NumberGene<
 	protected NumberGene() {
 	}
 
-	@Override
-	public G copy() {
-		return newInstance(_value);
-	}
+	/**
+	 * Boxes a given Java number into the required number object.
+	 *
+	 * @param value the Java number to box.
+	 * @return the boxed number.
+	 */
+	protected abstract N box(final java.lang.Number value);
 
 	/**
 	 * Create a new gene from the given {@code value}.
@@ -98,6 +101,11 @@ public abstract class NumberGene<
 	 */
 	public abstract G newInstance(final N value);
 
+	@Override
+	public G copy() {
+		return newInstance(_value);
+	}
+
 	/**
 	 * Create a new NumberGene with the same limits and the given value.
 	 *
@@ -105,7 +113,9 @@ public abstract class NumberGene<
 	 * @return The new NumberGene.
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
-	public abstract G newInstance(final java.lang.Number value);
+	public G newInstance(final java.lang.Number value) {
+		return newInstance(box(value));
+	}
 
 	/**
 	 * Set the <code>NumerGene</code>.
