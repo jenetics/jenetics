@@ -51,6 +51,11 @@ public final class Integer64Gene
 	Integer64Gene() {
 	}
 
+	@Override
+	protected Integer64 box(final java.lang.Number value) {
+		return Integer64.valueOf(value.longValue());
+	}
+
 	public Integer64Gene divide(final Integer64Gene gene) {
 		return newInstance(_value.divide(gene._value));
 	}
@@ -127,11 +132,6 @@ public final class Integer64Gene
 	}
 
 	@Override
-	public Integer64Gene newInstance(final java.lang.Number number) {
-		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
-	}
-
-	@Override
 	public Integer64Gene newInstance(final Integer64 value) {
 		return valueOf(value, _min, _max);
 	}
@@ -171,7 +171,7 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new random IntegerGene with the given value and the given range.
+	 * Create a new random Integer64Gene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
 	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()}
 	 * returns {@code false}.
@@ -193,7 +193,7 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new random IntegerGene. It is guaranteed that the value of the
+	 * Create a new random Integer64Gene. It is guaranteed that the value of the
 	 * IntegerGene lies in the closed interval [min, max].
 	 *
 	 * @param min the minimal value of the Integer64Gene to create.

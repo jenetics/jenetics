@@ -53,6 +53,11 @@ public final class Float64Gene
 	Float64Gene() {
 	}
 
+	@Override
+	protected Float64 box(final java.lang.Number value) {
+		return Float64.valueOf(value.doubleValue());
+	}
+
 	public Float64Gene divide(final Float64Gene gene) {
 		return newInstance(_value.divide(gene._value));
 	}
@@ -120,18 +125,13 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new DoubleGene with the same limits and the given value.
+	 * Create a new Float64Gene with the same limits and the given value.
 	 *
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 */
 	public Float64Gene newInstance(final double value) {
 		return valueOf(Float64.valueOf(value), _min, _max);
-	}
-
-	@Override
-	public Float64Gene newInstance(final java.lang.Number number) {
-		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random DoubleGene with the given value and the given range.
+	 * Create a new random Float64Gene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
 	 * exception is thrown. In this case the method {@link Float64Gene#isValid()}
 	 * returns {@code false}.
@@ -197,7 +197,7 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random DoubleGene. It is guaranteed that the value of the
+	 * Create a new random Float64Gene. It is guaranteed that the value of the
 	 * DoubleGene lies in the closed interval [min, max].
 	 *
 	 * @param min the minimal value of the Float64Gene to create.
