@@ -26,24 +26,73 @@ import java.util.Random;
 
 import org.jscience.mathematics.number.LargeInteger;
 
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.bit;
+import org.jenetics.util.object;
+
 /**
+ * Random number generator for {@link LargeInteger} values within a defined range.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date: 2013-03-15 $</em>
  */
 public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 
-	@Override
-	public LargeInteger box(final Number value) {
-		return LargeInteger.valueOf(value.longValue());
+	private final Random _random;
+
+	public LargeIntegerRandom(final Random random) {
+		_random = object.nonNull(random, "Random");
+	}
+
+	public LargeIntegerRandom() {
+		this(RandomRegistry.getRandom());
 	}
 
 	@Override
-	public LargeInteger next(final Random random, final LargeInteger min, final LargeInteger max) {
-		final LargeInteger diff = max.minus(max);
-		return null;
+	public LargeInteger next(final LargeInteger min, final LargeInteger max) {
+		return next(_random, min, max);
 	}
 
+	public static LargeInteger next(
+		final Random random,
+		final LargeInteger min,
+		final LargeInteger max
+	) {
+		if (min.isGreaterThan(max)) {
+			throw new IllegalArgumentException(String.format(
+				"Illegal range: %s > %s.", min, max
+			));
+		}
 
+		final LargeInteger diff = max.minus(min);
+		final int length = diff.isPowerOfTwo() ?
+							diff.bitLength() - 1 : diff.bitLength();
+		final byte[] bytes = new byte[(length >>> 3) + 1];
+
+		LargeInteger result = null;
+		do {
+			random.nextBytes(bytes);
+			bit.shiftRight(bytes, (bytes.length << 3) - length);
+			result = bit.toLargeInteger(bytes);
+		} while (result.isGreaterThan(diff));
+
+		return result.plus(min);
+	}
+
+	public static void main(final String[] args) {
+		final NumberRandom<LargeInteger> random = new LargeIntegerRandom();
+		final LargeInteger min = LargeInteger.valueOf(-1234123);
+		//final LargeInteger max = LargeInteger.ONE.times2pow(256).times(1);
+		final LargeInteger max = LargeInteger.valueOf("1888885");
+
+		for (int i = 0; i < 10; ++i) {
+			System.out.println(random.next(min, max));
+		}
+
+	}
 
 }
+
+
+

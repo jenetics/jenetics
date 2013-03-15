@@ -26,6 +26,9 @@ import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
 
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.object;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -33,13 +36,22 @@ import org.jscience.mathematics.number.Float64;
  */
 public class Float64Random implements NumberRandom<Float64> {
 
-	@Override
-	public Float64 box(final Number value) {
-		return Float64.valueOf(value.doubleValue());
+	private final Random _random;
+
+	public Float64Random(final Random random) {
+		_random = object.nonNull(random, "Random");
+	}
+
+	public Float64Random() {
+		this(RandomRegistry.getRandom());
 	}
 
 	@Override
-	public Float64 next(final Random random, final Float64 min, final Float64 max) {
+	public Float64 next(final Float64 min, final Float64 max) {
+		return next(_random, min, max);
+	}
+
+	public static Float64 next(final Random random, final Float64 min, final Float64 max) {
 		return Float64.valueOf(
 			random.nextDouble()*(max.doubleValue() - min.doubleValue()) +
 			min.doubleValue()

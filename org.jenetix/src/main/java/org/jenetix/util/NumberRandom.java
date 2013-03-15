@@ -22,7 +22,6 @@
  */
 package org.jenetix.util;
 
-import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -31,8 +30,6 @@ import java.util.Random;
  */
 public interface NumberRandom<N extends Comparable<? super N>> {
 
-	public N box(final Number value);
-
-	public N next(final Random random, final N min, final N max);
+	public N next(final N min, final N max);
 
 }
