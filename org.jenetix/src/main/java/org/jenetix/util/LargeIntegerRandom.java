@@ -35,9 +35,12 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-18 $</em>
  */
 public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
+
+	private static final LargeInteger
+	INT_MAX_VALUE = LargeInteger.valueOf(Integer.MAX_VALUE);
 
 	private final Random _random;
 
@@ -66,30 +69,32 @@ public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 		}
 
 		final LargeInteger diff = max.minus(min);
+		assert (!diff.isNegative());
+
+		final LargeInteger result = diff.compareTo(INT_MAX_VALUE) <= 0 ?
+			LargeInteger.valueOf(random.nextInt(diff.intValue())) :
+			next(random, diff);
+
+		return result.plus(min);
+	}
+
+	private static LargeInteger next(final Random random, final LargeInteger diff) {
 		final int length = diff.isPowerOfTwo() ?
-							diff.bitLength() - 1 : diff.bitLength();
+			diff.bitLength() - 1 :
+			diff.bitLength();
+
 		final byte[] bytes = new byte[(length >>> 3) + 1];
 
 		LargeInteger result = null;
 		do {
 			random.nextBytes(bytes);
 			bit.shiftRight(bytes, (bytes.length << 3) - length);
-			result = bit.toLargeInteger(bytes);
+			bit.reverse(bytes);
+
+			result = LargeInteger.valueOf(bytes, 0, bytes.length);
 		} while (result.isGreaterThan(diff));
 
-		return result.plus(min);
-	}
-
-	public static void main(final String[] args) {
-		final NumberRandom<LargeInteger> random = new LargeIntegerRandom();
-		final LargeInteger min = LargeInteger.valueOf(-1234123);
-		//final LargeInteger max = LargeInteger.ONE.times2pow(256).times(1);
-		final LargeInteger max = LargeInteger.valueOf("1888885");
-
-		for (int i = 0; i < 10; ++i) {
-			System.out.println(random.next(min, max));
-		}
-
+		return result;
 	}
 
 }
