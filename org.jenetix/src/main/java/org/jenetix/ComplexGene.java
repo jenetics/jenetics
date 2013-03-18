@@ -22,11 +22,54 @@
  */
 package org.jenetix;
 
+import org.jscience.mathematics.number.Complex;
+import org.jscience.mathematics.structure.GroupMultiplicative;
+
+import org.jenetics.NumberGene;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-18 $</em>
  */
-public class ComplexGene {
+public final class ComplexGene
+	extends NumberGene<Complex, ComplexGene>
+	implements GroupMultiplicative<ComplexGene>
+{
+
+	private static final long serialVersionUID = 1L;
+
+	ComplexGene() {
+	}
+
+	@Override
+	public ComplexGene newInstance() {
+		return null;
+	}
+
+	@Override
+	public ComplexGene mean(ComplexGene that) {
+		return null;
+	}
+
+	@Override
+	public ComplexGene inverse() {
+		return null;
+	}
+
+	@Override
+	public ComplexGene times(ComplexGene that) {
+		return null;
+	}
+
+	@Override
+	public ComplexGene newInstance(Complex value) {
+		return null;
+	}
+
+	@Override
+	public ComplexGene newInstance(java.lang.Number value) {
+		return null;
+	}
 
 }
