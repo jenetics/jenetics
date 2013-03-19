@@ -186,7 +186,6 @@ dependencies {
 	compile project(':org.jenetics')
 	compile "jscience:jscience:4.3.1"
 
-	testCompile project(':org.jenetics')
 	testCompile "testng:testng:6.8"
 }
 
