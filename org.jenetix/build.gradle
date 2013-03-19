@@ -154,16 +154,12 @@ javadoc {
 			classpath = files("../project/lib/java2html.jar")
 		}
 		copy {
-			from "src/main/java/org/jenetics/doc-files"
-			into "${destination}/org/jenetics/doc-files"
+			from "src/main/java/org/jenetix/doc-files"
+			into "${destination}/org/jenetix/doc-files"
 		}
 		copy {
-			from "src/main/java/org/jenetics/stat/doc-files"
-			into "${destination}/org/jenetics/stat/doc-files"
-		}
-		copy {
-			from "src/main/java/org/jenetics/util/doc-files"
-			into "${destination}/org/jenetics/util/doc-files"
+			from "src/main/java/org/jenetix/util/doc-files"
+			into "${destination}/org/jenetix/util/doc-files"
 		}
 	}
 }
@@ -189,6 +185,8 @@ repositories {
 dependencies {
 	compile project(':org.jenetics')
 	compile "jscience:jscience:4.3.1"
+
+	testCompile project(':org.jenetics')
 	testCompile "testng:testng:6.8"
 }
 
