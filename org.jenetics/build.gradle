@@ -78,20 +78,20 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 
 	// Copy the javadoc
 	copy {
-		from("${buildDir}/docs") {
-			include "javadoc/**/*.html"
+		from("${buildDir}/docs/javadoc") {
+			include "**/*.html"
 		}
-		into "${exportBaseDir}"
+		into "${exportBaseDir}/javadoc/${project.name}"
 		filter(ReplaceTokens, tokens: [
 			__identifier__: identifier,
 			__year__: copyrightYear
 		])
 	}
 	copy {
-		from("${buildDir}/docs") {
-			exclude "javadoc/**/*.html"
+		from("${buildDir}/docs/javadoc") {
+			exclude "**/*.html"
 		}
-		into "${exportBaseDir}"
+		into "${exportBaseDir}/javadoc/${project.name}"
 	}
 
 	// Copy the test-report.
@@ -101,7 +101,7 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 			include "*.gradle"
 			exclude ".gradle"
 		}
-		into "${exportBaseDir}/reports"
+		into "${exportBaseDir}/reports/${project.name}"
 	}
 }
 

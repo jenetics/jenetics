@@ -29,18 +29,7 @@ apply plugin: "idea"
 
 apply from: "../build-util.gradle"
 
-
-task jarjar(type: Jar) {
-	baseName = project.name + "-all"
-	from files(sourceSets.main.output.classesDir)
-	from {
-		configurations.compile.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
-}
-
-task pack(dependsOn: [build, jarjar, javadoc]) << {
+task pack(dependsOn: [build, javadoc]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
@@ -78,20 +67,20 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 
 	// Copy the javadoc
 	copy {
-		from("${buildDir}/docs") {
-			include "javadoc/**/*.html"
+		from("${buildDir}/docs/javadoc") {
+			include "**/*.html"
 		}
-		into "${exportBaseDir}"
+		into "${exportBaseDir}/javadoc/${project.name}"
 		filter(ReplaceTokens, tokens: [
 			__identifier__: identifier,
 			__year__: copyrightYear
 		])
 	}
 	copy {
-		from("${buildDir}/docs") {
-			exclude "javadoc/**/*.html"
+		from("${buildDir}/docs/javadoc") {
+			exclude "**/*.html"
 		}
-		into "${exportBaseDir}"
+		into "${exportBaseDir}/javadoc/${project.name}"
 	}
 
 	// Copy the test-report.
@@ -101,13 +90,13 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 			include "*.gradle"
 			exclude ".gradle"
 		}
-		into "${exportBaseDir}/reports"
+		into "${exportBaseDir}/reports/${project.name}"
 	}
 }
 
 jar {
 	manifest {
-		attributes "Implementation-Title": "org.jenetix",
+		attributes "Implementation-Title": "${project.name}",
 					"Implementation-Version": version,
 					"Implementation-URL": "http://jenetics.sourceforge.net",
 					"Implementation-Vendor": "Jenetics",
