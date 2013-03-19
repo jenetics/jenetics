@@ -22,12 +22,14 @@
  */
 package org.jenetics.util;
 
+import java.util.Random;
+
 /**
  * Object with mathematical functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-03-19 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -339,7 +341,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-03-19 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -365,10 +367,73 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-03-19 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * and max (end points included).
+		 *
+		 * @param min lower bound for generated long integer
+		 * @param max upper bound for generated long integer
+		 * @return a random long integer greater than or equal to {@code min}
+		 *         and less than or equal to {@code max}
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 */
+		public static long nextLong(final Random random, final long min, final long max) {
+			if (min >= max) {
+				throw new IllegalArgumentException(String.format(
+					"min >= max: %d >= %d.", min, max
+				));
+			}
+
+			final long diff = (max - min) + 1;
+			long result = 0;
+
+			if (diff <= 0) {
+				do {
+					result = random.nextLong();
+				} while (result < min || result > max);
+			} else if (diff < Integer.MAX_VALUE) {
+				result = random.nextInt((int)diff) + min;
+			} else {
+				result = nextLong(random, diff) + min;
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed int value between 0
+		 * (inclusive) and the specified value (exclusive), drawn from the given
+		 * random number generator's sequence.
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param n the bound on the random number to be returned. Must be
+		 *        positive.
+		 * @return the next pseudorandom, uniformly distributed int value
+		 *         between 0 (inclusive) and n (exclusive) from the given random
+		 *         number generator's sequence
+		 * @throws IllegalArgumentException if n is smaller than 1.
+		 */
+		public static long nextLong(final Random random, final long n) {
+			if (n <= 0) {
+				throw new IllegalArgumentException(String.format(
+					"n is smaller than one: %d", n
+				));
+			}
+
+			long bits;
+			long result;
+			do {
+				bits = random.nextLong() & 0x7fffffffffffffffL;
+				result = bits%n;
+			} while (bits - result + (n - 1) < 0);
+
+			return result;
+		}
 
 		/**
 		 * Create a new <em>seed</em> byte array of the given length.
