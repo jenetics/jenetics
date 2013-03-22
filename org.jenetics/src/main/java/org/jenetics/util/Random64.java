@@ -29,7 +29,7 @@ import java.util.Random;
  * @since 1.1
  * @version 1.2 &mdash; <em>$Date$</em>
  */
-abstract class Random64 extends Random {
+abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,6 +43,7 @@ abstract class Random64 extends Random {
 	// Force to explicitly override the Random.nextLong() method.
 	@Override
 	public abstract long nextLong();
+
 
 	@Override
 	public boolean nextBoolean() {
