@@ -36,13 +36,14 @@ import org.jscience.mathematics.structure.GroupMultiplicative;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.math;
 
 /**
  * Implementation of the NumberGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-23 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -223,7 +224,7 @@ public final class Float64Gene
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final Float64 value = Float64.valueOf(
-				nextDouble(random, min.doubleValue(), max.doubleValue())
+				math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
 			);
 
 		return valueOf(value, min, max);

@@ -35,13 +35,14 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.math;
 
 /**
  * NumberGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-23 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -219,7 +220,7 @@ public final class Integer64Gene
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final Integer64 value = Integer64.valueOf(
-			nextLong(random, min.longValue(), max.longValue())
+			math.random.nextLong(random, min.longValue(), max.longValue())
 		);
 
 		return valueOf(value, min, max);

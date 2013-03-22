@@ -22,12 +22,9 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.round;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
-
-import java.util.Random;
 
 import javolution.text.Text;
 import javolution.text.TextBuilder;
@@ -42,7 +39,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-23 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -253,22 +250,6 @@ public abstract class NumberGene<
 		TextBuilder out = new TextBuilder();
 		out.append("[").append(_value).append("]");
 		return out.toText();
-	}
-
-	static long nextLong(
-		final Random random,
-		final long min,
-		final long max
-	) {
-		return round(random.nextDouble()*(max - min)) + min;
-	}
-
-	static double nextDouble(
-		final Random random,
-		final double min,
-		final double max
-	) {
-		return random.nextDouble()*(max - min) + min;
 	}
 
 }
