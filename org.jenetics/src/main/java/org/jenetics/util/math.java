@@ -381,7 +381,9 @@ public final class math extends StaticObject {
 		 *         than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
-		public static int nextInt(final Random random, final int min, final int max) {
+		public static int nextInt(
+			final Random random, final int min, final int max
+		) {
 			if (min >= max) {
 				throw new IllegalArgumentException(String.format(
 					"Min >= max: %d >= %d", min, max
@@ -412,7 +414,9 @@ public final class math extends StaticObject {
 		 *         and less than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
-		public static long nextLong(final Random random, final long min, final long max) {
+		public static long nextLong(
+			final Random random, final long min, final long max
+		) {
 			if (min >= max) {
 				throw new IllegalArgumentException(String.format(
 					"min >= max: %d >= %d.", min, max
@@ -463,6 +467,22 @@ public final class math extends StaticObject {
 			} while (bits - result + (n - 1) < 0);
 
 			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated double value
+		 * @param max upper bound for generated double value
+		 * @return a random double greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static double nextDouble(
+			final Random random, final double min, final double max
+		) {
+			return random.nextDouble()*(max - min) + min;
 		}
 
 		/**
