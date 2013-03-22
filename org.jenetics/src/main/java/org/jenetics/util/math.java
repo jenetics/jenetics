@@ -373,7 +373,7 @@ public final class math extends StaticObject {
 
 		/**
 		 * Returns a pseudorandom, uniformly distributed int value between min and
-		 * max (end points included).
+		 * max (min and max included).
 		 *
 		 * @param min lower bound for generated integer
 		 * @param max upper bound for generated integer
@@ -404,7 +404,7 @@ public final class math extends StaticObject {
 
 		/**
 		 * Returns a pseudorandom, uniformly distributed int value between min
-		 * and max (end points included).
+		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated long integer
 		 * @param max upper bound for generated long integer
