@@ -45,6 +45,15 @@ task jarjar(type: Jar) {
 			it.isDirectory() ? it : zipTree(it)
 		}
 	}
+	manifest {
+		attributes "Implementation-Title": "org.jenetics-all",
+				"Implementation-Version": version,
+				"Implementation-URL": "http://jenetics.sourceforge.net",
+				"Implementation-Vendor": "Jenetics",
+				"ProjectName": "Jenetics",
+				"Version": version,
+				"Maintainer": "Franz Wilhelmstötter"
+	}
 }
 
 task pack(dependsOn: [build, jarjar, javadoc]) << {
