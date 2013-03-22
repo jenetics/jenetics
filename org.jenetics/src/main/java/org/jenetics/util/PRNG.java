@@ -51,24 +51,7 @@ abstract class PRNG extends Random {
 	 * @throws IllegalArgumentException if {@code min >= max}
 	 */
 	public int nextInt(final int min, final int max) {
-		if (min >= max) {
-			throw new IllegalArgumentException(String.format(
-				"Min >= max: %d >= %d", min, max
-			));
-		}
-
-		final int diff = max - min + 1;
-		int result = 0;
-
-		if (diff <= 0) {
-			do {
-				result = nextInt();
-			} while (result < min || result > max);
-		} else {
-			result = nextInt(diff) + min;
-		}
-
-		return result;
+		return math.random.nextInt(this, min, max);
 	}
 
 	/**
@@ -82,26 +65,7 @@ abstract class PRNG extends Random {
 	 * @throws IllegalArgumentException if {@code min >= max}
 	 */
 	public long nextLong(final long min, final long max) {
-		if (min >= max) {
-			throw new IllegalArgumentException(String.format(
-				"min >= max: %d >= %d.", min, max
-			));
-		}
-
-		final long diff = (max - min) + 1;
-		long result = 0;
-
-		if (diff <= 0) {
-			do {
-				result = nextLong();
-			} while (result < min || result > max);
-		} else if (diff < Integer.MAX_VALUE) {
-			result = nextInt((int)diff) + min;
-		} else {
-			result = nextLong(diff) + min;
-		}
-
-		return result;
+		return math.random.nextLong(this, min, max);
 	}
 
 
@@ -118,20 +82,7 @@ abstract class PRNG extends Random {
 	 * @throws IllegalArgumentException if n is smaller than 1.
 	 */
 	public long nextLong(final long n) {
-		if (n <= 0) {
-			throw new IllegalArgumentException(String.format(
-				"n is smaller than one: %d", n
-			));
-		}
-
-		long bits;
-		long result;
-		do {
-			bits = nextLong() & 0x7fffffffffffffffL;
-			result = bits%n;
-		} while (bits - result + (n - 1) < 0);
-
-		return result;
+		return math.random.nextLong(this, n);
 	}
 
 }
