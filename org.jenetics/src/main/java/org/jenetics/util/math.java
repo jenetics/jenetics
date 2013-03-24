@@ -476,7 +476,7 @@ public final class math extends StaticObject {
 		 * @param random the random engine used for creating the random number.
 		 * @param min lower bound for generated float value
 		 * @param max upper bound for generated float value
-		 * @return a random double greater than or equal to {@code min} and less
+		 * @return a random float greater than or equal to {@code min} and less
 		 *         than to {@code max}
 		 */
 		public static float nextFloat(
