@@ -85,4 +85,30 @@ abstract class PRNG extends Random {
 		return math.random.nextLong(this, n);
 	}
 
+	/**
+	 * Returns a pseudorandom, uniformly distributed double value between
+	 * min (inclusively) and max (exclusively).
+	 *
+	 * @param min lower bound for generated float value
+	 * @param max upper bound for generated float value
+	 * @return a random double greater than or equal to {@code min} and less
+	 *         than to {@code max}
+	 */
+	public float nextFloat(final float min, final float max) {
+		return math.random.nextFloat(this, min, max);
+	}
+
+	/**
+	 * Returns a pseudorandom, uniformly distributed double value between
+	 * min (inclusively) and max (exclusively).
+	 *
+	 * @param min lower bound for generated double value
+	 * @param max upper bound for generated double value
+	 * @return a random double greater than or equal to {@code min} and less
+	 *         than to {@code max}
+	 */
+	public double nextDouble(final double min, final double max) {
+		return math.random.nextDouble(this, min, max);
+	}
+
 }

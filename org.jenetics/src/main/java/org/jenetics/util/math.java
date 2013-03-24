@@ -474,6 +474,22 @@ public final class math extends StaticObject {
 		 * min (inclusively) and max (exclusively).
 		 *
 		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated float value
+		 * @param max upper bound for generated float value
+		 * @return a random double greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static float nextFloat(
+			final Random random, final float min, final float max
+		) {
+			return random.nextFloat()*(max - min) + min;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
 		 * @param min lower bound for generated double value
 		 * @param max upper bound for generated double value
 		 * @return a random double greater than or equal to {@code min} and less
