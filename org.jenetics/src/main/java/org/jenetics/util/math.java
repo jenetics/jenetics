@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-03-23 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-03-25 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -340,7 +340,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-03-23 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-03-25 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -366,7 +366,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-03-23 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-03-25 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -467,6 +467,22 @@ public final class math extends StaticObject {
 			} while (bits - result + (n - 1) < 0);
 
 			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated float value
+		 * @param max upper bound for generated float value
+		 * @return a random double greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static float nextFloat(
+			final Random random, final float min, final float max
+		) {
+			return random.nextFloat()*(max - min) + min;
 		}
 
 		/**
