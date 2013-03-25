@@ -24,11 +24,18 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "java"
+apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
 apply from: "../build-util.gradle"
 
+/*
+tasks.withType(AbstractCompile).all { AbstractCompile compile ->
+	//compile.options.debug = true
+	compile.options.compilerArgs = ['-Xlint:all']
+}
+*/
 
 task jarjar(type: Jar) {
 	baseName = project.name + "-all"
@@ -37,6 +44,15 @@ task jarjar(type: Jar) {
 		configurations.compile.collect {
 			it.isDirectory() ? it : zipTree(it)
 		}
+	}
+	manifest {
+		attributes "Implementation-Title": "org.jenetics-all",
+				"Implementation-Version": version,
+				"Implementation-URL": "http://jenetics.sourceforge.net",
+				"Implementation-Vendor": "Jenetics",
+				"ProjectName": "Jenetics",
+				"Version": version,
+				"Maintainer": "Franz Wilhelmstötter"
 	}
 }
 
@@ -107,6 +123,17 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 
 jar {
 	manifest {
+		version = version
+		symbolicName = "org.jenetics"
+		name = "org.jenetics"
+		instruction "Export-Package",
+				"org.jenetics",
+				"org.jenetics.util",
+				"org.jenetics.stat"
+		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
+		instruction "Bundle-Description", "Jenetics - Java Genetic Algorithm Library"
+		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
+
 		attributes "Implementation-Title": "org.jenetics",
 					"Implementation-Version": version,
 					"Implementation-URL": "http://jenetics.sourceforge.net",

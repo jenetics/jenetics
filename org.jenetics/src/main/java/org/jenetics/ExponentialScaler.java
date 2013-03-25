@@ -42,7 +42,7 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -62,10 +62,14 @@ public final class ExponentialScaler
 	/**
 	 * Create a new FitnessScaler.
 	 *
-	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
+	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ c</pre>
+	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ c</pre>
+	 * @param c <pre>fitness = (a * fitness + b) ^ <strong>c</strong></pre>
 	 */
-	public ExponentialScaler(final double c) {
-		this(0.0, c);
+	public ExponentialScaler(final double a, final double b, final double c) {
+		_a = a;
+		_b = b;
+		_c = c;
 	}
 
 	/**
@@ -81,15 +85,12 @@ public final class ExponentialScaler
 	/**
 	 * Create a new FitnessScaler.
 	 *
-	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ c</pre>
-	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ c</pre>
-	 * @param c <pre>fitness = (a * fitness + b) ^ <strong>c</strong></pre>
+	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
 	 */
-	public ExponentialScaler(final double a, final double b, final double c) {
-		_a = a;
-		_b = b;
-		_c = c;
+	public ExponentialScaler(final double c) {
+		this(0.0, c);
 	}
+
 
 	@Override
 	public Float64 apply(final Float64 value) {

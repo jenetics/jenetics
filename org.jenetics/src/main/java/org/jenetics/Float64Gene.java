@@ -36,13 +36,14 @@ import org.jscience.mathematics.structure.GroupMultiplicative;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.math;
 
 /**
  * Implementation of the NumberGene which holds a 64 bit floating point number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-23 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -51,6 +52,11 @@ public final class Float64Gene
 	private static final long serialVersionUID = 1L;
 
 	Float64Gene() {
+	}
+
+	@Override
+	protected Float64 box(final java.lang.Number value) {
+		return Float64.valueOf(value.doubleValue());
 	}
 
 	public Float64Gene divide(final Float64Gene gene) {
@@ -120,18 +126,13 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new DoubleGene with the same limits and the given value.
+	 * Create a new Float64Gene with the same limits and the given value.
 	 *
 	 * @param value The value of the new NumberGene.
 	 * @return The new NumberGene.
 	 */
 	public Float64Gene newInstance(final double value) {
 		return valueOf(Float64.valueOf(value), _min, _max);
-	}
-
-	@Override
-	public Float64Gene newInstance(final java.lang.Number number) {
-		return valueOf(Float64.valueOf(number.doubleValue()), _min, _max);
 	}
 
 	@Override
@@ -175,7 +176,7 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random DoubleGene with the given value and the given range.
+	 * Create a new random Float64Gene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
 	 * exception is thrown. In this case the method {@link Float64Gene#isValid()}
 	 * returns {@code false}.
@@ -197,7 +198,7 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random DoubleGene. It is guaranteed that the value of the
+	 * Create a new random Float64Gene. It is guaranteed that the value of the
 	 * DoubleGene lies in the closed interval [min, max].
 	 *
 	 * @param min the minimal value of the Float64Gene to create.
@@ -223,7 +224,7 @@ public final class Float64Gene
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final Float64 value = Float64.valueOf(
-				nextDouble(random, min.doubleValue(), max.doubleValue())
+				math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
 			);
 
 		return valueOf(value, min, max);

@@ -11,7 +11,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 *  **Gradle 1.3**: [Gradle](http://www.gradle.org/) is used for building the library.
 
 ### Run time
-*  **JScience** library, <http://jscience.org>: This library is included and lies in the `project/lib` directory.
+*  **JScience** library, <http://jscience.org>: This library is  included and lies in the `project/lib` directory.
 
 ## Download
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
@@ -20,7 +20,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Build Jenetics
 
 
-For building the Jenetics library from source, download the most recent, stable package version from <https://sourceforge.net/projects/jenetics/files/latest/download> and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download) or [Bitbucket](https://bitbucket.org/fwilhelm/jenetics/downloads) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -32,7 +32,7 @@ For building the Jenetics library from source, download the most recent, stable 
     # or
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
-Jenetics uses Gradle 1.3 as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
+Jenetics uses [Gradle 1.3](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
 * **org.jenetics**: This project contains the source code and tests for the Jenetics core-module.
 * **org.jenetics.example**: This project contains example code for the *core*-module.

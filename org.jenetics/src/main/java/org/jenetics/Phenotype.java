@@ -52,7 +52,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-28 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -259,9 +259,9 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final Function<Genotype<G>, C> function,
-			final Function<C, C> scaler,
-			final int generation
+		final Function<Genotype<G>, C> function,
+		final Function<C, C> scaler,
+		final int generation
 	) {
 		return valueOf(_genotype, function, scaler, generation);
 	}
@@ -277,8 +277,8 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final Function<Genotype<G>, C> function,
-			final int generation
+		final Function<Genotype<G>, C> function,
+		final int generation
 	) {
 		return valueOf(_genotype, function, functions.<C>Identity(), generation);
 	}

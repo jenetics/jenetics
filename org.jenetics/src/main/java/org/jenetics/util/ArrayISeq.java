@@ -27,7 +27,7 @@ import static org.jenetics.util.object.nonNull;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-06 $</em>
  */
 class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
@@ -69,6 +69,7 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		return new Array<>(new ArrayRef(toArray()), 0, length());
 	}
 
+	@Deprecated
 	@Override
 	@SuppressWarnings("unchecked")
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq) {
