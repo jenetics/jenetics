@@ -86,6 +86,19 @@ public final class ForkJoinContext extends ConcurrentContext {
 	}
 
 	/**
+	 * Deprecated for fixing typo in method name.
+	 *
+	 * @see #setForkJoinPool(ForkJoinPool)
+	 *
+	 * @deprecated Fixing typo, use {@link #setForkJoinPool(ForkJoinPool)}
+	 *             instead.
+	 */
+	@Deprecated
+	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
+		return setForkJoinPool(pool);
+	}
+
+	/**
 	 * Set the fork-join-pool used by this context. This method doesn't replace
 	 * an already set {@link ForkJoinPool}. Before the <i>context</i> can be
 	 * used a {@link ForkJoinPool} must be set.
@@ -95,7 +108,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 *          otherwise.
 	 * @throws NullPointerException if the pool is {@code null}.
 	 */
-	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
+	public static boolean setForkJoinPool(final ForkJoinPool pool) {
 		return _POOL.compareAndSet(null, nonNull(pool, "ForkJoinPool"));
 	}
 
@@ -132,9 +145,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 			{
 				n.getValue().get();
 			}
-		} catch (InterruptedException e) {
-			throw (CancellationException)new CancellationException().initCause(e);
-		} catch (ExecutionException e) {
+		} catch (InterruptedException | ExecutionException e) {
 			throw (CancellationException)new CancellationException().initCause(e);
 		}
 	}

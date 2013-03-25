@@ -66,7 +66,7 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		super(new Array<>(genes).toISeq());
+		this(Array.valueOf(genes).toISeq());
 	}
 
 	/**
@@ -131,8 +131,12 @@ public class Float64Chromosome
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<Float64Chromosome> asFactory() {
 		return (Factory<Float64Chromosome>)(Object)this;

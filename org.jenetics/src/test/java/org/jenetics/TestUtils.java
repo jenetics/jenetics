@@ -185,7 +185,7 @@ class TestUtils {
 	/**
 	 * Count the number of different genes.
 	 */
-	public static int diff(
+	public static int diff (
 		final Population<Float64Gene, Float64> p1,
 		final Population<Float64Gene, Float64> p2
 	) {

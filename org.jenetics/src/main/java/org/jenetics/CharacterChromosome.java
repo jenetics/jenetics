@@ -69,7 +69,7 @@ public class CharacterChromosome
 	public CharacterChromosome(final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS).asFactory()
+					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
 				).toISeq()
 		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
@@ -90,7 +90,7 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(validCharacters).asFactory()
+					CharacterGene.valueOf(validCharacters)
 				).toISeq()
 		);
 		_validCharacters = validCharacters;
@@ -156,7 +156,11 @@ public class CharacterChromosome
 	 * Return a more specific view of this chromosome factory.
 	 *
 	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<CharacterChromosome> asFactory() {
 		return (Factory<CharacterChromosome>)(Object)this;

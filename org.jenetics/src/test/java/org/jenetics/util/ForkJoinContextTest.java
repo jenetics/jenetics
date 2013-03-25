@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 public class ForkJoinContextTest {
 
 	static {
-		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(3));
+		ForkJoinContext.setForkJoinPool(new ForkJoinPool(3));
 	}
 
 	@SuppressWarnings("unused")

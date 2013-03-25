@@ -47,7 +47,7 @@ import org.testng.annotations.Test;
 public class GeneticAlgorithmTest {
 
 	static {
-		ForkJoinContext.setForkkJoinPool(new ForkJoinPool(5));
+		ForkJoinContext.setForkJoinPool(new ForkJoinPool(5));
 	}
 
 	private static class FF
@@ -70,7 +70,9 @@ public class GeneticAlgorithmTest {
 		try {
 			RandomRegistry.setRandom(new Random(12345));
 
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
+			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
+				new Float64Chromosome(0, 1)
+			);
 			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
 
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);

@@ -58,13 +58,15 @@ public interface ISeq<T>
 	 * [code]
 	 * ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
 	 * ISeq<Number> na = da.upcast(da);
-	 * ISeq<Object>; oa = na.upcast(na);
-	 * oa = da.upcast(da);
+	 * ISeq<Object> oa = na.upcast(na);
 	 * [/code]
 	 *
 	 * @param seq the sequence to cast.
 	 * @return the up-casted sequence.
+	 *
+	 * @deprecated Will be removed in the next version.
 	 */
+	@Deprecated
 	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
 
 	/**

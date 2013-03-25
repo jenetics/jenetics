@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.2 &mdash; <em>$Date$</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -427,22 +427,17 @@ public final class arrays extends StaticObject {
 	 *
 	 * This example shows how this can be used in an concurrent environment:
 	 * [code]
-	 * ConcurrentContext.enter();
-	 * try {
+	 * try (final Concurrency c = Concurrency.start()) {
 	 *     final int[] parts = arrays.partition(population.size(), _maxThreads);
 	 *
 	 *     for (int i = 0; i < parts.length - 1; ++i) {
 	 *         final int part = i;
-	 *         ConcurrentContext.execute(new Runnable() {
-	 *             public void run() {
-	 *                 for (int j = parts[part + 1]; --j >= parts[part];) {
-	 *                     population.get(j).evaluate();
-	 *                 }
+	 *         c.execute(new Runnable() { @Override public void run() {
+	 *             for (int j = parts[part + 1]; --j >= parts[part];) {
+	 *                 population.get(j).evaluate();
 	 *             }
-	 *         });
+	 *         }});
 	 *     }
-	 * } finally {
-	 *      ConcurrentContext.exit();
 	 * }
 	 * [/code]
 	 *
@@ -487,7 +482,6 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
-	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
@@ -504,8 +498,7 @@ public final class arrays extends StaticObject {
 	 * @param n the size of the set.
 	 * @param k the size of the subset.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code random} or {@code sub} is
-	 *          {@code null}.
+	 * @throws NullPointerException if {@code random} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
@@ -552,8 +545,7 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
-	 * @throws NullPointerException if {@code random} or {@code sub} is
-	 *          {@code null}.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *          integer overflow.
@@ -587,7 +579,8 @@ public final class arrays extends StaticObject {
 	 * @param n the size of the set.
 	 * @param sub the sub set array.
 	 * @param random the random number generator used.
-	 * @throws NullPointerException if {@code sub} is {@code null}.
+	 * @throws NullPointerException if {@code sub} or {@code random} is
+	 *         {@code null}.
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.
@@ -703,8 +696,8 @@ public final class arrays extends StaticObject {
 	 * @param p the permutation array.
 	 * @throws NullPointerException if the permutation array is {@code null}.
 	 */
-	public static void permutation(final int[] p) {
-		permutation(p, RandomRegistry.getRandom());
+	public static int[] permutation(final int[] p) {
+		return permutation(p, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -715,7 +708,7 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the permutation array or the random number
 	 *          generator is {@code null}.
 	 */
-	public static void permutation(final int[] p, final Random random) {
+	public static int[] permutation(final int[] p, final Random random) {
 		nonNull(p, "Permutation array");
 		nonNull(random, "Random");
 
@@ -723,6 +716,8 @@ public final class arrays extends StaticObject {
 			p[i] = i;
 		}
 		shuffle(p, random);
+
+		return p;
 	}
 
 	/**
@@ -749,7 +744,7 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException it the permutation array is {@code null}.
 	 * @throws IllegalArgumentException if {@code rank < 1}.
 	 */
-	public static void permutation(final int[] p, final long rank) {
+	public static int[] permutation(final int[] p, final long rank) {
 		nonNull(p, "Permutation array");
 		if (rank < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -786,6 +781,8 @@ public final class arrays extends StaticObject {
 
 			p[j - 1] = iprev;
 		}
+
+		return p;
 	}
 
 	/**

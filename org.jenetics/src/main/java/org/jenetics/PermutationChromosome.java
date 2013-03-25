@@ -116,8 +116,12 @@ public final class PermutationChromosome<T>
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<PermutationChromosome<T>> asFactory() {
 		return (Factory<PermutationChromosome<T>>)(Object)this;
@@ -212,7 +216,7 @@ public final class PermutationChromosome<T>
 
 			final ISeq<Object> ialleles = alleles.toISeq();
 
-			final Array<Integer> indexes = new Array<>(
+			final Array<Integer> indexes = Array.valueOf(
 				xml.get(ALLELE_INDEXES, String.class
 			).split(",")).map(StringToInteger);
 

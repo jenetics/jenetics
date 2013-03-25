@@ -49,10 +49,6 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	implements Immutable
 {
 
-	public MeanAlterer() {
-		this(0.05);
-	}
-
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
@@ -62,6 +58,13 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	 */
 	public MeanAlterer(final double probability) {
 		super(probability, 2);
+	}
+
+	/**
+	 * Create a new alterer with alter probability of {@code 0.05}.
+	 */
+	public MeanAlterer() {
+		this(0.05);
 	}
 
 	@Override

@@ -76,8 +76,8 @@ public final class ExponentialRankSelector<
 	public ExponentialRankSelector(final double c) {
 		if (c < 0.0 || c >= 1.0) {
 			throw new IllegalArgumentException(String.format(
-					"Value %s is out of range [0..1): ", c
-				));
+				"Value %s is out of range [0..1): ", c
+			));
 		}
 		_c = c;
 	}

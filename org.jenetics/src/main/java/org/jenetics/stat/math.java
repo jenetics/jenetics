@@ -37,7 +37,6 @@ import org.jenetics.util.StaticObject;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-@SuppressWarnings("javadoc")
 final class math extends StaticObject {
 	private math() {}
 

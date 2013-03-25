@@ -22,8 +22,6 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -32,7 +30,7 @@ import javolution.lang.Immutable;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
+import org.jenetics.util.arrays;
 
 /**
  * <p>
@@ -91,28 +89,18 @@ public final class PartiallyMatchedCrossover<T>
 		final MSeq<EnumGene<T>> that,
 		final MSeq<EnumGene<T>> other
 	) {
-		final Random random = RandomRegistry.getRandom();
-		int begin = random.nextInt(that.length());
-		int end = random.nextInt(other.length());
-		begin = min(begin, end);
-		end = max(begin, end) + 1;
+		assert (that.length() == other.length());
 
-		swap(that, other, begin, end);
-		repair(that, other, begin, end);
-		repair(other, that, begin, end);
+		if (that.length() >= 2) {
+			final Random random = RandomRegistry.getRandom();
+			final int[] points = arrays.subset(that.length(), 2, random);
+
+			that.swap(points[0], points[1], other, points[0]);
+			repair(that, other, points[0], points[1]);
+			repair(other, that, points[0], points[1]);
+		}
 
 		return 1;
-	}
-
-	private static <T> void swap(
-		final MSeq<T> that, final MSeq<T> other,
-		final int begin, final int end
-	) {
-		for (int i = begin; i < end; ++i) {
-			final T temp = that.get(i);
-			that.set(i, other.get(i));
-			other.set(i, temp);
-		}
 	}
 
 	private static <T> void repair(
@@ -120,33 +108,19 @@ public final class PartiallyMatchedCrossover<T>
 		final int begin, final int end
 	) {
 		for (int i = 0; i < begin; ++i) {
-			int index = indexOf(that, begin, end, that.get(i));
+			int index = that.indexOf(that.get(i), begin, end);
 			while (index != -1) {
 				that.set(i, other.get(index));
-				index = indexOf(that, begin, end, that.get(i));
+				index = that.indexOf(that.get(i), begin, end);
 			}
 		}
 		for (int i = end, n = that.length(); i < n; ++i) {
-			int index = indexOf(that, begin, end, that.get(i));
+			int index = that.indexOf(that.get(i), begin, end);
 			while (index != -1) {
 				that.set(i, other.get(index));
-				index = indexOf(that, begin, end, that.get(i));
+				index = that.indexOf(that.get(i), begin, end);
 			}
 		}
-	}
-
-	private static int indexOf(
-		final Seq<?> genes,
-		final int begin, final int end,
-		final Object gene
-	) {
-		int index = -1;
-		for (int i = begin; i < end && index == -1; ++i) {
-			if (genes.get(i).equals(gene)) {
-				index = i;
-			}
-		}
-		return index;
 	}
 
 	@Override

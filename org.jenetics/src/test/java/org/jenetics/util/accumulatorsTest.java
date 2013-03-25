@@ -190,7 +190,7 @@ public class accumulatorsTest {
 
 	@Test
 	public void accumulate7() {
-		final Seq<String> data = new Array<>("-10", "1", "2", "3", "4", "5");
+		final Seq<String> data = Array.valueOf("-10", "1", "2", "3", "4", "5");
 		final accumulators.Max<Integer> max = new accumulators.Max<>();
 		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(

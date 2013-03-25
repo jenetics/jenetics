@@ -73,13 +73,6 @@ public final class BoltzmannSelector<
 	private final double _b;
 
 	/**
-	 * Create a new BoltzmannSelector with a default beta of 0.2.
-	 */
-	public BoltzmannSelector() {
-		this(0.2);
-	}
-
-	/**
 	 * Create a new BolzmanSelector with the given <i>b</i> value. <b>High
 	 * absolute values of <i>b</i> can create numerical overflows while
 	 * calculating the selection probabilities.</b>
@@ -88,6 +81,13 @@ public final class BoltzmannSelector<
 	 */
 	public BoltzmannSelector(final double b) {
 		_b = b;
+	}
+
+	/**
+	 * Create a new BoltzmannSelector with a default beta of 0.2.
+	 */
+	public BoltzmannSelector() {
+		this(0.2);
 	}
 
 	@Override

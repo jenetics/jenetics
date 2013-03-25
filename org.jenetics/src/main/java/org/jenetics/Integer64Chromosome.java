@@ -73,7 +73,7 @@ public class Integer64Chromosome
 	 *         one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
-		super(new Array<>(genes).toISeq());
+		this(Array.valueOf(genes).toISeq());
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class Integer64Chromosome
 		final Integer64 max,
 		final int length
 	) {
-		super(
+		this(
 			new Array<Integer64Gene>(length).fill(
 				Integer64Gene.valueOf(min, max)
 			).toISeq()
@@ -137,8 +137,12 @@ public class Integer64Chromosome
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<Integer64Chromosome> asFactory() {
 		return (Factory<Integer64Chromosome>)(Object)this;

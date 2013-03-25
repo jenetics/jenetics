@@ -166,6 +166,7 @@ public class GeneticAlgorithm<
 	private final Optimize _optimization;
 
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Factory<Phenotype<G, C>> _phenotypeFactory;
 	private final Function<Genotype<G>, C> _fitnessFunction;
 	private Function<C, C> _fitnessScaler;
 
@@ -202,6 +203,39 @@ public class GeneticAlgorithm<
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 
+
+	/**
+	 * Create a new genetic algorithm.
+	 *
+	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param fitnessScaler the fitness scaler this GA is using.
+	 * @param optimization Determine whether this GA maximize or minimize the
+	 *        fitness function.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 */
+	public GeneticAlgorithm(
+		final Factory<Genotype<G>> genotypeFactory,
+		final Function<Genotype<G>, C> fitnessFunction,
+		final Function<C, C> fitnessScaler,
+		final Optimize optimization
+	) {
+		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
+		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
+		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
+		_optimization = nonNull(optimization, "Optimization");
+
+		_phenotypeFactory = new Factory<Phenotype<G, C>>() {
+			@Override public Phenotype<G, C> newInstance() {
+				return Phenotype.valueOf(
+					_genotypeFactory.newInstance(),
+					_fitnessFunction,
+					_fitnessScaler,
+					_generation
+				);
+			}
+		};
+	}
 
 	/**
 	 * Create a new genetic algorithm. By default the GA tries to maximize the
@@ -268,28 +302,6 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Create a new genetic algorithm.
-	 *
-	 * @param genotypeFactory the genotype factory this GA is working with.
-	 * @param fitnessFunction the fitness function this GA is using.
-	 * @param fitnessScaler the fitness scaler this GA is using.
-	 * @param optimization Determine whether this GA maximize or minimize the
-	 *        fitness function.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	public GeneticAlgorithm(
-		final Factory<Genotype<G>> genotypeFactory,
-		final Function<Genotype<G>, C> fitnessFunction,
-		final Function<C, C> fitnessScaler,
-		final Optimize optimization
-	) {
-		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
-		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
-		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
-		_optimization = nonNull(optimization, "Optimization");
-	}
-
-	/**
 	 * Create the initial population of the GA. Subsequent calls to this
 	 * method throw IllegalStateException. If no initial population has been
 	 * set (with {@link #setPopulation(Collection)} or
@@ -301,18 +313,7 @@ public class GeneticAlgorithm<
 		_lock.lock();
 		try {
 			prepareSetup();
-
-			//Initializing/filling up the Population.
-			for (int i = _population.size(); i < _populationSize; ++i) {
-				final Phenotype<G, C> pt = Phenotype.valueOf(
-					_genotypeFactory.newInstance(),
-					_fitnessFunction,
-					_fitnessScaler,
-					_generation
-				);
-				_population.add(pt);
-			}
-
+			_population.fill(_phenotypeFactory, _populationSize - _population.size());
 			finishSetup();
 		} finally {
 			_lock.unlock();
@@ -507,14 +508,13 @@ public class GeneticAlgorithm<
 				assert (survivors.size() == numberOfSurvivors);
 				selection.set(0, survivors);
 			}});
-			c.execute(new Runnable() { @Override public void run() {
-				final Population<G, C> offsprings = _offspringSelector.select(
-					_population, numberOfOffspring, _optimization
-				);
 
-				assert (offsprings.size() == numberOfOffspring);
-				selection.set(1, offsprings);
-			}});
+			final Population<G, C> offsprings = _offspringSelector.select(
+				_population, numberOfOffspring, _optimization
+			);
+
+			assert (offsprings.size() == numberOfOffspring);
+			selection.set(1, offsprings);
 		}
 
 		return selection;
@@ -527,9 +527,9 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Concurrency c = Concurrency.start()) {
+		try (final Concurrency concurrency = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
-			c.execute(new Runnable() { @Override public void run() {
+			concurrency.execute(new Runnable() { @Override public void run() {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
 					final Phenotype<G, C> survivor = survivors.get(i);
 
@@ -540,13 +540,7 @@ public class GeneticAlgorithm<
 
 					// Sorry, too old or not valid.
 					if (isInvalid) {
-						final Phenotype<G, C> newpt = Phenotype.valueOf(
-								_genotypeFactory.newInstance(),
-								_fitnessFunction,
-								_fitnessScaler,
-								_generation
-							);
-						survivors.set(i, newpt);
+						survivors.set(i, _phenotypeFactory.newInstance());
 					}
 
 					if (isTooOld) {
@@ -558,9 +552,7 @@ public class GeneticAlgorithm<
 			}});
 
 			// In the mean time we can add the offsprings.
-			c.execute(new Runnable() { @Override public void run() {
-				population.addAll(offsprings);
-			}});
+			population.addAll(offsprings);
 		}
 
 		population.addAll(survivors);

@@ -431,8 +431,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			throws XMLStreamException
 		{
 			final Optimize optimize = Optimize.valueOf(
-						xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
-					);
+				xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
+			);
 			final int generation = xml.getAttribute(GENERATION, 0);
 			final int samples = xml.getAttribute(SAMPLES, 1);
 			final Float64 meanAge = xml.get(AGE_MEAN);

@@ -39,10 +39,11 @@ import org.jenetics.util.RandomRegistry;
  * points, and merge those portions of different chromosomes to form new ones.
  * </p>
  * <p>
- * The recombination probability <i>P)r)</i> determines the probability that a given
- * individual (genotype, not gene) of a population is selected for recombination.
- * The (<i>mean</i>) number of changed individuals depend on the concrete
- * implementation and can be vary from <i>P(r)</i>&middot;<i>N<sub>G</sub></i> to
+ * The recombination probability <i>P)r)</i> determines the probability that a
+ * given individual (genotype, not gene) of a population is selected for
+ * recombination. The (<i>mean</i>) number of changed individuals depend on the
+ * concrete implementation and can be vary from
+ * <i>P(r)</i>&middot;<i>N<sub>G</sub></i> to
  * <i>P(r)</i>&middot;<i>N<sub>G</sub></i>&middot;<i>O<sub>R</sub></i>, where
  * <i>O<sub>R</sub></i> is the order of the recombination, which is the number
  * of individuals involved int the {@link #recombine} method.
@@ -66,7 +67,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 *          valid range of {@code [0, 1]} or the given {@code order} is smaller
 	 *          than two.
 	 */
-	public Recombinator(final double probability, final int order) {
+	protected Recombinator(final double probability, final int order) {
 		super(probability);
 		if (order < 2) {
 			throw new IllegalArgumentException(String.format(
@@ -93,7 +94,7 @@ public abstract class Recombinator<G extends Gene<?, G>>
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
 		final IndexStream stream = IndexStream.Random(
-			population.size(), _probability, random
+			population.size(), _probability
 		);
 
 		int alterations = 0;
