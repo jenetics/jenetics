@@ -61,8 +61,8 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Subtracts to long values and throws an ArithmeticException in the case of an
-	 * overflow.
+	 * Subtracts to long values and throws an ArithmeticException in the case of
+	 * an overflow.
 	 *
 	 * @param a the minuend.
 	 * @param b the subtrahend.
@@ -122,8 +122,9 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Normalize the given double array, so that it sum to one. The normalization
-	 * is performed in place and the same {@code values} are returned.
+	 * Normalize the given double array, so that it sum to one. The
+	 * normalization is performed in place and the same {@code values} are
+	 * returned.
 	 *
 	 * @param values the values to normalize.
 	 * @return the {@code values} array.
@@ -142,7 +143,8 @@ public final class math extends StaticObject {
 	 * Return the minimum value of the given double array.
 	 *
 	 * @param values the double array.
-	 * @return the minimum value or {@link Double#NaN} if the given array is empty.
+	 * @return the minimum value or {@link Double#NaN} if the given array is
+	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double min(final double[] values) {
@@ -164,7 +166,8 @@ public final class math extends StaticObject {
 	 * Return the maximum value of the given double array.
 	 *
 	 * @param values the double array.
-	 * @return the maximum value or {@link Double#NaN} if the given array is empty.
+	 * @return the maximum value or {@link Double#NaN} if the given array is
+	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double max(final double[] values) {
@@ -372,13 +375,13 @@ public final class math extends StaticObject {
 		private random() {}
 
 		/**
-		 * Returns a pseudorandom, uniformly distributed int value between min and
-		 * max (min and max included).
+		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated integer
 		 * @param max upper bound for generated integer
-		 * @return a random integer greater than or equal to {@code min} and less
-		 *         than or equal to {@code max}
+		 * @return a random integer greater than or equal to {@code min} and
+		 *         less than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
 		public static int nextInt(
@@ -524,7 +527,8 @@ public final class math extends StaticObject {
 		 *
 		 * @param seed the byte array seed to fill with random bytes.
 		 * @return the given byte array, for method chaining.
-		 * @throws NullPointerException if the {@code seed} array is {@code null}.
+		 * @throws NullPointerException if the {@code seed} array is
+		 *         {@code null}.
 		 */
 		public static byte[] seed(final byte[] seed) {
 			for (int i = 0, len = seed.length; i < len;) {
