@@ -29,11 +29,10 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-03-19 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
-
 
 	/**
 	 * Add to long values and throws an ArithmeticException in the case of an
@@ -62,8 +61,8 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Subtracts to long values and throws an ArithmeticException in the case of an
-	 * overflow.
+	 * Subtracts to long values and throws an ArithmeticException in the case of
+	 * an overflow.
 	 *
 	 * @param a the minuend.
 	 * @param b the subtrahend.
@@ -123,8 +122,9 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Normalize the given double array, so that it sum to one. The normalization
-	 * is performed in place and the same {@code values} are returned.
+	 * Normalize the given double array, so that it sum to one. The
+	 * normalization is performed in place and the same {@code values} are
+	 * returned.
 	 *
 	 * @param values the values to normalize.
 	 * @return the {@code values} array.
@@ -143,7 +143,8 @@ public final class math extends StaticObject {
 	 * Return the minimum value of the given double array.
 	 *
 	 * @param values the double array.
-	 * @return the minimum value or {@link Double#NaN} if the given array is empty.
+	 * @return the minimum value or {@link Double#NaN} if the given array is
+	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double min(final double[] values) {
@@ -165,7 +166,8 @@ public final class math extends StaticObject {
 	 * Return the maximum value of the given double array.
 	 *
 	 * @param values the double array.
-	 * @return the maximum value or {@link Double#NaN} if the given array is empty.
+	 * @return the maximum value or {@link Double#NaN} if the given array is
+	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double max(final double[] values) {
@@ -341,7 +343,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-03-19 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -367,14 +369,47 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-03-19 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
 
 		/**
 		 * Returns a pseudorandom, uniformly distributed int value between min
-		 * and max (end points included).
+		 * and max (min and max included).
+		 *
+		 * @param min lower bound for generated integer
+		 * @param max upper bound for generated integer
+		 * @return a random integer greater than or equal to {@code min} and
+		 *         less than or equal to {@code max}
+		 * @throws IllegalArgumentException if {@code min >= max}
+		 */
+		public static int nextInt(
+			final Random random, final int min, final int max
+		) {
+			if (min >= max) {
+				throw new IllegalArgumentException(String.format(
+					"Min >= max: %d >= %d", min, max
+				));
+			}
+
+			final int diff = max - min + 1;
+			int result = 0;
+
+			if (diff <= 0) {
+				do {
+					result = random.nextInt();
+				} while (result < min || result > max);
+			} else {
+				result = random.nextInt(diff) + min;
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed int value between min
+		 * and max (min and max included).
 		 *
 		 * @param min lower bound for generated long integer
 		 * @param max upper bound for generated long integer
@@ -382,7 +417,9 @@ public final class math extends StaticObject {
 		 *         and less than or equal to {@code max}
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
-		public static long nextLong(final Random random, final long min, final long max) {
+		public static long nextLong(
+			final Random random, final long min, final long max
+		) {
 			if (min >= max) {
 				throw new IllegalArgumentException(String.format(
 					"min >= max: %d >= %d.", min, max
@@ -436,6 +473,38 @@ public final class math extends StaticObject {
 		}
 
 		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated float value
+		 * @param max upper bound for generated float value
+		 * @return a random float greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static float nextFloat(
+			final Random random, final float min, final float max
+		) {
+			return random.nextFloat()*(max - min) + min;
+		}
+
+		/**
+		 * Returns a pseudorandom, uniformly distributed double value between
+		 * min (inclusively) and max (exclusively).
+		 *
+		 * @param random the random engine used for creating the random number.
+		 * @param min lower bound for generated double value
+		 * @param max upper bound for generated double value
+		 * @return a random double greater than or equal to {@code min} and less
+		 *         than to {@code max}
+		 */
+		public static double nextDouble(
+			final Random random, final double min, final double max
+		) {
+			return random.nextDouble()*(max - min) + min;
+		}
+
+		/**
 		 * Create a new <em>seed</em> byte array of the given length.
 		 *
 		 * @see #seed(byte[])
@@ -458,7 +527,8 @@ public final class math extends StaticObject {
 		 *
 		 * @param seed the byte array seed to fill with random bytes.
 		 * @return the given byte array, for method chaining.
-		 * @throws NullPointerException if the {@code seed} array is {@code null}.
+		 * @throws NullPointerException if the {@code seed} array is
+		 *         {@code null}.
 		 */
 		public static byte[] seed(final byte[] seed) {
 			for (int i = 0, len = seed.length; i < len;) {
@@ -529,7 +599,49 @@ public final class math extends StaticObject {
 
 
 		private static long objectHashSeed() {
-			return ((long)(new Object().hashCode()) << 32) | new Object().hashCode();
+			return ((long)(new Object().hashCode()) << 32) |
+							new Object().hashCode();
+		}
+
+
+		/*
+		 * Conversion methods used by the 'Random' engine from the JDK.
+		 */
+
+		static float toFloat(final int a) {
+			return (a >>> 8)/((float)(1 << 24));
+		}
+
+		static float toFloat(final long a) {
+			return (int)(a >>> 40)/((float)(1 << 24));
+		}
+
+		static double toDouble(final long a) {
+			return (((a >>> 38) << 27) + (((int)a) >>> 5))/(double)(1L << 53);
+		}
+
+		static double toDouble(final int a, final int b) {
+			return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
+		}
+
+		/*
+		 * Conversion methods used by the Apache Commons BitStreamGenerator.
+		 */
+
+		static float toFloat2(final int a) {
+			return (a >>> 9)*0x1.0p-23f;
+		}
+
+		static float toFloat2(final long a) {
+			return (int)(a >>> 41)*0x1.0p-23f;
+		}
+
+		static double toDouble2(final long a) {
+			return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
+		}
+
+		static double toDouble2(final int a, final int b) {
+			return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 		}
 
 	}

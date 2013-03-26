@@ -54,7 +54,7 @@
  * The diagram above shows the main data structures of the GA implementation.
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are
  * aggregated in {@link org.jenetics.Chromosome}s. One to n Chromosomes are
- * aggregated in {@link org.jenetics.Genotype}s. A Genptype and a fitness
+ * aggregated in {@link org.jenetics.Genotype}s. A Genotype and a fitness
  * {@link org.jenetics.util.Function} form the {@link org.jenetics.Phenotype}.
  * Phenotypes are collected into a {@link org.jenetics.Population}.
  *
@@ -308,7 +308,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 package org.jenetics;
 

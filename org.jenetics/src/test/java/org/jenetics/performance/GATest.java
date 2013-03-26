@@ -29,6 +29,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
+import org.jenetics.Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -41,7 +42,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-03-10 $</em>
  */
 @Suite("GA")
 public class GATest {
@@ -114,10 +115,10 @@ public class GATest {
 		String.format("CharacterGene[G=%s, C=%s]", NGENES, NCHROMOSOMES),
 		LOOPS, NGENES*NCHROMOSOMES
 	) {
-		private final Array<CharacterChromosome> _chromosomes = new Array<>(NCHROMOSOMES);
-		{
-			_chromosomes.fill(new CharacterChromosome(NGENES).asFactory());
-		}
+		private final Array<Chromosome<CharacterGene>>
+		_chromosomes = new Array<>(NCHROMOSOMES);
+		{_chromosomes.fill(new CharacterChromosome(NGENES));}
+
 		private final Genotype<CharacterGene> _gt = Genotype.valueOf(_chromosomes.toISeq());
 
 		private GeneticAlgorithm<CharacterGene, Float64> _ga;

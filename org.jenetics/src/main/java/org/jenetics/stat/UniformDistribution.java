@@ -43,7 +43,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
  */
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
@@ -63,7 +63,8 @@ public class UniformDistribution<
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @since 1.0
+	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -114,7 +115,8 @@ public class UniformDistribution<
 	 * </p>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version $Id$
+	 * @since 1.0
+	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements

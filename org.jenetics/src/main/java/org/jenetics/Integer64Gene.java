@@ -35,13 +35,14 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.math;
 
 /**
  * NumberGene implementation which holds a 64 bit integer number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-23 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -49,6 +50,11 @@ public final class Integer64Gene
 	private static final long serialVersionUID = 1L;
 
 	Integer64Gene() {
+	}
+
+	@Override
+	protected Integer64 box(final java.lang.Number value) {
+		return Integer64.valueOf(value.longValue());
 	}
 
 	public Integer64Gene divide(final Integer64Gene gene) {
@@ -127,11 +133,6 @@ public final class Integer64Gene
 	}
 
 	@Override
-	public Integer64Gene newInstance(final java.lang.Number number) {
-		return valueOf(Integer64.valueOf(number.longValue()), _min, _max);
-	}
-
-	@Override
 	public Integer64Gene newInstance(final Integer64 value) {
 		return valueOf(value, _min, _max);
 	}
@@ -171,7 +172,7 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new random IntegerGene with the given value and the given range.
+	 * Create a new random Integer64Gene with the given value and the given range.
 	 * If the {@code value} isn't within the closed interval [min, max], no
 	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()}
 	 * returns {@code false}.
@@ -193,7 +194,7 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new random IntegerGene. It is guaranteed that the value of the
+	 * Create a new random Integer64Gene. It is guaranteed that the value of the
 	 * IntegerGene lies in the closed interval [min, max].
 	 *
 	 * @param min the minimal value of the Integer64Gene to create.
@@ -219,7 +220,7 @@ public final class Integer64Gene
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final Integer64 value = Integer64.valueOf(
-			nextLong(random, min.longValue(), max.longValue())
+			math.random.nextLong(random, min.longValue(), max.longValue())
 		);
 
 		return valueOf(value, min, max);

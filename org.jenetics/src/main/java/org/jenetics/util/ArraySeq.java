@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-06 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -82,41 +82,32 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexOf(final Object element) {
-		int index = -1;
-
-		if (element == null) {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
-				}
-			});
-		} else {
-			index = indexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
-				}
-			});
-		}
-
-		return index;
+		return indexOf(element, 0, length());
 	}
 
 	@Override
-	public int lastIndexOf(final Object element) {
-		int index = -1;
+	public int indexOf(final Object element, final int start) {
+		return indexOf(element, start, length());
+	}
 
+	@Override
+	public int indexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
+
+		final int n = end + _start;
+		int index = -1;
 		if (element == null) {
-			index = lastIndexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return object == null ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = start + _start; i < n && index == -1; ++i) {
+				if (_array.data[i] == null) {
+					index = i - _start;
 				}
-			});
+			}
 		} else {
-			index = lastIndexWhere(new Function<T, Boolean>() {
-				@Override public Boolean apply(final T object) {
-					return element.equals(object) ? Boolean.TRUE : Boolean.FALSE;
+			for (int i = _start + start; i < n && index == -1; ++i) {
+				if (element.equals(_array.data[i])) {
+					index = i - _start;
 				}
-			});
+			}
 		}
 
 		return index;
@@ -124,14 +115,99 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexWhere(final Function<? super T, Boolean> predicate) {
+		return indexWhere(predicate, 0, length());
+	}
+
+	@Override
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start
+	) {
+		return indexWhere(predicate, start, length());
+	}
+
+	@Override
+	public int indexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start,
+		final int end
+	) {
 		nonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = _start; i < _end && index == -1; ++i) {
+		for (int i = start + _start, n = end + _start; i < n && index == -1; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
+			if (predicate.apply(element) == Boolean.TRUE) {
+				index = i - _start;
+			}
+		}
+
+		return index;
+	}
+
+	@Override
+	public int lastIndexOf(final Object element) {
+		return lastIndexOf(element, 0, length());
+	}
+
+	@Override
+	public int lastIndexOf(final Object element, final int end) {
+		return lastIndexOf(element, 0, end);
+	}
+
+	@Override
+	public int lastIndexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
+
+		int index = -1;
+
+		if (element == null) {
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
+				if (_array.data[i] == null) {
+					index = i - _start;
+				}
+			}
+		} else {
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
+				if (element.equals(_array.data[i])) {
+					index = i - _start;
+				}
+			}
+		}
+
+		return index;
+	}
+
+	@Override
+	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
+		return lastIndexWhere(predicate, 0, length());
+	}
+
+	@Override
+	public int lastIndexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int end
+	) {
+		return lastIndexWhere(predicate, 0, end);
+	}
+
+	@Override
+	public int lastIndexWhere(
+		final Function<? super T, Boolean> predicate,
+		final int start,
+		final int end
+	) {
+		nonNull(predicate, "Predicate");
+		checkIndex(start, end);
+
+		int index = -1;
+
+		for (int i = end + _start; --i >= _start && index == -1;) {
+			@SuppressWarnings("unchecked")
+			final T element = (T)_array.data[i];
 			if (predicate.apply(element) == Boolean.TRUE) {
 				index = i - _start;
 			}
@@ -189,23 +265,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		R apply(T1 t1, T2 t2);
 	}
 	*/
-
-	@Override
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
-		nonNull(predicate, "Predicate");
-
-		int index = -1;
-
-		for (int i = _end - 1; i >= _start && index == -1; --i) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array.data[i];
-			if (predicate.apply(element) == Boolean.TRUE) {
-				index = i - _start;
-			}
-		}
-
-		return index;
-	}
 
 	@Override
 	public boolean contains(final Object element) {
@@ -278,20 +337,20 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	final void checkIndex(final int index) {
-		if (index < 0 || index >= _length) {
+		if (index < 0 || index >= length()) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
-				"Index %s is out of bounds [0, %s)", index, (_end - _start)
+				"Index %s is out of bounds [0, %s)", index, length()
 			));
 		}
 	}
 
 	final void checkIndex(final int from, final int to) {
 		if (from > to) {
-			throw new IllegalArgumentException(
+			throw new ArrayIndexOutOfBoundsException(
 				"fromIndex(" + from + ") > toIndex(" + to+ ")"
 			);
 		}
-		if (from < 0 || to > _length) {
+		if (from < 0 || to > length()) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", from, to
 			));

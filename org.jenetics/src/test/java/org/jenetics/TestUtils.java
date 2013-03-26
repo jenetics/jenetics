@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-23 $</em>
+ * @version <em>$Date: 2013-02-09 $</em>
  */
 class TestUtils {
 
@@ -185,7 +185,7 @@ class TestUtils {
 	/**
 	 * Count the number of different genes.
 	 */
-	public static int diff(
+	public static int diff (
 		final Population<Float64Gene, Float64> p1,
 		final Population<Float64Gene, Float64> p2
 	) {
