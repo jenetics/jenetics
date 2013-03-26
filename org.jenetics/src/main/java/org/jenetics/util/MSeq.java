@@ -171,7 +171,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).
 	 *
 	 * @param random the {@link Random} object to use for randomize.
-	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give array or the random object is
 	 *          {@code null}.
 	 */
