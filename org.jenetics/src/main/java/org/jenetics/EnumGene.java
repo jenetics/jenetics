@@ -120,15 +120,6 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		return gene;
 	}
 
-	/**
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	public Factory<EnumGene<A>> asFactory() {
-		return this;
-	}
-
 	@Override
 	public int hashCode() {
 		return hashCodeOf(EnumGene.class)

@@ -135,20 +135,6 @@ public class Integer64Chromosome
 	}
 
 	/**
-	 * Return a more specific view of this chromosome factory.
-	 *
-	 * @return a more specific view of this chromosome factory.
-	 *
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public Factory<Integer64Chromosome> asFactory() {
-		return (Factory<Integer64Chromosome>)(Object)this;
-	}
-
-	/**
 	 * Create a new, <em>random</em> chromosome.
 	 */
 	@Override
