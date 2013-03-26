@@ -47,33 +47,33 @@ public class StatisticsCalculatorTest {
 		return new Iterable<Phenotype<Float64Gene,Float64>>() {
 			@Override
 			public Iterator<Phenotype<Float64Gene, Float64>> iterator() {
-				return new Iterator<Phenotype<Float64Gene,Float64>>() {
-					private final Float64 MIN = Float64.valueOf(0);
-					private final Float64 MAX = Float64.valueOf(size);
+			return new Iterator<Phenotype<Float64Gene,Float64>>() {
+				private final Float64 MIN = Float64.valueOf(0);
+				private final Float64 MAX = Float64.valueOf(size);
 
-					private int _pos = -1;
+				private int _pos = -1;
 
-					@Override
-					public boolean hasNext() {
-						return _pos < size - 1;
-					}
+				@Override
+				public boolean hasNext() {
+					return _pos < size - 1;
+				}
 
-					@Override
-					public Phenotype<Float64Gene, Float64> next() {
-						++_pos;
-						final Float64Gene gene = Float64Gene.valueOf(
-									Float64.valueOf(_pos), MIN, MAX
-								);
-						return Phenotype.valueOf(
-								Genotype.valueOf(new Float64Chromosome(gene)),
-								TestUtils.FF, 0
+				@Override
+				public Phenotype<Float64Gene, Float64> next() {
+					++_pos;
+					final Float64Gene gene = Float64Gene.valueOf(
+								Float64.valueOf(_pos), MIN, MAX
 							);
-					}
+					return Phenotype.valueOf(
+							Genotype.valueOf(new Float64Chromosome(gene)),
+							TestUtils.FF, 0
+						);
+				}
 
-					@Override
-					public void remove() {
-					}
-				};
+				@Override
+				public void remove() {
+				}
+			};
 			}
 		};
 	}
