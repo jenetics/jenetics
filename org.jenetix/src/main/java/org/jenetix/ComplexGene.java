@@ -30,7 +30,7 @@ import org.jenetics.NumberGene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-18 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public final class ComplexGene
 	extends NumberGene<Complex, ComplexGene>
@@ -69,6 +69,11 @@ public final class ComplexGene
 
 	@Override
 	public ComplexGene newInstance(java.lang.Number value) {
+		return null;
+	}
+
+	@Override
+	protected Complex box(Number value) {
 		return null;
 	}
 

@@ -32,7 +32,7 @@ import org.jenetics.NumberGene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public class RealGene
 	extends NumberGene<Real, RealGene>
@@ -44,6 +44,11 @@ public class RealGene
 	private static final Real TWO = Real.ONE.plus(Real.ONE);
 
 	RealGene() {
+	}
+
+	@Override
+	protected Real box(Number value) {
+		return null;
 	}
 
 	@Override
