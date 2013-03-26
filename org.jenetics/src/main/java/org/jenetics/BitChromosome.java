@@ -54,7 +54,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-07 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -109,7 +109,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	/**
 	 * Constructing a new BitChromosome with the given _length. The TRUEs and
-	 * FALSE in the {@code Chromosome} are equaly distributed.
+	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>_length</code> is smaller

@@ -41,19 +41,15 @@ public class accumulatorsMinMaxTest
 	extends MappedAccumulatorTester<Accumulator.MinMax<Double>>
 {
 
-	final Factory<Accumulator.MinMax<Double>>
-	_factory = new Factory<Accumulator.MinMax<Double>>() {
-		@Override
-		public Accumulator.MinMax<Double> newInstance() {
-			final Random random = RandomRegistry.getRandom();
+	final Factory<Accumulator.MinMax<Double>> _factory = () -> {
+		final Random random = RandomRegistry.getRandom();
 
-			final MinMax<Double> minMax = new MinMax<>();
-			for (int i = 0; i < 1000; ++i) {
-				minMax.accumulate(random.nextGaussian());
-			}
-
-			return minMax;
+		final MinMax<Double> minMax = new MinMax<>();
+		for (int i = 0; i < 1000; ++i) {
+			minMax.accumulate(random.nextGaussian());
 		}
+
+		return minMax;
 	};
 	@Override
 	protected Factory<Accumulator.MinMax<Double>> getFactory() {

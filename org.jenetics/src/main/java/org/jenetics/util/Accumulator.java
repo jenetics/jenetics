@@ -43,8 +43,6 @@ import org.jscience.mathematics.structure.GroupAdditive;
  * accumulators.accumulate(values, minMax, variance, quantile);
  * [/code]
  *
- * @see accumulators
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
