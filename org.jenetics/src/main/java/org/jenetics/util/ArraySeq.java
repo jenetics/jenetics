@@ -347,12 +347,12 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return arrays.hashCode(this);
+		return Seq.hashCode(this);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return arrays.equals(this, obj);
+		return Seq.equals(this, obj);
 	}
 
 	@Override

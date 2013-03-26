@@ -27,7 +27,7 @@ import java.util.Arrays;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 final class DefaultHashCodeBuilder extends HashCodeBuilder {
 	private static final int P1 = 47;
@@ -134,7 +134,7 @@ final class DefaultHashCodeBuilder extends HashCodeBuilder {
 
 	@Override
 	public HashCodeBuilder and(final Seq<?> values) {
-		_hash += arrays.hashCode(values); return this;
+		_hash += Seq.hashCode(values); return this;
 	}
 
 }

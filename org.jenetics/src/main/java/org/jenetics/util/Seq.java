@@ -544,6 +544,64 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	public String toString(final String separator);
 
+	/**
+	 * Unified method for calculating the hash code of every {@link Seq}
+	 * implementation. The hash code is defined as followed:
+	 *
+	 * [code]
+	 * int hashCode = 1;
+	 * final Iterator<E> it = seq.iterator();
+	 * while (it.hasNext()) {
+	 *     final E obj = it.next();
+	 *     hashCode = 31*hashCode + (obj == null ? 0 : obj.hashCode());
+	 * }
+	 * [/code]
+	 *
+	 * @see Seq#hashCode()
+	 * @see List#hashCode()
+	 *
+	 * @param seq the sequence to calculate the hash code for.
+	 * @return the hash code of the given sequence.
+	 */
+	public static int hashCode(final Seq<?> seq) {
+		int hash = 1;
+		for (Object element : seq) {
+			hash = 31*hash + (element == null ? 0: element.hashCode());
+		}
+		return hash;
+	}
+
+	/**
+	 * Unified method for compare to sequences for equality.
+	 *
+	 * @see Seq#equals(Object)
+	 *
+	 * @param seq the sequence to test for equality.
+	 * @param obj the object to test for equality with the sequence.
+	 * @return {@code true} if the given objects are sequences and contain the
+	 *          same objects in the same order, {@code false} otherwise.
+	 */
+	public static boolean equals(final Seq<?> seq, final Object obj) {
+		if (obj == seq) {
+			return true;
+		}
+		if (!(obj instanceof Seq<?>)) {
+			return false;
+		}
+
+		final Seq<?> other = (Seq<?>)obj;
+		boolean equals = (seq.length() == other.length());
+		for (int i = seq.length(); equals && --i >= 0;) {
+			final Object element = seq.get(i);
+			if (element != null) {
+				equals = element.equals(other.get(i));
+			} else {
+				equals = other.get(i) == null;
+			}
+		}
+		return equals;
+	}
+
 }
 
 

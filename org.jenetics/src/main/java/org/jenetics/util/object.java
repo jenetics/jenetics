@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-02-13 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -427,7 +427,7 @@ public final class object extends StaticObject {
 	 *          otherwise.
 	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
-		return arrays.equals(a, b);
+		return Seq.equals(a, b);
 	}
 
 	/**
