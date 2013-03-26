@@ -85,16 +85,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexOf(final Object element) {
-		return indexOf(element, 0, length());
-	}
-
-	@Override
-	public int indexOf(final Object element, final int start) {
-		return indexOf(element, start, length());
-	}
-
-	@Override
 	public int indexOf(final Object element, final int start, final int end) {
 		checkIndex(start, end);
 
@@ -115,19 +105,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		}
 
 		return index;
-	}
-
-	@Override
-	public int indexWhere(final Predicate<? super T> predicate) {
-		return indexWhere(predicate, 0, length());
-	}
-
-	@Override
-	public int indexWhere(
-		final Predicate<? super T> predicate,
-		final int start
-	) {
-		return indexWhere(predicate, start, length());
 	}
 
 	@Override
@@ -153,16 +130,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int lastIndexOf(final Object element) {
-		return lastIndexOf(element, 0, length());
-	}
-
-	@Override
-	public int lastIndexOf(final Object element, final int end) {
-		return lastIndexOf(element, 0, end);
-	}
-
-	@Override
 	public int lastIndexOf(final Object element, final int start, final int end) {
 		checkIndex(start, end);
 
@@ -183,19 +150,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		}
 
 		return index;
-	}
-
-	@Override
-	public int lastIndexWhere(final Predicate<? super T> predicate) {
-		return lastIndexWhere(predicate, 0, length());
-	}
-
-	@Override
-	public int lastIndexWhere(
-		final Predicate<? super T> predicate,
-		final int end
-	) {
-		return lastIndexWhere(predicate, 0, end);
 	}
 
 	@Override

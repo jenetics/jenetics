@@ -147,15 +147,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          this sequence, or -1 if this sequence does not contain the element
 	 */
 	public default int indexOf(final Object element) {
-		int index = -1;
-
-		if (element == null) {
-			index = indexWhere(o -> o == null);
-		} else {
-			index = indexWhere(o -> element.equals(o));
-		}
-
-		return index;
+		return indexOf(element, 0, length());
 	}
 
 	/**
@@ -169,7 +161,9 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
 	 */
-	public int indexOf(final Object element, final int start);
+	public default int indexOf(final Object element, final int start) {
+		return indexOf(element, start, length());
+	}
 
 	/**
 	 * Returns the index of the first occurrence of the specified element
@@ -183,7 +177,15 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int indexOf(final Object element, final int start, final int end);
+	public default int indexOf(final Object element, final int start, final int end) {
+		int index = -1;
+		if (element != null) {
+			index = indexWhere(o -> element.equals(o), start, end);
+		} else {
+			index = indexWhere(o -> o == null, start, end);
+		}
+		return index;
+	}
 
 	/**
 	 * <p>
@@ -205,7 +207,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *          for every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int indexWhere(final Predicate<? super T> predicate);
+	public default int indexWhere(final Predicate<? super T> predicate) {
+		return indexWhere(predicate, 0, length());
+	}
 
 	/**
 	 * <p>
@@ -229,10 +233,12 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
 	 */
-	public int indexWhere(
+	public default int indexWhere(
 		final Predicate<? super T> predicate,
 		final int start
-	);
+	) {
+		return indexWhere(predicate, start, length());
+	}
 
 	/**
 	 * <p>
@@ -271,15 +277,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * 		  this sequence, or -1 if this sequence does not contain the element
 	 */
 	public default int lastIndexOf(final Object element) {
-		int index = -1;
-
-		if (element == null) {
-			index = lastIndexWhere(o -> o == null);
-		} else {
-			index = lastIndexWhere(o -> element.equals(o));
-		}
-
-		return index;
+		return lastIndexOf(element, 0, length());
 	}
 
 	/**
@@ -292,7 +290,9 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code end < 0 || end > length()}).
 	 */
-	public int lastIndexOf(final Object element, final int end);
+	public default int lastIndexOf(final Object element, final int end) {
+		return lastIndexOf(element, 0, end);
+	}
 
 	/**
 	 * Returns the index of the last occurrence of the specified element
@@ -304,7 +304,17 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int lastIndexOf(final Object element, final int start, final int end);
+	public default int lastIndexOf(final Object element, final int start, final int end) {
+		int index = -1;
+
+		if (element == null) {
+			index = lastIndexWhere(o -> o == null, start, end);
+		} else {
+			index = lastIndexWhere(o -> element.equals(o), start, end);
+		}
+
+		return index;
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
@@ -317,7 +327,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *          every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public int lastIndexWhere(final Predicate<? super T> predicate);
+	public default int lastIndexWhere(final Predicate<? super T> predicate) {
+		return lastIndexWhere(predicate, 0, length());
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
@@ -332,10 +344,12 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code end < 0 || end > length()}).
 	 */
-	public int lastIndexWhere(
+	public default int lastIndexWhere(
 		final Predicate<? super T> predicate,
 		final int end
-	);
+	) {
+		return lastIndexWhere(predicate, 0, end);
+	}
 
 	/**
 	 * Returns the index of the last element on which the given predicate
