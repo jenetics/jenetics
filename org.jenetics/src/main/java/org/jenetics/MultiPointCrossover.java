@@ -35,9 +35,9 @@ import org.jenetics.util.arrays;
 /**
  * <strong><p>Multiple point crossover</p></strong>
  *
- * If the {@code MultiplePointCrossover} is created with one crossover point, it
+ * If the {@code MultiPointCrossover} is created with one crossover point, it
  * behaves exactly like the {@link SinglePointCrossover}. The following picture
- * shows how the {@code MultiplePointCrossover} works with two crossover points,
+ * shows how the {@code MultiPointCrossover} works with two crossover points,
  * defined at index 1 and 4.
  * <p><div align="center">
  *	<img src="doc-files/2PointCrossover.svg" width="400" >
@@ -50,26 +50,13 @@ import org.jenetics.util.arrays;
  *	<img src="doc-files/3PointCrossover.svg" width="400" >
  * </div></p>
  *
- * If you want to <i>zip</i> the two chromosomes, the number of crossover points
- * must be equal, or greater, than the number of genes in the chromosome minus
- * one. If you are not sure about the chromosome length you can set the number
- * of crossover points to {@code Integer.MAX_VALUE}.
- * [code]
- * final MultiplePointCrossover<Float64Gene> crossover =
- *     new MultiplePointCrossover<>(Integer.MAX_VALUE);
- * [/code]
- *
- * <p><div align="center">
- *	<img src="doc-files/NPointCrossover.svg" width="400" >
- * </div></p>
- *
- * The graph above shows the <i>zip</i> result of two chromosomes.
+ * @see SinglePointCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-02-26 $ </em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-13 $ </em>
  */
-public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
+public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
 	private final int _n;
 
@@ -81,7 +68,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or {@code n < 1}.
 	 */
-	public MultiplePointCrossover(final double probability, final int n) {
+	public MultiPointCrossover(final double probability, final int n) {
 		super(probability);
 		if (n < 1) {
 			throw new IllegalArgumentException(String.format(
@@ -98,7 +85,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}.
 	 */
-	public MultiplePointCrossover(final double probability) {
+	public MultiPointCrossover(final double probability) {
 		this(probability, 2);
 	}
 
@@ -109,7 +96,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * @param n the number of crossover points.
 	 * @throws IllegalArgumentException if {@code n < 1}.
 	 */
-	public MultiplePointCrossover(final int n) {
+	public MultiPointCrossover(final int n) {
 		this(0.05, n);
 	}
 
@@ -117,7 +104,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	 * Create a new crossover instance with two crossover points and crossover
 	 * probability 0.05.
 	 */
-	public MultiplePointCrossover() {
+	public MultiPointCrossover() {
 		this(0.05, 2);
 	}
 
@@ -178,7 +165,7 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			return false;
 		}
 
-		final MultiplePointCrossover<?> mpc = (MultiplePointCrossover<?>)obj;
+		final MultiPointCrossover<?> mpc = (MultiPointCrossover<?>)obj;
 		return _n == mpc._n && super.equals(obj);
 	}
 
@@ -189,6 +176,10 @@ public class MultiplePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 			getClass().getSimpleName(), _probability, _n
 		);
 	}
+
+	//public static <G extends Gene<?, G>> MultiPointCrossover<G> zip() {
+	//	return new MultiPointCrossover<>(Integer.MAX_VALUE);
+	//}
 
 }
 

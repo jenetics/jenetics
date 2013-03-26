@@ -40,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-10 $</em>
  */
 public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 
@@ -51,7 +51,7 @@ public abstract class Crossover<G extends Gene<?, G>> extends Recombinator<G> {
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public Crossover(final double probability) {
+	protected Crossover(final double probability) {
 		super(probability, 2);
 	}
 

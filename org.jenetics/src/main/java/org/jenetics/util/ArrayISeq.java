@@ -29,7 +29,7 @@ import java.util.function.Function;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;

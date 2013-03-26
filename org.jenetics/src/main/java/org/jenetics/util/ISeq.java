@@ -33,7 +33,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -60,13 +60,15 @@ public interface ISeq<T>
 	 * [code]
 	 * ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
 	 * ISeq<Number> na = da.upcast(da);
-	 * ISeq<Object>; oa = na.upcast(na);
-	 * oa = da.upcast(da);
+	 * ISeq<Object> oa = na.upcast(na);
 	 * [/code]
 	 *
 	 * @param seq the sequence to cast.
 	 * @return the up-casted sequence.
+	 *
+	 * @deprecated Will be removed in the next version.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public default <A> ISeq<A> upcast(final ISeq<? extends A> seq) {
 		return (ISeq<A>)seq;

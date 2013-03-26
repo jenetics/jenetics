@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -156,7 +156,11 @@ public class CharacterChromosome
 	 * Return a more specific view of this chromosome factory.
 	 *
 	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<CharacterChromosome> asFactory() {
 		return (Factory<CharacterChromosome>)(Object)this;

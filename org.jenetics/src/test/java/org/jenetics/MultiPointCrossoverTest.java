@@ -37,14 +37,13 @@ import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.TypeBound;
 import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-27 $</em>
+ * @version <em>$Date$</em>
  */
-public class MultiplePointCrossoverTest {
+public class MultiPointCrossoverTest {
 
 	@Test(dataProvider = "parameters")
 	public void crossover(
@@ -60,7 +59,7 @@ public class MultiplePointCrossoverTest {
 		final MSeq<Character> ma = a.copy();
 		final MSeq<Character> mb = b.copy();
 
-		MultiplePointCrossover.crossover(ma, mb, points.unbox(TypeBound.Integer));
+		MultiPointCrossover.crossover(ma, mb, Array.unboxInt(points));
 		Assert.assertEquals(ma, CharSeq.toISeq(expectedA));
 		Assert.assertEquals(mb, CharSeq.toISeq(expectedB));
 	}
@@ -228,7 +227,7 @@ public class MultiplePointCrossoverTest {
 			final MSeq<Character> ma2 = a.copy();
 			final MSeq<Character> mb2 = b.copy();
 
-			MultiplePointCrossover.crossover(ma1, mb1, new int[]{i});
+			MultiPointCrossover.crossover(ma1, mb1, new int[]{i});
 			SinglePointCrossover.crossover(ma2, mb2, i);
 
 			Assert.assertEquals(ma1, ma2);
@@ -255,8 +254,8 @@ public class MultiplePointCrossoverTest {
 				new Random(1234)
 			);
 
-			MultiplePointCrossover.crossover(ma1, mb1, points);
-			MultiplePointCrossover.crossover(ma1, mb1, points);
+			MultiPointCrossover.crossover(ma1, mb1, points);
+			MultiPointCrossover.crossover(ma1, mb1, points);
 
 			Assert.assertEquals(ma1, a);
 			Assert.assertEquals(mb1, b);
@@ -280,8 +279,8 @@ public class MultiplePointCrossoverTest {
 		final ISeq<CharacterGene> g1 = new CharacterChromosome(chars, 20).toSeq();
 		final ISeq<CharacterGene> g2 = new CharacterChromosome(chars, 20).toSeq();
 
-		final MultiplePointCrossover<CharacterGene> crossover =
-				new MultiplePointCrossover<>(2000);
+		final MultiPointCrossover<CharacterGene> crossover =
+				new MultiPointCrossover<>(2000);
 		final int[] points = new int[g1.length()];
 		for (int i = 0; i < points.length; ++i) {
 			points[i] = i;
@@ -307,7 +306,7 @@ public class MultiplePointCrossoverTest {
 			final MSeq<Character> ma = a.copy();
 			final MSeq<Character> mb = b.copy();
 
-			MultiplePointCrossover.crossover(ma, mb, indexes[i]);
+			MultiPointCrossover.crossover(ma, mb, indexes[i]);
 
 			final String l1 = String.format( "%6s: %s  %s", Array.box(indexes[i]), a, ma);
 			final String l2 = String.format( "        %s  %s",    b, mb);

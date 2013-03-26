@@ -51,7 +51,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-27 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -96,7 +96,7 @@ public final class Array<T>
 	 *
 	 * @param first the only element of the array.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(final T first) {
@@ -111,7 +111,7 @@ public final class Array<T>
 	 * @param first first array element.
 	 * @param second second array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -131,7 +131,7 @@ public final class Array<T>
 	 * @param second second array element.
 	 * @param third third array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -154,7 +154,7 @@ public final class Array<T>
 	 * @param third third array element.
 	 * @param fourth fourth array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -180,7 +180,7 @@ public final class Array<T>
 	 * @param fourth fourth array element.
 	 * @param fifth fifth array element.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(
@@ -209,7 +209,7 @@ public final class Array<T>
 	 * @param rest the rest of the array element.
 	 * @throws NullPointerException if the {@code rest} array is {@code null}.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	@SafeVarargs
@@ -236,7 +236,7 @@ public final class Array<T>
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 *
-	 * @deprecated use {@link #valueOf(Object...)} instead.
+	 * @deprecated Use {@link #valueOf(Object...)} instead.
 	 */
 	@Deprecated
 	public Array(final T[] values) {
@@ -251,7 +251,7 @@ public final class Array<T>
 	 * @param values the array values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 *
-	 * @deprecated use {@link #valueOf(Collection)} instead.
+	 * @deprecated Use {@link #valueOf(Collection)} instead.
 	 */
 	@Deprecated
 	public Array(final Collection<? extends T> values) {
@@ -674,102 +674,6 @@ public final class Array<T>
 		return new ArrayMSeqIterator<>(this);
 	}
 
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean[] unbox(final TypeBound.Boolean<T> bound) {
-		final boolean[] array = new boolean[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public char[] unbox(final TypeBound.Character<T> bound) {
-		final char[] array = new char[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public int[] unbox(final TypeBound.Integer<T> bound) {
-		final int[] array = new int[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public long[] unbox(final TypeBound.Long<T> bound) {
-		final long[] array = new long[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public float[] unbox(final TypeBound.Float<T> bound) {
-		final float[] array = new float[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
-	/**
-	 * Unboxes this array to the corresponding native version.
-	 *
-	 * @param bound the type bound.
-	 * @return the unboxed native array.
-	 */
-	@SuppressWarnings("unchecked")
-	public double[] unbox(final TypeBound.Double<T> bound) {
-		final double[] array = new double[length()];
-		for (int i = _start; i < _end; ++i) {
-			array[i - _start] = bound.apply((T)_array.data[i]);
-		}
-
-		return array;
-	}
-
 
 	/* *************************************************************************
 	 * Static factory methods.
@@ -940,6 +844,96 @@ public final class Array<T>
 			for (int i = values.length; --i >= 0;) {
 				array._array.data[i] = values[i];
 			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static boolean[] unboxBoolean(final Array<Boolean> values) {
+		final boolean[] array = new boolean[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Boolean)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static char[] unboxChar(final Array<Character> values) {
+		final char[] array = new char[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Character)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static int[] unboxInt(final Array<Integer> values) {
+		final int[] array = new int[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Integer)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static long[] unboxLong(final Array<Long> values) {
+		final long[] array = new long[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Long)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static float[] unboxFloat(final Array<Float> values) {
+		final float[] array = new float[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Float)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static double[] unboxDouble(final Array<Double> values) {
+		final double[] array = new double[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Double)values._array.data[i];
 		}
 
 		return array;

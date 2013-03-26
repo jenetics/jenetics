@@ -1,4 +1,6 @@
 Jenetics-1.2.0
+- Marking some Array constructors as deprecated.
+- Add some additional random helper functions.
 - Implement MultiplePointCrossover class.
 - Some code streamlining.
 - Prepare Selectors for parallelization.

@@ -1422,6 +1422,16 @@ name "fig:Genotype-structure"
 \end_inset
 
 Genotype structure
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotyp
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2040,6 +2050,16 @@ name "fig:Selector-class-diagram"
 Selector
 \family default
  class diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!diagram
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2790,6 +2810,16 @@ name "fig:Alterer-class-diagram"
 Alterer
 \family default
  class diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Alterer!diagram
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3269,7 +3299,7 @@ SinglePointCrossover
 \end_layout
 
 \begin_layout Paragraph
-Multiple-point crossover
+Multi-point crossover
 \begin_inset Index idx
 status collapsed
 
@@ -3295,11 +3325,11 @@ Crossover!Multiple-point crossover
 \begin_layout Standard
 If the 
 \family typewriter
-MultiplePointCrossover
+MultiPointCrossover
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the MultiplePointCrossover works with two
+ The following picture shows how the Multi-point crossover works with two
  crossover points, defined at index 
 \begin_inset Formula $1$
 \end_inset
@@ -3371,7 +3401,7 @@ reference "fig:3-point-crossover"
 
 \end_inset
 
- shows the crossover for an odd number of crossover points.
+ you can see how the crossover works for an odd number of crossover points.
 \end_layout
 
 \begin_layout Standard
@@ -3418,115 +3448,6 @@ status collapsed
 
 \begin_layout Plain Layout
 Crossover!3-point crossover
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If you want to 
-\emph on
-zip
-\emph default
- the two chromosomes, the number of crossover points must be equal, or greater,
- than the number of genes in the chromosome minus one.
- If you are not sure about the chromosome length you can set the number
- of crossover points to 
-\family typewriter
-Integer.MAX_VALUE
-\family default
-.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:n-point-(zip)-crossover"
-
-\end_inset
-
- shows how the multiple-point crossover operator is working with this configurat
-ion.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/NPointCrossover.svg
-	width 75text%
-	clip
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\emph on
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:n-point-(zip)-crossover"
-
-\end_inset
-
-n
-\emph default
--point (zip) crossover
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-n-point crossover
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Zip crossover
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Crossover!n-point crossover
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Crossover!Zip crossover
 \end_layout
 
 \end_inset
@@ -5879,10 +5800,12 @@ double
 \family default
 ) generation speed for the different PRNG implementations.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz 
+Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
+ Environment (build 1.7.0_17-b02)---Java HotSpot(TM) 64-Bit Server VM (build
+ 23.7-b01, mixed mode) 
 \end_layout
 
 \end_inset
@@ -6713,17 +6636,17 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<Integer> a1 = new Array<>(1, 2, 3);
+final Seq<Integer> a1 = Array.box(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final MSeq<Integer> a2 = new Array<>(1, 2, 3);
+final MSeq<Integer> a2 = Array.box(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final ISeq<Integer> a3 = new Array<>(1, 2, 3).toISeq();
+final ISeq<Integer> a3 = Array.box(1, 2, 3).toISeq();
 \end_layout
 
 \begin_layout Plain Layout
@@ -7295,7 +7218,7 @@ Gene
 \family typewriter
 getAllele
 \family default
-
+()
 \begin_inset Index idx
 status collapsed
 
@@ -7312,7 +7235,7 @@ newInstance
  method for creating new, random instances of the gene---must be of the
  same type and have the same constraint---and (3) the 
 \family typewriter
-isValid
+isValid()
 \family default
  method which checks if the gene fulfill the expected constraints.
  The gene constraint might be violated after mutation and/or recombination.
@@ -8889,12 +8812,80 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics ↓
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
 Mercurial repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+# or
+\end_layout
+
+\begin_layout LyX-Code
+$ hg clone http://hg.code.sf.net/p/jenetics/main ↓
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mercurial repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+# or
+\end_layout
+
+\begin_layout LyX-Code
+$ git clone https://github.com/jenetics/jenetics.git ↓
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Git repository
 \end_layout
 
 \end_inset

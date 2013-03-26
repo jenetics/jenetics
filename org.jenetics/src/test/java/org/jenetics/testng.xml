@@ -161,7 +161,7 @@
 	<test name="org.jenetics.Crossover">
 		<classes>
 			<class name="org.jenetics.SinglePointCrossoverTest" />
-			<class name="org.jenetics.MultiplePointCrossoverTest" />
+			<class name="org.jenetics.MultiPointCrossoverTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.Statistics">
@@ -276,11 +276,6 @@
 	<test name="org.jenetics.util.math">
 		<classes>
 			<class name="org.jenetics.util.mathTest" />
-		</classes>
-	</test>	
-	<test name="org.jenetics.util.Seq">
-		<classes>
-			<class name="org.jenetics.util.MSeqListAdapterTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.MurmurHashCodeBuilder">

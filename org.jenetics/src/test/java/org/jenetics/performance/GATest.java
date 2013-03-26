@@ -30,6 +30,7 @@ import org.jscience.mathematics.number.Float64;
 import org.jenetics.BoltzmannSelector;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.CharacterGene;
+import org.jenetics.Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
@@ -41,7 +42,7 @@ import org.jenetics.util.Array;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-12 $</em>
+ * @version <em>$Date: 2013-03-26 $</em>
  */
 @Suite("GA")
 public class GATest {
