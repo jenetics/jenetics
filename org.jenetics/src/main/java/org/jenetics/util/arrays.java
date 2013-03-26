@@ -129,48 +129,6 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
-	 * Test whether the given array is sorted in ascending order.
-	 *
-	 * @param seq the array to test.
-	 * @return {@code true} if the given {@code array} is sorted in ascending
-	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of it's element is
-	 *         {@code null}.
-	 */
-	public static <T extends Object & Comparable<? super T>> boolean
-	isSorted(final Seq<T> seq)
-	{
-		boolean sorted = true;
-		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
-			sorted = seq.get(i).compareTo(seq.get(i + 1)) <= 0;
-		}
-
-		return sorted;
-	}
-
-	/**
-	 * Test whether the given array is sorted in ascending order. The order of
-	 * the array elements is defined by the given comparator.
-	 *
-	 * @param seq the array to test.
-	 * @param comparator the comparator which defines the order.
-	 * @return {@code true} if the given {@code array} is sorted in ascending
-	 *         order, {@code false} otherwise.
-	 * @throws NullPointerException if the given array or one of it's element or
-	 *         the comparator is {@code null}.
-	 */
-	public static <T> boolean isSorted(
-		final Seq<T> seq, final Comparator<? super T> comparator
-	) {
-		boolean sorted = true;
-		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
-			sorted = comparator.compare(seq.get(i), seq.get(i + 1)) <= 0;
-		}
-
-		return sorted;
-	}
-
-	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).

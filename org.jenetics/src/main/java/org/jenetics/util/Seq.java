@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
@@ -454,6 +455,43 @@ public interface Seq<T> extends Iterable<T> {
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public Seq<T> subSeq(final int start, final int end);
+
+	/**
+	 * Test whether the given array is sorted in ascending order.
+	 *
+	 * @param seq the array to test.
+	 * @return {@code true} if the given {@code array} is sorted in ascending
+	 *         order, {@code false} otherwise.
+	 * @throws NullPointerException if the given array or one of it's element is
+	 *         {@code null}.
+	 */
+	public default boolean isSorted() {
+		boolean sorted = true;
+		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
+			sorted = ((Comparable<T>)get(i)).compareTo(get(i + 1)) <= 0;
+		}
+
+		return sorted;
+	}
+
+	/**
+	 * Test whether the given array is sorted in ascending order. The order of
+	 * the array elements is defined by the given comparator.
+	 *
+	 * @param comparator the comparator which defines the order.
+	 * @return {@code true} if the given {@code array} is sorted in ascending
+	 *         order, {@code false} otherwise.
+	 * @throws NullPointerException if the given array or one of it's element or
+	 *         the comparator is {@code null}.
+	 */
+	public default boolean isSorted(final Comparator<? super T> comparator) {
+		boolean sorted = true;
+		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
+			sorted = comparator.compare(get(i), get(i + 1)) <= 0;
+		}
+
+		return sorted;
+	}
 
 	/**
 	 * Returns the hash code value for this sequence. The hash code is defined

@@ -34,7 +34,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-12 $</em>
+ * @version <em>$Date: 2013-03-26 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -151,7 +151,7 @@ public class ArrayTest {
 
 		@Override
 		protected void afterTest() {
-			if (!arrays.isSorted(_array)) {
+			if (!_array.isSorted()) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}
@@ -174,7 +174,7 @@ public class ArrayTest {
 
 		@Override
 		protected void afterTest() {
-			if (!arrays.isSorted(_array)) {
+			if (!_array.isSorted()) {
 				throw new IllegalArgumentException("Error: array not sorted");
 			}
 		}

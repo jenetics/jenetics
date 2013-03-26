@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.arrays.sort;
 
 import java.util.Comparator;
@@ -34,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-27 $</em>
+ * @version <em>$Date: 2013-03-26 $</em>
  */
 public class arraysTest {
 
@@ -109,18 +108,18 @@ public class arraysTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		Assert.assertTrue(isSorted(array));
+		Assert.assertTrue(array.isSorted());
 
 		array.set(10, 5);
-		Assert.assertFalse(isSorted(array));
+		Assert.assertFalse(array.isSorted());
 
 		array.setAll(-234);
-		Assert.assertTrue(isSorted(array));
+		Assert.assertTrue(array.isSorted());
 
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, array.length() - i);
 		}
-		Assert.assertFalse(isSorted(array));
+		Assert.assertFalse(array.isSorted());
 	}
 
 	@Test
@@ -129,7 +128,7 @@ public class arraysTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		Assert.assertFalse(isSorted(array, new Comparator<Integer>() {
+		Assert.assertFalse(array.isSorted(new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
 				return -o1.compareTo(o2);
@@ -142,11 +141,11 @@ public class arraysTest {
 		final Random random = new Random();
 		final Array<Integer> array = new Array<>(100);
 		array.fill(() -> random.nextInt(10000));
-		Assert.assertFalse(isSorted(array));
+		Assert.assertFalse(array.isSorted());
 
 		final Array<Integer> clonedArray = array.copy();
 		org.jenetics.util.arrays.sort(array.subSeq(30, 40));
-		Assert.assertTrue(isSorted(array.subSeq(30, 40)));
+		Assert.assertTrue(array.subSeq(30, 40).isSorted());
 		Assert.assertEquals(array.subSeq(0, 30), clonedArray.subSeq(0, 30));
 		Assert.assertEquals(array.subSeq(40), clonedArray.subSeq(40));
 	}

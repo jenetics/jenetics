@@ -22,7 +22,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.arrays.isSorted;
 import static org.jenetics.util.factories.Int;
 
 import java.util.Arrays;
@@ -303,14 +302,14 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void sort() {
 		final Array<Integer> integers = new Array<Integer>(10000).fill(Int());
 
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 
 		integers.sort();
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 
 		arrays.shuffle(integers, new Random());
 		integers.sort();
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 	}
 
 	@Test
@@ -319,7 +318,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 		final Array<Integer> array = new Array<>(100);
 		array.fill(() -> random.nextInt(10000));
-		Assert.assertFalse(isSorted(array));
+		Assert.assertFalse(array.isSorted());
 
 		final Array<Integer> clonedArray = array.copy();
 		Assert.assertEquals(array, clonedArray);
@@ -345,9 +344,9 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	public void reverse() {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int(999, -1));
 
-		Assert.assertFalse(arrays.isSorted(integers));
+		Assert.assertFalse(integers.isSorted());
 		integers.reverse();
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 	}
 
 	@Test
@@ -400,13 +399,13 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	@Test
 	public void asList() {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 
 		arrays.shuffle(integers, new Random());
-		Assert.assertFalse(arrays.isSorted(integers));
+		Assert.assertFalse(integers.isSorted());
 
 		Collections.sort(integers.asList());
-		Assert.assertTrue(arrays.isSorted(integers));
+		Assert.assertTrue(integers.isSorted());
 	}
 
 	@Test
