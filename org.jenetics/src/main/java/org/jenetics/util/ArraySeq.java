@@ -118,13 +118,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int indexWhere(final Function<? super T, Boolean> predicate) {
+	public int indexWhere(final Predicate<? super T> predicate) {
 		return indexWhere(predicate, 0, length());
 	}
 
 	@Override
 	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start
 	) {
 		return indexWhere(predicate, start, length());
@@ -132,7 +132,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	) {
@@ -144,7 +144,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 
-			if (predicate.apply(element) == Boolean.TRUE) {
+			if (predicate.test(element)) {
 				index = i - _start;
 			}
 		}
@@ -186,13 +186,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
+	public int lastIndexWhere(final Predicate<? super T> predicate) {
 		return lastIndexWhere(predicate, 0, length());
 	}
 
 	@Override
 	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int end
 	) {
 		return lastIndexWhere(predicate, 0, end);
@@ -200,7 +200,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	) {
@@ -210,21 +210,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		int index = -1;
 
 		for (int i = end + _start; --i >= _start && index == -1;) {
-			@SuppressWarnings("unchecked")
-			final T element = (T)_array.data[i];
-			if (predicate.apply(element) == Boolean.TRUE) {
-				index = i - _start;
-			}
-		}
-
-		return index;
-	}
-
-	@Override
-	public int lastIndexWhere(final Predicate<? super T> predicate) {
-		int index = -1;
-
-		for (int i = _end - 1; i >= _start && index == -1; --i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			if (predicate.test(element)) {

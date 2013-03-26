@@ -231,7 +231,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          ({@code start < 0 || start > length()}).
 	 */
 	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start
 	);
 
@@ -258,7 +258,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	);
@@ -334,7 +334,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          ({@code end < 0 || end > length()}).
 	 */
 	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int end
 	);
 
@@ -352,7 +352,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
 	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	);
