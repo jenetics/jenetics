@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -34,7 +35,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-02-27 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -152,6 +153,34 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		final int start, final int end,
 		final MSeq<T> other, final int otherStart
 	);
+
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @throws NullPointerException if the give array is {@code null}.
+	 */
+	public default MSeq<T> shuffle() {
+		return shuffle(RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param random the {@link Random} object to use for randomize.
+	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give array or the random object is
+	 *          {@code null}.
+	 */
+	public default MSeq<T> shuffle(final Random random) {
+		for (int j = length() - 1; j > 0; --j) {
+			swap(j, random.nextInt(j + 1));
+		}
+		return this;
+	}
 
 	/**
 	 * Returns a list iterator over the elements in this sequence (in proper

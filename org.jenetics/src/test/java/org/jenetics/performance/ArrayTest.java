@@ -141,7 +141,7 @@ public class ArrayTest {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			arrays.shuffle(_array);
+			_array.shuffle();
 		}
 
 		@Override
@@ -164,7 +164,7 @@ public class ArrayTest {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			arrays.shuffle(_array);
+			_array.shuffle();
 		}
 
 		@Override

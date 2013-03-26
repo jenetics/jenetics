@@ -516,6 +516,7 @@ public final class Array<T>
 		}
 	}
 
+	@Override
 	public Array<T> shuffle(final Random random) {
 		_array.cloneIfSealed();
 

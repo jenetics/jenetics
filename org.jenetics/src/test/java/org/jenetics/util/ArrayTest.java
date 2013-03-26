@@ -307,7 +307,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		integers.sort();
 		Assert.assertTrue(integers.isSorted());
 
-		arrays.shuffle(integers, new Random());
+		integers.shuffle(new Random());
 		integers.sort();
 		Assert.assertTrue(integers.isSorted());
 	}
@@ -401,7 +401,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
 		Assert.assertTrue(integers.isSorted());
 
-		arrays.shuffle(integers, new Random());
+		integers.shuffle(new Random());
 		Assert.assertFalse(integers.isSorted());
 
 		Collections.sort(integers.asList());

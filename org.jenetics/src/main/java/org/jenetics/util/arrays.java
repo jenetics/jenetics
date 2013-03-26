@@ -158,35 +158,6 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param array the {@code array} to randomize.
-	 * @throws NullPointerException if the give array is {@code null}.
-	 */
-	public static <T> void shuffle(final MSeq<T> array) {
-		shuffle(array, RandomRegistry.getRandom());
-	}
-
-	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param array the {@code array} to randomize.
-	 * @param random the {@link Random} object to use for randomize.
-	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give array or the random object is
-	 *          {@code null}.
-	 */
-	public static <T> void shuffle(final MSeq<T> array, final Random random) {
-		for (int j = array.length() - 1; j > 0; --j) {
-			array.swap(j, random.nextInt(j + 1));
-		}
-	}
-
-	/**
 	 * Randomize the {@code list} using the given {@link Random} object. The used
 	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
 	 * Third edition, page 142, Algorithm S (Selection sampling technique).

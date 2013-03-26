@@ -43,7 +43,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-03-01 $</em>
+ * @version <em>$Date: 2013-03-26 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -60,8 +60,8 @@ public class PartiallyMatchedCrossoverTest {
 		final Array<EnumGene<Integer>> that = alleles.map(EnumGene.ToGene(ialleles));
 		final Array<EnumGene<Integer>> other = alleles.map(EnumGene.ToGene(ialleles));
 
-		arrays.shuffle(that);
-		arrays.shuffle(other);
+		that.shuffle();
+		other.shuffle();
 
 		final PermutationChromosome<Integer> thatChrom1 = PermutationChromosome.valueOf(that.toISeq());
 		Assert.assertTrue(thatChrom1.isValid(), "thatChrom1 not valid");
