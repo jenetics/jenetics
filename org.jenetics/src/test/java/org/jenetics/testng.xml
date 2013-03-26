@@ -158,9 +158,10 @@
 			<class name="org.jenetics.RouletteWheelSelector_range_m1000_3000_Test" />
 		</classes>
 	</test>		
-	<test name="org.jenetics.SinglePointCrossover">
+	<test name="org.jenetics.Crossover">
 		<classes>
 			<class name="org.jenetics.SinglePointCrossoverTest" />
+			<class name="org.jenetics.MultiPointCrossoverTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.Statistics">
@@ -275,11 +276,6 @@
 	<test name="org.jenetics.util.math">
 		<classes>
 			<class name="org.jenetics.util.mathTest" />
-		</classes>
-	</test>	
-	<test name="org.jenetics.util.Seq">
-		<classes>
-			<class name="org.jenetics.util.MSeqListAdapterTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.MurmurHashCodeBuilder">

@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  * them at some randomly chosen site. E.g.
  * </p>
  * <div align="center">
- *	<img src="doc-files/SinglePointCrossover.svg" width="500" >
+ *	<img src="doc-files/SinglePointCrossover.svg" width="400" >
  * </div>
  * <p>
  * If we create a child and its complement we preserving the total number of
@@ -51,11 +51,26 @@ import org.jenetics.util.RandomRegistry;
  * or uniform crossover.
  * </p>
  *
+ * @see MultiPointCrossover
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-17 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-13 $</em>
  */
-public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
+public class SinglePointCrossover<G extends Gene<?, G>>
+	extends MultiPointCrossover<G>
+{
+
+	/**
+	 * Constructs an alterer with a given recombination probability.
+	 *
+	 * @param probability the crossover probability.
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *         valid range of {@code [0, 1]}.
+	 */
+	public SinglePointCrossover(final double probability) {
+		super(probability, 1);
+	}
 
 	/**
 	 * Create a new single point crossover object with crossover probability of
@@ -65,27 +80,29 @@ public class SinglePointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		this(0.05);
 	}
 
-	/**
-	 * Constructs an alterer with a given recombination probability.
-	 *
-	 * @param probability the crossover probability.
-	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
-	 */
-	public SinglePointCrossover(final double probability) {
-		super(probability);
-	}
+
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert (that.length() == other.length());
 
 		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(that.length());
+		crossover(that, other, random.nextInt(that.length()));
+		return 2;
+	}
+
+	// Package private for testing purpose.
+	static <T> void crossover(
+		final MSeq<T> that,
+		final MSeq<T> other,
+		final int index
+	) {
+		assert (index >= 0) : String.format(
+			"Crossover index must be within [0, %d) but was %d",
+			that.length(), index
+		);
 
 		that.swap(index, that.length(), other, index);
-
-		return 2;
 	}
 
 	@Override

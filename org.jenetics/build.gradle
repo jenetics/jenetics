@@ -30,6 +30,12 @@ apply plugin: "idea"
 
 apply from: "../build-util.gradle"
 
+/*
+tasks.withType(AbstractCompile).all { AbstractCompile compile ->
+	//compile.options.debug = true
+	compile.options.compilerArgs = ['-Xlint:all']
+}
+*/
 
 task jarjar(type: Jar) {
 	baseName = project.name + "-all"
@@ -38,6 +44,15 @@ task jarjar(type: Jar) {
 		configurations.compile.collect {
 			it.isDirectory() ? it : zipTree(it)
 		}
+	}
+	manifest {
+		attributes "Implementation-Title": "org.jenetics-all",
+				"Implementation-Version": version,
+				"Implementation-URL": "http://jenetics.sourceforge.net",
+				"Implementation-Vendor": "Jenetics",
+				"ProjectName": "Jenetics",
+				"Version": version,
+				"Maintainer": "Franz Wilhelmstötter"
 	}
 }
 

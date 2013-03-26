@@ -1422,6 +1422,16 @@ name "fig:Genotype-structure"
 \end_inset
 
 Genotype structure
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotyp
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2040,6 +2050,16 @@ name "fig:Selector-class-diagram"
 Selector
 \family default
  class diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!diagram
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2651,8 +2671,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/StochasticUniversalSelection.eps
-	width 90text%
+	filename ../resources/graphic/StochasticUniversalSelection.svg
+	width 70text%
 
 \end_inset
 
@@ -2790,6 +2810,16 @@ name "fig:Alterer-class-diagram"
 Alterer
 \family default
  class diagram
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Alterer!diagram
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3157,10 +3187,20 @@ recombine
 \begin_layout Paragraph
 Single-point crossover
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Single-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Crossover!Single-point crossover
 \end_layout
 
 \end_inset
@@ -3177,8 +3217,8 @@ The single-point crossover changes two children chromosomes by taking two
  However, it produces very slow mixing compared with multi-point crossover
  or uniform crossover.
  For problems where the site position has some intrinsic meaning to the
- problem single-point crossover can lead to smaller disruption than multi-point
- or uniform crossover.
+ problem single-point crossover can lead to smaller disruption than multiple-poi
+nt or uniform crossover.
  
 \end_layout
 
@@ -3191,7 +3231,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/graphic/SinglePointCrossover.eps
+	filename ../resources/graphic/SinglePointCrossover.svg
 	width 75text%
 
 \end_inset
@@ -3203,6 +3243,12 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Single-point-crossover"
+
+\end_inset
+
 Single-point crossover
 \end_layout
 
@@ -3212,6 +3258,205 @@ Single-point crossover
 \end_layout
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Single-point-crossover"
+
+\end_inset
+
+ shows how the 
+\family typewriter
+SinglePointCrossover
+\family default
+ class is performing the crossover for different crossover points---in the
+ given example for the chromosome indexes 
+\begin_inset Formula $0$
+\end_inset
+
+, 
+\begin_inset Formula $1$
+\end_inset
+
+, 
+\begin_inset Formula $3$
+\end_inset
+
+, 
+\begin_inset Formula $6$
+\end_inset
+
+ and 
+\begin_inset Formula $7$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+Multi-point crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Multiple-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Multiple-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the 
+\family typewriter
+MultiPointCrossover
+\family default
+ class is created with one crossover point, it behaves exactly like the
+ single-point crossover.
+ The following picture shows how the Multi-point crossover works with two
+ crossover points, defined at index 
+\begin_inset Formula $1$
+\end_inset
+
+ and 
+\begin_inset Formula $4$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/2PointCrossover.svg
+	width 75text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+2-point crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+2-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Crossover!2-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3-point-crossover"
+
+\end_inset
+
+ you can see how the crossover works for an odd number of crossover points.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/3PointCrossover.svg
+	width 75text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3-point-crossover"
+
+\end_inset
+
+3-point crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+3-point crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!3-point crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -3227,6 +3472,16 @@ status collapsed
 
 \begin_layout Plain Layout
 Partially-matched crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Partially-matched crossover
 \end_layout
 
 \end_inset
@@ -5545,10 +5800,12 @@ double
 \family default
 ) generation speed for the different PRNG implementations.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz 
+Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
+ Environment (build 1.7.0_17-b02)---Java HotSpot(TM) 64-Bit Server VM (build
+ 23.7-b01, mixed mode) 
 \end_layout
 
 \end_inset
@@ -6379,17 +6636,17 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<Integer> a1 = new Array<>(1, 2, 3);
+final Seq<Integer> a1 = Array.box(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final MSeq<Integer> a2 = new Array<>(1, 2, 3);
+final MSeq<Integer> a2 = Array.box(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final ISeq<Integer> a3 = new Array<>(1, 2, 3).toISeq();
+final ISeq<Integer> a3 = Array.box(1, 2, 3).toISeq();
 \end_layout
 
 \begin_layout Plain Layout
@@ -6961,7 +7218,7 @@ Gene
 \family typewriter
 getAllele
 \family default
-
+()
 \begin_inset Index idx
 status collapsed
 
@@ -6978,7 +7235,7 @@ newInstance
  method for creating new, random instances of the gene---must be of the
  same type and have the same constraint---and (3) the 
 \family typewriter
-isValid
+isValid()
 \family default
  method which checks if the gene fulfill the expected constraints.
  The gene constraint might be violated after mutation and/or recombination.
@@ -8555,12 +8812,80 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics <builddir>
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics ↓
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
 Mercurial repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+# or
+\end_layout
+
+\begin_layout LyX-Code
+$ hg clone http://hg.code.sf.net/p/jenetics/main ↓
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mercurial repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Source code
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+# or
+\end_layout
+
+\begin_layout LyX-Code
+$ git clone https://github.com/jenetics/jenetics.git ↓
+\end_layout
+
+\begin_layout LyX-Code
+           <builddir>
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Git repository
 \end_layout
 
 \end_inset

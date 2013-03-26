@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-02-22 $</em>
  */
 public class accumulatorsTest {
 
@@ -190,7 +190,7 @@ public class accumulatorsTest {
 
 	@Test
 	public void accumulate7() {
-		final Seq<String> data = new Array<>("-10", "1", "2", "3", "4", "5");
+		final Seq<String> data = Array.valueOf("-10", "1", "2", "3", "4", "5");
 		final accumulators.Max<Integer> max = new accumulators.Max<>();
 		final accumulators.Min<Integer> min = new accumulators.Min<>();
 		accumulators.accumulate(

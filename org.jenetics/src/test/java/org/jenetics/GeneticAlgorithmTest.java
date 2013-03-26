@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-13 $</em>
+ * @version <em>$Date: 2013-03-11 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -70,7 +70,9 @@ public class GeneticAlgorithmTest {
 		try {
 			RandomRegistry.setRandom(new Random(12345));
 
-			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(new Float64Chromosome(0, 1));
+			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
+				new Float64Chromosome(0, 1)
+			);
 			final Function<Genotype<Float64Gene>, Float64> ff = new FF();
 
 			final GeneticAlgorithm<Float64Gene, Float64> ga = new GeneticAlgorithm<>(factory, ff);

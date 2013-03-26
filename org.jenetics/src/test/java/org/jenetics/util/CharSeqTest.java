@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-03-07 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
@@ -48,6 +48,13 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	}
 
 	@Test
+	public void distinct() {
+		final CharSeq cs1 = new CharSeq("abcdeaafg");
+		final CharSeq cs2 = new CharSeq("gfedcbabb");
+		Assert.assertEquals(cs1, cs2);
+	}
+
+	@Test
 	public void distinct1() {
 		CharSeq set = new CharSeq("".toCharArray());
 		Assert.assertEquals(set.toString(), "");
@@ -58,7 +65,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		set = new CharSeq("11".toCharArray());
 		Assert.assertEquals(set.toString(), "1");
 
-		set = new CharSeq("123456789".toCharArray());
+		set = new CharSeq("142321423456789".toCharArray());
 		Assert.assertEquals(set.toString(), "123456789");
 
 		set = new CharSeq("0000000000000000000000000".toCharArray());
