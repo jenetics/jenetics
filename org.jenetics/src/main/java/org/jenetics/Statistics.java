@@ -48,8 +48,8 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulators;
-import org.jenetics.util.accumulators.MinMax;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.FinalReference;
 
 /**
@@ -57,7 +57,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,7 +70,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -486,7 +486,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -681,7 +681,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -716,7 +716,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final MinMax<Phenotype<G, C>> minMax = new MinMax<>();
 			final Variance<Integer> age = new Variance<>();
 
-			accumulators.accumulate(
+			Accumulator.accumulate(
 					population,
 					minMax,
 					age.<Phenotype<G, C>>map(pt -> pt.getAge(generation))

@@ -42,7 +42,7 @@ import javolution.lang.Reusable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public final class Timer
 	implements
@@ -59,7 +59,7 @@ public final class Timer
 	/*private[test]*/ long _stop = 0;
 	/*private[test]*/ long _sum = 0;
 
-	private transient Accumulator<? super Long> _accumulator = accumulators.NULL;
+	private transient Accumulator<? super Long> _accumulator = o -> {};
 
 	/**
 	 * Create a new time with the given label. The label is use in the

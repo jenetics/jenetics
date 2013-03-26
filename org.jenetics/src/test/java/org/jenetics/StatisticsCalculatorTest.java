@@ -31,11 +31,11 @@ import org.testng.annotations.Test;
 
 import org.jenetics.Statistics.Calculator;
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulators;
+import org.jenetics.util.Accumulator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-02 $</em>
+ * @version <em>$Date: 2013-03-26 $</em>
  */
 public class StatisticsCalculatorTest {
 
@@ -86,7 +86,7 @@ public class StatisticsCalculatorTest {
 		final Statistics<Float64Gene, Float64> statistics = builder.build();
 
 		final Variance<Integer> ageVariance = new Variance<>();
-		accumulators.accumulate(
+		Accumulator.accumulate(
 			population(size),
 			ageVariance.<Phenotype<Float64Gene, Float64>>map(pt -> pt.getAge(gen))
 		);

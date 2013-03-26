@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.accumulators.accumulate;
+import static org.jenetics.util.Accumulator.accumulate;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -38,7 +38,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-02 $</em>
+ * @version <em>$Date: 2013-03-26 $</em>
  */
 public abstract class SelectorTester<S extends Selector<Float64Gene, Float64>>
 	extends ObjectTester<S>

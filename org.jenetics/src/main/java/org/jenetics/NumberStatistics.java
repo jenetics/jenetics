@@ -33,13 +33,13 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Variance;
-import org.jenetics.util.accumulators;
-import org.jenetics.util.accumulators.MinMax;
+import org.jenetics.util.Accumulator;
+import org.jenetics.util.Accumulator.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -53,7 +53,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -296,7 +296,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -322,7 +322,7 @@ public class NumberStatistics<
 			final Variance<Integer> age = new Variance<>();
 			final Variance<R> fitness = new Variance<>();
 
-			accumulators.accumulate(
+			Accumulator.accumulate(
 					population,
 					minMax,
 					age.<Phenotype<G, R>>map(pt -> pt.getAge(generation)),

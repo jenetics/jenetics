@@ -473,12 +473,12 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Test whether the given array is sorted in ascending order.
 	 *
-	 * @param seq the array to test.
 	 * @return {@code true} if the given {@code array} is sorted in ascending
 	 *         order, {@code false} otherwise.
 	 * @throws NullPointerException if the given array or one of it's element is
 	 *         {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public default boolean isSorted() {
 		boolean sorted = true;
 		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
