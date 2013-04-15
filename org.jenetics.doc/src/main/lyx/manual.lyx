@@ -28,8 +28,9 @@
 \definecolor{white}{rgb}{1.0,1.0,1.0}
 %\definecolor{covercolor}{RGB}{220,220,220}
 %\definecolor{covercolor}{RGB}{25,200,255}
-\definecolor{covercolor}{RGB}{202,232,255}
- 
+%\definecolor{covercolor}{RGB}{202,232,255}
+%\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
+\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
 \lstset{ %
   language=java, 
   basicstyle=\footnotesize, 
@@ -169,10 +170,15 @@ height "5pt"
 
 \family sans
 \series bold
+\shape slanted
 \size giant
 \noun on
-Jenetics
+J
+\size huge
+ENETICS
 \series default
+\shape default
+\size giant
 \noun default
 
 \begin_inset VSpace 6mm
