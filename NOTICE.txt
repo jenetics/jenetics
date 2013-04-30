@@ -1,0 +1,7 @@
+Java Genetic Algorithm Library
+Copyright (c) 2007-2013 Franz Wilhelmstötter
+
+This product includes software from the Jenetics library
+(http://jscience.org/) under the JScience BSD License
+(http://jscience.org/doc/license.txt)
+ 
