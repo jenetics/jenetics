@@ -1,3 +1,5 @@
+- Add Array boxing/unboxing methods for short/Short.
+
 Jenetics-1.2.0
 - Marking some Array constructors as deprecated.
 - Add some additional random helper functions.

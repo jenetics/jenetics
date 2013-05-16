@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-03-06 $</em>
+ * @version <em>$Date: 2013-05-16 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -160,6 +160,21 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 	}
 
 	@Test
+	public void boxShort() {
+		final Random random = RandomRegistry.getRandom();
+		final short[] array = new short[1000];
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = (short)random.nextInt();
+		}
+
+		final Array<Short> boxed = Array.box(array);
+
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(boxed.get(i).shortValue(), array[i]);
+		}
+	}
+
+	@Test
 	public void boxInt() {
 		final Random random = RandomRegistry.getRandom();
 		final int[] array = new int[1000];
@@ -246,6 +261,21 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 
 		for (int i = 0; i < array.length(); ++i) {
 			Assert.assertEquals(unboxed[i], array.get(i).charValue());
+		}
+	}
+
+	@Test
+	public void unboxShort() {
+		final Random random = RandomRegistry.getRandom();
+		final Array<Short> array = new Array<>(1000);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, (short)random.nextInt());
+		}
+
+		final short[] unboxed = Array.unboxShort(array);
+
+		for (int i = 0; i < array.length(); ++i) {
+			Assert.assertEquals(unboxed[i], array.get(i).shortValue());
 		}
 	}
 

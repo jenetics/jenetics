@@ -48,7 +48,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-06 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-05-16 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -768,6 +768,7 @@ public final class Array<T>
 		return array;
 	}
 
+
 	/**
 	 * Boxes the given native array into an {@code Array<Char>}.
 	 *
@@ -776,6 +777,24 @@ public final class Array<T>
 	 */
 	public static Array<Character> box(final char... values) {
 		Array<Character> array = empty();
+		if (values.length > 0) {
+			array = new Array<>(values.length);
+			for (int i = values.length; --i >= 0;) {
+				array._array.data[i] = values[i];
+			}
+		}
+
+		return array;
+	}
+
+	/**
+	 * Boxes the given native array into an {@code Array<Short>}.
+	 *
+	 * @param values the native array to box.
+	 * @return the boxed array.
+	 */
+	public static Array<Short> box(final short... values) {
+		Array<Short> array = empty();
 		if (values.length > 0) {
 			array = new Array<>(values.length);
 			for (int i = values.length; --i >= 0;) {
@@ -883,6 +902,21 @@ public final class Array<T>
 		final char[] array = new char[values.length()];
 		for (int i = values._start; i < values._end; ++i) {
 			array[i - values._start] = (Character)values._array.data[i];
+		}
+
+		return array;
+	}
+
+	/**
+	 * Unboxes the given array to the corresponding native version.
+	 *
+	 * @param values the {@code Array} to unbox.
+	 * @return the unboxed native array.
+	 */
+	public static short[] unboxShort(final Array<Short> values) {
+		final short[] array = new short[values.length()];
+		for (int i = values._start; i < values._end; ++i) {
+			array[i - values._start] = (Short)values._array.data[i];
 		}
 
 		return array;
