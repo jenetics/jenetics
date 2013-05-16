@@ -1,3 +1,4 @@
+- Implement 'Comparable' interface for 'EnumGene'.
 - Add Array boxing/unboxing methods for short/Short.
 
 Jenetics-1.2.0

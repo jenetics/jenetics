@@ -62,7 +62,11 @@ import org.jenetics.util.object;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
+public final class EnumGene<A>
+	implements
+		Gene<A, EnumGene<A>>,
+		Comparable<EnumGene<A>>
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -116,6 +120,18 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
 		return gene;
+	}
+
+	@Override
+	public int compareTo(final EnumGene<A> gene) {
+		int result = 0;
+		if (_alleleIndex > gene._alleleIndex) {
+			result = 1;
+		} else if (_alleleIndex < gene._alleleIndex) {
+			result = -1;
+		}
+
+		return result;
 	}
 
 	/**
