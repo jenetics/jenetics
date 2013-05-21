@@ -27,6 +27,14 @@ package org.jenetix.util;
  */
 public interface NumberRandom<N extends Comparable<? super N>> {
 
+	/**
+	 * Return a new random number, of type {@code N}, within the given range.
+	 *
+	 * @param min
+	 * @param max
+	 * @return a new random number, of type {@code N}, within the given range.
+	 * @throws IllegalArgumentException if {@code min > max}.
+	 */
 	public N next(final N min, final N max);
 
 }
