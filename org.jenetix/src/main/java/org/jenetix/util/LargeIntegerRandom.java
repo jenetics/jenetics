@@ -25,6 +25,7 @@ import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
+import org.jenetics.util.math;
 import org.jenetics.util.object;
 
 /**
@@ -38,6 +39,9 @@ public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 
 	private static final LargeInteger
 	INT_MAX_VALUE = LargeInteger.valueOf(Integer.MAX_VALUE);
+
+	private static final LargeInteger
+	LONG_MAX_VALUE = LargeInteger.valueOf(Long.MAX_VALUE);
 
 	private final Random _random;
 
@@ -68,7 +72,12 @@ public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 		final LargeInteger diff = max.minus(min);
 		assert (!diff.isNegative());
 
-		final LargeInteger result = diff.compareTo(INT_MAX_VALUE) <= 0 ?
+		LargeInteger result = null;
+		if (diff.compareTo(INT_MAX_VALUE) <= 0) {
+			result = LargeInteger.valueOf(random.nextInt(diff.intValue()));
+		}
+
+		result = diff.compareTo(INT_MAX_VALUE) <= 0 ?
 			LargeInteger.valueOf(random.nextInt(diff.intValue())) :
 			next(random, diff);
 
