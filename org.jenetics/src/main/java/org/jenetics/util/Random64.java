@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.2 &mdash; <em>$Date: 2013-03-28 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
  */
 public abstract class Random64 extends PRNG {
 

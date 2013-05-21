@@ -20,7 +20,7 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-17 $</em>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
  */
 package org.jenetix.util;

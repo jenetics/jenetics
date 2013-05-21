@@ -28,8 +28,8 @@ import java.util.Random;
  * Base class for random generators which create 32 bit random values natively.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.1 xxx
- * @version 1.2 xxx &mdash; <em>$Date: 2013-03-28 $</em>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
  */
 public abstract class Random32 extends PRNG {
 
