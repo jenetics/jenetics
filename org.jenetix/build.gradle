@@ -172,6 +172,8 @@ dependencies {
 	compile project(':org.jenetics')
 	compile "jscience:jscience:4.3.1"
 
+	testCompile files(project(':org.jenetics').sourceSets.test.output)
+	testCompile files(project(':org.jenetics').sourceSets.test.runtimeClasspath)
 	testCompile "testng:testng:6.8.1"
 }
 
