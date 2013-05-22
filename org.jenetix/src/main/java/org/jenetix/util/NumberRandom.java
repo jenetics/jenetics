@@ -21,17 +21,19 @@ package org.jenetix.util;
 
 
 /**
+ * This
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-22 $</em>
  */
 public interface NumberRandom<N extends Comparable<? super N>> {
 
 	/**
 	 * Return a new random number, of type {@code N}, within the given range.
 	 *
-	 * @param min
-	 * @param max
+	 * @param min the minimal value of the random number (inclusively).
+	 * @param max the maximum value of the random number.
 	 * @return a new random number, of type {@code N}, within the given range.
 	 * @throws IllegalArgumentException if {@code min > max}.
 	 */
