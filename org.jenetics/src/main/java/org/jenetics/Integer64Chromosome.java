@@ -35,6 +35,7 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 
 /**
@@ -42,7 +43,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
@@ -272,7 +273,7 @@ public class Integer64Chromosome
 
 		_min = min;
 		_max = max;
-		final Array<Integer64Gene> genes = new Array<>(length);
+		final MSeq<Integer64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
 		}
