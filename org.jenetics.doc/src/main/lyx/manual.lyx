@@ -9697,13 +9697,84 @@ License
 The library itself is licensed under the 
 \begin_inset CommandInset href
 LatexCommand href
-name "GNU Lesser General Public License"
-target "https://www.gnu.org/licenses/lgpl-2.1.html"
+name "Apache License, Version 2.0"
+target "http://www.apache.org/licenses/LICENSE-2.0.html"
 
 \end_inset
 
- as published by the Free Software Foundation; either version 2.1 of the
- License, or (at your option) any later version.
+.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+Copyright 2007-2013 Franz Wilhelmstötter
+\end_layout
+
+\begin_layout LyX-Code
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+Licensed under the Apache License, Version 2.0 (the "License");
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+you may not use this file except in compliance with the License.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+You may obtain a copy of the License at
+\end_layout
+
+\begin_layout LyX-Code
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+   http://www.apache.org/licenses/LICENSE-2.0
+\end_layout
+
+\begin_layout LyX-Code
+  
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+Unless required by applicable law or agreed to in writing, software
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+distributed under the License is distributed on an "AS IS" BASIS,
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+See the License for the specific language governing permissions and
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+limitations under the License.
 \end_layout
 
 \begin_layout Standard
