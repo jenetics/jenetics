@@ -41,7 +41,7 @@ import org.jenetics.util.object;
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
  * Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
@@ -49,20 +49,25 @@ import org.jenetics.util.object;
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * EnumGene<Integer> gene = EnumGene.valueOf(alleles, 5);
+ * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final EnumGene<Integer> gene = EnumGene.valueOf(alleles, 5);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
+ * assert(gene.getValidAlleles() == alleles);
  * [/code]
  *
  * @see PermutationChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-06 $</em>
+ * @version !!!new!!! &mdash; <em>$Date: 2013-05-17 $</em>
  */
-public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
+public final class EnumGene<A>
+	implements
+		Gene<A, EnumGene<A>>,
+		Comparable<EnumGene<A>>
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -116,6 +121,18 @@ public final class EnumGene<A> implements Gene<A, EnumGene<A>> {
 		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
 		return gene;
+	}
+
+	@Override
+	public int compareTo(final EnumGene<A> gene) {
+		int result = 0;
+		if (_alleleIndex > gene._alleleIndex) {
+			result = 1;
+		} else if (_alleleIndex < gene._alleleIndex) {
+			result = -1;
+		}
+
+		return result;
 	}
 
 	/**

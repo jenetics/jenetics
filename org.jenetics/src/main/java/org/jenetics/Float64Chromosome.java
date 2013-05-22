@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-10 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-05-22 $</em>
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
@@ -72,8 +72,8 @@ public class Float64Chromosome
 	/**
 	 * Create a new random DoubleChromosome.
 	 *
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
+	 * @param min the min value of the {@link Float64Gene}s (inclusively).
+	 * @param max the max value of the {@link Float64Gene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 */
 	public Float64Chromosome(
@@ -92,8 +92,8 @@ public class Float64Chromosome
 	/**
 	 * Create a new random chromosome of length one.
 	 *
-	 * @param min the minimal value of this chromosome.
-	 * @param max the maximal value of this chromosome.
+	 * @param min the minimal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
 	 */
 	public Float64Chromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
@@ -102,8 +102,8 @@ public class Float64Chromosome
 	/**
 	 * Create a new random chromosome of length one.
 	 *
-	 * @param min the minimal value of this chromosome.
-	 * @param max the maximal value of this chromosome.
+	 * @param min the minimal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
 	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
 	 */
 	public Float64Chromosome(final Float64 min, final Float64 max) {

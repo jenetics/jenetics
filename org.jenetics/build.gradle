@@ -215,7 +215,7 @@ repositories {
 
 dependencies {
 	compile "jscience:jscience:4.3.1"
-	testCompile "testng:testng:6.8"
+	testCompile "testng:testng:6.8.1"
 }
 
 
