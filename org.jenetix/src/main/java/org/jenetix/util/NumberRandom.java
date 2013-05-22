@@ -21,7 +21,7 @@ package org.jenetix.util;
 
 
 /**
- * This
+ * This interface defines a random engine for (comparable) number types.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
@@ -33,7 +33,8 @@ public interface NumberRandom<N extends Comparable<? super N>> {
 	 * Return a new random number, of type {@code N}, within the given range.
 	 *
 	 * @param min the minimal value of the random number (inclusively).
-	 * @param max the maximum value of the random number.
+	 * @param max the maximum value of the random number (inclusively for
+	 *        <i>integer</i> types and exclusively for <i>real</i> types).
 	 * @return a new random number, of type {@code N}, within the given range.
 	 * @throws IllegalArgumentException if {@code min > max}.
 	 */
