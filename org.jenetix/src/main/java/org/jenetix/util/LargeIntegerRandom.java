@@ -29,11 +29,12 @@ import org.jenetics.util.math;
 import org.jenetics.util.object;
 
 /**
- * Random number generator for {@link LargeInteger} values within a defined range.
+ * Random number generator for {@link LargeInteger} values within a defined
+ * range.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-22 $</em>
  */
 public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 
@@ -73,13 +74,15 @@ public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 		assert (!diff.isNegative());
 
 		LargeInteger result = null;
-		if (diff.compareTo(INT_MAX_VALUE) <= 0) {
-			result = LargeInteger.valueOf(random.nextInt(diff.intValue()));
+		if (diff.compareTo(INT_MAX_VALUE) < 0) {
+			result = LargeInteger.valueOf(random.nextInt(diff.intValue() + 1));
+		} else if (diff.compareTo(LONG_MAX_VALUE) < 0) {
+			result = LargeInteger.valueOf(
+				math.random.nextLong(random, diff.longValue() + 1)
+			);
+		} else {
+			result = next(random, diff);
 		}
-
-		result = diff.compareTo(INT_MAX_VALUE) <= 0 ?
-			LargeInteger.valueOf(random.nextInt(diff.intValue())) :
-			next(random, diff);
 
 		return result.plus(min);
 	}

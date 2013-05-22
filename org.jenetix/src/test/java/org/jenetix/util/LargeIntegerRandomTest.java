@@ -19,13 +19,50 @@
  */
 package org.jenetix.util;
 
+import java.util.Random;
+
 import org.jscience.mathematics.number.LargeInteger;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class LargeIntegerRandomTest {
+
+	@Test
+	public void randomInt() {
+		final Random random = new Random(123);
+		final NumberRandom<LargeInteger> nrandom = new LargeIntegerRandom(new Random(123));
+
+		final LargeInteger min = LargeInteger.valueOf(23);
+		final LargeInteger max = LargeInteger.valueOf(1232131231);
+
+		for (int i = 0; i < 100; ++i) {
+			final LargeInteger n1 = nrandom.next(min, max);
+			final int n2 = math.random.nextInt(random, min.intValue(), max.intValue());
+
+			Assert.assertEquals(n1.intValue(), n2);
+		}
+	}
+
+	@Test
+	public void randomLong() {
+		final Random random = new Random(123);
+		final NumberRandom<LargeInteger> nrandom = new LargeIntegerRandom(new Random(123));
+
+		final LargeInteger min = LargeInteger.valueOf(23);
+		final LargeInteger max = LargeInteger.valueOf(1232131232389834821L);
+
+		for (int i = 0; i < 100; ++i) {
+			final LargeInteger n1 = nrandom.next(min, max);
+			final long n2 = math.random.nextLong(random, min.longValue(), max.longValue());
+
+			Assert.assertEquals(n1.longValue(), n2);
+		}
+	}
 
 	@Test
 	public void random() {
