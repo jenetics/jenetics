@@ -19,7 +19,14 @@
  */
 package org.jenetix;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javolution.context.ObjectFactory;
+import javolution.context.StackContext;
+import javolution.xml.XMLFormat;
+import javolution.xml.stream.XMLStreamException;
 
 import org.jscience.mathematics.number.LargeInteger;
 
@@ -54,7 +61,14 @@ public class LargeIntegerGene
 
 	@Override
 	public LargeIntegerGene mean(final LargeIntegerGene that) {
-		return newInstance(_value.plus(that._value.minus(_value).divide(TWO)));
+		StackContext.enter();
+		try {
+			return newInstance(StackContext.outerCopy(
+				_value.plus(that._value.minus(_value).divide(TWO))
+			));
+		} finally {
+			StackContext.exit();
+		}
 	}
 
 	/* *************************************************************************
@@ -121,10 +135,82 @@ public class LargeIntegerGene
 		final LargeInteger max
 	) {
 		final LargeInteger value = LargeIntegerRandom.next(
-			RandomRegistry.getRandom(), min, max
+			RandomRegistry.getRandom(),
+			min, max
 		);
 
 		return valueOf(value, min, max);
+	}
+
+
+	/* *************************************************************************
+	 *  XML object serialization
+	 * ************************************************************************/
+
+	static final XMLFormat<LargeIntegerGene>
+	XML = new XMLFormat<LargeIntegerGene>(LargeIntegerGene.class)
+	{
+		private static final String MIN = "min";
+		private static final String MAX = "max";
+
+		private final static String MIN_VALUE = "0";
+		private final static String MAX_VALUE = "1000000";
+
+		@Override
+		public LargeIntegerGene newInstance(
+			final Class<LargeIntegerGene> cls, final InputElement element
+		)
+			throws XMLStreamException
+		{
+			final LargeInteger min = LargeInteger.valueOf(
+				element.getAttribute(MIN, MIN_VALUE)
+			);
+			final LargeInteger max = LargeInteger.valueOf(
+				element.getAttribute(MAX, MAX_VALUE)
+			);
+			final LargeInteger value = element.<LargeInteger>getNext();
+			return LargeIntegerGene.valueOf(value, min, max);
+		}
+		@Override
+		public void write(final LargeIntegerGene gene, final OutputElement element)
+			throws XMLStreamException
+		{
+			element.setAttribute(MIN, gene.getMin().toString());
+			element.setAttribute(MAX, gene.getMax().toString());
+			element.add(gene.getAllele());
+		}
+		@Override
+		public void read(final InputElement element, final LargeIntegerGene gene)
+			throws XMLStreamException
+		{
+		}
+	};
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeObject(_value);
+		out.writeObject(_min);
+		out.writeObject(_max);
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		set(
+			(LargeInteger)in.readObject(),
+			(LargeInteger)in.readObject(),
+			(LargeInteger)in.readObject()
+		);
 	}
 
 }

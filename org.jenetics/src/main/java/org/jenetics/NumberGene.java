@@ -36,7 +36,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-05-22 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -239,7 +239,9 @@ public abstract class NumberGene<
 		}
 
 		final NumberGene<?, ?> gene = (NumberGene<?, ?>)obj;
-		return eq(_value, gene._value) && eq(_min, gene._min) && eq(_max, gene._max);
+		return eq(_value, gene._value) &&
+				eq(_min, gene._min) &&
+				eq(_max, gene._max);
 	}
 
 	@Override

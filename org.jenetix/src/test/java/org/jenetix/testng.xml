@@ -28,6 +28,11 @@
  ###############################################################################
 -->
 <suite name="Jenetix" verbose="2" parallel="tests" thread-count="5" >
+	<test name="org.jenetix.LargeIntegerGene">
+		<classes>
+			<class name="org.jenetix.LargeIntegerGeneTest" />
+		</classes>
+	</test>
 	<test name="org.jenetix.util.NumberRandom">
 		<classes>
 			<class name="org.jenetix.util.LargeIntegerRandomTest" />
