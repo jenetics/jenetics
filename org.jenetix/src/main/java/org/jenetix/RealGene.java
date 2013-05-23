@@ -106,7 +106,7 @@ public class RealGene
 
 
 	@Override
-	protected org.jenetics.NumberGene.Factory<Real, RealGene> getFactory() {
+	protected org.jenetics.NumberGene.Builder<Real, RealGene> Builder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

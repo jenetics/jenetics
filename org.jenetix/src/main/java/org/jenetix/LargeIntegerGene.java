@@ -51,8 +51,8 @@ public class LargeIntegerGene
 	}
 
 	@Override
-	protected Factory<LargeInteger, LargeIntegerGene> getFactory() {
-		return value;
+	protected Builder<LargeInteger, LargeIntegerGene> Builder() {
+		return Builder;
 	}
 
 	public LargeIntegerGene divide(final LargeIntegerGene gene) {
@@ -82,8 +82,8 @@ public class LargeIntegerGene
 		}
 	};
 
-	public static final Factory<LargeInteger, LargeIntegerGene>
-	value = new Factory<LargeInteger, LargeIntegerGene>() {
+	public static final Builder<LargeInteger, LargeIntegerGene>
+	Builder = new Builder<LargeInteger, LargeIntegerGene>() {
 
 		@Override
 		protected LargeInteger next(
@@ -100,7 +100,7 @@ public class LargeIntegerGene
 		}
 
 		@Override
-		public LargeIntegerGene of(
+		public LargeIntegerGene build(
 			final LargeInteger value,
 			final LargeInteger min,
 			final LargeInteger max
@@ -139,7 +139,7 @@ public class LargeIntegerGene
 				element.getAttribute(MAX, MAX_VALUE)
 			);
 			final LargeInteger value = element.<LargeInteger>getNext();
-			return LargeIntegerGene.value.of(value, min, max);
+			return LargeIntegerGene.Builder.build(value, min, max);
 		}
 		@Override
 		public void write(final LargeIntegerGene gene, final OutputElement element)

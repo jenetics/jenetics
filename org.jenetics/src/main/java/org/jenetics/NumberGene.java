@@ -56,13 +56,13 @@ public abstract class NumberGene<
 	/**
 	 *
 	 */
-	public static abstract class Factory<
+	public static abstract class Builder<
 		N extends Number<N>,
 		G extends NumberGene<N, G>
 	>
 	{
 
-		protected Factory() {
+		protected Builder() {
 		}
 
 		/**
@@ -87,11 +87,11 @@ public abstract class NumberGene<
 		 * @return the new created gene with the given {@code value}.
 		 * @throws NullPointerException if one of the arguments is {@code null}.
 		 */
-		public abstract G of(final N value, final N min, final N max);
+		public abstract G build(final N value, final N min, final N max);
 
 		public G of(final N min, final N max) {
 			final Random random = RandomRegistry.getRandom();
-			return of(next(random, min, max), min, max);
+			return build(next(random, min, max), min, max);
 		}
 
 
@@ -100,7 +100,7 @@ public abstract class NumberGene<
 			final java.lang.Number min,
 			final java.lang.Number max
 		) {
-			return of(box(value), box(min), box(max));
+			return build(box(value), box(min), box(max));
 		}
 
 		public G of(
@@ -146,7 +146,7 @@ public abstract class NumberGene<
 		return null;
 	}
 
-	protected abstract Factory<N, G> getFactory();
+	protected abstract Builder<N, G> Builder();
 
 	/**
 	 * Create a new gene from the given {@code value}.
@@ -156,11 +156,11 @@ public abstract class NumberGene<
 	 */
 	@Override
 	public G newInstance() {
-		return getFactory().of(_min, _max);
+		return Builder().of(_min, _max);
 	}
 
 	public G newInstance(final N v) {
-		return getFactory().of(v, _min, _max);
+		return Builder().build(v, _min, _max);
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public abstract class NumberGene<
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public G newInstance(final java.lang.Number value) {
-		return newInstance(getFactory().box(value));
+		return newInstance(Builder().box(value));
 	}
 
 	/**

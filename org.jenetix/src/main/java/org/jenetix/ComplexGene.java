@@ -70,7 +70,7 @@ public final class ComplexGene
 	}
 
 	@Override
-	protected org.jenetics.NumberGene.Factory<Complex, ComplexGene> getFactory() {
+	protected org.jenetics.NumberGene.Builder<Complex, ComplexGene> Builder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

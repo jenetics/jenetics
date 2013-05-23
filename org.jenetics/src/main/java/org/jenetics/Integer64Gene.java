@@ -55,7 +55,7 @@ public final class Integer64Gene
 	}
 
 	@Override
-	public Factory<Integer64, Integer64Gene> getFactory() {
+	public Builder<Integer64, Integer64Gene> Builder() {
 		return null;
 	}
 

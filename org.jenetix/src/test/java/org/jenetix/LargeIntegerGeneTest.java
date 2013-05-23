@@ -35,7 +35,7 @@ public class LargeIntegerGeneTest
 	extends NumberGeneTester<LargeInteger, LargeIntegerGene>
 {
 
-	private final Factory<LargeIntegerGene> _factory = LargeIntegerGene.value.of(
+	private final Factory<LargeIntegerGene> _factory = LargeIntegerGene.Builder.of(
 		LargeInteger.ZERO,
 		LargeInteger.valueOf("101010101010101010101010101010101010101010101010")
 	);
@@ -52,7 +52,7 @@ public class LargeIntegerGeneTest
 		final LargeInteger max = LargeInteger.valueOf(
 			"1010101010101010101010101010101010101010101010101010101010101010"
 		);
-		final LargeIntegerGene template = LargeIntegerGene.value.of(min, max);
+		final LargeIntegerGene template = LargeIntegerGene.Builder.of(min, max);
 
 		for (int i = 1; i < 500; ++i) {
 			final LargeIntegerGene a = template.newInstance(i - 50);

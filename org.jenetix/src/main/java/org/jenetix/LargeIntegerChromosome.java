@@ -85,7 +85,7 @@ public class LargeIntegerChromosome
 	) {
 		this(
 			new Array<LargeIntegerGene>(length).fill(
-				LargeIntegerGene.value.of(min, max)
+				LargeIntegerGene.Builder.of(min, max)
 			).toISeq()
 		);
 		_valid = true;
@@ -159,7 +159,7 @@ public class LargeIntegerChromosome
 
 			for (int i = 0; i < length; ++i) {
 				final LargeInteger value = xml.getNext();
-				genes.set(i, LargeIntegerGene.value.of(value, min, max));
+				genes.set(i, LargeIntegerGene.Builder.build(value, min, max));
 			}
 
 			final LargeIntegerChromosome
@@ -226,7 +226,7 @@ public class LargeIntegerChromosome
 		final Array<LargeIntegerGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			final LargeInteger value = (LargeInteger)in.readObject();
-			genes.set(i, LargeIntegerGene.value.of(value, min, max));
+			genes.set(i, LargeIntegerGene.Builder.build(value, min, max));
 		}
 
 		_genes = genes.toISeq();
