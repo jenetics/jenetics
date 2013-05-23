@@ -121,12 +121,11 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new IntegerGene with the same limits and the given value.
+	 * Create a new {@code Integer64Gene} with the same limits and the given
+	 * value.
 	 *
-	 * @param value The value of the new NumberGene.
-	 * @return The new NumberGene.
-	 * @throws IllegalArgumentException if the gene value is not in the range
-	 *         (value < min || value > max).
+	 * @param value the value of the new {@code NumberGene}.
+	 * @return the new {@code NumberGene}.
 	 */
 	public Integer64Gene newInstance(final long value) {
 		return valueOf(Integer64.valueOf(value), _min, _max);
@@ -149,14 +148,14 @@ public final class Integer64Gene
 		};
 
 	/**
-	 * Create a new random Integer64Gene with the given value and the given range.
-	 * If the {@code value} isn't within the closed interval [min, max], no
-	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()}
-	 * returns {@code false}.
+	 * Create a new random {@code Integer64Gene} with the given value and the
+	 * given range. If the {@code value} isn't within the closed interval
+	 * [min, max], no exception is thrown. In this case the method
+	 * {@link Integer64Gene#isValid()} returns {@code false}.
 	 *
 	 * @param value the value of the gene.
-	 * @param min the minimal valid value of this gene.
-	 * @param max the maximal valid value of this gene.
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (inclusively).
 	 * @return the new created gene with the given {@code value}.
 	 */
 	public static Integer64Gene valueOf(
@@ -172,14 +171,14 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new random Integer64Gene with the given value and the given range.
-	 * If the {@code value} isn't within the closed interval [min, max], no
-	 * exception is thrown. In this case the method {@link Integer64Gene#isValid()}
-	 * returns {@code false}.
+	 * Create a new random {@code Integer64Gene} with the given value and the
+	 * given range. If the {@code value} isn't within the closed interval
+	 * [min, max], no exception is thrown. In this case the method
+	 * {@link Integer64Gene#isValid()} returns {@code false}.
 	 *
 	 * @param value the value of the gene.
-	 * @param min the minimal valid value of this gene.
-	 * @param max the maximal valid value of this gene.
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (inclusively).
 	 * @return the new created gene with the given {@code value}.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
@@ -188,17 +187,19 @@ public final class Integer64Gene
 		final Integer64 min,
 		final Integer64 max
 	) {
-		Integer64Gene gene = FACTORY.object();
+		final Integer64Gene gene = FACTORY.object();
 		gene.set(value, min, max);
 		return gene;
 	}
 
 	/**
-	 * Create a new random Integer64Gene. It is guaranteed that the value of the
-	 * IntegerGene lies in the closed interval [min, max].
+	 * Create a new random {@code Integer64Gene}. It is guaranteed that the
+	 * value of the {@code Integer64Gene} lies in the closed interval [min, max].
 	 *
-	 * @param min the minimal value of the Integer64Gene to create.
-	 * @param max the maximal value of the Integer64Gene to create.
+	 * @param min the minimal value of the {@code Integer64Gene} to create
+	 *        (inclusively).
+	 * @param max the maximal value of the {@code Integer64Gene} to create
+	 *        (inclusively).
 	 * @return the new created gene.
 	 */
 	public static Integer64Gene valueOf(final long min, final long max) {
@@ -206,11 +207,13 @@ public final class Integer64Gene
 	}
 
 	/**
-	 * Create a new random Integer64Gene. It is guaranteed that the value of the
-	 * Integer64Gene lies in the closed interval [min, max].
+	 * Create a new random {@code Integer64Gene}. It is guaranteed that the
+	 * value of the {@code Integer64Gene} lies in the closed interval [min, max].
 	 *
-	 * @param min the minimal value of the Integer64Gene to create.
-	 * @param max the maximal value of the Integer64Gene to create.
+	 * @param min the minimal value of the {@code Integer64Gene} to create
+	 *        (inclusively).
+	 * @param max the maximal value of the {@code Integer64Gene} to create
+	 *        (inclusively).
 	 * @return the new created gene.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
