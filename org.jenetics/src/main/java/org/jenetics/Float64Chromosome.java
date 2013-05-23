@@ -104,7 +104,8 @@ public class Float64Chromosome
 	 *
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (exclusively).
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws NullPointerException if {@code min} or {@code max} is
+	 *         {@code null}.
 	 */
 	public Float64Chromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);
@@ -117,7 +118,7 @@ public class Float64Chromosome
 	 * @param max the maximal value of this chromosome.
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *          one.
+	 *         one.
 	 */
 	public Float64Chromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
@@ -264,8 +265,8 @@ public class Float64Chromosome
 		in.defaultReadObject();
 
 		final int length = in.readInt();
-		Float64 min = Float64.valueOf(in.readDouble());
-		Float64 max = Float64.valueOf(in.readDouble());
+		final Float64 min = Float64.valueOf(in.readDouble());
+		final Float64 max = Float64.valueOf(in.readDouble());
 
 		_min = min;
 		_max = max;
