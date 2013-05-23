@@ -51,7 +51,7 @@ public class LargeIntegerGene
 	}
 
 	@Override
-	protected Builder<LargeInteger, LargeIntegerGene> Builder() {
+	protected Builder<LargeInteger, LargeIntegerGene> getBuilder() {
 		return Builder;
 	}
 

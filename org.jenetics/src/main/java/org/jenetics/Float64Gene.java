@@ -57,7 +57,7 @@ public final class Float64Gene
 	}
 
 	@Override
-	protected Builder<Float64, Float64Gene> Builder() {
+	protected Builder<Float64, Float64Gene> getBuilder() {
 		return null;
 	}
 

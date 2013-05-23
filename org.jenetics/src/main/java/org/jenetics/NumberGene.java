@@ -89,13 +89,13 @@ public abstract class NumberGene<
 		 */
 		public abstract G build(final N value, final N min, final N max);
 
-		public G of(final N min, final N max) {
+		public G build(final N min, final N max) {
 			final Random random = RandomRegistry.getRandom();
 			return build(next(random, min, max), min, max);
 		}
 
 
-		public G of(
+		public G build(
 			final java.lang.Number value,
 			final java.lang.Number min,
 			final java.lang.Number max
@@ -103,11 +103,11 @@ public abstract class NumberGene<
 			return build(box(value), box(min), box(max));
 		}
 
-		public G of(
+		public G build(
 			final java.lang.Number min,
 			final java.lang.Number max
 		) {
-			return of(box(min), box(max));
+			return build(box(min), box(max));
 		}
 
 	}
@@ -146,7 +146,7 @@ public abstract class NumberGene<
 		return null;
 	}
 
-	protected abstract Builder<N, G> Builder();
+	protected abstract Builder<N, G> getBuilder();
 
 	/**
 	 * Create a new gene from the given {@code value}.
@@ -156,11 +156,11 @@ public abstract class NumberGene<
 	 */
 	@Override
 	public G newInstance() {
-		return Builder().of(_min, _max);
+		return getBuilder().build(_min, _max);
 	}
 
 	public G newInstance(final N v) {
-		return Builder().build(v, _min, _max);
+		return getBuilder().build(v, _min, _max);
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public abstract class NumberGene<
 	 * @throws NullPointerException if the given {@code value} is {@code null}.
 	 */
 	public G newInstance(final java.lang.Number value) {
-		return newInstance(Builder().box(value));
+		return newInstance(getBuilder().box(value));
 	}
 
 	/**

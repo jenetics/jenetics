@@ -55,7 +55,7 @@ public final class Integer64Gene
 	}
 
 	@Override
-	public Builder<Integer64, Integer64Gene> Builder() {
+	public Builder<Integer64, Integer64Gene> getBuilder() {
 		return null;
 	}
 

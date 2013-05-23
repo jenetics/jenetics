@@ -85,7 +85,7 @@ public class LargeIntegerChromosome
 	) {
 		this(
 			new Array<LargeIntegerGene>(length).fill(
-				LargeIntegerGene.Builder.of(min, max)
+				LargeIntegerGene.Builder.build(min, max)
 			).toISeq()
 		);
 		_valid = true;
