@@ -22,6 +22,7 @@ package org.jenetix;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Random;
 
 import javolution.context.ObjectFactory;
 import javolution.context.StackContext;
@@ -31,14 +32,13 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.NumberGene;
-import org.jenetics.util.RandomRegistry;
 
 import org.jenetix.util.LargeIntegerRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-22 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-23 $</em>
  */
 public class LargeIntegerGene
 	extends NumberGene<LargeInteger, LargeIntegerGene>
@@ -51,8 +51,8 @@ public class LargeIntegerGene
 	}
 
 	@Override
-	protected LargeInteger box(final Number value) {
-		return LargeInteger.valueOf(value.longValue());
+	protected Factory<LargeInteger, LargeIntegerGene> getFactory() {
+		return value;
 	}
 
 	public LargeIntegerGene divide(final LargeIntegerGene gene) {
@@ -72,23 +72,6 @@ public class LargeIntegerGene
 	}
 
 	/* *************************************************************************
-	 *  Factory methods
-	 * ************************************************************************/
-
-	/**
-	 * Create a new valid, <em>random</em> gene.
-	 */
-	@Override
-	public LargeIntegerGene newInstance() {
-		return valueOf(_min, _max);
-	}
-
-	@Override
-	public LargeIntegerGene newInstance(final LargeInteger value) {
-		return valueOf(value, _min, _max);
-	}
-
-	/* *************************************************************************
 	 *  Static object creation methods
 	 * ************************************************************************/
 
@@ -99,48 +82,35 @@ public class LargeIntegerGene
 		}
 	};
 
-	/**
-	 * Create a new LargeIntegerGene with the given value and the given range.
-	 * If the {@code value} isn't within the closed interval [min, max], no
-	 * exception is thrown. In this case the method
-	 * {@link LargeIntegerGene#isValid()} returns {@code false}.
-	 *
-	 * @param value the value of the gene.
-	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (inclusively).
-	 * @return the new created gene with the given {@code value}.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	public static LargeIntegerGene valueOf(
-		final LargeInteger value,
-		final LargeInteger min,
-		final LargeInteger max
-	) {
-		final LargeIntegerGene gene = FACTORY.object();
-		gene.set(value, min, max);
-		return gene;
-	}
+	public static final Factory<LargeInteger, LargeIntegerGene>
+	value = new Factory<LargeInteger, LargeIntegerGene>() {
 
-	/**
-	 * Create a new random LargeIntegerGene. It is guaranteed that the value of
-	 * the LargeIntegerGene lies in the closed interval [min, max].
-	 *
-	 * @param min the minimal value of the gene to create (inclusively).
-	 * @param max the maximal value of the gene to create (inclusively).
-	 * @return the new created gene.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 */
-	public static LargeIntegerGene valueOf(
-		final LargeInteger min,
-		final LargeInteger max
-	) {
-		final LargeInteger value = LargeIntegerRandom.next(
-			RandomRegistry.getRandom(),
-			min, max
-		);
+		@Override
+		protected LargeInteger next(
+			final Random random,
+			final LargeInteger min,
+			final LargeInteger max
+		) {
+			return LargeIntegerRandom.next(random, min, max);
+		}
 
-		return valueOf(value, min, max);
-	}
+		@Override
+		protected LargeInteger box(final Number value) {
+			return LargeInteger.valueOf(value.longValue());
+		}
+
+		@Override
+		public LargeIntegerGene of(
+			final LargeInteger value,
+			final LargeInteger min,
+			final LargeInteger max
+		) {
+			final LargeIntegerGene gene = FACTORY.object();
+			gene.set(value, min, max);
+			return gene;
+		}
+
+	};
 
 
 	/* *************************************************************************
@@ -169,7 +139,7 @@ public class LargeIntegerGene
 				element.getAttribute(MAX, MAX_VALUE)
 			);
 			final LargeInteger value = element.<LargeInteger>getNext();
-			return LargeIntegerGene.valueOf(value, min, max);
+			return LargeIntegerGene.value.of(value, min, max);
 		}
 		@Override
 		public void write(final LargeIntegerGene gene, final OutputElement element)

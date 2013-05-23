@@ -54,6 +54,11 @@ public final class Integer64Gene
 		return Integer64.valueOf(value.longValue());
 	}
 
+	@Override
+	public Factory<Integer64, Integer64Gene> getFactory() {
+		return null;
+	}
+
 	public Integer64Gene divide(final Integer64Gene gene) {
 		return newInstance(_value.divide(gene._value));
 	}

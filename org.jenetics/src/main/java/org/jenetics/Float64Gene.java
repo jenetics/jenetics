@@ -56,6 +56,11 @@ public final class Float64Gene
 		return Float64.valueOf(value.doubleValue());
 	}
 
+	@Override
+	protected Factory<Float64, Float64Gene> getFactory() {
+		return null;
+	}
+
 	public Float64Gene divide(final Float64Gene gene) {
 		return newInstance(_value.divide(gene._value));
 	}

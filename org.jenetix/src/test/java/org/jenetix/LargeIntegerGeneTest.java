@@ -29,13 +29,13 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-05-22 $</em>
+ * @version <em>$Date: 2013-05-23 $</em>
  */
 public class LargeIntegerGeneTest
 	extends NumberGeneTester<LargeInteger, LargeIntegerGene>
 {
 
-	private final Factory<LargeIntegerGene> _factory = LargeIntegerGene.valueOf(
+	private final Factory<LargeIntegerGene> _factory = LargeIntegerGene.value.of(
 		LargeInteger.ZERO,
 		LargeInteger.valueOf("101010101010101010101010101010101010101010101010")
 	);
@@ -52,7 +52,7 @@ public class LargeIntegerGeneTest
 		final LargeInteger max = LargeInteger.valueOf(
 			"1010101010101010101010101010101010101010101010101010101010101010"
 		);
-		final LargeIntegerGene template = LargeIntegerGene.valueOf(min, max);
+		final LargeIntegerGene template = LargeIntegerGene.value.of(min, max);
 
 		for (int i = 1; i < 500; ++i) {
 			final LargeIntegerGene a = template.newInstance(i - 50);
