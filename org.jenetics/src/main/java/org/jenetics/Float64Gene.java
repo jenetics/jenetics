@@ -43,7 +43,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-22 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -128,8 +128,8 @@ public final class Float64Gene
 	/**
 	 * Create a new Float64Gene with the same limits and the given value.
 	 *
-	 * @param value The value of the new NumberGene.
-	 * @return The new NumberGene.
+	 * @param value the value of the new {@code NumberGene}.
+	 * @return the new {@code NumberGene}.
 	 */
 	public Float64Gene newInstance(final double value) {
 		return valueOf(Float64.valueOf(value), _min, _max);
@@ -153,10 +153,10 @@ public final class Float64Gene
 		};
 
 	/**
-	 * Create a new random Float64Gene with the given value and the given range.
-	 * If the {@code value} isn't within the interval [min, max), no exception
-	 * is thrown. In this case the method {@link Float64Gene#isValid()} returns
-	 * {@code false}.
+	 * Create a new random {@code Float64Gene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max),
+	 * no exception is thrown. In this case the method
+	 * {@link Float64Gene#isValid()} returns {@code false}.
 	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
@@ -176,10 +176,10 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random Float64Gene with the given value and the given range.
-	 * If the {@code value} isn't within the interval [min, max), no exception
-	 * is thrown. In this case the method {@link Float64Gene#isValid()} returns
-	 * {@code false}.
+	 * Create a new random {@code Float64Gene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max),
+	 * no exception is thrown. In this case the method
+	 * {@link Float64Gene#isValid()} returns {@code false}.
 	 *
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
@@ -198,11 +198,11 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random Float64Gene. It is guaranteed that the value of the
-	 * DoubleGene lies in the interval [min, max).
+	 * Create a new random {@code Float64Gene}. It is guaranteed that the value
+	 * of the {@code Float64Gene} lies in the interval [min, max).
 	 *
-	 * @param min the minimal value of the Float64Gene to create (inclusively).
-	 * @param max the maximal value of the Float64Gene to create (exclusively).
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return the new created gene.
 	 */
 	public static Float64Gene valueOf(final double min, final double max) {
@@ -210,11 +210,11 @@ public final class Float64Gene
 	}
 
 	/**
-	 * Create a new random Float64Gene. It is guaranteed that the value of the
-	 * Float64Gene lies in the interval [min, max).
+	 * Create a new random {@code Float64Gene}. It is guaranteed that the value
+	 * of the {@code Float64Gene} lies in the interval [min, max).
 	 *
-	 * @param min the minimal value of the Float64Gene to create (inclusively).
-	 * @param max the maximal value of the Float64Gene to create (exclusively).
+	 * @param min the minimal valid value of this gene (inclusively).
+	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return the new created gene.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
@@ -224,8 +224,8 @@ public final class Float64Gene
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final Float64 value = Float64.valueOf(
-				math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
-			);
+			math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
+		);
 
 		return valueOf(value, min, max);
 	}
