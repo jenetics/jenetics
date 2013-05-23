@@ -38,7 +38,7 @@ import org.jenetics.util.ISeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-22 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-23 $</em>
  */
 public class LargeIntegerChromosome
 	extends NumberChromosome<LargeInteger, LargeIntegerGene>
@@ -178,8 +178,8 @@ public class LargeIntegerChromosome
 			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
-			xml.setAttribute(MIN, chromosome._min);
-			xml.setAttribute(MAX, chromosome._max);
+			xml.setAttribute(MIN, chromosome._min.toString());
+			xml.setAttribute(MAX, chromosome._max.toString());
 			for (LargeIntegerGene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
