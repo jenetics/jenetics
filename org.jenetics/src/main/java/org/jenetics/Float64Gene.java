@@ -192,7 +192,7 @@ public final class Float64Gene
 		final Float64 min,
 		final Float64 max
 	) {
-		Float64Gene gene = FACTORY.object();
+		final Float64Gene gene = FACTORY.object();
 		gene.set(value, min, max);
 		return gene;
 	}
