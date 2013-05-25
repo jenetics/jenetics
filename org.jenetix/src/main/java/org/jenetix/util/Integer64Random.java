@@ -18,19 +18,19 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetix.util;
+import static org.jenetics.util.math.random.nextLong;
 
 import java.util.Random;
 
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
 import org.jenetics.util.object;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class Integer64Random implements NumberRandom<Integer64> {
 
@@ -55,7 +55,7 @@ public class Integer64Random implements NumberRandom<Integer64> {
 		final Integer64 max
 	) {
 		return Integer64.valueOf(
-			math.random.nextLong(random, min.longValue(), max.longValue())
+			nextLong(random, min.longValue(), max.longValue())
 		);
 	}
 

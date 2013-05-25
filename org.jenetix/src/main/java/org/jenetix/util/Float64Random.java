@@ -19,12 +19,13 @@
  */
 package org.jenetix.util;
 
+import static org.jenetics.util.math.random.nextDouble;
+
 import java.util.Random;
 
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.math;
 import org.jenetics.util.object;
 
 /**
@@ -55,7 +56,7 @@ public class Float64Random implements NumberRandom<Float64> {
 		final Float64 max
 	) {
 		return Float64.valueOf(
-			math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
+			nextDouble(random, min.doubleValue(), max.doubleValue())
 		);
 	}
 

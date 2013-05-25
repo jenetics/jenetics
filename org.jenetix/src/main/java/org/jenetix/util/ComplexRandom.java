@@ -19,6 +19,8 @@
  */
 package org.jenetix.util;
 
+import static org.jenetics.util.math.random.nextDouble;
+
 import java.util.Random;
 
 import org.jscience.mathematics.number.Complex;
@@ -31,7 +33,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class ComplexRandom implements NumberRandom<Complex> {
 
@@ -50,17 +52,19 @@ public class ComplexRandom implements NumberRandom<Complex> {
 		return next(_random, min, max);
 	}
 
-	public static Complex next(final Random random, final Complex min, final Complex max) {
+	public static Complex next(
+		final Random random,
+		final Complex min,
+		final Complex max
+	) {
 		if (min.getReal() > max.getReal() || min.getImaginary() > max.getImaginary()) {
 			throw new IllegalArgumentException();
 		}
 
-		final double real = random.nextDouble()*(max.getReal() - min.getReal()) +
-								min.getReal();
-		final double imag = random.nextDouble()*(max.getImaginary() - min.getImaginary()) +
-								min.getImaginary();
-
-		return Complex.valueOf(real, imag);
+		return Complex.valueOf(
+			nextDouble(random, min.getReal(), max.getReal()),
+			nextDouble(random, min.getImaginary(), max.getImaginary())
+		);
 	}
 
 }

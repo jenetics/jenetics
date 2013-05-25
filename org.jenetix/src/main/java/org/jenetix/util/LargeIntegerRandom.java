@@ -21,6 +21,8 @@ package org.jenetix.util;
 
 import java.util.Random;
 
+import javolution.context.StackContext;
+
 import org.jscience.mathematics.number.LargeInteger;
 
 import org.jenetics.util.RandomRegistry;
@@ -34,7 +36,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-22 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 
@@ -94,16 +96,21 @@ public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 
 		final byte[] bytes = new byte[(length >>> 3) + 1];
 
-		LargeInteger result = null;
-		do {
-			random.nextBytes(bytes);
-			bit.shiftRight(bytes, (bytes.length << 3) - length);
-			bit.reverse(bytes);
+		StackContext.enter();
+		try {
+			LargeInteger result = LargeInteger.ONE;
+			do {
+				random.nextBytes(bytes);
+				bit.shiftRight(bytes, (bytes.length << 3) - length);
+				bit.reverse(bytes);
 
-			result = LargeInteger.valueOf(bytes, 0, bytes.length);
-		} while (result.isGreaterThan(diff));
+				result = LargeInteger.valueOf(bytes, 0, bytes.length);
+			} while (result.isGreaterThan(diff));
 
-		return result;
+			return StackContext.outerCopy(result);
+		} finally {
+			StackContext.exit();
+		}
 	}
 
 }
