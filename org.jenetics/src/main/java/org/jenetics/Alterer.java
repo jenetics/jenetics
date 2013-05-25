@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-
 /**
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
@@ -40,7 +39,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 public interface Alterer<G extends Gene<?, G>> {
 
