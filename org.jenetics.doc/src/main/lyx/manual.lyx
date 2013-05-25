@@ -8036,6 +8036,12 @@ The type of the statistics object returned by the GA is the same type as
 \end_layout
 
 \begin_layout Part*
+Modules
+\end_layout
+
+\begin_layout Section
+
+\family typewriter
 org.jenetix
 \end_layout
 
