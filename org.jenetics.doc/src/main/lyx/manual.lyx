@@ -8036,6 +8036,21 @@ The type of the statistics object returned by the GA is the same type as
 \end_layout
 
 \begin_layout Part*
+org.jenetix
+\end_layout
+
+\begin_layout Standard
+Description about the jenetix module.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
 Appendix
 \end_layout
 
@@ -9390,7 +9405,7 @@ Version
 \series default
 : 
 \emph on
-6.8
+6.8.1
 \end_layout
 
 \begin_layout Itemize
@@ -9402,7 +9417,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9423,11 +9438,11 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://testng.org/testng-6.8.zip
+http://testng.org/testng-6.8.1.zip
 \end_layout
 
 \end_inset
@@ -9638,7 +9653,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
