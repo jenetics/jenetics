@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -141,6 +141,12 @@ public abstract class NumberGene<
 	protected NumberGene() {
 	}
 
+	/**
+	 * Boxes a given Java number into the required number object.
+	 *
+	 * @param value the Java number to box.
+	 * @return the boxed number.
+	 */
 	@Deprecated
 	protected N box(final java.lang.Number value) {
 		return null;
@@ -163,11 +169,6 @@ public abstract class NumberGene<
 		return getBuilder().build(v, _min, _max);
 	}
 
-	@Override
-	public G copy() {
-		return newInstance(_value);
-	}
-
 	/**
 	 * Create a new NumberGene with the same limits and the given value.
 	 *
@@ -177,6 +178,11 @@ public abstract class NumberGene<
 	 */
 	public G newInstance(final java.lang.Number value) {
 		return newInstance(getBuilder().box(value));
+	}
+
+	@Override
+	public G copy() {
+		return newInstance(_value);
 	}
 
 	/**

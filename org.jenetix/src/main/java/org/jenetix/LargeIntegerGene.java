@@ -38,7 +38,7 @@ import org.jenetix.util.LargeIntegerRandom;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class LargeIntegerGene
 	extends NumberGene<LargeInteger, LargeIntegerGene>
@@ -182,6 +182,7 @@ public class LargeIntegerGene
 			(LargeInteger)in.readObject()
 		);
 	}
+
 
 }
 
