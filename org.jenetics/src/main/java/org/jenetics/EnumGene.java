@@ -58,7 +58,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !!!new!!! &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public final class EnumGene<A>
 	implements

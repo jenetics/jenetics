@@ -36,7 +36,7 @@ import org.jenetics.util.accumulators.MinMax;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class NumberStatistics<
 	G extends Gene<?, G>,
@@ -50,7 +50,7 @@ public class NumberStatistics<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -293,7 +293,7 @@ public class NumberStatistics<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+	 * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

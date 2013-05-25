@@ -37,7 +37,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public interface Selector<
 	G extends Gene<?, G>,
