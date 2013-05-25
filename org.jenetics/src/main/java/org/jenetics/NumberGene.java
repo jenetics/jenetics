@@ -54,7 +54,9 @@ public abstract class NumberGene<
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since @__new_version__@
+	 * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
 	 */
 	public static abstract class Builder<
 		N extends Number<N>,
@@ -73,28 +75,45 @@ public abstract class NumberGene<
 		 */
 		protected abstract N box(final java.lang.Number value);
 
+		/**
+		 * Create a new number within the given range.
+		 *
+		 * @param random the random engine use for creating the random number.
+		 * @param min the minimal value of the random number (inclusively)
+		 * @param max the maximal value of the random number (inclusively for
+		 *        integer types and exclusively for real types).
+		 * @return a new random number within the given range
+		 */
 		protected abstract N next(final Random random, final N min, final N max);
 
 		/**
 		 * Create a new {@code Gene} with the given value and the given range.
-		 * If the {@code value} isn't within the closed interval [min, max], no
-		 * exception is thrown. In this case the method
-		 * {@link LargeIntegerGene#isValid()} returns {@code false}.
+		 * If the {@code value} isn't within the given interval, no exception is
+		 * thrown. In this case the method {@link Gene#isValid()} returns
+		 * {@code false}.
 		 *
 		 * @param value the value of the gene.
 		 * @param min the minimal valid value of this gene (inclusively).
-		 * @param max the maximal valid value of this gene (inclusively).
+		 * @param max the maximal value of the random number (inclusively for
+		 *        integer types and exclusively for real types).
 		 * @return the new created gene with the given {@code value}.
 		 * @throws NullPointerException if one of the arguments is {@code null}.
 		 */
 		public abstract G build(final N value, final N min, final N max);
 
-		public G build(final N min, final N max) {
-			final Random random = RandomRegistry.getRandom();
-			return build(next(random, min, max), min, max);
-		}
-
-
+		/**
+		 * Create a new {@code Gene} with the given value and the given range.
+		 * If the {@code value} isn't within the given interval, no exception is
+		 * thrown. In this case the method {@link Gene#isValid()} returns
+		 * {@code false}.
+		 *
+		 * @param value the value of the gene.
+		 * @param min the minimal valid value of this gene (inclusively).
+		 * @param max the maximal value of the random number (inclusively for
+		 *        integer types and exclusively for real types).
+		 * @return the new created gene with the given {@code value}.
+		 * @throws NullPointerException if one of the arguments is {@code null}.
+		 */
 		public G build(
 			final java.lang.Number value,
 			final java.lang.Number min,
@@ -103,6 +122,33 @@ public abstract class NumberGene<
 			return build(box(value), box(min), box(max));
 		}
 
+		/**
+		 * Create a new, random {@code Gene} with the given value and the given
+		 * range.
+		 *
+		 * @param value the value of the gene.
+		 * @param min the minimal valid value of this gene (inclusively).
+		 * @param max the maximal value of the random number (inclusively for
+		 *        integer types and exclusively for real types).
+		 * @return the new created gene with the given {@code value}.
+		 * @throws NullPointerException if one of the arguments is {@code null}.
+		 */
+		public G build(final N min, final N max) {
+			final Random random = RandomRegistry.getRandom();
+			return build(next(random, min, max), min, max);
+		}
+
+		/**
+		 * Create a new, random {@code Gene} with the given value and the given
+		 * range.
+		 *
+		 * @param value the value of the gene.
+		 * @param min the minimal valid value of this gene (inclusively).
+		 * @param max the maximal value of the random number (inclusively for
+		 *        integer types and exclusively for real types).
+		 * @return the new created gene with the given {@code value}.
+		 * @throws NullPointerException if one of the arguments is {@code null}.
+		 */
 		public G build(
 			final java.lang.Number min,
 			final java.lang.Number max
@@ -146,6 +192,8 @@ public abstract class NumberGene<
 	 *
 	 * @param value the Java number to box.
 	 * @return the boxed number.
+	 *
+	 * @deprecated Use the {@link Builder} instead.
 	 */
 	@Deprecated
 	protected N box(final java.lang.Number value) {
