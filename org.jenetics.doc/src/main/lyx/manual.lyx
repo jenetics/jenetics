@@ -8839,7 +8839,9 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics ↓
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -8871,7 +8873,9 @@ Source code
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main ↓
+$ hg clone http://hg.code.sf.net/p/jenetics/main 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -8903,7 +8907,9 @@ Source code
 \end_layout
 
 \begin_layout LyX-Code
-$ git clone https://github.com/jenetics/jenetics.git ↓
+$ git clone https://github.com/jenetics/jenetics.git 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
