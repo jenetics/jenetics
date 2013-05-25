@@ -30,7 +30,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public abstract class MappedAccumulator<T>
 	implements
