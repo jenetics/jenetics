@@ -57,7 +57,9 @@ public class ComplexRandom implements NumberRandom<Complex> {
 		final Complex min,
 		final Complex max
 	) {
-		if (min.getReal() > max.getReal() || min.getImaginary() > max.getImaginary()) {
+		if (min.getReal() > max.getReal() ||
+			min.getImaginary() > max.getImaginary())
+		{
 			throw new IllegalArgumentException();
 		}
 
