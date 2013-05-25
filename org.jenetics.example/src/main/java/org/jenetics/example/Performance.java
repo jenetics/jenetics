@@ -41,7 +41,8 @@ import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @since 1.0
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class Performance {
 

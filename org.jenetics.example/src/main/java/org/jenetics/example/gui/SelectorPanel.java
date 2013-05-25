@@ -22,7 +22,7 @@ package org.jenetics.example.gui;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; $Date$
+ * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class SelectorPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = 1L;
