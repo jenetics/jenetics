@@ -195,7 +195,9 @@ public abstract class NumberGene<
 	 */
 	protected abstract N box(final java.lang.Number value);
 
-	protected abstract Builder<N, G> getBuilder();
+	protected Builder<N, G> getBuilder() {
+		return null;
+	}
 
 	/**
 	 * Create a new gene from the given {@code value}.
