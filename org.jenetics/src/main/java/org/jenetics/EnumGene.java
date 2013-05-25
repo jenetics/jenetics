@@ -61,7 +61,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !!!new!!! &mdash; <em>$Date: 2013-05-17 $</em>
+ * @version !!!new!!! &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -133,15 +133,6 @@ public final class EnumGene<A>
 		}
 
 		return result;
-	}
-
-	/**
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	public Factory<EnumGene<A>> asFactory() {
-		return this;
 	}
 
 	@Override
