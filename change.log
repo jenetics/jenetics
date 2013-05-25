@@ -1,3 +1,7 @@
+Jenetics-2.0.0
+- Remove deprecated methods in 'Gene' and 'Array' classes.
+
+
 - Implement 'Comparable' interface for 'EnumGene'.
 - Add Array boxing/unboxing methods for short/Short.
 
