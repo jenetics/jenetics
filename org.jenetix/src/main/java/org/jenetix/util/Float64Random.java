@@ -24,12 +24,13 @@ import java.util.Random;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.math;
 import org.jenetics.util.object;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class Float64Random implements NumberRandom<Float64> {
 
@@ -48,10 +49,13 @@ public class Float64Random implements NumberRandom<Float64> {
 		return next(_random, min, max);
 	}
 
-	public static Float64 next(final Random random, final Float64 min, final Float64 max) {
+	public static Float64 next(
+		final Random random,
+		final Float64 min,
+		final Float64 max
+	) {
 		return Float64.valueOf(
-			random.nextDouble()*(max.doubleValue() - min.doubleValue()) +
-			min.doubleValue()
+			math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
 		);
 	}
 
