@@ -41,7 +41,8 @@ import org.jenetics.util.Function;
  * The classical <a href="http://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a>.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @since 1.0
+ * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class TravelingSalesman {
 

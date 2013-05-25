@@ -84,7 +84,8 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @since 1.0
+ * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
  */
 public class Geometry extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
