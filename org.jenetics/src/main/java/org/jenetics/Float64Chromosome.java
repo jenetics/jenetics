@@ -33,7 +33,6 @@ import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 /**
@@ -124,20 +123,6 @@ public class Float64Chromosome
 	@Override
 	public Float64Chromosome newInstance(final ISeq<Float64Gene> genes) {
 		return new Float64Chromosome(genes);
-	}
-
-	/**
-	 * Return a more specific view of this chromosome factory.
-	 *
-	 * @return a more specific view of this chromosome factory.
-	 *
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public Factory<Float64Chromosome> asFactory() {
-		return (Factory<Float64Chromosome>)(Object)this;
 	}
 
 	/**
