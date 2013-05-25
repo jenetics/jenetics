@@ -33,7 +33,6 @@ import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
 import org.jenetics.util.Function;
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 
 
@@ -133,20 +132,6 @@ public class Integer64Chromosome
 	@Override
 	public Integer64Chromosome newInstance(final ISeq<Integer64Gene> genes) {
 		return new Integer64Chromosome(genes);
-	}
-
-	/**
-	 * Return a more specific view of this chromosome factory.
-	 *
-	 * @return a more specific view of this chromosome factory.
-	 *
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public Factory<Integer64Chromosome> asFactory() {
-		return (Factory<Integer64Chromosome>)(Object)this;
 	}
 
 	/**

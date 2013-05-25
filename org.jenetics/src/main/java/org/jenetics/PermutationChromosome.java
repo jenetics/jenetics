@@ -34,7 +34,6 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
@@ -108,20 +107,6 @@ public final class PermutationChromosome<T>
 		}
 
 		return _valid;
-	}
-
-	/**
-	 * Return a more specific view of this chromosome factory.
-	 *
-	 * @return a more specific view of this chromosome factory.
-	 *
-	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public Factory<PermutationChromosome<T>> asFactory() {
-		return (Factory<PermutationChromosome<T>>)(Object)this;
 	}
 
 	/**
