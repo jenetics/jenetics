@@ -50,26 +50,6 @@ public interface ISeq<T>
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
-	 * <p>
-	 * Helper method for up-casting an given immutable sequence. This allows you
-	 * to assign this sequence to an sequence where the element type is a super
-	 * type of {@code T}.
-	 * </p>
-	 * [code]
-	 * ISeq<Double> da = new Array<Double>(0.0, 1.0, 2.0).toISeq();
-	 * ISeq<Number> na = da.upcast(da);
-	 * ISeq<Object> oa = na.upcast(na);
-	 * [/code]
-	 *
-	 * @param seq the sequence to cast.
-	 * @return the up-casted sequence.
-	 *
-	 * @deprecated Will be removed in the next version.
-	 */
-	@Deprecated
-	public <A> ISeq<A> upcast(final ISeq<? extends A> seq);
-
-	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
 	 * cloned.
 	 *

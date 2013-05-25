@@ -69,12 +69,5 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		return new Array<>(new ArrayRef(toArray()), 0, length());
 	}
 
-	@Deprecated
-	@Override
-	@SuppressWarnings("unchecked")
-	public <A> ISeq<A> upcast(final ISeq<? extends A> seq) {
-		return (ISeq<A>)seq;
-	}
-
 }
 
