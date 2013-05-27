@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-27 $</em>
  */
 public final class CharacterGene
 	implements
@@ -293,7 +293,10 @@ public final class CharacterGene
 				);
 			final String character = xml.getText().toString();
 
-			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
+			return CharacterGene.valueOf(
+				character.charAt(0),
+				new CharSeq(validCharacters)
+			);
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml)

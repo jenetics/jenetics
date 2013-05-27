@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-27 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -257,12 +257,18 @@ public class CharacterChromosome
 			final Array<CharacterGene> array = new Array<>(length);
 			final CharArray values = xml.getText();
 			for (int i = 0; i < length; ++i) {
-				array.set(i, CharacterGene.valueOf(values.charAt(i), validCharacters));
+				final CharacterGene gene = CharacterGene.valueOf(
+					values.charAt(i), validCharacters
+				);
+				array.set(i, gene);
 			}
 			return new CharacterChromosome(array.toISeq());
 		}
 		@Override
-		public void write(final CharacterChromosome chromosome, final OutputElement xml)
+		public void write(
+			final CharacterChromosome chromosome,
+			final OutputElement xml
+		)
 			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
@@ -274,7 +280,10 @@ public class CharacterChromosome
 			xml.addText(out.toString());
 		}
 		@Override
-		public void read(final InputElement element, final CharacterChromosome chromosome) {
+		public void read(
+			final InputElement element,
+			final CharacterChromosome chromosome
+		) {
 		}
 
 	};
@@ -306,7 +315,10 @@ public class CharacterChromosome
 
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
+			final CharacterGene gene = CharacterGene.valueOf(
+				Character.valueOf(in.readChar()), _validCharacters
+			);
+			genes.set(i, gene);
 		}
 
 		_genes = genes.toISeq();

@@ -40,7 +40,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-27 $</em>
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
@@ -199,14 +199,19 @@ public class Float64Chromosome
 				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
 			}
 
-			final Float64Chromosome chromosome = new Float64Chromosome(genes.toISeq());
+			final Float64Chromosome chromosome = new Float64Chromosome(
+				genes.toISeq()
+			);
 			chromosome._min = Float64.valueOf(min);
 			chromosome._max = Float64.valueOf(max);
 
 			return chromosome;
 		}
 		@Override
-		public void write(final Float64Chromosome chromosome, final OutputElement xml)
+		public void write(
+			final Float64Chromosome chromosome,
+			final OutputElement xml
+		)
 			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
@@ -217,9 +222,10 @@ public class Float64Chromosome
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Float64Chromosome chromosome)
-			throws XMLStreamException
-		{
+		public void read(
+			final InputElement element,
+			final Float64Chromosome chromosome
+		) {
 		}
 	};
 
