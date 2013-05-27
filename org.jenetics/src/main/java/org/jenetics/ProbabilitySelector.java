@@ -131,8 +131,9 @@ public abstract class ProbabilitySelector<
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 *         or lower fitness values must be selected. This parameter determines
-	 *         whether the GA maximizes or minimizes the fitness function.
+	 *        or lower fitness values must be selected. This parameter
+	 *        determines whether the GA maximizes or minimizes the fitness
+	 *        function.
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
@@ -165,12 +166,12 @@ public abstract class ProbabilitySelector<
 	 *
 	 * @param population The <em>unsorted</em> population.
 	 * @param count The number of phenotypes to select. <i>This parameter is not
-	 *         needed for most implementations.</i>
+	 *        needed for most implementations.</i>
 	 * @return Probability array. The returned probability array must have the
-	 *          length {@code population.size()} and <strong>must</strong> sum to
-	 *          one. The returned value is checked with
-	 *          {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
-	 *          in the base class.
+	 *         length {@code population.size()} and <strong>must</strong> sum to
+	 *         one. The returned value is checked with
+	 *         {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
+	 *         in the base class.
 	 */
 	protected abstract double[] probabilities(
 		final Population<G, C> population,
@@ -182,7 +183,7 @@ public abstract class ProbabilitySelector<
 	 *
 	 * @param probabilities the probabilities to check.
 	 * @return {@code true} if the sum of the probabilities are within the error
-	 *          range, {@code false} otherwise.
+	 *         range, {@code false} otherwise.
 	 */
 	static boolean sum2one(final double[] probabilities) {
 		final double sum = sum(probabilities);
