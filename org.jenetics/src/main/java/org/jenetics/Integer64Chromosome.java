@@ -226,7 +226,7 @@ public class Integer64Chromosome
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(MIN, chromosome._min.longValue());
 			xml.setAttribute(MAX, chromosome._max.longValue());
-			for (Integer64Gene gene : chromosome) {
+			for (final Integer64Gene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
 		}
