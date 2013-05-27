@@ -217,7 +217,7 @@ public class Float64Chromosome
 			xml.setAttribute(LENGTH, chromosome.length());
 			xml.setAttribute(MIN, chromosome._min.doubleValue());
 			xml.setAttribute(MAX, chromosome._max.doubleValue());
-			for (Float64Gene gene : chromosome) {
+			for (final Float64Gene gene : chromosome) {
 				xml.add(gene.getAllele());
 			}
 		}
