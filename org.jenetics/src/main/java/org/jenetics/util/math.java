@@ -340,7 +340,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date$</em>
+	 * @version 2.0 &mdash; <em>$Date$</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -366,7 +366,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date$</em>
+	 * @version 2.0 &mdash; <em>$Date$</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
