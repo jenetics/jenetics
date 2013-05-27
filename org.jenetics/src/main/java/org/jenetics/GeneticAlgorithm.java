@@ -50,11 +50,11 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     Function<Genotype<BitGene> Float64> ff = ...
- *     GeneticAlgorithm<BitGene, Float64>
+ *     final Function<Genotype<BitGene> Float64> ff = ...
+ *     final GeneticAlgorithm<BitGene, Float64>
  *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();

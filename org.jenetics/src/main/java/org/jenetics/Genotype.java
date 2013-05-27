@@ -53,7 +53,7 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * Genotype<Float64Gene> genotype = Genotype.valueOf(
+ * final Genotype<Float64Gene> genotype = Genotype.valueOf(
  *     new Float64Chromosome(0.0, 1.0, 8),
  *     new Float64Chromosome(1.0, 2.0, 10),
  *     new Float64Chromosome(0.0, 10.0, 9),
