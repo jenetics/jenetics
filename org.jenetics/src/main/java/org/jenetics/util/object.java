@@ -27,7 +27,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-05-27 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -44,7 +44,7 @@ public final class object extends StaticObject {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * final Array<Integer> array = ...
-	 * arrays.foreach(CheckRange<(0, 10));
+	 * arrays.foreach(CheckRange(0, 10));
 	 * [/code]
 	 */
 	public static final <C extends Comparable<? super C>> Function<C, Boolean>
