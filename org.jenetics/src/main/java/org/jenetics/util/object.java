@@ -44,7 +44,7 @@ public final class object extends StaticObject {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * final Array<Integer> array = ...
-	 * arrays.foreach(CheckRange<(0, 10));
+	 * arrays.foreach(CheckRange(0, 10));
 	 * [/code]
 	 */
 	public static final <C extends Comparable<? super C>> Function<C, Boolean>
