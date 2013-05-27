@@ -258,9 +258,7 @@ public final class Float64Gene
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override
-		public void read(InputElement element, Float64Gene gene)
-			throws XMLStreamException
-		{
+		public void read(final InputElement element, final Float64Gene gene) {
 		}
 	};
 

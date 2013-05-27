@@ -257,9 +257,7 @@ public final class Integer64Gene
 			element.add(gene.getAllele().longValue());
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Gene gene)
-			throws XMLStreamException
-		{
+		public void read(final InputElement element, final Integer64Gene gene) {
 		}
 	};
 

@@ -133,7 +133,10 @@ public enum BitGene
 		private static final String VALUE = "value";
 
 		@Override
-		public BitGene newInstance(final Class<BitGene> cls, final InputElement element)
+		public BitGene newInstance(
+			final Class<BitGene> cls,
+			final InputElement element
+		)
 			throws XMLStreamException
 		{
 			final boolean value = element.getAttribute(VALUE, true);

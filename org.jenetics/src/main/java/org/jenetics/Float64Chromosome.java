@@ -199,14 +199,19 @@ public class Float64Chromosome
 				genes.set(i, Float64Gene.valueOf(value.doubleValue(), min, max));
 			}
 
-			final Float64Chromosome chromosome = new Float64Chromosome(genes.toISeq());
+			final Float64Chromosome chromosome = new Float64Chromosome(
+				genes.toISeq()
+			);
 			chromosome._min = Float64.valueOf(min);
 			chromosome._max = Float64.valueOf(max);
 
 			return chromosome;
 		}
 		@Override
-		public void write(final Float64Chromosome chromosome, final OutputElement xml)
+		public void write(
+			final Float64Chromosome chromosome,
+			final OutputElement xml
+		)
 			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
@@ -217,9 +222,10 @@ public class Float64Chromosome
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Float64Chromosome chromosome)
-			throws XMLStreamException
-		{
+		public void read(
+			final InputElement element,
+			final Float64Chromosome chromosome
+		) {
 		}
 	};
 

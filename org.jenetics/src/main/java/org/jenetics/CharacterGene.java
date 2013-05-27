@@ -293,7 +293,10 @@ public final class CharacterGene
 				);
 			final String character = xml.getText().toString();
 
-			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
+			return CharacterGene.valueOf(
+				character.charAt(0),
+				new CharSeq(validCharacters)
+			);
 		}
 		@Override
 		public void write(final CharacterGene gene, final OutputElement xml)

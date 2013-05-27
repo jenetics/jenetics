@@ -208,14 +208,19 @@ public class Integer64Chromosome
 				genes.set(i, Integer64Gene.valueOf(value.longValue(), min, max));
 			}
 
-			final Integer64Chromosome chromosome = new Integer64Chromosome(genes.toISeq());
+			final Integer64Chromosome chromosome = new Integer64Chromosome(
+				genes.toISeq()
+			);
 			chromosome._min = Integer64.valueOf(min);
 			chromosome._max = Integer64.valueOf(max);
 
 			return chromosome;
 		}
 		@Override
-		public void write(final Integer64Chromosome chromosome, final OutputElement xml)
+		public void write(
+			final Integer64Chromosome chromosome,
+			final OutputElement xml
+		)
 			throws XMLStreamException
 		{
 			xml.setAttribute(LENGTH, chromosome.length());
@@ -226,9 +231,10 @@ public class Integer64Chromosome
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Chromosome chromosome)
-			throws XMLStreamException
-		{
+		public void read(
+			final InputElement element,
+			final Integer64Chromosome chromosome
+		) {
 		}
 	};
 
@@ -245,7 +251,7 @@ public class Integer64Chromosome
 		out.writeLong(_min.longValue());
 		out.writeLong(_max.longValue());
 
-		for (Integer64Gene gene : _genes) {
+		for (final Integer64Gene gene : _genes) {
 			out.writeLong(gene.longValue());
 		}
 	}
@@ -263,7 +269,10 @@ public class Integer64Chromosome
 		_max = max;
 		final Array<Integer64Gene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, Integer64Gene.valueOf(Integer64.valueOf(in.readLong()), min, max));
+			final Integer64Gene gene = Integer64Gene.valueOf(
+				Integer64.valueOf(in.readLong()), min, max
+			);
+			genes.set(i, gene);
 		}
 
 		_genes = genes.toISeq();
