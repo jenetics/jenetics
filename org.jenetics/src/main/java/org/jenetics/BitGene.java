@@ -35,11 +35,12 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-05-28 $</em>
  */
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
+		Comparable<BitGene>,
 		XMLSerializable
 {
 

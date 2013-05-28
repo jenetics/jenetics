@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-05-28 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
@@ -77,12 +77,14 @@ public class Integer64Chromosome
 	}
 
 	/**
-	 * Create a new random IntegerChromosome.
+	 * Create a new random {@code Integer64Chromosome} of the given
+	 * {@code length}.
 	 *
-	 * @param min the minimum value of the {@link Float64Gene}s.
-	 * @param max the maximum value of the {@link Float64Gene}s.
+	 * @param min the minimum value of the {@link Integer64Gene}s (inclusively).
+	 * @param max the maximum value of the {@link Integer64Gene}s (inclusively).
 	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @throws NullPointerException if {@code min} or {@code max} is
+	 *         {@code null}.
 	 */
 	public Integer64Chromosome(
 		final Integer64 min,
@@ -98,35 +100,37 @@ public class Integer64Chromosome
 	}
 
 	/**
-	 * Create a new random IntegerChromosome of length one.
+	 * Create a new random {@code Integer64Chromosome} of the given
+	 * {@code length}.
 	 *
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
+	 * @param min the minimum value of the {@link Integer64Gene}s (inclusively).
+	 * @param max the maximum value of the {@link Integer64Gene}s (inclusively).
+	 * @param length the length of the chromosome.
+	 */
+	public Integer64Chromosome(final long min, final long max, int length) {
+		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
+	}
+
+	/**
+	 * Create a new random {@code Integer64Chromosome} of length one.
+	 *
+	 * @param min the minimum value of the {@link Integer64Gene}s (inclusively).
+	 * @param max the maximum value of the {@link Integer64Gene}s (inclusively).
 	 */
 	public Integer64Chromosome(final long min, final long max) {
 		this(Integer64.valueOf(min), Integer64.valueOf(max));
 	}
 
 	/**
-	 * Create a new random IntegerChromosome with length one.
+	 * Create a new random {@code Integer64Chromosome} of length one.
 	 *
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @param min the minimum value of the {@link Integer64Gene}s (inclusively).
+	 * @param max the maximum value of the {@link Integer64Gene}s (inclusively).
+	 * @throws NullPointerException if {@code min} or {@code max} is
+	 *         {@code null}.
 	 */
 	public Integer64Chromosome(final Integer64 min, final Integer64 max) {
 		this(min, max, 1);
-	}
-
-	/**
-	 * Create a new random IntegerChromosome.
-	 *
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
-	 * @param length the length of the chromosome.
-	 */
-	public Integer64Chromosome(final long min, final long max, int length) {
-		this(Integer64.valueOf(min), Integer64.valueOf(max), length);
 	}
 
 	@Override
