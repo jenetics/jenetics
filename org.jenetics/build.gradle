@@ -24,6 +24,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "java"
+apply plugin: "jacoco"
 apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
@@ -195,28 +196,76 @@ javadoc {
 	}
 }
 
-test {
-	useTestNG()
-	options {
-		suites "src/test/java/org/jenetics/testng.xml"
-	}
-}
-
-task export(dependsOn: pack) << {
-}
-
 configurations {
     compile
+    
+    codeCoverage
+    codeCoverageAnt
 }
 
 repositories {
 	flatDir(dir: "../project/lib")
+	mavenCentral()
 }
 
 dependencies {
 	compile "jscience:jscience:4.3.1"
 	testCompile "testng:testng:6.8.1"
+	
+	codeCoverage 'org.jacoco:org.jacoco.agent:0.6.2.201302030002:runtime@jar'
+    codeCoverageAnt 'org.jacoco:org.jacoco.ant:0.6.2.201302030002'
 }
+
+test {
+	useTestNG()
+	options {
+		suites "src/test/java/org/jenetics/testng.xml"
+	}
+	
+	systemProperties = System.properties
+    jvmArgs "-javaagent:${configurations.codeCoverage.asPath}=destfile=${project.buildDir.path}/coverage-results/jacoco.exec,sessionid=HSServ,append=false",
+            '-Djacoco=true',
+            '-Xms128m',
+            '-Xmx512m',
+            '-XX:MaxPermSize=128m'
+}
+
+task export(dependsOn: pack) << {
+}
+
+task generateCoverageReport << {
+    ant {
+        taskdef(name:'jacocoreport', classname: 'org.jacoco.ant.ReportTask', classpath: configurations.codeCoverageAnt.asPath)
+
+        mkdir dir: "build/reports/coverage"
+
+        jacocoreport {
+            executiondata {
+                fileset(dir: "build/coverage-results") {
+                    include name: 'jacoco.exec'
+                }
+            }
+            structure(name: project.name) {
+                classfiles {
+                    fileset(dir: "build/classes/main") {
+                        exclude name: 'org/ifxforum/**/*'
+                        exclude name: 'org/gca/euronet/generated**/*'
+                    }
+                }
+                sourcefiles(encoding: 'CP1252') {
+                    fileset dir: "src/main/java"
+                }
+            }
+
+            xml  destfile: "build/reports/coverage/jacoco.xml"
+            html destdir:  "build/reports/coverage"
+        }
+    }
+}
+
+
+
+
 
 
 
