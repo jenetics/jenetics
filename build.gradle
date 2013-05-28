@@ -25,6 +25,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "eclipse"
 apply plugin: "idea"
+apply plugin: "jacoco"
 
 apply from: "./build-util.gradle"
 
