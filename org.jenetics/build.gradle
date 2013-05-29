@@ -57,7 +57,7 @@ task jarjar(type: Jar) {
 	}
 }
 
-task pack(dependsOn: [build, jarjar, javadoc]) << {
+task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
@@ -115,6 +115,7 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 	copy {
 		from("${buildDir}/reports") {
 			include "tests/**"
+			include "jacoco/**"
 			include "*.gradle"
 			exclude ".gradle"
 		}
@@ -212,6 +213,7 @@ configurations {
 
 repositories {
 	flatDir(dir: "../project/lib")
+	mavenCentral()
 }
 
 dependencies {
@@ -219,33 +221,6 @@ dependencies {
 	testCompile "testng:testng:6.8.1"
 }
 
-jacoco {
-	toolVersion = "0.6.3"
-}
-
-jacocoTestReport {
-	repositories {
-		flatDir(dir: "../project/lib")
-	}
-	dependencies {
-		classpath "org.jacoco.agent:org.jacoco.agent:0.6.3"
-		classpath "org.jacoco.ant:org.jacoco.ant:0.6.3"
-		classpath "org.jacoco.core:org.jacoco.core:0.6.3"
-		classpath "org.jacoco.report:org.jacoco.report:0.6.3"
-	}
-}
-
-buildscript {
-	repositories {
-		flatDir(dir: "../project/lib")
-	}
-	dependencies {
-		classpath "org.jacoco.agent:org.jacoco.agent:0.6.3"
-		classpath "org.jacoco.ant:org.jacoco.ant:0.6.3"
-		classpath "org.jacoco.core:org.jacoco.core:0.6.3"
-		classpath "org.jacoco.report:org.jacoco.report:0.6.3"
-	}
-}
 
 
 
