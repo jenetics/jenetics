@@ -196,13 +196,22 @@ javadoc {
 	}
 }
 
+test {
+	useTestNG()
+	options {
+		suites "src/test/java/org/jenetics/testng.xml"
+	}
+}
+
+task export(dependsOn: pack) << {
+}
+
 configurations {
     compile
 }
 
 repositories {
 	flatDir(dir: "../project/lib")
-	mavenCentral()
 }
 
 dependencies {
@@ -210,44 +219,34 @@ dependencies {
 	testCompile "testng:testng:6.8.1"
 }
 
-test {
-	useTestNG()
-	options {
-		suites "src/test/java/org/jenetics/testng.xml"
-	}
-	
-
-	
-	jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=org.your.project.*"
-}
-	jacoco {
-		append = false
-		destPath = file("$buildDir/jacoco/jacocoTest.exec")
-		classDumpPath = file("$buildDir/jacoco/classpathdumps")
-		
-
-	}
-	jacocoClasspath += files(
-		"../project/lib/org.jacoco.core-0.6.3.jar",
-		"../project/lib/org.jacoco.report-0.6.3.jar",
-		"../project/lib/asm-all-4.0.jar"
-	)
-
-task export(dependsOn: pack) << {
+jacoco {
+	toolVersion = "0.6.3"
 }
 
 jacocoTestReport {
-	jacocoClasspath += files(
-		"../project/lib/org.jacoco.core-0.6.3.jar",
-		"../project/lib/org.jacoco.report-0.6.3.jar",
-		"../project/lib/asm-all-4.0.jar"
-	)
-	reports {
-		xml.enabled false
-		csv.enabled false
-		html.enabled true
+	repositories {
+		flatDir(dir: "../project/lib")
+	}
+	dependencies {
+		classpath "org.jacoco.agent:org.jacoco.agent:0.6.3"
+		classpath "org.jacoco.ant:org.jacoco.ant:0.6.3"
+		classpath "org.jacoco.core:org.jacoco.core:0.6.3"
+		classpath "org.jacoco.report:org.jacoco.report:0.6.3"
 	}
 }
+
+buildscript {
+	repositories {
+		flatDir(dir: "../project/lib")
+	}
+	dependencies {
+		classpath "org.jacoco.agent:org.jacoco.agent:0.6.3"
+		classpath "org.jacoco.ant:org.jacoco.ant:0.6.3"
+		classpath "org.jacoco.core:org.jacoco.core:0.6.3"
+		classpath "org.jacoco.report:org.jacoco.report:0.6.3"
+	}
+}
+
 
 
 
