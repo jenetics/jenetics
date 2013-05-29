@@ -207,6 +207,13 @@ test {
 task export(dependsOn: pack) << {
 }
 
+jacocoTestReport{
+    reports {
+            xml.enabled true
+            csv.enabled true
+    }
+}
+
 configurations {
     compile
 }
