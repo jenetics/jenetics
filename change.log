@@ -1,3 +1,4 @@
+- Fix thread-safe version of the 'LCG64ShiftRandom' class.
 - Implement 'Comparable' interface for 'EnumGene'.
 - Add Array boxing/unboxing methods for short/Short.
 

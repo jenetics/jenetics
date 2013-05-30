@@ -323,9 +323,30 @@ public class LCG64ShiftRandom extends Random64 {
 		}
 
 		@Override
+		public synchronized void reset() {
+			super.reset();
+		}
+
+		@Override
 		public synchronized long nextLong() {
 			return super.nextLong();
 		}
+
+		@Override
+		public synchronized void split(final int p, final int s) {
+			super.split(p, s);
+		}
+
+		@Override
+		public synchronized void jump2(final int s) {
+			super.jump2(s);
+		}
+
+		@Override
+		public void jump(final long step) {
+			super.jump(step);
+		}
+
 	}
 
 
