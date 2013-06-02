@@ -594,8 +594,7 @@ public final class Array<T>
 
 	@Override
 	public ISeq<T> toISeq() {
-		_array._sealed = true;
-		return new ArrayISeq<>(new ArrayRef(_array.data), _start, _end);
+		return new ArrayISeq<>(new ArrayRef(_array.seal().data), _start, _end);
 	}
 
 	/**

@@ -43,10 +43,8 @@ abstract class AbstractCharSeq extends ArrayISeq<Character> {
 		for (int i = 0; i < characters.length; ++i) {
 			values[i] = characters[i];
 		}
-		final ArrayRef ref = new ArrayRef(values);
-		ref._sealed = true;
 
-		return ref;
+		return new ArrayRef(values).seal();
 	}
 
 
