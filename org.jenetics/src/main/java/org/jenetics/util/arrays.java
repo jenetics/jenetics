@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date$</em>
+ * @version 1.3 &mdash; <em>$Date$</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -187,10 +187,11 @@ public final class arrays extends StaticObject {
 	 * @throws UnsupportedOperationException if the array is sealed
 	 * 		  ({@code array.isSealed() == true}).
 	 */
-	public static <T extends Object & Comparable<? super T>> void
+	public static <T extends Object & Comparable<? super T>> MSeq<T>
 	sort(final MSeq<T> array)
 	{
 		Collections.sort(array.asList());
+		return array;
 	}
 
 	/**
@@ -243,8 +244,8 @@ public final class arrays extends StaticObject {
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void shuffle(final T[] array) {
-		shuffle(array, RandomRegistry.getRandom());
+	public static <T> T[] shuffle(final T[] array) {
+		return shuffle(array, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -258,10 +259,12 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the give array or the random object is
 	 *         {@code null}.
 	 */
-	public static <T> void shuffle(final T[] array, final Random random) {
+	public static <T> T[] shuffle(final T[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
+
+		return array;
 	}
 
 	/**
@@ -272,8 +275,8 @@ public final class arrays extends StaticObject {
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void shuffle(final MSeq<T> array) {
-		shuffle(array, RandomRegistry.getRandom());
+	public static <T> MSeq<T> shuffle(final MSeq<T> array) {
+		return shuffle(array, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -287,10 +290,12 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the give array or the random object is
 	 *          {@code null}.
 	 */
-	public static <T> void shuffle(final MSeq<T> array, final Random random) {
+	public static <T> MSeq<T> shuffle(final MSeq<T> array, final Random random) {
 		for (int j = array.length() - 1; j > 0; --j) {
 			array.swap(j, random.nextInt(j + 1));
 		}
+
+		return array;
 	}
 
 	/**
@@ -375,7 +380,7 @@ public final class arrays extends StaticObject {
 	 *          <tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void reverse(final T[] array, final int from, final int to) {
+	public static <T> T[] reverse(final T[] array, final int from, final int to) {
 		rangeCheck(array.length, from, to);
 
 		int i = from;
@@ -383,6 +388,8 @@ public final class arrays extends StaticObject {
 		while (i < j) {
 			swap(array, i++, --j);
 		}
+
+		return array;
 	}
 
 	/**
@@ -392,8 +399,8 @@ public final class arrays extends StaticObject {
 	 * @param array the array to reverse.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void reverse(final T[] array) {
-		reverse(array, 0, array.length);
+	public static <T> T[] reverse(final T[] array) {
+		return reverse(array, 0, array.length);
 	}
 
 	static void reverse(final byte[] array) {
@@ -611,7 +618,7 @@ public final class arrays extends StaticObject {
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.
 	 */
-	public static void subset(final int n, final int sub[], final Random random) {
+	public static int[] subset(final int n, final int sub[], final Random random) {
 		nonNull(random, "Random");
 		nonNull(sub, "Sub set array");
 
@@ -637,7 +644,7 @@ public final class arrays extends StaticObject {
 			for (int i = 0; i < sub.length; ++i) {
 				sub[i] = i;
 			}
-			return;
+			return sub;
 		}
 
 		for (int i = 0; i < k; ++i) {
@@ -702,6 +709,8 @@ public final class arrays extends StaticObject {
 			sub[i - 2] = ix;
 			--m;
 		}
+
+		return sub;
 	}
 
 	private static int nextInt(final Random random, final int a, final int b) {
