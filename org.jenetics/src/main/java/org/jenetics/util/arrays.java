@@ -112,7 +112,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give list is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void swap(final List<T> list, final int i, final int j) {
 		final T old = list.get(i);
 		list.set(i, list.get(j));
@@ -147,7 +150,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void swap(final byte[] array, final int i, final int j) {
 		final byte old = array[i];
 		array[i] = array[j];
@@ -164,7 +170,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void swap(final int[] array, final int i, final int j) {
 		final int old = array[i];
 		array[i] = array[j];
@@ -292,7 +301,10 @@ public final class arrays extends StaticObject {
 	 * @param list the {@code array} to randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void shuffle(final List<T> list) {
 		shuffle(list, RandomRegistry.getRandom());
 	}
@@ -307,7 +319,10 @@ public final class arrays extends StaticObject {
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is
 	 *          {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void shuffle(final List<T> list, final Random random) {
 		for (int j = list.size() - 1; j > 0; --j) {
 			swap(list, j, random.nextInt(j + 1));
@@ -321,7 +336,10 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void shuffle(final int[] array) {
 		shuffle(array, RandomRegistry.getRandom());
 	}
@@ -335,7 +353,10 @@ public final class arrays extends StaticObject {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @throws NullPointerException if the give array or the random object is
 	 *          {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void shuffle(final int[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
