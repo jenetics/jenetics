@@ -1,4 +1,5 @@
 Jenetics-1.3.0
+- Mark non-array methods in 'arrays' class as deprecated.
 - Mark 'arrays.permutation' methods as deprecated.
 - Fix thread-safe version of the 'LCG64ShiftRandom' class.
 - Implement 'Comparable' interface for 'EnumGene'.
