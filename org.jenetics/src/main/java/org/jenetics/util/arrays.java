@@ -400,8 +400,13 @@ public final class arrays extends StaticObject {
 		int i = 0;
 		int j = array.length;
 		while (i < j) {
-			swap(array, i++, --j);
+			_swap(array, i++, --j);
 		}
+	}
+	private static void _swap(final byte[] array, final int i, final int j) {
+		final byte old = array[i];
+		array[i] = array[j];
+		array[j] = old;
 	}
 
 	private static void rangeCheck(int length, int from, int to) {
