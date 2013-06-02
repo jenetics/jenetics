@@ -24,6 +24,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "java"
+apply plugin: "jacoco"
 apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
@@ -56,7 +57,7 @@ task jarjar(type: Jar) {
 	}
 }
 
-task pack(dependsOn: [build, jarjar, javadoc]) << {
+task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
 	def exportLibDir = new File(exportBaseDir, "lib")
@@ -114,6 +115,7 @@ task pack(dependsOn: [build, jarjar, javadoc]) << {
 	copy {
 		from("${buildDir}/reports") {
 			include "tests/**"
+			include "jacoco/**"
 			include "*.gradle"
 			exclude ".gradle"
 		}
@@ -205,18 +207,32 @@ test {
 task export(dependsOn: pack) << {
 }
 
+jacocoTestReport{
+    reports {
+            xml.enabled true
+            csv.enabled true
+    }
+}
+
 configurations {
     compile
 }
 
 repositories {
 	flatDir(dir: "../project/lib")
+	mavenCentral()
 }
 
 dependencies {
 	compile "jscience:jscience:4.3.1"
 	testCompile "testng:testng:6.8.1"
 }
+
+
+
+
+
+
 
 
 
