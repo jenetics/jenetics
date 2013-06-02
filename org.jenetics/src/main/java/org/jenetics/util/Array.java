@@ -48,7 +48,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-05-16 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-02 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -518,6 +518,15 @@ public final class Array<T>
 		}
 	}
 
+	/**
+	 * Randomize this array using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param random the {@link Random} object to use for randomize.
+	 * @return this array
+	 * @throws NullPointerException if the give random object is {@code null}.
+	 */
 	public Array<T> shuffle(final Random random) {
 		_array.cloneIfSealed();
 
@@ -526,6 +535,18 @@ public final class Array<T>
 		}
 
 		return this;
+	}
+
+	/**
+	 * Randomize this array using the <i>registered</i> {@link Random} object.
+	 * The used shuffling algorithm is from D. Knuth TAOCP, Seminumerical
+	 * Algorithms, Third edition, page 142, Algorithm S (Selection sampling
+	 * technique).
+	 *
+	 * @return this array
+	 */
+	public Array<T> shuffle() {
+		return shuffle(RandomRegistry.getRandom());
 	}
 
 	@Override
