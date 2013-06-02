@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-13 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-02 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -695,7 +695,10 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param p the permutation array.
 	 * @throws NullPointerException if the permutation array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int[] permutation(final int[] p) {
 		return permutation(p, RandomRegistry.getRandom());
 	}
@@ -707,7 +710,10 @@ public final class arrays extends StaticObject {
 	 * @param random the random number generator.
 	 * @throws NullPointerException if the permutation array or the random number
 	 *          generator is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int[] permutation(final int[] p, final Random random) {
 		nonNull(p, "Permutation array");
 		nonNull(random, "Random");
@@ -743,7 +749,10 @@ public final class arrays extends StaticObject {
 	 * @param rank the permutation rank.
 	 * @throws NullPointerException it the permutation array is {@code null}.
 	 * @throws IllegalArgumentException if {@code rank < 1}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int[] permutation(final int[] p, final long rank) {
 		nonNull(p, "Permutation array");
 		if (rank < 1) {
