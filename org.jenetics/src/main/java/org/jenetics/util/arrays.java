@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-02 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-03 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -962,13 +962,25 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forEach(Iterable, Function)} instead.
+	 */
+	@Deprecated
+	public static <T, R> void foreach(
+		final Iterable<? extends T> values,
+		final Function<? super T, ? extends R> f
+	) {
+		forEach(values, f);
+	}
+
+	/**
 	 * Iterates over all elements of the given {@code values}
 	 *
 	 * @param values the values to iterate.
 	 * @param f the function to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T, R> void foreach(
+	public static <T, R> void forEach(
 		final Iterable<? extends T> values,
 		final Function<? super T, ? extends R> f
 	) {
