@@ -234,6 +234,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public boolean forall(final Function<? super T, Boolean> predicate) {
+		return forAll(predicate);
+	}
+
+	@Override
+	public boolean forAll(final Function<? super T, Boolean> predicate) {
 		nonNull(predicate, "Predicate");
 
 		boolean valid = true;

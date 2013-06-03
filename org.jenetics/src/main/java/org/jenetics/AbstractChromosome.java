@@ -105,7 +105,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.forall(Verify);
+			_valid = _genes.forAll(Verify);
 		}
 
 		return _valid;

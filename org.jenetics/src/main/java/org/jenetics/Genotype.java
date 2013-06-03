@@ -191,7 +191,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forall(Verify);
+			_valid = _chromosomes.forAll(Verify);
 		}
 		return _valid;
 	}

@@ -36,7 +36,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date$</em>
+ * @version 1.3 &mdash; <em>$Date$</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -87,6 +87,13 @@ public interface Seq<T> extends Iterable<T> {
 	public <R> void forEach(final Function<? super T, ? extends R> function);
 
 	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forAll(Function)} instead.
+	 */
+	@Deprecated
+	public boolean forall(final Function<? super T, Boolean> predicate);
+
+	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
@@ -95,7 +102,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *          {@code null}.
 	 */
-	public boolean forall(final Function<? super T, Boolean> predicate);
+	public boolean forAll(final Function<? super T, Boolean> predicate);
 
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.
