@@ -64,7 +64,7 @@ public class objectTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.foreach(CheckRange(0, 100));
+		array.forEach(CheckRange(0, 100));
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -74,7 +74,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(CheckRange(0, 100));
+		array.forEach(CheckRange(0, 100));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -84,7 +84,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.foreach(CheckRange(0, 100));
+		array.forEach(CheckRange(0, 100));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 
-		array.foreach(NonNull);
+		array.forEach(NonNull);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -124,7 +124,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(NonNull);
+		array.forEach(NonNull);
 	}
 
 	@Test

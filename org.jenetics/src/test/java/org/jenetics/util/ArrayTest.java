@@ -537,7 +537,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> array = new Array<Integer>(10).setAll(123);
 		array.toISeq();
 		final AtomicInteger count = new AtomicInteger(0);
-		boolean value = array.forall(new Function<Integer, Boolean>() {
+		boolean value = array.forAll(new Function<Integer, Boolean>() {
 			@Override public Boolean apply(Integer object) {
 				Assert.assertEquals(object, new Integer(123));
 				count.addAndGet(1);
