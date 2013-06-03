@@ -308,6 +308,7 @@ public class Geometry extends javax.swing.JFrame {
 
         _toolPanel.setLayout(new java.awt.GridBagLayout());
 
+        _startButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _startButton.setText("Start");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -317,6 +318,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
         _toolPanel.add(_startButton, gridBagConstraints);
 
+        _stopButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _stopButton.setText("Stop");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -326,6 +328,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
         _toolPanel.add(_stopButton, gridBagConstraints);
 
+        _initButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _initButton.setText("Init");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -335,6 +338,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(20, 5, 3, 0);
         _toolPanel.add(_initButton, gridBagConstraints);
 
+        _pauseButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _pauseButton.setText("Pause");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -344,6 +348,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
         _toolPanel.add(_pauseButton, gridBagConstraints);
 
+        _stepButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _stepButton.setText("Step");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -353,6 +358,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
         _toolPanel.add(_stepButton, gridBagConstraints);
 
+        _generationLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _generationLabel.setText("Generation:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -394,6 +400,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 5, 3, 0);
         _toolPanel.add(_gaBestTransformPanel, gridBagConstraints);
 
+        _populationSizeLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _populationSizeLabel.setText("Population size:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -411,6 +418,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
         _toolPanel.add(_populationSizeSpinner, gridBagConstraints);
 
+        _maxPTAgeLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _maxPTAgeLabel.setText("Maximal PT age:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -428,6 +436,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
         _toolPanel.add(_maxPTAgeSpinner, gridBagConstraints);
 
+        _offspringFractionSlider.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _offspringFractionSlider.setMajorTickSpacing(10);
         _offspringFractionSlider.setMaximum(90);
         _offspringFractionSlider.setMinimum(10);
@@ -435,7 +444,6 @@ public class Geometry extends javax.swing.JFrame {
         _offspringFractionSlider.setPaintLabels(true);
         _offspringFractionSlider.setPaintTicks(true);
         _offspringFractionSlider.setValue(30);
-        _offspringFractionSlider.setBorder(null);
         _offspringFractionSlider.setName(""); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -445,6 +453,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         _toolPanel.add(_offspringFractionSlider, gridBagConstraints);
 
+        _offspringFractionLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _offspringFractionLabel.setText("Offspring fraction:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -455,6 +464,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         _toolPanel.add(_offspringFractionLabel, gridBagConstraints);
 
+        _populationTransformBestLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _populationTransformBestLabel.setText("Population best:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -465,6 +475,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         _toolPanel.add(_populationTransformBestLabel, gridBagConstraints);
 
+        _gaBestTransformLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _gaBestTransformLabel.setText("GA best:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -485,6 +496,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 3, 0);
         _toolPanel.add(_targetTransformPanel, gridBagConstraints);
 
+        _targetTransformLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _targetTransformLabel.setText("Target transform:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -495,6 +507,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 4);
         _toolPanel.add(_targetTransformLabel, gridBagConstraints);
 
+        _mutationProbabilityLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _mutationProbabilityLabel.setText("Mutation probability:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -505,6 +518,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         _toolPanel.add(_mutationProbabilityLabel, gridBagConstraints);
 
+        _mutationProbabilitySlider.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _mutationProbabilitySlider.setMajorTickSpacing(100);
         _mutationProbabilitySlider.setMaximum(500);
         _mutationProbabilitySlider.setMinorTickSpacing(50);
@@ -518,6 +532,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         _toolPanel.add(_mutationProbabilitySlider, gridBagConstraints);
 
+        _fitenssMeanLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _fitenssMeanLabel.setText("Fitness mean:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -537,6 +552,7 @@ public class Geometry extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(20, 5, 3, 0);
         _toolPanel.add(_fitnessMeanTextField, gridBagConstraints);
 
+        _fitnessVarianceLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         _fitnessVarianceLabel.setText("Fitness variance:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -575,11 +591,11 @@ public class Geometry extends javax.swing.JFrame {
         _drawPanel.setLayout(_drawPanelLayout);
         _drawPanelLayout.setHorizontalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 498, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
         _drawPanelLayout.setVerticalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+            .addGap(0, 583, Short.MAX_VALUE)
         );
 
         _drawToolSplitPane.setLeftComponent(_drawPanel);
