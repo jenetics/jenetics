@@ -42,7 +42,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-11 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-03 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -104,7 +104,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	) {
 		final AtomicInteger alterations = new AtomicInteger(0);
 
-		_alterers.foreach(new Function<Alterer<G>, Void>() {
+		_alterers.forEach(new Function<Alterer<G>, Void>() {
 			@Override public Void apply(final Alterer<G> alterer) {
 				alterations.addAndGet(alterer.alter(population, generation));
 				return null;
