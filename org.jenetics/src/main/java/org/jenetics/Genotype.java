@@ -69,7 +69,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-03 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -191,7 +191,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forall(Verify);
+			_valid = _chromosomes.forAll(Verify);
 		}
 		return _valid;
 	}
