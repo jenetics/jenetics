@@ -67,9 +67,9 @@ public abstract class IndexStream {
 	 *
 	 * @param function the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
-	 *          {@code null}.
+	 *         {@code null}.
 	 */
-	<R> void foreach(final Function<? super Integer, ? extends R> function) {
+	<R> void forEach(final Function<? super Integer, ? extends R> function) {
 		nonNull(function, "Function");
 		for (int i = next(); i != -1; i = next()) {
 			function.apply(i);
