@@ -24,7 +24,7 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
-import static org.jenetics.util.arrays.foreach;
+import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.functions.DoubleToFloat64;
 import static org.jenetics.util.functions.LongToInteger64;
 import static org.jenetics.util.math.sum;
@@ -112,7 +112,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		foreach(classes, NonNull);
+		forEach(classes, NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}

@@ -931,6 +931,18 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forEach(T[], Function)} instead.
+	 */
+	@Deprecated
+	public static <T, R> void foreach(
+		final T[] array,
+		final Function<? super T, ? extends R> f
+	) {
+		forEach(array, f);
+	}
+
+	/**
 	 * Iterates over all elements of the given {@code array} as long as the
 	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
 	 * returns the index the iteration has been interrupted. -1 is returned if
@@ -940,7 +952,7 @@ public final class arrays extends StaticObject {
 	 *
 	 * [code]
 	 * public void foo(final Integer[] values) {
-	 *     arrays.foreach(values, new Validator.NonNull());
+	 *     arrays.forEach(values, new Validator.NonNull());
 	 *     ...
 	 * }
 	 * [/code]
@@ -949,7 +961,7 @@ public final class arrays extends StaticObject {
 	 * @param f the function to apply to every element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T, R> void foreach(
+	public static <T, R> void forEach(
 		final T[] array,
 		final Function<? super T, ? extends R> f
 	) {
