@@ -55,7 +55,7 @@ public final class bit extends StaticObject {
 	 * @param value the value to set.
 	 * @return the given data array.
 	 * @throws IndexOutOfBoundsException if the index is
-	 *          {@code index >= max || index < 0}.
+	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index, final boolean value) {
@@ -63,13 +63,10 @@ public final class bit extends StaticObject {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
 
-			int d = data[bytes] & 0xFF;
-			if (value) {
-				d = d | (1 << bits);
-			} else {
-				d = d & ~(1 << bits);
-			}
-			data[bytes] = (byte)d;
+			data[bytes] = (byte)(value ?
+				(data[bytes] & 0xFF) |  (1 << bits) :
+				(data[bytes] & 0xFF) & ~(1 << bits)
+			);
 		}
 
 		return data;
