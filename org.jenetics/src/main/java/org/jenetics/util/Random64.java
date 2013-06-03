@@ -40,7 +40,10 @@ abstract class Random64 extends PRNG {
 	protected Random64() {
 	}
 
-	// Force to explicitly override the Random.nextLong() method.
+	/**
+	 * Force to explicitly override the Random.nextLong() method. All other
+	 * methods of this class are implemented by calling this method.
+	 */
 	@Override
 	public abstract long nextLong();
 
