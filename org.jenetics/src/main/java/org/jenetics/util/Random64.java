@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.2 &mdash; <em>$Date: 2013-03-22 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-03 $</em>
  */
 abstract class Random64 extends PRNG {
 
@@ -40,7 +40,10 @@ abstract class Random64 extends PRNG {
 	protected Random64() {
 	}
 
-	// Force to explicitly override the Random.nextLong() method.
+	/**
+	 * Force to explicitly override the Random.nextLong() method. All other
+	 * methods of this class are implemented by calling this method.
+	 */
 	@Override
 	public abstract long nextLong();
 
