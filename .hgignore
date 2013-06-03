@@ -34,3 +34,8 @@ random-x86_64
 *.iml
 *.ipr
 *.iws
+
+## Netbeans
+nbproject/**
+build.xml
+manifest.mf
