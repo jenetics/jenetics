@@ -932,7 +932,7 @@ public final class arrays extends StaticObject {
 
 	/**
 	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
-	 *             {@link #forEach(T[], Function)} instead.
+	 *             {@link #forEach(Object[], Function)} instead.
 	 */
 	@Deprecated
 	public static <T, R> void foreach(
