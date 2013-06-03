@@ -218,6 +218,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public <R> void foreach(final Function<? super T, ? extends R> function) {
+		forEach(function);
+	}
+
+	@Override
+	public <R> void forEach(final Function<? super T, ? extends R> function) {
 		nonNull(function, "Function");
 
 		for (int i = _start; i < _end; ++i) {

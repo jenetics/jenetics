@@ -1,4 +1,5 @@
 Jenetics-1.3.0
+- Marke 'Seq.foreach' method as deprecated.
 - Add 'Array.shuffle()' method.
 - Mark non-array methods in 'arrays' class as deprecated.
 - Mark 'arrays.permutation' methods as deprecated.
