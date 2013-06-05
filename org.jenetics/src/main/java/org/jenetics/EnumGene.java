@@ -42,7 +42,7 @@ import org.jenetics.util.object;
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
  * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+ * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
  * [/code]
