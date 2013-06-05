@@ -35,9 +35,44 @@ public class PRNGTest {
 		private static final long serialVersionUID = 1L;
 	};
 
+	@Test
+	public void nextIntMinMax() {
+		final int min = 10;
+		final int max = 100000;
+
+		for (int i = 0; i < 1000; ++i) {
+			final int value = prng.nextInt(min, max);
+			Assert.assertTrue(value < max);
+			Assert.assertTrue(value >= min);
+		}
+	}
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void nextIntIllegalArgumentException() {
 		prng.nextInt(1000, 10);
+	}
+
+	@Test
+	public void nextLongMinMax() {
+		final long min = 10;
+		final long max = 100000;
+
+		for (int i = 0; i < 1000; ++i) {
+			final long value = prng.nextLong(min, max);
+			Assert.assertTrue(value < max);
+			Assert.assertTrue(value >= min);
+		}
+	}
+
+	@Test
+	public void nextLongMax() {
+		final long max = 100000;
+
+		for (int i = 0; i < 1000; ++i) {
+			final long value = prng.nextLong(max);
+			Assert.assertTrue(value < max);
+			Assert.assertTrue(value >= 0);
+		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -46,17 +81,27 @@ public class PRNGTest {
 	}
 
 	@Test
-	public void nextFloat() {
-		final float value = prng.nextFloat(1000, 10);
-		Assert.assertTrue(value < 1000);
-		Assert.assertTrue(value >= 10);
+	public void nextFloatMinMax() {
+		final float min = 10;
+		final float max = 100000;
+
+		for (int i = 0; i < 1000; ++i) {
+			final float value = prng.nextFloat(min, max);
+			Assert.assertTrue(value < max);
+			Assert.assertTrue(value >= min);
+		}
 	}
 
 	@Test
-	public void nextDouble() {
-		final double value = prng.nextDouble(1000, 10);
-		Assert.assertTrue(value < 1000);
-		Assert.assertTrue(value >= 10);
+	public void nextDoubleMinMax() {
+		final double min = 10;
+		final double max = 100000;
+
+		for (int i = 0; i < 1000; ++i) {
+			final double value = prng.nextDouble(min, max);
+			Assert.assertTrue(value < max);
+			Assert.assertTrue(value >= min);
+		}
 	}
 
 }
