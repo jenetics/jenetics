@@ -38,11 +38,11 @@ public class PRNGTest {
 	@Test
 	public void nextIntMinMax() {
 		final int min = 10;
-		final int max = 100000;
+		final int max = Integer.MAX_VALUE;
 
 		for (int i = 0; i < 1000; ++i) {
-			final int value = prng.nextInt(min, max);
-			Assert.assertTrue(value < max);
+			final int value = prng.nextInt(min, max - 1);
+			Assert.assertTrue(value < max - 1);
 			Assert.assertTrue(value >= min);
 		}
 	}
@@ -55,11 +55,11 @@ public class PRNGTest {
 	@Test
 	public void nextLongMinMax() {
 		final long min = 10;
-		final long max = 100000;
+		final long max = Long.MAX_VALUE;
 
 		for (int i = 0; i < 1000; ++i) {
-			final long value = prng.nextLong(min, max);
-			Assert.assertTrue(value < max);
+			final long value = prng.nextLong(min, max - i);
+			Assert.assertTrue(value < max - 1);
 			Assert.assertTrue(value >= min);
 		}
 	}
