@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  */
 public class PRNGTest {
 
-	private final PRNG prng = new PRNG(){
+	private final PRNG prng = new PRNG(System.currentTimeMillis()){
 		private static final long serialVersionUID = 1L;
 	};
 
