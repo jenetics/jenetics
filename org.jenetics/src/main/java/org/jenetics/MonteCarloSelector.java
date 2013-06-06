@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
@@ -62,7 +63,7 @@ public final class MonteCarloSelector<
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %d.",
 				count
 			));
@@ -97,7 +98,7 @@ public final class MonteCarloSelector<
 
 	@Override
 	public String toString() {
-		return String.format("%s", getClass().getSimpleName());
+		return format("%s", getClass().getSimpleName());
 	}
 
 }
