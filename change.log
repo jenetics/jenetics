@@ -1,4 +1,5 @@
 Jenetics-1.3.0
+- Mark method 'math.min/max' as deprecated; functionality has moved to 'math.statistics' class.
 - Mark method 'math.sum' as deprecated; functionality has moved to 'math.statistics' class.
 - Add abstract 'Random64' class, respectively make it public.
 - Mark 'arrays.foreach' method as deprecated. Replaced by 'arrays.forEach'.
