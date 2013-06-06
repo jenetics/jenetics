@@ -26,7 +26,7 @@ import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static org.jenetics.util.math.min;
 import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.sum;
+import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.math.ulpDistance;
 import static org.jenetics.util.object.hashCodeOf;
 
