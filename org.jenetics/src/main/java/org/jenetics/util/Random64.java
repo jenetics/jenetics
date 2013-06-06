@@ -25,11 +25,24 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
+ * An abstract base class which eases the implementation of {@code Random}
+ * objects which natively creates random {@code long} values. All other
+ * {@code Random} functions are optimized using this {@code long} values.
+ *
+ * [code]
+ * public class MyRandom64 extends Random64 {
+ *     public long nextLong() {
+ *         // Only this method must be implemented.
+ *         ...
+ *     }
+ * }
+ * [/code]
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.2 &mdash; <em>$Date: 2013-06-03 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-06 $</em>
  */
-abstract class Random64 extends PRNG {
+public abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,9 +51,10 @@ abstract class Random64 extends PRNG {
 	}
 
 	protected Random64() {
+		this(math.random.seed());
 	}
 
-	/*
+	/**
 	 * Force to explicitly override the Random.nextLong() method. All other
 	 * methods of this class are implemented by calling this method.
 	 */
