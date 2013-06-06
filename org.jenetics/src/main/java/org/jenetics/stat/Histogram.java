@@ -68,7 +68,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-03 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -169,13 +169,13 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public Histogram<C> plus(final Histogram<C> histogram) {
 		if (!_comparator.equals(histogram._comparator)) {
 			throw new IllegalArgumentException(
-					"The histogram comparators are not equals."
-				);
+				"The histogram comparators are not equals."
+			);
 		}
 		if (!Arrays.equals(_separators, histogram._separators)) {
 			throw new IllegalArgumentException(
-					"The histogram separators are not equals."
-				);
+				"The histogram separators are not equals."
+			);
 		}
 
 		final long[] data = new long[_histogram.length];
