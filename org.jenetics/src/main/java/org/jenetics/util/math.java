@@ -96,7 +96,7 @@ public final class math extends StaticObject {
 	 */
 	@Deprecated
 	public static double sum(final double[] values) {
-		return math.statistics.sum(values);
+		return statistics.sum(values);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public final class math extends StaticObject {
 	 */
 	@Deprecated
 	public static long sum(final long[] values) {
-		return math.statistics.sum(values);
+		return statistics.sum(values);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public final class math extends StaticObject {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static double[] normalize(final double[] values) {
-		final double sum = 1.0/sum(values);
+		final double sum = 1.0/statistics.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}
@@ -138,20 +138,12 @@ public final class math extends StaticObject {
 	 * @return the minimum value or {@link Double#NaN} if the given array is
 	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#min(double[])} instead.
 	 */
+	@Deprecated
 	public static double min(final double[] values) {
-		double min = Double.NaN;
-		if (values.length > 0) {
-			min = values[0];
-
-			for (int i = values.length; --i >= 1;) {
-				if (values[i] < min) {
-					min = values[i];
-				}
-			}
-		}
-
-		return min;
+		return statistics.min(values);
 	}
 
 	/**
@@ -161,20 +153,12 @@ public final class math extends StaticObject {
 	 * @return the maximum value or {@link Double#NaN} if the given array is
 	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#max(double[])} instead.
 	 */
+	@Deprecated
 	public static double max(final double[] values) {
-		double max = Double.NaN;
-		if (values.length > 0) {
-			max = values[0];
-
-			for (int i = values.length; --i >= 1;) {
-				if (values[i] > max) {
-					max = values[i];
-				}
-			}
-		}
-
-		return max;
+		return statistics.max(values);
 	}
 
 	/**
@@ -342,6 +326,52 @@ public final class math extends StaticObject {
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
+
+		/**
+		 * Return the minimum value of the given double array.
+		 *
+		 * @param values the double array.
+		 * @return the minimum value or {@link Double#NaN} if the given array is
+		 *         empty.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double min(final double[] values) {
+			double min = Double.NaN;
+			if (values.length > 0) {
+				min = values[0];
+
+				for (int i = values.length; --i >= 1;) {
+					if (values[i] < min) {
+						min = values[i];
+					}
+				}
+			}
+
+			return min;
+		}
+
+		/**
+		 * Return the maximum value of the given double array.
+		 *
+		 * @param values the double array.
+		 * @return the maximum value or {@link Double#NaN} if the given array is
+		 *         empty.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double max(final double[] values) {
+			double max = Double.NaN;
+			if (values.length > 0) {
+				max = values[0];
+
+				for (int i = values.length; --i >= 1;) {
+					if (values[i] > max) {
+						max = values[i];
+					}
+				}
+			}
+
+			return max;
+		}
 
 		/**
 		 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
