@@ -54,7 +54,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-03-13 $ </em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-06 $ </em>
  */
 public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 
@@ -71,7 +71,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	public MultiPointCrossover(final double probability, final int n) {
 		super(probability);
 		if (n < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"n must be at least 1 but was %d.", n
 			));
 		}
