@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import java.util.Random;
 
 /**
@@ -45,16 +47,16 @@ public final class math extends StaticObject {
 	 */
 	public static long plus(final long a, final long b) {
 		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
-			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
 		}
 
 		final long z = a + b;
 		if (a > 0) {
 			if (b > 0 && z < 0) {
-				throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+				throw new ArithmeticException(format("Overflow: %d + %d", a, b));
 			}
 		} else if (b < 0 && z > 0) {
-			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
 		}
 
 		return z;
@@ -73,10 +75,10 @@ public final class math extends StaticObject {
 		final long z = a - b;
 		if (a > 0) {
 			if (b < 0 && z < 0) {
-				throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
+				throw new ArithmeticException(format("Overflow: %d - %d", a, b));
 			}
 		} else if (b > 0 && z > 0) {
-			throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
+			throw new ArithmeticException(format("Overflow: %d - %d", a, b));
 		}
 
 		return z;
@@ -389,7 +391,7 @@ public final class math extends StaticObject {
 			final int min, final int max
 		) {
 			if (min >= max) {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"Min >= max: %d >= %d", min, max
 				));
 			}
@@ -423,7 +425,7 @@ public final class math extends StaticObject {
 			final long min, final long max
 		) {
 			if (min >= max) {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"min >= max: %d >= %d.", min, max
 				));
 			}
@@ -459,7 +461,7 @@ public final class math extends StaticObject {
 		 */
 		public static long nextLong(final Random random, final long n) {
 			if (n <= 0) {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"n is smaller than one: %d", n
 				));
 			}
