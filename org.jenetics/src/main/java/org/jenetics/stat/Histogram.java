@@ -169,13 +169,13 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public Histogram<C> plus(final Histogram<C> histogram) {
 		if (!_comparator.equals(histogram._comparator)) {
 			throw new IllegalArgumentException(
-					"The histogram comparators are not equals."
-				);
+				"The histogram comparators are not equals."
+			);
 		}
 		if (!Arrays.equals(_separators, histogram._separators)) {
 			throw new IllegalArgumentException(
-					"The histogram separators are not equals."
-				);
+				"The histogram separators are not equals."
+			);
 		}
 
 		final long[] data = new long[_histogram.length];
