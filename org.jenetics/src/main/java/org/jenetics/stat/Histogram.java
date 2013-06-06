@@ -27,7 +27,7 @@ import static java.lang.Math.round;
 import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.functions.DoubleToFloat64;
 import static org.jenetics.util.functions.LongToInteger64;
-import static org.jenetics.util.math.sum;
+import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;

@@ -91,21 +91,12 @@ public final class math extends StaticObject {
 	 * @param values the values to sum up.
 	 * @return the sum of the given {@code values}.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#sum(double[])} instead.
 	 */
+	@Deprecated
 	public static double sum(final double[] values) {
-		double sum = 0.0;
-		double c = 0.0;
-		double y = 0.0;
-		double t = 0.0;
-
-		for (int i = values.length; --i >= 0;) {
-			y = values[i] - c;
-			t = sum + y;
-			c = t - sum - y;
-			sum = t;
-		}
-
-		return sum;
+		return math.statistics.sum(values);
 	}
 
 	/**
@@ -114,13 +105,12 @@ public final class math extends StaticObject {
 	 * @param values the values to add.
 	 * @return the values sum.
 	 * @throws NullPointerException if the values are null;
+	 *
+	 * @deprecated Use {@link math.statistics#sum(long[])} instead.
 	 */
+	@Deprecated
 	public static long sum(final long[] values) {
-		long sum = 0;
-		for (int i = values.length; --i >= 0;) {
-			sum += values[i];
-		}
-		return sum;
+		return math.statistics.sum(values);
 	}
 
 	/**
@@ -339,6 +329,49 @@ public final class math extends StaticObject {
 		return t;
 	}
 
+	public static final class statistics extends StaticObject {
+		private statistics() {}
+
+		/**
+		 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+		 * Kahan summation algorithm</a>.
+		 *
+		 * @param values the values to sum up.
+		 * @return the sum of the given {@code values}.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double sum(final double[] values) {
+			double sum = 0.0;
+			double c = 0.0;
+			double y = 0.0;
+			double t = 0.0;
+
+			for (int i = values.length; --i >= 0;) {
+				y = values[i] - c;
+				t = sum + y;
+				c = t - sum - y;
+				sum = t;
+			}
+
+			return sum;
+		}
+
+		/**
+		 * Add the values of the given array.
+		 *
+		 * @param values the values to add.
+		 * @return the values sum.
+		 * @throws NullPointerException if the values are null;
+		 */
+		public static long sum(final long[] values) {
+			long sum = 0;
+			for (int i = values.length; --i >= 0;) {
+				sum += values[i];
+			}
+			return sum;
+		}
+
+	}
 
 	/**
 	 * Mathematical functions regarding probabilities.

@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.math.sum;
+import static org.jenetics.util.math.statistics.sum;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-06-06 $</em>
  */
 public class mathTest {
 
