@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
@@ -39,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
@@ -62,7 +63,7 @@ public final class MonteCarloSelector<
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %d.",
 				count
 			));
@@ -97,7 +98,7 @@ public final class MonteCarloSelector<
 
 	@Override
 	public String toString() {
-		return String.format("%s", getClass().getSimpleName());
+		return format("%s", getClass().getSimpleName());
 	}
 
 }
