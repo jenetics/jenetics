@@ -27,7 +27,7 @@ import static java.lang.String.format;
 import java.util.Random;
 
 /**
- * Object with mathematical functions.
+ * This object contains mathematical helper functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -329,6 +329,17 @@ public final class math extends StaticObject {
 		return t;
 	}
 
+	static final class special extends StaticObject {
+		private special() {}
+	}
+
+	/**
+	 * Some helper method concerning statistics.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.3
+	 * @version 1.3 &mdash; <em>$Date$</em>
+	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
 
