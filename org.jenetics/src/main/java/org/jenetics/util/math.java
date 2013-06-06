@@ -385,7 +385,8 @@ public final class math extends StaticObject {
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
 		public static int nextInt(
-			final Random random, final int min, final int max
+			final Random random,
+			final int min, final int max
 		) {
 			if (min >= max) {
 				throw new IllegalArgumentException(String.format(
@@ -418,7 +419,8 @@ public final class math extends StaticObject {
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
 		public static long nextLong(
-			final Random random, final long min, final long max
+			final Random random,
+			final long min, final long max
 		) {
 			if (min >= max) {
 				throw new IllegalArgumentException(String.format(
@@ -483,7 +485,8 @@ public final class math extends StaticObject {
 		 *         than to {@code max}
 		 */
 		public static float nextFloat(
-			final Random random, final float min, final float max
+			final Random random,
+			final float min, final float max
 		) {
 			return random.nextFloat()*(max - min) + min;
 		}
@@ -499,7 +502,8 @@ public final class math extends StaticObject {
 		 *         than to {@code max}
 		 */
 		public static double nextDouble(
-			final Random random, final double min, final double max
+			final Random random,
+			final double min, final double max
 		) {
 			return random.nextDouble()*(max - min) + min;
 		}
