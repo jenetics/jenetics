@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
@@ -44,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -54,13 +55,6 @@ public class TournamentSelector<
 {
 
 	private final int _sampleSize;
-
-	/**
-	 * Create a tournament selector with sample size two.
-	 */
-	public TournamentSelector() {
-		this(2);
-	}
 
 	/**
 	 * Create a tournament selector with the give sample size. The sample size
@@ -78,6 +72,13 @@ public class TournamentSelector<
 	}
 
 	/**
+	 * Create a tournament selector with sample size two.
+	 */
+	public TournamentSelector() {
+		this(2);
+	}
+
+	/**
 	 * @throws IllegalArgumentException if the sample size is greater than the
 	 *         population size or {@code count} is greater the the population
 	 *         size or the _sampleSize is greater the the population size.
@@ -92,19 +93,19 @@ public class TournamentSelector<
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s",
 				count
 			));
 		}
 		if (count > population.size()) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection size greater than population size: %s > %s",
 				count, population.size()
 			));
 		}
 		if (_sampleSize > population.size()) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Tournament size is greater than the population size! %d > %d.",
 				 _sampleSize, population.size()
 			));
@@ -190,7 +191,7 @@ public class TournamentSelector<
 
 	@Override
 	public String toString() {
-		return String.format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);
+		return format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);
 	}
 
 }
