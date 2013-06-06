@@ -242,7 +242,9 @@ public abstract class NumberGene<
 		}
 
 		final NumberGene<?, ?> gene = (NumberGene<?, ?>)obj;
-		return eq(_value, gene._value) && eq(_min, gene._min) && eq(_max, gene._max);
+		return eq(_value, gene._value) &&
+				eq(_min, gene._min) &&
+				eq(_max, gene._max);
 	}
 
 	@Override

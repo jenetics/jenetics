@@ -411,7 +411,9 @@ public final class Phenotype<
 		nonNull(fitnessFunction, "Fitness function");
 		nonNull(fitnessScaler, "Fitness scaler");
 		if (generation < 0) {
-			throw new IllegalArgumentException("Generation must not < 0: " + generation);
+			throw new IllegalArgumentException(
+				"Generation must not < 0: " + generation
+			);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -464,10 +466,6 @@ public final class Phenotype<
 		public void read(final InputElement xml, final Phenotype gt) {
 		}
 	};
-
-	static String toString(final Object value) {
-		return value != null ? value.toString() : "null";
-	}
 
 }
 
