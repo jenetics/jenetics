@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNull;
 
@@ -71,13 +72,13 @@ public final class TruncationSelector<
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s",
 				count
 			));
 		}
 		if (count > population.size()) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection size greater than population size: %s > %s",
 				count, population.size()
 			));
