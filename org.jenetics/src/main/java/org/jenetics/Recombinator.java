@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.arrays.subset;
 
 import java.util.Random;
@@ -51,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-10 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -70,9 +71,9 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	protected Recombinator(final double probability, final int order) {
 		super(probability);
 		if (order < 2) {
-			throw new IllegalArgumentException(String.format(
-					"Order must be greater than one, but was %d.", order
-				));
+			throw new IllegalArgumentException(format(
+				"Order must be greater than one, but was %d.", order
+			));
 		}
 		_order = order;
 	}
@@ -121,10 +122,10 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	 * @return the number of genes that has been altered.
 	 */
 	protected abstract <C extends Comparable<? super C>> int recombine(
-			final Population<G, C> population,
-			final int[] individuals,
-			final int generation
-		);
+		final Population<G, C> population,
+		final int[] individuals,
+		final int generation
+	);
 
 
 }

@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
+import static java.lang.String.format;
 import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.sum;
 import static org.jenetics.util.math.ulpDistance;
@@ -49,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-03 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -71,7 +72,7 @@ public abstract class ProbabilitySelector<
 		nonNull(population, "Population");
 		nonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s.",
 				count
 			));

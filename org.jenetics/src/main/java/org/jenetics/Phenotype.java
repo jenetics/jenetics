@@ -52,7 +52,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -411,7 +411,9 @@ public final class Phenotype<
 		nonNull(fitnessFunction, "Fitness function");
 		nonNull(fitnessScaler, "Fitness scaler");
 		if (generation < 0) {
-			throw new IllegalArgumentException("Generation must not < 0: " + generation);
+			throw new IllegalArgumentException(
+				"Generation must not < 0: " + generation
+			);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -464,10 +466,6 @@ public final class Phenotype<
 		public void read(final InputElement xml, final Phenotype gt) {
 		}
 	};
-
-	static String toString(final Object value) {
-		return value != null ? value.toString() : "null";
-	}
 
 }
 
