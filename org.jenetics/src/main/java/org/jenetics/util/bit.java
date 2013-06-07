@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-03 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-07 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
