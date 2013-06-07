@@ -466,7 +466,10 @@ public final class object extends StaticObject {
 	 * @param a the object.
 	 * @return the result of calling toString for a non-null argument and "null"
 	 *          for a null argument
+	 *
+	 * @deprecated Use {@link Objects#toString(Object)} instead.
 	 */
+	@Deprecated
 	public static String str(final Object a) {
 		return Objects.toString(a);
 	}
