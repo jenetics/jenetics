@@ -37,6 +37,7 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.bit;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -44,7 +45,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-24 $</em>
+ * @version <em>$Date: 2013-06-07 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -162,10 +163,10 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			data[i] = (byte)(Math.random()*256);
 		}
 
-		final String dataString = BitChromosome.toString(data);
+		final String dataString = bit.toString(data);
 		Reporter.log(dataString);
 
-		final byte[] sdata = BitChromosome.toByteArray(dataString);
+		final byte[] sdata = bit.fromString(dataString);
 		Assert.assertEquals(sdata, data);
 	}
 

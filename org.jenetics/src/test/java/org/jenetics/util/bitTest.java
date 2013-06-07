@@ -41,7 +41,7 @@ public class bitTest {
 	public void byteStr(final byte[] data, final String result) {
 		Assert.assertEquals(bit.toString(data), result);
 	}
-	
+
 	@DataProvider(name = "byteStrData")
 	public Object[][] byteStrData() {
 		return new Object[][] {
@@ -55,7 +55,7 @@ public class bitTest {
 			{ new byte[]{(byte)1, (byte)0}, "00000000|00000001" },
 			{ new byte[]{(byte)0, (byte)1}, "00000001|00000000" },
 			{ new byte[]{(byte)1, (byte)1}, "00000001|00000001" },
-			
+
 			{ bit.toBytes(-5165661323090255963L), "10100101|00011111|00111011|00111111|01100101|11100010|01001111|10111000" },
 			{ bit.toBytes(-3111444787550306452L), "01101100|10111111|11010010|01101011|01110011|11101101|11010001|11010100" },
 			{ bit.toBytes(-3303191740454820247L), "01101001|10100110|00101111|11110101|10011100|10110100|00101000|11010010" },
@@ -83,7 +83,21 @@ public class bitTest {
 			{ bit.toBytes(2811728639172766355L), "10010011|01101010|10101111|11010110|01001100|01000100|00000101|00100111" },
 		};
 	}
-	
+
+	@Test
+	public void toStringFromString() {
+		final Random random = RandomRegistry.getRandom();
+		for (int i = 0; i < 1000; ++i) {
+			final byte[] bytes = new byte[232];
+			random.nextBytes(bytes);
+
+			final String string = bit.toString(bytes);
+			final byte[] data = bit.fromString(string);
+
+			Assert.assertEquals(data, bytes);
+		}
+	}
+
 	/*
 	@Test
 	public void foo() {
@@ -91,7 +105,7 @@ public class bitTest {
 			long value = RandomRegistry.getRandom().nextLong();
 			byte[] bytes = bit.toBytes(value);
 			String string = bit.toString(bytes);
-			
+
 			System.out.println(String.format(
 				"{ bit.toBytes(%dL), \"%s\" },",
 				value, string
@@ -99,7 +113,7 @@ public class bitTest {
 		}
 	}
 	*/
-	
+
 	@Test
 	public void flip() {
 		final long seed = System.currentTimeMillis();
@@ -291,13 +305,13 @@ public class bitTest {
 			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
 		}
 	}
-	
+
 	@Test
 	public void complement() {
 		final Random random = new Random(math.random.seed());
 		final byte[] data = new byte[20];
 		random.nextBytes(data);
-		
+
 		final byte[] cdata = bit.complement(data.clone());
 		Assert.assertFalse(Arrays.equals(data, cdata));
 		Assert.assertTrue(Arrays.equals(data, bit.complement(cdata)));
