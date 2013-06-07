@@ -410,7 +410,9 @@ public final class bit extends StaticObject {
 
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
 		if (data.length < 4 + start) {
-			throw new IllegalArgumentException("Byte array to short: " + data.length);
+			throw new IllegalArgumentException(
+				"Byte array to short: " + data.length
+			);
 		}
 
 		data[0 + start] = (byte)((v >>> 24) & 0xFF);
@@ -423,7 +425,9 @@ public final class bit extends StaticObject {
 
 	static int readInt(final byte[] data, final int start) {
 		if (data.length < 4 + start) {
-			throw new IllegalArgumentException("Byte array to short: " + data.length);
+			throw new IllegalArgumentException(
+				"Byte array to short: " + data.length
+			);
 		}
 
 		return ((data[0 + start] << 24) +
