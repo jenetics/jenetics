@@ -1,0 +1,66 @@
+/*
+ * Java Genetic Algorithm Library (@!identifier!@).
+ * Copyright (c) @!year!@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+
+import java.io.PrintWriter;
+
+import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version $Id$
+ */
+public class Chi {
+
+	public static void main(final String[] args) throws Exception {
+		final PrintWriter writer = new PrintWriter("chi.txt");
+		
+		double[] props = new double[]{0.9, 0.95, 0.975, 0.99, 0.995, 0.999, 0.9999};
+		
+		writer.print("#\t");
+		for (int i = 0; i < props.length; ++i) {
+			writer.print(String.format("%03.6f", props[i]));
+			if (i < props.length - 1) {
+				writer.print("\t");
+			}
+		}
+		writer.println();
+		
+		for (int f = 1; f <= 100; ++f) {
+			final ChiSquaredDistributionImpl chi = new ChiSquaredDistributionImpl(f);
+			
+			writer.print(f);
+			writer.print(":\t");
+			for (int i = 0; i < props.length; ++i) {
+				writer.print(String.format("%03.6f", chi.inverseCumulativeProbability(props[i])));
+				if (i < props.length - 1) {
+					writer.print("\t");
+				}
+			}
+			writer.println();
+			
+		}
+		
+		writer.close();
+	}
+	
+}

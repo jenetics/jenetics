@@ -320,6 +320,69 @@ public final class bit extends StaticObject {
 		array[j] = temp;
 	}
 
+	/**
+	 * Convert a binary representation of the given byte array to a string. The
+	 * string has the following format:
+	 * <pre>
+	 *  Byte:       3        2        1        0
+	 *              |        |        |        |
+	 *  Array: "11110011|10011101|01000000|00101010"
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
+	 * <i>Only the array string is printed.</i>
+	 *
+	 * @param data the byte array to convert to a string.
+	 * @return the binary representation of the given byte array.
+	 */
+	public static String toString(final byte... data) {
+		final StringBuilder out = new StringBuilder();
+
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[data.length - 1] >>> j) & 1);
+			}
+		}
+		for (int i = data.length - 2; i >= 0 ;--i) {
+			out.append('|');
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[i] >>> j) & 1);
+			}
+		}
+
+		return out.toString();
+	}
+
+	/**
+	 * Convert a string which was created with the {@link #toString(byte...)}
+	 * method back to an byte array.
+	 *
+	 * @param data the string to convert.
+	 * @return the byte array.
+	 * @throws IllegalArgumentException if the given data string could not be
+	 *          converted.
+	 */
+	 public static byte[] fromString(final String data) {
+		final String[] parts = data.split("\\|");
+		final byte[] bytes = new byte[parts.length];
+
+		for (int i = 0; i < parts.length; ++i) {
+			if (parts[i].length() != 8) {
+				throw new IllegalArgumentException(
+					"Byte value doesn't contain 8 bit: " + parts[i]
+				);
+			}
+
+			try {
+				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		return bytes;
+	}
+
 	static long toLong(final byte[] data) {
 		return
 			(((long)data[0] << 56) +
@@ -330,6 +393,19 @@ public final class bit extends StaticObject {
 			((data[5] & 255) << 16) +
 			((data[6] & 255) <<  8) +
 			((data[7] & 255) <<  0));
+	}
+
+	static byte[] toBytes(final long value) {
+		final byte[] bytes = new byte[8];
+		bytes[0] = (byte)(value >>> 56);
+		bytes[1] = (byte)(value >>> 48);
+		bytes[2] = (byte)(value >>> 40);
+		bytes[3] = (byte)(value >>> 32);
+		bytes[4] = (byte)(value >>> 24);
+		bytes[5] = (byte)(value >>> 16);
+		bytes[6] = (byte)(value >>>  8);
+		bytes[7] = (byte)(value >>>  0);
+		return bytes;
 	}
 
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
