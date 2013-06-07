@@ -31,7 +31,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-06 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-07 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -322,7 +322,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-06 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-07 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -419,7 +419,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-06 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-07 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -434,8 +434,17 @@ public final class math extends StaticObject {
 		 * @param probability the probability to widen.
 		 * @return the widened probability.
 		 */
+		static int toInt(final float probability) {
+			return Math.round(INT_RANGE*probability + Integer.MIN_VALUE);
+		}
+
 		static int toInt(final double probability) {
 			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		}
+
+		static float toFloat(final int probability) {
+			final long value = (long)probability + Integer.MAX_VALUE;
+			return (float)(value/(double)INT_RANGE);
 		}
 
 	}
@@ -445,7 +454,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-06-06 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-06-07 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
