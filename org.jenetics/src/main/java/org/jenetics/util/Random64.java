@@ -39,8 +39,8 @@ import java.util.Random;
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.1
- * @version 1.3 &mdash; <em>$Date: 2013-06-06 $</em>
+ * @since 1.3
+ * @version 1.3 &mdash; <em>$Date: 2013-06-07 $</em>
  */
 public abstract class Random64 extends PRNG {
 
