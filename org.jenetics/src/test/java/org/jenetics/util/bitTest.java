@@ -228,6 +228,11 @@ public class bitTest {
 			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
 		}
 	}
+	
+	@Test
+	public void complement() {
+		
+	}
 
 	@Test(dataProvider = "toByteArrayData")
 	public void toByteArray(final LargeInteger value) {
