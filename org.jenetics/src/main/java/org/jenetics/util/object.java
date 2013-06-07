@@ -30,7 +30,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date$</em>
+ * @version 1.3 &mdash; <em>$Date$</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -485,8 +485,8 @@ public final class object extends StaticObject {
 	 *
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
-	 * 
-	 * @deprecated Use {@link bit#toString(byte...)} instead. 
+	 *
+	 * @deprecated Use {@link bit#toString(byte...)} instead.
 	 */
 	@Deprecated
 	public static String str(final byte... data) {
