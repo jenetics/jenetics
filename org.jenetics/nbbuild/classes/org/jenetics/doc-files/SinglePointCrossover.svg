@@ -1,0 +1,3569 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.2"
+   viewBox="0 0 500.00071 236.13321"
+   preserveAspectRatio="xMidYMid"
+   clip-path="url(#presentation_clip_path)"
+   xml:space="preserve"
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   width="100%"
+   height="100%"
+   sodipodi:docname="SinglePointCrossover.svg"
+   style="fill-rule:evenodd;stroke-width:28.22200012;stroke-linejoin:round"><metadata
+   id="metadata1447"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1600"
+   inkscape:window-height="851"
+   id="namedview1445"
+   showgrid="false"
+   fit-margin-top="0"
+   fit-margin-left="0"
+   fit-margin-right="0"
+   fit-margin-bottom="0"
+   inkscape:zoom="0.01"
+   inkscape:cx="27459.125"
+   inkscape:cy="-14820.391"
+   inkscape:window-x="-4"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg2" />
+ <defs
+   id="defs4">
+  <clipPath
+   id="presentation_clip_path"
+   clipPathUnits="userSpaceOnUse">
+   <rect
+   x="0"
+   y="0"
+   width="21590"
+   height="27940"
+   id="rect7" />
+  </clipPath>
+ </defs>
+ <defs
+   id="defs9">
+  <font
+   id="EmbeddedFont_1"
+   horiz-adv-x="2048"
+   horiz-origin-x="0"
+   horiz-origin-y="0"
+   vert-origin-x="45"
+   vert-origin-y="90"
+   vert-adv-y="90">
+   <font-face
+   font-family="Droid Serif embedded"
+   units-per-em="2048"
+   font-weight="normal"
+   font-style="italic"
+   ascent="1879"
+   descent="476"
+   id="font-face12" />
+   <missing-glyph
+   horiz-adv-x="2048"
+   d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z"
+   id="missing-glyph14" />
+   <glyph
+   unicode="8"
+   horiz-adv-x="1139"
+   d="M 911,453 C 911,528 885,590 832,638 779,685 710,709 625,709 521,709 435,678 368,616 300,553 266,474 266,379 266,303 292,243 344,198 395,153 465,131 553,131 658,131 744,161 811,222 878,283 911,360 911,453 Z M 1014,1149 C 1014,1212 991,1263 944,1302 897,1341 835,1360 758,1360 667,1360 592,1334 533,1283 474,1232 444,1167 444,1090 444,1023 467,970 514,929 560,888 621,868 698,868 790,868 866,895 925,948 984,1001 1014,1068 1014,1149 Z M 877,786 C 952,757 1010,714 1050,656 1090,598 1110,528 1110,446 1110,308 1057,194 950,105 843,16 706,-29 537,-29 394,-29 280,6 195,77 110,147 68,241 68,358 68,465 104,560 177,643 250,726 344,778 461,801 391,825 338,862 301,913 264,963 246,1024 246,1096 246,1217 296,1318 397,1399 497,1480 624,1520 778,1520 907,1520 1012,1487 1093,1422 1174,1356 1214,1272 1214,1171 1214,1083 1184,1005 1124,936 1063,867 981,817 877,786 Z"
+   id="glyph16" />
+   <glyph
+   unicode="7"
+   horiz-adv-x="1086"
+   d="M 262,1493 L 1284,1493 1266,1407 412,0 190,0 997,1323 229,1323 262,1493 Z"
+   id="glyph18" />
+   <glyph
+   unicode="6"
+   horiz-adv-x="1086"
+   d="M 940,553 C 940,638 918,705 875,754 832,803 773,827 698,827 595,827 508,787 438,708 367,628 332,529 332,412 332,324 354,255 397,206 440,156 499,131 575,131 679,131 766,172 836,254 905,335 940,435 940,553 Z M 1212,1458 L 1178,1274 C 1139,1299 1095,1319 1045,1332 995,1345 942,1352 885,1352 747,1352 636,1309 553,1222 469,1135 406,1000 365,815 414,872 470,915 535,944 599,973 668,987 743,987 865,987 962,952 1035,882 1107,811 1143,717 1143,598 1143,501 1125,410 1090,327 1054,243 1002,169 934,106 887,63 833,29 771,6 709,-17 643,-29 573,-29 436,-29 327,15 248,102 169,189 129,309 129,461 129,602 147,739 184,870 220,1001 271,1114 336,1210 405,1311 488,1388 586,1441 683,1494 791,1520 909,1520 961,1520 1012,1515 1063,1505 1114,1494 1163,1479 1212,1458 Z"
+   id="glyph20" />
+   <glyph
+   unicode="5"
+   horiz-adv-x="1165"
+   d="M 1190,1493 L 1159,1325 541,1325 469,956 C 500,966 531,973 563,978 594,983 626,985 659,985 797,985 906,948 986,874 1066,800 1106,700 1106,573 1106,484 1086,399 1045,318 1004,237 945,165 870,104 817,61 752,29 675,6 598,-17 513,-29 422,-29 362,-29 301,-24 238,-13 175,-2 110,14 41,35 L 78,223 C 139,193 201,171 263,156 324,141 386,133 449,133 579,133 687,172 772,250 857,328 899,426 899,543 899,630 871,697 816,745 760,793 682,817 582,817 529,817 475,811 418,799 361,786 302,768 242,743 L 387,1493 1190,1493 Z"
+   id="glyph22" />
+   <glyph
+   unicode="4"
+   horiz-adv-x="1113"
+   d="M 881,1493 L 1135,1493 944,520 1157,520 1124,352 911,352 844,0 643,0 711,352 37,352 76,547 881,1493 Z M 899,1317 L 233,520 743,520 899,1317 Z"
+   id="glyph24" />
+   <glyph
+   unicode="3"
+   horiz-adv-x="1165"
+   d="M 324,1456 C 397,1477 469,1493 538,1504 607,1515 674,1520 741,1520 873,1520 978,1491 1055,1432 1132,1373 1171,1295 1171,1196 1171,1099 1141,1016 1080,947 1019,878 934,830 827,805 911,781 973,744 1012,693 1051,642 1071,575 1071,492 1071,412 1052,337 1014,267 975,197 920,137 848,86 793,47 728,19 652,-1 576,-19 488,-29 389,-29 326,-29 263,-23 199,-11 135,2 70,20 4,45 L 41,236 C 104,201 167,176 231,159 294,142 359,133 426,133 557,133 664,167 746,235 827,302 868,390 868,498 868,567 842,621 790,659 738,696 664,715 567,715 L 393,715 424,879 608,879 C 719,879 806,904 870,955 933,1006 965,1074 965,1161 965,1224 942,1272 895,1307 848,1341 783,1358 698,1358 634,1358 569,1351 502,1338 435,1324 365,1303 293,1276 L 324,1456 Z"
+   id="glyph26" />
+   <glyph
+   unicode="2"
+   horiz-adv-x="1165"
+   d="M 944,721 L 299,168 1012,168 977,0 8,0 41,170 715,748 C 805,826 869,895 907,954 944,1013 963,1073 963,1135 963,1200 940,1252 895,1293 850,1334 790,1354 717,1354 654,1354 583,1343 506,1320 429,1297 346,1264 258,1221 L 295,1421 C 378,1454 457,1478 532,1495 607,1512 677,1520 741,1520 872,1520 977,1485 1057,1416 1136,1347 1176,1256 1176,1143 1176,1067 1157,995 1119,926 1081,857 1023,788 944,721 Z"
+   id="glyph28" />
+   <glyph
+   unicode="1"
+   horiz-adv-x="900"
+   d="M 133,170 L 463,170 686,1319 313,1247 348,1421 719,1493 922,1493 664,170 993,170 961,0 100,0 133,170 Z"
+   id="glyph30" />
+  </font>
+ </defs>
+ <defs
+   id="defs32">
+  <font
+   id="EmbeddedFont_2"
+   horiz-adv-x="2048"
+   horiz-origin-x="0"
+   horiz-origin-y="0"
+   vert-origin-x="45"
+   vert-origin-y="90"
+   vert-adv-y="90">
+   <font-face
+   font-family="Droid Serif embedded"
+   units-per-em="2048"
+   font-weight="bold"
+   font-style="normal"
+   ascent="1879"
+   descent="476"
+   id="font-face35" />
+   <missing-glyph
+   horiz-adv-x="2048"
+   d="M 0,0 L 2047,0 2047,2047 0,2047 0,0 Z"
+   id="missing-glyph37" />
+   <glyph
+   unicode="h"
+   horiz-adv-x="1112"
+   d="M 1298,682 L 1298,0 938,0 938,111 938,520 C 938,618 936,685 932,722 927,759 920,786 909,803 895,826 876,845 852,858 828,871 801,877 770,877 695,877 637,848 594,791 551,733 530,653 530,551 L 530,0 172,0 172,1556 530,1556 530,956 C 584,1021 641,1070 702,1101 763,1132 830,1147 903,1147 1032,1147 1131,1107 1198,1028 1265,949 1298,833 1298,682 Z"
+   id="glyph39" />
+   <glyph
+   unicode="g"
+   horiz-adv-x="1192"
+   d="M 934,190 C 885,125 830,77 771,46 712,15 643,0 565,0 428,0 315,54 226,162 137,269 92,406 92,573 92,740 137,878 226,985 315,1092 428,1145 565,1145 643,1145 712,1130 771,1099 830,1068 885,1020 934,954 L 934,1120 1294,1120 1294,113 C 1294,-67 1237,-204 1124,-300 1010,-394 845,-442 629,-442 559,-442 491,-437 426,-426 361,-415 295,-399 229,-377 L 229,-98 C 292,-134 353,-161 413,-179 473,-196 533,-205 594,-205 711,-205 797,-179 852,-128 907,-77 934,4 934,113 L 934,190 Z M 698,887 C 624,887 566,860 525,805 484,750 463,673 463,573 463,470 483,393 523,340 563,287 621,260 698,260 773,260 831,287 872,342 913,397 934,474 934,573 934,673 913,750 872,805 831,860 773,887 698,887 Z"
+   id="glyph41" />
+   <glyph
+   unicode="f"
+   horiz-adv-x="875"
+   d="M 909,1556 L 909,1321 711,1321 C 660,1321 625,1312 605,1294 585,1275 575,1243 575,1198 L 575,1120 881,1120 881,864 575,864 575,0 217,0 217,864 39,864 39,1120 217,1120 217,1198 C 217,1320 251,1410 319,1469 387,1527 492,1556 635,1556 L 909,1556 Z"
+   id="glyph43" />
+   <glyph
+   unicode="e"
+   horiz-adv-x="1192"
+   d="M 1290,563 L 1290,461 453,461 C 462,377 492,314 544,272 596,230 669,209 762,209 837,209 915,220 994,243 1073,265 1154,299 1237,344 L 1237,68 C 1152,36 1068,12 983,-5 898,-21 814,-29 729,-29 526,-29 369,23 257,126 144,229 88,373 88,559 88,742 143,885 254,990 364,1095 516,1147 709,1147 885,1147 1026,1094 1132,988 1237,882 1290,740 1290,563 Z M 922,682 C 922,750 902,805 863,847 823,888 771,909 707,909 638,909 581,890 538,851 495,812 468,755 457,682 L 922,682 Z"
+   id="glyph45" />
+   <glyph
+   unicode="d"
+   horiz-adv-x="1192"
+   d="M 934,956 L 934,1556 1294,1556 1294,0 934,0 934,162 C 885,96 830,48 771,17 712,-14 643,-29 565,-29 427,-29 314,26 225,136 136,245 92,386 92,559 92,732 136,873 225,983 314,1092 427,1147 565,1147 642,1147 711,1132 771,1101 830,1070 885,1021 934,956 Z M 698,231 C 775,231 833,259 874,315 914,371 934,452 934,559 934,666 914,747 874,803 833,859 775,887 698,887 622,887 564,859 524,803 483,747 463,666 463,559 463,452 483,371 524,315 564,259 622,231 698,231 Z"
+   id="glyph47" />
+   <glyph
+   unicode="c"
+   horiz-adv-x="980"
+   d="M 1077,1085 L 1077,793 C 1028,826 980,851 931,867 882,883 831,891 778,891 678,891 600,862 545,804 489,745 461,664 461,559 461,454 489,373 545,315 600,256 678,227 778,227 834,227 887,235 938,252 988,269 1034,293 1077,326 L 1077,33 C 1021,12 964,-3 907,-14 849,-24 791,-29 733,-29 531,-29 373,23 259,127 145,230 88,374 88,559 88,744 145,888 259,992 373,1095 531,1147 733,1147 792,1147 850,1142 907,1132 964,1121 1020,1106 1077,1085 Z"
+   id="glyph49" />
+   <glyph
+   unicode="b"
+   horiz-adv-x="1191"
+   d="M 768,231 C 845,231 903,259 944,315 984,371 1004,452 1004,559 1004,666 984,747 944,803 903,859 845,887 768,887 691,887 633,859 592,803 551,746 530,665 530,559 530,453 551,372 592,316 633,259 691,231 768,231 Z M 530,956 C 579,1021 634,1070 694,1101 754,1132 823,1147 901,1147 1039,1147 1152,1092 1241,983 1330,873 1374,732 1374,559 1374,386 1330,245 1241,136 1152,26 1039,-29 901,-29 823,-29 754,-13 694,18 634,49 579,97 530,162 L 530,0 172,0 172,1556 530,1556 530,956 Z"
+   id="glyph51" />
+   <glyph
+   unicode="a"
+   horiz-adv-x="1139"
+   d="M 674,504 C 599,504 543,491 506,466 468,441 449,403 449,354 449,309 464,273 495,248 525,222 567,209 621,209 688,209 745,233 791,282 837,330 860,390 860,463 L 860,504 674,504 Z M 1221,639 L 1221,0 860,0 860,166 C 812,98 758,49 698,18 638,-13 565,-29 479,-29 363,-29 269,5 197,73 124,140 88,228 88,336 88,467 133,564 224,625 314,686 456,717 649,717 L 860,717 860,745 C 860,802 838,843 793,870 748,896 679,909 584,909 507,909 436,901 370,886 304,871 243,848 186,817 L 186,1090 C 263,1109 340,1123 417,1133 494,1142 572,1147 649,1147 851,1147 997,1107 1087,1028 1176,948 1221,818 1221,639 Z"
+   id="glyph53" />
+  </font>
+ </defs>
+ <g
+   id="id2"
+   class="Master_Slide"
+   clip-path="url(#presentation_clip_path)"
+   transform="translate(-1985.8746,-9263.4754)">
+  <g
+   id="bg-id2"
+   visibility="visible"
+   class="Background"
+   style="visibility:visible">
+   <rect
+   x="0"
+   y="0"
+   width="21590"
+   height="27940"
+   id="rect57"
+   style="fill:none;stroke:none" />
+  </g>
+  <g
+   id="bo-id2"
+   visibility="visible"
+   class="BackgroundObjects"
+   style="visibility:visible" />
+ </g>
+ <g
+   id="id1"
+   class="Slide"
+   visibility="visible"
+   clip-path="url(#presentation_clip_path)"
+   style="visibility:visible"
+   transform="matrix(0.02773429,0,0,0.02773429,-55.076833,-27.342543)">
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g61">
+   <g
+   id="g63">
+    <path
+   d="m 2500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path65"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g67"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g69"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="2299"
+   y="1720"
+   id="text71">1</text>
+</g>
+     <rect
+   x="2000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect73"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g75">
+   <g
+   id="g77">
+    <path
+   d="m 3500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path79"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g81"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g83"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="3299"
+   y="1720"
+   id="text85">2</text>
+</g>
+     <rect
+   x="3000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect87"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g89">
+   <g
+   id="g91">
+    <path
+   d="m 4500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path93"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g95"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g97"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="4299"
+   y="1720"
+   id="text99">3</text>
+</g>
+     <rect
+   x="4000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect101"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g103">
+   <g
+   id="g105">
+    <path
+   d="m 5500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path107"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g109"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g111"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="5299"
+   y="1720"
+   id="text113">4</text>
+</g>
+     <rect
+   x="5000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect115"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g117">
+   <g
+   id="g119">
+    <path
+   d="m 6500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path121"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g123"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g125"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="6299"
+   y="1720"
+   id="text127">5</text>
+</g>
+     <rect
+   x="6000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect129"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g131">
+   <g
+   id="g133">
+    <path
+   d="m 7500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path135"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g137"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g139"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="7299"
+   y="1720"
+   id="text141">6</text>
+</g>
+     <rect
+   x="7000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect143"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g145">
+   <g
+   id="g147">
+    <path
+   d="m 8500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path149"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g151"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g153"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="8299"
+   y="1720"
+   id="text155">7</text>
+</g>
+     <rect
+   x="8000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect157"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g159">
+   <g
+   id="g161">
+    <path
+   d="m 9500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path163"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g165"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g167"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="9299"
+   y="1720"
+   id="text169">8</text>
+</g>
+     <rect
+   x="9000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect171"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g173">
+   <g
+   id="g175">
+    <path
+   d="m 2500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path177"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g179"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g181"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="2286"
+   y="2720"
+   id="text183">a</text>
+</g>
+     <rect
+   x="2000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect185"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g187">
+   <g
+   id="g189">
+    <path
+   d="m 3500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path191"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g193"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g195"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="3274"
+   y="2720"
+   id="text197">b</text>
+</g>
+     <rect
+   x="3000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect199"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g201">
+   <g
+   id="g203">
+    <path
+   d="m 4500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path205"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g207"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g209"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="4312"
+   y="2720"
+   id="text211">c</text>
+</g>
+     <rect
+   x="4000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect213"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g215">
+   <g
+   id="g217">
+    <path
+   d="m 5500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path219"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g221"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g223"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="5274"
+   y="2720"
+   id="text225">d</text>
+</g>
+     <rect
+   x="5000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect227"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g229">
+   <g
+   id="g231">
+    <path
+   d="m 6500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path233"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g235"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g237"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="6284"
+   y="2720"
+   id="text239">e</text>
+</g>
+     <rect
+   x="6000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect241"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g243">
+   <g
+   id="g245">
+    <path
+   d="m 7500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path247"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g249"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g251"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="7363"
+   y="2720"
+   id="text253">f</text>
+</g>
+     <rect
+   x="7000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect255"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g257">
+   <g
+   id="g259">
+    <path
+   d="m 8500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path261"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g263"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g265"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="8274"
+   y="2720"
+   id="text267">g</text>
+</g>
+     <rect
+   x="8000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect269"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g271">
+   <g
+   id="g273">
+    <path
+   d="m 9500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path275"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g277"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g279"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="9274"
+   y="2720"
+   id="text281">h</text>
+</g>
+     <rect
+   x="9000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect283"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g285">
+   <g
+   id="g287">
+    <path
+   d="m 12500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path289"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g291"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g293"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="12286"
+   y="1720"
+   id="text295">a</text>
+</g>
+     <rect
+   x="12000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect297"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g299">
+   <g
+   id="g301">
+    <path
+   d="m 13500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path303"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g305"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g307"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="13274"
+   y="1720"
+   id="text309">b</text>
+</g>
+     <rect
+   x="13000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect311"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g313">
+   <g
+   id="g315">
+    <path
+   d="m 14500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path317"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g319"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g321"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="14312"
+   y="1720"
+   id="text323">c</text>
+</g>
+     <rect
+   x="14000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect325"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g327">
+   <g
+   id="g329">
+    <path
+   d="m 15500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path331"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g333"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g335"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="15274"
+   y="1720"
+   id="text337">d</text>
+</g>
+     <rect
+   x="15000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect339"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g341">
+   <g
+   id="g343">
+    <path
+   d="m 16500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path345"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g347"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g349"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="16284"
+   y="1720"
+   id="text351">e</text>
+</g>
+     <rect
+   x="16000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect353"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g355">
+   <g
+   id="g357">
+    <path
+   d="m 17500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path359"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g361"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g363"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="17363"
+   y="1720"
+   id="text365">f</text>
+</g>
+     <rect
+   x="17000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect367"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g369">
+   <g
+   id="g371">
+    <path
+   d="m 18500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path373"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g375"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g377"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="18274"
+   y="1720"
+   id="text379">g</text>
+</g>
+     <rect
+   x="18000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect381"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g383">
+   <g
+   id="g385">
+    <path
+   d="m 19500,2000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path387"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g389"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g391"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="19274"
+   y="1720"
+   id="text393">h</text>
+</g>
+     <rect
+   x="19000"
+   y="1000"
+   width="1001"
+   height="1001"
+   id="rect395"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g397">
+   <g
+   id="g399">
+    <path
+   d="m 12500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path401"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g403"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g405"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="12299"
+   y="2720"
+   id="text407">1</text>
+</g>
+     <rect
+   x="12000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect409"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g411">
+   <g
+   id="g413">
+    <path
+   d="m 13500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path415"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g417"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g419"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="13299"
+   y="2720"
+   id="text421">2</text>
+</g>
+     <rect
+   x="13000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect423"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g425">
+   <g
+   id="g427">
+    <path
+   d="m 14500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path429"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g431"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g433"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="14299"
+   y="2720"
+   id="text435">3</text>
+</g>
+     <rect
+   x="14000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect437"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g439">
+   <g
+   id="g441">
+    <path
+   d="m 15500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path443"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g445"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g447"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="15299"
+   y="2720"
+   id="text449">4</text>
+</g>
+     <rect
+   x="15000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect451"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g453">
+   <g
+   id="g455">
+    <path
+   d="m 16500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path457"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g459"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g461"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="16299"
+   y="2720"
+   id="text463">5</text>
+</g>
+     <rect
+   x="16000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect465"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g467">
+   <g
+   id="g469">
+    <path
+   d="m 17500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path471"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g473"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g475"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="17299"
+   y="2720"
+   id="text477">6</text>
+</g>
+     <rect
+   x="17000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect479"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g481">
+   <g
+   id="g483">
+    <path
+   d="m 18500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path485"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g487"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g489"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="18299"
+   y="2720"
+   id="text491">7</text>
+</g>
+     <rect
+   x="18000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect493"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g495">
+   <g
+   id="g497">
+    <path
+   d="m 19500,3000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path499"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g501"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g503"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="19299"
+   y="2720"
+   id="text505">8</text>
+</g>
+     <rect
+   x="19000"
+   y="2000"
+   width="1001"
+   height="1001"
+   id="rect507"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.LineShape"
+   id="g509">
+   <g
+   id="g511">
+    <path
+   d="m 12500,3500 0,-209"
+   id="path513"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+    <path
+   d="m 12500,3000 -101,305 203,0 -102,-305 z"
+   id="path515"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g517">
+   <g
+   id="g519">
+    <path
+   d="m 2500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path521"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g523"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g525"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="2299"
+   y="4720"
+   id="text527">1</text>
+</g>
+     <rect
+   x="2000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect529"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g531">
+   <g
+   id="g533">
+    <path
+   d="m 3500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path535"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g537"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g539"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="3274"
+   y="4720"
+   id="text541">b</text>
+</g>
+     <rect
+   x="3000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect543"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g545">
+   <g
+   id="g547">
+    <path
+   d="m 4500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path549"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g551"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g553"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="4312"
+   y="4720"
+   id="text555">c</text>
+</g>
+     <rect
+   x="4000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect557"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g559">
+   <g
+   id="g561">
+    <path
+   d="m 5500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path563"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g565"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g567"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="5274"
+   y="4720"
+   id="text569">d</text>
+</g>
+     <rect
+   x="5000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect571"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g573">
+   <g
+   id="g575">
+    <path
+   d="m 6500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path577"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g579"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g581"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="6284"
+   y="4720"
+   id="text583">e</text>
+</g>
+     <rect
+   x="6000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect585"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g587">
+   <g
+   id="g589">
+    <path
+   d="m 7500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path591"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g593"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g595"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="7363"
+   y="4720"
+   id="text597">f</text>
+</g>
+     <rect
+   x="7000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect599"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g601">
+   <g
+   id="g603">
+    <path
+   d="m 8500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path605"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g607"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g609"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="8274"
+   y="4720"
+   id="text611">g</text>
+</g>
+     <rect
+   x="8000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect613"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g615">
+   <g
+   id="g617">
+    <path
+   d="m 9500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path619"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g621"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g623"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="9274"
+   y="4720"
+   id="text625">h</text>
+</g>
+     <rect
+   x="9000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect627"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g629">
+   <g
+   id="g631">
+    <path
+   d="m 2500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path633"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g635"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g637"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="2286"
+   y="5720"
+   id="text639">a</text>
+</g>
+     <rect
+   x="2000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect641"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g643">
+   <g
+   id="g645">
+    <path
+   d="m 3500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path647"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g649"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g651"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="3299"
+   y="5720"
+   id="text653">2</text>
+</g>
+     <rect
+   x="3000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect655"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g657">
+   <g
+   id="g659">
+    <path
+   d="m 4500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path661"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g663"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g665"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="4299"
+   y="5720"
+   id="text667">3</text>
+</g>
+     <rect
+   x="4000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect669"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g671">
+   <g
+   id="g673">
+    <path
+   d="m 5500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path675"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g677"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g679"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="5299"
+   y="5720"
+   id="text681">4</text>
+</g>
+     <rect
+   x="5000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect683"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g685">
+   <g
+   id="g687">
+    <path
+   d="m 6500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path689"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g691"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g693"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="6299"
+   y="5720"
+   id="text695">5</text>
+</g>
+     <rect
+   x="6000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect697"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g699">
+   <g
+   id="g701">
+    <path
+   d="m 7500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path703"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g705"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g707"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="7299"
+   y="5720"
+   id="text709">6</text>
+</g>
+     <rect
+   x="7000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect711"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g713">
+   <g
+   id="g715">
+    <path
+   d="m 8500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path717"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g719"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g721"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="8299"
+   y="5720"
+   id="text723">7</text>
+</g>
+     <rect
+   x="8000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect725"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g727">
+   <g
+   id="g729">
+    <path
+   d="m 9500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path731"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g733"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g735"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="9299"
+   y="5720"
+   id="text737">8</text>
+</g>
+     <rect
+   x="9000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect739"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.LineShape"
+   id="g741">
+   <g
+   id="g743">
+    <path
+   d="m 3500,6500 0,-209"
+   id="path745"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+    <path
+   d="m 3500,6000 -101,305 203,0 -102,-305 z"
+   id="path747"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g749">
+   <g
+   id="g751">
+    <path
+   d="m 12500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path753"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g755"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g757"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="12299"
+   y="4720"
+   id="text759">1</text>
+</g>
+     <rect
+   x="12000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect761"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g763">
+   <g
+   id="g765">
+    <path
+   d="m 13500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path767"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g769"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g771"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="13299"
+   y="4720"
+   id="text773">2</text>
+</g>
+     <rect
+   x="13000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect775"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g777">
+   <g
+   id="g779">
+    <path
+   d="m 14500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path781"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g783"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g785"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="14299"
+   y="4720"
+   id="text787">3</text>
+</g>
+     <rect
+   x="14000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect789"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g791">
+   <g
+   id="g793">
+    <path
+   d="m 15500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path795"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g797"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g799"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="15274"
+   y="4720"
+   id="text801">d</text>
+</g>
+     <rect
+   x="15000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect803"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g805">
+   <g
+   id="g807">
+    <path
+   d="m 16500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path809"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g811"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g813"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="16284"
+   y="4720"
+   id="text815">e</text>
+</g>
+     <rect
+   x="16000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect817"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g819">
+   <g
+   id="g821">
+    <path
+   d="m 17500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path823"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g825"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g827"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="17363"
+   y="4720"
+   id="text829">f</text>
+</g>
+     <rect
+   x="17000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect831"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g833">
+   <g
+   id="g835">
+    <path
+   d="m 18500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path837"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g839"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g841"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="18274"
+   y="4720"
+   id="text843">g</text>
+</g>
+     <rect
+   x="18000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect845"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g847">
+   <g
+   id="g849">
+    <path
+   d="m 19500,5000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path851"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g853"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g855"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="19274"
+   y="4720"
+   id="text857">h</text>
+</g>
+     <rect
+   x="19000"
+   y="4000"
+   width="1001"
+   height="1001"
+   id="rect859"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g861">
+   <g
+   id="g863">
+    <path
+   d="m 12500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path865"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g867"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g869"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="12286"
+   y="5720"
+   id="text871">a</text>
+</g>
+     <rect
+   x="12000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect873"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g875">
+   <g
+   id="g877">
+    <path
+   d="m 13500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path879"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g881"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g883"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="13274"
+   y="5720"
+   id="text885">b</text>
+</g>
+     <rect
+   x="13000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect887"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g889">
+   <g
+   id="g891">
+    <path
+   d="m 14500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path893"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g895"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g897"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="14312"
+   y="5720"
+   id="text899">c</text>
+</g>
+     <rect
+   x="14000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect901"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g903">
+   <g
+   id="g905">
+    <path
+   d="m 15500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path907"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g909"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g911"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="15299"
+   y="5720"
+   id="text913">4</text>
+</g>
+     <rect
+   x="15000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect915"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g917">
+   <g
+   id="g919">
+    <path
+   d="m 16500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path921"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g923"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g925"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="16299"
+   y="5720"
+   id="text927">5</text>
+</g>
+     <rect
+   x="16000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect929"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g931">
+   <g
+   id="g933">
+    <path
+   d="m 17500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path935"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g937"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g939"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="17299"
+   y="5720"
+   id="text941">6</text>
+</g>
+     <rect
+   x="17000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect943"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g945">
+   <g
+   id="g947">
+    <path
+   d="m 18500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path949"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g951"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g953"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="18299"
+   y="5720"
+   id="text955">7</text>
+</g>
+     <rect
+   x="18000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect957"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g959">
+   <g
+   id="g961">
+    <path
+   d="m 19500,6000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path963"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g965"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g967"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="19299"
+   y="5720"
+   id="text969">8</text>
+</g>
+     <rect
+   x="19000"
+   y="5000"
+   width="1001"
+   height="1001"
+   id="rect971"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.LineShape"
+   id="g973">
+   <g
+   id="g975">
+    <path
+   d="m 15500,6500 0,-209"
+   id="path977"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+    <path
+   d="m 15500,6000 -101,305 203,0 -102,-305 z"
+   id="path979"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g981">
+   <g
+   id="g983">
+    <path
+   d="m 2500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path985"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g987"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g989"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="2299"
+   y="7720"
+   id="text991">1</text>
+</g>
+     <rect
+   x="2000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect993"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g995">
+   <g
+   id="g997">
+    <path
+   d="m 3500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path999"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1001"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1003"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="3299"
+   y="7720"
+   id="text1005">2</text>
+</g>
+     <rect
+   x="3000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1007"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1009">
+   <g
+   id="g1011">
+    <path
+   d="m 4500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1013"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1015"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1017"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="4299"
+   y="7720"
+   id="text1019">3</text>
+</g>
+     <rect
+   x="4000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1021"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1023">
+   <g
+   id="g1025">
+    <path
+   d="m 5500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1027"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1029"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1031"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="5299"
+   y="7720"
+   id="text1033">4</text>
+</g>
+     <rect
+   x="5000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1035"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1037">
+   <g
+   id="g1039">
+    <path
+   d="m 6500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1041"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1043"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1045"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="6299"
+   y="7720"
+   id="text1047">5</text>
+</g>
+     <rect
+   x="6000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1049"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1051">
+   <g
+   id="g1053">
+    <path
+   d="m 7500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1055"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1057"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1059"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="7299"
+   y="7720"
+   id="text1061">6</text>
+</g>
+     <rect
+   x="7000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1063"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1065">
+   <g
+   id="g1067">
+    <path
+   d="m 8500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1069"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1071"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1073"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="8274"
+   y="7720"
+   id="text1075">g</text>
+</g>
+     <rect
+   x="8000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1077"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1079">
+   <g
+   id="g1081">
+    <path
+   d="m 9500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1083"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1085"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1087"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="9274"
+   y="7720"
+   id="text1089">h</text>
+</g>
+     <rect
+   x="9000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1091"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1093">
+   <g
+   id="g1095">
+    <path
+   d="m 2500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1097"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1099"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1101"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="2286"
+   y="8720"
+   id="text1103">a</text>
+</g>
+     <rect
+   x="2000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1105"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1107">
+   <g
+   id="g1109">
+    <path
+   d="m 3500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1111"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1113"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1115"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="3274"
+   y="8720"
+   id="text1117">b</text>
+</g>
+     <rect
+   x="3000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1119"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1121">
+   <g
+   id="g1123">
+    <path
+   d="m 4500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1125"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1127"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1129"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="4312"
+   y="8720"
+   id="text1131">c</text>
+</g>
+     <rect
+   x="4000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1133"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1135">
+   <g
+   id="g1137">
+    <path
+   d="m 5500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1139"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1141"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1143"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="5274"
+   y="8720"
+   id="text1145">d</text>
+</g>
+     <rect
+   x="5000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1147"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1149">
+   <g
+   id="g1151">
+    <path
+   d="m 6500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1153"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1155"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1157"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="6284"
+   y="8720"
+   id="text1159">e</text>
+</g>
+     <rect
+   x="6000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1161"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1163">
+   <g
+   id="g1165">
+    <path
+   d="m 7500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1167"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1169"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1171"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="7363"
+   y="8720"
+   id="text1173">f</text>
+</g>
+     <rect
+   x="7000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1175"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1177">
+   <g
+   id="g1179">
+    <path
+   d="m 8500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1181"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1183"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1185"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="8299"
+   y="8720"
+   id="text1187">7</text>
+</g>
+     <rect
+   x="8000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1189"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1191">
+   <g
+   id="g1193">
+    <path
+   d="m 9500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1195"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1197"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1199"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="9299"
+   y="8720"
+   id="text1201">8</text>
+</g>
+     <rect
+   x="9000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1203"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.LineShape"
+   id="g1205">
+   <g
+   id="g1207">
+    <path
+   d="m 8400,9500 0,-209"
+   id="path1209"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+    <path
+   d="m 8400,9000 -101,305 203,0 -102,-305 z"
+   id="path1211"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1213">
+   <g
+   id="g1215">
+    <path
+   d="m 12500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1217"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1219"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1221"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="12299"
+   y="7720"
+   id="text1223">1</text>
+</g>
+     <rect
+   x="12000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1225"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1227">
+   <g
+   id="g1229">
+    <path
+   d="m 13500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1231"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1233"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1235"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="13299"
+   y="7720"
+   id="text1237">2</text>
+</g>
+     <rect
+   x="13000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1239"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1241">
+   <g
+   id="g1243">
+    <path
+   d="m 14500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1245"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1247"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1249"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="14299"
+   y="7720"
+   id="text1251">3</text>
+</g>
+     <rect
+   x="14000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1253"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1255">
+   <g
+   id="g1257">
+    <path
+   d="m 15500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1259"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1261"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1263"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="15299"
+   y="7720"
+   id="text1265">4</text>
+</g>
+     <rect
+   x="15000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1267"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1269">
+   <g
+   id="g1271">
+    <path
+   d="m 16500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1273"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1275"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1277"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="16299"
+   y="7720"
+   id="text1279">5</text>
+</g>
+     <rect
+   x="16000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1281"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1283">
+   <g
+   id="g1285">
+    <path
+   d="m 17500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1287"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1289"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1291"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="17299"
+   y="7720"
+   id="text1293">6</text>
+</g>
+     <rect
+   x="17000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1295"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1297">
+   <g
+   id="g1299">
+    <path
+   d="m 18500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1301"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1303"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1305"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="18299"
+   y="7720"
+   id="text1307">7</text>
+</g>
+     <rect
+   x="18000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1309"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1311">
+   <g
+   id="g1313">
+    <path
+   d="m 19500,8000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1315"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1317"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1319"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="19274"
+   y="7720"
+   id="text1321">h</text>
+</g>
+     <rect
+   x="19000"
+   y="7000"
+   width="1001"
+   height="1001"
+   id="rect1323"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1325">
+   <g
+   id="g1327">
+    <path
+   d="m 12500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1329"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1331"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1333"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="12286"
+   y="8720"
+   id="text1335">a</text>
+</g>
+     <rect
+   x="12000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1337"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1339">
+   <g
+   id="g1341">
+    <path
+   d="m 13500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1343"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1345"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1347"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="13274"
+   y="8720"
+   id="text1349">b</text>
+</g>
+     <rect
+   x="13000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1351"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1353">
+   <g
+   id="g1355">
+    <path
+   d="m 14500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1357"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1359"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1361"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="14312"
+   y="8720"
+   id="text1363">c</text>
+</g>
+     <rect
+   x="14000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1365"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1367">
+   <g
+   id="g1369">
+    <path
+   d="m 15500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1371"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1373"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1375"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="15274"
+   y="8720"
+   id="text1377">d</text>
+</g>
+     <rect
+   x="15000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1379"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1381">
+   <g
+   id="g1383">
+    <path
+   d="m 16500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1385"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1387"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1389"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="16284"
+   y="8720"
+   id="text1391">e</text>
+</g>
+     <rect
+   x="16000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1393"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1395">
+   <g
+   id="g1397">
+    <path
+   d="m 17500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1399"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1401"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1403"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="17363"
+   y="8720"
+   id="text1405">f</text>
+</g>
+     <rect
+   x="17000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1407"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1409">
+   <g
+   id="g1411">
+    <path
+   d="m 18500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1413"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="normal"
+   font-weight="700"
+   id="g1415"
+   style="font-size:634px;font-style:normal;font-weight:700;font-family:Droid Serif embedded">
+     <g
+   id="g1417"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="18274"
+   y="8720"
+   id="text1419">g</text>
+</g>
+     <rect
+   x="18000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1421"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g1423">
+   <g
+   id="g1425">
+    <path
+   d="m 19500,9000 -500,0 0,-1000 1000,0 0,1000 -500,0"
+   id="path1427"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#808080" />
+    <g
+   font-size="634px"
+   font-style="italic"
+   font-weight="400"
+   id="g1429"
+   style="font-size:634px;font-style:italic;font-weight:400;font-family:Droid Serif embedded">
+     <g
+   id="g1431"
+   style="fill:#1f1c1b;stroke:none">
+      <text
+   x="19299"
+   y="8720"
+   id="text1433">8</text>
+</g>
+     <rect
+   x="19000"
+   y="8000"
+   width="1001"
+   height="1001"
+   id="rect1435"
+   style="fill:none;stroke:none" />
+    </g>
+   </g>
+  </g>
+  <g
+   class="com.sun.star.drawing.LineShape"
+   id="g1437">
+   <g
+   id="g1439">
+    <path
+   d="m 19500,9500 0,-209"
+   id="path1441"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+    <path
+   d="m 19500,9000 -101,305 203,0 -102,-305 z"
+   id="path1443"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+   </g>
+  </g>
+ </g>
+</svg>
