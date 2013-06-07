@@ -38,6 +38,7 @@ abstract class PRNG extends Random {
 	}
 
 	protected PRNG() {
+		this(math.random.seed());
 	}
 
 	/**
