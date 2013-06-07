@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-03-25 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
  */
 abstract class PRNG extends Random {
 
@@ -38,6 +38,7 @@ abstract class PRNG extends Random {
 	}
 
 	protected PRNG() {
+		this(math.random.seed());
 	}
 
 	/**
