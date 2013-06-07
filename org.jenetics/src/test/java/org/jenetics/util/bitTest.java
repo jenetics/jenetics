@@ -33,7 +33,7 @@ import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-06-07 $</em>
  */
 public class bitTest {
 
@@ -227,6 +227,11 @@ public class bitTest {
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(cdata, i), !bit.get(data, i), "Index: " + i);
 		}
+	}
+	
+	@Test
+	public void complement() {
+		
 	}
 
 	@Test(dataProvider = "toByteArrayData")
