@@ -364,6 +364,19 @@ public final class bit extends StaticObject {
 			((data[6] & 255) <<  8) +
 			((data[7] & 255) <<  0));
 	}
+	
+	static byte[] toBytes(final long value) {
+		final byte[] bytes = new byte[8];
+		bytes[0] = (byte)(value >>> 56);
+		bytes[1] = (byte)(value >>> 48);
+		bytes[2] = (byte)(value >>> 40);
+		bytes[3] = (byte)(value >>> 32);
+		bytes[4] = (byte)(value >>> 24);
+		bytes[5] = (byte)(value >>> 16);
+		bytes[6] = (byte)(value >>>  8);
+		bytes[7] = (byte)(value >>>  0);
+		return bytes;
+	}
 
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
 		if (data.length < 4 + start) {
