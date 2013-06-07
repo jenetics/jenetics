@@ -485,23 +485,12 @@ public final class object extends StaticObject {
 	 *
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
+	 * 
+	 * @deprecated Use {@link bit#toString(byte...)} instead. 
 	 */
+	@Deprecated
 	public static String str(final byte... data) {
-		final StringBuilder out = new StringBuilder();
-
-		if (data.length > 0) {
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[data.length - 1] >>> j) & 1);
-			}
-		}
-		for (int i = data.length - 2; i >= 0 ;--i) {
-			out.append('|');
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[i] >>> j) & 1);
-			}
-		}
-
-		return out.toString();
+		return bit.toString(data);
 	}
 
 }

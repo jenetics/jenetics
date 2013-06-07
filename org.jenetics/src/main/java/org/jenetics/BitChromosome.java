@@ -26,7 +26,6 @@ import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
 import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.object.str;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,14 +39,13 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jscience.mathematics.number.LargeInteger;
-import org.jscience.mathematics.number.Number;
-
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
+import org.jscience.mathematics.number.LargeInteger;
+import org.jscience.mathematics.number.Number;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
@@ -457,7 +455,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Text toText() {
-		return Text.valueOf(str(toByteArray()));
+		return Text.valueOf(bit.toString(toByteArray()));
 	}
 
 	@Override

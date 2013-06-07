@@ -319,6 +319,39 @@ public final class bit extends StaticObject {
 		array[i] = array[j];
 		array[j] = temp;
 	}
+	
+	/**
+	 * Print a binary representation of the given byte array. The printed string
+	 * has the following format:
+	 * <pre>
+	 *  Byte:       3        2        1        0
+	 *              |        |        |        |
+	 *  Array: "11110011|10011101|01000000|00101010"
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
+	 * <i>Only the array string is printed.</i>
+	 *
+	 * @param data the byte array to convert to a string.
+	 * @return the binary representation of the given byte array.
+	 */
+	public static String toString(final byte... data) {
+		final StringBuilder out = new StringBuilder();
+
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[data.length - 1] >>> j) & 1);
+			}
+		}
+		for (int i = data.length - 2; i >= 0 ;--i) {
+			out.append('|');
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[i] >>> j) & 1);
+			}
+		}
+
+		return out.toString();
+	}
 
 	static long toLong(final byte[] data) {
 		return

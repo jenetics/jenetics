@@ -26,11 +26,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jscience.mathematics.number.LargeInteger;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -38,6 +37,27 @@ import org.jscience.mathematics.number.LargeInteger;
  */
 public class bitTest {
 
+	@Test(dataProvider = "byteStrData")
+	public void byteStr(final byte[] data, final String result) {
+		Assert.assertEquals(bit.toString(data), result);
+	}
+	
+	@DataProvider(name = "byteStrData")
+	public Object[][] byteStrData() {
+		return new Object[][] {
+			{ new byte[]{(byte)0}, "00000000" },
+			{ new byte[]{(byte)1}, "00000001" },
+			{ new byte[]{(byte)2}, "00000010" },
+			{ new byte[]{(byte)4}, "00000100" },
+			{ new byte[]{(byte)0xFF}, "11111111" },
+
+			{ new byte[]{(byte)0, (byte)0}, "00000000|00000000" },
+			{ new byte[]{(byte)1, (byte)0}, "00000000|00000001" },
+			{ new byte[]{(byte)0, (byte)1}, "00000001|00000000" },
+			{ new byte[]{(byte)1, (byte)1}, "00000001|00000001" }
+		};
+	}
+	
 	@Test
 	public void flip() {
 		final long seed = System.currentTimeMillis();
