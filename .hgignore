@@ -37,5 +37,6 @@ random-x86_64
 
 ## Netbeans
 nbproject/**
+nbbuild/**
 build.xml
 manifest.mf
