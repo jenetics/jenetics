@@ -123,15 +123,6 @@ public class mathTest {
 		Assert.assertEquals(sum(values), 1.0);
 	}
 
-	@Test
-	public void probabilityToInt() {
-		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(math.probability.toInt(0.5), 0);
-		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
-	}
-
 }
 
 

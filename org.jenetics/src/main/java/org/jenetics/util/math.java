@@ -434,8 +434,17 @@ public final class math extends StaticObject {
 		 * @param probability the probability to widen.
 		 * @return the widened probability.
 		 */
+		static int toInt(final float probability) {
+			return Math.round(INT_RANGE*probability + Integer.MIN_VALUE);
+		}
+
 		static int toInt(final double probability) {
 			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		}
+
+		static float toFloat(final int probability) {
+			final long value = (long)probability + Integer.MAX_VALUE;
+			return (float)(value/(double)INT_RANGE);
 		}
 
 	}

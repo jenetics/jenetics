@@ -274,6 +274,8 @@
 	</test>		
 	<test name="org.jenetics.util.math">
 		<classes>
+			<class name="org.jenetics.util.mathProbabilityTest" />
+			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.mathTest" />
 		</classes>
 	</test>	
@@ -286,7 +288,6 @@
 		<classes>
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomCompatibilityTest" />
-			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.PRNGTest" />
 		</classes>
 	</test>	
