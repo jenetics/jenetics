@@ -319,10 +319,10 @@ public final class bit extends StaticObject {
 		array[i] = array[j];
 		array[j] = temp;
 	}
-	
+
 	/**
-	 * Print a binary representation of the given byte array. The printed string
-	 * has the following format:
+	 * Convert a binary representation of the given byte array to a string. The
+	 * string has the following format:
 	 * <pre>
 	 *  Byte:       3        2        1        0
 	 *              |        |        |        |
@@ -353,6 +353,36 @@ public final class bit extends StaticObject {
 		return out.toString();
 	}
 
+	/**
+	 * Convert a string which was created with the {@link #toString(byte...)}
+	 * method back to an byte array.
+	 *
+	 * @param data the string to convert.
+	 * @return the byte array.
+	 * @throws IllegalArgumentException if the given data string could not be
+	 *          converted.
+	 */
+	 public static byte[] fromString(final String data) {
+		final String[] parts = data.split("\\|");
+		final byte[] bytes = new byte[parts.length];
+
+		for (int i = 0; i < parts.length; ++i) {
+			if (parts[i].length() != 8) {
+				throw new IllegalArgumentException(
+					"Byte value doesn't contain 8 bit: " + parts[i]
+				);
+			}
+
+			try {
+				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		return bytes;
+	}
+
 	static long toLong(final byte[] data) {
 		return
 			(((long)data[0] << 56) +
@@ -364,7 +394,7 @@ public final class bit extends StaticObject {
 			((data[6] & 255) <<  8) +
 			((data[7] & 255) <<  0));
 	}
-	
+
 	static byte[] toBytes(final long value) {
 		final byte[] bytes = new byte[8];
 		bytes[0] = (byte)(value >>> 56);
