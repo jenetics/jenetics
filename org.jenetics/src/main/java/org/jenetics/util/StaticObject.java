@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 /**
  * This class is used to <i>tag</i> a class as <i>object</i> with static
  * methods only. Such classes are not supposed to be treated as <i>types</i>.
@@ -56,7 +58,7 @@ public abstract class StaticObject {
 
 		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		if (trace.length >= 3) {
-			message = String.format(
+			message = format(
 				"Instantiation of '%s' is not allowed.",
 				trace[2].getClassName()
 			);
