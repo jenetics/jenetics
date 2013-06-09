@@ -23,9 +23,10 @@
 package org.jenetics.util;
 
 /**
- * This object is used to <i>tag</i> a class as <i>object</i> with static
- * methods only. The protected constructor always throws an {@link AssertionError}
- * and prevents the <i>static object</i> from being instantiated.
+ * This class is used to <i>tag</i> a class as <i>object</i> with static
+ * methods only. Such classes are not supposed to be treated as <i>types</i>.
+ * The protected constructor always throws an {@link AssertionError} and
+ * prevents the <i>static object</i> from being instantiated.
  *
  * The following <i>pattern</i> is used for creating such static helper
  * classes&mdash;the only constructors is declared private to gain the wished
@@ -40,7 +41,7 @@ package org.jenetics.util;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-26 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-06-09 $</em>
  */
 public abstract class StaticObject {
 
