@@ -489,11 +489,11 @@ public final class object extends StaticObject {
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
 	 *
-	 * @deprecated Use {@link bit#toString(byte...)} instead.
+	 * @deprecated Use {@link bit#toByteString(byte...)} instead.
 	 */
 	@Deprecated
 	public static String str(final byte... data) {
-		return bit.toString(data);
+		return bit.toByteString(data);
 	}
 
 }

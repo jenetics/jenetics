@@ -455,7 +455,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Text toText() {
-		return Text.valueOf(bit.toString(toByteArray()));
+		return Text.valueOf(bit.toByteString(toByteArray()));
 	}
 
 	@Override
@@ -483,7 +483,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			final int length = xml.getAttribute(LENGTH, 1);
 			final double probability = xml.getAttribute(PROBABILITY, 0.5);
-			final byte[] data = bit.fromString(xml.getText().toString());
+			final byte[] data = bit.fromByteString(xml.getText().toString());
 			final BitChromosome chromosome = new BitChromosome(data);
 			chromosome._p = probability;
 			chromosome._length = length;
@@ -495,7 +495,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
 			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(bit.toString(chromosome.toByteArray()));
+			xml.addText(bit.toByteString(chromosome.toByteArray()));
 		}
 		@Override
 		public void read(final InputElement element, final BitChromosome gene) {
