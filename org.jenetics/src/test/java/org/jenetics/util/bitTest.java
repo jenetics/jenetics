@@ -33,13 +33,13 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-07 $</em>
+ * @version <em>$Date: 2013-06-10 $</em>
  */
 public class bitTest {
 
 	@Test(dataProvider = "byteStrData")
 	public void byteStr(final byte[] data, final String result) {
-		Assert.assertEquals(bit.toString(data), result);
+		Assert.assertEquals(bit.toByteString(data), result);
 	}
 
 	@DataProvider(name = "byteStrData")
@@ -116,8 +116,8 @@ public class bitTest {
 			final byte[] bytes = new byte[232];
 			random.nextBytes(bytes);
 
-			final String string = bit.toString(bytes);
-			final byte[] data = bit.fromString(string);
+			final String string = bit.toByteString(bytes);
+			final byte[] data = bit.fromByteString(string);
 
 			Assert.assertEquals(data, bytes);
 		}
@@ -130,8 +130,8 @@ public class bitTest {
 			final long value = random.nextLong();
 			final byte[] bytes = bit.toBytes(value);
 
-			final String string = bit.toString(bytes);
-			final byte[] data = bit.fromString(string);
+			final String string = bit.toByteString(bytes);
+			final byte[] data = bit.fromByteString(string);
 
 			Assert.assertEquals(data, bytes);
 			Assert.assertEquals(bit.toLong(data), value);

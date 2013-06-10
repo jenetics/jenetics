@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-07 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-10 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -335,7 +335,7 @@ public final class bit extends StaticObject {
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
 	 */
-	public static String toString(final byte... data) {
+	public static String toByteString(final byte... data) {
 		final StringBuilder out = new StringBuilder();
 
 		if (data.length > 0) {
@@ -354,7 +354,7 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Convert a string which was created with the {@link #toString(byte...)}
+	 * Convert a string which was created with the {@link #toByteString(byte...)}
 	 * method back to an byte array.
 	 *
 	 * @param data the string to convert.
@@ -362,7 +362,7 @@ public final class bit extends StaticObject {
 	 * @throws IllegalArgumentException if the given data string could not be
 	 *          converted.
 	 */
-	 public static byte[] fromString(final String data) {
+	 public static byte[] fromByteString(final String data) {
 		final String[] parts = data.split("\\|");
 		final byte[] bytes = new byte[parts.length];
 
