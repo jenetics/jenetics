@@ -888,7 +888,10 @@ public final class arrays extends StaticObject {
 
 	/**
 	 * @see #indexOf(Object[], Object)
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> int indexWhere(
 		final T[] array,
 		final Function<? super T, Boolean> predicate
@@ -909,7 +912,10 @@ public final class arrays extends StaticObject {
 
 	/**
 	 * @see #indexOf(Object[], Object)
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> int indexWhere(
 		final Iterable<? extends T> values,
 		final Function<? super T, Boolean> predicate
