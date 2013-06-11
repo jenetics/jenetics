@@ -22,9 +22,9 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
@@ -52,7 +52,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -241,7 +241,7 @@ public final class Phenotype<
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
-		nonNull(genotype, "Genotype");
+		requireNonNull(genotype, "Genotype");
 		return Phenotype.valueOf(
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
@@ -407,9 +407,9 @@ public final class Phenotype<
 		final Function<C, C> fitnessScaler,
 		final int generation
 	) {
-		nonNull(genotype, "Genotype");
-		nonNull(fitnessFunction, "Fitness function");
-		nonNull(fitnessScaler, "Fitness scaler");
+		requireNonNull(genotype, "Genotype");
+		requireNonNull(fitnessFunction, "Fitness function");
+		requireNonNull(fitnessScaler, "Fitness scaler");
 		if (generation < 0) {
 			throw new IllegalArgumentException(
 				"Generation must not < 0: " + generation

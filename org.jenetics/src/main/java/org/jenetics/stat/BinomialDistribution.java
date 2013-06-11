@@ -22,8 +22,8 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 
@@ -37,7 +37,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 class BinomialDistribution<
 	N extends Number & Comparable<? super N>
@@ -138,7 +138,7 @@ class BinomialDistribution<
 	private final double _p;
 
 	public BinomialDistribution(final Range<N> domain, final double p) {
-		_domain = nonNull(domain, "Domain");
+		_domain = requireNonNull(domain, "Domain");
 		_p = checkProbability(p);
 	}
 

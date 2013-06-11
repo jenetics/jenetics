@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-02 $</em>
+ * @version <em>$Date: 2013-06-11 $</em>
  */
 public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<Float64Gene, Float64>
@@ -170,7 +170,7 @@ public abstract class ProbabilitySelectorTester<
 	}
 
 	private static void randomize(final double[] array, final Random random) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

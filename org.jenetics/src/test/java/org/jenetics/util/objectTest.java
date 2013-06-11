@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-07 $</em>
+ * @version <em>$Date: 2013-06-11 $</em>
  */
 public class objectTest {
 
@@ -103,16 +103,6 @@ public class objectTest {
 		}
 		array.set(45, null);
 		array.forEach(NonNull);
-	}
-
-	@Test
-	public void nonNull1() {
-		object.nonNull("df");
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void nonNull2() {
-		object.nonNull(null);
 	}
 
 }

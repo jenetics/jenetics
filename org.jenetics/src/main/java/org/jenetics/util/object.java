@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -30,7 +32,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-10 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -56,7 +58,7 @@ public final class object extends StaticObject {
 		return new Function<C,Boolean>() {
 			@Override
 			public Boolean apply(final C value) {
-				nonNull(value);
+				requireNonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
 					throw new IllegalArgumentException(String.format(
 						"Given value %s is out of range [%s, %s)",
@@ -116,7 +118,7 @@ public final class object extends StaticObject {
 	public static final Function<Object, Boolean> NonNull(final String message) {
 		return new Function<Object,Boolean>() {
 			@Override public Boolean apply(final Object object) {
-				nonNull(object, message );
+				requireNonNull(object, message );
 				return Boolean.TRUE;
 			}
 		};
@@ -129,7 +131,11 @@ public final class object extends StaticObject {
 	 * @param message the error message.
 	 * @return {@code obj} if not {@code null}.
 	 * @throws NullPointerException if {@code obj} is {@code null}.
+	 *
+	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object, String)}
+	 *             instead.
 	 */
+	@Deprecated
 	public static <T> T nonNull(final T obj, final String message) {
 		if (obj == null) {
 			throw new NullPointerException(message + " must not be null.");
@@ -143,7 +149,10 @@ public final class object extends StaticObject {
 	 * @param obj the object to check.
 	 * @return {@code obj} if not {@code null}.
 	 * @throws NullPointerException if {@code obj} is {@code null}.
+	 *
+	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object)} instead.
 	 */
+	@Deprecated
 	public static <T> T nonNull(final T obj) {
 		return nonNull(obj, "Object");
 	}

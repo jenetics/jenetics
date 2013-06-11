@@ -22,8 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 
@@ -213,7 +213,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given parameters are null.
 		 */
 		public ThreadLocal(final Param param) {
-			_param = nonNull(param, "PRNG param must not be null.");
+			_param = requireNonNull(param, "PRNG param must not be null.");
 		}
 
 		/**
@@ -396,7 +396,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final long seed, final Param param) {
-		_param = object.nonNull(param, "PRNG param must not be null.");
+		_param = requireNonNull(param, "PRNG param must not be null.");
 		_seed = seed;
 
 		_r = seed;
