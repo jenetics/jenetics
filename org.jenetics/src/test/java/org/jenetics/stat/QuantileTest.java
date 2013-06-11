@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Math.floor;
 import static java.lang.Math.sqrt;
 
 import java.util.Random;
@@ -59,12 +60,13 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 		return _factory;
 	}
 
+
 	@Test
 	public void median() {
 		final Quantile<Integer> quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i);
-			Assert.assertEquals(quantile.getValue(), Math.floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 	}
 
@@ -82,8 +84,8 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 		Assert.assertEquals(quantile.getValue(), q, 1.0/sqrt(N));
 	}
 
-	@DataProvider
-	public Object[][] quantiles() {
+	@DataProvider(name = "quantiles")
+	public Object[][] getQuantiles() {
 		return new Double[][] {
 			{0.01},
 			{0.0123},
@@ -103,14 +105,14 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 		final Quantile<Integer> quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i);
-			Assert.assertEquals(quantile.getValue(), Math.floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 
 		quantile.reset();
 
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i);
-			Assert.assertEquals(quantile.getValue(), Math.floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 	}
 
