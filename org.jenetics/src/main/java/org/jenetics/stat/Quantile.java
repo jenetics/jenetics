@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Double.compare;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -77,19 +78,36 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	 *
 	 * @param quantile the wished quantile value.
 	 * @throws IllegalArgumentException if the {@code quantile} is not in the
-	 *          range {@code [0, 1]}.
+	 *         range {@code [0, 1]}.
 	 */
-	public Quantile(double quantile) {
+	public Quantile(final double quantile) {
+		_quantile = quantile;
+		init(quantile);
+	}
+
+	private void init(final double quantile) {
 		if (quantile < 0.0 || quantile > 1) {
 			throw new IllegalArgumentException(String.format(
 					"Quantile (%s) not in the valid range of [0, 1]", quantile
 				));
 		}
-		_quantile = quantile;
+
+		Arrays.fill(_q, 0);
+		Arrays.fill(_n, 0);
+		Arrays.fill(_nn, 0);
+		Arrays.fill(_dn, 0);
+
 		_n[0] = -1.0;
 		_q[2] = 0.0;
-		_initialized = Double.compare(_quantile, 0.0) == 0 ||
-						Double.compare(_quantile, 1.0) == 0;
+		_initialized = compare(quantile, 0.0) == 0 || compare(quantile, 1.0) == 0;
+		_samples = 0;
+	}
+
+	/**
+	 * Reset this object to its initial state.
+	 */
+	public void reset() {
+		init(_quantile);
 	}
 
 	/**
@@ -305,6 +323,12 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	public Quantile<N> clone() {
 		return (Quantile<N>)super.clone();
 	}
+
+
+	static <N extends Number> Quantile<N> median() {
+		return new Quantile<>(0.5);
+	}
+
 }
 
 
