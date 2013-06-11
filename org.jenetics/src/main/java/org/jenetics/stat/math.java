@@ -35,7 +35,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 final class math extends StaticObject {
 	private math() {}
@@ -103,7 +103,7 @@ final class math extends StaticObject {
 	 * @return the φ value for x.
 	 */
 	public static double phi(final double x) {
-		return Math.exp(-x*x/2.0) / Math.sqrt(2.0*Math.PI);
+		return exp(-x*x/2.0) / sqrt(2.0*Math.PI);
 	}
 
 	/**
