@@ -187,7 +187,9 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @since 1.1
 	 * @version 1.1 &mdash; <em>$Date$</em>
 	 */
-	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
+	public static class ThreadLocal
+		extends java.lang.ThreadLocal<LCG64ShiftRandom>
+	{
 		private static final long STEP_BASE = 1L << 56;
 
 		private int _block = 0;
