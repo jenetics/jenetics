@@ -31,7 +31,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-09 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -46,16 +46,8 @@ public final class math extends StaticObject {
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
 	public static long plus(final long a, final long b) {
-		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
-			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
-		}
-
 		final long z = a + b;
-		if (a > 0) {
-			if (b > 0 && z < 0) {
-				throw new ArithmeticException(format("Overflow: %d + %d", a, b));
-			}
-		} else if (b < 0 && z > 0) {
+		if (((a^z) & (b^z)) < 0) {
 			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
 		}
 
@@ -73,11 +65,7 @@ public final class math extends StaticObject {
 	 */
 	public static long minus(final long a, final long b) {
 		final long z = a - b;
-		if (a > 0) {
-			if (b < 0 && z < 0) {
-				throw new ArithmeticException(format("Overflow: %d - %d", a, b));
-			}
-		} else if (b > 0 && z > 0) {
+		if (((a^b) & (a^z)) < 0) {
 			throw new ArithmeticException(format("Overflow: %d - %d", a, b));
 		}
 
@@ -245,7 +233,7 @@ public final class math extends StaticObject {
 
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
-		return m >= Integer.MIN_VALUE && m <= Integer.MAX_VALUE;
+		return ((int)m) == m;
 	}
 
 	/**
@@ -322,7 +310,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-09 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -419,7 +407,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-09 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -477,7 +465,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-06-09 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
