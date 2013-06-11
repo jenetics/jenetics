@@ -41,12 +41,17 @@ import org.jenetics.util.MappedAccumulator;
  * <br/>
  * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications
  * of the ACM; October 1985, Volume 28, Number 10</a>]
+ * <p>
+ * <strong>This class is not synchronized.</strong> If multiple threads access
+ * an {@code Quantile} object concurrently, it <strong>must</strong> be
+ * synchronized externally.
+ * </p>
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.3 &mdash; <em>$Date$</em>
  */
 public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
@@ -87,7 +92,24 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 						Double.compare(_quantile, 1.0) == 0;
 	}
 
+	/**
+	 * Return the computed quantile value.
+	 *
+	 * @return the quantile value.
+	 *
+	 * @deprecated Use {@link #getValue()} instead.
+	 */
+	@Deprecated
 	public double getQuantile() {
+		return _q[2];
+	}
+
+	/**
+	 * Return the computed quantile value.
+	 *
+	 * @return the quantile value.
+	 */
+	public double getValue() {
 		return _q[2];
 	}
 

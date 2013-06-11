@@ -56,11 +56,11 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 	}
 
 	@Test
-	public void quantile() {
+	public void value() {
 		final Quantile<Integer> quantile = new Quantile<>(0.5);
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i);
-			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.getValue(), Math.floor(i/2.0), 1.0);
 		}
 	}
 
