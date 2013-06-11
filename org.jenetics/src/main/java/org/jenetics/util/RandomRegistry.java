@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -171,7 +171,7 @@ public final class RandomRegistry extends StaticObject {
 	private final static class RRef extends Ref<Random> {
 		private final Random _random;
 		public RRef(final Random random) {
-			_random = nonNull(random, "Random");
+			_random = requireNonNull(random, "Random");
 		}
 		@Override public Random get() {
 			return _random;
@@ -181,7 +181,7 @@ public final class RandomRegistry extends StaticObject {
 	private final static class TLRRef<R extends Random> extends Ref<R> {
 		private final ThreadLocal<R> _random;
 		public TLRRef(final ThreadLocal<R> random) {
-			_random = nonNull(random, "Random");
+			_random = requireNonNull(random, "Random");
 		}
 		@Override public R get() {
 			return _random.get();

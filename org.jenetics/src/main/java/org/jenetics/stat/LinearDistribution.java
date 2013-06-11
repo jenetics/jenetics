@@ -22,9 +22,9 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -206,7 +206,7 @@ public class LinearDistribution<
 	private final double _y2;
 
 	public LinearDistribution(final Range<N> domain, final double y1) {
-		_domain = nonNull(domain);
+		_domain = requireNonNull(domain);
 
 		_y1 = Math.max(y1, 0.0);
 		_x1 = domain.getMin().doubleValue();

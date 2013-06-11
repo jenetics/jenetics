@@ -23,8 +23,8 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -71,7 +71,7 @@ public class StochasticUniversalSelector<
 		final int count,
 		final Optimize opt
 	) {
-		nonNull(population, "Population");
+		requireNonNull(population, "Population");
 		if (count < 0) {
 			throw new IllegalArgumentException(
 				"Selection count must be greater or equal then zero, but was " +
