@@ -24,9 +24,9 @@ package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -48,16 +48,16 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
+import org.jenetics.util.FinalReference;
 import org.jenetics.util.accumulators;
 import org.jenetics.util.accumulators.MinMax;
-import org.jenetics.util.FinalReference;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,7 +70,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -117,7 +117,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 
 		public Builder<G, C> optimize(final Optimize optimize) {
-			_optimize = nonNull(optimize, "Optimize strategy");
+			_optimize = requireNonNull(optimize, "Optimize strategy");
 			return this;
 		}
 
@@ -484,7 +484,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -677,7 +677,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

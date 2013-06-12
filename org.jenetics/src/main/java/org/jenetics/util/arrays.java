@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-10 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -537,7 +537,7 @@ public final class arrays extends StaticObject {
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k, final Random random) {
-		nonNull(random, "Random");
+		requireNonNull(random, "Random");
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
 					"Subset size smaller or equal zero: %s", k
@@ -619,8 +619,8 @@ public final class arrays extends StaticObject {
 	 *         integer overflow.
 	 */
 	public static int[] subset(final int n, final int sub[], final Random random) {
-		nonNull(random, "Random");
-		nonNull(sub, "Sub set array");
+		requireNonNull(random, "Random");
+		requireNonNull(sub, "Sub set array");
 
 		final int k = sub.length;
 		if (k <= 0) {
@@ -750,8 +750,8 @@ public final class arrays extends StaticObject {
 	 */
 	@Deprecated
 	public static int[] permutation(final int[] p, final Random random) {
-		nonNull(p, "Permutation array");
-		nonNull(random, "Random");
+		requireNonNull(p, "Permutation array");
+		requireNonNull(random, "Random");
 
 		for (int i = 0; i < p.length; ++i) {
 			p[i] = i;
@@ -789,7 +789,7 @@ public final class arrays extends StaticObject {
 	 */
 	@Deprecated
 	public static int[] permutation(final int[] p, final long rank) {
-		nonNull(p, "Permutation array");
+		requireNonNull(p, "Permutation array");
 		if (rank < 1) {
 			throw new IllegalArgumentException(String.format(
 					"Rank smaler than 1: %s", rank
@@ -846,7 +846,7 @@ public final class arrays extends StaticObject {
 		final Object[] array, final int start, final int end,
 		final Object element
 	) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new IndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", start, end
@@ -896,8 +896,8 @@ public final class arrays extends StaticObject {
 		final T[] array,
 		final Function<? super T, Boolean> predicate
 	) {
-		nonNull(array, "Array");
-		nonNull(predicate, "Predicate");
+		requireNonNull(array, "Array");
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
@@ -920,8 +920,8 @@ public final class arrays extends StaticObject {
 		final Iterable<? extends T> values,
 		final Function<? super T, Boolean> predicate
 	) {
-		nonNull(values, "Array");
-		nonNull(predicate, "Predicate");
+		requireNonNull(values, "Array");
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 		int i = 0;
@@ -971,8 +971,8 @@ public final class arrays extends StaticObject {
 		final T[] array,
 		final Function<? super T, ? extends R> f
 	) {
-		nonNull(array, "Array");
-		nonNull(f, "Predicate");
+		requireNonNull(array, "Array");
+		requireNonNull(f, "Predicate");
 
 		for (int i = 0; i < array.length; ++i) {
 			f.apply(array[i]);
@@ -1002,8 +1002,8 @@ public final class arrays extends StaticObject {
 		final Iterable<? extends T> values,
 		final Function<? super T, ? extends R> f
 	) {
-		nonNull(values, "Array");
-		nonNull(f, "Function");
+		requireNonNull(values, "Array");
+		requireNonNull(f, "Function");
 
 		for (final T value : values) {
 			f.apply(value);
@@ -1030,9 +1030,9 @@ public final class arrays extends StaticObject {
 		final B[] b,
 		final Function<? super A, ? extends B> converter
 	) {
-		nonNull(a, "Source array");
-		nonNull(b, "Target array");
-		nonNull(converter, "Converter");
+		requireNonNull(a, "Source array");
+		requireNonNull(b, "Target array");
+		requireNonNull(converter, "Converter");
 
 		B[] result = b;
 		if (b.length < a.length) {

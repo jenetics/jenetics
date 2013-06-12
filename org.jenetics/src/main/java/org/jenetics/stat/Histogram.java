@@ -24,6 +24,7 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.functions.DoubleToFloat64;
 import static org.jenetics.util.functions.LongToInteger64;
@@ -31,7 +32,6 @@ import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -92,7 +92,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	@SafeVarargs
 	public Histogram(final Comparator<C> comparator, final C... separators) {
 		_separators = check(separators);
-		_comparator = nonNull(comparator, "Comparator");
+		_comparator = requireNonNull(comparator, "Comparator");
 		_histogram = new long[separators.length + 1];
 
 		Arrays.sort(_separators, _comparator);
@@ -215,7 +215,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public long[] getHistogram(final long[] histogram) {
-		nonNull(histogram);
+		requireNonNull(histogram);
 
 		long[] hist = histogram;
 		if (histogram != null && histogram.length >= _histogram.length) {
@@ -545,8 +545,8 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	private static <C extends Comparable<? super C>> void
 	check(final C min, final C max, final int nclasses)
 	{
-		nonNull(min, "Minimum");
-		nonNull(max, "Maximum");
+		requireNonNull(min, "Minimum");
+		requireNonNull(max, "Maximum");
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(String.format(
 					"Min must be smaller than max: %s < %s failed.", min, max

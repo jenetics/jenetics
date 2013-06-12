@@ -22,10 +22,10 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,20 +39,21 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jscience.mathematics.number.LargeInteger;
+import org.jscience.mathematics.number.Number;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
-import org.jscience.mathematics.number.LargeInteger;
-import org.jscience.mathematics.number.Number;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-10 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -140,7 +141,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 *         <code>null</code>.
 	 */
 	public BitChromosome(final int length, final BitSet bits) {
-		nonNull(bits, "BitSet");
+		requireNonNull(bits, "BitSet");
 
 		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
 		_genes = new byte[bytes];
@@ -180,7 +181,7 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitChromosome (final CharSequence value) {
 		this(value.length());
 
-		nonNull(value, "Input");
+		requireNonNull(value, "Input");
 		if (value.length() == 0) {
 			throw new IllegalArgumentException("Length must greater than zero.");
 		}
@@ -351,7 +352,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
-		nonNull(genes, "Genes");
+		requireNonNull(genes, "Genes");
 
 		final BitChromosome chromosome = new BitChromosome(genes.length(), true);
 

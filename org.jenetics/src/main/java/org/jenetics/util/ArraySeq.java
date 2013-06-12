@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-03 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,7 +57,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 *          value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
@@ -132,7 +132,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		final int start,
 		final int end
 	) {
-		nonNull(predicate, "Predicate");
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
@@ -200,7 +200,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		final int start,
 		final int end
 	) {
-		nonNull(predicate, "Predicate");
+		requireNonNull(predicate, "Predicate");
 		checkIndex(start, end);
 
 		int index = -1;
@@ -228,7 +228,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public <R> void forEach(final Function<? super T, ? extends R> function) {
-		nonNull(function, "Function");
+		requireNonNull(function, "Function");
 
 		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
@@ -249,7 +249,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public boolean forAll(final Function<? super T, Boolean> predicate) {
-		nonNull(predicate, "Predicate");
+		requireNonNull(predicate, "Predicate");
 
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
@@ -305,7 +305,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> converter
 	) {
-		nonNull(converter, "Converter");
+		requireNonNull(converter, "Converter");
 
 		return new Iterator<B>() {
 			private final Iterator<T> _iterator = iterator();
