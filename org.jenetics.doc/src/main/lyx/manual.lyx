@@ -6995,7 +6995,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = new Array<>("-10","1","2","3","4","5");
+final Seq<String> data = Array.valueOf("-10","1","2","3","4","5");
 \end_layout
 
 \begin_layout Plain Layout
@@ -9309,7 +9309,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9330,7 +9330,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9429,11 +9429,11 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://testng.org/testng-6.8.zip
+http://testng.org/testng-6.8.1.zip
 \end_layout
 
 \end_inset
