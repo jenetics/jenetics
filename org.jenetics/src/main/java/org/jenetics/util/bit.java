@@ -332,6 +332,8 @@ public final class bit extends StaticObject {
 	 * </pre>
 	 * <i>Only the array string is printed.</i>
 	 *
+	 * @see #fromByteString(String)
+	 *
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
 	 */
@@ -356,6 +358,8 @@ public final class bit extends StaticObject {
 	/**
 	 * Convert a string which was created with the {@link #toByteString(byte...)}
 	 * method back to an byte array.
+	 *
+	 * @see #toByteString(byte...)
 	 *
 	 * @param data the string to convert.
 	 * @return the byte array.
