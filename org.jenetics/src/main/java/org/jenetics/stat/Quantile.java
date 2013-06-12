@@ -42,17 +42,16 @@ import org.jenetics.util.MappedAccumulator;
  * <br/>
  * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications
  * of the ACM; October 1985, Volume 28, Number 10</a>]
- * <p>
- * <strong>This class is not synchronized.</strong> If multiple threads access
- * an {@code Quantile} object concurrently, it <strong>must</strong> be
- * synchronized externally.
- * </p>
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public class Quantile<N extends Number> extends MappedAccumulator<N> {
 

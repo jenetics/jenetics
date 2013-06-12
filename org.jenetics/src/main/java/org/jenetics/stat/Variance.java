@@ -34,6 +34,11 @@ import static org.jenetics.util.object.hashCodeOf;
  *    />
  * </p>
  *
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" >
  *       Wikipedia: Algorithms for calculating variance</a>
  * @see <a href="http://mathworld.wolfram.com/Variance.html">
@@ -41,7 +46,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 

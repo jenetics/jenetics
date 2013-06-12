@@ -65,10 +65,14 @@ import org.jenetics.util.arrays;
  *                  -------+----+----+----+----+----+----+----+----+----+------
  * Histogram index:     0     1    2    3    4    5    6    7    8    9    10
  * </pre>
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 

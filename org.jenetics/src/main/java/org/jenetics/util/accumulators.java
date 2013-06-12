@@ -37,7 +37,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public final class accumulators extends StaticObject {
 	private accumulators() {}
@@ -50,6 +50,11 @@ public final class accumulators extends StaticObject {
 
 	/**
 	 * Calculates min value.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
@@ -139,6 +144,11 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates max value.
 	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
 	 * @version 1.0 &ndash; <em>$Revision$</em>
@@ -226,6 +236,11 @@ public final class accumulators extends StaticObject {
 
 	/**
 	 * Calculates min and max values.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
@@ -328,6 +343,18 @@ public final class accumulators extends StaticObject {
 		}
 	}
 
+	/**
+	 * Calculates the sum of the accumulated values.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
+	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 */
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappedAccumulator<G>
 	{
