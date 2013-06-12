@@ -31,7 +31,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -303,6 +303,19 @@ public final class math extends StaticObject {
 
 	static final class special extends StaticObject {
 		private special() {}
+
+
+
+		/**
+		 * TODO: Implement gamma function.
+		 *
+		 * @param x
+		 * @return
+		 */
+		static double Γ(final double x) {
+			return x;
+		}
+
 	}
 
 	/**
@@ -310,7 +323,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -407,7 +420,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
@@ -465,7 +478,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-06-12 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
