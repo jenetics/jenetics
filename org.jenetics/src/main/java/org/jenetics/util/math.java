@@ -303,6 +303,19 @@ public final class math extends StaticObject {
 
 	static final class special extends StaticObject {
 		private special() {}
+
+
+
+		/**
+		 * TODO: Implement gamma function.
+		 *
+		 * @param x
+		 * @return
+		 */
+		static double Γ(final double x) {
+			return x;
+		}
+
 	}
 
 	/**
