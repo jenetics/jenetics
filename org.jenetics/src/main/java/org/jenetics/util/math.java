@@ -332,6 +332,16 @@ public final class math extends StaticObject {
 			return z >= 0 ? result : -result;
 		}
 
+		/**
+		 * TODO: Implement gamma function.
+		 *
+		 * @param x
+		 * @return
+		 */
+		static double Γ(final double x) {
+			return x;
+		}
+		
 	}
 
 	/**
