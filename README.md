@@ -97,11 +97,11 @@ Ones counting is one of the simplest model-problem and consists of a binary chro
 
 	public class OnesCounting {
 		public static void main(String[] args) {
-			Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+			final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 				new BitChromosome(20, 0.15)
 			);
-			Function<Genotype<BitGene>, Integer> ff = new OneCounter();
-			GeneticAlgorithm<BitGene, Integer> ga =
+			final Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+			final GeneticAlgorithm<BitGene, Integer> ga =
 				new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
 
 			ga.setStatisticsCalculator(
@@ -218,12 +218,12 @@ In the [knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem) a set o
 		}
 
 		public static void main(String[] argv) throws Exception {
-			KnappsackFunction ff = FF(15, 100);
-			Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
+			final KnappsackFunction ff = FF(15, 100);
+			final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
 				new BitChromosome(15, 0.5)
 			);
 
-			GeneticAlgorithm<BitGene, Float64> ga =
+			final GeneticAlgorithm<BitGene, Float64> ga =
 				new GeneticAlgorithm<>(genotype, ff);
 
 			ga.setMaximalPhenotypeAge(30);
@@ -296,7 +296,7 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 		}
 		@Override
 		public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
-			Chromosome<EnumGene<Integer>> path =
+			final Chromosome<EnumGene<Integer>> path =
 				genotype.getChromosome();
 
 			double length = 0.0;
@@ -314,9 +314,9 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 		public static void main(String[] args) {
 			final int stops = 20;
 
-			Function<Genotype<EnumGene<Integer>>, Float64> ff =
+			final Function<Genotype<EnumGene<Integer>>, Float64> ff =
 				new FF(adjacencyMatrix(stops));
-			Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
+			final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
 				PermutationChromosome.ofInteger(stops)
 			);
 			final GeneticAlgorithm<EnumGene<Integer>, Float64>
@@ -348,7 +348,7 @@ The Traveling Salesman problem is a very good example which shows you how to sol
 		private static double chord(int stops, int i, double r) {
 			return 2.0*r*abs(sin((PI*i)/stops));
 		}
-		private static double RADIUS = 10.0;
+		private static final double RADIUS = 10.0;
 	}
 
 
