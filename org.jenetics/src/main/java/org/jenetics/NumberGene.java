@@ -22,9 +22,9 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import javolution.text.Text;
 import javolution.text.TextBuilder;
@@ -123,9 +123,9 @@ public abstract class NumberGene<
 	 * @throws NullPointerException if one of the given number is null.
 	 */
 	protected void set(final N value, final N min, final N max) {
-		_min = nonNull(min, "Min value");
-		_max = nonNull(max, "Max value");
-		_value = nonNull(value, "Gene value");
+		_min = requireNonNull(min, "Min value");
+		_max = requireNonNull(max, "Max value");
+		_value = requireNonNull(value, "Gene value");
 		_valid = _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
 

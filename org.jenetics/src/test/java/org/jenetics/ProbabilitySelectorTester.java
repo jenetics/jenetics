@@ -22,7 +22,7 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -170,7 +170,7 @@ public abstract class ProbabilitySelectorTester<
 	}
 
 	private static void randomize(final double[] array, final Random random) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

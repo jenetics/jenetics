@@ -22,11 +22,16 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Math.floor;
+import static java.lang.Math.sqrt;
+
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
@@ -55,13 +60,65 @@ public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 		return _factory;
 	}
 
+
 	@Test
-	public void quantile() {
-		final Quantile<Integer> quantile = new Quantile<>(0.5);
+	public void median() {
+		final Quantile<Integer> quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accumulate(i);
-			Assert.assertEquals(quantile.getQuantile(), Math.floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
 		}
 	}
 
+	@Test(dataProvider = "quantiles")
+	public void quantile(final Double q) {
+		final Random random = new LCG64ShiftRandom(1234);
+		final Quantile<Double> quantile = new Quantile<>(q);
+
+		final int N = 2_000_000;
+		for (int i = 0; i < N; ++i) {
+			quantile.accumulate(random.nextDouble());
+		}
+
+		Assert.assertEquals(quantile.getSamples(), N);
+		Assert.assertEquals(quantile.getValue(), q, 1.0/sqrt(N));
+	}
+
+	@DataProvider(name = "quantiles")
+	public Object[][] getQuantiles() {
+		return new Double[][] {
+			{0.01},
+			{0.0123},
+			{0.1},
+			{0.25},
+			{0.33},
+			{0.45},
+			{0.5},
+			{0.57},
+			{0.83},
+			{0.93}
+		};
+	}
+
+	@Test
+	public void reset() {
+		final Quantile<Integer> quantile = Quantile.median();
+		for (int i = 0; i < 1000; ++i) {
+			quantile.accumulate(i);
+			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
+		}
+
+		quantile.reset();
+
+		for (int i = 0; i < 1000; ++i) {
+			quantile.accumulate(i);
+			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
+		}
+	}
+
+
 }
+
+
+
+

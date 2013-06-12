@@ -105,16 +105,6 @@ public class objectTest {
 		array.forEach(NonNull);
 	}
 
-	@Test
-	public void nonNull1() {
-		object.nonNull("df");
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void nonNull2() {
-		object.nonNull(null);
-	}
-
 }
 
 

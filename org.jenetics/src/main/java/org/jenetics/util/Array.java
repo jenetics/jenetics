@@ -23,7 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -408,7 +408,7 @@ public final class Array<T>
 					"From index > to index: %d > %d.", from, to
 				));
 		}
-		nonNull(comparator, "Comparator");
+		requireNonNull(comparator, "Comparator");
 
 		_array.cloneIfSealed();
 
@@ -583,7 +583,7 @@ public final class Array<T>
 
 	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
-		nonNull(factory);
+		requireNonNull(factory);
 
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
@@ -649,7 +649,7 @@ public final class Array<T>
 	 * @throws NullPointerException if the {@code values} is {@code null}.
 	 */
 	public Array<T> add(final Collection<? extends T> values) {
-		nonNull(values, "Values");
+		requireNonNull(values, "Values");
 		final Array<T> array = new Array<>(length() + values.size());
 
 		System.arraycopy(_array.data, _start, array._array.data, 0, length());
@@ -663,7 +663,7 @@ public final class Array<T>
 
 	@Override
 	public <B> Array<B> map(final Function<? super T, ? extends B> mapper) {
-		nonNull(mapper, "Converter");
+		requireNonNull(mapper, "Converter");
 
 		final int length = length();
 		final Array<B> result = new Array<>(length);

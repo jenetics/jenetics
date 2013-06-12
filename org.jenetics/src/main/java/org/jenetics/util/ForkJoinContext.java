@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -109,7 +109,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 * @throws NullPointerException if the pool is {@code null}.
 	 */
 	public static boolean setForkJoinPool(final ForkJoinPool pool) {
-		return _POOL.compareAndSet(null, nonNull(pool, "ForkJoinPool"));
+		return _POOL.compareAndSet(null, requireNonNull(pool, "ForkJoinPool"));
 	}
 
 	/**
