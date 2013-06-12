@@ -50,6 +50,7 @@ import org.jenetics.util.arrays;
 /**
  * A population is a collection of Phenotypes.
  *
+ * <p/>
  * <strong>This class is not synchronized.</strong> If multiple threads access
  * a {@code Population} concurrently, and at least one of the threads modifies
  * it, it <strong>must</strong> be synchronized externally.
