@@ -39,7 +39,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.2 &mdash; <em>$Date$</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
