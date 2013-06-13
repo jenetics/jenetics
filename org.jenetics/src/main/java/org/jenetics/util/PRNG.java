@@ -61,6 +61,8 @@ abstract class PRNG extends Random {
 	 * @return a random integer greater than or equal to {@code min} and less
 	 *         than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
+	 *
+	 * @see math.random#nextInt(Random, int, int)
 	 */
 	public int nextInt(final int min, final int max) {
 		return math.random.nextInt(this, min, max);
@@ -75,6 +77,8 @@ abstract class PRNG extends Random {
 	 * @return a random long integer greater than or equal to {@code min}
 	 *         and less than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
+	 *
+	 * @see math.random#nextLong(Random, long, long)
 	 */
 	public long nextLong(final long min, final long max) {
 		return math.random.nextLong(this, min, max);
@@ -92,6 +96,8 @@ abstract class PRNG extends Random {
 	 *         between 0 (inclusive) and n (exclusive) from the given random
 	 *         number generator's sequence
 	 * @throws IllegalArgumentException if n is smaller than 1.
+	 *
+	 * @see math.random#nextLong(Random, long)
 	 */
 	public long nextLong(final long n) {
 		return math.random.nextLong(this, n);
@@ -105,6 +111,8 @@ abstract class PRNG extends Random {
 	 * @param max upper bound for generated float value
 	 * @return a random float greater than or equal to {@code min} and less
 	 *         than to {@code max}
+	 *
+	 * @see math.random#nextFloat(Random, float, float)
 	 */
 	public float nextFloat(final float min, final float max) {
 		return math.random.nextFloat(this, min, max);
@@ -118,6 +126,8 @@ abstract class PRNG extends Random {
 	 * @param max upper bound for generated double value
 	 * @return a random double greater than or equal to {@code min} and less
 	 *         than to {@code max}
+	 *
+	 * @see math.random#nextDouble(Random, double, double)
 	 */
 	public double nextDouble(final double min, final double max) {
 		return math.random.nextDouble(this, min, max);
