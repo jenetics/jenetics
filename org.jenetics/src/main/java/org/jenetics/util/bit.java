@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-10 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -332,6 +332,8 @@ public final class bit extends StaticObject {
 	 * </pre>
 	 * <i>Only the array string is printed.</i>
 	 *
+	 * @see #fromByteString(String)
+	 *
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
 	 */
@@ -356,6 +358,8 @@ public final class bit extends StaticObject {
 	/**
 	 * Convert a string which was created with the {@link #toByteString(byte...)}
 	 * method back to an byte array.
+	 *
+	 * @see #toByteString(byte...)
 	 *
 	 * @param data the string to convert.
 	 * @return the byte array.

@@ -43,7 +43,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
