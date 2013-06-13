@@ -70,7 +70,10 @@ public final class Float64Gene
 
 	@Override
 	public Float64Gene mean(final Float64Gene that) {
-		return newInstance((_value.doubleValue() + that._value.doubleValue())/2.0);
+		return newInstance(
+			_value.doubleValue()  +
+			(that._value.doubleValue() - _value.doubleValue())/2.0
+		);
 	}
 
 
@@ -261,9 +264,7 @@ public final class Float64Gene
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override
-		public void read(InputElement element, Float64Gene gene)
-			throws XMLStreamException
-		{
+		public void read(final InputElement element, final Float64Gene gene) {
 		}
 	};
 
