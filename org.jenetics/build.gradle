@@ -85,6 +85,11 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 			include "*.gradle"
 			exclude ".gradle"
 			exclude "src/site"
+			exclude "*.iml"
+			exclude "*.ipr"
+			exclude "*.iws"
+			exclude ".project"
+			exclude ".classpath"
 		}
 		into "${exportSourceDir}"
 		filter(ReplaceTokens, tokens: [

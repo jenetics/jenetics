@@ -84,6 +84,11 @@ task clean << {
 			exclude ".gradle"
 			exclude ".hgignore"
 			exclude ".hgtags"
+			exclude "*.iml"
+			exclude "*.ipr"
+			exclude "*.iws"
+			exclude ".project"
+			exclude ".classpath"
 		}
 		into "${exportBaseDir}"
 		filter(ReplaceTokens, tokens: [
