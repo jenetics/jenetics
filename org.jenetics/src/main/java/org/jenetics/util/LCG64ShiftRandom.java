@@ -67,6 +67,13 @@ import java.io.Serializable;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
+ * <p/>
+ * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
+ * class is not thread-safe.</strong> If multiple threads requests random
+ * numbers from this class, it <i>must</i> be synchronized externally.
+ * Alternatively you can use the thread-safe implementations
+ * {@link LCG64ShiftRandom.ThreadSafe} or {@link LCG64ShiftRandom.ThreadLocal}.
+ *
  * @see <a href="http://numbercrunch.de/trng/">TRNG</a>
  * @see RandomRegistry
  *
