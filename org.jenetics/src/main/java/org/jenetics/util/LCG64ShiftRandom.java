@@ -67,12 +67,19 @@ import java.io.Serializable;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
+ * <p/>
+ * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
+ * class is not thread-safe.</strong> If multiple threads requests random
+ * numbers from this class, it <i>must</i> be synchronized externally.
+ * Alternatively you can use the thread-safe implementations
+ * {@link LCG64ShiftRandom.ThreadSafe} or {@link LCG64ShiftRandom.ThreadLocal}.
+ *
  * @see <a href="http://numbercrunch.de/trng/">TRNG</a>
  * @see RandomRegistry
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +92,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,7 +192,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -275,7 +282,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
