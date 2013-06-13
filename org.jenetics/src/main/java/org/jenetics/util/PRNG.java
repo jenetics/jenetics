@@ -25,18 +25,29 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
+ * Abstract {@Random} class with additional <i>next</i> random number methods.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-13 $</em>
  */
 abstract class PRNG extends Random {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Create a new {@code PRNG} instance with the given {@code seed}.
+	 *
+	 * @param seed the seed of the new {@code PRNG} instance.
+	 */
 	protected PRNG(long seed) {
 		super(seed);
 	}
 
+	/**
+	 * Create a new {@code PRNG} instance with a seed created with the
+	 * {@link math.random#seed()} value.
+	 */
 	protected PRNG() {
 		this(math.random.seed());
 	}
