@@ -23,6 +23,8 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
+import static java.lang.String.format;
+import static java.lang.System.arraycopy;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -40,9 +42,10 @@ import javolution.util.FastList;
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array).
- * <strong>This array is not synchronized.</strong> If multiple threads access
- * an {@code Array} concurrently, and at least one of the threads modifies the
- * array, it <strong>must</strong> be synchronized externally.
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
  *
  * @param <T> the element type of the array.
  *
@@ -224,7 +227,7 @@ public final class Array<T>
 		_array.data[2] = third;
 		_array.data[3] = fourth;
 		_array.data[4] = fifth;
-		System.arraycopy(rest, 0, _array.data, 5, rest.length);
+		arraycopy(rest, 0, _array.data, 5, rest.length);
 	}
 
 	/**
@@ -238,7 +241,7 @@ public final class Array<T>
 	@Deprecated
 	public Array(final T[] values) {
 		this(values.length);
-		System.arraycopy(values, 0, _array.data, 0, values.length);
+		arraycopy(values, 0, _array.data, 0, values.length);
 	}
 
 	/**
@@ -255,7 +258,9 @@ public final class Array<T>
 		this(values.size());
 
 		int index = 0;
-		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+		for (Iterator<? extends T>
+			it = values.iterator(); it.hasNext(); ++index)
+		{
 			_array.data[index] = it.next();
 		}
 	}
@@ -404,7 +409,7 @@ public final class Array<T>
 	) {
 		checkIndex(from, to);
 		if (from > to) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"From index > to index: %d > %d.", from, to
 				));
 		}
@@ -475,7 +480,7 @@ public final class Array<T>
 		} else {
 			checkIndex(start, end);
 			if (otherStart < 0 || (otherStart + (end - start)) > _length) {
-				throw new ArrayIndexOutOfBoundsException(String.format(
+				throw new ArrayIndexOutOfBoundsException(format(
 					"Invalid index range: [%d, %d)",
 					otherStart, (otherStart + (end - start))
 				));
@@ -575,7 +580,7 @@ public final class Array<T>
 	@Override
 	public Array<T> setAll(final T[] values) {
 		_array.cloneIfSealed();
-		System.arraycopy(
+		arraycopy(
 			values, 0, _array.data, _start, min(length(), values.length)
 		);
 		return this;
@@ -608,7 +613,7 @@ public final class Array<T>
 	 */
 	public Array<T> add(final T value) {
 		final Array<T> array = new Array<>(length() + 1);
-		System.arraycopy(_array.data, _start, array._array.data, 0, length());
+		arraycopy(_array.data, _start, array._array.data, 0, length());
 		array._array.data[array.length() - 1] = value;
 		return array;
 	}
@@ -626,11 +631,11 @@ public final class Array<T>
 	public Array<T> add(final Array<? extends T> array) {
 		final Array<T> appended = new Array<>(length() + array.length());
 
-		System.arraycopy(
+		arraycopy(
 			_array.data, _start,
 			appended._array.data, 0, length()
 		);
-		System.arraycopy(
+		arraycopy(
 			array._array.data, array._start,
 			appended._array.data, length(), array.length()
 		);
@@ -652,9 +657,11 @@ public final class Array<T>
 		requireNonNull(values, "Values");
 		final Array<T> array = new Array<>(length() + values.size());
 
-		System.arraycopy(_array.data, _start, array._array.data, 0, length());
+		arraycopy(_array.data, _start, array._array.data, 0, length());
 		int index = length();
-		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+		for (Iterator<? extends T>
+			it = values.iterator(); it.hasNext(); ++index)
+		{
 			array._array.data[index] = it.next();
 		}
 
@@ -719,7 +726,7 @@ public final class Array<T>
 		Array<T> array = empty();
 		if (values.length > 0) {
 			array = new Array<>(values.length);
-			System.arraycopy(values, 0, array._array.data, 0, values.length);
+			arraycopy(values, 0, array._array.data, 0, values.length);
 		}
 
 		return array;
@@ -737,7 +744,9 @@ public final class Array<T>
 		if (values.size() > 0) {
 			array = new Array<>(values.size());
 			int index = 0;
-			for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+			for (Iterator<? extends T>
+				it = values.iterator(); it.hasNext(); ++index)
+			{
 				array._array.data[index] = it.next();
 			}
 		}

@@ -36,6 +36,11 @@ import org.jenetics.util.MappedAccumulator;
  *    />
  * </p>
  *
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
+ *
  * @see <a href="http://mathworld.wolfram.com/ArithmeticMean.html">Wolfram MathWorld: Artithmetic Mean</a>
  * @see <a href="http://en.wikipedia.org/wiki/Arithmetic_mean">Wikipedia: Arithmetic Mean</a>
  *
