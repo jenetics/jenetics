@@ -43,7 +43,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-13 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -70,7 +70,10 @@ public final class Float64Gene
 
 	@Override
 	public Float64Gene mean(final Float64Gene that) {
-		return newInstance((_value.doubleValue() + that._value.doubleValue())/2.0);
+		return newInstance(
+			_value.doubleValue()  +
+			(that._value.doubleValue() - _value.doubleValue())/2.0
+		);
 	}
 
 
@@ -261,9 +264,7 @@ public final class Float64Gene
 			element.add(gene.getAllele().doubleValue());
 		}
 		@Override
-		public void read(InputElement element, Float64Gene gene)
-			throws XMLStreamException
-		{
+		public void read(final InputElement element, final Float64Gene gene) {
 		}
 	};
 

@@ -1,6 +1,21 @@
+Jenetics-1.3.0
+- Add abstract 'Random64' class, respectively make it public.
+- Mark 'object.nonNull' methods as deprecated; functionality is now available in 'java.util.Objects.requireNonNull'.
+- Mark 'arrays.indexWhere' methods as deprecated.
+- Mark method 'object.str(Object)' as deprecated.
+- Mark method 'object.str(byte[])' as deprecated; functionality has moved to 'bit.toString(byte[])'.
+- Mark method 'math.min/max' as deprecated; functionality has moved to 'math.statistics' class.
+- Mark method 'math.sum' as deprecated; functionality has moved to 'math.statistics' class.
+- Mark 'arrays.foreach' method as deprecated. Replaced by 'arrays.forEach'.
+- Mark 'Seq.forall' method as deprecated. Replaced by 'Seq.forAll'.
+- Mark 'Seq.foreach' method as deprecated. Replaced by 'Seq.forEach'.
+- Mark non-array methods in 'arrays' class as deprecated.
+- Mark 'arrays.permutation' methods as deprecated.
+- Add 'Array.shuffle()' method.
 - Fix thread-safe version of the 'LCG64ShiftRandom' class.
 - Implement 'Comparable' interface for 'EnumGene'.
 - Add Array boxing/unboxing methods for short/Short.
+- Needed Gradle version (for building the library) is now 1.6.
 
 Jenetics-1.2.0
 - Marking some Array constructors as deprecated.

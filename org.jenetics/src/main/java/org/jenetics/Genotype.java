@@ -22,10 +22,10 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
@@ -56,7 +56,7 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * Genotype<Float64Gene> genotype = Genotype.valueOf(
+ * final Genotype<Float64Gene> genotype = Genotype.valueOf(
  *     new Float64Chromosome(0.0, 1.0, 8),
  *     new Float64Chromosome(1.0, 2.0, 10),
  *     new Float64Chromosome(0.0, 10.0, 9),
@@ -69,7 +69,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -191,7 +191,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forall(Verify);
+			_valid = _chromosomes.forAll(Verify);
 		}
 		return _valid;
 	}
@@ -301,7 +301,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
-		nonNull(chromosomes, "Chromosomes");
+		requireNonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}

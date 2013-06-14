@@ -22,8 +22,7 @@
  # Author:
  #     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version:
- #     $Id$
+ # Version: <em>$Date: 2013-06-07 $</em>
  #
  ###############################################################################
 -->
@@ -275,6 +274,8 @@
 	</test>		
 	<test name="org.jenetics.util.math">
 		<classes>
+			<class name="org.jenetics.util.mathProbabilityTest" />
+			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.mathTest" />
 		</classes>
 	</test>	
@@ -285,9 +286,9 @@
 	</test>			
 	<test name="org.jenetics.util.Random">
 		<classes>
-			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomTest" />
 			<class name="org.jenetics.util.LCG64ShiftRandomCompatibilityTest" />
+			<class name="org.jenetics.util.PRNGTest" />
 		</classes>
 	</test>	
 	<test name="org.jenetics.util.RandomIndexStream">

@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -55,7 +55,7 @@ public final class bit extends StaticObject {
 	 * @param value the value to set.
 	 * @return the given data array.
 	 * @throws IndexOutOfBoundsException if the index is
-	 *          {@code index >= max || index < 0}.
+	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index, final boolean value) {
@@ -63,13 +63,10 @@ public final class bit extends StaticObject {
 			final int bytes = index >>> 3; // = index/8
 			final int bits = index & 7;    // = index%8
 
-			int d = data[bytes] & 0xFF;
-			if (value) {
-				d = d | (1 << bits);
-			} else {
-				d = d & ~(1 << bits);
-			}
-			data[bytes] = (byte)d;
+			data[bytes] = (byte)(value ?
+				(data[bytes] & 0xFF) |  (1 << bits) :
+				(data[bytes] & 0xFF) & ~(1 << bits)
+			);
 		}
 
 		return data;
@@ -323,6 +320,73 @@ public final class bit extends StaticObject {
 		array[j] = temp;
 	}
 
+	/**
+	 * Convert a binary representation of the given byte array to a string. The
+	 * string has the following format:
+	 * <pre>
+	 *  Byte:       3        2        1        0
+	 *              |        |        |        |
+	 *  Array: "11110011|10011101|01000000|00101010"
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
+	 * <i>Only the array string is printed.</i>
+	 *
+	 * @see #fromByteString(String)
+	 *
+	 * @param data the byte array to convert to a string.
+	 * @return the binary representation of the given byte array.
+	 */
+	public static String toByteString(final byte... data) {
+		final StringBuilder out = new StringBuilder();
+
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[data.length - 1] >>> j) & 1);
+			}
+		}
+		for (int i = data.length - 2; i >= 0 ;--i) {
+			out.append('|');
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[i] >>> j) & 1);
+			}
+		}
+
+		return out.toString();
+	}
+
+	/**
+	 * Convert a string which was created with the {@link #toByteString(byte...)}
+	 * method back to an byte array.
+	 *
+	 * @see #toByteString(byte...)
+	 *
+	 * @param data the string to convert.
+	 * @return the byte array.
+	 * @throws IllegalArgumentException if the given data string could not be
+	 *          converted.
+	 */
+	 public static byte[] fromByteString(final String data) {
+		final String[] parts = data.split("\\|");
+		final byte[] bytes = new byte[parts.length];
+
+		for (int i = 0; i < parts.length; ++i) {
+			if (parts[i].length() != 8) {
+				throw new IllegalArgumentException(
+					"Byte value doesn't contain 8 bit: " + parts[i]
+				);
+			}
+
+			try {
+				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		return bytes;
+	}
+
 	static long toLong(final byte[] data) {
 		return
 			(((long)data[0] << 56) +
@@ -335,9 +399,24 @@ public final class bit extends StaticObject {
 			((data[7] & 255) <<  0));
 	}
 
+	static byte[] toBytes(final long value) {
+		final byte[] bytes = new byte[8];
+		bytes[0] = (byte)(value >>> 56);
+		bytes[1] = (byte)(value >>> 48);
+		bytes[2] = (byte)(value >>> 40);
+		bytes[3] = (byte)(value >>> 32);
+		bytes[4] = (byte)(value >>> 24);
+		bytes[5] = (byte)(value >>> 16);
+		bytes[6] = (byte)(value >>>  8);
+		bytes[7] = (byte)(value >>>  0);
+		return bytes;
+	}
+
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
 		if (data.length < 4 + start) {
-			throw new IllegalArgumentException("Byte array to short: " + data.length);
+			throw new IllegalArgumentException(
+				"Byte array to short: " + data.length
+			);
 		}
 
 		data[0 + start] = (byte)((v >>> 24) & 0xFF);
@@ -350,7 +429,9 @@ public final class bit extends StaticObject {
 
 	static int readInt(final byte[] data, final int start) {
 		if (data.length < 4 + start) {
-			throw new IllegalArgumentException("Byte array to short: " + data.length);
+			throw new IllegalArgumentException(
+				"Byte array to short: " + data.length
+			);
 		}
 
 		return ((data[0 + start] << 24) +

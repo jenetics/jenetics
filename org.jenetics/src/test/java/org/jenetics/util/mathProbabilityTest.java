@@ -22,20 +22,37 @@
  */
 package org.jenetics.util;
 
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-02 $</em>
+ * @version <em>$Date: 2013-06-07 $</em>
  */
-abstract class AbstractCharSeq extends ArrayISeq<Character> {
-	private static final long serialVersionUID = 1L;
+public class mathProbabilityTest {
 
-	final char[] _characters;
+	@Test
+	public void toIntToFloat() {
+		final Random random = RandomRegistry.getRandom();
 
-	AbstractCharSeq(final char[] characters) {
-		super(Array.box(characters)._array.seal(), 0, characters.length);
-		_characters = characters;
+		for (int i = 0; i < 100000; ++i) {
+			final float p = random.nextFloat();
+
+			final int ip = math.probability.toInt(p);
+			final float fip = math.probability.toFloat(ip);
+			Assert.assertEquals(fip, p, 0.000001F);
+		}
+	}
+
+	@Test
+	public void probabilityToInt() {
+		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
+		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
+		Assert.assertEquals(math.probability.toInt(0.5), 0);
+		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
+		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
 	}
 
 }

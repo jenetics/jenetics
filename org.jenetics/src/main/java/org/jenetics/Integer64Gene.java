@@ -42,7 +42,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-13 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -260,9 +260,7 @@ public final class Integer64Gene
 			element.add(gene.getAllele().longValue());
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Gene gene)
-			throws XMLStreamException
-		{
+		public void read(final InputElement element, final Integer64Gene gene) {
 		}
 	};
 

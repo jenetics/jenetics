@@ -22,8 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 
@@ -54,12 +54,6 @@ import java.io.Serializable;
  * {@code mod} 4 = 1.
  * <p/>
  *
- * <p><b>
- * The <i>main</i> class of this PRNG is not thread safe. To create an thread
- * safe instances of this PRNG, use the {@link LCG64ShiftRandom.ThreadSafe} or
- * {@link LCG64ShiftRandom.ThreadLocal} class.
- * </b></p>
- *
  * <em>
  * This is an re-implementation of the
  * <a href="https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp">
@@ -67,12 +61,19 @@ import java.io.Serializable;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
+ * <p/>
+ * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
+ * class is not thread-safe.</strong> If multiple threads requests random
+ * numbers from this class, it <i>must</i> be synchronized externally.
+ * Alternatively you can use the thread-safe implementations
+ * {@link LCG64ShiftRandom.ThreadSafe} or {@link LCG64ShiftRandom.ThreadLocal}.
+ *
  * @see <a href="http://numbercrunch.de/trng/">TRNG</a>
  * @see RandomRegistry
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-05-30 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -85,7 +86,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-05-30 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -185,9 +186,11 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-05-30 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
 	 */
-	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
+	public static class ThreadLocal
+		extends java.lang.ThreadLocal<LCG64ShiftRandom>
+	{
 		private static final long STEP_BASE = 1L << 56;
 
 		private int _block = 0;
@@ -211,7 +214,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given parameters are null.
 		 */
 		public ThreadLocal(final Param param) {
-			_param = nonNull(param, "PRNG param must not be null.");
+			_param = requireNonNull(param, "PRNG param must not be null.");
 		}
 
 		/**
@@ -273,7 +276,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-05-30 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -394,7 +397,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final long seed, final Param param) {
-		_param = object.nonNull(param, "PRNG param must not be null.");
+		_param = requireNonNull(param, "PRNG param must not be null.");
 		_seed = seed;
 
 		_r = seed;
