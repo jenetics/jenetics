@@ -19,6 +19,7 @@
  */
 package org.jenetix.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.math.random.nextDouble;
 
 import java.util.Random;
@@ -26,19 +27,18 @@ import java.util.Random;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.object;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public class Float64Random implements NumberRandom<Float64> {
 
 	private final Random _random;
 
 	public Float64Random(final Random random) {
-		_random = object.nonNull(random, "Random");
+		_random = requireNonNull(random, "Random");
 	}
 
 	public Float64Random() {

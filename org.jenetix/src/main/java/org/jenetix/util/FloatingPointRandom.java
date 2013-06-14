@@ -19,24 +19,25 @@
  */
 package org.jenetix.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Random;
 
 import org.jscience.mathematics.number.FloatingPoint;
 
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.object;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public class FloatingPointRandom implements NumberRandom<FloatingPoint> {
 
 	private final Random _random;
 
 	public FloatingPointRandom(final Random random) {
-		_random = object.nonNull(random, "Random");
+		_random = requireNonNull(random, "Random");
 	}
 
 	public FloatingPointRandom() {

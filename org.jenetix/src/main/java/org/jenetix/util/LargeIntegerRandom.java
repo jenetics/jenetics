@@ -19,6 +19,8 @@
  */
 package org.jenetix.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Random;
 
 import javolution.context.StackContext;
@@ -28,7 +30,6 @@ import org.jscience.mathematics.number.LargeInteger;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 import org.jenetics.util.math;
-import org.jenetics.util.object;
 
 /**
  * Random number generator for {@link LargeInteger} values within a defined
@@ -36,7 +37,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 
@@ -49,7 +50,7 @@ public class LargeIntegerRandom implements NumberRandom<LargeInteger> {
 	private final Random _random;
 
 	public LargeIntegerRandom(final Random random) {
-		_random = object.nonNull(random, "Random");
+		_random = requireNonNull(random, "Random");
 	}
 
 	public LargeIntegerRandom() {
