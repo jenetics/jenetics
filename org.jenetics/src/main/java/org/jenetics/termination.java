@@ -27,7 +27,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class termination extends StaticObject {
 	private termination() {}
@@ -88,7 +88,9 @@ public final class termination extends StaticObject {
 
 		@Override
 		public Boolean apply(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
+			return statistics.getGeneration() < _generation ?
+					Boolean.TRUE :
+					Boolean.FALSE;
 		}
 	}
 
@@ -104,7 +106,8 @@ public final class termination extends StaticObject {
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
-	public static Function<Statistics<?, ?>, Boolean> Generation(final int generation) {
+	public static Function<Statistics<?, ?>, Boolean>
+	Generation(final int generation) {
 		return new Generation(generation);
 	}
 

@@ -19,13 +19,13 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 
@@ -38,7 +38,7 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public Range(final C min, final C max) {
-		super(nonNull(min, "Min value"), nonNull(max, "Max value"));
+		super(requireNonNull(min, "Min value"), requireNonNull(max, "Max value"));
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(String.format(
 					"Min value must be smaller the max value: [%s, %s]", min, max

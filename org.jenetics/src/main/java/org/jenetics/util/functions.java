@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -32,7 +32,7 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
@@ -192,7 +192,7 @@ public final class functions extends StaticObject {
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
 	public static <T> Function<T, Boolean> not(final Function<? super T, Boolean> a) {
-		nonNull(a);
+		requireNonNull(a);
 		return new Function<T, Boolean>() {
 			@Override public Boolean apply(final T object) {
 				return a.apply(object) ? Boolean.FALSE : Boolean.TRUE;
@@ -217,8 +217,8 @@ public final class functions extends StaticObject {
 		final Function<? super T, Boolean> a,
 		final Function<? super T, Boolean> b
 	) {
-		nonNull(a);
-		nonNull(b);
+		requireNonNull(a);
+		requireNonNull(b);
 		return new Function<T, Boolean>() {
 			@Override public Boolean apply(final T object) {
 				return a.apply(object) && b.apply(object);
@@ -243,8 +243,8 @@ public final class functions extends StaticObject {
 		final Function<? super T, Boolean> a,
 		final Function<? super T, Boolean> b
 	) {
-		nonNull(a);
-		nonNull(b);
+		requireNonNull(a);
+		requireNonNull(b);
 		return new Function<T, Boolean>() {
 			@Override public Boolean apply(final T object) {
 				return a.apply(object) || b.apply(object);
@@ -287,8 +287,8 @@ public final class functions extends StaticObject {
 		final Function<A, B> f1,
 		final Function<B, C> f2
 	) {
-		nonNull(f1, "Function 1");
-		nonNull(f2, "Function 2");
+		requireNonNull(f1, "Function 1");
+		requireNonNull(f2, "Function 2");
 
 		return new Function<A, C>() {
 			@Override public C apply(A value) {

@@ -19,9 +19,9 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -65,7 +65,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -86,7 +86,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -140,7 +140,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -203,7 +203,7 @@ public class LinearDistribution<
 	private final double _y2;
 
 	public LinearDistribution(final Range<N> domain, final double y1) {
-		_domain = nonNull(domain);
+		_domain = requireNonNull(domain);
 
 		_y1 = Math.max(y1, 0.0);
 		_x1 = domain.getMin().doubleValue();

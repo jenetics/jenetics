@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.math.sum;
+import static org.jenetics.util.math.statistics.sum;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-06-14 $</em>
  */
 public class mathTest {
 
@@ -118,15 +118,6 @@ public class mathTest {
 		}
 
 		Assert.assertEquals(sum(values), 1.0);
-	}
-
-	@Test
-	public void probabilityToInt() {
-		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(math.probability.toInt(0.5), 0);
-		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
 	}
 
 }

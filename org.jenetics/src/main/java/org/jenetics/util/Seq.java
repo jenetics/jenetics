@@ -33,7 +33,7 @@ import java.util.RandomAccess;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -68,13 +68,27 @@ public interface Seq<T> extends Iterable<T> {
 	);
 
 	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forEach(Function)} instead.
+	 */
+	@Deprecated
+	public <R> void foreach(final Function<? super T, ? extends R> function);
+
+	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
 	 * @param function the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public <R> void foreach(final Function<? super T, ? extends R> function);
+	public <R> void forEach(final Function<? super T, ? extends R> function);
+
+	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forAll(Function)} instead.
+	 */
+	@Deprecated
+	public boolean forall(final Function<? super T, Boolean> predicate);
 
 	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
@@ -85,7 +99,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *          {@code null}.
 	 */
-	public boolean forall(final Function<? super T, Boolean> predicate);
+	public boolean forAll(final Function<? super T, Boolean> predicate);
 
 	/**
 	 * Returns {@code true} if this sequence contains the specified element.

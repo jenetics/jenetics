@@ -19,25 +19,24 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jscience.mathematics.number.Float64;
-
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.arrays;
+import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-06-14 $</em>
  */
 public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<Float64Gene, Float64>
@@ -123,7 +122,7 @@ public abstract class ProbabilitySelectorTester<
 	@Test
 	public void probabilities() {
 		final Population<Float64Gene, Float64> population = TestUtils.newFloat64Population(100);
-		arrays.shuffle(population, new Random(System.currentTimeMillis()));
+		lists.shuffle(population, new Random(System.currentTimeMillis()));
 
 		final S selector = getFactory().newInstance();
 		final double[] props = selector.probabilities(population, 23);
@@ -168,7 +167,7 @@ public abstract class ProbabilitySelectorTester<
 	}
 
 	private static void randomize(final double[] array, final Random random) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}

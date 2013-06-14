@@ -20,7 +20,9 @@
 package org.jenetics.util;
 
 import static java.lang.Math.min;
-import static org.jenetics.util.object.nonNull;
+import static java.lang.String.format;
+import static java.lang.System.arraycopy;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,15 +39,16 @@ import javolution.util.FastList;
 /**
  * Array class which wraps the the java build in array type T[]. Once the array
  * is created the array length can't be changed (like the build in array).
- * <strong>This array is not synchronized.</strong> If multiple threads access
- * an {@code Array} concurrently, and at least one of the threads modifies the
- * array, it <strong>must</strong> be synchronized externally.
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
  *
  * @param <T> the element type of the array.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-05-22 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>
@@ -221,7 +224,7 @@ public final class Array<T>
 		_array.data[2] = third;
 		_array.data[3] = fourth;
 		_array.data[4] = fifth;
-		System.arraycopy(rest, 0, _array.data, 5, rest.length);
+		arraycopy(rest, 0, _array.data, 5, rest.length);
 	}
 
 	/**
@@ -235,7 +238,7 @@ public final class Array<T>
 	@Deprecated
 	public Array(final T[] values) {
 		this(values.length);
-		System.arraycopy(values, 0, _array.data, 0, values.length);
+		arraycopy(values, 0, _array.data, 0, values.length);
 	}
 
 	/**
@@ -252,7 +255,9 @@ public final class Array<T>
 		this(values.size());
 
 		int index = 0;
-		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+		for (Iterator<? extends T>
+			it = values.iterator(); it.hasNext(); ++index)
+		{
 			_array.data[index] = it.next();
 		}
 	}
@@ -401,11 +406,11 @@ public final class Array<T>
 	) {
 		checkIndex(from, to);
 		if (from > to) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"From index > to index: %d > %d.", from, to
 				));
 		}
-		nonNull(comparator, "Comparator");
+		requireNonNull(comparator, "Comparator");
 
 		_array.cloneIfSealed();
 
@@ -472,7 +477,7 @@ public final class Array<T>
 		} else {
 			checkIndex(start, end);
 			if (otherStart < 0 || (otherStart + (end - start)) > _length) {
-				throw new ArrayIndexOutOfBoundsException(String.format(
+				throw new ArrayIndexOutOfBoundsException(format(
 					"Invalid index range: [%d, %d)",
 					otherStart, (otherStart + (end - start))
 				));
@@ -515,6 +520,15 @@ public final class Array<T>
 		}
 	}
 
+	/**
+	 * Randomize this array using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param random the {@link Random} object to use for randomize.
+	 * @return this array
+	 * @throws NullPointerException if the give random object is {@code null}.
+	 */
 	public Array<T> shuffle(final Random random) {
 		_array.cloneIfSealed();
 
@@ -523,6 +537,18 @@ public final class Array<T>
 		}
 
 		return this;
+	}
+
+	/**
+	 * Randomize this array using the <i>registered</i> {@link Random} object.
+	 * The used shuffling algorithm is from D. Knuth TAOCP, Seminumerical
+	 * Algorithms, Third edition, page 142, Algorithm S (Selection sampling
+	 * technique).
+	 *
+	 * @return this array
+	 */
+	public Array<T> shuffle() {
+		return shuffle(RandomRegistry.getRandom());
 	}
 
 	@Override
@@ -551,7 +577,7 @@ public final class Array<T>
 	@Override
 	public Array<T> setAll(final T[] values) {
 		_array.cloneIfSealed();
-		System.arraycopy(
+		arraycopy(
 			values, 0, _array.data, _start, min(length(), values.length)
 		);
 		return this;
@@ -559,7 +585,7 @@ public final class Array<T>
 
 	@Override
 	public Array<T> fill(final Factory<? extends T> factory) {
-		nonNull(factory);
+		requireNonNull(factory);
 
 		_array.cloneIfSealed();
 		for (int i = _start; i < _end; ++i) {
@@ -570,8 +596,7 @@ public final class Array<T>
 
 	@Override
 	public ISeq<T> toISeq() {
-		_array._sealed = true;
-		return new ArrayISeq<>(new ArrayRef(_array.data), _start, _end);
+		return new ArrayISeq<>(new ArrayRef(_array.seal().data), _start, _end);
 	}
 
 	/**
@@ -585,7 +610,7 @@ public final class Array<T>
 	 */
 	public Array<T> add(final T value) {
 		final Array<T> array = new Array<>(length() + 1);
-		System.arraycopy(_array.data, _start, array._array.data, 0, length());
+		arraycopy(_array.data, _start, array._array.data, 0, length());
 		array._array.data[array.length() - 1] = value;
 		return array;
 	}
@@ -603,11 +628,11 @@ public final class Array<T>
 	public Array<T> add(final Array<? extends T> array) {
 		final Array<T> appended = new Array<>(length() + array.length());
 
-		System.arraycopy(
+		arraycopy(
 			_array.data, _start,
 			appended._array.data, 0, length()
 		);
-		System.arraycopy(
+		arraycopy(
 			array._array.data, array._start,
 			appended._array.data, length(), array.length()
 		);
@@ -626,12 +651,14 @@ public final class Array<T>
 	 * @throws NullPointerException if the {@code values} is {@code null}.
 	 */
 	public Array<T> add(final Collection<? extends T> values) {
-		nonNull(values, "Values");
+		requireNonNull(values, "Values");
 		final Array<T> array = new Array<>(length() + values.size());
 
-		System.arraycopy(_array.data, _start, array._array.data, 0, length());
+		arraycopy(_array.data, _start, array._array.data, 0, length());
 		int index = length();
-		for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+		for (Iterator<? extends T>
+			it = values.iterator(); it.hasNext(); ++index)
+		{
 			array._array.data[index] = it.next();
 		}
 
@@ -640,7 +667,7 @@ public final class Array<T>
 
 	@Override
 	public <B> Array<B> map(final Function<? super T, ? extends B> mapper) {
-		nonNull(mapper, "Converter");
+		requireNonNull(mapper, "Converter");
 
 		final int length = length();
 		final Array<B> result = new Array<>(length);
@@ -696,7 +723,7 @@ public final class Array<T>
 		Array<T> array = empty();
 		if (values.length > 0) {
 			array = new Array<>(values.length);
-			System.arraycopy(values, 0, array._array.data, 0, values.length);
+			arraycopy(values, 0, array._array.data, 0, values.length);
 		}
 
 		return array;
@@ -714,7 +741,9 @@ public final class Array<T>
 		if (values.size() > 0) {
 			array = new Array<>(values.size());
 			int index = 0;
-			for (Iterator<? extends T> it = values.iterator(); it.hasNext(); ++index) {
+			for (Iterator<? extends T>
+				it = values.iterator(); it.hasNext(); ++index)
+			{
 				array._array.data[index] = it.next();
 			}
 		}

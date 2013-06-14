@@ -19,9 +19,9 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 /**
  * Abstract implementation of the {@link Accumulator} interface which defines a
@@ -30,7 +30,7 @@ import static org.jenetics.util.object.nonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public abstract class MappedAccumulator<T>
 	implements
@@ -88,7 +88,7 @@ public abstract class MappedAccumulator<T>
 	 * @throws NullPointerException if the given {@code converter} is {@code null}.
 	 */
 	public <B> MappedAccumulator<B> map(final Function<? super B, ? extends T> mapper) {
-		nonNull(mapper, "Mapper");
+		requireNonNull(mapper, "Mapper");
 		return new MappedAccumulator<B>() {
 			@Override
 			public void accumulate(final B value) {

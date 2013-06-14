@@ -19,12 +19,12 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 	private static final long serialVersionUID = 1L;
@@ -47,7 +47,7 @@ class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 
 	@Override
 	public <B> ISeq<B> map(final Function<? super T, ? extends B> converter) {
-		nonNull(converter, "Converter");
+		requireNonNull(converter, "Converter");
 
 		final int length = length();
 		final ArrayISeq<B> result = new ArrayISeq<>(new ArrayRef(length), 0, length);

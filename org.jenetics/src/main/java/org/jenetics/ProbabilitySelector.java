@@ -20,10 +20,11 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.pow;
-import static org.jenetics.util.math.sum;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.ulpDistance;
-import static org.jenetics.util.object.nonNull;
+import static org.jenetics.util.math.statistics.sum;
 
 import java.util.Random;
 
@@ -46,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -54,7 +55,7 @@ public abstract class ProbabilitySelector<
 >
 	implements Selector<G, C>
 {
-	private static final long MAX_ULP_DISTANCE = (long)pow(10, 10);
+	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
 	protected ProbabilitySelector() {
 	}
@@ -65,10 +66,10 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		nonNull(population, "Population");
-		nonNull(opt, "Optimization");
+		requireNonNull(population, "Population");
+		requireNonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s.",
 				count
 			));
@@ -167,10 +168,10 @@ public abstract class ProbabilitySelector<
 	 * @param count The number of phenotypes to select. <i>This parameter is not
 	 *         needed for most implementations.</i>
 	 * @return Probability array. The returned probability array must have the
-	 *          length {@code population.size()} and <strong>must</strong> sum to
-	 *          one. The returned value is checked with
-	 *          {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
-	 *          in the base class.
+	 *         length {@code population.size()} and <strong>must</strong> sum to
+	 *         one. The returned value is checked with
+	 *         {@code assert(Math.abs(math.sum(probabilities) - 1.0) < 0.0001)}
+	 *         in the base class.
 	 */
 	protected abstract double[] probabilities(
 		final Population<G, C> population,

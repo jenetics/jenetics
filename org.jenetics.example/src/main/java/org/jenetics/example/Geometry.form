@@ -6,6 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -60,6 +61,9 @@
               <SubComponents>
                 <Component class="javax.swing.JButton" name="_startButton">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Start"/>
                   </Properties>
                   <Constraints>
@@ -70,6 +74,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="_stopButton">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Stop"/>
                   </Properties>
                   <Constraints>
@@ -80,6 +87,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="_initButton">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Init"/>
                   </Properties>
                   <Constraints>
@@ -90,6 +100,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="_pauseButton">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Pause"/>
                   </Properties>
                   <Constraints>
@@ -100,6 +113,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="_stepButton">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Step"/>
                   </Properties>
                   <Constraints>
@@ -110,6 +126,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_generationLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Generation:"/>
                   </Properties>
                   <Constraints>
@@ -171,6 +190,9 @@
                 </Container>
                 <Component class="javax.swing.JLabel" name="_populationSizeLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Population size:"/>
                   </Properties>
                   <Constraints>
@@ -188,6 +210,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_maxPTAgeLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Maximal PT age:"/>
                   </Properties>
                   <Constraints>
@@ -205,6 +230,9 @@
                 </Component>
                 <Component class="javax.swing.JSlider" name="_offspringFractionSlider">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="majorTickSpacing" type="int" value="10"/>
                     <Property name="maximum" type="int" value="90"/>
                     <Property name="minimum" type="int" value="10"/>
@@ -212,9 +240,6 @@
                     <Property name="paintLabels" type="boolean" value="true"/>
                     <Property name="paintTicks" type="boolean" value="true"/>
                     <Property name="value" type="int" value="30"/>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="null"/>
-                    </Property>
                     <Property name="name" type="java.lang.String" value="" noResource="true"/>
                   </Properties>
                   <Constraints>
@@ -225,6 +250,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_offspringFractionLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Offspring fraction:"/>
                   </Properties>
                   <Constraints>
@@ -235,6 +263,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_populationTransformBestLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Population best:"/>
                   </Properties>
                   <Constraints>
@@ -245,6 +276,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_gaBestTransformLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="GA best:"/>
                   </Properties>
                   <Constraints>
@@ -274,6 +308,9 @@
                 </Container>
                 <Component class="javax.swing.JLabel" name="_targetTransformLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Target transform:"/>
                   </Properties>
                   <Constraints>
@@ -284,6 +321,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_mutationProbabilityLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Mutation probability:"/>
                   </Properties>
                   <Constraints>
@@ -294,6 +334,9 @@
                 </Component>
                 <Component class="javax.swing.JSlider" name="_mutationProbabilitySlider">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="majorTickSpacing" type="int" value="100"/>
                     <Property name="maximum" type="int" value="500"/>
                     <Property name="minorTickSpacing" type="int" value="50"/>
@@ -308,6 +351,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_fitenssMeanLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Fitness mean:"/>
                   </Properties>
                   <Constraints>
@@ -328,6 +374,9 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="_fitnessVarianceLabel">
                   <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Dialog" size="12" style="0"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Fitness variance:"/>
                   </Properties>
                   <Constraints>
@@ -373,12 +422,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="498" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="497" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="585" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="583" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

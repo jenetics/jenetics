@@ -5810,8 +5810,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.7.0_17-b02)---Java HotSpot(TM) 64-Bit Server VM (build
- 23.7-b01, mixed mode) 
+ Environment (build 1.7.0_21-b11)---Java HotSpot(TM) 64-Bit Server VM (build
+ 23.21-b01, mixed mode) 
 \end_layout
 
 \end_inset
@@ -6036,7 +6036,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $223\cdot10^{6}$
+\begin_inset Formula $230\cdot10^{6}$
 \end_inset
 
 
@@ -6048,7 +6048,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $236\cdot10^{6}$
+\begin_inset Formula $243\cdot10^{6}$
 \end_inset
 
 
@@ -6060,7 +6060,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $175\cdot10^{6}$
+\begin_inset Formula $210\cdot10^{6}$
 \end_inset
 
 
@@ -6072,7 +6072,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $182\cdot10^{6}$
+\begin_inset Formula $216\cdot10^{6}$
 \end_inset
 
 
@@ -6995,7 +6995,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = new Array<>("-10","1","2","3","4","5");
+final Seq<String> data = Array.valueOf("-10","1","2","3","4","5");
 \end_layout
 
 \begin_layout Plain Layout
@@ -9330,6 +9330,27 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://jscience.org
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
@@ -9429,7 +9450,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -9628,7 +9649,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.2 (
+: 1.6 (
 \emph on
 or later
 \emph default
@@ -9665,11 +9686,11 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.2-bin.zip
+http://services.gradle.org/distributions/gradle-1.6-bin.zip
 \end_layout
 
 \end_inset

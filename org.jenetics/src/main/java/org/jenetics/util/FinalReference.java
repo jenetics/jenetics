@@ -21,9 +21,9 @@ package org.jenetics.util;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.str;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javolution.lang.Reference;
 
@@ -34,7 +34,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class FinalReference<T> implements Reference<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -109,7 +109,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 
 	@Override
 	public String toString() {
-		return str(get());
+		return Objects.toString(get());
 	}
 
 }

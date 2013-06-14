@@ -22,11 +22,22 @@ package org.jenetics.util;
 import java.util.Random;
 
 /**
- * Base class for random generators which create 64 bit random values natively.
+ * An abstract base class which eases the implementation of {@code Random}
+ * objects which natively creates random {@code long} values. All other
+ * {@code Random} functions are optimized using this {@code long} values.
+ *
+ * [code]
+ * public class MyRandom64 extends Random64 {
+ *     public long nextLong() {
+ *         // Only this method must be implemented.
+ *         ...
+ *     }
+ * }
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.1
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-22 $</em>
+ * @since 1.3
+ * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public abstract class Random64 extends PRNG {
 
@@ -37,9 +48,13 @@ public abstract class Random64 extends PRNG {
 	}
 
 	protected Random64() {
+		this(math.random.seed());
 	}
 
-	// Force to explicitly override the Random.nextLong() method.
+	/**
+	 * Force to explicitly override the Random.nextLong() method. All other
+	 * methods of this class are implemented by calling this method.
+	 */
 	@Override
 	public abstract long nextLong();
 

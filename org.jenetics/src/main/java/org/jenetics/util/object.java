@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -53,7 +55,7 @@ public final class object extends StaticObject {
 		return new Function<C,Boolean>() {
 			@Override
 			public Boolean apply(final C value) {
-				nonNull(value);
+				requireNonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
 					throw new IllegalArgumentException(String.format(
 						"Given value %s is out of range [%s, %s)",
@@ -113,7 +115,7 @@ public final class object extends StaticObject {
 	public static final Function<Object, Boolean> NonNull(final String message) {
 		return new Function<Object,Boolean>() {
 			@Override public Boolean apply(final Object object) {
-				nonNull(object, message );
+				requireNonNull(object, message );
 				return Boolean.TRUE;
 			}
 		};
@@ -126,7 +128,11 @@ public final class object extends StaticObject {
 	 * @param message the error message.
 	 * @return {@code obj} if not {@code null}.
 	 * @throws NullPointerException if {@code obj} is {@code null}.
+	 *
+	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object, String)}
+	 *             instead.
 	 */
+	@Deprecated
 	public static <T> T nonNull(final T obj, final String message) {
 		if (obj == null) {
 			throw new NullPointerException(message + " must not be null.");
@@ -140,7 +146,10 @@ public final class object extends StaticObject {
 	 * @param obj the object to check.
 	 * @return {@code obj} if not {@code null}.
 	 * @throws NullPointerException if {@code obj} is {@code null}.
+	 *
+	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object)} instead.
 	 */
+	@Deprecated
 	public static <T> T nonNull(final T obj) {
 		return nonNull(obj, "Object");
 	}
@@ -463,7 +472,10 @@ public final class object extends StaticObject {
 	 * @param a the object.
 	 * @return the result of calling toString for a non-null argument and "null"
 	 *          for a null argument
+	 *
+	 * @deprecated Use {@link Objects#toString(Object)} instead.
 	 */
+	@Deprecated
 	public static String str(final Object a) {
 		return Objects.toString(a);
 	}
@@ -482,23 +494,12 @@ public final class object extends StaticObject {
 	 *
 	 * @param data the byte array to convert to a string.
 	 * @return the binary representation of the given byte array.
+	 *
+	 * @deprecated Use {@link bit#toByteString(byte...)} instead.
 	 */
+	@Deprecated
 	public static String str(final byte... data) {
-		final StringBuilder out = new StringBuilder();
-
-		if (data.length > 0) {
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[data.length - 1] >>> j) & 1);
-			}
-		}
-		for (int i = data.length - 2; i >= 0 ;--i) {
-			out.append('|');
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[i] >>> j) & 1);
-			}
-		}
-
-		return out.toString();
+		return bit.toByteString(data);
 	}
 
 }

@@ -29,11 +29,11 @@ import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Function;
-import org.jenetics.util.arrays;
+import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-06-14 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
@@ -73,7 +73,7 @@ public class PopulationTest {
 
 		@Override
 		protected void afterTest() {
-			arrays.shuffle(_population);
+			lists.shuffle(_population);
 		}
 	};
 

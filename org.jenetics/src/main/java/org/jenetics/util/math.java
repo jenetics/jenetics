@@ -19,14 +19,18 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.exp;
+import static java.lang.String.format;
+
 import java.util.Random;
 
 /**
- * Object with mathematical functions.
+ * This object contains mathematical helper functions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-05-22 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -41,17 +45,9 @@ public final class math extends StaticObject {
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
 	public static long plus(final long a, final long b) {
-		if (a == Long.MIN_VALUE && b == Long.MIN_VALUE) {
-			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
-		}
-
 		final long z = a + b;
-		if (a > 0) {
-			if (b > 0 && z < 0) {
-				throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
-			}
-		} else if (b < 0 && z > 0) {
-			throw new ArithmeticException(String.format("Overflow: %d + %d", a, b));
+		if (((a^z) & (b^z)) < 0) {
+			throw new ArithmeticException(format("Overflow: %d + %d", a, b));
 		}
 
 		return z;
@@ -68,12 +64,8 @@ public final class math extends StaticObject {
 	 */
 	public static long minus(final long a, final long b) {
 		final long z = a - b;
-		if (a > 0) {
-			if (b < 0 && z < 0) {
-				throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
-			}
-		} else if (b > 0 && z > 0) {
-			throw new ArithmeticException(String.format("Overflow: %d - %d", a, b));
+		if (((a^b) & (a^z)) < 0) {
+			throw new ArithmeticException(format("Overflow: %d - %d", a, b));
 		}
 
 		return z;
@@ -86,21 +78,12 @@ public final class math extends StaticObject {
 	 * @param values the values to sum up.
 	 * @return the sum of the given {@code values}.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#sum(double[])} instead.
 	 */
+	@Deprecated
 	public static double sum(final double[] values) {
-		double sum = 0.0;
-		double c = 0.0;
-		double y = 0.0;
-		double t = 0.0;
-
-		for (int i = values.length; --i >= 0;) {
-			y = values[i] - c;
-			t = sum + y;
-			c = t - sum - y;
-			sum = t;
-		}
-
-		return sum;
+		return statistics.sum(values);
 	}
 
 	/**
@@ -109,13 +92,12 @@ public final class math extends StaticObject {
 	 * @param values the values to add.
 	 * @return the values sum.
 	 * @throws NullPointerException if the values are null;
+	 *
+	 * @deprecated Use {@link math.statistics#sum(long[])} instead.
 	 */
+	@Deprecated
 	public static long sum(final long[] values) {
-		long sum = 0;
-		for (int i = values.length; --i >= 0;) {
-			sum += values[i];
-		}
-		return sum;
+		return statistics.sum(values);
 	}
 
 	/**
@@ -128,7 +110,7 @@ public final class math extends StaticObject {
 	 * @throws NullPointerException if the given double array is {@code null}.
 	 */
 	public static double[] normalize(final double[] values) {
-		final double sum = 1.0/sum(values);
+		final double sum = 1.0/statistics.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			values[i] = values[i]*sum;
 		}
@@ -143,20 +125,12 @@ public final class math extends StaticObject {
 	 * @return the minimum value or {@link Double#NaN} if the given array is
 	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#min(double[])} instead.
 	 */
+	@Deprecated
 	public static double min(final double[] values) {
-		double min = Double.NaN;
-		if (values.length > 0) {
-			min = values[0];
-
-			for (int i = values.length; --i >= 1;) {
-				if (values[i] < min) {
-					min = values[i];
-				}
-			}
-		}
-
-		return min;
+		return statistics.min(values);
 	}
 
 	/**
@@ -166,20 +140,12 @@ public final class math extends StaticObject {
 	 * @return the maximum value or {@link Double#NaN} if the given array is
 	 *         empty.
 	 * @throws NullPointerException if the given array is {@code null}.
+	 *
+	 * @deprecated Use {@link math.statistics#max(double[])} instead.
 	 */
+	@Deprecated
 	public static double max(final double[] values) {
-		double max = Double.NaN;
-		if (values.length > 0) {
-			max = values[0];
-
-			for (int i = values.length; --i >= 1;) {
-				if (values[i] > max) {
-					max = values[i];
-				}
-			}
-		}
-
-		return max;
+		return statistics.max(values);
 	}
 
 	/**
@@ -266,7 +232,7 @@ public final class math extends StaticObject {
 
 	static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
-		return m >= Integer.MIN_VALUE && m <= Integer.MAX_VALUE;
+		return ((int)m) == m;
 	}
 
 	/**
@@ -334,29 +300,198 @@ public final class math extends StaticObject {
 		return t;
 	}
 
+	static final class special extends StaticObject {
+		private special() {}
+
+		/**
+		 * Return the <i>error function</i> of {@code z}. The fractional error
+		 * of this implementation is less than 1.2E-7.
+		 *
+		 * @param z the value to calculate the error function for.
+		 * @return the error function for {@code z}.
+		 */
+		static double erf(final double z) {
+			final double t = 1.0/(1.0 + 0.5*abs(z));
+
+			// Horner's method
+			final double result = 1 - t*exp(
+					-z*z - 1.26551223 +
+					t*( 1.00002368 +
+					t*( 0.37409196 +
+					t*( 0.09678418 +
+					t*(-0.18628806 +
+					t*( 0.27886807 +
+					t*(-1.13520398 +
+					t*( 1.48851587 +
+					t*(-0.82215223 +
+					t*(0.17087277))))))))));
+
+			return z >= 0 ? result : -result;
+		}
+
+		/**
+		 * TODO: Implement gamma function.
+		 *
+		 * @param x
+		 * @return
+		 */
+		static double Γ(final double x) {
+			return x;
+		}
+		
+	}
+
+	/**
+	 * Some helper method concerning statistics.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.3
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
+	 */
+	public static final class statistics extends StaticObject {
+		private statistics() {}
+
+		/**
+		 * Return the minimum value of the given double array.
+		 *
+		 * @param values the double array.
+		 * @return the minimum value or {@link Double#NaN} if the given array is
+		 *         empty.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double min(final double[] values) {
+			double min = Double.NaN;
+			if (values.length > 0) {
+				min = values[0];
+
+				for (int i = values.length; --i >= 1;) {
+					if (values[i] < min) {
+						min = values[i];
+					}
+				}
+			}
+
+			return min;
+		}
+
+		/**
+		 * Return the maximum value of the given double array.
+		 *
+		 * @param values the double array.
+		 * @return the maximum value or {@link Double#NaN} if the given array is
+		 *         empty.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double max(final double[] values) {
+			double max = Double.NaN;
+			if (values.length > 0) {
+				max = values[0];
+
+				for (int i = values.length; --i >= 1;) {
+					if (values[i] > max) {
+						max = values[i];
+					}
+				}
+			}
+
+			return max;
+		}
+
+		/**
+		 * Implementation of the <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+		 * Kahan summation algorithm</a>.
+		 *
+		 * @param values the values to sum up.
+		 * @return the sum of the given {@code values}.
+		 * @throws NullPointerException if the given array is {@code null}.
+		 */
+		public static double sum(final double[] values) {
+			double sum = 0.0;
+			double c = 0.0;
+			double y = 0.0;
+			double t = 0.0;
+
+			for (int i = values.length; --i >= 0;) {
+				y = values[i] - c;
+				t = sum + y;
+				c = t - sum - y;
+				sum = t;
+			}
+
+			return sum;
+		}
+
+		/**
+		 * Add the values of the given array.
+		 *
+		 * @param values the values to add.
+		 * @return the values sum.
+		 * @throws NullPointerException if the values are null;
+		 */
+		public static long sum(final long[] values) {
+			long sum = 0;
+			for (int i = values.length; --i >= 0;) {
+				sum += values[i];
+			}
+			return sum;
+		}
+
+	}
 
 	/**
 	 * Mathematical functions regarding probabilities.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-05-22 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
 	 */
 	static final class probability extends StaticObject {
 		private probability() {}
 
 		static final long INT_RANGE = pow(2, 32) - 1;
 
+		/**
+		 * Maps the probability, given in the range {@code [0, 1]}, to an
+		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
+		 *
+		 * @see {@link #toInt(double)}
+		 * @see {@link #toFloat(int)}
+		 *
+		 * @param probability the probability to widen.
+		 * @return the widened probability.
+		 */
+		static int toInt(final float probability) {
+			return Math.round(INT_RANGE*probability + Integer.MIN_VALUE);
+		}
 
 		/**
 		 * Maps the probability, given in the range {@code [0, 1]}, to an
 		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
+		 *
+		 * @see {@link #toInt(float)}
+		 * @see {@link #toFloat(int)}
 		 *
 		 * @param probability the probability to widen.
 		 * @return the widened probability.
 		 */
 		static int toInt(final double probability) {
 			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
+		}
+
+		/**
+		 * Maps the <i>integer</i> probability, within the range
+		 * {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]} back to a float
+		 * probability within the range {@code [0, 1]}.
+		 *
+		 * @see {@link #toInt(float)}
+		 * @see {@link #toInt(double)}
+		 *
+		 * @param probability the <i>integer</i> probability to map.
+		 * @return the mapped probability within the range {@code [0, 1]}.
+		 */
+		static float toFloat(final int probability) {
+			final long value = (long)probability + Integer.MAX_VALUE;
+			return (float)(value/(double)INT_RANGE);
 		}
 
 	}
@@ -366,7 +501,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-05-22 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-06-14 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -382,10 +517,11 @@ public final class math extends StaticObject {
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
 		public static int nextInt(
-			final Random random, final int min, final int max
+			final Random random,
+			final int min, final int max
 		) {
 			if (min >= max) {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"Min >= max: %d >= %d", min, max
 				));
 			}
@@ -415,10 +551,11 @@ public final class math extends StaticObject {
 		 * @throws IllegalArgumentException if {@code min >= max}
 		 */
 		public static long nextLong(
-			final Random random, final long min, final long max
+			final Random random,
+			final long min, final long max
 		) {
 			if (min >= max) {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"min >= max: %d >= %d.", min, max
 				));
 			}
@@ -454,7 +591,7 @@ public final class math extends StaticObject {
 		 */
 		public static long nextLong(final Random random, final long n) {
 			if (n <= 0) {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"n is smaller than one: %d", n
 				));
 			}
@@ -480,7 +617,8 @@ public final class math extends StaticObject {
 		 *         than to {@code max}
 		 */
 		public static float nextFloat(
-			final Random random, final float min, final float max
+			final Random random,
+			final float min, final float max
 		) {
 			return random.nextFloat()*(max - min) + min;
 		}
@@ -496,7 +634,8 @@ public final class math extends StaticObject {
 		 *         than to {@code max}
 		 */
 		public static double nextDouble(
-			final Random random, final double min, final double max
+			final Random random,
+			final double min, final double max
 		) {
 			return random.nextDouble()*(max - min) + min;
 		}
@@ -643,9 +782,7 @@ public final class math extends StaticObject {
 
 	}
 
-
 }
-
 
 
 

@@ -64,11 +64,11 @@
  *
  * [code]
  * public static void main(final String[] args) {
- *     Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     Function<Genotype<BitGene> Float64> ff = ...
- *     GeneticAlgorithm<BitGene, Float64>
+ *     final Function<Genotype<BitGene> Float64> ff = ...
+ *     final GeneticAlgorithm<BitGene, Float64>
  *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();
@@ -132,7 +132,7 @@
  * IO.xml.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population<Float64Gene,Float64> population =
+ * final Population<Float64Gene,Float64> population =
  *     (Population<Float64Gene, Float64)IO.xml.read(file);
  * ga.setPopulation(population);
  * [/code]
@@ -176,11 +176,11 @@
  *
  * public class OnesCounting {
  *     public static void main(String[] args) {
- *         Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *         final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *             new BitChromosome(20, 0.15)
  *         );
- *         Function<Genotype<BitGene>, Integer> ff = new OneCounter();
- *         GeneticAlgorithm<BitGene, Integer> ga =
+ *         final Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+ *         final GeneticAlgorithm<BitGene, Integer> ga =
  *             new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
  *
  *         ga.setStatisticsCalculator(
@@ -247,7 +247,7 @@
  *         _adjacence = adjacence;
  *     }
  *     public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
- *         Chromosome<EnumGene<Integer>> path =
+ *         final Chromosome<EnumGene<Integer>> path =
  *             genotype.getChromosome();
  *
  *         double length = 0.0;
@@ -265,9 +265,9 @@
  *     public static void main(String[] args) {
  *         final int stops = 20;
  *
- *         Function<Genotype<EnumGene<Integer>>, Float64> ff =
+ *         final Function<Genotype<EnumGene<Integer>>, Float64> ff =
  *             new FF(adjacencyMatrix(stops));
- *         Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
+ *         final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
  *             PermutationChromosome.ofInteger(stops)
  *         );
  *         final GeneticAlgorithm<EnumGene<Integer>, Float64>
@@ -305,7 +305,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 package org.jenetics;
 

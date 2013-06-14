@@ -19,9 +19,9 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 
@@ -39,7 +39,7 @@ import javolution.lang.Reusable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
  */
 public final class Timer
 	implements
@@ -66,7 +66,7 @@ public final class Timer
 	 * @throws NullPointerException if the {@code label} is {@code null}.
 	 */
 	public Timer(final String label) {
-		_label = nonNull(label, "Time label");
+		_label = requireNonNull(label, "Time label");
 	}
 
 	/**
@@ -98,7 +98,7 @@ public final class Timer
 	 * @throws NullPointerException if the {@code accumulator} is {@code null}.
 	 */
 	public void setAccumulator(final Accumulator<? super Long> accumulator) {
-		_accumulator = nonNull(accumulator, "Accumulator");
+		_accumulator = requireNonNull(accumulator, "Accumulator");
 	}
 
 	/**
@@ -171,12 +171,12 @@ public final class Timer
 	 * @param label the new timer label
 	 */
 	public void setLabel(final String label) {
-		_label = nonNull(label, "Timer label");
+		_label = requireNonNull(label, "Timer label");
 	}
 
 	@Override
 	public int compareTo(final Timer timer) {
-		nonNull(timer, "Timer");
+		requireNonNull(timer, "Timer");
 
 		long diff = _sum - timer._sum;
 		int comp = 0;
