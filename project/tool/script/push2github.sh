@@ -1,5 +1,5 @@
 #!/bin/bash
 
 hg bookmark -f default
-hg push gitbub
+hg push github
 hg bookmarks -d default
