@@ -23,7 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
@@ -67,10 +67,10 @@ public abstract class IndexStream {
 	 *
 	 * @param function the function to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
-	 *          {@code null}.
+	 *         {@code null}.
 	 */
-	<R> void foreach(final Function<? super Integer, ? extends R> function) {
-		nonNull(function, "Function");
+	<R> void forEach(final Function<? super Integer, ? extends R> function) {
+		requireNonNull(function, "Function");
 		for (int i = next(); i != -1; i = next()) {
 			function.apply(i);
 		}

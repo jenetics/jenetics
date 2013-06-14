@@ -29,17 +29,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import javolution.xml.XMLSerializable;
 
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import org.jenetics.util.Function;
 import org.jenetics.util.IO;
-import org.jenetics.util.arrays;
 import org.jenetics.util.Serialize;
+import org.jenetics.util.lists;
 
 
 /**
@@ -78,7 +77,7 @@ public class PopulationTest {
 			Assert.assertTrue(first.compareTo(second) >= 0);
 		}
 
-		arrays.shuffle(population);
+		lists.shuffle(population);
 		population.sort(Optimize.MAXIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.apply(population.get(i).getGenotype());
@@ -86,7 +85,7 @@ public class PopulationTest {
 			Assert.assertTrue(first.compareTo(second) >= 0, first + "<" + second);
 		}
 
-		arrays.shuffle(population);
+		lists.shuffle(population);
 		population.sort(Optimize.MINIMUM.<Float64>descending());
 		for (int i = 0; i < population.size() - 1; ++i) {
 			Float64 first = _cf.apply(population.get(i).getGenotype());

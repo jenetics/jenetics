@@ -22,8 +22,10 @@
  */
 package org.jenetics.util;
 
+import java.util.Arrays;
 import java.util.Random;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
@@ -35,6 +37,35 @@ import org.jenetics.stat.UniformDistribution;
  * @version <em>$Date$</em>
  */
 public class mathRandomTest {
+
+	@Test
+	public void seed() {
+		for (int i = 0; i < 100; ++i) {
+			final long seed1 = math.random.seed();
+			final long seed2 = math.random.seed();
+			Assert.assertNotEquals(seed1, seed2);
+		}
+	}
+
+	@Test
+	public void seedLong() {
+		for (int i = 0; i < 100; ++i) {
+			final long seed1 = math.random.seed(i);
+			final long seed2 = math.random.seed(i);
+			Assert.assertNotEquals(seed1, seed2);
+		}
+	}
+
+	@Test
+	public void seedBytes() {
+		final int length = 123;
+
+		for (int i = 0; i < 100; ++i) {
+			final byte[] seed1 = math.random.seedBytes(length);
+			final byte[] seed2 = math.random.seedBytes(length);
+			Assert.assertFalse(Arrays.equals(seed1, seed2));
+		}
+	}
 
 	@Test(invocationCount = 5)
 	public void toFloat_int() {

@@ -71,7 +71,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 	public MultiPointCrossover(final double probability, final int n) {
 		super(probability);
 		if (n < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"n must be at least 1 but was %d.", n
 			));
 		}

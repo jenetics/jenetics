@@ -32,7 +32,7 @@ import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.Population;
 import org.jenetics.util.Function;
-import org.jenetics.util.arrays;
+import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -76,7 +76,7 @@ public class PopulationTest {
 
 		@Override
 		protected void afterTest() {
-			arrays.shuffle(_population);
+			lists.shuffle(_population);
 		}
 	};
 

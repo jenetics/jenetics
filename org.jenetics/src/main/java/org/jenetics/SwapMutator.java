@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -44,14 +45,6 @@ import org.jenetics.util.RandomRegistry;
 public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 	/**
-	 * Default constructor, with default mutation probability
-	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
-	 */
-	public SwapMutator() {
-		this(DEFAULT_ALTER_PROBABILITY);
-	}
-
-	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *
 	 * @param probability the crossover probability.
@@ -60,6 +53,14 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 	 */
 	public SwapMutator(final double probability) {
 		super(probability);
+	}
+
+	/**
+	 * Default constructor, with default mutation probability
+	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
+	 */
+	public SwapMutator() {
+		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
 	/**
@@ -72,7 +73,9 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 		if (genes.length() > 1) {
 			final Random random = RandomRegistry.getRandom();
-			final IndexStream stream = IndexStream.Random(genes.length(), p, random);
+			final IndexStream stream = IndexStream.Random(
+				genes.length(), p, random
+			);
 
 			for (int i = stream.next(); i != -1; i = stream.next()) {
 				final int j = random.nextInt(genes.length());
@@ -104,7 +107,7 @@ public class SwapMutator<G extends Gene<?, G>> extends Mutator<G> {
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

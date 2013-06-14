@@ -22,9 +22,9 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.AbstractCollection;
 import java.util.ArrayList;
@@ -50,6 +50,7 @@ import org.jenetics.util.arrays;
 /**
  * A population is a collection of Phenotypes.
  *
+ * <p/>
  * <strong>This class is not synchronized.</strong> If multiple threads access
  * a {@code Population} concurrently, and at least one of the threads modifies
  * it, it <strong>must</strong> be synchronized externally.
@@ -163,7 +164,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	@Override
 	public boolean add(final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
 
@@ -176,7 +177,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	@Override
 	public void add(final int index, final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
 
@@ -197,12 +198,12 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public Phenotype<G, C> set(final int index, final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
 
 	public void remove(final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
 

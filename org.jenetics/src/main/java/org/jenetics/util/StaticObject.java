@@ -22,10 +22,13 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 /**
- * This object is used to <i>tag</i> a class as <i>object</i> with static
- * methods only. The protected constructor always throws an {@link AssertionError}
- * and prevents the <i>static object</i> from being instantiated.
+ * This class is used to <i>tag</i> a class as <i>object</i> with static
+ * methods only. Such classes are not supposed to be treated as <i>types</i>.
+ * The protected constructor always throws an {@link AssertionError} and
+ * prevents the <i>static object</i> from being instantiated.
  *
  * The following <i>pattern</i> is used for creating such static helper
  * classes&mdash;the only constructors is declared private to gain the wished
@@ -55,7 +58,7 @@ public abstract class StaticObject {
 
 		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		if (trace.length >= 3) {
-			message = String.format(
+			message = format(
 				"Instantiation of '%s' is not allowed.",
 				trace[2].getClassName()
 			);

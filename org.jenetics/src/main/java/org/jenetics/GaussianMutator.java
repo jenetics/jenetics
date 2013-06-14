@@ -109,7 +109,11 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return String.format(
+			"%s[p=%f]",
+			getClass().getSimpleName(),
+			_probability
+		);
 	}
 
 }

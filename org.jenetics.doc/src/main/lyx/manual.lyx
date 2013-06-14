@@ -5810,8 +5810,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.7.0_17-b02)---Java HotSpot(TM) 64-Bit Server VM (build
- 23.7-b01, mixed mode) 
+ Environment (build 1.7.0_21-b11)---Java HotSpot(TM) 64-Bit Server VM (build
+ 23.21-b01, mixed mode) 
 \end_layout
 
 \end_inset
@@ -6036,7 +6036,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $223\cdot10^{6}$
+\begin_inset Formula $230\cdot10^{6}$
 \end_inset
 
 
@@ -6048,7 +6048,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $236\cdot10^{6}$
+\begin_inset Formula $243\cdot10^{6}$
 \end_inset
 
 
@@ -6060,7 +6060,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $175\cdot10^{6}$
+\begin_inset Formula $210\cdot10^{6}$
 \end_inset
 
 
@@ -6072,7 +6072,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $182\cdot10^{6}$
+\begin_inset Formula $216\cdot10^{6}$
 \end_inset
 
 
@@ -6995,7 +6995,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Seq<String> data = new Array<>("-10","1","2","3","4","5");
+final Seq<String> data = Array.valueOf("-10","1","2","3","4","5");
 \end_layout
 
 \begin_layout Plain Layout
@@ -8818,7 +8818,9 @@ default
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics ↓
+$ hg clone https://fwilhelm@bitbucket.org/fwilhelm/jenetics 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -8850,7 +8852,9 @@ Source code
 \end_layout
 
 \begin_layout LyX-Code
-$ hg clone http://hg.code.sf.net/p/jenetics/main ↓
+$ hg clone http://hg.code.sf.net/p/jenetics/main 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -8882,7 +8886,9 @@ Source code
 \end_layout
 
 \begin_layout LyX-Code
-$ git clone https://github.com/jenetics/jenetics.git ↓
+$ git clone https://github.com/jenetics/jenetics.git 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -9303,7 +9309,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9324,7 +9330,7 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -9390,7 +9396,7 @@ Version
 \series default
 : 
 \emph on
-6.8
+6.8.1
 \end_layout
 
 \begin_layout Itemize
@@ -9423,11 +9429,11 @@ Download
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://testng.org/testng-6.8.zip
+http://testng.org/testng-6.8.1.zip
 \end_layout
 
 \end_inset
@@ -9601,7 +9607,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.2 (
+: 1.6 (
 \emph on
 or later
 \emph default
@@ -9642,7 +9648,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.2-bin.zip
+http://services.gradle.org/distributions/gradle-1.6-bin.zip
 \end_layout
 
 \end_inset

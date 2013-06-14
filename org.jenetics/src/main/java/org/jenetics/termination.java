@@ -91,7 +91,9 @@ public final class termination extends StaticObject {
 
 		@Override
 		public Boolean apply(final Statistics<?, ?> statistics) {
-			return statistics.getGeneration() < _generation ? Boolean.TRUE : Boolean.FALSE;
+			return statistics.getGeneration() < _generation ?
+					Boolean.TRUE :
+					Boolean.FALSE;
 		}
 	}
 
@@ -107,7 +109,8 @@ public final class termination extends StaticObject {
 	 * @param generation the maximal GA generation.
 	 * @return the termination predicate.
 	 */
-	public static Function<Statistics<?, ?>, Boolean> Generation(final int generation) {
+	public static Function<Statistics<?, ?>, Boolean>
+	Generation(final int generation) {
 		return new Generation(generation);
 	}
 

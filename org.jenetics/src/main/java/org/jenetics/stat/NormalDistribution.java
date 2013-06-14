@@ -22,12 +22,12 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.stat.math.Φ;
 import static org.jenetics.stat.math.φ;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -204,7 +204,7 @@ public class NormalDistribution<
 		final double mean,
 		final double var
 	) {
-		_domain = nonNull(domain, "Domain");
+		_domain = requireNonNull(domain, "Domain");
 		_mean = mean;
 		_var = nonNegative(var, "Variance");
 

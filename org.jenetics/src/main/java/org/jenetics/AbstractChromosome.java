@@ -22,11 +22,11 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.functions.Null;
 import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.functions.Null;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
@@ -75,7 +75,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 *          smaller than one.
 	 */
 	protected AbstractChromosome(final ISeq<G> genes) {
-		nonNull(genes, "Gene array");
+		requireNonNull(genes, "Gene array");
 		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
@@ -105,7 +105,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _genes.forall(Verify);
+			_valid = _genes.forAll(Verify);
 		}
 
 		return _valid;

@@ -22,37 +22,37 @@
  */
 package org.jenetics.util;
 
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 1.3 &mdash; <em>$Date$</em>
+ * @version <em>$Date$</em>
  */
-final class ArrayRef implements Cloneable {
-	Object[] data;
-	final int length;
+public class mathProbabilityTest {
 
-	private boolean _sealed = false;
+	@Test
+	public void toIntToFloat() {
+		final Random random = RandomRegistry.getRandom();
 
-	ArrayRef(final Object[] data) {
-		this.data = data;
-		length = data.length;
-	}
+		for (int i = 0; i < 100000; ++i) {
+			final float p = random.nextFloat();
 
-	ArrayRef(final int length) {
-		data = new Object[length];
-		this.length = length;
-	}
-
-	void cloneIfSealed() {
-		if (_sealed) {
-			data = data.clone();
-			_sealed = false;
+			final int ip = math.probability.toInt(p);
+			final float fip = math.probability.toFloat(ip);
+			Assert.assertEquals(fip, p, 0.000001F);
 		}
 	}
 
-	ArrayRef seal() {
-		_sealed = true;
-		return this;
+	@Test
+	public void probabilityToInt() {
+		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
+		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
+		Assert.assertEquals(math.probability.toInt(0.5), 0);
+		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
+		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
 	}
 
 }

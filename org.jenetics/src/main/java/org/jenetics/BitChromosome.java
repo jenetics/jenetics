@@ -22,11 +22,10 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
-import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.object.str;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -142,7 +141,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 *         <code>null</code>.
 	 */
 	public BitChromosome(final int length, final BitSet bits) {
-		nonNull(bits, "BitSet");
+		requireNonNull(bits, "BitSet");
 
 		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
 		_genes = new byte[bytes];
@@ -182,7 +181,7 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitChromosome (final CharSequence value) {
 		this(value.length());
 
-		nonNull(value, "Input");
+		requireNonNull(value, "Input");
 		if (value.length() == 0) {
 			throw new IllegalArgumentException("Length must greater than zero.");
 		}
@@ -353,7 +352,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
-		nonNull(genes, "Genes");
+		requireNonNull(genes, "Genes");
 
 		final BitChromosome chromosome = new BitChromosome(genes.length(), true);
 
@@ -457,7 +456,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Text toText() {
-		return Text.valueOf(str(toByteArray()));
+		return Text.valueOf(bit.toByteString(toByteArray()));
 	}
 
 	@Override
@@ -466,56 +465,6 @@ public class BitChromosome extends Number<BitChromosome>
 		System.arraycopy(_genes, 0, chromosome._genes, 0, chromosome._genes.length);
 		return chromosome;
 	}
-
-
-	static String toString(final byte[] data) {
-		final StringBuilder out = new StringBuilder(data.length*8 + data.length);
-
-		if (data.length > 0) {
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[data.length - 1] >>> j) & 1);
-			}
-		}
-		for (int i = data.length - 2; i >= 0 ;--i) {
-			out.append('|');
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[i] >>> j) & 1);
-			}
-		}
-
-		return out.toString();
-	}
-
-	/**
-	 * Convert a string which was created with the {@link #toString(byte...)}
-	 * method back to an byte array.
-	 *
-	 * @param data the string to convert.
-	 * @return the byte array.
-	 * @throws IllegalArgumentException if the given data string could not be
-	 *         converted.
-	 */
-	 static byte[] toByteArray(final String data) {
-		final String[] parts = data.split("\\|");
-		final byte[] bytes = new byte[parts.length];
-
-		for (int i = 0; i < parts.length; ++i) {
-			if (parts[i].length() != 8) {
-				throw new IllegalArgumentException(
-					"Byte value doesn't contain 8 bit: " + parts[i]
-				);
-			}
-
-			try {
-				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
-			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
-
-		return bytes;
-	}
-
 
 	/* *************************************************************************
 	 *  XML object serialization
@@ -535,7 +484,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			final int length = xml.getAttribute(LENGTH, 1);
 			final double probability = xml.getAttribute(PROBABILITY, 0.5);
-			final byte[] data = toByteArray(xml.getText().toString());
+			final byte[] data = bit.fromByteString(xml.getText().toString());
 			final BitChromosome chromosome = new BitChromosome(data);
 			chromosome._p = probability;
 			chromosome._length = length;
@@ -547,7 +496,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
 			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(BitChromosome.toString(chromosome.toByteArray()));
+			xml.addText(bit.toByteString(chromosome.toByteArray()));
 		}
 		@Override
 		public void read(final InputElement element, final BitChromosome gene) {

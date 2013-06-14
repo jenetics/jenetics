@@ -22,9 +22,9 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -175,7 +175,7 @@ public class UniformDistribution<
 	 * @throws NullPointerException if the {@code domain} is {@code null}.
 	 */
 	public UniformDistribution(final Range<N> domain) {
-		_domain = nonNull(domain, "Domain");
+		_domain = requireNonNull(domain, "Domain");
 		_cdf = new CDF<>(_domain);
 		_pdf = new PDF<>(_domain);
 	}

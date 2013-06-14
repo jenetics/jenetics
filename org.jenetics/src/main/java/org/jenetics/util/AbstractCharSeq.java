@@ -26,7 +26,7 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.3 &mdash; <em>$Date$</em>
  */
 abstract class AbstractCharSeq extends ArrayISeq<Character> {
 	private static final long serialVersionUID = 1L;
@@ -34,20 +34,8 @@ abstract class AbstractCharSeq extends ArrayISeq<Character> {
 	final char[] _characters;
 
 	AbstractCharSeq(final char[] characters) {
-		super(toArrayRef(characters), 0, characters.length);
+		super(Array.box(characters)._array.seal(), 0, characters.length);
 		_characters = characters;
 	}
-
-	private static ArrayRef toArrayRef(final char[] characters) {
-		final Object[] values = new Object[characters.length];
-		for (int i = 0; i < characters.length; ++i) {
-			values[i] = characters[i];
-		}
-		final ArrayRef ref = new ArrayRef(values);
-		ref._sealed = true;
-
-		return ref;
-	}
-
 
 }

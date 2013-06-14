@@ -97,7 +97,7 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 		final MSeq<T> other,
 		final int index
 	) {
-		assert (index >= 0) : String.format(
+		assert (index >= 0) : format(
 			"Crossover index must be within [0, %d) but was %d",
 			that.length(), index
 		);

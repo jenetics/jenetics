@@ -22,9 +22,9 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
@@ -51,6 +51,11 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates min value.
 	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
 	 * @version 1.0 &ndash; <em>$Revision$</em>
@@ -73,7 +78,7 @@ public final class accumulators extends StaticObject {
 		 * @throws NullPointerException if {@code min} is {@code null}.
 		 */
 		public Min(final Min<C> min) {
-			nonNull(min, "Min");
+			requireNonNull(min, "Min");
 			_samples = min._samples;
 			_min = min._min;
 		}
@@ -139,6 +144,11 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates max value.
 	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
 	 * @version 1.0 &ndash; <em>$Revision$</em>
@@ -161,7 +171,7 @@ public final class accumulators extends StaticObject {
 		 * @throws NullPointerException if {@code max} is {@code null}.
 		 */
 		public Max(final Max<C> max) {
-			nonNull(max, "Max");
+			requireNonNull(max, "Max");
 			_samples = max._samples;
 			_max = max._max;
 		}
@@ -227,6 +237,11 @@ public final class accumulators extends StaticObject {
 	/**
 	 * Calculates min and max values.
 	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
 	 * @version 1.0 &ndash; <em>$Revision$</em>
@@ -250,7 +265,7 @@ public final class accumulators extends StaticObject {
 		 * @throws NullPointerException if {@code mm} is {@code null}.
 		 */
 		public MinMax(final MinMax<C> mm) {
-			nonNull(mm, "MinMax");
+			requireNonNull(mm, "MinMax");
 			_samples = mm._samples;
 			_min = mm._min;
 			_max = mm._max;
@@ -328,6 +343,18 @@ public final class accumulators extends StaticObject {
 		}
 	}
 
+	/**
+	 * Calculates the sum of the accumulated values.
+	 *
+	 * <p/>
+	 * <strong>Note that this implementation is not synchronized.</strong> If
+	 * multiple threads access this object concurrently, and at least one of the
+	 * threads modifies it, it must be synchronized externally.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
+	 * @version 1.0 &ndash; <em>$Revision$</em>
+	 */
 	public static class Sum<G extends GroupAdditive<G>>
 		extends MappedAccumulator<G>
 	{

@@ -25,6 +25,8 @@ package org.jenetics;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.util.Objects;
+
 import javolution.context.ObjectFactory;
 
 import org.jenetics.util.Array;
@@ -32,7 +34,6 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.object;
 
 /**
  * Gene which holds enumerable (countable) genes. Will be used for combinatorial
@@ -42,7 +43,7 @@ import org.jenetics.util.object;
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
  * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+ * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
  * [/code]
@@ -167,7 +168,7 @@ public final class EnumGene<A>
 
 	@Override
 	public String toString() {
-		return object.str(getAllele());
+		return Objects.toString(getAllele());
 	}
 
 	/* *************************************************************************

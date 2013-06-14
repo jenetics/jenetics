@@ -23,10 +23,11 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static org.jenetics.util.math.min;
+import static java.lang.String.format;
 import static org.jenetics.util.math.pow;
-import static org.jenetics.util.math.sum;
 import static org.jenetics.util.math.ulpDistance;
+import static org.jenetics.util.math.statistics.min;
+import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Arrays;
@@ -108,7 +109,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	public String toString() {
-		return String.format("%s", getClass().getSimpleName());
+		return format("%s", getClass().getSimpleName());
 	}
 
 }
