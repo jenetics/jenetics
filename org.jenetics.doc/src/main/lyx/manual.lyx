@@ -718,7 +718,14 @@ key "michalewicz1996genetic"
 
 \end_inset
 
- and 
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Shiffman2012"
+
+\end_inset
+
+ or 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
