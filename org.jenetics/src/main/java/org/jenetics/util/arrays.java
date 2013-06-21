@@ -37,7 +37,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-21 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -714,15 +714,7 @@ public final class arrays extends StaticObject {
 	}
 
 	private static int nextInt(final Random random, final int a, final int b) {
-		int value = 0;
-
-		if (a == b) {
-			value = a - 1;
-		} else {
-			value = random.nextInt(b - a) + a;
-		}
-
-		return value;
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
 	}
 
 	/**

@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-21 $</em>
  */
 public abstract class ProbabilitySelector<
 	G extends Gene<?, G>,
@@ -135,8 +135,8 @@ public abstract class ProbabilitySelector<
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 *         or lower fitness values must be selected. This parameter determines
-	 *         whether the GA maximizes or minimizes the fitness function.
+	 *        or lower fitness values must be selected. This parameter determines
+	 *        whether the GA maximizes or minimizes the fitness function.
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
