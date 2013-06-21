@@ -135,8 +135,8 @@ public abstract class ProbabilitySelector<
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
 	 * @param opt Determines whether the individuals with higher fitness values
-	 *         or lower fitness values must be selected. This parameter determines
-	 *         whether the GA maximizes or minimizes the fitness function.
+	 *        or lower fitness values must be selected. This parameter determines
+	 *        whether the GA maximizes or minimizes the fitness function.
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(

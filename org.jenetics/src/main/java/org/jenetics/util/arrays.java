@@ -714,15 +714,7 @@ public final class arrays extends StaticObject {
 	}
 
 	private static int nextInt(final Random random, final int a, final int b) {
-		int value = 0;
-
-		if (a == b) {
-			value = a - 1;
-		} else {
-			value = random.nextInt(b - a) + a;
-		}
-
-		return value;
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
 	}
 
 	/**

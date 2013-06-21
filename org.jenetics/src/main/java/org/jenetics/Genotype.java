@@ -89,9 +89,6 @@ public final class Genotype<G extends Gene<?, G>>
 	private volatile Boolean _valid = null;
 
 	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		assert(chromosomes != null);
-		assert(ngenes(chromosomes) == ngenes);
-
 		_chromosomes = chromosomes;
 		_ngenes = ngenes;
 	}

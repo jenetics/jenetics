@@ -43,14 +43,14 @@ final class ArrayRef implements Cloneable {
 		this.length = length;
 	}
 
-	void cloneIfSealed() {
+	final void cloneIfSealed() {
 		if (_sealed) {
 			data = data.clone();
 			_sealed = false;
 		}
 	}
 
-	ArrayRef seal() {
+	final ArrayRef seal() {
 		_sealed = true;
 		return this;
 	}

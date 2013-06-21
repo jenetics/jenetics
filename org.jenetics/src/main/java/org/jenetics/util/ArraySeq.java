@@ -361,7 +361,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	final void checkIndex(final int index) {
-		if (index < 0 || index >= length()) {
+		if (index < 0 || index >= _length) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Index %s is out of bounds [0, %s)", index, length()
 			));
@@ -374,7 +374,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				"fromIndex(" + from + ") > toIndex(" + to+ ")"
 			);
 		}
-		if (from < 0 || to > length()) {
+		if (from < 0 || to > _length) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", from, to
 			));

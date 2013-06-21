@@ -173,7 +173,7 @@ public final class RandomRegistry extends StaticObject {
 		public RRef(final Random random) {
 			_random = requireNonNull(random, "Random");
 		}
-		@Override public Random get() {
+		@Override public final Random get() {
 			return _random;
 		}
 	}
@@ -183,7 +183,7 @@ public final class RandomRegistry extends StaticObject {
 		public TLRRef(final ThreadLocal<R> random) {
 			_random = requireNonNull(random, "Random");
 		}
-		@Override public R get() {
+		@Override public final R get() {
 			return _random.get();
 		}
 	}

@@ -94,7 +94,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 		population.set(
 			individuals[0],
-			pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
+			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
 		);
 
 		return 1;
