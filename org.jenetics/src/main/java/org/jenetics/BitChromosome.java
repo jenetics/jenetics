@@ -32,6 +32,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 import javolution.text.Text;
@@ -247,18 +248,11 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new Iterator<BitGene>() {
-			private int _pos = 0;
-			@Override public boolean hasNext() {
-				return _pos < _length;
-			}
-			@Override public BitGene next()	{
-				return BitGene.valueOf(bit.get(_genes, _pos++));
-			}
-			@Override public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return new BitGeneSeqIterator(_genes, _length);
+	}
+
+	public ListIterator<BitGene> listIterator() {
+		return new BitGeneSeqIterator(_genes, _length);
 	}
 
 	/**
