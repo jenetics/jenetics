@@ -53,7 +53,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-21 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -217,29 +217,25 @@ public class BitChromosome extends Number<BitChromosome>
 		bit.set(_genes, index, value);
 	}
 
-	private boolean get(final int index) {
-		return bit.get(_genes, index);
-	}
-
 	@Override
 	public BitGene getGene() {
 		assert (_genes != null);
 		assert (_genes.length > 0);
-		return get(0) ? BitGene.TRUE : BitGene.FALSE;
+		return BitGene.valueOf(bit.get(_genes, 0));
 	}
 
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
 		assert(_genes != null);
-		return get(index) ? BitGene.TRUE : BitGene.FALSE;
+		return BitGene.valueOf(bit.get(_genes, index));
 	}
 
 	@Override
 	public ISeq<BitGene> toSeq() {
 		final Array<BitGene> genes = new Array<>(_length);
 		for (int i = 0; i < _length; ++i) {
-			genes.set(i, bit.get(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
+			genes.set(i, BitGene.valueOf(bit.get(_genes, i)));
 		}
 		return genes.toISeq();
 	}
@@ -257,7 +253,7 @@ public class BitChromosome extends Number<BitChromosome>
 				return _pos < _length;
 			}
 			@Override public BitGene next()	{
-				return get(_pos++) ? BitGene.TRUE : BitGene.FALSE;
+				return BitGene.valueOf(bit.get(_genes, _pos++));
 			}
 			@Override public void remove() {
 				throw new UnsupportedOperationException();
