@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
 public enum BitGene
 	implements
@@ -108,6 +108,17 @@ public enum BitGene
 	@Override
 	public String toString() {
 		return Boolean.toString(_value);
+	}
+
+	/**
+	 * Return the corresponding {@code BitGene} for the given {@code boolean}
+	 * value.
+	 *
+	 * @param value the value of the returned {@code BitGene}.
+	 * @return the {@code BitGene} for the given {@code boolean} value.
+	 */
+	public static BitGene valueOf(final boolean value) {
+		return value ? TRUE : FALSE;
 	}
 
 
