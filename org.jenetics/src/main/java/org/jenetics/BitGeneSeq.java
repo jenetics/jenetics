@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractList;
@@ -31,7 +32,10 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
+import org.jenetics.util.Array;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.Seq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.bit;
@@ -41,14 +45,31 @@ import org.jenetics.util.bit;
  * @since @__new_version__@
  * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
-final class BitGeneSeq implements ISeq<BitGene> {
+abstract class BitGeneSeq implements Seq<BitGene> {
 
-	private final byte[] _genes;
-	private final int _length;
+	final byte[] _genes;
+	final int _start;
+	final int _end;
+	final int _length;
 
-	BitGeneSeq(final byte[] genes, final int length) {
+	BitGeneSeq(final byte[] genes, final int start, final int end) {
 		_genes = genes;
-		_length = length;
+		_start = start;
+		_end = end;
+		_length = _end - _start;
+	}
+
+	final void checkIndex(final int from, final int to) {
+		if (from > to) {
+			throw new ArrayIndexOutOfBoundsException(
+				"fromIndex(" + from + ") > toIndex(" + to+ ")"
+			);
+		}
+		if (from < 0 || to > _length) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Invalid index range: [%d, %s)", from, to
+			));
+		}
 	}
 
 	@Override
@@ -61,11 +82,15 @@ final class BitGeneSeq implements ISeq<BitGene> {
 		return new BitGeneSeqIterator(_genes, _length);
 	}
 
+	public ListIterator<BitGene> listIterator() {
+		return new BitGeneSeqIterator(_genes, _length);
+	}
+
 	@Override
 	public <B> Iterator<B> iterator(
 		final Function<? super BitGene, ? extends B> mapper
 	) {
-		requireNonNull(mapper, "Maooer");
+		requireNonNull(mapper, "Mapper must not be null");
 
 		return new Iterator<B>() {
 			private final Iterator<BitGene> _iterator = iterator();
@@ -91,7 +116,7 @@ final class BitGeneSeq implements ISeq<BitGene> {
 	public <R> void forEach(final Function<? super BitGene, ? extends R> function) {
 		requireNonNull(function, "Function");
 
-		for (int i = 0; i < _length; ++i) {
+		for (int i = _start; i < _end; ++i) {
 			function.apply(BitGene.valueOf(bit.get(_genes, i)));
 		}
 	}
@@ -107,7 +132,7 @@ final class BitGeneSeq implements ISeq<BitGene> {
 		requireNonNull(predicate, "Predicate");
 
 		boolean valid = true;
-		for (int i = 0; i < _length && valid; ++i) {
+		for (int i = _start; i < _end && valid; ++i) {
 			valid = predicate.apply(BitGene.valueOf(bit.get(_genes, i)));
 		}
 		return valid;
@@ -130,11 +155,14 @@ final class BitGeneSeq implements ISeq<BitGene> {
 
 	@Override
 	public int indexOf(final Object element, final int start, final int end) {
-		int index = -1;
+		checkIndex(start, end);
 
+		int index = -1;
 		if (element instanceof BitGene) {
 			final boolean gene = ((BitGene)element).booleanValue();
-			for (int i = start; i < end && index == -1; ++i) {
+			for (int i = start + _start, n = end + _start;
+				i < n && index == -1; ++i)
+			{
 				if (bit.get(_genes, i) == gene) {
 					index = i;
 				}
@@ -163,11 +191,14 @@ final class BitGeneSeq implements ISeq<BitGene> {
 		final int start,
 		final int end
 	) {
+		checkIndex(start, end);
 		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = start, n = end; i < n && index == -1; ++i) {
+		for (int i = start + _start, n = end + _start;
+			i < n && index == -1; ++i)
+		{
 			if (predicate.apply(BitGene.valueOf(bit.get(_genes, i)))) {
 				index = i;
 			}
@@ -188,11 +219,12 @@ final class BitGeneSeq implements ISeq<BitGene> {
 
 	@Override
 	public int lastIndexOf(final Object element, final int start, final int end) {
+		checkIndex(start, end);
 		int index = -1;
 
 		if (element instanceof BitGene) {
 			final boolean gene = ((BitGene)element).booleanValue();
-			for (int i = end; --i >= start && index == -1;) {
+			for (int i = end + _start; --i >= start + _start && index == -1;) {
 				if (bit.get(_genes, i) == gene) {
 					index = i;
 				}
@@ -221,47 +253,18 @@ final class BitGeneSeq implements ISeq<BitGene> {
 		final int start,
 		final int end
 	) {
+		checkIndex(start, end);
 		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
-		for (int i = end; --i >= 0 && index == -1;) {
+		for (int i = end + _start; --i >= start + _start && index == -1;) {
 			if (predicate.apply(BitGene.valueOf(bit.get(_genes, i)))) {
 				index = i;
 			}
 		}
 
 		return index;
-	}
-
-	@Override
-	public ISeq<BitGene> subSeq(int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ISeq<BitGene> subSeq(int start) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <B> ISeq<B> map(Function<? super BitGene, ? extends B> mapper) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public <A> ISeq<A> upcast(ISeq<? extends A> seq) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public MSeq<BitGene> copy() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -285,18 +288,19 @@ final class BitGeneSeq implements ISeq<BitGene> {
 
 	@Override
 	public BitGene[] toArray(final BitGene[] array) {
+		BitGene[] genes = array;
 		if (array.length < _length) {
-			final BitGene[] genes = new BitGene[_length];
+			genes = new BitGene[_length];
 			for (int i = 0; i < _length; ++i) {
 				genes[i] = BitGene.valueOf(bit.get(_genes, i));
 			}
-			return genes;
 		} else {
 			for (int i = 0; i < _length; ++i) {
-				array[i] = BitGene.valueOf(bit.get(_genes, i));
+				genes[i] = BitGene.valueOf(bit.get(_genes, i));
 			}
-			return array;
 		}
+
+		return genes;
 	}
 
 	@Override
@@ -328,6 +332,118 @@ final class BitGeneSeq implements ISeq<BitGene> {
 	@Override
 	public String toString() {
 		  return toString("[", ",", "]");
+	}
+
+}
+
+class BitGeneISeq extends BitGeneSeq implements ISeq<BitGene> {
+
+	BitGeneISeq(final byte[] genes, final int start, final int end) {
+		super(genes, start, end);
+	}
+
+	@Override
+	public ISeq<BitGene> subSeq(int start, int end) {
+		return new BitGeneISeq(_genes, start + _start, end + _start);
+	}
+
+	@Override
+	public ISeq<BitGene> subSeq(int start) {
+		return new BitGeneISeq(_genes, start + _start, _end);
+	}
+
+	@Override
+	public <B> ISeq<B> map(Function<? super BitGene, ? extends B> mapper) {
+		final Array<B> array = new Array<>(length());
+		for (int i = 0; i < _length; ++i){
+			array.set(i, mapper.apply(BitGene.valueOf(bit.get(_genes, i + _start))));
+		}
+		return array.toISeq();
+	}
+
+	@Override
+	@Deprecated
+	public <A> ISeq<A> upcast(ISeq<? extends A> seq) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public MSeq<BitGene> copy() {
+		return null;
+	}
+
+}
+
+class BitGeneMSeq extends BitGeneSeq implements MSeq<BitGene> {
+
+	BitGeneMSeq(final byte[] genes, final int start, final int end) {
+		super(genes, start, end);
+	}
+
+	@Override
+	public MSeq<BitGene> subSeq(int start, int end) {
+		return new BitGeneMSeq(_genes, start + _start, end + _start);
+	}
+
+	@Override
+	public MSeq<BitGene> subSeq(int start) {
+		return new BitGeneMSeq(_genes, start + _start, _end);
+	}
+
+	@Override
+	public MSeq<BitGene> copy() {
+		return null;
+	}
+
+	@Override
+	public void set(int index, BitGene value) {
+
+	}
+
+	@Override
+	public MSeq<BitGene> setAll(BitGene value) {
+		return null;
+	}
+
+	@Override
+	public MSeq<BitGene> setAll(Iterator<? extends BitGene> it) {
+		return null;
+	}
+
+	@Override
+	public MSeq<BitGene> setAll(Iterable<? extends BitGene> values) {
+		return null;
+	}
+
+	@Override
+	public MSeq<BitGene> setAll(BitGene[] values) {
+		return null;
+	}
+
+	@Override
+	public MSeq<BitGene> fill(Factory<? extends BitGene> factory) {
+		return null;
+	}
+
+	@Override
+	public void swap(int i, int j) {
+
+	}
+
+	@Override
+	public void swap(int start, int end, MSeq<BitGene> other, int otherStart) {
+
+	}
+
+
+	@Override
+	public <B> MSeq<B> map(Function<? super BitGene, ? extends B> mapper) {
+		return null;
+	}
+
+	@Override
+	public ISeq<BitGene> toISeq() {
+		return null;
 	}
 
 }
