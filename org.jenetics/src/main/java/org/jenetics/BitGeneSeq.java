@@ -79,11 +79,11 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new BitGeneSeqIterator(_genes, _length);
+		return new BitGeneSeqIterator(_genes, _start, _end);
 	}
 
 	public ListIterator<BitGene> listIterator() {
-		return new BitGeneSeqIterator(_genes, _length);
+		return new BitGeneSeqIterator(_genes, _start, _end);
 	}
 
 	@Override
@@ -336,6 +336,88 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 }
 
+/**
+ * Helper class which iterates over an given bit array.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date$</em>
+ */
+final class BitGeneSeqIterator implements ListIterator<BitGene> {
+
+	final byte[] _genes;
+	final int _start;
+	final int _end;
+	final int _length;
+
+	private int _pos = -1;
+
+	BitGeneSeqIterator(final byte[] genes, final int start, final int end) {
+		_genes = genes;
+		_start = start;
+		_end = end;
+		_length = _end - _start;
+	}
+
+	@Override
+	public boolean hasNext() {
+		return _pos < _length - 1;
+	}
+
+	@Override
+	public BitGene next() {
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
+		return BitGene.valueOf(bit.get(_genes, (++_pos) + _start));
+	}
+
+	@Override
+	public int nextIndex() {
+		return _pos + 1;
+	}
+
+	@Override
+	public boolean hasPrevious() {
+		return _pos > 0;
+	}
+
+	@Override
+	public BitGene previous() {
+		if (!hasPrevious()) {
+			throw new NoSuchElementException();
+		}
+		return BitGene.valueOf(bit.get(_genes, (--_pos) + _start));
+	}
+
+	@Override
+	public int previousIndex() {
+		return _pos - 1;
+	}
+
+	@Override
+	public void set(final BitGene value) {
+		throw new UnsupportedOperationException(
+			"BitChromosome is immutable."
+		);
+	}
+
+	@Override
+	public void add(final BitGene o) {
+		throw new UnsupportedOperationException(
+			"Can't change Chromosome size."
+		);
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException(
+			"Can't change Chromosome size."
+		);
+	}
+
+}
+
 class BitGeneISeq extends BitGeneSeq implements ISeq<BitGene> {
 
 	BitGeneISeq(final byte[] genes, final int start, final int end) {
@@ -448,77 +530,7 @@ class BitGeneMSeq extends BitGeneSeq implements MSeq<BitGene> {
 
 }
 
-/**
- * Helper class which iterates over an given bit array.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date$</em>
- */
-final class BitGeneSeqIterator implements ListIterator<BitGene> {
 
-	private final byte[] _genes;
-	private final int _length;
-
-	private int _pos = -1;
-
-	BitGeneSeqIterator(final byte[] genes, final int length) {
-		_genes = genes;
-		_length = length;
-	}
-
-	@Override
-	public boolean hasNext() {
-		return _pos < _length - 1;
-	}
-
-	@Override
-	public BitGene next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return BitGene.valueOf(bit.get(_genes, ++_pos));
-	}
-
-	@Override
-	public int nextIndex() {
-		return _pos + 1;
-	}
-
-	@Override
-	public boolean hasPrevious() {
-		return _pos > 0;
-	}
-
-	@Override
-	public BitGene previous() {
-		if (!hasPrevious()) {
-			throw new NoSuchElementException();
-		}
-		return BitGene.valueOf(bit.get(_genes, --_pos));
-	}
-
-	@Override
-	public int previousIndex() {
-		return _pos - 1;
-	}
-
-	@Override
-	public void set(final BitGene value) {
-		throw new UnsupportedOperationException("BitChromosome is immutable.");
-	}
-
-	@Override
-	public void add(final BitGene o) {
-		throw new UnsupportedOperationException("Can't change Chromosome size.");
-	}
-
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException("Can't change Chromosome size.");
-	}
-
-}
 
 class BitGeneSeqList extends AbstractList<BitGene>
 	implements RandomAccess
