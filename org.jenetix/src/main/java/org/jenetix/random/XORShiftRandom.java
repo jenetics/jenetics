@@ -25,7 +25,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-20 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-21 $</em>
  */
 public class XORShiftRandom extends Random32 {
 
@@ -45,9 +45,10 @@ public class XORShiftRandom extends Random32 {
 		return (int)x;
 		*/
 
-		_x ^= (_x << 13);
-		_x = (_x >> 17);
+		//_x ^= (_x << 13);
+		//_x = (_x >> 17);
 		return (_x ^= (_x << 5));
+		//return 1234;
 	}
 
 }
