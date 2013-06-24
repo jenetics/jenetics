@@ -54,7 +54,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-21 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-24 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -248,11 +248,11 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new BitGeneSeqIterator(_genes, 0, _length);
+		return toSeq().iterator();
 	}
 
 	public ListIterator<BitGene> listIterator() {
-		return new BitGeneSeqIterator(_genes, 0, _length);
+		return (ListIterator<BitGene>)iterator();
 	}
 
 	/**
