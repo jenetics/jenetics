@@ -81,13 +81,17 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 	}
 
 	@Override
-	public BitGene get(final int index) {
+	public final BitGene get(final int index) {
 		checkIndex(index);
 		return BitGene.valueOf(bit.get(_genes.data, index + _start));
 	}
 
 	final BitGene uncheckedGet(final int index) {
 		return BitGene.valueOf(bit.get(_genes.data, index + _start));
+	}
+
+	final BitGene uncheckedOffsetGet(final int absoluteIndex) {
+		return BitGene.valueOf(bit.get(_genes.data, absoluteIndex));
 	}
 
 	@Override
@@ -172,11 +176,8 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 		int index = -1;
 		if (element instanceof BitGene) {
-			final boolean gene = ((BitGene)element).booleanValue();
-			for (int i = start + _start, n = end + _start;
-				i < n && index == -1; ++i)
-			{
-				if (bit.get(_genes.data, i) == gene) {
+			for (int i = start; i < end && index == -1; ++i) {
+				if (uncheckedOffsetGet(i) == element) {
 					index = i;
 				}
 			}
@@ -209,10 +210,8 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 		int index = -1;
 
-		for (int i = start + _start, n = end + _start;
-			i < n && index == -1; ++i)
-		{
-			if (predicate.apply(uncheckedGet(i))) {
+		for (int i = start; i < end && index == -1; ++i) {
+			if (predicate.apply(uncheckedOffsetGet(i))) {
 				index = i;
 			}
 		}
@@ -236,9 +235,8 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 		int index = -1;
 
 		if (element instanceof BitGene) {
-			final boolean gene = ((BitGene)element).booleanValue();
-			for (int i = end + _start; --i >= start + _start && index == -1;) {
-				if (bit.get(_genes.data, i) == gene) {
+			for (int i = end; --i >= start && index == -1;) {
+				if (uncheckedOffsetGet(i) == element) {
 					index = i;
 				}
 			}
@@ -271,8 +269,8 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 		int index = -1;
 
-		for (int i = end + _start; --i >= start + _start && index == -1;) {
-			if (predicate.apply(uncheckedGet(i))) {
+		for (int i = end; --i >= start && index == -1;) {
+			if (predicate.apply(uncheckedOffsetGet(i))) {
 				index = i;
 			}
 		}
@@ -606,21 +604,17 @@ class BitGeneSeqList extends AbstractList<BitGene>
  */
 final class BitGeneArrayRef implements Cloneable {
 	byte[] data;
-	final int start;
-	final int end;
 	final int length;
 
 	private boolean _sealed = false;
 
-	BitGeneArrayRef(final byte[] data, final int start, final int end) {
+	BitGeneArrayRef(final byte[] data, final int length) {
 		this.data = data;
-		this.start = start;
-		this.end = end;
-		this.length = end -start;
+		this.length = length;
 	}
 
 	BitGeneArrayRef(final int length) {
-		this(new byte[toByteLength(length)], 0, length);
+		this(new byte[toByteLength(length)], length);
 	}
 
 	private static int toByteLength(final int length) {
@@ -640,25 +634,5 @@ final class BitGeneArrayRef implements Cloneable {
 	}
 
 }
-
-
-interface ArrayProxy<T, P extends ArrayProxy<T, P>> {
-
-	void set(final int index, final T value);
-
-	T get(final int index);
-
-	void uncheckedSet(final int index, final T value);
-
-	T uncheckedGet(final int index);
-
-	void cloneIfSealed();
-
-	P seal();
-
-	int length();
-
-}
-
 
 
