@@ -47,16 +47,24 @@ import org.jenetics.util.bit;
  */
 abstract class BitGeneSeq implements Seq<BitGene> {
 
-	final byte[] _genes;
+	final BitGeneArrayRef _genes;
 	final int _start;
 	final int _end;
 	final int _length;
 
-	BitGeneSeq(final byte[] genes, final int start, final int end) {
+	BitGeneSeq(final BitGeneArrayRef genes, final int start, final int end) {
 		_genes = genes;
 		_start = start;
 		_end = end;
 		_length = _end - _start;
+	}
+
+	final void checkIndex(final int index) {
+		if (index < 0 || index >= _length) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Index %s is out of bounds [0, %s)", index, length()
+			));
+		}
 	}
 
 	final void checkIndex(final int from, final int to) {
@@ -73,17 +81,22 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 	}
 
 	@Override
-	public BitGene get(int index) {
-		return BitGene.valueOf(bit.get(_genes, index));
+	public BitGene get(final int index) {
+		checkIndex(index);
+		return BitGene.valueOf(bit.get(_genes.data, index + _start));
+	}
+
+	final BitGene uncheckedGet(final int index) {
+		return BitGene.valueOf(bit.get(_genes.data, index + _start));
 	}
 
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new BitGeneSeqIterator(_genes, _start, _end);
+		return new BitGeneSeqIterator(this);
 	}
 
 	public ListIterator<BitGene> listIterator() {
-		return new BitGeneSeqIterator(_genes, _start, _end);
+		return new BitGeneSeqIterator(this);
 	}
 
 	@Override
@@ -117,7 +130,7 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 		requireNonNull(function, "Function");
 
 		for (int i = _start; i < _end; ++i) {
-			function.apply(BitGene.valueOf(bit.get(_genes, i)));
+			function.apply(uncheckedGet(i));
 		}
 	}
 
@@ -133,7 +146,7 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
-			valid = predicate.apply(BitGene.valueOf(bit.get(_genes, i)));
+			valid = predicate.apply(uncheckedGet(i));
 		}
 		return valid;
 	}
@@ -163,7 +176,7 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 			for (int i = start + _start, n = end + _start;
 				i < n && index == -1; ++i)
 			{
-				if (bit.get(_genes, i) == gene) {
+				if (bit.get(_genes.data, i) == gene) {
 					index = i;
 				}
 			}
@@ -199,7 +212,7 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 		for (int i = start + _start, n = end + _start;
 			i < n && index == -1; ++i)
 		{
-			if (predicate.apply(BitGene.valueOf(bit.get(_genes, i)))) {
+			if (predicate.apply(uncheckedGet(i))) {
 				index = i;
 			}
 		}
@@ -225,7 +238,7 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 		if (element instanceof BitGene) {
 			final boolean gene = ((BitGene)element).booleanValue();
 			for (int i = end + _start; --i >= start + _start && index == -1;) {
-				if (bit.get(_genes, i) == gene) {
+				if (bit.get(_genes.data, i) == gene) {
 					index = i;
 				}
 			}
@@ -259,7 +272,7 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 		int index = -1;
 
 		for (int i = end + _start; --i >= start + _start && index == -1;) {
-			if (predicate.apply(BitGene.valueOf(bit.get(_genes, i)))) {
+			if (predicate.apply(uncheckedGet(i))) {
 				index = i;
 			}
 		}
@@ -274,33 +287,33 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 	@Override
 	public List<BitGene> asList() {
-		return new BitGeneSeqList(_genes, _length);
+		return new BitGeneSeqList(this);
 	}
 
 	@Override
 	public Object[] toArray() {
-		final Object[] array = new Object[_length];
-		for (int i = 0; i < _length; ++i) {
-			array[i] = BitGene.valueOf(bit.get(_genes, i));
+		final Object[] array = new Object[length()];
+		for (int i = length(); --i >= 0;) {
+			array[i] = uncheckedGet(i);
 		}
 		return array;
 	}
 
 	@Override
 	public BitGene[] toArray(final BitGene[] array) {
-		BitGene[] genes = array;
-		if (array.length < _length) {
-			genes = new BitGene[_length];
-			for (int i = 0; i < _length; ++i) {
-				genes[i] = BitGene.valueOf(bit.get(_genes, i));
+		if (array.length < length()) {
+			final BitGene[] copy = new BitGene[length()];
+			for (int i = length(); --i >= 0;) {
+				copy[i] = uncheckedGet(i);
 			}
-		} else {
-			for (int i = 0; i < _length; ++i) {
-				genes[i] = BitGene.valueOf(bit.get(_genes, i));
-			}
+
+			return copy;
 		}
 
-		return genes;
+		for (int i = length(); --i >= 0;) {
+			array[i] = uncheckedGet(i);
+		}
+		return array;
 	}
 
 	@Override
@@ -313,11 +326,11 @@ abstract class BitGeneSeq implements Seq<BitGene> {
 
 		  out.append(prefix);
 		  if (_length > 0) {
-			out.append(Boolean.toString(bit.get(_genes, 0)));
+			out.append(Boolean.toString(bit.get(_genes.data, 0)));
 		  }
 		  for (int i = 1; i < _length; ++i) {
 			out.append(separator);
-			out.append(Boolean.toString(bit.get(_genes, i)));
+			out.append(Boolean.toString(bit.get(_genes.data, i)));
 		  }
 		  out.append(suffix);
 
@@ -345,23 +358,17 @@ abstract class BitGeneSeq implements Seq<BitGene> {
  */
 final class BitGeneSeqIterator implements ListIterator<BitGene> {
 
-	final byte[] _genes;
-	final int _start;
-	final int _end;
-	final int _length;
+	final BitGeneSeq _seq;
 
 	private int _pos = -1;
 
-	BitGeneSeqIterator(final byte[] genes, final int start, final int end) {
-		_genes = genes;
-		_start = start;
-		_end = end;
-		_length = _end - _start;
+	BitGeneSeqIterator(final BitGeneSeq seq) {
+		_seq = seq;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return _pos < _length - 1;
+		return _pos < _seq.length() - 1;
 	}
 
 	@Override
@@ -369,7 +376,7 @@ final class BitGeneSeqIterator implements ListIterator<BitGene> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return BitGene.valueOf(bit.get(_genes, (++_pos) + _start));
+		return _seq.uncheckedGet(++_pos);
 	}
 
 	@Override
@@ -387,7 +394,7 @@ final class BitGeneSeqIterator implements ListIterator<BitGene> {
 		if (!hasPrevious()) {
 			throw new NoSuchElementException();
 		}
-		return BitGene.valueOf(bit.get(_genes, (--_pos) + _start));
+		return _seq.uncheckedGet(--_pos);
 	}
 
 	@Override
@@ -420,7 +427,7 @@ final class BitGeneSeqIterator implements ListIterator<BitGene> {
 
 class BitGeneISeq extends BitGeneSeq implements ISeq<BitGene> {
 
-	BitGeneISeq(final byte[] genes, final int start, final int end) {
+	BitGeneISeq(final BitGeneArrayRef genes, final int start, final int end) {
 		super(genes, start, end);
 	}
 
@@ -438,7 +445,7 @@ class BitGeneISeq extends BitGeneSeq implements ISeq<BitGene> {
 	public <B> ISeq<B> map(Function<? super BitGene, ? extends B> mapper) {
 		final Array<B> array = new Array<>(length());
 		for (int i = 0; i < _length; ++i){
-			array.set(i, mapper.apply(BitGene.valueOf(bit.get(_genes, i + _start))));
+			array.set(i, mapper.apply(uncheckedGet(i)));
 		}
 		return array.toISeq();
 	}
@@ -458,7 +465,7 @@ class BitGeneISeq extends BitGeneSeq implements ISeq<BitGene> {
 
 class BitGeneMSeq extends BitGeneSeq implements MSeq<BitGene> {
 
-	BitGeneMSeq(final byte[] genes, final int start, final int end) {
+	BitGeneMSeq(final BitGeneArrayRef genes, final int start, final int end) {
 		super(genes, start, end);
 	}
 
@@ -535,50 +542,37 @@ class BitGeneMSeq extends BitGeneSeq implements MSeq<BitGene> {
 class BitGeneSeqList extends AbstractList<BitGene>
 	implements RandomAccess
 {
-	private final byte[] _genes;
-	private final int _length;
+	private final BitGeneSeq _seq;
 
-	BitGeneSeqList(final byte[] genes, final int length) {
-		_genes = genes;
-		_length = length;
+	BitGeneSeqList(final BitGeneSeq seq) {
+		_seq = seq;
 	}
 
 	@Override
 	public BitGene get(final int index) {
-		return BitGene.valueOf(bit.get(_genes, index));
+		return _seq.get(index);
 	}
 
 	@Override
 	public int size() {
-		return _length;
+		return _seq.length();
 	}
 
 	@Override
 	public int indexOf(final Object element) {
-		int index = -1;
-
-		if (element instanceof BitGene) {
-			final boolean gene = ((BitGene)element).booleanValue();
-			for (int i = 0; i < _length && index == -1; ++i) {
-				if (bit.get(_genes, i) == gene) {
-					index = i;
-				}
-			}
-		}
-
-		return index;
+		return _seq.indexOf(element);
 	}
 
 	@Override
 	public boolean contains(final Object element) {
-		return indexOf(element) != -1;
+		return _seq.contains(element);
 	}
 
 	@Override
 	public Object[] toArray() {
-		final Object[] array = new Object[_length];
-		for (int i = 0; i < _length; ++i) {
-			array[i] = BitGene.valueOf(bit.get(_genes, i));
+		final Object[] array = new Object[size()];
+		for (int i = size(); --i >= 0;) {
+			array[i] = _seq.uncheckedGet(i);
 		}
 		return array;
 	}
@@ -586,23 +580,85 @@ class BitGeneSeqList extends AbstractList<BitGene>
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E> E[] toArray(final E[] array) {
-		if (array.length < _length) {
+		if (array.length < size()) {
 			final E[] copy = (E[])java.lang.reflect.Array.newInstance(
-				array.getClass().getComponentType(), _length
+				array.getClass().getComponentType(), size()
 			);
-			for (int i = 0; i < _length; ++i) {
-				copy[i] = (E)BitGene.valueOf(bit.get(_genes, i));
+			for (int i = size(); --i >= 0;) {
+				copy[i] = (E)_seq.uncheckedGet(i);
 			}
 
 			return copy;
 		}
 
-		for (int i = 0; i < _length; ++i) {
-			array[i] = (E)BitGene.valueOf(bit.get(_genes, i));
+		for (int i = size(); --i >= 0;) {
+			array[i] = (E)_seq.uncheckedGet(i);
 		}
 		return array;
 	}
 
 }
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date$</em>
+ */
+final class BitGeneArrayRef implements Cloneable {
+	byte[] data;
+	final int start;
+	final int end;
+	final int length;
+
+	private boolean _sealed = false;
+
+	BitGeneArrayRef(final byte[] data, final int start, final int end) {
+		this.data = data;
+		this.start = start;
+		this.end = end;
+		this.length = end -start;
+	}
+
+	BitGeneArrayRef(final int length) {
+		this(new byte[toByteLength(length)], 0, length);
+	}
+
+	private static int toByteLength(final int length) {
+		return (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
+	}
+
+	final void cloneIfSealed() {
+		if (_sealed) {
+			data = data.clone();
+			_sealed = false;
+		}
+	}
+
+	final BitGeneArrayRef seal() {
+		_sealed = true;
+		return this;
+	}
+
+}
+
+
+interface ArrayProxy<T, P extends ArrayProxy<T, P>> {
+
+	void set(final int index, final T value);
+
+	T get(final int index);
+
+	void uncheckedSet(final int index, final T value);
+
+	T uncheckedGet(final int index);
+
+	void cloneIfSealed();
+
+	P seal();
+
+	int length();
+
+}
+
 
 

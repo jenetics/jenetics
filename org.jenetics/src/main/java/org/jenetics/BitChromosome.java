@@ -248,11 +248,11 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new BitGeneSeqIterator(_genes, 0, _length);
+		return toSeq().iterator();
 	}
 
 	public ListIterator<BitGene> listIterator() {
-		return new BitGeneSeqIterator(_genes, 0, _length);
+		return (ListIterator<BitGene>)iterator();
 	}
 
 	/**
