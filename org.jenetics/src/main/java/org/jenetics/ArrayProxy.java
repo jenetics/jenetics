@@ -87,6 +87,38 @@ abstract class ArrayProxy<T> {
 
 	abstract T uncheckedOffsetGet(final int absoluteIndex);
 
+	abstract ArrayProxy<T> sub(final int start, final int end);
+
+	ArrayProxy<T> sub(final int start) {
+		return sub(start, _length);
+	}
+
+}
+
+final class ObjectArrayProxy<T> extends ArrayProxy<T> {
+
+	final Object[] _array;
+
+	ObjectArrayProxy(final Object[] array, final int start, final int end) {
+		super(start, end);
+		_array = array;
+	}
+
+	ObjectArrayProxy(final int length) {
+		this(new Object[length], 0, length);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	T uncheckedOffsetGet(final int absoluteIndex) {
+		return (T)_array[absoluteIndex];
+	}
+
+	@Override
+	ObjectArrayProxy<T> sub(final int start, final int end) {
+		return new ObjectArrayProxy<>(_array, start + _start, _end + end - _length);
+	}
+
 }
 
 /**
@@ -147,7 +179,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 		requireNonNull(function, "Function");
 
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			function.apply(_proxy.uncheckedGet(i));
+			function.apply(_proxy.uncheckedOffsetGet(i));
 		}
 	}
 
@@ -163,7 +195,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 
 		boolean valid = true;
 		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
-			valid = predicate.apply(_proxy.uncheckedGet(i));
+			valid = predicate.apply(_proxy.uncheckedOffsetGet(i));
 		}
 		return valid;
 	}
@@ -193,7 +225,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 				i < n && index == -1; ++i)
 			{
 				if (_proxy.uncheckedOffsetGet(i) == null) {
-					index = i;
+					index = i - _proxy._start;
 				}
 			}
 		} else {
@@ -201,7 +233,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 				i < n && index == -1; ++i)
 				{
 					if (element.equals(_proxy.uncheckedOffsetGet(i))) {
-						index = i;
+						index = i - _proxy._start;
 					}
 				}
 		}
@@ -237,7 +269,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 				i < n && index == -1; ++i)
 		{
 			if (predicate.apply(_proxy.uncheckedOffsetGet(i))) {
-				index = i;
+				index = i - _proxy._start;
 			}
 		}
 
@@ -259,12 +291,20 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 		_proxy.checkIndex(start, end);
 		int index = -1;
 
-		if (element instanceof BitGene) {
+		if (element == null) {
 			for (int i = end + _proxy._start;
 				--i >= start + _proxy._start && index == -1;)
 			{
-				if (_proxy.uncheckedOffsetGet(i) == element) {
-					index = i;
+				if (_proxy.uncheckedOffsetGet(i) == null) {
+					index = i - _proxy._start;
+				}
+			}
+		} else {
+			for (int i = end + _proxy._start;
+				--i >= start + _proxy._start && index == -1;)
+			{
+				if (element.equals(_proxy.uncheckedOffsetGet(i))) {
+					index = i - _proxy._start;
 				}
 			}
 		}
@@ -300,7 +340,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 			--i >= start + _proxy._start && index == -1;)
 		{
 			if (predicate.apply(_proxy.uncheckedOffsetGet(i))) {
-				index = i;
+				index = i - _proxy._start;
 			}
 		}
 
@@ -364,25 +404,34 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-25 $</em>
+ */
 class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
 
-	ArrayProxyISeq(ArrayProxy<T> proxy) {
+	ArrayProxyISeq(final ArrayProxy<T> proxy) {
 		super(proxy);
 	}
 
 	@Override
-	public <B> ISeq<B> map(Function<? super T, ? extends B> mapper) {
-		return null;
+	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
+		final ObjectArrayProxy<B> proxy = new ObjectArrayProxy<>(_proxy._length);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy._array[i] = mapper.apply(_proxy.uncheckedGet(i));
+		}
+		return new ArrayProxyISeq<>(proxy);
 	}
 
 	@Override
-	public ISeq<T> subSeq(int start) {
-		return null;
+	public ISeq<T> subSeq(final int start) {
+		return new ArrayProxyISeq<>(_proxy.sub(start));
 	}
 
 	@Override
 	public ISeq<T> subSeq(int start, int end) {
-		return null;
+		return new ArrayProxyISeq<>(_proxy.sub(start, end));
 	}
 
 	@SuppressWarnings("unchecked")

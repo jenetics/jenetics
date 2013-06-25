@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.testng.Assert;
@@ -31,6 +32,7 @@ import org.testng.annotations.Test;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
+import org.jenetics.util.functions;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,17 +41,11 @@ import org.jenetics.util.Seq;
 public class ArrayProxyTest {
 
 	static ArrayProxy<Integer> newArrayProxy(final int length) {
-		return new ArrayProxy<Integer>(0, length) {
-			private final int[] _array = new int[length];
-			{for (int i = 0; i < length; ++i) {
-				_array[i] = i;
-			}}
-
-			@Override
-			Integer uncheckedOffsetGet(int absoluteIndex) {
-				return _array[absoluteIndex];
-			}
-		};
+		final ObjectArrayProxy<Integer> proxy = new ObjectArrayProxy<>(length);
+		for (int i = 0; i < length; ++i) {
+			proxy._array[i] = i;
+		}
+		return proxy;
 	}
 
 	static ISeq<Integer> newISeq(final int length) {
@@ -68,11 +64,12 @@ public class ArrayProxyTest {
 	@Test(dataProvider = "sequences")
 	public void contains(final Seq<Integer> seq) {
 		for (int i = 0; i < seq.length(); ++i) {
-			Assert.assertTrue(seq.contains(i));
+			final Integer value = seq.get(i);
+			Assert.assertTrue(seq.contains(value));
 		}
 
 		for (int i = seq.length(); i < 2*seq.length(); ++i) {
-			Assert.assertFalse(seq.contains(i));
+			Assert.assertFalse(seq.contains(Integer.toString(i)));
 		}
 	}
 
@@ -161,6 +158,102 @@ public class ArrayProxyTest {
 	}
 
 	@Test(dataProvider = "sequences")
+	public void lastIndexOf(final Seq<Integer> seq) {
+		for (int i = 0; i < seq.length(); ++i) {
+			final int value = seq.get(i);
+			Assert.assertEquals(seq.lastIndexOf(value), i);
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void lastIndexOfInt(final Seq<Integer> seq) {
+		for (int end = seq.length(); end <= 0; --end) {
+			for (int i = 0; i < seq.length(); ++i) {
+				final int value = seq.get(i);
+				final int index = seq.lastIndexOf(value, end);
+
+				if (i < end) {
+					Assert.assertEquals(index, i);
+				} else {
+					Assert.assertEquals(index, -1);
+				}
+			}
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void lastIndexOfIntInt(final Seq<Integer> seq) {
+		for (int start = 0; start < seq.length(); ++start) {
+			for (int end = start; end < seq.length(); ++end) {
+				for (int i = 0; i < seq.length(); ++i) {
+					final int value = seq.get(i);
+					final int index = seq.lastIndexOf(value, start, end);
+
+					if (i >= start && i < end) {
+						Assert.assertEquals(index, i);
+					} else {
+						Assert.assertEquals(index, -1);
+					}
+				}
+			}
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void lastIndexWhere(final Seq<Integer> seq) {
+		for (int i = 0; i < seq.length(); ++i) {
+			final int value = seq.get(i);
+			Assert.assertEquals(seq.lastIndexWhere(ValueOf(value)), i);
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void lastIndexWhereInt(final Seq<Integer> seq) {
+		for (int end = seq.length(); end <= 0; --end) {
+			for (int i = 0; i < seq.length(); ++i) {
+				final int value = seq.get(i);
+				final int index = seq.lastIndexWhere(ValueOf(value), end);
+
+				if (i < end) {
+					Assert.assertEquals(index, i);
+				} else {
+					Assert.assertEquals(index, -1);
+				}
+			}
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void lastIndexWhereIntInt(final Seq<Integer> seq) {
+		for (int start = 0; start < seq.length(); ++start) {
+			for (int end = start; end < seq.length(); ++end) {
+				for (int i = 0; i < seq.length(); ++i) {
+					final int value = seq.get(i);
+					final int index = seq.lastIndexWhere(ValueOf(value), start, end);
+
+					if (i >= start && i < end) {
+						Assert.assertEquals(index, i);
+					} else {
+						Assert.assertEquals(index, -1);
+					}
+				}
+			}
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void iterator(final Seq<Integer> seq) {
+		int count = 0;
+		final Iterator<Integer> it = seq.iterator();
+		while (it.hasNext()) {
+			it.next();
+			++count;
+		}
+
+		Assert.assertEquals(count, seq.length());
+	}
+
+	@Test(dataProvider = "sequences")
 	public void forEach(final Seq<Integer> seq) {
 		final AtomicInteger counter = new AtomicInteger();
 		final AtomicInteger lastValue = new AtomicInteger(-1);
@@ -214,10 +307,92 @@ public class ArrayProxyTest {
 		}
 	}
 
+	@Test(dataProvider = "sequences")
+	public void map(final Seq<Integer> seq) {
+		final Seq<String> sseq = seq.map(functions.ObjectToString);
+		Assert.assertEquals(sseq.length(), seq.length());
+
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(sseq.get(i), seq.get(i).toString());
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void toArrayObject(final Seq<Integer> seq) {
+		final Object[] array = seq.toArray();
+		Assert.assertEquals(array.length, seq.length());
+
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(array[i], seq.get(i));
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void toArrayInteger(final Seq<Integer> seq) {
+		final Integer[] array = seq.toArray(new Integer[0]);
+		Assert.assertEquals(array.length, seq.length());
+
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(array[i], seq.get(i));
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void toArrayInteger2(final Seq<Integer> seq) {
+		final Integer[] array = seq.toArray(new Integer[seq.length()]);
+		Assert.assertEquals(array.length, seq.length());
+
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(array[i], seq.get(i));
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void toArrayInteger3(final Seq<Integer> seq) {
+		final Integer[] array = seq.toArray(new Integer[seq.length() + 5]);
+		Assert.assertEquals(array.length, seq.length() + 5);
+
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(array[i], seq.get(i));
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void subSeqInt(final Seq<Integer> seq) {
+		for (int start = 0; start < seq.length(); ++start) {
+			final Seq<Integer> sub = seq.subSeq(start);
+
+			Assert.assertEquals(sub.length(), seq.length() - start);
+			for (int i = 0; i < sub.length(); ++i) {
+				Assert.assertEquals(
+					new Integer(sub.get(i)),
+					new Integer(seq.get(i + start))
+				);
+			}
+		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void subSeqIntInt(final Seq<Integer> seq) {
+		for (int start = 0; start < seq.length(); ++start) {
+			for (int end = start; end < seq.length(); ++end) {
+				final Seq<Integer> sub = seq.subSeq(start, end);
+
+				Assert.assertEquals(sub.length(), end - start);
+				for (int i = 0; i < sub.length(); ++i) {
+					Assert.assertEquals(sub.get(i), seq.get(i + start));
+				}
+			}
+		}
+	}
+
 	@DataProvider
 	public Object[][] sequences() {
 		return new Object[][] {
-			{newISeq(33)}
+			{newISeq(33)},
+			{newISeq(35).subSeq(5)} ,
+			{newISeq(33).subSeq(8, 23)},
+			{newISeq(50).subSeq(5, 43).subSeq(10)}
 		};
 	}
 
