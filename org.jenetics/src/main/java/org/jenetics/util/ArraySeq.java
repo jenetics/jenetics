@@ -207,7 +207,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 		int index = -1;
 
-		for (int i = end + _start; --i >= _start && index == -1;) {
+		for (int i = end + _start; --i >= start +_start && index == -1;) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			if (predicate.apply(element) == Boolean.TRUE) {

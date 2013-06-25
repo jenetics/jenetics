@@ -116,7 +116,8 @@ final class ObjectArrayProxy<T> extends ArrayProxy<T> {
 
 	@Override
 	ObjectArrayProxy<T> sub(final int start, final int end) {
-		return new ObjectArrayProxy<>(_array, start + _start, _end + end - _length);
+		return new ObjectArrayProxy<>(_array, start + _start, end + _start);
+		//return new ObjectArrayProxy<>(_array, start + _start, _end + end - _length);
 	}
 
 }
