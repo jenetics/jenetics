@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-24 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-25 $</em>
  */
 abstract class ArrayProxy<T> {
 
@@ -89,7 +89,7 @@ abstract class ArrayProxy<T> {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-24 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-25 $</em>
  */
 abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -334,19 +334,19 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 		final String separator,
 		final String suffix
 	) {
-		  final StringBuilder out = new StringBuilder();
+		final StringBuilder out = new StringBuilder();
 
-		  out.append(prefix);
-		  if (_proxy._length > 0) {
+		out.append(prefix);
+		if (_proxy._length > 0) {
 			out.append(_proxy.get(0));
-		  }
-		  for (int i = 1; i < _proxy._length; ++i) {
+		}
+		for (int i = 1; i < _proxy._length; ++i) {
 			out.append(separator);
 			out.append(_proxy.get(i));
-		  }
-		  out.append(suffix);
+		}
+		out.append(suffix);
 
-		  return out.toString();
+		return out.toString();
 	}
 
 	@Override
@@ -364,7 +364,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-24 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-06-25 $</em>
  */
 final class ArrayProxyIterator<T> implements ListIterator<T> {
 
