@@ -396,9 +396,6 @@ public class ArrayProxyTest {
 		};
 	}
 
-
-
-
 }
 
 
