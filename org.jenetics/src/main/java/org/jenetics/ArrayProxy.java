@@ -32,7 +32,10 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 
 /**
@@ -357,6 +360,111 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 	@Override
 	public String toString() {
 		  return toString("[", ",", "]");
+	}
+
+}
+
+class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
+
+	ArrayProxyISeq(ArrayProxy<T> proxy) {
+		super(proxy);
+	}
+
+	@Override
+	public <B> ISeq<B> map(Function<? super T, ? extends B> mapper) {
+		return null;
+	}
+
+	@Override
+	public ISeq<T> subSeq(int start) {
+		return null;
+	}
+
+	@Override
+	public ISeq<T> subSeq(int start, int end) {
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Deprecated
+	public <A> ISeq<A> upcast(ISeq<? extends A> seq) {
+		return (ISeq<A>)seq;
+	}
+
+	@Override
+	public MSeq<T> copy() {
+		return null;
+	}
+
+}
+
+class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
+
+	ArrayProxyMSeq(ArrayProxy<T> proxy) {
+		super(proxy);
+	}
+
+	@Override
+	public MSeq<T> copy() {
+		return null;
+	}
+
+	@Override
+	public void set(int index, T value) {
+	}
+
+	@Override
+	public MSeq<T> setAll(T value) {
+		return null;
+	}
+
+	@Override
+	public MSeq<T> setAll(Iterator<? extends T> it) {
+		return null;
+	}
+
+	@Override
+	public MSeq<T> setAll(Iterable<? extends T> values) {
+		return null;
+	}
+
+	@Override
+	public MSeq<T> setAll(T[] values) {
+		return null;
+	}
+
+	@Override
+	public MSeq<T> fill(Factory<? extends T> factory) {
+		return null;
+	}
+
+	@Override
+	public void swap(int i, int j) {
+	}
+
+	@Override
+	public void swap(int start, int end, MSeq<T> other, int otherStart) {
+	}
+
+	@Override
+	public MSeq<T> subSeq(int start, int end) {
+		return null;
+	}
+
+	@Override
+	public MSeq<T> subSeq(int start) {
+		return null;
+	}
+
+	@Override
+	public <B> MSeq<B> map(Function<? super T, ? extends B> mapper) {
+		return null;
+	}
+
+	@Override
+	public ISeq<T> toISeq() {
+		return null;
 	}
 
 }
