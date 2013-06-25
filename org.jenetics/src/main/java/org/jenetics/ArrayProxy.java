@@ -334,19 +334,19 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 		final String separator,
 		final String suffix
 	) {
-		  final StringBuilder out = new StringBuilder();
+		final StringBuilder out = new StringBuilder();
 
-		  out.append(prefix);
-		  if (_proxy._length > 0) {
+		out.append(prefix);
+		if (_proxy._length > 0) {
 			out.append(_proxy.get(0));
-		  }
-		  for (int i = 1; i < _proxy._length; ++i) {
+		}
+		for (int i = 1; i < _proxy._length; ++i) {
 			out.append(separator);
 			out.append(_proxy.get(i));
-		  }
-		  out.append(suffix);
+		}
+		out.append(suffix);
 
-		  return out.toString();
+		return out.toString();
 	}
 
 	@Override
