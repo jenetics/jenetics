@@ -62,7 +62,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !!!new!!! &mdash; <em>$Date: 2013-06-07 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-26 $</em>
  */
 public final class EnumGene<A>
 	implements
