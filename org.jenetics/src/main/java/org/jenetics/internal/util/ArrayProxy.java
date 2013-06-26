@@ -101,30 +101,5 @@ public abstract class ArrayProxy<T> {
 
 }
 
-final class ObjectArrayProxy<T> extends ArrayProxy<T> {
-
-	final Object[] _array;
-
-	ObjectArrayProxy(final Object[] array, final int start, final int end) {
-		super(start, end);
-		_array = array;
-	}
-
-	ObjectArrayProxy(final int length) {
-		this(new Object[length], 0, length);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public T uncheckedOffsetGet(final int absoluteIndex) {
-		return (T)_array[absoluteIndex];
-	}
-
-	@Override
-	public ObjectArrayProxy<T> sub(final int start, final int end) {
-		return new ObjectArrayProxy<>(_array, start + _start, end + _start);
-	}
-
-}
 
 
