@@ -26,6 +26,6 @@ package org.jenetics.internal.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date: 2013-06-26 $</em>
  */
-public class ArrayProxyImplTest {
+public class ArrayProxySeqTest {
 
 }
