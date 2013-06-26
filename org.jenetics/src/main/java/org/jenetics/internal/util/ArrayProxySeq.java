@@ -140,12 +140,12 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 			}
 		} else {
 			for (int i = start + _proxy._start, n = end + _proxy._start;
-				i < n && index == -1; ++i)
-				{
-					if (element.equals(_proxy.uncheckedOffsetGet(i))) {
-						index = i - _proxy._start;
-					}
+			i < n && index == -1; ++i)
+			{
+				if (element.equals(_proxy.uncheckedOffsetGet(i))) {
+					index = i - _proxy._start;
 				}
+			}
 		}
 
 		return index;
