@@ -242,7 +242,7 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 		final int end
 	) {
 		_proxy.checkIndex(start, end);
-		requireNonNull(predicate, "Predicate");
+		requireNonNull(predicate, "Predicate must not be null.");
 
 		int index = -1;
 
@@ -269,16 +269,12 @@ abstract class ArrayProxySeq<T> implements Seq<T> {
 
 	@Override
 	public Object[] toArray() {
-		final Object[] array = new Object[length()];
-		for (int i = length(); --i >= 0;) {
-			array[i] = _proxy.uncheckedGet(i);
-		}
-		return array;
+		return asList().toArray();
 	}
 
 	@Override
 	public T[] toArray(final T[] array) {
-		return new ArrayProxyList<>(_proxy).toArray(array);
+		return asList().toArray(array);
 	}
 
 	@Override
