@@ -28,16 +28,16 @@ package org.jenetics.internal.util;
  * @since @__new_version__@
  * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
-public class ObjectArrayProxy<T> extends ArrayProxy<T> {
+public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	final Object[] _array;
 
-	public ObjectArrayProxy(final Object[] array, final int start, final int end) {
+	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
 		super(start, end);
 		_array = array;
 	}
 
-	public ObjectArrayProxy(final int length) {
+	public ArrayProxyImpl(final int length) {
 		this(new Object[length], 0, length);
 	}
 
@@ -48,8 +48,8 @@ public class ObjectArrayProxy<T> extends ArrayProxy<T> {
 	}
 
 	@Override
-	public ObjectArrayProxy<T> sub(final int start, final int end) {
-		return new ObjectArrayProxy<>(_array, start + _start, end + _start);
+	public ArrayProxyImpl<T> sub(final int start, final int end) {
+		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
 	}
 
 }
