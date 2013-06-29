@@ -247,6 +247,11 @@
 			<class name="org.jenetics.util.accumulatorsMinTest" />
 		</classes>
 	</test>	
+	<test name="org.jenetics.internal.util.ArrayProxy">
+		<classes>
+			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
+		</classes>
+	</test>	
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArraySeqTest" />

@@ -292,6 +292,22 @@ public abstract class SeqTestBase {
 		}
 	}
 
+	@Test(
+		dataProvider = "sequences",
+		expectedExceptions = IndexOutOfBoundsException.class
+	)
+	public void indexOutOfBoundsGet(final Seq<Integer> seq) {
+		seq.get(seq.length());
+	}
+
+	@Test(
+		dataProvider = "sequences",
+		expectedExceptions = IndexOutOfBoundsException.class
+	)
+	public void negativeIndexGet(final Seq<Integer> seq) {
+		seq.get(-1);
+	}
+
 	@Test(dataProvider = "sequences")
 	public void map(final Seq<Integer> seq) {
 		final Seq<String> sseq = seq.map(functions.ObjectToString);
