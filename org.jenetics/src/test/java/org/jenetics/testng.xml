@@ -22,7 +22,7 @@
  # Author:
  #     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2013-06-07 $</em>
+ # Version: <em>$Date: 2013-06-29 $</em>
  #
  ###############################################################################
 -->
@@ -249,6 +249,7 @@
 	</test>	
 	<test name="org.jenetics.util.Array">
 		<classes>
+			<class name="org.jenetics.util.ArraySeqTest" />
 			<class name="org.jenetics.util.ArrayTest" />
 		</classes>
 	</test>		
