@@ -22,11 +22,10 @@
  */
 package org.jenetics.util;
 
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-25 $</em>
+ * @version <em>$Date: 2013-06-29 $</em>
  */
 public class ArraySeqTest extends SeqTestBase {
 
@@ -37,10 +36,6 @@ public class ArraySeqTest extends SeqTestBase {
 			array.set(i, i);
 		}
 		return array;
-	}
-
-	@Test
-	public void foo() {
 	}
 
 }

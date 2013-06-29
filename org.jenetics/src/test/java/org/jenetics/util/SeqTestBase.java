@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-25 $</em>
+ * @version <em>$Date: 2013-06-29 $</em>
  */
 public abstract class SeqTestBase {
 
@@ -290,6 +290,22 @@ public abstract class SeqTestBase {
 			Assert.assertTrue(lastValue < seq.get(i));
 			lastValue = seq.get(i);
 		}
+	}
+
+	@Test(
+		dataProvider = "sequences",
+		expectedExceptions = IndexOutOfBoundsException.class
+	)
+	public void indexOutOfBoundsGet(final Seq<Integer> seq) {
+		seq.get(seq.length());
+	}
+
+	@Test(
+		dataProvider = "sequences",
+		expectedExceptions = IndexOutOfBoundsException.class
+	)
+	public void negativeIndexGet(final Seq<Integer> seq) {
+		seq.get(-1);
 	}
 
 	@Test(dataProvider = "sequences")
