@@ -45,7 +45,7 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 	@Override
 	public MSeq<T> copy() {
-		return null;
+		return new ArrayProxyMSeq<>(_proxy.copy());
 	}
 
 	@Override
@@ -125,12 +125,12 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end) {
-		return new ArrayProxyMSeq<>(_proxy).subSeq(start, end);
+		return new ArrayProxyMSeq<>(_proxy.sub(start, end));
 	}
 
 	@Override
 	public MSeq<T> subSeq(final int start) {
-		return new ArrayProxyMSeq<>(_proxy).subSeq(start);
+		return new ArrayProxyMSeq<>(_proxy.sub(start));
 	}
 
 	@Override
