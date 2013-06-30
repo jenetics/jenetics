@@ -30,7 +30,9 @@ package org.jenetics.internal.util;
  */
 public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
-	final Object[] _array;
+	Object[] _array;
+
+	private boolean _sealed = false;
 
 	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
 		super(start, end);
@@ -48,8 +50,44 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	}
 
 	@Override
+	public void uncheckedOffsetSet(final int absoluteIndex, final T value) {
+		_array[absoluteIndex] = value;
+	}
+
+	@Override
 	public ArrayProxyImpl<T> sub(final int start, final int end) {
 		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
+	}
+
+	@Override
+	public void swap(
+		final int start,
+		final int end,
+		final ArrayProxy<T> other,
+		final int otherStart
+	) {
+
+	}
+
+	@Override
+	public void cloneIfSealed() {
+		if (_sealed) {
+			_array = _array.clone();
+			_sealed = false;
+		}
+	}
+
+	@Override
+	public ArrayProxyImpl<T> seal() {
+		_sealed = true;
+		return new ArrayProxyImpl<>(_array, _start, _end);
+	}
+
+	@Override
+	public ArrayProxyImpl<T> copy() {
+		final ArrayProxyImpl<T> proxy = new ArrayProxyImpl<>(_length);
+		System.arraycopy(_array, _start, proxy._array, 0, _length);
+		return proxy;
 	}
 
 }

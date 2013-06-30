@@ -24,13 +24,15 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
+import org.jenetics.util.Copyable;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
  * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
-public abstract class ArrayProxy<T> {
+public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 
 	protected final int _start;
 	protected final int _end;
@@ -44,7 +46,20 @@ public abstract class ArrayProxy<T> {
 
 	public abstract T uncheckedOffsetGet(final int absoluteIndex);
 
+	public abstract void uncheckedOffsetSet(final int absoluteIndex, final T value);
+
 	public abstract ArrayProxy<T> sub(final int start, final int end);
+
+	public abstract void swap(
+		final int start,
+		final int end,
+		final ArrayProxy<T> other,
+		final int otherStart
+	);
+
+	public abstract void cloneIfSealed();
+
+	public abstract ArrayProxyImpl<T> seal();
 
 	/**
 	 * Return the <i>array</i> element at the specified position in the
@@ -60,6 +75,11 @@ public abstract class ArrayProxy<T> {
 		return uncheckedOffsetGet(index + _start);
 	}
 
+	public void set(final int index, final T value) {
+		checkIndex(index);
+		uncheckedOffsetSet(index + _start, value);
+	}
+
 	/**
 	 * Return the <i>array</i> element at the specified position in the
 	 * {@code ArrayProxy}. The array boundaries are not checked.
@@ -71,6 +91,10 @@ public abstract class ArrayProxy<T> {
 	 */
 	public T uncheckedGet(final int index) {
 		return uncheckedOffsetGet(index + _start);
+	}
+
+	public void uncheckedSet(final int index, final T value) {
+		uncheckedOffsetSet(index + _start, value);
 	}
 
 	public ArrayProxy<T> sub(final int start) {
