@@ -23,6 +23,7 @@
 package org.jenetics.internal.util;
 
 import static java.lang.Math.min;
+import static java.lang.String.format;
 
 import java.util.Iterator;
 
@@ -103,8 +104,23 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 	@Override
 	public void swap(int start, int end, MSeq<T> other, int otherStart) {
-		_proxy.cloneIfSealed();
-		//_proxy.swap(start, end, other._proxy, otherStart);
+		_proxy.checkIndex(start, end);
+		if (otherStart < 0 || (otherStart + (end - start)) > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Invalid index range: [%d, %d)",
+				otherStart, (otherStart + (end - start))
+			));
+		}
+
+		if (start < end) {
+			_proxy.cloneIfSealed();
+
+			for (int i = (end - start); --i >= 0;) {
+				final T temp = _proxy.uncheckedOffsetGet(i + start);
+				_proxy.uncheckedOffsetSet(i + start, other.get(otherStart + i));
+				other.set(otherStart + i, temp);
+			}
+		}
 	}
 
 	@Override
