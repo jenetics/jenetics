@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-29 $</em>
+ * @version <em>$Date: 2013-07-01 $</em>
  */
 public abstract class SeqTestBase {
 
@@ -231,7 +231,8 @@ public abstract class SeqTestBase {
 		int count = 0;
 		final Iterator<Integer> it = seq.iterator();
 		while (it.hasNext()) {
-			it.next();
+			final Integer value = it.next();
+			Assert.assertTrue(seq.contains(value));
 			++count;
 		}
 
@@ -246,6 +247,7 @@ public abstract class SeqTestBase {
 		seq.forEach(new Function<Integer, Void>() {
 			@Override public Void apply(final Integer value) {
 				Assert.assertTrue(lastValue.get() < value);
+				Assert.assertTrue(seq.contains(value));
 
 				lastValue.set(value);
 				counter.incrementAndGet();
@@ -262,6 +264,7 @@ public abstract class SeqTestBase {
 
 		seq.forAll(new Function<Integer, Boolean>() {
 			@Override public Boolean apply(final Integer value) {
+				Assert.assertTrue(seq.contains(value));
 				counter.incrementAndGet();
 				return true;
 			}
