@@ -46,6 +46,17 @@ public abstract class SeqTestBase {
 		};
 	}
 
+	@Test
+	public void length() {
+		for (int i = 0; i < 100; ++i) {
+			final Seq<Integer> seq = newSeq(i);
+			for (int j = 0; j < i; ++j) {
+				Assert.assertEquals(seq.get(j).intValue(), j);
+			}
+			Assert.assertEquals(seq.length(), i);
+		}
+	}
+
 	@Test(dataProvider = "sequences")
 	public void contains(final Seq<Integer> seq) {
 		for (int i = 0; i < seq.length(); ++i) {
