@@ -255,6 +255,7 @@
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArraySeqTest" />
+			<class name="org.jenetics.util.ArrayISeqTest" />
 			<class name="org.jenetics.util.ArrayTest" />
 		</classes>
 	</test>		
