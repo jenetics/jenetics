@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -38,5 +40,25 @@ public abstract class ISeqTestBase extends SeqTestBase {
 	public void copy(final ISeq<Integer> seq) {
 		final MSeq<Integer> copy = seq.copy();
 		Assert.assertEquals(copy, seq);
+
+		final Integer[] mcopy = copy.toArray(new Integer[0]);
+		for (int i = 0; i < mcopy.length; ++i) {
+			Assert.assertEquals(mcopy[i], seq.get(i));
+		}
+
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+		for (int i = 0; i < copy.length(); ++i) {
+			copy.set(i, random.nextInt());
+		}
+
+		for (int i = 0; i < mcopy.length; ++i) {
+			Assert.assertEquals(mcopy[i], seq.get(i));
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < copy.length(); ++i) {
+			Assert.assertEquals(copy.get(i).intValue(), random.nextInt());
+		}
 	}
 }

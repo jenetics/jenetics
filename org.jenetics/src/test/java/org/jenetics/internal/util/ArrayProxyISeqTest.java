@@ -22,50 +22,22 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import org.jenetics.util.ISeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date$</em>
+ * @version <em>$Date$</em>
  */
-public class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
-
-	public ArrayProxyISeq(final ArrayProxy<T> proxy) {
-		super(proxy);
-	}
+public class ArrayProxyISeqTest extends ISeqTestBase {
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
-		final ArrayProxyImpl<B> proxy = new ArrayProxyImpl<>(_proxy._length);
-		for (int i = 0; i < proxy._length; ++i) {
-			proxy._array[i] = mapper.apply(_proxy.uncheckedGet(i));
+	protected ISeq<Integer> newSeq(final int length) {
+		final ArrayProxyImpl<Integer> impl = new ArrayProxyImpl<>(length);
+		for (int i = 0; i < length; ++i) {
+			impl._array[i] = i;
 		}
-		return new ArrayProxyISeq<>(proxy);
-	}
-
-	@Override
-	public ISeq<T> subSeq(final int start) {
-		return new ArrayProxyISeq<>(_proxy.sub(start));
-	}
-
-	@Override
-	public ISeq<T> subSeq(int start, int end) {
-		return new ArrayProxyISeq<>(_proxy.sub(start, end));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public <A> ISeq<A> upcast(ISeq<? extends A> seq) {
-		return (ISeq<A>)seq;
-	}
-
-	@Override
-	public MSeq<T> copy() {
-		return new ArrayProxyMSeq<>(_proxy.copy());
+		return new ArrayProxyISeq<>(impl);
 	}
 
 }
