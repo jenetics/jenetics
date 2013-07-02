@@ -35,11 +35,11 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-30 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-02 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
-	ArrayProxyMSeq(final ArrayProxy<T> proxy) {
+	public ArrayProxyMSeq(final ArrayProxy<T> proxy) {
 		super(proxy);
 	}
 
@@ -116,8 +116,8 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 			_proxy.cloneIfSealed();
 
 			for (int i = (end - start); --i >= 0;) {
-				final T temp = _proxy.uncheckedOffsetGet(i + start);
-				_proxy.uncheckedOffsetSet(i + start, other.get(otherStart + i));
+				final T temp = _proxy.uncheckedGet(i + start);
+				_proxy.uncheckedSet(i + start, other.get(otherStart + i));
 				other.set(otherStart + i, temp);
 			}
 		}
