@@ -23,6 +23,7 @@
 package org.jenetics;
 
 import org.jenetics.internal.util.ArrayProxy;
+import org.jenetics.internal.util.ArrayProxyISeq;
 import org.jenetics.internal.util.ArrayProxyMSeq;
 import org.jenetics.util.bit;
 
@@ -33,8 +34,29 @@ import org.jenetics.util.bit;
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
+	public BitGeneArray(final byte[] array, final int start, final int end) {
+		super(new Proxy(array, start, end));
+	}
+
 	public BitGeneArray(final int length) {
 		super(new Proxy(length));
+	}
+
+	@Override
+	public BitGeneISeq toISeq() {
+		return new BitGeneISeq((Proxy)_proxy.seal());
+	}
+
+	static final class BitGeneISeq extends ArrayProxyISeq<BitGene> {
+		public BitGeneISeq(final Proxy proxy) {
+			super(proxy);
+		}
+
+		void copyTo(final byte[] array) {
+			final Proxy proxy = (Proxy)_proxy;
+			System.arraycopy(proxy._array, 0, array, 0, proxy._array.length);
+		}
+
 	}
 
 	private static final class Proxy extends ArrayProxy<BitGene> {
