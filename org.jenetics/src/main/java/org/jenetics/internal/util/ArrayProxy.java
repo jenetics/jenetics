@@ -59,7 +59,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 
 	public abstract void cloneIfSealed();
 
-	public abstract ArrayProxyImpl<T> seal();
+	public abstract ArrayProxy<T> seal();
 
 	/**
 	 * Return the <i>array</i> element at the specified position in the
