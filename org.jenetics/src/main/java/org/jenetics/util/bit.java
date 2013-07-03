@@ -52,7 +52,7 @@ public final class bit extends StaticObject {
 	private static final byte[] BIT_SET_TABLE = new byte[256];
 	static {
 		for (int i = 0; i < 256; ++i) {
-			BIT_SET_TABLE[i] = (byte)((i&1) + BIT_SET_TABLE[i/2]);
+			BIT_SET_TABLE[i] = (byte)((i&1) + BIT_SET_TABLE[i >>> 1]);
 		}
 		for (int i = 0; i < 128; ++i) {
 			BIT_SET_TABLE[i] = (byte)(BIT_SET_TABLE[i] + 1);
@@ -126,6 +126,13 @@ public final class bit extends StaticObject {
 		return bit;
 	}
 
+	/**
+	 * Returns the number of one-bits in the given {@code byte} array.
+	 *
+	 * @param data the {@code byte} array for which the one bits should be
+	 *        counted.
+	 * @return the number of one bits in the given {@code byte} array.
+	 */
 	public static int count(final byte[] data) {
 		int count = 0;
 		for (int i = data.length; --i >= 0;) {
@@ -134,24 +141,14 @@ public final class bit extends StaticObject {
 		return count;
 	}
 
+	/**
+	 * Returns the number of one-bits in the given {@code byte} {@code value}.
+	 *
+	 * @param value the value for which the one bits should be counted.
+	 * @return the number of one bits in the given value
+	 */
 	public static int count(final byte value) {
 		return BIT_SET_TABLE[value + 128];
-	}
-
-	public static void main(final String[] args) {
-		for (int i = -128; i <= 127; ++i) {
-			final byte bit = (byte)i;
-			if (count(bit) != count(bit)) {
-				System.out.println(String.format(
-					"%d: %d != %d", bit, count(bit), count(bit)
-				));
-			} else {
-				System.out.println(String.format(
-						"%d: %d == %d: %s",
-						bit, count(bit), count(bit), toByteString(new byte[]{bit})
-					));
-			}
-		}
 	}
 
 	/**
