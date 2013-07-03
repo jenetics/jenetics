@@ -36,11 +36,11 @@ import org.jenetics.util.Seq;
  * @since @__new_version__@
  * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
-abstract class ArrayProxySeq<T> implements Seq<T> {
+public abstract class ArrayProxySeq<T> implements Seq<T> {
 
-	final ArrayProxy<T> _proxy;
+	public final ArrayProxy<T> _proxy;
 
-	ArrayProxySeq(final ArrayProxy<T> proxy) {
+	public ArrayProxySeq(final ArrayProxy<T> proxy) {
 		_proxy = proxy;
 	}
 
