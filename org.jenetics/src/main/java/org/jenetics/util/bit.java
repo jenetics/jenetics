@@ -41,10 +41,26 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date$</em>
+ * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
+
+	/**
+	 * Lookup table for counting the number of set bits in an {@code byte} value.
+	 */
+	private static final byte[] BIT_SET_TABLE = new byte[256];
+	static {
+		for (int i = 0; i < 256; ++i) {
+			BIT_SET_TABLE[i] = (byte)((i&1) + BIT_SET_TABLE[i/2]);
+		}
+		for (int i = 0; i < 128; ++i) {
+			BIT_SET_TABLE[i] = (byte)(BIT_SET_TABLE[i] + 1);
+		}
+		for (int i = 128; i < 256; ++i) {
+			BIT_SET_TABLE[i] = (byte)(BIT_SET_TABLE[i] - 1);
+		}
+	}
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
@@ -108,6 +124,34 @@ public final class bit extends StaticObject {
 		}
 
 		return bit;
+	}
+
+	public static int count(final byte[] data) {
+		int count = 0;
+		for (int i = data.length; --i >= 0;) {
+			count += count(data[i]);
+		}
+		return count;
+	}
+
+	public static int count(final byte value) {
+		return BIT_SET_TABLE[value + 128];
+	}
+
+	public static void main(final String[] args) {
+		for (int i = -128; i <= 127; ++i) {
+			final byte bit = (byte)i;
+			if (count(bit) != count(bit)) {
+				System.out.println(String.format(
+					"%d: %d != %d", bit, count(bit), count(bit)
+				));
+			} else {
+				System.out.println(String.format(
+						"%d: %d == %d: %s",
+						bit, count(bit), count(bit), toByteString(new byte[]{bit})
+					));
+			}
+		}
 	}
 
 	/**
