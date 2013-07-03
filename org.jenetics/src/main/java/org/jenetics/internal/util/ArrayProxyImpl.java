@@ -66,7 +66,14 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 		final ArrayProxy<T> other,
 		final int otherStart
 	) {
+		cloneIfSealed();
+		other.cloneIfSealed();
 
+		for (int i = (end - start); --i >= 0;) {
+			final T temp = uncheckedGet(i + start);
+			uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
+			other.uncheckedSet(otherStart + i, temp);
+		}
 	}
 
 	@Override

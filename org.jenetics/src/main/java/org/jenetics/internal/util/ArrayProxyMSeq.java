@@ -104,22 +104,37 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
 	@Override
 	public void swap(int start, int end, MSeq<T> other, int otherStart) {
+		checkIndex(start, end, otherStart, other.length());
+
+		if (start < end) {
+			if (other instanceof ArrayProxyMSeq<?>) {
+				swap(start, end, (ArrayProxyMSeq<T>)other, otherStart);
+			} else {
+				_proxy.cloneIfSealed();
+
+				for (int i = (end - start); --i >= 0;) {
+					final T temp = _proxy.uncheckedGet(i + start);
+					_proxy.uncheckedSet(i + start, other.get(otherStart + i));
+					other.set(otherStart + i, temp);
+				}
+			}
+		}
+	}
+
+	private void swap(int start, int end, ArrayProxyMSeq<T> other, int otherStart) {
+		_proxy.swap(start, end, other._proxy, otherStart);
+	}
+
+	private void checkIndex(
+		final int start, final int end,
+		final int otherStart, final int otherLength
+	) {
 		_proxy.checkIndex(start, end);
-		if (otherStart < 0 || (otherStart + (end - start)) > length()) {
+		if (otherStart < 0 || (otherStart + (end - start)) > otherLength) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %d)",
 				otherStart, (otherStart + (end - start))
 			));
-		}
-
-		if (start < end) {
-			_proxy.cloneIfSealed();
-
-			for (int i = (end - start); --i >= 0;) {
-				final T temp = _proxy.uncheckedGet(i + start);
-				_proxy.uncheckedSet(i + start, other.get(otherStart + i));
-				other.set(otherStart + i, temp);
-			}
 		}
 	}
 
