@@ -346,11 +346,7 @@ public class BitChromosome extends Number<BitChromosome>
 		if (genes instanceof BitGeneArray.BitGeneISeq) {
 			final BitGeneArray.BitGeneISeq iseq = (BitGeneArray.BitGeneISeq)genes;
 			iseq.copyTo(chromosome._genes);
-			for (int i = genes.length(); --i >= 0;) {
-				if (bit.get(chromosome._genes, i)) {
-					++ones;
-				}
-			}
+			ones = bit.count(chromosome._genes);
 		} else {
 			for (int i = genes.length(); --i >= 0;) {
 				if (genes.get(i).booleanValue()) {
