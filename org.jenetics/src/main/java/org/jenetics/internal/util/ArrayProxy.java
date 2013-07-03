@@ -30,7 +30,7 @@ import org.jenetics.util.Copyable;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-30 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-03 $</em>
  */
 public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 
@@ -59,7 +59,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 
 	public abstract void cloneIfSealed();
 
-	public abstract ArrayProxyImpl<T> seal();
+	public abstract ArrayProxy<T> seal();
 
 	/**
 	 * Return the <i>array</i> element at the specified position in the
