@@ -53,7 +53,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-03 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-04 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -346,11 +346,7 @@ public class BitChromosome extends Number<BitChromosome>
 		if (genes instanceof BitGeneArray.BitGeneISeq) {
 			final BitGeneArray.BitGeneISeq iseq = (BitGeneArray.BitGeneISeq)genes;
 			iseq.copyTo(chromosome._genes);
-			for (int i = genes.length(); --i >= 0;) {
-				if (bit.get(chromosome._genes, i)) {
-					++ones;
-				}
-			}
+			ones = bit.count(chromosome._genes);
 		} else {
 			for (int i = genes.length(); --i >= 0;) {
 				if (genes.get(i).booleanValue()) {
