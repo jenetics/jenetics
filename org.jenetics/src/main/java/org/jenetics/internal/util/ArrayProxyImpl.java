@@ -26,7 +26,7 @@ package org.jenetics.internal.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-30 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-03 $</em>
  */
 public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
@@ -66,7 +66,14 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 		final ArrayProxy<T> other,
 		final int otherStart
 	) {
+		cloneIfSealed();
+		other.cloneIfSealed();
 
+		for (int i = (end - start); --i >= 0;) {
+			final T temp = uncheckedGet(i + start);
+			uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
+			other.uncheckedSet(otherStart + i, temp);
+		}
 	}
 
 	@Override
