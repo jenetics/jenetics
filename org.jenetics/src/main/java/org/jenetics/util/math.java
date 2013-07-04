@@ -33,7 +33,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-07-04 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -341,7 +341,7 @@ public final class math extends StaticObject {
 		static double Γ(final double x) {
 			return x;
 		}
-		
+
 	}
 
 	/**
@@ -349,7 +349,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-07-04 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -442,69 +442,11 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Mathematical functions regarding probabilities.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.1
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
-	 */
-	static final class probability extends StaticObject {
-		private probability() {}
-
-		static final long INT_RANGE = pow(2, 32) - 1;
-
-		/**
-		 * Maps the probability, given in the range {@code [0, 1]}, to an
-		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
-		 *
-		 * @see {@link #toInt(double)}
-		 * @see {@link #toFloat(int)}
-		 *
-		 * @param probability the probability to widen.
-		 * @return the widened probability.
-		 */
-		static int toInt(final float probability) {
-			return Math.round(INT_RANGE*probability + Integer.MIN_VALUE);
-		}
-
-		/**
-		 * Maps the probability, given in the range {@code [0, 1]}, to an
-		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
-		 *
-		 * @see {@link #toInt(float)}
-		 * @see {@link #toFloat(int)}
-		 *
-		 * @param probability the probability to widen.
-		 * @return the widened probability.
-		 */
-		static int toInt(final double probability) {
-			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
-		}
-
-		/**
-		 * Maps the <i>integer</i> probability, within the range
-		 * {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]} back to a float
-		 * probability within the range {@code [0, 1]}.
-		 *
-		 * @see {@link #toInt(float)}
-		 * @see {@link #toInt(double)}
-		 *
-		 * @param probability the <i>integer</i> probability to map.
-		 * @return the mapped probability within the range {@code [0, 1]}.
-		 */
-		static float toFloat(final int probability) {
-			final long value = (long)probability + Integer.MAX_VALUE;
-			return (float)(value/(double)INT_RANGE);
-		}
-
-	}
-
-	/**
 	 * Some helper method concerning random numbers and random seed generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-06-12 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-07-04 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}

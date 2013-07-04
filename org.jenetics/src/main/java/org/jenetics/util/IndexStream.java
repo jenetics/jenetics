@@ -27,6 +27,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.probability;
+
 /**
  * Interface which delivers a stream of (positive) indexes ({@code int}s)s. The
  * stream ends if {@link #next()} returns {@code -1}. Here some usage examples:
@@ -47,7 +49,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-07-04 $</em>
  */
 public abstract class IndexStream {
 
@@ -101,7 +103,7 @@ public abstract class IndexStream {
 	 */
 	public static IndexStream Random(
 		final int n,
-		final double probability,
+		final double p,
 		final Random random
 	) {
 		if (n == Integer.MAX_VALUE) {
@@ -116,7 +118,7 @@ public abstract class IndexStream {
 		}
 
 		return new IndexStream() {
-			private final int P = math.probability.toInt(probability);
+			private final int P = probability.toInt(p);
 
 			private int _pos = -1;
 

@@ -43,6 +43,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
+import org.jenetics.internal.math.probability;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
@@ -364,8 +366,10 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitChromosome newInstance() {
 		final Random random = RandomRegistry.getRandom();
 		final BitChromosome chromosome = new BitChromosome(_length, _p);
+		final int P = probability.toInt(_p);
+
 		for (int i = 0; i < _length; ++i) {
-			bit.set(chromosome._genes, i, random.nextDouble() < _p);
+			bit.set(chromosome._genes, i, random.nextInt() < P);
 		}
 		return chromosome;
 	}
