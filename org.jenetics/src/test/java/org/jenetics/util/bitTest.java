@@ -138,6 +138,26 @@ public class bitTest {
 		}
 	}
 
+	@Test
+	public void count() {
+		for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; ++i) {
+			final byte value = (byte)i;
+
+			Assert.assertEquals(bit.count(value), count(value));
+		}
+	}
+
+	private static int count(final byte value) {
+		final byte[] array = new byte[]{value};
+		int count = 0;
+		for (int i = 0; i < 8; ++i) {
+			if (bit.get(array, i)) {
+				++count;
+			}
+		}
+		return count;
+	}
+
 	/*
 	@Test
 	public void foo() {
