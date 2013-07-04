@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-10 $</em>
+ * @version <em>$Date: 2013-07-04 $</em>
  */
 public class bitTest {
 
@@ -136,6 +136,26 @@ public class bitTest {
 			Assert.assertEquals(data, bytes);
 			Assert.assertEquals(bit.toLong(data), value);
 		}
+	}
+
+	@Test
+	public void count() {
+		for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; ++i) {
+			final byte value = (byte)i;
+
+			Assert.assertEquals(bit.count(value), count(value));
+		}
+	}
+
+	private static int count(final byte value) {
+		final byte[] array = new byte[]{value};
+		int count = 0;
+		for (int i = 0; i < 8; ++i) {
+			if (bit.get(array, i)) {
+				++count;
+			}
+		}
+		return count;
 	}
 
 	/*
