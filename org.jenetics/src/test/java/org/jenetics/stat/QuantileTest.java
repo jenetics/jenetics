@@ -31,14 +31,14 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.MappedAccumulatorTester;
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-11 $</em>
+ * @version <em>$Date: 2013-07-04 $</em>
  */
 public class QuantileTest extends MappedAccumulatorTester<Quantile<Double>> {
 

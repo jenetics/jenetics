@@ -31,18 +31,19 @@ import java.util.concurrent.ForkJoinPool;
 import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.ForkJoinContext;
-import org.jenetics.util.Function;
-import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Factory;
+import org.jenetics.util.ForkJoinContext;
+import org.jenetics.util.Function;
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-03-11 $</em>
+ * @version <em>$Date: 2013-07-04 $</em>
  */
 public class GeneticAlgorithmTest {
 

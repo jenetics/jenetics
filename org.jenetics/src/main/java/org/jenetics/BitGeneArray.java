@@ -25,12 +25,13 @@ package org.jenetics;
 import org.jenetics.internal.util.ArrayProxy;
 import org.jenetics.internal.util.ArrayProxyISeq;
 import org.jenetics.internal.util.ArrayProxyMSeq;
+
 import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-03 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-04 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
