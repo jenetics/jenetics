@@ -34,9 +34,6 @@ import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
 import javolution.xml.XMLSerializable;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
