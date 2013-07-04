@@ -254,6 +254,11 @@
 			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.internal.math.probability">
+		<classes>
+			<class name="org.jenetics.internal.math.probabilityTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.util.Array">
 		<classes>
 			<class name="org.jenetics.util.ArraySeqTest" />
@@ -284,7 +289,6 @@
 	</test>
 	<test name="org.jenetics.util.math">
 		<classes>
-			<class name="org.jenetics.util.mathProbabilityTest" />
 			<class name="org.jenetics.util.mathRandomTest" />
 			<class name="org.jenetics.util.mathTest" />
 		</classes>

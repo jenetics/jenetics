@@ -20,4 +20,4 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.internal.util;
+package org.jenetics.internal.math;
