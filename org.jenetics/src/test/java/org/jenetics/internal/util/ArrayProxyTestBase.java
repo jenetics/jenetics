@@ -22,6 +22,10 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.Random;
+
+import org.jenetics.util.math;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
@@ -29,5 +33,11 @@ package org.jenetics.internal.util;
 public abstract class ArrayProxyTestBase<T> {
 
 	public abstract ArrayProxy<T> newArrayProxy(final int length);
+
+	public abstract T newArrayProxyElement(final Random random);
+
+	public T newArrayProxyElement() {
+		return newArrayProxyElement(new Random(math.random.seed()));
+	}
 
 }
