@@ -48,18 +48,22 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 
 	public abstract void uncheckedOffsetSet(final int absoluteIndex, final T value);
 
-	public abstract ArrayProxy<T> sub(final int start, final int end);
+	/**
+	 * Return the <i>array</i> element at the specified position in the
+	 * {@code ArrayProxy}. The array boundaries are not checked.
+	 *
+	 * @param index index of the element to return
+	 * @return the <i>array</i> element at the specified position
+	 * @throws IndexOutOfBoundsException if the index it out of range
+	 *          (index < 0 || index >= _length).
+	 */
+	public T uncheckedGet(final int index) {
+		return uncheckedOffsetGet(index + _start);
+	}
 
-	public abstract void swap(
-		final int start,
-		final int end,
-		final ArrayProxy<T> other,
-		final int otherStart
-	);
-
-	public abstract void cloneIfSealed();
-
-	public abstract ArrayProxy<T> seal();
+	public void uncheckedSet(final int index, final T value) {
+		uncheckedOffsetSet(index + _start, value);
+	}
 
 	/**
 	 * Return the <i>array</i> element at the specified position in the
@@ -80,26 +84,22 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 		uncheckedOffsetSet(index + _start, value);
 	}
 
-	/**
-	 * Return the <i>array</i> element at the specified position in the
-	 * {@code ArrayProxy}. The array boundaries are not checked.
-	 *
-	 * @param index index of the element to return
-	 * @return the <i>array</i> element at the specified position
-	 * @throws IndexOutOfBoundsException if the index it out of range
-	 *          (index < 0 || index >= _length).
-	 */
-	public T uncheckedGet(final int index) {
-		return uncheckedOffsetGet(index + _start);
-	}
-
-	public void uncheckedSet(final int index, final T value) {
-		uncheckedOffsetSet(index + _start, value);
-	}
+	public abstract ArrayProxy<T> sub(final int start, final int end);
 
 	public ArrayProxy<T> sub(final int start) {
 		return sub(start, _length);
 	}
+
+	public abstract void swap(
+		final int start,
+		final int end,
+		final ArrayProxy<T> other,
+		final int otherStart
+	);
+
+	public abstract void cloneIfSealed();
+
+	public abstract ArrayProxy<T> seal();
 
 	protected final void checkIndex(final int index) {
 		if (index < 0 || index >= _length) {
