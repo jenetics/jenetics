@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-04 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-05 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -98,17 +98,13 @@ public final class bit extends StaticObject {
 	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
-	public static byte[] set(final byte[] data, final int index, final boolean value) {
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-
-			data[bytes] = (byte)(value ?
-				(data[bytes] & 0xFF) |  (1 << bits) :
-				(data[bytes] & 0xFF) & ~(1 << bits)
-			);
-		}
-
+	public static byte[] set(
+		final byte[] data,
+		final int index,
+		final boolean value
+	) {
+		if (value) data[index >>> 3] |=   1 << (index & 7);
+		else       data[index >>> 3] &= ~(1 << (index & 7));
 		return data;
 	}
 
@@ -138,16 +134,9 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static boolean get(final byte[] data, final int index) {
-		boolean bit = false;
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-			final int d = data[bytes] & 0xFF;
-
-			bit = (d & (1 << bits)) != 0;
-		}
-
-		return bit;
+		return data.length == 0 ?
+					false :
+					((data[index >>> 3] & 0xFF) & (1 << (index & 7))) != 0;
 	}
 
 	/**
@@ -319,18 +308,16 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-			int d = data[bytes] & 0xFF;
+		final int bytes = index >>> 3; // = index/8
+		final int bits = index & 7;    // = index%8
+		int d = data[bytes] & 0xFF;
 
-			if ((d & (1 << bits)) == 0) {
-				d |= (1 << bits);
-			} else {
-				d &= ~(1 << bits);
-			}
-			data[bytes] = (byte)d;
+		if ((d & (1 << bits)) == 0) {
+			d |= (1 << bits);
+		} else {
+			d &= ~(1 << bits);
 		}
+		data[bytes] = (byte)d;
 
 		return data;
 	}
