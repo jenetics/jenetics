@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-04 $</em>
+ * @version <em>$Date: 2013-07-05 $</em>
  */
 public class bitTest {
 
@@ -156,6 +156,44 @@ public class bitTest {
 			}
 		}
 		return count;
+	}
+
+	@Test
+	public void swap() {
+		final int byteLength = 1_000;
+		final int bitLength = byteLength*8;
+
+		final byte[] seq = newByteArray(byteLength, new Random());
+
+		for (int start = 0; start < bitLength - 3; ++start) {
+			final byte[] copy = seq.clone();
+			final byte[] other = newByteArray(byteLength, new Random());
+			final byte[] otherCopy = other.clone();
+
+			final int end = start + 2;
+			final int otherStart = 1;
+
+			bit.swap(seq, start, end, other, otherStart);
+
+			for (int j = start; j < end; ++j) {
+				final boolean actual = bit.get(seq, j);
+				final boolean expected = bit.get(otherCopy, j + otherStart - start);
+				Assert.assertEquals(actual, expected);
+			}
+			for (int j = 0; j < (end - start); ++j) {
+				final boolean actual = bit.get(other, j + otherStart);
+				final boolean expected = bit.get(copy, j + start);
+				Assert.assertEquals(actual, expected);
+			}
+		}
+	}
+
+	private static byte[] newByteArray(final int length, final Random random) {
+		final byte[] array = new byte[length];
+		for (int i = 0; i < length; ++i) {
+			array[i] = (byte)random.nextInt();
+		}
+		return array;
 	}
 
 	/*
