@@ -114,17 +114,22 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 			final int start, final int end,
 			final Proxy other, final int otherStart
 		) {
-			for (int i = (end - start); --i >= 0;) {
-				final boolean temp = bit.get(_array, i + start + _start);
-				bit.set(
-					_array, i + start + _start,
-					bit.get(other._array, i + otherStart + other._start)
-				);
-				bit.set(
-					other._array, i + otherStart + other._start,
-					temp
-				);
-			}
+			bit.swap(
+				_array, start + _start, end + _start,
+				other._array, otherStart + other._start
+			);
+
+//			for (int i = (end - start); --i >= 0;) {
+//				final boolean temp = bit.get(_array, i + start + _start);
+//				bit.set(
+//					_array, i + start + _start,
+//					bit.get(other._array, i + otherStart + other._start)
+//				);
+//				bit.set(
+//					other._array, i + otherStart + other._start,
+//					temp
+//				);
+//			}
 		}
 
 		@Override
