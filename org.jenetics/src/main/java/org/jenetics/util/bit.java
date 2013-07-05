@@ -117,14 +117,12 @@ public final class bit extends StaticObject {
 		final int index,
 		final boolean value
 	) {
-		if (value) data[index >>> 3] |=   1 << (index & 7);
-		else       data[index >>> 3] &= ~(1 << (index & 7));
-		return data;
+		return value ? set(data, index) : unset(data, index);
 	}
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
-	 * within the byte array) to true.
+	 * within the byte array) to {@code true}.
 	 *
 	 * @param data the byte array.
 	 * @param index the bit index within the byte array.
@@ -134,15 +132,32 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index) {
-		return set(data, index, true);
+		data[index >>> 3] |= 1 << (index & 7);
+		return data;
+	}
+
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to {@code false}.
+	 *
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @return the given data array.
+	 * @throws IndexOutOfBoundsException if the index is
+	 *          {@code index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static byte[] unset(final byte[] data, final int index) {
+		data[index >>> 3] &= ~(1 << (index & 7));
+		return data;
 	}
 
 	/**
 	 * Swap a given range with a range of the same size with another array.
 	 *
 	 * <pre>
-	 *                start                end
-	 *                  |                   |
+	 *                start            end
+	 *                  |               |
 	 * data:      +---+---+---+---+---+---+---+---+---+---+---+---+
 	 *              +---------------+
 	 *                              +---------------+
