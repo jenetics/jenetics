@@ -163,8 +163,102 @@ public abstract class ArrayProxyTestBase<T> {
 			Assert.assertEquals(sub.uncheckedGet(i), expected);
 			Assert.assertEquals(proxy.uncheckedGet(i + start), expected);
 
-			Assert.assertEquals(sub.uncheckedOffsetGet(i + start), expected);
-			Assert.assertEquals(proxy.uncheckedOffsetGet(i + start), expected);
+			Assert.assertEquals(
+				sub.uncheckedOffsetGet(i + start + proxy._start),
+				expected
+			);
+			Assert.assertEquals(
+				proxy.uncheckedOffsetGet(i + start + proxy._start),
+				expected
+			);
+		}
+	}
+
+	@Test(dataProvider = "subintintdata")
+	public void subSubIntInt(
+		final Integer length,
+		final Integer start,
+		final Integer end
+	) {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final ArrayProxy<T> proxy = newArrayProxy(length + 10).sub(5, length + 5);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, newArrayProxyElement(random));
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < start; ++i) {
+			final T actual = proxy.get(i);
+			final T expected = newArrayProxyElement(random);
+
+			Assert.assertEquals(actual, expected);
+		}
+
+		final ArrayProxy<T> sub = proxy.sub(start, end);
+		for (int i = 0; i < (end - start); ++i) {
+			final T expected = newArrayProxyElement(random);
+
+			Assert.assertEquals(sub.get(i), expected);
+			Assert.assertEquals(proxy.get(i + start), expected);
+
+			Assert.assertEquals(sub.uncheckedGet(i), expected);
+			Assert.assertEquals(proxy.uncheckedGet(i + start), expected);
+
+			Assert.assertEquals(
+				sub.uncheckedOffsetGet(i + start + proxy._start),
+				expected
+			);
+			Assert.assertEquals(
+				proxy.uncheckedOffsetGet(i + start + proxy._start),
+				expected
+			);
+		}
+	}
+
+	@Test(dataProvider = "subintintdata")
+	public void subSubSubIntInt(
+		final Integer length,
+		final Integer start,
+		final Integer end
+	) {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final ArrayProxy<T> proxy = newArrayProxy(length + 20)
+										.sub(5, length + 15)
+										.sub(5, length + 10);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, newArrayProxyElement(random));
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < start; ++i) {
+			final T actual = proxy.get(i);
+			final T expected = newArrayProxyElement(random);
+
+			Assert.assertEquals(actual, expected);
+		}
+
+		final ArrayProxy<T> sub = proxy.sub(start, end);
+		for (int i = 0; i < (end - start); ++i) {
+			final T expected = newArrayProxyElement(random);
+
+			Assert.assertEquals(sub.get(i), expected);
+			Assert.assertEquals(proxy.get(i + start), expected);
+
+			Assert.assertEquals(sub.uncheckedGet(i), expected);
+			Assert.assertEquals(proxy.uncheckedGet(i + start), expected);
+
+			Assert.assertEquals(
+				sub.uncheckedOffsetGet(i + start + proxy._start),
+				expected
+			);
+			Assert.assertEquals(
+				proxy.uncheckedOffsetGet(i + start + proxy._start),
+				expected
+			);
 		}
 	}
 
