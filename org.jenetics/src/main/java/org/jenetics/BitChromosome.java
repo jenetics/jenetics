@@ -369,7 +369,9 @@ public class BitChromosome extends Number<BitChromosome>
 		final int P = probability.toInt(_p);
 
 		for (int i = 0; i < _length; ++i) {
-			bit.set(chromosome._genes, i, random.nextInt() < P);
+			if (random.nextInt() < P) {
+				bit.set(chromosome._genes, i);
+			}
 		}
 		return chromosome;
 	}
