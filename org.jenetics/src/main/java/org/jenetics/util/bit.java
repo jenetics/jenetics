@@ -87,6 +87,20 @@ public final class bit extends StaticObject {
 	private static final int BIT_SET_TABLE_INDEX_OFFSET = 128;
 
 	/**
+	 * Return the (boolean) value of the byte array at the given bit index.
+	 *
+	 * @param data the byte array.
+	 * @param index the bit index.
+	 * @return the value at the given bit index.
+	 * @throws IndexOutOfBoundsException if the index is
+	 *          {@code index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static boolean get(final byte[] data, final int index) {
+		return (data[index >>> 3] & (1 << (index & 7))) != 0;
+	}
+
+	/**
 	 * Set the bit in the given byte array at the bit position (not the index
 	 * within the byte array) to the specified value.
 	 *
@@ -124,19 +138,40 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Return the (boolean) value of the byte array at the given bit index.
+	 * Swap a given range with a range of the same size with another array.
 	 *
-	 * @param data the byte array.
-	 * @param index the bit index.
-	 * @return the value at the given bit index.
-	 * @throws IndexOutOfBoundsException if the index is
-	 *          {@code index >= max || index < 0}.
-	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 * <pre>
+	 *                start                end
+	 *                  |                   |
+	 * data:      +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *              +---------------+
+	 *                              +---------------+
+	 * otherData: +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *                              |
+	 *                          otherStart
+	 * </pre>
+	 *
+	 * @param data the first byte array which are used for swapping.
+	 * @param start the start bit index of the {@code data} byte array,
+	 *        inclusively.
+	 * @param end the end bit index of the {@code data} byte array, exclusively.
+	 * @param otherData the other byte array to swap the elements with.
+	 * @param otherStart the start index of the {@code otherData} byte array.
+	 * @throws IndexOutOfBoundsException if {@code start > end}.
+	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
+	 *         end >= data.length*8 || otherStart < 0 ||
+	 *         otherStart + (end - start) >= otherData.length*8}
 	 */
-	public static boolean get(final byte[] data, final int index) {
-		return data.length == 0 ?
-					false :
-					((data[index >>> 3] & 0xFF) & (1 << (index & 7))) != 0;
+	public static void swap(
+		final byte[] data, final int start, final int end,
+		final byte[] otherData, final int otherStart
+	) {
+		for (int i = (end - start); --i >= 0;) {
+			final boolean temp = get(data, i + start);
+			set(data, i + start, get(otherData, otherStart + i));
+			set(otherData, otherStart + i, temp);
+		}
+
 	}
 
 	/**
