@@ -55,7 +55,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-04 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-05 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -369,7 +369,9 @@ public class BitChromosome extends Number<BitChromosome>
 		final int P = probability.toInt(_p);
 
 		for (int i = 0; i < _length; ++i) {
-			bit.set(chromosome._genes, i, random.nextInt() < P);
+			if (random.nextInt() < P) {
+				bit.set(chromosome._genes, i);
+			}
 		}
 		return chromosome;
 	}
