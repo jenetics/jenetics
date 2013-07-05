@@ -31,12 +31,12 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-04 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-05 $</em>
  */
 public final class probability extends StaticObject {
 	private probability() {}
 
-	static final long INT_RANGE = pow(2, 32) - 1;
+	private static final long INT_RANGE = pow(2, 32) - 1;
 
 	/**
 	 * Maps the probability, given in the range {@code [0, 1]}, to an
