@@ -22,10 +22,28 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.Random;
+
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public class ArrayProxyImplTest {
+public class ArrayProxyImplTest extends ArrayProxyTestBase<Integer> {
+
+	@Override
+	public ArrayProxy<Integer> newArrayProxy(final int length) {
+		return new ArrayProxyImpl<>(length);
+	}
+
+	@Override
+	public Integer newArrayProxyElement(final Random random) {
+		return random.nextInt();
+	}
+
+	@Test
+	public void foo() {
+	}
 
 }
