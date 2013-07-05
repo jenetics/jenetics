@@ -36,7 +36,7 @@ import org.jenetics.util.StaticObject;
 public final class probability extends StaticObject {
 	private probability() {}
 
-	static final long INT_RANGE = pow(2, 32) - 1;
+	private static final long INT_RANGE = pow(2, 32) - 1;
 
 	/**
 	 * Maps the probability, given in the range {@code [0, 1]}, to an
