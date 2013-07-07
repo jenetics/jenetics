@@ -66,7 +66,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-07 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -86,9 +86,6 @@ public final class Genotype<G extends Gene<?, G>>
 	private volatile Boolean _valid = null;
 
 	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		assert(chromosomes != null);
-		assert(ngenes(chromosomes) == ngenes);
-
 		_chromosomes = chromosomes;
 		_ngenes = ngenes;
 	}
