@@ -60,7 +60,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
 	}
 
-	private static final class Proxy extends ArrayProxy<BitGene> {
+	/*private[jenetics]*/ static final class Proxy extends ArrayProxy<BitGene> {
 		private byte[] _array;
 		private boolean _sealed = false;
 
@@ -114,6 +114,11 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 			final int start, final int end,
 			final Proxy other, final int otherStart
 		) {
+			checkIndex(start, end);
+			other.checkIndex(otherStart, otherStart + (end - start));
+			cloneIfSealed();
+			other.cloneIfSealed();
+
 			bit.swap(
 				_array, start + _start, end + _start,
 				other._array, otherStart + other._start
