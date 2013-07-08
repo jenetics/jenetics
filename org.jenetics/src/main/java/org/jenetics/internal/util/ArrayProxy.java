@@ -90,7 +90,6 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
 	 * @param index index of the <i>array</i> element
-	 * @return the <i>array</i> element
 	 */
 	public void uncheckedSet(final int index, final T value) {
 		uncheckedOffsetSet(index + _start, value);
@@ -110,7 +109,6 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
 	 * @param index absolute index of the <i>array</i> element
-	 * @return the <i>array</i> element
 	 */
 	public abstract void uncheckedOffsetSet(final int absoluteIndex, final T value);
 
