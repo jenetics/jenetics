@@ -24,11 +24,10 @@ package org.jenetics.internal.util;
 
 import java.util.Random;
 
+import org.jenetics.util.math;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -274,7 +273,144 @@ public abstract class ArrayProxyTestBase<T> {
 		};
 	}
 
+
+	@Test(dataProvider = "swapparameter")
+	public void swapIntIntArrayProxyInt(
+		final Integer length, final Integer start, final Integer end,
+		final Integer otherLength, final Integer otherStart
+	) {
+		final long thatSeed = math.random.seed();
+		final long otherSeed = math.random.seed();
+		final Random thatRandom = new Random(thatSeed);
+		final Random otherRandom = new Random(otherSeed);
+
+		final ArrayProxy<T> that = newArrayProxy(length);
+		final ArrayProxy<T> other = newArrayProxy(otherLength);
+		final ArrayProxy<T> thatCopy = newArrayProxy(length);
+		final ArrayProxy<T> otherCopy = newArrayProxy(otherLength);
+
+		for (int i = 0; i < length; ++i) {
+			that.set(i, newArrayProxyElement(thatRandom));
+		}
+		for (int i = 0; i < otherLength; ++i) {
+			other.set(i, newArrayProxyElement(otherRandom));
+		}
+
+		thatRandom.setSeed(thatSeed);
+		otherRandom.setSeed(otherSeed);
+		for (int i = 0; i < length; ++i) {
+			thatCopy.set(i, newArrayProxyElement(thatRandom));
+		}
+		for (int i = 0; i < otherLength; ++i) {
+			otherCopy.set(i, newArrayProxyElement(otherRandom));
+		}
+
+
+		that.swap(start, end, other, otherStart);
+
+		for (int j = start; j < end; ++j) {
+			Assert.assertEquals(that.get(j), otherCopy.get(j + otherStart - start));
+		}
+		for (int j = 0; j < (end - start); ++j) {
+			Assert.assertEquals(other.get(j + otherStart), thatCopy.get(j + start));
+		}
+
+	}
+
+	@DataProvider(name = "swapparameter")
+	public Object[][] getSwapParameter() {
+		return new Object[][] {
+			{10, 1, 5, 15, 4},
+			{10, 5, 7, 3, 1}
+		};
+	}
+
+	@Test(
+		dataProvider = "swapparameteroutofbounds",
+		expectedExceptions = IndexOutOfBoundsException.class
+	)
+	public void swapIntIntArrayProxyIntIndexOutOfBounds(
+		final Integer length, final Integer start, final Integer end,
+		final Integer otherLength, final Integer otherStart
+	) {
+		final long thatSeed = math.random.seed();
+		final long otherSeed = math.random.seed();
+		final Random thatRandom = new Random(thatSeed);
+		final Random otherRandom = new Random(otherSeed);
+
+		final ArrayProxy<T> that = newArrayProxy(length);
+		final ArrayProxy<T> other = newArrayProxy(otherLength);
+		final ArrayProxy<T> thatCopy = newArrayProxy(length);
+		final ArrayProxy<T> otherCopy = newArrayProxy(otherLength);
+
+		for (int i = 0; i < length; ++i) {
+			that.set(i, newArrayProxyElement(thatRandom));
+		}
+		for (int i = 0; i < otherLength; ++i) {
+			other.set(i, newArrayProxyElement(otherRandom));
+		}
+
+		thatRandom.setSeed(thatSeed);
+		otherRandom.setSeed(otherSeed);
+		for (int i = 0; i < length; ++i) {
+			thatCopy.set(i, newArrayProxyElement(thatRandom));
+		}
+		for (int i = 0; i < otherLength; ++i) {
+			otherCopy.set(i, newArrayProxyElement(otherRandom));
+		}
+
+
+		try {
+			that.swap(start, end, other, otherStart);
+		} catch (IndexOutOfBoundsException e) {
+			// The arrays should not be changed.
+			for (int i = 0; i < length; ++i) {
+				Assert.assertEquals(that.get(i), thatCopy.get(i));
+			}
+			for (int i = 0; i < length; ++i) {
+				Assert.assertEquals(other.get(i), otherCopy.get(i));
+			}
+
+			throw e;
+		}
+
+	}
+
+	@DataProvider(name = "swapparameteroutofbounds")
+	public Object[][] getSwapParameterOutOfBounds() {
+		return new Object[][] {
+			{10, -1, 5, 15, 4},
+			{10, 2, 7, 3, 1}
+		};
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
