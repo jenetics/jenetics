@@ -32,6 +32,11 @@
 			<class name="org.jenetics.BitChromosomeTest" />
 		</classes>
 	</test>
+	<test name="org.jenetics.BitGeneArray">
+		<classes>
+			<class name="org.jenetics.BitGeneArrayProxyTest" />
+		</classes>
+	</test>
 	<test name="org.jenetics.BitGene">
 		<classes>
 			<class name="org.jenetics.BitGeneTest" />
@@ -249,6 +254,7 @@
 	</test>
 	<test name="org.jenetics.internal.util.ArrayProxy">
 		<classes>
+			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
 			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
