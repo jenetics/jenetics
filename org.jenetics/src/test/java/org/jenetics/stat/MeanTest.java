@@ -28,15 +28,15 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-07-04 $</em>
  */
 public class MeanTest extends MappedAccumulatorTester<Mean<Double>> {
 	private final static String DATA = "/org/jenetics/util/statistic-moments.txt";

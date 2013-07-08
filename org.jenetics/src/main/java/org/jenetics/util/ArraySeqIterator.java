@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-21 $</em>
  */
 class ArraySeqIterator<T> implements ListIterator<T> {
 	final ArraySeq<T> _array;
@@ -82,7 +82,7 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 
 	@Override
 	public void set(final T value) {
-		throw new UnsupportedOperationException("Array is sealed.");
+		throw new UnsupportedOperationException("Array is immutable.");
 	}
 
 	@Override

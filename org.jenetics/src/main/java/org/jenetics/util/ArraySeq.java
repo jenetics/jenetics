@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-21 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-06-25 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -207,7 +207,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 		int index = -1;
 
-		for (int i = end + _start; --i >= _start && index == -1;) {
+		for (int i = end + _start; --i >= start +_start && index == -1;) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			if (predicate.apply(element) == Boolean.TRUE) {

@@ -33,7 +33,7 @@ import java.io.InputStreamReader;
  * number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-07-08 $</em>
  */
 public final class ChiSquare {
 	private static final String CHI = "/org/jenetics/stat/chi.txt";
@@ -45,10 +45,11 @@ public final class ChiSquare {
 	private static final double[][] TABLE = new double[1000][PROPS.length];
 
 	static {
-		final InputStream in = ChiSquare.class.getResourceAsStream(CHI);
-		try {
-			final BufferedReader reader =
-				new BufferedReader(new InputStreamReader(in));
+		try (
+			final InputStream in = ChiSquare.class.getResourceAsStream(CHI);
+			final InputStreamReader isr = new InputStreamReader(in);
+			final BufferedReader reader = new BufferedReader(isr)
+		) {
 
 			int index = 0;
 			String line = null;
@@ -62,8 +63,8 @@ public final class ChiSquare {
 
 				++index;
 			}
-		} finally {
-			try { in.close(); } catch (Exception ignore) {}
+		} catch (final IOException e) {
+			throw new AssertionError(e);
 		}
 	}
 
@@ -83,7 +84,7 @@ public final class ChiSquare {
 			}
 
 			return line;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new AssertionError(e);
 		}
 	}

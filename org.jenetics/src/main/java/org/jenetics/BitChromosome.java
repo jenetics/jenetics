@@ -32,6 +32,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 import javolution.text.Text;
@@ -42,7 +43,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
-import org.jenetics.util.Array;
+import org.jenetics.internal.math.probability;
+
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
@@ -53,7 +55,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-05 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -77,6 +79,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
 	protected byte[] _genes;
+	private transient BitGeneArray _seq;
 
 	private BitChromosome(final int length, final boolean internal) {
 		nonNegative(length);
@@ -84,6 +87,7 @@ public class BitChromosome extends Number<BitChromosome>
 		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
 		_genes = new byte[bytes];
 		_length = length;
+		_seq = new BitGeneArray(_genes, 0, length);
 	}
 
 	/**
@@ -217,31 +221,23 @@ public class BitChromosome extends Number<BitChromosome>
 		bit.set(_genes, index, value);
 	}
 
-	private boolean get(final int index) {
-		return bit.get(_genes, index);
-	}
-
 	@Override
 	public BitGene getGene() {
 		assert (_genes != null);
 		assert (_genes.length > 0);
-		return get(0) ? BitGene.TRUE : BitGene.FALSE;
+		return BitGene.valueOf(bit.get(_genes, 0));
 	}
 
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
 		assert(_genes != null);
-		return get(index) ? BitGene.TRUE : BitGene.FALSE;
+		return BitGene.valueOf(bit.get(_genes, index));
 	}
 
 	@Override
 	public ISeq<BitGene> toSeq() {
-		final Array<BitGene> genes = new Array<>(_length);
-		for (int i = 0; i < _length; ++i) {
-			genes.set(i, bit.get(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
-		}
-		return genes.toISeq();
+		return _seq.toISeq();
 	}
 
 	@Override
@@ -251,18 +247,11 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new Iterator<BitGene>() {
-			private int _pos = 0;
-			@Override public boolean hasNext() {
-				return _pos < _length;
-			}
-			@Override public BitGene next()	{
-				return get(_pos++) ? BitGene.TRUE : BitGene.FALSE;
-			}
-			@Override public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return _seq.iterator();
+	}
+
+	public ListIterator<BitGene> listIterator() {
+		return _seq.listIterator();
 	}
 
 	/**
@@ -274,7 +263,6 @@ public class BitChromosome extends Number<BitChromosome>
 	public long longValue() {
 		return toLargeInteger().longValue();
 	}
-
 
 	/**
 	 * Return the double value this BitChromosome represents.
@@ -355,14 +343,21 @@ public class BitChromosome extends Number<BitChromosome>
 		requireNonNull(genes, "Genes");
 
 		final BitChromosome chromosome = new BitChromosome(genes.length(), true);
-
 		int ones = 0;
-		for (int i = 0; i < genes.length(); ++i) {
-			if (genes.get(i).booleanValue()) {
-				++ones;
+
+		if (genes instanceof BitGeneArray.BitGeneISeq) {
+			final BitGeneArray.BitGeneISeq iseq = (BitGeneArray.BitGeneISeq)genes;
+			iseq.copyTo(chromosome._genes);
+			ones = bit.count(chromosome._genes);
+		} else {
+			for (int i = genes.length(); --i >= 0;) {
+				if (genes.get(i).booleanValue()) {
+					++ones;
+				}
+				bit.set(chromosome._genes, i, genes.get(i).booleanValue());
 			}
-			bit.set(chromosome._genes, i, genes.get(i).booleanValue());
 		}
+
 		chromosome._p = (double)ones/(double)genes.length();
 		return chromosome;
 	}
@@ -371,8 +366,12 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitChromosome newInstance() {
 		final Random random = RandomRegistry.getRandom();
 		final BitChromosome chromosome = new BitChromosome(_length, _p);
+		final int P = probability.toInt(_p);
+
 		for (int i = 0; i < _length; ++i) {
-			bit.set(chromosome._genes, i, random.nextDouble() < _p);
+			if (random.nextInt() < P) {
+				bit.set(chromosome._genes, i);
+			}
 		}
 		return chromosome;
 	}
@@ -530,6 +529,7 @@ public class BitChromosome extends Number<BitChromosome>
 		_genes = new byte[bytes];
 		in.readFully(_genes);
 
+		_seq = new BitGeneArray(_genes, 0, _length);
 	}
 
 }

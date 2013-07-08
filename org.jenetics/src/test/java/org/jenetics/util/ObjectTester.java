@@ -34,15 +34,12 @@ import javolution.lang.Reflection;
 import javolution.lang.Reflection.Method;
 import javolution.xml.XMLSerializable;
 
-import org.jenetics.util.Array;
-import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-11-30 $</em>
+ * @version <em>$Date: 2013-07-04 $</em>
  */
 public abstract class ObjectTester<T> {
 

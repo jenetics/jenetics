@@ -41,10 +41,64 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-12 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-07-05 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
+
+	/**
+	 * Lookup table for counting the number of set bits in an {@code byte} value.
+	 */
+	private static final byte[] BIT_SET_TABLE = new byte[] {
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)5, (byte)6, (byte)6, (byte)7, (byte)6, (byte)7, (byte)7, (byte)8,
+		(byte)0, (byte)1, (byte)1, (byte)2, (byte)1, (byte)2, (byte)2, (byte)3,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7
+	};
+
+	private static final int BIT_SET_TABLE_INDEX_OFFSET = 128;
+
+	/**
+	 * Return the (boolean) value of the byte array at the given bit index.
+	 *
+	 * @param data the byte array.
+	 * @param index the bit index.
+	 * @return the value at the given bit index.
+	 * @throws IndexOutOfBoundsException if the index is
+	 *          {@code index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static boolean get(final byte[] data, final int index) {
+		return (data[index >>> 3] & (1 << (index & 7))) != 0;
+	}
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
@@ -58,23 +112,17 @@ public final class bit extends StaticObject {
 	 *         {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
-	public static byte[] set(final byte[] data, final int index, final boolean value) {
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-
-			data[bytes] = (byte)(value ?
-				(data[bytes] & 0xFF) |  (1 << bits) :
-				(data[bytes] & 0xFF) & ~(1 << bits)
-			);
-		}
-
-		return data;
+	public static byte[] set(
+		final byte[] data,
+		final int index,
+		final boolean value
+	) {
+		return value ? set(data, index) : unset(data, index);
 	}
 
 	/**
 	 * Set the bit in the given byte array at the bit position (not the index
-	 * within the byte array) to true.
+	 * within the byte array) to {@code true}.
 	 *
 	 * @param data the byte array.
 	 * @param index the bit index within the byte array.
@@ -84,30 +132,86 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] set(final byte[] data, final int index) {
-		return set(data, index, true);
+		data[index >>> 3] |= 1 << (index & 7);
+		return data;
 	}
 
 	/**
-	 * Return the (boolean) value of the byte array at the given bit index.
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to {@code false}.
 	 *
 	 * @param data the byte array.
-	 * @param index the bit index.
-	 * @return the value at the given bit index.
+	 * @param index the bit index within the byte array.
+	 * @return the given data array.
 	 * @throws IndexOutOfBoundsException if the index is
 	 *          {@code index >= max || index < 0}.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
-	public static boolean get(final byte[] data, final int index) {
-		boolean bit = false;
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-			final int d = data[bytes] & 0xFF;
+	public static byte[] unset(final byte[] data, final int index) {
+		data[index >>> 3] &= ~(1 << (index & 7));
+		return data;
+	}
 
-			bit = (d & (1 << bits)) != 0;
+	/**
+	 * Swap a given range with a range of the same size with another array.
+	 *
+	 * <pre>
+	 *                start            end
+	 *                  |               |
+	 * data:      +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *              +---------------+
+	 *                              +---------------+
+	 * otherData: +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *                              |
+	 *                          otherStart
+	 * </pre>
+	 *
+	 * @param data the first byte array which are used for swapping.
+	 * @param start the start bit index of the {@code data} byte array,
+	 *        inclusively.
+	 * @param end the end bit index of the {@code data} byte array, exclusively.
+	 * @param otherData the other byte array to swap the elements with.
+	 * @param otherStart the start index of the {@code otherData} byte array.
+	 * @throws IndexOutOfBoundsException if {@code start > end}.
+	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
+	 *         end >= data.length*8 || otherStart < 0 ||
+	 *         otherStart + (end - start) >= otherData.length*8}
+	 */
+	public static void swap(
+		final byte[] data, final int start, final int end,
+		final byte[] otherData, final int otherStart
+	) {
+		for (int i = (end - start); --i >= 0;) {
+			final boolean temp = get(data, i + start);
+			set(data, i + start, get(otherData, otherStart + i));
+			set(otherData, otherStart + i, temp);
 		}
 
-		return bit;
+	}
+
+	/**
+	 * Returns the number of one-bits in the given {@code byte} array.
+	 *
+	 * @param data the {@code byte} array for which the one bits should be
+	 *        counted.
+	 * @return the number of one bits in the given {@code byte} array.
+	 */
+	public static int count(final byte[] data) {
+		int count = 0;
+		for (int i = data.length; --i >= 0;) {
+			count += count(data[i]);
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of one-bits in the given {@code byte} {@code value}.
+	 *
+	 * @param value the value for which the one bits should be counted.
+	 * @return the number of one bits in the given value
+	 */
+	public static int count(final byte value) {
+		return BIT_SET_TABLE[value + BIT_SET_TABLE_INDEX_OFFSET];
 	}
 
 	/**
@@ -254,18 +358,16 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-			int d = data[bytes] & 0xFF;
+		final int bytes = index >>> 3; // = index/8
+		final int bits = index & 7;    // = index%8
+		int d = data[bytes] & 0xFF;
 
-			if ((d & (1 << bits)) == 0) {
-				d |= (1 << bits);
-			} else {
-				d &= ~(1 << bits);
-			}
-			data[bytes] = (byte)d;
+		if ((d & (1 << bits)) == 0) {
+			d |= (1 << bits);
+		} else {
+			d &= ~(1 << bits);
 		}
+		data[bytes] = (byte)d;
 
 		return data;
 	}
