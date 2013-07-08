@@ -59,6 +59,7 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
 	}
 
+	/*
 	@Override
 	public void swap(
 		final int start,
@@ -75,6 +76,7 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 			other.uncheckedSet(otherStart + i, temp);
 		}
 	}
+	*/
 
 	@Override
 	public void cloneIfSealed() {
