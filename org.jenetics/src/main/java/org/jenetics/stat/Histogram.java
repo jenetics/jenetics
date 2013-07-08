@@ -222,7 +222,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		requireNonNull(histogram);
 
 		long[] hist = histogram;
-		if (histogram != null && histogram.length >= _histogram.length) {
+		if (histogram.length >= _histogram.length) {
 			System.arraycopy(_histogram, 0, hist, 0, _histogram.length);
 		} else {
 			hist = _histogram.clone();
