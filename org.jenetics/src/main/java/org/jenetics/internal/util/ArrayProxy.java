@@ -189,13 +189,34 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 	/**
 	 * Clone the underlying data structure of this {@code ArrayProxy} if it is
 	 * sealed.
+	 * <p/>
+	 * The <i>default</i> implementation will look like this:
+	 * [code]
+	 *     public void cloneIfSealed() {
+	 *         if (_sealed) {
+	 *             _array = _array.clone();
+	 *             _selaed = false;
+	 *         }
+	 *     }
+	 * [/code]
 	 */
 	public abstract void cloneIfSealed();
 
+
 	/**
-	 * Set the seal flag of the underlying data structure.
+	 * Set the seal flag for this {@code ArrayProxy} instance and return a new
+	 * {@code ArrayProxy} object with an not set <i>seal</i> flag but with the
+	 * same underlying data structure.
+	 * <p/>
+	 * The <i>default</i> implementation will look like this:
+	 * [code]
+	 * public MyArrayProxy<T> seal() {
+	 *     _sealed = true;
+	 *     return new MyArrayProxy(_array, _start, _end);
+	 * }
+	 * [code]
 	 *
-	 * @return this {@code ArrayProxy} instance; for command chaining.
+	 * @return a new {@code ArrayProxy} instance; for command chaining.
 	 */
 	public abstract ArrayProxy<T> seal();
 
