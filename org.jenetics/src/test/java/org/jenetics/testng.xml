@@ -22,7 +22,7 @@
  # Author:
  #     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2013-07-04 $</em>
+ # Version: <em>$Date: 2013-07-08 $</em>
  #
  ###############################################################################
 -->
@@ -30,6 +30,11 @@
 	<test name="org.jenetics.BitChromosome">
 		<classes>
 			<class name="org.jenetics.BitChromosomeTest" />
+		</classes>
+	</test>
+	<test name="org.jenetics.BitGeneArray">
+		<classes>
+			<class name="org.jenetics.BitGeneArrayProxyTest" />
 		</classes>
 	</test>
 	<test name="org.jenetics.BitGene">
@@ -249,6 +254,7 @@
 	</test>
 	<test name="org.jenetics.internal.util.ArrayProxy">
 		<classes>
+			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
 			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
