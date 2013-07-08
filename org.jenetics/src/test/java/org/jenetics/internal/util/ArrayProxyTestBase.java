@@ -390,6 +390,41 @@ public abstract class ArrayProxyTestBase<T> {
 		};
 	}
 
+	@Test(dataProvider = "copyproxylength")
+	public void copy(final Integer length, final Integer offset) {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final ArrayProxy<T> that = newArrayProxy(length + offset).sub(offset);
+		for (int i = 0; i < length; ++i) {
+			that.set(i, newArrayProxyElement(random));
+		}
+
+		final ArrayProxy<T> copy = that.copy();
+		Assert.assertEquals(copy._length, length.intValue());
+
+		for (int i = 0; i < length; ++i) {
+			that.set(i, newArrayProxyElement(random));
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(copy.get(i), newArrayProxyElement(random));
+		}
+	}
+
+	@DataProvider(name = "copyproxylength")
+	public Object[][] getCopyProxyLengthOffset() {
+		return new Object[][] {
+			{2, 1},
+			{0, 0},
+			{1, 0},
+			{234, 23},
+			{12203, 433},
+			{122300, 1433}
+		};
+	}
+
 }
 
 
