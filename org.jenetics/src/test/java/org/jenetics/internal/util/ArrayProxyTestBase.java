@@ -321,7 +321,10 @@ public abstract class ArrayProxyTestBase<T> {
 	public Object[][] getSwapParameter() {
 		return new Object[][] {
 			{10, 1, 5, 15, 4},
-			{10, 5, 7, 3, 1}
+			{10, 5, 7, 3, 1},
+			{100, 23, 56, 60, 21},
+			{1000, 231, 561, 601, 211},
+			{10001, 2310, 5610, 6010, 2113}
 		};
 	}
 
@@ -380,7 +383,10 @@ public abstract class ArrayProxyTestBase<T> {
 	public Object[][] getSwapParameterOutOfBounds() {
 		return new Object[][] {
 			{10, -1, 5, 15, 4},
-			{10, 2, 7, 3, 1}
+			{10, 1, -5, 15, 4},
+			{10, 0, 5, 15, -3},
+			{10, 2, 7, 3, 1},
+			{100, 2, 100, 34, 3}
 		};
 	}
 
