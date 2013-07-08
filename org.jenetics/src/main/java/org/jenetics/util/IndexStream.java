@@ -49,7 +49,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-07-04 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-07-08 $</em>
  */
 public abstract class IndexStream {
 
@@ -94,7 +94,7 @@ public abstract class IndexStream {
 	 * Create a new random IndexIterator.
 	 * @param n the maximal value (exclusively) the created index stream will
 	 *         return.
-	 * @param probability the index selection probability.
+	 * @param p the index selection probability.
 	 * @param random the random engine used for creating the random indexes.
 	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
 	 *         {@code n <= 0} or the given {@code probability} is not valid.
