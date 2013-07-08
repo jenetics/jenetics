@@ -30,8 +30,8 @@ import org.jenetics.util.StaticObject;
  * Mathematical functions regarding probabilities.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-05 $</em>
+ * @since 1.4
+ * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
  */
 public final class probability extends StaticObject {
 	private probability() {}

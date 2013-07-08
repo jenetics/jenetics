@@ -28,8 +28,8 @@ import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-07-02 $</em>
+ * @since 1.4
+ * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
  */
 public class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
 
