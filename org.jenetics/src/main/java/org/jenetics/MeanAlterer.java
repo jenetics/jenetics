@@ -29,8 +29,8 @@ import java.util.Random;
 import javolution.lang.Immutable;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.Mean;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
 

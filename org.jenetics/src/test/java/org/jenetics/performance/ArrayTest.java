@@ -27,9 +27,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.arrays;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
+import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

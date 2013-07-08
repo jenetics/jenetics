@@ -31,28 +31,34 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version <em>$Date$</em>
  */
-public class mathProbabilityTest {
+public abstract class ISeqTestBase extends SeqTestBase {
 
-	@Test
-	public void toIntToFloat() {
-		final Random random = RandomRegistry.getRandom();
+	@Override
+	protected abstract ISeq<Integer> newSeq(final int length);
 
-		for (int i = 0; i < 100000; ++i) {
-			final float p = random.nextFloat();
+	@Test(dataProvider = "sequences")
+	public void copy(final ISeq<Integer> seq) {
+		final MSeq<Integer> copy = seq.copy();
+		Assert.assertEquals(copy, seq);
 
-			final int ip = math.probability.toInt(p);
-			final float fip = math.probability.toFloat(ip);
-			Assert.assertEquals(fip, p, 0.000001F);
+		final Integer[] mcopy = copy.toArray(new Integer[0]);
+		for (int i = 0; i < mcopy.length; ++i) {
+			Assert.assertEquals(mcopy[i], seq.get(i));
+		}
+
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+		for (int i = 0; i < copy.length(); ++i) {
+			copy.set(i, random.nextInt());
+		}
+
+		for (int i = 0; i < mcopy.length; ++i) {
+			Assert.assertEquals(mcopy[i], seq.get(i));
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < copy.length(); ++i) {
+			Assert.assertEquals(copy.get(i).intValue(), random.nextInt());
 		}
 	}
-
-	@Test
-	public void probabilityToInt() {
-		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(math.probability.toInt(0.5), 0);
-		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
-	}
-
 }

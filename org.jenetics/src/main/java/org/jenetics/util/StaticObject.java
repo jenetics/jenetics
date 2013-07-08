@@ -41,6 +41,8 @@ import static java.lang.String.format;
  * }
  * [/code]
  *
+ * By convention, {@code StaticObject} names are all lower-case in this library.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 1.1 &mdash; <em>$Date$</em>
