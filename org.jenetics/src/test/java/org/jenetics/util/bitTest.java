@@ -196,22 +196,6 @@ public class bitTest {
 		return array;
 	}
 
-	/*
-	@Test
-	public void foo() {
-		for (int j = 0; j < 25; ++j) {
-			long value = RandomRegistry.getRandom().nextLong();
-			byte[] bytes = bit.toBytes(value);
-			String string = bit.toString(bytes);
-
-			System.out.println(String.format(
-				"{ bit.toBytes(%dL), \"%s\" },",
-				value, string
-			));
-		}
-	}
-	*/
-
 	@Test
 	public void flip() {
 		final long seed = math.random.seed();
