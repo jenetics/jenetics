@@ -29,13 +29,13 @@ import java.util.NoSuchElementException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 
 	final ArrayProxy<T> _proxy;
 
-	private int _pos = -1;
+	private int _pos = 0;
 
 	public ArrayProxyIterator(final ArrayProxy<T> proxy) {
 		_proxy = proxy;
@@ -43,7 +43,7 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 
 	@Override
 	public boolean hasNext() {
-		return _pos < _proxy._length - 1;
+		return _pos < _proxy._length;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return _proxy.uncheckedGet(++_pos);
+		return _proxy.uncheckedGet(_pos++);
 	}
 
 	@Override
