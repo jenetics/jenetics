@@ -56,7 +56,7 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 
 	@Override
 	public int nextIndex() {
-		return _pos + 1;
+		return _pos;
 	}
 
 	@Override

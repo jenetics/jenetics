@@ -257,6 +257,7 @@
 			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
 			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
+			<class name="org.jenetics.internal.util.ArrayProxyIteratorTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
 		</classes>
 	</test>
