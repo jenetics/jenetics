@@ -214,12 +214,12 @@ public class bitTest {
 
 	@Test
 	public void flip() {
-		final long seed = System.currentTimeMillis();
+		final long seed = math.random.seed();
 		final Random random = new Random(seed);
-		final byte[] data = new byte[4];
+		final byte[] data = new byte[1000];
 
-		for (int i = 0; i < data.length*8; ++i) {
-			bit.set(data, i, random.nextBoolean());
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = (byte)random.nextInt();
 		}
 
 		final byte[] cdata = data.clone();
