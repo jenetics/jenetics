@@ -84,4 +84,53 @@ public class ArrayProxyIteratorTest {
 		Assert.assertEquals(count, proxy._length);
 	}
 
+	@Test
+	public void nextIndex() {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, random.nextInt());
+		}
+
+		random.setSeed(seed);
+		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		int count = 0;
+		while (it.hasNext()) {
+			Assert.assertEquals(it.nextIndex(), count);
+			Assert.assertEquals(proxy.get(it.nextIndex()), it.next());
+
+			++count;
+		}
+
+		Assert.assertEquals(count, proxy._length);
+	}
+
+	@Test
+	public void previousIndex() {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, random.nextInt());
+		}
+
+		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+		while (it.hasNext()) {
+			it.next();
+		}
+
+		int count = proxy._length;
+		while (it.hasPrevious()) {
+			--count;
+
+			Assert.assertEquals(it.previousIndex(), count);
+			Assert.assertEquals(proxy.get(it.previousIndex()), it.previous());
+		}
+
+		Assert.assertEquals(count, 0);
+	}
+
 }
