@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -306,14 +306,9 @@ public final class bit extends StaticObject {
 	 */
 	public static byte[] increment(final byte[] data) {
 		boolean carry = true;
-		int index = 0;
-
-		while (index < data.length && carry) {
-			int d = data[index] & 0xFF;
-			++d;
-			data[index++] = (byte)d;
-
-			carry = d > 0xFF;
+		for (int i = 0; i < data.length && carry; ++i) {
+			data[i] = (byte)(data[i] + 1);
+			carry = data[i] > 0xFF;
 		}
 
 		return data;
@@ -327,13 +322,9 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] invert(final byte[] data)	{
-		int d = 0;
-		for (int i = 0; i < data.length; ++i) {
-			d = data[i] & 0xFF;
-			d = ~d;
-			data[i] = (byte)d;
+		for (int i = data.length; --i >= 0;) {
+			data[i] = (byte)~data[i];
 		}
-
 		return data;
 	}
 
@@ -358,18 +349,7 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
-		final int bytes = index >>> 3; // = index/8
-		final int bits = index & 7;    // = index%8
-		int d = data[bytes] & 0xFF;
-
-		if ((d & (1 << bits)) == 0) {
-			d |= (1 << bits);
-		} else {
-			d &= ~(1 << bits);
-		}
-		data[bytes] = (byte)d;
-
-		return data;
+		return get(data, index) ? unset(data, index) : set(data, index);
 	}
 
 	/**

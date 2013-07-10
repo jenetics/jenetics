@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-05 $</em>
+ * @version <em>$Date: 2013-07-10 $</em>
  */
 public class bitTest {
 
@@ -196,30 +196,14 @@ public class bitTest {
 		return array;
 	}
 
-	/*
-	@Test
-	public void foo() {
-		for (int j = 0; j < 25; ++j) {
-			long value = RandomRegistry.getRandom().nextLong();
-			byte[] bytes = bit.toBytes(value);
-			String string = bit.toString(bytes);
-
-			System.out.println(String.format(
-				"{ bit.toBytes(%dL), \"%s\" },",
-				value, string
-			));
-		}
-	}
-	*/
-
 	@Test
 	public void flip() {
-		final long seed = System.currentTimeMillis();
+		final long seed = math.random.seed();
 		final Random random = new Random(seed);
-		final byte[] data = new byte[4];
+		final byte[] data = new byte[1000];
 
-		for (int i = 0; i < data.length*8; ++i) {
-			bit.set(data, i, random.nextBoolean());
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = (byte)random.nextInt();
 		}
 
 		final byte[] cdata = data.clone();
