@@ -22,6 +22,8 @@
  */
 package org.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
+
 
 /**
  * {@code ArrayProxy} implementation which stores {@code Object}s.
@@ -45,7 +47,7 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	 */
 	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
 		super(start, end);
-		_array = array;
+		_array = requireNonNull(array, "Object array must not be null.");
 	}
 
 	/**
