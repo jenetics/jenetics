@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -358,18 +358,7 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
-		final int bytes = index >>> 3; // = index/8
-		final int bits = index & 7;    // = index%8
-		int d = data[bytes] & 0xFF;
-
-		if ((d & (1 << bits)) == 0) {
-			d |= (1 << bits);
-		} else {
-			d &= ~(1 << bits);
-		}
-		data[bytes] = (byte)d;
-
-		return data;
+		return get(data, index) ? unset(data, index) : set(data, index);
 	}
 
 	/**
