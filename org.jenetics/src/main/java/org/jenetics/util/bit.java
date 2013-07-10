@@ -306,14 +306,9 @@ public final class bit extends StaticObject {
 	 */
 	public static byte[] increment(final byte[] data) {
 		boolean carry = true;
-		int index = 0;
-
-		while (index < data.length && carry) {
-			int d = data[index] & 0xFF;
-			++d;
-			data[index++] = (byte)d;
-
-			carry = d > 0xFF;
+		for (int i = 0; i < data.length && carry; ++i) {
+			data[i] = (byte)(data[i] + 1);
+			carry = data[i] > 0xFF;
 		}
 
 		return data;
@@ -327,13 +322,9 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] invert(final byte[] data)	{
-		int d = 0;
-		for (int i = 0; i < data.length; ++i) {
-			d = data[i] & 0xFF;
-			d = ~d;
-			data[i] = (byte)d;
+		for (int i = data.length; --i >= 0;) {
+			data[i] = (byte)~data[i];
 		}
-
 		return data;
 	}
 
