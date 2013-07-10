@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-08 $</em>
+ * @version <em>$Date: 2013-07-10 $</em>
  */
 public abstract class ArrayProxyTestBase<T> {
 
@@ -426,33 +426,6 @@ public abstract class ArrayProxyTestBase<T> {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
