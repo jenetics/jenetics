@@ -24,6 +24,8 @@ package org.jenetics.internal.util;
 
 
 /**
+ * {@code ArrayProxy} implementation which stores {@code Object}s.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
  * @version 1.4 &mdash; <em>$Date$</em>
@@ -34,11 +36,23 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	private boolean _sealed = false;
 
+	/**
+	 * Create a new array proxy implementation.
+	 *
+	 * @param array the array where the elements are stored.
+	 * @param start the start index of the array proxy, inclusively.
+	 * @param end the end index of the array proxy, exclusively.s
+	 */
 	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
 		super(start, end);
 		_array = array;
 	}
 
+	/**
+	 * Create a new array proxy implementation.
+	 *
+	 * @param length the length of the array proxy.
+	 */
 	public ArrayProxyImpl(final int length) {
 		this(new Object[length], 0, length);
 	}
