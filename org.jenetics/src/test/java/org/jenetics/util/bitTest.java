@@ -333,16 +333,34 @@ public class bitTest {
 		}
 	}
 
-	@Test(expectedExceptions = IndexOutOfBoundsException.class)
-	public void setOutOfIndex() {
-		final byte[] data = new byte[3];
-		bit.set(data, 100, false);
+	@Test(
+		expectedExceptions = IndexOutOfBoundsException.class,
+		dataProvider = "indexoutofboundsdata"
+	)
+	public void setOutOfIndex(final Integer length, final Integer index) {
+		final byte[] data = bit.newBitArray(length);
+		bit.set(data, index, false);
 	}
 
-	@Test(expectedExceptions = IndexOutOfBoundsException.class)
-	public void getOutOfIndex() {
-		final byte[] data = new byte[3];
-		bit.get(data, 100);
+	@Test(
+		expectedExceptions = IndexOutOfBoundsException.class,
+		dataProvider = "indexoutofboundsdata"
+	)
+	public void getOutOfIndex(final Integer length, final Integer index) {
+		final byte[] data = bit.newBitArray(length);
+		bit.get(data, index);
+	}
+
+	@DataProvider(name = "indexoutofboundsdata")
+	public Object[][] getIndexOutOfBoundsData() {
+		return new Object[][] {
+			{1, 8},
+			{1, -1},
+			{2, 16},
+			{2, 2342},
+			{10, 80},
+			{100, 108}
+		};
 	}
 
 	@Test
