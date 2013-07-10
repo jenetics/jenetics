@@ -522,6 +522,10 @@ public final class bit extends StaticObject {
 				(data[3 + start] << 0));
 	}
 
+	static byte[] newBitArray(final int length) {
+		return new byte[(length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1];
+	}
+
 }
 
 
