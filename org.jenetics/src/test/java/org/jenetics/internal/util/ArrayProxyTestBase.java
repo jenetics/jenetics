@@ -24,10 +24,11 @@ package org.jenetics.internal.util;
 
 import java.util.Random;
 
-import org.jenetics.util.math;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
