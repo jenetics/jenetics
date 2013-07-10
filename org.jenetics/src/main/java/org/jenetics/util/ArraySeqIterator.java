@@ -39,12 +39,12 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 
 	public ArraySeqIterator(final ArraySeq<T> array) {
 		_array = array;
-		_pos = array._start - 1;
+		_pos = array._start;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return _pos < _array._end - 1;
+		return _pos < _array._end;
 	}
 
 	@Override
@@ -53,12 +53,12 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array._array.data[++_pos];
+		return (T)_array._array.data[_pos++];
 	}
 
 	@Override
 	public int nextIndex() {
-		return _pos + 1;
+		return _pos;
 	}
 
 	@Override
