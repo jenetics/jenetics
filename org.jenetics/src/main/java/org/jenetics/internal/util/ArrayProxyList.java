@@ -22,13 +22,15 @@
  */
 package org.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
  */
 public class ArrayProxyList<T> extends AbstractList<T>
 	implements RandomAccess
@@ -36,8 +38,8 @@ public class ArrayProxyList<T> extends AbstractList<T>
 
 	private final ArrayProxy<T> _proxy;
 
-	ArrayProxyList(final ArrayProxy<T> proxy) {
-		_proxy = proxy;
+	public ArrayProxyList(final ArrayProxy<T> proxy) {
+		_proxy = requireNonNull(proxy, "ArrayProxy must not be null");
 	}
 
 	@Override
