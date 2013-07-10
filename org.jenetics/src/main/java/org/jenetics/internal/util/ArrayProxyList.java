@@ -48,6 +48,13 @@ public class ArrayProxyList<T> extends AbstractList<T>
 	}
 
 	@Override
+	public T set(final int index, final T element) {
+		final T oldElement = _proxy.get(index);
+		_proxy.set(index, element);
+		return oldElement;
+	}
+
+	@Override
 	public int size() {
 		return _proxy._length;
 	}
