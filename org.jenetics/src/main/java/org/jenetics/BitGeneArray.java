@@ -35,12 +35,21 @@ import org.jenetics.util.bit;
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
+	public BitGeneArray(final Proxy proxy) {
+		super(proxy);
+	}
+
 	public BitGeneArray(final byte[] array, final int start, final int end) {
-		super(new Proxy(array, start, end));
+		this(new Proxy(array, start, end));
 	}
 
 	public BitGeneArray(final int length) {
-		super(new Proxy(length));
+		this(new Proxy(length));
+	}
+
+	@Override
+	public BitGeneArray copy() {
+		return new BitGeneArray(((Proxy)_proxy).copy());
 	}
 
 	@Override
@@ -58,9 +67,14 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 			System.arraycopy(proxy._array, 0, array, 0, proxy._array.length);
 		}
 
+		@Override
+		public BitGeneArray copy() {
+			return new BitGeneArray(((Proxy)_proxy).copy());
+		}
+
 	}
 
-	/*private[jenetics]*/ static final class Proxy extends ArrayProxy<BitGene> {
+	static final class Proxy extends ArrayProxy<BitGene> {
 		private byte[] _array;
 		private boolean _sealed = false;
 
