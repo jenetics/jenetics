@@ -33,7 +33,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-10 $</em>
+ * @version <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayProxyIteratorTest {
 
@@ -105,6 +105,14 @@ public class ArrayProxyIteratorTest {
 		}
 
 		Assert.assertEquals(count, proxy._length);
+	}
+
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void set() {
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+
+		it.set(23);
 	}
 
 	@Test

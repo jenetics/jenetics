@@ -30,13 +30,13 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayProxyList<T> extends AbstractList<T>
 	implements RandomAccess
 {
 
-	private final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T> _proxy;
 
 	public ArrayProxyList(final ArrayProxy<T> proxy) {
 		_proxy = requireNonNull(proxy, "ArrayProxy must not be null");
@@ -45,13 +45,6 @@ public class ArrayProxyList<T> extends AbstractList<T>
 	@Override
 	public T get(final int index) {
 		return _proxy.get(index);
-	}
-
-	@Override
-	public T set(final int index, final T element) {
-		final T oldElement = _proxy.get(index);
-		_proxy.set(index, element);
-		return oldElement;
 	}
 
 	@Override

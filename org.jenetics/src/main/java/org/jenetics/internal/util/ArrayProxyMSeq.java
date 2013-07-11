@@ -26,6 +26,8 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -35,7 +37,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
@@ -46,6 +48,16 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 	@Override
 	public MSeq<T> copy() {
 		return new ArrayProxyMSeq<>(_proxy.copy());
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new ArrayProxyMIterator<>(_proxy);
+	}
+
+	@Override
+	public ListIterator<T> listIterator() {
+		return new ArrayProxyMIterator<>(_proxy);
 	}
 
 	@Override
@@ -163,6 +175,11 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 	@Override
 	public ISeq<T> toISeq() {
 		return new ArrayProxyISeq<>(_proxy.seal());
+	}
+
+	@Override
+	public List<T> asList() {
+		return new ArrayProxyMList<>(_proxy);
 	}
 
 }

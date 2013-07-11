@@ -30,11 +30,11 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
-	Object[] _array;
+	protected Object[] _array;
 
 	private boolean _sealed = false;
 

@@ -22,7 +22,7 @@
  # Author:
  #     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  #
- # Version: <em>$Date: 2013-07-10 $</em>
+ # Version: <em>$Date: 2013-07-11 $</em>
  #
  ###############################################################################
 -->
@@ -257,8 +257,10 @@
 			<class name="org.jenetics.internal.util.ArrayProxyImplTest" />
 			<class name="org.jenetics.internal.util.ArrayProxySeqTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyISeqTest" />
+			<class name="org.jenetics.internal.util.ArrayProxyMListTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyListTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyIteratorTest" />
+			<class name="org.jenetics.internal.util.ArrayProxyMIteratorTest" />
 			<class name="org.jenetics.internal.util.ArrayProxyMSeqTest" />
 		</classes>
 	</test>

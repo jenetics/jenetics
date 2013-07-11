@@ -34,11 +34,11 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-11 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
-	public final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T> _proxy;
 
 	public ArrayProxySeq(final ArrayProxy<T> proxy) {
 		_proxy = proxy;

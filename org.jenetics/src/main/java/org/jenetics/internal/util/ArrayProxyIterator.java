@@ -29,11 +29,11 @@ import java.util.NoSuchElementException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 
-	final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T> _proxy;
 
 	private int _pos = 0;
 

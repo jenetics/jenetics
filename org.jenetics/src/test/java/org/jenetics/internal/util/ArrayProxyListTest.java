@@ -32,7 +32,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-10 $</em>
+ * @version <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayProxyListTest {
 
@@ -63,29 +63,12 @@ public class ArrayProxyListTest {
 		}
 	}
 
-	@Test
+	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
-		long seed = math.random.seed();
-		final Random random = new Random(seed);
-
 		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
-		for (int i = 0; i < proxy._length; ++i) {
-			proxy.set(i, random.nextInt());
-		}
-
 		final List<Integer> list = new ArrayProxyList<>(proxy);
 
-		seed = math.random.seed();
-		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
-			list.set(i, random.nextInt());
-		}
-
-		random.setSeed(seed);
-		for (int i = 0; i < proxy._length; ++i) {
-			Assert.assertEquals(proxy.get(i), list.get(i));
-			Assert.assertEquals(list.get(i).intValue(), random.nextInt());
-		}
+		list.set(34, 23);
 	}
 
 	@Test

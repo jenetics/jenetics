@@ -22,9 +22,10 @@
  */
 package org.jenetics.util;
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-01 $</em>
+ * @version <em>$Date: 2013-07-11 $</em>
  */
 public class ArrayMSeqTest extends MSeqTestBase {
 
