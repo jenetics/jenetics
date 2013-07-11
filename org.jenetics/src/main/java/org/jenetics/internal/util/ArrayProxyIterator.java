@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 
-	final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T> _proxy;
 
 	private int _pos = 0;
 

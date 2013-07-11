@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -35,6 +36,14 @@ public abstract class ISeqTestBase extends SeqTestBase {
 
 	@Override
 	protected abstract ISeq<Integer> newSeq(final int length);
+
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void asList() {
+		final ISeq<Integer> seq = newSeq(1000);
+		final List<Integer> list = seq.asList();
+
+		list.set(3, 3);
+	}
 
 	@Test(dataProvider = "sequences")
 	public void copy(final ISeq<Integer> seq) {

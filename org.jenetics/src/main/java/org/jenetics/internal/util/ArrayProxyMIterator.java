@@ -27,6 +27,15 @@ package org.jenetics.internal.util;
  * @since 1.4
  * @version 1.4 &mdash; <em>$Date$</em>
  */
-public class ArrayProxyMIterator {
+public class ArrayProxyMIterator<T> extends ArrayProxyIterator<T> {
+
+	public ArrayProxyMIterator(ArrayProxy<T> proxy) {
+		super(proxy);
+	}
+
+	@Override
+	public void set(final T value) {
+		_proxy.set(nextIndex(), value);
+	}
 
 }

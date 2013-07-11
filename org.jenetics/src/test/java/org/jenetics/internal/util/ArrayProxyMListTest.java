@@ -22,22 +22,43 @@
  */
 package org.jenetics.internal.util;
 
+import java.util.List;
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import org.jenetics.util.math;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version <em>$Date$</em>
  */
-public class ArrayProxyMList<T> extends ArrayProxyList<T> {
+public class ArrayProxyMListTest {
 
-	public ArrayProxyMList(ArrayProxy<T> proxy) {
-		super(proxy);
-	}
+	@Test
+	public void set() {
+		long seed = math.random.seed();
+		final Random random = new Random(seed);
 
-	@Override
-	public T set(final int index, final T element) {
-		final T oldElement = _proxy.get(index);
-		_proxy.set(index, element);
-		return oldElement;
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, random.nextInt());
+		}
+
+		final List<Integer> list = new ArrayProxyMList<>(proxy);
+
+		seed = math.random.seed();
+		random.setSeed(seed);
+		for (int i = 0; i < proxy._length; ++i) {
+			list.set(i, random.nextInt());
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < proxy._length; ++i) {
+			Assert.assertEquals(proxy.get(i), list.get(i));
+			Assert.assertEquals(list.get(i).intValue(), random.nextInt());
+		}
 	}
 
 }

@@ -107,6 +107,14 @@ public class ArrayProxyIteratorTest {
 		Assert.assertEquals(count, proxy._length);
 	}
 
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void set() {
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		final ListIterator<Integer> it = new ArrayProxyIterator<>(proxy);
+
+		it.set(23);
+	}
+
 	@Test
 	public void previousIndex() {
 		final long seed = math.random.seed();

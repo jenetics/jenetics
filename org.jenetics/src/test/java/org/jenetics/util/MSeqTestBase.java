@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -44,6 +45,33 @@ public abstract class MSeqTestBase extends SeqTestBase {
 				return random.nextInt();
 			}
 		};
+	}
+
+	@Test
+	public void asList() {
+		final long seed = math.random.seed();
+		final Random random = new Random(seed);
+
+		final MSeq<Integer> seq = newSeq(1000);
+		for (int i = 0; i < seq.length(); ++i) {
+			seq.set(i, random.nextInt());
+		}
+
+		final List<Integer> list = seq.asList();
+		random.setSeed(seed);
+		for (int i = 0; i < seq.length(); ++i) {
+			list.set(i, random.nextInt());
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(list.get(i).intValue(), random.nextInt());
+		}
+
+		random.setSeed(seed);
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(seq.get(i).intValue(), random.nextInt());
+		}
 	}
 
 	@Test(dataProvider = "sequences")

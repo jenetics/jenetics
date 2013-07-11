@@ -38,7 +38,7 @@ import org.jenetics.util.Seq;
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
-	public final ArrayProxy<T> _proxy;
+	protected final ArrayProxy<T> _proxy;
 
 	public ArrayProxySeq(final ArrayProxy<T> proxy) {
 		_proxy = proxy;

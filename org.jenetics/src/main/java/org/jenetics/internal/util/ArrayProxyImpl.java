@@ -34,7 +34,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
-	Object[] _array;
+	protected Object[] _array;
 
 	private boolean _sealed = false;
 
