@@ -37,8 +37,8 @@ import org.jenetics.util.StaticObject;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-public final class math extends StaticObject {
-	private math() {}
+public final class statistics extends StaticObject {
+	private statistics() {}
 
 
 	/**
