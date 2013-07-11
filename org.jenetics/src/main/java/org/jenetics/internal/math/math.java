@@ -20,7 +20,7 @@
  *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-package org.jenetics.stat;
+package org.jenetics.internal.math;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
@@ -37,7 +37,7 @@ import org.jenetics.util.StaticObject;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
-final class math extends StaticObject {
+public final class math extends StaticObject {
 	private math() {}
 
 
@@ -47,7 +47,7 @@ final class math extends StaticObject {
 	 * @param x
 	 * @return the log gamma value.
 	 */
-	static double logGamma(final double x) {
+	public static double logGamma(final double x) {
 		final double ser = 1.0 + 76.18009173 /
 							(x + 0) - 86.50532033 /
 							(x + 1) + 24.01409822 /

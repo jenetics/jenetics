@@ -23,8 +23,8 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.stat.math.Φ;
-import static org.jenetics.stat.math.φ;
+import static org.jenetics.internal.math.math.Φ;
+import static org.jenetics.internal.math.math.φ;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
