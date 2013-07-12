@@ -69,7 +69,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -219,7 +219,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		requireNonNull(histogram);
 
 		long[] hist = histogram;
-		if (histogram != null && histogram.length >= _histogram.length) {
+		if (histogram.length >= _histogram.length) {
 			System.arraycopy(_histogram, 0, hist, 0, _histogram.length);
 		} else {
 			hist = _histogram.clone();
