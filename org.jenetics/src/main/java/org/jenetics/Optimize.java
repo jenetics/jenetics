@@ -30,7 +30,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-05 $</em>
  */
 public enum Optimize {
 
@@ -136,11 +136,7 @@ public enum Optimize {
 	 * @return the best value. If both values are equal the first one is returned.
 	 */
 	public <C extends Comparable<? super C>> C best(final C a, final C b) {
-		C best = a;
-		if (compare(b, best) > 0) {
-			best = b;
-		}
-		return best;
+		return compare(b, a) > 0 ? b : a;
 	}
 
 	/**
@@ -152,11 +148,7 @@ public enum Optimize {
 	 * @return the worst value. If both values are equal the first one is returned.
 	 */
 	public <C extends Comparable<? super C>> C worst(final C a, final C b) {
-		C worst = a;
-		if (compare(b, worst) < 0) {
-			worst = b;
-		}
-		return worst;
+		return compare(b, a) < 0 ? b : a;
 	}
 
 }

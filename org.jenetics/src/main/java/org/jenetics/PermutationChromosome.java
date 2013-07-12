@@ -40,7 +40,6 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 
@@ -50,7 +49,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-10 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -75,7 +74,7 @@ public final class PermutationChromosome<T>
 		super(
 			new Array<EnumGene<T>>(
 				validAlleles.length()
-			).fill(Gene(validAlleles)).shuffle(RandomRegistry.getRandom()).toISeq()
+			).fill(Gene(validAlleles)).shuffle().toISeq()
 		);
 		_validAlleles = validAlleles;
 	}

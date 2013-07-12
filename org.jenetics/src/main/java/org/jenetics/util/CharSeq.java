@@ -22,9 +22,9 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -48,7 +48,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-07 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -86,7 +86,7 @@ public final class CharSeq
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {
-		nonNull(characters, "Characters");
+		requireNonNull(characters, "Characters");
 
 		final char[] chars = new char[characters.length()];
 		for (int i = 0; i < characters.length(); ++i) {
@@ -255,7 +255,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
 	public static String expand(final CharSequence pattern) {
-		nonNull(pattern, "Pattern");
+		requireNonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
 
 		for (int i = 0, n = pattern.length(); i < n; ++i) {

@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-10 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-05 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -69,8 +69,8 @@ public class CharacterChromosome
 	public CharacterChromosome(final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
-				).toISeq()
+				CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
+			).toISeq()
 		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
 		_valid = true;
@@ -90,8 +90,8 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(validCharacters)
-				).toISeq()
+				CharacterGene.valueOf(validCharacters)
+			).toISeq()
 		);
 		_validCharacters = validCharacters;
 		_valid = true;
@@ -105,7 +105,7 @@ public class CharacterChromosome
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 *          smaller than one.
+	 *         smaller than one.
 	 */
 	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
@@ -118,7 +118,7 @@ public class CharacterChromosome
 	 * @param genes the character genes.
 	 * @param validCharacters the valid characters.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *          characters or the genes string is empty.
+	 *         characters or the genes string is empty.
 	 */
 	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
 		super(
@@ -146,7 +146,7 @@ public class CharacterChromosome
 	 *
 	 * @param genes the character genes.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *          characters or the genes is an empty string.
+	 *         characters or the genes is an empty string.
 	 */
 	public CharacterChromosome(final String genes) {
 		this(genes, CharacterGene.DEFAULT_CHARACTERS);
@@ -158,7 +158,7 @@ public class CharacterChromosome
 	 * @return a more specific view of this chromosome factory.
 	 *
 	 * @deprecated No longer needed after adding new factory methods to the
-	 *             {@link Array} class.
+	 *            {@link Array} class.
 	 */
 	@Deprecated
 	@SuppressWarnings("unchecked")
@@ -323,7 +323,11 @@ public class CharacterChromosome
 
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
+			final CharacterGene gene = CharacterGene.valueOf(
+				Character.valueOf(in.readChar()),
+				_validCharacters
+			);
+			genes.set(i, gene);
 		}
 
 		_genes = genes.toISeq();

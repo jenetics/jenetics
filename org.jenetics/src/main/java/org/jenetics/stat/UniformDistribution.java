@@ -22,9 +22,9 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -43,7 +43,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
@@ -64,7 +64,7 @@ public class UniformDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -116,7 +116,7 @@ public class UniformDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -175,7 +175,7 @@ public class UniformDistribution<
 	 * @throws NullPointerException if the {@code domain} is {@code null}.
 	 */
 	public UniformDistribution(final Range<N> domain) {
-		_domain = nonNull(domain, "Domain");
+		_domain = requireNonNull(domain, "Domain");
 		_cdf = new CDF<>(_domain);
 		_pdf = new PDF<>(_domain);
 	}

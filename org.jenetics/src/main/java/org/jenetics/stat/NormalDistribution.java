@@ -22,12 +22,12 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.stat.math.Φ;
 import static org.jenetics.stat.math.φ;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -61,7 +61,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 public class NormalDistribution<
 	N extends Number & Comparable<? super N>
@@ -80,7 +80,7 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -134,7 +134,7 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -204,7 +204,7 @@ public class NormalDistribution<
 		final double mean,
 		final double var
 	) {
-		_domain = nonNull(domain, "Domain");
+		_domain = requireNonNull(domain, "Domain");
 		_mean = mean;
 		_var = nonNegative(var, "Variance");
 
