@@ -23,11 +23,10 @@ import static org.jenetics.TestUtils.newPermutationFloat64GenePopulation;
 import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.factories.Int;
 
+import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -40,7 +39,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-07-12 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 

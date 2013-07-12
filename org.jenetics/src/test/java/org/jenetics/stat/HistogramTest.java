@@ -27,13 +27,13 @@ import org.jscience.mathematics.number.Integer64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-07-12 $</em>
  */
 public class HistogramTest
 	extends MappedAccumulatorTester<Histogram<Double>>

@@ -21,14 +21,14 @@ package org.jenetics.util;
 
 import java.util.Random;
 
+import javolution.context.LocalContext;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javolution.context.LocalContext;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-07-12 $</em>
  */
 public class RandomRegistryTest {
 
