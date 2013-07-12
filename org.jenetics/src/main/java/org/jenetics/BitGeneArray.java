@@ -156,8 +156,20 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		@Override
 		public Proxy copy() {
 			final Proxy proxy = new Proxy(_length);
-			for (int i = _length; --i >= 0;) {
-				bit.set(proxy._array, i, bit.get(_array, i + _start));
+			if (_start == 0 && _end == _length) {
+				proxy._array = _array.clone();
+			} else if (_start == 0) {
+				System.arraycopy(
+					_array, 0, proxy._array, 0, proxy._array.length
+				);
+			} else if ((_start & 7) == 0) {
+				System.arraycopy(
+					_array, _start >>> 3, proxy._array, 0, proxy._array.length
+				);
+			} else {
+				for (int i = _length; --i >= 0;) {
+					bit.set(proxy._array, i, bit.get(_array, i + _start));
+				}
 			}
 			return proxy;
 		}
