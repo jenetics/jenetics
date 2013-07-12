@@ -25,8 +25,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.Factory;
+import org.jenetics.util.MappedAccumulatorTester;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.TestDataIterator;
 import org.jenetics.util.TestDataIterator.Data;

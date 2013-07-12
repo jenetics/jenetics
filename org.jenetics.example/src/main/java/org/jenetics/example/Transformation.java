@@ -36,8 +36,8 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
