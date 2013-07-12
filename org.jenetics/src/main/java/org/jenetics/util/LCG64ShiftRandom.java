@@ -73,7 +73,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -86,7 +86,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-07-12 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -186,7 +186,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-07-12 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -276,7 +276,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-13 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-07-12 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -439,7 +439,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
 	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
-	 * via <i>leapfrogging</i>.
+	 * via <i>leap-frogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
