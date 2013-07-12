@@ -296,7 +296,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &ndash; <em>$Revision$</em>
+	 * @version 2.0 &ndash; <em>$Revision: 4ffc28a6e2ef $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -350,7 +350,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &ndash; <em>$Revision$</em>
+	 * @version 2.0 &ndash; <em>$Revision: 4ffc28a6e2ef $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;

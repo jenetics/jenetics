@@ -20,10 +20,11 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.pow;
-import static org.jenetics.util.math.sum;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.ulpDistance;
-import static org.jenetics.util.object.nonNull;
+import static org.jenetics.util.math.statistics.sum;
 
 import java.util.Random;
 
@@ -54,7 +55,7 @@ public abstract class ProbabilitySelector<
 >
 	implements Selector<G, C>
 {
-	private static final long MAX_ULP_DISTANCE = (long)pow(10, 10);
+	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
 	protected ProbabilitySelector() {
 	}
@@ -65,10 +66,10 @@ public abstract class ProbabilitySelector<
 		final int count,
 		final Optimize opt
 	) {
-		nonNull(population, "Population");
-		nonNull(opt, "Optimization");
+		requireNonNull(population, "Population");
+		requireNonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s.",
 				count
 			));

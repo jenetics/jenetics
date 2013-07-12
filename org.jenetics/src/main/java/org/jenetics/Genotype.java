@@ -19,10 +19,10 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
@@ -86,9 +86,6 @@ public final class Genotype<G extends Gene<?, G>>
 	private volatile Boolean _valid = null;
 
 	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		assert(chromosomes != null);
-		assert(ngenes(chromosomes) == ngenes);
-
 		_chromosomes = chromosomes;
 		_ngenes = ngenes;
 	}
@@ -188,7 +185,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forall(Verify);
+			_valid = _chromosomes.forAll(Verify);
 		}
 		return _valid;
 	}
@@ -298,7 +295,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
-		nonNull(chromosomes, "Chromosomes");
+		requireNonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}

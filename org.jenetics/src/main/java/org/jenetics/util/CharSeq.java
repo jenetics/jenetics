@@ -19,9 +19,9 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -83,7 +83,7 @@ public final class CharSeq
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {
-		nonNull(characters, "Characters");
+		requireNonNull(characters, "Characters");
 
 		final char[] chars = new char[characters.length()];
 		for (int i = 0; i < characters.length(); ++i) {
@@ -252,7 +252,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
 	public static String expand(final CharSequence pattern) {
-		nonNull(pattern, "Pattern");
+		requireNonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
 
 		for (int i = 0, n = pattern.length(); i < n; ++i) {

@@ -19,8 +19,8 @@
  */
 package org.jenetics.stat;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 
@@ -135,7 +135,7 @@ class BinomialDistribution<
 	private final double _p;
 
 	public BinomialDistribution(final Range<N> domain, final double p) {
-		_domain = nonNull(domain, "Domain");
+		_domain = requireNonNull(domain, "Domain");
 		_p = checkProbability(p);
 	}
 

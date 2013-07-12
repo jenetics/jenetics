@@ -1,5 +1,5 @@
 /*
- * J@ava Genetic Algorithm Library (@__identifier__@).
+ * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +67,10 @@ public final class Float64Gene
 
 	@Override
 	public Float64Gene mean(final Float64Gene that) {
-		return newInstance((_value.doubleValue() + that._value.doubleValue())/2.0);
+		return newInstance(
+			_value.doubleValue()  +
+			(that._value.doubleValue() - _value.doubleValue())/2.0
+		);
 	}
 
 

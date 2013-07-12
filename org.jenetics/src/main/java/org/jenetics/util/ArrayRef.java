@@ -28,7 +28,7 @@ final class ArrayRef implements Cloneable {
 	Object[] data;
 	final int length;
 
-	boolean _sealed = false;
+	private boolean _sealed = false;
 
 	ArrayRef(final Object[] data) {
 		this.data = data;
@@ -45,6 +45,11 @@ final class ArrayRef implements Cloneable {
 			data = data.clone();
 			_sealed = false;
 		}
+	}
+
+	final ArrayRef seal() {
+		_sealed = true;
+		return this;
 	}
 
 }

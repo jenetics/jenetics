@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -139,7 +140,7 @@ public final class PartiallyMatchedCrossover<T>
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

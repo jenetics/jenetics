@@ -19,9 +19,9 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 
@@ -33,6 +33,7 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.CharSeq;
+import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 
@@ -261,8 +262,8 @@ public final class CharacterGene
 		final Character character,
 		final CharSeq validCharacters
 	) {
-		nonNull(character, "Character");
-		nonNull(validCharacters, "Valid characters");
+		requireNonNull(character, "Character");
+		requireNonNull(validCharacters, "Valid characters");
 
 		final CharacterGene gene = FACTORY.object();
 		gene._character = character;
