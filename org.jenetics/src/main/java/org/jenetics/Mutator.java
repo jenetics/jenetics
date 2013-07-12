@@ -22,6 +22,8 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -64,7 +66,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-02-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -98,7 +100,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 
-		final double p = Math.pow(_probability, 1.0/3.0);
+		final double p = pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 
 		final IndexStream stream = IndexStream.Random(population.size(), p);
@@ -146,9 +148,9 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 	/**
-	 * Template method which gives an (re)implementation of the mutation class the
-	 * possibility to perform its own mutation operation, based on a writable
-	 * gene array and the gene mutation probability <i>p</i>.
+	 * Template method which gives an (re)implementation of the mutation class
+	 * the possibility to perform its own mutation operation, based on a
+	 * writable gene array and the gene mutation probability <i>p</i>.
 	 * <p/>
 	 * This implementation, for example, does it in this way:
 	 * [code]
@@ -196,7 +198,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

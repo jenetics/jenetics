@@ -23,10 +23,10 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
-import static org.jenetics.util.arrays.foreach;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.checkProbability;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,11 +52,11 @@ import org.jenetics.util.Timer;
  *
  * [code]
  * public static void main(final String[] args) {
- *     Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     Function<Genotype<BitGene> Float64> ff = ...
- *     GeneticAlgorithm<BitGene, Float64>
+ *     final Function<Genotype<BitGene> Float64> ff = ...
+ *     final GeneticAlgorithm<BitGene, Float64>
  *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();
@@ -136,7 +136,7 @@ import org.jenetics.util.Timer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-03 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -219,10 +219,10 @@ public class GeneticAlgorithm<
 		final Function<C, C> fitnessScaler,
 		final Optimize optimization
 	) {
-		_genotypeFactory = nonNull(genotypeFactory, "GenotypeFactory");
-		_fitnessFunction = nonNull(fitnessFunction, "FitnessFunction");
-		_fitnessScaler = nonNull(fitnessScaler, "FitnessScaler");
-		_optimization = nonNull(optimization, "Optimization");
+		_genotypeFactory = requireNonNull(genotypeFactory, "GenotypeFactory");
+		_fitnessFunction = requireNonNull(fitnessFunction, "FitnessFunction");
+		_fitnessScaler = requireNonNull(fitnessScaler, "FitnessScaler");
+		_optimization = requireNonNull(optimization, "Optimization");
 
 		_phenotypeFactory = () -> Phenotype.valueOf(
 			_genotypeFactory.newInstance(),
@@ -714,7 +714,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the scaler is {@code null}.
 	 */
 	public void setFitnessScaler(final Function<C, C> scaler) {
-		_fitnessScaler = nonNull(scaler, "FitnessScaler");
+		_fitnessScaler = requireNonNull(scaler, "FitnessScaler");
 	}
 
 	/**
@@ -809,7 +809,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setOffspringSelector(final Selector<G, C> selector) {
-		_offspringSelector = nonNull(selector, "Offspring selector");
+		_offspringSelector = requireNonNull(selector, "Offspring selector");
 	}
 
 	/**
@@ -819,7 +819,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException, if the given selector is null.
 	 */
 	public void setSurvivorSelector(final Selector<G, C> selector) {
-		_survivorSelector = nonNull(selector, "Survivor selector");
+		_survivorSelector = requireNonNull(selector, "Survivor selector");
 	}
 
 	/**
@@ -850,7 +850,7 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the alterer is null.
 	 */
 	public void setAlterer(final Alterer<G> alterer) {
-		_alterer = nonNull(alterer, "Alterer");
+		_alterer = requireNonNull(alterer, "Alterer");
 	}
 
 	/**
@@ -912,7 +912,7 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
-		foreach(population, NonNull);
+		forEach(population, NonNull);
 		if (population.size() < 1) {
 			throw new IllegalArgumentException(String.format(
 				"Population size must be greater than zero, but was %s.",
@@ -948,7 +948,7 @@ public class GeneticAlgorithm<
 	 *         one.
 	 */
 	public void setGenotypes(final Collection<Genotype<G>> genotypes) {
-		foreach(genotypes, NonNull);
+		forEach(genotypes, NonNull);
 		if (genotypes.size() < 1) {
 			throw new IllegalArgumentException(
 				"Genotype size must be greater than zero, but was " +
@@ -1025,7 +1025,7 @@ public class GeneticAlgorithm<
 	 *         {@code null}.
 	 */
 	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
-		_calculator = nonNull(calculator, "Statistic calculator");
+		_calculator = requireNonNull(calculator, "Statistic calculator");
 	}
 
 	/**

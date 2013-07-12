@@ -22,13 +22,15 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.lang.String.format;
+import static java.lang.System.arraycopy;
+import static java.util.Arrays.copyOfRange;
+import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -39,7 +41,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -61,7 +63,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 *          value ({@code start < 0 || end > array.lenght || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new ArrayIndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s)", start, end
@@ -113,7 +115,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		final int start,
 		final int end
 	) {
-		nonNull(predicate, "Predicate");
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
@@ -158,7 +160,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		final int start,
 		final int end
 	) {
-		nonNull(predicate, "Predicate");
+		requireNonNull(predicate, "Predicate");
 		checkIndex(start, end);
 
 		int index = -1;
@@ -174,8 +176,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return index;
 	}
 
+	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forEach(Function)} instead.
+	 */
+	@Deprecated
 	@Override
-	public void foreach(final Consumer<? super T> consumer) {
+	public void forEach(final Consumer<? super T> consumer) {
 		for (int i = _start; i < _end; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
@@ -183,8 +190,13 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		}
 	}
 
+	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forAll(Function)} instead.
+	 */
+	@Deprecated
 	@Override
-	public boolean forall(final Predicate<? super T> predicate) {
+	public boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 		for (int i = _start; i < _end && valid; ++i) {
 			@SuppressWarnings("unchecked")
@@ -250,7 +262,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 			array = _array.data.clone();
 		} else {
 			array = new Object[length()];
-			System.arraycopy(_array.data, _start, array, 0, length());
+			arraycopy(_array.data, _start, array, 0, length());
 		}
 
 		return array;
@@ -261,9 +273,11 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	public T[] toArray(final T[] array) {
 		T[] result = null;
 		if (array.length < length()) {
-			result = (T[])Arrays.copyOfRange(_array.data, _start, _end, array.getClass());
+			result = (T[])copyOfRange(
+				_array.data, _start, _end, array.getClass()
+			);
 		} else {
-			System.arraycopy(_array.data, _start, array, 0, length());
+			arraycopy(_array.data, _start, array, 0, length());
 			if (array.length > length()) {
 				array[length()] = null;
 			}
@@ -279,8 +293,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	final void checkIndex(final int index) {
-		if (index < 0 || index >= length()) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
+		if (index < 0 || index >= _length) {
+			throw new ArrayIndexOutOfBoundsException(format(
 				"Index %s is out of bounds [0, %s)", index, length()
 			));
 		}
@@ -292,8 +306,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 				"fromIndex(" + from + ") > toIndex(" + to+ ")"
 			);
 		}
-		if (from < 0 || to > length()) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
+		if (from < 0 || to > _length) {
+			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", from, to
 			));
 		}

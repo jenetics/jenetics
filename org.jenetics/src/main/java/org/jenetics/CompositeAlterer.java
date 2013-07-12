@@ -22,10 +22,10 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -42,7 +42,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -59,7 +59,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	public CompositeAlterer(final Seq<Alterer<G>> alterers) {
 		super(1.0);
 
-		alterers.foreach(NonNull("Alterer"));
+		alterers.forEach(NonNull("Alterer"));
 		_alterers = normalize(alterers).toISeq();
 	}
 
@@ -103,7 +103,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final int generation
 	) {
 		final AtomicInteger alterations = new AtomicInteger(0);
-		_alterers.foreach(a -> {
+		_alterers.forEach(a -> {
 			alterations.addAndGet(a.alter(population, generation));
 		});
 		return alterations.get();
@@ -117,7 +117,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if the given alterer is {@code null}.
 	 */
 	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return new CompositeAlterer<>(this, nonNull(alterer, "Alterer"));
+		return new CompositeAlterer<>(this, requireNonNull(alterer, "Alterer"));
 	}
 
 	/**

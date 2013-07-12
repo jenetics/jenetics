@@ -55,7 +55,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-13 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-06-06 $</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
 	extends MultiPointCrossover<G>
@@ -97,7 +97,7 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 		final MSeq<T> other,
 		final int index
 	) {
-		assert (index >= 0) : String.format(
+		assert (index >= 0) : format(
 			"Crossover index must be within [0, %d) but was %d",
 			that.length(), index
 		);

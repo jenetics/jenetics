@@ -30,6 +30,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.function.Function;
 
+import javolution.xml.XMLSerializable;
+
+import org.jscience.mathematics.number.Float64;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -38,13 +41,13 @@ import javolution.xml.XMLSerializable;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.IO;
-import org.jenetics.util.arrays;
 import org.jenetics.util.Serialize;
+import org.jenetics.util.lists;
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-02-01 $</em>
+ * @version <em>$Date: 2013-07-12 $</em>
  */
 public class PopulationTest {
 

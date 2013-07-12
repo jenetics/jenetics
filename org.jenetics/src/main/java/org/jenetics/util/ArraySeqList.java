@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractList;
 import java.util.RandomAccess;
@@ -30,7 +30,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
  */
 class ArraySeqList<T> extends AbstractList<T>
 	implements RandomAccess
@@ -38,7 +38,7 @@ class ArraySeqList<T> extends AbstractList<T>
 	final ArraySeq<T> _array;
 
 	public ArraySeqList(final ArraySeq<T> array) {
-		_array = nonNull(array, "ArrayBase");
+		_array = requireNonNull(array, "ArrayBase");
 	}
 
 	@Override

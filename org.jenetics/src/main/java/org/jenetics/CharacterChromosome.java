@@ -45,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -105,7 +105,7 @@ public class CharacterChromosome
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 *          smaller than one.
+	 *         smaller than one.
 	 */
 	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
@@ -118,7 +118,7 @@ public class CharacterChromosome
 	 * @param genes the character genes.
 	 * @param validCharacters the valid characters.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *          characters or the genes string is empty.
+	 *         characters or the genes string is empty.
 	 */
 	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
 		super(
@@ -146,7 +146,7 @@ public class CharacterChromosome
 	 *
 	 * @param genes the character genes.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *          characters or the genes is an empty string.
+	 *         characters or the genes is an empty string.
 	 */
 	public CharacterChromosome(final String genes) {
 		this(genes, CharacterGene.DEFAULT_CHARACTERS);
@@ -280,7 +280,11 @@ public class CharacterChromosome
 
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
+			final CharacterGene gene = CharacterGene.valueOf(
+				Character.valueOf(in.readChar()),
+				_validCharacters
+			);
+			genes.set(i, gene);
 		}
 
 		_genes = genes.toISeq();

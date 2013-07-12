@@ -22,7 +22,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -56,7 +56,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give list is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void swap(final List<T> list, final int i, final int j) {
 		final T old = list.get(i);
 		list.set(i, list.get(j));
@@ -91,7 +94,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void swap(final byte[] array, final int i, final int j) {
 		final byte old = array[i];
 		array[i] = array[j];
@@ -108,7 +114,10 @@ public final class arrays extends StaticObject {
 	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
 	 *			<tt>j &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void swap(final int[] array, final int i, final int j) {
 		final int old = array[i];
 		array[i] = array[j];
@@ -122,10 +131,11 @@ public final class arrays extends StaticObject {
 	 * @throws UnsupportedOperationException if the array is sealed
 	 * 		  ({@code array.isSealed() == true}).
 	 */
-	public static <T extends Object & Comparable<? super T>> void
+	public static <T extends Object & Comparable<? super T>> MSeq<T>
 	sort(final MSeq<T> array)
 	{
 		Collections.sort(array.asList());
+		return array;
 	}
 
 	/**
@@ -136,8 +146,8 @@ public final class arrays extends StaticObject {
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void shuffle(final T[] array) {
-		shuffle(array, RandomRegistry.getRandom());
+	public static <T> T[] shuffle(final T[] array) {
+		return shuffle(array, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -151,10 +161,43 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the give array or the random object is
 	 *         {@code null}.
 	 */
-	public static <T> void shuffle(final T[] array, final Random random) {
+	public static <T> T[] shuffle(final T[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
 		}
+
+		return array;
+	}
+
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param array the {@code array} to randomize.
+	 * @throws NullPointerException if the give array is {@code null}.
+	 */
+	public static <T> MSeq<T> shuffle(final MSeq<T> array) {
+		return shuffle(array, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param array the {@code array} to randomize.
+	 * @param random the {@link Random} object to use for randomize.
+	 * @param <T> the component type of the array to randomize.
+	 * @throws NullPointerException if the give array or the random object is
+	 *          {@code null}.
+	 */
+	public static <T> MSeq<T> shuffle(final MSeq<T> array, final Random random) {
+		for (int j = array.length() - 1; j > 0; --j) {
+			array.swap(j, random.nextInt(j + 1));
+		}
+
+		return array;
 	}
 
 	/**
@@ -165,7 +208,10 @@ public final class arrays extends StaticObject {
 	 * @param list the {@code array} to randomize.
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void shuffle(final List<T> list) {
 		shuffle(list, RandomRegistry.getRandom());
 	}
@@ -180,7 +226,10 @@ public final class arrays extends StaticObject {
 	 * @param <T> the component type of the array to randomize.
 	 * @throws NullPointerException if the give list or the random object is
 	 *          {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> void shuffle(final List<T> list, final Random random) {
 		for (int j = list.size() - 1; j > 0; --j) {
 			swap(list, j, random.nextInt(j + 1));
@@ -194,7 +243,10 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param array the {@code array} to randomize.
 	 * @throws NullPointerException if the give array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void shuffle(final int[] array) {
 		shuffle(array, RandomRegistry.getRandom());
 	}
@@ -208,7 +260,10 @@ public final class arrays extends StaticObject {
 	 * @param random the {@link Random} object to use for randomize.
 	 * @throws NullPointerException if the give array or the random object is
 	 *          {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static void shuffle(final int[] array, final Random random) {
 		for (int j = array.length - 1; j > 0; --j) {
 			swap(array, j, random.nextInt(j + 1));
@@ -227,7 +282,7 @@ public final class arrays extends StaticObject {
 	 *          <tt>to &gt; a.length</tt>
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void reverse(final T[] array, final int from, final int to) {
+	public static <T> T[] reverse(final T[] array, final int from, final int to) {
 		rangeCheck(array.length, from, to);
 
 		int i = from;
@@ -235,6 +290,8 @@ public final class arrays extends StaticObject {
 		while (i < j) {
 			swap(array, i++, --j);
 		}
+
+		return array;
 	}
 
 	/**
@@ -244,16 +301,21 @@ public final class arrays extends StaticObject {
 	 * @param array the array to reverse.
 	 * @throws NullPointerException if the give array is {@code null}.
 	 */
-	public static <T> void reverse(final T[] array) {
-		reverse(array, 0, array.length);
+	public static <T> T[] reverse(final T[] array) {
+		return reverse(array, 0, array.length);
 	}
 
 	static void reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
 		while (i < j) {
-			swap(array, i++, --j);
+			_swap(array, i++, --j);
 		}
+	}
+	private static void _swap(final byte[] array, final int i, final int j) {
+		final byte old = array[i];
+		array[i] = array[j];
+		array[j] = old;
 	}
 
 	private static void rangeCheck(int length, int from, int to) {
@@ -377,7 +439,7 @@ public final class arrays extends StaticObject {
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k, final Random random) {
-		nonNull(random, "Random");
+		requireNonNull(random, "Random");
 		if (k <= 0) {
 			throw new IllegalArgumentException(String.format(
 					"Subset size smaller or equal zero: %s", k
@@ -458,9 +520,9 @@ public final class arrays extends StaticObject {
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.
 	 */
-	public static void subset(final int n, final int sub[], final Random random) {
-		nonNull(random, "Random");
-		nonNull(sub, "Sub set array");
+	public static int[] subset(final int n, final int sub[], final Random random) {
+		requireNonNull(random, "Random");
+		requireNonNull(sub, "Sub set array");
 
 		final int k = sub.length;
 		if (k <= 0) {
@@ -484,7 +546,7 @@ public final class arrays extends StaticObject {
 			for (int i = 0; i < sub.length; ++i) {
 				sub[i] = i;
 			}
-			return;
+			return sub;
 		}
 
 		for (int i = 0; i < k; ++i) {
@@ -549,18 +611,12 @@ public final class arrays extends StaticObject {
 			sub[i - 2] = ix;
 			--m;
 		}
+
+		return sub;
 	}
 
 	private static int nextInt(final Random random, final int a, final int b) {
-		int value = 0;
-
-		if (a == b) {
-			value = a - 1;
-		} else {
-			value = random.nextInt(b - a) + a;
-		}
-
-		return value;
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
 	}
 
 	/**
@@ -568,7 +624,10 @@ public final class arrays extends StaticObject {
 	 *
 	 * @param p the permutation array.
 	 * @throws NullPointerException if the permutation array is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int[] permutation(final int[] p) {
 		return permutation(p, RandomRegistry.getRandom());
 	}
@@ -580,10 +639,13 @@ public final class arrays extends StaticObject {
 	 * @param random the random number generator.
 	 * @throws NullPointerException if the permutation array or the random number
 	 *          generator is {@code null}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int[] permutation(final int[] p, final Random random) {
-		nonNull(p, "Permutation array");
-		nonNull(random, "Random");
+		requireNonNull(p, "Permutation array");
+		requireNonNull(random, "Random");
 
 		for (int i = 0; i < p.length; ++i) {
 			p[i] = i;
@@ -616,9 +678,12 @@ public final class arrays extends StaticObject {
 	 * @param rank the permutation rank.
 	 * @throws NullPointerException it the permutation array is {@code null}.
 	 * @throws IllegalArgumentException if {@code rank < 1}.
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static int[] permutation(final int[] p, final long rank) {
-		nonNull(p, "Permutation array");
+		requireNonNull(p, "Permutation array");
 		if (rank < 1) {
 			throw new IllegalArgumentException(String.format(
 					"Rank smaller than 1: %s", rank
@@ -675,7 +740,7 @@ public final class arrays extends StaticObject {
 		final Object[] array, final int start, final int end,
 		final Object element
 	) {
-		nonNull(array, "Array");
+		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
 			throw new IndexOutOfBoundsException(String.format(
 				"Invalid index range: [%d, %s]", start, end
@@ -717,13 +782,16 @@ public final class arrays extends StaticObject {
 
 	/**
 	 * @see #indexOf(Object[], Object)
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> int indexWhere(
 		final T[] array,
 		final Predicate<? super T> predicate
 	) {
-		nonNull(array, "Array");
-		nonNull(predicate, "Predicate");
+		requireNonNull(array, "Array");
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 
@@ -738,13 +806,16 @@ public final class arrays extends StaticObject {
 
 	/**
 	 * @see #indexOf(Object[], Object)
+	 *
+	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
 	 */
+	@Deprecated
 	public static <T> int indexWhere(
 		final Iterable<? extends T> values,
 		final Predicate<? super T> predicate
 	) {
-		nonNull(values, "Array");
-		nonNull(predicate, "Predicate");
+		requireNonNull(values, "Array");
+		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
 		int i = 0;
@@ -757,6 +828,18 @@ public final class arrays extends StaticObject {
 		}
 
 		return index;
+	}
+
+	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forEach(Object[], Function)} instead.
+	 */
+	@Deprecated
+	public static <T, R> void foreach(
+		final T[] array,
+		final Function<? super T, ? extends R> f
+	) {
+		forEach(array, f);
 	}
 
 	/**
@@ -778,7 +861,7 @@ public final class arrays extends StaticObject {
 	 * @param consumer the code to apply to every element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T> void foreach(
+	public static <T> void forEach(
 		final T[] array,
 		final Consumer<? super T> consumer
 	) {
@@ -794,7 +877,7 @@ public final class arrays extends StaticObject {
 	 * @param consumer the code to apply to each element.
 	 * @throws NullPointerException if one of the elements are {@code null}.
 	 */
-	public static <T> void foreach(
+	public static <T> void forEach(
 		final Iterable<? extends T> values,
 		final Consumer<? super T> consumer
 	) {
@@ -823,9 +906,9 @@ public final class arrays extends StaticObject {
 		final B[] b,
 		final Function<? super A, ? extends B> converter
 	) {
-		nonNull(a, "Source array");
-		nonNull(b, "Target array");
-		nonNull(converter, "Converter");
+		requireNonNull(a, "Source array");
+		requireNonNull(b, "Target array");
+		requireNonNull(converter, "Converter");
 
 		B[] result = b;
 		if (b.length < a.length) {

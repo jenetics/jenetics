@@ -34,7 +34,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-03-26 $</em>
+ * @version <em>$Date: 2013-07-12 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -76,7 +76,7 @@ public class ArrayTest {
 	public final TestCase foreachLoopGetter = new TestCase("foreach(GETTER)", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			_array.foreach(o -> {o.intValue();});
+			_array.forEach(o -> {o.intValue();});
 		}
 	};
 

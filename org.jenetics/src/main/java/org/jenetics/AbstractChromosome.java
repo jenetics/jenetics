@@ -24,7 +24,7 @@ package org.jenetics;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.RandomAccess;
@@ -41,7 +41,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -73,8 +73,8 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 *          smaller than one.
 	 */
 	protected AbstractChromosome(final ISeq<G> genes) {
-		nonNull(genes, "Gene array");
-		assert (genes.indexWhere(g -> g == null) == -1) : "Found at least on null gene.";
+		requireNonNull(genes, "Gene array");
+		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
 			throw new IllegalArgumentException(String.format(

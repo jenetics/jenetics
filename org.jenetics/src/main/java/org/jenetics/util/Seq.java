@@ -40,7 +40,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -82,13 +82,20 @@ public interface Seq<T> extends Iterable<T> {
 	);
 
 	/**
+	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 *             {@link #forEach(Function)} instead.
+	 */
+	@Deprecated
+	public <R> void foreach(final Function<? super T, ? extends R> function);
+
+	/**
 	 * Applies a {@code function} to all elements of this sequence.
 	 *
 	 * @param consumer the code to apply to the elements.
 	 * @throws NullPointerException if the given {@code function} is
 	 *          {@code null}.
 	 */
-	public default void foreach(final Consumer<? super T> consumer) {
+	public default void forEach(final Consumer<? super T> consumer) {
 		if (this instanceof RandomAccess) {
 			for (int i = 0, n = length(); i < n; ++i) {
 				consumer.accept(get(i));
@@ -109,7 +116,7 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *          {@code null}.
 	 */
-	public default boolean forall(final Predicate<? super T> predicate) {
+	public default boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 
 		if (this instanceof RandomAccess) {

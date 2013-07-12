@@ -46,13 +46,15 @@ agent_param() {
 
 main() {
 	mkdir "${REPORT_DIR}"
+	
+	opts="-XX:+UseG1GC"
 
-	java -agentpath:`agent_param Knapsack.jgrind` -cp $CLS_PATH org.jenetics.example.Knapsack
-	java -agentpath:`agent_param OnesCounting.jgrind` -cp $CLS_PATH org.jenetics.example.OnesCounting
-	java -agentpath:`agent_param RealFunction.jgrind` -cp $CLS_PATH org.jenetics.example.RealFunction
-	java -agentpath:`agent_param StringGenerator.jgrind` -cp $CLS_PATH org.jenetics.example.StringGenerator
-	java -agentpath:`agent_param Transformation.jgrind` -cp $CLS_PATH org.jenetics.example.Transformation
-	java -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH org.jenetics.example.TravelingSalesman
+	java ${opts} -agentpath:`agent_param Knapsack.jgrind` -cp $CLS_PATH org.jenetics.example.Knapsack
+	java ${opts} -agentpath:`agent_param OnesCounting.jgrind` -cp $CLS_PATH org.jenetics.example.OnesCounting
+	java ${opts} -agentpath:`agent_param RealFunction.jgrind` -cp $CLS_PATH org.jenetics.example.RealFunction
+	java ${opts} -agentpath:`agent_param StringGenerator.jgrind` -cp $CLS_PATH org.jenetics.example.StringGenerator
+	java ${opts} -agentpath:`agent_param Transformation.jgrind` -cp $CLS_PATH org.jenetics.example.Transformation
+	java ${opts} -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH org.jenetics.example.TravelingSalesman
 }
 
 main $*

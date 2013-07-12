@@ -24,7 +24,6 @@ package org.jenetics.util;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.str;
 
 import java.io.Serializable;
 import java.util.function.Supplier;
@@ -38,7 +37,7 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-03 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public final class FinalReference<T>
 	implements
@@ -118,7 +117,7 @@ public final class FinalReference<T>
 
 	@Override
 	public String toString() {
-		return str(get());
+		return Objects.toString(get());
 	}
 
 }

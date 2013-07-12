@@ -34,7 +34,6 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.object;
 
 /**
  * Gene which holds enumerable (countable) genes. Will be used for combinatorial
@@ -44,7 +43,7 @@ import org.jenetics.util.object;
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
  * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+ * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
  * [/code]
@@ -63,7 +62,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !!!new!!! &mdash; <em>$Date: 2013-05-28 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -160,7 +159,7 @@ public final class EnumGene<A>
 
 	@Override
 	public String toString() {
-		return object.str(getAllele());
+		return Objects.toString(getAllele());
 	}
 
 	/* *************************************************************************

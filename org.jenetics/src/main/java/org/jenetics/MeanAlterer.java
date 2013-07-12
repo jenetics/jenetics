@@ -42,7 +42,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-06-21 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -94,7 +94,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 		population.set(
 			individuals[0],
-			pt1.newInstance(Genotype.valueOf(c1.toISeq()), generation)
+			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
 		);
 
 		return 1;

@@ -22,9 +22,9 @@
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -46,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public final class CharacterGene
 	implements
@@ -258,8 +258,8 @@ public final class CharacterGene
 		final Character character,
 		final CharSeq validCharacters
 	) {
-		nonNull(character, "Character");
-		nonNull(validCharacters, "Valid characters");
+		requireNonNull(character, "Character");
+		requireNonNull(validCharacters, "Valid characters");
 
 		final CharacterGene gene = FACTORY.object();
 		gene._character = character;
