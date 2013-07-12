@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since xxx
- * @version xxx &mdash; <em>$Date: 2013-05-03 $</em>
+ * @version xxx &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public class RandomIndexStream implements IntStream {
 
@@ -195,12 +195,12 @@ public class RandomIndexStream implements IntStream {
 	}
 
 	@Override
-	public LongStream longs() {
+	public LongStream asLongStream() {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
-	public DoubleStream doubles() {
+	public DoubleStream asDoubleStream() {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 

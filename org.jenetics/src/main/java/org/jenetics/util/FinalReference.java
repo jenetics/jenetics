@@ -26,6 +26,7 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import javolution.lang.Reference;

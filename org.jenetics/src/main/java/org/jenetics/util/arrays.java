@@ -44,28 +44,6 @@ import java.util.function.Predicate;
 public final class arrays extends StaticObject {
 	private arrays() {}
 
-
-	/**
-	 * Swap two elements of an given list.
-	 *
-	 * @param <T> the list type.
-	 * @param list the array
-	 * @param i index of the first list element.
-	 * @param j index of the second list element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give list is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static <T> void swap(final List<T> list, final int i, final int j) {
-		final T old = list.get(i);
-		list.set(i, list.get(j));
-		list.set(j, old);
-	}
-
 	/**
 	 * Swap two elements of an given array.
 	 *
@@ -80,46 +58,6 @@ public final class arrays extends StaticObject {
 	 */
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		final T old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
-	 * Swap two byte elements of the given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static void swap(final byte[] array, final int i, final int j) {
-		final byte old = array[i];
-		array[i] = array[j];
-		array[j] = old;
-	}
-
-	/**
-	 * Swap two elements of an given array.
-	 *
-	 * @param array the array
-	 * @param i index of the first array element.
-	 * @param j index of the second array element.
-	 * @throws IndexOutOfBoundsException if <tt>i &lt; 0</tt> or
-	 *			<tt>j &lt; 0</tt> or <tt>i &gt; a.length</tt> or
-	 *			<tt>j &gt; a.length</tt>
-	 * @throws NullPointerException if the give array is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static void swap(final int[] array, final int i, final int j) {
-		final int old = array[i];
 		array[i] = array[j];
 		array[j] = old;
 	}
@@ -198,76 +136,6 @@ public final class arrays extends StaticObject {
 		}
 
 		return array;
-	}
-
-	/**
-	 * Randomize the {@code list} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param list the {@code array} to randomize.
-	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give list is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static <T> void shuffle(final List<T> list) {
-		shuffle(list, RandomRegistry.getRandom());
-	}
-
-	/**
-	 * Randomize the {@code list} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param list the {@code array} to randomize.
-	 * @param random the {@link Random} object to use for randomize.
-	 * @param <T> the component type of the array to randomize.
-	 * @throws NullPointerException if the give list or the random object is
-	 *          {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static <T> void shuffle(final List<T> list, final Random random) {
-		for (int j = list.size() - 1; j > 0; --j) {
-			swap(list, j, random.nextInt(j + 1));
-		}
-	}
-
-	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param array the {@code array} to randomize.
-	 * @throws NullPointerException if the give array is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static void shuffle(final int[] array) {
-		shuffle(array, RandomRegistry.getRandom());
-	}
-
-	/**
-	 * Randomize the {@code array} using the given {@link Random} object. The used
-	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
-	 * Third edition, page 142, Algorithm S (Selection sampling technique).
-	 *
-	 * @param array the {@code array} to randomize.
-	 * @param random the {@link Random} object to use for randomize.
-	 * @throws NullPointerException if the give array or the random object is
-	 *          {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static void shuffle(final int[] array, final Random random) {
-		for (int j = array.length - 1; j > 0; --j) {
-			swap(array, j, random.nextInt(j + 1));
-		}
 	}
 
 	/**
@@ -620,110 +488,6 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
-	 * Calculates a random permutation.
-	 *
-	 * @param p the permutation array.
-	 * @throws NullPointerException if the permutation array is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static int[] permutation(final int[] p) {
-		return permutation(p, RandomRegistry.getRandom());
-	}
-
-	/**
-	 * Calculates a random permutation.
-	 *
-	 * @param p the permutation array.
-	 * @param random the random number generator.
-	 * @throws NullPointerException if the permutation array or the random number
-	 *          generator is {@code null}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static int[] permutation(final int[] p, final Random random) {
-		requireNonNull(p, "Permutation array");
-		requireNonNull(random, "Random");
-
-		for (int i = 0; i < p.length; ++i) {
-			p[i] = i;
-		}
-		shuffle(p, random);
-
-		return p;
-	}
-
-	/**
-	 * Calculates the permutation with the given {@code rank}.
-	 *
-	 * <p>
-	 * <em>Authors:</em>
-	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 *      version based on the  C++ version by John Burkardt.
-	 * </p>
-	 *
-	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
-	 *  Reference:</a></em>
-	 *      Albert Nijenhuis, Herbert Wilf,
-	 *      Combinatorial Algorithms for Computers and Calculators,
-	 *      Second Edition,
-	 *      Academic Press, 1978,
-	 *      ISBN: 0-12-519260-6,
-	 *      LC: QA164.N54.
-	 * </p>
-	 *
-	 * @param p the permutation array.
-	 * @param rank the permutation rank.
-	 * @throws NullPointerException it the permutation array is {@code null}.
-	 * @throws IllegalArgumentException if {@code rank < 1}.
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static int[] permutation(final int[] p, final long rank) {
-		requireNonNull(p, "Permutation array");
-		if (rank < 1) {
-			throw new IllegalArgumentException(String.format(
-					"Rank smaller than 1: %s", rank
-				));
-		}
-
-		Arrays.fill(p, 0);
-
-		long jrank = rank - 1;
-		for (int i = 1; i <= p.length; ++i) {
-			int iprev = p.length + 1 - i;
-			int irem = (int)(jrank%iprev);
-			jrank = jrank/iprev;
-
-			int j = 0;
-			int jdir = 0;
-			if ((jrank%2) == 1) {
-				j = 0;
-				jdir = 1;
-			} else {
-				j = p.length + 1;
-				jdir = -1;
-			}
-
-			int icount = 0;
-			do {
-				j = j + jdir;
-
-				if (p[j - 1] == 0) {
-					++icount;
-				}
-			} while (irem >= icount);
-
-			p[j - 1] = iprev;
-		}
-
-		return p;
-	}
-
-	/**
 	 * Returns the index of the first occurrence of the specified element in
 	 * the {@code array}, or -1 if the {@code array} does not contain the element.
 	 * @param array the array to search.
@@ -778,68 +542,6 @@ public final class arrays extends StaticObject {
 	 */
 	public static int indexOf(final Object[] array, final Object element) {
 		return indexOf(array, 0, array.length, element);
-	}
-
-	/**
-	 * @see #indexOf(Object[], Object)
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static <T> int indexWhere(
-		final T[] array,
-		final Predicate<? super T> predicate
-	) {
-		requireNonNull(array, "Array");
-		requireNonNull(predicate, "Predicate");
-
-		int index = -1;
-
-		for (int i = 0; i < array.length && index == -1; ++i) {
-			if (predicate.test(array[i])) {
-				index = i;
-			}
-		}
-
-		return index;
-	}
-
-	/**
-	 * @see #indexOf(Object[], Object)
-	 *
-	 * @deprecated Not used in the <i>Jenetics</i> library. Will be removed.
-	 */
-	@Deprecated
-	public static <T> int indexWhere(
-		final Iterable<? extends T> values,
-		final Predicate<? super T> predicate
-	) {
-		requireNonNull(values, "Array");
-		requireNonNull(predicate, "Predicate");
-
-		int index = -1;
-		int i = 0;
-		for (Iterator<? extends T>
-			it = values.iterator(); it.hasNext() && index == -1; ++i)
-		{
-			if (predicate.test(it.next())) {
-				index = i;
-			}
-		}
-
-		return index;
-	}
-
-	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
-	 *             {@link #forEach(Object[], Function)} instead.
-	 */
-	@Deprecated
-	public static <T, R> void foreach(
-		final T[] array,
-		final Function<? super T, ? extends R> f
-	) {
-		forEach(array, f);
 	}
 
 	/**
