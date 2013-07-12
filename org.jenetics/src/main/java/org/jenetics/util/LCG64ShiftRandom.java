@@ -439,7 +439,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
 	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
-	 * via <i>leapfrogging</i>.
+	 * via <i>leap-frogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
