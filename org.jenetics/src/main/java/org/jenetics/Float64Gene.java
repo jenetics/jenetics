@@ -1,5 +1,5 @@
 /*
- * J@ava Genetic Algorithm Library (@__identifier__@).
+ * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-05-27 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -67,7 +67,10 @@ public final class Float64Gene
 
 	@Override
 	public Float64Gene mean(final Float64Gene that) {
-		return newInstance((_value.doubleValue() + that._value.doubleValue())/2.0);
+		return newInstance(
+			_value.doubleValue()  +
+			(that._value.doubleValue() - _value.doubleValue())/2.0
+		);
 	}
 
 

@@ -25,35 +25,13 @@ import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.Verify;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-06-14 $</em>
  */
 public class objectTest {
-
-	@Test(dataProvider = "byteStrData")
-	public void byteStr(final byte[] data, final String result) {
-		Assert.assertEquals(object.str(data), result);
-	}
-
-	@DataProvider(name = "byteStrData")
-	public Object[][] byteStrData() {
-		return new Object[][] {
-			{ new byte[]{(byte)0}, "00000000" },
-			{ new byte[]{(byte)1}, "00000001" },
-			{ new byte[]{(byte)2}, "00000010" },
-			{ new byte[]{(byte)4}, "00000100" },
-			{ new byte[]{(byte)0xFF}, "11111111" },
-
-			{ new byte[]{(byte)0, (byte)0}, "00000000|00000000" },
-			{ new byte[]{(byte)1, (byte)0}, "00000000|00000001" },
-			{ new byte[]{(byte)0, (byte)1}, "00000001|00000000" },
-			{ new byte[]{(byte)1, (byte)1}, "00000001|00000001" }
-		};
-	}
 
 	@Test
 	public void rangeCheckPredicate1() {
@@ -61,7 +39,7 @@ public class objectTest {
 		for (int i = 0; i < array.length(); ++i) {
 			array.set(i, i);
 		}
-		array.foreach(CheckRange(0, 100));
+		array.forEach(CheckRange(0, 100));
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -71,7 +49,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(CheckRange(0, 100));
+		array.forEach(CheckRange(0, 100));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -81,7 +59,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, 333);
-		array.foreach(CheckRange(0, 100));
+		array.forEach(CheckRange(0, 100));
 	}
 
 	@Test
@@ -111,7 +89,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 
-		array.foreach(NonNull);
+		array.forEach(NonNull);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -121,17 +99,7 @@ public class objectTest {
 			array.set(i, i);
 		}
 		array.set(45, null);
-		array.foreach(NonNull);
-	}
-
-	@Test
-	public void nonNull1() {
-		object.nonNull("df");
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void nonNull2() {
-		object.nonNull(null);
+		array.forEach(NonNull);
 	}
 
 }
