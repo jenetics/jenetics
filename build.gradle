@@ -25,6 +25,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "eclipse"
 apply plugin: "idea"
+apply plugin: "signing"
 
 apply from: "./build-util.gradle"
 
@@ -42,9 +43,9 @@ subprojects { subproj ->
 }
 
 
-task clean << {
-	buildDir.deleteDir()
-}
+//task clean << {
+//	buildDir.deleteDir()
+//}
 
  task pack << {
 	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
@@ -114,6 +115,10 @@ task zip(type: Zip) {
 		def zip = new File("${identifier}.zip")
 		zip.renameTo(new File("build/package", zip.getName()))
 	}
+}
+
+signing {
+	sign zip
 }
 
 
