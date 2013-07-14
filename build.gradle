@@ -118,6 +118,8 @@ task zip(type: Zip) {
 }
 
 signing {
+	// gpg --armor --detach-sign jenetics-1.4.0.zip
+	// gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
 	sign zip
 }
 
