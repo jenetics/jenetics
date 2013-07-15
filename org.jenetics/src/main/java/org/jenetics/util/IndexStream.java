@@ -92,8 +92,9 @@ public abstract class IndexStream {
 
 	/**
 	 * Create a new random IndexIterator.
+	 *
 	 * @param n the maximal value (exclusively) the created index stream will
-	 *         return.
+	 *        return.
 	 * @param p the index selection probability.
 	 * @param random the random engine used for creating the random indexes.
 	 * @throws IllegalArgumentException if {@code n == Integer.MAX_VALUE} or
