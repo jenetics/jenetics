@@ -24,6 +24,8 @@ package org.jenetics.util;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.random;
+
 /**
  * An abstract base class which eases the implementation of {@code Random}
  * objects which natively creates random {@code long} values. All other
@@ -94,7 +96,7 @@ public abstract class Random64 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return math.random.toFloat2(nextLong());
+		return random.toFloat2(nextLong());
 	}
 
 	/**
@@ -103,7 +105,7 @@ public abstract class Random64 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return math.random.toDouble2(nextLong());
+		return random.toDouble2(nextLong());
 	}
 
 }
