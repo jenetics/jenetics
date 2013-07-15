@@ -31,7 +31,7 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-15 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
@@ -161,10 +161,6 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 			} else if (_start == 0) {
 				System.arraycopy(
 					_array, 0, proxy._array, 0, proxy._array.length
-				);
-			} else if ((_start & 7) == 0) {
-				System.arraycopy(
-					_array, _start >>> 3, proxy._array, 0, proxy._array.length
 				);
 			} else {
 				for (int i = _length; --i >= 0;) {
