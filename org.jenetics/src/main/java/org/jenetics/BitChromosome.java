@@ -55,7 +55,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-16 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -84,8 +84,7 @@ public class BitChromosome extends Number<BitChromosome>
 	private BitChromosome(final int length, final boolean internal) {
 		nonNegative(length);
 
-		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
-		_genes = new byte[bytes];
+		_genes = bit.newBitArray(length);
 		_length = length;
 		_seq = new BitGeneArray(_genes, 0, length);
 	}

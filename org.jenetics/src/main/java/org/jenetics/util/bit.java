@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-07-16 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -469,6 +469,17 @@ public final class bit extends StaticObject {
 		return bytes;
 	}
 
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @return the new byte array.s
+	 */
+	public static byte[] newBitArray(final int length) {
+		return new byte[(length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1];
+	}
+
 	static long toLong(final byte[] data) {
 		return
 			(((long)data[0] << 56) +
@@ -520,10 +531,6 @@ public final class bit extends StaticObject {
 				(data[1 + start] << 16) +
 				(data[2 + start] << 8) +
 				(data[3 + start] << 0));
-	}
-
-	static byte[] newBitArray(final int length) {
-		return new byte[(length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1];
 	}
 
 }
