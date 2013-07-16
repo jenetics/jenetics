@@ -84,8 +84,7 @@ public class BitChromosome extends Number<BitChromosome>
 	private BitChromosome(final int length, final boolean internal) {
 		nonNegative(length);
 
-		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
-		_genes = new byte[bytes];
+		_genes = bit.newBitArray(length);
 		_length = length;
 		_seq = new BitGeneArray(_genes, 0, length);
 	}
