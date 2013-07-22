@@ -638,6 +638,37 @@ JDK
 
 \end_inset
 
+ and Gradle
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gradle
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Version 1.6 or higher: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.gradle.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
  to be installed, all other dependencies are available in the package which
  you can download from 
 \begin_inset Flex URL
