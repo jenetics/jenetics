@@ -5684,7 +5684,7 @@ public class LCG64ShiftRandom extends Random {
 
 \begin_layout Plain Layout
 
-    public void jump2(final int s);ss
+    public void jump2(final int s);
 \end_layout
 
 \begin_layout Plain Layout
