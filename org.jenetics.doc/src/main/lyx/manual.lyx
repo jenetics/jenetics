@@ -6164,7 +6164,7 @@ int
 \family default
  values)
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The 
@@ -6187,7 +6187,7 @@ random
 \family typewriter
 IndexStream
 \family default
- is used for selecting the genes, chromosomes and genotpyes.
+ is used for selecting the genes, chromosomes and genotypes.
 \end_layout
 
 \end_inset
