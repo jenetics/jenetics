@@ -1989,7 +1989,7 @@ status open
 
 \begin_layout Plain Layout
 
-GeneticAlgorithm<Float64Gene, Float64> ga = ...
+final GeneticAlgorithm<Float64Gene, Float64> ga = ...
 \end_layout
 
 \begin_layout Plain Layout
@@ -3849,7 +3849,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -3939,7 +3939,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4089,7 +4089,7 @@ status open
 
 \begin_layout Plain Layout
 
-try (Concurrency c = Concurrency.start()) {
+try (final Concurrency c = Concurrency.start()) {
 \end_layout
 
 \begin_layout Plain Layout
