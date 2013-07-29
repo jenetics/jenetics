@@ -3390,7 +3390,7 @@ MultiPointCrossover
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -3595,34 +3595,115 @@ end{multicols}
 
 \begin_layout Standard
 The PMX is similar to the two-point crossover.
- A crossing region is chosen by selecting two crossing points.
+ A crossing region is chosen by selecting two crossing points (see figure
  
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
+ 
+\emph on
+a
+\emph default
+)).
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/PMX.svg
+	width 50text%
+	BoundingBox 0bp 0bp 500bp 375bp
+	clip
+	rotateOrigin leftTop
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout LyX-Code
-C1 = 012|345|6789
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Partially-matched-crossover"
+
+\end_inset
+
+Partially-matched crossover
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Partially-matched crossover
 \end_layout
 
-\begin_layout LyX-Code
-C2 = 987|654|3210
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Crossover!Partially-matched crossover
 \end_layout
 
-\begin_layout Standard
-After performing the crossover we--normally--got two invalid chromosomes.
+\end_inset
+
+.
+ 
+\emph on
+a)
+\emph default
+ shows the original chromosomes, 
+\emph on
+b)
+\emph default
+ the (invalid) chromosomes after crossover and 
+\emph on
+c)
+\emph default
+ the repaired chromosomes.
 \end_layout
 
-\begin_layout LyX-Code
-C1 = 012|654|6789
+\end_inset
+
+
 \end_layout
 
-\begin_layout LyX-Code
-C2 = 987|345|3210
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Chromosome C1 contains the value 6 twice and misses the value 3.
- On the other side chromosome C2 contains the value 3 twice and misses the
- value 6.
+After performing the crossover we--normally--got two invalid chromosomes
+ (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
+ 
+\emph on
+b
+\emph default
+)).
+ Chromosome 
+\begin_inset Formula $1$
+\end_inset
+
+ contains the value 6 twice and misses the value 3.
+ On the other side chromosome 
+\begin_inset Formula $2$
+\end_inset
+
+ contains the value 3 twice and misses the value 6.
  We can observe that this crossover is equivalent to the exchange of the
  values 3
 \begin_inset Formula $\rightarrow$
@@ -3638,16 +3719,18 @@ Chromosome C1 contains the value 6 twice and misses the value 3.
 
 4.
  To repair the two chromosomes we have to apply this exchange outside the
- crossing region.
+ crossing region (figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Partially-matched-crossover"
+
+\end_inset
+
  
-\end_layout
-
-\begin_layout LyX-Code
-C1 = 012|654|3789
-\end_layout
-
-\begin_layout LyX-Code
-C2 = 987|345|6210
+\emph on
+b
+\emph default
+)).
 \end_layout
 
 \begin_layout Section
