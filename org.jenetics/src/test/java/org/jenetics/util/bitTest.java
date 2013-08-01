@@ -197,6 +197,17 @@ public class bitTest {
 	}
 
 	@Test
+	public void reverse() {
+		final byte[] array = new byte[1000];
+		new Random().nextBytes(array);
+
+		final byte[] reverseArray = bit.reverse(array.clone());
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(reverseArray[i], array[array.length - 1 - i]);
+		}
+	}
+
+	@Test
 	public void flip() {
 		final long seed = math.random.seed();
 		final Random random = new Random(seed);

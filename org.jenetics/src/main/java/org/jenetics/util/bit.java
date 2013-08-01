@@ -378,14 +378,11 @@ public final class bit extends StaticObject {
 	 * @return the {@link LargeInteger} built from the given byte array.
 	 */
 	public static LargeInteger toLargeInteger(final byte[] array) {
-		reverse(array);
-		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
-		reverse(array);
-		return li;
+		return LargeInteger.valueOf(reverse(array.clone()), 0, array.length);
 	}
 
 
-	private static byte[] reverse(final byte[] array) {
+	static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
 
