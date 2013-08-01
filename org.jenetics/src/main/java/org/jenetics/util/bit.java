@@ -41,7 +41,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-16 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-01 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -378,14 +378,11 @@ public final class bit extends StaticObject {
 	 * @return the {@link LargeInteger} built from the given byte array.
 	 */
 	public static LargeInteger toLargeInteger(final byte[] array) {
-		reverse(array);
-		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
-		reverse(array);
-		return li;
+		return LargeInteger.valueOf(reverse(array.clone()), 0, array.length);
 	}
 
 
-	private static byte[] reverse(final byte[] array) {
+	static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
 

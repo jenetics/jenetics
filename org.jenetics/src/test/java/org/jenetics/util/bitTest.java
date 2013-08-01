@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-10 $</em>
+ * @version <em>$Date: 2013-08-01 $</em>
  */
 public class bitTest {
 
@@ -194,6 +194,17 @@ public class bitTest {
 			array[i] = (byte)random.nextInt();
 		}
 		return array;
+	}
+
+	@Test
+	public void reverse() {
+		final byte[] array = new byte[1000];
+		new Random().nextBytes(array);
+
+		final byte[] reverseArray = bit.reverse(array.clone());
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(reverseArray[i], array[array.length - 1 - i]);
+		}
 	}
 
 	@Test
