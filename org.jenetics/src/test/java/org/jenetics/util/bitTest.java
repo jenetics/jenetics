@@ -113,7 +113,7 @@ public class bitTest {
 	public void toStringFromString() {
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0; i < 1000; ++i) {
-			final byte[] bytes = new byte[232];
+			final byte[] bytes = new byte[625];
 			random.nextBytes(bytes);
 
 			final String string = bit.toByteString(bytes);
@@ -341,6 +341,17 @@ public class bitTest {
 		random.setSeed(seed);
 		for (int i = 0; i < data.length*8; ++i) {
 			Assert.assertEquals(bit.get(data, i), random.nextBoolean());
+		}
+	}
+
+	@Test
+	public void setGetBit1() {
+		final byte[] data = new byte[625];
+		Arrays.fill(data, (byte)0);
+
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.set(data, i);
+			Assert.assertTrue(bit.get(data, i));
 		}
 	}
 
