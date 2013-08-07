@@ -192,7 +192,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.object.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();
@@ -211,7 +211,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.xml.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();
