@@ -46,7 +46,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-11 $</em>
+ * @version <em>$Date: 2013-08-07 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -192,7 +192,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.object.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();
@@ -211,7 +211,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.xml.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();
