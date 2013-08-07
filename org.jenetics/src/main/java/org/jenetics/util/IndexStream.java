@@ -49,7 +49,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-07-15 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-08-07 $</em>
  */
 public abstract class IndexStream {
 
@@ -118,19 +118,18 @@ public abstract class IndexStream {
 			));
 		}
 
+
 		return new IndexStream() {
 			private final int P = probability.toInt(p);
-			private final int n_m1 = n - 1;
 
 			private int _pos = -1;
 
 			@Override
 			public int next() {
-				while (_pos < n && P < random.nextInt()) {
+				while (_pos < n && random.nextInt() >= P) {
 					++_pos;
 				}
-
-				return (_pos < n_m1) ? ++_pos : -1;
+				return (_pos < n - 1) ? ++_pos : -1;
 			}
 
 		};
