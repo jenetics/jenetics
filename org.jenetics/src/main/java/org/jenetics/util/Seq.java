@@ -293,13 +293,11 @@ public interface Seq<T> extends Iterable<T> {
 		requireNonNull(predicate, "Predicate");
 
 		int index = -1;
-
 		for (int i = 0, n = length(); i < n && index == -1; ++i) {
 			if (predicate.test(get(i))) {
 				index = i;
 			}
 		}
-
 		return index;
 	}
 
@@ -339,7 +337,11 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public default int lastIndexOf(final Object element, final int start, final int end) {
+	public default int lastIndexOf(
+		final Object element,
+		final int start,
+		final int end
+	) {
 		int index = -1;
 
 		if (element == null) {
@@ -399,11 +401,21 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int lastIndexWhere(
+	public default int lastIndexWhere(
 		final Predicate<? super T> predicate,
 		final int start,
 		final int end
-	);
+	) {
+		requireNonNull(predicate, "Predicate");
+
+		int index = -1;
+		for (int i = length(); --i >= 0 && index == -1;) {
+			if (predicate.test(get(i))) {
+				index = i;
+			}
+		}
+		return index;
+	}
 
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
