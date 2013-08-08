@@ -24,6 +24,7 @@ package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.AbstractList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -80,22 +81,7 @@ public interface Seq<T> extends Iterable<T> {
 	 */
 	@Override
 	public default Iterator<T> iterator() {
-		return new Iterator<T>() {
-			private int _pos = 0;
-
-			@Override
-			public boolean hasNext() {
-				return _pos < length();
-			}
-
-			@Override
-			public T next() {
-				if (!hasNext()) {
-					throw new NoSuchElementException();
-				}
-				return get(_pos++);
-			}
-		};
+		return new SeqIteratorAdapter<T>(this);
 	}
 
 	/**
@@ -107,20 +93,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code converter} is
 	 *        {@code null}.
 	 */
-	public default <B> Iterator<B> iterator(final Function<? super T, ? extends B> mapper) {
-		return new Iterator<B>() {
-			private Iterator<T> iterator = iterator();
-
-			@Override
-			public boolean hasNext() {
-				return iterator.hasNext();
-			}
-
-			@Override
-			public B next() {
-				return mapper.apply(iterator.next());
-			}
-		};
+	public default <B> Iterator<B> iterator(
+		final Function<? super T, ? extends B> mapper
+	) {
+		return new SeqMappedIteratorAdapter<>(this, mapper);
 	}
 
 	/**
@@ -424,7 +400,9 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @return a list view of this sequence
 	 */
-	public List<T> asList();
+	public default List<T> asList() {
+		return new SeqListAdapter<T>(this);
+	}
 
 	/**
 	 * Builds a new sequence by applying a function to all elements of this
@@ -451,7 +429,13 @@ public interface Seq<T> extends Iterable<T> {
 	 * @return an array containing all of the elements in this list in right
 	 *          order
 	 */
-	public Object[] toArray();
+	public default Object[] toArray() {
+		final Object[] array = new Object[size()];
+		for (int i = size(); --i >= 0;) {
+			array[i] = get(i);
+		}
+		return array;
+	}
 
 	/**
 	 * Return an array containing all of the elements in this sequence in right
@@ -476,7 +460,23 @@ public interface Seq<T> extends Iterable<T> {
 	 *          not a super type of the runtime type of every element in this array
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
-	public T[] toArray(final T[] array);
+	public default T[] toArray(final T[] array) {
+		if (array.length < length()) {
+			final T[] copy = (T[])java.lang.reflect.Array.newInstance(
+				array.getClass().getComponentType(), length()
+			);
+			for (int i = length(); --i >= 0;) {
+				copy[i] = get(i);
+			}
+
+			return copy;
+		}
+
+		for (int i = 0, n = length(); i < n; ++i) {
+			array[i] = get(i);
+		}
+		return array;
+	}
 
 	/**
 	 * Returns a view of the portion of this sequence between the specified
@@ -631,9 +631,25 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param suffix the suffix of the string representation; e.g. {@code ']'}.
 	 * @return the string representation of this sequence.
 	 */
-	public String toString(
-			final String prefix, final String separator, final String suffix
-		);
+	public default String toString(
+		final String prefix,
+		final String separator,
+		final String suffix
+	) {
+		final StringBuilder out = new StringBuilder();
+
+		out.append(prefix);
+		if (length() > 0) {
+			out.append(get(0));
+		}
+		for (int i =  1; i < length(); ++i) {
+			out.append(separator);
+			out.append(get(i));
+		}
+		out.append(suffix);
+
+		return out.toString();
+	}
 
 	/**
 	 * Create a string representation of the given sequence.
@@ -641,7 +657,9 @@ public interface Seq<T> extends Iterable<T> {
 	 * @param separator the separator of the array elements; e.g. {@code ','}.
 	 * @return the string representation of this sequence.
 	 */
-	public String toString(final String separator);
+	public default String toString(final String separator) {
+		return toString("", separator, "");
+	}
 
 	/**
 	 * Unified method for calculating the hash code of every {@link Seq}
@@ -699,6 +717,133 @@ public interface Seq<T> extends Iterable<T> {
 			}
 		}
 		return equals;
+	}
+
+}
+
+/*
+ * Some 'default' helper class implementations.
+ */
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
+ */
+final class SeqIteratorAdapter<T> implements Iterator<T> {
+	private final Seq<T> _seq;
+
+	public SeqIteratorAdapter(final Seq<T> seq) {
+		_seq = requireNonNull(seq, "Seq must not be null.");
+	}
+
+	private int _pos = 0;
+
+	@Override
+	public boolean hasNext() {
+		return _pos < _seq.length();
+	}
+
+	@Override
+	public T next() {
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
+		return _seq.get(_pos++);
+	}
+
+}
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
+ */
+final class SeqMappedIteratorAdapter<T, B> implements Iterator<B> {
+	private final Seq<T> _seq;
+	private final Function<? super T, ? extends B> _mapper;
+
+	public SeqMappedIteratorAdapter(
+		final Seq<T> seq,
+		final Function<? super T, ? extends B> mapper
+	) {
+		_seq = requireNonNull(seq, "Seq must not be null.");
+		_mapper = requireNonNull(mapper, "Mapper function must not be null.");
+	}
+
+	private int _pos = 0;
+
+	@Override
+	public boolean hasNext() {
+		return _pos < _seq.length();
+	}
+
+	@Override
+	public B next() {
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
+		return _mapper.apply(_seq.get(_pos++));
+	}
+
+}
+
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
+ */
+final class SeqListAdapter<T> extends AbstractList<T> implements RandomAccess {
+	private final Seq<T> _seq;
+
+	public SeqListAdapter(final Seq<T> seq) {
+		_seq = requireNonNull(seq, "Seq must not be null.");
+	}
+
+	@Override
+	public T get(final int index) {
+		return _seq.get(index);
+	}
+
+	@Override
+	public int size() {
+		return _seq.length();
+	}
+
+	@Override
+	public int indexOf(final Object element) {
+		return _seq.indexOf(element);
+	}
+
+	@Override
+	public boolean contains(final Object element) {
+		return indexOf(element) != -1;
+	}
+
+	@Override
+	public Object[] toArray() {
+		return _seq.toArray();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <E> E[] toArray(final E[] array) {
+		if (array.length < _seq.length()) {
+			final E[] copy = (E[])java.lang.reflect.Array.newInstance(
+				array.getClass().getComponentType(), _seq.length()
+			);
+			for (int i = 0; i < _seq.length(); ++i) {
+				copy[i] = (E)_seq.get(i);
+			}
+
+			return copy;
+		}
+
+		for (int i = 0, n = _seq.length(); i < n; ++i) {
+			array[i] = (E)_seq.get(i);
+		}
+		return array;
 	}
 
 }
