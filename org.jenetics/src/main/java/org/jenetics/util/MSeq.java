@@ -22,8 +22,11 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,7 +38,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-03-26 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-08-08 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -149,10 +152,25 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         end >= this.length() || otherStart < 0 ||
 	 *         otherStart + (end - start) >= other.length()}
 	 */
-	public void swap(
+	public default void swap(
 		final int start, final int end,
 		final MSeq<T> other, final int otherStart
-	);
+	) {
+		if (otherStart < 0 || (otherStart + (end - start)) > length()) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Invalid index range: [%d, %d)",
+				otherStart, (otherStart + (end - start))
+			));
+		}
+
+		if (start < end) {
+			for (int i = (end - start); --i >= 0;) {
+				final T temp = get(start + i);
+				set(start + i, other.get(otherStart + i));
+				other.set(otherStart + i, temp);
+			}
+		}
+	}
 
 	/**
 	 * Randomize the {@code array} using the given {@link Random} object. The used
@@ -188,7 +206,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence)
 	 */
-	public ListIterator<T> listIterator();
+	public default ListIterator<T> listIterator() {
+		return new SeqListIteratorAdapter<T>(this);
+	}
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end);
@@ -210,6 +230,53 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 }
 
+final class SeqListIteratorAdapter<T>
+	extends SeqIteratorAdapter<T>
+	implements ListIterator<T>
+{
 
+	public SeqListIteratorAdapter(final MSeq<T> seq) {
+		super(seq);
+	}
+
+	@Override
+	public void set(final T value) {
+		final MSeq<T> array = (MSeq<T>)_seq;
+		array.set(_pos, value);
+	}
+
+	@Override
+	public int nextIndex() {
+		return _pos;
+	}
+
+	@Override
+	public boolean hasPrevious() {
+		return _pos > 0;
+	}
+
+	@Override
+	public T previous() {
+		if (!hasPrevious()) {
+			throw new NoSuchElementException();
+		}
+		return _seq.get(--_pos);
+	}
+
+	@Override
+	public int previousIndex() {
+		return _pos - 1;
+	}
+
+	@Override
+	public void add(final T o) {
+		throw new UnsupportedOperationException("Can't change array size.");
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException("Can't change array size.");
+	}
+}
 
 

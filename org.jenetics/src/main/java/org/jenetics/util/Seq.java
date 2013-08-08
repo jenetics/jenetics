@@ -753,14 +753,14 @@ public interface Seq<T> extends Iterable<T> {
  * @since @__new_version__@
  * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
  */
-final class SeqIteratorAdapter<T> implements Iterator<T> {
-	private final Seq<T> _seq;
+class SeqIteratorAdapter<T> implements Iterator<T> {
+
+	protected final Seq<T> _seq;
+	protected int _pos = 0;
 
 	public SeqIteratorAdapter(final Seq<T> seq) {
 		_seq = requireNonNull(seq, "Seq must not be null.");
 	}
-
-	private int _pos = 0;
 
 	@Override
 	public boolean hasNext() {
