@@ -38,7 +38,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-08 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -230,6 +230,11 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
+ */
 final class SeqListIteratorAdapter<T>
 	extends SeqIteratorAdapter<T>
 	implements ListIterator<T>
