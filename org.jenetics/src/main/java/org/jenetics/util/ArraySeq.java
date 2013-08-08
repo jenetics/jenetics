@@ -321,32 +321,6 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	@Override
-	public String toString(
-		final String prefix,
-		final String separator,
-		final String suffix
-	) {
-		  final StringBuilder out = new StringBuilder();
-
-		  out.append(prefix);
-		  if (length() > 0) {
-			out.append(_array.data[_start]);
-		  }
-		  for (int i = _start + 1; i < _end; ++i) {
-			out.append(separator);
-			out.append(_array.data[i]);
-		  }
-		  out.append(suffix);
-
-		  return out.toString();
-	}
-
-	@Override
-	public String toString(final String separator) {
-		return toString("", separator, "");
-	}
-
-	@Override
 	public String toString() {
 		  return toString("[", ",", "]");
 	}
