@@ -6481,7 +6481,7 @@ status open
 
 \begin_layout Plain Layout
 
-File file = new File("population.xml");
+final File file = new File("population.xml");
 \end_layout
 
 \begin_layout Plain Layout
