@@ -203,8 +203,8 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the given array or one of it's element is
 	 *         {@code null}.
 	 */
-	public static <T extends Object & Comparable<? super T>> boolean
-	isSorted(final Seq<T> seq)
+	public static <T extends Object & Comparable<? super T>>
+	boolean isSorted(final Seq<T> seq)
 	{
 		boolean sorted = true;
 		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
