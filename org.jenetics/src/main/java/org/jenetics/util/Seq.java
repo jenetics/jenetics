@@ -22,6 +22,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +31,6 @@ import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -284,11 +285,23 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public int indexWhere(
+	public default int indexWhere(
 		final Predicate<? super T> predicate,
 		final int start,
 		final int end
-	);
+	) {
+		requireNonNull(predicate, "Predicate");
+
+		int index = -1;
+
+		for (int i = 0, n = length(); i < n && index == -1; ++i) {
+			if (predicate.test(get(i))) {
+				index = i;
+			}
+		}
+
+		return index;
+	}
 
 	/**
 	 * Returns the index of the last occurrence of the specified element
