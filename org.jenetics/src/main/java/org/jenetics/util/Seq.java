@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -124,6 +125,28 @@ public interface Seq<T> extends Iterable<T> {
 		}
 
 		return valid;
+	}
+
+	public default <B> B foldLeft(
+		final B z,
+		final BiFunction<? super B, ? super T, ? extends B> op
+	) {
+		B result = z;
+		for (int i = 0, n = length(); i < n; ++i) {
+			result = op.apply(result, get(i));
+		}
+		return result;
+	}
+
+	public default <B> B foldRight(
+		final B z,
+		final BiFunction<? super T, ? super B, ? extends B> op
+	) {
+		B result = z;
+		for (int i = length(); --i >= 0;) {
+			result = op.apply(get(i), result);
+		}
+		return result;
 	}
 
 	/**
