@@ -41,7 +41,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -196,25 +196,32 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		return valid;
 	}
 
-
-	public <B> B foldLeft(final B z, final BiFunction<? super B, ? super T, ? extends B> op) {
+	@Override
+	public <B> B foldLeft(
+		final B z,
+		final BiFunction<? super B, ? super T, ? extends B> op
+	) {
 		B result = z;
 		for (int i = 0, n = length(); i < n; ++i) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 			result = op.apply(result, value);
 		}
-		return z;
+		return result;
 	}
 
-	public <B> B foldRight(final B z, final BiFunction<? super T, ? super B, ? extends B> op) {
+	@Override
+	public <B> B foldRight(
+		final B z,
+		final BiFunction<? super T, ? super B, ? extends B> op
+	) {
 		B result = z;
 		for (int i = length(); --i >= 0;) {
 			@SuppressWarnings("unchecked")
 			final T value = (T)_array.data[i + _start];
 			result = op.apply(value, result);
 		}
-		return z;
+		return result;
 	}
 
 	@Override
