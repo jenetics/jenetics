@@ -25,8 +25,8 @@ package org.jenetics.util;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.RandomAccess;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -40,7 +40,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -70,34 +70,56 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
+	 * Return default implementation of the {@code Iterable} method. Only uses
+	 * the {@link #get(int)} and {@link #length()} method for implementing the
+	 * Iterator. Implementing classes encouraged to override this method if
+	 * needed.
+	 *
+	 * @return an iterator over the elements of the sequence.
+	 */
+	@Override
+	public default Iterator<T> iterator() {
+		return new Iterator<T>() {
+			private int _pos = 0;
+
+			@Override
+			public boolean hasNext() {
+				return _pos < length();
+			}
+
+			@Override
+			public T next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				return get(_pos++);
+			}
+		};
+	}
+
+	/**
 	 * Return an iterator with the new type {@code B}.
 	 *
 	 * @param <B> the component type of the returned type.
 	 * @param mapper the converter for converting from {@code T} to {@code B}.
 	 * @return the iterator of the converted type.
-	 * @throws NullPointerException if the given {@code converter} is {@code null}.
+	 * @throws NullPointerException if the given {@code converter} is
+	 *        {@code null}.
 	 */
-	public <B> Iterator<B> iterator(
-		final Function<? super T, ? extends B> mapper
-	);
+	public default <B> Iterator<B> iterator(final Function<? super T, ? extends B> mapper) {
+		return new Iterator<B>() {
+			private Iterator<T> iterator = iterator();
 
-	/**
-	 * Applies a {@code function} to all elements of this sequence.
-	 *
-	 * @param consumer the code to apply to the elements.
-	 * @throws NullPointerException if the given {@code function} is
-	 *          {@code null}.
-	 */
-	public default void forEach(final Consumer<? super T> consumer) {
-		if (this instanceof RandomAccess) {
-			for (int i = 0, n = length(); i < n; ++i) {
-				consumer.accept(get(i));
+			@Override
+			public boolean hasNext() {
+				return iterator.hasNext();
 			}
-		} else {
-			for (final T value : this) {
-				consumer.accept(value);
+
+			@Override
+			public B next() {
+				return mapper.apply(iterator.next());
 			}
-		}
+		};
 	}
 
 	/**
