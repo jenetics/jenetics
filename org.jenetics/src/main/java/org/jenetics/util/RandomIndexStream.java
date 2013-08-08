@@ -44,8 +44,8 @@ import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since xxx
- * @version xxx &mdash; <em>$Date: 2013-07-12 $</em>
+ * @since @__new_version__@
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-08-08 $</em>
  */
 public class RandomIndexStream implements IntStream {
 
