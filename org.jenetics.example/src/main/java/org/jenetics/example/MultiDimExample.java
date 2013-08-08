@@ -2,11 +2,12 @@ package org.jenetics.example;
 
 import org.jscience.mathematics.number.Float64;
 
+import java.util.function.Function;
+
 import org.jenetics.Float64Chromosome;
 import org.jenetics.Float64Gene;
 import org.jenetics.Genotype;
 import org.jenetics.util.Factory;
-import org.jenetics.util.Function;
 
 public class MultiDimExample {
 
