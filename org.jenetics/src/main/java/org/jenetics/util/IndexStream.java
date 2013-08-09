@@ -91,7 +91,8 @@ public abstract class IndexStream {
 	}
 
 	/**
-	 * Create a new random IndexIterator.
+	 * Create a new random IndexIterator. The elements returned by this stream
+	 * are strictly increasing.
 	 *
 	 * @param n the maximal value (exclusively) the created index stream will
 	 *        return.
