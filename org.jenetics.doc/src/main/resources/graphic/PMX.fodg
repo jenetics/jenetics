@@ -6,8 +6,8 @@
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="VisibleAreaTop" config:type="int">776</config:config-item>
    <config:config-item config:name="VisibleAreaLeft" config:type="int">796</config:config-item>
-   <config:config-item config:name="VisibleAreaWidth" config:type="int">33316</config:config-item>
-   <config:config-item config:name="VisibleAreaHeight" config:type="int">16614</config:config-item>
+   <config:config-item config:name="VisibleAreaWidth" config:type="int">33315</config:config-item>
+   <config:config-item config:name="VisibleAreaHeight" config:type="int">16613</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
@@ -92,7 +92,7 @@
    <config:config-item config:name="PrintQuality" config:type="int">0</config:config-item>
    <config:config-item config:name="PrinterIndependentLayout" config:type="string">low-resolution</config:config-item>
    <config:config-item config:name="PrinterName" config:type="string">Generic Printer</config:config-item>
-   <config:config-item config:name="PrinterSetup" config:type="base64Binary">kAH+/0dlbmVyaWMgUHJpbnRlcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU0dFTlBSVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAMAtgAAAAAAAAAIAFZUAAAkbQAASm9iRGF0YSAxCnByaW50ZXI9R2VuZXJpYyBQcmludGVyCm9yaWVudGF0aW9uPVBvcnRyYWl0CmNvcGllcz0xCm1hcmdpbmRhanVzdG1lbnQ9MCwwLDAsMApjb2xvcmRlcHRoPTI0CnBzbGV2ZWw9MApwZGZkZXZpY2U9MApjb2xvcmRldmljZT0wClBQRENvbnRleERhdGEKRHVwbGV4Ok5vbmUAUGFnZVNpemU6TGV0dGVyAAASAENPTVBBVF9EVVBMRVhfTU9ERQoARFVQTEVYX09GRg==</config:config-item>
+   <config:config-item config:name="PrinterSetup" config:type="base64Binary">kAH+/0dlbmVyaWMgUHJpbnRlcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU0dFTlBSVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAMAtgAAAAAAAAAIAFZUAAAkbQAASm9iRGF0YSAxCnByaW50ZXI9R2VuZXJpYyBQcmludGVyCm9yaWVudGF0aW9uPVBvcnRyYWl0CmNvcGllcz0xCm1hcmdpbmRhanVzdG1lbnQ9MCwwLDAsMApjb2xvcmRlcHRoPTI0CnBzbGV2ZWw9MApwZGZkZXZpY2U9MApjb2xvcmRldmljZT0wClBQRENvbnRleERhdGEKUGFnZVNpemU6TGV0dGVyAER1cGxleDpOb25lAAASAENPTVBBVF9EVVBMRVhfTU9ERQoARFVQTEVYX09GRg==</config:config-item>
    <config:config-item config:name="SaveVersionOnClose" config:type="boolean">false</config:config-item>
    <config:config-item config:name="ScaleDenominator" config:type="int">1</config:config-item>
    <config:config-item config:name="ScaleNumerator" config:type="int">1</config:config-item>
@@ -360,7 +360,10 @@
    <style:graphic-properties draw:marker-end="Arrow" draw:marker-end-width="0.203cm" draw:fill="none" draw:textarea-vertical-align="middle"/>
   </style:style>
   <style:style style:name="gr3" style:family="graphic" style:parent-style-name="standard">
-   <style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" draw:textarea-horizontal-align="left" draw:auto-grow-height="true" draw:auto-grow-width="true" fo:min-height="0cm" fo:min-width="0cm"/>
+   <style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" draw:textarea-horizontal-align="left" draw:auto-grow-height="true" draw:auto-grow-width="true" fo:min-height="0.712cm" fo:min-width="0.565cm"/>
+  </style:style>
+  <style:style style:name="gr4" style:family="graphic" style:parent-style-name="standard">
+   <style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" draw:textarea-horizontal-align="left" draw:auto-grow-height="true" draw:auto-grow-width="true" fo:min-height="0.712cm" fo:min-width="0.531cm"/>
   </style:style>
   <style:style style:name="P1" style:family="paragraph">
    <style:paragraph-properties fo:text-align="center"/>
@@ -374,12 +377,7 @@
    <style:text-properties fo:font-family="&apos;Droid Serif&apos;" style:font-family-generic="swiss" style:font-pitch="variable" fo:font-size="18pt" fo:font-style="normal" fo:font-weight="bold" style:font-size-asian="18pt" style:font-size-complex="18pt"/>
   </style:style>
   <style:style style:name="P4" style:family="paragraph">
-   <style:paragraph-properties fo:text-align="center"/>
-   <style:text-properties fo:font-size="18pt" fo:font-style="normal" fo:font-weight="bold" style:font-size-asian="18pt" style:font-size-complex="18pt"/>
-  </style:style>
-  <style:style style:name="P5" style:family="paragraph">
-   <style:paragraph-properties fo:text-align="center"/>
-   <style:text-properties fo:font-size="18pt" fo:font-style="italic" fo:font-weight="normal" style:font-size-asian="18pt" style:font-size-complex="18pt"/>
+   <style:text-properties fo:font-style="italic" style:font-style-asian="italic" style:font-style-complex="italic"/>
   </style:style>
   <style:style style:name="T1" style:family="text">
    <style:text-properties fo:font-family="&apos;Droid Serif&apos;" style:font-family-generic="swiss" style:font-pitch="variable" fo:font-size="18pt" fo:font-style="italic" fo:font-weight="normal" style:font-size-asian="18pt" style:font-size-complex="18pt"/>
@@ -388,7 +386,7 @@
    <style:text-properties fo:font-family="&apos;Droid Serif&apos;" style:font-family-generic="swiss" style:font-pitch="variable" fo:font-size="18pt" fo:font-style="normal" fo:font-weight="bold" style:font-size-asian="18pt" style:font-size-complex="18pt"/>
   </style:style>
   <style:style style:name="T3" style:family="text">
-   <style:text-properties fo:font-family="&apos;Droid Serif&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/>
+   <style:text-properties fo:font-style="italic" style:font-style-asian="italic" style:font-style-complex="italic"/>
   </style:style>
   <text:list-style style:name="L1">
    <text:list-level-style-bullet text:level="1" text:bullet-char="●">
@@ -545,15 +543,15 @@
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="7.045cm" svg:y="5cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">6</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">6</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="8.045cm" svg:y="5cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">5</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">5</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="9.045cm" svg:y="5cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">4</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">4</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="10.045cm" svg:y="5cm">
@@ -577,15 +575,15 @@
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="7.045cm" svg:y="6cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">3</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">3</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="8.045cm" svg:y="6cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">4</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">4</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="9.045cm" svg:y="6cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">5</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">5</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="10.045cm" svg:y="6cm">
@@ -631,19 +629,19 @@
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="7.045cm" svg:y="8cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">6</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">6</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="8.045cm" svg:y="8cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">5</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">5</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="9.045cm" svg:y="8cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">4</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">4</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="10.045cm" svg:y="8cm">
-     <text:p text:style-name="P4"><text:span text:style-name="T3">3</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T2">3</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="11.045cm" svg:y="8cm">
@@ -663,19 +661,19 @@
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="7.045cm" svg:y="9cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">3</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">3</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="8.045cm" svg:y="9cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">4</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">4</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="9.045cm" svg:y="9cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">5</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">5</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="10.045cm" svg:y="9cm">
-     <text:p text:style-name="P5"><text:span text:style-name="T3">6</text:span></text:p>
+     <text:p text:style-name="P1"><text:span text:style-name="T1">6</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
     <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout" svg:width="1cm" svg:height="1cm" svg:x="11.045cm" svg:y="9cm">
@@ -704,19 +702,19 @@
      <text:p text:style-name="P1"><text:span text:style-name="T2">0</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
-    <draw:frame draw:style-name="gr3" draw:layer="layout" svg:width="1.065cm" svg:height="0.962cm" svg:x="2.4cm" svg:y="2.5cm">
+    <draw:frame draw:style-name="gr3" draw:text-style-name="P4" draw:layer="layout" svg:width="1.065cm" svg:height="0.962cm" svg:x="2.4cm" svg:y="2.5cm">
      <draw:text-box>
-      <text:p>a)</text:p>
+      <text:p text:style-name="P4"><text:span text:style-name="T3">a)</text:span></text:p>
      </draw:text-box>
     </draw:frame>
-    <draw:frame draw:style-name="gr3" draw:layer="layout" svg:width="1.065cm" svg:height="0.962cm" svg:x="2.401cm" svg:y="5.5cm">
+    <draw:frame draw:style-name="gr3" draw:text-style-name="P4" draw:layer="layout" svg:width="1.065cm" svg:height="0.962cm" svg:x="2.401cm" svg:y="5.5cm">
      <draw:text-box>
-      <text:p>b)</text:p>
+      <text:p text:style-name="P4"><text:span text:style-name="T3">b)</text:span></text:p>
      </draw:text-box>
     </draw:frame>
-    <draw:frame draw:style-name="gr3" draw:layer="layout" svg:width="1.031cm" svg:height="0.962cm" svg:x="2.401cm" svg:y="8.5cm">
+    <draw:frame draw:style-name="gr4" draw:text-style-name="P4" draw:layer="layout" svg:width="1.031cm" svg:height="0.962cm" svg:x="2.401cm" svg:y="8.5cm">
      <draw:text-box>
-      <text:p>c)</text:p>
+      <text:p text:style-name="P4"><text:span text:style-name="T3">c)</text:span></text:p>
      </draw:text-box>
     </draw:frame>
    </draw:page>
