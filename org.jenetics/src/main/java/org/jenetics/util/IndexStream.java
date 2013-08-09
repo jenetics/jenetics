@@ -49,7 +49,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-08-07 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-08-09 $</em>
  */
 public abstract class IndexStream {
 
@@ -91,7 +91,8 @@ public abstract class IndexStream {
 	}
 
 	/**
-	 * Create a new random IndexIterator.
+	 * Create a new random IndexIterator. The elements returned by this stream
+	 * are strictly increasing.
 	 *
 	 * @param n the maximal value (exclusively) the created index stream will
 	 *        return.
