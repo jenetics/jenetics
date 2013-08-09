@@ -3390,7 +3390,7 @@ MultiPointCrossover
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -3618,7 +3618,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/PMX.svg
-	width 50text%
+	width 60text%
 	BoundingBox 0bp 0bp 500bp 375bp
 	clip
 	rotateOrigin leftTop
@@ -6951,6 +6951,28 @@ Selector
 Alterer
 \family default
  classes for choosing random genes and/or chromosomes (indices).
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The elements returned by the 
+\emph on
+random
+\emph default
+ 
+\family typewriter
+IndexStream 
+\family default
+are strictly increasing, except the termination element., which is 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
