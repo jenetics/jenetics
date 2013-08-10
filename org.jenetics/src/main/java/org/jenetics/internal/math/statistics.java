@@ -44,7 +44,7 @@ public final class statistics extends StaticObject {
 	/**
 	 * Uses Lanczos approximation formula. See Numerical Recipes 6.1.
 	 *
-	 * @param x
+	 * @param x the value to calculate the log gamma for.
 	 * @return the log gamma value.
 	 */
 	public static double logGamma(final double x) {

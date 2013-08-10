@@ -111,7 +111,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	/**
 	 * Constructing a new BitChromosome with the given _length. The TRUEs and
-	 * FALSE in the {@code Chromosome} are equaly distributed.
+	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>_length</code> is smaller
@@ -127,7 +127,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * BitChromosome will be <code>bitSet.length()</code>
 	 * (@see BitSet#length).
 	 *
-	 * @param bits
+	 * @param bits the bit-set which initializes the chromosome
 	 * @throws NullPointerException if the <code>bitSet</code> is
 	 *         <code>null</code>.
 	 */
@@ -137,7 +137,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	/**
 	 * @param length Length of the BitChromosome.
-	 * @param bits
+	 * @param bits the bit-set which initializes the chromosome
 	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
 	 *         than one.
 	 * @throws NullPointerException if the <code>bitSet</code> is
