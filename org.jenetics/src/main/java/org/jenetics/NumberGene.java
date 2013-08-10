@@ -39,7 +39,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-06-12 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-08-10 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -56,24 +56,18 @@ public abstract class NumberGene<
 	/**
 	 * The minimum value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _min;
 
 	/**
 	 * The maximum value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _max;
 
 	/**
 	 * The value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _value;
 

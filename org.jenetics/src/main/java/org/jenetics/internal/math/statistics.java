@@ -35,7 +35,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-11 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-10 $</em>
  */
 public final class statistics extends StaticObject {
 	private statistics() {}
@@ -44,7 +44,7 @@ public final class statistics extends StaticObject {
 	/**
 	 * Uses Lanczos approximation formula. See Numerical Recipes 6.1.
 	 *
-	 * @param x
+	 * @param x the value to calculate the log gamma for.
 	 * @return the log gamma value.
 	 */
 	public static double logGamma(final double x) {
