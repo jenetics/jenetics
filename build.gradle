@@ -49,6 +49,9 @@ class Includes {
  */
 ext {
 	jeneticsVersion = '1.4.0'
+	jeneticsAuthor = 'Franz Wilhelsmtötter'
+	jeneticsName = 'Jenetics'
+	jeneticsURL = 'http://jenetics.sourceforge.net'
 
 	now = new Date()
 	year = now.year + 1900
