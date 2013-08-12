@@ -91,10 +91,10 @@ subprojects { subproj ->
 	}
 	copy {
 		from("project") {
-			exclude "**/*.java"
-			exclude "**/*.java"
-			exclude "**/*.xml"
-			exclude "**/*.gradle"
+			exclude '**/*.java'
+			exclude '**/*.java'
+			exclude '**/*.xml'
+			exclude '**/*.gradle'
 		}
 		into "${exportProjectDir}"
 	}
@@ -102,16 +102,16 @@ subprojects { subproj ->
 	// Copy the files in the base directory.
 	copy {
 		from(".") {
-			include "*.*"
-			exclude "org.*"
-			exclude ".gradle"
-			exclude ".hgignore"
-			exclude ".hgtags"
-			exclude "*.iml"
-			exclude "*.ipr"
-			exclude "*.iws"
-			exclude ".project"
-			exclude ".classpath"
+			include '*.*'
+			exclude 'org.*'
+			exclude '.gradle'
+			exclude '.hgignore'
+			exclude '.hgtags'
+			exclude '*.iml'
+			exclude '*.ipr'
+			exclude '*.iws'
+			exclude '.project'
+			exclude '.classpath'
 		}
 		into "${exportBaseDir}"
 		filter(ReplaceTokens, tokens: [
@@ -135,7 +135,7 @@ task zip(type: Zip) {
 
 	doLast {
 		def zip = new File("${identifier}.zip")
-		zip.renameTo(new File("build/package", zip.getName()))
+		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
 

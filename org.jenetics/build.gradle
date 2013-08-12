@@ -168,8 +168,8 @@ javadoc {
 		//options.addStringOption('-subpackages', 'org.jenetics')
 		//options.addStringOption('-exclude', 'org.jenetics.internal.util')
 		
-		group('Core API', ['org.jenetics']).
-		group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+		//group('Core API', ['org.jenetics']).
+		//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 	}
 
 	def destination = destinationDir.path
@@ -215,8 +215,8 @@ task export(dependsOn: pack) << {
 
 jacocoTestReport{
     reports {
-            xml.enabled true
-            csv.enabled true
+		xml.enabled true
+		csv.enabled true
     }
 }
 
