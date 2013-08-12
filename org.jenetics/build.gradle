@@ -35,7 +35,7 @@ apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-apply from: '../commons.gradle'
+apply from: "${rootDir}/commons.gradle"
 
 task jarjar(type: Jar) {
 	baseName = project.name + '-all'
@@ -47,12 +47,12 @@ task jarjar(type: Jar) {
 	}
 	manifest {
 		attributes 'Implementation-Title': 'org.jenetics-all',
-				'Implementation-Versionv: version,
-				'Implementation-URL': 'http://jenetics.sourceforge.net',
-				'Implementation-Vendor': 'Jenetic',
-				'ProjectNamev: 'Jenetics',
-				'Versionv: version,
-				'Maintainerv: 'Franz Wilhelmstötter'
+				'Implementation-Versionv': version,
+				'Implementation-URL': "${jeneticsURL}",
+				'Implementation-Vendor': "${jeneticsName}",
+				'ProjectName': "${jeneticsName}",
+				'Version': version,
+				'Maintainer': "${jeneticsAuthor}"
 	}
 }
 
@@ -136,17 +136,17 @@ jar {
 				'org.jenetics',
 				'org.jenetics.util',
 				'org.jenetics.stat'
-		instruction 'Bundle-Vendor', 'Franz Wilhelmstötter'
+		instruction 'Bundle-Vendor', "${jeneticsAuthor}"
 		instruction 'Bundle-Description', 'Jenetics - Java Genetic Algorithm Library'
-		instruction 'Bundle-DocUR', 'http://jenetics.sourceforge.net'
+		instruction 'Bundle-DocUR', "${jeneticsURL}"
 
 		attributes 'Implementation-Title': 'org.jenetics',
 					'Implementation-Version': version,
-					'Implementation-URL': 'http://jenetics.sourceforge.net',
-					'Implementation-Vendor': 'Jenetics',
-					'ProjectName': 'Jenetics',
+					'Implementation-URL': "${jeneticsURL}",
+					'Implementation-Vendor': "${jeneticsName}",
+					'ProjectName': "${jeneticsName}",
 					'Version': version,
-					'Maintainer': 'Franz Wilhelmstötter'
+					'Maintainer': "${jeneticsAuthor}"
 	}
 }
 
@@ -167,7 +167,7 @@ javadoc {
 		windowTitle = "Jenetics API ${project.version}"
 		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
 		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
-		stylesheetFile = file('../project/resources/javadoc/stylesheet.css')
+		stylesheetFile = file("${rootDir}/project/resources/javadoc/stylesheet.css")
 		
 		exclude 'org/jenetics/internal/**'
 		
@@ -184,7 +184,7 @@ javadoc {
 		javaexec {
 			main = 'org.jenetics.colorizer.Colorize'
 			args destination
-			classpath = files('../project/lib/colorizer.jar')
+			classpath = files("${rootDir}/project/lib/colorizer.jar")
 		}
 		javaexec {
 			main = 'de.java2html.Java2Html'
@@ -192,7 +192,7 @@ javadoc {
 				'-srcdir', 'src/main/java',
 				'-targetdir', "$destination/src-html"
 			]
-			classpath = files("../project/lib/java2html.jar")
+			classpath = files("${rootDir}/project/lib/java2html.jar")
 		}
 		copy {
 			from 'src/main/java/org/jenetics/doc-files'

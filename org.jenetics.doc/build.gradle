@@ -32,7 +32,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 
-apply from: '../commons.gradle'
+apply from: "${rootDir}/commons.gradle"
 
 task buildManual << {
 	def buildTemp = new File(buildDir, "tmp")
