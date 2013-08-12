@@ -1,0 +1,5 @@
+repositories {
+	flatDir(dir: "../project/lib")
+	mavenCentral()
+}
+
