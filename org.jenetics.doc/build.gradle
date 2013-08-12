@@ -26,7 +26,7 @@ import java.util.Date
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply from: "../build-util.gradle"
+apply from: '../commons.gradle'
 
 task buildManual << {
 	def buildTemp = new File(buildDir, "tmp")

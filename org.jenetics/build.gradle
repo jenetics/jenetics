@@ -23,20 +23,13 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: "java"
-apply plugin: "jacoco"
-apply plugin: "osgi"
-apply plugin: "eclipse"
-apply plugin: "idea"
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'osgi'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-apply from: "../build-util.gradle"
-
-/*
-tasks.withType(AbstractCompile).all { AbstractCompile compile ->
-	//compile.options.debug = true
-	compile.options.compilerArgs = ['-Xlint:all']
-}
-*/
+apply from: '../commons.gradle'
 
 task jarjar(type: Jar) {
 	baseName = project.name + "-all"
@@ -231,14 +224,9 @@ configurations {
     compile
 }
 
-repositories {
-	flatDir(dir: "../project/lib")
-	mavenCentral()
-}
-
 dependencies {
-	compile "jscience:jscience:4.3.1"
-	testCompile "testng:testng:6.8.1"
+	compile includes.JScience
+	testCompile includes.TestNG
 }
 
 

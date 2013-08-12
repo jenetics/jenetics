@@ -21,13 +21,39 @@
  *
  */
 
+import java.text.SimpleDateFormat
+import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "eclipse"
 apply plugin: "idea"
 apply plugin: "signing"
 
-apply from: "./build-util.gradle"
+/**
+ * Class which defines the external dependencies.
+ */
+class Includes {
+	final JScience = 'jscience:jscience:4.3.1'
+	final TestNG = 'testng:testng:6.8.1'
+}
+
+
+/**
+ * Definition of additional variables.
+ */
+ext {
+	jeneticsVersion = '1.4.0'
+
+	now = new Date()
+	year = now.year + 1900
+	copyrightYear = "2007-${year}".toString()
+	identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+	manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
+	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	
+	includes = new Includes()
+}
 
 allprojects {
 	//group = "org.gradle"
@@ -35,17 +61,13 @@ allprojects {
 
 subprojects { subproj ->
 	version = jeneticsVersion
-	if (plugins.hasPlugin("java")) {
+	if (plugins.hasPlugin('java')) {
 		sourceCompatibility = 1.7
 		targetCompatibility = 1.7
-
 	}
 }
 
 
-//task clean << {
-//	buildDir.deleteDir()
-//}
 
  task pack << {
 	def exportBaseDir = new File(buildDir, "package/${identifier}/source")

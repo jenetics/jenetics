@@ -28,7 +28,7 @@ apply plugin: "osgi"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
-apply from: "../build-util.gradle"
+apply from: '../commons.gradle'
 
  task pack(dependsOn: build) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
@@ -101,10 +101,6 @@ jar {
 					"Version": version,
 					"Maintainer": "Franz Wilhelmstötter"
 	}
-}
-
-repositories {
-	flatDir(dir: "../project/lib")
 }
 
 dependencies {
