@@ -32,7 +32,7 @@ apply plugin: 'idea'
 apply from: '../commons.gradle'
 
 task jarjar(type: Jar) {
-	baseName = project.name + "-all"
+	baseName = project.name + '-all'
 	from files(sourceSets.main.output.classesDir)
 	from {
 		configurations.compile.collect {
@@ -40,20 +40,20 @@ task jarjar(type: Jar) {
 		}
 	}
 	manifest {
-		attributes "Implementation-Title": "org.jenetics-all",
-				"Implementation-Version": version,
-				"Implementation-URL": "http://jenetics.sourceforge.net",
-				"Implementation-Vendor": "Jenetics",
-				"ProjectName": "Jenetics",
-				"Version": version,
-				"Maintainer": "Franz Wilhelmstötter"
+		attributes 'Implementation-Title': 'org.jenetics-all',
+				'Implementation-Versionv: version,
+				'Implementation-URL': 'http://jenetics.sourceforge.net',
+				'Implementation-Vendor': 'Jenetic',
+				'ProjectNamev: 'Jenetics',
+				'Versionv: version,
+				'Maintainerv: 'Franz Wilhelmstötter'
 	}
 }
 
 task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	def exportLibDir = new File(exportBaseDir, "lib")
+	def exportLibDir = new File(exportBaseDir, 'lib')
 
 	exportBaseDir.mkdirs()
 	exportSourceDir.mkdirs()
@@ -65,7 +65,7 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 		into "${exportLibDir}"
 	}
 	copy {
-		from("../project/lib") {
+		from('../project/lib') {
 			include "jscience-*.jar"
 		}
 		into "${exportLibDir}"
@@ -74,15 +74,15 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	// Copy the sources.
 	copy {
 		from(".") {
-			include "src/**"
-			include "*.gradle"
-			exclude ".gradle"
-			exclude "src/site"
-			exclude "*.iml"
-			exclude "*.ipr"
-			exclude "*.iws"
-			exclude ".project"
-			exclude ".classpath"
+			include 'src/**'
+			include '*.gradle'
+			exclude '.gradle'
+			exclude 'src/site'
+			exclude '*.iml'
+			exclude '*.ipr'
+			exclude '*.iws'
+			exclude '.project'
+			exclude '.classpath'
 		}
 		into "${exportSourceDir}"
 		filter(ReplaceTokens, tokens: [
@@ -94,7 +94,7 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	// Copy the javadoc
 	copy {
 		from("${buildDir}/docs") {
-			include "javadoc/**/*.html"
+			include 'javadoc/**/*.html'
 		}
 		into "${exportBaseDir}"
 		filter(ReplaceTokens, tokens: [
@@ -104,7 +104,7 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	}
 	copy {
 		from("${buildDir}/docs") {
-			exclude "javadoc/**/*.html"
+			exclude 'javadoc/**/*.html'
 		}
 		into "${exportBaseDir}"
 	}
@@ -112,10 +112,10 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	// Copy the test-report.
 	copy {
 		from("${buildDir}/reports") {
-			include "tests/**"
-			include "jacoco/**"
-			include "*.gradle"
-			exclude ".gradle"
+			include 'tests/**'
+			include 'jacoco/**'
+			include '*.gradle'
+			exclude '.gradle'
 		}
 		into "${exportBaseDir}/reports"
 	}
