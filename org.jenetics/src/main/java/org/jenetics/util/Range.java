@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -43,7 +44,7 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 	public Range(final C min, final C max) {
 		super(requireNonNull(min, "Min value"), requireNonNull(max, "Max value"));
 		if (min.compareTo(max) >= 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Min value must be smaller the max value: [%s, %s]", min, max
 				));
 		}

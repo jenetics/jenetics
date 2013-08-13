@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -128,7 +129,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 					"%s[samples=%d, min=%s]",
 					getClass().getSimpleName(), getSamples(), getMin()
 				);
@@ -221,7 +222,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 					"%s[samples=%d, max=%s]",
 					getClass().getSimpleName(), getSamples(), getMax()
 				);
@@ -331,7 +332,7 @@ public final class accumulators extends StaticObject {
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 					"%s[samples=%d, min=%s, max=%s]",
 					getClass().getSimpleName(), getSamples(), getMin(), getMax()
 				);

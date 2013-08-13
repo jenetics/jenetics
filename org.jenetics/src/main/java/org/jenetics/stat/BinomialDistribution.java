@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
 
@@ -81,7 +82,7 @@ class BinomialDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("p(x) = %s", "");
+			return format("p(x) = %s", "");
 		}
 
 	}
@@ -129,7 +130,7 @@ class BinomialDistribution<
 
 		@Override
 		public String toString() {
-			return String.format("p(x) = %s", "");
+			return format("p(x) = %s", "");
 		}
 
 	}

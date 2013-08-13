@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -227,10 +228,10 @@ public final class Timer
 
 	@Override
 	public String toString() {
-		return String.format(
-					"%s: %11.11f s", _label,
-					getTime().doubleValue(SI.SECOND)
-				);
+		return format(
+			"%s: %11.11f s", _label,
+			getTime().doubleValue(SI.SECOND)
+		);
 	}
 
 }

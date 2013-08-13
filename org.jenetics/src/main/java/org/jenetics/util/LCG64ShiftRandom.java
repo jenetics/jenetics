@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -154,7 +155,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public String toString() {
-			return String.format("%s[a=%d, b=%d]", getClass().getName(), a, b);
+			return format("%s[a=%d, b=%d]", getClass().getName(), a, b);
 		}
 	}
 
@@ -447,12 +448,12 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void split(final int p, final int s) {
 		if (p < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"p must be >= 1 but was %d.", p
 			));
 		}
 		if (s >= p) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"s must be < %d but was %d.", p, s
 			));
 		}
@@ -474,13 +475,13 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void jump2(final int s) {
 		if (s < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"s must be positive but was %d.", s
 			));
 		}
 
 		if (s >= Long.SIZE) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"The 'jump2' size must be smaller than %d but was %d.",
 				Long.SIZE, s
 			));
@@ -498,7 +499,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void jump(final long step) {
 		if (step < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"step must be positive but was %d", step
 			));
 		}
@@ -528,7 +529,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[a=%d, b=%d, r=%d",
 			getClass().getName(), _a, _b, _r
 		);

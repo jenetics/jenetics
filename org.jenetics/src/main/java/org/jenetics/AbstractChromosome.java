@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.functions.Null;
 import static org.jenetics.util.object.Verify;
@@ -79,7 +80,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
 
 		if (genes.length() < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Chromosome length < 1: %d", genes.length()
 			));
 		}

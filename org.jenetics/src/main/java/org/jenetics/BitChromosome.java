@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
@@ -198,7 +199,7 @@ public class BitChromosome extends Number<BitChromosome>
 			} else if (c == '0') {
 				bit.set(_genes, i, false);
 			} else {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"Illegal character '%s' at position %d", c, i
 				));
 			}

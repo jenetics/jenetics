@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -193,7 +194,7 @@ public final class CharSeq
 			}
 			@Override public Character next() {
 				if (!hasNext()) {
-					throw new NoSuchElementException(String.format(
+					throw new NoSuchElementException(format(
 							"Index %s is out of range [0, %s)",
 							_pos, _characters.length
 						));

@@ -61,7 +61,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	ArraySeq(final ArrayRef array, final int start, final int end) {
 		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
+			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", start, end
 			));
 		}

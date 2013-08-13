@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -182,7 +183,7 @@ public final class functions extends StaticObject {
 			return object == null ? Boolean.TRUE : Boolean.FALSE;
 		}
 		@Override public String toString() {
-			return String.format("%s", getClass().getSimpleName());
+			return format("%s", getClass().getSimpleName());
 		}
 	};
 
@@ -201,7 +202,7 @@ public final class functions extends StaticObject {
 				return a.apply(object) ? Boolean.FALSE : Boolean.TRUE;
 			}
 			@Override public String toString() {
-				return String.format("%s[%s]", getClass().getSimpleName(), a);
+				return format("%s[%s]", getClass().getSimpleName(), a);
 			}
 		};
 	}
@@ -227,7 +228,7 @@ public final class functions extends StaticObject {
 				return a.apply(object) && b.apply(object);
 			}
 			@Override public String toString() {
-				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
+				return format("%s[%s, %s]", getClass().getSimpleName(), a, b);
 			}
 		};
 	}
@@ -253,7 +254,7 @@ public final class functions extends StaticObject {
 				return a.apply(object) || b.apply(object);
 			}
 			@Override public String toString() {
-				return String.format(
+				return format(
 						"%s[%s, %s]",
 						getClass().getSimpleName(), a, b
 					);

@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
@@ -155,7 +156,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 
 	@Override
 	public String toString() {
-		return String.format("%s[%s]", getClass().getSimpleName(), _alterers);
+		return format("%s[%s]", getClass().getSimpleName(), _alterers);
 	}
 
 	/**

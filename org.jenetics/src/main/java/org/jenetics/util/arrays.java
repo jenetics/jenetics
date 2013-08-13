@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -539,12 +540,12 @@ public final class arrays extends StaticObject {
 	public static int[] subset(final int n, final int k, final Random random) {
 		requireNonNull(random, "Random");
 		if (k <= 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Subset size smaller or equal zero: %s", k
 				));
 		}
 		if (n < k) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"n smaller than k: %s < %s.", n, k
 				));
 		}
@@ -624,17 +625,17 @@ public final class arrays extends StaticObject {
 
 		final int k = sub.length;
 		if (k <= 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Subset size smaller or equal zero: %s", k
 			));
 		}
 		if (n < k) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
 		if (!math.isMultiplicationSave(n, k)) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
 				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
 			));
@@ -783,7 +784,7 @@ public final class arrays extends StaticObject {
 	public static int[] permutation(final int[] p, final long rank) {
 		requireNonNull(p, "Permutation array");
 		if (rank < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Rank smaler than 1: %s", rank
 				));
 		}
@@ -840,7 +841,7 @@ public final class arrays extends StaticObject {
 	) {
 		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
-			throw new IndexOutOfBoundsException(String.format(
+			throw new IndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s]", start, end
 			));
 		}

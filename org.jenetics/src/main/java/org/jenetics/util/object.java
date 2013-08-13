@@ -22,6 +22,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -60,7 +61,7 @@ public final class object extends StaticObject {
 			public Boolean apply(final C value) {
 				requireNonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
-					throw new IllegalArgumentException(String.format(
+					throw new IllegalArgumentException(format(
 						"Given value %s is out of range [%s, %s)",
 						value, min, max
 					));
@@ -167,7 +168,7 @@ public final class object extends StaticObject {
 	 */
 	public static double nonNegative(final double value, final String message) {
 		if (value < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"%s must not negative: %f.", message, value
 				));
 		}
@@ -209,7 +210,7 @@ public final class object extends StaticObject {
 	 */
 	public static double checkProbability(final double p) {
 		if (p < 0.0 || p > 1.0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"The given probability is not in the range [0, 1]: %f", p
 			));
 		}
