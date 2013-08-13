@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -42,7 +43,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-07-04 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -127,7 +128,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

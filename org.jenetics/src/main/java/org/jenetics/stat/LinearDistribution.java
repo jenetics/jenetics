@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -68,7 +69,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public class LinearDistribution<
 	N extends Number & Comparable<? super N>
@@ -89,7 +90,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -127,7 +128,7 @@ public class LinearDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(Locale.ENGLISH, "p(x) = %f·x + %f", _k, _d);
+			return format(Locale.ENGLISH, "p(x) = %f·x + %f", _k, _d);
 		}
 
 	}
@@ -143,7 +144,7 @@ public class LinearDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -190,7 +191,7 @@ public class LinearDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(Locale.ENGLISH, "P(x) = %f·x² - %f·x", _k/2.0, _d);
+			return format(Locale.ENGLISH, "P(x) = %f·x² - %f·x", _k/2.0, _d);
 		}
 
 	}
@@ -291,7 +292,7 @@ public class LinearDistribution<
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"LinearDistribution[(%f, %f), (%f, %f)]",
 			_x1, _y1, _x2, _y2
 		) ;

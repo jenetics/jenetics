@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -49,7 +50,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public final class GaussianMutator<G extends NumberGene<?, G>>
 	extends Mutator<G>
@@ -109,7 +110,7 @@ public final class GaussianMutator<G extends NumberGene<?, G>>
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[p=%f]",
 			getClass().getSimpleName(),
 			_probability

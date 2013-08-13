@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -62,7 +63,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-26 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -224,7 +225,7 @@ public final class EnumGene<A>
 		}
 
 		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
-			throw new IndexOutOfBoundsException(String.format(
+			throw new IndexOutOfBoundsException(format(
 				"Allele index is not in range [0, %d).", alleleIndex
 			));
 		}

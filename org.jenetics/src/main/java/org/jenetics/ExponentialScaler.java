@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -42,7 +43,7 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-01-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -117,9 +118,9 @@ public final class ExponentialScaler
 
 	@Override
 	public String toString() {
-		return String.format(
-				"%s[a=%f, b=%f, c=%f]",
-				getClass().getSimpleName(), _a, _b, _c
-			);
+		return format(
+			"%s[a=%f, b=%f, c=%f]",
+			getClass().getSimpleName(), _a, _b, _c
+		);
 	}
 }

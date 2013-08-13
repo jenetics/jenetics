@@ -22,6 +22,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
@@ -55,7 +56,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-08-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -198,7 +199,7 @@ public class BitChromosome extends Number<BitChromosome>
 			} else if (c == '0') {
 				bit.set(_genes, i, false);
 			} else {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"Illegal character '%s' at position %d", c, i
 				));
 			}

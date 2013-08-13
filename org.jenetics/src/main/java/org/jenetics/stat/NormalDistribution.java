@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.math.statistics.Φ;
 import static org.jenetics.internal.math.statistics.φ;
@@ -61,7 +62,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-07-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public class NormalDistribution<
 	N extends Number & Comparable<? super N>
@@ -80,7 +81,7 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-07-11 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -115,7 +116,7 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"p(x) = N[µ=%f, σ²=%f](x)", _mean, _var
 			);
@@ -134,7 +135,7 @@ public class NormalDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-07-11 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -175,7 +176,7 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))",
 				_mean, _var
@@ -270,7 +271,7 @@ public class NormalDistribution<
 
 	@Override
 	public String toString() {
-		return String.format("N[µ=%f, σ²=%f]", _mean, _var);
+		return format("N[µ=%f, σ²=%f]", _mean, _var);
 	}
 
 }

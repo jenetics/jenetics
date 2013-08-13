@@ -22,6 +22,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -43,7 +44,7 @@ import org.jenetics.util.Range;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public class UniformDistribution<
 	N extends Number & Comparable<? super N>
@@ -64,7 +65,7 @@ public class UniformDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
 	 */
 	static final class PDF<N extends Number & Comparable<? super N>>
 		implements
@@ -97,7 +98,7 @@ public class UniformDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(Locale.ENGLISH, "p(x) = %s", _probability);
+			return format(Locale.ENGLISH, "p(x) = %s", _probability);
 		}
 
 	}
@@ -116,7 +117,7 @@ public class UniformDistribution<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-11 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-13 $</em>
 	 */
 	static final class CDF<N extends Number & Comparable<? super N>>
 		implements
@@ -155,7 +156,7 @@ public class UniformDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max
 			);
@@ -256,7 +257,7 @@ public class UniformDistribution<
 
 	@Override
 	public String toString() {
-		return String.format("UniformDistribution[%s]", _domain);
+		return format("UniformDistribution[%s]", _domain);
 	}
 
 }
