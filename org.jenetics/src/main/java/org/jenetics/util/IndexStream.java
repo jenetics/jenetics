@@ -35,8 +35,8 @@ import org.jenetics.internal.math.probability;
  *
  * [code]
  * final IndexStream stream = ...;
- * for (int i = stream.next(); i != -1; i = stream.next()) {
- *     System.out.println(i);
+ * for (int index = stream.next(); index != -1; index = stream.next()) {
+ *     System.out.println(index);
  * }
  * [/code]
  * [code]
@@ -135,6 +135,7 @@ public abstract class IndexStream {
 
 		};
 	}
+
 
 }
 
