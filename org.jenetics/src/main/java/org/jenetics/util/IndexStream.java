@@ -35,8 +35,8 @@ import org.jenetics.internal.math.probability;
  *
  * [code]
  * final IndexStream stream = ...;
- * for (int i = stream.next(); i != -1; i = stream.next()) {
- *     System.out.println(i);
+ * for (int index = stream.next(); index != -1; index = stream.next()) {
+ *     System.out.println(index);
  * }
  * [/code]
  * [code]
@@ -49,7 +49,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-08-09 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-08-13 $</em>
  */
 public abstract class IndexStream {
 
@@ -135,6 +135,7 @@ public abstract class IndexStream {
 
 		};
 	}
+
 
 }
 
