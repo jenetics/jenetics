@@ -36,11 +36,11 @@ import org.jenetics.util.CharSeq;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.arrays;
+import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-03-06 $</em>
+ * @version <em>$Date: 2013-08-14 $</em>
  */
 public class MultiPointCrossoverTest {
 
@@ -247,7 +247,7 @@ public class MultiPointCrossoverTest {
 
 			final MSeq<Character> ma1 = a.copy();
 			final MSeq<Character> mb1 = b.copy();
-			final int[] points = arrays.subset(
+			final int[] points = math.subset(
 				a.length() + 1,
 				min(npoints, a.length() + 1),
 				new Random(1234)

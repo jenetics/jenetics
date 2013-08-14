@@ -23,6 +23,7 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-07-16 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-14 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -302,11 +303,220 @@ public final class math extends StaticObject {
 	}
 
 	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[])
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *          {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k) {
+		return subset(n, k, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[], Random)
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *          {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k, final Random random) {
+		requireNonNull(random, "Random");
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+					"Subset size smaller or equal zero: %s", k
+				));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+					"n smaller than k: %s < %s.", n, k
+				));
+		}
+
+		final int[] sub = new int[k];
+		subset(n, sub,random);
+		return sub;
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size
+	 * {@code n}.
+	 * </p>
+	 *
+	 * <p>
+	 * <em>Authors:</em>
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 * 	 version based on the  C++ version by John Burkardt.
+	 * </p>
+	 *
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 * 	 Albert Nijenhuis, Herbert Wilf,
+	 * 	 Combinatorial Algorithms for Computers and Calculators,
+	 * 	 Second Edition,
+	 * 	 Academic Press, 1978,
+	 * 	 ISBN: 0-12-519260-6,
+	 * 	 LC: QA164.N54.
+	 * </p>
+	 *
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *          integer overflow.
+	 */
+	public static void subset(final int n, final int sub[]) {
+		subset(n, sub, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size
+	 * {@code n}.
+	 * </p>
+	 *
+	 * <p>
+	 * <em>Authors:</em>
+	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 *      version based on the  C++ version by John Burkardt.
+	 * </p>
+	 *
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 *      Albert Nijenhuis, Herbert Wilf,
+	 *      Combinatorial Algorithms for Computers and Calculators,
+	 *      Second Edition,
+	 *      Academic Press, 1978,
+	 *      ISBN: 0-12-519260-6,
+	 *      LC: QA164.N54.
+	 * </p>
+	 *
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code sub} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *         integer overflow.
+	 */
+	public static int[] subset(final int n, final int sub[], final Random random) {
+		requireNonNull(random, "Random");
+		requireNonNull(sub, "Sub set array");
+
+		final int k = sub.length;
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+				"Subset size smaller or equal zero: %s", k
+			));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		if (!math.isMultiplicationSave(n, k)) {
+			throw new IllegalArgumentException(format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
+				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
+			));
+		}
+
+		if (sub.length == n) {
+			for (int i = 0; i < sub.length; ++i) {
+				sub[i] = i;
+			}
+			return sub;
+		}
+
+		for (int i = 0; i < k; ++i) {
+			sub[i] = (i*n)/k;
+		}
+
+		int l = 0;
+		int ix = 0;
+		for (int i = 0; i < k; ++i) {
+			do {
+				ix = nextInt(random, 1, n);
+				l = (ix*k - 1)/n;
+			} while (sub[l] >= ix);
+
+			sub[l] = sub[l] + 1;
+		}
+
+		int m = 0;
+		int ip = 0;
+		int is = k;
+		for (int i = 0; i < k; ++i) {
+			m = sub[i];
+			sub[i] = 0;
+
+			if (m != (i*n)/k) {
+				ip = ip + 1;
+				sub[ip - 1] = m;
+			}
+		}
+
+		int ihi = ip;
+		int ids = 0;
+		for (int i = 1; i <= ihi; ++i) {
+			ip = ihi + 1 - i;
+			l = 1 + (sub[ip - 1]*k - 1)/n;
+			ids = sub[ip - 1] - ((l - 1)*n)/k;
+			sub[ip - 1] = 0;
+			sub[is - 1] = l;
+			is = is - ids;
+		}
+
+		int ir = 0;
+		int m0 = 0;
+		for (int ll = 1; ll <= k; ++ll) {
+			l = k + 1 - ll;
+
+			if (sub[l - 1] != 0) {
+				ir = l;
+				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
+				m = (sub[l-1]*n)/k - m0 + 1;
+			}
+
+			ix = nextInt(random, m0, m0 + m - 1);
+
+			int i = l + 1;
+			while (i <= ir && ix >= sub[i - 1]) {
+				ix = ix + 1;
+				sub[ i- 2] = sub[i - 1];
+				i = i + 1;
+			}
+
+			sub[i - 2] = ix;
+			--m;
+		}
+
+		return sub;
+	}
+
+	private static int nextInt(final Random random, final int a, final int b) {
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
+	}
+
+	/**
 	 * Some helper method concerning statistics.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-07-16 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-08-14 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -403,7 +613,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-07-16 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-08-14 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
