@@ -23,7 +23,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.arrays.subset;
+import static org.jenetics.util.math.subset;
 
 import java.util.Random;
 

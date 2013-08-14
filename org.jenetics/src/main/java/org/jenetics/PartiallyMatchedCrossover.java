@@ -31,7 +31,7 @@ import javolution.lang.Immutable;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.arrays;
+import org.jenetics.util.math;
 
 /**
  * <p>
@@ -94,7 +94,7 @@ public final class PartiallyMatchedCrossover<T>
 
 		if (that.length() >= 2) {
 			final Random random = RandomRegistry.getRandom();
-			final int[] points = arrays.subset(that.length(), 2, random);
+			final int[] points = math.subset(that.length(), 2, random);
 
 			that.swap(points[0], points[1], other, points[0]);
 			repair(that, other, points[0], points[1]);
