@@ -26,7 +26,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-12 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-14 $</em>
  */
 
 apply plugin: 'java'
@@ -39,7 +39,7 @@ apply from: "${rootDir}/commons.gradle"
 
 tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.debug = true
-	compile.options.compilerArgs = ['-Xlint:all']
+	//compile.options.compilerArgs = ['-Xlint:all']
 }
 
 task jarjar(type: Jar) {
