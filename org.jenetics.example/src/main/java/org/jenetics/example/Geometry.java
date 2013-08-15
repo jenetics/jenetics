@@ -591,11 +591,11 @@ public class Geometry extends javax.swing.JFrame {
         _drawPanel.setLayout(_drawPanelLayout);
         _drawPanelLayout.setHorizontalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 497, Short.MAX_VALUE)
+            .addGap(0, 434, Short.MAX_VALUE)
         );
         _drawPanelLayout.setVerticalGroup(
             _drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 583, Short.MAX_VALUE)
+            .addGap(0, 477, Short.MAX_VALUE)
         );
 
         _drawToolSplitPane.setLeftComponent(_drawPanel);
