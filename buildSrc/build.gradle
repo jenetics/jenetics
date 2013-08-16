@@ -20,15 +20,14 @@
  *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
-
+ 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since 1.4
  * @version 1.4 &mdash; <em>$Date: 2013-08-16 $</em>
- */
+ */ 
  
-repositories {
-	flatDir(dir: "${rootDir}/buildSrc/lib")
-	mavenCentral()
-}
+apply plugin: 'java'
 
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
