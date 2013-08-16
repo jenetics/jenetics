@@ -34,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -304,12 +305,9 @@ public final class Colorize {
 			"while"
 		};
 
-		private static final Set<String> IDENTIFIERS = new HashSet<>();
-		static {
-			for (int i = 0; i < KEYWORDS.length; i++) {
-				IDENTIFIERS.add(KEYWORDS[i]);
-			}
-		}		
+		private static final Set<String> IDENTIFIERS = new HashSet<>(
+			Arrays.asList(KEYWORDS)
+		);
 		
 	}
 	
