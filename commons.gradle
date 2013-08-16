@@ -28,7 +28,7 @@
  */
  
 repositories {
-	flatDir(dir: "../project/lib")
+	flatDir(dir: "${rootDir}/buildSrc/lib")
 	mavenCentral()
 }
 
