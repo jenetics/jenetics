@@ -1,6 +1,7 @@
 Jenetics-1.4.0
 - Significant performance improvements of 'BitChromosome' class.
 - Mark 'arrays.subset' methods as deprecated; methods has been moved to 'org.jenetics.util.math' class.
+- Improve Gradle build scripts.
 
 Jenetics-1.3.0
 - Add abstract 'Random64' class, respectively make it public.
