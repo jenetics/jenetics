@@ -31,9 +31,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 
-apply plugin: "eclipse"
-apply plugin: "idea"
-apply plugin: "signing"
+apply plugin: 'signing'
 
 /**
  * Class which defines the external dependencies.
