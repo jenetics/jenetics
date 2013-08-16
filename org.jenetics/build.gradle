@@ -187,9 +187,9 @@ javadoc {
 
 	doLast() {
 		javaexec {
-			main = 'org.jenetics.colorizer.Colorize'
+			main 'org.jenetics.colorizer.Colorize'
 			args destination
-			classpath = project(':buildSrc').classpath.asPath
+			classpath "${rootDir}/buildSrc/build/libs/buildSrc.jar"
 		}
 		javaexec {
 			main = 'de.java2html.Java2Html'
