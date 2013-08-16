@@ -189,7 +189,6 @@ javadoc {
 		javaexec {
 			main = 'org.jenetics.colorizer.Colorize'
 			args destination
-			//classpath = files("${rootDir}/buildSrc/build/libs/buildSrc.jar")
 			classpath = project(':buildSrc').classpath.asPath
 		}
 		javaexec {
