@@ -22,6 +22,8 @@
  */
 package org.jenetics.colorizer;
 
+import static java.util.Arrays.asList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +36,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -99,8 +100,9 @@ public final class Colorize {
 		private void colorize(final Path file) throws IOException {
 			_processed++;
 	
-			try (BufferedReader in = new BufferedReader(new InputStreamReader(
-					new FileInputStream(file.toFile()), ENCODING)))
+			try(FileInputStream fis = new FileInputStream(file.toFile());
+				InputStreamReader isr = new InputStreamReader(fis, ENCODING);
+				BufferedReader in = new BufferedReader(isr))
 			{
 				final StringBuilder doc = new StringBuilder(10000);
 				State state = State.DATA;
@@ -251,8 +253,8 @@ public final class Colorize {
 		private static final String KEYWORD_COLOR = "#7F0055";
 		private static final String COMMENT_COLOR = "#3F7F5F";
 		private static final String STRING_COLOR = "#0000FF";
-		
-		private static final String[] KEYWORDS = {
+
+		private static final Set<String> IDENTIFIERS = new HashSet<>(asList(
 			"abstract",
 			"assert",
 			"boolean",
@@ -303,15 +305,9 @@ public final class Colorize {
 			"void",
 			"volatile",
 			"while"
-		};
-
-		private static final Set<String> IDENTIFIERS = new HashSet<>(
-			Arrays.asList(KEYWORDS)
-		);
+		));
 		
 	}
-	
-	
 
 }
 
