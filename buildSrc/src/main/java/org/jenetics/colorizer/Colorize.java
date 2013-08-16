@@ -57,10 +57,10 @@ public final class Colorize {
 			Files.walkFileTree(dir.toPath(), colorizer);
 			
 			System.out.println(String.format(
-					"Colorizer processed %d files and modified %d.",
-					colorizer.getProcessed(),
-					colorizer.getModified()
-				));
+				"Colorizer processed %d files and modified %d.",
+				colorizer.getProcessed(),
+				colorizer.getModified()
+			));
 		} catch (IOException e) {
 			System.err.println("Error while processing files: " + e);
 			System.exit(1);
