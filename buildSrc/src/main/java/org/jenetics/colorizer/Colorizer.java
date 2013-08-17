@@ -43,9 +43,9 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
+ * @version 1.4 &mdash; <em>$Date$</em>
  */
-public final class Colorize extends SimpleFileVisitor<Path> {
+public final class Colorizer extends SimpleFileVisitor<Path> {
 
 	public static void main(final String[] args) {
 		final File dir = new File(args[0]);
@@ -55,7 +55,7 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 		}
 
 		try {
-			final Colorize colorizer = new Colorize();
+			final Colorizer colorizer = new Colorizer();
 			Files.walkFileTree(dir.toPath(), colorizer);
 
 			System.out.println(String.format(
@@ -147,7 +147,7 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
+	 * @version 1.4 &mdash; <em>$Date$</em>
 	 */
 	private static enum State {
 
