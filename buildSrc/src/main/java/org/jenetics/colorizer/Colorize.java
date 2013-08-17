@@ -44,7 +44,7 @@ import java.util.Set;
  * @since 1.0
  * @version 1.4 &mdash; <em>$Date$</em>
  */
-public final class Colorize {
+public final class Colorize extends SimpleFileVisitor<Path> {
 
 	public static void main(final String[] args) {
 		final File dir = new File(args[0]);
@@ -54,9 +54,9 @@ public final class Colorize {
 		}
 
 		try {
-			final Colorizer colorizer = new Colorizer();
+			final Colorize colorizer = new Colorize();
 			Files.walkFileTree(dir.toPath(), colorizer);
-			
+
 			System.out.println(String.format(
 				"Colorizer processed %d files and modified %d.",
 				colorizer.getProcessed(),
@@ -68,84 +68,89 @@ public final class Colorize {
 		}
 	}
 
-	private static final class Colorizer extends SimpleFileVisitor<Path> {	
-		
-		private static final String ENCODING = "UTF-8";
-		
-		private int _processed = 0;
-		private int _modified = 0;
 
-		public int getProcessed() {
-			return _processed;
-		}
-		
-		public int getModified() {
-			return _modified;
-		}
-		
-		@Override
-		public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
-			if (file.toString().endsWith(".html")) {
-				try {
-					colorize(file);
-				} catch (IOException e) {
-					System.out.println("Error while processing file: " + file);
-					return FileVisitResult.TERMINATE;
-				}
+
+	private static final String ENCODING = "UTF-8";
+
+	private int _processed = 0;
+	private int _modified = 0;
+
+	int getProcessed() {
+		return _processed;
+	}
+
+	int getModified() {
+		return _modified;
+	}
+
+	@Override
+	public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
+		if (file.toString().endsWith(".html")) {
+			try {
+				colorize(file);
+			} catch (IOException e) {
+				System.out.println("Error while processing file: " + file);
+				return FileVisitResult.TERMINATE;
 			}
-
-			return FileVisitResult.CONTINUE;
 		}
 
-		private void colorize(final Path file) throws IOException {
-			_processed++;
-	
-			try(FileInputStream fis = new FileInputStream(file.toFile());
-				InputStreamReader isr = new InputStreamReader(fis, ENCODING);
-				BufferedReader in = new BufferedReader(isr))
-			{
-				final StringBuilder doc = new StringBuilder(10000);
-				State state = State.DATA;
-				boolean modified = false;
-				
-				for (int read = in.read(); read != -1; read = in.read()) {
-					if (state != State.DATA) {
-						if (read == '<') {
-							doc.append("&lt;");
-						} else if (read == '>') {
-							doc.append("&gt;");
-						} else if (read == '&') {
-							doc.append("&amp;");
-						} else {
-							doc.append((char)read);
-						}
+		return FileVisitResult.CONTINUE;
+	}
+
+	private void colorize(final Path file) throws IOException {
+		_processed++;
+
+		try(FileInputStream fis = new FileInputStream(file.toFile());
+			InputStreamReader isr = new InputStreamReader(fis, ENCODING);
+			BufferedReader in = new BufferedReader(isr))
+		{
+			final StringBuilder doc = new StringBuilder(10000);
+			State state = State.DATA;
+			boolean modified = false;
+
+			for (int read = in.read(); read != -1; read = in.read()) {
+				if (state != State.DATA) {
+					if (read == '<') {
+						doc.append("&lt;");
+					} else if (read == '>') {
+						doc.append("&gt;");
+					} else if (read == '&') {
+						doc.append("&amp;");
 					} else {
 						doc.append((char)read);
 					}
-					
-					if (state == State.CODE) {
-						modified = true;
-					}
-					
-					state = state.apply(read, doc);
+				} else {
+					doc.append((char)read);
 				}
 
-				if (modified) {
-					_modified++;
-					try (final OutputStreamWriter out = new OutputStreamWriter(
-								new FileOutputStream(file.toFile()), ENCODING)
-							)
-					{
-						out.write(doc.toString());
-					}
-				}				
+				if (state == State.CODE) {
+					modified = true;
+				}
+
+				state = state.apply(read, doc);
+			}
+
+			if (modified) {
+				_modified++;
+				try (final OutputStreamWriter out = new OutputStreamWriter(
+							new FileOutputStream(file.toFile()), ENCODING)
+						)
+				{
+					out.write(doc.toString());
+				}
 			}
 		}
-		
 	}
-	
+
+	/**
+	 * Represents the current 'Colorize' state.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.0
+	 * @version 1.4 &mdash; <em>$Date$</em>
+	 */
 	private static enum State {
-		
+
 		DATA {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
@@ -157,12 +162,12 @@ public final class Colorize {
 					doc.setLength(doc.length() - 6);
 					doc.append("<div class=\"code\"><code lang=\"java\">");
 					state = SKIP_NL;
-				}			
-				
+				}
+
 				return state;
 			}
 		},
-		
+
 		SKIP_NL {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
@@ -174,7 +179,7 @@ public final class Colorize {
 				return state;
 			}
 		},
-		
+
 		CODE {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
@@ -190,12 +195,12 @@ public final class Colorize {
 				{
 					state = COMMENT;
 					doc.insert(doc.length() - 2, "<font color=\"" + COMMENT_COLOR + "\">");
-				}	
-				
+				}
+
 				return state;
 			}
 		},
-		
+
 		IDENTIFIER {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
@@ -215,11 +220,11 @@ public final class Colorize {
 					}
 					state = CODE;
 				}
-				
+
 				return state;
 			}
 		},
-		
+
 		STRING_LITERAL {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
@@ -231,7 +236,7 @@ public final class Colorize {
 				return state;
 			}
 		},
-		
+
 		COMMENT {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
@@ -243,13 +248,13 @@ public final class Colorize {
 				return state;
 			}
 		}
-		
+
 		;
-		
+
 		int _start = -1;
-		
+
 		public abstract State apply(final int read, final StringBuilder doc);
-		
+
 		private static final String KEYWORD_COLOR = "#7F0055";
 		private static final String COMMENT_COLOR = "#3F7F5F";
 		private static final String STRING_COLOR = "#0000FF";
@@ -306,17 +311,6 @@ public final class Colorize {
 			"volatile",
 			"while"
 		));
-		
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
