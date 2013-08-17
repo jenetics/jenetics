@@ -100,7 +100,7 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 	private void colorize(final Path file) throws IOException {
 		_processed++;
 
-		try(FileInputStream fis = new FileInputStream(file.toFile());
+		try (FileInputStream fis = new FileInputStream(file.toFile());
 			InputStreamReader isr = new InputStreamReader(fis, ENCODING);
 			BufferedReader in = new BufferedReader(isr))
 		{
@@ -132,9 +132,8 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 
 			if (modified) {
 				_modified++;
-				try (final OutputStreamWriter out = new OutputStreamWriter(
-							new FileOutputStream(file.toFile()), ENCODING)
-						)
+				try (FileOutputStream fout = new FileOutputStream(file.toFile());
+					OutputStreamWriter out = new OutputStreamWriter(fout, ENCODING))
 				{
 					out.write(doc.toString());
 				}
@@ -247,9 +246,7 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 				}
 				return state;
 			}
-		}
-
-		;
+		};
 
 		int _start = -1;
 
