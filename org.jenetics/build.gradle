@@ -26,7 +26,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-16 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
  */
 
 apply plugin: 'java'
@@ -187,7 +187,7 @@ javadoc {
 
 	doLast() {
 		javaexec {
-			main 'org.jenetics.colorizer.Colorize'
+			main 'org.jenetics.colorizer.Colorizer'
 			args destination
 			classpath "${rootDir}/buildSrc/build/libs/buildSrc.jar"
 		}
