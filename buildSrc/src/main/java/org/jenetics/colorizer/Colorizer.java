@@ -22,6 +22,7 @@
  */
 package org.jenetics.colorizer;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 import java.io.BufferedReader;
@@ -43,7 +44,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
@@ -58,7 +59,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			final Colorizer colorizer = new Colorizer();
 			Files.walkFileTree(dir.toPath(), colorizer);
 
-			System.out.println(String.format(
+			System.out.println(format(
 				"Colorizer processed %d files and modified %d.",
 				colorizer.getProcessed(),
 				colorizer.getModified()
@@ -147,7 +148,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date$</em>
+	 * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
 	 */
 	private static enum State {
 
@@ -223,8 +224,10 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 
 				// End of identifier.
 				} else if (!Character.isJavaIdentifierPart((char)read)) {
-					String name = doc.substring(_start, doc.length() - 1);
-					if (IDENTIFIERS.contains(name)) { // Identifier found.
+					final String name = doc.substring(_start, doc.length() - 1);
+
+					// Identifier found.
+					if (IDENTIFIERS.contains(name)) {
 						doc.insert(_start + name.length(), "</b></font>");
 						doc.insert(
 							_start,
