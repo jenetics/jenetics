@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -70,7 +71,7 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 
 
 
-	private static final String ENCODING = "UTF-8";
+	private static final Charset CHARSET = Charset.forName("UTF-8");
 
 	private int _processed = 0;
 	private int _modified = 0;
@@ -98,10 +99,10 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 	}
 
 	private void colorize(final Path file) throws IOException {
-		_processed++;
+		++_processed;
 
 		try (FileInputStream fis = new FileInputStream(file.toFile());
-			InputStreamReader isr = new InputStreamReader(fis, ENCODING);
+			InputStreamReader isr = new InputStreamReader(fis, CHARSET);
 			BufferedReader in = new BufferedReader(isr))
 		{
 			final StringBuilder doc = new StringBuilder(10000);
@@ -131,9 +132,9 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 			}
 
 			if (modified) {
-				_modified++;
+				++_modified;
 				try (FileOutputStream fout = new FileOutputStream(file.toFile());
-					OutputStreamWriter out = new OutputStreamWriter(fout, ENCODING))
+					OutputStreamWriter out = new OutputStreamWriter(fout, CHARSET))
 				{
 					out.write(doc.toString());
 				}
@@ -160,14 +161,14 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 				{
 					doc.setLength(doc.length() - 6);
 					doc.append("<div class=\"code\"><code lang=\"java\">");
-					state = SKIP_NL;
+					state = SKIP_NEWLINE;
 				}
 
 				return state;
 			}
 		},
 
-		SKIP_NL {
+		SKIP_NEWLINE {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
 				State state = this;
@@ -188,12 +189,18 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 					state._start = doc.length() - 1;
 				} else if (read == '"') {
 					state = STRING_LITERAL;
-					doc.insert(doc.length() - 1, "<font color=\"" + STRING_COLOR + "\">");
+					doc.insert(
+						doc.length() - 1,
+						"<font color=\"" + STRING_COLOR + "\">"
+					);
 				} else if ((read == '/') &&
 							(doc.charAt(doc.length() - 2) == '/'))
 				{
 					state = COMMENT;
-					doc.insert(doc.length() - 2, "<font color=\"" + COMMENT_COLOR + "\">");
+					doc.insert(
+						doc.length() - 2,
+						"<font color=\"" + COMMENT_COLOR + "\">"
+					);
 				}
 
 				return state;
@@ -204,18 +211,25 @@ public final class Colorize extends SimpleFileVisitor<Path> {
 			@Override
 			public State apply(final int read, final StringBuilder doc) {
 				State state = this;
-				if ((read == ']') && // code identifier.
+
+				// Code identifier.
+				if ((read == ']') &&
 					doc.substring(doc.length() - 7).equalsIgnoreCase("[/code]"))
 				{
 					int index = doc.lastIndexOf("\n");
 					doc.setLength(index);
 					doc.append("</code></div>");
 					state = DATA;
-				} else if (!Character.isJavaIdentifierPart((char)read)) { // End of identifier.
+
+				// End of identifier.
+				} else if (!Character.isJavaIdentifierPart((char)read)) {
 					String name = doc.substring(_start, doc.length() - 1);
 					if (IDENTIFIERS.contains(name)) { // Identifier found.
 						doc.insert(_start + name.length(), "</b></font>");
-						doc.insert(_start, "<font color=\"" + KEYWORD_COLOR + "\"><b>");
+						doc.insert(
+							_start,
+							"<font color=\"" + KEYWORD_COLOR + "\"><b>"
+						);
 					}
 					state = CODE;
 				}
