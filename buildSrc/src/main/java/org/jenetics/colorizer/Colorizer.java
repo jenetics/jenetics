@@ -44,7 +44,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-19 $</em>
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
@@ -86,7 +86,10 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	}
 
 	@Override
-	public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
+	public FileVisitResult visitFile(
+		final Path file,
+		final BasicFileAttributes attrs
+	) {
 		if (file.toString().endsWith(".html")) {
 			try {
 				colorize(file);
@@ -148,7 +151,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2013-08-19 $</em>
 	 */
 	private static enum State {
 
