@@ -86,7 +86,10 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	}
 
 	@Override
-	public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
+	public FileVisitResult visitFile(
+		final Path file,
+		final BasicFileAttributes attrs
+	) {
 		if (file.toString().endsWith(".html")) {
 			try {
 				colorize(file);
