@@ -55,7 +55,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	 *
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
+	 *         valid range of {@code [0, 1]}.
 	 */
 	public MeanAlterer(final double probability) {
 		super(probability, 2);
