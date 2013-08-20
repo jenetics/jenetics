@@ -119,7 +119,6 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 						case '<': out.append("&lt;"); break;
 						case '>': out.append("&gt;"); break;
 						case '&': out.append("&amp;"); break;
-						//case '@': out.append("&#64;"); break;
 						default: out.append((char)ch); break;
 					}
 				} else {
@@ -201,7 +200,10 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 						out.length() - 2,
 						"<font color=\"" + COMMENT_COLOR + "\">"
 					);
-				} else if ((ch == '@') && (out.charAt(out.length() - 2) == '\\')) {
+				} else if ((ch == '@') &&
+							(out.charAt(out.length() - 2) == '\\') &&
+							(out.charAt(out.length() - 3) != '\\'))
+				{
 					state = ANNOTATION;
 					out.deleteCharAt(out.length() - 2);
 					out.insert(
