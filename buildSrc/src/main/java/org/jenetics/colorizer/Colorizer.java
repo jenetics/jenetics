@@ -44,7 +44,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-08-20 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-21 $</em>
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
@@ -149,7 +149,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2013-08-20 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2013-08-21 $</em>
 	 */
 	private static enum State {
 
@@ -195,25 +195,20 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 						out.length() - 1,
 						"<font color=\"" + STRING_COLOR + "\">"
 					);
-				} else if ((ch == '/') &&
-							(out.charAt(out.length() - 2) == '/'))
-				{
+				} else if ((ch == '/') && (out.charAt(out.length() - 2) == '/')) {
 					state = COMMENT;
 					out.insert(
 						out.length() - 2,
 						"<font color=\"" + COMMENT_COLOR + "\">"
 					);
-				} /*else if (ch == ';' &&
-						out.substring(out.length() - "&#64;".length()).equalsIgnoreCase("&#64;"))
-				{
+				} else if ((ch == '@') && (out.charAt(out.length() - 2) == '\\')) {
 					state = ANNOTATION;
+					out.deleteCharAt(out.length() - 2);
 					out.insert(
-						out.length() - 2,
-						"<span style=\"color: " +
-						ANNOTATION_COLOR +
-						"; font-style: italic\">"
+						out.length() - 1,
+						"<font color=\"" + ANNOTATION_COLOR + "\"><b>"
 					);
-				}*/
+				}
 
 				return state;
 			}
@@ -251,7 +246,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			public State apply(final char ch, final StringBuilder out) {
 				State state = this;
 				if (!Character.isJavaIdentifierPart(ch)) {
-					out.insert(out.length() - 1, "</span>");
+					out.insert(out.length() - 1, "</b></font>");
 					state = CODE_TAG;
 				}
 				return state;
@@ -286,7 +281,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 
 		public abstract State apply(final char read, final StringBuilder doc);
 
-		//private static final String ANNOTATION_COLOR = "#808080";
+		private static final String ANNOTATION_COLOR = "#808080";
 		private static final String KEYWORD_COLOR = "#7F0055";
 		private static final String COMMENT_COLOR = "#3F7F5F";
 		private static final String STRING_COLOR = "#0000FF";
