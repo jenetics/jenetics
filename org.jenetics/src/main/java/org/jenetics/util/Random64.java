@@ -33,6 +33,7 @@ import org.jenetics.internal.math.random;
  *
  * [code]
  * public class MyRandom64 extends Random64 {
+ *     \@Override
  *     public long nextLong() {
  *         // Only this method must be implemented.
  *         ...
