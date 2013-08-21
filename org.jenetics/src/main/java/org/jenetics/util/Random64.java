@@ -33,6 +33,7 @@ import org.jenetics.internal.math.random;
  *
  * [code]
  * public class MyRandom64 extends Random64 {
+ *     \@Override
  *     public long nextLong() {
  *         // Only this method must be implemented.
  *         ...
@@ -42,7 +43,7 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.3
- * @version 1.3 &mdash; <em>$Date: 2013-07-15 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-08-21 $</em>
  */
 public abstract class Random64 extends PRNG {
 
