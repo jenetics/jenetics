@@ -74,7 +74,11 @@ subprojects { subproj ->
 	}
 }
 
-
+/*
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.7'
+}
+*/
 
  task pack << {
 	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
