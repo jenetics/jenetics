@@ -10,6 +10,8 @@ bin/**
 build/**
 out/**
 test-output/**
+
+# Gradle
 .gradle/**
 gradle-app.setting
 
