@@ -28,7 +28,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-16 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-22 $</em>
  */
 
 apply plugin: 'signing'
@@ -74,7 +74,11 @@ subprojects { subproj ->
 	}
 }
 
-
+/*
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.7'
+}
+*/
 
  task pack << {
 	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
