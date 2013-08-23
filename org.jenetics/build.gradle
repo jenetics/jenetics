@@ -23,10 +23,12 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.task.JavadocColorizeTask
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
 
 apply plugin: 'java'
@@ -40,6 +42,10 @@ apply from: "${rootDir}/commons.gradle"
 tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.debug = true
 	//compile.options.compilerArgs = ['-Xlint:all']
+}
+
+task foo(type: JavadocColorizeTask) {
+	
 }
 
 task jarjar(type: Jar) {
