@@ -200,7 +200,6 @@ clean.doLast {
 
 dependencies {
 	compile includes.JScience
-	compile 'commons-lang:commons-lang:2.6'
 	testCompile includes.TestNG
 }
 
