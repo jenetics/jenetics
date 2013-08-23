@@ -74,7 +74,9 @@ task export(group: 'export', description: 'Exports the whole project') {
 		if (plugins.hasPlugin('java')) {
 			// Copy the external jar dependencies.
 			configurations.testRuntime.each { jar ->
-				if (jar.toString().endsWith('.jar')) {
+				if (jar.name.endsWith('.jar') && 
+					!jar.name.startsWith('org.jeneti')) 
+				{
 					copy {
 						from jar
 						into exportProjectLibDir
