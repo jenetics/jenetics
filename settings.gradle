@@ -27,11 +27,13 @@
  * @version 1.4 &mdash; <em>$Date$</em>
  */
  
-include "org.jenetics"
-include "org.jenetics.example"
-include "org.jenetics.doc"
+include 'buildSrc'
+ 
+include 'org.jenetics'
+include 'org.jenetics.example'
+include 'org.jenetics.doc'
 
-rootProject.name = "jenetics"
+rootProject.name = 'jenetics'
 
 
 
