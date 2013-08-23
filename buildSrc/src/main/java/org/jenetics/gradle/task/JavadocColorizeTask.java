@@ -9,7 +9,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -17,28 +17,39 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
+package org.jenetics.gradle.task;
 
- /**
+import java.io.File;
+
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.TaskAction;
+
+/**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since 1.4
  * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
- 
-// The Gradle build project.
-include 'buildSrc'
- 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.example'
-include 'org.jenetics.doc'
+public class JavadocColorizeTask extends DefaultTask {
 
-rootProject.name = 'jenetics'
+	private File _directory;
 
+	@Input
+	public File getDirectory() {
+		return _directory;
+	}
 
-ext {
-	foooo = 'asdf'
+	public void setDirectory(final File directory) {
+		_directory = directory;
+	}
+
+	@TaskAction
+	public void run() {
+		System.out.println("Executing: " + getClass().getName());
+		System.out.println("Directory: " + getDirectory());
+	}
+
 }
-

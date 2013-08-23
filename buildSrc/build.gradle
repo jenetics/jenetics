@@ -24,10 +24,18 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-16 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */ 
  
 apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
+
+
+dependencies {
+	compile gradleApi()
+}
+

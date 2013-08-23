@@ -28,10 +28,12 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-22 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
 
 apply plugin: 'signing'
+
+apply from: "${rootDir}/commons.gradle"
 
 /**
  * Class which defines the external dependencies.
@@ -42,25 +44,7 @@ class Includes {
 }
 
 
-/**
- * Definition of additional variables.
- */
-ext {
-	jeneticsVersion = '1.4.0'
-	jeneticsAuthor = 'Franz Wilhelsmtötter'
-	jeneticsName = 'Jenetics'
-	jeneticsURL = 'http://jenetics.sourceforge.net'
-
-	now = new Date()
-	year = now.year + 1900
-	copyrightYear = "2007-${year}".toString()
-	identifier = "${rootProject.name}-${jeneticsVersion}".toString()
-	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
-	manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
-	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-	
-	includes = new Includes()
-}
+ext.includes = new Includes()
 
 allprojects {
 	//group = "org.gradle"
@@ -136,8 +120,7 @@ task wrapper(type: Wrapper) {
 	}
 }
 
-task export(dependsOn: pack) << {
-}
+export.dependsOn(pack)
 
 // Create a zip file from the export directory.
 task zip(type: Zip) {
@@ -158,6 +141,11 @@ signing {
 	// gpg --armor --detach-sign jenetics-1.4.0.zip
 	// gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
 	sign zip
+}
+
+repositories {
+	flatDir(dir: "${rootDir}/buildSrc/lib")
+	mavenCentral()
 }
 
 

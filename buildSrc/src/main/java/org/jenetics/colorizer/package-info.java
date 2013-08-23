@@ -9,7 +9,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -17,28 +17,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  *
  */
 
- /**
+/**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since 1.0
  * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
- 
-// The Gradle build project.
-include 'buildSrc'
- 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.example'
-include 'org.jenetics.doc'
-
-rootProject.name = 'jenetics'
-
-
-ext {
-	foooo = 'asdf'
-}
-
+package org.jenetics.colorizer;

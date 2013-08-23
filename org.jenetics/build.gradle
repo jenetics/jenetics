@@ -23,10 +23,12 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.task.JavadocColorizeTask
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-17 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
 
 apply plugin: 'java'
@@ -40,6 +42,17 @@ apply from: "${rootDir}/commons.gradle"
 tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.debug = true
 	//compile.options.compilerArgs = ['-Xlint:all']
+}
+
+task foo(type: JavadocColorizeTask) {
+	directory = rootDir
+	doLast {
+		println( 'FOOOOOO: ' + foooo )
+	}
+}
+
+printProject << {
+    println( "some additional project: " + project.name )
 }
 
 task jarjar(type: Jar) {
@@ -58,6 +71,24 @@ task jarjar(type: Jar) {
 				'ProjectName': "${jeneticsName}",
 				'Version': version,
 				'Maintainer': "${jeneticsAuthor}"
+	}
+}
+
+task copyExternalLibs << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	def exportLibDir = new File(exportBaseDir, 'lib')
+	exportBaseDir.mkdirs()
+	exportSourceDir.mkdirs()
+	exportLibDir.mkdirs()
+	
+	copy {
+		from {
+			configurations.compile.collect {
+				it.isDirectory() ? it : zipTree(it)
+			}
+		}
+		into "${exportLibDir}"
 	}
 }
 
@@ -221,8 +252,7 @@ test {
 	}
 }
 
-task export(dependsOn: pack) << {
-}
+export.dependsOn(pack)
 
 jacocoTestReport{
     reports {
@@ -231,12 +261,9 @@ jacocoTestReport{
     }
 }
 
-configurations {
-    compile
-}
-
 dependencies {
 	compile includes.JScience
+	//compile 
 	testCompile includes.TestNG
 }
 
