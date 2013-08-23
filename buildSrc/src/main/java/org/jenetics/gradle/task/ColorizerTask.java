@@ -37,7 +37,7 @@ import org.jenetics.colorizer.Colorizer;
  * @since 1.4
  * @version 1.4 &mdash; <em>$Date$</em>
  */
-public class JavadocColorizeTask extends DefaultTask {
+public class ColorizerTask extends DefaultTask {
 
 	private File _directory;
 
