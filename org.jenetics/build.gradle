@@ -231,8 +231,7 @@ test {
 	}
 }
 
-task export(dependsOn: pack) << {
-}
+export.dependsOn(pack)
 
 jacocoTestReport{
     reports {

@@ -87,8 +87,7 @@ apply from: "${rootDir}/commons.gradle"
 	}
 }
 
-task export(dependsOn: pack) << {
-}
+export.dependsOn(pack)
 
 jar {
 	manifest {

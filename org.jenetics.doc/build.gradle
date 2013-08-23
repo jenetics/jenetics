@@ -34,44 +34,62 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply from: "${rootDir}/commons.gradle"
 
-task buildManual << {
-	def buildTemp = new File(buildDir, "tmp")
-	def buildTempLyx = new File(buildTemp, "lyx")
-	buildTempLyx.mkdirs()
+task buildManual {
+	inputs.dir file('src/main')
+	outputs.file file("${buildDir}/doc/manual-${version}.pdf")
+	
+	def encoding = 'UTF-8'
+	def manualFile = file("${projectDir}/src/main/lyx/manual.lyx")
+	def buildTemp = file("${buildDir}/tmp")
+	def buildTempLyx = file("${buildTemp}/lyx")
+	def buildDoc = file("${buildDir}/doc")
 
-	def buildDoc = new File(buildDir, "doc")
-	buildDoc.mkdirs()
-
-	def content = new File("${projectDir}/src/main/lyx/manual.lyx").getText("UTF-8")
-	content = content.replaceAll("@!identifier!@", "${manualIdentifier}")
-	new File("${buildTempLyx}/manual-${version}.lyx").write(content, "UTF-8")
-
-	copy {
-		from "${projectDir}/src/main/lyx/references.bib"
-		into "${buildTempLyx}"
-	}
-	copy {
-		from "${projectDir}/src/main/resources"
-		into "${buildTemp}/resources"
-	}
-
-	exec() {
-		executable = "lyx"
-		workingDir = "${buildTempLyx}"
-		args = ["-e", "pdf2", "manual-${version}.lyx"]
-	}
-
-	copy {
-		from "${buildTemp}/lyx/manual-${version}.pdf"
-		into "${buildDoc}"
-
-		rename { String fileName ->
-			fileName.replace("manual.lyx", "manual-${version}.pdf")
+	// Copy the needed files to the temporary working directory.
+	doFirst {
+		buildTempLyx.mkdirs()
+		buildDoc.mkdirs()
+		
+		def content = file(manualFile).getText(encoding).replaceAll(
+			'@!identifier!@', "${manualIdentifier}"
+		)
+		
+		file("${buildTempLyx}/manual-${version}.lyx").write(
+			content, 
+			encoding
+		)
+		
+		copy {
+			from "${projectDir}/src/main/lyx/references.bib"
+			into "${buildTempLyx}"
+		}
+		copy {
+			from "${projectDir}/src/main/resources"
+			into "${buildTemp}/resources"
 		}
 	}
+	
+	// Performt the lyx -> pdf conversion.
+	doLast {
+		exec() {
+			executable = "lyx"
+			workingDir = "${buildTempLyx}"
+			args = ["-e", "pdf2", "manual-${version}.lyx"]
+		}
+	
+		copy {
+			from "${buildTemp}/lyx/manual-${version}.pdf"
+			into "${buildDoc}"
+	
+			rename { String fileName ->
+				fileName.replace("manual.lyx", "manual-${version}.pdf")
+			}
+		}
+	}
+	
 }
 
-task export(dependsOn: buildManual) << {
+export.dependsOn(buildManual)
+export.doLast {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
 	exportBaseDir.mkdirs()
 
