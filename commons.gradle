@@ -21,6 +21,9 @@
  *
  */
 
+ import java.text.SimpleDateFormat
+ import java.util.Date
+ 
  import org.jenetics.gradle.task.JavadocColorizeTask
  
 /**
@@ -31,6 +34,24 @@
  * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
  
+ /**
+  * Definition of additional variables.
+  */
+ ext {
+	 jeneticsVersion = '1.4.0'
+	 jeneticsAuthor = 'Franz Wilhelsmtötter'
+	 jeneticsName = 'Jenetics'
+	 jeneticsURL = 'http://jenetics.sourceforge.net'
+ 
+	 now = new Date()
+	 year = now.year + 1900
+	 copyrightYear = "2007-${year}".toString()
+	 identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+	 manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+	 manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
+	 dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+ }
+ 
 task printProject << {
 	println( "Project: " + project.name )
 }
@@ -40,6 +61,14 @@ task javadocHighlight(type: JavadocColorizeTask) {
 }
 
 task export << {
+}
+
+task exportTemp {
+	
+	def exportBaseDir = file("${buildDir}/package/${identifier}")
+	
+	doFirst {
+	}
 }
 
 repositories {

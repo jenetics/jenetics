@@ -46,6 +46,9 @@ tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 
 task foo(type: JavadocColorizeTask) {
 	directory = rootDir
+	doLast {
+		println( 'FOOOOOO: ' + foooo )
+	}
 }
 
 printProject << {
@@ -68,6 +71,24 @@ task jarjar(type: Jar) {
 				'ProjectName': "${jeneticsName}",
 				'Version': version,
 				'Maintainer': "${jeneticsAuthor}"
+	}
+}
+
+task copyExternalLibs << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	def exportLibDir = new File(exportBaseDir, 'lib')
+	exportBaseDir.mkdirs()
+	exportSourceDir.mkdirs()
+	exportLibDir.mkdirs()
+	
+	copy {
+		from {
+			configurations.compile.collect {
+				it.isDirectory() ? it : zipTree(it)
+			}
+		}
+		into "${exportLibDir}"
 	}
 }
 
@@ -242,6 +263,7 @@ jacocoTestReport{
 
 dependencies {
 	compile includes.JScience
+	//compile 
 	testCompile includes.TestNG
 }
 
