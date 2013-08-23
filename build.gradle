@@ -138,8 +138,7 @@ task wrapper(type: Wrapper) {
 	}
 }
 
-task export(dependsOn: pack) << {
-}
+export.dependsOn(pack)
 
 // Create a zip file from the export directory.
 task zip(type: Zip) {

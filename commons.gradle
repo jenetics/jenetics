@@ -21,6 +21,8 @@
  *
  */
 
+ import org.jenetics.gradle.task.JavadocColorizeTask
+ 
 /**
  * Some commone task definitions and configurations.
  *
@@ -30,9 +32,16 @@
  */
  
 task printProject << {
-    println( "Project: " + project.name )
+	println( "Project: " + project.name )
 }
- 
+
+task javadocHighlight(type: JavadocColorizeTask) {
+	
+}
+
+task export << {
+}
+
 repositories {
 	flatDir(dir: "${rootDir}/buildSrc/lib")
 	mavenCentral()
