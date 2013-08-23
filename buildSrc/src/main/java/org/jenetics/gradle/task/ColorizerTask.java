@@ -35,7 +35,7 @@ import org.jenetics.colorizer.Colorizer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-24 $</em>
  */
 public class ColorizerTask extends DefaultTask {
 
@@ -56,8 +56,8 @@ public class ColorizerTask extends DefaultTask {
 			final Colorizer colorizer = new Colorizer(_directory);
 			colorizer.colorize();
 
-			getLogger().info(
-				"Colorizer processed {0} files and modified {1}",
+			getLogger().lifecycle(
+				"Colorizer processed {} files and modified {}.",
 				colorizer.getProcessed(), colorizer.getModified()
 			);
 		} catch (final IOException e) {
