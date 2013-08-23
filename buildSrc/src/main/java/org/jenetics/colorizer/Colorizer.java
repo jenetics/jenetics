@@ -49,30 +49,6 @@ import java.util.Set;
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
-	public static void main(final String[] args) {
-		final File dir = new File(args[0]);
-		if (!dir.isDirectory()) {
-			System.err.println(args[0] + " is not a directory.");
-			System.exit(1);
-		}
-
-		try {
-			final Colorizer colorizer = new Colorizer(dir);
-			colorizer.colorize();
-
-			System.out.println(format(
-				"Colorizer processed %d files and modified %d.",
-				colorizer.getProcessed(),
-				colorizer.getModified()
-			));
-		} catch (IOException e) {
-			System.err.println("Error while processing files: " + e);
-			System.exit(1);
-		}
-	}
-
-
-
 	private static final Charset CHARSET = Charset.forName("UTF-8");
 
 	private File _baseDir;
@@ -363,6 +339,29 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			"volatile",
 			"while"
 		));
+	}
+
+
+	public static void main(final String[] args) {
+		final File dir = new File(args[0]);
+		if (!dir.isDirectory()) {
+			System.err.println(args[0] + " is not a directory.");
+			System.exit(1);
+		}
+
+		try {
+			final Colorizer colorizer = new Colorizer(dir);
+			colorizer.colorize();
+
+			System.out.println(format(
+				"Colorizer processed %d files and modified %d.",
+				colorizer.getProcessed(),
+				colorizer.getModified()
+			));
+		} catch (IOException e) {
+			System.err.println("Error while processing files: " + e);
+			System.exit(1);
+		}
 	}
 
 }
