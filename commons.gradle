@@ -22,10 +22,16 @@
  */
 
 /**
+ * Some commone task definitions and configurations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-16 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
+ 
+task printProject << {
+    println( "Project: " + project.name )
+}
  
 repositories {
 	flatDir(dir: "${rootDir}/buildSrc/lib")

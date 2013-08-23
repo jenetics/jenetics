@@ -28,10 +28,12 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-22 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
 
 apply plugin: 'signing'
+
+apply from: "${rootDir}/commons.gradle"
 
 /**
  * Class which defines the external dependencies.
