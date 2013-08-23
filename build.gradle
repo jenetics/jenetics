@@ -133,7 +133,7 @@ task export(overwrite: true) {
 				include 'src/**/*.*'
 				include 'lib/**/*'
 				include 'tool/**/*'
-				include 'resource/**/*'
+				include 'resources/**/*'
 				exclude 'src/**/*.java'
 				exclude 'src/**/*.gradle'
 				exclude 'src/**/*.xml'
@@ -183,7 +183,7 @@ repositories {
  */
 class Includes {
 	final JScience = 'jscience:jscience:4.3.1'
-	final TestNG = 'testng:testng:6.8.1'
+	final TestNG = 'org.testng:testng:6.8.5' //'testng:testng:6.8.1'
 }
 
 
