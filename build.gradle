@@ -35,19 +35,30 @@ apply plugin: 'signing'
 
 apply from: "${rootDir}/commons.gradle"
 
-/**
- * Class which defines the external dependencies.
- */
-class Includes {
-	final JScience = 'jscience:jscience:4.3.1'
-	final TestNG = 'testng:testng:6.8.1'
-}
-
-
-ext.includes = new Includes()
-
-allprojects {
-	//group = "org.gradle"
+ext {
+	 jeneticsVersion = '1.4.0'
+	 jeneticsAuthor = 'Franz Wilhelsmtötter'
+	 jeneticsName = 'Jenetics'
+	 jeneticsURL = 'http://jenetics.sourceforge.net'
+ 
+	 now = new Date()
+	 year = now.year + 1900
+	 copyrightYear = "2007-${year}".toString()
+	 identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+	 manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+	 manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
+	 dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	 
+	 includes = new Includes()
+	 
+	 // Define some 'global' path variables.
+	 exportDir = file("${buildDir}/package/${identifier}")
+	 exportProjectDir = file("${exportDir}/project")
+	 exportProjectLibDir = file("${exportProjectDir}/buildSrc/lib")
+	 exportLibDir = file("${exportDir}/lib")
+	 exportJavadocDir = file("${exportDir}/javadoc")
+	 exportReportDir = file("${exportDir}/report")
+	 exportScriptDir = file("${exportDir}/script")
 }
 
 subprojects { subproj ->
@@ -58,69 +69,100 @@ subprojects { subproj ->
 	}
 }
 
-/*
 task wrapper(type: Wrapper) {
     gradleVersion = '1.7'
 }
-*/
 
- task pack << {
-	def exportBaseDir = new File(buildDir, "package/${identifier}/source")
-	def exportbuildSrcDir = new File(exportBaseDir, 'buildSrc')
+task export(overwrite: true) {
+	inputs.dir file('.')
+	outputs.dir exportDir
 
-	exportBaseDir.mkdirs()
-	exportbuildSrcDir.mkdirs()
-
-	// Copy the project directory.
-	copy {
-		from('buildSrc') {
-			exclude 'build'
-			exclude '.gradle'
-			include '**/*.java'
-			include '**/*.xml'
-			include '**/*.gradle'
-		}
-		into "${exportbuildSrcDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-	copy {
-		from('buildSrc') {
-			exclude 'build'
-			exclude '.gradle'
-			exclude '**/*.java'
-			exclude '**/*.java'
-			exclude '**/*.xml'
-			exclude '**/*.gradle'
-		}
-		into "${exportbuildSrcDir}"
+	// Create the directory structure.
+	doFirst {
+		exportDir.mkdirs()
+		exportProjectDir.mkdirs()
+		exportProjectLibDir.mkdirs()
+		exportLibDir.mkdirs()
+		exportReportDir.mkdirs()
+		exportJavadocDir.mkdirs()
+		exportScriptDir.mkdirs()
 	}
 
-	// Copy the files in the base directory.
-	copy {
-		from(".") {
-			include '*.*'
-			exclude 'org.*'
-			exclude '.gradle'
-			exclude '.hgignore'
-			exclude '.hgtags'
-			exclude '*.iml'
-			exclude '*.ipr'
-			exclude '*.iws'
-			exclude '.project'
-			exclude '.classpath'
+	doLast  {
+		// Copy the files in the base directory.
+		copy {
+			from('.') {
+				include '*.*'
+				exclude 'org.*'
+				exclude '.gradle'
+				exclude '.hgignore'
+				exclude '.hgtags'
+				exclude '*.iml'
+				exclude '*.ipr'
+				exclude '*.iws'
+				exclude '.project'
+				exclude '.classpath'
+			}
+			into exportProjectDir
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear
+			])
 		}
-		into "${exportBaseDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
+		
+		// Copy 'buildSrc' files.
+		copy {
+			from('buildSrc') {
+				include '*.gradle'
+				include 'src/**/*'
+				include 'lib/**/*'
+				include 'resources/**/*'
+				include 'tool/**/*'
+			}
+			into "${exportProjectDir}/buildSrc"
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear
+			])
+		}
+		// Copy the project source code.
+		copy {
+			from('buildSrc') {
+				include '*.gradle'
+				include '**/*.java'
+				include '**/*.groovy'
+				include '**/*.xml'
+				include '**/*.c'
+				include '**/*.cpp'
+				include '**/*.h'
+				include '**/*.hpp'
+			}
+			into file("${exportProjectDir}/${project.name}")
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear
+			])
+		}
+		copy {
+			from('buildSrc') {
+				include 'lib/**/*'
+				include 'resources/**/*'
+				include 'src/**/*'
+				include 'tool/**/*'
+				exclude '*.gradle'
+				exclude '**/*.java'
+				include '**/*.groovy'
+				exclude '**/*.xml'
+				exclude '**/*.c'
+				exclude '**/*.cpp'
+				exclude '**/*.h'
+				exclude '**/*.hpp'
+			}
+			into file("${exportProjectDir}/${project.name}")
+		}
 	}
 }
 
-export.dependsOn(pack)
 
 // Create a zip file from the export directory.
 task zip(type: Zip) {
@@ -146,6 +188,19 @@ signing {
 repositories {
 	flatDir(dir: "${rootDir}/buildSrc/lib")
 	mavenCentral()
+}
+
+
+/**
+ * Class which defines the external dependencies.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.4
+ * @version 1.4 &mdash; <em>$Date$</em>
+ */
+class Includes {
+	final JScience = 'jscience:jscience:4.3.1'
+	final TestNG = 'testng:testng:6.8.1'
 }
 
 

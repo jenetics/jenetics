@@ -90,35 +90,13 @@ task buildManual {
 
 export.dependsOn(buildManual)
 export.doLast {
-	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-	exportBaseDir.mkdirs()
-
 	// Copy the manual.
 	copy {
 		from("${buildDir}/doc") {
 			include "*.pdf"
 		}
-		into "${exportBaseDir}"
+		into "${exportDir}"
 	}
-
-/*
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	exportSourceDir.mkdirs()
-
-	// Copy the sources.
-	copy {
-		from(".") {
-			include "src/**"
-			include "*.gradle"
-			exclude ".gradle"
-		}
-		into "${exportSourceDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-*/
 }
 
 task clean << {
