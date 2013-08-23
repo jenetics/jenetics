@@ -44,125 +44,6 @@ tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.compilerArgs = ['-Xlint:all']
 }
 
-task foo(type: JavadocColorizeTask) {
-	directory = rootDir
-	doLast {
-		println( 'FOOOOOO: ' + foooo )
-	}
-}
-
-printProject << {
-    println( "some additional project: " + project.name )
-}
-
-task jarjar(type: Jar) {
-	baseName = project.name + '-all'
-	from files(sourceSets.main.output.classesDir)
-	from {
-		configurations.compile.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
-	manifest {
-		attributes 'Implementation-Title': 'org.jenetics-all',
-				'Implementation-Versionv': version,
-				'Implementation-URL': "${jeneticsURL}",
-				'Implementation-Vendor': "${jeneticsName}",
-				'ProjectName': "${jeneticsName}",
-				'Version': version,
-				'Maintainer': "${jeneticsAuthor}"
-	}
-}
-
-task copyExternalLibs << {
-	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	def exportLibDir = new File(exportBaseDir, 'lib')
-	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
-	exportLibDir.mkdirs()
-	
-	copy {
-		from {
-			configurations.compile.collect {
-				it.isDirectory() ? it : zipTree(it)
-			}
-		}
-		into "${exportLibDir}"
-	}
-}
-
-task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
-	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	def exportLibDir = new File(exportBaseDir, 'lib')
-
-	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
-	exportLibDir.mkdirs()
-
-	// Copy the library
-	copy {
-		from("${buildDir}/libs")
-		into "${exportLibDir}"
-	}
-	copy {
-		from('../project/lib') {
-			include "jscience-*.jar"
-		}
-		into "${exportLibDir}"
-	}
-
-	// Copy the sources.
-	copy {
-		from(".") {
-			include 'src/**'
-			include '*.gradle'
-			exclude '.gradle'
-			exclude 'src/site'
-			exclude '*.iml'
-			exclude '*.ipr'
-			exclude '*.iws'
-			exclude '.project'
-			exclude '.classpath'
-		}
-		into "${exportSourceDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-
-	// Copy the javadoc
-	copy {
-		from("${buildDir}/docs") {
-			include 'javadoc/**/*.html'
-		}
-		into "${exportBaseDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-	copy {
-		from("${buildDir}/docs") {
-			exclude 'javadoc/**/*.html'
-		}
-		into "${exportBaseDir}"
-	}
-
-	// Copy the test-report.
-	copy {
-		from("${buildDir}/reports") {
-			include 'tests/**'
-			include 'jacoco/**'
-			include '*.gradle'
-			exclude '.gradle'
-		}
-		into "${exportBaseDir}/reports"
-	}
-}
-
 jar {
 	manifest {
 		version = version
@@ -183,6 +64,59 @@ jar {
 					'ProjectName': "${jeneticsName}",
 					'Version': version,
 					'Maintainer': "${jeneticsAuthor}"
+	}
+}
+
+task jarjar(type: Jar, dependsOn: build) {
+	baseName = project.name + '-all'
+	from files(sourceSets.main.output.classesDir)
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+	manifest {
+		attributes 'Implementation-Title': 'org.jenetics-all',
+				'Implementation-Versionv': version,
+				'Implementation-URL': "${jeneticsURL}",
+				'Implementation-Vendor': "${jeneticsName}",
+				'ProjectName': "${jeneticsName}",
+				'Version': version,
+				'Maintainer': "${jeneticsAuthor}"
+	}
+}
+
+task pack(dependsOn: [jarjar, javadoc, jacocoTestReport]){}
+
+export.dependsOn(pack)
+export.doLast {
+	// Copy the javadoc
+	copy {
+		from("${buildDir}/docs/javadoc") {
+			include '**/*.html'
+		}
+		into "${exportJavadocDir}"
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from("${buildDir}/docs/javadoc") {
+			exclude '**/*.html'
+		}
+		into "${exportJavadocDir}"
+	}
+
+	// Copy the test-report.
+	copy {
+		from("${buildDir}/reports") {
+			include 'tests/**'
+			include 'jacoco/**'
+			include '*.gradle'
+			exclude '.gradle'
+		}
+		into "${exportReportDir}"
 	}
 }
 
@@ -252,8 +186,6 @@ test {
 	}
 }
 
-export.dependsOn(pack)
-
 jacocoTestReport{
     reports {
 		xml.enabled true
@@ -263,7 +195,7 @@ jacocoTestReport{
 
 dependencies {
 	compile includes.JScience
-	//compile 
+	compile 'commons-lang:commons-lang:2.6'
 	testCompile includes.TestNG
 }
 

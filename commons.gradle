@@ -24,6 +24,8 @@
  import java.text.SimpleDateFormat
  import java.util.Date
  
+ import org.apache.tools.ant.filters.ReplaceTokens
+ 
  import org.jenetics.gradle.task.JavadocColorizeTask
  
 /**
@@ -34,40 +36,58 @@
  * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
  */
  
- /**
-  * Definition of additional variables.
-  */
- ext {
-	 jeneticsVersion = '1.4.0'
-	 jeneticsAuthor = 'Franz Wilhelsmtötter'
-	 jeneticsName = 'Jenetics'
-	 jeneticsURL = 'http://jenetics.sourceforge.net'
- 
-	 now = new Date()
-	 year = now.year + 1900
-	 copyrightYear = "2007-${year}".toString()
-	 identifier = "${rootProject.name}-${jeneticsVersion}".toString()
-	 manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
-	 manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
-	 dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
- }
- 
-task printProject << {
-	println( "Project: " + project.name )
-}
 
-task javadocHighlight(type: JavadocColorizeTask) {
-	
-}
+task export(group: 'export', description: 'Exports the whole project') {
 
-task export << {
-}
-
-task exportTemp {
-	
-	def exportBaseDir = file("${buildDir}/package/${identifier}")
-	
-	doFirst {
+	doLast  {
+		// Copy the project source code.
+		copy {
+			from(projectDir) {
+				include '*.gradle'
+				include 'src/**/*.java'
+				include 'src/**/*.xml'
+				include 'src/**/*.c'
+				include 'src/**/*.cpp'
+				include 'src/**/*.h'
+				include 'src/**/*.hpp'
+			}
+			into file("${exportProjectDir}/${project.name}")
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear
+			])
+		}
+		copy {
+			from(projectDir) {
+				include 'src/**/*'
+				exclude '*.gradle'
+				exclude '**/*.java'
+				exclude '**/*.xml'
+				exclude '**/*.c'
+				exclude '**/*.cpp'
+				exclude '**/*.h'
+				exclude '**/*.hpp'
+			}
+			into file("${exportProjectDir}/${project.name}")
+		}
+		
+		if (plugins.hasPlugin('java')) {
+			// Copy the external jar dependencies.
+			configurations.testRuntime.each { jar ->
+				if (jar.toString().endsWith('.jar')) {
+					copy {
+						from jar
+						into exportProjectLibDir
+					}
+				}
+			}
+			
+			// Copy the build library
+			copy {
+				from("${buildDir}/libs")
+				into "${exportLibDir}"
+			}
+		}
 	}
 }
 
