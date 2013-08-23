@@ -23,7 +23,7 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-import org.jenetics.gradle.task.JavadocColorizeTask
+import org.jenetics.gradle.task.ColorizerTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -152,11 +152,6 @@ javadoc {
 
 	doLast() {
 		javaexec {
-			main 'org.jenetics.colorizer.Colorizer'
-			args destination
-			classpath "${rootDir}/buildSrc/build/libs/buildSrc.jar"
-		}
-		javaexec {
 			main = 'de.java2html.Java2Html'
 			args = [
 				'-srcdir', 'src/main/java',
@@ -178,6 +173,12 @@ javadoc {
 		}
 	}
 }
+
+task colorize(type: ColorizerTask) {
+	directory = file(javadoc.destinationDir.path)
+}
+
+javadoc.finalizedBy(colorize)
 
 test {
 	useTestNG()

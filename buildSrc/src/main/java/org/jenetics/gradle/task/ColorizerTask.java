@@ -56,8 +56,8 @@ public class ColorizerTask extends DefaultTask {
 			final Colorizer colorizer = new Colorizer(_directory);
 			colorizer.colorize();
 
-			getLogger().info(
-				"Colorizer processed {0} files and modified {1}",
+			getLogger().lifecycle(
+				"Colorizer processed {} files and modified {}.",
 				colorizer.getProcessed(), colorizer.getModified()
 			);
 		} catch (final IOException e) {
