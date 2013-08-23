@@ -33,6 +33,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'signing'
 
+apply from: "${rootDir}/commons.gradle"
+
 /**
  * Class which defines the external dependencies.
  */

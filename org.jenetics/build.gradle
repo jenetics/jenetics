@@ -45,7 +45,11 @@ tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 }
 
 task foo(type: JavadocColorizeTask) {
-	
+	directory = rootDir
+}
+
+printProject << {
+    println( "some additional project: " + project.name )
 }
 
 task jarjar(type: Jar) {
@@ -235,10 +239,6 @@ jacocoTestReport{
 		xml.enabled true
 		csv.enabled true
     }
-}
-
-configurations {
-    compile
 }
 
 dependencies {
