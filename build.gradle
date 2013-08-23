@@ -44,25 +44,7 @@ class Includes {
 }
 
 
-/**
- * Definition of additional variables.
- */
-ext {
-	jeneticsVersion = '1.4.0'
-	jeneticsAuthor = 'Franz Wilhelsmtötter'
-	jeneticsName = 'Jenetics'
-	jeneticsURL = 'http://jenetics.sourceforge.net'
-
-	now = new Date()
-	year = now.year + 1900
-	copyrightYear = "2007-${year}".toString()
-	identifier = "${rootProject.name}-${jeneticsVersion}".toString()
-	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
-	manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
-	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-	
-	includes = new Includes()
-}
+ext.includes = new Includes()
 
 allprojects {
 	//group = "org.gradle"
@@ -159,6 +141,11 @@ signing {
 	// gpg --armor --detach-sign jenetics-1.4.0.zip
 	// gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
 	sign zip
+}
+
+repositories {
+	flatDir(dir: "${rootDir}/buildSrc/lib")
+	mavenCentral()
 }
 
 
