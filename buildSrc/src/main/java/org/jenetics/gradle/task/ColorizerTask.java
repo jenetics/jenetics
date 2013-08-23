@@ -35,9 +35,9 @@ import org.jenetics.colorizer.Colorizer;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-24 $</em>
+ * @version 1.4 &mdash; <em>$Date$</em>
  */
-public class JavadocColorizeTask extends DefaultTask {
+public class ColorizerTask extends DefaultTask {
 
 	private File _directory;
 
