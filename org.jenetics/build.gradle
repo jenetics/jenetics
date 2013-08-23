@@ -121,7 +121,6 @@ export.doLast {
 }
 
 javadoc {
-
 	configure(options) {
 		memberLevel = 'PROTECTED'
 		version = true
@@ -147,10 +146,15 @@ javadoc {
 		//group('Core API', ['org.jenetics']).
 		//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 	}
+}
 
-	def destination = destinationDir.path
+task colorize(type: ColorizerTask) {
+	directory = file(javadoc.destinationDir.path)
+}
 
-	doLast() {
+task java2html {
+	def destination = javadoc.destinationDir.path
+	doLast {
 		javaexec {
 			main = 'de.java2html.Java2Html'
 			args = [
@@ -174,11 +178,7 @@ javadoc {
 	}
 }
 
-task colorize(type: ColorizerTask) {
-	directory = file(javadoc.destinationDir.path)
-}
-
-javadoc.finalizedBy(colorize)
+javadoc.finalizedBy([colorize, java2html])
 
 test {
 	useTestNG()
