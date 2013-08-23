@@ -9103,7 +9103,7 @@ Build!Gradle
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gradle
@@ -9120,6 +9120,44 @@ sub
 modules
 \emph default
 ).
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+If you are calling the 
+\family typewriter
+gradlew
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Build!gradlew
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+gradlew
+\end_layout
+
+\end_inset
+
+
+\family default
+ script (instead of 
+\family typewriter
+gradle
+\family default
+), which are part of the downloaded package, the proper Gradle version is
+ automatically downloaded and you don't have to install Gradle explicitly.
+\end_layout
+
+\end_inset
+
  Each 
 \emph on
 sub
@@ -9754,7 +9792,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.6 (
+: 1.7 (
 \emph on
 or later
 \emph default
@@ -9795,7 +9833,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.6-bin.zip
+http://services.gradle.org/distributions/gradle-1.7-bin.zip
 \end_layout
 
 \end_inset
