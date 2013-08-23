@@ -8,7 +8,7 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 
 ### Build time
 *  **JDK 7**: The `JAVA_HOME` variable must be set to your java installation directory.
-*  **Gradle 1.6**: [Gradle](http://www.gradle.org/) is used for building the library.
+*  **Gradle 1.7**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using Gradle Wrapper script `gradlew` for building the library.)
 
 ### Runtime
 *  **JRE 7**: Java runtime version 7 is needed for using the library, respectively for running the examples.
@@ -51,7 +51,7 @@ For building the library change into the `<builddir>` directory (or one of the m
 For packaging (building)  the source call
 
     $ cd <build-dir>
-    $ gradle pack
+    $ ./gradlew pack
 
 
 
@@ -59,7 +59,7 @@ For packaging (building)  the source call
 
 Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. Call
 
-    $ gradle [eclipse|idea]
+    $ ./gradlew [eclipse|idea]
 
 for creating the project files for Eclipse or IntelliJ, respectively.
 
