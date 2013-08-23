@@ -23,7 +23,7 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
+ * @since 1.4
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 package org.jenetics.colorizer;
