@@ -113,29 +113,7 @@ task export(overwrite: true) {
 		// Copy 'buildSrc' files.
 		copy {
 			from('buildSrc') {
-				include '*.gradle'
 				include 'src/**/*'
-				include 'lib/**/*'
-				include 'resources/**/*'
-				include 'tool/**/*'
-			}
-			into "${exportProjectDir}/buildSrc"
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear
-			])
-		}
-		// Copy the project source code.
-		copy {
-			from('buildSrc') {
-				include '*.gradle'
-				include '**/*.java'
-				include '**/*.groovy'
-				include '**/*.xml'
-				include '**/*.c'
-				include '**/*.cpp'
-				include '**/*.h'
-				include '**/*.hpp'
 			}
 			into file("${exportProjectDir}/${project.name}")
 			filter(ReplaceTokens, tokens: [
@@ -147,22 +125,12 @@ task export(overwrite: true) {
 			from('buildSrc') {
 				include 'lib/**/*'
 				include 'resources/**/*'
-				include 'src/**/*'
 				include 'tool/**/*'
-				exclude '*.gradle'
-				exclude '**/*.java'
-				include '**/*.groovy'
-				exclude '**/*.xml'
-				exclude '**/*.c'
-				exclude '**/*.cpp'
-				exclude '**/*.h'
-				exclude '**/*.hpp'
 			}
 			into file("${exportProjectDir}/${project.name}")
 		}
 	}
 }
-
 
 // Create a zip file from the export directory.
 task zip(type: Zip) {
