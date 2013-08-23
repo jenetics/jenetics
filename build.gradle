@@ -112,22 +112,37 @@ task export(overwrite: true) {
 		
 		// Copy 'buildSrc' files.
 		copy {
-			from('buildSrc') {
-				include 'src/**/*'
+			from(project('buildSrc').projectDir) {
+				include '*.gradle'
+				include 'src/**/*.java'
+				include 'src/**/*.gradle'
+				include 'src/**/*.xml'
+				include 'src/**/*.c'
+				include 'src/**/*.cpp'
+				include 'src/**/*.h'
+				include 'src/**/*.hpp'
 			}
-			into file("${exportProjectDir}/${project.name}")
+			into file("${exportProjectDir}/buildSrc")
 			filter(ReplaceTokens, tokens: [
 				__identifier__: identifier,
 				__year__: copyrightYear
 			])
 		}
 		copy {
-			from('buildSrc') {
+			from(project('buildSrc').projectDir) {
+				include 'src/**/*.*'
 				include 'lib/**/*'
-				include 'resources/**/*'
 				include 'tool/**/*'
+				include 'resource/**/*'
+				exclude 'src/**/*.java'
+				exclude 'src/**/*.gradle'
+				exclude 'src/**/*.xml'
+				exclude 'src/**/*.c'
+				exclude 'src/**/*.cpp'
+				exclude 'src/**/*.h'
+				exclude 'src/**/*.hpp'
 			}
-			into file("${exportProjectDir}/${project.name}")
+			into file("${exportProjectDir}/buildSrc")
 		}
 	}
 }
