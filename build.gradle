@@ -92,7 +92,7 @@ task export(overwrite: true) {
 		// Copy the files in the base directory.
 		copy {
 			from('.') {
-				include '*.*'
+				include '*'
 				exclude 'org.*'
 				exclude '.gradle'
 				exclude '.hgignore'
@@ -102,12 +102,19 @@ task export(overwrite: true) {
 				exclude '*.iws'
 				exclude '.project'
 				exclude '.classpath'
+				exclude 'build'
 			}
 			into exportProjectDir
 			filter(ReplaceTokens, tokens: [
 				__identifier__: identifier,
 				__year__: copyrightYear
 			])
+		}
+		copy {
+			from('.') {
+				include 'gradle/**/*'
+			}
+			into exportProjectDir
 		}
 		
 		// Copy 'buildSrc' files.
@@ -183,7 +190,7 @@ repositories {
  */
 class Includes {
 	final JScience = 'jscience:jscience:4.3.1'
-	final TestNG = 'org.testng:testng:6.8.5' //'testng:testng:6.8.1'
+	final TestNG = 'org.testng:testng:6.8.5'
 }
 
 
