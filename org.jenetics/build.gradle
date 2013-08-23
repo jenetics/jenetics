@@ -193,6 +193,11 @@ jacocoTestReport{
     }
 }
 
+clean.doLast {
+	file("${projectDir}/bin").deleteDir()
+	file("${projectDir}/test-output").deleteDir()
+}
+
 dependencies {
 	compile includes.JScience
 	compile 'commons-lang:commons-lang:2.6'

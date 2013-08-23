@@ -73,6 +73,10 @@ jar {
 	}
 }
 
+clean.doLast {
+	file("${projectDir}/bin").deleteDir()
+}
+
 dependencies {
 	compile project(':org.jenetics')
 }
