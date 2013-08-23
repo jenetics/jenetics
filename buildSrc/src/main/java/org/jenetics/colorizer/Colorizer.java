@@ -24,6 +24,7 @@ package org.jenetics.colorizer;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,7 +45,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-08-21 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-24 $</em>
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
@@ -56,8 +57,8 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 		}
 
 		try {
-			final Colorizer colorizer = new Colorizer();
-			Files.walkFileTree(dir.toPath(), colorizer);
+			final Colorizer colorizer = new Colorizer(dir);
+			colorizer.colorize();
 
 			System.out.println(format(
 				"Colorizer processed %d files and modified %d.",
@@ -74,15 +75,37 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 
 	private static final Charset CHARSET = Charset.forName("UTF-8");
 
+	private File _baseDir;
+
 	private int _processed = 0;
 	private int _modified = 0;
 
-	int getProcessed() {
+	public Colorizer(final File baseDir) {
+		_baseDir = requireNonNull(baseDir, "Base dir must not be null.");
+	}
+
+	public Colorizer() {
+		this(new File("."));
+	}
+
+	public void setBaseDir(final File baseDir) {
+		_baseDir = requireNonNull(baseDir, "Base dir must not be null.");
+	}
+
+	public File getBaseDir() {
+		return _baseDir;
+	}
+
+	public int getProcessed() {
 		return _processed;
 	}
 
-	int getModified() {
+	public int getModified() {
 		return _modified;
+	}
+
+	public void colorize() throws IOException {
+		Files.walkFileTree(_baseDir.toPath(), this);
 	}
 
 	@Override
@@ -148,7 +171,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.4 &mdash; <em>$Date: 2013-08-21 $</em>
+	 * @version 1.4 &mdash; <em>$Date: 2013-08-24 $</em>
 	 */
 	private static enum State {
 
