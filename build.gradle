@@ -189,6 +189,7 @@ repositories {
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 class Includes {
+	final Javolution = 'org.javolution:javolution-core-java:6.0.0'
 	final JScience = 'jscience:jscience:4.3.1'
 	final TestNG = 'org.testng:testng:6.8.5'
 }
