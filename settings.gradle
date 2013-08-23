@@ -27,11 +27,18 @@
  * @version 1.4 &mdash; <em>$Date$</em>
  */
  
-include "org.jenetics"
-include "org.jenetics.example"
-include "org.jenetics.doc"
+// The Gradle build project.
+include 'buildSrc'
+ 
+// The Jenetics projects.
+include 'org.jenetics'
+include 'org.jenetics.example'
+include 'org.jenetics.doc'
 
-rootProject.name = "jenetics"
+rootProject.name = 'jenetics'
 
 
+ext {
+	foooo = 'asdf'
+}
 

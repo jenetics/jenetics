@@ -23,6 +23,8 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.task.JavadocColorizeTask
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -42,6 +44,17 @@ tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.compilerArgs = ['-Xlint:all']
 }
 
+task foo(type: JavadocColorizeTask) {
+	directory = rootDir
+	doLast {
+		println( 'FOOOOOO: ' + foooo )
+	}
+}
+
+printProject << {
+    println( "some additional project: " + project.name )
+}
+
 task jarjar(type: Jar) {
 	baseName = project.name + '-all'
 	from files(sourceSets.main.output.classesDir)
@@ -58,6 +71,24 @@ task jarjar(type: Jar) {
 				'ProjectName': "${jeneticsName}",
 				'Version': version,
 				'Maintainer': "${jeneticsAuthor}"
+	}
+}
+
+task copyExternalLibs << {
+	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
+	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+	def exportLibDir = new File(exportBaseDir, 'lib')
+	exportBaseDir.mkdirs()
+	exportSourceDir.mkdirs()
+	exportLibDir.mkdirs()
+	
+	copy {
+		from {
+			configurations.compile.collect {
+				it.isDirectory() ? it : zipTree(it)
+			}
+		}
+		into "${exportLibDir}"
 	}
 }
 
@@ -221,8 +252,7 @@ test {
 	}
 }
 
-task export(dependsOn: pack) << {
-}
+export.dependsOn(pack)
 
 jacocoTestReport{
     reports {
@@ -231,12 +261,9 @@ jacocoTestReport{
     }
 }
 
-configurations {
-    compile
-}
-
 dependencies {
 	compile includes.JScience
+	//compile 
 	testCompile includes.TestNG
 }
 
