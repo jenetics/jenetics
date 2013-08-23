@@ -182,7 +182,7 @@ javadoc {
 test {
 	useTestNG()
 	options {
-		suites 'src/test/java/org/jenetics/testng.xml'
+		suites 'src/test/resources/testng.xml'
 	}
 }
 
