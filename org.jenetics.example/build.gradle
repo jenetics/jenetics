@@ -34,7 +34,7 @@ apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-apply from: "${rootDir}/commons.gradle"
+apply from: "${rootDir}/gradle/commons.gradle"
 
 task pack(dependsOn: build) {}
 

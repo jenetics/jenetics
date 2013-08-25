@@ -34,7 +34,8 @@ import org.jenetics.gradle.task.ChecksumTask
  */
 
 apply plugin: 'signing'
-apply from: "${rootDir}/commons.gradle"
+
+apply from: "${rootDir}/gradle/commons.gradle"
 
 ext {
 	jeneticsVersion = '1.4.0'
