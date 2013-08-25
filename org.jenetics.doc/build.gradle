@@ -34,7 +34,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 
-apply from: "${rootDir}/commons.gradle"
+apply from: "${rootDir}/gradle/commons.gradle"
 
 // The temp build temp directory.
 def buildTempDir = file("${buildDir}/tmp")
@@ -82,7 +82,7 @@ export.doLast {
 		from("${buildDir}/doc") {
 			include '*.pdf'
 		}
-		into exportDirs
+		into exportDir
 	}
 }
 
