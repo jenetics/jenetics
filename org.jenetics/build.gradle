@@ -159,7 +159,7 @@ task java2html {
 			main = 'de.java2html.Java2Html'
 			args = [
 				'-srcdir', 'src/main/java',
-				'-targetdir', "$destination/src-html"
+				'-targetdir', "${destination}/src-html"
 			]
 			classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
 		}
