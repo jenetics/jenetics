@@ -39,7 +39,7 @@ apply from: "${rootDir}/commons.gradle"
 // The temp build temp directory.
 def buildTempDir = file("${buildDir}/tmp")
 
-task buildManual << {
+task build(override: true) {
 	copy {
 		from("${projectDir}/src/main") {
 			include 'lyx/manual.lyx'
@@ -66,21 +66,21 @@ task lyx(type: Lyx2PDFTask) {
 lyx.doLast {
 	copy {
 		from "${buildTempDir}/lyx/manual.pdf"
-		into "${buildTempDir}/../doc"
+		into "${buildDir}/doc"
 		rename { String fileName ->
 			fileName.replace('manual.pdf', "manual-${version}.pdf")
 		}
 	}
 }
 
-buildManual.finalizedBy(lyx)
+build.finalizedBy(lyx)
 
-export.dependsOn(buildManual)
+export.dependsOn(build)
 export.doLast {
 	// Copy the manual.
 	copy {
 		from("${buildDir}/doc") {
-			include "*.pdf"
+			include '*.pdf'
 		}
 		into exportDirs
 	}
