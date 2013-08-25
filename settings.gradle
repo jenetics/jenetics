@@ -24,7 +24,7 @@
  /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
  */
  
 // The Gradle build project.
@@ -36,9 +36,4 @@ include 'org.jenetics.example'
 include 'org.jenetics.doc'
 
 rootProject.name = 'jenetics'
-
-
-ext {
-	foooo = 'asdf'
-}
 

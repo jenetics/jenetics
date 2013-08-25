@@ -26,7 +26,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
  */
 
 apply plugin: 'java'
@@ -42,10 +42,10 @@ export.dependsOn(pack)
 export.doLast {
 	// Copy the scripts.
 	copy {
-		from("./src/main/scripts") {
-			include "**/*"
+		from('src/main/scripts') {
+			include '**/*'
 		}
-		into "${exportScriptDir}"
+		into exportScriptDir
 		filter(ReplaceTokens, tokens: [
 			__identifier__: identifier,
 			__year__: copyrightYear,
@@ -56,20 +56,20 @@ export.doLast {
 
 jar {
 	manifest {
-		name = "org.jenetics.example"
-		instruction "Export-Package",
-				"org.jenetics.example"
-		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
-		instruction "Bundle-Description", "Jenetics Algorithm Library"
-		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
+		name = 'org.jenetics.example'
+		instruction 'Export-Package',
+				'org.jenetics.example'
+		instruction 'Bundle-Vendor', jeneticsAuthor
+		instruction 'Bundle-Description', 'Jenetics - Java Genetic Algorithm Library'
+		instruction 'Bundle-DocUR', jeneticsURL
 
-		attributes "Implementation-Title": "org.jenetics.example",
-					"Implementation-Version": version,
-					"Implementation-URL": "http://jenetics.sourceforge.net",
-					"Implementation-Vendor": "Jenetics",
-					"ProjectName": "Jenetics",
-					"Version": version,
-					"Maintainer": "Franz Wilhelmstötter"
+		attributes 'Implementation-Title': 'org.jenetics.example',
+					'Implementation-Version': version,
+					'Implementation-URL': jeneticsURL,
+					'Implementation-Vendor': jeneticsName,
+					'ProjectName': jeneticsName,
+					'Version': version,
+					'Maintainer': jeneticsAuthor
 	}
 }
 
