@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.task.ChecksumTask
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -32,33 +34,32 @@ import org.apache.tools.ant.filters.ReplaceTokens
  */
 
 apply plugin: 'signing'
-
 apply from: "${rootDir}/commons.gradle"
 
 ext {
-	 jeneticsVersion = '1.4.0'
-	 jeneticsAuthor = 'Franz Wilhelsmtötter'
-	 jeneticsName = 'Jenetics'
-	 jeneticsURL = 'http://jenetics.sourceforge.net'
- 
-	 now = new Date()
-	 year = now.year + 1900
-	 copyrightYear = "2007-${year}".toString()
-	 identifier = "${rootProject.name}-${jeneticsVersion}".toString()
-	 manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
-	 manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
-	 dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-	 
-	 includes = new Includes()
-	 
-	 // Define some 'global' path variables.
-	 exportDir = file("${buildDir}/package/${identifier}")
-	 exportProjectDir = file("${exportDir}/project")
-	 exportProjectLibDir = file("${exportProjectDir}/buildSrc/lib")
-	 exportLibDir = file("${exportDir}/lib")
-	 exportJavadocDir = file("${exportDir}/javadoc")
-	 exportReportDir = file("${exportDir}/report")
-	 exportScriptDir = file("${exportDir}/script")
+	jeneticsVersion = '1.4.0'
+	jeneticsAuthor = 'Franz Wilhelsmtötter'
+	jeneticsName = 'Jenetics'
+	jeneticsURL = 'http://jenetics.sourceforge.net'
+
+	now = new Date()
+	year = Calendar.getInstance().get(Calendar.YEAR);
+	copyrightYear = "2007-${year}".toString()
+	identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+	manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
+	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	
+	includes = new Includes()
+	
+	// Define some 'global' path variables.
+	exportDir = file("${buildDir}/package/${identifier}")
+	exportProjectDir = file("${exportDir}/project")
+	exportProjectLibDir = file("${exportProjectDir}/buildSrc/lib")
+	exportLibDir = file("${exportDir}/lib")
+	exportJavadocDir = file("${exportDir}/javadoc")
+	exportReportDir = file("${exportDir}/report")
+	exportScriptDir = file("${exportDir}/script")
 }
 
 subprojects { subproj ->
@@ -70,7 +71,7 @@ subprojects { subproj ->
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.7'
+	gradleVersion = '1.7'
 }
 
 task export(overwrite: true) {
@@ -164,14 +165,25 @@ task zip(type: Zip) {
 	version = jeneticsVersion
 
 	doLast {
-		def zip = new File("${identifier}.zip")
+		def zip = file("${identifier}.zip")
 		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
 
+task sha256(type: ChecksumTask) {
+	algorithm = 'SHA-256'
+	inputFile = file("build/distributions/${identifier}.zip")
+}
+
+task md5(type: ChecksumTask) {
+	inputFile = file("build/distributions/${identifier}.zip")
+}
+
+zip.finalizedBy([sha256, md5])
+
 signing {
-	// gpg --armor --detach-sign jenetics-1.4.0.zip
-	// gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
+	//gpg --armor --detach-sign jenetics-1.4.0.zip
+	//gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
 	sign zip
 }
 

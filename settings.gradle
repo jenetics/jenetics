@@ -37,8 +37,3 @@ include 'org.jenetics.doc'
 
 rootProject.name = 'jenetics'
 
-
-ext {
-	foooo = 'asdf'
-}
-

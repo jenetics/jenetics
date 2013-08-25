@@ -363,7 +363,7 @@ http://jenetics.sourceforge.net/
 \align left
 
 \size small
-@!identifier!@
+@__identifier__@
 \end_layout
 
 \begin_layout Standard
