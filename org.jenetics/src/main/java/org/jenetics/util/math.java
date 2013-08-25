@@ -845,7 +845,6 @@ public final class math extends StaticObject {
 			return seed;
 		}
 
-
 		private static long objectHashSeed() {
 			return ((long)(new Object().hashCode()) << 32) |
 							new Object().hashCode();
