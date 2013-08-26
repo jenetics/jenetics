@@ -42,10 +42,6 @@ apply from: "${rootDir}/gradle/commons.gradle"
 new PropertiesLoader(ext).load(file('project.properties'))
 rootProject.version = jenetics.version
 
-for (final Map.Entry<Object, Object> entry : ext.properties.entrySet()) {
-	println(entry)
-}
-
 ext {
 	now = new Date()
 	year = Calendar.getInstance().get(Calendar.YEAR);

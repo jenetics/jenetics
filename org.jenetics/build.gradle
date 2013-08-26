@@ -48,14 +48,14 @@ tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 jar {
 	manifest {
 		version = version
-		symbolicName = name
-		name = 'org.jenetics'
+		symbolicName = project.name
+		name = project.name
 		instruction 'Export-Package',
 				'org.jenetics',
 				'org.jenetics.util',
 				'org.jenetics.stat'
 		instruction 'Bundle-Vendor', jenetics.author
-		instruction 'Bundle-Description', 'Jenetics - Java Genetic Algorithm Library'
+		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url
 
 		attributes 'Implementation-Title': 'org.jenetics',
@@ -205,12 +205,5 @@ dependencies {
 	compile Include.JScience
 	testCompile Include.TestNG
 }
-
-
-
-
-
-
-
 
 
