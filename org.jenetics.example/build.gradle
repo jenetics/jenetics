@@ -56,11 +56,13 @@ export.doLast {
 
 jar {
 	manifest {
-		name = 'org.jenetics.example'
+		version = version
+		symbolicName = project.name
+		name = project.name
 		instruction 'Export-Package',
 				'org.jenetics.example'
 		instruction 'Bundle-Vendor', jenetics.author
-		instruction 'Bundle-Description', 'Jenetics - Java Genetic Algorithm Library'
+		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url
 
 		attributes 'Implementation-Title': 'org.jenetics.example',
