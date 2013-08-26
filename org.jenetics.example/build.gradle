@@ -65,7 +65,7 @@ jar {
 		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url
 
-		attributes 'Implementation-Title': 'org.jenetics.example',
+		attributes 'Implementation-Title': project.name,
 					'Implementation-Version': version,
 					'Implementation-URL': jenetics.url,
 					'Implementation-Vendor': jenetics.name,
