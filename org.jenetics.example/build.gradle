@@ -26,7 +26,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
  */
 
 apply plugin: 'java'
@@ -59,17 +59,17 @@ jar {
 		name = 'org.jenetics.example'
 		instruction 'Export-Package',
 				'org.jenetics.example'
-		instruction 'Bundle-Vendor', jeneticsAuthor
+		instruction 'Bundle-Vendor', jenetics.author
 		instruction 'Bundle-Description', 'Jenetics - Java Genetic Algorithm Library'
-		instruction 'Bundle-DocUR', jeneticsURL
+		instruction 'Bundle-DocUR', jenetics.url
 
 		attributes 'Implementation-Title': 'org.jenetics.example',
 					'Implementation-Version': version,
-					'Implementation-URL': jeneticsURL,
-					'Implementation-Vendor': jeneticsName,
-					'ProjectName': jeneticsName,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
 					'Version': version,
-					'Maintainer': jeneticsAuthor
+					'Maintainer': jenetics.author
 	}
 }
 
