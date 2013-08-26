@@ -37,6 +37,8 @@ apply plugin: 'signing'
 
 apply from: "${rootDir}/gradle/commons.gradle"
 
+rootProject.version = '1.4.0'
+
 ext {
 	jeneticsVersion = '1.4.0'
 	jeneticsAuthor = 'Franz Wilhelsmtötter'
@@ -59,6 +61,16 @@ ext {
 	exportJavadocDir = file("${exportDir}/javadoc")
 	exportReportDir = file("${exportDir}/report")
 	exportScriptDir = file("${exportDir}/script")
+}
+
+allprojects {
+    group = 'org.jenetics'
+    version = rootProject.version
+    
+    repositories {
+	    flatDir(dir: "${rootDir}/buildSrc/lib")
+	    mavenCentral()
+    }
 }
 
 subprojects { subproj ->
