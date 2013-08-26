@@ -31,7 +31,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
  */
  
 
@@ -91,8 +91,4 @@ task export(group: 'export', description: 'Exports the whole project') {
 	}
 }
 
-repositories {
-	flatDir(dir: "${rootDir}/buildSrc/lib")
-	mavenCentral()
-}
 

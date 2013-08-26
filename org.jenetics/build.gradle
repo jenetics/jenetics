@@ -23,12 +23,13 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.Include
 import org.jenetics.gradle.task.ColorizerTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
  */
 
 apply plugin: 'java'
@@ -200,9 +201,9 @@ clean.doLast {
 }
 
 dependencies {
-	//testCompile(includes.Javolution) { transitive = false }
-	compile includes.JScience
-	testCompile includes.TestNG
+	//testCompile(Include.Javolution) { transitive = false }
+	compile Include.JScience
+	testCompile Include.TestNG
 }
 
 
