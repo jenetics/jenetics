@@ -1,0 +1,39 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+package org.jenetics.gradle;
+
+/**
+ * Defining the external dependencies used by the 'Jenetics' library.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.4
+ * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
+ */
+public final class Include {
+	private Include() {}
+
+	public static final String Javolution = "org.javolution:javolution-core-java:6.0.0";
+	public static final String JScience = "jscience:jscience:4.3.1";
+	public static final String TestNG = "org.testng:testng:6.8.5";
+
+}

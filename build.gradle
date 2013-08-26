@@ -30,7 +30,7 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
  */
 
 apply plugin: 'signing'
@@ -50,8 +50,6 @@ ext {
 	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
 	manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-	
-	includes = new Includes()
 	
 	// Define some 'global' path variables.
 	exportDir = file("${buildDir}/package/${identifier}")
@@ -192,21 +190,6 @@ repositories {
 	flatDir(dir: "${rootDir}/buildSrc/lib")
 	mavenCentral()
 }
-
-
-/**
- * Class which defines the external dependencies.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
- */
-class Includes {
-	final Javolution = 'org.javolution:javolution-core-java:6.0.0'
-	final JScience = 'jscience:jscience:4.3.1'
-	final TestNG = 'org.testng:testng:6.8.5'
-}
-
 
 
 
