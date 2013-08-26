@@ -58,7 +58,7 @@ jar {
 		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url
 
-		attributes 'Implementation-Title': 'org.jenetics',
+		attributes 'Implementation-Title': project.name,
 					'Implementation-Version': version,
 					'Implementation-URL': jenetics.url,
 					'Implementation-Vendor': jenetics.name,
@@ -77,7 +77,7 @@ task jarjar(type: Jar, dependsOn: build) {
 		}
 	}
 	manifest {
-		attributes 'Implementation-Title': 'org.jenetics-all',
+		attributes 'Implementation-Title': "${project.name}-all",
 				'Implementation-Versionv': version,
 				'Implementation-URL': jenetics.url,
 				'Implementation-Vendor': jenetics.name,
