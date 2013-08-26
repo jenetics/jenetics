@@ -36,4 +36,5 @@ include 'org.jenetics.example'
 include 'org.jenetics.doc'
 
 rootProject.name = 'jenetics'
+rootProject.version = '1.4.0'
 
