@@ -23,6 +23,7 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.Include
 import org.jenetics.gradle.task.ColorizerTask
 
 /**
@@ -200,9 +201,9 @@ clean.doLast {
 }
 
 dependencies {
-	//testCompile(includes.Javolution) { transitive = false }
-	compile includes.JScience
-	testCompile includes.TestNG
+	//testCompile(Include.Javolution) { transitive = false }
+	compile Include.JScience
+	testCompile Include.TestNG
 }
 
 

@@ -37,6 +37,8 @@ apply plugin: 'signing'
 
 apply from: "${rootDir}/gradle/commons.gradle"
 
+rootProject.version = '1.4.0'
+
 ext {
 	jeneticsVersion = '1.4.0'
 	jeneticsAuthor = 'Franz Wilhelsmtötter'
@@ -51,8 +53,6 @@ ext {
 	manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 	
-	includes = new Includes()
-	
 	// Define some 'global' path variables.
 	exportDir = file("${buildDir}/package/${identifier}")
 	exportProjectDir = file("${exportDir}/project")
@@ -61,6 +61,16 @@ ext {
 	exportJavadocDir = file("${exportDir}/javadoc")
 	exportReportDir = file("${exportDir}/report")
 	exportScriptDir = file("${exportDir}/script")
+}
+
+allprojects {
+    group = 'org.jenetics'
+    version = rootProject.version
+    
+    repositories {
+	    flatDir(dir: "${rootDir}/buildSrc/lib")
+	    mavenCentral()
+    }
 }
 
 subprojects { subproj ->
@@ -73,6 +83,28 @@ subprojects { subproj ->
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '1.7'
+}
+
+
+task alljavadoc(type: Javadoc) {
+    def jeneticsProjects = subprojects.findAll { project -> 
+        project.name.startsWith('org.jeneti') &&
+        project.name != 'org.jenetics.doc'
+    }
+    configure(jeneticsProjects) {
+        apply plugin: 'java'
+    }
+    
+    println("JENETICS: " + jeneticsProjects)
+    source jeneticsProjects.collect { p ->
+        p.sourceSets.main.allJava
+    }
+    destinationDir = file("${buildDir}/alljavadoc")
+    
+    // Might need a classpath
+    classpath = files(jeneticsProjects.collect { project ->
+        project.sourceSets.main.compileClasspath
+    })
 }
 
 task export(overwrite: true) {
@@ -192,21 +224,6 @@ repositories {
 	flatDir(dir: "${rootDir}/buildSrc/lib")
 	mavenCentral()
 }
-
-
-/**
- * Class which defines the external dependencies.
- *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
- */
-class Includes {
-	final Javolution = 'org.javolution:javolution-core-java:6.0.0'
-	final JScience = 'jscience:jscience:4.3.1'
-	final TestNG = 'org.testng:testng:6.8.5'
-}
-
 
 
 
