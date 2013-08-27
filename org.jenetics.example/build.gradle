@@ -26,7 +26,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-28 $</em>
  */
 
 apply plugin: 'osgi'
@@ -58,8 +58,7 @@ jar {
 		version = version
 		symbolicName = project.name
 		name = project.name
-		instruction 'Export-Package',
-				'org.jenetics.example'
+		instruction 'Export-Package', 'org.jenetics.example'
 		instruction 'Bundle-Vendor', jenetics.author
 		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url

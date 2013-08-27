@@ -31,7 +31,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-28 $</em>
  */
  
 task export(group: 'export', description: 'Exports the whole project') << {
@@ -91,11 +91,8 @@ if (tasks.findByPath('clean') == null) {
 	}
 }
 
-clean << {
-	delete("${projectDir}/test-output")
-}
-
 task cleanAll(dependsOn: clean) << {
+	delete("${projectDir}/test-output")
 	delete("${projectDir}/bin")
 }
 
