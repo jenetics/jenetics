@@ -24,16 +24,13 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
  */ 
  
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
 
 clean.doLast {
 	file("${projectDir}/bin").deleteDir()
