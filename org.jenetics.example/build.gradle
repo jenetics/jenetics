@@ -26,10 +26,9 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
  */
 
-apply plugin: 'java'
 apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'idea'

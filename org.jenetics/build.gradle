@@ -32,7 +32,6 @@ import org.jenetics.gradle.task.ColorizerTask
  * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
  */
 
-apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'osgi'
 apply plugin: 'eclipse'
