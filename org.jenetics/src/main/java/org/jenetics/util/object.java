@@ -193,12 +193,13 @@ public final class object extends StaticObject {
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
 	 * 		  than zero.
 	 */
-	public static void nonNegative(final int length) {
+	public static int nonNegative(final int length) {
 		if (length < 0) {
 			throw new NegativeArraySizeException(
 				"Length must be greater than zero, but was " + length + ". "
 			);
 		}
+		return length;
 	}
 
 	/**
