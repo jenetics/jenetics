@@ -81,7 +81,7 @@ public final class PropertiesLoader {
 		} else {
 			Map<String, Object> map = getOrElseCreateMap(parts[0]);
 			for (int i = 1; i < parts.length - 1; ++i) {
-				map = getOrElseCreateMap(parts[i], map);
+				map = getOrElseCreateMap(map, parts[i]);
 			}
 			map.put(parts[parts.length - 1], value);
 		}
@@ -89,8 +89,8 @@ public final class PropertiesLoader {
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> getOrElseCreateMap(
-		final String key,
-		final Map<String, Object> parent
+		final Map<String, Object> parent,
+		final String key
 	) {
 		Map<String, Object> map = (Map<String, Object>)parent.get(key);
 		if (map == null) {
