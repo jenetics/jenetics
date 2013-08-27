@@ -48,23 +48,23 @@ tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 jar {
 	manifest {
 		version = version
-		symbolicName = 'org.jenetics'
-		name = 'org.jenetics'
+		symbolicName = project.name
+		name = project.name
 		instruction 'Export-Package',
 				'org.jenetics',
 				'org.jenetics.util',
 				'org.jenetics.stat'
-		instruction 'Bundle-Vendor', jeneticsAuthor
-		instruction 'Bundle-Description', 'Jenetics - Java Genetic Algorithm Library'
-		instruction 'Bundle-DocUR', jeneticsURL
+		instruction 'Bundle-Vendor', jenetics.author
+		instruction 'Bundle-Description', jenetics.description
+		instruction 'Bundle-DocUR', jenetics.url
 
-		attributes 'Implementation-Title': 'org.jenetics',
+		attributes 'Implementation-Title': project.name,
 					'Implementation-Version': version,
-					'Implementation-URL': jeneticsURL,
-					'Implementation-Vendor': jeneticsName,
-					'ProjectName': jeneticsName,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
 					'Version': version,
-					'Maintainer': jeneticsAuthor
+					'Maintainer': jenetics.author
 	}
 }
 
@@ -77,13 +77,13 @@ task jarjar(type: Jar, dependsOn: build) {
 		}
 	}
 	manifest {
-		attributes 'Implementation-Title': 'org.jenetics-all',
+		attributes 'Implementation-Title': "${project.name}-all",
 				'Implementation-Versionv': version,
-				'Implementation-URL': jeneticsURL,
-				'Implementation-Vendor': jeneticsName,
-				'ProjectName': jeneticsName,
+				'Implementation-URL': jenetics.url,
+				'Implementation-Vendor': jenetics.name,
+				'ProjectName': jenetics.name,
 				'Version': version,
-				'Maintainer': jeneticsAuthor
+				'Maintainer': jenetics.author
 	}
 }
 
@@ -205,12 +205,5 @@ dependencies {
 	compile Include.JScience
 	testCompile Include.TestNG
 }
-
-
-
-
-
-
-
 
 

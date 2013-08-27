@@ -49,11 +49,11 @@ import javolution.xml.stream.XMLStreamException;
  * final Population<Float64Gene,Float64> population =
  *     (Population<Float64Gene, Float64)IO.xml.read(file);
  * ga.setPopulation(population);
- *[/code]
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-26 $</em>
  */
 public abstract class IO {
 
@@ -299,7 +299,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-26 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -353,7 +353,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2013-06-05 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-26 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;
