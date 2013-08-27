@@ -33,7 +33,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-08-13 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-08-27 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -193,12 +193,13 @@ public final class object extends StaticObject {
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
 	 * 		  than zero.
 	 */
-	public static void nonNegative(final int length) {
+	public static int nonNegative(final int length) {
 		if (length < 0) {
 			throw new NegativeArraySizeException(
 				"Length must be greater than zero, but was " + length + ". "
 			);
 		}
+		return length;
 	}
 
 	/**
