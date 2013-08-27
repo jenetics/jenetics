@@ -32,8 +32,6 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-apply from: '../gradle/commons.gradle'
-
 dependencies {
 	compile gradleApi()
 }

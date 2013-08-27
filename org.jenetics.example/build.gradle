@@ -29,7 +29,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 
-apply plugin: 'java'
 apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
