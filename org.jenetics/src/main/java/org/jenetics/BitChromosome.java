@@ -107,7 +107,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Create a new {@code BitChromosome} from the given {@code byte} array.
 	 *
-	 * @param value the {@code byte} array.
+	 * @param bits the {@code byte} array.
 	 */
 	public BitChromosome(final byte[] bits) {
 		this(bits, bits.length*8);
