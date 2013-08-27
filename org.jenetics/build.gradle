@@ -195,14 +195,6 @@ jacocoTestReport{
 	}
 }
 
-clean.doLast {
-	delete("${projectDir}/test-output")
-}
-
-task cleanAll(dependsOn: clean) << {
-    delete("${projectDir}/bin")
-}
-
 dependencies {
 	//testCompile(Include.Javolution) { transitive = false }
 	compile Include.JScience

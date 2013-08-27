@@ -31,7 +31,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-25 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
  */
 
 apply from: "${rootDir}/gradle/commons.gradle"
@@ -63,7 +63,7 @@ task lyx(type: Lyx2PDFTask) {
 	document = file("${buildTempDir}/lyx/manual.lyx")
 }
 
-lyx.doLast {
+lyx << {
 	copy {
 		from "${buildTempDir}/lyx/manual.pdf"
 		into "${buildDir}/doc"
@@ -76,8 +76,7 @@ lyx.doLast {
 build.finalizedBy(lyx)
 
 export.dependsOn(build)
-export.doLast {
-	// Copy the manual.
+export << {
 	copy {
 		from("${buildDir}/doc") {
 			include '*.pdf'
@@ -86,7 +85,7 @@ export.doLast {
 	}
 }
 
-task clean << {
+clean << {
 	buildDir.deleteDir()
 }
 
