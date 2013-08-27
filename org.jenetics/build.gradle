@@ -196,8 +196,11 @@ jacocoTestReport{
 }
 
 clean.doLast {
-	file("${projectDir}/bin").deleteDir()
-	file("${projectDir}/test-output").deleteDir()
+	delete("${projectDir}/test-output")
+}
+
+task cleanAll(dependsOn: clean) << {
+    delete("${projectDir}/bin")
 }
 
 dependencies {

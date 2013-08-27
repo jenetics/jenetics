@@ -77,6 +77,10 @@ public class Lyx2PDFTask extends DefaultTask {
 		try {
 			final Process process = builder.start();
 			_exitValue = process.waitFor();
+			if (_exitValue != 0) {
+				getLogger().lifecycle("Error while generating PDF.");
+				getLogger().lifecycle("Manual PDF has not been created.");
+			}
 		} catch (IOException | InterruptedException e) {
 			throw new TaskExecutionException(this, e);
 		}

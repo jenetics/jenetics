@@ -32,9 +32,6 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
-
 clean.doLast {
 	file("${projectDir}/bin").deleteDir()
 	file("${projectDir}/test-output").deleteDir()
