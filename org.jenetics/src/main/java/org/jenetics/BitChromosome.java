@@ -33,20 +33,18 @@ import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Random;
 
 import javolution.text.Text;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.internal.math.probability;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.IndexStream;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.bit;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
+
+import org.jenetics.util.ISeq;
+import org.jenetics.util.IndexStream;
+import org.jenetics.util.bit;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.
