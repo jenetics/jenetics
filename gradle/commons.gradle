@@ -91,11 +91,8 @@ if (tasks.findByPath('clean') == null) {
 	}
 }
 
-clean << {
-	delete("${projectDir}/test-output")
-}
-
 task cleanAll(dependsOn: clean) << {
+	delete("${projectDir}/test-output")
 	delete("${projectDir}/bin")
 }
 

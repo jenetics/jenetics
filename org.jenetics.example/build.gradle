@@ -58,8 +58,7 @@ jar {
 		version = version
 		symbolicName = project.name
 		name = project.name
-		instruction 'Export-Package',
-				'org.jenetics.example'
+		instruction 'Export-Package', 'org.jenetics.example'
 		instruction 'Bundle-Vendor', jenetics.author
 		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url
