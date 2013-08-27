@@ -32,10 +32,7 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-clean.doLast {
-	file("${projectDir}/bin").deleteDir()
-	file("${projectDir}/test-output").deleteDir()
-}
+apply from: '../gradle/commons.gradle'
 
 dependencies {
 	compile gradleApi()
