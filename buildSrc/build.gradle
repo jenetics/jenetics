@@ -40,6 +40,7 @@ clean.doLast {
 	file("${projectDir}/test-output").deleteDir()
 }
 
+
 dependencies {
 	compile gradleApi()
 }
