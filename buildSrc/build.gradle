@@ -24,7 +24,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-23 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
  */ 
  
 apply plugin: 'java'
@@ -39,6 +39,7 @@ clean.doLast {
 	file("${projectDir}/bin").deleteDir()
 	file("${projectDir}/test-output").deleteDir()
 }
+
 
 dependencies {
 	compile gradleApi()
