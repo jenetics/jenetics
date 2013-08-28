@@ -86,23 +86,23 @@ task wrapper(type: Wrapper) {
 
 
 task alljavadoc(type: Javadoc) {
-    def jeneticsProjects = subprojects.findAll { project -> 
-        project.name.startsWith('org.jeneti') &&
-        project.name != 'org.jenetics.doc'
-    }
-    configure(jeneticsProjects) {
-        apply plugin: 'java'
-    }
-    
-    source jeneticsProjects.collect { p ->
-        p.sourceSets.main.allJava
-    }
-    destinationDir = file("${buildDir}/alljavadoc")
-    
-    // Might need a classpath
-    classpath = files(jeneticsProjects.collect { project ->
-        project.sourceSets.main.compileClasspath
-    })
+	def jeneticsProjects = subprojects.findAll { project -> 
+		project.name.startsWith('org.jeneti') &&
+		project.name != 'org.jenetics.doc'
+	}
+	configure(jeneticsProjects) {
+		apply plugin: 'java'
+	}
+	
+	source jeneticsProjects.collect { p ->
+		p.sourceSets.main.allJava
+	}
+	destinationDir = file("${buildDir}/alljavadoc")
+	
+	// Might need a classpath
+	classpath = files(jeneticsProjects.collect { project ->
+		project.sourceSets.main.compileClasspath
+	})
 }
 
 task export(overwrite: true) {

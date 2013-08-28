@@ -32,7 +32,6 @@ import org.jenetics.gradle.task.ColorizerTask
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 
-apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'osgi'
 apply plugin: 'eclipse'
@@ -51,9 +50,9 @@ jar {
 		symbolicName = project.name
 		name = project.name
 		instruction 'Export-Package',
-				'org.jenetics',
-				'org.jenetics.util',
-				'org.jenetics.stat'
+					'org.jenetics',
+					'org.jenetics.util',
+					'org.jenetics.stat'
 		instruction 'Bundle-Vendor', jenetics.author
 		instruction 'Bundle-Description', jenetics.description
 		instruction 'Bundle-DocUR', jenetics.url
@@ -69,21 +68,22 @@ jar {
 }
 
 task jarjar(type: Jar, dependsOn: build) {
-	baseName = project.name + '-all'
+	baseName = "${project.name}-all"
 	from files(sourceSets.main.output.classesDir)
 	from {
 		configurations.compile.collect {
 			it.isDirectory() ? it : zipTree(it)
 		}
 	}
+
 	manifest {
 		attributes 'Implementation-Title': "${project.name}-all",
-				'Implementation-Versionv': version,
-				'Implementation-URL': jenetics.url,
-				'Implementation-Vendor': jenetics.name,
-				'ProjectName': jenetics.name,
-				'Version': version,
-				'Maintainer': jenetics.author
+					'Implementation-Versionv': version,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
+					'Version': version,
+					'Maintainer': jenetics.author
 	}
 }
 
@@ -134,8 +134,8 @@ javadoc {
 			'http://jscience.org/api/',
 			'http://javolution.org/target/site/apidocs/'
 		]
-		windowTitle = "Jenetics API ${project.version}"
-		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
+		windowTitle = "Jenetics ${project.version}"
+		docTitle = "<h1>Jenetics ${project.version}</h1>"
 		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
 		stylesheetFile = file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 		
@@ -193,14 +193,6 @@ jacocoTestReport{
 		xml.enabled true
 		csv.enabled true
 	}
-}
-
-clean.doLast {
-	delete("${projectDir}/test-output")
-}
-
-task cleanAll(dependsOn: clean) << {
-    delete("${projectDir}/bin")
 }
 
 dependencies {
