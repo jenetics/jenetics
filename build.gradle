@@ -31,7 +31,7 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
  */
 
 apply plugin: 'signing'
@@ -86,23 +86,23 @@ task wrapper(type: Wrapper) {
 
 
 task alljavadoc(type: Javadoc) {
-    def jeneticsProjects = subprojects.findAll { project -> 
-        project.name.startsWith('org.jeneti') &&
-        project.name != 'org.jenetics.doc'
-    }
-    configure(jeneticsProjects) {
-        apply plugin: 'java'
-    }
-    
-    source jeneticsProjects.collect { p ->
-        p.sourceSets.main.allJava
-    }
-    destinationDir = file("${buildDir}/alljavadoc")
-    
-    // Might need a classpath
-    classpath = files(jeneticsProjects.collect { project ->
-        project.sourceSets.main.compileClasspath
-    })
+	def jeneticsProjects = subprojects.findAll { project -> 
+		project.name.startsWith('org.jeneti') &&
+		project.name != 'org.jenetics.doc'
+	}
+	configure(jeneticsProjects) {
+		apply plugin: 'java'
+	}
+	
+	source jeneticsProjects.collect { p ->
+		p.sourceSets.main.allJava
+	}
+	destinationDir = file("${buildDir}/alljavadoc")
+	
+	// Might need a classpath
+	classpath = files(jeneticsProjects.collect { project ->
+		project.sourceSets.main.compileClasspath
+	})
 }
 
 task export(overwrite: true) {

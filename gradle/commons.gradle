@@ -31,64 +31,68 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-26 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-28 $</em>
  */
  
-
-task export(group: 'export', description: 'Exports the whole project') {
-
-	doLast  {
-		// Copy the project source code.
-		copy {
-			from(projectDir) {
-				include '*.gradle'
-				include 'src/**/*.java'
-				include 'src/**/*.xml'
-				include 'src/**/*.c'
-				include 'src/**/*.cpp'
-				include 'src/**/*.h'
-				include 'src/**/*.hpp'
-			}
-			into file("${exportProjectDir}/${project.name}")
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear
-			])
+task export(group: 'export', description: 'Exports the whole project') << {
+	copy {
+		from(projectDir) {
+			include '*.gradle'
+			include 'src/**/*.java'
+			include 'src/**/*.xml'
+			include 'src/**/*.c'
+			include 'src/**/*.cpp'
+			include 'src/**/*.h'
+			include 'src/**/*.hpp'
 		}
-		copy {
-			from(projectDir) {
-				include 'src/**/*'
-				exclude '*.gradle'
-				exclude '**/*.java'
-				exclude '**/*.xml'
-				exclude '**/*.c'
-				exclude '**/*.cpp'
-				exclude '**/*.h'
-				exclude '**/*.hpp'
-			}
-			into file("${exportProjectDir}/${project.name}")
+		into file("${exportProjectDir}/${project.name}")
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from(projectDir) {
+			include 'src/**/*'
+			exclude '*.gradle'
+			exclude '**/*.java'
+			exclude '**/*.xml'
+			exclude '**/*.c'
+			exclude '**/*.cpp'
+			exclude '**/*.h'
+			exclude '**/*.hpp'
 		}
-		
-		if (plugins.hasPlugin('java')) {
-			// Copy the external jar dependencies.
-			configurations.testRuntime.each { jar ->
-				if (jar.name.endsWith('.jar') && 
-					!jar.name.startsWith('org.jeneti')) 
-				{
-					copy {
-						from jar
-						into exportProjectLibDir
-					}
+		into file("${exportProjectDir}/${project.name}")
+	}
+	
+	if (plugins.hasPlugin('java')) {
+		// Copy the external jar dependencies.
+		configurations.testRuntime.each { jar ->
+			if (jar.name.endsWith('.jar') && 
+				!jar.name.startsWith('org.jeneti')) 
+			{
+				copy {
+					from jar
+					into exportProjectLibDir
 				}
 			}
-			
-			// Copy the build library
-			copy {
-				from("${buildDir}/libs")
-				into "${exportLibDir}"
-			}
+		}
+		
+		// Copy the build library
+		copy {
+			from("${buildDir}/libs")
+			into "${exportLibDir}"
 		}
 	}
 }
 
+if (tasks.findByPath('clean') == null) {
+	tasks.create('clean') {
+	}
+}
+
+task cleanAll(dependsOn: clean) << {
+	delete("${projectDir}/test-output")
+	delete("${projectDir}/bin")
+}
 
