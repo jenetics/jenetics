@@ -26,12 +26,13 @@ import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
+import org.jenetics.gradle.Version
 import org.jenetics.gradle.task.ChecksumTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-08-27 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-28 $</em>
  */
 
 apply plugin: 'signing'
@@ -40,7 +41,7 @@ apply from: "${rootDir}/gradle/commons.gradle"
 
 
 new PropertiesLoader(ext).load(file('project.properties'))
-rootProject.version = jenetics.version
+rootProject.version = Version.parse(jenetics.version)
 
 ext {
 	now = new Date()
