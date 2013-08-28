@@ -26,6 +26,7 @@ import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
+import org.jenetics.gradle.Version
 import org.jenetics.gradle.task.ChecksumTask
 
 /**
@@ -40,7 +41,7 @@ apply from: "${rootDir}/gradle/commons.gradle"
 
 
 new PropertiesLoader(ext).load(file('project.properties'))
-rootProject.version = jenetics.version
+rootProject.version = Version.parse(jenetics.version)
 
 ext {
 	now = new Date()
