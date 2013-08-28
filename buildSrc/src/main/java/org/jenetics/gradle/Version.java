@@ -23,6 +23,8 @@
 package org.jenetics.gradle;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static java.util.regex.Pattern.quote;
 
 
 /**
@@ -126,19 +128,40 @@ public final class Version implements Comparable<Version> {
 		return format("%d.%d.%d", _major, _minor, _micro);
 	}
 
+	public static Version parse(final String versionString) {
+		requireNonNull(versionString, "Version string must not be null.");
+		final String[] parts = versionString.split(quote("."));
+
+		Version version = null;
+		try {
+			if (parts.length == 1) {
+				version = new Version(Integer.parseInt(parts[0]));
+			} else if (parts.length == 2) {
+				version = new Version(
+					Integer.parseInt(parts[0]),
+					Integer.parseInt(parts[1])
+				);
+			} else if (parts.length == 3) {
+				version = new Version(
+					Integer.parseInt(parts[0]),
+					Integer.parseInt(parts[1]),
+					Integer.parseInt(parts[2])
+				);
+			} else {
+				throw new IllegalArgumentException(format(
+					"'%s' is not a valid version string.", versionString
+				));
+			}
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(format(
+				"'%s' is not a valid version string.", versionString
+			));
+		}
+
+		return version;
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
