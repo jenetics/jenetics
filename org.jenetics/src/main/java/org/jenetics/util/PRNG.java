@@ -24,7 +24,7 @@ import java.util.Random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.2 &mdash; <em>$Date$</em>
  */
 abstract class PRNG extends Random {
 
