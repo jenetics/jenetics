@@ -31,11 +31,11 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
 
 /**
- * This tasks converts a lyx document into a PDF.
+ * This tasks converts a lyx document into a  PDF.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-28 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-29 $</em>
  */
 public class Lyx2PDFTask extends DefaultTask {
 
