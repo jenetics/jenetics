@@ -28,6 +28,8 @@ import static java.util.regex.Pattern.quote;
 
 
 /**
+ * Represent a library version.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
  * @version 1.4 &mdash; <em>$Date$</em>
