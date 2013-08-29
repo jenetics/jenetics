@@ -30,7 +30,7 @@ import java.io.InputStreamReader;
  * number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2013-04-27 $</em>
  */
 public final class ChiSquare {
 	private static final String CHI = "/org/jenetics/stat/chi.txt";

@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date$</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
