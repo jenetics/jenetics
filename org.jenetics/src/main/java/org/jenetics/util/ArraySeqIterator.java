@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 class ArraySeqIterator<T> implements ListIterator<T> {
 	final ArraySeq<T> _array;
@@ -36,12 +36,12 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 
 	public ArraySeqIterator(final ArraySeq<T> array) {
 		_array = array;
-		_pos = array._start - 1;
+		_pos = array._start;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return _pos < _array._end - 1;
+		return _pos < _array._end;
 	}
 
 	@Override
@@ -50,12 +50,12 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array._array.data[++_pos];
+		return (T)_array._array.data[_pos++];
 	}
 
 	@Override
 	public int nextIndex() {
-		return _pos + 1;
+		return _pos;
 	}
 
 	@Override

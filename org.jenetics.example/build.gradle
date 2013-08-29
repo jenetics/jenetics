@@ -64,6 +64,11 @@ apply from: "../build-util.gradle"
 			include "src/**"
 			include "*.gradle"
 			exclude ".gradle"
+			exclude "*.iml"
+			exclude "*.ipr"
+			exclude "*.iws"
+			exclude ".project"
+			exclude ".classpath"
 		}
 		into "${exportSourceDir}"
 		filter(ReplaceTokens, tokens: [

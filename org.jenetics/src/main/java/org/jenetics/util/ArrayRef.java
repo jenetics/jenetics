@@ -22,13 +22,13 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 final class ArrayRef implements Cloneable {
 	Object[] data;
 	final int length;
 
-	boolean _sealed = false;
+	private boolean _sealed = false;
 
 	ArrayRef(final Object[] data) {
 		this.data = data;
@@ -45,6 +45,11 @@ final class ArrayRef implements Cloneable {
 			data = data.clone();
 			_sealed = false;
 		}
+	}
+
+	final ArrayRef seal() {
+		_sealed = true;
+		return this;
 	}
 
 }
