@@ -33,7 +33,7 @@ import org.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
  */
 public class Serial {
 
