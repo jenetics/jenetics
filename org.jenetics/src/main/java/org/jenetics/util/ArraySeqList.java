@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractList;
 import java.util.RandomAccess;
@@ -35,7 +35,7 @@ class ArraySeqList<T> extends AbstractList<T>
 	final ArraySeq<T> _array;
 
 	public ArraySeqList(final ArraySeq<T> array) {
-		_array = nonNull(array, "ArrayBase");
+		_array = requireNonNull(array, "ArrayBase");
 	}
 
 	@Override

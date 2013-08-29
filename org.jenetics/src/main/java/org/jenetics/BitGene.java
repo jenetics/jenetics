@@ -36,6 +36,7 @@ import org.jenetics.util.RandomRegistry;
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
+		Comparable<BitGene>,
 		XMLSerializable
 {
 
