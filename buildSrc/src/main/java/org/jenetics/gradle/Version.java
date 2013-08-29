@@ -28,9 +28,11 @@ import static java.util.regex.Pattern.quote;
 
 
 /**
+ * Represent a library version.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-08-28 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-08-29 $</em>
  */
 public final class Version implements Comparable<Version> {
 
