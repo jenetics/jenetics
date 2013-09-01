@@ -18,8 +18,15 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
- */
-package org.jenetics.util.performance;
+import java.text.SimpleDateFormat
+import java.util.Date
+
+ext.jeneticsVersion = "1.3.0"
+
+ext.now = new Date()
+ext.year = now.year + 1900
+ext.copyrightYear = "2007-${year}".toString()
+ext.identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+ext.manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+ext.manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
+ext.dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
