@@ -9899,7 +9899,7 @@ target "http://www.apache.org/licenses/LICENSE-2.0.html"
 \begin_layout LyX-Code
 
 \size footnotesize
-Copyright 2007-2013 Franz Wilhelmstötter
+Copyright @__year__@ Franz Wilhelmstötter
 \end_layout
 
 \begin_layout LyX-Code
