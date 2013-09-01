@@ -17,30 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
 
-import org.jenetics.util.Factory;
+import java.text.SimpleDateFormat
+import java.util.Date
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
- */
-public class PermutationChromosomeTest
-	extends ChromosomeTester<EnumGene<Integer>>
-{
+ext.jeneticsVersion = "1.3.0"
 
-	private final Factory<Chromosome<EnumGene<Integer>>>
-	_factory = new Factory<Chromosome<EnumGene<Integer>>>() {
-		@Override
-		public PermutationChromosome<Integer> newInstance() {
-			return PermutationChromosome.ofInteger(100);
-		}
-	};
-
-	@Override
-	protected Factory<Chromosome<EnumGene<Integer>>> getFactory() {
-		return _factory;
-	}
-
-
-}
+ext.now = new Date()
+ext.year = now.year + 1900
+ext.copyrightYear = "2007-${year}".toString()
+ext.identifier = "${rootProject.name}-${jeneticsVersion}".toString()
+ext.manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+ext.manualIdentifier = "${jeneticsVersion}---${manualDate}".toString()
+ext.dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
