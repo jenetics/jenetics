@@ -192,6 +192,10 @@ jacocoTestReport{
 	}
 }
 
+configurations {
+	tests
+}
+
 dependencies {
 	//testCompile(Include.Javolution) { transitive = false }
 	compile Include.JScience

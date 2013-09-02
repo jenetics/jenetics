@@ -168,12 +168,10 @@ test {
 }
 
 dependencies {
-    compile project(':org.jenetics')
-	testCompile project(':org.jenetics')
-    compile Include.JScience
-
-	//testCompile files(project(':org.jenetics').sourceSets.test.output)
-	//testCompile files(project(':org.jenetics').sourceSets.test.runtimeClasspath)
+	compile Include.JScience
+	compile project(':org.jenetics')
+	
+	testCompile project(':org.jenetics').sourceSets.test.output
     testCompile Include.TestNG
 }
 
