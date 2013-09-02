@@ -70,7 +70,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @deprecated Use {@link #valueOf(Alterer...)} instead.
 	 */
 	@Deprecated
-	@SuppressWarnings({"unchecked"})
+	@SafeVarargs
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		this(Array.valueOf(alterers));
 	}
