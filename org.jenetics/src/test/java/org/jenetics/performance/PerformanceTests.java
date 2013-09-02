@@ -19,6 +19,7 @@
  */
 package org.jenetics.performance;
 
+import javolution.context.Context;
 import javolution.context.LogContext;
 import javolution.lang.ClassInitializer;
 
@@ -33,11 +34,11 @@ public final class PerformanceTests {
 	}
 
 	public static void main(final String[] args) {
-		LogContext.enter(LogContext.NULL);
+		Context.enter(LogContext.NULL);
 		try {
 			ClassInitializer.initializeClassPath();
 		} finally {
-			LogContext.exit();
+			Context.exit();
 		}
 
 		//ForkJoinContext.setForkkJoinPool(new ForkJoinPool(10));
