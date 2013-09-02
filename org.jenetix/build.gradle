@@ -35,137 +35,70 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 apply from: "${rootDir}/gradle/commons.gradle"
-
-
-//task pack(dependsOn: [build, javadoc]) << {
-//	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-//	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-//	def exportLibDir = new File(exportBaseDir, "lib")
-//
-//	exportBaseDir.mkdirs()
-//	exportSourceDir.mkdirs()
-//	exportLibDir.mkdirs()
-//
-//	// Copy the library
-//	copy {
-//		from("${buildDir}/libs")
-//		into "${exportLibDir}"
-//	}
-//	copy {
-//		from("../project/lib") {
-//			include "jscience-*.jar"
-//		}
-//		into "${exportLibDir}"
-//	}
-//
-//	// Copy the sources.
-//	copy {
-//		from(".") {
-//			include "src/**"
-//			include "*.gradle"
-//			exclude ".gradle"
-//			exclude "src/site"
-//		}
-//		into "${exportSourceDir}"
-//		filter(ReplaceTokens, tokens: [
-//			__identifier__: identifier,
-//			__year__: copyrightYear
-//		])
-//	}
-//
-//	// Copy the javadoc
-//	copy {
-//		from("${buildDir}/docs/javadoc") {
-//			include "**/*.html"
-//		}
-//		into "${exportBaseDir}/javadoc/${project.name}"
-//		filter(ReplaceTokens, tokens: [
-//			__identifier__: identifier,
-//			__year__: copyrightYear
-//		])
-//	}
-//	copy {
-//		from("${buildDir}/docs/javadoc") {
-//			exclude "**/*.html"
-//		}
-//		into "${exportBaseDir}/javadoc/${project.name}"
-//	}
-//
-//	// Copy the test-report.
-//	copy {
-//		from("${buildDir}/reports") {
-//			include "tests/**"
-//			include "*.gradle"
-//			exclude ".gradle"
-//		}
-//		into "${exportBaseDir}/reports/${project.name}"
-//	}
-//}
-
+apply from: "${rootDir}/gradle/javadoc.gradle"
 
 jar {
 	manifest {
-		attributes "Implementation-Title": "${project.name}",
-					"Implementation-Version": version,
-					"Implementation-URL": "http://jenetics.sourceforge.net",
-					"Implementation-Vendor": "Jenetics",
-					"ProjectName": "Jenetics",
-					"Version": version,
-					"Maintainer": "Franz Wilhelmstötter"
+		version = version
+		symbolicName = project.name
+		name = project.name
+		instruction 'Export-Package',
+					'org.jenetix',
+					'org.jenetix.random'
+		instruction 'Bundle-Vendor', jenetics.author
+		instruction 'Bundle-Description', jenetics.description
+		instruction 'Bundle-DocUR', jenetics.url
+
+		attributes 'Implementation-Title': project.name,
+					'Implementation-Version': version,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
+					'Version': version,
+					'Maintainer': jenetics.author
 	}
 }
 
-javadoc {
-
-	configure(options) {
-		memberLevel = "PROTECTED"
-		version = true
-		author = true
-		docEncoding = "UTF-8"
-		charSet = "UTF-8"
-		linkSource = true
-		links = [
-			"http://download.oracle.com/javase/7/docs/api/",
-			"http://jscience.org/api/",
-			"http://javolution.org/target/site/apidocs/"
-		]
-		windowTitle = "Jenetics API ${project.version}"
-		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
-		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
-		stylesheetFile = file("../project/resources/javadoc/stylesheet.css")
+task jarjar(type: Jar, dependsOn: build) {
+	baseName = "${project.name}-all"
+	from files(sourceSets.main.output.classesDir)
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
 	}
 
-	def destination = destinationDir.path
-
-	doLast() {
-		javaexec {
-			main = "org.jenetics.colorizer.Colorize"
-			args destination
-			classpath = files("../project/lib/colorizer.jar")
-		}
-		javaexec {
-			main = "de.java2html.Java2Html"
-			args = [
-				"-srcdir", "src/main/java",
-				"-targetdir", "$destination/src-html"
-			]
-			classpath = files("../project/lib/java2html.jar")
-		}
-		copy {
-			from "src/main/java/org/jenetix/doc-files"
-			into "${destination}/org/jenetix/doc-files"
-		}
-		copy {
-			from "src/main/java/org/jenetix/util/doc-files"
-			into "${destination}/org/jenetix/util/doc-files"
-		}
+	manifest {
+		attributes 'Implementation-Title': "${project.name}-all",
+					'Implementation-Versionv': version,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
+					'Version': version,
+					'Maintainer': jenetics.author
 	}
 }
+
+task pack(dependsOn: [jarjar, javadoc, jacocoTestReport]){}
+
+export.dependsOn(pack)
 
 test {
 	useTestNG()
 	options {
 		suites "src/test/java/org/jenetix/testng.xml"
+	}
+}
+
+export.doLast {
+	copy {
+		from("${buildDir}/reports") {
+			include 'tests/**'
+			include 'jacoco/**'
+			include '*.gradle'
+			exclude '.gradle'
+		}
+		into "${exportReportDir}/${project.name}"
 	}
 }
 
