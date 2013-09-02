@@ -78,7 +78,7 @@ task export(group: 'export', description: 'Exports the whole project') << {
 		// Copy the build library
 		copy {
 			from("${buildDir}/libs")
-			into "${exportLibDir}"
+			into exportLibDir
 		}
 	}
 }
