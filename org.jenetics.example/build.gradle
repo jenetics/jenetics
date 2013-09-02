@@ -24,7 +24,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 
 apply plugin: 'osgi'
@@ -32,6 +32,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 apply from: "${rootDir}/gradle/commons.gradle"
+apply from: "${rootDir}/gradle/xlint.gradle"
 
 task pack(dependsOn: build) {}
 
