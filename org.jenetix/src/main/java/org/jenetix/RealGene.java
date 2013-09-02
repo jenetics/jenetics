@@ -29,7 +29,7 @@ import org.jenetics.NumberGene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class RealGene
 	extends NumberGene<Real, RealGene>
@@ -107,6 +107,13 @@ public class RealGene
 
 	@Override
 	protected org.jenetics.NumberGene.Builder<Real, RealGene> getBuilder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	protected Real box(Number value) {
 		// TODO Auto-generated method stub
 		return null;
 	}

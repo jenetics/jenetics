@@ -190,9 +190,7 @@ public abstract class NumberGene<
 	 * @deprecated Use the {@link Builder} instead.
 	 */
 	@Deprecated
-	protected N box(final java.lang.Number value) {
-		return null;
-	}
+	protected abstract N box(final java.lang.Number value);
 
 	protected abstract Builder<N, G> getBuilder();
 

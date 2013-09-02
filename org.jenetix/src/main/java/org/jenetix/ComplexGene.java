@@ -27,7 +27,7 @@ import org.jenetics.NumberGene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class ComplexGene
 	extends NumberGene<Complex, ComplexGene>
@@ -71,6 +71,12 @@ public final class ComplexGene
 
 	@Override
 	protected org.jenetics.NumberGene.Builder<Complex, ComplexGene> getBuilder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Complex box(Number value) {
 		// TODO Auto-generated method stub
 		return null;
 	}

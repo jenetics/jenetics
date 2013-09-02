@@ -58,7 +58,24 @@ public final class Float64Gene
 
 	@Override
 	protected Builder<Float64, Float64Gene> getBuilder() {
-		return null;
+		return new Builder<Float64, Float64Gene>() {
+			@Override
+			protected Float64 next(Random random, Float64 min, Float64 max) {
+				return Float64.valueOf(
+					math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
+				);
+			}
+
+			@Override
+			public Float64Gene build(Float64 value, Float64 min, Float64 max) {
+				return Float64Gene.valueOf(value, min, max);
+			}
+
+			@Override
+			protected Float64 box(Number value) {
+				return Float64.valueOf(value.doubleValue());
+			}
+		};
 	}
 
 	public Float64Gene divide(final Float64Gene gene) {

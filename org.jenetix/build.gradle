@@ -36,70 +36,72 @@ apply plugin: 'idea'
 
 apply from: "${rootDir}/gradle/commons.gradle"
 
-task pack(dependsOn: [build, javadoc]) << {
-	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	def exportLibDir = new File(exportBaseDir, "lib")
 
-	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
-	exportLibDir.mkdirs()
+//task pack(dependsOn: [build, javadoc]) << {
+//	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
+//	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
+//	def exportLibDir = new File(exportBaseDir, "lib")
+//
+//	exportBaseDir.mkdirs()
+//	exportSourceDir.mkdirs()
+//	exportLibDir.mkdirs()
+//
+//	// Copy the library
+//	copy {
+//		from("${buildDir}/libs")
+//		into "${exportLibDir}"
+//	}
+//	copy {
+//		from("../project/lib") {
+//			include "jscience-*.jar"
+//		}
+//		into "${exportLibDir}"
+//	}
+//
+//	// Copy the sources.
+//	copy {
+//		from(".") {
+//			include "src/**"
+//			include "*.gradle"
+//			exclude ".gradle"
+//			exclude "src/site"
+//		}
+//		into "${exportSourceDir}"
+//		filter(ReplaceTokens, tokens: [
+//			__identifier__: identifier,
+//			__year__: copyrightYear
+//		])
+//	}
+//
+//	// Copy the javadoc
+//	copy {
+//		from("${buildDir}/docs/javadoc") {
+//			include "**/*.html"
+//		}
+//		into "${exportBaseDir}/javadoc/${project.name}"
+//		filter(ReplaceTokens, tokens: [
+//			__identifier__: identifier,
+//			__year__: copyrightYear
+//		])
+//	}
+//	copy {
+//		from("${buildDir}/docs/javadoc") {
+//			exclude "**/*.html"
+//		}
+//		into "${exportBaseDir}/javadoc/${project.name}"
+//	}
+//
+//	// Copy the test-report.
+//	copy {
+//		from("${buildDir}/reports") {
+//			include "tests/**"
+//			include "*.gradle"
+//			exclude ".gradle"
+//		}
+//		into "${exportBaseDir}/reports/${project.name}"
+//	}
+//}
 
-	// Copy the library
-	copy {
-		from("${buildDir}/libs")
-		into "${exportLibDir}"
-	}
-	copy {
-		from("../project/lib") {
-			include "jscience-*.jar"
-		}
-		into "${exportLibDir}"
-	}
-
-	// Copy the sources.
-	copy {
-		from(".") {
-			include "src/**"
-			include "*.gradle"
-			exclude ".gradle"
-			exclude "src/site"
-		}
-		into "${exportSourceDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-
-	// Copy the javadoc
-	copy {
-		from("${buildDir}/docs/javadoc") {
-			include "**/*.html"
-		}
-		into "${exportBaseDir}/javadoc/${project.name}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-	copy {
-		from("${buildDir}/docs/javadoc") {
-			exclude "**/*.html"
-		}
-		into "${exportBaseDir}/javadoc/${project.name}"
-	}
-
-	// Copy the test-report.
-	copy {
-		from("${buildDir}/reports") {
-			include "tests/**"
-			include "*.gradle"
-			exclude ".gradle"
-		}
-		into "${exportBaseDir}/reports/${project.name}"
-	}
-}
 
 jar {
 	manifest {
