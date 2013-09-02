@@ -21,12 +21,14 @@ package org.jenetics.util;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.random;
+
 /**
  * Base class for random generators which create 32 bit random values natively.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-19 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public abstract class Random32 extends PRNG {
 
@@ -56,7 +58,7 @@ public abstract class Random32 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return math.random.toFloat2(nextInt());
+		return random.toFloat2(nextInt());
 	}
 
 	/**
@@ -65,7 +67,7 @@ public abstract class Random32 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return math.random.toDouble2(nextInt(), nextInt());
+		return random.toDouble2(nextInt(), nextInt());
 	}
 
 }

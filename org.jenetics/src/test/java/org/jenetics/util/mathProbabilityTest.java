@@ -21,12 +21,13 @@ package org.jenetics.util;
 
 import java.util.Random;
 
+import org.jenetics.internal.math.probability;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-14 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 public class mathProbabilityTest {
 
@@ -37,19 +38,19 @@ public class mathProbabilityTest {
 		for (int i = 0; i < 100000; ++i) {
 			final float p = random.nextFloat();
 
-			final int ip = math.probability.toInt(p);
-			final float fip = math.probability.toFloat(ip);
+			final int ip = probability.toInt(p);
+			final float fip = probability.toFloat(ip);
 			Assert.assertEquals(fip, p, 0.000001F);
 		}
 	}
 
 	@Test
 	public void probabilityToInt() {
-		Assert.assertEquals(math.probability.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(math.probability.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(math.probability.toInt(0.5), 0);
-		Assert.assertEquals(math.probability.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(math.probability.toInt(0.75), Integer.MAX_VALUE/2);
+		Assert.assertEquals(probability.toInt(0), Integer.MIN_VALUE);
+		Assert.assertEquals(probability.toInt(1), Integer.MAX_VALUE);
+		Assert.assertEquals(probability.toInt(0.5), 0);
+		Assert.assertEquals(probability.toInt(0.25), Integer.MIN_VALUE/2);
+		Assert.assertEquals(probability.toInt(0.75), Integer.MAX_VALUE/2);
 	}
 
 }
