@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -56,7 +56,7 @@ public abstract class NumberGene<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since @__new_version__@
-	 * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
+	 * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
 	 */
 	public static abstract class Builder<
 		N extends Number<N>,
@@ -161,24 +161,18 @@ public abstract class NumberGene<
 	/**
 	 * The minimum value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _min;
 
 	/**
 	 * The maximum value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _max;
 
 	/**
 	 * The value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _value;
 

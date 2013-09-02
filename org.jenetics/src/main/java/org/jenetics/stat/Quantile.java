@@ -20,6 +20,7 @@
 package org.jenetics.stat;
 
 import static java.lang.Double.compare;
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -48,7 +49,7 @@ import org.jenetics.util.MappedAccumulator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
@@ -83,7 +84,7 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
 	private void init(final double quantile) {
 		if (quantile < 0.0 || quantile > 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Quantile (%s) not in the valid range of [0, 1]", quantile
 				));
 		}
@@ -309,7 +310,7 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[samples=%d, qantile=%f]",
 			getClass().getSimpleName(), getSamples(), getQuantile()
 		);

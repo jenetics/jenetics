@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -30,7 +31,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public abstract class MappedAccumulator<T>
 	implements
@@ -117,7 +118,7 @@ public abstract class MappedAccumulator<T>
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 				"%s[samples=%d]", getClass().getName(), _samples
 			);
 	}

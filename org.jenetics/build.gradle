@@ -20,87 +20,80 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: "java"
-apply plugin: "jacoco"
-apply plugin: "osgi"
-apply plugin: "eclipse"
-apply plugin: "idea"
+import org.jenetics.gradle.Include
+import org.jenetics.gradle.task.ColorizerTask
 
-apply from: "../build-util.gradle"
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.2
+ * @version 1.4 &mdash; <em>$Date: 2013-09-02 $</em>
+ */
 
-/*
+apply plugin: 'jacoco'
+apply plugin: 'osgi'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+apply from: "${rootDir}/gradle/commons.gradle"
+
 tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.debug = true
-	compile.options.compilerArgs = ['-Xlint:all']
+	//compile.options.compilerArgs = ['-Xlint:all']
 }
-*/
 
-task jarjar(type: Jar) {
-	baseName = project.name + "-all"
+jar {
+	manifest {
+		version = version
+		symbolicName = project.name
+		name = project.name
+		instruction 'Export-Package',
+					'org.jenetics',
+					'org.jenetics.util',
+					'org.jenetics.stat'
+		instruction 'Bundle-Vendor', jenetics.author
+		instruction 'Bundle-Description', jenetics.description
+		instruction 'Bundle-DocUR', jenetics.url
+
+		attributes 'Implementation-Title': project.name,
+					'Implementation-Version': version,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
+					'Version': version,
+					'Maintainer': jenetics.author
+	}
+}
+
+task jarjar(type: Jar, dependsOn: build) {
+	baseName = "${project.name}-all"
 	from files(sourceSets.main.output.classesDir)
 	from {
 		configurations.compile.collect {
 			it.isDirectory() ? it : zipTree(it)
 		}
 	}
+
 	manifest {
-		attributes "Implementation-Title": "org.jenetics-all",
-				"Implementation-Version": version,
-				"Implementation-URL": "http://jenetics.sourceforge.net",
-				"Implementation-Vendor": "Jenetics",
-				"ProjectName": "Jenetics",
-				"Version": version,
-				"Maintainer": "Franz Wilhelmstötter"
+		attributes 'Implementation-Title': "${project.name}-all",
+					'Implementation-Versionv': version,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
+					'Version': version,
+					'Maintainer': jenetics.author
 	}
 }
 
-task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
-	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	def exportLibDir = new File(exportBaseDir, "lib")
+task pack(dependsOn: [jarjar, javadoc, jacocoTestReport]){}
 
-	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
-	exportLibDir.mkdirs()
-
-	// Copy the library
-	copy {
-		from("${buildDir}/libs")
-		into "${exportLibDir}"
-	}
-	copy {
-		from("../project/lib") {
-			include "jscience-*.jar"
-		}
-		into "${exportLibDir}"
-	}
-
-	// Copy the sources.
-	copy {
-		from(".") {
-			include "src/**"
-			include "*.gradle"
-			exclude ".gradle"
-			exclude "src/site"
-			exclude "*.iml"
-			exclude "*.ipr"
-			exclude "*.iws"
-			exclude ".project"
-			exclude ".classpath"
-		}
-		into "${exportSourceDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-
+export.dependsOn(pack)
+export.doLast {
 	// Copy the javadoc
 	copy {
 		from("${buildDir}/docs/javadoc") {
-			include "**/*.html"
+			include '**/*.html'
 		}
-		into "${exportBaseDir}/javadoc/${project.name}"
+		into exportJavadocDir
 		filter(ReplaceTokens, tokens: [
 			__identifier__: identifier,
 			__year__: copyrightYear
@@ -108,133 +101,101 @@ task pack(dependsOn: [build, jarjar, javadoc, jacocoTestReport]) << {
 	}
 	copy {
 		from("${buildDir}/docs/javadoc") {
-			exclude "**/*.html"
+			exclude '**/*.html'
 		}
-		into "${exportBaseDir}/javadoc/${project.name}"
+		into exportJavadocDir
 	}
 
 	// Copy the test-report.
 	copy {
 		from("${buildDir}/reports") {
-			include "tests/**"
-			include "jacoco/**"
-			include "*.gradle"
-			exclude ".gradle"
+			include 'tests/**'
+			include 'jacoco/**'
+			include '*.gradle'
+			exclude '.gradle'
 		}
-		into "${exportBaseDir}/reports/${project.name}"
-	}
-}
-
-jar {
-	manifest {
-		version = version
-		symbolicName = "org.jenetics"
-		name = "org.jenetics"
-		instruction "Export-Package",
-				"org.jenetics",
-				"org.jenetics.util",
-				"org.jenetics.stat"
-		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
-		instruction "Bundle-Description", "Jenetics - Java Genetic Algorithm Library"
-		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
-
-		attributes "Implementation-Title": "org.jenetics",
-					"Implementation-Version": version,
-					"Implementation-URL": "http://jenetics.sourceforge.net",
-					"Implementation-Vendor": "Jenetics",
-					"ProjectName": "Jenetics",
-					"Version": version,
-					"Maintainer": "Franz Wilhelmstötter"
+		into exportReportDir
 	}
 }
 
 javadoc {
-
 	configure(options) {
-		memberLevel = "PROTECTED"
+		memberLevel = 'PROTECTED'
 		version = true
 		author = true
-		docEncoding = "UTF-8"
-		charSet = "UTF-8"
+		docEncoding = 'UTF-8'
+		charSet = 'UTF-8'
 		linkSource = true
 		links = [
-			"http://download.oracle.com/javase/7/docs/api/",
-			"http://jscience.org/api/",
-			"http://javolution.org/target/site/apidocs/"
+			'http://download.oracle.com/javase/7/docs/api/',
+			'http://jscience.org/api/',
+			'http://javolution.org/target/site/apidocs/'
 		]
-		windowTitle = "Jenetics API ${project.version}"
-		docTitle = "<h1>Jenetics API (Version $project.version)</h1>"
+		windowTitle = "Jenetics ${project.version}"
+		docTitle = "<h1>Jenetics ${project.version}</h1>"
 		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now)})</i>"
-		stylesheetFile = file("../project/resources/javadoc/stylesheet.css")
+		stylesheetFile = file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+		
+		exclude 'org/jenetics/internal/**'
+		
+		//options.addStringOption('-subpackages', 'org.jenetics')
+		//options.addStringOption('-exclude', 'org.jenetics.internal.util')
+		
+		//group('Core API', ['org.jenetics']).
+		//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 	}
+}
 
-	def destination = destinationDir.path
+task colorize(type: ColorizerTask) {
+	directory = file(javadoc.destinationDir.path)
+}
 
-	doLast() {
+task java2html {
+	def destination = javadoc.destinationDir.path
+	doLast {
 		javaexec {
-			main = "org.jenetics.colorizer.Colorize"
-			args destination
-			classpath = files("../project/lib/colorizer.jar")
-		}
-		javaexec {
-			main = "de.java2html.Java2Html"
+			main = 'de.java2html.Java2Html'
 			args = [
-				"-srcdir", "src/main/java",
-				"-targetdir", "$destination/src-html"
+				'-srcdir', 'src/main/java',
+				'-targetdir', "${destination}/src-html"
 			]
-			classpath = files("../project/lib/java2html.jar")
+			classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
 		}
 		copy {
-			from "src/main/java/org/jenetics/doc-files"
+			from 'src/main/java/org/jenetics/doc-files'
 			into "${destination}/org/jenetics/doc-files"
 		}
 		copy {
-			from "src/main/java/org/jenetics/stat/doc-files"
+			from 'src/main/java/org/jenetics/stat/doc-files'
 			into "${destination}/org/jenetics/stat/doc-files"
 		}
 		copy {
-			from "src/main/java/org/jenetics/util/doc-files"
+			from 'src/main/java/org/jenetics/util/doc-files'
 			into "${destination}/org/jenetics/util/doc-files"
 		}
 	}
 }
 
+javadoc.finalizedBy([colorize, java2html])
+
 test {
 	useTestNG()
 	options {
-		suites "src/test/java/org/jenetics/testng.xml"
+		suites 'src/test/resources/testng.xml'
 	}
 }
 
-task export(dependsOn: pack) << {
-}
-
 jacocoTestReport{
-    reports {
-            xml.enabled true
-            csv.enabled true
-    }
-}
-
-configurations {
-    compile
-}
-
-repositories {
-	flatDir(dir: "../project/lib")
-	mavenCentral()
+	reports {
+		xml.enabled true
+		csv.enabled true
+	}
 }
 
 dependencies {
-	compile "jscience:jscience:4.3.1"
-	testCompile "testng:testng:6.8.1"
+	//testCompile(Include.Javolution) { transitive = false }
+	compile Include.JScience
+	testCompile Include.TestNG
 }
-
-
-
-
-
-
-
 
 

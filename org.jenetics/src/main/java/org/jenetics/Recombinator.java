@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.util.arrays.subset;
+import static org.jenetics.util.math.subset;
 
 import java.util.Random;
 
@@ -49,7 +49,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>

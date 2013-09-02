@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -57,7 +58,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-04-26 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -85,7 +86,7 @@ public final class LinearRankSelector<
 	 */
 	public LinearRankSelector(final double nminus) {
 		if (nminus < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"nminus is smaller than zero: %s", nminus
 				));
 		}
@@ -142,10 +143,10 @@ public final class LinearRankSelector<
 
 	@Override
 	public String toString() {
-		return String.format(
-				"%s[n-=%f, n+=%f]",
-				getClass().getSimpleName(), _nminus, _nplus
-			);
+		return format(
+			"%s[n-=%f, n+=%f]",
+			getClass().getSimpleName(), _nminus, _nplus
+		);
 	}
 
 }

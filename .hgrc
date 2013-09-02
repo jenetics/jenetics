@@ -1,0 +1,13 @@
+[paths]
+default = ssh://fwilhelm@hg.code.sf.net/p/jenetics/main
+bitbucket = ssh://hg@bitbucket.org/fwilhelm/jenetics
+github = git+ssh://git@github.com/jenetics/jenetics.git
+
+[extensions]
+keyword=
+
+[keyword]
+**.java =
+
+[keywordmaps]
+Date = {date|shortdate}

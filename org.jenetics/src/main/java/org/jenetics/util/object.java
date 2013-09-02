@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -57,7 +58,7 @@ public final class object extends StaticObject {
 			public Boolean apply(final C value) {
 				requireNonNull(value);
 				if (value.compareTo(min) < 0 || value.compareTo(max) >= 0) {
-					throw new IllegalArgumentException(String.format(
+					throw new IllegalArgumentException(format(
 						"Given value %s is out of range [%s, %s)",
 						value, min, max
 					));
@@ -164,7 +165,7 @@ public final class object extends StaticObject {
 	 */
 	public static double nonNegative(final double value, final String message) {
 		if (value < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"%s must not negative: %f.", message, value
 				));
 		}
@@ -189,12 +190,13 @@ public final class object extends StaticObject {
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
 	 * 		  than zero.
 	 */
-	public static void nonNegative(final int length) {
+	public static int nonNegative(final int length) {
 		if (length < 0) {
 			throw new NegativeArraySizeException(
 				"Length must be greater than zero, but was " + length + ". "
 			);
 		}
+		return length;
 	}
 
 	/**
@@ -206,7 +208,7 @@ public final class object extends StaticObject {
 	 */
 	public static double checkProbability(final double p) {
 		if (p < 0.0 || p > 1.0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"The given probability is not in the range [0, 1]: %f", p
 			));
 		}

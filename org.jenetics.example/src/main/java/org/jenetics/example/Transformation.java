@@ -36,12 +36,12 @@ import org.jenetics.Genotype;
 import org.jenetics.MeanAlterer;
 import org.jenetics.Mutator;
 import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-04-27 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public class Transformation {
 

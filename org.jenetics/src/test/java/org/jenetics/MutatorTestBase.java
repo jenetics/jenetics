@@ -35,7 +35,7 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-08-29 $</em>
  */
 public abstract class MutatorTestBase {
 

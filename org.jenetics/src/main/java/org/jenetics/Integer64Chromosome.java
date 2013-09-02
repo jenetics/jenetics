@@ -32,8 +32,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
@@ -43,7 +43,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-05-23 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>

@@ -19,9 +19,8 @@
  */
 package org.jenetics.util;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.exp;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
@@ -30,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -300,45 +299,213 @@ public final class math extends StaticObject {
 		return t;
 	}
 
-	static final class special extends StaticObject {
-		private special() {}
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[])
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *          {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k) {
+		return subset(n, k, RandomRegistry.getRandom());
+	}
 
-		/**
-		 * Return the <i>error function</i> of {@code z}. The fractional error
-		 * of this implementation is less than 1.2E-7.
-		 *
-		 * @param z the value to calculate the error function for.
-		 * @return the error function for {@code z}.
-		 */
-		static double erf(final double z) {
-			final double t = 1.0/(1.0 + 0.5*abs(z));
-
-			// Horner's method
-			final double result = 1 - t*exp(
-					-z*z - 1.26551223 +
-					t*( 1.00002368 +
-					t*( 0.37409196 +
-					t*( 0.09678418 +
-					t*(-0.18628806 +
-					t*( 0.27886807 +
-					t*(-1.13520398 +
-					t*( 1.48851587 +
-					t*(-0.82215223 +
-					t*(0.17087277))))))))));
-
-			return z >= 0 ? result : -result;
+	/**
+	 * Selects a random subset of size {@code k} from a set of size {@code n}.
+	 *
+	 * @see #subset(int, int[], Random)
+	 *
+	 * @param n the size of the set.
+	 * @param k the size of the subset.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code random} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
+	 *          {@code n*k} will cause an integer overflow.
+	 * @return the subset array.
+	 */
+	public static int[] subset(final int n, final int k, final Random random) {
+		requireNonNull(random, "Random");
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+					"Subset size smaller or equal zero: %s", k
+				));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+					"n smaller than k: %s < %s.", n, k
+				));
 		}
 
-		/**
-		 * TODO: Implement gamma function.
-		 *
-		 * @param x
-		 * @return
-		 */
-		static double Γ(final double x) {
-			return x;
+		final int[] sub = new int[k];
+		subset(n, sub,random);
+		return sub;
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size
+	 * {@code n}.
+	 * </p>
+	 *
+	 * <p>
+	 * <em>Authors:</em>
+	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 * 	 version based on the  C++ version by John Burkardt.
+	 * </p>
+	 *
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 * 	 Albert Nijenhuis, Herbert Wilf,
+	 * 	 Combinatorial Algorithms for Computers and Calculators,
+	 * 	 Second Edition,
+	 * 	 Academic Press, 1978,
+	 * 	 ISBN: 0-12-519260-6,
+	 * 	 LC: QA164.N54.
+	 * </p>
+	 *
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @throws NullPointerException if {@code sub} is {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *          integer overflow.
+	 */
+	public static void subset(final int n, final int sub[]) {
+		subset(n, sub, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * <p>
+	 * Selects a random subset of size {@code sub.length} from a set of size
+	 * {@code n}.
+	 * </p>
+	 *
+	 * <p>
+	 * <em>Authors:</em>
+	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
+	 *      version based on the  C++ version by John Burkardt.
+	 * </p>
+	 *
+	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
+	 *  Reference:</a></em>
+	 *      Albert Nijenhuis, Herbert Wilf,
+	 *      Combinatorial Algorithms for Computers and Calculators,
+	 *      Second Edition,
+	 *      Academic Press, 1978,
+	 *      ISBN: 0-12-519260-6,
+	 *      LC: QA164.N54.
+	 * </p>
+	 *
+	 * @param n the size of the set.
+	 * @param sub the sub set array.
+	 * @param random the random number generator used.
+	 * @throws NullPointerException if {@code sub} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code n < sub.length},
+	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
+	 *         integer overflow.
+	 */
+	public static int[] subset(final int n, final int sub[], final Random random) {
+		requireNonNull(random, "Random");
+		requireNonNull(sub, "Sub set array");
+
+		final int k = sub.length;
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+				"Subset size smaller or equal zero: %s", k
+			));
 		}
-		
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		if (!math.isMultiplicationSave(n, k)) {
+			throw new IllegalArgumentException(format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
+				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
+			));
+		}
+
+		if (sub.length == n) {
+			for (int i = 0; i < sub.length; ++i) {
+				sub[i] = i;
+			}
+			return sub;
+		}
+
+		for (int i = 0; i < k; ++i) {
+			sub[i] = (i*n)/k;
+		}
+
+		int l = 0;
+		int ix = 0;
+		for (int i = 0; i < k; ++i) {
+			do {
+				ix = nextInt(random, 1, n);
+				l = (ix*k - 1)/n;
+			} while (sub[l] >= ix);
+
+			sub[l] = sub[l] + 1;
+		}
+
+		int m = 0;
+		int ip = 0;
+		int is = k;
+		for (int i = 0; i < k; ++i) {
+			m = sub[i];
+			sub[i] = 0;
+
+			if (m != (i*n)/k) {
+				ip = ip + 1;
+				sub[ip - 1] = m;
+			}
+		}
+
+		int ihi = ip;
+		int ids = 0;
+		for (int i = 1; i <= ihi; ++i) {
+			ip = ihi + 1 - i;
+			l = 1 + (sub[ip - 1]*k - 1)/n;
+			ids = sub[ip - 1] - ((l - 1)*n)/k;
+			sub[ip - 1] = 0;
+			sub[is - 1] = l;
+			is = is - ids;
+		}
+
+		int ir = 0;
+		int m0 = 0;
+		for (int ll = 1; ll <= k; ++ll) {
+			l = k + 1 - ll;
+
+			if (sub[l - 1] != 0) {
+				ir = l;
+				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
+				m = (sub[l-1]*n)/k - m0 + 1;
+			}
+
+			ix = nextInt(random, m0, m0 + m - 1);
+
+			int i = l + 1;
+			while (i <= ir && ix >= sub[i - 1]) {
+				ix = ix + 1;
+				sub[ i- 2] = sub[i - 1];
+				i = i + 1;
+			}
+
+			sub[i - 2] = ix;
+			--m;
+		}
+
+		return sub;
+	}
+
+	private static int nextInt(final Random random, final int a, final int b) {
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
 	}
 
 	/**
@@ -346,7 +513,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-09-02 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -439,69 +606,11 @@ public final class math extends StaticObject {
 	}
 
 	/**
-	 * Mathematical functions regarding probabilities.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.1
-	 * @version 1.3 &mdash; <em>$Date: 2013-06-14 $</em>
-	 */
-	static final class probability extends StaticObject {
-		private probability() {}
-
-		static final long INT_RANGE = pow(2, 32) - 1;
-
-		/**
-		 * Maps the probability, given in the range {@code [0, 1]}, to an
-		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
-		 *
-		 * @see {@link #toInt(double)}
-		 * @see {@link #toFloat(int)}
-		 *
-		 * @param probability the probability to widen.
-		 * @return the widened probability.
-		 */
-		static int toInt(final float probability) {
-			return Math.round(INT_RANGE*probability + Integer.MIN_VALUE);
-		}
-
-		/**
-		 * Maps the probability, given in the range {@code [0, 1]}, to an
-		 * integer in the range {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]}.
-		 *
-		 * @see {@link #toInt(float)}
-		 * @see {@link #toFloat(int)}
-		 *
-		 * @param probability the probability to widen.
-		 * @return the widened probability.
-		 */
-		static int toInt(final double probability) {
-			return (int)(Math.round(INT_RANGE*probability) + Integer.MIN_VALUE);
-		}
-
-		/**
-		 * Maps the <i>integer</i> probability, within the range
-		 * {@code [Integer.MIN_VALUE, Integer.MAX_VALUE]} back to a float
-		 * probability within the range {@code [0, 1]}.
-		 *
-		 * @see {@link #toInt(float)}
-		 * @see {@link #toInt(double)}
-		 *
-		 * @param probability the <i>integer</i> probability to map.
-		 * @return the mapped probability within the range {@code [0, 1]}.
-		 */
-		static float toFloat(final int probability) {
-			final long value = (long)probability + Integer.MAX_VALUE;
-			return (float)(value/(double)INT_RANGE);
-		}
-
-	}
-
-	/**
 	 * Some helper method concerning random numbers and random seed generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-06-14 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-09-02 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
@@ -733,51 +842,9 @@ public final class math extends StaticObject {
 			return seed;
 		}
 
-
 		private static long objectHashSeed() {
 			return ((long)(new Object().hashCode()) << 32) |
 							new Object().hashCode();
-		}
-
-
-		/*
-		 * Conversion methods used by the 'Random' engine from the JDK.
-		 */
-
-		static float toFloat(final int a) {
-			return (a >>> 8)/((float)(1 << 24));
-		}
-
-		static float toFloat(final long a) {
-			return (int)(a >>> 40)/((float)(1 << 24));
-		}
-
-		static double toDouble(final long a) {
-			return (((a >>> 38) << 27) + (((int)a) >>> 5))/(double)(1L << 53);
-		}
-
-		static double toDouble(final int a, final int b) {
-			return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
-		}
-
-		/*
-		 * Conversion methods used by the Apache Commons BitStreamGenerator.
-		 */
-
-		static float toFloat2(final int a) {
-			return (a >>> 9)*0x1.0p-23f;
-		}
-
-		static float toFloat2(final long a) {
-			return (int)(a >>> 41)*0x1.0p-23f;
-		}
-
-		static double toDouble2(final long a) {
-			return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
-		}
-
-		static double toDouble2(final int a, final int b) {
-			return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 		}
 
 	}

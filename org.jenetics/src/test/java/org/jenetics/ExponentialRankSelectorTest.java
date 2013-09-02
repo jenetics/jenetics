@@ -19,9 +19,8 @@
  */
 package org.jenetics;
 
-import org.testng.annotations.Test;
-
 import org.jscience.mathematics.number.Float64;
+import org.testng.annotations.Test;
 
 import org.jenetics.stat.Distribution;
 import org.jenetics.stat.UniformDistribution;
@@ -29,7 +28,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-09-01 $</em>
  */
 public class ExponentialRankSelectorTest
 	extends ProbabilitySelectorTester<ExponentialRankSelector<Float64Gene, Float64>>

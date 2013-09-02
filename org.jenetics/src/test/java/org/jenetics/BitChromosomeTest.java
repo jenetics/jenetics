@@ -30,19 +30,20 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.IO;
-import org.jenetics.util.LCG64ShiftRandom;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.bit;
 import org.jscience.mathematics.number.LargeInteger;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Factory;
+import org.jenetics.util.IO;
+import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.bit;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-14 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -50,6 +51,15 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	_factory = new BitChromosome(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
+	}
+
+	@Test
+	public void seqTypes() {
+		final BitChromosome c = new BitChromosome(100, 0.3);
+
+		Assert.assertEquals(c.toSeq().getClass(), BitGeneArray.BitGeneISeq.class);
+		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneArray.class);
+		Assert.assertEquals(c.toSeq().copy().toISeq().getClass(), BitGeneArray.BitGeneISeq.class);
 	}
 
 	@Test
@@ -179,7 +189,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.object.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();
@@ -198,7 +208,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.xml.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();

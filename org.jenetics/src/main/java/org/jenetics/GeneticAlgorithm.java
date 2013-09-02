@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.Math.round;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.object.NonNull;
@@ -134,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -875,7 +876,7 @@ public class GeneticAlgorithm<
 	 */
 	public void setMaximalPhenotypeAge(final int age) {
 		if (age < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Phenotype age must be greater than one, but was %s.", age
 			));
 		}
@@ -891,7 +892,7 @@ public class GeneticAlgorithm<
 	 */
 	public void setPopulationSize(final int size) {
 		if (size < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.", size
 			));
 		}
@@ -917,7 +918,7 @@ public class GeneticAlgorithm<
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
 		forEach(population, NonNull);
 		if (population.size() < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
 				population.size()
 			));
@@ -1079,7 +1080,7 @@ public class GeneticAlgorithm<
 			_lock.unlock();
 		}
 
-		return String.format("%4d: (best) %s", generation, phenotype);
+		return format("%4d: (best) %s", generation, phenotype);
 	}
 
 }

@@ -21,6 +21,7 @@ package org.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.functions.DoubleToFloat64;
@@ -69,7 +70,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -549,12 +550,12 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		requireNonNull(min, "Minimum");
 		requireNonNull(max, "Maximum");
 		if (min.compareTo(max) >= 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Min must be smaller than max: %s < %s failed.", min, max
 				));
 		}
 		if (nclasses < 2) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"nclasses should be < 2, but was %s.", nclasses
 			));
 		}

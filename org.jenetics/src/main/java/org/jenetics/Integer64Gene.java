@@ -39,7 +39,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>

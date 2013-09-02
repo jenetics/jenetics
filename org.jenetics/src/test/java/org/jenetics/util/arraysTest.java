@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-14 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 public class arraysTest {
 
@@ -52,18 +52,6 @@ public class arraysTest {
 	}
 
 	@Test
-	public void subset() {
-		final Random random = new Random();
-
-		for (int i = 1; i < 100; ++i) {
-			int[] sub = new int[i];
-			arrays.subset(1000, sub, random);
-
-			Assert.assertTrue(isSortedd(sub));
-		}
-	}
-
-	@Test
 	public void iselect() {
 		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
@@ -75,14 +63,6 @@ public class arraysTest {
 			//Assert.assertEquals(ArrayUtils.iselect(array, i), i);
 		}
 		//System.out.println(ArrayUtils.iselect(array, 2));
-	}
-
-	private static boolean isSortedd(int[] array) {
-		boolean sorted = true;
-		for (int i = 0; i < array.length - 1 && sorted; ++i) {
-			sorted = array[i] < array[i + 1];
-		}
-		return sorted;
 	}
 
 	@Test

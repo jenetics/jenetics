@@ -26,12 +26,11 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Random;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import javolution.context.LocalContext;
 
 import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.UniformDistribution;
@@ -41,7 +40,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-14 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 public class Float64GeneTest extends NumberGeneTester<Float64, Float64Gene> {
 

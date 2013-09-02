@@ -20,88 +20,59 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: "java"
-apply plugin: "osgi"
-apply plugin: "eclipse"
-apply plugin: "idea"
 
-apply from: "../build-util.gradle"
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.2
+ * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ */
 
- task pack(dependsOn: build) << {
-	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
-	def exportSourceDir = new File(exportBaseDir, "source/${project.name}")
-	def exportLibDir = new File(exportBaseDir, "lib")
-	def exportScriptDir = new File(exportBaseDir, "scripts")
+apply plugin: 'osgi'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-	exportBaseDir.mkdirs()
-	exportSourceDir.mkdirs()
-	exportLibDir.mkdirs()
-	//exportScriptDir.mkdirs()
+apply from: "${rootDir}/gradle/commons.gradle"
 
-	// Copy the library
-	copy {
-		from("${buildDir}/libs")
-		into "${exportLibDir}"
-	}
+task pack(dependsOn: build) {}
 
+export.dependsOn(pack)
+export.doLast {
 	// Copy the scripts.
 	copy {
-		from("./src/main") {
-			include "scripts/**"
-			exclude ".gradle"
+		from('src/main/scripts') {
+			include '**/*'
 		}
-		into "${exportBaseDir}"
+		into exportScriptDir
 		filter(ReplaceTokens, tokens: [
 			__identifier__: identifier,
 			__year__: copyrightYear,
 			__version__: version
 		])
 	}
-
-	// Copy the sources.
-	copy {
-		from(".") {
-			include "src/**"
-			include "*.gradle"
-			exclude ".gradle"
-			exclude "*.iml"
-			exclude "*.ipr"
-			exclude "*.iws"
-			exclude ".project"
-			exclude ".classpath"
-		}
-		into "${exportSourceDir}"
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-}
-
-task export(dependsOn: pack) << {
 }
 
 jar {
 	manifest {
-		name = "org.jenetics.example"
-		instruction "Export-Package",
-				"org.jenetics.example"
-		instruction "Bundle-Vendor", "Franz Wilhelmstötter"
-		instruction "Bundle-Description", "Jenetics Algorithm Library"
-		instruction "Bundle-DocURL", "http://jenetics.sourceforge.net"
+		version = version
+		symbolicName = project.name
+		name = project.name
+		instruction 'Export-Package', 'org.jenetics.example'
+		instruction 'Bundle-Vendor', jenetics.author
+		instruction 'Bundle-Description', jenetics.description
+		instruction 'Bundle-DocUR', jenetics.url
 
-		attributes "Implementation-Title": "org.jenetics.example",
-					"Implementation-Version": version,
-					"Implementation-URL": "http://jenetics.sourceforge.net",
-					"Implementation-Vendor": "Jenetics",
-					"ProjectName": "Jenetics",
-					"Version": version,
-					"Maintainer": "Franz Wilhelmstötter"
+		attributes 'Implementation-Title': project.name,
+					'Implementation-Version': version,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
+					'ProjectName': jenetics.name,
+					'Version': version,
+					'Maintainer': jenetics.author
 	}
 }
 
-repositories {
-	flatDir(dir: "../project/lib")
+clean.doLast {
+	file("${projectDir}/bin").deleteDir()
 }
 
 dependencies {

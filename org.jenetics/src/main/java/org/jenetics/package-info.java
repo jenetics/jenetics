@@ -163,7 +163,8 @@
  * final class OneCounter
  *     implements Function<Genotype<BitGene>, Integer>
  * {
- *     public Integer apply(Genotype<BitGene> genotype) {
+ *     \@Override
+ *     public Integer apply(final Genotype<BitGene> genotype) {
  *         int count = 0;
  *         for (BitGene gene : genotype.getChromosome()) {
  *             if (gene.getBit()) {
@@ -246,7 +247,9 @@
  *     public FF(final double[][] adjacence) {
  *         _adjacence = adjacence;
  *     }
- *     public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
+ *
+ *     \@Override
+ *     public Float64 apply(final Genotype<EnumGene<Integer>> genotype) {
  *         final Chromosome<EnumGene<Integer>> path =
  *             genotype.getChromosome();
  *
@@ -305,7 +308,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-06-14 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 package org.jenetics;
 
