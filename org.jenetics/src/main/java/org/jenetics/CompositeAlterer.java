@@ -99,10 +99,8 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	}
 
 	@Override
-	public <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population,
-		final int generation
-	) {
+	public <C extends Comparable<? super C>>
+	int alter(final Population<G, C> population, final int generation) {
 		final AtomicInteger alterations = new AtomicInteger(0);
 
 		_alterers.forEach(new Function<Alterer<G>, Void>() {
@@ -166,9 +164,8 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>> CompositeAlterer<G> valueOf(
-		final Alterer<G>... alterers
-	) {
+	public static <G extends Gene<?, G>>
+	CompositeAlterer<G> valueOf(final Alterer<G>... alterers) {
 		return new CompositeAlterer<>(Array.valueOf(alterers));
 	}
 
