@@ -34,11 +34,11 @@ public class CompositeAltererTest {
 
 	public Alterer<Float64Gene> newAlterer(double p) {
 		final double p3 = Math.pow(p, 3);
-		return new CompositeAlterer<>(
-					new Mutator<Float64Gene>(p3),
-					new Mutator<Float64Gene>(p3),
-					new Mutator<Float64Gene>(p3)
-				);
+		return CompositeAlterer.valueOf(
+			new Mutator<Float64Gene>(p3),
+			new Mutator<Float64Gene>(p3),
+			new Mutator<Float64Gene>(p3)
+		);
 	}
 
 	@Test(dataProvider = "alterCountParameters")
@@ -158,12 +158,12 @@ public class CompositeAltererTest {
 		Assert.assertEquals(alterer.getAlterers().get(1), new GaussianMutator<Float64Gene>());
 		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<Float64Gene>());
 
-		alterer = new CompositeAlterer<>(
-				new MeanAlterer<Float64Gene>(),
-				new SwapMutator<Float64Gene>(),
-				alterer,
-				new SwapMutator<Float64Gene>()
-			);
+		alterer = CompositeAlterer.valueOf(
+			new MeanAlterer<Float64Gene>(),
+			new SwapMutator<Float64Gene>(),
+			alterer,
+			new SwapMutator<Float64Gene>()
+		);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 6);
 		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<Float64Gene>());

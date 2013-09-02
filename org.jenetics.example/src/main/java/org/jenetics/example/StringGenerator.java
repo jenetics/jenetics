@@ -90,7 +90,7 @@ public class StringGenerator {
 		ga.setOffspringSelector(
 			new TournamentSelector<CharacterGene, Integer64>(5)
 		);
-		ga.setAlterer(new CompositeAlterer<>(
+		ga.setAlterer(CompositeAlterer.valueOf(
 			new Mutator<CharacterGene>(0.1),
 			new SinglePointCrossover<CharacterGene>(0.5)
 		));
