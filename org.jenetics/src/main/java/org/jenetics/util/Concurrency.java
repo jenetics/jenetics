@@ -82,7 +82,7 @@ import javolution.lang.Configurable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class Concurrency implements AutoCloseable {
 
@@ -137,11 +137,11 @@ public final class Concurrency implements AutoCloseable {
 	}
 
 	private static void setProperties(final Properties properties) {
-		LogContext.enter(LogContext.NULL);
+		Context.enter(LogContext.NULL);
 		try {
 			Configurable.read(properties);
 		} finally {
-			LogContext.exit();
+			Context.exit();
 		}
 	}
 
@@ -154,7 +154,7 @@ public final class Concurrency implements AutoCloseable {
 
 	@SuppressWarnings("unchecked")
 	public static Class<ConcurrentContext> getContext() {
-		final Context context = ConcurrentContext.getCurrent();
+		final Context context = Context.getCurrent();
 		return (Class<ConcurrentContext>)
 				ConcurrentContext.class.cast(context).getClass();
 	}
