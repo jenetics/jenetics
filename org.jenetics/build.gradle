@@ -38,7 +38,15 @@ apply from: "${rootDir}/gradle/commons.gradle"
 
 tasks.withType(AbstractCompile).all { AbstractCompile compile ->
 	//compile.options.debug = true
-	//compile.options.compilerArgs = ['-Xlint:all']
+	def xlintOptions = [
+		'cast',        'classfile', 
+		'deprecation', 'dep-ann', 
+		'divzero',     'finally', 
+		'overrides',   'rawtypes', 
+		'serial',      'try', 
+		'unchecked'
+	]
+	compile.options.compilerArgs = ["-Xlint:${xlintOptions.join(',')}"]
 }
 
 jar {
