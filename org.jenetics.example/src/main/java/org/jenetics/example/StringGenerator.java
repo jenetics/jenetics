@@ -40,7 +40,7 @@ import org.jenetics.util.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class StringGenerator {
 
@@ -90,7 +90,7 @@ public class StringGenerator {
 		ga.setOffspringSelector(
 			new TournamentSelector<CharacterGene, Integer64>(5)
 		);
-		ga.setAlterer(new CompositeAlterer<>(
+		ga.setAlterer(CompositeAlterer.valueOf(
 			new Mutator<CharacterGene>(0.1),
 			new SinglePointCrossover<CharacterGene>(0.5)
 		));

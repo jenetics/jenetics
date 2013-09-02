@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -171,7 +171,7 @@ public class GeneticAlgorithm<
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = new CompositeAlterer<>(
+	private Alterer<G> _alterer = CompositeAlterer.valueOf(
 		new SinglePointCrossover<G>(0.1),
 		new Mutator<G>(0.05)
 	);
@@ -865,7 +865,7 @@ public class GeneticAlgorithm<
 	 */
 	@SafeVarargs
 	public final void setAlterers(final Alterer<G>... alterers) {
-		setAlterer(new CompositeAlterer<>(alterers));
+		setAlterer(CompositeAlterer.valueOf(alterers));
 	}
 
 	/**

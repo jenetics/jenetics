@@ -40,7 +40,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class CompositeAlterer<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -66,8 +66,11 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 *
+	 * @deprecated Use {@link #valueOf(Alterer...)} instead.
 	 */
-	@SafeVarargs
+	@Deprecated
+	@SuppressWarnings({"unchecked"})
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		this(Array.valueOf(alterers));
 	}
@@ -120,7 +123,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if the given alterer is {@code null}.
 	 */
 	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return new CompositeAlterer<>(this, requireNonNull(alterer, "Alterer"));
+		return CompositeAlterer.valueOf(this, requireNonNull(alterer, "Alterer"));
 	}
 
 	/**
@@ -157,6 +160,19 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	}
 
 	/**
+	 * Combine the given alterers.
+	 *
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>> CompositeAlterer<G> valueOf(
+		final Alterer<G>... alterers
+	) {
+		return new CompositeAlterer<>(Array.valueOf(alterers));
+	}
+
+	/**
 	 * Joins the given alterer and returns a new CompositeAlterer object. If one
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are
 	 * unpacked and appended to the newly created CompositeAlterer.
@@ -171,7 +187,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
-		return new CompositeAlterer<>(a1, a2);
+		return CompositeAlterer.valueOf(a1, a2);
 	}
 }
 
