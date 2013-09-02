@@ -20,11 +20,21 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: "java"
-apply plugin: "eclipse"
-apply plugin: "idea"
+import org.jenetics.gradle.Include
+import org.jenetics.gradle.task.ColorizerTask
 
-apply from: "../build-util.gradle"
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since __new_version__
+ * @version __new_version__ &mdash; <em>$Date: 2013-09-02 $</em>
+ */
+
+apply plugin: 'jacoco'
+apply plugin: 'osgi'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+apply from: "${rootDir}/gradle/commons.gradle"
 
 task pack(dependsOn: [build, javadoc]) << {
 	def exportBaseDir = new File(rootProject.buildDir, "package/${identifier}")
@@ -155,9 +165,6 @@ test {
 	options {
 		suites "src/test/java/org/jenetix/testng.xml"
 	}
-}
-
-task export(dependsOn: pack) << {
 }
 
 configurations {
