@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
  */
 public class ArrayProxyIterator<T> implements ListIterator<T> {
 
@@ -84,14 +84,14 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 	@Override
 	public void add(final T value) {
 		throw new UnsupportedOperationException(
-			"Can't change Iteration size."
+			"Can't change Iteratior size."
 		);
 	}
 
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException(
-			"Can't change Iterattion size."
+			"Can't change Iterator size."
 		);
 	}
 

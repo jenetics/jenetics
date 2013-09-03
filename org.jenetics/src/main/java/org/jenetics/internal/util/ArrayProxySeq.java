@@ -31,14 +31,14 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
 	protected final ArrayProxy<T> _proxy;
 
 	public ArrayProxySeq(final ArrayProxy<T> proxy) {
-		_proxy = proxy;
+		_proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> mapper
 	) {
-		requireNonNull(mapper, "Mapper must not be null");
+		requireNonNull(mapper, "Mapper must not be null.");
 
 		return new Iterator<B>() {
 			private final Iterator<T> _iterator = iterator();

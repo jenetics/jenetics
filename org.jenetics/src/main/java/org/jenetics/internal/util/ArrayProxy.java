@@ -29,9 +29,9 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
  */
-public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
+public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 
 	protected final int _start;
 	protected final int _end;
@@ -50,7 +50,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 	 * @param index index of the element to return
 	 * @return the <i>array</i> element at the specified position
 	 * @throws IndexOutOfBoundsException if the index it out of range
-	 *          (index < 0 || index >= _length).
+	 *         (index < 0 || index >= _length).
 	 */
 	public T get(final int index) {
 		checkIndex(index);
@@ -64,7 +64,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 	 * @param index the index of the element to set
 	 * @param value the <i>array</i> element
 	 * @throws IndexOutOfBoundsException if the index it out of range
-	 *          (index < 0 || index >= _length).
+	 *         (index < 0 || index >= _length).
 	 */
 	public void set(final int index, final T value) {
 		checkIndex(index);
@@ -225,9 +225,9 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>>{
 
 	protected final void checkIndex(final int from, final int to) {
 		if (from > to) {
-			throw new ArrayIndexOutOfBoundsException(
-				"fromIndex(" + from + ") > toIndex(" + to+ ")"
-			);
+			throw new ArrayIndexOutOfBoundsException(format(
+				"fromIndex(%d) > toIndex(%d)", from, to
+			));
 		}
 		if (from < 0 || to > _length) {
 			throw new ArrayIndexOutOfBoundsException(format(

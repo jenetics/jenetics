@@ -27,9 +27,9 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
  */
-public class ArrayProxyImpl<T> extends ArrayProxy<T> {
+public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	protected Object[] _array;
 
@@ -40,7 +40,7 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	 *
 	 * @param array the array where the elements are stored.
 	 * @param start the start index of the array proxy, inclusively.
-	 * @param end the end index of the array proxy, exclusively.s
+	 * @param end the end index of the array proxy, exclusively.
 	 */
 	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
 		super(start, end);
