@@ -35,6 +35,7 @@ import org.jenetics.gradle.task.ChecksumTask
 apply plugin: 'signing'
 
 apply from: "${rootDir}/gradle/commons.gradle"
+apply from: "${rootDir}/gradle/packaging.gradle"
 
 
 new PropertiesLoader(ext).load(file('project.properties'))
@@ -101,7 +102,7 @@ task alljavadoc(type: Javadoc) {
 	})
 }
 
-task export(overwrite: true) {
+task packaging(overwrite: true) {
 	inputs.dir file('.')
 	outputs.dir exportDir
 
