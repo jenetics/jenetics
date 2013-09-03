@@ -29,7 +29,7 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
  */
 
 apply plugin: 'signing'
@@ -58,8 +58,6 @@ ext {
 	exportReportDir = file("${exportDir}/report")
 	exportScriptDir = file("${exportDir}/script")
 }
-
-
 
 allprojects {
 	group = 'org.jenetics'
