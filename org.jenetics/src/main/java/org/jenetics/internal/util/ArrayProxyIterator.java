@@ -84,14 +84,14 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 	@Override
 	public void add(final T value) {
 		throw new UnsupportedOperationException(
-			"Can't change Iteration size."
+			"Can't change Iteratior size."
 		);
 	}
 
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException(
-			"Can't change Iterattion size."
+			"Can't change Iterator size."
 		);
 	}
 

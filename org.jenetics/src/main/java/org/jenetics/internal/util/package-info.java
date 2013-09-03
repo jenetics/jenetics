@@ -17,4 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.4
+ * @version 1.4 &mdash; <em>$Date$</em>
+ */
 package org.jenetics.internal.util;

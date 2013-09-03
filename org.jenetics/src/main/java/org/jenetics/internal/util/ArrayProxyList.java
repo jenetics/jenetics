@@ -36,7 +36,7 @@ public class ArrayProxyList<T> extends AbstractList<T>
 	protected final ArrayProxy<T> _proxy;
 
 	public ArrayProxyList(final ArrayProxy<T> proxy) {
-		_proxy = requireNonNull(proxy, "ArrayProxy must not be null");
+		_proxy = requireNonNull(proxy, "ArrayProxy must not be null.");
 	}
 
 	@Override

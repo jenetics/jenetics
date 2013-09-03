@@ -26,7 +26,7 @@ package org.jenetics.internal.util;
  */
 public class ArrayProxyMList<T> extends ArrayProxyList<T> {
 
-	public ArrayProxyMList(ArrayProxy<T> proxy) {
+	public ArrayProxyMList(final ArrayProxy<T> proxy) {
 		super(proxy);
 	}
 

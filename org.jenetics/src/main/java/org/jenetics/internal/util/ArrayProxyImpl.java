@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * @since 1.4
  * @version 1.4 &mdash; <em>$Date$</em>
  */
-public class ArrayProxyImpl<T> extends ArrayProxy<T> {
+public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	protected Object[] _array;
 
@@ -40,7 +40,7 @@ public class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	 *
 	 * @param array the array where the elements are stored.
 	 * @param start the start index of the array proxy, inclusively.
-	 * @param end the end index of the array proxy, exclusively.s
+	 * @param end the end index of the array proxy, exclusively.
 	 */
 	public ArrayProxyImpl(final Object[] array, final int start, final int end) {
 		super(start, end);
