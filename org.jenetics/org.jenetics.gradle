@@ -23,6 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.jenetics.gradle.Include
 import org.jenetics.gradle.task.ColorizerTask
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
@@ -35,8 +36,8 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 apply from: "${rootDir}/gradle/commons.gradle"
+apply from: "${rootDir}/gradle/packaging.gradle"
 apply from: "${rootDir}/gradle/xlint.gradle"
-
 
 
 jar {
@@ -79,40 +80,6 @@ task jarjar(type: Jar, dependsOn: build) {
 					'ProjectName': jenetics.name,
 					'Version': version,
 					'Maintainer': jenetics.author
-	}
-}
-
-task pack(dependsOn: [jarjar, javadoc, jacocoTestReport]){}
-
-export.dependsOn(pack)
-export.doLast {
-	// Copy the javadoc
-	copy {
-		from("${buildDir}/docs/javadoc") {
-			include '**/*.html'
-		}
-		into exportJavadocDir
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-	copy {
-		from("${buildDir}/docs/javadoc") {
-			exclude '**/*.html'
-		}
-		into exportJavadocDir
-	}
-
-	// Copy the test-report.
-	copy {
-		from("${buildDir}/reports") {
-			include 'tests/**'
-			include 'jacoco/**'
-			include '*.gradle'
-			exclude '.gradle'
-		}
-		into exportReportDir
 	}
 }
 
@@ -187,6 +154,38 @@ jacocoTestReport{
 	reports {
 		xml.enabled true
 		csv.enabled true
+	}
+}
+
+packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
+packaging << {
+	// Copy the javadoc
+	copy {
+		from("${buildDir}/docs/javadoc") {
+			include '**/*.html'
+		}
+		into exportJavadocDir
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from("${buildDir}/docs/javadoc") {
+			exclude '**/*.html'
+		}
+		into exportJavadocDir
+	}
+
+	// Copy the test-report.
+	copy {
+		from("${buildDir}/reports") {
+			include 'tests/**'
+			include 'jacoco/**'
+			include '*.gradle'
+			exclude '.gradle'
+		}
+		into exportReportDir
 	}
 }
 

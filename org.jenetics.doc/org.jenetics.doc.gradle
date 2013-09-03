@@ -32,6 +32,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  */
 
 apply from: "${rootDir}/gradle/commons.gradle"
+apply from: "${rootDir}/gradle/packaging.gradle"
 
 // The temp build temp directory.
 def buildTempDir = file("${buildDir}/tmp")
@@ -72,8 +73,8 @@ lyx << {
 
 build.finalizedBy(lyx)
 
-export.dependsOn(build)
-export << {
+packaging.dependsOn(build)
+packaging << {
 	copy {
 		from("${buildDir}/doc") {
 			include '*.pdf'
