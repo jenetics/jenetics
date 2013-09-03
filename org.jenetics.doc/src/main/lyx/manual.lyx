@@ -9244,30 +9244,6 @@ tasks
 
 \family typewriter
 \series bold
-pack
-\family default
-\series default
-: Compiles the sources of all modules, creates the JAR files and the Javadoc.
- The build artifacts are copied into the 
-\family typewriter
-<build\SpecialChar \-
-dir>\SpecialChar \slash{}
-build/package directory.
- 
-\family default
-\emph on
-This task is only available in the 
-\family typewriter
-<build\SpecialChar \-
-dir>
-\family default
- directory.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-\series bold
 compileJava
 \family default
 \series default
@@ -9361,6 +9337,23 @@ libs
 
 \family typewriter
 \series bold
+packaging
+\family default
+\series default
+: Compiles the sources of all modules, creates the JAR files and the Javadoc
+ and creates a complete library package---the very same which you can download
+ from the home page.
+ The build artifacts are copied into the 
+\family typewriter
+<build\SpecialChar \-
+dir>\SpecialChar \slash{}
+build/package/jenetics-<version> directory.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
 clean
 \family default
 \series default
@@ -9378,7 +9371,7 @@ For
 \family typewriter
 packaging
 \family default
- (building) the source call
+ (building) the source, call
 \end_layout
 
 \begin_layout LyX-Code
@@ -9386,7 +9379,21 @@ $ cd <build-dir>
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle pack
+$ gradle packaging
+\end_layout
+
+\begin_layout Standard
+or
+\end_layout
+
+\begin_layout LyX-Code
+$ ./gradlew packaging
+\end_layout
+
+\begin_layout Standard
+if you don't have the the Gradle build system installed---calling the the
+ Gradle wrapper script will download all needed files and trigger the build
+ task afterwards.
 \end_layout
 
 \begin_layout Paragraph
@@ -9433,7 +9440,7 @@ target "http://www.jetbrains.com/idea/"
 \end_layout
 
 \begin_layout LyX-Code
-$ gradle <eclipse|idea>
+$ ./gradlew <eclipse|idea>
 \end_layout
 
 \begin_layout Standard
@@ -9903,6 +9910,8 @@ Copyright @__year__@ Franz Wilhelmstötter
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
   
 \end_layout
 
@@ -9925,6 +9934,8 @@ You may obtain a copy of the License at
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
   
 \end_layout
 
@@ -9935,6 +9946,8 @@ You may obtain a copy of the License at
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
   
 \end_layout
 
