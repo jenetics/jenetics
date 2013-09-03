@@ -59,8 +59,6 @@ ext {
 	exportScriptDir = file("${exportDir}/script")
 }
 
-
-
 allprojects {
 	group = 'org.jenetics'
 	version = jenetics.version

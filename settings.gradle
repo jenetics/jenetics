@@ -34,4 +34,8 @@ include 'org.jenetics.doc'
 
 rootProject.name = 'jenetics'
 
+rootProject.children.each {
+	it.buildFileName = it.name + '.gradle'
+}
+
 
