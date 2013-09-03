@@ -34,6 +34,7 @@ include 'org.jenetics.doc'
 
 rootProject.name = 'jenetics'
 
+// Rename the build scripts of the projects to ${project.name}.gradle
 rootProject.children.each {
 	it.buildFileName = it.name + '.gradle'
 }
