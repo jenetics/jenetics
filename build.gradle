@@ -42,11 +42,11 @@ new PropertiesLoader(ext).load(file('project.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 ext {
-	now = new Date()
-	year = Calendar.getInstance().get(Calendar.YEAR);
+	now = Calendar.getInstance()
+	year = now.get(Calendar.YEAR);
 	copyrightYear = "2007-${year}".toString()
 	identifier = "${rootProject.name}-${version}".toString()
-	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now)
+	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
 	manualIdentifier = "${version}---${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 	
