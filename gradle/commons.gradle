@@ -17,11 +17,6 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-
- import java.text.SimpleDateFormat
- import java.util.Date
- 
- import org.apache.tools.ant.filters.ReplaceTokens
  
 /**
  * Some commone task definitions and configurations.
@@ -31,6 +26,10 @@
  * @version 1.4 &mdash; <em>$Date$</em>
  */
 
+tasks.withType(Compile) {
+	options.encoding = 'UTF-8'
+}
+ 
 if (tasks.findByPath('clean') == null) {
 	tasks.create('clean') {
 	}
