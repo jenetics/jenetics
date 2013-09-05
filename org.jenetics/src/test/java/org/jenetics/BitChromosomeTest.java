@@ -54,6 +54,19 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@Test
+	public void newInstance() {
+		final int size = 10_000;
+		final BitChromosome base = new BitChromosome(size, 0.5);
+
+		for (int i = 0; i < 5_000; ++i) {
+			final BitChromosome other = base.newInstance();
+			Assert.assertNotEquals(other, base);
+
+			Assert.assertEquals(other.bitCount(), size/2.0, 200);
+		}
+	}
+
+	@Test
 	public void seqTypes() {
 		final BitChromosome c = new BitChromosome(100, 0.3);
 
