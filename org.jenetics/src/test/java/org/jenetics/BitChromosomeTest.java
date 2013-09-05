@@ -43,7 +43,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-09-05 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -51,6 +51,19 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	_factory = new BitChromosome(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
+	}
+
+	@Test
+	public void newInstance() {
+		final int size = 10_000;
+		final BitChromosome base = new BitChromosome(size, 0.5);
+
+		for (int i = 0; i < 5_000; ++i) {
+			final BitChromosome other = base.newInstance();
+			Assert.assertNotEquals(other, base);
+
+			Assert.assertEquals(other.bitCount(), size/2.0, 200);
+		}
 	}
 
 	@Test
