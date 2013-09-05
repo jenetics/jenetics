@@ -27,7 +27,7 @@ import org.jenetics.gradle.task.ColorizerTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-05 $</em>
  */
 
 apply plugin: 'jacoco'
@@ -51,7 +51,7 @@ jar {
 					'org.jenetics.stat'
 		instruction 'Bundle-Vendor', jenetics.author
 		instruction 'Bundle-Description', jenetics.description
-		instruction 'Bundle-DocUR', jenetics.url
+		instruction 'Bundle-DocURL', jenetics.url
 
 		attributes 'Implementation-Title': project.name,
 					'Implementation-Version': version,
