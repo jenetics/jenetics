@@ -144,8 +144,10 @@ task java2html {
 javadoc.finalizedBy([colorize, java2html])
 
 test {
-	useTestNG()
-	options {
+	useTestNG {
+		//parallel = 'tests' // 'methods'
+		//threadCount = Runtime.runtime.availableProcessors() + 1
+		//include '**/*Test.class'
 		suites 'src/test/resources/testng.xml'
 	}
 }
