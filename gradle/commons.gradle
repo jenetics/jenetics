@@ -17,20 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-
- import java.text.SimpleDateFormat
- import java.util.Date
- 
- import org.apache.tools.ant.filters.ReplaceTokens
  
 /**
  * Some commone task definitions and configurations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-05 $</em>
  */
 
+tasks.withType(Compile) {
+	options.encoding = 'UTF-8'
+}
+ 
 if (tasks.findByPath('clean') == null) {
 	tasks.create('clean') {
 	}
