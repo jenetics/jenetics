@@ -48,7 +48,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-05 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -256,6 +256,15 @@ public class BitChromosome extends Number<BitChromosome>
 		return _length;
 	}
 
+	/**
+	 * Returns the number of bits set to true in this {@code BitChromosome}.
+	 *
+	 * @return the number of bits set to true in this {@code BitChromosome}
+	 */
+	public int bitCount() {
+		return bit.count(_genes);
+	}
+
 	@Override
 	public Iterator<BitGene> iterator() {
 		return _seq.iterator();
@@ -378,18 +387,6 @@ public class BitChromosome extends Number<BitChromosome>
 	@Override
 	public BitChromosome newInstance() {
 		return new BitChromosome(_length, _p);
-		/*
-		final Random random = RandomRegistry.getRandom();
-		final BitChromosome chromosome = new BitChromosome(_length, _p);
-		final int P = probability.toInt(_p);
-
-		for (int i = _length; --i >= 0;) {
-			if (random.nextInt() < P) {
-				bit.set(chromosome._genes, i);
-			}
-		}
-		return chromosome;
-		*/
 	}
 
 	/**
