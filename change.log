@@ -1,5 +1,5 @@
 Jenetics-1.4.0
-- Significant performance improvements of 'BitChromosome' class.
+- Performance improvements of 'BitChromosome' class.
 - Add method 'BitChromosome.bitCount()'.
 - Mark 'arrays.subset' methods as deprecated; methods has been moved to 'org.jenetics.util.math' class.
 - Improve Gradle build scripts.
