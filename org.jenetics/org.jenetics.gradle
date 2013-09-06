@@ -20,7 +20,6 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-import org.jenetics.gradle.Include
 import org.jenetics.gradle.task.ColorizerTask
 
 

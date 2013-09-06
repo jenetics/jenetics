@@ -39,6 +39,7 @@ apply from: "${rootDir}/gradle/packaging.gradle"
 
 
 new PropertiesLoader(ext).load(file('project.properties'))
+new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 ext {
