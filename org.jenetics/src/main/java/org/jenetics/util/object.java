@@ -2,26 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -33,7 +31,7 @@ import java.util.function.Consumer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -50,7 +48,7 @@ public final class object extends StaticObject {
 	 * integers in the array are smaller than zero and greater than 9.
 	 * [code]
 	 * final Array<Integer> array = ...
-	 * arrays.foreach(CheckRange<(0, 10));
+	 * arrays.forEach(CheckRange<(0, 10));
 	 * [/code]
 	 */
 	public static final <C extends Comparable<? super C>> Consumer<C>
@@ -72,10 +70,10 @@ public final class object extends StaticObject {
 	 *
 	 * [code]
 	 * final Array<String> array = ...
-	 * array.foreach(NonNull("Object"));
+	 * array.forEach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
-	 * arrays.foreach(array, NonNull);
+	 * arrays.forEach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Consumer<Object> NonNull = o -> { nonNull(o, "Object"); };
@@ -87,10 +85,10 @@ public final class object extends StaticObject {
 	 *
 	 * [code]
 	 * final Array<String> array = ...
-	 * array.foreach(NonNull("Object"));
+	 * array.forEach(NonNull("Object"));
 	 * ...
 	 * final String[] array = ...
-	 * arrays.foreach(array, NonNull);
+	 * arrays.forEach(array, NonNull);
 	 * [/code]
 	 */
 	public static final Consumer<Object> NonNull(final String message) {
@@ -140,7 +138,7 @@ public final class object extends StaticObject {
 	 */
 	public static double nonNegative(final double value, final String message) {
 		if (value < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"%s must not negative: %f.", message, value
 				));
 		}
@@ -165,12 +163,13 @@ public final class object extends StaticObject {
 	 * @throws NegativeArraySizeException if the given {@code length} is smaller
 	 * 		  than zero.
 	 */
-	public static void nonNegative(final int length) {
+	public static int nonNegative(final int length) {
 		if (length < 0) {
 			throw new NegativeArraySizeException(
 				"Length must be greater than zero, but was " + length + ". "
 			);
 		}
+		return length;
 	}
 
 	/**
@@ -182,7 +181,7 @@ public final class object extends StaticObject {
 	 */
 	public static double checkProbability(final double p) {
 		if (p < 0.0 || p > 1.0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"The given probability is not in the range [0, 1]: %f", p
 			));
 		}

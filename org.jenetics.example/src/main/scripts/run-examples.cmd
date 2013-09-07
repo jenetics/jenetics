@@ -1,19 +1,17 @@
 rem Java Genetic Algorithm Library (@__identifier__@).
 rem Copyright (c) @__year__@ Franz Wilhelmstötter
 rem
-rem This library is free software; you can redistribute it and/or
-rem modify it under the terms of the GNU Lesser General Public
-rem License as published by the Free Software Foundation; either
-rem version 2.1 of the License, or (at your option) any later version.
+rem Licensed under the Apache License, Version 2.0 (the "License");
+rem you may not use this file except in compliance with the License.
+rem You may obtain a copy of the License at
 rem
-rem This library is distributed in the hope that it will be useful,
-rem but WITHOUT ANY WARRANTY; without even the implied warranty of
-rem MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
-rem Lesser General Public License for more details.
+rem      http://www.apache.org/licenses/LICENSE-2.0
 rem
-rem You should have received a copy of the GNU Lesser General Public
-rem License along with this library; if not, write to the Free Software
-rem Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+rem Unless required by applicable law or agreed to in writing, software
+rem distributed under the License is distributed on an "AS IS" BASIS,
+rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+rem See the License for the specific language governing permissions and
+rem limitations under the License.
 rem
 rem Author:
 rem   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
