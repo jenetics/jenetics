@@ -82,7 +82,6 @@ task wrapper(type: Wrapper) {
 	gradleVersion = '1.7'
 }
 
-
 task alljavadoc(type: Javadoc) {
 	def jeneticsProjects = subprojects.findAll { project -> 
 		project.name.startsWith('org.jeneti') &&
