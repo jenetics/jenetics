@@ -10,7 +10,11 @@ bin/**
 build/**
 out/**
 test-output/**
+
+# Gradle
 .gradle/**
+.groovy/*
+gradle-app.setting
 
 ## Eclipse
 .settings/**
