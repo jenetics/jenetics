@@ -52,7 +52,7 @@ public final class FinalReference<T> implements Reference<T>, Serializable {
 	 * Create a new FinalReference with the given default value. The value of
 	 * this reference can still be set, that means {@code isFinal() == false}.
 	 *
-	 * @param devault
+	 * @param devault the default value of the reference.
 	 */
 	public FinalReference(final T devault) {
 		_value = devault;

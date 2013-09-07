@@ -514,7 +514,8 @@ public final class Array<T>
 	@Override
 	public Array<T> subSeq(final int start, final int end) {
 		checkIndex(start, end);
-		return new Array<>(_array, start + _start, end + _start);
+		return new Array<>(_array, start + _start, _end + end - _length);
+		//return new Array<>(_array, start + _start, end + _start);
 	}
 
 	@Override

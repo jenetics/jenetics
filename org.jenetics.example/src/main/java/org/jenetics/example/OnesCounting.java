@@ -21,6 +21,7 @@ package org.jenetics.example;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
+import org.jenetics.Chromosome;
 import org.jenetics.GeneticAlgorithm;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -36,12 +37,19 @@ final class OneCounter
 {
 	@Override
 	public Integer apply(Genotype<BitGene> genotype) {
+		final Chromosome<BitGene> chromosome = genotype.getChromosome();
+
 		int count = 0;
-		for (BitGene gene : genotype.getChromosome()) {
-			if (gene.getBit()) {
-				++count;
+		if (chromosome instanceof BitChromosome) {
+			count = ((BitChromosome)chromosome).bitCount();
+		} else {
+			for (BitGene gene : genotype.getChromosome()) {
+				if (gene.getBit()) {
+					++count;
+				}
 			}
 		}
+
 		return count;
 	}
 }

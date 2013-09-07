@@ -111,7 +111,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param end the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
 	 * @param otherStart the start index of the {@code other} array.
-	 * @throws IllegalArgumentException if {@code start > end}.
+	 * @throws IndexOutOfBoundsException if {@code start > end}.
 	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
 	 *         end >= this.length() || otherStart < 0 ||
 	 *         otherStart + (end - start) >= other.length()}

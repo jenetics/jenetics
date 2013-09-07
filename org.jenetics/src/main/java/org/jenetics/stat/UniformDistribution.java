@@ -19,6 +19,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -94,7 +95,7 @@ public class UniformDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(Locale.ENGLISH, "p(x) = %s", _probability);
+			return format(Locale.ENGLISH, "p(x) = %s", _probability);
 		}
 
 	}
@@ -152,7 +153,7 @@ public class UniformDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"P(x) = (x - %1$s)/(%2$s - %1$s)", _min, _max
 			);
@@ -253,7 +254,7 @@ public class UniformDistribution<
 
 	@Override
 	public String toString() {
-		return String.format("UniformDistribution[%s]", _domain);
+		return format("UniformDistribution[%s]", _domain);
 	}
 
 }

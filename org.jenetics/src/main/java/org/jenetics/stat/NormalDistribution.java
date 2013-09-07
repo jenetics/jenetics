@@ -19,9 +19,10 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.stat.math.Φ;
-import static org.jenetics.stat.math.φ;
+import static org.jenetics.internal.math.statistics.Φ;
+import static org.jenetics.internal.math.statistics.φ;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
@@ -112,7 +113,7 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"p(x) = N[µ=%f, σ²=%f](x)", _mean, _var
 			);
@@ -172,7 +173,7 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))",
 				_mean, _var
@@ -267,7 +268,7 @@ public class NormalDistribution<
 
 	@Override
 	public String toString() {
-		return String.format("N[µ=%f, σ²=%f]", _mean, _var);
+		return format("N[µ=%f, σ²=%f]", _mean, _var);
 	}
 
 }

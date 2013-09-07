@@ -29,7 +29,7 @@
 
 SCRIPT_DIR=`readlink -f $0`
 SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
-REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../reports/performance`
+REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../report/performance`
 
 VERSION="@__version__@"
 CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-all-${VERSION}.jar`
@@ -37,7 +37,7 @@ CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VE
 
 agent_param() {
 	output_file=$1
-	agent=`readlink -f ${SCRIPT_DIR}/../source/project/lib/libjgrind-x86_64.so`
+	agent=`readlink -f ${SCRIPT_DIR}/../project/buildSrc/lib/libjgrind-x86_64.so`
 	agent="${agent}=output=${REPORT_DIR}/${output_file}:include=org.jenetics"
 
 	echo ${agent}

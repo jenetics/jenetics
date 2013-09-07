@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
@@ -65,7 +66,10 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 *
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 *
+	 * @deprecated Use {@link #valueOf(Alterer...)} instead.
 	 */
+	@Deprecated
 	@SafeVarargs
 	public CompositeAlterer(final Alterer<G>... alterers) {
 		this(Array.valueOf(alterers));
@@ -95,10 +99,8 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	}
 
 	@Override
-	public <C extends Comparable<? super C>> int alter(
-		final Population<G, C> population,
-		final int generation
-	) {
+	public <C extends Comparable<? super C>>
+	int alter(final Population<G, C> population, final int generation) {
 		final AtomicInteger alterations = new AtomicInteger(0);
 
 		_alterers.forEach(new Function<Alterer<G>, Void>() {
@@ -119,7 +121,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 	 * @throws NullPointerException if the given alterer is {@code null}.
 	 */
 	public CompositeAlterer<G> append(final Alterer<G> alterer) {
-		return new CompositeAlterer<>(this, requireNonNull(alterer, "Alterer"));
+		return CompositeAlterer.valueOf(this, requireNonNull(alterer, "Alterer"));
 	}
 
 	/**
@@ -152,7 +154,19 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 
 	@Override
 	public String toString() {
-		return String.format("%s[%s]", getClass().getSimpleName(), _alterers);
+		return format("%s[%s]", getClass().getSimpleName(), _alterers);
+	}
+
+	/**
+	 * Combine the given alterers.
+	 *
+	 * @param alterers the alterers to combine.
+	 * @throws NullPointerException if one of the alterers is {@code null}.
+	 */
+	@SafeVarargs
+	public static <G extends Gene<?, G>>
+	CompositeAlterer<G> valueOf(final Alterer<G>... alterers) {
+		return new CompositeAlterer<>(Array.valueOf(alterers));
 	}
 
 	/**
@@ -170,7 +184,7 @@ public final class CompositeAlterer<G extends Gene<?, G>>
 		final Alterer<T> a1,
 		final Alterer<T> a2
 	) {
-		return new CompositeAlterer<>(a1, a2);
+		return CompositeAlterer.valueOf(a1, a2);
 	}
 }
 

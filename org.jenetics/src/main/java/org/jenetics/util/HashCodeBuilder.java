@@ -25,6 +25,7 @@ package org.jenetics.util;
  * <p/>
  * Example for calculating the hash code for a given class:
  * [code]
+ * \@Override
  * public int hashCode() {
  *     return object.hashCodeOf(getClass())
  *                  .and(_prop1)

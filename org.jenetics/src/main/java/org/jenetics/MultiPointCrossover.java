@@ -27,7 +27,7 @@ import java.util.Random;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.arrays;
+import org.jenetics.util.math;
 
 /**
  * <strong><p>Multiple point crossover</p></strong>
@@ -122,7 +122,7 @@ public class MultiPointCrossover<G extends Gene<?, G>> extends Crossover<G> {
 		final int k = min(n, _n);
 
 		final Random random = RandomRegistry.getRandom();
-		final int[] points = k > 0 ? arrays.subset(n, k, random) : new int[0];
+		final int[] points = k > 0 ? math.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
 		return 2;

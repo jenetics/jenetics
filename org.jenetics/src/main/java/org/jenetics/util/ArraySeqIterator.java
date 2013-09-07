@@ -79,7 +79,7 @@ class ArraySeqIterator<T> implements ListIterator<T> {
 
 	@Override
 	public void set(final T value) {
-		throw new UnsupportedOperationException("Array is sealed.");
+		throw new UnsupportedOperationException("Array is immutable.");
 	}
 
 	@Override

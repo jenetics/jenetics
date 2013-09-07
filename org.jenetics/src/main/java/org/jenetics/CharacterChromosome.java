@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -125,7 +126,7 @@ public class CharacterChromosome
 				public CharacterGene newInstance() {
 					final char c = genes.charAt(_index++);
 					if (!validCharacters.contains(c)) {
-						throw new IllegalArgumentException(String.format(
+						throw new IllegalArgumentException(format(
 								"Character '%s' not in valid characters %s",
 								c, validCharacters
 							));

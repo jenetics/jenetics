@@ -19,6 +19,7 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -112,7 +113,7 @@ public class Mean<N extends Number> extends MappedAccumulator<N> {
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[samples=%d, mean=%f, stderr=%f]",
 			getClass().getSimpleName(),
 			getSamples(),

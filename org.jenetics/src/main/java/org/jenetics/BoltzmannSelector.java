@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.Math.exp;
+import static java.lang.String.format;
 import static org.jenetics.util.math.divide;
 import static org.jenetics.util.math.normalize;
 import static org.jenetics.util.math.statistics.max;
@@ -134,7 +135,7 @@ public final class BoltzmannSelector<
 
 	@Override
 	public String toString() {
-		return String.format("BoltzmannSelector[b=%f]", _b);
+		return format("BoltzmannSelector[b=%f]", _b);
 	}
 
 }

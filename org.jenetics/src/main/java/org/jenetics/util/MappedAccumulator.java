@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -117,7 +118,7 @@ public abstract class MappedAccumulator<T>
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 				"%s[samples=%d]", getClass().getName(), _samples
 			);
 	}

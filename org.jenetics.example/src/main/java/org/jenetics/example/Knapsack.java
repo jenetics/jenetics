@@ -77,7 +77,7 @@ final class KnapsackFunction
 
 public class Knapsack {
 
-	private static KnapsackFunction FF(int n, double size) {
+	private static KnapsackFunction FF(final int n, final double size) {
 		Item[] items = new Item[n];
 		for (int i = 0; i < items.length; ++i) {
 			items[i] = new Item();
@@ -89,13 +89,12 @@ public class Knapsack {
 	}
 
 	public static void main(String[] argv) throws Exception {
-		KnapsackFunction ff = FF(15, 100);
-		Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
+		final KnapsackFunction ff = FF(15, 100);
+		final Factory<Genotype<BitGene>> genotype = Genotype.valueOf(
 			new BitChromosome(15, 0.5)
 		);
 
-		GeneticAlgorithm<BitGene, Float64> ga =
-		new GeneticAlgorithm<>(
+		final GeneticAlgorithm<BitGene, Float64> ga = new GeneticAlgorithm<>(
 			genotype, ff
 		);
 		ga.setPopulationSize(500);

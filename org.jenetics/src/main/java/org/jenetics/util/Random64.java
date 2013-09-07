@@ -19,7 +19,11 @@
  */
 package org.jenetics.util;
 
+import static java.lang.Math.min;
+
 import java.util.Random;
+
+import org.jenetics.internal.math.random;
 
 /**
  * An abstract base class which eases the implementation of {@code Random}
@@ -28,6 +32,7 @@ import java.util.Random;
  *
  * [code]
  * public class MyRandom64 extends Random64 {
+ *     \@Override
  *     public long nextLong() {
  *         // Only this method must be implemented.
  *         ...
@@ -81,9 +86,9 @@ public abstract class Random64 extends PRNG {
 	@Override
 	public void nextBytes(final byte[] bytes) {
 		for (int i = 0, len = bytes.length; i < len;) {
-			int n = Math.min(len - i, Long.SIZE/Byte.SIZE);
+			int n = min(len - i, Long.SIZE/Byte.SIZE);
 
-			for (long x = nextLong(); n-- > 0; x >>= Byte.SIZE) {
+			for (long x = nextLong(); --n >= 0; x >>= Byte.SIZE) {
 				bytes[i++] = (byte)x;
 			}
 		}
@@ -91,7 +96,7 @@ public abstract class Random64 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return math.random.toFloat2(nextLong());
+		return random.toFloat2(nextLong());
 	}
 
 	/**
@@ -100,7 +105,7 @@ public abstract class Random64 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return math.random.toDouble2(nextLong());
+		return random.toDouble2(nextLong());
 	}
 
 }

@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -212,7 +213,7 @@ public final class EnumGene<A>
 		}
 
 		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
-			throw new IndexOutOfBoundsException(String.format(
+			throw new IndexOutOfBoundsException(format(
 				"Allele index is not in range [0, %d).", alleleIndex
 			));
 		}

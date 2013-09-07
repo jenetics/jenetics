@@ -110,7 +110,7 @@ public class bitTest {
 	public void toStringFromString() {
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0; i < 1000; ++i) {
-			final byte[] bytes = new byte[232];
+			final byte[] bytes = new byte[625];
 			random.nextBytes(bytes);
 
 			final String string = bit.toByteString(bytes);
@@ -135,30 +135,83 @@ public class bitTest {
 		}
 	}
 
-	/*
 	@Test
-	public void foo() {
-		for (int j = 0; j < 25; ++j) {
-			long value = RandomRegistry.getRandom().nextLong();
-			byte[] bytes = bit.toBytes(value);
-			String string = bit.toString(bytes);
+	public void count() {
+		for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; ++i) {
+			final byte value = (byte)i;
 
-			System.out.println(String.format(
-				"{ bit.toBytes(%dL), \"%s\" },",
-				value, string
-			));
+			Assert.assertEquals(bit.count(value), count(value));
 		}
 	}
-	*/
+
+	private static int count(final byte value) {
+		final byte[] array = new byte[]{value};
+		int count = 0;
+		for (int i = 0; i < 8; ++i) {
+			if (bit.get(array, i)) {
+				++count;
+			}
+		}
+		return count;
+	}
+
+	@Test
+	public void swap() {
+		final int byteLength = 1_000;
+		final int bitLength = byteLength*8;
+
+		final byte[] seq = newByteArray(byteLength, new Random());
+
+		for (int start = 0; start < bitLength - 3; ++start) {
+			final byte[] copy = seq.clone();
+			final byte[] other = newByteArray(byteLength, new Random());
+			final byte[] otherCopy = other.clone();
+
+			final int end = start + 2;
+			final int otherStart = 1;
+
+			bit.swap(seq, start, end, other, otherStart);
+
+			for (int j = start; j < end; ++j) {
+				final boolean actual = bit.get(seq, j);
+				final boolean expected = bit.get(otherCopy, j + otherStart - start);
+				Assert.assertEquals(actual, expected);
+			}
+			for (int j = 0; j < (end - start); ++j) {
+				final boolean actual = bit.get(other, j + otherStart);
+				final boolean expected = bit.get(copy, j + start);
+				Assert.assertEquals(actual, expected);
+			}
+		}
+	}
+
+	private static byte[] newByteArray(final int length, final Random random) {
+		final byte[] array = new byte[length];
+		for (int i = 0; i < length; ++i) {
+			array[i] = (byte)random.nextInt();
+		}
+		return array;
+	}
+
+	@Test
+	public void reverse() {
+		final byte[] array = new byte[1000];
+		new Random().nextBytes(array);
+
+		final byte[] reverseArray = bit.reverse(array.clone());
+		for (int i = 0; i < array.length; ++i) {
+			Assert.assertEquals(reverseArray[i], array[array.length - 1 - i]);
+		}
+	}
 
 	@Test
 	public void flip() {
-		final long seed = System.currentTimeMillis();
+		final long seed = math.random.seed();
 		final Random random = new Random(seed);
-		final byte[] data = new byte[4];
+		final byte[] data = new byte[1000];
 
-		for (int i = 0; i < data.length*8; ++i) {
-			bit.set(data, i, random.nextBoolean());
+		for (int i = 0; i < data.length; ++i) {
+			data[i] = (byte)random.nextInt();
 		}
 
 		final byte[] cdata = data.clone();
@@ -288,16 +341,45 @@ public class bitTest {
 		}
 	}
 
-	@Test(expectedExceptions = IndexOutOfBoundsException.class)
-	public void setOutOfIndex() {
-		final byte[] data = new byte[3];
-		bit.set(data, 100, false);
+	@Test
+	public void setGetBit1() {
+		final byte[] data = new byte[625];
+		Arrays.fill(data, (byte)0);
+
+		for (int i = 0; i < data.length*8; ++i) {
+			bit.set(data, i);
+			Assert.assertTrue(bit.get(data, i));
+		}
 	}
 
-	@Test(expectedExceptions = IndexOutOfBoundsException.class)
-	public void getOutOfIndex() {
-		final byte[] data = new byte[3];
-		bit.get(data, 100);
+	@Test(
+		expectedExceptions = IndexOutOfBoundsException.class,
+		dataProvider = "indexoutofboundsdata"
+	)
+	public void setOutOfIndex(final Integer length, final Integer index) {
+		final byte[] data = bit.newBitArray(length);
+		bit.set(data, index, false);
+	}
+
+	@Test(
+		expectedExceptions = IndexOutOfBoundsException.class,
+		dataProvider = "indexoutofboundsdata"
+	)
+	public void getOutOfIndex(final Integer length, final Integer index) {
+		final byte[] data = bit.newBitArray(length);
+		bit.get(data, index);
+	}
+
+	@DataProvider(name = "indexoutofboundsdata")
+	public Object[][] getIndexOutOfBoundsData() {
+		return new Object[][] {
+			{1, 8},
+			{1, -1},
+			{2, 16},
+			{2, 2342},
+			{10, 80},
+			{100, 108}
+		};
 	}
 
 	@Test

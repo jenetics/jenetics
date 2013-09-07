@@ -34,7 +34,7 @@ public class RandomPerformanceTests {
 
 
 	public static void main(final String[] args) {
-		final int loops = 500_000_000;
+		final int loops = Integer.MAX_VALUE;//1_000_000_000;
 
 		test(new Random(), loops);
 		test(ThreadLocalRandom.current(), loops);
@@ -53,9 +53,9 @@ public class RandomPerformanceTests {
 		));
 	}
 
-	private static String testNextInt(final Random random, final long loops) {
+	private static String testNextInt(final Random random, final int loops) {
 		long start = System.nanoTime();
-		for (long i = 0; i < loops; ++i) {
+		for (int i = loops; --i >= 0;) {
 			random.nextInt();
 		}
 		long end = System.nanoTime();
@@ -64,9 +64,9 @@ public class RandomPerformanceTests {
 		return String.format("%11s i/sec", format.format(perSec(loops, start, end)));
 	}
 
-	private static String testNextLong(final Random random, final long loops) {
+	private static String testNextLong(final Random random, final int loops) {
 		long start = System.nanoTime();
-		for (long i = 0; i < loops; ++i) {
+		for (int i = loops; --i >= 0;) {
 			random.nextLong();
 		}
 		long end = System.nanoTime();
@@ -75,9 +75,9 @@ public class RandomPerformanceTests {
 		return String.format("%11s l/sec", format.format(perSec(loops, start, end)));
 	}
 
-	private static String testNextFloat(final Random random, final long loops) {
+	private static String testNextFloat(final Random random, final int loops) {
 		long start = System.nanoTime();
-		for (long i = 0; i < loops; ++i) {
+		for (int i = loops; --i >= 0;) {
 			random.nextFloat();
 		}
 		long end = System.nanoTime();
@@ -86,9 +86,9 @@ public class RandomPerformanceTests {
 		return String.format("%11s f/sec", format.format(perSec(loops, start, end)));
 	}
 
-	private static String testNextDouble(final Random random, final long loops) {
+	private static String testNextDouble(final Random random, final int loops) {
 		long start = System.nanoTime();
-		for (long i = 0; i < loops; ++i) {
+		for (int i = loops; --i >= 0;) {
 			random.nextDouble();
 		}
 		long end = System.nanoTime();

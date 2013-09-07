@@ -161,24 +161,18 @@ public abstract class NumberGene<
 	/**
 	 * The minimum value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _min;
 
 	/**
 	 * The maximum value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _max;
 
 	/**
 	 * The value of this <code>NumberGene</code>. This field is marked
 	 * as transient and must serialized manually by sub classes.
-	 *
-	 * @serial
 	 */
 	protected transient N _value;
 

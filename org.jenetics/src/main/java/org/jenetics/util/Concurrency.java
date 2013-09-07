@@ -137,11 +137,11 @@ public final class Concurrency implements AutoCloseable {
 	}
 
 	private static void setProperties(final Properties properties) {
-		LogContext.enter(LogContext.NULL);
+		Context.enter(LogContext.NULL);
 		try {
 			Configurable.read(properties);
 		} finally {
-			LogContext.exit();
+			Context.exit();
 		}
 	}
 
@@ -154,7 +154,7 @@ public final class Concurrency implements AutoCloseable {
 
 	@SuppressWarnings("unchecked")
 	public static Class<ConcurrentContext> getContext() {
-		final Context context = ConcurrentContext.getCurrent();
+		final Context context = Context.getCurrent();
 		return (Class<ConcurrentContext>)
 				ConcurrentContext.class.cast(context).getClass();
 	}
