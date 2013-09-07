@@ -31,7 +31,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -55,7 +55,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return new ArrayProxyIterator<>(_proxy);
 	}
 
-	@Override
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> mapper
 	) {
@@ -75,13 +74,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		};
 	}
 
-	@Override
-	@Deprecated
-	public <R> void foreach(final Function<? super T, ? extends R> function) {
-		forEach(function);
-	}
-
-	@Override
 	public <R> void forEach(final Function<? super T, ? extends R> function) {
 		requireNonNull(function, "Function");
 
@@ -90,13 +82,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		}
 	}
 
-	@Override
-	@Deprecated
-	public boolean forall(final Function<? super T, Boolean> predicate) {
-		return forAll(predicate);
-	}
-
-	@Override
 	public boolean forAll(final Function<? super T, Boolean> predicate) {
 		requireNonNull(predicate, "Predicate");
 
@@ -148,12 +133,10 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return index;
 	}
 
-	@Override
 	public int indexWhere(final Function<? super T, Boolean> predicate) {
 		return indexWhere(predicate, 0, _proxy._length);
 	}
 
-	@Override
 	public int indexWhere(
 		final Function<? super T, Boolean> predicate,
 		final int start
@@ -161,7 +144,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return indexWhere(predicate, start, _proxy._length);
 	}
 
-	@Override
 	public int indexWhere(
 		final Function<? super T, Boolean> predicate,
 		final int start,
@@ -219,12 +201,10 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return index;
 	}
 
-	@Override
 	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
 		return lastIndexWhere(predicate, 0, _proxy._length);
 	}
 
-	@Override
 	public int lastIndexWhere(
 		final Function<? super T, Boolean> predicate,
 		final int end
@@ -232,7 +212,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return lastIndexWhere(predicate, 0, end);
 	}
 
-	@Override
 	public int lastIndexWhere(
 		final Function<? super T, Boolean> predicate,
 		final int start,

@@ -26,7 +26,7 @@ import org.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
 
@@ -51,13 +51,6 @@ public class ArrayProxyISeq<T> extends ArrayProxySeq<T> implements ISeq<T> {
 	@Override
 	public ISeq<T> subSeq(int start, int end) {
 		return new ArrayProxyISeq<>(_proxy.sub(start, end));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Deprecated
-	public <A> ISeq<A> upcast(ISeq<? extends A> seq) {
-		return (ISeq<A>)seq;
 	}
 
 	@Override

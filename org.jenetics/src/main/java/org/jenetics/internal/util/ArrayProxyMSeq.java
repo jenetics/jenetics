@@ -30,11 +30,12 @@ import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
@@ -95,7 +96,6 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 		return this;
 	}
 
-	@Override
 	public MSeq<T> fill(Factory<? extends T> factory) {
 		_proxy.cloneIfSealed();
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
@@ -157,7 +157,6 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 		return new ArrayProxyMSeq<>(_proxy.sub(start));
 	}
 
-	@Override
 	public <B> MSeq<B> map(Function<? super T, ? extends B> mapper) {
 		final ArrayProxyMSeq<B> array = new ArrayProxyMSeq<>(
 			new ArrayProxyImpl<B>(length())

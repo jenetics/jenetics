@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
-import java.util.function.Function;
 import java.util.function.IntConsumer;
 
 import org.jenetics.internal.math.probability;
@@ -117,7 +116,7 @@ public abstract class IndexStream {
 			));
 		}
 
-		return new RandomIndexStream(n, p, random);
+		return new RandomIndexStream_(n, p, random);
 	}
 
 }
