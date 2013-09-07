@@ -7,6181 +7,6221 @@ events: Time
 
 fl=(1) org/jenetics/example/RealFunction.java
 fn=(1) org::jenetics::example::RealFunction::main(java::lang::String[]): void
-0 1662947287
+0 550482474
 cfl=(1)
 cfn=(2) org::jenetics::AbstractChromosome::<clinit>(): void
 calls=1 0
-0 7752979
+0 2291075
 cfl=(1)
 cfn=(3) org::jenetics::Float64Chromosome::<clinit>(): void
 calls=1 0
-0 202609389
+0 60936290
 cfl=(1)
 cfn=(4) org::jenetics::Float64Chromosome::<init>(double, double): void
 calls=1 0
-0 3624647111
+0 1004903634
 cfl=(1)
 cfn=(5) org::jenetics::Genotype::<clinit>(): void
 calls=1 0
-0 1316523
+0 380727
 cfl=(1)
-cfn=(6) org::jenetics::Genotype::valueOf(org::jenetics::Chromosome): org::jenetics::Genotype
+cfn=(6) org::jenetics::Genotype::valueOf(org::jenetics::Chromosome[]): org::jenetics::Genotype
 calls=1 0
-0 1701282
+0 2628155
 cfl=(1)
 cfn=(7) org::jenetics::example::Real::<init>(): void
 calls=1 0
-0 73993
+0 20301
 cfl=(1)
 cfn=(8) org::jenetics::GeneticAlgorithm::<clinit>(): void
 calls=1 0
-0 363375
+0 105279
 cfl=(1)
 cfn=(9) org::jenetics::Optimize::<clinit>(): void
 calls=1 0
-0 1094625
+0 359316
 cfl=(1)
 cfn=(10) org::jenetics::GeneticAlgorithm::<init>(org::jenetics::util::Factory, org::jenetics::util::Function, org::jenetics::Optimize): void
 calls=1 0
-0 1881990762
+0 674537191
 cfl=(1)
 cfn=(11) org::jenetics::NumberStatistics$Calculator::<init>(): void
 calls=1 0
-0 135994
+0 39920
 cfl=(1)
 cfn=(12) org::jenetics::GeneticAlgorithm::setStatisticsCalculator(org::jenetics::Statistics$Calculator): void
 calls=1 0
-0 149254
+0 41259
 cfl=(1)
 cfn=(13) org::jenetics::GeneticAlgorithm::setPopulationSize(int): void
 calls=1 0
-0 11426
+0 3480
 cfl=(1)
 cfn=(14) org::jenetics::Mutator::<init>(double): void
 calls=1 0
-0 233686
+0 64418
 cfl=(1)
 cfn=(15) org::jenetics::MeanAlterer::<init>(double): void
 calls=1 0
-0 286455
+0 84900
 cfl=(1)
 cfn=(16) org::jenetics::GeneticAlgorithm::setAlterers(org::jenetics::Alterer[]): void
 calls=1 0
-0 14553196
+0 2403735
 cfl=(1)
 cfn=(17) org::jenetics::GeneticAlgorithm::setup(): void
 calls=1 0
-0 13475644265
+0 3386517541
 cfl=(1)
 cfn=(18) org::jenetics::GeneticAlgorithm::evolve(int): void
 calls=1 0
-0 739932618858
+0 211721181441
 cfl=(1)
 cfn=(19) org::jenetics::GeneticAlgorithm::getBestStatistics(): org::jenetics::Statistics
 calls=1 0
-0 15946
+0 5454
 cfl=(1)
 cfn=(20) org::jenetics::NumberStatistics::toString(): java::lang::String
 calls=1 0
-0 1093265166
+0 324387569
 cfl=(1)
 cfn=(21) org::jenetics::GeneticAlgorithm::getBestPhenotype(): org::jenetics::Phenotype
 calls=1 0
-0 98980
+0 28838
 cfl=(1)
 cfn=(22) org::jenetics::Phenotype::toString(): java::lang::String
 calls=1 0
-0 21771652
+0 6342933
 
 fl=(2) org/jenetics/AbstractChromosome.java
 fn=(2)
-0 7752979
+0 2291075
 
 fl=(3) org/jenetics/Float64Chromosome.java
 fn=(3)
-0 93547169
+0 28807035
 cfl=(3)
 cfn=(23) org::jenetics::AbstractChromosome::genes(): org::jenetics::util::Function
 calls=1 0
-0 54716864
+0 16035691
 cfl=(3)
 cfn=(24) org::jenetics::AbstractChromosome::gene(): org::jenetics::util::Function
 calls=1 0
-0 53591585
+0 15870152
 cfl=(3)
 cfn=(25) org::jenetics::Float64Chromosome$1::<init>(java::lang::Class): void
 calls=1 0
-0 753771
+0 223412
 
 fl=(2)
 fn=(23)
-0 54642811
+0 16015720
 cfl=(2)
 cfn=(26) org::jenetics::AbstractChromosome$3::<init>(): void
 calls=1 0
-0 74053
+0 19971
 
 fl=(2)
 fn=(26)
-0 74053
+0 19971
 
 fl=(2)
 fn=(24)
-0 53521616
+0 15850238
 cfl=(2)
 cfn=(27) org::jenetics::AbstractChromosome$1::<init>(): void
 calls=1 0
-0 69969
+0 19914
 
 fl=(2)
 fn=(27)
-0 69969
+0 19914
 
 fl=(3)
 fn=(25)
-0 753771
+0 223412
 
 fl=(3)
 fn=(4)
-0 2085865264
+0 618664376
 cfl=(3)
 cfn=(28) org::jenetics::Float64Chromosome::<init>(org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64): void
 calls=1 0
-0 1538781847
+0 386239258
 
 fl=(3)
 fn=(28)
-0 144157
+0 41959
 cfl=(3)
 cfn=(29) org::jenetics::Float64Chromosome::<init>(org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64, int): void
 calls=1 0
-0 1538637690
+0 386197299
 
 fl=(3)
 fn=(29)
-0 609380987
+0 180795286
 cfl=(3)
 cfn=(30) org::jenetics::util::Array::<clinit>(): void
 calls=1 0
-0 405996057
+0 20017965
 cfl=(3)
 cfn=(31) org::jenetics::util::Array::<init>(int): void
 calls=1 0
-0 474031
+0 129199
 cfl=(3)
 cfn=(32) org::jenetics::Float64Gene::<clinit>(): void
 calls=1 0
-0 163296814
+0 48344832
 cfl=(3)
 cfn=(33) org::jenetics::Float64Gene::valueOf(org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64): org::jenetics::Float64Gene
 calls=1 0
-0 296682236
+0 118748981
 cfl=(3)
 cfn=(34) org::jenetics::util::Array::fill(org::jenetics::util::Factory): org::jenetics::util::Array
 calls=1 0
-0 4287934
+0 1172401
 cfl=(3)
 cfn=(35) org::jenetics::util::Array::toISeq(): org::jenetics::util::ISeq
 calls=1 0
-0 57657870
+0 16739316
 cfl=(3)
 cfn=(36) org::jenetics::Float64Chromosome::<init>(org::jenetics::util::ISeq): void
 calls=1 0
-0 861761
+0 249319
 
 fl=(4) org/jenetics/util/Array.java
 fn=(30)
-0 435448
+0 128444
 cfl=(4)
 cfn=(31)
 calls=1 0
-0 405560609
+0 19889521
 
 fl=(4)
 fn=(31)
-0 84607
+0 24688
 cfl=(4)
 cfn=(37) org::jenetics::util::ArraySeq::<init>(int): void
 calls=1 0
-0 405476002
+0 19864833
 
 fl=(5) org/jenetics/util/ArraySeq.java
 fn=(37)
-0 60142711
+0 17725947
 cfl=(5)
 cfn=(38) org::jenetics::util::ArrayRef::<init>(int): void
 calls=1 0
-0 92625
+0 25696
 cfl=(5)
 cfn=(39) org::jenetics::util::ArraySeq::<init>(org::jenetics::util::ArrayRef, int, int): void
 calls=1 0
-0 345240666
+0 2113190
 
 fl=(6) org/jenetics/util/ArrayRef.java
 fn=(38)
-0 92625
+0 25696
 
 fl=(5)
 fn=(39)
-0 236510575
-cfl=(5)
-cfn=(40) org::jenetics::util::object::<clinit>(): void
-calls=1 0
-0 108718945
-cfl=(5)
-cfn=(41) org::jenetics::util::object::nonNull(java::lang::Object, java::lang::String): java::lang::Object
-calls=1 0
-0 11146
+0 2113190
 
-fl=(7) org/jenetics/util/object.java
+fl=(4)
+fn=(31)
+0 21095
+cfl=(4)
+cfn=(37)
+calls=1 0
+0 108104
+
+fl=(5)
+fn=(37)
+0 45867
+cfl=(5)
+cfn=(38)
+calls=1 0
+0 16379
+cfl=(5)
+cfn=(39)
+calls=1 0
+0 45858
+
+fl=(6)
+fn=(38)
+0 16379
+
+fl=(5)
+fn=(39)
+0 45858
+
+fl=(7) org/jenetics/Float64Gene.java
+fn=(32)
+0 47911194
+cfl=(7)
+cfn=(40) org::jenetics::Float64Gene$1::<init>(): void
+calls=1 0
+0 20230
+cfl=(7)
+cfn=(41) org::jenetics::Float64Gene$2::<init>(): void
+calls=1 0
+0 20544
+cfl=(7)
+cfn=(42) org::jenetics::Float64Gene$3::<init>(): void
+calls=1 0
+0 20793
+cfl=(7)
+cfn=(43) org::jenetics::Float64Gene$4::<init>(): void
+calls=1 0
+0 165692
+cfl=(7)
+cfn=(44) org::jenetics::Float64Gene$5::<init>(java::lang::Class): void
+calls=1 0
+0 206379
+
+fl=(7)
 fn=(40)
-0 54612877
-cfl=(7)
-cfn=(42) org::jenetics::util::object$2::<init>(): void
-calls=1 0
-0 87674
-cfl=(7)
-cfn=(43) org::jenetics::util::object::NonNull(java::lang::String): org::jenetics::util::Function
-calls=1 0
-0 54018394
+0 20230
+
+fl=(7)
+fn=(41)
+0 20544
 
 fl=(7)
 fn=(42)
-0 87674
+0 20793
 
 fl=(7)
 fn=(43)
-0 53937461
-cfl=(7)
-cfn=(44) org::jenetics::util::object$3::<init>(java::lang::String): void
-calls=1 0
-0 80933
+0 165692
 
 fl=(7)
 fn=(44)
-0 80933
+0 206379
 
 fl=(7)
-fn=(41)
-0 11146
+fn=(33)
+0 63867441
+cfl=(7)
+cfn=(45) org::jenetics::util::RandomRegistry::<clinit>(): void
+calls=1 0
+0 51631022
+cfl=(7)
+cfn=(46) org::jenetics::util::RandomRegistry::getRandom(): java::util::Random
+calls=1 0
+0 1050376
+cfl=(7)
+cfn=(47) org::jenetics::util::math$random::nextDouble(java::util::Random, double, double): double
+calls=1 0
+0 55635
+cfl=(7)
+cfn=(48) org::jenetics::Float64Gene::valueOf(org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64): org::jenetics::Float64Gene
+calls=1 0
+0 2144507
 
-fl=(4)
-fn=(31)
-0 89864
-cfl=(4)
-cfn=(37)
-calls=1 0
-0 384167
-
-fl=(5)
-fn=(37)
-0 152922
-cfl=(5)
-cfn=(38)
-calls=1 0
-0 56513
-cfl=(5)
-cfn=(39)
-calls=1 0
-0 174732
-
-fl=(6)
-fn=(38)
-0 56513
-
-fl=(5)
-fn=(39)
-0 166232
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8500
-
-fl=(7)
-fn=(41)
-0 8500
-
-fl=(8) org/jenetics/Float64Gene.java
-fn=(32)
-0 161831173
-cfl=(8)
-cfn=(45) org::jenetics::Float64Gene$1::<init>(): void
-calls=1 0
-0 72264
-cfl=(8)
-cfn=(46) org::jenetics::Float64Gene$2::<init>(): void
-calls=1 0
-0 73126
-cfl=(8)
-cfn=(47) org::jenetics::Float64Gene$3::<init>(): void
-calls=1 0
-0 74504
-cfl=(8)
-cfn=(48) org::jenetics::Float64Gene$4::<init>(): void
-calls=1 0
-0 550214
-cfl=(8)
-cfn=(49) org::jenetics::Float64Gene$5::<init>(java::lang::Class): void
-calls=1 0
-0 695533
-
-fl=(8)
+fl=(8) org/jenetics/util/RandomRegistry.java
 fn=(45)
-0 72264
-
-fl=(8)
-fn=(46)
-0 73126
-
-fl=(8)
-fn=(47)
-0 74504
-
-fl=(8)
-fn=(48)
-0 550214
+0 51558557
+cfl=(8)
+cfn=(49) org::jenetics::util::RandomRegistry$1::<init>(): void
+calls=1 0
+0 72465
 
 fl=(8)
 fn=(49)
-0 695533
+0 32101
+cfl=(8)
+cfn=(50) org::jenetics::util::RandomRegistry$Ref::<init>(org::jenetics::util::RandomRegistry$1): void
+calls=1 0
+0 40364
 
 fl=(8)
-fn=(33)
-0 109476079
-cfl=(8)
-cfn=(50) org::jenetics::util::RandomRegistry::<clinit>(): void
-calls=1 0
-0 175570480
-cfl=(8)
-cfn=(51) org::jenetics::util::RandomRegistry::getRandom(): java::util::Random
-calls=1 0
-0 3647811
-cfl=(8)
-cfn=(52) org::jenetics::NumberGene::nextDouble(java::util::Random, double, double): double
-calls=1 0
-0 178720
-cfl=(8)
-cfn=(53) org::jenetics::Float64Gene::valueOf(org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64, org::jscience::mathematics::number::Float64): org::jenetics::Float64Gene
-calls=1 0
-0 7809146
-
-fl=(9) org/jenetics/util/RandomRegistry.java
 fn=(50)
-0 175271250
-cfl=(9)
-cfn=(54) org::jenetics::util::RandomRegistry$1::<init>(): void
+0 22036
+cfl=(8)
+cfn=(51) org::jenetics::util::RandomRegistry$Ref::<init>(): void
 calls=1 0
-0 299230
+0 18328
 
-fl=(9)
-fn=(54)
-0 113954
-cfl=(9)
-cfn=(55) org::jenetics::util::RandomRegistry$Ref::<init>(org::jenetics::util::RandomRegistry$1): void
-calls=1 0
-0 185276
-
-fl=(9)
-fn=(55)
-0 77556
-cfl=(9)
-cfn=(56) org::jenetics::util::RandomRegistry$Ref::<init>(): void
-calls=1 0
-0 107720
-
-fl=(9)
-fn=(56)
-0 107720
-
-fl=(9)
+fl=(8)
 fn=(51)
-0 189911
-cfl=(9)
-cfn=(57) org::jenetics::util::RandomRegistry$1::get(): java::lang::Object
+0 18328
+
+fl=(8)
+fn=(46)
+0 54691
+cfl=(8)
+cfn=(52) org::jenetics::util::RandomRegistry$1::get(): java::lang::Object
 calls=1 0
-0 3457900
+0 995685
 
-fl=(9)
-fn=(57)
-0 90967
-cfl=(9)
-cfn=(58) org::jenetics::util::RandomRegistry$1::get(): java::util::Random
-calls=1 0
-0 3366933
-
-fl=(9)
-fn=(58)
-0 3366933
-
-fl=(10) org/jenetics/NumberGene.java
+fl=(8)
 fn=(52)
-0 178720
+0 26345
+cfl=(8)
+cfn=(53) org::jenetics::util::RandomRegistry$1::get(): java::util::Random
+calls=1 0
+0 969340
 
 fl=(8)
 fn=(53)
-0 6528915
-cfl=(8)
-cfn=(59) org::jenetics::Float64Gene$4::create(): java::lang::Object
-calls=1 0
-0 396375
-cfl=(8)
-cfn=(60) org::jenetics::NumberGene::set(org::jscience::mathematics::number::Number, org::jscience::mathematics::number::Number, org::jscience::mathematics::number::Number): void
-calls=1 0
-0 883856
+0 969340
 
-fl=(8)
-fn=(59)
-0 91804
-cfl=(8)
-cfn=(61) org::jenetics::Float64Gene$4::create(): org::jenetics::Float64Gene
-calls=1 0
-0 304571
-
-fl=(8)
-fn=(61)
-0 74218
-cfl=(8)
-cfn=(62) org::jenetics::Float64Gene::<init>(): void
-calls=1 0
-0 230353
-
-fl=(8)
-fn=(62)
-0 71052
-cfl=(8)
-cfn=(63) org::jenetics::NumberGene::<init>(): void
-calls=1 0
-0 159301
-
-fl=(10)
-fn=(63)
-0 159301
-
-fl=(10)
-fn=(60)
-0 860073
-cfl=(10)
-cfn=(41)
-calls=3 0
-0 23783
+fl=(9) org/jenetics/util/math.java
+fn=(47)
+0 55635
 
 fl=(7)
-fn=(41)
-0 23783
+fn=(48)
+0 1782297
+cfl=(7)
+cfn=(54) org::jenetics::Float64Gene$4::create(): java::lang::Object
+calls=1 0
+0 122470
+cfl=(7)
+cfn=(55) org::jenetics::NumberGene::set(org::jscience::mathematics::number::Number, org::jscience::mathematics::number::Number, org::jscience::mathematics::number::Number): void
+calls=1 0
+0 239740
+
+fl=(7)
+fn=(54)
+0 27865
+cfl=(7)
+cfn=(56) org::jenetics::Float64Gene$4::create(): org::jenetics::Float64Gene
+calls=1 0
+0 94605
+
+fl=(7)
+fn=(56)
+0 22355
+cfl=(7)
+cfn=(57) org::jenetics::Float64Gene::<init>(): void
+calls=1 0
+0 72250
+
+fl=(7)
+fn=(57)
+0 22294
+cfl=(7)
+cfn=(58) org::jenetics::NumberGene::<init>(): void
+calls=1 0
+0 49956
+
+fl=(10) org/jenetics/NumberGene.java
+fn=(58)
+0 49956
+
+fl=(10)
+fn=(55)
+0 239740
 
 fl=(4)
 fn=(34)
-0 293541
+0 87555
 cfl=(4)
-cfn=(64) org::jenetics::util::object::nonNull(java::lang::Object): java::lang::Object
+cfn=(59) org::jenetics::util::ArrayRef::cloneIfSealed(): void
 calls=1 0
-0 134716
+0 2310
 cfl=(4)
-cfn=(65) org::jenetics::util::ArrayRef::cloneIfSealed(): void
+cfn=(60) org::jenetics::Float64Gene::newInstance(): java::lang::Object
 calls=1 0
-0 8404
-cfl=(4)
-cfn=(66) org::jenetics::Float64Gene::newInstance(): java::lang::Object
-calls=1 0
-0 3851273
-
-fl=(7)
-fn=(64)
-0 126788
-cfl=(7)
-cfn=(41)
-calls=1 0
-0 7928
-
-fl=(7)
-fn=(41)
-0 7928
+0 1082536
 
 fl=(6)
-fn=(65)
-0 8404
+fn=(59)
+0 2310
 
-fl=(8)
-fn=(66)
-0 86677
-cfl=(8)
-cfn=(67) org::jenetics::Float64Gene::newInstance(): org::jenetics::Float64Gene
+fl=(7)
+fn=(60)
+0 24499
+cfl=(7)
+cfn=(61) org::jenetics::Float64Gene::newInstance(): org::jenetics::Float64Gene
 calls=1 0
-0 3764596
+0 1058037
 
-fl=(8)
-fn=(67)
-0 148296
-cfl=(8)
+fl=(7)
+fn=(61)
+0 43968
+cfl=(7)
 cfn=(33)
 calls=1 0
-0 3616300
+0 1014069
+
+fl=(7)
+fn=(33)
+0 317637
+cfl=(7)
+cfn=(46)
+calls=1 0
+0 216453
+cfl=(7)
+cfn=(47)
+calls=1 0
+0 47015
+cfl=(7)
+cfn=(48)
+calls=1 0
+0 432964
 
 fl=(8)
-fn=(33)
-0 1091038
-cfl=(8)
-cfn=(51)
-calls=1 0
-0 801755
+fn=(46)
+0 40009
 cfl=(8)
 cfn=(52)
 calls=1 0
-0 158970
+0 176444
+
+fl=(8)
+fn=(52)
+0 21916
 cfl=(8)
 cfn=(53)
 calls=1 0
-0 1564537
-
-fl=(9)
-fn=(51)
-0 137347
-cfl=(9)
-cfn=(57)
-calls=1 0
-0 664408
-
-fl=(9)
-fn=(57)
-0 75145
-cfl=(9)
-cfn=(58)
-calls=1 0
-0 589263
-
-fl=(9)
-fn=(58)
-0 589263
-
-fl=(10)
-fn=(52)
-0 158970
+0 154528
 
 fl=(8)
 fn=(53)
-0 445366
-cfl=(8)
-cfn=(59)
-calls=1 0
-0 323624
-cfl=(8)
-cfn=(60)
-calls=1 0
-0 795547
+0 154528
 
-fl=(8)
-fn=(59)
-0 74063
-cfl=(8)
-cfn=(61)
-calls=1 0
-0 249561
-
-fl=(8)
-fn=(61)
-0 57435
-cfl=(8)
-cfn=(62)
-calls=1 0
-0 192126
-
-fl=(8)
-fn=(62)
-0 56072
-cfl=(8)
-cfn=(63)
-calls=1 0
-0 136054
-
-fl=(10)
-fn=(63)
-0 136054
-
-fl=(10)
-fn=(60)
-0 775622
-cfl=(10)
-cfn=(41)
-calls=3 0
-0 19925
+fl=(9)
+fn=(47)
+0 47015
 
 fl=(7)
-fn=(41)
-0 19925
+fn=(48)
+0 129927
+cfl=(7)
+cfn=(54)
+calls=1 0
+0 95827
+cfl=(7)
+cfn=(55)
+calls=1 0
+0 207210
+
+fl=(7)
+fn=(54)
+0 21608
+cfl=(7)
+cfn=(56)
+calls=1 0
+0 74219
+
+fl=(7)
+fn=(56)
+0 17180
+cfl=(7)
+cfn=(57)
+calls=1 0
+0 57039
+
+fl=(7)
+fn=(57)
+0 16665
+cfl=(7)
+cfn=(58)
+calls=1 0
+0 40374
+
+fl=(10)
+fn=(58)
+0 40374
+
+fl=(10)
+fn=(55)
+0 207210
 
 fl=(4)
 fn=(35)
-0 56964099
+0 16540754
 cfl=(4)
-cfn=(68) org::jenetics::util::ArrayISeq::<clinit>(): void
+cfn=(62) org::jenetics::util::ArrayISeq::<clinit>(): void
 calls=1 0
-0 347519
+0 100391
 cfl=(4)
-cfn=(69) org::jenetics::util::ArrayRef::<init>(java::lang::Object[]): void
+cfn=(63) org::jenetics::util::ArrayRef::seal(): org::jenetics::util::ArrayRef
 calls=1 0
-0 58323
+0 2882
 cfl=(4)
-cfn=(70) org::jenetics::util::ArrayISeq::<init>(org::jenetics::util::ArrayRef, int, int): void
+cfn=(64) org::jenetics::util::ArrayRef::<init>(java::lang::Object[]): void
 calls=1 0
-0 287929
+0 16808
+cfl=(4)
+cfn=(65) org::jenetics::util::ArrayISeq::<init>(org::jenetics::util::ArrayRef, int, int): void
+calls=1 0
+0 78481
 
 fl=(11) org/jenetics/util/ArrayISeq.java
-fn=(68)
-0 347519
+fn=(62)
+0 100391
 
 fl=(6)
-fn=(69)
-0 58323
+fn=(63)
+0 2882
+
+fl=(6)
+fn=(64)
+0 16808
 
 fl=(11)
-fn=(70)
-0 109113
+fn=(65)
+0 32041
 cfl=(11)
 cfn=(39)
 calls=1 0
-0 178816
+0 46440
 
 fl=(5)
 fn=(39)
-0 170117
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8699
-
-fl=(7)
-fn=(41)
-0 8699
+0 46440
 
 fl=(3)
 fn=(36)
-0 102854
+0 30679
 cfl=(3)
-cfn=(71) org::jenetics::NumberChromosome::<init>(org::jenetics::util::ISeq): void
+cfn=(66) org::jenetics::NumberChromosome::<init>(org::jenetics::util::ISeq): void
 calls=1 0
-0 758907
+0 218640
 
 fl=(12) org/jenetics/NumberChromosome.java
-fn=(71)
-0 286901
+fn=(66)
+0 84473
 cfl=(12)
-cfn=(72) org::jenetics::AbstractChromosome::<init>(org::jenetics::util::ISeq): void
+cfn=(67) org::jenetics::AbstractChromosome::<init>(org::jenetics::util::ISeq): void
 calls=1 0
-0 305158
+0 84452
 cfl=(12)
-cfn=(73) org::jenetics::util::ArraySeq::get(int): java::lang::Object
+cfn=(68) org::jenetics::util::ArraySeq::get(int): java::lang::Object
 calls=2 0
-0 166848
+0 49715
 
 fl=(2)
-fn=(72)
-0 287679
+fn=(67)
+0 81874
 cfl=(2)
-cfn=(41)
+cfn=(69) org::jenetics::util::ArraySeq::length(): int
 calls=1 0
-0 9281
-cfl=(2)
-cfn=(74) org::jenetics::util::ArraySeq::length(): int
-calls=1 0
-0 8198
-
-fl=(7)
-fn=(41)
-0 9281
+0 2578
 
 fl=(5)
-fn=(74)
-0 8198
+fn=(69)
+0 2578
 
 fl=(5)
-fn=(73)
-0 152987
+fn=(68)
+0 45494
 cfl=(5)
-cfn=(75) org::jenetics::util::ArraySeq::checkIndex(int): void
+cfn=(70) org::jenetics::util::ArraySeq::checkIndex(int): void
 calls=2 0
-0 13861
+0 4221
 
 fl=(5)
-fn=(75)
-0 13861
+fn=(70)
+0 4221
 
 fl=(13) org/jenetics/Genotype.java
 fn=(5)
-0 618409
+0 174496
 cfl=(13)
-cfn=(76) org::jenetics::Genotype$4::<init>(java::lang::Class): void
+cfn=(71) org::jenetics::Genotype$4::<init>(java::lang::Class): void
 calls=1 0
-0 698114
+0 206231
 
 fl=(13)
-fn=(76)
-0 698114
+fn=(71)
+0 206231
 
 fl=(13)
 fn=(6)
-0 490635
+0 89127
 cfl=(13)
-cfn=(41)
+cfn=(72) org::jenetics::util::Array::valueOf(java::lang::Object[]): org::jenetics::util::Array
 calls=1 0
-0 9441
-cfl=(13)
-cfn=(77) org::jenetics::util::Array::<init>(java::lang::Object): void
-calls=1 0
-0 515656
+0 2122274
 cfl=(13)
 cfn=(35)
 calls=1 0
-0 534914
+0 163230
 cfl=(13)
-cfn=(78) org::jenetics::AbstractChromosome::length(): int
+cfn=(73) org::jenetics::Genotype::valueOf(org::jenetics::util::ISeq): org::jenetics::Genotype
 calls=1 0
-0 69487
-cfl=(13)
-cfn=(79) org::jenetics::Genotype::<init>(org::jenetics::util::ISeq, int): void
-calls=1 0
-0 81149
-
-fl=(7)
-fn=(41)
-0 9441
+0 253524
 
 fl=(4)
-fn=(77)
-0 69523
+fn=(72)
+0 1988430
+cfl=(4)
+cfn=(74) org::jenetics::util::Array::empty(): org::jenetics::util::Array
+calls=1 0
+0 3610
 cfl=(4)
 cfn=(31)
 calls=1 0
-0 446133
+0 130234
+
+fl=(4)
+fn=(74)
+0 3610
 
 fl=(4)
 fn=(31)
-0 65659
+0 20721
 cfl=(4)
 cfn=(37)
 calls=1 0
-0 380474
+0 109513
 
 fl=(5)
 fn=(37)
-0 151965
+0 46473
 cfl=(5)
 cfn=(38)
 calls=1 0
-0 56258
+0 16309
 cfl=(5)
 cfn=(39)
 calls=1 0
-0 172251
+0 46731
 
 fl=(6)
 fn=(38)
-0 56258
+0 16309
 
 fl=(5)
 fn=(39)
-0 164288
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 7963
-
-fl=(7)
-fn=(41)
-0 7963
+0 46731
 
 fl=(4)
 fn=(35)
-0 170508
+0 72056
 cfl=(4)
-cfn=(69)
+cfn=(63)
 calls=1 0
-0 52654
+0 2057
 cfl=(4)
-cfn=(70)
+cfn=(64)
 calls=1 0
-0 311752
+0 15987
+cfl=(4)
+cfn=(65)
+calls=1 0
+0 73130
 
 fl=(6)
-fn=(69)
-0 52654
+fn=(63)
+0 2057
+
+fl=(6)
+fn=(64)
+0 15987
 
 fl=(11)
-fn=(70)
-0 94053
+fn=(65)
+0 28042
 cfl=(11)
 cfn=(39)
 calls=1 0
-0 217699
+0 45088
 
 fl=(5)
 fn=(39)
-0 208073
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 9626
-
-fl=(7)
-fn=(41)
-0 9626
-
-fl=(2)
-fn=(78)
-0 62727
-cfl=(2)
-cfn=(74)
-calls=1 0
-0 6760
-
-fl=(5)
-fn=(74)
-0 6760
+0 45088
 
 fl=(13)
-fn=(79)
-0 81149
+fn=(73)
+0 114202
+cfl=(13)
+cfn=(69)
+calls=1 0
+0 2269
+cfl=(13)
+cfn=(75) org::jenetics::Genotype::ngenes(org::jenetics::util::Seq): int
+calls=1 0
+0 114581
+cfl=(13)
+cfn=(76) org::jenetics::Genotype::<init>(org::jenetics::util::ISeq, int): void
+calls=1 0
+0 22472
+
+fl=(5)
+fn=(69)
+0 2269
+
+fl=(13)
+fn=(75)
+0 69537
+cfl=(13)
+cfn=(69)
+calls=1 0
+0 1900
+cfl=(13)
+cfn=(68)
+calls=1 0
+0 23360
+cfl=(13)
+cfn=(77) org::jenetics::AbstractChromosome::length(): int
+calls=1 0
+0 19784
+
+fl=(5)
+fn=(69)
+0 1900
+
+fl=(5)
+fn=(68)
+0 21155
+cfl=(5)
+cfn=(70)
+calls=1 0
+0 2205
+
+fl=(5)
+fn=(70)
+0 2205
+
+fl=(2)
+fn=(77)
+0 18064
+cfl=(2)
+cfn=(69)
+calls=1 0
+0 1720
+
+fl=(5)
+fn=(69)
+0 1720
+
+fl=(13)
+fn=(76)
+0 22472
 
 fl=(14) org/jenetics/example/Real.java
 fn=(7)
-0 73993
+0 20301
 
 fl=(15) org/jenetics/GeneticAlgorithm.java
 fn=(8)
-0 363375
+0 105279
 
 fl=(16) org/jenetics/Optimize.java
 fn=(9)
-0 400805
+0 114523
 cfl=(16)
-cfn=(80) org::jenetics::Optimize$1::<init>(java::lang::String, int): void
+cfn=(78) org::jenetics::Optimize$1::<init>(java::lang::String, int): void
 calls=1 0
-0 364227
+0 108919
 cfl=(16)
-cfn=(81) org::jenetics::Optimize$2::<init>(java::lang::String, int): void
+cfn=(79) org::jenetics::Optimize$2::<init>(java::lang::String, int): void
 calls=1 0
-0 329593
+0 135874
+
+fl=(16)
+fn=(78)
+0 37874
+cfl=(16)
+cfn=(80) org::jenetics::Optimize::<init>(java::lang::String, int, org::jenetics::Optimize$1): void
+calls=1 0
+0 71045
 
 fl=(16)
 fn=(80)
-0 126753
+0 28887
 cfl=(16)
-cfn=(82) org::jenetics::Optimize::<init>(java::lang::String, int, org::jenetics::Optimize$1): void
+cfn=(81) org::jenetics::Optimize::<init>(java::lang::String, int): void
 calls=1 0
-0 237474
-
-fl=(16)
-fn=(82)
-0 97952
-cfl=(16)
-cfn=(83) org::jenetics::Optimize::<init>(java::lang::String, int): void
-calls=1 0
-0 139522
-
-fl=(16)
-fn=(83)
-0 139522
+0 42158
 
 fl=(16)
 fn=(81)
-0 123967
-cfl=(16)
-cfn=(82)
-calls=1 0
-0 205626
+0 42158
 
 fl=(16)
-fn=(82)
-0 85233
+fn=(79)
+0 62109
 cfl=(16)
-cfn=(83)
+cfn=(80)
 calls=1 0
-0 120393
+0 73765
 
 fl=(16)
-fn=(83)
-0 120393
+fn=(80)
+0 36804
+cfl=(16)
+cfn=(81)
+calls=1 0
+0 36961
+
+fl=(16)
+fn=(81)
+0 36961
 
 fl=(15)
 fn=(10)
-0 55817523
+0 16293304
 cfl=(15)
-cfn=(84) org::jenetics::util::functions::<clinit>(): void
+cfn=(82) org::jenetics::util::functions::<clinit>(): void
 calls=1 0
-0 756301525
+0 222648474
 cfl=(15)
-cfn=(85) org::jenetics::util::functions::Identity(): org::jenetics::util::Function
+cfn=(83) org::jenetics::util::functions::Identity(): org::jenetics::util::Function
 calls=1 0
-0 15395
+0 4344
 cfl=(15)
-cfn=(86) org::jenetics::GeneticAlgorithm::<init>(org::jenetics::util::Factory, org::jenetics::util::Function, org::jenetics::util::Function, org::jenetics::Optimize): void
+cfn=(84) org::jenetics::GeneticAlgorithm::<init>(org::jenetics::util::Factory, org::jenetics::util::Function, org::jenetics::util::Function, org::jenetics::Optimize): void
 calls=1 0
-0 1069856319
+0 435591069
 
 fl=(17) org/jenetics/util/functions.java
-fn=(84)
-0 755210668
+fn=(82)
+0 222338755
 cfl=(17)
-cfn=(87) org::jenetics::util::functions$1::<init>(): void
+cfn=(85) org::jenetics::util::functions$1::<init>(): void
 calls=1 0
-0 71798
+0 20161
 cfl=(17)
-cfn=(88) org::jenetics::util::functions$2::<init>(): void
+cfn=(86) org::jenetics::util::functions$2::<init>(): void
 calls=1 0
-0 73156
+0 20646
 cfl=(17)
-cfn=(89) org::jenetics::util::functions$3::<init>(): void
+cfn=(87) org::jenetics::util::functions$3::<init>(): void
 calls=1 0
-0 72670
+0 20506
 cfl=(17)
-cfn=(90) org::jenetics::util::functions$4::<init>(): void
+cfn=(88) org::jenetics::util::functions$4::<init>(): void
 calls=1 0
-0 71166
+0 20601
 cfl=(17)
-cfn=(91) org::jenetics::util::functions$5::<init>(): void
+cfn=(89) org::jenetics::util::functions$5::<init>(): void
 calls=1 0
-0 74629
+0 20572
 cfl=(17)
-cfn=(92) org::jenetics::util::functions$6::<init>(): void
+cfn=(90) org::jenetics::util::functions$6::<init>(): void
 calls=1 0
-0 71528
+0 20372
 cfl=(17)
-cfn=(93) org::jenetics::util::functions$7::<init>(): void
+cfn=(91) org::jenetics::util::functions$7::<init>(): void
 calls=1 0
-0 72444
+0 20326
 cfl=(17)
-cfn=(94) org::jenetics::util::functions$8::<init>(): void
+cfn=(92) org::jenetics::util::functions$8::<init>(): void
 calls=1 0
-0 71357
+0 20453
 cfl=(17)
-cfn=(95) org::jenetics::util::functions$9::<init>(): void
+cfn=(93) org::jenetics::util::functions$9::<init>(): void
 calls=1 0
-0 73131
+0 20945
 cfl=(17)
-cfn=(96) org::jenetics::util::functions$10::<init>(): void
+cfn=(94) org::jenetics::util::functions$10::<init>(): void
 calls=1 0
-0 71452
+0 20907
 cfl=(17)
-cfn=(97) org::jenetics::util::functions$11::<init>(): void
+cfn=(95) org::jenetics::util::functions$11::<init>(): void
 calls=1 0
-0 72850
+0 20675
 cfl=(17)
-cfn=(98) org::jenetics::util::functions$12::<init>(): void
+cfn=(96) org::jenetics::util::functions$12::<init>(): void
 calls=1 0
-0 75086
+0 20752
 cfl=(17)
-cfn=(99) org::jenetics::util::functions$13::<init>(): void
+cfn=(97) org::jenetics::util::functions$13::<init>(): void
 calls=1 0
-0 73733
+0 20681
 cfl=(17)
-cfn=(100) org::jenetics::util::functions$Identity::<init>(org::jenetics::util::functions$1): void
+cfn=(98) org::jenetics::util::functions$Identity::<init>(org::jenetics::util::functions$1): void
 calls=1 0
-0 145857
-
-fl=(17)
-fn=(87)
-0 71798
-
-fl=(17)
-fn=(88)
-0 73156
-
-fl=(17)
-fn=(89)
-0 72670
-
-fl=(17)
-fn=(90)
-0 71166
-
-fl=(17)
-fn=(91)
-0 74629
-
-fl=(17)
-fn=(92)
-0 71528
-
-fl=(17)
-fn=(93)
-0 72444
-
-fl=(17)
-fn=(94)
-0 71357
-
-fl=(17)
-fn=(95)
-0 73131
-
-fl=(17)
-fn=(96)
-0 71452
-
-fl=(17)
-fn=(97)
-0 72850
-
-fl=(17)
-fn=(98)
-0 75086
-
-fl=(17)
-fn=(99)
-0 73733
-
-fl=(17)
-fn=(100)
-0 80894
-cfl=(17)
-cfn=(101) org::jenetics::util::functions$Identity::<init>(): void
-calls=1 0
-0 64963
-
-fl=(17)
-fn=(101)
-0 64963
+0 42122
 
 fl=(17)
 fn=(85)
-0 15395
+0 20161
+
+fl=(17)
+fn=(86)
+0 20646
+
+fl=(17)
+fn=(87)
+0 20506
+
+fl=(17)
+fn=(88)
+0 20601
+
+fl=(17)
+fn=(89)
+0 20572
+
+fl=(17)
+fn=(90)
+0 20372
+
+fl=(17)
+fn=(91)
+0 20326
+
+fl=(17)
+fn=(92)
+0 20453
+
+fl=(17)
+fn=(93)
+0 20945
+
+fl=(17)
+fn=(94)
+0 20907
+
+fl=(17)
+fn=(95)
+0 20675
+
+fl=(17)
+fn=(96)
+0 20752
+
+fl=(17)
+fn=(97)
+0 20681
+
+fl=(17)
+fn=(98)
+0 23709
+cfl=(17)
+cfn=(99) org::jenetics::util::functions$Identity::<init>(): void
+calls=1 0
+0 18413
+
+fl=(17)
+fn=(99)
+0 18413
+
+fl=(17)
+fn=(83)
+0 4344
 
 fl=(15)
-fn=(86)
-0 814879612
+fn=(84)
+0 274812312
 cfl=(15)
-cfn=(102) org::jenetics::SinglePointCrossover::<clinit>(): void
+cfn=(100) org::jenetics::MultiPointCrossover::<clinit>(): void
 calls=1 0
-0 351358
+0 102832
 cfl=(15)
-cfn=(103) org::jenetics::SinglePointCrossover::<init>(double): void
+cfn=(101) org::jenetics::SinglePointCrossover::<clinit>(): void
 calls=1 0
-0 426078
+0 92853
 cfl=(15)
-cfn=(104) org::jenetics::Mutator::<clinit>(): void
+cfn=(102) org::jenetics::SinglePointCrossover::<init>(double): void
 calls=1 0
-0 349508
+0 85425937
+cfl=(15)
+cfn=(103) org::jenetics::Mutator::<clinit>(): void
+calls=1 0
+0 101733
 cfl=(15)
 cfn=(14)
 calls=1 0
-0 200225
+0 60131
 cfl=(15)
-cfn=(105) org::jenetics::CompositeAlterer::<init>(org::jenetics::Alterer, org::jenetics::Alterer): void
+cfn=(104) org::jenetics::CompositeAlterer::valueOf(org::jenetics::Alterer[]): org::jenetics::CompositeAlterer
 calls=1 0
-0 132237877
+0 39119829
 cfl=(15)
-cfn=(106) org::jenetics::TournamentSelector::<clinit>(): void
+cfn=(105) org::jenetics::TournamentSelector::<clinit>(): void
 calls=1 0
-0 388934
+0 100236
 cfl=(15)
-cfn=(107) org::jenetics::TournamentSelector::<init>(int): void
+cfn=(106) org::jenetics::TournamentSelector::<init>(int): void
 calls=2 0
-0 123459
+0 35661
 cfl=(15)
-cfn=(108) org::jenetics::Population::<clinit>(): void
+cfn=(107) org::jenetics::Population::<clinit>(): void
 calls=1 0
-0 974893
+0 282816
 cfl=(15)
-cfn=(109) org::jenetics::Population::<init>(int): void
+cfn=(108) org::jenetics::Population::<init>(int): void
 calls=1 0
-0 6856113
+0 2074628
 cfl=(15)
-cfn=(110) org::jenetics::Statistics$Calculator::<init>(): void
+cfn=(109) org::jenetics::Statistics$Calculator::<init>(): void
 calls=1 0
-0 79997
+0 21016
 cfl=(15)
-cfn=(111) org::jenetics::util::Timer::<init>(java::lang::String): void
+cfn=(110) org::jenetics::util::Timer::<init>(java::lang::String): void
 calls=6 0
-0 112956258
+0 33336533
 cfl=(15)
-cfn=(41)
-calls=4 0
-0 32007
+cfn=(111) org::jenetics::GeneticAlgorithm$1::<init>(org::jenetics::GeneticAlgorithm): void
+calls=1 0
+0 24552
 
-fl=(18) org/jenetics/SinglePointCrossover.java
+fl=(18) org/jenetics/MultiPointCrossover.java
+fn=(100)
+0 102832
+
+fl=(19) org/jenetics/SinglePointCrossover.java
+fn=(101)
+0 92853
+
+fl=(19)
 fn=(102)
-0 351358
+0 25270
+cfl=(19)
+cfn=(112) org::jenetics::MultiPointCrossover::<init>(double, int): void
+calls=1 0
+0 85400667
 
 fl=(18)
-fn=(103)
-0 98238
-cfl=(18)
-cfn=(112) org::jenetics::Crossover::<init>(double): void
-calls=1 0
-0 327840
-
-fl=(19) org/jenetics/Crossover.java
 fn=(112)
-0 83515
-cfl=(19)
-cfn=(113) org::jenetics::Recombinator::<init>(double, int): void
+0 25800
+cfl=(18)
+cfn=(113) org::jenetics::Crossover::<init>(double): void
 calls=1 0
-0 244325
+0 85374867
 
-fl=(20) org/jenetics/Recombinator.java
+fl=(20) org/jenetics/Crossover.java
 fn=(113)
-0 85820
+0 24640
 cfl=(20)
-cfn=(114) org::jenetics::AbstractAlterer::<init>(double): void
+cfn=(114) org::jenetics::Recombinator::<init>(double, int): void
 calls=1 0
-0 158505
+0 85350227
 
-fl=(21) org/jenetics/AbstractAlterer.java
+fl=(21) org/jenetics/Recombinator.java
 fn=(114)
-0 149570
+0 26188
 cfl=(21)
-cfn=(115) org::jenetics::util::object::checkProbability(double): double
+cfn=(115) org::jenetics::AbstractAlterer::<init>(double): void
 calls=1 0
-0 8935
+0 85324039
 
-fl=(7)
+fl=(22) org/jenetics/AbstractAlterer.java
 fn=(115)
-0 8935
-
-fl=(22) org/jenetics/Mutator.java
-fn=(104)
-0 349508
-
-fl=(22)
-fn=(14)
-0 79501
+0 53122857
 cfl=(22)
-cfn=(114)
+cfn=(116) org::jenetics::util::object::<clinit>(): void
 calls=1 0
-0 120724
-
-fl=(21)
-fn=(114)
-0 112997
-cfl=(21)
-cfn=(115)
+0 32197308
+cfl=(22)
+cfn=(117) org::jenetics::util::object::checkProbability(double): double
 calls=1 0
-0 7727
+0 3874
 
-fl=(7)
-fn=(115)
-0 7727
-
-fl=(23) org/jenetics/CompositeAlterer.java
-fn=(105)
-0 407494
-cfl=(23)
-cfn=(64)
-calls=2 0
-0 241373
-cfl=(23)
-cfn=(116) org::jenetics::util::Array::<init>(java::lang::Object, java::lang::Object): void
-calls=1 0
-0 550945
-cfl=(23)
-cfn=(117) org::jenetics::CompositeAlterer::<init>(org::jenetics::util::Seq): void
-calls=1 0
-0 131038065
-
-fl=(7)
-fn=(64)
-0 227076
-cfl=(7)
-cfn=(41)
-calls=2 0
-0 14297
-
-fl=(7)
-fn=(41)
-0 14297
-
-fl=(4)
+fl=(23) org/jenetics/util/object.java
 fn=(116)
-0 69206
-cfl=(4)
-cfn=(31)
+0 16083389
+cfl=(23)
+cfn=(118) org::jenetics::util::object$2::<init>(): void
 calls=1 0
-0 481739
-
-fl=(4)
-fn=(31)
-0 65193
-cfl=(4)
-cfn=(37)
+0 20217
+cfl=(23)
+cfn=(119) org::jenetics::util::object::NonNull(java::lang::String): org::jenetics::util::Function
 calls=1 0
-0 416546
-
-fl=(5)
-fn=(37)
-0 181983
-cfl=(5)
-cfn=(38)
-calls=1 0
-0 55075
-cfl=(5)
-cfn=(39)
-calls=1 0
-0 179488
-
-fl=(6)
-fn=(38)
-0 55075
-
-fl=(5)
-fn=(39)
-0 171054
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8434
-
-fl=(7)
-fn=(41)
-0 8434
+0 16093702
 
 fl=(23)
-fn=(117)
-0 486861
-cfl=(23)
-cfn=(114)
-calls=1 0
-0 140915
-cfl=(23)
-cfn=(43)
-calls=1 0
-0 139381
-cfl=(23)
-cfn=(118) org::jenetics::util::Array::forall(org::jenetics::util::Function): boolean
-calls=1 0
-0 1073592
-cfl=(23)
-cfn=(119) org::jenetics::CompositeAlterer::normalize(org::jenetics::util::Seq): org::jenetics::util::Array
-calls=1 0
-0 128643699
-cfl=(23)
-cfn=(35)
-calls=1 0
-0 553617
-
-fl=(21)
-fn=(114)
-0 133498
-cfl=(21)
-cfn=(115)
-calls=1 0
-0 7417
-
-fl=(7)
-fn=(115)
-0 7417
-
-fl=(7)
-fn=(43)
-0 87288
-cfl=(7)
-cfn=(44)
-calls=1 0
-0 52093
-
-fl=(7)
-fn=(44)
-0 52093
-
-fl=(4)
 fn=(118)
-0 99767
-cfl=(4)
-cfn=(120) org::jenetics::util::ArraySeq::forall(org::jenetics::util::Function): boolean
-calls=1 0
-0 973825
-
-fl=(5)
-fn=(120)
-0 464820
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8424
-cfl=(5)
-cfn=(121) org::jenetics::util::object$3::apply(java::lang::Object): java::lang::Object
-calls=2 0
-0 500581
-
-fl=(7)
-fn=(41)
-0 8424
-
-fl=(7)
-fn=(121)
-0 233735
-cfl=(7)
-cfn=(122) org::jenetics::util::object$3::apply(java::lang::Object): java::lang::Boolean
-calls=2 0
-0 266846
-
-fl=(7)
-fn=(122)
-0 252297
-cfl=(7)
-cfn=(41)
-calls=2 0
-0 14549
-
-fl=(7)
-fn=(41)
-0 14549
+0 20217
 
 fl=(23)
 fn=(119)
-0 10380359
+0 16070770
 cfl=(23)
-cfn=(123) org::jenetics::util::Array::asList(): java::util::List
+cfn=(120) org::jenetics::util::object$3::<init>(java::lang::String): void
 calls=1 0
-0 115830202
-cfl=(23)
-cfn=(124) org::jenetics::util::ArraySeqList::toArray(): java::lang::Object[]
-calls=1 0
-0 413895
-cfl=(23)
-cfn=(125) org::jenetics::util::Array::<init>(java::util::Collection): void
-calls=1 0
-0 2019243
+0 22932
 
-fl=(4)
-fn=(123)
-0 115398542
-cfl=(4)
-cfn=(126) org::jenetics::util::ArrayMSeqList::<init>(org::jenetics::util::Array): void
-calls=1 0
-0 431660
+fl=(23)
+fn=(120)
+0 22932
 
-fl=(24) org/jenetics/util/ArrayMSeqList.java
-fn=(126)
-0 116795
+fl=(23)
+fn=(117)
+0 3874
+
+fl=(24) org/jenetics/Mutator.java
+fn=(103)
+0 101733
+
+fl=(24)
+fn=(14)
+0 23740
 cfl=(24)
-cfn=(127) org::jenetics::util::ArraySeqList::<init>(org::jenetics::util::ArraySeq): void
+cfn=(115)
 calls=1 0
-0 314865
+0 36391
 
-fl=(25) org/jenetics/util/ArraySeqList.java
-fn=(127)
-0 305243
+fl=(22)
+fn=(115)
+0 34004
+cfl=(22)
+cfn=(117)
+calls=1 0
+0 2387
+
+fl=(23)
+fn=(117)
+0 2387
+
+fl=(25) org/jenetics/CompositeAlterer.java
+fn=(104)
+0 66297
 cfl=(25)
-cfn=(41)
+cfn=(72)
 calls=1 0
-0 9622
-
-fl=(7)
-fn=(41)
-0 9622
-
-fl=(25)
-fn=(124)
-0 89759
+0 216435
 cfl=(25)
-cfn=(128) org::jenetics::util::Array::toArray(): java::lang::Object[]
+cfn=(121) org::jenetics::CompositeAlterer::<init>(org::jenetics::util::Seq): void
 calls=1 0
-0 324136
+0 38837097
 
 fl=(4)
-fn=(128)
-0 87499
-cfl=(4)
-cfn=(129) org::jenetics::util::ArraySeq::toArray(): java::lang::Object[]
-calls=1 0
-0 236637
-
-fl=(5)
-fn=(129)
-0 162839
-cfl=(5)
-cfn=(130) org::jenetics::util::Array::length(): int
-calls=1 0
-0 73798
-
-fl=(4)
-fn=(130)
-0 68010
+fn=(72)
+0 73627
 cfl=(4)
 cfn=(74)
 calls=1 0
-0 5788
-
-fl=(5)
-fn=(74)
-0 5788
-
-fl=(4)
-fn=(125)
-0 1470958
+0 2312
 cfl=(4)
 cfn=(31)
 calls=1 0
-0 548285
+0 140496
+
+fl=(4)
+fn=(74)
+0 2312
 
 fl=(4)
 fn=(31)
-0 66962
+0 20932
 cfl=(4)
 cfn=(37)
 calls=1 0
-0 481323
+0 119564
 
 fl=(5)
 fn=(37)
-0 163993
+0 46726
 cfl=(5)
 cfn=(38)
 calls=1 0
-0 106406
+0 17159
 cfl=(5)
 cfn=(39)
 calls=1 0
-0 210924
+0 55679
 
 fl=(6)
 fn=(38)
-0 106406
+0 17159
 
 fl=(5)
 fn=(39)
-0 199403
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 11521
+0 55679
 
-fl=(7)
-fn=(41)
-0 11521
+fl=(25)
+fn=(121)
+0 143511
+cfl=(25)
+cfn=(115)
+calls=1 0
+0 35761
+cfl=(25)
+cfn=(119)
+calls=1 0
+0 46666
+cfl=(25)
+cfn=(122) org::jenetics::util::Array::forAll(org::jenetics::util::Function): boolean
+calls=1 0
+0 287259
+cfl=(25)
+cfn=(123) org::jenetics::CompositeAlterer::normalize(org::jenetics::util::Seq): org::jenetics::util::Array
+calls=1 0
+0 38145000
+cfl=(25)
+cfn=(35)
+calls=1 0
+0 178900
+
+fl=(22)
+fn=(115)
+0 33400
+cfl=(22)
+cfn=(117)
+calls=1 0
+0 2361
+
+fl=(23)
+fn=(117)
+0 2361
+
+fl=(23)
+fn=(119)
+0 31374
+cfl=(23)
+cfn=(120)
+calls=1 0
+0 15292
+
+fl=(23)
+fn=(120)
+0 15292
 
 fl=(4)
-fn=(35)
-0 173068
+fn=(122)
+0 30409
+cfl=(4)
+cfn=(124) org::jenetics::util::ArraySeq::forAll(org::jenetics::util::Function): boolean
+calls=1 0
+0 256850
+
+fl=(5)
+fn=(124)
+0 123646
+cfl=(5)
+cfn=(125) org::jenetics::util::object$3::apply(java::lang::Object): java::lang::Object
+calls=2 0
+0 133204
+
+fl=(23)
+fn=(125)
+0 60172
+cfl=(23)
+cfn=(126) org::jenetics::util::object$3::apply(java::lang::Object): java::lang::Boolean
+calls=2 0
+0 73032
+
+fl=(23)
+fn=(126)
+0 73032
+
+fl=(25)
+fn=(123)
+0 3130057
+cfl=(25)
+cfn=(127) org::jenetics::util::Array::asList(): java::util::List
+calls=1 0
+0 34288921
+cfl=(25)
+cfn=(128) org::jenetics::util::ArraySeqList::toArray(): java::lang::Object[]
+calls=1 0
+0 122083
+cfl=(25)
+cfn=(129) org::jenetics::util::Array::valueOf(java::util::Collection): org::jenetics::util::Array
+calls=1 0
+0 603939
+
+fl=(4)
+fn=(127)
+0 34169423
+cfl=(4)
+cfn=(130) org::jenetics::util::ArrayMSeqList::<init>(org::jenetics::util::Array): void
+calls=1 0
+0 119498
+
+fl=(26) org/jenetics/util/ArrayMSeqList.java
+fn=(130)
+0 32938
+cfl=(26)
+cfn=(131) org::jenetics::util::ArraySeqList::<init>(org::jenetics::util::ArraySeq): void
+calls=1 0
+0 86560
+
+fl=(27) org/jenetics/util/ArraySeqList.java
+fn=(131)
+0 86560
+
+fl=(27)
+fn=(128)
+0 26146
+cfl=(27)
+cfn=(132) org::jenetics::util::Array::toArray(): java::lang::Object[]
+calls=1 0
+0 95937
+
+fl=(4)
+fn=(132)
+0 26024
+cfl=(4)
+cfn=(133) org::jenetics::util::ArraySeq::toArray(): java::lang::Object[]
+calls=1 0
+0 69913
+
+fl=(5)
+fn=(133)
+0 47714
+cfl=(5)
+cfn=(134) org::jenetics::util::Array::length(): int
+calls=1 0
+0 22199
+
+fl=(4)
+fn=(134)
+0 20272
 cfl=(4)
 cfn=(69)
 calls=1 0
-0 52364
-cfl=(4)
-cfn=(70)
-calls=1 0
-0 328185
+0 1927
 
-fl=(6)
+fl=(5)
 fn=(69)
-0 52364
+0 1927
 
-fl=(11)
-fn=(70)
-0 94910
-cfl=(11)
+fl=(4)
+fn=(129)
+0 463689
+cfl=(4)
+cfn=(74)
+calls=1 0
+0 2249
+cfl=(4)
+cfn=(31)
+calls=1 0
+0 138001
+
+fl=(4)
+fn=(74)
+0 2249
+
+fl=(4)
+fn=(31)
+0 26238
+cfl=(4)
+cfn=(37)
+calls=1 0
+0 111763
+
+fl=(5)
+fn=(37)
+0 48273
+cfl=(5)
+cfn=(38)
+calls=1 0
+0 16779
+cfl=(5)
 cfn=(39)
 calls=1 0
-0 233275
+0 46711
+
+fl=(6)
+fn=(38)
+0 16779
 
 fl=(5)
 fn=(39)
-0 223027
-cfl=(5)
-cfn=(41)
+0 46711
+
+fl=(4)
+fn=(35)
+0 87066
+cfl=(4)
+cfn=(63)
 calls=1 0
-0 10248
-
-fl=(7)
-fn=(41)
-0 10248
-
-fl=(26) org/jenetics/TournamentSelector.java
-fn=(106)
-0 388934
-
-fl=(26)
-fn=(107)
-0 123459
-
-fl=(27) org/jenetics/Population.java
-fn=(108)
-0 271051
-cfl=(27)
-cfn=(131) org::jenetics::Population$1::<init>(java::lang::Class): void
+0 2174
+cfl=(4)
+cfn=(64)
 calls=1 0
-0 703842
-
-fl=(27)
-fn=(131)
-0 703842
-
-fl=(27)
-fn=(109)
-0 6856113
-
-fl=(28) org/jenetics/Statistics.java
-fn=(110)
-0 79997
-
-fl=(29) org/jenetics/util/Timer.java
-fn=(111)
-0 59264353
-cfl=(29)
-cfn=(132) org::jenetics::util::accumulators::<clinit>(): void
+0 16059
+cfl=(4)
+cfn=(65)
 calls=1 0
-0 53646037
-cfl=(29)
-cfn=(41)
-calls=6 0
-0 45868
+0 73601
 
-fl=(30) org/jenetics/util/accumulators.java
-fn=(132)
-0 53574986
-cfl=(30)
-cfn=(133) org::jenetics::util::accumulators$1::<init>(): void
+fl=(6)
+fn=(63)
+0 2174
+
+fl=(6)
+fn=(64)
+0 16059
+
+fl=(11)
+fn=(65)
+0 28214
+cfl=(11)
+cfn=(39)
 calls=1 0
-0 71051
+0 45387
 
-fl=(30)
-fn=(133)
-0 71051
+fl=(5)
+fn=(39)
+0 45387
 
-fl=(7)
-fn=(41)
-0 45868
-
-fl=(7)
-fn=(41)
-0 32007
-
-fl=(31) org/jenetics/NumberStatistics.java
-fn=(11)
-0 83040
-cfl=(31)
-cfn=(110)
-calls=1 0
-0 52954
+fl=(28) org/jenetics/TournamentSelector.java
+fn=(105)
+0 100236
 
 fl=(28)
+fn=(106)
+0 35661
+
+fl=(29) org/jenetics/Population.java
+fn=(107)
+0 76376
+cfl=(29)
+cfn=(135) org::jenetics::Population$2::<init>(java::lang::Class): void
+calls=1 0
+0 206440
+
+fl=(29)
+fn=(135)
+0 206440
+
+fl=(29)
+fn=(108)
+0 2053625
+cfl=(29)
+cfn=(136) org::jenetics::Population::<init>(java::util::List): void
+calls=1 0
+0 21003
+
+fl=(29)
+fn=(136)
+0 21003
+
+fl=(30) org/jenetics/Statistics.java
+fn=(109)
+0 21016
+
+fl=(31) org/jenetics/util/Timer.java
 fn=(110)
-0 52954
+0 17336408
+cfl=(31)
+cfn=(137) org::jenetics::util::accumulators::<clinit>(): void
+calls=1 0
+0 16000125
+
+fl=(32) org/jenetics/util/accumulators.java
+fn=(137)
+0 15979756
+cfl=(32)
+cfn=(138) org::jenetics::util::accumulators$1::<init>(): void
+calls=1 0
+0 20369
+
+fl=(32)
+fn=(138)
+0 20369
+
+fl=(15)
+fn=(111)
+0 24552
+
+fl=(33) org/jenetics/NumberStatistics.java
+fn=(11)
+0 24358
+cfl=(33)
+cfn=(109)
+calls=1 0
+0 15562
+
+fl=(30)
+fn=(109)
+0 15562
 
 fl=(15)
 fn=(12)
-0 139757
-cfl=(15)
-cfn=(41)
-calls=1 0
-0 9497
-
-fl=(7)
-fn=(41)
-0 9497
+0 41259
 
 fl=(15)
 fn=(13)
-0 11426
+0 3480
+
+fl=(24)
+fn=(14)
+0 21434
+cfl=(24)
+cfn=(115)
+calls=1 0
+0 42984
 
 fl=(22)
-fn=(14)
-0 69678
+fn=(115)
+0 40537
 cfl=(22)
-cfn=(114)
-calls=1 0
-0 164008
-
-fl=(21)
-fn=(114)
-0 154451
-cfl=(21)
-cfn=(115)
-calls=1 0
-0 9557
-
-fl=(7)
-fn=(115)
-0 9557
-
-fl=(32) org/jenetics/MeanAlterer.java
-fn=(15)
-0 91076
-cfl=(32)
-cfn=(113)
-calls=1 0
-0 195379
-
-fl=(20)
-fn=(113)
-0 70275
-cfl=(20)
-cfn=(114)
-calls=1 0
-0 125104
-
-fl=(21)
-fn=(114)
-0 116560
-cfl=(21)
-cfn=(115)
-calls=1 0
-0 8544
-
-fl=(7)
-fn=(115)
-0 8544
-
-fl=(15)
-fn=(16)
-0 194843
-cfl=(15)
-cfn=(134) org::jenetics::CompositeAlterer::<init>(org::jenetics::Alterer[]): void
-calls=1 0
-0 14216296
-cfl=(15)
-cfn=(135) org::jenetics::GeneticAlgorithm::setAlterer(org::jenetics::Alterer): void
-calls=1 0
-0 142057
-
-fl=(23)
-fn=(134)
-0 177487
-cfl=(23)
-cfn=(136) org::jenetics::util::Array::<init>(java::lang::Object[]): void
-calls=1 0
-0 7203272
-cfl=(23)
 cfn=(117)
 calls=1 0
-0 6835537
-
-fl=(4)
-fn=(136)
-0 6661157
-cfl=(4)
-cfn=(31)
-calls=1 0
-0 542115
-
-fl=(4)
-fn=(31)
-0 87348
-cfl=(4)
-cfn=(37)
-calls=1 0
-0 454767
-
-fl=(5)
-fn=(37)
-0 196977
-cfl=(5)
-cfn=(38)
-calls=1 0
-0 59610
-cfl=(5)
-cfn=(39)
-calls=1 0
-0 198180
-
-fl=(6)
-fn=(38)
-0 59610
-
-fl=(5)
-fn=(39)
-0 189526
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8654
-
-fl=(7)
-fn=(41)
-0 8654
+0 2447
 
 fl=(23)
 fn=(117)
-0 403855
-cfl=(23)
+0 2447
+
+fl=(34) org/jenetics/MeanAlterer.java
+fn=(15)
+0 27283
+cfl=(34)
 cfn=(114)
 calls=1 0
-0 117281
-cfl=(23)
-cfn=(43)
-calls=1 0
-0 171655
-cfl=(23)
-cfn=(118)
-calls=1 0
-0 940174
-cfl=(23)
-cfn=(119)
-calls=1 0
-0 4637743
-cfl=(23)
-cfn=(35)
-calls=1 0
-0 564829
+0 57617
 
 fl=(21)
 fn=(114)
-0 109990
+0 20494
 cfl=(21)
 cfn=(115)
 calls=1 0
-0 7291
+0 37123
 
-fl=(7)
+fl=(22)
 fn=(115)
-0 7291
-
-fl=(7)
-fn=(43)
-0 114440
-cfl=(7)
-cfn=(44)
+0 34501
+cfl=(22)
+cfn=(117)
 calls=1 0
-0 57215
+0 2622
 
-fl=(7)
-fn=(44)
-0 57215
+fl=(23)
+fn=(117)
+0 2622
+
+fl=(15)
+fn=(16)
+0 58668
+cfl=(15)
+cfn=(104)
+calls=1 0
+0 2310182
+cfl=(15)
+cfn=(139) org::jenetics::GeneticAlgorithm::setAlterer(org::jenetics::Alterer): void
+calls=1 0
+0 34885
+
+fl=(25)
+fn=(104)
+0 54530
+cfl=(25)
+cfn=(72)
+calls=1 0
+0 217137
+cfl=(25)
+cfn=(121)
+calls=1 0
+0 2038515
 
 fl=(4)
-fn=(118)
-0 87133
+fn=(72)
+0 78810
 cfl=(4)
-cfn=(120)
+cfn=(74)
 calls=1 0
-0 853041
+0 2521
+cfl=(4)
+cfn=(31)
+calls=1 0
+0 135806
+
+fl=(4)
+fn=(74)
+0 2521
+
+fl=(4)
+fn=(31)
+0 20606
+cfl=(4)
+cfn=(37)
+calls=1 0
+0 115200
 
 fl=(5)
-fn=(120)
-0 384984
+fn=(37)
+0 46806
 cfl=(5)
-cfn=(41)
+cfn=(38)
 calls=1 0
-0 7978
+0 16799
 cfl=(5)
-cfn=(121)
-calls=2 0
-0 460079
+cfn=(39)
+calls=1 0
+0 51595
 
-fl=(7)
-fn=(41)
-0 7978
+fl=(6)
+fn=(38)
+0 16799
 
-fl=(7)
+fl=(5)
+fn=(39)
+0 51595
+
+fl=(25)
 fn=(121)
-0 214612
-cfl=(7)
+0 119061
+cfl=(25)
+cfn=(115)
+calls=1 0
+0 34879
+cfl=(25)
+cfn=(119)
+calls=1 0
+0 46384
+cfl=(25)
 cfn=(122)
-calls=2 0
-0 245467
+calls=1 0
+0 270086
+cfl=(25)
+cfn=(123)
+calls=1 0
+0 1399986
+cfl=(25)
+cfn=(35)
+calls=1 0
+0 168119
 
-fl=(7)
-fn=(122)
-0 230497
-cfl=(7)
-cfn=(41)
-calls=2 0
-0 14970
+fl=(22)
+fn=(115)
+0 32640
+cfl=(22)
+cfn=(117)
+calls=1 0
+0 2239
 
-fl=(7)
-fn=(41)
-0 14970
+fl=(23)
+fn=(117)
+0 2239
 
 fl=(23)
 fn=(119)
-0 2346288
+0 30725
 cfl=(23)
-cfn=(123)
+cfn=(120)
 calls=1 0
-0 462795
-cfl=(23)
-cfn=(124)
-calls=1 0
-0 373743
-cfl=(23)
-cfn=(125)
-calls=1 0
-0 1454917
+0 15659
+
+fl=(23)
+fn=(120)
+0 15659
 
 fl=(4)
-fn=(123)
-0 87879
+fn=(122)
+0 26716
 cfl=(4)
-cfn=(126)
+cfn=(124)
 calls=1 0
-0 374916
+0 243370
 
-fl=(24)
+fl=(5)
+fn=(124)
+0 111892
+cfl=(5)
+cfn=(125)
+calls=2 0
+0 131478
+
+fl=(23)
+fn=(125)
+0 56785
+cfl=(23)
+cfn=(126)
+calls=2 0
+0 74693
+
+fl=(23)
 fn=(126)
-0 111428
-cfl=(24)
+0 74693
+
+fl=(25)
+fn=(123)
+0 701473
+cfl=(25)
 cfn=(127)
 calls=1 0
-0 263488
-
-fl=(25)
-fn=(127)
-0 255395
-cfl=(25)
-cfn=(41)
-calls=1 0
-0 8093
-
-fl=(7)
-fn=(41)
-0 8093
-
-fl=(25)
-fn=(124)
-0 76599
+0 127188
 cfl=(25)
 cfn=(128)
 calls=1 0
-0 297144
-
-fl=(4)
-fn=(128)
-0 74348
-cfl=(4)
+0 104512
+cfl=(25)
 cfn=(129)
 calls=1 0
-0 222796
+0 466813
 
-fl=(5)
-fn=(129)
-0 146343
-cfl=(5)
+fl=(4)
+fn=(127)
+0 26401
+cfl=(4)
 cfn=(130)
 calls=1 0
-0 76453
+0 100787
 
-fl=(4)
+fl=(26)
 fn=(130)
-0 69803
-cfl=(4)
-cfn=(74)
+0 29960
+cfl=(26)
+cfn=(131)
 calls=1 0
-0 6650
+0 70827
 
-fl=(5)
-fn=(74)
-0 6650
+fl=(27)
+fn=(131)
+0 70827
+
+fl=(27)
+fn=(128)
+0 22583
+cfl=(27)
+cfn=(132)
+calls=1 0
+0 81929
 
 fl=(4)
-fn=(125)
-0 975193
+fn=(132)
+0 24708
 cfl=(4)
-cfn=(31)
+cfn=(133)
 calls=1 0
-0 479724
-
-fl=(4)
-fn=(31)
-0 65404
-cfl=(4)
-cfn=(37)
-calls=1 0
-0 414320
+0 57221
 
 fl=(5)
-fn=(37)
-0 155722
+fn=(133)
+0 37487
 cfl=(5)
-cfn=(38)
+cfn=(134)
 calls=1 0
-0 85259
-cfl=(5)
-cfn=(39)
-calls=1 0
-0 173339
-
-fl=(6)
-fn=(38)
-0 85259
-
-fl=(5)
-fn=(39)
-0 164674
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8665
-
-fl=(7)
-fn=(41)
-0 8665
+0 19734
 
 fl=(4)
-fn=(35)
-0 212269
+fn=(134)
+0 18014
 cfl=(4)
 cfn=(69)
 calls=1 0
-0 58488
-cfl=(4)
-cfn=(70)
-calls=1 0
-0 294072
+0 1720
 
-fl=(6)
+fl=(5)
 fn=(69)
-0 58488
+0 1720
 
-fl=(11)
-fn=(70)
-0 121585
-cfl=(11)
+fl=(4)
+fn=(129)
+0 332859
+cfl=(4)
+cfn=(74)
+calls=1 0
+0 1888
+cfl=(4)
+cfn=(31)
+calls=1 0
+0 132066
+
+fl=(4)
+fn=(74)
+0 1888
+
+fl=(4)
+fn=(31)
+0 20095
+cfl=(4)
+cfn=(37)
+calls=1 0
+0 111971
+
+fl=(5)
+fn=(37)
+0 45676
+cfl=(5)
+cfn=(38)
+calls=1 0
+0 15999
+cfl=(5)
 cfn=(39)
 calls=1 0
-0 172487
+0 50296
+
+fl=(6)
+fn=(38)
+0 15999
 
 fl=(5)
 fn=(39)
-0 164328
-cfl=(5)
-cfn=(41)
-calls=1 0
-0 8159
+0 50296
 
-fl=(7)
-fn=(41)
-0 8159
+fl=(4)
+fn=(35)
+0 72530
+cfl=(4)
+cfn=(63)
+calls=1 0
+0 1953
+cfl=(4)
+cfn=(64)
+calls=1 0
+0 15565
+cfl=(4)
+cfn=(65)
+calls=1 0
+0 78071
+
+fl=(6)
+fn=(63)
+0 1953
+
+fl=(6)
+fn=(64)
+0 15565
+
+fl=(11)
+fn=(65)
+0 27814
+cfl=(11)
+cfn=(39)
+calls=1 0
+0 50257
+
+fl=(5)
+fn=(39)
+0 50257
 
 fl=(15)
-fn=(135)
-0 134124
-cfl=(15)
-cfn=(41)
-calls=1 0
-0 7933
-
-fl=(7)
-fn=(41)
-0 7933
+fn=(139)
+0 34885
 
 fl=(15)
 fn=(17)
-0 305896248
+0 505160
 cfl=(15)
-cfn=(137) org::jenetics::GeneticAlgorithm::prepareSetup(): void
+cfn=(140) org::jenetics::GeneticAlgorithm::prepareSetup(): void
 calls=1 0
-0 138604
+0 41428
 cfl=(15)
-cfn=(138) org::jenetics::Population::size(): int
+cfn=(141) org::jenetics::Population::size(): int
 calls=1 0
-0 68862
+0 20344
 cfl=(15)
-cfn=(139) org::jenetics::Genotype::newInstance(): java::lang::Object
-calls=500 0
-0 5974234395
-cfl=(15)
-cfn=(140) org::jenetics::Phenotype::<clinit>(): void
+cfn=(142) org::jenetics::Population::fill(org::jenetics::util::Factory, int): org::jenetics::Population
 calls=1 0
-0 1671554
-cfl=(15)
-cfn=(141) org::jenetics::Phenotype::valueOf(org::jenetics::Genotype, org::jenetics::util::Function, org::jenetics::util::Function, int): org::jenetics::Phenotype
-calls=500 0
-0 420869601
-cfl=(15)
-cfn=(142) org::jenetics::Population::add(org::jenetics::Phenotype): boolean
-calls=500 0
-0 121261028
+0 1791667229
 cfl=(15)
 cfn=(143) org::jenetics::GeneticAlgorithm::finishSetup(): void
 calls=1 0
-0 6651503973
+0 1594283380
 
 fl=(15)
-fn=(137)
-0 73787
+fn=(140)
+0 22263
 cfl=(15)
 cfn=(144) org::jenetics::util::Timer::start(): void
 calls=1 0
-0 64817
+0 19165
+
+fl=(31)
+fn=(144)
+0 19165
 
 fl=(29)
-fn=(144)
-0 64817
+fn=(141)
+0 20344
 
-fl=(27)
-fn=(138)
-0 68862
+fl=(29)
+fn=(142)
+0 357760143
+cfl=(29)
+cfn=(145) org::jenetics::Population$PhenotypeArray::<init>(int): void
+calls=1 0
+0 41884
+cfl=(29)
+cfn=(146) org::jenetics::Population::fill(org::jenetics::util::Factory, java::lang::Object[]): void
+calls=1 0
+0 1433860631
+cfl=(29)
+cfn=(147) org::jenetics::Population$PhenotypeArray::toArray(): java::lang::Object[]
+calls=1 0
+0 4571
 
-fl=(13)
-fn=(139)
-0 35330180
-cfl=(13)
-cfn=(145) org::jenetics::Genotype::newInstance(): org::jenetics::Genotype
-calls=500 0
-0 5938904215
-
-fl=(13)
+fl=(29)
 fn=(145)
-0 292047475
+0 41884
+
+fl=(29)
+fn=(146)
+0 52227771
+cfl=(29)
+cfn=(148) org::jenetics::util::Concurrency::<clinit>(): void
+calls=1 0
+0 46732
+cfl=(29)
+cfn=(149) org::jenetics::util::Concurrency::start(): org::jenetics::util::Concurrency
+calls=1 0
+0 74928468
+cfl=(29)
+cfn=(150) org::jenetics::util::arrays::<clinit>(): void
+calls=1 0
+0 104380
+cfl=(29)
+cfn=(151) org::jenetics::util::arrays::partition(int, int): int[]
+calls=1 0
+0 1967934
+cfl=(29)
+cfn=(152) org::jenetics::Population$1::<init>(int[], int, java::lang::Object[], org::jenetics::util::Factory): void
+calls=4 0
+0 77641
+cfl=(29)
+cfn=(153) org::jenetics::util::Concurrency::execute(java::lang::Runnable): void
+calls=4 0
+0 1205000740
+cfl=(29)
+cfn=(154) org::jenetics::util::Concurrency::close(): void
+calls=1 0
+0 99506965
+
+fl=(35) org/jenetics/util/Concurrency.java
+fn=(148)
+0 27838
+cfl=(35)
+cfn=(155) org::jenetics::util::Concurrency::<init>(): void
+calls=1 0
+0 18894
+
+fl=(35)
+fn=(155)
+0 18894
+
+fl=(35)
+fn=(149)
+0 74928468
+
+fl=(36) org/jenetics/util/arrays.java
+fn=(150)
+0 104380
+
+fl=(36)
+fn=(151)
+0 1967934
+
+fl=(29)
+fn=(152)
+0 77641
+
+fl=(35)
+fn=(153)
+0 1403591
+cfl=(35)
+cfn=(156) org::jenetics::Population$1::run(): void
+calls=1 0
+0 1203597149
+
+fl=(29)
+fn=(156)
+0 4945931
+cfl=(29)
+cfn=(157) org::jenetics::GeneticAlgorithm$1::newInstance(): java::lang::Object
+calls=125 0
+0 1198651218
+
+fl=(15)
+fn=(157)
+0 5243367
+cfl=(15)
+cfn=(158) org::jenetics::GeneticAlgorithm$1::newInstance(): org::jenetics::Phenotype
+calls=125 0
+0 1193407851
+
+fl=(15)
+fn=(158)
+0 97638656
+cfl=(15)
+cfn=(159) org::jenetics::GeneticAlgorithm::access$000(org::jenetics::GeneticAlgorithm): org::jenetics::util::Factory
+calls=125 0
+0 430998
+cfl=(15)
+cfn=(160) org::jenetics::Genotype::newInstance(): java::lang::Object
+calls=125 0
+0 995596573
+cfl=(15)
+cfn=(161) org::jenetics::GeneticAlgorithm::access$100(org::jenetics::GeneticAlgorithm): org::jenetics::util::Function
+calls=125 0
+0 439123
+cfl=(15)
+cfn=(162) org::jenetics::GeneticAlgorithm::access$200(org::jenetics::GeneticAlgorithm): org::jenetics::util::Function
+calls=125 0
+0 421062
+cfl=(15)
+cfn=(163) org::jenetics::GeneticAlgorithm::access$300(org::jenetics::GeneticAlgorithm): int
+calls=125 0
+0 398026
+cfl=(15)
+cfn=(164) org::jenetics::Phenotype::<clinit>(): void
+calls=1 0
+0 509619
+cfl=(15)
+cfn=(165) org::jenetics::Phenotype::valueOf(org::jenetics::Genotype, org::jenetics::util::Function, org::jenetics::util::Function, int): org::jenetics::Phenotype
+calls=125 0
+0 97973794
+
+fl=(15)
+fn=(159)
+0 430998
+
+fl=(13)
+fn=(160)
+0 5219181
 cfl=(13)
-cfn=(146) org::jenetics::Genotype::length(): int
-calls=1500 0
-0 92619180
+cfn=(166) org::jenetics::Genotype::newInstance(): org::jenetics::Genotype
+calls=125 0
+0 990377392
+
+fl=(13)
+fn=(166)
+0 43134150
+cfl=(13)
+cfn=(167) org::jenetics::Genotype::length(): int
+calls=375 0
+0 13805639
 cfl=(13)
 cfn=(31)
-calls=500 0
-0 212344279
+calls=125 0
+0 30228157
 cfl=(13)
-cfn=(73)
-calls=500 0
-0 34503625
+cfn=(68)
+calls=125 0
+0 5126101
 cfl=(13)
-cfn=(147) org::jenetics::Float64Chromosome::newInstance(): java::lang::Object
-calls=500 0
-0 4987361057
+cfn=(168) org::jenetics::Float64Chromosome::newInstance(): java::lang::Object
+calls=125 0
+0 846361668
 cfl=(13)
-cfn=(148) org::jenetics::util::Array::set(int, java::lang::Object): void
-calls=500 0
-0 63711544
+cfn=(169) org::jenetics::util::Array::set(int, java::lang::Object): void
+calls=125 0
+0 9436223
 cfl=(13)
 cfn=(35)
-calls=500 0
-0 231490985
+calls=125 0
+0 38584049
 cfl=(13)
-cfn=(79)
-calls=500 0
-0 24826070
+cfn=(76)
+calls=125 0
+0 3701405
 
 fl=(13)
-fn=(146)
-0 85653235
+fn=(167)
+0 12808147
 cfl=(13)
-cfn=(74)
-calls=1500 0
-0 6965945
+cfn=(69)
+calls=375 0
+0 997492
 
 fl=(5)
-fn=(74)
-0 6965945
+fn=(69)
+0 997492
 
 fl=(4)
 fn=(31)
-0 31429577
+0 4674542
 cfl=(4)
 cfn=(37)
-calls=500 0
-0 180914702
+calls=125 0
+0 25553615
 
 fl=(5)
 fn=(37)
-0 73765767
+0 10917813
 cfl=(5)
 cfn=(38)
-calls=500 0
-0 25782171
+calls=125 0
+0 3769920
 cfl=(5)
 cfn=(39)
-calls=500 0
-0 81366764
+calls=125 0
+0 10865882
 
 fl=(6)
 fn=(38)
-0 25782171
+0 3769920
 
 fl=(5)
 fn=(39)
-0 78159307
-cfl=(5)
-cfn=(41)
-calls=500 0
-0 3207457
-
-fl=(7)
-fn=(41)
-0 3207457
+0 10865882
 
 fl=(5)
-fn=(73)
-0 31843609
+fn=(68)
+0 4746195
 cfl=(5)
-cfn=(75)
-calls=500 0
-0 2660016
+cfn=(70)
+calls=125 0
+0 379906
 
 fl=(5)
-fn=(75)
-0 2660016
+fn=(70)
+0 379906
 
 fl=(3)
-fn=(147)
-0 36533394
+fn=(168)
+0 5357541
 cfl=(3)
-cfn=(149) org::jenetics::Float64Chromosome::newInstance(): org::jenetics::Float64Chromosome
-calls=500 0
-0 4950827663
+cfn=(170) org::jenetics::Float64Chromosome::newInstance(): org::jenetics::Float64Chromosome
+calls=125 0
+0 841004127
 
 fl=(3)
-fn=(149)
-0 83975302
+fn=(170)
+0 12264427
 cfl=(3)
-cfn=(78)
-calls=500 0
-0 30526004
+cfn=(77)
+calls=125 0
+0 4575532
 cfl=(3)
 cfn=(29)
-calls=500 0
-0 4836326357
+calls=125 0
+0 824164168
 
 fl=(2)
-fn=(78)
-0 28188473
+fn=(77)
+0 4246410
 cfl=(2)
-cfn=(74)
-calls=500 0
-0 2337531
+cfn=(69)
+calls=125 0
+0 329122
 
 fl=(5)
-fn=(74)
-0 2337531
+fn=(69)
+0 329122
 
 fl=(3)
 fn=(29)
-0 247929678
+0 35736418
 cfl=(3)
 cfn=(31)
-calls=500 0
-0 210883900
+calls=125 0
+0 30021089
 cfl=(3)
 cfn=(33)
-calls=500 0
-0 1770932427
+calls=125 0
+0 325273490
 cfl=(3)
 cfn=(34)
-calls=500 0
-0 2038717132
+calls=125 0
+0 346482745
 cfl=(3)
 cfn=(35)
-calls=500 0
-0 233394938
+calls=125 0
+0 38678778
 cfl=(3)
 cfn=(36)
-calls=500 0
-0 334468282
+calls=125 0
+0 47971648
 
 fl=(4)
 fn=(31)
-0 31278743
+0 4646541
 cfl=(4)
 cfn=(37)
-calls=500 0
-0 179605157
+calls=125 0
+0 25374548
 
 fl=(5)
 fn=(37)
-0 73024145
+0 10837805
 cfl=(5)
 cfn=(38)
-calls=500 0
-0 25230307
+calls=125 0
+0 3727758
 cfl=(5)
 cfn=(39)
-calls=500 0
-0 81350705
+calls=125 0
+0 10808985
 
 fl=(6)
 fn=(38)
-0 25230307
+0 3727758
 
 fl=(5)
 fn=(39)
-0 78133284
-cfl=(5)
-cfn=(41)
-calls=500 0
-0 3217421
+0 10808985
 
 fl=(7)
-fn=(41)
-0 3217421
+fn=(33)
+0 116580565
+cfl=(7)
+cfn=(46)
+calls=125 0
+0 52712135
+cfl=(7)
+cfn=(47)
+calls=125 0
+0 11350827
+cfl=(7)
+cfn=(48)
+calls=125 0
+0 144629963
 
 fl=(8)
-fn=(33)
-0 542518888
-cfl=(8)
-cfn=(51)
-calls=500 0
-0 394814144
+fn=(46)
+0 9709011
 cfl=(8)
 cfn=(52)
-calls=500 0
-0 77236310
+calls=125 0
+0 43003124
+
+fl=(8)
+fn=(52)
+0 5306318
 cfl=(8)
 cfn=(53)
-calls=500 0
-0 756363085
-
-fl=(9)
-fn=(51)
-0 67218857
-cfl=(9)
-cfn=(57)
-calls=500 0
-0 327595287
-
-fl=(9)
-fn=(57)
-0 36149613
-cfl=(9)
-cfn=(58)
-calls=500 0
-0 291445674
-
-fl=(9)
-fn=(58)
-0 291445674
-
-fl=(10)
-fn=(52)
-0 77236310
+calls=125 0
+0 37696806
 
 fl=(8)
 fn=(53)
-0 221052970
-cfl=(8)
-cfn=(59)
-calls=500 0
-0 158065477
-cfl=(8)
-cfn=(60)
-calls=500 0
-0 377244638
+0 37696806
 
-fl=(8)
-fn=(59)
-0 35536085
-cfl=(8)
-cfn=(61)
-calls=500 0
-0 122529392
-
-fl=(8)
-fn=(61)
-0 28029505
-cfl=(8)
-cfn=(62)
-calls=500 0
-0 94499887
-
-fl=(8)
-fn=(62)
-0 27174083
-cfl=(8)
-cfn=(63)
-calls=500 0
-0 67325804
-
-fl=(10)
-fn=(63)
-0 67325804
-
-fl=(10)
-fn=(60)
-0 368213478
-cfl=(10)
-cfn=(41)
-calls=1500 0
-0 9031160
+fl=(9)
+fn=(47)
+0 11350827
 
 fl=(7)
-fn=(41)
-0 9031160
+fn=(48)
+0 69296038
+cfl=(7)
+cfn=(54)
+calls=125 0
+0 23706689
+cfl=(7)
+cfn=(55)
+calls=125 0
+0 51627236
+
+fl=(7)
+fn=(54)
+0 5236731
+cfl=(7)
+cfn=(56)
+calls=125 0
+0 18469958
+
+fl=(7)
+fn=(56)
+0 4183886
+cfl=(7)
+cfn=(57)
+calls=125 0
+0 14286072
+
+fl=(7)
+fn=(57)
+0 4144003
+cfl=(7)
+cfn=(58)
+calls=125 0
+0 10142069
+
+fl=(10)
+fn=(58)
+0 10142069
+
+fl=(10)
+fn=(55)
+0 51627236
 
 fl=(4)
 fn=(34)
-0 109046093
+0 15145431
 cfl=(4)
-cfn=(64)
-calls=500 0
-0 59156062
+cfn=(59)
+calls=125 0
+0 369914
 cfl=(4)
-cfn=(65)
-calls=500 0
-0 2588384
-cfl=(4)
-cfn=(66)
-calls=500 0
-0 1867926593
-
-fl=(7)
-fn=(64)
-0 56057571
-cfl=(7)
-cfn=(41)
-calls=500 0
-0 3098491
-
-fl=(7)
-fn=(41)
-0 3098491
+cfn=(60)
+calls=125 0
+0 330967400
 
 fl=(6)
-fn=(65)
-0 2588384
+fn=(59)
+0 369914
 
-fl=(8)
-fn=(66)
-0 35893139
-cfl=(8)
-cfn=(67)
-calls=500 0
-0 1832033454
+fl=(7)
+fn=(60)
+0 5236774
+cfl=(7)
+cfn=(61)
+calls=125 0
+0 325730626
 
-fl=(8)
-fn=(67)
-0 62709697
-cfl=(8)
+fl=(7)
+fn=(61)
+0 9051619
+cfl=(7)
 cfn=(33)
-calls=500 0
-0 1769323757
+calls=125 0
+0 316679007
+
+fl=(7)
+fn=(33)
+0 112137505
+cfl=(7)
+cfn=(46)
+calls=125 0
+0 52850799
+cfl=(7)
+cfn=(47)
+calls=125 0
+0 11348849
+cfl=(7)
+cfn=(48)
+calls=125 0
+0 140341854
 
 fl=(8)
-fn=(33)
-0 542835690
-cfl=(8)
-cfn=(51)
-calls=500 0
-0 393273790
+fn=(46)
+0 9752950
 cfl=(8)
 cfn=(52)
-calls=500 0
-0 77556860
+calls=125 0
+0 43097849
+
+fl=(8)
+fn=(52)
+0 5290366
 cfl=(8)
 cfn=(53)
-calls=500 0
-0 755657417
-
-fl=(9)
-fn=(51)
-0 66803413
-cfl=(9)
-cfn=(57)
-calls=500 0
-0 326470377
-
-fl=(9)
-fn=(57)
-0 36008419
-cfl=(9)
-cfn=(58)
-calls=500 0
-0 290461958
-
-fl=(9)
-fn=(58)
-0 290461958
-
-fl=(10)
-fn=(52)
-0 77556860
+calls=125 0
+0 37807483
 
 fl=(8)
 fn=(53)
-0 220819558
-cfl=(8)
-cfn=(59)
-calls=500 0
-0 157766110
-cfl=(8)
-cfn=(60)
-calls=500 0
-0 377071749
+0 37807483
 
-fl=(8)
-fn=(59)
-0 35543466
-cfl=(8)
-cfn=(61)
-calls=500 0
-0 122222644
-
-fl=(8)
-fn=(61)
-0 27847283
-cfl=(8)
-cfn=(62)
-calls=500 0
-0 94375361
-
-fl=(8)
-fn=(62)
-0 27169487
-cfl=(8)
-cfn=(63)
-calls=500 0
-0 67205874
-
-fl=(10)
-fn=(63)
-0 67205874
-
-fl=(10)
-fn=(60)
-0 368103105
-cfl=(10)
-cfn=(41)
-calls=1500 0
-0 8968644
+fl=(9)
+fn=(47)
+0 11348849
 
 fl=(7)
-fn=(41)
-0 8968644
+fn=(48)
+0 64963795
+cfl=(7)
+cfn=(54)
+calls=125 0
+0 23679457
+cfl=(7)
+cfn=(55)
+calls=125 0
+0 51698602
+
+fl=(7)
+fn=(54)
+0 5240196
+cfl=(7)
+cfn=(56)
+calls=125 0
+0 18439261
+
+fl=(7)
+fn=(56)
+0 4176611
+cfl=(7)
+cfn=(57)
+calls=125 0
+0 14262650
+
+fl=(7)
+fn=(57)
+0 4126514
+cfl=(7)
+cfn=(58)
+calls=125 0
+0 10136136
+
+fl=(10)
+fn=(58)
+0 10136136
+
+fl=(10)
+fn=(55)
+0 51698602
 
 fl=(4)
 fn=(35)
-0 83426404
+0 17177898
 cfl=(4)
-cfn=(69)
-calls=500 0
-0 25045536
+cfn=(63)
+calls=125 0
+0 385152
 cfl=(4)
-cfn=(70)
-calls=500 0
-0 124922998
+cfn=(64)
+calls=125 0
+0 3683429
+cfl=(4)
+cfn=(65)
+calls=125 0
+0 17432299
 
 fl=(6)
-fn=(69)
-0 25045536
+fn=(63)
+0 385152
+
+fl=(6)
+fn=(64)
+0 3683429
 
 fl=(11)
-fn=(70)
-0 44503079
+fn=(65)
+0 6599355
 cfl=(11)
 cfn=(39)
-calls=500 0
-0 80419919
+calls=125 0
+0 10832944
 
 fl=(5)
 fn=(39)
-0 77234908
-cfl=(5)
-cfn=(41)
-calls=500 0
-0 3185011
-
-fl=(7)
-fn=(41)
-0 3185011
+0 10832944
 
 fl=(3)
 fn=(36)
-0 40658054
+0 6013839
 cfl=(3)
-cfn=(71)
-calls=500 0
-0 293810228
+cfn=(66)
+calls=125 0
+0 41957809
 
 fl=(12)
-fn=(71)
-0 114344628
+fn=(66)
+0 16666458
 cfl=(12)
-cfn=(72)
-calls=500 0
-0 110450986
+cfn=(67)
+calls=125 0
+0 15144212
 cfl=(12)
-cfn=(73)
-calls=1000 0
-0 69014614
+cfn=(68)
+calls=250 0
+0 10147139
 
 fl=(2)
-fn=(72)
-0 104874907
+fn=(67)
+0 14791618
 cfl=(2)
-cfn=(41)
-calls=500 0
-0 3189858
-cfl=(2)
-cfn=(74)
-calls=500 0
-0 2386221
-
-fl=(7)
-fn=(41)
-0 3189858
+cfn=(69)
+calls=125 0
+0 352594
 
 fl=(5)
-fn=(74)
-0 2386221
+fn=(69)
+0 352594
 
 fl=(5)
-fn=(73)
-0 63829993
+fn=(68)
+0 9403838
 cfl=(5)
-cfn=(75)
-calls=1000 0
-0 5184621
+cfn=(70)
+calls=250 0
+0 743301
 
 fl=(5)
-fn=(75)
-0 5184621
+fn=(70)
+0 743301
 
 fl=(4)
-fn=(148)
-0 58594970
+fn=(169)
+0 8698274
 cfl=(4)
-cfn=(75)
-calls=500 0
-0 2702069
+cfn=(70)
+calls=125 0
+0 389971
 cfl=(4)
-cfn=(65)
-calls=500 0
-0 2414505
+cfn=(59)
+calls=125 0
+0 347978
 
 fl=(5)
-fn=(75)
-0 2702069
+fn=(70)
+0 389971
 
 fl=(6)
-fn=(65)
-0 2414505
+fn=(59)
+0 347978
 
 fl=(4)
 fn=(35)
-0 81852370
+0 17063960
 cfl=(4)
-cfn=(69)
-calls=500 0
-0 24730969
+cfn=(63)
+calls=125 0
+0 382855
 cfl=(4)
-cfn=(70)
-calls=500 0
-0 124907646
+cfn=(64)
+calls=125 0
+0 3670103
+cfl=(4)
+cfn=(65)
+calls=125 0
+0 17467131
 
 fl=(6)
-fn=(69)
-0 24730969
+fn=(63)
+0 382855
+
+fl=(6)
+fn=(64)
+0 3670103
 
 fl=(11)
-fn=(70)
-0 44005101
+fn=(65)
+0 6597844
 cfl=(11)
 cfn=(39)
-calls=500 0
-0 80902545
+calls=125 0
+0 10869287
 
 fl=(5)
 fn=(39)
-0 77746627
-cfl=(5)
-cfn=(41)
-calls=500 0
-0 3155918
-
-fl=(7)
-fn=(41)
-0 3155918
+0 10869287
 
 fl=(13)
-fn=(79)
-0 24826070
+fn=(76)
+0 3701405
 
-fl=(33) org/jenetics/Phenotype.java
-fn=(140)
-0 412020
-cfl=(33)
-cfn=(150) org::jenetics::Phenotype$1::<init>(): void
+fl=(15)
+fn=(161)
+0 439123
+
+fl=(15)
+fn=(162)
+0 421062
+
+fl=(15)
+fn=(163)
+0 398026
+
+fl=(37) org/jenetics/Phenotype.java
+fn=(164)
+0 137518
+cfl=(37)
+cfn=(171) org::jenetics::Phenotype$1::<init>(): void
 calls=1 0
-0 560758
-cfl=(33)
-cfn=(151) org::jenetics::Phenotype$7::<init>(java::lang::Class): void
+0 167058
+cfl=(37)
+cfn=(172) org::jenetics::Phenotype$7::<init>(java::lang::Class): void
 calls=1 0
-0 698776
+0 205043
 
-fl=(33)
-fn=(150)
-0 560758
+fl=(37)
+fn=(171)
+0 167058
 
-fl=(33)
-fn=(151)
-0 698776
+fl=(37)
+fn=(172)
+0 205043
 
-fl=(33)
-fn=(141)
-0 319710226
-cfl=(33)
-cfn=(41)
-calls=1500 0
-0 9094888
-cfl=(33)
-cfn=(152) org::jenetics::Phenotype$1::create(): java::lang::Object
-calls=500 0
-0 92064487
+fl=(37)
+fn=(165)
+0 84274161
+cfl=(37)
+cfn=(173) org::jenetics::Phenotype$1::create(): java::lang::Object
+calls=125 0
+0 13699633
 
-fl=(7)
-fn=(41)
-0 9094888
+fl=(37)
+fn=(173)
+0 5953538
+cfl=(37)
+cfn=(174) org::jenetics::Phenotype::<init>(org::jenetics::Phenotype$1): void
+calls=125 0
+0 7746095
 
-fl=(33)
-fn=(152)
-0 40633021
-cfl=(33)
-cfn=(153) org::jenetics::Phenotype::<init>(org::jenetics::Phenotype$1): void
-calls=500 0
-0 51431466
+fl=(37)
+fn=(174)
+0 4168288
+cfl=(37)
+cfn=(175) org::jenetics::Phenotype::<init>(): void
+calls=125 0
+0 3577807
 
-fl=(33)
-fn=(153)
-0 27581004
-cfl=(33)
-cfn=(154) org::jenetics::Phenotype::<init>(): void
-calls=500 0
-0 23850462
+fl=(37)
+fn=(175)
+0 3577807
 
-fl=(33)
+fl=(35)
 fn=(154)
-0 23850462
+0 99506965
 
-fl=(27)
-fn=(142)
-0 118231690
-cfl=(27)
-cfn=(41)
-calls=500 0
-0 3029338
-
-fl=(7)
-fn=(41)
-0 3029338
+fl=(29)
+fn=(147)
+0 4571
 
 fl=(15)
 fn=(143)
-0 545195
+0 279348
 cfl=(15)
-cfn=(155) org::jenetics::GeneticAlgorithm::evaluate(): void
+cfn=(176) org::jenetics::GeneticAlgorithm::evaluate(): void
 calls=1 0
-0 3376562390
+0 571190817
 cfl=(15)
 cfn=(144)
 calls=1 0
-0 53141
+0 15331
 cfl=(15)
-cfn=(156) org::jenetics::NumberStatistics$Calculator::evaluate(java::lang::Iterable, int, org::jenetics::Optimize): org::jenetics::Statistics$Builder
+cfn=(177) org::jenetics::NumberStatistics$Calculator::evaluate(java::lang::Iterable, int, org::jenetics::Optimize): org::jenetics::Statistics$Builder
 calls=1 0
-0 1581391223
+0 526561067
 cfl=(15)
-cfn=(157) org::jenetics::NumberStatistics$Builder::build(): org::jenetics::Statistics
+cfn=(178) org::jenetics::NumberStatistics$Builder::build(): org::jenetics::Statistics
 calls=1 0
-0 1686111441
+0 494210173
 cfl=(15)
-cfn=(158) org::jenetics::util::Timer::stop(): void
+cfn=(179) org::jenetics::util::Timer::stop(): void
 calls=2 0
-0 666969
+0 198209
 cfl=(15)
-cfn=(159) org::jenetics::GeneticAlgorithm::setTimes(org::jenetics::Statistics): void
+cfn=(180) org::jenetics::GeneticAlgorithm::setTimes(org::jenetics::Statistics): void
 calls=1 0
-0 6173614
+0 1828435
 
 fl=(15)
-fn=(155)
-0 185778881
+fn=(176)
+0 39952888
 cfl=(15)
 cfn=(144)
 calls=1 0
-0 55295
+0 53072
 cfl=(15)
-cfn=(160) org::jenetics::util::Concurrency::<clinit>(): void
+cfn=(149)
 calls=1 0
-0 168863
+0 2592789
 cfl=(15)
-cfn=(161) org::jenetics::util::Concurrency::start(): org::jenetics::util::Concurrency
+cfn=(141)
 calls=1 0
-0 1396062236
+0 55484
 cfl=(15)
-cfn=(138)
-calls=1 0
-0 58673
-cfl=(15)
-cfn=(162) org::jenetics::Population::get(int): org::jenetics::Phenotype
+cfn=(181) org::jenetics::Population::get(int): org::jenetics::Phenotype
 calls=500 0
-0 152094905
+0 48667831
 cfl=(15)
-cfn=(163) org::jenetics::util::Concurrency::execute(java::lang::Runnable): void
+cfn=(153)
 calls=500 0
-0 1626498820
+0 474495999
 cfl=(15)
-cfn=(164) org::jenetics::util::Concurrency::close(): void
+cfn=(154)
 calls=1 0
-0 8705321
+0 2753831
 cfl=(15)
-cfn=(158)
+cfn=(179)
 calls=1 0
-0 7139396
+0 2618923
 
-fl=(29)
+fl=(31)
 fn=(144)
-0 55295
-
-fl=(34) org/jenetics/util/Concurrency.java
-fn=(160)
-0 103795
-cfl=(34)
-cfn=(165) org::jenetics::util::Concurrency::<init>(): void
-calls=1 0
-0 65068
-
-fl=(34)
-fn=(165)
-0 65068
-
-fl=(34)
-fn=(161)
-0 1396062236
-
-fl=(27)
-fn=(138)
-0 58673
-
-fl=(27)
-fn=(162)
-0 152094905
-
-fl=(34)
-fn=(163)
-0 902587295
-cfl=(34)
-cfn=(166) org::jenetics::Phenotype::run(): void
-calls=217 0
-0 723911525
-
-fl=(33)
-fn=(166)
-0 20406461
-cfl=(33)
-cfn=(167) org::jenetics::Phenotype::evaluate(): void
-calls=217 0
-0 703505064
-
-fl=(33)
-fn=(167)
-0 63408096
-cfl=(33)
-cfn=(168) org::jenetics::example::Real::apply(java::lang::Object): java::lang::Object
-calls=217 0
-0 638123737
-cfl=(33)
-cfn=(169) org::jenetics::util::functions$Identity::apply(java::lang::Object): java::lang::Object
-calls=217 0
-0 1973231
-
-fl=(14)
-fn=(168)
-0 35273274
-cfl=(14)
-cfn=(170) org::jenetics::example::Real::apply(org::jenetics::Genotype): org::jscience::mathematics::number::Float64
-calls=217 0
-0 602850463
-
-fl=(14)
-fn=(170)
-0 442077900
-cfl=(14)
-cfn=(171) org::jenetics::Genotype::getGene(): org::jenetics::Gene
-calls=217 0
-0 133054264
-cfl=(14)
-cfn=(172) org::jenetics::NumberGene::doubleValue(): double
-calls=217 0
-0 27718299
-
-fl=(13)
-fn=(171)
-0 53540499
-cfl=(13)
-cfn=(73)
-calls=217 0
-0 25719287
-cfl=(13)
-cfn=(173) org::jenetics::AbstractChromosome::getGene(): org::jenetics::Gene
-calls=217 0
-0 53794478
-
-fl=(5)
-fn=(73)
-0 23771949
-cfl=(5)
-cfn=(75)
-calls=217 0
-0 1947338
-
-fl=(5)
-fn=(75)
-0 1947338
-
-fl=(2)
-fn=(173)
-0 28602615
-cfl=(2)
-cfn=(73)
-calls=217 0
-0 25191863
-
-fl=(5)
-fn=(73)
-0 23300542
-cfl=(5)
-cfn=(75)
-calls=217 0
-0 1891321
-
-fl=(5)
-fn=(75)
-0 1891321
-
-fl=(10)
-fn=(172)
-0 27718299
-
-fl=(17)
-fn=(169)
-0 1973231
-
-fl=(34)
-fn=(164)
-0 8705321
-
-fl=(29)
-fn=(158)
-0 7127614
-cfl=(29)
-cfn=(174) org::jenetics::util::accumulators$1::accumulate(java::lang::Object): void
-calls=1 0
-0 11782
-
-fl=(30)
-fn=(174)
-0 11782
-
-fl=(29)
-fn=(144)
-0 53141
-
-fl=(31)
-fn=(156)
-0 176997
-cfl=(31)
-cfn=(175) org::jenetics::NumberStatistics$Calculator::evaluate(java::lang::Iterable, int, org::jenetics::Optimize): org::jenetics::NumberStatistics$Builder
-calls=1 0
-0 1581214226
-
-fl=(31)
-fn=(175)
-0 400811892
-cfl=(31)
-cfn=(176) org::jenetics::NumberStatistics$Builder::<init>(): void
-calls=1 0
-0 193990
-cfl=(31)
-cfn=(177) org::jenetics::Statistics$Builder::generation(int): org::jenetics::Statistics$Builder
-calls=1 0
-0 11261
-cfl=(31)
-cfn=(178) org::jenetics::Statistics$Builder::optimize(org::jenetics::Optimize): org::jenetics::Statistics$Builder
-calls=1 0
-0 173374
-cfl=(31)
-cfn=(179) org::jenetics::util::accumulators$MinMax::<init>(): void
-calls=1 0
-0 163251
-cfl=(31)
-cfn=(180) org::jenetics::stat::Variance::<init>(): void
-calls=2 0
-0 393258
-cfl=(31)
-cfn=(181) org::jenetics::Phenotype::Age(int): org::jenetics::util::Function
-calls=1 0
-0 55451231
-cfl=(31)
-cfn=(182) org::jenetics::util::MappedAccumulator::map(org::jenetics::util::Function): org::jenetics::util::MappedAccumulator
-calls=2 0
-0 953691
-cfl=(31)
-cfn=(183) org::jenetics::Phenotype::Fitness(): org::jenetics::util::Function
-calls=1 0
-0 54806402
-cfl=(31)
-cfn=(184) org::jenetics::util::accumulators::accumulate(java::lang::Iterable, org::jenetics::util::Accumulator, org::jenetics::util::Accumulator, org::jenetics::util::Accumulator): void
-calls=1 0
-0 1065710452
-cfl=(31)
-cfn=(185) org::jenetics::util::accumulators$MinMax::getMax(): java::lang::Comparable
-calls=2 0
-0 20215
-cfl=(31)
-cfn=(186) org::jenetics::util::accumulators$MinMax::getMin(): java::lang::Comparable
-calls=2 0
-0 13791
-cfl=(31)
-cfn=(187) org::jenetics::Optimize::best(java::lang::Comparable, java::lang::Comparable): java::lang::Comparable
-calls=1 0
-0 821620
-cfl=(31)
-cfn=(188) org::jenetics::Statistics$Builder::bestPhenotype(org::jenetics::Phenotype): org::jenetics::Statistics$Builder
-calls=1 0
-0 11350
-cfl=(31)
-cfn=(189) org::jenetics::Optimize::worst(java::lang::Comparable, java::lang::Comparable): java::lang::Comparable
-calls=1 0
-0 862603
-cfl=(31)
-cfn=(190) org::jenetics::Statistics$Builder::worstPhenotype(org::jenetics::Phenotype): org::jenetics::Statistics$Builder
-calls=1 0
-0 10845
-cfl=(31)
-cfn=(191) org::jenetics::stat::Mean::getMean(): double
-calls=2 0
-0 17140
-cfl=(31)
-cfn=(192) org::jenetics::NumberStatistics$Builder::fitnessMean(double): org::jenetics::NumberStatistics$Builder
-calls=1 0
-0 12464
-cfl=(31)
-cfn=(193) org::jenetics::stat::Variance::getVariance(): double
-calls=2 0
-0 18943
-cfl=(31)
-cfn=(194) org::jenetics::NumberStatistics$Builder::fitnessVariance(double): org::jenetics::NumberStatistics$Builder
-calls=1 0
-0 9632
-cfl=(31)
-cfn=(195) org::jenetics::util::MappedAccumulator::getSamples(): long
-calls=1 0
-0 8890
-cfl=(31)
-cfn=(196) org::jenetics::Statistics$Builder::samples(int): org::jenetics::Statistics$Builder
-calls=1 0
-0 9928
-cfl=(31)
-cfn=(197) org::jenetics::Statistics$Builder::ageMean(double): org::jenetics::Statistics$Builder
-calls=1 0
-0 9702
-cfl=(31)
-cfn=(198) org::jenetics::Statistics$Builder::ageVariance(double): org::jenetics::Statistics$Builder
-calls=1 0
-0 9006
-cfl=(31)
-cfn=(199) org::jenetics::stat::Mean::getStandardError(): double
-calls=1 0
-0 697980
-cfl=(31)
-cfn=(200) org::jenetics::NumberStatistics$Builder::standardError(double): org::jenetics::NumberStatistics$Builder
-calls=1 0
-0 11315
-
-fl=(31)
-fn=(176)
-0 95186
-cfl=(31)
-cfn=(201) org::jenetics::Statistics$Builder::<init>(): void
-calls=1 0
-0 98804
-
-fl=(28)
-fn=(201)
-0 98804
-
-fl=(28)
-fn=(177)
-0 11261
-
-fl=(28)
-fn=(178)
-0 163717
-cfl=(28)
-cfn=(41)
-calls=1 0
-0 9657
-
-fl=(7)
-fn=(41)
-0 9657
-
-fl=(30)
-fn=(179)
-0 87053
-cfl=(30)
-cfn=(202) org::jenetics::util::MappedAccumulator::<init>(): void
-calls=1 0
-0 76198
-
-fl=(35) org/jenetics/util/MappedAccumulator.java
-fn=(202)
-0 76198
-
-fl=(36) org/jenetics/stat/Variance.java
-fn=(180)
-0 152877
-cfl=(36)
-cfn=(203) org::jenetics::stat::Mean::<init>(): void
-calls=2 0
-0 240381
-
-fl=(37) org/jenetics/stat/Mean.java
-fn=(203)
-0 138990
-cfl=(37)
-cfn=(202)
-calls=2 0
-0 101391
+0 53072
 
 fl=(35)
-fn=(202)
-0 101391
+fn=(149)
+0 2592789
 
-fl=(33)
+fl=(29)
+fn=(141)
+0 55484
+
+fl=(29)
 fn=(181)
-0 55367175
-cfl=(33)
-cfn=(204) org::jenetics::Phenotype$2::<init>(int): void
-calls=1 0
-0 84056
-
-fl=(33)
-fn=(204)
-0 84056
+0 48667831
 
 fl=(35)
-fn=(182)
-0 585303
+fn=(153)
+0 270967352
 cfl=(35)
-cfn=(41)
-calls=2 0
-0 16428
-cfl=(35)
-cfn=(205) org::jenetics::util::MappedAccumulator$1::<init>(org::jenetics::util::MappedAccumulator, org::jenetics::util::Function): void
-calls=2 0
-0 351960
-
-fl=(7)
-fn=(41)
-0 16428
-
-fl=(35)
-fn=(205)
-0 223914
-cfl=(35)
-cfn=(202)
-calls=2 0
-0 128046
-
-fl=(35)
-fn=(202)
-0 128046
-
-fl=(33)
-fn=(183)
-0 54736088
-cfl=(33)
-cfn=(206) org::jenetics::Phenotype$4::<init>(): void
-calls=1 0
-0 70314
-
-fl=(33)
-fn=(206)
-0 70314
-
-fl=(30)
-fn=(184)
-0 55423989
-cfl=(30)
-cfn=(161)
-calls=1 0
-0 2589077
-cfl=(30)
-cfn=(207) org::jenetics::util::accumulators$Acc::<init>(java::lang::Iterable, org::jenetics::util::Accumulator): void
-calls=3 0
-0 276142
-cfl=(30)
-cfn=(163)
-calls=3 0
-0 5444128
-cfl=(30)
-cfn=(164)
-calls=1 0
-0 1001977116
-
-fl=(34)
-fn=(161)
-0 2589077
-
-fl=(30)
-fn=(207)
-0 276142
-
-fl=(34)
-fn=(163)
-0 5444128
-
-fl=(34)
-fn=(164)
-0 1001977116
-
-fl=(30)
-fn=(185)
-0 20215
-
-fl=(30)
-fn=(186)
-0 13791
-
-fl=(16)
-fn=(187)
-0 122378
-cfl=(16)
-cfn=(208) org::jenetics::Optimize$1::compare(java::lang::Comparable, java::lang::Comparable): int
-calls=1 0
-0 699242
-
-fl=(16)
-fn=(208)
-0 114565
-cfl=(16)
-cfn=(209) org::jenetics::Phenotype::compareTo(java::lang::Object): int
-calls=1 0
-0 584677
-
-fl=(33)
-fn=(209)
-0 83570
-cfl=(33)
-cfn=(210) org::jenetics::Phenotype::compareTo(org::jenetics::Phenotype): int
-calls=1 0
-0 501107
-
-fl=(33)
-fn=(210)
-0 345082
-cfl=(33)
-cfn=(211) org::jenetics::Phenotype::getFitness(): java::lang::Comparable
-calls=2 0
-0 156025
-
-fl=(33)
-fn=(211)
-0 141731
-cfl=(33)
-cfn=(167)
-calls=2 0
-0 14294
-
-fl=(33)
-fn=(167)
-0 14294
-
-fl=(28)
-fn=(188)
-0 11350
-
-fl=(16)
-fn=(189)
-0 122542
-cfl=(16)
-cfn=(208)
-calls=1 0
-0 740061
-
-fl=(16)
-fn=(208)
-0 107770
-cfl=(16)
-cfn=(209)
-calls=1 0
-0 632291
-
-fl=(33)
-fn=(209)
-0 86476
-cfl=(33)
-cfn=(210)
-calls=1 0
-0 545815
-
-fl=(33)
-fn=(210)
-0 340739
-cfl=(33)
-cfn=(211)
-calls=2 0
-0 205076
-
-fl=(33)
-fn=(211)
-0 193180
-cfl=(33)
-cfn=(167)
-calls=2 0
-0 11896
-
-fl=(33)
-fn=(167)
-0 11896
-
-fl=(28)
-fn=(190)
-0 10845
+cfn=(182) org::jenetics::Phenotype::run(): void
+calls=197 0
+0 203528647
 
 fl=(37)
-fn=(191)
-0 17140
+fn=(182)
+0 5870230
+cfl=(37)
+cfn=(183) org::jenetics::Phenotype::evaluate(): void
+calls=197 0
+0 197658417
 
-fl=(31)
-fn=(192)
-0 12464
+fl=(37)
+fn=(183)
+0 17926319
+cfl=(37)
+cfn=(184) org::jenetics::example::Real::apply(java::lang::Object): java::lang::Object
+calls=197 0
+0 179207263
+cfl=(37)
+cfn=(185) org::jenetics::util::functions$Identity::apply(java::lang::Object): java::lang::Object
+calls=197 0
+0 524835
 
-fl=(36)
-fn=(193)
-0 18943
+fl=(14)
+fn=(184)
+0 10353812
+cfl=(14)
+cfn=(186) org::jenetics::example::Real::apply(org::jenetics::Genotype): org::jscience::mathematics::number::Float64
+calls=197 0
+0 168853451
 
-fl=(31)
-fn=(194)
-0 9632
+fl=(14)
+fn=(186)
+0 121502247
+cfl=(14)
+cfn=(187) org::jenetics::Genotype::getGene(): org::jenetics::Gene
+calls=197 0
+0 42293039
+cfl=(14)
+cfn=(188) org::jenetics::NumberGene::doubleValue(): double
+calls=197 0
+0 5058165
+
+fl=(13)
+fn=(187)
+0 16823359
+cfl=(13)
+cfn=(68)
+calls=197 0
+0 8290513
+cfl=(13)
+cfn=(189) org::jenetics::AbstractChromosome::getGene(): org::jenetics::Gene
+calls=197 0
+0 17179167
+
+fl=(5)
+fn=(68)
+0 7673481
+cfl=(5)
+cfn=(70)
+calls=197 0
+0 617032
+
+fl=(5)
+fn=(70)
+0 617032
+
+fl=(2)
+fn=(189)
+0 9064559
+cfl=(2)
+cfn=(68)
+calls=197 0
+0 8114608
+
+fl=(5)
+fn=(68)
+0 7522161
+cfl=(5)
+cfn=(70)
+calls=197 0
+0 592447
+
+fl=(5)
+fn=(70)
+0 592447
+
+fl=(10)
+fn=(188)
+0 5058165
+
+fl=(17)
+fn=(185)
+0 524835
 
 fl=(35)
+fn=(154)
+0 2753831
+
+fl=(31)
+fn=(179)
+0 2615751
+cfl=(31)
+cfn=(190) org::jenetics::util::accumulators$1::accumulate(java::lang::Object): void
+calls=1 0
+0 3172
+
+fl=(32)
+fn=(190)
+0 3172
+
+fl=(31)
+fn=(144)
+0 15331
+
+fl=(33)
+fn=(177)
+0 90477
+cfl=(33)
+cfn=(191) org::jenetics::NumberStatistics$Calculator::evaluate(java::lang::Iterable, int, org::jenetics::Optimize): org::jenetics::NumberStatistics$Builder
+calls=1 0
+0 526470590
+
+fl=(33)
+fn=(191)
+0 120333187
+cfl=(33)
+cfn=(192) org::jenetics::NumberStatistics$Builder::<init>(): void
+calls=1 0
+0 58868
+cfl=(33)
+cfn=(193) org::jenetics::Statistics$Builder::generation(int): org::jenetics::Statistics$Builder
+calls=1 0
+0 3383
+cfl=(33)
+cfn=(194) org::jenetics::Statistics$Builder::optimize(org::jenetics::Optimize): org::jenetics::Statistics$Builder
+calls=1 0
+0 46940
+cfl=(33)
+cfn=(195) org::jenetics::util::accumulators$MinMax::<init>(): void
+calls=1 0
+0 46562
+cfl=(33)
+cfn=(196) org::jenetics::stat::Variance::<init>(): void
+calls=2 0
+0 114760
+cfl=(33)
+cfn=(197) org::jenetics::Phenotype::Age(int): org::jenetics::util::Function
+calls=1 0
+0 16078077
+cfl=(33)
+cfn=(198) org::jenetics::util::MappedAccumulator::map(org::jenetics::util::Function): org::jenetics::util::MappedAccumulator
+calls=2 0
+0 239832
+cfl=(33)
+cfn=(199) org::jenetics::Phenotype::Fitness(): org::jenetics::util::Function
+calls=1 0
+0 16017213
+cfl=(33)
+cfn=(200) org::jenetics::util::accumulators::accumulate(java::lang::Iterable, org::jenetics::util::Accumulator, org::jenetics::util::Accumulator, org::jenetics::util::Accumulator): void
+calls=1 0
+0 371743597
+cfl=(33)
+cfn=(201) org::jenetics::util::accumulators$MinMax::getMax(): java::lang::Comparable
+calls=2 0
+0 21680
+cfl=(33)
+cfn=(202) org::jenetics::util::accumulators$MinMax::getMin(): java::lang::Comparable
+calls=2 0
+0 14460
+cfl=(33)
+cfn=(203) org::jenetics::Optimize::best(java::lang::Comparable, java::lang::Comparable): java::lang::Comparable
+calls=1 0
+0 819599
+cfl=(33)
+cfn=(204) org::jenetics::Statistics$Builder::bestPhenotype(org::jenetics::Phenotype): org::jenetics::Statistics$Builder
+calls=1 0
+0 11707
+cfl=(33)
+cfn=(205) org::jenetics::Optimize::worst(java::lang::Comparable, java::lang::Comparable): java::lang::Comparable
+calls=1 0
+0 761694
+cfl=(33)
+cfn=(206) org::jenetics::Statistics$Builder::worstPhenotype(org::jenetics::Phenotype): org::jenetics::Statistics$Builder
+calls=1 0
+0 10614
+cfl=(33)
+cfn=(207) org::jenetics::stat::Mean::getMean(): double
+calls=2 0
+0 17092
+cfl=(33)
+cfn=(208) org::jenetics::NumberStatistics$Builder::fitnessMean(double): org::jenetics::NumberStatistics$Builder
+calls=1 0
+0 13879
+cfl=(33)
+cfn=(209) org::jenetics::stat::Variance::getVariance(): double
+calls=2 0
+0 18902
+cfl=(33)
+cfn=(210) org::jenetics::NumberStatistics$Builder::fitnessVariance(double): org::jenetics::NumberStatistics$Builder
+calls=1 0
+0 10660
+cfl=(33)
+cfn=(211) org::jenetics::util::MappedAccumulator::getSamples(): long
+calls=1 0
+0 9697
+cfl=(33)
+cfn=(212) org::jenetics::Statistics$Builder::samples(int): org::jenetics::Statistics$Builder
+calls=1 0
+0 10720
+cfl=(33)
+cfn=(213) org::jenetics::Statistics$Builder::ageMean(double): org::jenetics::Statistics$Builder
+calls=1 0
+0 11326
+cfl=(33)
+cfn=(214) org::jenetics::Statistics$Builder::ageVariance(double): org::jenetics::Statistics$Builder
+calls=1 0
+0 9802
+cfl=(33)
+cfn=(215) org::jenetics::stat::Mean::getStandardError(): double
+calls=1 0
+0 35569
+cfl=(33)
+cfn=(216) org::jenetics::NumberStatistics$Builder::standardError(double): org::jenetics::NumberStatistics$Builder
+calls=1 0
+0 10770
+
+fl=(33)
+fn=(192)
+0 28626
+cfl=(33)
+cfn=(217) org::jenetics::Statistics$Builder::<init>(): void
+calls=1 0
+0 30242
+
+fl=(30)
+fn=(217)
+0 30242
+
+fl=(30)
+fn=(193)
+0 3383
+
+fl=(30)
+fn=(194)
+0 46940
+
+fl=(32)
 fn=(195)
-0 8890
+0 25213
+cfl=(32)
+cfn=(218) org::jenetics::util::MappedAccumulator::<init>(): void
+calls=1 0
+0 21349
 
-fl=(28)
+fl=(38) org/jenetics/util/MappedAccumulator.java
+fn=(218)
+0 21349
+
+fl=(39) org/jenetics/stat/Variance.java
 fn=(196)
-0 9928
+0 43802
+cfl=(39)
+cfn=(219) org::jenetics::stat::Mean::<init>(): void
+calls=2 0
+0 70958
 
-fl=(28)
+fl=(40) org/jenetics/stat/Mean.java
+fn=(219)
+0 41141
+cfl=(40)
+cfn=(218)
+calls=2 0
+0 29817
+
+fl=(38)
+fn=(218)
+0 29817
+
+fl=(37)
 fn=(197)
-0 9702
+0 16055391
+cfl=(37)
+cfn=(220) org::jenetics::Phenotype$2::<init>(int): void
+calls=1 0
+0 22686
 
-fl=(28)
+fl=(37)
+fn=(220)
+0 22686
+
+fl=(38)
 fn=(198)
-0 9006
+0 167216
+cfl=(38)
+cfn=(221) org::jenetics::util::MappedAccumulator$1::<init>(org::jenetics::util::MappedAccumulator, org::jenetics::util::Function): void
+calls=2 0
+0 72616
+
+fl=(38)
+fn=(221)
+0 42724
+cfl=(38)
+cfn=(218)
+calls=2 0
+0 29892
+
+fl=(38)
+fn=(218)
+0 29892
 
 fl=(37)
 fn=(199)
-0 697980
-
-fl=(31)
-fn=(200)
-0 11315
-
-fl=(31)
-fn=(157)
-0 90737
-cfl=(31)
-cfn=(212) org::jenetics::NumberStatistics$Builder::build(): org::jenetics::NumberStatistics
+0 15997330
+cfl=(37)
+cfn=(222) org::jenetics::Phenotype$4::<init>(): void
 calls=1 0
-0 1686020704
+0 19883
 
-fl=(31)
-fn=(212)
-0 112155049
-cfl=(31)
-cfn=(213) org::jenetics::Statistics::<clinit>(): void
-calls=1 0
-0 1072254
-cfl=(31)
-cfn=(214) org::jenetics::NumberStatistics::<clinit>(): void
-calls=1 0
-0 1092045
-cfl=(31)
-cfn=(215) org::jenetics::NumberStatistics::<init>(org::jenetics::Optimize, int, org::jenetics::Phenotype, org::jenetics::Phenotype, double, double, int, double, double, double, int, int): void
-calls=1 0
-0 1571701356
-
-fl=(28)
-fn=(213)
-0 366798
-cfl=(28)
-cfn=(216) org::jenetics::Statistics$1::<init>(java::lang::Class): void
-calls=1 0
-0 705456
-
-fl=(28)
-fn=(216)
-0 705456
-
-fl=(31)
-fn=(214)
-0 315637
-cfl=(31)
-cfn=(217) org::jenetics::NumberStatistics$1::<init>(java::lang::Class): void
-calls=1 0
-0 776408
-
-fl=(31)
-fn=(217)
-0 776408
-
-fl=(31)
-fn=(215)
-0 180469
-cfl=(31)
-cfn=(218) org::jenetics::Statistics::<init>(org::jenetics::Optimize, int, org::jenetics::Phenotype, org::jenetics::Phenotype, int, double, double, int, int): void
-calls=1 0
-0 1571520887
-
-fl=(28)
-fn=(218)
-0 168950783
-cfl=(28)
-cfn=(219) org::jenetics::Statistics$Time::<clinit>(): void
-calls=1 0
-0 1401588715
-cfl=(28)
-cfn=(220) org::jenetics::Statistics$Time::<init>(): void
-calls=1 0
-0 927230
-cfl=(28)
-cfn=(221) org::jenetics::util::FinalReference::<init>(java::lang::Object): void
-calls=1 0
-0 54159
-
-fl=(28)
-fn=(219)
-0 1400608244
-cfl=(28)
-cfn=(222) org::jenetics::Statistics$Time$1::<init>(java::lang::Class): void
-calls=1 0
-0 980471
-
-fl=(28)
+fl=(37)
 fn=(222)
-0 980471
+0 19883
 
-fl=(28)
-fn=(220)
-0 612201
-cfl=(28)
-cfn=(221)
-calls=6 0
-0 315029
+fl=(32)
+fn=(200)
+0 16234988
+cfl=(32)
+cfn=(149)
+calls=1 0
+0 725221
+cfl=(32)
+cfn=(223) org::jenetics::util::accumulators$Acc::<init>(java::lang::Iterable, org::jenetics::util::Accumulator): void
+calls=3 0
+0 70935
+cfl=(32)
+cfn=(153)
+calls=3 0
+0 1361524
+cfl=(32)
+cfn=(154)
+calls=1 0
+0 353350929
 
-fl=(38) org/jenetics/util/FinalReference.java
-fn=(221)
-0 315029
+fl=(35)
+fn=(149)
+0 725221
 
-fl=(38)
-fn=(221)
-0 54159
+fl=(32)
+fn=(223)
+0 70935
 
-fl=(29)
-fn=(158)
-0 654401
-cfl=(29)
-cfn=(174)
+fl=(35)
+fn=(153)
+0 1361524
+
+fl=(35)
+fn=(154)
+0 353350929
+
+fl=(32)
+fn=(201)
+0 21680
+
+fl=(32)
+fn=(202)
+0 14460
+
+fl=(16)
+fn=(203)
+0 124846
+cfl=(16)
+cfn=(224) org::jenetics::Optimize$1::compare(java::lang::Comparable, java::lang::Comparable): int
+calls=1 0
+0 694753
+
+fl=(16)
+fn=(224)
+0 116161
+cfl=(16)
+cfn=(225) org::jenetics::Phenotype::compareTo(java::lang::Object): int
+calls=1 0
+0 578592
+
+fl=(37)
+fn=(225)
+0 87306
+cfl=(37)
+cfn=(226) org::jenetics::Phenotype::compareTo(org::jenetics::Phenotype): int
+calls=1 0
+0 491286
+
+fl=(37)
+fn=(226)
+0 357912
+cfl=(37)
+cfn=(227) org::jenetics::Phenotype::getFitness(): java::lang::Comparable
 calls=2 0
-0 12568
+0 133374
+
+fl=(37)
+fn=(227)
+0 120824
+cfl=(37)
+cfn=(183)
+calls=2 0
+0 12550
+
+fl=(37)
+fn=(183)
+0 12550
 
 fl=(30)
-fn=(174)
-0 12568
+fn=(204)
+0 11707
+
+fl=(16)
+fn=(205)
+0 111122
+cfl=(16)
+cfn=(224)
+calls=1 0
+0 650572
+
+fl=(16)
+fn=(224)
+0 85257
+cfl=(16)
+cfn=(225)
+calls=1 0
+0 565315
+
+fl=(37)
+fn=(225)
+0 85486
+cfl=(37)
+cfn=(226)
+calls=1 0
+0 479829
+
+fl=(37)
+fn=(226)
+0 350124
+cfl=(37)
+cfn=(227)
+calls=2 0
+0 129705
+
+fl=(37)
+fn=(227)
+0 117792
+cfl=(37)
+cfn=(183)
+calls=2 0
+0 11913
+
+fl=(37)
+fn=(183)
+0 11913
+
+fl=(30)
+fn=(206)
+0 10614
+
+fl=(40)
+fn=(207)
+0 17092
+
+fl=(33)
+fn=(208)
+0 13879
+
+fl=(39)
+fn=(209)
+0 18902
+
+fl=(33)
+fn=(210)
+0 10660
+
+fl=(38)
+fn=(211)
+0 9697
+
+fl=(30)
+fn=(212)
+0 10720
+
+fl=(30)
+fn=(213)
+0 11326
+
+fl=(30)
+fn=(214)
+0 9802
+
+fl=(40)
+fn=(215)
+0 35569
+
+fl=(33)
+fn=(216)
+0 10770
+
+fl=(33)
+fn=(178)
+0 62293
+cfl=(33)
+cfn=(228) org::jenetics::NumberStatistics$Builder::build(): org::jenetics::NumberStatistics
+calls=1 0
+0 494147880
+
+fl=(33)
+fn=(228)
+0 38238956
+cfl=(33)
+cfn=(229) org::jenetics::Statistics::<clinit>(): void
+calls=1 0
+0 313312
+cfl=(33)
+cfn=(230) org::jenetics::NumberStatistics::<clinit>(): void
+calls=1 0
+0 281821
+cfl=(33)
+cfn=(231) org::jenetics::NumberStatistics::<init>(org::jenetics::Optimize, int, org::jenetics::Phenotype, org::jenetics::Phenotype, double, double, int, double, double, double, int, int): void
+calls=1 0
+0 455313791
+
+fl=(30)
+fn=(229)
+0 105449
+cfl=(30)
+cfn=(232) org::jenetics::Statistics$1::<init>(java::lang::Class): void
+calls=1 0
+0 207863
+
+fl=(30)
+fn=(232)
+0 207863
+
+fl=(33)
+fn=(230)
+0 80256
+cfl=(33)
+cfn=(233) org::jenetics::NumberStatistics$1::<init>(java::lang::Class): void
+calls=1 0
+0 201565
+
+fl=(33)
+fn=(233)
+0 201565
+
+fl=(33)
+fn=(231)
+0 53861
+cfl=(33)
+cfn=(234) org::jenetics::Statistics::<init>(org::jenetics::Optimize, int, org::jenetics::Phenotype, org::jenetics::Phenotype, int, double, double, int, int): void
+calls=1 0
+0 455259930
+
+fl=(30)
+fn=(234)
+0 48900772
+cfl=(30)
+cfn=(235) org::jenetics::Statistics$Time::<clinit>(): void
+calls=1 0
+0 406082487
+cfl=(30)
+cfn=(236) org::jenetics::Statistics$Time::<init>(): void
+calls=1 0
+0 260772
+cfl=(30)
+cfn=(237) org::jenetics::util::FinalReference::<init>(java::lang::Object): void
+calls=1 0
+0 15899
+
+fl=(30)
+fn=(235)
+0 405793647
+cfl=(30)
+cfn=(238) org::jenetics::Statistics$Time$1::<init>(java::lang::Class): void
+calls=1 0
+0 288840
+
+fl=(30)
+fn=(238)
+0 288840
+
+fl=(30)
+fn=(236)
+0 168125
+cfl=(30)
+cfn=(237)
+calls=6 0
+0 92647
+
+fl=(41) org/jenetics/util/FinalReference.java
+fn=(237)
+0 92647
+
+fl=(41)
+fn=(237)
+0 15899
+
+fl=(31)
+fn=(179)
+0 194328
+cfl=(31)
+cfn=(190)
+calls=2 0
+0 3881
+
+fl=(32)
+fn=(190)
+0 3881
 
 fl=(15)
-fn=(159)
-0 1453507
+fn=(180)
+0 401937
 cfl=(15)
-cfn=(223) org::jenetics::Statistics::getTime(): org::jenetics::Statistics$Time
+cfn=(239) org::jenetics::Statistics::getTime(): org::jenetics::Statistics$Time
 calls=6 0
-0 491710
+0 142294
 cfl=(15)
-cfn=(224) org::jenetics::util::Timer::getInterimTime(): javax::measure::Measurable
+cfn=(240) org::jenetics::util::Timer::getInterimTime(): javax::measure::Measurable
 calls=6 0
-0 4185375
+0 1271224
 cfl=(15)
-cfn=(225) org::jenetics::util::FinalReference::set(java::lang::Object): void
+cfn=(241) org::jenetics::util::FinalReference::set(java::lang::Object): void
 calls=6 0
-0 43022
+0 12980
 
-fl=(28)
-fn=(223)
-0 457889
-cfl=(28)
-cfn=(226) org::jenetics::util::FinalReference::get(): java::lang::Object
+fl=(30)
+fn=(239)
+0 132284
+cfl=(30)
+cfn=(242) org::jenetics::util::FinalReference::get(): java::lang::Object
 calls=6 0
-0 33821
+0 10010
 
-fl=(38)
-fn=(226)
-0 33821
+fl=(41)
+fn=(242)
+0 10010
 
-fl=(29)
-fn=(224)
-0 4185375
+fl=(31)
+fn=(240)
+0 1271224
 
-fl=(38)
-fn=(225)
-0 43022
+fl=(41)
+fn=(241)
+0 12980
 
 fl=(15)
 fn=(18)
-0 5482915
+0 2553743
 cfl=(15)
-cfn=(227) org::jenetics::GeneticAlgorithm::evolve(): void
+cfn=(243) org::jenetics::GeneticAlgorithm::evolve(): void
 calls=100 0
-0 739927135943
+0 211718627698
 
 fl=(15)
-fn=(227)
-0 293894378
+fn=(243)
+0 151466105
 cfl=(15)
 cfn=(144)
 calls=500 0
-0 25179446
+0 9006151
 cfl=(15)
-cfn=(228) org::jenetics::GeneticAlgorithm::select(): org::jenetics::util::Array
+cfn=(244) org::jenetics::GeneticAlgorithm::select(): org::jenetics::util::Array
 calls=100 0
-0 143658337351
+0 36965233100
 cfl=(15)
-cfn=(229) org::jenetics::util::Array::get(int): java::lang::Object
+cfn=(245) org::jenetics::util::Array::get(int): java::lang::Object
 calls=200 0
-0 34813787
+0 12010369
 cfl=(15)
-cfn=(158)
+cfn=(179)
 calls=500 0
-0 171695578
+0 91417254
 cfl=(15)
-cfn=(230) org::jenetics::CompositeAlterer::alter(org::jenetics::Population, int): int
+cfn=(246) org::jenetics::CompositeAlterer::alter(org::jenetics::Population, int): int
 calls=100 0
-0 314763493844
+0 89334145186
 cfl=(15)
-cfn=(231) org::jenetics::GeneticAlgorithm::combine(org::jenetics::Population, org::jenetics::Population): org::jenetics::Population
+cfn=(247) org::jenetics::GeneticAlgorithm::combine(org::jenetics::Population, org::jenetics::Population): org::jenetics::Population
 calls=100 0
-0 17723294468
+0 5847719495
 cfl=(15)
-cfn=(155)
+cfn=(176)
 calls=100 0
-0 145086795419
+0 42895690465
 cfl=(15)
-cfn=(156)
+cfn=(177)
 calls=100 0
-0 117374622369
+0 35871512394
 cfl=(15)
-cfn=(232) org::jenetics::Statistics$Builder::killed(int): org::jenetics::Statistics$Builder
+cfn=(248) org::jenetics::Statistics$Builder::killed(int): org::jenetics::Statistics$Builder
 calls=100 0
-0 822076
+0 658882
 cfl=(15)
-cfn=(233) org::jenetics::Statistics$Builder::invalid(int): org::jenetics::Statistics$Builder
+cfn=(249) org::jenetics::Statistics$Builder::invalid(int): org::jenetics::Statistics$Builder
 calls=100 0
-0 678933
+0 577869
 cfl=(15)
-cfn=(157)
+cfn=(178)
 calls=100 0
-0 138761903
+0 113169295
 cfl=(15)
-cfn=(234) org::jenetics::Statistics::getBestPhenotype(): org::jenetics::Phenotype
+cfn=(250) org::jenetics::Statistics::getBestPhenotype(): org::jenetics::Phenotype
 calls=200 0
-0 1245715
+0 1000454
 cfl=(15)
-cfn=(208)
+cfn=(224)
 calls=100 0
-0 80742795
+0 63776782
 cfl=(15)
-cfn=(159)
+cfn=(180)
 calls=100 0
-0 572757881
+0 361243897
 
-fl=(29)
+fl=(31)
 fn=(144)
-0 25179446
+0 9006151
 
 fl=(15)
-fn=(228)
-0 193052814
+fn=(244)
+0 41665123
 cfl=(15)
 cfn=(31)
 calls=100 0
-0 44433330
+0 18753275
 cfl=(15)
-cfn=(235) org::jenetics::GeneticAlgorithm::getNumberOfSurvivors(): int
+cfn=(251) org::jenetics::GeneticAlgorithm::getNumberOfSurvivors(): int
 calls=100 0
-0 53468311
+0 21481009
 cfl=(15)
-cfn=(236) org::jenetics::GeneticAlgorithm::getNumberOfOffsprings(): int
+cfn=(252) org::jenetics::GeneticAlgorithm::getNumberOfOffsprings(): int
 calls=100 0
-0 45238536
+0 16420895
 cfl=(15)
-cfn=(161)
+cfn=(149)
 calls=100 0
-0 258271748
+0 84425472
 cfl=(15)
-cfn=(237) org::jenetics::GeneticAlgorithm$1::<clinit>(): void
+cfn=(253) org::jenetics::GeneticAlgorithm$2::<clinit>(): void
 calls=1 0
-0 351989
+0 99295
 cfl=(15)
-cfn=(238) org::jenetics::GeneticAlgorithm$1::<init>(org::jenetics::GeneticAlgorithm, int, org::jenetics::util::Array): void
+cfn=(254) org::jenetics::GeneticAlgorithm$2::<init>(org::jenetics::GeneticAlgorithm, int, org::jenetics::util::Array): void
 calls=100 0
-0 5504588
+0 1733428
 cfl=(15)
-cfn=(163)
-calls=200 0
-0 271159653
-cfl=(15)
-cfn=(239) org::jenetics::GeneticAlgorithm$2::<clinit>(): void
-calls=1 0
-0 357958
-cfl=(15)
-cfn=(240) org::jenetics::GeneticAlgorithm$2::<init>(org::jenetics::GeneticAlgorithm, int, org::jenetics::util::Array): void
+cfn=(153)
 calls=100 0
-0 7242061
+0 32797775
 cfl=(15)
-cfn=(164)
+cfn=(255) org::jenetics::TournamentSelector::select(org::jenetics::Population, int, org::jenetics::Optimize): org::jenetics::Population
 calls=100 0
-0 142779256363
+0 35244170627
+cfl=(15)
+cfn=(169)
+calls=100 0
+0 4969591
+cfl=(15)
+cfn=(154)
+calls=100 0
+0 1498716610
 
 fl=(4)
 fn=(31)
-0 6626842
+0 2926252
 cfl=(4)
 cfn=(37)
 calls=100 0
-0 37806488
+0 15827023
 
 fl=(5)
 fn=(37)
-0 15073484
+0 6563142
 cfl=(5)
 cfn=(38)
 calls=100 0
-0 5703730
+0 2493364
 cfl=(5)
 cfn=(39)
 calls=100 0
-0 17029274
+0 6770517
 
 fl=(6)
 fn=(38)
-0 5703730
+0 2493364
 
 fl=(5)
 fn=(39)
-0 16265915
-cfl=(5)
-cfn=(41)
-calls=100 0
-0 763359
-
-fl=(7)
-fn=(41)
-0 763359
+0 6770517
 
 fl=(15)
-fn=(235)
-0 5805989
+fn=(251)
+0 2281147
 cfl=(15)
-cfn=(236)
+cfn=(252)
 calls=100 0
-0 47662322
+0 19199862
 
 fl=(15)
-fn=(236)
-0 47662322
+fn=(252)
+0 19199862
 
 fl=(15)
-fn=(236)
-0 45238536
+fn=(252)
+0 16420895
 
-fl=(34)
-fn=(161)
-0 258271748
-
-fl=(15)
-fn=(237)
-0 351989
+fl=(35)
+fn=(149)
+0 84425472
 
 fl=(15)
-fn=(238)
-0 5504588
-
-fl=(34)
-fn=(163)
-0 271159653
+fn=(253)
+0 99295
 
 fl=(15)
-fn=(239)
-0 357958
+fn=(254)
+0 1733428
 
-fl=(15)
-fn=(240)
-0 7242061
+fl=(35)
+fn=(153)
+0 32797775
 
-fl=(34)
-fn=(164)
-0 142779256363
-
-fl=(4)
-fn=(229)
-0 18204646
-cfl=(4)
-cfn=(73)
+fl=(28)
+fn=(255)
+0 29223693
+cfl=(28)
+cfn=(141)
 calls=200 0
-0 16609141
-
-fl=(5)
-fn=(73)
-0 15124509
-cfl=(5)
-cfn=(75)
-calls=200 0
-0 1484632
-
-fl=(5)
-fn=(75)
-0 1484632
+0 4471386
+cfl=(28)
+cfn=(108)
+calls=100 0
+0 14352327
+cfl=(28)
+cfn=(46)
+calls=100 0
+0 32206153
+cfl=(28)
+cfn=(256) org::jenetics::TournamentSelector::factory(org::jenetics::Population, org::jenetics::Optimize, int, java::util::Random): org::jenetics::util::Factory
+calls=100 0
+0 24388032
+cfl=(28)
+cfn=(142)
+calls=100 0
+0 35139529036
 
 fl=(29)
-fn=(158)
-0 168608448
+fn=(141)
+0 4471386
+
+fl=(29)
+fn=(108)
+0 12151810
 cfl=(29)
-cfn=(174)
-calls=500 0
-0 3087130
-
-fl=(30)
-fn=(174)
-0 3087130
-
-fl=(23)
-fn=(230)
-0 96848261
-cfl=(23)
-cfn=(241) org::jenetics::CompositeAlterer$1::<init>(org::jenetics::CompositeAlterer, java::util::concurrent::atomic::AtomicInteger, org::jenetics::Population, int): void
+cfn=(136)
 calls=100 0
-0 5523026
-cfl=(23)
-cfn=(242) org::jenetics::util::ArraySeq::foreach(org::jenetics::util::Function): void
-calls=100 0
-0 314661122557
+0 2200517
 
-fl=(23)
-fn=(241)
-0 5523026
-
-fl=(5)
-fn=(242)
-0 29895076
-cfl=(5)
-cfn=(41)
-calls=100 0
-0 809129
-cfl=(5)
-cfn=(243) org::jenetics::CompositeAlterer$1::apply(java::lang::Object): java::lang::Object
-calls=200 0
-0 314630418352
-
-fl=(7)
-fn=(41)
-0 809129
-
-fl=(23)
-fn=(243)
-0 19316287
-cfl=(23)
-cfn=(244) org::jenetics::CompositeAlterer$1::apply(org::jenetics::Alterer): java::lang::Void
-calls=200 0
-0 314611102065
-
-fl=(23)
-fn=(244)
-0 64399509
-cfl=(23)
-cfn=(245) org::jenetics::Mutator::alter(org::jenetics::Population, int): int
-calls=100 0
-0 61927384228
-cfl=(23)
-cfn=(246) org::jenetics::Recombinator::alter(org::jenetics::Population, int): int
-calls=100 0
-0 252619318328
-
-fl=(22)
-fn=(245)
-0 4810826501
-cfl=(22)
-cfn=(51)
-calls=100 0
-0 79793537
-cfl=(22)
-cfn=(138)
-calls=100 0
-0 5235546
-cfl=(22)
-cfn=(247) org::jenetics::util::IndexStream::Random(int, double, java::util::Random): org::jenetics::util::IndexStream
-calls=100 0
-0 181060931
-cfl=(22)
-cfn=(248) org::jenetics::util::IndexStream$1::next(): int
-calls=9466 0
-0 2877497496
-cfl=(22)
-cfn=(162)
-calls=9366 0
-0 1693144946
-cfl=(22)
-cfn=(249) org::jenetics::Phenotype::getGenotype(): org::jenetics::Genotype
-calls=9366 0
-0 55486063
-cfl=(22)
-cfn=(250) org::jenetics::Mutator::mutate(org::jenetics::Genotype, double, java::util::concurrent::atomic::AtomicInteger): org::jenetics::Genotype
-calls=9366 0
-0 39148350881
-cfl=(22)
-cfn=(251) org::jenetics::Phenotype::newInstance(org::jenetics::Genotype, int): org::jenetics::Phenotype
-calls=9366 0
-0 10141281703
-cfl=(22)
-cfn=(252) org::jenetics::Population::set(int, org::jenetics::Phenotype): org::jenetics::Phenotype
-calls=9366 0
-0 2934706624
-
-fl=(9)
-fn=(51)
-0 13846901
-cfl=(9)
-cfn=(57)
-calls=100 0
-0 65946636
-
-fl=(9)
-fn=(57)
-0 7248555
-cfl=(9)
-cfn=(58)
-calls=100 0
-0 58698081
-
-fl=(9)
-fn=(58)
-0 58698081
-
-fl=(27)
-fn=(138)
-0 5235546
-
-fl=(39) org/jenetics/util/IndexStream.java
-fn=(247)
-0 9516881
-cfl=(39)
-cfn=(253) org::jenetics::util::IndexStream$1::<init>(double, int, java::util::Random): void
-calls=100 0
-0 171544050
-
-fl=(39)
-fn=(253)
-0 65627735
-cfl=(39)
-cfn=(254) org::jenetics::util::IndexStream::<init>(): void
-calls=100 0
-0 4998512
-cfl=(39)
-cfn=(255) org::jenetics::util::math$probability::<clinit>(): void
-calls=1 0
-0 55129045
-cfl=(39)
-cfn=(256) org::jenetics::util::math$probability::toInt(double): int
-calls=100 0
-0 45788758
-
-fl=(39)
-fn=(254)
-0 4998512
-
-fl=(40) org/jenetics/util/math.java
-fn=(255)
-0 55112342
-cfl=(40)
-cfn=(257) org::jenetics::util::math::pow(long, long): long
-calls=1 0
-0 16703
-
-fl=(40)
-fn=(257)
-0 16703
-
-fl=(40)
-fn=(256)
-0 45788758
-
-fl=(39)
-fn=(248)
-0 2877497496
-
-fl=(27)
-fn=(162)
-0 1693144946
-
-fl=(33)
-fn=(249)
-0 55486063
-
-fl=(22)
-fn=(250)
-0 4964819391
-cfl=(22)
-cfn=(51)
-calls=9366 0
-0 7301570367
-cfl=(22)
-cfn=(146)
-calls=9366 0
-0 595137311
-cfl=(22)
-cfn=(247)
-calls=9366 0
-0 6569747628
-cfl=(22)
-cfn=(248)
-calls=12302 0
-0 1849580914
-cfl=(22)
-cfn=(258) org::jenetics::Genotype::toSeq(): org::jenetics::util::ISeq
-calls=2936 0
-0 18174960
-cfl=(22)
-cfn=(259) org::jenetics::util::ArrayISeq::copy(): org::jenetics::util::MSeq
-calls=5872 0
-0 4192624042
-cfl=(22)
-cfn=(229)
-calls=2936 0
-0 433748786
-cfl=(22)
-cfn=(260) org::jenetics::AbstractChromosome::toSeq(): org::jenetics::util::ISeq
-calls=2936 0
-0 17269474
-cfl=(22)
-cfn=(261) org::jenetics::Mutator::mutate(org::jenetics::util::MSeq, double): int
-calls=2936 0
-0 10069958665
-cfl=(22)
-cfn=(35)
-calls=3889 0
-0 1811224393
-cfl=(22)
-cfn=(262) org::jenetics::Genotype::newInstance(org::jenetics::util::ISeq): org::jenetics::Genotype
-calls=2936 0
-0 394898097
-cfl=(22)
-cfn=(263) org::jenetics::Float64Chromosome::newInstance(org::jenetics::util::ISeq): org::jenetics::Chromosome
-calls=953 0
-0 807585356
-cfl=(22)
-cfn=(148)
-calls=953 0
-0 122011497
-
-fl=(9)
-fn=(51)
-0 1253205585
-cfl=(9)
-cfn=(57)
-calls=9366 0
-0 6048364782
-
-fl=(9)
-fn=(57)
-0 669731428
-cfl=(9)
-cfn=(58)
-calls=9366 0
-0 5378633354
-
-fl=(9)
-fn=(58)
-0 5378633354
-
-fl=(13)
-fn=(146)
-0 551976262
-cfl=(13)
-cfn=(74)
-calls=9366 0
-0 43161049
-
-fl=(5)
-fn=(74)
-0 43161049
-
-fl=(39)
-fn=(247)
-0 849881058
-cfl=(39)
-cfn=(253)
-calls=9366 0
-0 5719866570
-
-fl=(39)
-fn=(253)
-0 1099942506
-cfl=(39)
-cfn=(254)
-calls=9366 0
-0 446402652
-cfl=(39)
-cfn=(256)
-calls=9366 0
-0 4173521412
-
-fl=(39)
-fn=(254)
-0 446402652
-
-fl=(40)
-fn=(256)
-0 4173521412
-
-fl=(39)
-fn=(248)
-0 1849580914
-
-fl=(13)
-fn=(258)
-0 18174960
-
-fl=(11)
-fn=(259)
-0 1664557917
-cfl=(11)
-cfn=(129)
-calls=5872 0
-0 739707600
-cfl=(11)
-cfn=(69)
-calls=5872 0
-0 292179143
-cfl=(11)
-cfn=(74)
-calls=5872 0
-0 27868155
-cfl=(11)
-cfn=(264) org::jenetics::util::Array::<init>(org::jenetics::util::ArrayRef, int, int): void
-calls=5872 0
-0 1468311227
-
-fl=(5)
-fn=(129)
-0 712681109
-cfl=(5)
-cfn=(74)
-calls=5872 0
-0 27026491
-
-fl=(5)
-fn=(74)
-0 27026491
-
-fl=(6)
-fn=(69)
-0 292179143
-
-fl=(5)
-fn=(74)
-0 27868155
-
-fl=(4)
-fn=(264)
-0 519593032
-cfl=(4)
-cfn=(39)
-calls=5872 0
-0 948718195
-
-fl=(5)
-fn=(39)
-0 910642067
-cfl=(5)
-cfn=(41)
-calls=5872 0
-0 38076128
-
-fl=(7)
-fn=(41)
-0 38076128
-
-fl=(4)
-fn=(229)
-0 230580055
-cfl=(4)
-cfn=(73)
-calls=2936 0
-0 203168731
-
-fl=(5)
-fn=(73)
-0 186500946
-cfl=(5)
-cfn=(75)
-calls=2936 0
-0 16667785
-
-fl=(5)
-fn=(75)
-0 16667785
-
-fl=(2)
-fn=(260)
-0 17269474
-
-fl=(22)
-fn=(261)
-0 1081919145
-cfl=(22)
-cfn=(51)
-calls=2936 0
-0 2291190117
-cfl=(22)
-cfn=(130)
-calls=2936 0
-0 183201985
-cfl=(22)
-cfn=(247)
-calls=2936 0
-0 2060216081
-cfl=(22)
-cfn=(248)
-calls=3889 0
-0 582438613
-cfl=(22)
-cfn=(229)
-calls=953 0
-0 140327967
-cfl=(22)
-cfn=(265) org::jenetics::Float64Gene::newInstance(): org::jenetics::Gene
-calls=953 0
-0 3605412551
-cfl=(22)
-cfn=(148)
-calls=953 0
-0 125252206
-
-fl=(9)
-fn=(51)
-0 391232794
-cfl=(9)
-cfn=(57)
-calls=2936 0
-0 1899957323
-
-fl=(9)
-fn=(57)
-0 209859566
-cfl=(9)
-cfn=(58)
-calls=2936 0
-0 1690097757
-
-fl=(9)
-fn=(58)
-0 1690097757
-
-fl=(4)
-fn=(130)
-0 169526554
-cfl=(4)
-cfn=(74)
-calls=2936 0
-0 13675431
-
-fl=(5)
-fn=(74)
-0 13675431
-
-fl=(39)
-fn=(247)
-0 267192824
-cfl=(39)
-cfn=(253)
-calls=2936 0
-0 1793023257
-
-fl=(39)
-fn=(253)
-0 344990312
-cfl=(39)
-cfn=(254)
-calls=2936 0
-0 139996225
-cfl=(39)
-cfn=(256)
-calls=2936 0
-0 1308036720
-
-fl=(39)
-fn=(254)
-0 139996225
-
-fl=(40)
-fn=(256)
-0 1308036720
-
-fl=(39)
-fn=(248)
-0 582438613
-
-fl=(4)
-fn=(229)
-0 74544897
-cfl=(4)
-cfn=(73)
-calls=953 0
-0 65783070
-
-fl=(5)
-fn=(73)
-0 60440372
-cfl=(5)
-cfn=(75)
-calls=953 0
-0 5342698
-
-fl=(5)
-fn=(75)
-0 5342698
+fl=(29)
+fn=(136)
+0 2200517
 
 fl=(8)
-fn=(265)
-0 68696917
-cfl=(8)
-cfn=(67)
-calls=953 0
-0 3536715634
-
-fl=(8)
-fn=(67)
-0 120631701
-cfl=(8)
-cfn=(33)
-calls=953 0
-0 3416083933
-
-fl=(8)
-fn=(33)
-0 1088426636
-cfl=(8)
-cfn=(51)
-calls=953 0
-0 743220433
+fn=(46)
+0 6012306
 cfl=(8)
 cfn=(52)
-calls=953 0
-0 145874995
-cfl=(8)
-cfn=(53)
-calls=953 0
-0 1438561869
+calls=100 0
+0 26193847
 
-fl=(9)
-fn=(51)
-0 127189840
-cfl=(9)
-cfn=(57)
-calls=953 0
-0 616030593
-
-fl=(9)
-fn=(57)
-0 67967131
-cfl=(9)
-cfn=(58)
-calls=953 0
-0 548063462
-
-fl=(9)
-fn=(58)
-0 548063462
-
-fl=(10)
+fl=(8)
 fn=(52)
-0 145874995
-
-fl=(8)
-fn=(53)
-0 417995120
-cfl=(8)
-cfn=(59)
-calls=953 0
-0 301898589
-cfl=(8)
-cfn=(60)
-calls=953 0
-0 718668160
-
-fl=(8)
-fn=(59)
-0 67727990
-cfl=(8)
-cfn=(61)
-calls=953 0
-0 234170599
-
-fl=(8)
-fn=(61)
-0 53771588
-cfl=(8)
-cfn=(62)
-calls=953 0
-0 180399011
-
-fl=(8)
-fn=(62)
-0 51749071
-cfl=(8)
-cfn=(63)
-calls=953 0
-0 128649940
-
-fl=(10)
-fn=(63)
-0 128649940
-
-fl=(10)
-fn=(60)
-0 701165967
-cfl=(10)
-cfn=(41)
-calls=2859 0
-0 17502193
-
-fl=(7)
-fn=(41)
-0 17502193
-
-fl=(4)
-fn=(148)
-0 114456316
-cfl=(4)
-cfn=(75)
-calls=953 0
-0 5914884
-cfl=(4)
-cfn=(65)
-calls=953 0
-0 4881006
-
-fl=(5)
-fn=(75)
-0 5914884
-
-fl=(6)
-fn=(65)
-0 4881006
-
-fl=(4)
-fn=(35)
-0 642540072
-cfl=(4)
-cfn=(69)
-calls=3889 0
-0 193539644
-cfl=(4)
-cfn=(70)
-calls=3889 0
-0 975144677
-
-fl=(6)
-fn=(69)
-0 193539644
-
-fl=(11)
-fn=(70)
-0 343909113
-cfl=(11)
-cfn=(39)
-calls=3889 0
-0 631235564
-
-fl=(5)
-fn=(39)
-0 605296185
-cfl=(5)
-cfn=(41)
-calls=3889 0
-0 25939379
-
-fl=(7)
-fn=(41)
-0 25939379
-
-fl=(13)
-fn=(262)
-0 248307944
-cfl=(13)
-cfn=(79)
-calls=2936 0
-0 146590153
-
-fl=(13)
-fn=(79)
-0 146590153
-
-fl=(3)
-fn=(263)
-0 93182232
-cfl=(3)
-cfn=(266) org::jenetics::Float64Chromosome::newInstance(org::jenetics::util::ISeq): org::jenetics::Float64Chromosome
-calls=953 0
-0 714403124
-
-fl=(3)
-fn=(266)
-0 78400966
-cfl=(3)
-cfn=(36)
-calls=953 0
-0 636002158
-
-fl=(3)
-fn=(36)
-0 76711631
-cfl=(3)
-cfn=(71)
-calls=953 0
-0 559290527
-
-fl=(12)
-fn=(71)
-0 216879778
-cfl=(12)
-cfn=(72)
-calls=953 0
-0 210427199
-cfl=(12)
-cfn=(73)
-calls=1906 0
-0 131983550
-
-fl=(2)
-fn=(72)
-0 199189027
-cfl=(2)
-cfn=(41)
-calls=953 0
-0 6638520
-cfl=(2)
-cfn=(74)
-calls=953 0
-0 4599652
-
-fl=(7)
-fn=(41)
-0 6638520
-
-fl=(5)
-fn=(74)
-0 4599652
-
-fl=(5)
-fn=(73)
-0 121733445
-cfl=(5)
-cfn=(75)
-calls=1906 0
-0 10250105
-
-fl=(5)
-fn=(75)
-0 10250105
-
-fl=(4)
-fn=(148)
-0 111975757
-cfl=(4)
-cfn=(75)
-calls=953 0
-0 5402990
-cfl=(4)
-cfn=(65)
-calls=953 0
-0 4632750
-
-fl=(5)
-fn=(75)
-0 5402990
-
-fl=(6)
-fn=(65)
-0 4632750
-
-fl=(33)
-fn=(251)
-0 2312540710
-cfl=(33)
-cfn=(41)
-calls=9366 0
-0 63051962
-cfl=(33)
-cfn=(141)
-calls=9366 0
-0 7765689031
-
-fl=(7)
-fn=(41)
-0 63051962
-
-fl=(33)
-fn=(141)
-0 5868338337
-cfl=(33)
-cfn=(41)
-calls=28098 0
-0 175096298
-cfl=(33)
-cfn=(152)
-calls=9366 0
-0 1722254396
-
-fl=(7)
-fn=(41)
-0 175096298
-
-fl=(33)
-fn=(152)
-0 755526108
-cfl=(33)
-cfn=(153)
-calls=9366 0
-0 966728288
-
-fl=(33)
-fn=(153)
-0 516061955
-cfl=(33)
-cfn=(154)
-calls=9366 0
-0 450666333
-
-fl=(33)
-fn=(154)
-0 450666333
-
-fl=(27)
-fn=(252)
-0 2876418616
-cfl=(27)
-cfn=(41)
-calls=9366 0
-0 58288008
-
-fl=(7)
-fn=(41)
-0 58288008
-
-fl=(20)
-fn=(246)
-0 4955891363
-cfl=(20)
-cfn=(51)
-calls=100 0
-0 78759079
-cfl=(20)
-cfn=(138)
-calls=18147 0
-0 892366958
-cfl=(20)
-cfn=(247)
-calls=100 0
-0 70548465
-cfl=(20)
-cfn=(248)
-calls=18047 0
-0 2986817685
-cfl=(20)
-cfn=(267) org::jenetics::util::arrays::<clinit>(): void
-calls=1 0
-0 354289
-cfl=(20)
-cfn=(268) org::jenetics::util::arrays::subset(int, int, java::util::Random): int[]
-calls=17947 0
-0 22656606193
-cfl=(20)
-cfn=(269) org::jenetics::MeanAlterer::recombine(org::jenetics::Population, int[], int): int
-calls=17947 0
-0 220977974296
-
-fl=(9)
-fn=(51)
-0 13768042
-cfl=(9)
-cfn=(57)
-calls=100 0
-0 64991037
-
-fl=(9)
-fn=(57)
-0 7222740
-cfl=(9)
-cfn=(58)
-calls=100 0
-0 57768297
-
-fl=(9)
-fn=(58)
-0 57768297
-
-fl=(27)
-fn=(138)
-0 892366958
-
-fl=(39)
-fn=(247)
-0 9169072
-cfl=(39)
-cfn=(253)
-calls=100 0
-0 61379393
-
-fl=(39)
-fn=(253)
-0 12011747
-cfl=(39)
-cfn=(254)
-calls=100 0
-0 4828632
-cfl=(39)
-cfn=(256)
-calls=100 0
-0 44539014
-
-fl=(39)
-fn=(254)
-0 4828632
-
-fl=(40)
-fn=(256)
-0 44539014
-
-fl=(39)
-fn=(248)
-0 2986817685
-
-fl=(41) org/jenetics/util/arrays.java
-fn=(267)
-0 354289
-
-fl=(41)
-fn=(268)
-0 3583078477
-cfl=(41)
-cfn=(41)
-calls=17947 0
-0 117247585
-cfl=(41)
-cfn=(270) org::jenetics::util::arrays::subset(int, int[], java::util::Random): void
-calls=17947 0
-0 18956280131
-
-fl=(7)
-fn=(41)
-0 117247585
-
-fl=(41)
-fn=(270)
-0 10925385335
-cfl=(41)
-cfn=(41)
-calls=35894 0
-0 218665131
-cfl=(41)
-cfn=(271) org::jenetics::util::math::isMultiplicationSave(int, int): boolean
-calls=17947 0
-0 133304009
-cfl=(41)
-cfn=(272) org::jenetics::util::arrays::nextInt(java::util::Random, int, int): int
-calls=71846 0
-0 7678925656
-
-fl=(7)
-fn=(41)
-0 218665131
-
-fl=(40)
-fn=(271)
-0 133304009
-
-fl=(41)
-fn=(272)
-0 7678925656
-
-fl=(32)
-fn=(269)
-0 32721316067
-cfl=(32)
-cfn=(51)
-calls=17947 0
-0 14032032207
-cfl=(32)
-cfn=(162)
-calls=35894 0
-0 6440408558
-cfl=(32)
-cfn=(249)
-calls=35894 0
-0 202032877
-cfl=(32)
-cfn=(146)
-calls=17947 0
-0 1129557704
-cfl=(32)
-cfn=(258)
-calls=35894 0
-0 206498635
-cfl=(32)
-cfn=(259)
-calls=35894 0
-0 25535473742
-cfl=(32)
-cfn=(229)
-calls=35894 0
-0 5252230068
-cfl=(32)
-cfn=(260)
-calls=35894 0
-0 207133002
-cfl=(32)
-cfn=(73)
-calls=17947 0
-0 1245325011
-cfl=(32)
-cfn=(273) org::jenetics::MeanAlterer::mean(org::jenetics::util::MSeq, org::jenetics::util::Seq): org::jenetics::util::MSeq
-calls=17947 0
-0 60809920680
-cfl=(32)
-cfn=(35)
-calls=35894 0
-0 16578150297
-cfl=(32)
-cfn=(263)
-calls=17947 0
-0 15063086485
-cfl=(32)
-cfn=(148)
-calls=17947 0
-0 2278477314
-cfl=(32)
-cfn=(274) org::jenetics::Genotype::valueOf(org::jenetics::util::ISeq): org::jenetics::Genotype
-calls=17947 0
-0 14284776384
-cfl=(32)
-cfn=(251)
-calls=17947 0
-0 19370138331
-cfl=(32)
-cfn=(252)
-calls=17947 0
-0 5621416934
-
-fl=(9)
-fn=(51)
-0 2408978549
-cfl=(9)
-cfn=(57)
-calls=17947 0
-0 11623053658
-
-fl=(9)
-fn=(57)
-0 1283295722
-cfl=(9)
-cfn=(58)
-calls=17947 0
-0 10339757936
-
-fl=(9)
-fn=(58)
-0 10339757936
-
-fl=(27)
-fn=(162)
-0 6440408558
-
-fl=(33)
-fn=(249)
-0 202032877
-
-fl=(13)
-fn=(146)
-0 1044585850
-cfl=(13)
-cfn=(74)
-calls=17947 0
-0 84971854
-
-fl=(5)
-fn=(74)
-0 84971854
-
-fl=(13)
-fn=(258)
-0 206498635
-
-fl=(11)
-fn=(259)
-0 10145842546
-cfl=(11)
-cfn=(129)
-calls=35894 0
-0 4497876073
-cfl=(11)
-cfn=(69)
-calls=35894 0
-0 1778958073
-cfl=(11)
-cfn=(74)
-calls=35894 0
-0 168446642
-cfl=(11)
-cfn=(264)
-calls=35894 0
-0 8944350408
-
-fl=(5)
-fn=(129)
-0 4332768599
-cfl=(5)
-cfn=(74)
-calls=35894 0
-0 165107474
-
-fl=(5)
-fn=(74)
-0 165107474
-
-fl=(6)
-fn=(69)
-0 1778958073
-
-fl=(5)
-fn=(74)
-0 168446642
-
-fl=(4)
-fn=(264)
-0 3161308088
-cfl=(4)
-cfn=(39)
-calls=35894 0
-0 5783042320
-
-fl=(5)
-fn=(39)
-0 5554294829
-cfl=(5)
-cfn=(41)
-calls=35894 0
-0 228747491
-
-fl=(7)
-fn=(41)
-0 228747491
-
-fl=(4)
-fn=(229)
-0 2801749589
-cfl=(4)
-cfn=(73)
-calls=35894 0
-0 2450480479
-
-fl=(5)
-fn=(73)
-0 2256156789
-cfl=(5)
-cfn=(75)
-calls=35894 0
-0 194323690
-
-fl=(5)
-fn=(75)
-0 194323690
-
-fl=(2)
-fn=(260)
-0 207133002
-
-fl=(5)
-fn=(73)
-0 1147493747
-cfl=(5)
-cfn=(75)
-calls=17947 0
-0 97831264
-
-fl=(5)
-fn=(75)
-0 97831264
-
-fl=(32)
-fn=(273)
-0 6685784861
-cfl=(32)
-cfn=(130)
-calls=17947 0
-0 1101396676
-cfl=(32)
-cfn=(229)
-calls=17947 0
-0 2600958537
-cfl=(32)
-cfn=(73)
-calls=17947 0
-0 1228335756
-cfl=(32)
-cfn=(275) org::jenetics::Float64Gene::mean(java::lang::Object): java::lang::Object
-calls=17947 0
-0 46874219785
-cfl=(32)
-cfn=(148)
-calls=17947 0
-0 2319225065
-
-fl=(4)
-fn=(130)
-0 1017014276
-cfl=(4)
-cfn=(74)
-calls=17947 0
-0 84382400
-
-fl=(5)
-fn=(74)
-0 84382400
-
-fl=(4)
-fn=(229)
-0 1384435129
-cfl=(4)
-cfn=(73)
-calls=17947 0
-0 1216523408
-
-fl=(5)
-fn=(73)
-0 1119490381
-cfl=(5)
-cfn=(75)
-calls=17947 0
-0 97033027
-
-fl=(5)
-fn=(75)
-0 97033027
-
-fl=(5)
-fn=(73)
-0 1133960564
-cfl=(5)
-cfn=(75)
-calls=17947 0
-0 94375192
-
-fl=(5)
-fn=(75)
-0 94375192
-
-fl=(8)
-fn=(275)
-0 1694137934
-cfl=(8)
-cfn=(276) org::jenetics::Float64Gene::mean(org::jenetics::Float64Gene): org::jenetics::Float64Gene
-calls=17947 0
-0 45180081851
-
-fl=(8)
-fn=(276)
-0 3155181235
-cfl=(8)
-cfn=(277) org::jenetics::Float64Gene::newInstance(double): org::jenetics::Float64Gene
-calls=17947 0
-0 42024900616
-
-fl=(8)
-fn=(277)
-0 15015465511
+0 3205895
 cfl=(8)
 cfn=(53)
-calls=17947 0
-0 27009435105
+calls=100 0
+0 22987952
 
 fl=(8)
 fn=(53)
-0 7868743462
-cfl=(8)
-cfn=(59)
-calls=17947 0
-0 5643910568
-cfl=(8)
-cfn=(60)
-calls=17947 0
-0 13496781075
+0 22987952
 
-fl=(8)
-fn=(59)
-0 1269584851
-cfl=(8)
-cfn=(61)
-calls=17947 0
-0 4374325717
+fl=(28)
+fn=(256)
+0 22026035
+cfl=(28)
+cfn=(257) org::jenetics::TournamentSelector$1::<init>(org::jenetics::Population, org::jenetics::Optimize, int, java::util::Random): void
+calls=100 0
+0 2361997
 
-fl=(8)
-fn=(61)
-0 997318675
-cfl=(8)
-cfn=(62)
-calls=17947 0
-0 3377007042
+fl=(28)
+fn=(257)
+0 2361997
 
-fl=(8)
-fn=(62)
-0 969720230
-cfl=(8)
-cfn=(63)
-calls=17947 0
-0 2407286812
+fl=(29)
+fn=(142)
+0 24345405
+cfl=(29)
+cfn=(145)
+calls=100 0
+0 4404771
+cfl=(29)
+cfn=(146)
+calls=100 0
+0 35110521788
+cfl=(29)
+cfn=(147)
+calls=100 0
+0 257072
 
-fl=(10)
-fn=(63)
-0 2407286812
+fl=(29)
+fn=(145)
+0 4404771
 
-fl=(10)
-fn=(60)
-0 13172082202
-cfl=(10)
-cfn=(41)
-calls=53841 0
-0 324698873
+fl=(29)
+fn=(146)
+0 54020646
+cfl=(29)
+cfn=(149)
+calls=100 0
+0 105853349
+cfl=(29)
+cfn=(151)
+calls=100 0
+0 2978841
+cfl=(29)
+cfn=(152)
+calls=400 0
+0 11378552
+cfl=(29)
+cfn=(153)
+calls=400 0
+0 34164075868
+cfl=(29)
+cfn=(154)
+calls=100 0
+0 772214532
 
-fl=(7)
-fn=(41)
-0 324698873
+fl=(35)
+fn=(149)
+0 105853349
+
+fl=(36)
+fn=(151)
+0 2978841
+
+fl=(29)
+fn=(152)
+0 11378552
+
+fl=(35)
+fn=(153)
+0 317037531
+cfl=(35)
+cfn=(156)
+calls=194 0
+0 33847038337
+
+fl=(29)
+fn=(156)
+0 519927103
+cfl=(29)
+cfn=(258) org::jenetics::TournamentSelector$1::newInstance(): java::lang::Object
+calls=14550 0
+0 33327111234
+
+fl=(28)
+fn=(258)
+0 546347152
+cfl=(28)
+cfn=(259) org::jenetics::TournamentSelector$1::newInstance(): org::jenetics::Phenotype
+calls=14550 0
+0 32780764082
+
+fl=(28)
+fn=(259)
+0 1026195975
+cfl=(28)
+cfn=(260) org::jenetics::TournamentSelector::access$000(org::jenetics::Population, org::jenetics::Optimize, int, java::util::Random): org::jenetics::Phenotype
+calls=14550 0
+0 31754568107
+
+fl=(28)
+fn=(260)
+0 1055913676
+cfl=(28)
+cfn=(261) org::jenetics::TournamentSelector::select(org::jenetics::Population, org::jenetics::Optimize, int, java::util::Random): org::jenetics::Phenotype
+calls=14550 0
+0 30698654431
+
+fl=(28)
+fn=(261)
+0 7980174840
+cfl=(28)
+cfn=(141)
+calls=14550 0
+0 381592982
+cfl=(28)
+cfn=(181)
+calls=58200 0
+0 5567971377
+cfl=(28)
+cfn=(224)
+calls=43650 0
+0 16768915232
+
+fl=(29)
+fn=(141)
+0 381592982
+
+fl=(29)
+fn=(181)
+0 5567971377
+
+fl=(16)
+fn=(224)
+0 1830465835
+cfl=(16)
+cfn=(225)
+calls=43650 0
+0 14938449397
+
+fl=(37)
+fn=(225)
+0 1831849536
+cfl=(37)
+cfn=(226)
+calls=43650 0
+0 13106599861
+
+fl=(37)
+fn=(226)
+0 10310538256
+cfl=(37)
+cfn=(227)
+calls=87300 0
+0 2796061605
+
+fl=(37)
+fn=(227)
+0 2591784173
+cfl=(37)
+cfn=(183)
+calls=87300 0
+0 204277432
+
+fl=(37)
+fn=(183)
+0 204277432
+
+fl=(35)
+fn=(154)
+0 772214532
+
+fl=(29)
+fn=(147)
+0 257072
 
 fl=(4)
-fn=(148)
-0 2126051049
-cfl=(4)
-cfn=(75)
-calls=17947 0
-0 104633684
-cfl=(4)
-cfn=(65)
-calls=17947 0
-0 88540332
-
-fl=(5)
-fn=(75)
-0 104633684
-
-fl=(6)
-fn=(65)
-0 88540332
-
-fl=(4)
-fn=(35)
-0 5880673878
-cfl=(4)
-cfn=(69)
-calls=35894 0
-0 1771377399
+fn=(169)
+0 4503550
 cfl=(4)
 cfn=(70)
-calls=35894 0
-0 8926099020
+calls=100 0
+0 259039
+cfl=(4)
+cfn=(59)
+calls=100 0
+0 207002
+
+fl=(5)
+fn=(70)
+0 259039
 
 fl=(6)
+fn=(59)
+0 207002
+
+fl=(35)
+fn=(154)
+0 1498716610
+
+fl=(4)
+fn=(245)
+0 6147650
+cfl=(4)
+cfn=(68)
+calls=200 0
+0 5862719
+
+fl=(5)
+fn=(68)
+0 5311998
+cfl=(5)
+cfn=(70)
+calls=200 0
+0 550721
+
+fl=(5)
+fn=(70)
+0 550721
+
+fl=(31)
+fn=(179)
+0 89818147
+cfl=(31)
+cfn=(190)
+calls=500 0
+0 1599107
+
+fl=(32)
+fn=(190)
+0 1599107
+
+fl=(25)
+fn=(246)
+0 30438367
+cfl=(25)
+cfn=(262) org::jenetics::CompositeAlterer$1::<init>(org::jenetics::CompositeAlterer, java::util::concurrent::atomic::AtomicInteger, org::jenetics::Population, int): void
+calls=100 0
+0 1923996
+cfl=(25)
+cfn=(263) org::jenetics::util::ArraySeq::forEach(org::jenetics::util::Function): void
+calls=100 0
+0 89301782823
+
+fl=(25)
+fn=(262)
+0 1923996
+
+fl=(5)
+fn=(263)
+0 9651927
+cfl=(5)
+cfn=(264) org::jenetics::CompositeAlterer$1::apply(java::lang::Object): java::lang::Object
+calls=200 0
+0 89292130896
+
+fl=(25)
+fn=(264)
+0 6133821
+cfl=(25)
+cfn=(265) org::jenetics::CompositeAlterer$1::apply(org::jenetics::Alterer): java::lang::Void
+calls=200 0
+0 89285997075
+
+fl=(25)
+fn=(265)
+0 19610843
+cfl=(25)
+cfn=(266) org::jenetics::Mutator::alter(org::jenetics::Population, int): int
+calls=100 0
+0 18439944010
+cfl=(25)
+cfn=(267) org::jenetics::Recombinator::alter(org::jenetics::Population, int): int
+calls=100 0
+0 70826442222
+
+fl=(24)
+fn=(266)
+0 1426812977
+cfl=(24)
+cfn=(141)
+calls=100 0
+0 1983797
+cfl=(24)
+cfn=(268) org::jenetics::util::IndexStream::Random(int, double): org::jenetics::util::IndexStream
+calls=100 0
+0 102430624
+cfl=(24)
+cfn=(269) org::jenetics::util::RandomIndexStream::next(): int
+calls=9401 0
+0 861240321
+cfl=(24)
+cfn=(181)
+calls=9301 0
+0 506030652
+cfl=(24)
+cfn=(270) org::jenetics::Phenotype::getGenotype(): org::jenetics::Genotype
+calls=9301 0
+0 15938458
+cfl=(24)
+cfn=(271) org::jenetics::Mutator::mutate(org::jenetics::Genotype, double, java::util::concurrent::atomic::AtomicInteger): org::jenetics::Genotype
+calls=9301 0
+0 11856598296
+cfl=(24)
+cfn=(272) org::jenetics::Phenotype::newInstance(org::jenetics::Genotype, int): org::jenetics::Phenotype
+calls=9301 0
+0 2831941776
+cfl=(24)
+cfn=(273) org::jenetics::Population::set(int, org::jenetics::Phenotype): org::jenetics::Phenotype
+calls=9301 0
+0 836967109
+
+fl=(29)
+fn=(141)
+0 1983797
+
+fl=(42) org/jenetics/util/IndexStream.java
+fn=(268)
+0 6818531
+cfl=(42)
+cfn=(46)
+calls=100 0
+0 27599459
+cfl=(42)
+cfn=(274) org::jenetics::util::IndexStream::Random(int, double, java::util::Random): org::jenetics::util::IndexStream
+calls=100 0
+0 68012634
+
+fl=(8)
+fn=(46)
+0 5248848
+cfl=(8)
+cfn=(52)
+calls=100 0
+0 22350611
+
+fl=(8)
+fn=(52)
+0 2722496
+cfl=(8)
+cfn=(53)
+calls=100 0
+0 19628115
+
+fl=(8)
+fn=(53)
+0 19628115
+
+fl=(42)
+fn=(274)
+0 3739596
+cfl=(42)
+cfn=(275) org::jenetics::util::RandomIndexStream::<init>(int, double, java::util::Random): void
+calls=100 0
+0 64273038
+
+fl=(43) org/jenetics/util/RandomIndexStream.java
+fn=(275)
+0 28089650
+cfl=(43)
+cfn=(276) org::jenetics::util::IndexStream::<init>(): void
+calls=100 0
+0 1870697
+cfl=(43)
+cfn=(277) org::jenetics::internal::math::probability::<clinit>(): void
+calls=1 0
+0 16346831
+cfl=(43)
+cfn=(278) org::jenetics::internal::math::probability::toInt(double): int
+calls=100 0
+0 17965860
+
+fl=(42)
+fn=(276)
+0 1870697
+
+fl=(44) org/jenetics/internal/math/probability.java
+fn=(277)
+0 16342278
+cfl=(44)
+cfn=(279) org::jenetics::util::math::pow(long, long): long
+calls=1 0
+0 4553
+
+fl=(9)
+fn=(279)
+0 4553
+
+fl=(44)
+fn=(278)
+0 17965860
+
+fl=(43)
+fn=(269)
+0 861240321
+
+fl=(29)
+fn=(181)
+0 506030652
+
+fl=(37)
+fn=(270)
+0 15938458
+
+fl=(24)
+fn=(271)
+0 1202690863
+cfl=(24)
+cfn=(167)
+calls=9301 0
+0 174476920
+cfl=(24)
+cfn=(268)
+calls=9301 0
+0 4717303434
+cfl=(24)
+cfn=(269)
+calls=12185 0
+0 549161142
+cfl=(24)
+cfn=(280) org::jenetics::Genotype::toSeq(): org::jenetics::util::ISeq
+calls=2884 0
+0 5163857
+cfl=(24)
+cfn=(281) org::jenetics::util::ArrayISeq::copy(): org::jenetics::util::MSeq
+calls=5768 0
+0 1202091779
+cfl=(24)
+cfn=(245)
+calls=2884 0
+0 127766414
+cfl=(24)
+cfn=(282) org::jenetics::AbstractChromosome::toSeq(): org::jenetics::util::ISeq
+calls=2884 0
+0 4833811
+cfl=(24)
+cfn=(283) org::jenetics::Mutator::mutate(org::jenetics::util::MSeq, double): int
+calls=2884 0
+0 2925089925
+cfl=(24)
+cfn=(35)
+calls=3752 0
+0 586158635
+cfl=(24)
+cfn=(284) org::jenetics::Genotype::newInstance(org::jenetics::util::ISeq): org::jenetics::Genotype
+calls=2884 0
+0 115410034
+cfl=(24)
+cfn=(285) org::jenetics::Float64Chromosome::newInstance(org::jenetics::util::ISeq): org::jenetics::Chromosome
+calls=868 0
+0 213802748
+cfl=(24)
+cfn=(169)
+calls=868 0
+0 32648734
+
+fl=(13)
+fn=(167)
+0 161090639
+cfl=(13)
+cfn=(69)
+calls=9301 0
+0 13386281
+
+fl=(5)
 fn=(69)
-0 1771377399
+0 13386281
+
+fl=(42)
+fn=(268)
+0 476298087
+cfl=(42)
+cfn=(46)
+calls=9301 0
+0 2002052850
+cfl=(42)
+cfn=(274)
+calls=9301 0
+0 2238952497
+
+fl=(8)
+fn=(46)
+0 367096832
+cfl=(8)
+cfn=(52)
+calls=9301 0
+0 1634956018
+
+fl=(8)
+fn=(52)
+0 197617892
+cfl=(8)
+cfn=(53)
+calls=9301 0
+0 1437338126
+
+fl=(8)
+fn=(53)
+0 1437338126
+
+fl=(42)
+fn=(274)
+0 252025259
+cfl=(42)
+cfn=(275)
+calls=9301 0
+0 1986927238
+
+fl=(43)
+fn=(275)
+0 609583350
+cfl=(43)
+cfn=(276)
+calls=9301 0
+0 133756828
+cfl=(43)
+cfn=(278)
+calls=9301 0
+0 1243587060
+
+fl=(42)
+fn=(276)
+0 133756828
+
+fl=(44)
+fn=(278)
+0 1243587060
+
+fl=(43)
+fn=(269)
+0 549161142
+
+fl=(13)
+fn=(280)
+0 5163857
 
 fl=(11)
-fn=(70)
-0 3154724218
+fn=(281)
+0 486715976
 cfl=(11)
+cfn=(133)
+calls=5768 0
+0 213178107
+cfl=(11)
+cfn=(64)
+calls=5768 0
+0 85208933
+cfl=(11)
+cfn=(69)
+calls=5768 0
+0 8143638
+cfl=(11)
+cfn=(286) org::jenetics::util::Array::<init>(org::jenetics::util::ArrayRef, int, int): void
+calls=5768 0
+0 408845125
+
+fl=(5)
+fn=(133)
+0 205137720
+cfl=(5)
+cfn=(69)
+calls=5768 0
+0 8040387
+
+fl=(5)
+fn=(69)
+0 8040387
+
+fl=(6)
+fn=(64)
+0 85208933
+
+fl=(5)
+fn=(69)
+0 8143638
+
+fl=(4)
+fn=(286)
+0 154374927
+cfl=(4)
 cfn=(39)
-calls=35894 0
-0 5771374802
+calls=5768 0
+0 254470198
 
 fl=(5)
 fn=(39)
-0 5541670770
+0 254470198
+
+fl=(4)
+fn=(245)
+0 67768462
+cfl=(4)
+cfn=(68)
+calls=2884 0
+0 59997952
+
+fl=(5)
+fn=(68)
+0 55097375
 cfl=(5)
-cfn=(41)
-calls=35894 0
-0 229704032
+cfn=(70)
+calls=2884 0
+0 4900577
+
+fl=(5)
+fn=(70)
+0 4900577
+
+fl=(2)
+fn=(282)
+0 4833811
+
+fl=(24)
+fn=(283)
+0 234962395
+cfl=(24)
+cfn=(134)
+calls=2884 0
+0 52317210
+cfl=(24)
+cfn=(268)
+calls=2884 0
+0 1453722318
+cfl=(24)
+cfn=(269)
+calls=3752 0
+0 170028172
+cfl=(24)
+cfn=(245)
+calls=868 0
+0 38239637
+cfl=(24)
+cfn=(287) org::jenetics::Float64Gene::newInstance(): org::jenetics::Gene
+calls=868 0
+0 942501919
+cfl=(24)
+cfn=(169)
+calls=868 0
+0 33318274
+
+fl=(4)
+fn=(134)
+0 48280183
+cfl=(4)
+cfn=(69)
+calls=2884 0
+0 4037027
+
+fl=(5)
+fn=(69)
+0 4037027
+
+fl=(42)
+fn=(268)
+0 146003901
+cfl=(42)
+cfn=(46)
+calls=2884 0
+0 617270539
+cfl=(42)
+cfn=(274)
+calls=2884 0
+0 690447878
+
+fl=(8)
+fn=(46)
+0 113121955
+cfl=(8)
+cfn=(52)
+calls=2884 0
+0 504148584
+
+fl=(8)
+fn=(52)
+0 60713443
+cfl=(8)
+cfn=(53)
+calls=2884 0
+0 443435141
+
+fl=(8)
+fn=(53)
+0 443435141
+
+fl=(42)
+fn=(274)
+0 77681608
+cfl=(42)
+cfn=(275)
+calls=2884 0
+0 612766270
+
+fl=(43)
+fn=(275)
+0 187499569
+cfl=(43)
+cfn=(276)
+calls=2884 0
+0 41298118
+cfl=(43)
+cfn=(278)
+calls=2884 0
+0 383968583
+
+fl=(42)
+fn=(276)
+0 41298118
+
+fl=(44)
+fn=(278)
+0 383968583
+
+fl=(43)
+fn=(269)
+0 170028172
+
+fl=(4)
+fn=(245)
+0 20298632
+cfl=(4)
+cfn=(68)
+calls=868 0
+0 17941005
+
+fl=(5)
+fn=(68)
+0 16436921
+cfl=(5)
+cfn=(70)
+calls=868 0
+0 1504084
+
+fl=(5)
+fn=(70)
+0 1504084
 
 fl=(7)
-fn=(41)
-0 229704032
+fn=(287)
+0 18474565
+cfl=(7)
+cfn=(61)
+calls=868 0
+0 924027354
+
+fl=(7)
+fn=(61)
+0 32499909
+cfl=(7)
+cfn=(33)
+calls=868 0
+0 891527445
+
+fl=(7)
+fn=(33)
+0 292509066
+cfl=(7)
+cfn=(46)
+calls=868 0
+0 184251788
+cfl=(7)
+cfn=(47)
+calls=868 0
+0 39636793
+cfl=(7)
+cfn=(48)
+calls=868 0
+0 375129798
+
+fl=(8)
+fn=(46)
+0 33731597
+cfl=(8)
+cfn=(52)
+calls=868 0
+0 150520191
+
+fl=(8)
+fn=(52)
+0 18177898
+cfl=(8)
+cfn=(53)
+calls=868 0
+0 132342293
+
+fl=(8)
+fn=(53)
+0 132342293
+
+fl=(9)
+fn=(47)
+0 39636793
+
+fl=(7)
+fn=(48)
+0 112764779
+cfl=(7)
+cfn=(54)
+calls=868 0
+0 80897342
+cfl=(7)
+cfn=(55)
+calls=868 0
+0 181467677
+
+fl=(7)
+fn=(54)
+0 18018947
+cfl=(7)
+cfn=(56)
+calls=868 0
+0 62878395
+
+fl=(7)
+fn=(56)
+0 14381774
+cfl=(7)
+cfn=(57)
+calls=868 0
+0 48496621
+
+fl=(7)
+fn=(57)
+0 14130239
+cfl=(7)
+cfn=(58)
+calls=868 0
+0 34366382
+
+fl=(10)
+fn=(58)
+0 34366382
+
+fl=(10)
+fn=(55)
+0 181467677
+
+fl=(4)
+fn=(169)
+0 30449321
+cfl=(4)
+cfn=(70)
+calls=868 0
+0 1540938
+cfl=(4)
+cfn=(59)
+calls=868 0
+0 1328015
+
+fl=(5)
+fn=(70)
+0 1540938
+
+fl=(6)
+fn=(59)
+0 1328015
+
+fl=(4)
+fn=(35)
+0 259782853
+cfl=(4)
+cfn=(63)
+calls=3752 0
+0 6454135
+cfl=(4)
+cfn=(64)
+calls=3752 0
+0 55349586
+cfl=(4)
+cfn=(65)
+calls=3752 0
+0 264572061
+
+fl=(6)
+fn=(63)
+0 6454135
+
+fl=(6)
+fn=(64)
+0 55349586
+
+fl=(11)
+fn=(65)
+0 99578534
+cfl=(11)
+cfn=(39)
+calls=3752 0
+0 164993527
+
+fl=(5)
+fn=(39)
+0 164993527
+
+fl=(13)
+fn=(284)
+0 73111407
+cfl=(13)
+cfn=(76)
+calls=2884 0
+0 42298627
+
+fl=(13)
+fn=(76)
+0 42298627
 
 fl=(3)
-fn=(263)
-0 1733839715
+fn=(285)
+0 25017005
 cfl=(3)
-cfn=(266)
-calls=17947 0
-0 13329246770
+cfn=(288) org::jenetics::Float64Chromosome::newInstance(org::jenetics::util::ISeq): org::jenetics::Float64Chromosome
+calls=868 0
+0 188785743
 
 fl=(3)
-fn=(266)
-0 1458548357
+fn=(288)
+0 21032903
 cfl=(3)
 cfn=(36)
-calls=17947 0
-0 11870698413
+calls=868 0
+0 167752840
 
 fl=(3)
 fn=(36)
-0 1441107693
+0 20945057
 cfl=(3)
-cfn=(71)
-calls=17947 0
-0 10429590720
+cfn=(66)
+calls=868 0
+0 146807783
 
 fl=(12)
-fn=(71)
-0 4052225614
+fn=(66)
+0 58459412
 cfl=(12)
-cfn=(72)
-calls=17947 0
-0 3924599961
+cfn=(67)
+calls=868 0
+0 52755908
 cfl=(12)
-cfn=(73)
-calls=35894 0
-0 2452765145
+cfn=(68)
+calls=1736 0
+0 35592463
 
 fl=(2)
-fn=(72)
-0 3719009000
+fn=(67)
+0 51468348
 cfl=(2)
-cfn=(41)
-calls=17947 0
-0 117934881
-cfl=(2)
-cfn=(74)
-calls=17947 0
-0 87656080
-
-fl=(7)
-fn=(41)
-0 117934881
+cfn=(69)
+calls=868 0
+0 1287560
 
 fl=(5)
-fn=(74)
-0 87656080
+fn=(69)
+0 1287560
 
 fl=(5)
-fn=(73)
-0 2262586436
+fn=(68)
+0 32847436
 cfl=(5)
-cfn=(75)
-calls=35894 0
-0 190178709
+cfn=(70)
+calls=1736 0
+0 2745027
 
 fl=(5)
-fn=(75)
-0 190178709
+fn=(70)
+0 2745027
 
 fl=(4)
-fn=(148)
-0 2095295133
+fn=(169)
+0 29822696
 cfl=(4)
-cfn=(75)
-calls=17947 0
-0 97067293
+cfn=(70)
+calls=868 0
+0 1508713
 cfl=(4)
-cfn=(65)
-calls=17947 0
-0 86114888
+cfn=(59)
+calls=868 0
+0 1317325
 
 fl=(5)
-fn=(75)
-0 97067293
+fn=(70)
+0 1508713
 
 fl=(6)
-fn=(65)
-0 86114888
+fn=(59)
+0 1317325
+
+fl=(37)
+fn=(272)
+0 669091302
+cfl=(37)
+cfn=(165)
+calls=9301 0
+0 2162850474
+
+fl=(37)
+fn=(165)
+0 1650115278
+cfl=(37)
+cfn=(173)
+calls=9301 0
+0 512735196
+
+fl=(37)
+fn=(173)
+0 225014277
+cfl=(37)
+cfn=(174)
+calls=9301 0
+0 287720919
+
+fl=(37)
+fn=(174)
+0 153661891
+cfl=(37)
+cfn=(175)
+calls=9301 0
+0 134059028
+
+fl=(37)
+fn=(175)
+0 134059028
+
+fl=(29)
+fn=(273)
+0 836967109
+
+fl=(21)
+fn=(267)
+0 1457953097
+cfl=(21)
+cfn=(46)
+calls=100 0
+0 21460285
+cfl=(21)
+cfn=(141)
+calls=18233 0
+0 261988337
+cfl=(21)
+cfn=(268)
+calls=100 0
+0 50066441
+cfl=(21)
+cfn=(269)
+calls=18133 0
+0 883404967
+cfl=(21)
+cfn=(289) org::jenetics::util::math::subset(int, int, java::util::Random): int[]
+calls=18033 0
+0 6505969344
+cfl=(21)
+cfn=(290) org::jenetics::MeanAlterer::recombine(org::jenetics::Population, int[], int): int
+calls=18033 0
+0 61645599751
+
+fl=(8)
+fn=(46)
+0 3989651
+cfl=(8)
+cfn=(52)
+calls=100 0
+0 17470634
+
+fl=(8)
+fn=(52)
+0 2134768
+cfl=(8)
+cfn=(53)
+calls=100 0
+0 15335866
+
+fl=(8)
+fn=(53)
+0 15335866
+
+fl=(29)
+fn=(141)
+0 261988337
+
+fl=(42)
+fn=(268)
+0 5061778
+cfl=(42)
+cfn=(46)
+calls=100 0
+0 21233953
+cfl=(42)
+cfn=(274)
+calls=100 0
+0 23770710
+
+fl=(8)
+fn=(46)
+0 3992579
+cfl=(8)
+cfn=(52)
+calls=100 0
+0 17241374
+
+fl=(8)
+fn=(52)
+0 2088210
+cfl=(8)
+cfn=(53)
+calls=100 0
+0 15153164
+
+fl=(8)
+fn=(53)
+0 15153164
+
+fl=(42)
+fn=(274)
+0 2685613
+cfl=(42)
+cfn=(275)
+calls=100 0
+0 21085097
+
+fl=(43)
+fn=(275)
+0 6487169
+cfl=(43)
+cfn=(276)
+calls=100 0
+0 1417951
+cfl=(43)
+cfn=(278)
+calls=100 0
+0 13179977
+
+fl=(42)
+fn=(276)
+0 1417951
+
+fl=(44)
+fn=(278)
+0 13179977
+
+fl=(43)
+fn=(269)
+0 883404967
+
+fl=(9)
+fn=(289)
+0 1019086637
+cfl=(9)
+cfn=(291) org::jenetics::util::math::subset(int, int[], java::util::Random): int[]
+calls=18033 0
+0 5486882707
+
+fl=(9)
+fn=(291)
+0 3154241754
+cfl=(9)
+cfn=(292) org::jenetics::util::math::isMultiplicationSave(int, int): boolean
+calls=18033 0
+0 35817740
+cfl=(9)
+cfn=(293) org::jenetics::util::math::nextInt(java::util::Random, int, int): int
+calls=72193 0
+0 2296823213
+
+fl=(9)
+fn=(292)
+0 35817740
+
+fl=(9)
+fn=(293)
+0 2296823213
+
+fl=(34)
+fn=(290)
+0 9617529203
+cfl=(34)
+cfn=(46)
+calls=18033 0
+0 3844605083
+cfl=(34)
+cfn=(181)
+calls=36066 0
+0 1927301418
+cfl=(34)
+cfn=(270)
+calls=36066 0
+0 57947868
+cfl=(34)
+cfn=(167)
+calls=18033 0
+0 332916153
+cfl=(34)
+cfn=(280)
+calls=36066 0
+0 61837701
+cfl=(34)
+cfn=(281)
+calls=36066 0
+0 7427289631
+cfl=(34)
+cfn=(245)
+calls=36066 0
+0 1566412311
+cfl=(34)
+cfn=(282)
+calls=36066 0
+0 59280678
+cfl=(34)
+cfn=(68)
+calls=18033 0
+0 372973107
+cfl=(34)
+cfn=(294) org::jenetics::MeanAlterer::mean(org::jenetics::util::MSeq, org::jenetics::util::Seq): org::jenetics::util::MSeq
+calls=18033 0
+0 17985847381
+cfl=(34)
+cfn=(35)
+calls=36066 0
+0 5571378605
+cfl=(34)
+cfn=(285)
+calls=18033 0
+0 4407093497
+cfl=(34)
+cfn=(169)
+calls=18033 0
+0 671252745
+cfl=(34)
+cfn=(284)
+calls=18033 0
+0 715572097
+cfl=(34)
+cfn=(272)
+calls=18033 0
+0 5424988135
+cfl=(34)
+cfn=(273)
+calls=18033 0
+0 1601374138
+
+fl=(8)
+fn=(46)
+0 709021430
+cfl=(8)
+cfn=(52)
+calls=18033 0
+0 3135583653
+
+fl=(8)
+fn=(52)
+0 379348019
+cfl=(8)
+cfn=(53)
+calls=18033 0
+0 2756235634
+
+fl=(8)
+fn=(53)
+0 2756235634
+
+fl=(29)
+fn=(181)
+0 1927301418
+
+fl=(37)
+fn=(270)
+0 57947868
 
 fl=(13)
-fn=(274)
-0 7359615064
+fn=(167)
+0 307699851
 cfl=(13)
-cfn=(41)
-calls=17947 0
-0 112418724
-cfl=(13)
-cfn=(74)
-calls=17947 0
-0 92520401
-cfl=(13)
-cfn=(278) org::jenetics::util::ArrayISeq::upcast(org::jenetics::util::ISeq): org::jenetics::util::ISeq
-calls=17947 0
-0 112128988
-cfl=(13)
-cfn=(279) org::jenetics::Genotype::ngenes(org::jenetics::util::Seq): int
-calls=17947 0
-0 5705429441
-cfl=(13)
-cfn=(79)
-calls=17947 0
-0 902663766
-
-fl=(7)
-fn=(41)
-0 112418724
+cfn=(69)
+calls=18033 0
+0 25216302
 
 fl=(5)
-fn=(74)
-0 92520401
+fn=(69)
+0 25216302
+
+fl=(13)
+fn=(280)
+0 61837701
 
 fl=(11)
-fn=(278)
-0 112128988
-
-fl=(13)
-fn=(279)
-0 3290349961
-cfl=(13)
-cfn=(74)
-calls=17947 0
-0 87804227
-cfl=(13)
-cfn=(73)
-calls=17947 0
-0 1228653563
-cfl=(13)
-cfn=(78)
-calls=17947 0
-0 1098621690
-
-fl=(5)
-fn=(74)
-0 87804227
+fn=(281)
+0 3000228616
+cfl=(11)
+cfn=(133)
+calls=36066 0
+0 1314975621
+cfl=(11)
+cfn=(64)
+calls=36066 0
+0 527941899
+cfl=(11)
+cfn=(69)
+calls=36066 0
+0 49693328
+cfl=(11)
+cfn=(286)
+calls=36066 0
+0 2534450167
 
 fl=(5)
-fn=(73)
-0 1132697215
+fn=(133)
+0 1265916224
 cfl=(5)
-cfn=(75)
-calls=17947 0
-0 95956348
+cfn=(69)
+calls=36066 0
+0 49059397
 
 fl=(5)
-fn=(75)
-0 95956348
+fn=(69)
+0 49059397
+
+fl=(6)
+fn=(64)
+0 527941899
+
+fl=(5)
+fn=(69)
+0 49693328
+
+fl=(4)
+fn=(286)
+0 954134898
+cfl=(4)
+cfn=(39)
+calls=36066 0
+0 1580315269
+
+fl=(5)
+fn=(39)
+0 1580315269
+
+fl=(4)
+fn=(245)
+0 833364357
+cfl=(4)
+cfn=(68)
+calls=36066 0
+0 733047954
+
+fl=(5)
+fn=(68)
+0 675462159
+cfl=(5)
+cfn=(70)
+calls=36066 0
+0 57585795
+
+fl=(5)
+fn=(70)
+0 57585795
 
 fl=(2)
-fn=(78)
-0 1016175435
-cfl=(2)
-cfn=(74)
-calls=17947 0
-0 82446255
+fn=(282)
+0 59280678
 
 fl=(5)
-fn=(74)
-0 82446255
+fn=(68)
+0 344068026
+cfl=(5)
+cfn=(70)
+calls=18033 0
+0 28905081
+
+fl=(5)
+fn=(70)
+0 28905081
+
+fl=(34)
+fn=(294)
+0 1968500429
+cfl=(34)
+cfn=(134)
+calls=18033 0
+0 323082914
+cfl=(34)
+cfn=(245)
+calls=18033 0
+0 779176639
+cfl=(34)
+cfn=(68)
+calls=18033 0
+0 367554230
+cfl=(34)
+cfn=(295) org::jenetics::Float64Gene::mean(java::lang::Object): java::lang::Object
+calls=18033 0
+0 13866088457
+cfl=(34)
+cfn=(169)
+calls=18033 0
+0 681444712
+
+fl=(4)
+fn=(134)
+0 298008494
+cfl=(4)
+cfn=(69)
+calls=18033 0
+0 25074420
+
+fl=(5)
+fn=(69)
+0 25074420
+
+fl=(4)
+fn=(245)
+0 413938492
+cfl=(4)
+cfn=(68)
+calls=18033 0
+0 365238147
+
+fl=(5)
+fn=(68)
+0 336320523
+cfl=(5)
+cfn=(70)
+calls=18033 0
+0 28917624
+
+fl=(5)
+fn=(70)
+0 28917624
+
+fl=(5)
+fn=(68)
+0 339517332
+cfl=(5)
+cfn=(70)
+calls=18033 0
+0 28036898
+
+fl=(5)
+fn=(70)
+0 28036898
+
+fl=(7)
+fn=(295)
+0 506044588
+cfl=(7)
+cfn=(296) org::jenetics::Float64Gene::mean(org::jenetics::Float64Gene): org::jenetics::Float64Gene
+calls=18033 0
+0 13360043869
+
+fl=(7)
+fn=(296)
+0 1171901281
+cfl=(7)
+cfn=(297) org::jenetics::Float64Gene::newInstance(double): org::jenetics::Float64Gene
+calls=18033 0
+0 12188142588
+
+fl=(7)
+fn=(297)
+0 4444916836
+cfl=(7)
+cfn=(48)
+calls=18033 0
+0 7743225752
+
+fl=(7)
+fn=(48)
+0 2321186777
+cfl=(7)
+cfn=(54)
+calls=18033 0
+0 1666858067
+cfl=(7)
+cfn=(55)
+calls=18033 0
+0 3755180908
+
+fl=(7)
+fn=(54)
+0 371604178
+cfl=(7)
+cfn=(56)
+calls=18033 0
+0 1295253889
+
+fl=(7)
+fn=(56)
+0 295164723
+cfl=(7)
+cfn=(57)
+calls=18033 0
+0 1000089166
+
+fl=(7)
+fn=(57)
+0 289384098
+cfl=(7)
+cfn=(58)
+calls=18033 0
+0 710705068
+
+fl=(10)
+fn=(58)
+0 710705068
+
+fl=(10)
+fn=(55)
+0 3755180908
+
+fl=(4)
+fn=(169)
+0 624609004
+cfl=(4)
+cfn=(70)
+calls=18033 0
+0 30107580
+cfl=(4)
+cfn=(59)
+calls=18033 0
+0 26728128
+
+fl=(5)
+fn=(70)
+0 30107580
+
+fl=(6)
+fn=(59)
+0 26728128
+
+fl=(4)
+fn=(35)
+0 2465852980
+cfl=(4)
+cfn=(63)
+calls=36066 0
+0 58863664
+cfl=(4)
+cfn=(64)
+calls=36066 0
+0 524503599
+cfl=(4)
+cfn=(65)
+calls=36066 0
+0 2522158362
+
+fl=(6)
+fn=(63)
+0 58863664
+
+fl=(6)
+fn=(64)
+0 524503599
+
+fl=(11)
+fn=(65)
+0 948546415
+cfl=(11)
+cfn=(39)
+calls=36066 0
+0 1573611947
+
+fl=(5)
+fn=(39)
+0 1573611947
+
+fl=(3)
+fn=(285)
+0 513892652
+cfl=(3)
+cfn=(288)
+calls=18033 0
+0 3893200845
+
+fl=(3)
+fn=(288)
+0 434867606
+cfl=(3)
+cfn=(36)
+calls=18033 0
+0 3458333239
+
+fl=(3)
+fn=(36)
+0 431345391
+cfl=(3)
+cfn=(66)
+calls=18033 0
+0 3026987848
+
+fl=(12)
+fn=(66)
+0 1205192550
+cfl=(12)
+cfn=(67)
+calls=18033 0
+0 1087899194
+cfl=(12)
+cfn=(68)
+calls=36066 0
+0 733896104
+
+fl=(2)
+fn=(67)
+0 1061453258
+cfl=(2)
+cfn=(69)
+calls=18033 0
+0 26445936
+
+fl=(5)
+fn=(69)
+0 26445936
+
+fl=(5)
+fn=(68)
+0 678524932
+cfl=(5)
+cfn=(70)
+calls=36066 0
+0 55371172
+
+fl=(5)
+fn=(70)
+0 55371172
+
+fl=(4)
+fn=(169)
+0 616072810
+cfl=(4)
+cfn=(70)
+calls=18033 0
+0 28991013
+cfl=(4)
+cfn=(59)
+calls=18033 0
+0 26188922
+
+fl=(5)
+fn=(70)
+0 28991013
+
+fl=(6)
+fn=(59)
+0 26188922
 
 fl=(13)
-fn=(79)
-0 902663766
+fn=(284)
+0 453511554
+cfl=(13)
+cfn=(76)
+calls=18033 0
+0 262060543
 
-fl=(33)
-fn=(251)
-0 4422385027
-cfl=(33)
-cfn=(41)
-calls=17947 0
-0 118035357
-cfl=(33)
-cfn=(141)
-calls=17947 0
-0 14829717947
+fl=(13)
+fn=(76)
+0 262060543
 
-fl=(7)
-fn=(41)
-0 118035357
+fl=(37)
+fn=(272)
+0 1279908736
+cfl=(37)
+cfn=(165)
+calls=18033 0
+0 4145079399
 
-fl=(33)
-fn=(141)
-0 11207635123
-cfl=(33)
-cfn=(41)
-calls=53841 0
-0 330743636
-cfl=(33)
-cfn=(152)
-calls=17947 0
-0 3291339188
+fl=(37)
+fn=(165)
+0 3163690066
+cfl=(37)
+cfn=(173)
+calls=18033 0
+0 981389333
 
-fl=(7)
-fn=(41)
-0 330743636
+fl=(37)
+fn=(173)
+0 430279262
+cfl=(37)
+cfn=(174)
+calls=18033 0
+0 551110071
 
-fl=(33)
-fn=(152)
-0 1445318200
-cfl=(33)
+fl=(37)
+fn=(174)
+0 294819004
+cfl=(37)
+cfn=(175)
+calls=18033 0
+0 256291067
+
+fl=(37)
+fn=(175)
+0 256291067
+
+fl=(29)
+fn=(273)
+0 1601374138
+
+fl=(15)
+fn=(247)
+0 36128500
+cfl=(15)
+cfn=(108)
+calls=100 0
+0 9825618
+cfl=(15)
+cfn=(149)
+calls=100 0
+0 72395845
+cfl=(15)
+cfn=(298) org::jenetics::GeneticAlgorithm$3::<init>(org::jenetics::GeneticAlgorithm, org::jenetics::Population): void
+calls=100 0
+0 1531526
+cfl=(15)
 cfn=(153)
-calls=17947 0
-0 1846020988
-
-fl=(33)
-fn=(153)
-0 984041535
-cfl=(33)
-cfn=(154)
-calls=17947 0
-0 861979453
-
-fl=(33)
-fn=(154)
-0 861979453
-
-fl=(27)
-fn=(252)
-0 5511181867
-cfl=(27)
-cfn=(41)
-calls=17947 0
-0 110235067
-
-fl=(7)
-fn=(41)
-0 110235067
-
-fl=(15)
-fn=(231)
-0 197321653
-cfl=(15)
-cfn=(109)
 calls=100 0
-0 24138180
+0 31093264
 cfl=(15)
-cfn=(161)
-calls=100 0
-0 253437440
-cfl=(15)
-cfn=(280) org::jenetics::GeneticAlgorithm$3::<init>(org::jenetics::GeneticAlgorithm, org::jenetics::Population): void
-calls=100 0
-0 5135296
-cfl=(15)
-cfn=(163)
+cfn=(299) org::jenetics::Population::addAll(java::util::Collection): boolean
 calls=200 0
-0 262463701
+0 71388770
 cfl=(15)
-cfn=(281) org::jenetics::GeneticAlgorithm$4::<init>(org::jenetics::GeneticAlgorithm, org::jenetics::Population, org::jenetics::Population): void
+cfn=(154)
 calls=100 0
-0 6984409
-cfl=(15)
-cfn=(164)
-calls=100 0
-0 16894806426
-cfl=(15)
-cfn=(282) org::jenetics::Population::addAll(java::util::Collection): boolean
-calls=100 0
-0 79007363
+0 5625355972
 
-fl=(27)
-fn=(109)
-0 24138180
+fl=(29)
+fn=(108)
+0 8352170
+cfl=(29)
+cfn=(136)
+calls=100 0
+0 1473448
 
-fl=(34)
-fn=(161)
-0 253437440
+fl=(29)
+fn=(136)
+0 1473448
+
+fl=(35)
+fn=(149)
+0 72395845
 
 fl=(15)
-fn=(280)
-0 5135296
+fn=(298)
+0 1531526
 
-fl=(34)
-fn=(163)
-0 262463701
+fl=(35)
+fn=(153)
+0 31093264
 
-fl=(15)
-fn=(281)
-0 6984409
+fl=(29)
+fn=(299)
+0 27292384
+cfl=(29)
+cfn=(300) org::jenetics::Population::toArray(): java::lang::Object[]
+calls=200 0
+0 44096386
 
-fl=(34)
-fn=(164)
-0 16894806426
+fl=(29)
+fn=(300)
+0 44096386
 
-fl=(27)
-fn=(282)
-0 29761744
-cfl=(27)
-cfn=(283) org::jenetics::Population::toArray(): java::lang::Object[]
-calls=100 0
-0 49245619
-
-fl=(27)
-fn=(283)
-0 49245619
+fl=(35)
+fn=(154)
+0 5625355972
 
 fl=(15)
-fn=(155)
-0 12633725678
+fn=(176)
+0 3935753357
 cfl=(15)
 cfn=(144)
 calls=100 0
-0 5048958
+0 2875822
 cfl=(15)
-cfn=(161)
+cfn=(149)
 calls=100 0
-0 259678573
+0 150855953
 cfl=(15)
-cfn=(138)
+cfn=(141)
 calls=100 0
-0 5169881
+0 3105508
 cfl=(15)
-cfn=(162)
+cfn=(181)
 calls=50000 0
-0 15376946800
+0 4798463920
 cfl=(15)
-cfn=(163)
+cfn=(153)
 calls=50000 0
-0 115933814722
+0 33751572587
 cfl=(15)
-cfn=(164)
+cfn=(154)
 calls=100 0
-0 831848216
+0 240643022
 cfl=(15)
-cfn=(158)
-calls=100 0
-0 40562591
-
-fl=(29)
-fn=(144)
-0 5048958
-
-fl=(34)
-fn=(161)
-0 259678573
-
-fl=(27)
-fn=(138)
-0 5169881
-
-fl=(27)
-fn=(162)
-0 15376946800
-
-fl=(34)
-fn=(163)
-0 89589228925
-cfl=(34)
-cfn=(166)
-calls=10323 0
-0 26344585797
-
-fl=(33)
-fn=(166)
-0 1029440721
-cfl=(33)
-cfn=(167)
-calls=10323 0
-0 25315145076
-
-fl=(33)
-fn=(167)
-0 2210658154
-cfl=(33)
-cfn=(168)
-calls=7242 0
-0 23032669730
-cfl=(33)
-cfn=(169)
-calls=7242 0
-0 71817192
-
-fl=(14)
-fn=(168)
-0 1230273439
-cfl=(14)
-cfn=(170)
-calls=7242 0
-0 21802396291
-
-fl=(14)
-fn=(170)
-0 16345258179
-cfl=(14)
-cfn=(171)
-calls=7242 0
-0 4758693453
-cfl=(14)
-cfn=(172)
-calls=7242 0
-0 698444659
-
-fl=(13)
-fn=(171)
-0 1920948019
-cfl=(13)
-cfn=(73)
-calls=7242 0
-0 916007435
-cfl=(13)
-cfn=(173)
-calls=7242 0
-0 1921737999
-
-fl=(5)
-fn=(73)
-0 846795114
-cfl=(5)
-cfn=(75)
-calls=7242 0
-0 69212321
-
-fl=(5)
-fn=(75)
-0 69212321
-
-fl=(2)
-fn=(173)
-0 1014096063
-cfl=(2)
-cfn=(73)
-calls=7242 0
-0 907641936
-
-fl=(5)
-fn=(73)
-0 838608028
-cfl=(5)
-cfn=(75)
-calls=7242 0
-0 69033908
-
-fl=(5)
-fn=(75)
-0 69033908
-
-fl=(10)
-fn=(172)
-0 698444659
-
-fl=(17)
-fn=(169)
-0 71817192
-
-fl=(34)
-fn=(164)
-0 831848216
-
-fl=(29)
-fn=(158)
-0 39828986
-cfl=(29)
-cfn=(174)
-calls=100 0
-0 733605
-
-fl=(30)
-fn=(174)
-0 733605
-
-fl=(31)
-fn=(156)
-0 12781953
-cfl=(31)
-cfn=(175)
-calls=100 0
-0 117361840416
-
-fl=(31)
-fn=(175)
-0 233813031
-cfl=(31)
-cfn=(176)
-calls=100 0
-0 11047464
-cfl=(31)
-cfn=(177)
-calls=100 0
-0 824143
-cfl=(31)
-cfn=(178)
-calls=100 0
-0 12737598
-cfl=(31)
 cfn=(179)
 calls=100 0
-0 10830067
-cfl=(31)
-cfn=(180)
-calls=200 0
-0 31870303
-cfl=(31)
-cfn=(181)
-calls=100 0
-0 11610672
-cfl=(31)
+0 12420296
+
+fl=(31)
+fn=(144)
+0 2875822
+
+fl=(35)
+fn=(149)
+0 150855953
+
+fl=(29)
+fn=(141)
+0 3105508
+
+fl=(29)
+fn=(181)
+0 4798463920
+
+fl=(35)
+fn=(153)
+0 25989460721
+cfl=(35)
 cfn=(182)
-calls=200 0
-0 66556462
-cfl=(31)
+calls=10072 0
+0 7762111866
+
+fl=(37)
+fn=(182)
+0 311715942
+cfl=(37)
 cfn=(183)
-calls=100 0
-0 10571977
-cfl=(31)
+calls=10072 0
+0 7450395924
+
+fl=(37)
+fn=(183)
+0 664532103
+cfl=(37)
 cfn=(184)
-calls=100 0
-0 116812391844
-cfl=(31)
+calls=6948 0
+0 6765798167
+cfl=(37)
 cfn=(185)
-calls=200 0
-0 1657120
-cfl=(31)
+calls=6948 0
+0 20065654
+
+fl=(14)
+fn=(184)
+0 373456240
+cfl=(14)
 cfn=(186)
-calls=200 0
-0 1168145
-cfl=(31)
+calls=6948 0
+0 6392341927
+
+fl=(14)
+fn=(186)
+0 4717564728
+cfl=(14)
 cfn=(187)
-calls=100 0
-0 73562891
-cfl=(31)
+calls=6948 0
+0 1465202675
+cfl=(14)
 cfn=(188)
-calls=100 0
-0 967965
-cfl=(31)
+calls=6948 0
+0 209574524
+
+fl=(13)
+fn=(187)
+0 587265159
+cfl=(13)
+cfn=(68)
+calls=6948 0
+0 285120019
+cfl=(13)
 cfn=(189)
-calls=100 0
-0 73114907
+calls=6948 0
+0 592817497
+
+fl=(5)
+fn=(68)
+0 263679076
+cfl=(5)
+cfn=(70)
+calls=6948 0
+0 21440943
+
+fl=(5)
+fn=(70)
+0 21440943
+
+fl=(2)
+fn=(189)
+0 311235865
+cfl=(2)
+cfn=(68)
+calls=6948 0
+0 281581632
+
+fl=(5)
+fn=(68)
+0 258185430
+cfl=(5)
+cfn=(70)
+calls=6948 0
+0 23396202
+
+fl=(5)
+fn=(70)
+0 23396202
+
+fl=(10)
+fn=(188)
+0 209574524
+
+fl=(17)
+fn=(185)
+0 20065654
+
+fl=(35)
+fn=(154)
+0 240643022
+
+fl=(31)
+fn=(179)
+0 12192826
 cfl=(31)
 cfn=(190)
 calls=100 0
-0 850385
-cfl=(31)
-cfn=(191)
-calls=200 0
-0 1222482
-cfl=(31)
-cfn=(192)
-calls=100 0
-0 768230
-cfl=(31)
-cfn=(193)
-calls=200 0
-0 1549943
-cfl=(31)
-cfn=(194)
-calls=100 0
-0 647046
-cfl=(31)
-cfn=(195)
-calls=100 0
-0 569104
-cfl=(31)
-cfn=(196)
-calls=100 0
-0 684180
-cfl=(31)
-cfn=(197)
-calls=100 0
-0 689479
-cfl=(31)
-cfn=(198)
-calls=100 0
-0 665572
-cfl=(31)
-cfn=(199)
-calls=100 0
-0 764683
-cfl=(31)
-cfn=(200)
-calls=100 0
-0 704723
+0 227470
 
-fl=(31)
-fn=(176)
-0 5931479
-cfl=(31)
-cfn=(201)
-calls=100 0
-0 5115985
-
-fl=(28)
-fn=(201)
-0 5115985
-
-fl=(28)
-fn=(177)
-0 824143
-
-fl=(28)
-fn=(178)
-0 11919976
-cfl=(28)
-cfn=(41)
-calls=100 0
-0 817622
-
-fl=(7)
-fn=(41)
-0 817622
-
-fl=(30)
-fn=(179)
-0 5972841
-cfl=(30)
-cfn=(202)
-calls=100 0
-0 4857226
-
-fl=(35)
-fn=(202)
-0 4857226
-
-fl=(36)
-fn=(180)
-0 11347019
-cfl=(36)
-cfn=(203)
-calls=200 0
-0 20523284
-
-fl=(37)
-fn=(203)
-0 11070262
-cfl=(37)
-cfn=(202)
-calls=200 0
-0 9453022
-
-fl=(35)
-fn=(202)
-0 9453022
+fl=(32)
+fn=(190)
+0 227470
 
 fl=(33)
-fn=(181)
-0 6595973
+fn=(177)
+0 7112507
+cfl=(33)
+cfn=(191)
+calls=100 0
+0 35864399887
+
+fl=(33)
+fn=(191)
+0 148107799
+cfl=(33)
+cfn=(192)
+calls=100 0
+0 3364699
+cfl=(33)
+cfn=(193)
+calls=100 0
+0 282834
+cfl=(33)
+cfn=(194)
+calls=100 0
+0 3321270
+cfl=(33)
+cfn=(195)
+calls=100 0
+0 3249531
+cfl=(33)
+cfn=(196)
+calls=200 0
+0 9511881
+cfl=(33)
+cfn=(197)
+calls=100 0
+0 3449236
+cfl=(33)
+cfn=(198)
+calls=200 0
+0 18658665
+cfl=(33)
+cfn=(199)
+calls=100 0
+0 3180486
+cfl=(33)
+cfn=(200)
+calls=100 0
+0 35542189020
+cfl=(33)
+cfn=(201)
+calls=200 0
+0 1237160
+cfl=(33)
+cfn=(202)
+calls=200 0
+0 924796
+cfl=(33)
+cfn=(203)
+calls=100 0
+0 58372070
 cfl=(33)
 cfn=(204)
 calls=100 0
-0 5014699
-
-fl=(33)
-fn=(204)
-0 5014699
-
-fl=(35)
-fn=(182)
-0 43896596
-cfl=(35)
-cfn=(41)
-calls=200 0
-0 1360297
-cfl=(35)
+0 751986
+cfl=(33)
 cfn=(205)
-calls=200 0
-0 21299569
-
-fl=(7)
-fn=(41)
-0 1360297
-
-fl=(35)
-fn=(205)
-0 11794159
-cfl=(35)
-cfn=(202)
-calls=200 0
-0 9505410
-
-fl=(35)
-fn=(202)
-0 9505410
-
-fl=(33)
-fn=(183)
-0 5814075
+calls=100 0
+0 60172513
 cfl=(33)
 cfn=(206)
 calls=100 0
-0 4757902
-
-fl=(33)
-fn=(206)
-0 4757902
-
-fl=(30)
-fn=(184)
-0 89923252
-cfl=(30)
-cfn=(161)
-calls=100 0
-0 253683729
-cfl=(30)
+0 679210
+cfl=(33)
 cfn=(207)
-calls=300 0
-0 19876734
-cfl=(30)
-cfn=(163)
-calls=300 0
-0 469531884
-cfl=(30)
-cfn=(164)
-calls=100 0
-0 115979376245
-
-fl=(34)
-fn=(161)
-0 253683729
-
-fl=(30)
-fn=(207)
-0 19876734
-
-fl=(34)
-fn=(163)
-0 469531884
-
-fl=(34)
-fn=(164)
-0 115979376245
-
-fl=(30)
-fn=(185)
-0 1657120
-
-fl=(30)
-fn=(186)
-0 1168145
-
-fl=(16)
-fn=(187)
-0 10620649
-cfl=(16)
+calls=200 0
+0 1010944
+cfl=(33)
 cfn=(208)
 calls=100 0
-0 62942242
-
-fl=(16)
-fn=(208)
-0 8210085
-cfl=(16)
+0 663133
+cfl=(33)
 cfn=(209)
-calls=100 0
-0 54732157
-
-fl=(33)
-fn=(209)
-0 8063339
+calls=200 0
+0 1279076
 cfl=(33)
 cfn=(210)
 calls=100 0
-0 46668818
-
-fl=(33)
-fn=(210)
-0 34384720
+0 560935
 cfl=(33)
 cfn=(211)
-calls=200 0
-0 12284098
-
-fl=(33)
-fn=(211)
-0 11181327
-cfl=(33)
-cfn=(167)
-calls=200 0
-0 1102771
-
-fl=(33)
-fn=(167)
-0 1102771
-
-fl=(28)
-fn=(188)
-0 967965
-
-fl=(16)
-fn=(189)
-0 10404841
-cfl=(16)
-cfn=(208)
 calls=100 0
-0 62710066
-
-fl=(16)
-fn=(208)
-0 8130468
-cfl=(16)
-cfn=(209)
+0 503487
+cfl=(33)
+cfn=(212)
 calls=100 0
-0 54579598
-
-fl=(33)
-fn=(209)
-0 8131598
+0 629412
 cfl=(33)
-cfn=(210)
+cfn=(213)
 calls=100 0
-0 46448000
-
-fl=(33)
-fn=(210)
-0 34105289
+0 553886
 cfl=(33)
-cfn=(211)
-calls=200 0
-0 12342711
-
-fl=(33)
-fn=(211)
-0 11327226
+cfn=(214)
+calls=100 0
+0 563268
 cfl=(33)
-cfn=(167)
-calls=200 0
-0 1015485
+cfn=(215)
+calls=100 0
+0 619257
+cfl=(33)
+cfn=(216)
+calls=100 0
+0 563333
 
 fl=(33)
-fn=(167)
-0 1015485
+fn=(192)
+0 1844337
+cfl=(33)
+cfn=(217)
+calls=100 0
+0 1520362
 
-fl=(28)
-fn=(190)
-0 850385
+fl=(30)
+fn=(217)
+0 1520362
+
+fl=(30)
+fn=(193)
+0 282834
+
+fl=(30)
+fn=(194)
+0 3321270
+
+fl=(32)
+fn=(195)
+0 1808939
+cfl=(32)
+cfn=(218)
+calls=100 0
+0 1440592
+
+fl=(38)
+fn=(218)
+0 1440592
+
+fl=(39)
+fn=(196)
+0 3427538
+cfl=(39)
+cfn=(219)
+calls=200 0
+0 6084343
+
+fl=(40)
+fn=(219)
+0 3330690
+cfl=(40)
+cfn=(218)
+calls=200 0
+0 2753653
+
+fl=(38)
+fn=(218)
+0 2753653
 
 fl=(37)
-fn=(191)
-0 1222482
-
-fl=(31)
-fn=(192)
-0 768230
-
-fl=(36)
-fn=(193)
-0 1549943
-
-fl=(31)
-fn=(194)
-0 647046
-
-fl=(35)
-fn=(195)
-0 569104
-
-fl=(28)
-fn=(196)
-0 684180
-
-fl=(28)
 fn=(197)
-0 689479
+0 2008216
+cfl=(37)
+cfn=(220)
+calls=100 0
+0 1441020
 
-fl=(28)
+fl=(37)
+fn=(220)
+0 1441020
+
+fl=(38)
 fn=(198)
-0 665572
+0 12400738
+cfl=(38)
+cfn=(221)
+calls=200 0
+0 6257927
+
+fl=(38)
+fn=(221)
+0 3471492
+cfl=(38)
+cfn=(218)
+calls=200 0
+0 2786435
+
+fl=(38)
+fn=(218)
+0 2786435
 
 fl=(37)
 fn=(199)
-0 764683
+0 1733901
+cfl=(37)
+cfn=(222)
+calls=100 0
+0 1446585
 
-fl=(31)
+fl=(37)
+fn=(222)
+0 1446585
+
+fl=(32)
 fn=(200)
-0 704723
-
-fl=(28)
-fn=(232)
-0 822076
-
-fl=(28)
-fn=(233)
-0 678933
-
-fl=(31)
-fn=(157)
-0 7497067
-cfl=(31)
-cfn=(212)
+0 27700222
+cfl=(32)
+cfn=(149)
 calls=100 0
-0 131264836
-
-fl=(31)
-fn=(212)
-0 14634675
-cfl=(31)
-cfn=(215)
+0 71783176
+cfl=(32)
+cfn=(223)
+calls=300 0
+0 5887761
+cfl=(32)
+cfn=(153)
+calls=300 0
+0 128238242
+cfl=(32)
+cfn=(154)
 calls=100 0
-0 116630161
+0 35308579619
 
-fl=(31)
-fn=(215)
-0 14179022
-cfl=(31)
-cfn=(218)
-calls=100 0
-0 102451139
+fl=(35)
+fn=(149)
+0 71783176
 
-fl=(28)
-fn=(218)
-0 18279929
-cfl=(28)
-cfn=(220)
-calls=100 0
-0 79344304
-cfl=(28)
-cfn=(221)
-calls=100 0
-0 4826906
+fl=(32)
+fn=(223)
+0 5887761
 
-fl=(28)
-fn=(220)
-0 50284921
-cfl=(28)
-cfn=(221)
-calls=600 0
-0 29059383
+fl=(35)
+fn=(153)
+0 128238242
 
-fl=(38)
-fn=(221)
-0 29059383
+fl=(35)
+fn=(154)
+0 35308579619
 
-fl=(38)
-fn=(221)
-0 4826906
+fl=(32)
+fn=(201)
+0 1237160
 
-fl=(28)
-fn=(234)
-0 1245715
+fl=(32)
+fn=(202)
+0 924796
 
 fl=(16)
-fn=(208)
-0 7994237
+fn=(203)
+0 8350725
 cfl=(16)
-cfn=(209)
+cfn=(224)
 calls=100 0
-0 72748558
+0 50021345
+
+fl=(16)
+fn=(224)
+0 6374667
+cfl=(16)
+cfn=(225)
+calls=100 0
+0 43646678
+
+fl=(37)
+fn=(225)
+0 6438104
+cfl=(37)
+cfn=(226)
+calls=100 0
+0 37208574
+
+fl=(37)
+fn=(226)
+0 27427055
+cfl=(37)
+cfn=(227)
+calls=200 0
+0 9781519
+
+fl=(37)
+fn=(227)
+0 8980136
+cfl=(37)
+cfn=(183)
+calls=200 0
+0 801383
+
+fl=(37)
+fn=(183)
+0 801383
+
+fl=(30)
+fn=(204)
+0 751986
+
+fl=(16)
+fn=(205)
+0 8568036
+cfl=(16)
+cfn=(224)
+calls=100 0
+0 51604477
+
+fl=(16)
+fn=(224)
+0 6604960
+cfl=(16)
+cfn=(225)
+calls=100 0
+0 44999517
+
+fl=(37)
+fn=(225)
+0 6784826
+cfl=(37)
+cfn=(226)
+calls=100 0
+0 38214691
+
+fl=(37)
+fn=(226)
+0 28078636
+cfl=(37)
+cfn=(227)
+calls=200 0
+0 10136055
+
+fl=(37)
+fn=(227)
+0 9258253
+cfl=(37)
+cfn=(183)
+calls=200 0
+0 877802
+
+fl=(37)
+fn=(183)
+0 877802
+
+fl=(30)
+fn=(206)
+0 679210
+
+fl=(40)
+fn=(207)
+0 1010944
 
 fl=(33)
+fn=(208)
+0 663133
+
+fl=(39)
 fn=(209)
-0 7960023
-cfl=(33)
-cfn=(210)
-calls=100 0
-0 64788535
+0 1279076
 
 fl=(33)
 fn=(210)
-0 52608618
-cfl=(33)
-cfn=(211)
-calls=200 0
-0 12179917
+0 560935
 
-fl=(33)
+fl=(38)
 fn=(211)
-0 11220070
-cfl=(33)
-cfn=(167)
-calls=200 0
-0 959847
+0 503487
+
+fl=(30)
+fn=(212)
+0 629412
+
+fl=(30)
+fn=(213)
+0 553886
+
+fl=(30)
+fn=(214)
+0 563268
+
+fl=(40)
+fn=(215)
+0 619257
 
 fl=(33)
-fn=(167)
-0 959847
+fn=(216)
+0 563333
+
+fl=(30)
+fn=(248)
+0 658882
+
+fl=(30)
+fn=(249)
+0 577869
+
+fl=(33)
+fn=(178)
+0 6092296
+cfl=(33)
+cfn=(228)
+calls=100 0
+0 107076999
+
+fl=(33)
+fn=(228)
+0 12237109
+cfl=(33)
+cfn=(231)
+calls=100 0
+0 94839890
+
+fl=(33)
+fn=(231)
+0 11936406
+cfl=(33)
+cfn=(234)
+calls=100 0
+0 82903484
+
+fl=(30)
+fn=(234)
+0 15147330
+cfl=(30)
+cfn=(236)
+calls=100 0
+0 63858909
+cfl=(30)
+cfn=(237)
+calls=100 0
+0 3897245
+
+fl=(30)
+fn=(236)
+0 40226938
+cfl=(30)
+cfn=(237)
+calls=600 0
+0 23631971
+
+fl=(41)
+fn=(237)
+0 23631971
+
+fl=(41)
+fn=(237)
+0 3897245
+
+fl=(30)
+fn=(250)
+0 1000454
+
+fl=(16)
+fn=(224)
+0 6404483
+cfl=(16)
+cfn=(225)
+calls=100 0
+0 57372299
+
+fl=(37)
+fn=(225)
+0 6366348
+cfl=(37)
+cfn=(226)
+calls=100 0
+0 51005951
+
+fl=(37)
+fn=(226)
+0 41334248
+cfl=(37)
+cfn=(227)
+calls=200 0
+0 9671703
+
+fl=(37)
+fn=(227)
+0 8909619
+cfl=(37)
+cfn=(183)
+calls=200 0
+0 762084
+
+fl=(37)
+fn=(183)
+0 762084
 
 fl=(15)
-fn=(159)
-0 130288321
+fn=(180)
+0 80174253
 cfl=(15)
-cfn=(223)
+cfn=(239)
 calls=600 0
-0 48320262
+0 30420688
 cfl=(15)
-cfn=(224)
+cfn=(240)
 calls=600 0
-0 390216042
+0 248302776
 cfl=(15)
-cfn=(225)
+cfn=(241)
 calls=600 0
-0 3933256
+0 2346180
 
-fl=(28)
-fn=(223)
-0 45047177
-cfl=(28)
-cfn=(226)
+fl=(30)
+fn=(239)
+0 28331915
+cfl=(30)
+cfn=(242)
 calls=600 0
-0 3273085
+0 2088773
 
-fl=(38)
-fn=(226)
-0 3273085
+fl=(41)
+fn=(242)
+0 2088773
 
-fl=(29)
-fn=(224)
-0 390216042
+fl=(31)
+fn=(240)
+0 248302776
 
-fl=(38)
-fn=(225)
-0 3933256
+fl=(41)
+fn=(241)
+0 2346180
 
 fl=(15)
 fn=(19)
-0 15946
+0 5454
 
-fl=(31)
+fl=(33)
 fn=(20)
-0 164720489
-cfl=(31)
-cfn=(284) org::jenetics::Statistics::toString(): java::lang::String
-calls=1 0
-0 928544677
-
-fl=(28)
-fn=(284)
-0 928219544
-cfl=(28)
-cfn=(285) org::jenetics::Statistics::getBestFitness(): java::lang::Comparable
-calls=1 0
-0 169279
-cfl=(28)
-cfn=(286) org::jenetics::Statistics::getWorstFitness(): java::lang::Comparable
-calls=1 0
-0 155854
-
-fl=(28)
-fn=(285)
-0 99631
-cfl=(28)
-cfn=(211)
-calls=1 0
-0 69648
-
-fl=(33)
-fn=(211)
-0 62377
+0 48197568
 cfl=(33)
-cfn=(167)
+cfn=(301) org::jenetics::Statistics::toString(): java::lang::String
 calls=1 0
-0 7271
+0 276190001
 
-fl=(33)
-fn=(167)
-0 7271
-
-fl=(28)
-fn=(286)
-0 87369
-cfl=(28)
-cfn=(211)
+fl=(30)
+fn=(301)
+0 276093447
+cfl=(30)
+cfn=(302) org::jenetics::Statistics::getBestFitness(): java::lang::Comparable
 calls=1 0
-0 68485
-
-fl=(33)
-fn=(211)
-0 61754
-cfl=(33)
-cfn=(167)
+0 49442
+cfl=(30)
+cfn=(303) org::jenetics::Statistics::getWorstFitness(): java::lang::Comparable
 calls=1 0
-0 6731
+0 47112
 
-fl=(33)
-fn=(167)
-0 6731
+fl=(30)
+fn=(302)
+0 28431
+cfl=(30)
+cfn=(227)
+calls=1 0
+0 21011
+
+fl=(37)
+fn=(227)
+0 18931
+cfl=(37)
+cfn=(183)
+calls=1 0
+0 2080
+
+fl=(37)
+fn=(183)
+0 2080
+
+fl=(30)
+fn=(303)
+0 26606
+cfl=(30)
+cfn=(227)
+calls=1 0
+0 20506
+
+fl=(37)
+fn=(227)
+0 18290
+cfl=(37)
+cfn=(183)
+calls=1 0
+0 2216
+
+fl=(37)
+fn=(183)
+0 2216
 
 fl=(15)
 fn=(21)
-0 90651
+0 26648
 cfl=(15)
-cfn=(234)
+cfn=(250)
 calls=1 0
-0 8329
+0 2190
 
-fl=(28)
-fn=(234)
-0 8329
+fl=(30)
+fn=(250)
+0 2190
 
-fl=(33)
+fl=(37)
 fn=(22)
-0 8109820
-cfl=(33)
-cfn=(287) org::jenetics::Phenotype::toText(): javolution::text::Text
+0 2395604
+cfl=(37)
+cfn=(304) org::jenetics::Phenotype::toText(): javolution::text::Text
 calls=1 0
-0 13592400
-cfl=(33)
-cfn=(211)
+0 3926738
+cfl=(37)
+cfn=(227)
 calls=1 0
-0 69432
+0 20591
 
-fl=(33)
-fn=(287)
-0 87202
-cfl=(33)
-cfn=(288) org::jenetics::Genotype::toText(): javolution::text::Text
+fl=(37)
+fn=(304)
+0 25939
+cfl=(37)
+cfn=(305) org::jenetics::Genotype::toText(): javolution::text::Text
 calls=1 0
-0 13505198
+0 3900799
 
 fl=(13)
-fn=(288)
-0 507006
+fn=(305)
+0 150742
 cfl=(13)
-cfn=(289) org::jenetics::util::ArraySeq::toString(): java::lang::String
+cfn=(306) org::jenetics::util::ArraySeq::toString(): java::lang::String
 calls=1 0
-0 12998192
+0 3750057
 
 fl=(5)
-fn=(289)
-0 148863
+fn=(306)
+0 44560
 cfl=(5)
-cfn=(290) org::jenetics::util::ArraySeq::toString(java::lang::String, java::lang::String, java::lang::String): java::lang::String
+cfn=(307) org::jenetics::util::ArraySeq::toString(java::lang::String, java::lang::String, java::lang::String): java::lang::String
 calls=1 0
-0 12849329
+0 3705497
 
 fl=(5)
-fn=(290)
-0 2441889
+fn=(307)
+0 679488
 cfl=(5)
-cfn=(74)
+cfn=(69)
 calls=1 0
-0 8264
+0 2278
 cfl=(5)
-cfn=(291) org::jenetics::AbstractChromosome::toString(): java::lang::String
+cfn=(308) org::jenetics::AbstractChromosome::toString(): java::lang::String
 calls=1 0
-0 10399176
+0 3023731
 
 fl=(5)
-fn=(74)
-0 8264
+fn=(69)
+0 2278
 
 fl=(2)
-fn=(291)
-0 88977
+fn=(308)
+0 26099
 cfl=(2)
-cfn=(289)
+cfn=(306)
 calls=1 0
-0 10310199
+0 2997632
 
 fl=(5)
-fn=(289)
-0 136630
+fn=(306)
+0 40831
 cfl=(5)
-cfn=(290)
+cfn=(307)
 calls=1 0
-0 10173569
+0 2956801
 
 fl=(5)
-fn=(290)
-0 2664006
+fn=(307)
+0 791058
 cfl=(5)
-cfn=(74)
+cfn=(69)
 calls=1 0
-0 6811
+0 1930
 cfl=(5)
-cfn=(292) org::jenetics::NumberGene::toText(): javolution::text::Text
+cfn=(309) org::jenetics::NumberGene::toText(): javolution::text::Text
 calls=1 0
-0 7502752
+0 2163813
 
 fl=(5)
-fn=(74)
-0 6811
+fn=(69)
+0 1930
 
 fl=(10)
-fn=(292)
-0 7502752
+fn=(309)
+0 2163813
 
-fl=(33)
-fn=(211)
-0 62466
-cfl=(33)
-cfn=(167)
+fl=(37)
+fn=(227)
+0 18549
+cfl=(37)
+cfn=(183)
 calls=1 0
-0 6966
+0 2042
 
-fl=(33)
-fn=(167)
-0 6966
+fl=(37)
+fn=(183)
+0 2042
 

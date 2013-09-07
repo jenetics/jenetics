@@ -2,31 +2,30 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Random;
 
+import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -43,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -53,13 +52,6 @@ public class TournamentSelector<
 {
 
 	private final int _sampleSize;
-
-	/**
-	 * Create a tournament selector with sample size two.
-	 */
-	public TournamentSelector() {
-		this(2);
-	}
 
 	/**
 	 * Create a tournament selector with the give sample size. The sample size
@@ -77,9 +69,16 @@ public class TournamentSelector<
 	}
 
 	/**
+	 * Create a tournament selector with sample size two.
+	 */
+	public TournamentSelector() {
+		this(2);
+	}
+
+	/**
 	 * @throws IllegalArgumentException if the sample size is greater than the
-	 *          population size or {@code count} is greater the the population
-	 *          size or the _sampleSize is greater the the population size.
+	 *         population size or {@code count} is greater the the population
+	 *         size or the _sampleSize is greater the the population size.
 	 * @throws NullPointerException if the {@code population} is {@code null}.
 	 */
 	@Override
@@ -88,52 +87,75 @@ public class TournamentSelector<
 		final int count,
 		final Optimize opt
 	) {
-		nonNull(population, "Population");
-		nonNull(opt, "Optimization");
+		requireNonNull(population, "Population");
+		requireNonNull(opt, "Optimization");
 		if (count < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection count must be greater or equal then zero, but was %s",
 				count
 			));
 		}
 		if (count > population.size()) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Selection size greater than population size: %s > %s",
 				count, population.size()
 			));
 		}
 		if (_sampleSize > population.size()) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Tournament size is greater than the population size! %d > %d.",
 				 _sampleSize, population.size()
 			));
 		}
 
 		final Population<G, C> pop = new Population<>(count);
-		if (count == 0) {
-			return pop;
-		}
+		final Factory<Phenotype<G, C>> factory = factory(
+			population, opt, _sampleSize, RandomRegistry.getRandom()
+		);
 
-		Phenotype<G, C> winner = null;
+		return pop.fill(factory, count);
+	}
 
-		final int N = population.size();
-		final Random random = RandomRegistry.getRandom();
-
-		for (int i = 0; i < count; ++i) {
-			winner = population.get(random.nextInt(N));
-
-			for (int j = 0; j < _sampleSize; ++j) {
-				final Phenotype<G, C> selection = population.get(random.nextInt(N));
-				if (opt.compare(selection, winner) > 0) {
-					winner = selection;
-				}
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Factory<Phenotype<G, C>> factory(
+		final Population<G, C> population,
+		final Optimize opt,
+		final int sampleSize,
+		final Random random
+	) {
+		return new Factory<Phenotype<G, C>>() {
+			@Override
+			public Phenotype<G, C> newInstance() {
+				return select(population, opt, sampleSize, random);
 			}
+		};
+	}
 
-			assert (winner != null);
-			pop.add(winner);
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	Phenotype<G, C> select(
+		final Population<G, C> population,
+		final Optimize opt,
+		final int sampleSize,
+		final Random random
+	) {
+		final int N = population.size();
+		Phenotype<G, C> winner = population.get(random.nextInt(N));
+
+		for (int j = 0; j < sampleSize; ++j) {
+			final Phenotype<G, C> selection = population.get(random.nextInt(N));
+			if (opt.compare(selection, winner) > 0) {
+				winner = selection;
+			}
 		}
+		assert (winner != null);
 
-		return pop;
+		return winner;
 	}
 
 	@Override
@@ -166,7 +188,7 @@ public class TournamentSelector<
 
 	@Override
 	public String toString() {
-		return String.format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);
+		return format("%s[s=%d]", getClass().getSimpleName(), _sampleSize);
 	}
 
 }

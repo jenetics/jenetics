@@ -2,28 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -32,7 +28,7 @@ import javolution.lang.Immutable;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
+import org.jenetics.util.math;
 
 /**
  * <p>
@@ -75,7 +71,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public final class PartiallyMatchedCrossover<T>
 	extends Crossover<EnumGene<T>>
@@ -91,28 +87,18 @@ public final class PartiallyMatchedCrossover<T>
 		final MSeq<EnumGene<T>> that,
 		final MSeq<EnumGene<T>> other
 	) {
-		final Random random = RandomRegistry.getRandom();
-		int begin = random.nextInt(that.length());
-		int end = random.nextInt(other.length());
-		begin = min(begin, end);
-		end = max(begin, end) + 1;
+		assert (that.length() == other.length());
 
-		swap(that, other, begin, end);
-		repair(that, other, begin, end);
-		repair(other, that, begin, end);
+		if (that.length() >= 2) {
+			final Random random = RandomRegistry.getRandom();
+			final int[] points = math.subset(that.length(), 2, random);
+
+			that.swap(points[0], points[1], other, points[0]);
+			repair(that, other, points[0], points[1]);
+			repair(other, that, points[0], points[1]);
+		}
 
 		return 1;
-	}
-
-	private static <T> void swap(
-		final MSeq<T> that, final MSeq<T> other,
-		final int begin, final int end
-	) {
-		for (int i = begin; i < end; ++i) {
-			final T temp = that.get(i);
-			that.set(i, other.get(i));
-			other.set(i, temp);
-		}
 	}
 
 	private static <T> void repair(
@@ -120,33 +106,19 @@ public final class PartiallyMatchedCrossover<T>
 		final int begin, final int end
 	) {
 		for (int i = 0; i < begin; ++i) {
-			int index = indexOf(that, begin, end, that.get(i));
+			int index = that.indexOf(that.get(i), begin, end);
 			while (index != -1) {
 				that.set(i, other.get(index));
-				index = indexOf(that, begin, end, that.get(i));
+				index = that.indexOf(that.get(i), begin, end);
 			}
 		}
 		for (int i = end, n = that.length(); i < n; ++i) {
-			int index = indexOf(that, begin, end, that.get(i));
+			int index = that.indexOf(that.get(i), begin, end);
 			while (index != -1) {
 				that.set(i, other.get(index));
-				index = indexOf(that, begin, end, that.get(i));
+				index = that.indexOf(that.get(i), begin, end);
 			}
 		}
-	}
-
-	private static int indexOf(
-		final Seq<?> genes,
-		final int begin, final int end,
-		final Object gene
-	) {
-		int index = -1;
-		for (int i = begin; i < end && index == -1; ++i) {
-			if (genes.get(i).equals(gene)) {
-				index = i;
-			}
-		}
-		return index;
 	}
 
 	@Override
@@ -168,7 +140,7 @@ public final class PartiallyMatchedCrossover<T>
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

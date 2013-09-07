@@ -2,33 +2,32 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
 
 
 /**
- * This class implements a linear congruental PRNG with additional bit-shift
+ * This class implements a linear congruential PRNG with additional bit-shift
  * transition. The base recursion
  * <p><div align="center">
  * <img
@@ -53,12 +52,6 @@ import java.io.Serializable;
  * {@code mod} 4 = 1.
  * <p/>
  *
- * <p><b>
- * The <i>main</i> class of this PRNG is not thread safe. To create an thread
- * safe instances of this PRNG, use the {@link LCG64ShiftRandom.ThreadSafe} or
- * {@link LCG64ShiftRandom.ThreadLocal} class.
- * </b></p>
- *
  * <em>
  * This is an re-implementation of the
  * <a href="https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp">
@@ -66,12 +59,19 @@ import java.io.Serializable;
  * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
  * Bauke.</em>
  *
+ * <p/>
+ * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
+ * class is not thread-safe.</strong> If multiple threads requests random
+ * numbers from this class, it <i>must</i> be synchronized externally.
+ * Alternatively you can use the thread-safe implementations
+ * {@link LCG64ShiftRandom.ThreadSafe} or {@link LCG64ShiftRandom.ThreadLocal}.
+ *
  * @see <a href="http://numbercrunch.de/trng/">TRNG</a>
  * @see RandomRegistry
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -84,7 +84,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-09-01 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -101,7 +101,7 @@ public class LCG64ShiftRandom extends Random64 {
 		public static final Param LECUYER1 = new Param(0x27BB2EE687B0B0FDL, 1L);
 
 		/**
-		 * LEcuyer 2 parameters: a = 0x369DEA0F31A53F85L; b = 1
+		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 1
 		 */
 		public static final Param LECUYER2 = new Param(0x2C6FE96EE78B6955L, 1L);
 
@@ -152,7 +152,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public String toString() {
-			return String.format("%s[a=%d, b=%d]", getClass().getName(), a, b);
+			return format("%s[a=%d, b=%d]", getClass().getName(), a, b);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * way:
 	 *
 	 * [code]
-	 * // Register the PRGN with the default parameters.
+	 * // Register the PRNG with the default parameters.
 	 * RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
 	 *
 	 * // Register the PRNG with the {@code LECUYER3} parameters.
@@ -184,9 +184,11 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-09-01 $</em>
 	 */
-	public static class ThreadLocal extends java.lang.ThreadLocal<LCG64ShiftRandom> {
+	public static class ThreadLocal
+		extends java.lang.ThreadLocal<LCG64ShiftRandom>
+	{
 		private static final long STEP_BASE = 1L << 56;
 
 		private int _block = 0;
@@ -210,7 +212,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given parameters are null.
 		 */
 		public ThreadLocal(final Param param) {
-			_param = object.nonNull(param, "PRNG param must not be null.");
+			_param = requireNonNull(param, "PRNG param must not be null.");
 		}
 
 		/**
@@ -272,7 +274,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2012-12-25 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-09-01 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -322,9 +324,30 @@ public class LCG64ShiftRandom extends Random64 {
 		}
 
 		@Override
+		public synchronized void reset() {
+			super.reset();
+		}
+
+		@Override
 		public synchronized long nextLong() {
 			return super.nextLong();
 		}
+
+		@Override
+		public synchronized void split(final int p, final int s) {
+			super.split(p, s);
+		}
+
+		@Override
+		public synchronized void jump2(final int s) {
+			super.jump2(s);
+		}
+
+		@Override
+		public void jump(final long step) {
+			super.jump(step);
+		}
+
 	}
 
 
@@ -372,7 +395,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final long seed, final Param param) {
-		_param = object.nonNull(param, "PRNG param must not be null.");
+		_param = requireNonNull(param, "PRNG param must not be null.");
 		_seed = seed;
 
 		_r = seed;
@@ -414,7 +437,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
 	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
-	 * via <i>leapfrogging</i>.
+	 * via <i>leap-frogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
@@ -422,12 +445,12 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void split(final int p, final int s) {
 		if (p < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"p must be >= 1 but was %d.", p
 			));
 		}
 		if (s >= p) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"s must be < %d but was %d.", p, s
 			));
 		}
@@ -449,13 +472,13 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void jump2(final int s) {
 		if (s < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"s must be positive but was %d.", s
 			));
 		}
 
 		if (s >= Long.SIZE) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"The 'jump2' size must be smaller than %d but was %d.",
 				Long.SIZE, s
 			));
@@ -473,7 +496,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void jump(final long step) {
 		if (step < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"step must be positive but was %d", step
 			));
 		}
@@ -503,7 +526,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[a=%d, b=%d, r=%d",
 			getClass().getName(), _a, _b, _r
 		);

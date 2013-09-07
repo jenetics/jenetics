@@ -2,31 +2,30 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,18 +34,27 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
+import org.jenetics.util.Concurrency;
 import org.jenetics.util.Copyable;
+import org.jenetics.util.Factory;
+import org.jenetics.util.arrays;
 
 /**
  * A population is a collection of Phenotypes.
  *
+ * <p/>
+ * <strong>This class is not synchronized.</strong> If multiple threads access
+ * a {@code Population} concurrently, and at least one of the threads modifies
+ * it, it <strong>must</strong> be synchronized externally.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -59,6 +67,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	private final List<Phenotype<G, C>> _population;
 
+	private Population(final List<Phenotype<G, C>> population) {
+		_population = population;
+	}
+
 	/**
 	 * Constructs a population containing the elements of the specified collection,
 	 * in the order they are returned by the collection's iterator.
@@ -68,7 +80,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
 	public Population(final Collection<? extends Phenotype<G, C>> population) {
-		_population = new ArrayList<>(population);
+		this(new ArrayList<>(population));
 	}
 
 	/**
@@ -80,14 +92,65 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *          negative
 	 */
 	public Population(final int size) {
-		_population = new ArrayList<>(size + 1);
+		this(new ArrayList<Phenotype<G, C>>(size + 1));
 	}
 
 	/**
 	 * Creating a new <code>Population</code>.
 	 */
 	public Population() {
-		_population = new ArrayList<>();
+		this(new ArrayList<Phenotype<G, C>>());
+	}
+
+	/**
+	 * Fills the population with individuals created by the given factory.
+	 *
+	 * @param factory the {@code Phenotype} factory.
+	 * @param count the number of individuals to add to this population.
+	 * @return return this population, for command chanining.
+	 */
+	public Population<G, C> fill(
+		final Factory<? extends Phenotype<G, C>> factory,
+		final int count
+	) {
+		// Serial version.
+		if (ConcurrentContext.getConcurrency() == 0) {
+			for (int i = 0; i < count; ++i) {
+				_population.add(factory.newInstance());
+			}
+
+		// Parallel version.
+		} else {
+			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
+			fill(factory, array._array);
+			_population.addAll(array);
+		}
+
+		return this;
+	}
+
+	private static <
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	void fill(
+		final Factory<? extends Phenotype<G, C>> factory,
+		final Object[] array
+	) {
+		try (final Concurrency c = Concurrency.start()) {
+			final int threads = ConcurrentContext.getConcurrency() + 1;
+			final int[] parts = arrays.partition(array.length, threads);
+
+			for (int i = 0; i < parts.length - 1; ++i) {
+				final int part = i;
+
+				c.execute(new Runnable() { @Override public void run() {
+					for (int j = parts[part + 1]; --j >= parts[part];) {
+						array[j] = factory.newInstance();
+					}
+				}});
+			}
+		}
 	}
 
 	/**
@@ -98,7 +161,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	@Override
 	public boolean add(final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		return _population.add(phenotype);
 	}
 
@@ -111,7 +174,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 */
 	@Override
 	public void add(final int index, final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		_population.add(index, phenotype);
 	}
 
@@ -132,12 +195,12 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public Phenotype<G, C> set(final int index, final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		return _population.set(index, phenotype);
 	}
 
 	public void remove(final Phenotype<G, C> phenotype) {
-		nonNull(phenotype, "Phenotype");
+		requireNonNull(phenotype, "Phenotype");
 		_population.remove(phenotype);
 	}
 
@@ -302,7 +365,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@Override
 	public Population<G, C> copy() {
-		return new Population<>(_population);
+		return new Population<>(new ArrayList<>(_population));
 	}
 
 	@Override
@@ -367,6 +430,39 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public void read(final InputElement xml, final Population p) {
 		}
 	};
+
+
+	private static final class PhenotypeArray<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+		extends AbstractCollection<Phenotype<G, C>>
+	{
+
+		final Object[] _array;
+
+		PhenotypeArray(final int size) {
+			_array = new Object[size];
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Iterator<Phenotype<G, C>> iterator() {
+			return Arrays.asList((Phenotype<G, C>[])_array).iterator();
+		}
+
+		@Override
+		public int size() {
+			return _array.length;
+		}
+
+		@Override
+		public Object[] toArray() {
+			return _array;
+		}
+
+	}
+
 
 }
 

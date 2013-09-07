@@ -2,27 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -72,7 +69,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public final class ForkJoinContext extends ConcurrentContext {
 
@@ -86,6 +83,19 @@ public final class ForkJoinContext extends ConcurrentContext {
 	}
 
 	/**
+	 * Deprecated for fixing typo in method name.
+	 *
+	 * @see #setForkJoinPool(ForkJoinPool)
+	 *
+	 * @deprecated Fixing typo, use {@link #setForkJoinPool(ForkJoinPool)}
+	 *             instead.
+	 */
+	@Deprecated
+	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
+		return setForkJoinPool(pool);
+	}
+
+	/**
 	 * Set the fork-join-pool used by this context. This method doesn't replace
 	 * an already set {@link ForkJoinPool}. Before the <i>context</i> can be
 	 * used a {@link ForkJoinPool} must be set.
@@ -95,8 +105,8 @@ public final class ForkJoinContext extends ConcurrentContext {
 	 *          otherwise.
 	 * @throws NullPointerException if the pool is {@code null}.
 	 */
-	public static boolean setForkkJoinPool(final ForkJoinPool pool) {
-		return _POOL.compareAndSet(null, nonNull(pool, "ForkJoinPool"));
+	public static boolean setForkJoinPool(final ForkJoinPool pool) {
+		return _POOL.compareAndSet(null, requireNonNull(pool, "ForkJoinPool"));
 	}
 
 	/**
@@ -132,9 +142,7 @@ public final class ForkJoinContext extends ConcurrentContext {
 			{
 				n.getValue().get();
 			}
-		} catch (InterruptedException e) {
-			throw (CancellationException)new CancellationException().initCause(e);
-		} catch (ExecutionException e) {
+		} catch (InterruptedException | ExecutionException e) {
 			throw (CancellationException)new CancellationException().initCause(e);
 		}
 	}

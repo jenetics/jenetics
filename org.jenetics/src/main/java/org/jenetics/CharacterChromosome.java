@@ -2,26 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -45,7 +43,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-15 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -69,8 +67,8 @@ public class CharacterChromosome
 	public CharacterChromosome(final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS).asFactory()
-				).toISeq()
+				CharacterGene.valueOf(CharacterGene.DEFAULT_CHARACTERS)
+			).toISeq()
 		);
 		_validCharacters = CharacterGene.DEFAULT_CHARACTERS;
 		_valid = true;
@@ -90,8 +88,8 @@ public class CharacterChromosome
 	public CharacterChromosome(final CharSeq validCharacters, final int length) {
 		super(
 			new Array<CharacterGene>(length).fill(
-					CharacterGene.valueOf(validCharacters).asFactory()
-				).toISeq()
+				CharacterGene.valueOf(validCharacters)
+			).toISeq()
 		);
 		_validCharacters = validCharacters;
 		_valid = true;
@@ -105,7 +103,7 @@ public class CharacterChromosome
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
-	 *          smaller than one.
+	 *         smaller than one.
 	 */
 	public CharacterChromosome(final ISeq<CharacterGene> genes) {
 		super(genes);
@@ -118,7 +116,7 @@ public class CharacterChromosome
 	 * @param genes the character genes.
 	 * @param validCharacters the valid characters.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *          characters or the genes string is empty.
+	 *         characters or the genes string is empty.
 	 */
 	public CharacterChromosome(final String genes, final CharSeq validCharacters) {
 		super(
@@ -128,7 +126,7 @@ public class CharacterChromosome
 				public CharacterGene newInstance() {
 					final char c = genes.charAt(_index++);
 					if (!validCharacters.contains(c)) {
-						throw new IllegalArgumentException(String.format(
+						throw new IllegalArgumentException(format(
 								"Character '%s' not in valid characters %s",
 								c, validCharacters
 							));
@@ -146,7 +144,7 @@ public class CharacterChromosome
 	 *
 	 * @param genes the character genes.
 	 * @throws IllegalArgumentException if not all genes are in the set of valid
-	 *          characters or the genes is an empty string.
+	 *         characters or the genes is an empty string.
 	 */
 	public CharacterChromosome(final String genes) {
 		this(genes, CharacterGene.DEFAULT_CHARACTERS);
@@ -156,7 +154,11 @@ public class CharacterChromosome
 	 * Return a more specific view of this chromosome factory.
 	 *
 	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *            {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<CharacterChromosome> asFactory() {
 		return (Factory<CharacterChromosome>)(Object)this;
@@ -319,7 +321,11 @@ public class CharacterChromosome
 
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
-			genes.set(i, CharacterGene.valueOf(Character.valueOf(in.readChar()), _validCharacters));
+			final CharacterGene gene = CharacterGene.valueOf(
+				Character.valueOf(in.readChar()),
+				_validCharacters
+			);
+			genes.set(i, gene);
 		}
 
 		_genes = genes.toISeq();

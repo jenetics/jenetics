@@ -2,31 +2,28 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
 import static java.lang.Double.NaN;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -48,16 +45,16 @@ import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
 import org.jenetics.stat.Variance;
+import org.jenetics.util.FinalReference;
 import org.jenetics.util.accumulators;
 import org.jenetics.util.accumulators.MinMax;
-import org.jenetics.util.FinalReference;
 
 /**
  * Data object which holds performance indicators of a given {@link Population}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -70,7 +67,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -117,7 +114,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		}
 
 		public Builder<G, C> optimize(final Optimize optimize) {
-			_optimize = nonNull(optimize, "Optimize strategy");
+			_optimize = requireNonNull(optimize, "Optimize strategy");
 			return this;
 		}
 
@@ -431,8 +428,8 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			throws XMLStreamException
 		{
 			final Optimize optimize = Optimize.valueOf(
-						xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
-					);
+				xml.getAttribute(OPTIMIZE, Optimize.MAXIMUM.name())
+			);
 			final int generation = xml.getAttribute(GENERATION, 0);
 			final int samples = xml.getAttribute(SAMPLES, 1);
 			final Float64 meanAge = xml.get(AGE_MEAN);
@@ -474,9 +471,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			xml.add(s._time.get(), STATISITCS_TIME);
 		}
 		@Override
-		public void read(final InputElement xml, final Statistics p)
-			throws XMLStreamException
-		{
+		public void read(final InputElement xml, final Statistics p) {
 		}
 	};
 
@@ -486,7 +481,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
@@ -659,9 +654,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 				xml.add(format.format(s.statistics.get()), STATISTICS_TIME);
 			}
 			@Override
-			public void read(final InputElement xml, final Statistics.Time p)
-				throws XMLStreamException
-			{
+			public void read(final InputElement xml, final Statistics.Time p) {
 			}
 
 			private MeasureFormat getMeasureFormat() {
@@ -681,7 +674,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,
@@ -717,10 +710,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			final Variance<Integer> age = new Variance<>();
 
 			accumulators.<Phenotype<G, C>>accumulate(
-					population,
-					minMax,
-					age.map(Phenotype.Age(generation))
-				);
+				population,
+				minMax,
+				age.map(Phenotype.Age(generation))
+			);
 
 			builder.bestPhenotype(opt.best(minMax.getMax(), minMax.getMin()));
 			builder.worstPhenotype(opt.worst(minMax.getMax(), minMax.getMin()));

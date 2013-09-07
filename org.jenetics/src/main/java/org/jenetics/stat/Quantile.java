@@ -2,26 +2,25 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.stat;
 
+import static java.lang.Double.compare;
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -41,12 +40,16 @@ import org.jenetics.util.MappedAccumulator;
  * <br/>
  * [<a href="http://www.cse.wustl.edu/~jain/papers/ftp/psqr.pdf">Communications
  * of the ACM; October 1985, Volume 28, Number 10</a>]
+ * <p/>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access this object concurrently, and at least one of the
+ * threads modifies it, it must be synchronized externally.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
@@ -72,22 +75,56 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	 *
 	 * @param quantile the wished quantile value.
 	 * @throws IllegalArgumentException if the {@code quantile} is not in the
-	 *          range {@code [0, 1]}.
+	 *         range {@code [0, 1]}.
 	 */
-	public Quantile(double quantile) {
+	public Quantile(final double quantile) {
+		_quantile = quantile;
+		init(quantile);
+	}
+
+	private void init(final double quantile) {
 		if (quantile < 0.0 || quantile > 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Quantile (%s) not in the valid range of [0, 1]", quantile
 				));
 		}
-		_quantile = quantile;
+
+		Arrays.fill(_q, 0);
+		Arrays.fill(_n, 0);
+		Arrays.fill(_nn, 0);
+		Arrays.fill(_dn, 0);
+
 		_n[0] = -1.0;
 		_q[2] = 0.0;
-		_initialized = Double.compare(_quantile, 0.0) == 0 ||
-						Double.compare(_quantile, 1.0) == 0;
+		_initialized = compare(quantile, 0.0) == 0 || compare(quantile, 1.0) == 0;
+		_samples = 0;
 	}
 
+	/**
+	 * Reset this object to its initial state.
+	 */
+	public void reset() {
+		init(_quantile);
+	}
+
+	/**
+	 * Return the computed quantile value.
+	 *
+	 * @return the quantile value.
+	 *
+	 * @deprecated Use {@link #getValue()} instead.
+	 */
+	@Deprecated
 	public double getQuantile() {
+		return _q[2];
+	}
+
+	/**
+	 * Return the computed quantile value.
+	 *
+	 * @return the quantile value.
+	 */
+	public double getValue() {
 		return _q[2];
 	}
 
@@ -273,7 +310,7 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[samples=%d, qantile=%f]",
 			getClass().getSimpleName(), getSamples(), getQuantile()
 		);
@@ -283,6 +320,12 @@ public class Quantile<N extends Number> extends MappedAccumulator<N> {
 	public Quantile<N> clone() {
 		return (Quantile<N>)super.clone();
 	}
+
+
+	static <N extends Number> Quantile<N> median() {
+		return new Quantile<>(0.5);
+	}
+
 }
 
 

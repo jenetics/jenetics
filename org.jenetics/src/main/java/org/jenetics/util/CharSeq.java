@@ -2,29 +2,27 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -40,9 +38,15 @@ import javolution.lang.Immutable;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
+ * [code]
+ * final CharSeq cs1 = new CharSeq("abcdeaafg");
+ * final CharSeq cs2 = new CharSeq("gfedcbabb");
+ * assert(cs1.equals(cs2));
+ * [/code]
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-21 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -59,33 +63,35 @@ public final class CharSeq
 	 * Create a new (distinct) CharSeq from the given {@code characters}. The
 	 * given {@link CharSequence} is sorted and duplicate values are removed
 	 *
-	 * @param characters the characters.
-	 * @throws NullPointerException if the {@code characters} are {@code null}.
-	 */
-	public CharSeq(final CharSequence characters) {
-		super(toCharArray(characters));
-	}
-
-	private static char[] toCharArray(final CharSequence characters) {
-		nonNull(characters, "Characters");
-
-		final char[] chars = new char[characters.length()];
-		for (int i = 0; i < characters.length(); ++i) {
-			chars[i] = characters.charAt(i);
-		}
-
-		return distinct(chars);
-	}
-
-	/**
-	 * Create a new (distinct) CharSeq from the given {@code characters}. The
-	 * given {@link CharSequence} is sorted and duplicate values are removed
+	 * @see #CharSeq(CharSequence)
 	 *
 	 * @param characters the characters.
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final char[] characters) {
 		super(distinct(characters.clone()));
+	}
+
+	/**
+	 * Create a new (distinct) CharSeq from the given {@code characters}. The
+	 * given {@link CharSequence} is sorted and duplicate values are removed.
+	 *
+	 * @param characters the characters.
+	 * @throws NullPointerException if the {@code characters} are {@code null}.
+	 */
+	public CharSeq(final CharSequence characters) {
+		this(toCharArray(characters));
+	}
+
+	private static char[] toCharArray(final CharSequence characters) {
+		requireNonNull(characters, "Characters");
+
+		final char[] chars = new char[characters.length()];
+		for (int i = 0; i < characters.length(); ++i) {
+			chars[i] = characters.charAt(i);
+		}
+
+		return chars;
 	}
 
 	private static char[] distinct(final char[] chars) {
@@ -185,7 +191,7 @@ public final class CharSeq
 			}
 			@Override public Character next() {
 				if (!hasNext()) {
-					throw new NoSuchElementException(String.format(
+					throw new NoSuchElementException(format(
 							"Index %s is out of range [0, %s)",
 							_pos, _characters.length
 						));
@@ -247,7 +253,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the pattern is {@code null}.
 	 */
 	public static String expand(final CharSequence pattern) {
-		nonNull(pattern, "Pattern");
+		requireNonNull(pattern, "Pattern");
 		final StringBuilder out = new StringBuilder();
 
 		for (int i = 0, n = pattern.length(); i < n; ++i) {
@@ -333,6 +339,24 @@ public final class CharSeq
 	 */
 	public static CharSeq valueOf(final char a, final char b) {
 		return new CharSeq(expand(a, b));
+	}
+
+	/**
+	 * Helper method for creating a sequence of characters from the given
+	 * {@code CharSequence}. The returned sequence will contain all characters
+	 * in the original order.
+	 *
+	 * @param chars the char sequence to convert.
+	 * @return a sequence which will contain all given chars in the original
+	 *         order.
+	 */
+	public static ISeq<Character> toISeq(final CharSequence chars) {
+		final Array<Character> seq = new Array<>(chars.length());
+		for (int i = 0; i < chars.length(); ++i) {
+			seq.set(i, chars.charAt(i));
+		}
+
+		return seq.toISeq();
 	}
 
 }

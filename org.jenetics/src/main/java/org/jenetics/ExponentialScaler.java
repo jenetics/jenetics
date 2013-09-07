@@ -2,26 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -42,7 +40,7 @@ import org.jenetics.util.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public final class ExponentialScaler
 	implements
@@ -62,10 +60,14 @@ public final class ExponentialScaler
 	/**
 	 * Create a new FitnessScaler.
 	 *
-	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
+	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ c</pre>
+	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ c</pre>
+	 * @param c <pre>fitness = (a * fitness + b) ^ <strong>c</strong></pre>
 	 */
-	public ExponentialScaler(final double c) {
-		this(0.0, c);
+	public ExponentialScaler(final double a, final double b, final double c) {
+		_a = a;
+		_b = b;
+		_c = c;
 	}
 
 	/**
@@ -81,15 +83,12 @@ public final class ExponentialScaler
 	/**
 	 * Create a new FitnessScaler.
 	 *
-	 * @param a <pre>fitness = (<strong>a</strong> * fitness + b) ^ c</pre>
-	 * @param b <pre>fitness = (a * fitness + <strong>b</strong>) ^ c</pre>
-	 * @param c <pre>fitness = (a * fitness + b) ^ <strong>c</strong></pre>
+	 * @param c <pre>fitness = (1 * fitness + 0) ^ <strong>c</strong></pre>
 	 */
-	public ExponentialScaler(final double a, final double b, final double c) {
-		_a = a;
-		_b = b;
-		_c = c;
+	public ExponentialScaler(final double c) {
+		this(0.0, c);
 	}
+
 
 	@Override
 	public Float64 apply(final Float64 value) {
@@ -116,9 +115,9 @@ public final class ExponentialScaler
 
 	@Override
 	public String toString() {
-		return String.format(
-				"%s[a=%f, b=%f, c=%f]",
-				getClass().getSimpleName(), _a, _b, _c
-			);
+		return format(
+			"%s[a=%f, b=%f, c=%f]",
+			getClass().getSimpleName(), _a, _b, _c
+		);
 	}
 }

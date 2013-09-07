@@ -10,7 +10,11 @@ bin/**
 build/**
 out/**
 test-output/**
+
+# Gradle
 .gradle/**
+.groovy/*
+gradle-app.setting
 
 ## Eclipse
 .settings/**
@@ -34,3 +38,9 @@ random-x86_64
 *.iml
 *.ipr
 *.iws
+
+## Netbeans
+nbproject/**
+nbbuild/**
+build.xml
+manifest.mf

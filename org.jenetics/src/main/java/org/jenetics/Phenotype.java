@@ -2,29 +2,26 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import javolution.context.ObjectFactory;
 import javolution.lang.Immutable;
@@ -52,7 +49,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -241,7 +238,7 @@ public final class Phenotype<
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
 	 */
 	Phenotype<G, C> newInstance(final Genotype<G> genotype, final int generation) {
-		nonNull(genotype, "Genotype");
+		requireNonNull(genotype, "Genotype");
 		return Phenotype.valueOf(
 			genotype, _fitnessFunction, _fitnessScaler, generation
 		);
@@ -259,9 +256,9 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final Function<Genotype<G>, C> function,
-			final Function<C, C> scaler,
-			final int generation
+		final Function<Genotype<G>, C> function,
+		final Function<C, C> scaler,
+		final int generation
 	) {
 		return valueOf(_genotype, function, scaler, generation);
 	}
@@ -277,8 +274,8 @@ public final class Phenotype<
 	 * @throws IllegalArgumentException if the given {@code generation} is < 0.
 	 */
 	public Phenotype<G, C> newInstance(
-			final Function<Genotype<G>, C> function,
-			final int generation
+		final Function<Genotype<G>, C> function,
+		final int generation
 	) {
 		return valueOf(_genotype, function, functions.<C>Identity(), generation);
 	}
@@ -407,11 +404,13 @@ public final class Phenotype<
 		final Function<C, C> fitnessScaler,
 		final int generation
 	) {
-		nonNull(genotype, "Genotype");
-		nonNull(fitnessFunction, "Fitness function");
-		nonNull(fitnessScaler, "Fitness scaler");
+		requireNonNull(genotype, "Genotype");
+		requireNonNull(fitnessFunction, "Fitness function");
+		requireNonNull(fitnessScaler, "Fitness scaler");
 		if (generation < 0) {
-			throw new IllegalArgumentException("Generation must not < 0: " + generation);
+			throw new IllegalArgumentException(
+				"Generation must not < 0: " + generation
+			);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -464,10 +463,6 @@ public final class Phenotype<
 		public void read(final InputElement xml, final Phenotype gt) {
 		}
 	};
-
-	static String toString(final Object value) {
-		return value != null ? value.toString() : "null";
-	}
 
 }
 

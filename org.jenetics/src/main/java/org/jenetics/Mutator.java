@@ -2,34 +2,31 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
+import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
 
 
 /**
@@ -67,16 +64,9 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
-
-	/**
-	 * Default constructor, with probability = 0.01.
-	 */
-	public Mutator() {
-		this(0.01);
-	}
 
 	/**
 	 * Construct a Mutation object which a given mutation probability.
@@ -92,6 +82,13 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 	/**
+	 * Default constructor, with probability = 0.01.
+	 */
+	public Mutator() {
+		this(0.01);
+	}
+
+	/**
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
@@ -101,11 +98,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		assert(population != null) : "Not null is guaranteed from base class.";
 
-		final double p = Math.pow(_probability, 1.0/3.0);
+		final double p = pow(_probability, 1.0/3.0);
 		final AtomicInteger alterations = new AtomicInteger(0);
 
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(population.size(), p, random);
+		final IndexStream stream = IndexStream.Random(population.size(), p);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			final Phenotype<G, C> pt = population.get(i);
 
@@ -126,9 +122,9 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	) {
 		Genotype<G> gt = genotype;
 
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(genotype.length(), p, random);
-		int start = stream.next();
+		final IndexStream stream = IndexStream.Random(genotype.length(), p);
+		final int start = stream.next();
+
 		if (start != -1) {
 			final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
@@ -150,9 +146,9 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 	/**
-	 * Template method which gives an (re)implementation of the mutation class the
-	 * possibility to perform its own mutation operation, based on a writable
-	 * gene array and the gene mutation probability <i>p</i>.
+	 * Template method which gives an (re)implementation of the mutation class
+	 * the possibility to perform its own mutation operation, based on a
+	 * writable gene array and the gene mutation probability <i>p</i>.
 	 * <p/>
 	 * This implementation, for example, does it in this way:
 	 * [code]
@@ -174,8 +170,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * @param p the gene mutation probability.
 	 */
 	protected int mutate(final MSeq<G> genes, final double p) {
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(genes.length(), p, random);
+		final IndexStream stream = IndexStream.Random(genes.length(), p);
 
 		int alterations = 0;
 		for (int i = stream.next(); i != -1; i = stream.next()) {
@@ -201,7 +196,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

@@ -2,30 +2,27 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.Verify;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
 
 import java.util.Iterator;
 
@@ -37,12 +34,11 @@ import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
-import org.jenetics.util.object;
 
 /**
  * The central class the GA is working with, is the {@code Genotype}. It is the
@@ -57,7 +53,7 @@ import org.jenetics.util.object;
  * for number genes.
  *
  * [code]
- * Genotype<Float64Gene> genotype = Genotype.valueOf(
+ * final Genotype<Float64Gene> genotype = Genotype.valueOf(
  *     new Float64Chromosome(0.0, 1.0, 8),
  *     new Float64Chromosome(1.0, 2.0, 10),
  *     new Float64Chromosome(0.0, 10.0, 9),
@@ -70,7 +66,7 @@ import org.jenetics.util.object;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -90,9 +86,6 @@ public final class Genotype<G extends Gene<?, G>>
 	private volatile Boolean _valid = null;
 
 	private Genotype(final ISeq<Chromosome<G>> chromosomes, final int ngenes) {
-		assert(chromosomes != null);
-		assert(ngenes(chromosomes) == ngenes);
-
 		_chromosomes = chromosomes;
 		_ngenes = ngenes;
 	}
@@ -145,7 +138,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * [/code]
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
-	 *          {@code Genotype}.
+	 *         {@code Genotype}.
 	 */
 	public G getGene() {
 		assert(_chromosomes != null);
@@ -192,7 +185,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			_valid = _chromosomes.forall(Verify);
+			_valid = _chromosomes.forAll(Verify);
 		}
 		return _valid;
 	}
@@ -291,102 +284,41 @@ public final class Genotype<G extends Gene<?, G>>
 
 
 	/**
-	 * Create a new Genotype from a given array of <code>Chromosomes</code>.
-	 * The <code>Chromosome</code> array <code>c</code> is cloned.
+	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
-	 * @param chromosomes The <code>Chromosome</code> array the <code>Genotype</code>
+	 * @param chromosomes The <code>Chromosome</code> array the {@code Genotype}
 	 *         consists of.
-	 * @throws NullPointerException if <code>c</code> is null or one of the
-	 *          chromosome.
-	 * @throws IllegalArgumentException if <code>c.length == 0</code>.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final ISeq<? extends Chromosome<G>> chromosomes
 	) {
-		nonNull(chromosomes, "Chromosomes");
+		requireNonNull(chromosomes, "Chromosomes");
 		if (chromosomes.length() == 0) {
 			throw new IllegalArgumentException("Chromosomes must be given.");
 		}
 
-		return new Genotype<>(
-				chromosomes.upcast(chromosomes),
-				ngenes(chromosomes)
-			);
+		@SuppressWarnings("unchecked")
+		ISeq<Chromosome<G>> c = (ISeq<Chromosome<G>>)chromosomes;
+		return new Genotype<>(c, ngenes(chromosomes));
 	}
 
 	/**
-	 * Create a new Genotype from a given {@link Chromosome}
+	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
-	 * @param chromosome The <code>Chromosome</code> array the <code>Genotype</code>
+	 * @param chromosomes The <code>Chromosome</code> array the {@code Genotype}
 	 *         consists of.
-	 * @throws NullPointerException if <code>chromosome</code> is null.
+	 * @throws NullPointerException if {@code chromosomes} is null or one of its
+	 *         element.
+	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> chromosome
-	) {
-		nonNull(chromosome, "Chromosome");
-
-		return new Genotype<>(
-				new Array<>(chromosome).toISeq(),
-				chromosome.length()
-			);
-	}
-
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1,
-		final Chromosome<G> ch2
-	) {
-		nonNull(ch1, "Chromosome 1");
-		nonNull(ch2, "Chromosome 2");
-
-		return new Genotype<>(
-				new Array<>(ch1, ch2).toISeq(),
-				ch1.length() + ch2.length()
-			);
-	}
-
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1,
-		final Chromosome<G> ch2,
-		final Chromosome<G> ch3
-	) {
-		nonNull(ch1, "Chromosome 1");
-		nonNull(ch2, "Chromosome 2");
-		nonNull(ch3, "Chromosome 3");
-
-		return new Genotype<>(
-				new Array<>(ch1, ch2, ch3).toISeq(),
-				ch1.length() + ch2.length() + ch3.length()
-			);
-	}
-
-	public static <G extends Gene<?, G>> Genotype<G> valueOf(
-		final Chromosome<G> ch1,
-		final Chromosome<G> ch2,
-		final Chromosome<G> ch3,
-		final Chromosome<G> ch4
-	) {
-		nonNull(ch1, "Chromosome 1");
-		nonNull(ch2, "Chromosome 2");
-		nonNull(ch3, "Chromosome 3");
-		nonNull(ch4, "Chromosome 4");
-
-		return new Genotype<>(
-				new Array<>(ch1, ch2, ch3, ch4).toISeq(),
-				ch1.length() + ch2.length() + ch3.length() + ch4.length()
-			);
-	}
-
 	@SafeVarargs
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
 	) {
-		final Array<Chromosome<G>> array = new Array<>(chromosomes);
-		if (!array.forall(object.NonNull)) {
-			throw new NullPointerException("One of the given chromosomes is null.");
-		}
-
-		return valueOf(array.toISeq());
+		return valueOf(Array.valueOf(chromosomes).toISeq());
 	}
 
 	/* *************************************************************************

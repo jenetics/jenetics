@@ -2,27 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -94,23 +91,20 @@ import javolution.lang.Reference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2012-12-01 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
  */
-public final class RandomRegistry {
+public final class RandomRegistry extends StaticObject {
+	private RandomRegistry() {}
 
-	private static final Reference<Random> THREAD_LOCAL_REF = new Ref<Random>() {
-		@Override public Random get() {
+	private static final Reference<Random> TLOCAL_REF = new Ref<Random>() {
+		@Override
+		public Random get() {
 			return ThreadLocalRandom.current();
 		}
 	};
 
 	private static final LocalContext.Reference<Reference<? extends Random>>
-	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(THREAD_LOCAL_REF);
-
-
-	private RandomRegistry() {
-		throw new AssertionError("Don't create an 'RandomRegistry' instance.");
-	}
+	RANDOM = new LocalContext.Reference<Reference<? extends Random>>(TLOCAL_REF);
 
 	/**
 	 * Return the global {@link Random} object.
@@ -159,7 +153,7 @@ public final class RandomRegistry {
 	 * is the {@link ThreadLocalRandom} PRNG.
 	 */
 	public static void reset() {
-		RANDOM.set(THREAD_LOCAL_REF);
+		RANDOM.set(TLOCAL_REF);
 	}
 
 
@@ -174,9 +168,9 @@ public final class RandomRegistry {
 	private final static class RRef extends Ref<Random> {
 		private final Random _random;
 		public RRef(final Random random) {
-			_random = nonNull(random, "Random");
+			_random = requireNonNull(random, "Random");
 		}
-		@Override public Random get() {
+		@Override public final Random get() {
 			return _random;
 		}
 	}
@@ -184,9 +178,9 @@ public final class RandomRegistry {
 	private final static class TLRRef<R extends Random> extends Ref<R> {
 		private final ThreadLocal<R> _random;
 		public TLRRef(final ThreadLocal<R> random) {
-			_random = nonNull(random, "Random");
+			_random = requireNonNull(random, "Random");
 		}
-		@Override public R get() {
+		@Override public final R get() {
 			return _random.get();
 		}
 	}

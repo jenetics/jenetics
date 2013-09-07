@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
@@ -41,54 +38,50 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-14 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
 
 	/**
-	 * Set the bit in the given byte array at the bit position (not the index
-	 * within the byte array) to the specified value.
-	 *
-	 * @param data the byte array.
-	 * @param index the bit index within the byte array.
-	 * @param value the value to set.
-	 * @return the given data array.
-	 * @throws IndexOutOfBoundsException if the index is
-	 *          {@code index >= max || index < 0}.
-	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 * Lookup table for counting the number of set bits in an {@code byte} value.
 	 */
-	public static byte[] set(final byte[] data, final int index, final boolean value) {
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
+	private static final byte[] BIT_SET_TABLE = new byte[] {
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7,
+		(byte)5, (byte)6, (byte)6, (byte)7, (byte)6, (byte)7, (byte)7, (byte)8,
+		(byte)0, (byte)1, (byte)1, (byte)2, (byte)1, (byte)2, (byte)2, (byte)3,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
+		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7
+	};
 
-			int d = data[bytes] & 0xFF;
-			if (value) {
-				d = d | (1 << bits);
-			} else {
-				d = d & ~(1 << bits);
-			}
-			data[bytes] = (byte)d;
-		}
-
-		return data;
-	}
-
-	/**
-	 * Set the bit in the given byte array at the bit position (not the index
-	 * within the byte array) to true.
-	 *
-	 * @param data the byte array.
-	 * @param index the bit index within the byte array.
-	 * @return the given data array.
-	 * @throws IndexOutOfBoundsException if the index is
-	 *          {@code index >= max || index < 0}.
-	 * @throws NullPointerException if the {@code data} array is {@code null}.
-	 */
-	public static byte[] set(final byte[] data, final int index) {
-		return set(data, index, true);
-	}
+	private static final int BIT_SET_TABLE_INDEX_OFFSET = 128;
 
 	/**
 	 * Return the (boolean) value of the byte array at the given bit index.
@@ -101,16 +94,121 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static boolean get(final byte[] data, final int index) {
-		boolean bit = false;
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-			final int d = data[bytes] & 0xFF;
+		return (data[index >>> 3] & (1 << (index & 7))) != 0;
+	}
 
-			bit = (d & (1 << bits)) != 0;
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to the specified value.
+	 *
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @param value the value to set.
+	 * @return the given data array.
+	 * @throws IndexOutOfBoundsException if the index is
+	 *         {@code index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static byte[] set(
+		final byte[] data,
+		final int index,
+		final boolean value
+	) {
+		return value ? set(data, index) : unset(data, index);
+	}
+
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to {@code true}.
+	 *
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @return the given data array.
+	 * @throws IndexOutOfBoundsException if the index is
+	 *          {@code index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static byte[] set(final byte[] data, final int index) {
+		data[index >>> 3] |= 1 << (index & 7);
+		return data;
+	}
+
+	/**
+	 * Set the bit in the given byte array at the bit position (not the index
+	 * within the byte array) to {@code false}.
+	 *
+	 * @param data the byte array.
+	 * @param index the bit index within the byte array.
+	 * @return the given data array.
+	 * @throws IndexOutOfBoundsException if the index is
+	 *          {@code index >= max || index < 0}.
+	 * @throws NullPointerException if the {@code data} array is {@code null}.
+	 */
+	public static byte[] unset(final byte[] data, final int index) {
+		data[index >>> 3] &= ~(1 << (index & 7));
+		return data;
+	}
+
+	/**
+	 * Swap a given range with a range of the same size with another array.
+	 *
+	 * <pre>
+	 *                start            end
+	 *                  |               |
+	 * data:      +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *              +---------------+
+	 *                              +---------------+
+	 * otherData: +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *                              |
+	 *                          otherStart
+	 * </pre>
+	 *
+	 * @param data the first byte array which are used for swapping.
+	 * @param start the start bit index of the {@code data} byte array,
+	 *        inclusively.
+	 * @param end the end bit index of the {@code data} byte array, exclusively.
+	 * @param otherData the other byte array to swap the elements with.
+	 * @param otherStart the start index of the {@code otherData} byte array.
+	 * @throws IndexOutOfBoundsException if {@code start > end}.
+	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
+	 *         end >= data.length*8 || otherStart < 0 ||
+	 *         otherStart + (end - start) >= otherData.length*8}
+	 */
+	public static void swap(
+		final byte[] data, final int start, final int end,
+		final byte[] otherData, final int otherStart
+	) {
+		for (int i = (end - start); --i >= 0;) {
+			final boolean temp = get(data, i + start);
+			set(data, i + start, get(otherData, otherStart + i));
+			set(otherData, otherStart + i, temp);
 		}
 
-		return bit;
+	}
+
+	/**
+	 * Returns the number of one-bits in the given {@code byte} array.
+	 *
+	 * @param data the {@code byte} array for which the one bits should be
+	 *        counted.
+	 * @return the number of one bits in the given {@code byte} array.
+	 */
+	public static int count(final byte[] data) {
+		int count = 0;
+		for (int i = data.length; --i >= 0;) {
+			count += count(data[i]);
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of one-bits in the given {@code byte} {@code value}.
+	 *
+	 * @param value the value for which the one bits should be counted.
+	 * @return the number of one bits in the given value
+	 */
+	public static int count(final byte value) {
+		return BIT_SET_TABLE[value + BIT_SET_TABLE_INDEX_OFFSET];
 	}
 
 	/**
@@ -205,14 +303,9 @@ public final class bit extends StaticObject {
 	 */
 	public static byte[] increment(final byte[] data) {
 		boolean carry = true;
-		int index = 0;
-
-		while (index < data.length && carry) {
-			int d = data[index] & 0xFF;
-			++d;
-			data[index++] = (byte)d;
-
-			carry = d > 0xFF;
+		for (int i = 0; i < data.length && carry; ++i) {
+			data[i] = (byte)(data[i] + 1);
+			carry = data[i] > 0xFF;
 		}
 
 		return data;
@@ -226,13 +319,9 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] invert(final byte[] data)	{
-		int d = 0;
-		for (int i = 0; i < data.length; ++i) {
-			d = data[i] & 0xFF;
-			d = ~d;
-			data[i] = (byte)d;
+		for (int i = data.length; --i >= 0;) {
+			data[i] = (byte)~data[i];
 		}
-
 		return data;
 	}
 
@@ -257,20 +346,7 @@ public final class bit extends StaticObject {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] flip(final byte[] data, final int index) {
-		if (data.length > 0) {
-			final int bytes = index >>> 3; // = index/8
-			final int bits = index & 7;    // = index%8
-			int d = data[bytes] & 0xFF;
-
-			if ((d & (1 << bits)) == 0) {
-				d |= (1 << bits);
-			} else {
-				d &= ~(1 << bits);
-			}
-			data[bytes] = (byte)d;
-		}
-
-		return data;
+		return get(data, index) ? unset(data, index) : set(data, index);
 	}
 
 	/**
@@ -299,14 +375,11 @@ public final class bit extends StaticObject {
 	 * @return the {@link LargeInteger} built from the given byte array.
 	 */
 	public static LargeInteger toLargeInteger(final byte[] array) {
-		reverse(array);
-		final LargeInteger li = LargeInteger.valueOf(array, 0, array.length);
-		reverse(array);
-		return li;
+		return LargeInteger.valueOf(reverse(array.clone()), 0, array.length);
 	}
 
 
-	private static byte[] reverse(final byte[] array) {
+	static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
 
@@ -323,6 +396,94 @@ public final class bit extends StaticObject {
 		array[j] = temp;
 	}
 
+	/**
+	 * Convert a binary representation of the given byte array to a string. The
+	 * string has the following format:
+	 * <pre>
+	 *  Byte:       3        2        1        0
+	 *              |        |        |        |
+	 *  Array: "11110011|10011101|01000000|00101010"
+	 *          |                 |        |      |
+	 *  Bit:    23                15       7      0
+	 * </pre>
+	 * <i>Only the array string is printed.</i>
+	 *
+	 * @see #fromByteString(String)
+	 *
+	 * @param data the byte array to convert to a string.
+	 * @return the binary representation of the given byte array.
+	 */
+	public static String toByteString(final byte... data) {
+		final StringBuilder out = new StringBuilder();
+
+		if (data.length > 0) {
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[data.length - 1] >>> j) & 1);
+			}
+		}
+		for (int i = data.length - 2; i >= 0 ;--i) {
+			out.append('|');
+			for (int j = 7; j >= 0; --j) {
+				out.append((data[i] >>> j) & 1);
+			}
+		}
+
+		return out.toString();
+	}
+
+	/**
+	 * Convert a string which was created with the {@link #toByteString(byte...)}
+	 * method back to an byte array.
+	 *
+	 * @see #toByteString(byte...)
+	 *
+	 * @param data the string to convert.
+	 * @return the byte array.
+	 * @throws IllegalArgumentException if the given data string could not be
+	 *          converted.
+	 */
+	 public static byte[] fromByteString(final String data) {
+		final String[] parts = data.split("\\|");
+		final byte[] bytes = new byte[parts.length];
+
+		for (int i = 0; i < parts.length; ++i) {
+			if (parts[i].length() != 8) {
+				throw new IllegalArgumentException(
+					"Byte value doesn't contain 8 bit: " + parts[i]
+				);
+			}
+
+			try {
+				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		return bytes;
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @return the new byte array.s
+	 */
+	public static byte[] newBitArray(final int length) {
+		return new byte[toByteLength(length)];
+	}
+
+	/**
+	 * Return the minimum number of bytes to store the given number of bits.
+	 *
+	 * @param bitLength the number of bits
+	 * @return the number of bytes needed to store the given number of bits.
+	 */
+	public static int toByteLength(final int bitLength) {
+		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
+	}
+
 	static long toLong(final byte[] data) {
 		return
 			(((long)data[0] << 56) +
@@ -335,9 +496,24 @@ public final class bit extends StaticObject {
 			((data[7] & 255) <<  0));
 	}
 
+	static byte[] toBytes(final long value) {
+		final byte[] bytes = new byte[8];
+		bytes[0] = (byte)(value >>> 56);
+		bytes[1] = (byte)(value >>> 48);
+		bytes[2] = (byte)(value >>> 40);
+		bytes[3] = (byte)(value >>> 32);
+		bytes[4] = (byte)(value >>> 24);
+		bytes[5] = (byte)(value >>> 16);
+		bytes[6] = (byte)(value >>>  8);
+		bytes[7] = (byte)(value >>>  0);
+		return bytes;
+	}
+
 	static byte[] writeInt(final int v, final byte[] data, final int start) {
 		if (data.length < 4 + start) {
-			throw new IllegalArgumentException("Byte array to short: " + data.length);
+			throw new IllegalArgumentException(
+				"Byte array to short: " + data.length
+			);
 		}
 
 		data[0 + start] = (byte)((v >>> 24) & 0xFF);
@@ -350,7 +526,9 @@ public final class bit extends StaticObject {
 
 	static int readInt(final byte[] data, final int start) {
 		if (data.length < 4 + start) {
-			throw new IllegalArgumentException("Byte array to short: " + data.length);
+			throw new IllegalArgumentException(
+				"Byte array to short: " + data.length
+			);
 		}
 
 		return ((data[0 + start] << 24) +

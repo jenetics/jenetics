@@ -2,38 +2,34 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.checkProbability;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNegative;
-import static org.jenetics.util.object.nonNull;
-import static org.jenetics.util.object.str;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
 import java.util.Iterator;
-import java.util.Random;
+import java.util.ListIterator;
 
 import javolution.text.Text;
 import javolution.xml.XMLFormat;
@@ -43,10 +39,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.LargeInteger;
 import org.jscience.mathematics.number.Number;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.IndexStream;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
 
 /**
@@ -54,7 +48,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-12-24 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-05 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -78,13 +72,40 @@ public class BitChromosome extends Number<BitChromosome>
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
 	protected byte[] _genes;
+	private transient BitGeneArray _seq;
 
-	private BitChromosome(final int length, final boolean internal) {
-		nonNegative(length);
 
-		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
-		_genes = new byte[bytes];
+	private BitChromosome(final byte[] bits, final int length, final double p) {
+		if (bits.length < bit.toByteLength(length)) {
+			throw new IllegalArgumentException(String.format(
+				"The byte array must has at least a length of %d to contain %d bits.",
+				bit.toByteLength(length), length
+			));
+		}
+
 		_length = length;
+		_p = checkProbability(p);
+		_genes = bit.newBitArray(length);
+		_seq = new BitGeneArray(_genes, 0, _length);
+		System.arraycopy(bits, 0, _genes, 0,_genes.length);
+
+	}
+
+	private BitChromosome(final byte[] bits, final int length) {
+		this(
+			bits,
+			length,
+			(double)bit.count(bits)/(double)length
+		);
+	}
+
+	/**
+	 * Create a new {@code BitChromosome} from the given {@code byte} array.
+	 *
+	 * @param bits the {@code byte} array.
+	 */
+	public BitChromosome(final byte[] bits) {
+		this(bits, bits.length*8);
 	}
 
 	/**
@@ -97,20 +118,18 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @throws IllegalArgumentException if <code>p</code> is out of range.
 	 */
 	public BitChromosome(final int length, final double p) {
-		this(length, true);
+		this(bit.newBitArray(length), length, p);
 		checkProbability(p);
 
-		final Random random = RandomRegistry.getRandom();
-		final IndexStream stream = IndexStream.Random(length, p, random);
+		final IndexStream stream = IndexStream.Random(length, p);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
 			set(i, true);
 		}
-		_p = p;
 	}
 
 	/**
 	 * Constructing a new BitChromosome with the given _length. The TRUEs and
-	 * FALSE in the {@code Chromosome} are equaly distributed.
+	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
 	 * @throws NegativeArraySizeException if the <code>_length</code> is smaller
@@ -126,7 +145,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * BitChromosome will be <code>bitSet.length()</code>
 	 * (@see BitSet#length).
 	 *
-	 * @param bits
+	 * @param bits the bit-set which initializes the chromosome
 	 * @throws NullPointerException if the <code>bitSet</code> is
 	 *         <code>null</code>.
 	 */
@@ -136,17 +155,16 @@ public class BitChromosome extends Number<BitChromosome>
 
 	/**
 	 * @param length Length of the BitChromosome.
-	 * @param bits
+	 * @param bits the bit-set which initializes the chromosome
 	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
 	 *         than one.
 	 * @throws NullPointerException if the <code>bitSet</code> is
 	 *         <code>null</code>.
 	 */
 	public BitChromosome(final int length, final BitSet bits) {
-		nonNull(bits, "BitSet");
+		requireNonNull(bits, "BitSet");
 
-		final int bytes = (length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1;
-		_genes = new byte[bytes];
+		_genes = bit.newBitArray(length);
 		_length = length;
 
 		int ones = 0;
@@ -166,11 +184,6 @@ public class BitChromosome extends Number<BitChromosome>
 		this(bit.toByteArray(value));
 	}
 
-	public BitChromosome(final byte[] value) {
-		this(value.length*8);
-		System.arraycopy(value, 0, _genes, 0, value.length);
-	}
-
 	/**
 	 * Create a new {@code BitChromosome} from the given character sequence
 	 * containing '0' and '1'.
@@ -183,7 +196,7 @@ public class BitChromosome extends Number<BitChromosome>
 	public BitChromosome (final CharSequence value) {
 		this(value.length());
 
-		nonNull(value, "Input");
+		requireNonNull(value, "Input");
 		if (value.length() == 0) {
 			throw new IllegalArgumentException("Length must greater than zero.");
 		}
@@ -197,7 +210,7 @@ public class BitChromosome extends Number<BitChromosome>
 			} else if (c == '0') {
 				bit.set(_genes, i, false);
 			} else {
-				throw new IllegalArgumentException(String.format(
+				throw new IllegalArgumentException(format(
 					"Illegal character '%s' at position %d", c, i
 				));
 			}
@@ -219,31 +232,23 @@ public class BitChromosome extends Number<BitChromosome>
 		bit.set(_genes, index, value);
 	}
 
-	private boolean get(final int index) {
-		return bit.get(_genes, index);
-	}
-
 	@Override
 	public BitGene getGene() {
 		assert (_genes != null);
 		assert (_genes.length > 0);
-		return get(0) ? BitGene.TRUE : BitGene.FALSE;
+		return BitGene.valueOf(bit.get(_genes, 0));
 	}
 
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
 		assert(_genes != null);
-		return get(index) ? BitGene.TRUE : BitGene.FALSE;
+		return BitGene.valueOf(bit.get(_genes, index));
 	}
 
 	@Override
 	public ISeq<BitGene> toSeq() {
-		final Array<BitGene> genes = new Array<>(_length);
-		for (int i = 0; i < _length; ++i) {
-			genes.set(i, bit.get(_genes, i) ? BitGene.TRUE : BitGene.FALSE);
-		}
-		return genes.toISeq();
+		return _seq.toISeq();
 	}
 
 	@Override
@@ -251,20 +256,22 @@ public class BitChromosome extends Number<BitChromosome>
 		return _length;
 	}
 
+	/**
+	 * Returns the number of bits set to true in this {@code BitChromosome}.
+	 *
+	 * @return the number of bits set to true in this {@code BitChromosome}
+	 */
+	public int bitCount() {
+		return bit.count(_genes);
+	}
+
 	@Override
 	public Iterator<BitGene> iterator() {
-		return new Iterator<BitGene>() {
-			private int _pos = 0;
-			@Override public boolean hasNext() {
-				return _pos < _length;
-			}
-			@Override public BitGene next()	{
-				return get(_pos++) ? BitGene.TRUE : BitGene.FALSE;
-			}
-			@Override public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		return _seq.iterator();
+	}
+
+	public ListIterator<BitGene> listIterator() {
+		return _seq.listIterator();
 	}
 
 	/**
@@ -276,7 +283,6 @@ public class BitChromosome extends Number<BitChromosome>
 	public long longValue() {
 		return toLargeInteger().longValue();
 	}
-
 
 	/**
 	 * Return the double value this BitChromosome represents.
@@ -354,29 +360,33 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
-		nonNull(genes, "Genes");
+		requireNonNull(genes, "Genes");
 
-		final BitChromosome chromosome = new BitChromosome(genes.length(), true);
-
+		final BitChromosome chromosome = new BitChromosome(
+			bit.newBitArray(genes.length()), genes.length()
+		);
 		int ones = 0;
-		for (int i = 0; i < genes.length(); ++i) {
-			if (genes.get(i).booleanValue()) {
-				++ones;
+
+		if (genes instanceof BitGeneArray.BitGeneISeq) {
+			final BitGeneArray.BitGeneISeq iseq = (BitGeneArray.BitGeneISeq)genes;
+			iseq.copyTo(chromosome._genes);
+			ones = bit.count(chromosome._genes);
+		} else {
+			for (int i = genes.length(); --i >= 0;) {
+				if (genes.get(i).booleanValue()) {
+					++ones;
+				}
+				bit.set(chromosome._genes, i, genes.get(i).booleanValue());
 			}
-			bit.set(chromosome._genes, i, genes.get(i).booleanValue());
 		}
+
 		chromosome._p = (double)ones/(double)genes.length();
 		return chromosome;
 	}
 
 	@Override
 	public BitChromosome newInstance() {
-		final Random random = RandomRegistry.getRandom();
-		final BitChromosome chromosome = new BitChromosome(_length, _p);
-		for (int i = 0; i < _length; ++i) {
-			bit.set(chromosome._genes, i, random.nextDouble() < _p);
-		}
-		return chromosome;
+		return new BitChromosome(_length, _p);
 	}
 
 	/**
@@ -458,7 +468,7 @@ public class BitChromosome extends Number<BitChromosome>
 
 	@Override
 	public Text toText() {
-		return Text.valueOf(str(toByteArray()));
+		return Text.valueOf(bit.toByteString(toByteArray()));
 	}
 
 	@Override
@@ -467,56 +477,6 @@ public class BitChromosome extends Number<BitChromosome>
 		System.arraycopy(_genes, 0, chromosome._genes, 0, chromosome._genes.length);
 		return chromosome;
 	}
-
-
-	static String toString(final byte[] data) {
-		final StringBuilder out = new StringBuilder(data.length*8 + data.length);
-
-		if (data.length > 0) {
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[data.length - 1] >>> j) & 1);
-			}
-		}
-		for (int i = data.length - 2; i >= 0 ;--i) {
-			out.append('|');
-			for (int j = 7; j >= 0; --j) {
-				out.append((data[i] >>> j) & 1);
-			}
-		}
-
-		return out.toString();
-	}
-
-	/**
-	 * Convert a string which was created with the {@link #toString(byte...)}
-	 * method back to an byte array.
-	 *
-	 * @param data the string to convert.
-	 * @return the byte array.
-	 * @throws IllegalArgumentException if the given data string could not be
-	 *         converted.
-	 */
-	 static byte[] toByteArray(final String data) {
-		final String[] parts = data.split("\\|");
-		final byte[] bytes = new byte[parts.length];
-
-		for (int i = 0; i < parts.length; ++i) {
-			if (parts[i].length() != 8) {
-				throw new IllegalArgumentException(
-					"Byte value doesn't contain 8 bit: " + parts[i]
-				);
-			}
-
-			try {
-				bytes[parts.length - 1 - i] = (byte)Integer.parseInt(parts[i], 2);
-			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
-
-		return bytes;
-	}
-
 
 	/* *************************************************************************
 	 *  XML object serialization
@@ -536,7 +496,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			final int length = xml.getAttribute(LENGTH, 1);
 			final double probability = xml.getAttribute(PROBABILITY, 0.5);
-			final byte[] data = toByteArray(xml.getText().toString());
+			final byte[] data = bit.fromByteString(xml.getText().toString());
 			final BitChromosome chromosome = new BitChromosome(data);
 			chromosome._p = probability;
 			chromosome._length = length;
@@ -548,7 +508,7 @@ public class BitChromosome extends Number<BitChromosome>
 		{
 			xml.setAttribute(LENGTH, chromosome._length);
 			xml.setAttribute(PROBABILITY, chromosome._p);
-			xml.addText(BitChromosome.toString(chromosome.toByteArray()));
+			xml.addText(bit.toByteString(chromosome.toByteArray()));
 		}
 		@Override
 		public void read(final InputElement element, final BitChromosome gene) {
@@ -582,6 +542,7 @@ public class BitChromosome extends Number<BitChromosome>
 		_genes = new byte[bytes];
 		in.readFully(_genes);
 
+		_seq = new BitGeneArray(_genes, 0, _length);
 	}
 
 }

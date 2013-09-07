@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
@@ -35,8 +32,8 @@ import javolution.xml.stream.XMLStreamException;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Function;
 import org.jenetics.util.Factory;
+import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
@@ -44,7 +41,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public class Float64Chromosome
 	extends NumberChromosome<Float64, Float64Gene>
@@ -66,14 +63,14 @@ public class Float64Chromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	public Float64Chromosome(final Float64Gene... genes) {
-		super(new Array<>(genes).toISeq());
+		this(Array.valueOf(genes).toISeq());
 	}
 
 	/**
 	 * Create a new random DoubleChromosome.
 	 *
-	 * @param min the min value of the {@link Float64Gene}s.
-	 * @param max the max value of the {@link Float64Gene}s.
+	 * @param min the min value of the {@link Float64Gene}s (inclusively).
+	 * @param max the max value of the {@link Float64Gene}s (exclusively).
 	 * @param length the length of the chromosome.
 	 */
 	public Float64Chromosome(
@@ -92,8 +89,8 @@ public class Float64Chromosome
 	/**
 	 * Create a new random chromosome of length one.
 	 *
-	 * @param min the minimal value of this chromosome.
-	 * @param max the maximal value of this chromosome.
+	 * @param min the minimal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
 	 */
 	public Float64Chromosome(final double min, final double max) {
 		this(Float64.valueOf(min), Float64.valueOf(max));
@@ -102,9 +99,10 @@ public class Float64Chromosome
 	/**
 	 * Create a new random chromosome of length one.
 	 *
-	 * @param min the minimal value of this chromosome.
-	 * @param max the maximal value of this chromosome.
-	 * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+	 * @param min the minimal value of this chromosome (inclusively).
+	 * @param max the maximal value of this chromosome (exclusively).
+	 * @throws NullPointerException if {@code min} or {@code max} is
+	 *         {@code null}.
 	 */
 	public Float64Chromosome(final Float64 min, final Float64 max) {
 		this(min, max, 1);
@@ -117,7 +115,7 @@ public class Float64Chromosome
 	 * @param max the maximal value of this chromosome.
 	 * @param length the {@code length} of the new chromosome.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *          one.
+	 *         one.
 	 */
 	public Float64Chromosome(final double min, final double max, final int length) {
 		this(Float64.valueOf(min), Float64.valueOf(max), length);
@@ -131,8 +129,12 @@ public class Float64Chromosome
 	/**
 	 * Return a more specific view of this chromosome factory.
 	 *
-	 * @return a more specific view of thiw chromosome factory.
+	 * @return a more specific view of this chromosome factory.
+	 *
+	 * @deprecated No longer needed after adding new factory methods to the
+	 *             {@link Array} class.
 	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public Factory<Float64Chromosome> asFactory() {
 		return (Factory<Float64Chromosome>)(Object)this;
@@ -260,8 +262,8 @@ public class Float64Chromosome
 		in.defaultReadObject();
 
 		final int length = in.readInt();
-		Float64 min = Float64.valueOf(in.readDouble());
-		Float64 max = Float64.valueOf(in.readDouble());
+		final Float64 min = Float64.valueOf(in.readDouble());
+		final Float64 max = Float64.valueOf(in.readDouble());
 
 		_min = min;
 		_max = max;

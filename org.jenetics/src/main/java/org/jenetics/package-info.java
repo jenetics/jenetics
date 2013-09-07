@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- * 	 Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
 /**
@@ -54,7 +51,7 @@
  * The diagram above shows the main data structures of the GA implementation.
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are
  * aggregated in {@link org.jenetics.Chromosome}s. One to n Chromosomes are
- * aggregated in {@link org.jenetics.Genotype}s. A Genptype and a fitness
+ * aggregated in {@link org.jenetics.Genotype}s. A Genotype and a fitness
  * {@link org.jenetics.util.Function} form the {@link org.jenetics.Phenotype}.
  * Phenotypes are collected into a {@link org.jenetics.Population}.
  *
@@ -67,11 +64,11 @@
  *
  * [code]
  * public static void main(final String[] args) {
- *     Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     Function<Genotype<BitGene> Float64> ff = ...
- *     GeneticAlgorithm<BitGene, Float64>
+ *     final Function<Genotype<BitGene> Float64> ff = ...
+ *     final GeneticAlgorithm<BitGene, Float64>
  *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
  *
  *     ga.setup();
@@ -135,7 +132,7 @@
  * IO.xml.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population<Float64Gene,Float64> population =
+ * final Population<Float64Gene,Float64> population =
  *     (Population<Float64Gene, Float64)IO.xml.read(file);
  * ga.setPopulation(population);
  * [/code]
@@ -166,7 +163,8 @@
  * final class OneCounter
  *     implements Function<Genotype<BitGene>, Integer>
  * {
- *     public Integer apply(Genotype<BitGene> genotype) {
+ *     \@Override
+ *     public Integer apply(final Genotype<BitGene> genotype) {
  *         int count = 0;
  *         for (BitGene gene : genotype.getChromosome()) {
  *             if (gene.getBit()) {
@@ -179,11 +177,11 @@
  *
  * public class OnesCounting {
  *     public static void main(String[] args) {
- *         Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *         final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *             new BitChromosome(20, 0.15)
  *         );
- *         Function<Genotype<BitGene>, Integer> ff = new OneCounter();
- *         GeneticAlgorithm<BitGene, Integer> ga =
+ *         final Function<Genotype<BitGene>, Integer> ff = new OneCounter();
+ *         final GeneticAlgorithm<BitGene, Integer> ga =
  *             new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM);
  *
  *         ga.setStatisticsCalculator(
@@ -249,8 +247,10 @@
  *     public FF(final double[][] adjacence) {
  *         _adjacence = adjacence;
  *     }
- *     public Float64 apply(Genotype<EnumGene<Integer>> genotype) {
- *         Chromosome<EnumGene<Integer>> path =
+ *
+ *     \@Override
+ *     public Float64 apply(final Genotype<EnumGene<Integer>> genotype) {
+ *         final Chromosome<EnumGene<Integer>> path =
  *             genotype.getChromosome();
  *
  *         double length = 0.0;
@@ -268,9 +268,9 @@
  *     public static void main(String[] args) {
  *         final int stops = 20;
  *
- *         Function<Genotype<EnumGene<Integer>>, Float64> ff =
+ *         final Function<Genotype<EnumGene<Integer>>, Float64> ff =
  *             new FF(adjacencyMatrix(stops));
- *         Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
+ *         final Factory<Genotype<EnumGene<Integer>>> gt = Genotype.valueOf(
  *             PermutationChromosome.ofInteger(stops)
  *         );
  *         final GeneticAlgorithm<EnumGene<Integer>, Float64>
@@ -308,7 +308,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 package org.jenetics;
 

@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics.util;
 
@@ -32,7 +29,7 @@ import java.util.ListIterator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2012-11-06 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-09-01 $</em>
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -42,7 +39,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          {@code (index < 0 || index >= size())}.
+	 *         {@code (index < 0 || index >= size())}.
 	 */
 	public void set(final int index, final T value);
 
@@ -61,6 +58,14 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} sequence.
 	 */
 	public MSeq<T> setAll(final Iterator<? extends T> it);
+
+	/**
+	 * Fills the sequence with values of the given iterable.
+	 *
+	 * @param values the values to fill this sequence.
+	 * @return {@code this} sequence.
+	 */
+	public MSeq<T> setAll(final Iterable<? extends T> values);
 
 	/**
 	 * Fill the sequence with the given values.
@@ -91,14 +96,25 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Swap a given range with a range of the same size with another array.
 	 *
+	 * <pre>
+	 *            start                end
+	 *              |                   |
+	 * this:  +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *              +---------------+
+	 *                          +---------------+
+	 * other: +---+---+---+---+---+---+---+---+---+---+---+---+
+	 *                          |
+	 *                      otherStart
+	 * </pre>
+	 *
 	 * @param start the start index of {@code this} range, inclusively.
 	 * @param end the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
 	 * @param otherStart the start index of the {@code other} array.
-	 * @throws IllegalArgumentException if {@code start > end}.
+	 * @throws IndexOutOfBoundsException if {@code start > end}.
 	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *          end >= this.length() || otherStart < 0 ||
-	 *          otherStart + (end - start) >= other.length()}
+	 *         end >= this.length() || otherStart < 0 ||
+	 *         otherStart + (end - start) >= other.length()}
 	 */
 	public void swap(
 		final int start, final int end,
@@ -110,7 +126,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * sequence).
 	 *
 	 * @return a list iterator over the elements in this list (in proper
-	 *           sequence)
+	 *         sequence)
 	 */
 	public ListIterator<T> listIterator();
 
@@ -124,7 +140,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
-	 * Return a read-only projection of this sequence.
+	 * Return a read-only projection of this sequence. Changes to the original
+	 * sequence will not influence the returned {@code ISeq}.
 	 *
 	 * @return a read-only projection of this sequence
 	 */
