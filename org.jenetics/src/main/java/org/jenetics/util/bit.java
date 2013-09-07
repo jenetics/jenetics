@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -379,7 +379,7 @@ public final class bit extends StaticObject {
 	}
 
 
-	static byte[] reverse(final byte[] array) {
+	public static byte[] reverse(final byte[] array) {
 		int i = 0;
 		int j = array.length;
 

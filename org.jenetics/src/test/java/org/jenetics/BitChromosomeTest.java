@@ -44,7 +44,7 @@ import org.jenetics.util.bit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-05 $</em>
+ * @version <em>$Date: 2013-09-07 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 

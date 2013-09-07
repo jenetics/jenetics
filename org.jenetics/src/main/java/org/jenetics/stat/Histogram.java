@@ -70,7 +70,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 

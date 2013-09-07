@@ -54,7 +54,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements

@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;

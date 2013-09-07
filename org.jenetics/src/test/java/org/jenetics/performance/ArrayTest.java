@@ -30,7 +30,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 @Suite("Array")
 public class ArrayTest {

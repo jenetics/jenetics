@@ -26,7 +26,7 @@ import org.jenetics.gradle.task.ColorizerTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-06 $</em>
+ * @version 1.4 &mdash; <em>$Date$</em>
  */
 
 apply plugin: 'jacoco'

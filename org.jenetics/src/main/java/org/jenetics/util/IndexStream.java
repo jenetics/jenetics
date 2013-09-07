@@ -46,7 +46,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public abstract class IndexStream {
 
@@ -124,7 +124,7 @@ public abstract class IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-02 $</em>
  */
 final class RandomIndexStream extends IndexStream {
 	private final int _n;

@@ -36,7 +36,7 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-30 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 public abstract class ProbabilitySelectorTester<
 	S extends ProbabilitySelector<Float64Gene, Float64>

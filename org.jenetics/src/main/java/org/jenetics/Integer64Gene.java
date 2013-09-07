@@ -39,7 +39,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -52,6 +52,11 @@ public final class Integer64Gene
 	@Override
 	protected Integer64 box(final java.lang.Number value) {
 		return Integer64.valueOf(value.longValue());
+	}
+
+	@Override
+	public Builder<Integer64, Integer64Gene> getBuilder() {
+		return null;
 	}
 
 	public Integer64Gene divide(final Integer64Gene gene) {

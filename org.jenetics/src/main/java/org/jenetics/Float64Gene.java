@@ -40,7 +40,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
  */
 public final class Float64Gene
 	extends NumberGene<Float64, Float64Gene>
@@ -54,6 +54,28 @@ public final class Float64Gene
 	@Override
 	protected Float64 box(final java.lang.Number value) {
 		return Float64.valueOf(value.doubleValue());
+	}
+
+	@Override
+	protected Builder<Float64, Float64Gene> getBuilder() {
+		return new Builder<Float64, Float64Gene>() {
+			@Override
+			protected Float64 next(Random random, Float64 min, Float64 max) {
+				return Float64.valueOf(
+					math.random.nextDouble(random, min.doubleValue(), max.doubleValue())
+				);
+			}
+
+			@Override
+			public Float64Gene build(Float64 value, Float64 min, Float64 max) {
+				return Float64Gene.valueOf(value, min, max);
+			}
+
+			@Override
+			protected Float64 box(Number value) {
+				return Float64.valueOf(value.doubleValue());
+			}
+		};
 	}
 
 	public Float64Gene divide(final Float64Gene gene) {
