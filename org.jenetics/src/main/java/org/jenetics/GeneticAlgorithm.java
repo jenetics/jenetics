@@ -2,27 +2,25 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics;
 
 import static java.lang.Math.round;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.object.NonNull;
@@ -173,7 +171,7 @@ public class GeneticAlgorithm<
 	private double _offspringFraction = DEFAULT_OFFSPRING_FRACTION;
 
 	// Alterers
-	private Alterer<G> _alterer = new CompositeAlterer<>(
+	private Alterer<G> _alterer = CompositeAlterer.valueOf(
 		new SinglePointCrossover<G>(0.1),
 		new Mutator<G>(0.05)
 	);
@@ -867,7 +865,7 @@ public class GeneticAlgorithm<
 	 */
 	@SafeVarargs
 	public final void setAlterers(final Alterer<G>... alterers) {
-		setAlterer(new CompositeAlterer<>(alterers));
+		setAlterer(CompositeAlterer.valueOf(alterers));
 	}
 
 	/**
@@ -878,7 +876,7 @@ public class GeneticAlgorithm<
 	 */
 	public void setMaximalPhenotypeAge(final int age) {
 		if (age < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Phenotype age must be greater than one, but was %s.", age
 			));
 		}
@@ -894,7 +892,7 @@ public class GeneticAlgorithm<
 	 */
 	public void setPopulationSize(final int size) {
 		if (size < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.", size
 			));
 		}
@@ -920,7 +918,7 @@ public class GeneticAlgorithm<
 	public void setPopulation(final Collection<Phenotype<G, C>> population) {
 		forEach(population, NonNull);
 		if (population.size() < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Population size must be greater than zero, but was %s.",
 				population.size()
 			));
@@ -1082,7 +1080,7 @@ public class GeneticAlgorithm<
 			_lock.unlock();
 		}
 
-		return String.format("%4d: (best) %s", generation, phenotype);
+		return format("%4d: (best) %s", generation, phenotype);
 	}
 
 }

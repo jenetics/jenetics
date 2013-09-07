@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics;
 
@@ -33,15 +30,17 @@ import java.util.Random;
 
 import javolution.context.LocalContext;
 
+import org.jscience.mathematics.number.LargeInteger;
+import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.IO;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.bit;
-import org.jscience.mathematics.number.LargeInteger;
-import org.testng.Assert;
-import org.testng.Reporter;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -53,6 +52,28 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	_factory = new BitChromosome(500, 0.3);
 	@Override protected Factory<Chromosome<BitGene>> getFactory() {
 		return _factory;
+	}
+
+	@Test(invocationCount = 20, successPercentage = 90)
+	public void newInstance() {
+		final int size = 50_000;
+		final BitChromosome base = new BitChromosome(size, 0.5);
+
+		for (int i = 0; i < 100; ++i) {
+			final BitChromosome other = base.newInstance();
+			Assert.assertNotEquals(other, base);
+
+			Assert.assertEquals(other.bitCount(), size/2.0, size/100.0);
+		}
+	}
+
+	@Test
+	public void seqTypes() {
+		final BitChromosome c = new BitChromosome(100, 0.3);
+
+		Assert.assertEquals(c.toSeq().getClass(), BitGeneArray.BitGeneISeq.class);
+		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneArray.class);
+		Assert.assertEquals(c.toSeq().copy().toISeq().getClass(), BitGeneArray.BitGeneISeq.class);
 	}
 
 	@Test
@@ -170,6 +191,43 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		Assert.assertEquals(sdata, data);
 	}
 
+	@Test(dataProvider = "bitCountProbability")
+	public void bitCount(final Double p) {
+		final int size = 1_000;
+		final BitChromosome base = new BitChromosome(size, p);
+
+		for (int i = 0; i < 1_000; ++i) {
+			final BitChromosome other = base.newInstance();
+
+			int bitCount = 0;
+			for (BitGene gene : other) {
+				if (gene.booleanValue()) {
+					++bitCount;
+				}
+			}
+
+			Assert.assertEquals(other.bitCount(), bitCount);
+		}
+	}
+
+	@Test(dataProvider = "bitCountProbability")
+	public void bitSetBitCount(final Double p) {
+		final int size = 1_000;
+		final BitChromosome base = new BitChromosome(size, p);
+
+		for (int i = 0; i < 1_000; ++i) {
+			final BitChromosome other = base.newInstance();
+			Assert.assertEquals(other.toBitSet().cardinality(), other.bitCount());
+		}
+	}
+
+	@DataProvider(name = "bitCountProbability")
+	public Object[][] getBitcountProbability() {
+		return new Object[][] {
+			{0.01}, {0.1}, {0.125}, {0.333}, {0.5}, {0.75}, {0.85}, {0.999}
+		};
+	}
+
 	@Test
 	public void objectSerializationCompatibility() throws IOException {
 		final Random random = new LCG64ShiftRandom.ThreadSafe(0);
@@ -182,7 +240,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.object.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();
@@ -201,7 +259,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
 				final Object object = IO.xml.read(in);
 
-				Assert.assertEquals(object, chromosome);
+				Assert.assertEquals(chromosome, object);
 			}
 		} finally {
 			LocalContext.exit();

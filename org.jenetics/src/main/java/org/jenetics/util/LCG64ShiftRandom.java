@@ -2,26 +2,24 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -154,7 +152,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		@Override
 		public String toString() {
-			return String.format("%s[a=%d, b=%d]", getClass().getName(), a, b);
+			return format("%s[a=%d, b=%d]", getClass().getName(), a, b);
 		}
 	}
 
@@ -439,7 +437,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
 	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
 	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
-	 * via <i>leapfrogging</i>.
+	 * via <i>leap-frogging</i>.
 	 *
 	 * @param p the overall number of sub-streams
 	 * @param s the s<sup>th</sup> sub-stream
@@ -447,12 +445,12 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void split(final int p, final int s) {
 		if (p < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"p must be >= 1 but was %d.", p
 			));
 		}
 		if (s >= p) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"s must be < %d but was %d.", p, s
 			));
 		}
@@ -474,13 +472,13 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void jump2(final int s) {
 		if (s < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"s must be positive but was %d.", s
 			));
 		}
 
 		if (s >= Long.SIZE) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"The 'jump2' size must be smaller than %d but was %d.",
 				Long.SIZE, s
 			));
@@ -498,7 +496,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 */
 	public void jump(final long step) {
 		if (step < 0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"step must be positive but was %d", step
 			));
 		}
@@ -528,7 +526,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 	@Override
 	public String toString() {
-		return String.format(
+		return format(
 			"%s[a=%d, b=%d, r=%d",
 			getClass().getName(), _a, _b, _r
 		);

@@ -2,29 +2,27 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.stat.math.Φ;
-import static org.jenetics.stat.math.φ;
+import static org.jenetics.internal.math.statistics.Φ;
+import static org.jenetics.internal.math.statistics.φ;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 import static org.jenetics.util.object.nonNegative;
@@ -115,7 +113,7 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"p(x) = N[µ=%f, σ²=%f](x)", _mean, _var
 			);
@@ -175,7 +173,7 @@ public class NormalDistribution<
 
 		@Override
 		public String toString() {
-			return String.format(
+			return format(
 				Locale.ENGLISH,
 				"P(x) = 1/2(1 + erf((x - %f)/(sqrt(2·%f))))",
 				_mean, _var
@@ -270,7 +268,7 @@ public class NormalDistribution<
 
 	@Override
 	public String toString() {
-		return String.format("N[µ=%f, σ²=%f]", _mean, _var);
+		return format("N[µ=%f, σ²=%f]", _mean, _var);
 	}
 
 }

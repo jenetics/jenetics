@@ -2,23 +2,20 @@
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Author:
- *     Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
- *
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 package org.jenetics.util;
 
@@ -29,6 +26,8 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jenetics.internal.math.probability;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
@@ -68,6 +67,35 @@ public class RandomIndexStreamTest {
 			}
 
 			Assert.assertEquals(stream.next(), -1);
+		}
+	}
+
+	@Test
+	public void reference() {
+		final int size = 5000;
+		final double p = 0.5;
+
+		final Random random1 = new LCG64ShiftRandom(0);
+		final Random random2 = new LCG64ShiftRandom(0);
+
+		for (int j = 0; j < 1; ++j) {
+			final IndexStream stream1 = IndexStream.Random(
+				size, p, random1
+			);
+			final IndexStream stream2 = ReferenceRandomStream(
+				size, p, random2
+			);
+
+			int actual = 0;
+			int expected = 0;
+			do {
+				actual = stream1.next();
+				expected = stream2.next();
+				Assert.assertEquals(actual, expected);
+			} while (actual != -1);
+
+			Assert.assertEquals(stream1.next(), -1);
+			Assert.assertEquals(stream2.next(), -1);
 		}
 	}
 
@@ -184,6 +212,25 @@ public class RandomIndexStreamTest {
 				{ new Integer(11100), new Double(0.99) },
 				{ new Integer(11200), new Double(0.99) },
 				{ new Integer(11500), new Double(0.99) }
+		};
+	}
+
+
+	public static IndexStream ReferenceRandomStream(
+		final int n,
+		final double p,
+		final Random random
+	) {
+		return new IndexStream() {
+			private final int P = probability.toInt(p);
+			private int _pos = -1;
+			@Override public int next() {
+				while (_pos < n && random.nextInt() >= P) {
+					++_pos;
+				}
+				return (_pos < n - 1) ? ++_pos : -1;
+			}
+
 		};
 	}
 }

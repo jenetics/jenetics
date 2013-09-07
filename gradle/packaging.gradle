@@ -1,0 +1,86 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ */
+
+ import java.text.SimpleDateFormat
+ import java.util.Date
+ 
+ import org.apache.tools.ant.filters.ReplaceTokens
+ 
+/**
+ * Contains the packaging task.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.2
+ * @version 1.4 &mdash; <em>$Date$</em>
+ */
+ 
+task packaging(group: 'package', description: 'Packages the project.') << {
+	copy {
+		from(projectDir) {
+			include '*.gradle'
+			include 'src/**/*.java'
+			include 'src/**/*.xml'
+			include 'src/**/*.c'
+			include 'src/**/*.cpp'
+			include 'src/**/*.h'
+			include 'src/**/*.hpp'
+		}
+		into file("${exportProjectDir}/${project.name}")
+		filter(ReplaceTokens, tokens: [
+			__identifier__: identifier,
+			__year__: copyrightYear
+		])
+	}
+	copy {
+		from(projectDir) {
+			include 'src/**/*'
+			exclude '*.gradle'
+			exclude '**/*.java'
+			exclude '**/*.xml'
+			exclude '**/*.c'
+			exclude '**/*.cpp'
+			exclude '**/*.h'
+			exclude '**/*.hpp'
+		}
+		into file("${exportProjectDir}/${project.name}")
+	}
+	
+	if (plugins.hasPlugin('java')) {
+		// Copy the external jar dependencies.
+		configurations.testRuntime.each { jar ->
+			if (jar.name.endsWith('.jar') && 
+				!jar.name.startsWith('org.jeneti')) 
+			{
+				copy {
+					from jar
+					into exportProjectLibDir
+				}
+			}
+		}
+		
+		// Copy the build library
+		copy {
+			from("${buildDir}/libs")
+			into exportLibDir
+		}
+	}
+}
+
+
