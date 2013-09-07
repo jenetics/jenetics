@@ -24,14 +24,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
 /**
  * It would be more elegant to calculate the inverse cumulative probability and
  * not reading it from a file. But for now it is better than a single magic
  * number.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-12 $</em>
+ * @version <em>$Date: 2013-09-08 $</em>
  */
 public final class ChiSquare {
 	private static final String CHI = "/org/jenetics/stat/chi.txt";
@@ -48,6 +47,7 @@ public final class ChiSquare {
 			final InputStreamReader isr = new InputStreamReader(in);
 			final BufferedReader reader = new BufferedReader(isr)
 		) {
+
 			int index = 0;
 			String line = null;
 			while ((line = readLine(reader)) != null) {
@@ -81,7 +81,7 @@ public final class ChiSquare {
 			}
 
 			return line;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new AssertionError(e);
 		}
 	}

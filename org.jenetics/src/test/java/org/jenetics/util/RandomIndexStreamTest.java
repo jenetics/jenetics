@@ -27,13 +27,15 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.internal.math.probability;
+
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.NormalDistribution;
 import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-04-27 $</em>
+ * @version <em>$Date: 2013-09-01 $</em>
  */
 public class RandomIndexStreamTest {
 
@@ -65,6 +67,35 @@ public class RandomIndexStreamTest {
 			}
 
 			Assert.assertEquals(stream.next(), -1);
+		}
+	}
+
+	@Test
+	public void reference() {
+		final int size = 5000;
+		final double p = 0.5;
+
+		final Random random1 = new LCG64ShiftRandom(0);
+		final Random random2 = new LCG64ShiftRandom(0);
+
+		for (int j = 0; j < 1; ++j) {
+			final IndexStream stream1 = IndexStream.Random(
+				size, p, random1
+			);
+			final IndexStream stream2 = ReferenceRandomStream(
+				size, p, random2
+			);
+
+			int actual = 0;
+			int expected = 0;
+			do {
+				actual = stream1.next();
+				expected = stream2.next();
+				Assert.assertEquals(actual, expected);
+			} while (actual != -1);
+
+			Assert.assertEquals(stream1.next(), -1);
+			Assert.assertEquals(stream2.next(), -1);
 		}
 	}
 
@@ -181,6 +212,25 @@ public class RandomIndexStreamTest {
 				{ new Integer(11100), new Double(0.99) },
 				{ new Integer(11200), new Double(0.99) },
 				{ new Integer(11500), new Double(0.99) }
+		};
+	}
+
+
+	public static IndexStream ReferenceRandomStream(
+		final int n,
+		final double p,
+		final Random random
+	) {
+		return new IndexStream() {
+			private final int P = probability.toInt(p);
+			private int _pos = -1;
+			@Override public int next() {
+				while (_pos < n && random.nextInt() >= P) {
+					++_pos;
+				}
+				return (_pos < n - 1) ? ++_pos : -1;
+			}
+
 		};
 	}
 }

@@ -7,10 +7,11 @@ Jenetics is an Genetic Algorithm, respectively an Evolutionary Algorithm, librar
 ## Requirements
 
 ### Build time
-*  **JDK 1.7**: The `JAVA_HOME` variable must be set to your java installation directory.
-*  **Gradle 1.6**: [Gradle](http://www.gradle.org/) is used for building the library.
+*  **JDK 7**: The `JAVA_HOME` variable must be set to your java installation directory.
+*  **Gradle 1.7**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
 
-### Run time
+### Runtime
+*  **JRE 7**: Java runtime version 7 is needed for using the library, respectively for running the examples.
 *  **JScience** library, <http://jscience.org>: This library is  included and lies in the `project/lib` directory.
 
 ## Download
@@ -40,17 +41,17 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 
 For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
 
-* **pack**: Compiles the sources of all modules, creates the JAR files and the Javadoc. The build artifacts are copied into the `<builddir>/build/package` directory. This task is only available in the `<builddir>` directory.
 * **compileJava**: Compiles the Jenetics sources and copies the class files to the `<builddir>/<module-dir>/build/classes/main` directory.
 * **test**: Compiles and executes the unit tests. The test results are printed onto the console and a test-report, created by TestNG, is written to `<builddir>/<module-dir>` directory.
 * **javadoc**: Generates the API documentation. The Javadoc is stored in the `<builddir>/<module-dir>/build/docs` directory
 * **jar**: Compiles the sources and creates the JAR files. The artifacts are copied to the `<builddir>/<module-dir>/build/libs` directory.
+* **packaging**: Compiles the sources of all modules, creates the JAR files and the Javadoc and creates a complete library package--the same which you can download from the home page. The build artifacts are copied into the `<builddir>/build/package/jenetics-<version>` directory.
 * **clean**: Deletes the `<builddir>/build/*` directories and removes all generated artifacts.
 
 For packaging (building)  the source call
 
     $ cd <build-dir>
-    $ gradle pack
+    $ ./gradlew pack
 
 
 
@@ -58,7 +59,7 @@ For packaging (building)  the source call
 
 Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. Call
 
-    $ gradle [eclipse|idea]
+    $ ./gradlew [eclipse|idea]
 
 for creating the project files for Eclipse or IntelliJ, respectively.
 

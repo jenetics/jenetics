@@ -21,13 +21,15 @@ package org.jenetics.util;
 
 import static org.jenetics.util.math.statistics.sum;
 
+import java.util.Random;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-06-14 $</em>
+ * @version <em>$Date: 2013-09-02 $</em>
  */
 public class mathTest {
 
@@ -118,6 +120,26 @@ public class mathTest {
 		}
 
 		Assert.assertEquals(sum(values), 1.0);
+	}
+
+	@Test
+	public void subset() {
+		final Random random = new Random();
+
+		for (int i = 1; i < 100; ++i) {
+			int[] sub = new int[i];
+			math.subset(1000, sub, random);
+
+			Assert.assertTrue(isSortedd(sub));
+		}
+	}
+
+	private static boolean isSortedd(int[] array) {
+		boolean sorted = true;
+		for (int i = 0; i < array.length - 1 && sorted; ++i) {
+			sorted = array[i] < array[i + 1];
+		}
+		return sorted;
 	}
 
 }

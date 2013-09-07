@@ -1,4 +1,4 @@
-Java Genetic Algorithm Library
+Jenetics: Java Genetic Algorithm Library
 Copyright (c) 2007-2013 Franz Wilhelmstötter
 
 This product includes software from the JScience library

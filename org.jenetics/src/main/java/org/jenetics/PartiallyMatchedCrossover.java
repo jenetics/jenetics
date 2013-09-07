@@ -28,7 +28,7 @@ import javolution.lang.Immutable;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.arrays;
+import org.jenetics.util.math;
 
 /**
  * <p>
@@ -71,7 +71,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public final class PartiallyMatchedCrossover<T>
 	extends Crossover<EnumGene<T>>
@@ -91,7 +91,7 @@ public final class PartiallyMatchedCrossover<T>
 
 		if (that.length() >= 2) {
 			final Random random = RandomRegistry.getRandom();
-			final int[] points = arrays.subset(that.length(), 2, random);
+			final int[] points = math.subset(that.length(), 2, random);
 
 			that.swap(points[0], points[1], other, points[0]);
 			repair(that, other, points[0], points[1]);

@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.String.format;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
@@ -39,7 +40,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -51,7 +52,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	 *
 	 * @param probability the crossover probability.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *          valid range of {@code [0, 1]}.
+	 *         valid range of {@code [0, 1]}.
 	 */
 	public MeanAlterer(final double probability) {
 		super(probability, 2);
@@ -124,7 +125,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	public String toString() {
-		return String.format("%s[p=%f]", getClass().getSimpleName(), _probability);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

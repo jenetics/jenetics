@@ -42,7 +42,7 @@ import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-12 $</em>
+ * @version <em>$Date: 2013-09-08 $</em>
  */
 public class Float64ChromosomeTest
 	extends NumberChromosomeTester<Float64, Float64Gene>

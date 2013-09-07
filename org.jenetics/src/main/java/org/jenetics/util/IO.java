@@ -46,11 +46,11 @@ import javolution.xml.stream.XMLStreamException;
  * final Population<Float64Gene,Float64> population =
  *     (Population<Float64Gene, Float64)IO.xml.read(file);
  * ga.setPopulation(population);
- *[/code]
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public abstract class IO {
 

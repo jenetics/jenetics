@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -51,7 +52,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-05-25 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -72,7 +73,7 @@ public final class ExponentialRankSelector<
 	 */
 	public ExponentialRankSelector(final double c) {
 		if (c < 0.0 || c >= 1.0) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 				"Value %s is out of range [0..1): ", c
 			));
 		}
@@ -127,7 +128,7 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public String toString() {
-		return String.format("%s[c=%f]", getClass().getSimpleName(), _c);
+		return format("%s[c=%f]", getClass().getSimpleName(), _c);
 	}
 
 }

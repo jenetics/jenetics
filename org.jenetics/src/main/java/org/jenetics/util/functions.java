@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
@@ -179,7 +180,7 @@ public final class functions extends StaticObject {
 			return object == null ? Boolean.TRUE : Boolean.FALSE;
 		}
 		@Override public String toString() {
-			return String.format("%s", getClass().getSimpleName());
+			return format("%s", getClass().getSimpleName());
 		}
 	};
 
@@ -198,7 +199,7 @@ public final class functions extends StaticObject {
 				return a.apply(object) ? Boolean.FALSE : Boolean.TRUE;
 			}
 			@Override public String toString() {
-				return String.format("%s[%s]", getClass().getSimpleName(), a);
+				return format("%s[%s]", getClass().getSimpleName(), a);
 			}
 		};
 	}
@@ -224,7 +225,7 @@ public final class functions extends StaticObject {
 				return a.apply(object) && b.apply(object);
 			}
 			@Override public String toString() {
-				return String.format("%s[%s, %s]", getClass().getSimpleName(), a, b);
+				return format("%s[%s, %s]", getClass().getSimpleName(), a, b);
 			}
 		};
 	}
@@ -250,7 +251,7 @@ public final class functions extends StaticObject {
 				return a.apply(object) || b.apply(object);
 			}
 			@Override public String toString() {
-				return String.format(
+				return format(
 						"%s[%s, %s]",
 						getClass().getSimpleName(), a, b
 					);

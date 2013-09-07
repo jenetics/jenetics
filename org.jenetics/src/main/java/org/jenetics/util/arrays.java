@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -34,7 +35,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -200,8 +201,8 @@ public final class arrays extends StaticObject {
 	 * @throws NullPointerException if the given array or one of it's element is
 	 *         {@code null}.
 	 */
-	public static <T extends Object & Comparable<? super T>> boolean
-	isSorted(final Seq<T> seq)
+	public static <T extends Object & Comparable<? super T>>
+	boolean isSorted(final Seq<T> seq)
 	{
 		boolean sorted = true;
 		for (int i = 0, n = seq.length() - 1; i < n && sorted; ++i) {
@@ -515,9 +516,12 @@ public final class arrays extends StaticObject {
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
+	 *
+	 * @deprecated Use {@link math#subset(int, int)} instead.
 	 */
+	@Deprecated
 	public static int[] subset(final int n, final int k) {
-		return subset(n, k, RandomRegistry.getRandom());
+		return math.subset(n, k);
 	}
 
 	/**
@@ -532,23 +536,12 @@ public final class arrays extends StaticObject {
 	 * @throws IllegalArgumentException if {@code n < k}, {@code k == 0} or if
 	 *          {@code n*k} will cause an integer overflow.
 	 * @return the subset array.
+	 *
+	 * @deprecated Use {@link math#subset(int, int, Random)} instead.
 	 */
+	@Deprecated
 	public static int[] subset(final int n, final int k, final Random random) {
-		requireNonNull(random, "Random");
-		if (k <= 0) {
-			throw new IllegalArgumentException(String.format(
-					"Subset size smaller or equal zero: %s", k
-				));
-		}
-		if (n < k) {
-			throw new IllegalArgumentException(String.format(
-					"n smaller than k: %s < %s.", n, k
-				));
-		}
-
-		final int[] sub = new int[k];
-		subset(n, sub,random);
-		return sub;
+		return math.subset(n, k, random);
 	}
 
 	/**
@@ -579,9 +572,12 @@ public final class arrays extends StaticObject {
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *          {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *          integer overflow.
+	 *
+	 * @deprecated Use {@link math#subset(int, int[])} instead.
 	 */
+	@Deprecated
 	public static void subset(final int n, final int sub[]) {
-		subset(n, sub, RandomRegistry.getRandom());
+		math.subset(n, sub);
 	}
 
 	/**
@@ -614,105 +610,14 @@ public final class arrays extends StaticObject {
 	 * @throws IllegalArgumentException if {@code n < sub.length},
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.
+	 *
+	 * @deprecated Use {@link math#subset(int, int[], Random)} instead.
 	 */
+	@Deprecated
 	public static int[] subset(final int n, final int sub[], final Random random) {
-		requireNonNull(random, "Random");
-		requireNonNull(sub, "Sub set array");
-
-		final int k = sub.length;
-		if (k <= 0) {
-			throw new IllegalArgumentException(String.format(
-				"Subset size smaller or equal zero: %s", k
-			));
-		}
-		if (n < k) {
-			throw new IllegalArgumentException(String.format(
-				"n smaller than k: %s < %s.", n, k
-			));
-		}
-		if (!math.isMultiplicationSave(n, k)) {
-			throw new IllegalArgumentException(String.format(
-				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
-				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
-			));
-		}
-
-		if (sub.length == n) {
-			for (int i = 0; i < sub.length; ++i) {
-				sub[i] = i;
-			}
-			return sub;
-		}
-
-		for (int i = 0; i < k; ++i) {
-			sub[i] = (i*n)/k;
-		}
-
-		int l = 0;
-		int ix = 0;
-		for (int i = 0; i < k; ++i) {
-			do {
-				ix = nextInt(random, 1, n);
-				l = (ix*k - 1)/n;
-			} while (sub[l] >= ix);
-
-			sub[l] = sub[l] + 1;
-		}
-
-		int m = 0;
-		int ip = 0;
-		int is = k;
-		for (int i = 0; i < k; ++i) {
-			m = sub[i];
-			sub[i] = 0;
-
-			if (m != (i*n)/k) {
-				ip = ip + 1;
-				sub[ip - 1] = m;
-			}
-		}
-
-		int ihi = ip;
-		int ids = 0;
-		for (int i = 1; i <= ihi; ++i) {
-			ip = ihi + 1 - i;
-			l = 1 + (sub[ip - 1]*k - 1)/n;
-			ids = sub[ip - 1] - ((l - 1)*n)/k;
-			sub[ip - 1] = 0;
-			sub[is - 1] = l;
-			is = is - ids;
-		}
-
-		int ir = 0;
-		int m0 = 0;
-		for (int ll = 1; ll <= k; ++ll) {
-			l = k + 1 - ll;
-
-			if (sub[l - 1] != 0) {
-				ir = l;
-				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
-				m = (sub[l-1]*n)/k - m0 + 1;
-			}
-
-			ix = nextInt(random, m0, m0 + m - 1);
-
-			int i = l + 1;
-			while (i <= ir && ix >= sub[i - 1]) {
-				ix = ix + 1;
-				sub[ i- 2] = sub[i - 1];
-				i = i + 1;
-			}
-
-			sub[i - 2] = ix;
-			--m;
-		}
-
-		return sub;
+		return math.subset(n, sub, random);
 	}
 
-	private static int nextInt(final Random random, final int a, final int b) {
-		return a == b ? a - 1 : random.nextInt(b - a) + a;
-	}
 
 	/**
 	 * Calculates a random permutation.
@@ -780,7 +685,7 @@ public final class arrays extends StaticObject {
 	public static int[] permutation(final int[] p, final long rank) {
 		requireNonNull(p, "Permutation array");
 		if (rank < 1) {
-			throw new IllegalArgumentException(String.format(
+			throw new IllegalArgumentException(format(
 					"Rank smaler than 1: %s", rank
 				));
 		}
@@ -837,7 +742,7 @@ public final class arrays extends StaticObject {
 	) {
 		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
-			throw new IndexOutOfBoundsException(String.format(
+			throw new IndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s]", start, end
 			));
 		}

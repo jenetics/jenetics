@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -58,7 +58,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	ArraySeq(final ArrayRef array, final int start, final int end) {
 		requireNonNull(array, "Array");
 		if (start < 0 || end > array.length || start > end) {
-			throw new ArrayIndexOutOfBoundsException(String.format(
+			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", start, end
 			));
 		}
@@ -204,7 +204,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 		int index = -1;
 
-		for (int i = end + _start; --i >= _start && index == -1;) {
+		for (int i = end + _start; --i >= start +_start && index == -1;) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
 			if (predicate.apply(element) == Boolean.TRUE) {

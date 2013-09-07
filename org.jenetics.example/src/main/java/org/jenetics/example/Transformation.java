@@ -42,7 +42,7 @@ import org.jenetics.util.Function;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2013-07-12 $</em>
+ * @version 2.0 &mdash; <em>$Date: 2013-09-08 $</em>
  */
 public class Transformation {
 
@@ -135,7 +135,7 @@ public class Transformation {
 
 		ga.setFitnessScaler(SQR_SCALER);
 		ga.setPopulationSize(1000);
-		ga.setAlterer(new CompositeAlterer<>(
+		ga.setAlterer(CompositeAlterer.valueOf(
 			new Mutator<Float64Gene>(0.03),
 			new MeanAlterer<Float64Gene>(0.6)
 		));

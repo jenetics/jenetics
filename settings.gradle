@@ -18,19 +18,25 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-include "org.jenetics"
-include "org.jenetics.example"
-include "org.jenetics.doc"
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.2
+ * @version 1.4 &mdash; <em>$Date: 2013-09-06 $</em>
+ */
+ 
+// The Gradle build project.
+include 'buildSrc'
+ 
+// The Jenetics projects.
+include 'org.jenetics'
+include 'org.jenetics.example'
+include 'org.jenetics.doc'
 
-rootProject.name = "jenetics"
-/*
-rootProject.children.each { project ->
-	//project.version = "1.1.0"
-	//project.sourceCompatibility = 1.7
-	//project.targetCompatibility = 1.7
-	println(project)
+rootProject.name = 'jenetics'
+
+// Rename the build scripts of the projects to ${project.name}.gradle
+rootProject.children.each {
+	it.buildFileName = it.name + '.gradle'
 }
-*/
-
 
 

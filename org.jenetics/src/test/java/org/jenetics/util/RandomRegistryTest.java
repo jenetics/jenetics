@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-07-12 $</em>
+ * @version <em>$Date: 2013-09-08 $</em>
  */
 public class RandomRegistryTest {
 
