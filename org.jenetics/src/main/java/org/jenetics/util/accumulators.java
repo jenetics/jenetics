@@ -39,12 +39,6 @@ import org.jscience.mathematics.structure.GroupAdditive;
 public final class accumulators extends StaticObject {
 	private accumulators() {}
 
-	public static final Accumulator<Object> NULL = new Accumulator<Object>() {
-		@Override
-		public void accumulate(final Object value) {
-		}
-	};
-
 	/**
 	 * Calculates the sum of the accumulated values.
 	 *
