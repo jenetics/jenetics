@@ -39,28 +39,11 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-10 $</em>
  */
 public interface Alterer<G extends Gene<?, G>> {
 
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
-
-	/**
-	 * Return an alterer which does nothing.
-	 *
-	 * @return an alterer which does nothing.
-	 */
-	public static <G extends Gene<?, G>> Alterer<G> Null() {
-		return new Alterer<G>() {
-			@Override
-			public <C extends Comparable<? super C>> int alter(
-				final Population<G, C> population,
-				final int generation
-			) {
-				return 0;
-			}
-		};
-	}
 
 	/**
 	 * Alters (recombine) a given population. If the <code>population</code>
