@@ -28,7 +28,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-10 $</em>
  */
 
 apply from: "${rootDir}/gradle/commons.gradle"
@@ -37,7 +37,7 @@ apply from: "${rootDir}/gradle/packaging.gradle"
 // The temp build temp directory.
 def buildTempDir = file("${buildDir}/tmp")
 
-task build(override: true) {
+task build << {
 	copy {
 		from("${projectDir}/src/main") {
 			include 'lyx/manual.lyx'
