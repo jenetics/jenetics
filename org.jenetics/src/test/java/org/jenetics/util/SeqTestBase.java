@@ -21,6 +21,9 @@ package org.jenetics.util;
 
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -28,19 +31,14 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-09-10 $</em>
  */
 public abstract class SeqTestBase {
 
 	protected abstract Seq<Integer> newSeq(final int length);
 
-	private static Function<Integer, Boolean> ValueOf(final int value) {
-		return new Function<Integer, Boolean>() {
-			@Override
-			public Boolean apply(final Integer v) {
-				return v == value;
-			}
-		};
+	private static Predicate<Integer> ValueOf(final int value) {
+		return i -> i == value;
 	}
 
 	@Test
@@ -252,15 +250,12 @@ public abstract class SeqTestBase {
 		final AtomicInteger counter = new AtomicInteger();
 		final AtomicInteger lastValue = new AtomicInteger(-1);
 
-		seq.forEach(new Function<Integer, Void>() {
-			@Override public Void apply(final Integer value) {
-				Assert.assertTrue(lastValue.get() < value);
-				Assert.assertTrue(seq.contains(value));
+		seq.forEach(value -> {
+			Assert.assertTrue(lastValue.get() < value);
+			Assert.assertTrue(seq.contains(value));
 
-				lastValue.set(value);
-				counter.incrementAndGet();
-				return null;
-			}
+			lastValue.set(value);
+			counter.incrementAndGet();
 		});
 
 		Assert.assertEquals(counter.get(), seq.length());
@@ -270,12 +265,10 @@ public abstract class SeqTestBase {
 	public void forAll(final Seq<Integer> seq) {
 		final AtomicInteger counter = new AtomicInteger();
 
-		seq.forAll(new Function<Integer, Boolean>() {
-			@Override public Boolean apply(final Integer value) {
-				Assert.assertTrue(seq.contains(value));
-				counter.incrementAndGet();
-				return true;
-			}
+		seq.forAll(value -> {
+			Assert.assertTrue(seq.contains(value));
+			counter.incrementAndGet();
+			return true;
 		});
 
 		Assert.assertEquals(counter.get(), seq.length());
@@ -285,10 +278,8 @@ public abstract class SeqTestBase {
 	public void forAll2(final Seq<Integer> seq) {
 		final AtomicInteger counter = new AtomicInteger();
 
-		seq.forAll(new Function<Integer, Boolean>() {
-			@Override public Boolean apply(final Integer value) {
-				return counter.incrementAndGet() < seq.length()/2;
-			}
+		seq.forAll(value -> {
+			return counter.incrementAndGet() < seq.length()/2;
 		});
 
 		Assert.assertEquals(counter.get(), seq.length()/2);

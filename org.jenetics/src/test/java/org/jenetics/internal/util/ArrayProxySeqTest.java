@@ -19,14 +19,15 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.SeqTestBase;
 
+import java.util.function.Function;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-09-10 $</em>
  */
 public class ArrayProxySeqTest extends SeqTestBase {
 

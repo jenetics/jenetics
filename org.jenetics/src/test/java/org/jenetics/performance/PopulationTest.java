@@ -33,7 +33,7 @@ import org.jenetics.util.arrays;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-09-10 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
@@ -73,7 +73,7 @@ public class PopulationTest {
 
 		@Override
 		protected void afterTest() {
-			lists.shuffle(_population);
+			//arrays.shuffle(_population);
 		}
 	};
 

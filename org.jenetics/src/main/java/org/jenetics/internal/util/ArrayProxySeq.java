@@ -24,14 +24,14 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Function;
 
-import org.jenetics.util.Function;
 import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-10 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -55,6 +55,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return new ArrayProxyIterator<>(_proxy);
 	}
 
+	@Override
 	public <B> Iterator<B> iterator(
 		final Function<? super T, ? extends B> mapper
 	) {

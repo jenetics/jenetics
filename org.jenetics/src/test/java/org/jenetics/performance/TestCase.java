@@ -25,11 +25,10 @@ import org.jenetics.stat.Variance;
 import org.jenetics.util.Accumulator.MinMax;
 import org.jenetics.util.Accumulator;
 import org.jenetics.util.Timer;
-import org.jenetics.util.accumulators.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-09-10 $</em>
  */
 public abstract class TestCase
 	implements
