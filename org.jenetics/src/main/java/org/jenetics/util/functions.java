@@ -34,21 +34,10 @@ import org.jscience.mathematics.number.Integer64;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-10 $</em>
  */
 public final class functions extends StaticObject {
 	private functions() {}
-
-	/**
-	 * Convert an object to a string by calling the objects {@link Object#toString()}
-	 * method.
-	 */
-	public static final Function<Object, String>
-	ObjectToString = new Function<Object, String>() {
-		@Override public String apply(final Object value) {
-			return Objects.toString(value);
-		}
-	};
 
 	/**
 	 * Convert a string value to its length.

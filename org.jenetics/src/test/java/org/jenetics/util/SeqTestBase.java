@@ -20,6 +20,7 @@
 package org.jenetics.util;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -312,7 +313,7 @@ public abstract class SeqTestBase {
 
 	@Test(dataProvider = "sequences")
 	public void map(final Seq<Integer> seq) {
-		final Seq<String> sseq = seq.map(functions.ObjectToString);
+		final Seq<String> sseq = seq.map(Objects::toString);
 		Assert.assertEquals(sseq.length(), seq.length());
 
 		for (int i = 0; i < seq.length(); ++i) {
