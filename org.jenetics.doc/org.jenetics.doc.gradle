@@ -37,7 +37,7 @@ apply from: "${rootDir}/gradle/packaging.gradle"
 // The temp build temp directory.
 def buildTempDir = file("${buildDir}/tmp")
 
-task build(override: true) {
+task build << {
 	copy {
 		from("${projectDir}/src/main") {
 			include 'lyx/manual.lyx'
