@@ -40,18 +40,6 @@ public final class functions extends StaticObject {
 	private functions() {}
 
 	/**
-	 * Convert a string to an integer. If the string can't be converted, an
-	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
-	 * method.
-	 */
-	public static final Function<String, Integer>
-	StringToInteger = new Function<String, Integer>() {
-		@Override public Integer apply(final String value) {
-			return Integer.parseInt(value);
-		}
-	};
-
-	/**
 	 * Convert a string to a long. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
