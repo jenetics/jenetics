@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-10 $</em>
  */
 public final class object extends StaticObject {
 	private object() {}
@@ -76,7 +76,9 @@ public final class object extends StaticObject {
 	 * arrays.forEach(array, NonNull);
 	 * [/code]
 	 */
-	public static final Consumer<Object> NonNull = o -> { nonNull(o, "Object"); };
+	public static final Consumer<Object> NonNull = o -> {
+		requireNonNull(o, "Object must not be null.");
+	};
 
 	/**
 	 * A {@code null} checking predicate which can be used to check an array
@@ -92,40 +94,7 @@ public final class object extends StaticObject {
 	 * [/code]
 	 */
 	public static final Consumer<Object> NonNull(final String message) {
-		return object -> { nonNull(object, message); };
-	}
-
-	/**
-	 * Checks that the specified object reference is not {@code null}.
-	 *
-	 * @param obj the object to check.
-	 * @param message the error message.
-	 * @return {@code obj} if not {@code null}.
-	 * @throws NullPointerException if {@code obj} is {@code null}.
-	 *
-	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object, String)}
-	 *             instead.
-	 */
-	@Deprecated
-	public static <T> T nonNull(final T obj, final String message) {
-		if (obj == null) {
-			throw new NullPointerException(message + " must not be null.");
-		}
-		return obj;
-	}
-
-	/**
-	 * Checks that the specified object reference is not {@code null}.
-	 *
-	 * @param obj the object to check.
-	 * @return {@code obj} if not {@code null}.
-	 * @throws NullPointerException if {@code obj} is {@code null}.
-	 *
-	 * @deprecated Use {@link java.util.Objects#requireNonNull(Object)} instead.
-	 */
-	@Deprecated
-	public static <T> T nonNull(final T obj) {
-		return nonNull(obj, "Object");
+		return object -> { requireNonNull(object, message); };
 	}
 
 	/**
@@ -436,45 +405,6 @@ public final class object extends StaticObject {
 	 */
 	public static boolean eq(final Seq<?> a, final Seq<?> b) {
 		return Seq.equals(a, b);
-	}
-
-	/**
-	 * Returns the result of calling toString for a non-null argument and "null"
-	 * for a null argument.
-	 *
-	 * @see Objects#toString(Object)
-	 *
-	 * @param a the object.
-	 * @return the result of calling toString for a non-null argument and "null"
-	 *          for a null argument
-	 *
-	 * @deprecated Use {@link Objects#toString(Object)} instead.
-	 */
-	@Deprecated
-	public static String str(final Object a) {
-		return Objects.toString(a);
-	}
-
-	/**
-	 * Print a binary representation of the given byte array. The printed string
-	 * has the following format:
-	 * <pre>
-	 *  Byte:       3        2        1        0
-	 *              |        |        |        |
-	 *  Array: "11110011|10011101|01000000|00101010"
-	 *          |                 |        |      |
-	 *  Bit:    23                15       7      0
-	 * </pre>
-	 * <i>Only the array string is printed.</i>
-	 *
-	 * @param data the byte array to convert to a string.
-	 * @return the binary representation of the given byte array.
-	 *
-	 * @deprecated Use {@link bit#toByteString(byte...)} instead.
-	 */
-	@Deprecated
-	public static String str(final byte... data) {
-		return bit.toByteString(data);
 	}
 
 }

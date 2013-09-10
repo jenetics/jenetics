@@ -21,8 +21,9 @@ package org.jenetics.util;
 
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
-import static org.jenetics.util.object.nonNull;
+import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.Iterator;
 
@@ -42,7 +43,7 @@ import org.jscience.mathematics.structure.GroupAdditive;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-10 $</em>
  */
 public interface Accumulator<T> {
 
@@ -111,7 +112,7 @@ public interface Accumulator<T> {
 		 * @throws NullPointerException if {@code min} is {@code null}.
 		 */
 		public Min(final Min<C> min) {
-			nonNull(min, "Min");
+			Objects.requireNonNull(min, "Min");
 			_samples = min._samples;
 			_min = min._min;
 		}
@@ -199,7 +200,7 @@ public interface Accumulator<T> {
 		 * @throws NullPointerException if {@code max} is {@code null}.
 		 */
 		public Max(final Max<C> max) {
-			nonNull(max, "Max");
+			requireNonNull(max, "Max");
 			_samples = max._samples;
 			_max = max._max;
 		}
@@ -288,7 +289,7 @@ public interface Accumulator<T> {
 		 * @throws NullPointerException if {@code mm} is {@code null}.
 		 */
 		public MinMax(final MinMax<C> mm) {
-			nonNull(mm, "MinMax");
+			requireNonNull(mm, "MinMax");
 			_samples = mm._samples;
 			_min = mm._min;
 			_max = mm._max;
