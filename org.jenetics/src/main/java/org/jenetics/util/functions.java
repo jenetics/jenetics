@@ -40,16 +40,6 @@ public final class functions extends StaticObject {
 	private functions() {}
 
 	/**
-	 * Convert a string value to its length.
-	 */
-	public static final Function<String, Integer>
-	StringLength = new Function<String, Integer>() {
-		@Override public Integer apply(final String value) {
-			return value.length();
-		}
-	};
-
-	/**
 	 * Convert a string to an integer. If the string can't be converted, an
 	 * {@link NumberFormatException} is throws by the {@link Function#apply(Object)}
 	 * method.
