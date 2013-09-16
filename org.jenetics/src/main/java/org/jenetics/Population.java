@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
+import java.util.function.Supplier;
 
 import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
@@ -54,7 +55,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -105,24 +106,24 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	/**
 	 * Fills the population with individuals created by the given factory.
 	 *
-	 * @param factory the {@code Phenotype} factory.
+	 * @param supplier the {@code Phenotype} supplier.
 	 * @param count the number of individuals to add to this population.
 	 * @return return this population, for command chanining.
 	 */
 	public Population<G, C> fill(
-		final Factory<? extends Phenotype<G, C>> factory,
+		final Supplier<? extends Phenotype<G, C>> supplier,
 		final int count
 	) {
 		// Serial version.
 		if (ConcurrentContext.getConcurrency() == 0) {
 			for (int i = 0; i < count; ++i) {
-				_population.add(factory.newInstance());
+				_population.add(supplier.get());
 			}
 
 		// Parallel version.
 		} else {
 			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-			fill(factory, array._array);
+			fill(supplier, array._array);
 			_population.addAll(array);
 		}
 
@@ -134,7 +135,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		C extends Comparable<? super C>
 	>
 	void fill(
-		final Factory<? extends Phenotype<G, C>> factory,
+		final Supplier<? extends Phenotype<G, C>> supplier,
 		final Object[] array
 	) {
 		try (final Concurrency c = Concurrency.start()) {
@@ -144,11 +145,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;
 
-				c.execute(new Runnable() { @Override public void run() {
+				c.execute(() ->{
 					for (int j = parts[part + 1]; --j >= parts[part];) {
-						array[j] = factory.newInstance();
+						array[j] = supplier.get();
 					}
-				}});
+				});
 			}
 		}
 	}
