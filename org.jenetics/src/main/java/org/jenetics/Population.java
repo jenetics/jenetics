@@ -42,7 +42,6 @@ import javolution.xml.stream.XMLStreamException;
 
 import org.jenetics.util.Concurrency;
 import org.jenetics.util.Copyable;
-import org.jenetics.util.Factory;
 import org.jenetics.util.arrays;
 
 /**
@@ -145,7 +144,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;
 
-				c.execute(() ->{
+				c.execute(() -> {
 					for (int j = parts[part + 1]; --j >= parts[part];) {
 						array[j] = supplier.get();
 					}

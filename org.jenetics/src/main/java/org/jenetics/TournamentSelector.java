@@ -24,9 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -110,11 +108,10 @@ public class TournamentSelector<
 		}
 
 		final Random random = RandomRegistry.getRandom();
-		final Supplier<Phenotype<G, C>> supplier = () -> (
-			select(population, opt, _sampleSize, random)
+		return new Population<G, C>(count).fill(
+			() -> select(population, opt, _sampleSize, random),
+			count
 		);
-
-		return new Population<G, C>(count).fill(supplier, count);
 	}
 
 	private static <

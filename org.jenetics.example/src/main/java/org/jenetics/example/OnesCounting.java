@@ -33,46 +33,35 @@ import org.jenetics.RouletteWheelSelector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.util.Factory;
 
-final class OneCounter
-	implements Function<Genotype<BitGene>, Integer>
-{
-	@Override
-	public Integer apply(Genotype<BitGene> genotype) {
-		final Chromosome<BitGene> chromosome = genotype.getChromosome();
-
-		int count = 0;
-		if (chromosome instanceof BitChromosome) {
-			count = ((BitChromosome)chromosome).bitCount();
-		} else {
-			for (BitGene gene : genotype.getChromosome()) {
-				if (gene.getBit()) {
-					++count;
-				}
-			}
-		}
-
-		return count;
-	}
-}
-
 public class OnesCounting {
 	public static void main(String[] args) {
-		Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+		final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
 			new BitChromosome(20, 0.15)
 		);
-		Function<Genotype<BitGene>, Integer> ff = new OneCounter();
-		GeneticAlgorithm<BitGene, Integer> ga =
-		new GeneticAlgorithm<>(
+		final Function<Genotype<BitGene>, Integer> ff = genotype -> {
+			final Chromosome<BitGene> chromosome = genotype.getChromosome();
+
+			int count = 0;
+			if (chromosome instanceof BitChromosome) {
+				count = ((BitChromosome)chromosome).bitCount();
+			} else {
+				for (BitGene gene : genotype.getChromosome()) {
+					if (gene.getBit()) {
+						++count;
+					}
+				}
+			}
+
+			return count;
+		};
+
+		GeneticAlgorithm<BitGene, Integer> ga = new GeneticAlgorithm<>(
 			gtf, ff, Optimize.MAXIMUM
 		);
 
-		ga.setStatisticsCalculator(
-			new NumberStatistics.Calculator<BitGene, Integer>()
-		);
+		ga.setStatisticsCalculator(new NumberStatistics.Calculator<>());
 		ga.setPopulationSize(500);
-		ga.setSelectors(
-			new RouletteWheelSelector<BitGene, Integer>()
-		);
+		ga.setSelectors(new RouletteWheelSelector<>());
 		ga.setAlterers(
 			new Mutator<BitGene>(0.55),
 			new SinglePointCrossover<BitGene>(0.06)

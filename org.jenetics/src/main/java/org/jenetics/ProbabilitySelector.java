@@ -27,7 +27,6 @@ import static org.jenetics.util.math.statistics.sum;
 import static org.jenetics.util.math.ulpDistance;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 import org.jenetics.util.RandomRegistry;
 
@@ -85,11 +84,10 @@ public abstract class ProbabilitySelector<
 			incremental(probabilities);
 
 			final Random random = RandomRegistry.getRandom();
-			final Supplier<Phenotype<G, C>> supplier = () -> (
-				population.get(indexOf(probabilities, random.nextDouble()))
+			selection.fill(
+				() -> population.get(indexOf(probabilities, random.nextDouble())),
+				count
 			);
-
-			selection.fill(supplier, count);
 			assert (count == selection.size());
 		}
 
@@ -131,7 +129,7 @@ public abstract class ProbabilitySelector<
 	 * population is not sorted. If a subclass needs a sorted population, the
 	 * subclass is responsible to populationSort the population.
 	 * <p/>
-	 * The implementor always assumes that higher fitness values are better. The
+	 * The implementer always assumes that higher fitness values are better. The
 	 * base class inverts the probabilities ({@code p = 1.0 - p }) if the GA is
 	 * supposed to minimize the fitness function.
 	 *
