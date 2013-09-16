@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static org.jenetics.util.math.subset;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jenetics.util.IndexStream;
 import org.jenetics.util.RandomRegistry;
@@ -49,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public abstract class Recombinator<G extends Gene<?, G>>
 	extends AbstractAlterer<G>
@@ -91,19 +92,15 @@ public abstract class Recombinator<G extends Gene<?, G>>
 	) {
 		final Random random = RandomRegistry.getRandom();
 		final int order = Math.min(_order, population.size());
-		final IndexStream stream = IndexStream.Random(
-			population.size(), _probability
-		);
 
-		int alterations = 0;
-		for (int i = stream.next(); i != -1; i = stream.next()) {
+		final AtomicInteger alterations = new AtomicInteger(0);
+		IndexStream.Random(population.size(), _probability).forEach(i -> {
 			final int[] individuals = subset(population.size(), order, random);
 			individuals[0] = i;
+			alterations.addAndGet(recombine(population, individuals, generation));
+		});
 
-			alterations += recombine(population, individuals, generation);
-		}
-
-		return alterations;
+		return alterations.get();
 	}
 
 	/**
