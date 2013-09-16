@@ -42,13 +42,13 @@ import org.jenetics.internal.math.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.3
- * @version 1.3 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.3 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
-	protected Random64(long seed) {
+	protected Random64(final long seed) {
 		super(seed);
 	}
 

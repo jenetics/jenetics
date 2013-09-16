@@ -685,6 +685,17 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> Seq<T> valueOf(final T... values) {
+		return Array.valueOf(values);
+	}
+
+	/**
 	 * Unified method for calculating the hash code of every {@link Seq}
 	 * implementation. The hash code is defined as followed:
 	 *

@@ -243,6 +243,16 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	public ISeq<T> toISeq();
 
+	/**
+	 * Create a new {@code MSeq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> MSeq<T> valueOf(final T... values) {
+		return Array.valueOf(values);
+	}
 
 }
 
