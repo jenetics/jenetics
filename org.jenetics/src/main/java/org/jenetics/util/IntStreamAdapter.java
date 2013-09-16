@@ -49,7 +49,7 @@ abstract class IntStreamAdapter implements IntStream {
 
 	private IntStream _adoptee;
 
-	protected IntStreamAdapter() {
+	IntStreamAdapter() {
 	}
 
 	void setAdoptee(final IntStream adoptee) {
