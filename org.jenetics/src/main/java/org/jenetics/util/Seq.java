@@ -216,10 +216,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(new Predicates.Nil());
+	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
+	 * assert (sequence.indexOf(o -> o == null) == -1);
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
@@ -240,10 +240,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(new Predicates.Nil());
+	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
+	 * assert (sequence.indexOf(o -> o == null) == -1);
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
@@ -269,10 +269,10 @@ public interface Seq<T> extends Iterable<T> {
 	 * </p>
 	 * [code]
 	 * // Finding index of first null value.
-	 * final int index = seq.indexOf(new Predicates.Nil());
+	 * final int index = seq.indexOf(o -> o == null);
 	 *
 	 * // Assert of no null values.
-	 * assert (sequence.indexOf(new Predicates.Nil()) == -1);
+	 * assert (sequence.indexOf(o -> o == null) == -1);
 	 * [/code]
 	 *
 	 * @param predicate the search predicate.
