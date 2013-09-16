@@ -20,11 +20,13 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.SeqListIteratorAdapter;
@@ -216,6 +218,22 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
+
+	public default <B, S extends MSeq<B>> S map(
+		final Function<? super T, ? extends B> mapper,
+		final IntFunction<? extends S> builder
+	) {
+		requireNonNull(mapper, "Converter function must not be null.");
+		requireNonNull(builder, "Seq builder must not be null.");
+
+		final S result = builder.apply(length());
+		assert (result.length() == length());
+
+		for (int i = length(); --i >= 0;) {
+			result.set(i, mapper.apply(get(i)));
+		}
+		return result;
+	}
 
 	/**
 	 * Return a read-only projection of this sequence. Changes to the original
