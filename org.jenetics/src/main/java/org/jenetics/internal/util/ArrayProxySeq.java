@@ -24,14 +24,16 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public abstract class ArrayProxySeq<T> implements Seq<T> {
 
@@ -75,37 +77,24 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		};
 	}
 
-	public <R> void forEach(final Function<? super T, ? extends R> function) {
-		requireNonNull(function, "Function");
+	@Override
+	public void forEach(final Consumer<? super T> consumer) {
+		requireNonNull(consumer, "The consumer must not be null.");
 
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			function.apply(_proxy.uncheckedOffsetGet(i));
+			consumer.accept(_proxy.uncheckedOffsetGet(i));
 		}
 	}
 
-	public boolean forAll(final Function<? super T, Boolean> predicate) {
+	@Override
+	public boolean forAll(final Predicate<? super T> predicate) {
 		requireNonNull(predicate, "Predicate");
 
 		boolean valid = true;
 		for (int i = _proxy._start; i < _proxy._end && valid; ++i) {
-			valid = predicate.apply(_proxy.uncheckedOffsetGet(i));
+			valid = predicate.test(_proxy.uncheckedOffsetGet(i));
 		}
 		return valid;
-	}
-
-	@Override
-	public boolean contains(final Object element) {
-		return indexOf(element) != -1;
-	}
-
-	@Override
-	public int indexOf(final Object element) {
-		return indexOf(element, 0, length());
-	}
-
-	@Override
-	public int indexOf(final Object element, final int start) {
-		return indexOf(element, start, _proxy._length);
 	}
 
 	@Override
@@ -134,19 +123,9 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return index;
 	}
 
-	public int indexWhere(final Function<? super T, Boolean> predicate) {
-		return indexWhere(predicate, 0, _proxy._length);
-	}
-
+	@Override
 	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
-		final int start
-	) {
-		return indexWhere(predicate, start, _proxy._length);
-	}
-
-	public int indexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	) {
@@ -158,22 +137,12 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		for (int i = start + _proxy._start, n = end + _proxy._start;
 				i < n && index == -1; ++i)
 		{
-			if (predicate.apply(_proxy.uncheckedOffsetGet(i))) {
+			if (predicate.test(_proxy.uncheckedOffsetGet(i))) {
 				index = i - _proxy._start;
 			}
 		}
 
 		return index;
-	}
-
-	@Override
-	public int lastIndexOf(final Object element) {
-		return lastIndexOf(element, 0, _proxy._length);
-	}
-
-	@Override
-	public int lastIndexOf(final Object element, final int end) {
-		return lastIndexOf(element, 0, end);
 	}
 
 	@Override
@@ -202,19 +171,9 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		return index;
 	}
 
-	public int lastIndexWhere(final Function<? super T, Boolean> predicate) {
-		return lastIndexWhere(predicate, 0, _proxy._length);
-	}
-
+	@Override
 	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
-		final int end
-	) {
-		return lastIndexWhere(predicate, 0, end);
-	}
-
-	public int lastIndexWhere(
-		final Function<? super T, Boolean> predicate,
+		final Predicate<? super T> predicate,
 		final int start,
 		final int end
 	) {
@@ -226,7 +185,7 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 		for (int i = end + _proxy._start;
 			--i >= start + _proxy._start && index == -1;)
 		{
-			if (predicate.apply(_proxy.uncheckedOffsetGet(i))) {
+			if (predicate.test(_proxy.uncheckedOffsetGet(i))) {
 				index = i - _proxy._start;
 			}
 		}
@@ -252,37 +211,6 @@ public abstract class ArrayProxySeq<T> implements Seq<T> {
 	@Override
 	public T[] toArray(final T[] array) {
 		return asList().toArray(array);
-	}
-
-	@Override
-	public String toString(
-		final String prefix,
-		final String separator,
-		final String suffix
-	) {
-		final StringBuilder out = new StringBuilder();
-
-		out.append(prefix);
-		if (_proxy._length > 0) {
-			out.append(_proxy.get(0));
-		}
-		for (int i = 1; i < _proxy._length; ++i) {
-			out.append(separator);
-			out.append(_proxy.get(i));
-		}
-		out.append(suffix);
-
-		return out.toString();
-	}
-
-	@Override
-	public String toString(String separator) {
-		return toString("", separator, "");
-	}
-
-	@Override
-	public String toString() {
-		  return toString("[", ",", "]");
 	}
 
 }

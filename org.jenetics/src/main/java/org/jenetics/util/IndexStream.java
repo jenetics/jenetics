@@ -47,7 +47,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.1 &mdash; <em>$Date: 2013-09-10 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public abstract class IndexStream {
 
@@ -119,32 +119,32 @@ public abstract class IndexStream {
 		return new RandomIndexStream(n, p, random);
 	}
 
-}
 
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-10 $</em>
- */
-final class RandomIndexStream extends IndexStream {
-	private final int _n;
-	private final int _p;
-	private final Random _random;
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.4
+	 * @version 1.4 &mdash; <em>$Date: 2013-09-16 $</em>
+	 */
+	final static class RandomIndexStream extends IndexStream {
+		private final int _n;
+		private final int _p;
+		private final Random _random;
 
-	private int _pos = -1;
+		private int _pos = -1;
 
-	RandomIndexStream(final int n, final double p, final Random random) {
-		_n = n;
-		_p = probability.toInt(p);
-		_random = requireNonNull(random, "Random object must not be null.");
-	}
-
-	@Override
-	public final int next() {
-		while (_pos < _n && _random.nextInt() >= _p) {
-			++_pos;
+		RandomIndexStream(final int n, final double p, final Random random) {
+			_n = n;
+			_p = probability.toInt(p);
+			_random = requireNonNull(random, "Random object must not be null.");
 		}
-		return (_pos < _n - 1) ? ++_pos : -1;
+
+		@Override
+		public final int next() {
+			while (_pos < _n && _random.nextInt() >= _p) {
+				++_pos;
+			}
+			return (_pos < _n - 1) ? ++_pos : -1;
+		}
 	}
 }
 

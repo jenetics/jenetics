@@ -26,15 +26,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-10 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 
@@ -95,10 +95,10 @@ public class ArrayProxyMSeq<T> extends ArrayProxySeq<T> implements MSeq<T> {
 		return this;
 	}
 
-	public MSeq<T> fill(Factory<? extends T> factory) {
+	public MSeq<T> fill(final Supplier<? extends T> supplier) {
 		_proxy.cloneIfSealed();
 		for (int i = _proxy._start; i < _proxy._end; ++i) {
-			_proxy.uncheckedOffsetSet(i, factory.newInstance());
+			_proxy.uncheckedOffsetSet(i, supplier.get());
 		}
 		return this;
 	}
