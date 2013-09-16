@@ -83,7 +83,7 @@ import org.jenetics.util.Timer;
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector<BitGene>());
+ *     ga.setSelectors(new RouletteWheelSelector<>());
  *     ga.setAlterers(
  *         new SinglePointCrossover<BitGene>(0.1),
  *         new Mutator<BitGene>(0.01)
@@ -560,9 +560,7 @@ public class GeneticAlgorithm<
 	}
 
 	private int getNumberOfOffspring() {
-		return (int)round(
-			_offspringFraction*_populationSize
-		);
+		return (int)round(_offspringFraction*_populationSize);
 	}
 
 	/**
