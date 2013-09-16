@@ -24,7 +24,6 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.arrays.forEach;
-import static org.jenetics.util.math.sum;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -34,11 +33,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 
-import org.jenetics.util.AbstractAccumulator;
 import org.jscience.mathematics.number.Float64;
 import org.jscience.mathematics.number.Integer64;
 
+import org.jenetics.util.AbstractAccumulator;
 import org.jenetics.util.arrays;
+import org.jenetics.util.math;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -68,7 +68,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public class Histogram<C> extends AbstractAccumulator<C> {
 
@@ -253,7 +253,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (sum(_histogram) == _samples);
+		assert (math.statistics.sum(_histogram) == _samples);
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = (double)_histogram[i]/(double)_samples;
 		}

@@ -21,15 +21,17 @@ package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.AbstractList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import org.jenetics.internal.util.SeqIteratorAdapter;
+import org.jenetics.internal.util.SeqListAdapter;
+import org.jenetics.internal.util.SeqMappedIteratorAdapter;
 
 /**
  * General interface for a ordered, fixed sized, object sequence.
@@ -40,7 +42,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
@@ -480,6 +482,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *          not a super type of the runtime type of every element in this array
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
 	public default T[] toArray(final T[] array) {
 		if (array.length < length()) {
 			final T[] copy = (T[])java.lang.reflect.Array.newInstance(
@@ -740,136 +743,3 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 }
-
-/*
- * Some 'default' helper class implementations.
- */
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-08 $</em>
- */
-class SeqIteratorAdapter<T> implements Iterator<T> {
-
-	protected final Seq<T> _seq;
-	protected int _pos = 0;
-
-	public SeqIteratorAdapter(final Seq<T> seq) {
-		_seq = requireNonNull(seq, "Seq must not be null.");
-	}
-
-	@Override
-	public boolean hasNext() {
-		return _pos < _seq.length();
-	}
-
-	@Override
-	public T next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return _seq.get(_pos++);
-	}
-
-}
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-08 $</em>
- */
-final class SeqMappedIteratorAdapter<T, B> implements Iterator<B> {
-	private final Seq<T> _seq;
-	private final Function<? super T, ? extends B> _mapper;
-
-	public SeqMappedIteratorAdapter(
-		final Seq<T> seq,
-		final Function<? super T, ? extends B> mapper
-	) {
-		_seq = requireNonNull(seq, "Seq must not be null.");
-		_mapper = requireNonNull(mapper, "Mapper function must not be null.");
-	}
-
-	private int _pos = 0;
-
-	@Override
-	public boolean hasNext() {
-		return _pos < _seq.length();
-	}
-
-	@Override
-	public B next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-		return _mapper.apply(_seq.get(_pos++));
-	}
-
-}
-
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-08 $</em>
- */
-final class SeqListAdapter<T> extends AbstractList<T> implements RandomAccess {
-	private final Seq<T> _seq;
-
-	public SeqListAdapter(final Seq<T> seq) {
-		_seq = requireNonNull(seq, "Seq must not be null.");
-	}
-
-	@Override
-	public T get(final int index) {
-		return _seq.get(index);
-	}
-
-	@Override
-	public int size() {
-		return _seq.length();
-	}
-
-	@Override
-	public int indexOf(final Object element) {
-		return _seq.indexOf(element);
-	}
-
-	@Override
-	public boolean contains(final Object element) {
-		return indexOf(element) != -1;
-	}
-
-	@Override
-	public Object[] toArray() {
-		return _seq.toArray();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <E> E[] toArray(final E[] array) {
-		if (array.length < _seq.length()) {
-			final E[] copy = (E[])java.lang.reflect.Array.newInstance(
-				array.getClass().getComponentType(), _seq.length()
-			);
-			for (int i = 0; i < _seq.length(); ++i) {
-				copy[i] = (E)_seq.get(i);
-			}
-
-			return copy;
-		}
-
-		for (int i = 0, n = _seq.length(); i < n; ++i) {
-			array[i] = (E)_seq.get(i);
-		}
-		return array;
-	}
-
-}
-
-
-
-
-
-
