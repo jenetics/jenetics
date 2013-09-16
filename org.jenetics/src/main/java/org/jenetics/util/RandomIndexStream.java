@@ -23,9 +23,11 @@
 package org.jenetics.util;
 
 import java.util.IntSummaryStatistics;
+import java.util.Objects;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.PrimitiveIterator;
+import java.util.Random;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import java.util.function.IntBinaryOperator;
@@ -45,17 +47,30 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date$</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
  */
 public class RandomIndexStream implements IntStream {
 
+	private final int _n;
+	private final double _p;
+	private final Random _random;
+
+	private final IndexStream _stream;
+
+	public RandomIndexStream(final int n, final double p, final Random random) {
+		_n = n;
+		_p = p;
+		_random = Objects.requireNonNull(random, "Random must not be null.");
+		_stream = IndexStream.Random(n, p, random);
+	}
+
 	@Override
-	public IntStream filter(IntPredicate predicate) {
+	public IntStream filter(final IntPredicate predicate) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
-	public IntStream map(IntUnaryOperator mapper) {
+	public IntStream map(final IntUnaryOperator mapper) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
