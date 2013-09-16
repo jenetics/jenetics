@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
 
 import org.jenetics.internal.math.probability;
 
@@ -49,9 +50,11 @@ import org.jenetics.internal.math.probability;
  * @since 1.0
  * @version 1.1 &mdash; <em>$Date: 2013-09-16 $</em>
  */
-public abstract class IndexStream {
+public abstract class IndexStream extends IntStreamAdapter {
+
 
 	protected IndexStream() {
+		setAdoptee(IntStream.generate(this::next));
 	}
 
 	/**
@@ -69,6 +72,7 @@ public abstract class IndexStream {
 	 * @throws NullPointerException if the given {@code function} is
 	 *         {@code null}.
 	 */
+	@Override
 	public void forEach(final IntConsumer consumer) {
 		for (int i = next(); i != -1; i = next()) {
 			consumer.accept(i);
