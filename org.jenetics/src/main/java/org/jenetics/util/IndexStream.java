@@ -23,8 +23,10 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
+import java.util.Spliterator;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 import org.jenetics.internal.math.probability;
 
@@ -45,6 +47,11 @@ import org.jenetics.internal.math.probability;
  *     System.out.println(index);
  * }
  * [/code]
+ * [code]
+ * IndexStream.Random(1000, 0.6).forEach(index -> {
+ *     System.out.println(index);
+ * });
+ * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -53,7 +60,11 @@ import org.jenetics.internal.math.probability;
 public abstract class IndexStream extends IntStreamAdapter {
 
 	protected IndexStream() {
-		setAdoptee(IntStream.generate(this::next));
+		setAdoptee(StreamSupport.intStream(
+			() -> new IndexSpliterator(this),
+			IndexSpliterator.CHARACTERISTICS,
+			false
+		));
 	}
 
 	/**
@@ -122,11 +133,50 @@ public abstract class IndexStream extends IntStreamAdapter {
 		return new RandomIndexStream(n, p, random);
 	}
 
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since @__new_version__@
+	 * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
+	 */
+	final static class IndexSpliterator implements Spliterator.OfInt {
+		private final IndexStream _stream;
+
+		final static int CHARACTERISTICS = Spliterator.IMMUTABLE;
+
+		IndexSpliterator(final IndexStream stream) {
+			_stream = stream;
+		}
+
+		@Override
+		public OfInt trySplit() {
+			return null;
+		}
+
+		@Override
+		public boolean tryAdvance(final IntConsumer action) {
+			final int index = _stream.next();
+			if (index != -1) {
+				action.accept(index);
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public long estimateSize() {
+			return Long.MAX_VALUE;
+		}
+
+		@Override
+		public int characteristics() {
+			return CHARACTERISTICS;
+		}
+	}
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version 1.4 &mdash; <em>$Date: 2013-09-16 $</em>
+	 * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
 	 */
 	final static class RandomIndexStream extends IndexStream {
 		private final int _n;
@@ -147,6 +197,13 @@ public abstract class IndexStream extends IntStreamAdapter {
 				++_pos;
 			}
 			return (_pos < _n - 1) ? ++_pos : -1;
+		}
+
+		@Override
+		public void forEachOrdered(final IntConsumer consumer) {
+			for (int i = next(); i != -1; i = next()) {
+				consumer.accept(i);
+			}
 		}
 	}
 }
