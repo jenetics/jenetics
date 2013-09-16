@@ -47,7 +47,7 @@ import java.util.stream.Stream;
  * @since @__new_version__@
  * @version @__new_version__@ &mdash; <em>$Date$</em>
  */
-public class RandomIndexStream_ implements IntStream {
+public class RandomIndexStream implements IntStream {
 
 	@Override
 	public IntStream filter(IntPredicate predicate) {
