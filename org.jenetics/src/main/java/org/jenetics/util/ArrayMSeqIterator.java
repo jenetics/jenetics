@@ -22,7 +22,7 @@ package org.jenetics.util;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-09-18 $</em>
  */
 final class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
 
@@ -32,7 +32,10 @@ final class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
 
 	@Override
 	public void set(final T value) {
+		if (_lastElement < 0) {
+			throw new IllegalStateException();
+		}
 		final Array<T> array = (Array<T>)_array;
-		array.set(_pos, value);
+		array._array.data[_lastElement] = value;
 	}
 }
