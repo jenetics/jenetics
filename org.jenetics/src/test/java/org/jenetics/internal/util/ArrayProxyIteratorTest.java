@@ -138,4 +138,5 @@ public class ArrayProxyIteratorTest {
 		Assert.assertEquals(count, 0);
 	}
 
+
 }

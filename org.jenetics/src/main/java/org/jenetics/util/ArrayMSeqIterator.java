@@ -32,7 +32,10 @@ final class ArrayMSeqIterator<T> extends ArraySeqIterator<T> {
 
 	@Override
 	public void set(final T value) {
+		if (_lastElement < 0) {
+			throw new IllegalStateException();
+		}
 		final Array<T> array = (Array<T>)_array;
-		array.set(_pos, value);
+		array._array.data[_lastElement] = value;
 	}
 }

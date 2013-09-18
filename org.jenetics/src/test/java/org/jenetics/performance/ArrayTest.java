@@ -123,7 +123,8 @@ public class ArrayTest {
 	public final TestCase listIterator = new TestCase("listIterator()", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			for (ListIterator<Integer> it = _array.listIterator(); it.hasNext();) {
+			final ListIterator<Integer> it = _array.listIterator();
+			while (it.hasNext()) {
 				it.next();
 				it.set(1);
 			}

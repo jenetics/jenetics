@@ -127,4 +127,59 @@ public class ArraySeqIteratorTest {
 		Assert.assertEquals(count, 0);
 	}
 
+	@Test
+	public void setValueForward() {
+		final Array<Integer> array = new Array<>(1000);
+		array.setAll(111);
+
+		for (Integer value : array) {
+			Assert.assertEquals(value, new Integer(111));
+		}
+
+		int count = 0;
+		final ListIterator<Integer> it = array.listIterator();
+		while (it.hasNext()) {
+			it.next();
+			it.set(222);
+			++count;
+		}
+
+		Assert.assertEquals(count, array.length());
+		for (Integer value : array) {
+			Assert.assertEquals(value, new Integer(222));
+		}
+	}
+
+	@Test
+	public void setValueBackward() {
+		final Array<Integer> array = new Array<>(1000);
+		array.setAll(111);
+
+		for (Integer value : array) {
+			Assert.assertEquals(value, new Integer(111));
+		}
+
+		final ListIterator<Integer> it = array.listIterator();
+		while (it.hasNext()) {
+			it.next();
+		}
+
+		int count = 0;
+		while (it.hasPrevious()) {
+			it.previous();
+			it.set(222);
+			++count;
+		}
+
+		Assert.assertEquals(count, array.length());
+		for (Integer value : array) {
+			Assert.assertEquals(value, new Integer(222));
+		}
+	}
+
 }
+
+
+
+
+

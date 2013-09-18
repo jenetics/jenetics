@@ -32,49 +32,56 @@ import java.util.NoSuchElementException;
 class ArraySeqIterator<T> implements ListIterator<T> {
 	final ArraySeq<T> _array;
 
-	int _pos;
+	int _cursor;
+	int _lastElement = -1;
 
 	public ArraySeqIterator(final ArraySeq<T> array) {
 		_array = array;
-		_pos = array._start;
+		_cursor = array._start;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return _pos < _array._end;
+		return _cursor != _array._end;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public T next() {
-		if (!hasNext()) {
+		final int i = _cursor;
+		if (_cursor >= _array._end) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array._array.data[_pos++];
+
+		_cursor = i + 1;
+		return (T)_array._array.data[_lastElement = i];
 	}
 
 	@Override
 	public int nextIndex() {
-		return _pos;
+		return _cursor;
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		return _pos > _array._start;
+		return _cursor != _array._start;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public T previous() {
-		if (!hasPrevious()) {
+		final int i = _cursor - 1;
+		if (i < _array._start) {
 			throw new NoSuchElementException();
 		}
-		return (T)_array._array.data[--_pos];
+
+		_cursor = i;
+		return (T)_array._array.data[_lastElement = i];
 	}
 
 	@Override
 	public int previousIndex() {
-		return _pos - 1;
+		return _cursor - 1;
 	}
 
 	@Override

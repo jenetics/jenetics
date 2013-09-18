@@ -32,7 +32,8 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 
 	protected final ArrayProxy<T> _proxy;
 
-	private int _pos = 0;
+	protected int _cursor = 0;
+	protected int _lastElement = -1;
 
 	public ArrayProxyIterator(final ArrayProxy<T> proxy) {
 		_proxy = proxy;
@@ -40,38 +41,44 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 
 	@Override
 	public boolean hasNext() {
-		return _pos < _proxy._length;
+		return _cursor != _proxy._length;
 	}
 
 	@Override
 	public T next() {
-		if (!hasNext()) {
+		final int i = _cursor;
+		if (_cursor >= _proxy._length) {
 			throw new NoSuchElementException();
 		}
-		return _proxy.uncheckedGet(_pos++);
+
+		_cursor = i + 1;
+		return _proxy.uncheckedGet(_lastElement = i);
 	}
 
 	@Override
 	public int nextIndex() {
-		return _pos;
+		return _cursor;
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		return _pos > 0;
+		return _cursor != 0;
 	}
 
 	@Override
 	public T previous() {
-		if (!hasPrevious()) {
+		final int i = _cursor - 1;
+		if (i < 0) {
 			throw new NoSuchElementException();
 		}
-		return _proxy.uncheckedGet(--_pos);
+
+		_cursor = i;
+		return _proxy.uncheckedGet(_lastElement = i);
 	}
 
 	@Override
 	public int previousIndex() {
-		return _pos - 1;
+		return _cursor - 1;
 	}
 
 	@Override
