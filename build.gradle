@@ -131,7 +131,9 @@ task packaging(overwrite: true) {
 				exclude '*.iws'
 				exclude '.project'
 				exclude '.classpath'
+				exclude '.settings'
 				exclude 'build'
+				exclude 'out'
 			}
 			into exportProjectDir
 			filter(ReplaceTokens, tokens: [
@@ -157,6 +159,7 @@ task packaging(overwrite: true) {
 				include 'src/**/*.cpp'
 				include 'src/**/*.h'
 				include 'src/**/*.hpp'
+				exclude '.gradle'
 			}
 			into file("${exportProjectDir}/buildSrc")
 			filter(ReplaceTokens, tokens: [
