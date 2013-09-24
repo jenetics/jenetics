@@ -96,9 +96,8 @@ public class ChecksumTask extends DefaultTask {
 			// Read the file.
 			try (FileInputStream in = new FileInputStream(_inputFile)) {
 				final byte[] data = new byte[4096];
-				int length = 0;
-				while ((length = in.read(data)) != -1) {
-					digest.update(data, 0, length);
+				for (int l = in.read(data); l != -1; l = in.read(data)) {
+					digest.update(data, 0, l);
 				}
 			}
 
