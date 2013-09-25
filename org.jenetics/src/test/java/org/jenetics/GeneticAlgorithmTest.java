@@ -41,7 +41,7 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-09-25 $</em>
  */
 public class GeneticAlgorithmTest {
 
@@ -63,10 +63,9 @@ public class GeneticAlgorithmTest {
 
 	@Test
 	public void optimize() {
-		final int concurrency = ConcurrentContext.getConcurrency();
-		ConcurrentContext.setConcurrency(0);
 		LocalContext.enter();
 		try {
+			ConcurrentContext.setConcurrency(0);
 			RandomRegistry.setRandom(new Random(12345));
 
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
@@ -107,7 +106,6 @@ public class GeneticAlgorithmTest {
 //			Assert.assertEquals(s.getBestFitness().doubleValue(), 0.9800565233548408, 0.00000001);
 //			Assert.assertEquals(s.getWorstFitness().doubleValue(), 0.9800565233548408, 0.00000001);
 		} finally {
-			ConcurrentContext.setConcurrency(concurrency);
 			LocalContext.exit();
 		}
 

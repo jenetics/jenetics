@@ -30,7 +30,7 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-09-25 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -116,7 +116,8 @@ public class ArrayTest {
 	public final TestCase listIterator = new TestCase("listIterator()", LOOPS, SIZE) {
 		@Override
 		protected void test() {
-			for (ListIterator<Integer> it = _array.listIterator(); it.hasNext();) {
+			final ListIterator<Integer> it = _array.listIterator();
+			while (it.hasNext()) {
 				it.next();
 				it.set(1);
 			}

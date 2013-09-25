@@ -40,7 +40,7 @@ import org.gradle.api.tasks.TaskExecutionException;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-09-24 $</em>
  */
 public class ChecksumTask extends DefaultTask {
 
@@ -96,9 +96,8 @@ public class ChecksumTask extends DefaultTask {
 			// Read the file.
 			try (FileInputStream in = new FileInputStream(_inputFile)) {
 				final byte[] data = new byte[4096];
-				int length = 0;
-				while ((length = in.read(data)) != -1) {
-					digest.update(data, 0, length);
+				for (int l = in.read(data); l != -1; l = in.read(data)) {
+					digest.update(data, 0, l);
 				}
 			}
 
