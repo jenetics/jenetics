@@ -43,7 +43,7 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-09-25 $</em>
  */
 abstract class IntStreamAdapter implements IntStream {
 
@@ -248,6 +248,16 @@ abstract class IntStreamAdapter implements IntStream {
 	@Override
 	public IntStream unordered() {
 		return _adoptee.unordered();
+	}
+
+	@Override
+	public IntStream onClose(final Runnable runnable) {
+		return _adoptee.onClose(runnable);
+	}
+
+	@Override
+	public void close() {
+		_adoptee.close();
 	}
 
 }
