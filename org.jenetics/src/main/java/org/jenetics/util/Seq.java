@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
 import org.jenetics.internal.util.SeqIteratorAdapter;
@@ -44,7 +45,7 @@ import org.jenetics.internal.util.SeqMappedIteratorAdapter;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
-public interface Seq<T> extends Iterable<T> {
+public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -55,6 +56,11 @@ public interface Seq<T> extends Iterable<T> {
 	 *          {@code (index < 0 || index >= size())}.
 	 */
 	public T get(final int index);
+
+	@Override
+	public default T apply(final int index) {
+		return get(index);
+	}
 
 	/**
 	 * Return the length of this sequence. Once the sequence is created, the

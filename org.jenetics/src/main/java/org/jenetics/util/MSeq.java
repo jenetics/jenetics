@@ -27,6 +27,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.SeqListIteratorAdapter;
@@ -40,7 +41,7 @@ import org.jenetics.internal.util.SeqListIteratorAdapter;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
-public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
+public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 
 	/**
 	 * Set the {@code value} at the given {@code index}.
@@ -51,6 +52,11 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         {@code (index < 0 || index >= size())}.
 	 */
 	public void set(final int index, final T value);
+
+	@Override
+	public default void accept(final T value, final int index) {
+		set(index, value);
+	}
 
 	/**
 	 * Set all sequence elements to the given {@code value}.
