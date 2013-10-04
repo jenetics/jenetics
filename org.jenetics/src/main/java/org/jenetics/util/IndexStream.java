@@ -55,7 +55,7 @@ import org.jenetics.internal.math.probability;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
 public abstract class IndexStream extends IntStreamAdapter {
 
@@ -135,8 +135,8 @@ public abstract class IndexStream extends IntStreamAdapter {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since @__new_version__@
-	 * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
+	 * @since @__version__@
+	 * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
 	 */
 	final static class IndexSpliterator implements Spliterator.OfInt {
 		private final IndexStream _stream;
@@ -176,7 +176,7 @@ public abstract class IndexStream extends IntStreamAdapter {
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.4
-	 * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
 	 */
 	final static class RandomIndexStream extends IndexStream {
 		private final int _n;
