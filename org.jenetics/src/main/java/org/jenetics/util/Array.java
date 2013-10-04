@@ -52,6 +52,9 @@ import javolution.util.FastList;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
+ *
+ * @deprecated Use the {@link MSeq} factory methods for creating new
+ *            {@code MSeq} instances.
  */
 @Deprecated
 public final class Array<T>
