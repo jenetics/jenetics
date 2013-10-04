@@ -27,14 +27,9 @@ import static org.jenetics.util.object.hashCodeOf;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.Duration;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
-
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.MeasureFormat;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-import javax.measure.unit.UnitFormat;
 
 import javolution.lang.Immutable;
 import javolution.xml.XMLFormat;
@@ -54,7 +49,7 @@ import org.jenetics.util.FinalReference;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
 public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -67,7 +62,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-10-04 $</em>
 	 */
 	public static class Builder<
 		G extends Gene<?, G>,
@@ -481,14 +476,10 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+	 * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
 	 */
 	public static final class Time implements XMLSerializable {
 		private static final long serialVersionUID = 1L;
-
-		private static final Measurable<Duration> ZERO = Measure.valueOf(
-			0, SI.MILLI(SI.SECOND)
-		);
 
 		/**
 		 * Create a new time object with zero time values. The time references
@@ -503,48 +494,48 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
-			execution = new FinalReference<>(ZERO);
+		public final FinalReference<Duration>
+		execution = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The selection time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
-			selection = new FinalReference<>(ZERO);
+		public final FinalReference<Duration>
+		selection = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The alter time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
-			alter = new FinalReference<>(ZERO);
+		public final FinalReference<Duration>
+		alter = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * Combination time between offsprings and survivors.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
-			combine = new FinalReference<>(ZERO);
+		public final FinalReference<Duration>
+		combine = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The evaluation time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
-			evaluation = new FinalReference<>(ZERO);
+		public final FinalReference<Duration>
+		evaluation = new FinalReference<>(Duration.ZERO);
 
 		/**
 		 * The statistics time.
 		 * The time can be set only once, otherwise an IllegalArgumentException
 		 * is thrown.
 		 */
-		public final FinalReference<Measurable<Duration>>
-			statistics = new FinalReference<>(ZERO);
+		public final FinalReference<Duration>
+		statistics = new FinalReference<>(Duration.ZERO);
 
 
 		@Override
@@ -584,12 +575,12 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			out.append("+---------------------------------------------------------+\n");
 			out.append("|  Time Statistics                                        |\n");
 			out.append("+---------------------------------------------------------+\n");
-			out.append(format(pattern, "Select time", selection.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Alter time", alter.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Combine time", combine.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Fitness calculation time", evaluation.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Statistics calculation time", statistics.get().doubleValue(SI.SECOND)));
-			out.append(format(pattern, "Overall execution time", execution.get().doubleValue(SI.SECOND)));
+			out.append(format(pattern, "Select time", selection.get().getNano()/1_000_000_000.0));
+			out.append(format(pattern, "Alter time", alter.get().getNano()/1_000_000_000.0));
+			out.append(format(pattern, "Combine time", combine.get().getNano()/1_000_000_000.0));
+			out.append(format(pattern, "Fitness calculation time", evaluation.get().getNano()/1_000_000_000.0));
+			out.append(format(pattern, "Statistics calculation time", statistics.get().getNano()/1_000_000_000.0));
+			out.append(format(pattern, "Overall execution time", execution.get().getNano()/1_000_000_000.0));
 			out.append("+---------------------------------------------------------+");
 
 			return out.toString();
@@ -612,57 +603,33 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 			)
 				throws XMLStreamException
 			{
-				final MeasureFormat format = getMeasureFormat();
 				final Statistics.Time time = new Statistics.Time();
 
 				try {
-					time.alter.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(ALTER_TIME)
-						));
-					time.combine.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(COMBINE_TIME)
-						));
-					time.evaluation.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(EVALUATION_TIME)
-						));
-					time.execution.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(EXECUTION_TIME)
-						));
-					time.selection.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(SELECTION_TIME)
-						));
-					time.statistics.set((Measurable<Duration>)format.parseObject(
-							(String)xml.get(STATISTICS_TIME)
-						));
-				} catch (ParseException e) {
+					time.alter.set(Duration.parse(xml.get(ALTER_TIME)));
+					time.combine.set(Duration.parse(xml.get(COMBINE_TIME)));
+					time.evaluation.set(Duration.parse(xml.get(EVALUATION_TIME)));
+					time.execution.set(Duration.parse(xml.get(EXECUTION_TIME)));
+					time.selection.set(Duration.parse(xml.get(SELECTION_TIME)));
+					time.statistics.set(Duration.parse(xml.get(STATISTICS_TIME)));
+				} catch (DateTimeParseException e) {
 					throw new XMLStreamException(e);
 				}
 				return time;
-
 			}
 			@Override
 			public void write(final Statistics.Time s, final OutputElement xml)
 				throws XMLStreamException
 			{
-				final MeasureFormat format = getMeasureFormat();
-
-				xml.add(format.format(s.alter.get()), ALTER_TIME);
-				xml.add(format.format(s.combine.get()), COMBINE_TIME);
-				xml.add(format.format(s.evaluation.get()), EVALUATION_TIME);
-				xml.add(format.format(s.execution.get()), EXECUTION_TIME);
-				xml.add(format.format(s.selection.get()), SELECTION_TIME);
-				xml.add(format.format(s.statistics.get()), STATISTICS_TIME);
+				xml.add(s.alter.get().toString(), ALTER_TIME);
+				xml.add(s.combine.get().toString(), COMBINE_TIME);
+				xml.add(s.evaluation.get().toString(), EVALUATION_TIME);
+				xml.add(s.execution.get().toString(), EXECUTION_TIME);
+				xml.add(s.selection.get().toString(), SELECTION_TIME);
+				xml.add(s.statistics.get().toString(), STATISTICS_TIME);
 			}
 			@Override
 			public void read(final InputElement xml, final Statistics.Time p) {
-			}
-
-			private MeasureFormat getMeasureFormat() {
-				final NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
-				nf.setMinimumFractionDigits(25);
-				final UnitFormat uf = UnitFormat.getInstance(Locale.ENGLISH);
-
-				return MeasureFormat.getInstance(nf, uf);
 			}
 		};
 	}
@@ -674,7 +641,7 @@ public class Statistics<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.0
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-10-04 $</em>
 	 */
 	public static class Calculator<
 		G extends Gene<?, G>,

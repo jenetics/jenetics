@@ -25,11 +25,7 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.io.Serializable;
-
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
+import java.time.Duration;
 
 import javolution.lang.Reusable;
 
@@ -40,7 +36,7 @@ import javolution.lang.Reusable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
 public final class Timer
 	implements
@@ -143,8 +139,8 @@ public final class Timer
 	 *
 	 * @return the measured time so far.
 	 */
-	public Measurable<Duration> getTime() {
-		return Measure.valueOf(_sum, SI.NANO(SI.SECOND));
+	public Duration getTime() {
+		return Duration.ofNanos(_sum);
 	}
 
 	/**
@@ -153,8 +149,8 @@ public final class Timer
 	 *
 	 * @return the interim time measured.
 	 */
-	public Measurable<Duration> getInterimTime() {
-		return Measure.valueOf(_stop - _start, SI.NANO(SI.SECOND));
+	public Duration getInterimTime() {
+		return Duration.ofNanos(_stop - _start);
 	}
 
 	/**
@@ -227,7 +223,7 @@ public final class Timer
 	public String toString() {
 		return format(
 			"%s: %11.11f s", _label,
-			getTime().doubleValue(SI.SECOND)
+			getTime().getNano()/1_000_000_000.0
 		);
 	}
 
