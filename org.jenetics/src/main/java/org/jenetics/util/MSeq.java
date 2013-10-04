@@ -257,6 +257,28 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * Some static factory methods.
 	 */
 
+	/**
+	 * Single instance of an empty {@code MSeq}.
+	 */
+	public static final MSeq<?> EMPTY = valueOf(0);
+
+	/**
+	 * Return an empty {@code MSeq}.
+	 *
+	 * @param <T> the element type of the new {@code MSeq}.
+	 * @return an empty {@code MSeq}.
+	 */
+	public static <T> MSeq<T> empty() {
+		return (MSeq<T>)EMPTY;
+	}
+
+	/**
+	 * Create a new {@code MSeq} with the given {@code length}.
+	 *
+	 * @param length the length of the created {@code MSeq}.
+	 * @param <T> the element type of the new {@code MSeq}.
+	 * @return the new mutable sequence.
+	 */
 	public static <T> MSeq<T> valueOf(final int length) {
 		return new ArrayProxyMSeq<>(new ArrayProxyImpl<T>(length));
 	}
@@ -272,6 +294,12 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 		return MSeq.<T>valueOf(values.length).setAll(values);
 	}
 
+	/**
+	 * Create a new {@code MSeq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
 	public static <T> MSeq<T> valueOf(final Collection<? extends T> values) {
 		return MSeq.<T>valueOf(values.size()).setAll(values);
 	}
