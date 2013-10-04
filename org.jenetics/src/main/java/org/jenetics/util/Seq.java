@@ -215,6 +215,17 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	}
 
 	/**
+	 * Tests whether a predicate holds for some of the elements of this sequence.
+	 *
+	 * @param predicate the predicate used to test elements.
+	 * @return {@code true} if the given predicate p holds for some of the
+	 *         elements of this sequence, otherwise {@code false}.
+	 */
+	public default boolean exists(final Predicate<? super T> predicate) {
+		return indexWhere(predicate) != -1;
+	}
+
+	/**
 	 * <p>
 	 * Returns the index of the first element on which the given predicate
 	 * returns {@code true}, or -1 if the predicate returns false for every
