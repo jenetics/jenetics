@@ -33,22 +33,20 @@ import org.jenetics.util.RandomRegistry;
  */
 public class StatisticsTimeTest extends ObjectTester<Time> {
 
-	final Factory<Time> _factory = new Factory<Time>() {
-		@Override
-		public Time newInstance() {
-			final Random random = RandomRegistry.getRandom();
+	final Factory<Time> _factory = () -> {
+		final Random random = RandomRegistry.getRandom();
 
-			final Time time = new Time();
-			time.alter.set(Duration.ofNanos(Math.abs(random.nextLong())));
-			time.combine.set(Duration.ofNanos(Math.abs(random.nextLong())));
-			time.evaluation.set(Duration.ofNanos(Math.abs(random.nextLong())));
-			time.execution.set(Duration.ofNanos(Math.abs(random.nextLong())));
-			time.selection.set(Duration.ofNanos(Math.abs(random.nextLong())));
-			time.statistics.set(Duration.ofNanos(Math.abs(random.nextLong())));
+		final Time time = new Time();
+		time.alter.set(Duration.ofNanos(Math.abs(random.nextLong())));
+		time.combine.set(Duration.ofNanos(Math.abs(random.nextLong())));
+		time.evaluation.set(Duration.ofNanos(Math.abs(random.nextLong())));
+		time.execution.set(Duration.ofNanos(Math.abs(random.nextLong())));
+		time.selection.set(Duration.ofNanos(Math.abs(random.nextLong())));
+		time.statistics.set(Duration.ofNanos(Math.abs(random.nextLong())));
 
-			return time;
-		}
+		return time;
 	};
+
 	@Override
 	protected Factory<Time> getFactory() {
 		return _factory;

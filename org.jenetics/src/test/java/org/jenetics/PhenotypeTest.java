@@ -32,7 +32,7 @@ import org.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-08 $</em>
+ * @version <em>$Date: 2013-10-04 $</em>
  */
 public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>> {
 
@@ -54,16 +54,10 @@ public class PhenotypeTest extends ObjectTester<Phenotype<Float64Gene, Float64>>
 			new Float64Chromosome(0, 1, 50)
 		);
 	private final Function<Genotype<Float64Gene>, Float64> _ff = new FF();
-	private final Function<Float64, Float64> _scaler = a -> a;
-	private final Factory<Phenotype<Float64Gene, Float64>>
-	_factory = new Factory<Phenotype<Float64Gene, Float64>>() {
-		@Override public Phenotype<Float64Gene, Float64> newInstance() {
-			return Phenotype.valueOf(_genotype.newInstance(), _ff, _scaler, 0);
-		}
-	};
 
-	@Override protected Factory<Phenotype<Float64Gene, Float64>> getFactory() {
-		return _factory;
+	@Override
+	protected Factory<Phenotype<Float64Gene, Float64>> getFactory() {
+		return () -> Phenotype.valueOf(_genotype.newInstance(), _ff, a -> a, 0);
 	}
 
 }
