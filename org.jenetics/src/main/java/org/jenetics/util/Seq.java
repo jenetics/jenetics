@@ -21,6 +21,7 @@ package org.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -608,20 +609,12 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * [/code]
 	 *
 	 * @see List#hashCode()
+	 * @see Seq#hashCode(Seq)
 	 *
 	 * @return the hash code value for this list
 	 */
 	@Override
 	public int hashCode();
-	/*
-	{
-		int hash = 1;
-		for (Object element : this) {
-			hash = 31*hash + (element == null ? 0: element.hashCode());
-		}
-		return hash;
-	}
-	*/
 
 	/**
 	 * Compares the specified object with this sequence for equality. Returns
@@ -633,6 +626,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * interface.
 	 *
 	 * @see List#equals(Object)
+	 * @see Seq#equals(Seq, Object) 
 	 *
 	 * @param object the object to be compared for equality with this sequence.
 	 * @return {@code true} if the specified object is equal to this sequence,
@@ -640,28 +634,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 */
 	@Override
 	public boolean equals(final Object object);
-	/*
-	{
-		if (object == this) {
-			return true;
-		}
-		if (!(object instanceof Seq<?>)) {
-			return false;
-		}
-
-		final Seq<?> other = (Seq<?>)object;
-		boolean equals = (length() == other.length());
-		for (int i = length(); equals && --i >= 0;) {
-			final Object element = get(i);
-			if (element != null) {
-				equals = element.equals(other.get(i));
-			} else {
-				equals = other.get(i) == null;
-			}
-		}
-		return equals;
-	}
-	*/
 
 	/**
 	 * Create a string representation of the given sequence.
@@ -699,17 +671,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 */
 	public default String toString(final String separator) {
 		return toString("", separator, "");
-	}
-
-	/**
-	 * Create a new {@code Seq} from the given values.
-	 *
-	 * @param values the array values.
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
-	 */
-	@SafeVarargs
-	public static <T> Seq<T> valueOf(final T... values) {
-		return Array.valueOf(values);
 	}
 
 	/**
@@ -768,6 +729,32 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 			}
 		}
 		return equals;
+	}
+
+
+	/*
+	 * Some static factory methods.
+	 */
+
+	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> Seq<T> valueOf(final T... values) {
+		return MSeq.valueOf(values).toISeq();
+	}
+
+	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> Seq<T> valueOf(final Collection<? extends T> values) {
+		return MSeq.valueOf(values).toISeq();
 	}
 
 }
