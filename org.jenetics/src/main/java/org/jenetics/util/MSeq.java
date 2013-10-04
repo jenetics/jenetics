@@ -65,7 +65,7 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} array.
 	 */
 	public default MSeq<T> setAll(final T value) {
-		for (int i = 0, n = length(); i < n; ++i) {
+		for (int i = length(); --i >= 0;) {
 			set(i, value);
 		}
 		return this;
