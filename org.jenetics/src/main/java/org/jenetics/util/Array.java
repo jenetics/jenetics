@@ -51,7 +51,7 @@ import javolution.util.FastList;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
 public final class Array<T>
 	extends ArraySeq<T>

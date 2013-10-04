@@ -38,7 +38,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
 abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	private static final long serialVersionUID = 1L;

@@ -42,7 +42,7 @@ import org.jenetics.internal.util.SeqMappedIteratorAdapter;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
 public interface Seq<T> extends Iterable<T> {
 
