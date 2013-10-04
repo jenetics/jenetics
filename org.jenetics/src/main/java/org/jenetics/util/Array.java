@@ -53,6 +53,7 @@ import javolution.util.FastList;
  * @since 1.0
  * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
  */
+@Deprecated
 public final class Array<T>
 	extends ArraySeq<T>
 	implements
