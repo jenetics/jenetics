@@ -22,6 +22,7 @@ package org.jenetics.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
@@ -30,6 +31,8 @@ import java.util.function.IntFunction;
 import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 
+import org.jenetics.internal.util.ArrayProxyImpl;
+import org.jenetics.internal.util.ArrayProxyMSeq;
 import org.jenetics.internal.util.SeqListIteratorAdapter;
 
 /**
@@ -249,6 +252,15 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 */
 	public ISeq<T> toISeq();
 
+
+	/*
+	 * Some static factory methods.
+	 */
+
+	public static <T> MSeq<T> valueOf(final int length) {
+		return new ArrayProxyMSeq<>(new ArrayProxyImpl<T>(length));
+	}
+
 	/**
 	 * Create a new {@code MSeq} from the given values.
 	 *
@@ -257,7 +269,11 @@ public interface MSeq<T> extends Seq<T>, ObjIntConsumer<T>, Copyable<MSeq<T>> {
 	 */
 	@SafeVarargs
 	public static <T> MSeq<T> valueOf(final T... values) {
-		return Array.valueOf(values);
+		return MSeq.<T>valueOf(values.length).setAll(values);
+	}
+
+	public static <T> MSeq<T> valueOf(final Collection<? extends T> values) {
+		return MSeq.<T>valueOf(values.size()).setAll(values);
 	}
 
 }
