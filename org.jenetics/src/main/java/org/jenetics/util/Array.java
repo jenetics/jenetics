@@ -484,20 +484,6 @@ public final class Array<T>
 	@Override
 	public <B> Array<B> map(final Function<? super T, ? extends B> mapper) {
 		return map(mapper, Array::new);
-		/*
-		requireNonNull(mapper, "Converter");
-
-		final int length = length();
-		final Array<B> result = new Array<>(length);
-		assert (result._array.data.length == length);
-
-		for (int i = length; --i >= 0;) {
-			@SuppressWarnings("unchecked")
-			final T value = (T)_array.data[i + _start];
-			result._array.data[i] = mapper.apply(value);
-		}
-		return result;
-		*/
 	}
 
 	@Override
