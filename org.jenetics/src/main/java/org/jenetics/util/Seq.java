@@ -64,6 +64,18 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	}
 
 	/**
+	 * Check if the value of the {@code IntFunction} is defined at the given
+	 * {@code index}.
+	 *
+	 * @param index the index to test.
+	 * @return {@code true} if {@code index >= 0 && index < length()},
+	 *         {@code false} otherwise.
+	 */
+	public default boolean isDefinedAt(final int index) {
+		return index >= 0 && index < length();
+	}
+
+	/**
 	 * Return the length of this sequence. Once the sequence is created, the
 	 * length can't be changed.
 	 *
@@ -626,7 +638,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * interface.
 	 *
 	 * @see List#equals(Object)
-	 * @see Seq#equals(Seq, Object) 
+	 * @see Seq#equals(Seq, Object)
 	 *
 	 * @param object the object to be compared for equality with this sequence.
 	 * @return {@code true} if the specified object is equal to this sequence,
