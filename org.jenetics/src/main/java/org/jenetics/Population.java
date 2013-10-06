@@ -39,7 +39,7 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Concurrency;
+import org.jenetics.util.Concurrent;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
 import org.jenetics.util.arrays;
@@ -137,7 +137,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final Object[] array
 	) {
-		try (final Concurrency c = Concurrency.start()) {
+		try (Concurrent c = new Concurrent()) {
 			final int threads = ConcurrentContext.getConcurrency() + 1;
 			final int[] parts = arrays.partition(array.length, threads);
 
