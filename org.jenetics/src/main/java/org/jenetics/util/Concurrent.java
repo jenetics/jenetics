@@ -25,6 +25,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 
+import javolution.context.LocalContext;
+
 /**
  * [code]
  * try (Concurrent c = new Concurrent()) {
@@ -41,25 +43,31 @@ public class Concurrent implements Executor, AutoCloseable {
 
 	private final int TASKS_SIZE = 15;
 
-	private static ForkJoinPool _POOL = new ForkJoinPool(
-		Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
-	);
+	private static LocalContext.Reference<ForkJoinPool> _POOL = new LocalContext.Reference<>(
+			new ForkJoinPool(
+					Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
+				)
+			);
 
 	public static void setForkJoinPool(final ForkJoinPool pool) {
-		_POOL = pool;
+		_POOL.set(pool);
 	}
 
 	public static ForkJoinPool getForkJoinPool() {
-		return _POOL;
+		return _POOL.get();
 	}
 
 	private final List<ForkJoinTask<?>> _tasks = new ArrayList<>(TASKS_SIZE);
 
 	@Override
 	public void execute(final Runnable command) {
-		final ForkJoinTask<?> task = ForkJoinTask.adapt(command);
-		_POOL.execute(task);
-		_tasks.add(task);
+		if (_POOL.get().getParallelism() > 1) {
+			final ForkJoinTask<?> task = ForkJoinTask.adapt(command);
+			_POOL.get().execute(task);
+			_tasks.add(task);
+		} else {
+			command.run();
+		}
 	}
 
 	@Override

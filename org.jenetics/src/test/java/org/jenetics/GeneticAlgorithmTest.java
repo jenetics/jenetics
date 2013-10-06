@@ -33,6 +33,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinContext;
 import org.jenetics.util.Function;
@@ -64,7 +65,7 @@ public class GeneticAlgorithmTest {
 	public void optimize() {
 		LocalContext.enter();
 		try {
-			ConcurrentContext.setConcurrency(0);
+			Concurrent.setForkJoinPool(new ForkJoinPool(1));
 			RandomRegistry.setRandom(new Random(12345));
 
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(
