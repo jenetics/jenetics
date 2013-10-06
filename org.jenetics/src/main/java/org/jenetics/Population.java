@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
-import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -107,24 +106,15 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @param factory the {@code Phenotype} factory.
 	 * @param count the number of individuals to add to this population.
-	 * @return return this population, for command chanining.
+	 * @return return this population, for command chaining.
 	 */
 	public Population<G, C> fill(
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		// Serial version.
-		if (ConcurrentContext.getConcurrency() == 0) {
-			for (int i = 0; i < count; ++i) {
-				_population.add(factory.newInstance());
-			}
-
-		// Parallel version.
-		} else {
-			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-			fill(factory, array._array);
-			_population.addAll(array);
-		}
+		final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
+		fill(factory, array._array);
+		_population.addAll(array);
 
 		return this;
 	}
@@ -138,7 +128,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Object[] array
 	) {
 		try (Concurrent c = new Concurrent()) {
-			final int threads = ConcurrentContext.getConcurrency() + 1;
+			final int threads = Concurrent.getForkJoinPool().getParallelism();
 			final int[] parts = arrays.partition(array.length, threads);
 
 			for (int i = 0; i < parts.length - 1; ++i) {
