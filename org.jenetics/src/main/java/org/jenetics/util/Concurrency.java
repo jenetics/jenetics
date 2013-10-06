@@ -82,8 +82,11 @@ import javolution.lang.Configurable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-06 $</em>
+ *
+ * @deprecated Use the {@link Concurrent} class instead.
  */
+@Deprecated
 public final class Concurrency implements AutoCloseable {
 
 	private static final String KEY_CONTEXT =
