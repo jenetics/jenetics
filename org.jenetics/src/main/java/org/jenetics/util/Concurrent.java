@@ -19,22 +19,54 @@
  */
 package org.jenetics.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 
 /**
+ * [code]
+ * try (Concurrent c = new Concurrent()) {
+ *     c.execute(task1);
+ *     c.execute(task2);
+ * }
+ * [/code]
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
 public class Concurrent implements Executor, AutoCloseable {
 
+	private final int TASKS_SIZE = 15;
+
+	private static ForkJoinPool _POOL = new ForkJoinPool(
+		Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
+	);
+
+	public static void setForkJoinPool(final ForkJoinPool pool) {
+		_POOL = pool;
+	}
+
+	public static ForkJoinPool getForkJoinPool() {
+		return _POOL;
+	}
+
+	private final List<ForkJoinTask<?>> _tasks = new ArrayList<>(TASKS_SIZE);
 
 	@Override
 	public void execute(final Runnable command) {
+		final ForkJoinTask<?> task = ForkJoinTask.adapt(command);
+		_POOL.execute(task);
+		_tasks.add(task);
 	}
 
 	@Override
 	public void close() {
+		for (final ForkJoinTask<?> task : _tasks) {
+			task.join();
+		}
 	}
 
 }
