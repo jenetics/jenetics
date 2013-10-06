@@ -19,11 +19,22 @@
  */
 package org.jenetics.util;
 
+import java.util.concurrent.Executor;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date: 2013-10-06 $</em>
  */
-public class Concurrent {
+public class Concurrent implements Executor, AutoCloseable {
+
+
+	@Override
+	public void execute(final Runnable command) {
+	}
+
+	@Override
+	public void close() {
+	}
 
 }
