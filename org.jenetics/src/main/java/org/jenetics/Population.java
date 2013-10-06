@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
+import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -112,9 +113,18 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-		fill(factory, array._array);
-		_population.addAll(array);
+		// Serial version.
+		if (Concurrent.getForkJoinPool().getParallelism() == 1) {
+			for (int i = 0; i < count; ++i) {
+				_population.add(factory.newInstance());
+			}
+
+		// Parallel version.
+		} else {
+			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
+			fill(factory, array._array);
+			_population.addAll(array);
+		}
 
 		return this;
 	}
