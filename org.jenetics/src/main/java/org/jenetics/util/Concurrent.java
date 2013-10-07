@@ -29,7 +29,7 @@ import javolution.context.LocalContext;
 
 /**
  * [code]
- * try (Concurrent c = new Concurrent()) {
+ * try (final Concurrent c = new Concurrent()) {
  *     c.execute(task1);
  *     c.execute(task2);
  * }
@@ -83,6 +83,11 @@ public class Concurrent implements Executor, AutoCloseable {
 		this(getForkJoinPool());
 	}
 
+	/**
+	 * Return the current <i>parallelism</i> of this {@code Concurrent} object.
+	 *
+	 * @return the current <i>parallelism</i> of this {@code Concurrent} object
+	 */
 	public int getParallelism() {
 		return _pool != null ? _pool.getParallelism() : 1;
 	}
