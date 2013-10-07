@@ -70,6 +70,10 @@ public class Concurrent implements Executor, AutoCloseable {
 		}
 	}
 
+	public void execute(final Runnable... runnables) {
+
+	}
+
 	@Override
 	public void close() {
 		for (final ForkJoinTask<?> task : _tasks) {
