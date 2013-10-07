@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import static java.util.concurrent.ForkJoinTask.adapt;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -95,12 +97,16 @@ public class Concurrent implements Executor, AutoCloseable {
 	@Override
 	public void execute(final Runnable command) {
 		if (_parallel) {
-			final ForkJoinTask<?> task = ForkJoinTask.adapt(command);
+			final ForkJoinTask<?> task = toForkJoinTask(command);
 			_pool.execute(task);
 			_tasks.add(task);
 		} else {
 			command.run();
 		}
+	}
+
+	private static ForkJoinTask<?> toForkJoinTask(final Runnable r) {
+		return r instanceof ForkJoinTask<?> ? (ForkJoinTask<?>)r : adapt(r);
 	}
 
 	/**
