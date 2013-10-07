@@ -71,6 +71,7 @@ import javolution.util.FastList;
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date$</em>
  */
+@Deprecated
 public final class ForkJoinContext extends ConcurrentContext {
 
 	private static final long serialVersionUID = 1L;

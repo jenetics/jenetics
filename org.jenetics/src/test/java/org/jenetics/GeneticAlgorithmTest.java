@@ -29,7 +29,6 @@ import javolution.context.LocalContext;
 
 import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
-import org.jenetics.util.ForkJoinContext;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
 import org.jscience.mathematics.number.Float64;
@@ -42,10 +41,6 @@ import org.testng.annotations.Test;
  * @version <em>$Date$</em>
  */
 public class GeneticAlgorithmTest {
-
-	static {
-		ForkJoinContext.setForkJoinPool(new ForkJoinPool(5));
-	}
 
 	private static class FF
 		implements Function<Genotype<Float64Gene>, Float64>,
@@ -63,7 +58,7 @@ public class GeneticAlgorithmTest {
 	public void optimize() {
 		LocalContext.enter();
 		try {
-			Concurrent.setForkJoinPool(new ForkJoinPool(1));
+			Concurrent.setForkJoinPool(null);
 			RandomRegistry.setRandom(new Random(12345));
 
 			final Factory<Genotype<Float64Gene>> factory = Genotype.valueOf(

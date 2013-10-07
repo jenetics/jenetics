@@ -112,18 +112,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		// Serial version.
-		if (Concurrent.getForkJoinPool().getParallelism() == 1) {
-			for (int i = 0; i < count; ++i) {
-				_population.add(factory.newInstance());
-			}
-
-		// Parallel version.
-		} else {
-			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-			fill(factory, array._array);
-			_population.addAll(array);
-		}
+		final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
+		fill(factory, array._array);
+		_population.addAll(array);
 
 		return this;
 	}
@@ -137,14 +128,14 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Object[] array
 	) {
 		try (Concurrent c = new Concurrent()) {
-			final int threads = Concurrent.getForkJoinPool().getParallelism();
+			final int threads = c.getParallelism();
 			final int[] parts = arrays.partition(array.length, threads);
 
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;
 
 				c.execute(new Runnable() { @Override public void run() {
-					for (int j = parts[part + 1]; --j >= parts[part];) {
+					for (int j = parts[part]; j < parts[part + 1]; ++j) {
 						array[j] = factory.newInstance();
 					}
 				}});
