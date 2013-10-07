@@ -34,12 +34,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 
-import javolution.context.ConcurrentContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Concurrency;
+import org.jenetics.util.Concurrent;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
 import org.jenetics.util.arrays;
@@ -54,7 +53,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-10-07 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -107,24 +106,15 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *
 	 * @param factory the {@code Phenotype} factory.
 	 * @param count the number of individuals to add to this population.
-	 * @return return this population, for command chanining.
+	 * @return return this population, for command chaining.
 	 */
 	public Population<G, C> fill(
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		// Serial version.
-		if (ConcurrentContext.getConcurrency() == 0) {
-			for (int i = 0; i < count; ++i) {
-				_population.add(factory.newInstance());
-			}
-
-		// Parallel version.
-		} else {
-			final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-			fill(factory, array._array);
-			_population.addAll(array);
-		}
+		final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
+		fill(factory, array._array);
+		_population.addAll(array);
 
 		return this;
 	}
@@ -137,15 +127,15 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final Object[] array
 	) {
-		try (final Concurrency c = Concurrency.start()) {
-			final int threads = ConcurrentContext.getConcurrency() + 1;
+		try (Concurrent c = new Concurrent()) {
+			final int threads = c.getParallelism();
 			final int[] parts = arrays.partition(array.length, threads);
 
 			for (int i = 0; i < parts.length - 1; ++i) {
 				final int part = i;
 
 				c.execute(new Runnable() { @Override public void run() {
-					for (int j = parts[part + 1]; --j >= parts[part];) {
+					for (int j = parts[part]; j < parts[part + 1]; ++j) {
 						array[j] = factory.newInstance();
 					}
 				}});
