@@ -37,33 +37,63 @@ import javolution.context.LocalContext;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-07 $</em>
  */
 public class Concurrent implements Executor, AutoCloseable {
 
 	private final int TASKS_SIZE = 15;
 
-	private static LocalContext.Reference<ForkJoinPool> _POOL = new LocalContext.Reference<>(
-			new ForkJoinPool(
-					Math.max(Runtime.getRuntime().availableProcessors() - 1, 1)
-				)
-			);
+	private static final Object NULL = new Object();
+	
+	private static final LocalContext.Reference<Object> 
+	FORK_JOIN_POOL = new LocalContext.Reference<Object>(new ForkJoinPool(
+		Runtime.getRuntime().availableProcessors()
+	));
 
+	/**
+	 * Set the thread pool to use for concurrent actions. If the given pool is
+	 * {@code null}, the command, given in the {@link #execute(Runnable)} mehtod
+	 * is executed in the main thread.
+	 * 
+	 * @param pool the thread pool to use.
+	 */
 	public static void setForkJoinPool(final ForkJoinPool pool) {
-		_POOL.set(pool);
+		System.out.println("SET POOL:" + pool);
+		FORK_JOIN_POOL.set(pool != null ? pool : NULL);
 	}
 
+	/**
+	 * Return the currently use thread pool.
+	 * 
+	 * @return the currently used thread pool.
+	 */
 	public static ForkJoinPool getForkJoinPool() {
-		return _POOL.get();
+		final Object pool = FORK_JOIN_POOL.get();
+		return pool != NULL ? (ForkJoinPool)pool : null;
 	}
 
+	private final ForkJoinPool _pool;
 	private final List<ForkJoinTask<?>> _tasks = new ArrayList<>(TASKS_SIZE);
+	private final boolean _parallel;
 
+	private Concurrent(final ForkJoinPool pool) {
+		_pool = pool;
+		_parallel = _pool != null;
+	}
+	
+	public Concurrent() {
+		this(getForkJoinPool());
+	}
+	
+	public int getParallelism() {
+		return _pool != null ? _pool.getParallelism() : 1;
+	}
+	
 	@Override
 	public void execute(final Runnable command) {
-		if (_POOL.get().getParallelism() > 1) {
+		if (_parallel) {
 			final ForkJoinTask<?> task = ForkJoinTask.adapt(command);
-			_POOL.get().execute(task);
+			_pool.execute(task);
 			_tasks.add(task);
 		} else {
 			command.run();
@@ -72,9 +102,13 @@ public class Concurrent implements Executor, AutoCloseable {
 
 	@Override
 	public void close() {
-		for (final ForkJoinTask<?> task : _tasks) {
-			task.join();
+		if (_parallel) {
+			for (int i = _tasks.size(); --i >= 0;) {
+				_tasks.get(i).join();
+			}
 		}
 	}
-
+	
 }
+
+
