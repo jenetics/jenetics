@@ -37,7 +37,7 @@ import javolution.context.LocalContext;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-07 $</em>
  */
 public class Concurrent implements Executor, AutoCloseable {
 
@@ -68,6 +68,10 @@ public class Concurrent implements Executor, AutoCloseable {
 		} else {
 			command.run();
 		}
+	}
+
+	public void execute(final Runnable... runnables) {
+
 	}
 
 	@Override
