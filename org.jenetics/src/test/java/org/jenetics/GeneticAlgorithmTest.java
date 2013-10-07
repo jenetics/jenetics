@@ -25,19 +25,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
-import javolution.context.ConcurrentContext;
 import javolution.context.LocalContext;
-
-import org.jscience.mathematics.number.Float64;
-import org.testng.Assert;
-import org.testng.Reporter;
-import org.testng.annotations.Test;
 
 import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ForkJoinContext;
 import org.jenetics.util.Function;
 import org.jenetics.util.RandomRegistry;
+import org.jscience.mathematics.number.Float64;
+import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
