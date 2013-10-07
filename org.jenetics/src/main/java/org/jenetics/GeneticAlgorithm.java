@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-06 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-07 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -457,10 +457,8 @@ public class GeneticAlgorithm<
 
 	private void evaluate() {
 		_evaluateTimer.start();
-		try (Concurrent c = new Concurrent()) {
-			for (int i =  _population.size(); --i >= 0;) {
-				c.execute(_population.get(i));
-			}
+		try (final Concurrent c = new Concurrent()) {
+			c.execute(_population);
 		}
 		_evaluateTimer.stop();
 	}
