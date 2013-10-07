@@ -457,10 +457,8 @@ public class GeneticAlgorithm<
 
 	private void evaluate() {
 		_evaluateTimer.start();
-		try (Concurrent c = new Concurrent()) {
-			for (int i =  _population.size(); --i >= 0;) {
-				c.execute(_population.get(i));
-			}
+		try (final Concurrent c = new Concurrent()) {
+			c.execute(_population);
 		}
 		_evaluateTimer.stop();
 	}
