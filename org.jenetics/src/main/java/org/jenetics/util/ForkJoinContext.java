@@ -70,6 +70,9 @@ import javolution.util.FastList;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 1.0 &mdash; <em>$Date: 2013-10-07 $</em>
+ *
+ * @deprecated Use the {@link Concurrent} class instead. <b>Using this class will
+ *             no longer effect the concurrency behavior of the GA.</b>
  */
 @Deprecated
 public final class ForkJoinContext extends ConcurrentContext {
