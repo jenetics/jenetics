@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal.util;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import org.jenetics.util.Concurrent;
@@ -40,7 +41,7 @@ public final class arrays extends StaticObject {
 			try (Concurrent c = new Concurrent()) {
 				final int threads = c.getParallelism();
 				final int[] parts = org.jenetics.util.arrays.partition(
-					array.length, min(threads, array.length/MIN_BULK_SIZE)
+					array.length, min(threads, max(array.length/MIN_BULK_SIZE, 1))
 				);
 
 				for (int i = 0; i < parts.length - 1; ++i) {
