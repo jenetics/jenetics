@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-07 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-08 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -311,7 +311,10 @@ public class GeneticAlgorithm<
 		_lock.lock();
 		try {
 			prepareSetup();
-			_population.fill(_phenotypeFactory, _populationSize - _population.size());
+			_population.fill(
+				_phenotypeFactory,
+				_populationSize - _population.size()
+			);
 			finishSetup();
 		} finally {
 			_lock.unlock();
