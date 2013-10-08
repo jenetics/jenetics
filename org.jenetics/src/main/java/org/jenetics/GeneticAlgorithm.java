@@ -311,7 +311,10 @@ public class GeneticAlgorithm<
 		_lock.lock();
 		try {
 			prepareSetup();
-			_population.fill(_phenotypeFactory, _populationSize - _population.size());
+			_population.fill(
+				_phenotypeFactory,
+				_populationSize - _population.size()
+			);
 			finishSetup();
 		} finally {
 			_lock.unlock();
