@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.ForkJoinTask.adapt;
 
 import java.util.ArrayList;
@@ -39,9 +40,9 @@ import javolution.context.LocalContext;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-07 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-08 $</em>
  */
-public class Concurrent implements Executor, AutoCloseable {
+public final class Concurrent implements Executor, AutoCloseable {
 
 	private static final Object NULL = new Object();
 	private final int TASKS_SIZE = 15;
@@ -114,18 +115,22 @@ public class Concurrent implements Executor, AutoCloseable {
 	 *
 	 * @param n the number of parts the given {@code runnables} are executed.
 	 * @param runnables the runnables to be executed.
+	 * @throws NullPointerException if the given runnables are {@code null}.
 	 */
 	public void execute(final int n, final List<? extends Runnable> runnables) {
-		final int[] parts = arrays.partition(runnables.size(), n);
+		requireNonNull(runnables, "Runnables must not be null");
+		if (runnables.size() > 0) {
+			final int[] parts = arrays.partition(runnables.size(), n);
 
-		for (int i = 0; i < parts.length - 1; ++i) {
-			final int part = i;
+			for (int i = 0; i < parts.length - 1; ++i) {
+				final int part = i;
 
-			execute(new Runnable() { @Override public void run() {
-				for (int j = parts[part]; j < parts[part + 1]; ++j) {
-					runnables.get(j).run();
-				}
-			}});
+				execute(new Runnable() { @Override public void run() {
+					for (int j = parts[part]; j < parts[part + 1]; ++j) {
+						runnables.get(j).run();
+					}
+				}});
+			}
 		}
 	}
 
@@ -133,6 +138,7 @@ public class Concurrent implements Executor, AutoCloseable {
 	 * Executes the given {@code runnables} in {@link #getParallelism()} parts.
 	 *
 	 * @param runnables the runnables to be executed.
+	 * @throws NullPointerException if the given runnables are {@code null}.
 	 */
 	public void execute(final List<? extends Runnable> runnables) {
 		execute(getParallelism(), runnables);
@@ -143,18 +149,22 @@ public class Concurrent implements Executor, AutoCloseable {
 	 *
 	 * @param n the number of parts the given {@code runnables} are executed.
 	 * @param runnables the runnables to be executed.
+	 * @throws NullPointerException if the given runnables are {@code null}.
 	 */
 	public void execute(final int n, final Runnable... runnables) {
-		final int[] parts = arrays.partition(runnables.length, n);
+		requireNonNull(runnables, "Runnables must not be null");
+		if (runnables.length > 0) {
+			final int[] parts = arrays.partition(runnables.length, n);
 
-		for (int i = 0; i < parts.length - 1; ++i) {
-			final int part = i;
+			for (int i = 0; i < parts.length - 1; ++i) {
+				final int part = i;
 
-			execute(new Runnable() { @Override public void run() {
-				for (int j = parts[part]; j < parts[part + 1]; ++j) {
-					runnables[j].run();
-				}
-			}});
+				execute(new Runnable() { @Override public void run() {
+					for (int j = parts[part]; j < parts[part + 1]; ++j) {
+						runnables[j].run();
+					}
+				}});
+			}
 		}
 	}
 
@@ -162,6 +172,7 @@ public class Concurrent implements Executor, AutoCloseable {
 	 * Executes the given {@code runnables} in {@link #getParallelism()} parts.
 	 *
 	 * @param runnables the runnables to be executed.
+	 * @throws NullPointerException if the given runnables are {@code null}.
 	 */
 	public void execute(final Runnable... runnables) {
 		execute(getParallelism(), runnables);
