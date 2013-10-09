@@ -19,10 +19,10 @@
  */
 package org.jenetics.internal.util;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
-import org.jenetics.util.Concurrent;
+//import static java.lang.Math.max;
+//import static java.lang.Math.min;
+//
+//import org.jenetics.util.Concurrent;
 import org.jenetics.util.Factory;
 import org.jenetics.util.StaticObject;
 
@@ -34,28 +34,34 @@ import org.jenetics.util.StaticObject;
 public final class arrays extends StaticObject {
 	private arrays() {}
 
-	private static int MIN_BULK_SIZE = 11;
+//	static int MIN_BULK_SIZE = 11;
+//	public static Object[] fill(final Object[] array, final Factory<?> factory) {
+//		if (array.length > 0) {
+//			try (Concurrent c = new Concurrent()) {
+//				final int threads = c.getParallelism();
+//				final int[] parts = org.jenetics.util.arrays.partition(
+//					array.length, min(threads, max(array.length/MIN_BULK_SIZE, 1))
+//				);
+//
+//				for (int i = 0; i < parts.length - 1; ++i) {
+//					final int part = i;
+//
+//					c.execute(new Runnable() { @Override public void run() {
+//						for (int j = parts[part]; j < parts[part + 1]; ++j) {
+//							array[j] = factory.newInstance();
+//						}
+//					}});
+//				}
+//			}
+//		}
+//
+//		return array;
+//	}
 
 	public static Object[] fill(final Object[] array, final Factory<?> factory) {
-		if (array.length > 0) {
-			try (Concurrent c = new Concurrent()) {
-				final int threads = c.getParallelism();
-				final int[] parts = org.jenetics.util.arrays.partition(
-					array.length, min(threads, max(array.length/MIN_BULK_SIZE, 1))
-				);
-
-				for (int i = 0; i < parts.length - 1; ++i) {
-					final int part = i;
-
-					c.execute(new Runnable() { @Override public void run() {
-						for (int j = parts[part]; j < parts[part + 1]; ++j) {
-							array[j] = factory.newInstance();
-						}
-					}});
-				}
-			}
+		for (int i = 0; i < array.length; ++i) {
+			array[i] = factory.newInstance();
 		}
-
 		return array;
 	}
 
