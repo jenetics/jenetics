@@ -36,8 +36,6 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.internal.util.lists;
-
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
 
@@ -51,7 +49,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-10-08 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-10-09 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -110,7 +108,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		lists.fill(_population, factory, count);
+		for (int i = count; --i >= 0;) {
+			_population.add(factory.newInstance());
+		}
+		//lists.fill(_population, factory, count);
 		return this;
 	}
 
