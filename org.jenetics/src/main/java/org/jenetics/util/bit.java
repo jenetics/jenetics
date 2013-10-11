@@ -247,7 +247,6 @@ public final class bit extends StaticObject {
 			}
 		}
 
-
 		return data;
 	}
 
