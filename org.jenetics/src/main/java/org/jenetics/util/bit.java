@@ -182,7 +182,6 @@ public final class bit extends StaticObject {
 			set(data, i + start, get(otherData, otherStart + i));
 			set(otherData, otherStart + i, temp);
 		}
-
 	}
 
 	/**
