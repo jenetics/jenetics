@@ -46,7 +46,7 @@ public final class bit extends StaticObject {
 	/**
 	 * Lookup table for counting the number of set bits in a {@code byte} value.
 	 */
-	private static final byte[] BIT_SET_TABLE = new byte[] {
+	private static final byte[] BIT_SET_TABLE = {
 		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
 		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
 		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
@@ -80,7 +80,6 @@ public final class bit extends StaticObject {
 		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
 		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7
 	};
-
 	private static final int BIT_SET_TABLE_INDEX_OFFSET = 128;
 
 	/**
