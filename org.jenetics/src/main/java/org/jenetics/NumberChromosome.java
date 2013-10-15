@@ -32,7 +32,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-29 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-15 $</em>
  */
 public abstract class NumberChromosome<
 	N extends Number<N>,
@@ -60,7 +60,7 @@ public abstract class NumberChromosome<
 	 *          than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected NumberChromosome(final ISeq<G> genes) {
+	protected NumberChromosome(final ISeq<? extends G> genes) {
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;
