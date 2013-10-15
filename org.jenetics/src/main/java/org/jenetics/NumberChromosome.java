@@ -60,7 +60,7 @@ public abstract class NumberChromosome<
 	 *          than one.
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected NumberChromosome(final ISeq<G> genes) {
+	protected NumberChromosome(final ISeq<? extends G> genes) {
 		super(genes);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;

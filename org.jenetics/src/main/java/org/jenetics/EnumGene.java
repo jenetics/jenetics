@@ -27,6 +27,8 @@ import java.util.Objects;
 
 import javolution.context.ObjectFactory;
 
+import org.jenetics.internal.util.cast;
+
 import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
@@ -60,7 +62,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.3 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class EnumGene<A>
 	implements
@@ -184,7 +186,7 @@ public final class EnumGene<A>
 		};
 	}
 
-	static <T> Factory<EnumGene<T>> Gene(final ISeq<T> validAlleles) {
+	static <T> Factory<EnumGene<T>> Gene(final ISeq<? extends T> validAlleles) {
 		return new Factory<EnumGene<T>>() {
 			private int _index = 0;
 			@Override
@@ -212,7 +214,7 @@ public final class EnumGene<A>
 	}
 
 	public static <G> EnumGene<G> valueOf(
-		final ISeq<G> validAlleles,
+		final ISeq<? extends G> validAlleles,
 		final int alleleIndex
 	) {
 		if (validAlleles.length() == 0) {
@@ -230,7 +232,7 @@ public final class EnumGene<A>
 		@SuppressWarnings("unchecked")
 		final EnumGene<G> gene = FACTORY.object();
 
-		gene._validAlleles = validAlleles;
+		gene._validAlleles = cast.apply(validAlleles);
 		gene._alleleIndex = alleleIndex;
 		return gene;
 	}
