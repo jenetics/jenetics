@@ -89,7 +89,7 @@ import javolution.context.LocalContext;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-10-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-17 $</em>
  */
 public final class RandomRegistry extends StaticObject {
 	private RandomRegistry() {}
