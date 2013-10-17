@@ -36,22 +36,6 @@ import org.testng.annotations.Test;
 public class arraysTest {
 
 	@Test
-	public void swapObjectArray() {
-		final Integer[] array = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-		arrays.swap(array, 2, 6);
-
-		Assert.assertEquals(array[2], new Integer(6));
-		Assert.assertEquals(array[6], new Integer(2));
-	}
-
-	@Test(expectedExceptions = NullPointerException.class)
-	public void swapObjectArrayNull() {
-		final Integer[] array = null;
-		arrays.swap(array, 2, 5);
-	}
-
-	@Test
 	public void iselect() {
 		final Array<Integer> array = new Array<>(100);
 		for (int i = 0; i < array.length(); ++i) {
