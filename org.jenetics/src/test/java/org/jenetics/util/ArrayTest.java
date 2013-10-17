@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-30 $</em>
+ * @version <em>$Date: 2013-10-17 $</em>
  */
 public class ArrayTest extends ObjectTester<Array<Double>> {
 
@@ -407,7 +407,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		integers.sort();
 		Assert.assertTrue(arrays.isSorted(integers));
 
-		arrays.shuffle(integers, new Random());
+		shuffling.shuffle(integers, new Random());
 		integers.sort();
 		Assert.assertTrue(arrays.isSorted(integers));
 	}
@@ -526,7 +526,7 @@ public class ArrayTest extends ObjectTester<Array<Double>> {
 		final Array<Integer> integers = new Array<Integer>(1000).fill(Int());
 		Assert.assertTrue(arrays.isSorted(integers));
 
-		arrays.shuffle(integers, new Random());
+		shuffling.shuffle(integers, new Random());
 		Assert.assertFalse(arrays.isSorted(integers));
 
 		Collections.sort(integers.asList());
