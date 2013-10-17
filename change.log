@@ -1,6 +1,6 @@
 Jenetics-1.5.0
 - Minor fixes in Gradle build script.
-- Mark some 'array' methods as deprecated.
+- Mark some 'arrays' class methods as deprecated.
 
 Jenetics-1.4.1
 - Fix bug in ListIterator implementation of the 'Seq' classes.
