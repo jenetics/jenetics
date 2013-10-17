@@ -19,6 +19,7 @@
  */
 package org.jenetics.util;
 
+import java.util.Collection;
 import java.util.function.Function;
 
 import javolution.lang.Immutable;
@@ -30,7 +31,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-17 $</em>
  */
 public interface ISeq<T>
 	extends
@@ -56,6 +57,33 @@ public interface ISeq<T>
 	 */
 	@Override
 	public MSeq<T> copy();
+
+
+
+	/*
+	 * Some static factory methods.
+	 */
+
+	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	@SafeVarargs
+	public static <T> ISeq<T> valueOf(final T... values) {
+		return MSeq.valueOf(values).toISeq();
+	}
+
+	/**
+	 * Create a new {@code Seq} from the given values.
+	 *
+	 * @param values the array values.
+	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 */
+	public static <T> ISeq<T> valueOf(final Collection<? extends T> values) {
+		return MSeq.valueOf(values).toISeq();
+	}
 
 }
 
