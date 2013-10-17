@@ -42,6 +42,8 @@ public final class math extends StaticObject {
 	 * @param b the second summand.
 	 * @return the sum of the given values.
 	 * @throws ArithmeticException if the summation would lead to an overflow.
+	 *
+	 * @deprecated Use {@link Math#addExact(long, long)} instead.
 	 */
 	@Deprecated
 	public static long plus(final long a, final long b) {
@@ -61,6 +63,8 @@ public final class math extends StaticObject {
 	 * @param b the subtrahend.
 	 * @return the difference of the given values.
 	 * @throws ArithmeticException if the subtraction would lead to an overflow.
+	 *
+	 * @deprecated Use {@link Math#subtractExact(long, long)} instead.
 	 */
 	@Deprecated
 	public static long minus(final long a, final long b) {
