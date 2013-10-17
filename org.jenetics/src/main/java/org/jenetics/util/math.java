@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-17 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -43,6 +43,7 @@ public final class math extends StaticObject {
 	 * @return the sum of the given values.
 	 * @throws ArithmeticException if the summation would lead to an overflow.
 	 */
+	@Deprecated
 	public static long plus(final long a, final long b) {
 		final long z = a + b;
 		if (((a^z) & (b^z)) < 0) {
@@ -61,6 +62,7 @@ public final class math extends StaticObject {
 	 * @return the difference of the given values.
 	 * @throws ArithmeticException if the subtraction would lead to an overflow.
 	 */
+	@Deprecated
 	public static long minus(final long a, final long b) {
 		final long z = a - b;
 		if (((a^b) & (a^z)) < 0) {
@@ -513,7 +515,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-09-01 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-10-17 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -610,7 +612,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-09-01 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-10-17 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
