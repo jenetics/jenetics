@@ -357,7 +357,7 @@ public class bitTest {
 		dataProvider = "indexoutofboundsdata"
 	)
 	public void setOutOfIndex(final Integer length, final Integer index) {
-		final byte[] data = bit.newBitArray(length);
+		final byte[] data = bit.newByteArray(length);
 		bit.set(data, index, false);
 	}
 
@@ -366,7 +366,7 @@ public class bitTest {
 		dataProvider = "indexoutofboundsdata"
 	)
 	public void getOutOfIndex(final Integer length, final Integer index) {
-		final byte[] data = bit.newBitArray(length);
+		final byte[] data = bit.newByteArray(length);
 		bit.get(data, index);
 	}
 

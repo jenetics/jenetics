@@ -466,9 +466,63 @@ public final class bit extends StaticObject {
 	 *
 	 * @param length the number of bits, the returned byte array can store.
 	 * @return the new byte array.s
+	 *
+	 * @deprecated Use {@link #newByteArray(int)} instead.
 	 */
+	@Deprecated
 	public static byte[] newBitArray(final int length) {
+		return newByteArray(length);
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @return the new byte array.s
+	 */
+	public static byte[] newByteArray(final int length) {
 		return new byte[toByteLength(length)];
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter. The returned
+	 * byte array is initialized with ones according to the given ones
+	 * probability {@code p}.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @param p the ones probability of the returned byte array.
+	 * @return the new byte array.s
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 *
+	 * @deprecated Use {@link #newByteArray(int, double)} instead.
+	 */
+	@Deprecated
+	public static byte[] newBitArray(final int length, final double p) {
+		return newByteArray(length, p);
+	}
+
+	/**
+	 * Create a new {@code byte[]} array which can store at least the number
+	 * of bits as defined by the given {@code length} parameter. The returned
+	 * byte array is initialized with ones according to the given ones
+	 * probability {@code p}.
+	 *
+	 * @param length the number of bits, the returned byte array can store.
+	 * @param p the ones probability of the returned byte array.
+	 * @return the new byte array.s
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static byte[] newByteArray(final int length, final double p) {
+		final byte[] bytes = newByteArray(length);
+
+		final IndexStream stream = IndexStream.Random(length, p);
+		for (int i = stream.next(); i != -1; i = stream.next()) {
+			bytes[i >>> 3] |= 1 << (i & 7);
+		}
+
+		return bytes;
 	}
 
 	/**
