@@ -24,7 +24,6 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Iterator;
-import java.util.function.Function;
 
 import javolution.lang.Immutable;
 import javolution.lang.Realtime;
@@ -33,9 +32,9 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Seq;
 import org.jenetics.util.Verifiable;
 
@@ -65,7 +64,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-22 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -196,8 +195,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		final Array<Chromosome<G>> chromosomes = new Array<>(length());
-		for (int i = 0; i < length(); ++i) {
+		final MSeq<Chromosome<G>> chromosomes = MSeq.valueOf(length());
+		for (int i = 0, n = length(); i < n; ++i) {
 			chromosomes.set(i, _chromosomes.get(i).newInstance());
 		}
 
@@ -276,19 +275,19 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G> valueOf(
 		final Chromosome<G>... chromosomes
 	) {
-		final Array<Chromosome<G>> array = Array.valueOf(chromosomes);
-		if (!array.forAll(o -> o != null)) {
+		final ISeq<Chromosome<G>> seq = ISeq.valueOf(chromosomes);
+		if (!seq.forAll(o -> o != null)) {
 			throw new NullPointerException("One of the given chromosomes is null.");
 		}
 
-		return valueOf(array.toISeq());
+		return valueOf(seq);
 	}
 
 	/* *************************************************************************
 	 *  XML object serialization
 	 * ************************************************************************/
 
-	@SuppressWarnings({ "unchecked", "rawtypes"})
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	static final XMLFormat<Genotype>
 	XML = new XMLFormat<Genotype>(Genotype.class)
 	{
@@ -303,7 +302,7 @@ public final class Genotype<G extends Gene<?, G>>
 		{
 			final int length = xml.getAttribute(LENGTH, 0);
 			final int ngenes = xml.getAttribute(NGENES, 0);
-			final Array<Chromosome> chromosomes = new Array<>(length);
+			final MSeq<Chromosome> chromosomes = MSeq.valueOf(length);
 			for (int i = 0; i < length; ++i) {
 				final Chromosome<?> c = xml.getNext();
 				chromosomes.set(i, c);
