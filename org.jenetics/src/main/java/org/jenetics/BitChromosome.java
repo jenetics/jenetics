@@ -77,7 +77,8 @@ public class BitChromosome extends Number<BitChromosome>
 	private BitChromosome(final byte[] bits, final int length, final double p) {
 		if (bits.length != bit.toByteLength(length)) {
 			throw new IllegalArgumentException(String.format(
-				"The byte array must has at least a length of %d to contain %d bits.",
+				"The byte array must has at least a length of " +
+				"%d to contain %d bits.",
 				bit.toByteLength(length), length
 			));
 		}
@@ -94,7 +95,7 @@ public class BitChromosome extends Number<BitChromosome>
 			bits,
 			length != -1 ? length : bits.length*8,
 			(double)bit.count(bits)/
-				(double)(length != -1 ? length : bits.length*8)
+			(double)(length != -1 ? length : bits.length*8)
 		);
 	}
 
