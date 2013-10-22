@@ -1,7 +1,7 @@
 Jenetics-1.5.0
 - Minor fixes in Gradle build script.
 - Mark some 'arrays' class methods as deprecated.
-- Fix BitChromosome constructors.
+- Fix/streamline BitChromosome constructors.
 
 Jenetics-1.4.1
 - Fix bug in ListIterator implementation of the 'Seq' classes.
