@@ -32,7 +32,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-22 $</em>
  */
 public enum BitGene
 	implements
@@ -129,7 +129,10 @@ public enum BitGene
 		private static final String VALUE = "value";
 
 		@Override
-		public BitGene newInstance(final Class<BitGene> cls, final InputElement element)
+		public BitGene newInstance(
+			final Class<BitGene> cls,
+			final InputElement element
+		)
 			throws XMLStreamException
 		{
 			final boolean value = element.getAttribute(VALUE, true);

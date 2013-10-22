@@ -32,7 +32,6 @@ import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
 
-
 /**
  * <p>
  * The order ({@link #getOrder()}) of this Recombination implementation is two.
@@ -40,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-22 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
