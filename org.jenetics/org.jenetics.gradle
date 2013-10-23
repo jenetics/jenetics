@@ -29,7 +29,7 @@ import org.jenetics.gradle.task.ColorizerTask
  * @version 1.4 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 
-apply plugin: 'jacoco'
+//apply plugin: 'jacoco'
 apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -163,14 +163,16 @@ test {
 	}
 }
 
+/*
 jacocoTestReport{
 	reports {
 		xml.enabled true
 		csv.enabled true
 	}
 }
+*/
 
-packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
+packaging.dependsOn([jarjar/*, javadoc/*, jacocoTestReport*/])
 packaging << {
 	// Copy the javadoc
 	copy {
