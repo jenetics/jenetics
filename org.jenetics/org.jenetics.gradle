@@ -26,7 +26,7 @@ import org.jenetics.gradle.task.ColorizerTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-06 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 
 apply plugin: 'jacoco'
@@ -38,6 +38,11 @@ apply from: "${rootDir}/gradle/commons.gradle"
 apply from: "${rootDir}/gradle/packaging.gradle"
 apply from: "${rootDir}/gradle/xlint.gradle"
 
+dependencies {
+	//testCompile(Include.Javolution) { transitive = false }
+	compile Include.JScience
+	testCompile Include.TestNG
+}
 
 jar {
 	manifest {
@@ -83,6 +88,8 @@ task jarjar(type: Jar, dependsOn: build) {
 }
 
 javadoc {
+	options.addStringOption('-Xdoclint:none')
+	
 	configure(options) {
 		memberLevel = 'PROTECTED'
 		version = true
@@ -101,14 +108,19 @@ javadoc {
 		stylesheetFile = file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 		
 		exclude 'org/jenetics/internal/**'
-		
+
+	
 		//options.addStringOption('-subpackages', 'org.jenetics')
 		//options.addStringOption('-exclude', 'org.jenetics.internal.util')
 		
 		//group('Core API', ['org.jenetics']).
 		//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 	}
+	
+
 }
+
+// javadoc.options.jflags
 
 task colorize(type: ColorizerTask) {
 	directory = file(javadoc.destinationDir.path)
@@ -190,10 +202,5 @@ packaging << {
 	}
 }
 
-dependencies {
-	//testCompile(Include.Javolution) { transitive = false }
-	compile Include.JScience
-	testCompile Include.TestNG
-}
 
 
