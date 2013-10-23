@@ -66,7 +66,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -286,7 +286,7 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
-	 * @param chromosomes The <code>Chromosome</code> array the {@code Genotype}
+	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
 	 *         consists of.
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.
@@ -308,7 +308,7 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Create a new Genotype from a given array of {@code Chromosomes}.
 	 *
-	 * @param chromosomes The <code>Chromosome</code> array the {@code Genotype}
+	 * @param chromosomes The {@code Chromosome} array the {@code Genotype}
 	 *         consists of.
 	 * @throws NullPointerException if {@code chromosomes} is null or one of its
 	 *         element.

@@ -31,7 +31,7 @@ import javolution.lang.Immutable;
 
 /**
  * <p>
- * In this <code>Selector</code>, the probability for selection is defined as.
+ * In this {@code Selector}, the probability for selection is defined as.
  * </p>
  * <p/><img
  *        src="doc-files/boltzmann-formula1.gif"
@@ -58,7 +58,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,

@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-10-22 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -210,13 +210,13 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given
+	 * Shifting all bits in the given {@code data} array the given
 	 * {@code shift} to the right. The bits on the left side are filled with
 	 * zeros.
 	 *
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
-	 * @return the given <code>data</code> array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftRight(final byte[] data, final int shift) {
@@ -251,13 +251,13 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Shifting all bits in the given <code>data</code> array the given
+	 * Shifting all bits in the given {@code data} array the given
 	 * {@code shift} to the left. The bits on the right side are filled with
 	 * zeros.
 	 *
 	 * @param data the data bits to shift.
 	 * @param shift the number of bits to shift.
-	 * @return the given <code>data</code> array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] shiftLeft(final byte[] data, final int shift) {
@@ -292,10 +292,10 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Increment the given <code>data</code> array.
+	 * Increment the given {@code data} array.
 	 *
-	 * @param data the given <code>data</code> array.
-	 * @return the given <code>data</code> array.
+	 * @param data the given {@code data} array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
@@ -309,10 +309,10 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Invert the given <code>data</code> array.
+	 * Invert the given {@code data} array.
 	 *
-	 * @param data the given <code>data</code> array.
-	 * @return the given <code>data</code> array.
+	 * @param data the given {@code data} array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] invert(final byte[] data)	{
@@ -323,10 +323,10 @@ public final class bit extends StaticObject {
 	}
 
 	/**
-	 * Make the two's complement of the given <code>data</code> array.
+	 * Make the two's complement of the given {@code data} array.
 	 *
-	 * @param data the given <code>data</code> array.
-	 * @return the given <code>data</code> array.
+	 * @param data the given {@code data} array.
+	 * @return the given {@code data} array.
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] complement(final byte[] data) {

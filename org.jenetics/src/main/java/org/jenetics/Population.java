@@ -53,7 +53,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-10-07 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -83,7 +83,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/**
-	 * Creating a new <code>Population</code> with the preallocated population
+	 * Creating a new {@code Population} with the preallocated population
 	 * size.
 	 *
 	 * @param size Preallocated population size.
@@ -95,7 +95,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/**
-	 * Creating a new <code>Population</code>.
+	 * Creating a new {@code Population}.
 	 */
 	public Population() {
 		this(new ArrayList<Phenotype<G, C>>());
@@ -144,9 +144,9 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/**
-	 * Add <code>Phenotype</code> to the <code>Population</code>.
+	 * Add {@code Phenotype} to the {@code Population}.
 	 *
-	 * @param phenotype <code>Phenotype</code> to be add.
+	 * @param phenotype {@code Phenotype} to be add.
 	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
 	@Override
@@ -156,10 +156,10 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	/**
-	 * Add <code>Phenotype</code> to the <code>Population</code>.
+	 * Add {@code Phenotype} to the {@code Population}.
 	 *
 	 * @param index Index of the
-	 * @param phenotype <code>Phenotype</code> to be add.
+	 * @param phenotype {@code Phenotype} to be add.
 	 * @throws NullPointerException if the given {@code phenotype} is {@code null}.
 	 */
 	@Override
