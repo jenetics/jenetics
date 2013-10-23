@@ -79,7 +79,7 @@ subprojects { project ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.8'
+	gradleVersion = '1.9-rc-1'
 }
 
 task alljavadoc(type: Javadoc) {
