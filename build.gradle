@@ -29,7 +29,7 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-10-15 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 
 apply plugin: 'signing'
@@ -79,7 +79,7 @@ subprojects { project ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.8'
+	gradleVersion = '1.9-rc-1'
 }
 
 task alljavadoc(type: Javadoc) {
