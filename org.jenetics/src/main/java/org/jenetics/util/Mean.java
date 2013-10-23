@@ -32,12 +32,12 @@ package org.jenetics.util;
 public interface Mean<T> {
 
 	/**
-	 * Return the (usually arithmetic) mean value of <code>this</code> and
+	 * Return the (usually arithmetic) mean value of {@code this} and
 	 * {@code that}. For {@link org.jenetics.NumberGene}s the mean is the
 	 * arithmetic mean.
 	 *
 	 * @param that the second value for calculating the mean.
-	 * @return the mean value of <code>this</code> and <code>that</code>.
+	 * @return the mean value of {@code this} and {@code that}.
 	 * @throws NullPointerException if the argument is {@code null}.
 	 */
 	public T mean(final T that);

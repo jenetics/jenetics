@@ -319,7 +319,7 @@ public class GeneticAlgorithm<
 	}
 
 	/**
-	 * Setting up the <code>GeneticAlgorithm</code> with the given initial
+	 * Setting up the {@code GeneticAlgorithm} with the given initial
 	 * population. Subsequent calls to this method throw an IllegalStateException.
 	 * This method is similar to the {@link #setGenotypes(Collection)} and
 	 * {@link #setPopulation(Collection)} methods, but this method is required
@@ -907,7 +907,7 @@ public class GeneticAlgorithm<
 	 * @see #setGenotypes(Collection)
 	 * @see #setup(Collection)
 	 * @param population The list of phenotypes to set. The population size is
-	 *        set to <code>phenotype.size()</code>.
+	 *        set to {@code phenotype.size()}.
 	 * @throws NullPointerException if the population, or one of its element, is
 	 *         {@code null}.
 	 * @throws IllegalArgumentException it the population size is smaller than
@@ -943,7 +943,7 @@ public class GeneticAlgorithm<
 	 * @see #setPopulation(Collection)
 	 * @see #setup(Collection)
 	 * @param genotypes The list of genotypes to set. The population size is set
-	 *        to <code>genotypes.size()</code>.
+	 *        to {@code genotypes.size()}.
 	 * @throws NullPointerException if the population, or one of its elements,
 	 *         is {@code null}s.
 	 * @throws IllegalArgumentException it the population size is smaller than

@@ -31,7 +31,7 @@ import javolution.lang.Immutable;
 
 /**
  * <p>
- * In this <code>Selector</code>, the probability for selection is defined as.
+ * In this {@code Selector}, the probability for selection is defined as.
  * </p>
  * <p/><img
  *        src="doc-files/boltzmann-formula1.gif"

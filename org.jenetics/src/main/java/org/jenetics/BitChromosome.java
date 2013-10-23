@@ -113,7 +113,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 *
 	 * @param length Length of the BitChromosome, number of bits.
 	 * @param p Probability of the TRUEs in the BitChromosome.
-	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
@@ -126,7 +126,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * FALSE in the {@code Chromosome} are equally distributed.
 	 *
 	 * @param length Length of the BitChromosome.
-	 * @throws NegativeArraySizeException if the <code>_length</code> is smaller
+	 * @throws NegativeArraySizeException if the {@code _length} is smaller
 	 *         than one.
 	 */
 	public BitChromosome(final int length) {
@@ -136,10 +136,10 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * @param length Length of the BitChromosome.
 	 * @param bits the bit-set which initializes the chromosome
-	 * @throws NegativeArraySizeException if the <code>length</code> is smaller
+	 * @throws NegativeArraySizeException if the {@code length} is smaller
 	 *         than one.
-	 * @throws NullPointerException if the <code>bitSet</code> is
-	 *         <code>null</code>.
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *         {@code null}.
 	 */
 	public BitChromosome(final int length, final BitSet bits) {
 		this(toByteArray(requireNonNull(bits, "BitSet"), length));
@@ -158,12 +158,12 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * Constructing a new BitChromosome from a given BitSet.
 	 * The BitSet is copied while construction. The length of the constructed
-	 * BitChromosome will be <code>bitSet.length()</code>
+	 * BitChromosome will be {@code bitSet.length()}
 	 * (@see BitSet#length).
 	 *
 	 * @param bits the bit-set which initializes the chromosome
-	 * @throws NullPointerException if the <code>bitSet</code> is
-	 *         <code>null</code>.
+	 * @throws NullPointerException if the {@code bitSet} is
+	 *         {@code null}.
 	 */
 	public BitChromosome (final BitSet bits) {
 		this(bits.toByteArray(), -1);
@@ -299,8 +299,8 @@ public class BitChromosome extends Number<BitChromosome>
 	 * large integer. The output array is in <i>big-endian</i>
 	 * byte-order: the most significant byte is at the offset position.
 	 *
-	 * <p>Note: This representation is consistent with <code>java.lang.BigInteger
-	 *          </code> byte array representation and can be used for conversion
+	 * <p>Note: This representation is consistent with {@code java.lang.BigInteger
+	 *          } byte array representation and can be used for conversion
 	 *          between the two classes.</p>
 	 *
 	 * @param bytes the bytes to hold the binary representation

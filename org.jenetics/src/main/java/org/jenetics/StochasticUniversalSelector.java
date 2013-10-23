@@ -27,7 +27,7 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
- * <code>StochasticUniversalSelector</code> is a method for selecting a
+ * {@code StochasticUniversalSelector} is a method for selecting a
  * population according to some given probability in a way that minimize chance
  * fluctuations. It can be viewed as a type of roulette game where now we have
  * P equally spaced points which we spin.

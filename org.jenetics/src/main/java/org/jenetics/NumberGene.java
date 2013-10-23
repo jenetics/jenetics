@@ -51,19 +51,19 @@ public abstract class NumberGene<
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * The minimum value of this <code>NumberGene</code>. This field is marked
+	 * The minimum value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
 	 */
 	protected transient N _min;
 
 	/**
-	 * The maximum value of this <code>NumberGene</code>. This field is marked
+	 * The maximum value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
 	 */
 	protected transient N _max;
 
 	/**
-	 * The value of this <code>NumberGene</code>. This field is marked
+	 * The value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
 	 */
 	protected transient N _value;
@@ -106,7 +106,7 @@ public abstract class NumberGene<
 	}
 
 	/**
-	 * Set the <code>NumerGene</code>.
+	 * Set the {@code NumerGene}.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.

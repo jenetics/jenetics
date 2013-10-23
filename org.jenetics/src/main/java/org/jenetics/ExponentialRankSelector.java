@@ -28,7 +28,7 @@ import javolution.lang.Immutable;
 
 /**
  * <p>
- * An alternative to the "weak" <code>LinearRankSelector</code> is to assign
+ * An alternative to the "weak" {@code LinearRankSelector} is to assign
  * survival probabilities to the sorted individuals using an exponential
  * function.
  * </p>
