@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import java.util.function.Function;
-
 import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
@@ -32,7 +30,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-10-22 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-23 $</em>
  */
 public enum BitGene
 	implements
