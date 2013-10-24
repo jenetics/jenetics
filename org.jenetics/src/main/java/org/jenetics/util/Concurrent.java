@@ -40,12 +40,15 @@ import javolution.context.LocalContext;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-08 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-24 $</em>
  */
 public final class Concurrent implements Executor, AutoCloseable {
 
+	/* ************************************************************************
+	 * Static concurrent context.
+	 * ************************************************************************/
+
 	private static final Object NULL = new Object();
-	private final int TASKS_SIZE = 15;
 
 	private static final LocalContext.Reference<Object>
 	FORK_JOIN_POOL = new LocalContext.Reference<Object>(new ForkJoinPool(
@@ -73,15 +76,35 @@ public final class Concurrent implements Executor, AutoCloseable {
 		return pool != NULL ? (ForkJoinPool)pool : null;
 	}
 
+
+	/* ************************************************************************
+	 * 'Dynamic' concurrent context.
+	 * ************************************************************************/
+
+	private final int TASKS_SIZE = 15;
+
 	private final ForkJoinPool _pool;
 	private final List<ForkJoinTask<?>> _tasks = new ArrayList<>(TASKS_SIZE);
 	private final boolean _parallel;
 
+	/**
+	 * Create a new {@code Concurrent} executor <i>context</i> with the given
+	 * {@link ForkJoinPool}.
+	 *
+	 * @param pool the {@code ForkJoinPool} used for concurrent execution of the
+	 *        given tasks. The {@code pool} may be {@code null} and if so, the
+	 *        given tasks are executed in the main thread.
+	 */
 	private Concurrent(final ForkJoinPool pool) {
 		_pool = pool;
 		_parallel = _pool != null;
 	}
 
+	/**
+	 * Create a new {@code Concurrent} executor <i>context</i> with the
+	 * {@code ForkJoinPool} set with the {@link #setForkJoinPool(ForkJoinPool)},
+	 * or the default pool, if no one has been set.
+	 */
 	public Concurrent() {
 		this(getForkJoinPool());
 	}
