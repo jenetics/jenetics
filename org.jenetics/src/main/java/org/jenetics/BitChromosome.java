@@ -48,7 +48,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-24 $</em>
  */
 public class BitChromosome extends Number<BitChromosome>
 	implements
@@ -74,7 +74,9 @@ public class BitChromosome extends Number<BitChromosome>
 	protected byte[] _genes;
 	private transient BitGeneArray _seq;
 
-
+	/**
+	 * Primary constructor.
+	 */
 	private BitChromosome(final byte[] bits, final int length, final double p) {
 		if (bits.length < bit.toByteLength(length)) {
 			throw new IllegalArgumentException(String.format(
