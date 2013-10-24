@@ -81,7 +81,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		Proxy(final int length) {
-			this(bit.newByteArray(length), 0, length);
+			this(bit.newArray(length), 0, length);
 		}
 
 		@Override

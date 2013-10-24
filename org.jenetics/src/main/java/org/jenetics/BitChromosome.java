@@ -118,7 +118,7 @@ public class BitChromosome extends Number<BitChromosome>
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
 	public BitChromosome(final int length, final double p) {
-		this(bit.newByteArray(length, p), length, p);
+		this(bit.newArray(length, p), length, p);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	private static byte[] toByteArray(final BitSet bits, final int length) {
-		final byte[] bytes = bit.newByteArray(length);
+		final byte[] bytes = bit.newArray(length);
 		for (int i = 0; i < length; ++i) {
 			if (bits.get(i)) {
 				bit.set(bytes, i);
@@ -194,7 +194,7 @@ public class BitChromosome extends Number<BitChromosome>
 	}
 
 	private static byte[] toByteArray(final CharSequence value) {
-		final byte[] bytes = bit.newByteArray(value.length());
+		final byte[] bytes = bit.newArray(value.length());
 		for (int i = value.length(); --i >= 0;) {
 			final char c = value.charAt(i);
 			if (c == '1') {
@@ -349,7 +349,7 @@ public class BitChromosome extends Number<BitChromosome>
 		requireNonNull(genes, "Genes");
 
 		final BitChromosome chromosome = new BitChromosome(
-			bit.newByteArray(genes.length()), genes.length()
+			bit.newArray(genes.length()), genes.length()
 		);
 		int ones = 0;
 
