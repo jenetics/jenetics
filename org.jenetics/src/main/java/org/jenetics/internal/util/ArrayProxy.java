@@ -29,7 +29,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-24 $</em>
  */
 public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 
@@ -105,7 +105,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * Set the <i>array</i> element at the specified absolute position in the
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
-	 * @param index absolute index of the <i>array</i> element
+	 * @param absoluteIndex absolute index of the <i>array</i> element
 	 */
 	public abstract void uncheckedOffsetSet(final int absoluteIndex, final T value);
 
