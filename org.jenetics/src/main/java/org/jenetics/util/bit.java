@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-10-24 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -467,11 +467,11 @@ public final class bit extends StaticObject {
 	 * @param length the number of bits, the returned byte array can store.
 	 * @return the new byte array.s
 	 *
-	 * @deprecated Use {@link #newByteArray(int)} instead.
+	 * @deprecated Use {@link #newArray(int)} instead.
 	 */
 	@Deprecated
 	public static byte[] newBitArray(final int length) {
-		return newByteArray(length);
+		return newArray(length);
 	}
 
 	/**
@@ -481,7 +481,7 @@ public final class bit extends StaticObject {
 	 * @param length the number of bits, the returned byte array can store.
 	 * @return the new byte array.s
 	 */
-	public static byte[] newByteArray(final int length) {
+	public static byte[] newArray(final int length) {
 		return new byte[toByteLength(length)];
 	}
 
@@ -496,11 +496,11 @@ public final class bit extends StaticObject {
 	 * @return the new byte array.s
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 *
-	 * @deprecated Use {@link #newByteArray(int, double)} instead.
+	 * @deprecated Use {@link #newArray(int, double)} instead.
 	 */
 	@Deprecated
 	public static byte[] newBitArray(final int length, final double p) {
-		return newByteArray(length, p);
+		return newArray(length, p);
 	}
 
 	/**
@@ -514,8 +514,8 @@ public final class bit extends StaticObject {
 	 * @return the new byte array.s
 	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
 	 */
-	public static byte[] newByteArray(final int length, final double p) {
-		final byte[] bytes = newByteArray(length);
+	public static byte[] newArray(final int length, final double p) {
+		final byte[] bytes = newArray(length);
 
 		final IndexStream stream = IndexStream.Random(length, p);
 		for (int i = stream.next(); i != -1; i = stream.next()) {
