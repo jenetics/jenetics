@@ -28,7 +28,7 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-24 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
@@ -81,10 +81,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		Proxy(final int length) {
-			this(
-				new byte[(length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1],
-				0, length
-			);
+			this(bit.newByteArray(length), 0, length);
 		}
 
 		@Override
