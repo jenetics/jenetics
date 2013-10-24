@@ -24,7 +24,7 @@ import java.util.Arrays;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-24 $</em>
  */
 final class DefaultHashCodeBuilder extends HashCodeBuilder {
 	private static final int P1 = 47;
@@ -33,7 +33,7 @@ final class DefaultHashCodeBuilder extends HashCodeBuilder {
 	private static final int P4 = 1237;
 
 
-	public DefaultHashCodeBuilder(final Class<?> type) {
+	DefaultHashCodeBuilder(final Class<?> type) {
 		super(type);
 	}
 
