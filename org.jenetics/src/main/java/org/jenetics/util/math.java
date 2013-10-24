@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-17 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-24 $</em>
  */
 public final class math extends StaticObject {
 	private math() {}
@@ -250,7 +250,7 @@ public final class math extends StaticObject {
 	 * @throws ArithmeticException if the distance doesn't fit in a long value.
 	 */
 	public static long ulpDistance(final double a, final double b) {
-		return minus(ulpPosition(a), ulpPosition(b));
+		return Math.subtractExact(ulpPosition(a), ulpPosition(b));
 	}
 
 	/**
@@ -519,7 +519,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.3
-	 * @version 1.3 &mdash; <em>$Date: 2013-10-17 $</em>
+	 * @version 1.3 &mdash; <em>$Date: 2013-10-24 $</em>
 	 */
 	public static final class statistics extends StaticObject {
 		private statistics() {}
@@ -616,7 +616,7 @@ public final class math extends StaticObject {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.2 &mdash; <em>$Date: 2013-10-17 $</em>
+	 * @version 1.2 &mdash; <em>$Date: 2013-10-24 $</em>
 	 */
 	public static final class random extends StaticObject {
 		private random() {}
