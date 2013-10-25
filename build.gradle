@@ -38,7 +38,6 @@ rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
 apply from: "${rootDir}/gradle/commons.gradle"
-//apply from: "${rootDir}/gradle/packaging.gradle"
 apply plugin: PackagingPlugin
 
 
@@ -94,90 +93,6 @@ task alljavadoc(type: Javadoc) {
 		project.sourceSets.main.compileClasspath
 	})
 }
-
-//task packaging/*(overwrite: true)*/ {
-//	inputs.dir file('.')
-//	outputs.dir exportDir
-//
-//	// Create the directory structure.
-//	doFirst {
-//		exportDir.mkdirs()
-//		exportProjectDir.mkdirs()
-//		exportProjectLibDir.mkdirs()
-//		exportLibDir.mkdirs()
-//		exportReportDir.mkdirs()
-//		exportJavadocDir.mkdirs()
-//		exportScriptDir.mkdirs()
-//	}
-//
-//	doLast  {
-//		// Copy the files in the base directory.
-//		copy {
-//			from('.') {
-//				include '*'
-//				exclude 'org.*'
-//				exclude '.gradle'
-//				exclude '.hgignore'
-//				exclude '.hgtags'
-//				exclude '*.iml'
-//				exclude '*.ipr'
-//				exclude '*.iws'
-//				exclude '.project'
-//				exclude '.classpath'
-//				exclude '.settings'
-//				exclude 'build'
-//				exclude 'out'
-//			}
-//			into exportProjectDir
-//			filter(ReplaceTokens, tokens: [
-//				__identifier__: identifier,
-//				__year__: copyrightYear
-//			])
-//		}
-//		copy {
-//			from('.') {
-//				include 'gradle/**/*'
-//			}
-//			into exportProjectDir
-//		}
-//
-//		// Copy 'buildSrc' files.
-//		copy {
-//			from(project('buildSrc').projectDir) {
-//				include '*.gradle'
-//				include 'src/**/*.java'
-//				include 'src/**/*.gradle'
-//				include 'src/**/*.xml'
-//				include 'src/**/*.c'
-//				include 'src/**/*.cpp'
-//				include 'src/**/*.h'
-//				include 'src/**/*.hpp'
-//				exclude '.gradle'
-//			}
-//			into file("${exportProjectDir}/buildSrc")
-//			filter(ReplaceTokens, tokens: [
-//				__identifier__: identifier,
-//				__year__: copyrightYear
-//			])
-//		}
-//		copy {
-//			from(project('buildSrc').projectDir) {
-//				include 'src/**/*.*'
-//				include 'lib/**/*'
-//				include 'tool/**/*'
-//				include 'resources/**/*'
-//				exclude 'src/**/*.java'
-//				exclude 'src/**/*.gradle'
-//				exclude 'src/**/*.xml'
-//				exclude 'src/**/*.c'
-//				exclude 'src/**/*.cpp'
-//				exclude 'src/**/*.h'
-//				exclude 'src/**/*.hpp'
-//			}
-//			into file("${exportProjectDir}/buildSrc")
-//		}
-//	}
-//}
 
 // Create a zip file from the export directory.
 task zip(type: Zip) {

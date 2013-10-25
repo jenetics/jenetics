@@ -119,7 +119,10 @@ class PackagingPlugin implements Plugin<Project> {
 			dependencies += TASK_NAME_JARJAR
 		}
 		if (project.tasks.findByPath('build') != null) {
-			//dependencies += 'build'
+			dependencies += 'build'
+		}
+		if (project.tasks.findByPath('jarjar') != null) {
+			dependencies += 'jarjar'
 		}
 		if (project.tasks.findByPath('javadoc') != null) {
 			dependencies += 'javadoc'
@@ -144,17 +147,66 @@ class PackagingPlugin implements Plugin<Project> {
 					copy()
 				}
 			}
+		}
 
+		// Copy the test-reports
+		if (project.tasks.findByPath('test') != null) {
+			project.tasks.findByPath('test').doLast {
+				project.copy {
+					from("${project.buildDir}/reports") {
+						include 'tests/**'
+						include 'jacoco/**'
+						include '*.gradle'
+						exclude '.gradle'
+					}
+					into exportReportDir
+				}
+			}
 		}
 
 		// Copy the javadoc.
 		if (project.tasks.findByPath('javadoc') != null) {
 			project.tasks.findByPath('javadoc').doLast {
 				copyDir(
-					new File("${project.buildDir}/docs/javadoc"),
+					new File(project.buildDir, 'docs/javadoc'),
 					project.name,
 					exportJavadocDir
 				)
+			}
+		}
+
+		// Copy the pdf manual.
+		if (project.tasks.findByPath('lyx') != null) {
+			project.tasks.findByPath('build').doLast {
+				project.copy {
+					from("${project.buildDir}/doc") {
+						include '*.pdf'
+					}
+					into exportDir
+				}
+			}
+		}
+
+		// Copy the external libraries.
+		if (project.plugins.hasPlugin('java')) {
+			project.tasks.findByPath('build').doLast {
+				// Copy the external jar dependencies.
+				project.configurations.testRuntime.each { jar ->
+					if (jar.name.endsWith('.jar') &&
+						!jar.name.startsWith('org.jeneti'))
+					{
+						project.copy {
+							from jar
+							into exportProjectLibDir
+						}
+					}
+				}
+
+				// Copy the build library
+				project.copy {
+					from("${project.buildDir}/libs")
+					into exportLibDir
+				}
 			}
 		}
 
@@ -249,7 +301,8 @@ class PackagingPlugin implements Plugin<Project> {
 		'**/*.md',
 		'**/*.log',
 		'**/*.xml',
-		'**/*.html'
+		'**/*.html',
+		'**/*.lyx'
 	]
 
 }

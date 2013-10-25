@@ -50,38 +50,3 @@ packaging {
 	url = 'http://jenetics.sourceforge.net'
 }
 
-//packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
-//packaging << {
-//	// Copy the javadoc
-//	copy {
-//		from("${buildDir}/docs/javadoc") {
-//			include '**/*.html'
-//		}
-//		into exportJavadocDir
-//		filter(ReplaceTokens, tokens: [
-//			__identifier__: identifier,
-//			__year__: copyrightYear
-//		])
-//	}
-//	copy {
-//		from("${buildDir}/docs/javadoc") {
-//			exclude '**/*.html'
-//		}
-//		into exportJavadocDir
-//	}
-//
-//	// Copy the test-report.
-//	copy {
-//		from("${buildDir}/reports") {
-//			include 'tests/**'
-//			include 'jacoco/**'
-//			include '*.gradle'
-//			exclude '.gradle'
-//		}
-//		into exportReportDir
-//	}
-//}
-
-
-
-
