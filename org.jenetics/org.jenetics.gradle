@@ -29,51 +29,20 @@ import org.jenetics.gradle.plugin.PackagingPlugin
  * @version @__version__@ &mdash; <em>$Date: 2013-10-25 $</em>
  */
 
-apply plugin: 'jacoco'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-
-apply plugin: PackagingPlugin
-
+apply plugin: 'java'
 apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/javadoc.gradle"
-apply from: "${rootDir}/gradle/manifest.gradle"
-apply from: "${rootDir}/gradle/xlint.gradle"
+apply plugin: PackagingPlugin
 
 dependencies {
 	compile Include.JScience
 	testCompile Include.TestNG
 }
 
-packaging {
-	url = 'http://jenetics.sourceforge.net'
-}
-
-jar {
-	manifest {
-		instruction('Export-Package',
-			'org.jenetics',
-			'org.jenetics.util',
-			'org.jenetics.stat'
-		)
-	}
-}
-
-test {
-	useTestNG {
-		//parallel = 'tests' // 'methods'
-		//threadCount = Runtime.runtime.availableProcessors() + 1
-		//include '**/*Test.class'
-		suites 'src/test/resources/testng.xml'
-	}
-}
-
-jacocoTestReport{
-	reports {
-		xml.enabled true
-		csv.enabled true
-	}
-}
+jar.manifest.instruction('Export-Package',
+	'org.jenetics',
+	'org.jenetics.util',
+	'org.jenetics.stat'
+)
 
 //packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
 //packaging << {
