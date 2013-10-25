@@ -55,9 +55,7 @@ class PackagingPlugin implements Plugin<Project> {
 					'Maintainer': project.packaging.author
 				)
 			}
-
 		}
-
 	}
 
 }

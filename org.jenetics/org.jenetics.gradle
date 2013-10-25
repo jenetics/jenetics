@@ -21,7 +21,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.plugin.PackagingPlugin
-import org.jenetics.gradle.task.ColorizerTask
 
 
 /**
@@ -37,8 +36,8 @@ apply plugin: 'idea'
 apply plugin: PackagingPlugin
 
 apply from: "${rootDir}/gradle/commons.gradle"
+apply from: "${rootDir}/gradle/javadoc.gradle"
 apply from: "${rootDir}/gradle/manifest.gradle"
-//apply from: "${rootDir}/gradle/packaging.gradle"
 apply from: "${rootDir}/gradle/xlint.gradle"
 
 dependencies {
@@ -59,66 +58,6 @@ jar {
 		)
 	}
 }
-
-javadoc {
-	configure(options) {
-		memberLevel = 'PROTECTED'
-		version = true
-		author = true
-		docEncoding = 'UTF-8'
-		charSet = 'UTF-8'
-		linkSource = true
-		links = [
-			'http://download.oracle.com/javase/7/docs/api/',
-			'http://jscience.org/api/',
-			'http://javolution.org/target/site/apidocs/'
-		]
-		windowTitle = "Jenetics ${project.version}"
-		docTitle = "<h1>Jenetics ${project.version}</h1>"
-		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
-		stylesheetFile = file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
-		
-		exclude 'org/jenetics/internal/**'
-		
-		//options.addStringOption('-subpackages', 'org.jenetics')
-		//options.addStringOption('-exclude', 'org.jenetics.internal.util')
-		
-		//group('Core API', ['org.jenetics']).
-		//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
-	}
-}
-
-task colorize(type: ColorizerTask) {
-	directory = file(javadoc.destinationDir.path)
-}
-
-task java2html {
-	def destination = javadoc.destinationDir.path
-	doLast {
-		javaexec {
-			main = 'de.java2html.Java2Html'
-			args = [
-				'-srcdir', 'src/main/java',
-				'-targetdir', "${destination}/src-html"
-			]
-			classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
-		}
-		copy {
-			from 'src/main/java/org/jenetics/doc-files'
-			into "${destination}/org/jenetics/doc-files"
-		}
-		copy {
-			from 'src/main/java/org/jenetics/stat/doc-files'
-			into "${destination}/org/jenetics/stat/doc-files"
-		}
-		copy {
-			from 'src/main/java/org/jenetics/util/doc-files'
-			into "${destination}/org/jenetics/util/doc-files"
-		}
-	}
-}
-
-javadoc.finalizedBy([colorize, java2html])
 
 test {
 	useTestNG {
