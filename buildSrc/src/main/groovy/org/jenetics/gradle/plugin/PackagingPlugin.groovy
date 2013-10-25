@@ -21,20 +21,55 @@ package org.jenetics.gradle.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.tasks.bundling.Jar
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date: 2013-09-24 $</em>
  */
-class PackagingPlugin extends BasePlugin {
+class PackagingPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(final Project project) {
-		project.task('packaging') << {
+		project.extensions.create('packaging', PackagingPluginExtension)
+
+		project.task('jarjar', type: Jar, dependsOn: 'jar') {
+			baseName = "${project.name}-all"
+
+			from project.files(project.sourceSets.main.output.classesDir)
+			from {
+				project.configurations.compile.collect {
+					it.isDirectory() ? it : project.zipTree(it)
+				}
+			}
+
+			manifest {
+				attributes(
+					'Implementation-Title': "${project.name}-all",
+					'Implementation-Versionv': project.version,
+					'Implementation-URL': project.packaging.url,
+					'Implementation-Vendor': project.packaging.author,
+					'ProjectName': project.packaging.name,
+					'Version': project.version,
+					'Maintainer': project.packaging.author
+				)
+			}
 
 		}
+
 	}
 
 }
+
+class PackagingPluginExtension {
+	String name = 'Jenetics'
+	String author = 'Franz Wilhelmstötter'
+	String url = 'http://jenetics.sourceforge.net'
+}
+
+
+
+
+
+
