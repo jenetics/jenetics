@@ -32,7 +32,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  */
 
 apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/packaging.gradle"
+//apply from: "${rootDir}/gradle/packaging.gradle"
 
 // The temp build temp directory.
 def buildTempDir = file("${buildDir}/tmp")
@@ -73,6 +73,7 @@ lyx << {
 
 build.finalizedBy(lyx)
 
+/*
 packaging.dependsOn(build)
 packaging << {
 	copy {
@@ -82,6 +83,7 @@ packaging << {
 		into exportDir
 	}
 }
+*/
 
 clean << {
 	buildDir.deleteDir()

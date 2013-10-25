@@ -44,6 +44,12 @@ jar.manifest.instruction('Export-Package',
 	'org.jenetics.stat'
 )
 
+packaging {
+	name = 'Jenetics'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+}
+
 //packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
 //packaging << {
 //	// Copy the javadoc
