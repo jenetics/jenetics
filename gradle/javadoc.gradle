@@ -1,0 +1,93 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ */
+ 
+ 
+import org.jenetics.gradle.task.ColorizerTask
+ 
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since @__version__@
+ * @version @__version__@ &mdash; <em>$Date$</em>
+ */
+
+javadoc {
+	configure(options) {
+		memberLevel = 'PROTECTED'
+		version = true
+		author = true
+		docEncoding = 'UTF-8'
+		charSet = 'UTF-8'
+		linkSource = true
+		links = [
+			'http://download.oracle.com/javase/7/docs/api/',
+			'http://jscience.org/api/',
+			'http://javolution.org/target/site/apidocs/'
+		]
+		windowTitle = "Jenetics ${project.version}"
+		docTitle = "<h1>Jenetics ${project.version}</h1>"
+		bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
+		stylesheetFile = file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+		
+		exclude 'org/*/internal/**'
+		
+		//options.addStringOption('-subpackages', 'org.jenetics')
+		//options.addStringOption('-exclude', 'org.jenetics.internal.util')
+		
+		//group('Core API', ['org.jenetics']).
+		//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+	}
+}
+
+task colorize(type: ColorizerTask) {
+	directory = file(javadoc.destinationDir.path)
+}
+
+task java2html {
+	ext {
+		destination = javadoc.destinationDir.path
+	}
+
+		doLast {
+		javaexec {
+			main = 'de.java2html.Java2Html'
+			args = [
+				'-srcdir', 'src/main/java',
+				'-targetdir', "${destination}/src-html"
+			]
+			classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
+		}
+		copy {
+			from 'src/main/java/org/*/doc-files'
+			into "${destination}/org/*/doc-files"
+		}
+		copy {
+			from 'src/main/java/org/*/stat/doc-files'
+			into "${destination}/org/*/stat/doc-files"
+		}
+		copy {
+			from 'src/main/java/org/*/util/doc-files'
+			into "${destination}/org/*/util/doc-files"
+		}
+	}
+}
+
+javadoc.finalizedBy([colorize, java2html])
+ 
