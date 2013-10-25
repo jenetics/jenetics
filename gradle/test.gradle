@@ -23,23 +23,27 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-25 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-26 $</em>
  */
 
 apply plugin: 'jacoco'
 
 test {
-	useTestNG {
-		//parallel = 'tests' // 'methods'
-		//threadCount = Runtime.runtime.availableProcessors() + 1
-		//include '**/*Test.class'
-		suites 'src/test/resources/testng.xml'
+	if (file('src/test/resources/testng.xml').isFile()) {
+		useTestNG {
+			//parallel = 'tests' // 'methods'
+			//threadCount = Runtime.runtime.availableProcessors() + 1
+			//include '**/*Test.class'
+			suites 'src/test/resources/testng.xml'
+		}
 	}
 }
 
-jacocoTestReport{
-	reports {
-		xml.enabled true
-		csv.enabled true
-	}
-} 
+if (file('src/test/resources/testng.xml').isFile()) {
+	jacocoTestReport {
+		reports {
+			xml.enabled true
+			csv.enabled true
+		}
+	} 
+}
