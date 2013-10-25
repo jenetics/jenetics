@@ -24,7 +24,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-05 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-10-25 $</em>
  */
 
 apply plugin: 'osgi'
@@ -32,8 +32,8 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/packaging.gradle"
-apply from: "${rootDir}/gradle/xlint.gradle"
+//apply from: "${rootDir}/gradle/packaging.gradle"
+//apply from: "${rootDir}/gradle/xlint.gradle"
 
 jar {
 	manifest {
@@ -55,21 +55,23 @@ jar {
 	}
 }
 
-packaging.dependsOn(build)
-packaging << {
-	// Copy the scripts.
-	copy {
-		from('src/main/scripts') {
-			include '**/*'
-		}
-		into exportScriptDir
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear,
-			__version__: version
-		])
-	}
-}
+
+//packaging.dependsOn(build)
+//packaging << {
+//	// Copy the scripts.
+//	copy {
+//		from('src/main/scripts') {
+//			include '**/*'
+//		}
+//		into exportScriptDir
+//		filter(ReplaceTokens, tokens: [
+//			__identifier__: identifier,
+//			__year__: copyrightYear,
+//			__version__: version
+//		])
+//	}
+//}
+
 
 clean << {
 	file("${projectDir}/bin").deleteDir()
