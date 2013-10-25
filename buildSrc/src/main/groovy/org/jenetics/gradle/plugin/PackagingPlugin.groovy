@@ -34,6 +34,9 @@ import org.jenetics.gradle.Version
  */
 class PackagingPlugin implements Plugin<Project> {
 
+	private static final String TASK_NAME_JARJAR = 'jarjar'
+	private static final String TASK_NAME_PACKAGING = 'packaging'
+
 	private final Calendar now = Calendar.getInstance()
 	private final int year = now.get(Calendar.YEAR)
 	private final String copyrightYear = "2007-${year}"
@@ -41,17 +44,33 @@ class PackagingPlugin implements Plugin<Project> {
 	private Project project = null
 	private String identifier = null
 	private String version = null
+
 	private File buildDir = null
+	private File exportDir = null
+	private File exportProjectDir = null
+	private File exportProjectLibDir = null
+	private File exportLibDir = null
+	private File exportJavadocDir = null
+	private File exportReportDir = null
+	private File exportScriptDir = null
 
 	private def textContentReplacements = [:]
 
 	@Override
 	void apply(final Project project) {
 		this.project = project
-
 		version = project.rootProject.version
-		buildDir = project.rootProject.buildDir
 		identifier = "${project.rootProject.name}-${version}"
+
+		buildDir = project.rootProject.buildDir
+		exportDir = new File("${buildDir}/package/${identifier}")
+		exportProjectDir = new File("${exportDir}/project")
+		exportProjectLibDir = new File("${exportProjectDir}/buildSrc/lib")
+		exportLibDir = new File("${exportDir}/lib")
+		exportJavadocDir = new File("${exportDir}/javadoc")
+		exportReportDir = new File("${exportDir}/report")
+		exportScriptDir = new File("${exportDir}/script")
+
 		textContentReplacements = [
 			__identifier__: identifier,
 			__year__: copyrightYear
@@ -70,7 +89,7 @@ class PackagingPlugin implements Plugin<Project> {
 	}
 
 	private void jarjar() {
-		project.task('jarjar', type: Jar, dependsOn: 'jar') {
+		project.task(TASK_NAME_JARJAR, type: Jar, dependsOn: 'jar') {
 			baseName = "${project.name}-all"
 
 			from project.files(project.sourceSets.main.output.classesDir)
@@ -95,16 +114,27 @@ class PackagingPlugin implements Plugin<Project> {
 	}
 
 	private void packaging() {
-		project.task('packaging') {
+		def dependencies = []
+		if (project.tasks.findByPath(TASK_NAME_JARJAR) != null) {
+			dependencies += TASK_NAME_JARJAR
+		}
+		if (project.tasks.findByPath('build') != null) {
+			//dependencies += 'build'
+		}
+		if (project.tasks.findByPath('javadoc') != null) {
+			dependencies += 'javadoc'
+		}
+
+		project.task(TASK_NAME_PACKAGING, dependsOn: dependencies) {
 			ext {
 				identifier = this.identifier
-				exportDir = new File("${buildDir}/package/${identifier}")
-				exportProjectDir = new File("${exportDir}/project")
-				exportProjectLibDir = new File("${exportProjectDir}/buildSrc/lib")
-				exportLibDir = new File("${exportDir}/lib")
-				exportJavadocDir = new File("${exportDir}/javadoc")
-				exportReportDir = new File("${exportDir}/report")
-				exportScriptDir = new File("${exportDir}/script")
+				exportDir = this.exportDir
+				exportProjectDir = this.exportProjectDir
+				exportProjectLibDir = this.exportProjectLibDir
+				exportLibDir = this.exportLibDir
+				exportJavadocDir = this.exportJavadocDir
+				exportReportDir = this.exportReportDir
+				exportScriptDir = this.exportScriptDir
 			}
 
 			doLast {
@@ -114,16 +144,27 @@ class PackagingPlugin implements Plugin<Project> {
 					copy()
 				}
 			}
+
 		}
+
+		// Copy the javadoc.
+		if (project.tasks.findByPath('javadoc') != null) {
+			project.tasks.findByPath('javadoc').doLast {
+				copyDir(
+					new File("${project.buildDir}/docs/javadoc"),
+					project.name,
+					exportJavadocDir
+				)
+			}
+		}
+
 	}
 
 	private void copy() {
-		println("Copying '${project}'")
+		copyDir(project.projectDir, exportProjectDir)
 	}
 
 	private void copyRoot() {
-		def task = project.tasks.getByName('packaging')
-
 		// Copy the files in the root directory.
 		project.copy {
 			from('.') {
@@ -131,21 +172,25 @@ class PackagingPlugin implements Plugin<Project> {
 				excludes = IGNORED_FILES
 			}
 			includeEmptyDirs = false
-			into task.exportProjectDir
+			into exportProjectDir
 			filter(ReplaceTokens, tokens: textContentReplacements)
 		}
 
-		copyDir('gradle', task.exportProjectDir)
-		copyDir('buildSrc', task.exportProjectDir)
+		copyDir(new File('gradle'), exportProjectDir)
+		copyDir(new File('buildSrc'), exportProjectDir)
 	}
 
-	private void copyDir(final String source, final File target) {
+	private void copyDir(final File source, final File target) {
+		copyDir(source, source.name, target)
+	}
+
+	private void copyDir(final File source, final String sinto, final File target) {
 		// Copy the text files with text pattern replacement.
 		project.copy {
-			from(source) {
+			from(source.absoluteFile) {
 				includes = TEXT_FILE_PATTERN
 				excludes = IGNORED_FILES
-				into source
+				into sinto
 			}
 			includeEmptyDirs = false
 			into target
@@ -154,9 +199,9 @@ class PackagingPlugin implements Plugin<Project> {
 
 		// Copy the rest, without replacement.
 		project.copy {
-			from(source) {
+			from(source.absoluteFile) {
 				excludes = TEXT_FILE_PATTERN + IGNORED_FILES
-				into source
+				into sinto
 			}
 			includeEmptyDirs = false
 			into target
@@ -202,7 +247,9 @@ class PackagingPlugin implements Plugin<Project> {
 		'**/*.txt',
 		'**/*.properties',
 		'**/*.md',
-		'**/*.log'
+		'**/*.log',
+		'**/*.xml',
+		'**/*.html'
 	]
 
 }
@@ -212,35 +259,4 @@ class PackagingPluginExtension {
 	String author = 'Franz Wilhelmstötter'
 	String url = 'http://jenetics.sourceforge.net'
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
