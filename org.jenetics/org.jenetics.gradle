@@ -20,65 +20,43 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import org.jenetics.gradle.plugin.PackagingPlugin
 import org.jenetics.gradle.task.ColorizerTask
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date: 2013-09-06 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-25 $</em>
  */
 
 apply plugin: 'jacoco'
-apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
+apply plugin: PackagingPlugin
+
 apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/packaging.gradle"
+apply from: "${rootDir}/gradle/manifest.gradle"
+//apply from: "${rootDir}/gradle/packaging.gradle"
 apply from: "${rootDir}/gradle/xlint.gradle"
 
+dependencies {
+	compile Include.JScience
+	testCompile Include.TestNG
+}
+
+packaging {
+	url = 'http://jenetics.sourceforge.net'
+}
 
 jar {
 	manifest {
-		version = version
-		symbolicName = project.name
-		name = project.name
-		instruction 'Export-Package',
-					'org.jenetics',
-					'org.jenetics.util',
-					'org.jenetics.stat'
-		instruction 'Bundle-Vendor', jenetics.author
-		instruction 'Bundle-Description', jenetics.description
-		instruction 'Bundle-DocURL', jenetics.url
-
-		attributes 'Implementation-Title': project.name,
-					'Implementation-Version': version,
-					'Implementation-URL': jenetics.url,
-					'Implementation-Vendor': jenetics.name,
-					'ProjectName': jenetics.name,
-					'Version': version,
-					'Maintainer': jenetics.author
-	}
-}
-
-task jarjar(type: Jar, dependsOn: build) {
-	baseName = "${project.name}-all"
-	from files(sourceSets.main.output.classesDir)
-	from {
-		configurations.compile.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
-
-	manifest {
-		attributes 'Implementation-Title': "${project.name}-all",
-					'Implementation-Versionv': version,
-					'Implementation-URL': jenetics.url,
-					'Implementation-Vendor': jenetics.name,
-					'ProjectName': jenetics.name,
-					'Version': version,
-					'Maintainer': jenetics.author
+		instruction('Export-Package',
+			'org.jenetics',
+			'org.jenetics.util',
+			'org.jenetics.stat'
+		)
 	}
 }
 
@@ -158,42 +136,38 @@ jacocoTestReport{
 	}
 }
 
-packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
-packaging << {
-	// Copy the javadoc
-	copy {
-		from("${buildDir}/docs/javadoc") {
-			include '**/*.html'
-		}
-		into exportJavadocDir
-		filter(ReplaceTokens, tokens: [
-			__identifier__: identifier,
-			__year__: copyrightYear
-		])
-	}
-	copy {
-		from("${buildDir}/docs/javadoc") {
-			exclude '**/*.html'
-		}
-		into exportJavadocDir
-	}
+//packaging.dependsOn([jarjar, javadoc, jacocoTestReport])
+//packaging << {
+//	// Copy the javadoc
+//	copy {
+//		from("${buildDir}/docs/javadoc") {
+//			include '**/*.html'
+//		}
+//		into exportJavadocDir
+//		filter(ReplaceTokens, tokens: [
+//			__identifier__: identifier,
+//			__year__: copyrightYear
+//		])
+//	}
+//	copy {
+//		from("${buildDir}/docs/javadoc") {
+//			exclude '**/*.html'
+//		}
+//		into exportJavadocDir
+//	}
+//
+//	// Copy the test-report.
+//	copy {
+//		from("${buildDir}/reports") {
+//			include 'tests/**'
+//			include 'jacoco/**'
+//			include '*.gradle'
+//			exclude '.gradle'
+//		}
+//		into exportReportDir
+//	}
+//}
 
-	// Copy the test-report.
-	copy {
-		from("${buildDir}/reports") {
-			include 'tests/**'
-			include 'jacoco/**'
-			include '*.gradle'
-			exclude '.gradle'
-		}
-		into exportReportDir
-	}
-}
 
-dependencies {
-	//testCompile(Include.Javolution) { transitive = false }
-	compile Include.JScience
-	testCompile Include.TestNG
-}
 
 
