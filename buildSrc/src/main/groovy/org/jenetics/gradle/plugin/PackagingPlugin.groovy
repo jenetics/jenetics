@@ -30,24 +30,9 @@ import org.jenetics.gradle.Version
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-09-24 $</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 class PackagingPlugin implements Plugin<Project> {
-
-	private static final def TEXT_FILE_PATTERN = [
-		'**/*.java',
-		'**/*.gradle',
-		'**/*.cpp',
-		'**/*.hpp',
-		'**/*.c',
-		'**/*.h',
-		'**/*.bat',
-		'**/*.sh',
-		'**/*.txt',
-		'**/*.properties',
-		'**/*.md',
-		'**/*.log'
-	]
 
 	private final Calendar now = Calendar.getInstance()
 	private final int year = now.get(Calendar.YEAR)
@@ -143,17 +128,15 @@ class PackagingPlugin implements Plugin<Project> {
 		project.copy {
 			from('.') {
 				include '*'
-				excludes = [
-					'org.*', '.gradle', 'gradle-app.setting', '.hgignore',
-					'.hgtags', '*.iml', '*.ipr', '*.iws', '.project',
-					'.classpath', '.settings', 'build', 'out'
-				]
+				excludes = IGNORED_FILES
 			}
+			includeEmptyDirs = false
 			into task.exportProjectDir
 			filter(ReplaceTokens, tokens: textContentReplacements)
 		}
 
 		copyDir('gradle', task.exportProjectDir)
+		copyDir('buildSrc', task.exportProjectDir)
 	}
 
 	private void copyDir(final String source, final File target) {
@@ -161,8 +144,10 @@ class PackagingPlugin implements Plugin<Project> {
 		project.copy {
 			from(source) {
 				includes = TEXT_FILE_PATTERN
+				excludes = IGNORED_FILES
 				into source
 			}
+			includeEmptyDirs = false
 			into target
 			filter(ReplaceTokens, tokens: textContentReplacements)
 		}
@@ -170,12 +155,55 @@ class PackagingPlugin implements Plugin<Project> {
 		// Copy the rest, without replacement.
 		project.copy {
 			from(source) {
-				excludes = TEXT_FILE_PATTERN
+				excludes = TEXT_FILE_PATTERN + IGNORED_FILES
 				into source
 			}
+			includeEmptyDirs = false
 			into target
 		}
 	}
+
+	private static final def IGNORED_FILES = [
+		'bin/**',
+		'build/**',
+		'out/**',
+		'test-output/**',
+		'.gradle/**',
+		'.groovy/*',
+		'gradle-app.setting',
+		'.settings/**',
+		'wiki/**',
+		'*.so',
+		'*.dblite',
+		'random-x86_64',
+		'.classpath',
+		'.project',
+		'*.iml',
+		'*.ipr',
+		'*.iws',
+		'.hgrc',
+		'.nb-gradle/**',
+		'nbproject/**',
+		'nbbuild/**',
+		'build.xml',
+		'manifest.mf'
+	]
+
+	private static final def TEXT_FILE_PATTERN = [
+		'**/*.java',
+		'**/*.gradle',
+		'**/*.groovy',
+		'**/*.cpp',
+		'**/*.hpp',
+		'**/*.c',
+		'**/*.h',
+		'**/*.bat',
+		'**/*.sh',
+		'**/*.txt',
+		'**/*.properties',
+		'**/*.md',
+		'**/*.log'
+	]
 
 }
 
