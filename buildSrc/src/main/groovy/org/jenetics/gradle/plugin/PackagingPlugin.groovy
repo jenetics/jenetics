@@ -34,6 +34,11 @@ class PackagingPlugin implements Plugin<Project> {
 	void apply(final Project project) {
 		project.extensions.create('packaging', PackagingPluginExtension)
 
+		jarjar(project)
+		packaging(project)
+	}
+
+	private void jarjar(final Project project) {
 		project.task('jarjar', type: Jar, dependsOn: 'jar') {
 			baseName = "${project.name}-all"
 
@@ -55,6 +60,12 @@ class PackagingPlugin implements Plugin<Project> {
 					'Maintainer': project.packaging.author
 				)
 			}
+		}
+	}
+
+	private void packaging(final Project project) {
+		project.task('packaging') {
+
 		}
 	}
 
