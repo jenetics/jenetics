@@ -65,7 +65,7 @@ task java2html {
 		destination = javadoc.destinationDir.path
 	}
 
-		doLast {
+	doLast {
 		javaexec {
 			main = 'de.java2html.Java2Html'
 			args = [
@@ -89,5 +89,8 @@ task java2html {
 	}
 }
 
-javadoc.finalizedBy([colorize, java2html])
+javadoc.doLast {
+	colorize.execute()
+	java2html.execute()
+}
  
