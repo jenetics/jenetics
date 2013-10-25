@@ -22,31 +22,24 @@
  * Some commone task definitions and configurations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
 
-tasks.withType(Compile) {
-	options.encoding = 'UTF-8'
-}
- 
-if (project.plugins.hasPlugin('java')) {
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
-	
-	apply from: "${rootDir}/gradle/javadoc.gradle"
-	apply from: "${rootDir}/gradle/xlint.gradle"
-	apply from: "${rootDir}/gradle/manifest.gradle"
-	apply from: "${rootDir}/gradle/test.gradle"
-}
+apply plugin: 'jacoco'
 
-if (tasks.findByPath('clean') == null) {
-	tasks.create('clean') {
+test {
+	useTestNG {
+		//parallel = 'tests' // 'methods'
+		//threadCount = Runtime.runtime.availableProcessors() + 1
+		//include '**/*Test.class'
+		suites 'src/test/resources/testng.xml'
 	}
 }
 
-task cleanAll(dependsOn: clean) << {
-	delete("${projectDir}/test-output")
-	delete("${projectDir}/bin")
-}
-
+jacocoTestReport{
+	reports {
+		xml.enabled true
+		csv.enabled true
+	}
+} 
