@@ -95,7 +95,7 @@ class PackagingPlugin implements Plugin<Project> {
 
 	private void jarjar() {
 		_project.task(TASK_NAME_JARJAR, type: Jar, dependsOn: 'jar') {
-			appendix = 'jajar'
+			appendix = 'jarjar'
 
 			from _project.files(_project.sourceSets.main.output.classesDir)
 			from {
