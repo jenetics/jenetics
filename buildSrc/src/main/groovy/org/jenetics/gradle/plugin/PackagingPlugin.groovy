@@ -275,7 +275,7 @@ class PackagingPlugin implements Plugin<Project> {
 		'*.iml',
 		'*.ipr',
 		'*.iws',
-		'manifest.mf'
+		'manifest.mf',
 		'nbbuild/**',
 		'.nb-gradle/**',
 		'nbproject/**',
@@ -285,7 +285,7 @@ class PackagingPlugin implements Plugin<Project> {
 		'.settings/**',
 		'*.so',
 		'test-output/**',
-		'wiki/**',
+		'wiki/**'
 	]
 
 	private static final def TEXT_FILE_PATTERN = [
@@ -299,12 +299,12 @@ class PackagingPlugin implements Plugin<Project> {
 		'**/*.html',
 		'**/*.java',
 		'**/*.log',
-		'**/*.lyx'
+		'**/*.lyx',
 		'**/*.md',
 		'**/*.properties',
 		'**/*.sh',
 		'**/*.txt',
-		'**/*.xml',
+		'**/*.xml'
 	]
 
 }
