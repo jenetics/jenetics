@@ -194,7 +194,7 @@ class PackagingPlugin implements Plugin<Project> {
 			}
 		}
 
-
+		// Copy jar dependencies for java builds.
 		if (_project.plugins.hasPlugin('java')) {
 			_project.tasks.findByPath('build').doLast {
 				// Copy the external jar dependencies.
