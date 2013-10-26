@@ -41,7 +41,7 @@ if (project.plugins.hasPlugin('java')) {
 }
 
 if (tasks.findByPath('clean') == null) {
-	tasks.create('clean'){
+	tasks.create('clean') {
 		//file("${projectDir}/bin").deleteDir()
 	}
 }

@@ -187,7 +187,7 @@ class PackagingPlugin implements Plugin<Project> {
 			}
 		}
 
-		// Copy the external libraries.
+
 		if (project.plugins.hasPlugin('java')) {
 			project.tasks.findByPath('build').doLast {
 				// Copy the external jar dependencies.
@@ -201,7 +201,9 @@ class PackagingPlugin implements Plugin<Project> {
 						}
 					}
 				}
+			}
 
+			project.tasks.findByPath('jarjar').doLast {
 				// Copy the build library
 				project.copy {
 					from("${project.buildDir}/libs")
