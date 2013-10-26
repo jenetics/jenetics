@@ -44,5 +44,7 @@ jacocoTestReport {
 	}
 } 
 
-test.finalizedBy jacocoTestReport
+task testReport(dependsOn: test) << {
+	jacocoTestReport.execute()
+}
 
