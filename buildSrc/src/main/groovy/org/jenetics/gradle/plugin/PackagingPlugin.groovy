@@ -37,46 +37,51 @@ class PackagingPlugin implements Plugin<Project> {
 	private static final String TASK_NAME_JARJAR = 'jarjar'
 	private static final String TASK_NAME_PACKAGING = 'packaging'
 
-	private final Calendar now = Calendar.getInstance()
-	private final int year = now.get(Calendar.YEAR)
-	private final String copyrightYear = "2007-${year}"
+	private final Calendar _now = Calendar.getInstance()
+	private final int _year = _now.get(Calendar.YEAR)
+	private final String _copyrightYear = "2007-${_year}"
 
-	private Project project = null
-	private String identifier = null
-	private String version = null
+	private Project _project = null
+	private String _identifier = null
+	private String _version = null
 
-	private File buildDir = null
-	private File exportDir = null
-	private File exportProjectDir = null
-	private File exportProjectLibDir = null
-	private File exportLibDir = null
-	private File exportJavadocDir = null
-	private File exportReportDir = null
-	private File exportScriptDir = null
+	private File _buildDir = null
+	private File _exportDir = null
+	private File _exportProjectDir = null
+	private File _exportProjectLibDir = null
+	private File _exportLibDir = null
+	private File _exportJavadocDir = null
+	private File _exportReportDir = null
+	private File _exportScriptDir = null
 
-	private def textContentReplacements = [:]
+	private def _textContentReplacements = [:]
 
 	@Override
 	void apply(final Project project) {
-		this.project = project
-		version = project.rootProject.version
-		identifier = "${project.rootProject.name}-${version}"
+		_project = project
+		_version = project.rootProject.version
+		_identifier = "${project.rootProject.name}-${_version}"
 
-		buildDir = project.rootProject.buildDir
-		exportDir = new File("${buildDir}/package/${identifier}")
-		exportProjectDir = new File("${exportDir}/project")
-		exportProjectLibDir = new File("${exportProjectDir}/buildSrc/lib")
-		exportLibDir = new File("${exportDir}/lib")
-		exportJavadocDir = new File("${exportDir}/javadoc")
-		exportReportDir = new File("${exportDir}/report")
-		exportScriptDir = new File("${exportDir}/script")
+		_buildDir = project.rootProject.buildDir
+		_exportDir = new File("${_buildDir}/package/${_identifier}")
+		_exportProjectDir = new File("${_exportDir}/project")
+		_exportProjectLibDir = new File("${_exportProjectDir}/buildSrc/lib")
+		_exportLibDir = new File("${_exportDir}/lib")
+		_exportJavadocDir = new File("${_exportDir}/javadoc")
+		_exportReportDir = new File("${_exportDir}/report")
+		_exportScriptDir = new File("${_exportDir}/script")
 
-		textContentReplacements = [
-			__identifier__: identifier,
-			__year__: copyrightYear
+		_textContentReplacements = [
+			__identifier__: _identifier,
+			__year__: _copyrightYear
 		]
 
-		project.extensions.create('packaging', PackagingPluginExtension)
+		// Packaging extension class.
+		project.extensions.create(
+			'packaging',
+			PackagingPluginExtension,
+			this
+		)
 
 		if (project.plugins.hasPlugin('java')) {
 			jarjar()
@@ -85,29 +90,29 @@ class PackagingPlugin implements Plugin<Project> {
 	}
 
 	private boolean isRootProject() {
-		return project == project.rootProject
+		return _project == _project.rootProject
 	}
 
 	private void jarjar() {
-		project.task(TASK_NAME_JARJAR, type: Jar, dependsOn: 'jar') {
-			baseName = "${project.name}-all"
+		_project.task(TASK_NAME_JARJAR, type: Jar, dependsOn: 'jar') {
+			baseName = "${_project.name}-all"
 
-			from project.files(project.sourceSets.main.output.classesDir)
+			from _project.files(_project.sourceSets.main.output.classesDir)
 			from {
-				project.configurations.compile.collect {
-					it.isDirectory() ? it : project.zipTree(it)
+				_project.configurations.compile.collect {
+					it.isDirectory() ? it : _project.zipTree(it)
 				}
 			}
 
 			manifest {
 				attributes(
-					'Implementation-Title': "${project.name}-all",
-					'Implementation-Versionv': project.version,
-					'Implementation-URL': project.packaging.url,
-					'Implementation-Vendor': project.packaging.author,
-					'ProjectName': project.packaging.name,
-					'Version': project.version,
-					'Maintainer': project.packaging.author
+					'Implementation-Title': "${_project.name}-all",
+					'Implementation-Versionv': _project.version,
+					'Implementation-URL': _project.packaging.url,
+					'Implementation-Vendor': _project.packaging.author,
+					'ProjectName': _project.packaging.name,
+					'Version': _project.version,
+					'Maintainer': _project.packaging.author
 				)
 			}
 		}
@@ -115,29 +120,29 @@ class PackagingPlugin implements Plugin<Project> {
 
 	private void packaging() {
 		def dependencies = []
-		if (project.tasks.findByPath(TASK_NAME_JARJAR) != null) {
+		if (_project.tasks.findByPath(TASK_NAME_JARJAR) != null) {
 			dependencies += TASK_NAME_JARJAR
 		}
-		if (project.tasks.findByPath('build') != null) {
+		if (_project.tasks.findByPath('build') != null) {
 			dependencies += 'build'
 		}
-		if (project.tasks.findByPath('jarjar') != null) {
+		if (_project.tasks.findByPath('jarjar') != null) {
 			dependencies += 'jarjar'
 		}
-		if (project.tasks.findByPath('javadoc') != null) {
+		if (_project.tasks.findByPath('javadoc') != null) {
 			dependencies += 'javadoc'
 		}
 
-		project.task(TASK_NAME_PACKAGING, dependsOn: dependencies) {
+		_project.task(TASK_NAME_PACKAGING, dependsOn: dependencies) {
 			ext {
-				identifier = this.identifier
-				exportDir = this.exportDir
-				exportProjectDir = this.exportProjectDir
-				exportProjectLibDir = this.exportProjectLibDir
-				exportLibDir = this.exportLibDir
-				exportJavadocDir = this.exportJavadocDir
-				exportReportDir = this.exportReportDir
-				exportScriptDir = this.exportScriptDir
+				identifier = _identifier
+				exportDir = _exportDir
+				exportProjectDir = _exportProjectDir
+				exportProjectLibDir = _exportProjectLibDir
+				exportLibDir = _exportLibDir
+				exportJavadocDir = _exportJavadocDir
+				exportReportDir = _exportReportDir
+				exportScriptDir = _exportScriptDir
 			}
 
 			doLast {
@@ -150,64 +155,64 @@ class PackagingPlugin implements Plugin<Project> {
 		}
 
 		// Copy the test-reports
-		if (project.tasks.findByPath('test') != null) {
-			project.tasks.findByPath('test').doLast {
-				project.copy {
-					from("${project.buildDir}/reports") {
+		if (_project.tasks.findByPath('test') != null) {
+			_project.tasks.findByPath('test').doLast {
+				_project.copy {
+					from("${_project.buildDir}/reports") {
 						include 'tests/**'
 						include 'jacoco/**'
 						include '*.gradle'
 						exclude '.gradle'
 					}
-					into exportReportDir
+					into _exportReportDir
 				}
 			}
 		}
 
 		// Copy the javadoc.
-		if (project.tasks.findByPath('javadoc') != null) {
-			project.tasks.findByPath('javadoc').doLast {
+		if (_project.tasks.findByPath('javadoc') != null) {
+			_project.tasks.findByPath('javadoc').doLast {
 				copyDir(
-					new File(project.buildDir, 'docs/javadoc'),
-					project.name,
-					exportJavadocDir
+					new File(_project.buildDir, 'docs/javadoc'),
+					_project.name,
+					_exportJavadocDir
 				)
 			}
 		}
 
 		// Copy the pdf manual.
-		if (project.tasks.findByPath('lyx') != null) {
-			project.tasks.findByPath('build').doLast {
-				project.copy {
-					from("${project.buildDir}/doc") {
+		if (_project.tasks.findByPath('lyx') != null) {
+			_project.tasks.findByPath('build').doLast {
+				_project.copy {
+					from("${_project.buildDir}/doc") {
 						include '*.pdf'
 					}
-					into exportDir
+					into _exportDir
 				}
 			}
 		}
 
 
-		if (project.plugins.hasPlugin('java')) {
-			project.tasks.findByPath('build').doLast {
+		if (_project.plugins.hasPlugin('java')) {
+			_project.tasks.findByPath('build').doLast {
 				// Copy the external jar dependencies.
-				project.configurations.testRuntime.each { jar ->
+				_project.configurations.testRuntime.each { jar ->
 					if (jar.name.endsWith('.jar') &&
 						!jar.name.startsWith('org.jeneti'))
 					{
-						project.copy {
+						_project.copy {
 							from jar
-							into exportProjectLibDir
+							into _exportProjectLibDir
 						}
 					}
 				}
 			}
 
-			project.tasks.findByPath('jarjar').doLast {
+			_project.tasks.findByPath('jarjar').doLast {
 				// Copy the build library
-				project.copy {
-					from("${project.buildDir}/libs")
-					into exportLibDir
+				_project.copy {
+					from("${_project.buildDir}/libs")
+					into _exportLibDir
 				}
 			}
 		}
@@ -215,23 +220,23 @@ class PackagingPlugin implements Plugin<Project> {
 	}
 
 	private void copy() {
-		copyDir(project.projectDir, exportProjectDir)
+		copyDir(_project.projectDir, _exportProjectDir)
 	}
 
 	private void copyRoot() {
 		// Copy the files in the root directory.
-		project.copy {
+		_project.copy {
 			from('.') {
 				include '*'
 				excludes = IGNORED_FILES
 			}
 			includeEmptyDirs = false
-			into exportProjectDir
-			filter(ReplaceTokens, tokens: textContentReplacements)
+			into _exportProjectDir
+			filter(ReplaceTokens, tokens: _textContentReplacements)
 		}
 
-		copyDir(new File('gradle'), exportProjectDir)
-		copyDir(new File('buildSrc'), exportProjectDir)
+		copyDir(new File('gradle'), _exportProjectDir)
+		copyDir(new File('buildSrc'), _exportProjectDir)
 	}
 
 	private void copyDir(final File source, final File target) {
@@ -240,7 +245,7 @@ class PackagingPlugin implements Plugin<Project> {
 
 	private void copyDir(final File source, final String sinto, final File target) {
 		// Copy the text files with text pattern replacement.
-		project.copy {
+		_project.copy {
 			from(source.absoluteFile) {
 				includes = TEXT_FILE_PATTERN
 				excludes = IGNORED_FILES
@@ -248,11 +253,11 @@ class PackagingPlugin implements Plugin<Project> {
 			}
 			includeEmptyDirs = false
 			into target
-			filter(ReplaceTokens, tokens: textContentReplacements)
+			filter(ReplaceTokens, tokens: _textContentReplacements)
 		}
 
 		// Copy the rest, without replacement.
-		project.copy {
+		_project.copy {
 			from(source.absoluteFile) {
 				excludes = TEXT_FILE_PATTERN + IGNORED_FILES
 				into sinto
@@ -260,6 +265,14 @@ class PackagingPlugin implements Plugin<Project> {
 			includeEmptyDirs = false
 			into target
 		}
+	}
+
+	void doFirstPackaging(final Closure closure) {
+		_project.tasks.findByPath(TASK_NAME_PACKAGING).doFirst(closure)
+	}
+
+	void doLastPackaging(final Closure closure) {
+		_project.tasks.findByPath(TASK_NAME_PACKAGING).doLast(closure)
 	}
 
 	private static final def IGNORED_FILES = [
@@ -310,8 +323,23 @@ class PackagingPlugin implements Plugin<Project> {
 }
 
 class PackagingPluginExtension {
+
+	private final PackagingPlugin _plugin
+
+	PackagingPluginExtension(final PackagingPlugin plugin) {
+		_plugin = plugin
+	}
+
 	String name = 'Jenetics'
 	String author = 'Franz Wilhelmstötter'
 	String url = 'http://jenetics.sourceforge.net'
+
+	void doFirst(final Closure closure) {
+		_plugin.doFirstPackaging(closure)
+	}
+
+	void doLast(final Closure closure) {
+		_plugin.doLastPackaging(closure)
+	}
 }
 
