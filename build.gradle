@@ -24,7 +24,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
 import org.jenetics.gradle.Version
-import org.jenetics.gradle.plugin.PackagingPlugin
 import org.jenetics.gradle.task.ChecksumTask
 
 /**
@@ -38,9 +37,7 @@ rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
 apply from: "${rootDir}/gradle/commons.gradle"
-apply plugin: PackagingPlugin
-
-
+apply plugin: 'packaging'
 
 
 ext {
