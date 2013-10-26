@@ -95,7 +95,7 @@ class PackagingPlugin implements Plugin<Project> {
 
 	private void jarjar() {
 		_project.task(TASK_NAME_JARJAR, type: Jar, dependsOn: 'jar') {
-			baseName = "${_project.name}-all"
+			appendix = 'jajar'
 
 			from _project.files(_project.sourceSets.main.output.classesDir)
 			from {
@@ -107,7 +107,7 @@ class PackagingPlugin implements Plugin<Project> {
 			doFirst {
 				manifest {
 					attributes(
-						'Implementation-Title': "${_project.name}-all",
+						'Implementation-Title': "${_project.name}-${appendix}",
 						'Implementation-Versionv': _project.version,
 						'Implementation-URL': _project.packaging.url,
 						'Implementation-Vendor': _project.packaging.author,
