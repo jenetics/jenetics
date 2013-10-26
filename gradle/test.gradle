@@ -29,21 +29,17 @@
 apply plugin: 'jacoco'
 
 test {
-	if (file('src/test/resources/testng.xml').isFile()) {
-		useTestNG {
-			//parallel = 'tests' // 'methods'
-			//threadCount = Runtime.runtime.availableProcessors() + 1
-			//include '**/*Test.class'
-			suites 'src/test/resources/testng.xml'
-		}
+	useTestNG {
+		//parallel = 'tests' // 'methods'
+		//threadCount = Runtime.runtime.availableProcessors() + 1
+		//include '**/*Test.class'
+		suites 'src/test/resources/testng.xml'
 	}
 }
 
-if (file('src/test/resources/testng.xml').isFile()) {
-	jacocoTestReport {
-		reports {
-			xml.enabled true
-			csv.enabled true
-		}
-	} 
-}
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled true
+	}
+} 

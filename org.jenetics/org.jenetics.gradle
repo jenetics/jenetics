@@ -20,8 +20,6 @@
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-import org.jenetics.gradle.plugin.PackagingPlugin
-
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -31,7 +29,7 @@ import org.jenetics.gradle.plugin.PackagingPlugin
 
 apply plugin: 'java'
 apply from: "${rootDir}/gradle/commons.gradle"
-apply plugin: PackagingPlugin
+apply plugin: 'packaging'
 
 dependencies {
 	compile Include.JScience

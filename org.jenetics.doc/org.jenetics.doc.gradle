@@ -23,7 +23,6 @@ import java.util.Date
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
-import org.jenetics.gradle.plugin.PackagingPlugin
 import org.jenetics.gradle.task.Lyx2PDFTask
 
 /**
@@ -80,6 +79,6 @@ clean << {
 	buildDir.deleteDir()
 }
 
-apply plugin: PackagingPlugin
+apply plugin: 'packaging'
 
 
