@@ -128,8 +128,8 @@ class PackagingPlugin implements Plugin<Project> {
 		if (_project.tasks.findByPath('build') != null) {
 			dependencies += 'build'
 		}
-		if (_project.tasks.findByPath('jarjar') != null) {
-			dependencies += 'jarjar'
+		if (_project.tasks.findByPath('testReport') != null) {
+			dependencies += 'testReport'
 		}
 		if (_project.tasks.findByPath('javadoc') != null) {
 			dependencies += 'javadoc'
@@ -157,8 +157,8 @@ class PackagingPlugin implements Plugin<Project> {
 		}
 
 		// Copy the test-reports
-		if (_project.tasks.findByPath('test') != null) {
-			_project.tasks.findByPath('test').doLast {
+		if (_project.tasks.findByPath('testReport') != null) {
+			_project.tasks.findByPath('testReport').doLast {
 				_project.copy {
 					from("${_project.buildDir}/reports") {
 						include 'tests/**'
