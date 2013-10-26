@@ -104,16 +104,18 @@ class PackagingPlugin implements Plugin<Project> {
 				}
 			}
 
-			manifest {
-				attributes(
-					'Implementation-Title': "${_project.name}-all",
-					'Implementation-Versionv': _project.version,
-					'Implementation-URL': _project.packaging.url,
-					'Implementation-Vendor': _project.packaging.author,
-					'ProjectName': _project.packaging.name,
-					'Version': _project.version,
-					'Maintainer': _project.packaging.author
-				)
+			doFirst {
+				manifest {
+					attributes(
+						'Implementation-Title': "${_project.name}-all",
+						'Implementation-Versionv': _project.version,
+						'Implementation-URL': _project.packaging.url,
+						'Implementation-Vendor': _project.packaging.author,
+						'ProjectName': _project.packaging.name,
+						'Version': _project.version,
+						'Maintainer': _project.packaging.author
+					)
+				}
 			}
 		}
 	}

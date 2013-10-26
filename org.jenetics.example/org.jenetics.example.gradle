@@ -23,7 +23,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 
 apply plugin: 'java'
@@ -39,7 +39,7 @@ jar.manifest.instruction('Export-Package',
 )
 
 packaging {
-	name = 'Jenetics'
+	name = 'Jenetics examples'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 }
