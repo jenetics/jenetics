@@ -34,8 +34,8 @@ import org.jenetics.gradle.Version
  */
 class PackagingPlugin implements Plugin<Project> {
 
-	private static final String TASK_NAME_JARJAR = 'jarjar'
-	private static final String TASK_NAME_PACKAGING = 'packaging'
+	private static final String JARJAR = 'jarjar'
+	private static final String PACKAGING = 'packaging'
 
 	private final Calendar _now = Calendar.getInstance()
 	private final int _year = _now.get(Calendar.YEAR)
@@ -94,7 +94,7 @@ class PackagingPlugin implements Plugin<Project> {
 	}
 
 	private void jarjar() {
-		_project.task(TASK_NAME_JARJAR, type: Jar, dependsOn: 'jar') {
+		_project.task(JARJAR, type: Jar, dependsOn: 'jar') {
 			appendix = 'jarjar'
 
 			from _project.files(_project.sourceSets.main.output.classesDir)
@@ -122,8 +122,8 @@ class PackagingPlugin implements Plugin<Project> {
 
 	private void packaging() {
 		def dependencies = []
-		if (_project.tasks.findByPath(TASK_NAME_JARJAR) != null) {
-			dependencies += TASK_NAME_JARJAR
+		if (_project.tasks.findByPath(JARJAR) != null) {
+			dependencies += JARJAR
 		}
 		if (_project.tasks.findByPath('build') != null) {
 			dependencies += 'build'
@@ -135,7 +135,7 @@ class PackagingPlugin implements Plugin<Project> {
 			dependencies += 'javadoc'
 		}
 
-		_project.task(TASK_NAME_PACKAGING, dependsOn: dependencies) {
+		_project.task(PACKAGING, dependsOn: dependencies) {
 			ext {
 				identifier = _identifier
 				exportDir = _exportDir
@@ -174,11 +174,13 @@ class PackagingPlugin implements Plugin<Project> {
 		// Copy the javadoc.
 		if (_project.tasks.findByPath('javadoc') != null) {
 			_project.tasks.findByPath('javadoc').doLast {
-				copyDir(
-					new File(_project.buildDir, 'docs/javadoc'),
-					_project.name,
-					_exportJavadocDir
-				)
+				if (_project.packaging.javadoc) {
+					copyDir(
+						new File(_project.buildDir, 'docs/javadoc'),
+						_project.name,
+						_exportJavadocDir
+					)
+				}
 			}
 		}
 
@@ -214,6 +216,9 @@ class PackagingPlugin implements Plugin<Project> {
 				// Copy the build library
 				_project.copy {
 					from("${_project.buildDir}/libs")
+					if (!_project.packaging.jarjar) {
+						exclude '*-jarjar*.jar'
+					}
 					into _exportLibDir
 				}
 			}
@@ -270,11 +275,11 @@ class PackagingPlugin implements Plugin<Project> {
 	}
 
 	void doFirstPackaging(final Closure closure) {
-		_project.tasks.findByPath(TASK_NAME_PACKAGING).doFirst(closure)
+		_project.tasks.findByPath(PACKAGING).doFirst(closure)
 	}
 
 	void doLastPackaging(final Closure closure) {
-		_project.tasks.findByPath(TASK_NAME_PACKAGING).doLast(closure)
+		_project.tasks.findByPath(PACKAGING).doLast(closure)
 	}
 
 	private static final def IGNORED_FILES = [
@@ -335,6 +340,8 @@ class PackagingPluginExtension {
 	String name = 'Jenetics'
 	String author = 'Franz Wilhelmstötter'
 	String url = 'http://jenetics.sourceforge.net'
+	Boolean jarjar = true
+	Boolean javadoc = true
 
 	void doFirst(final Closure closure) {
 		_plugin.doFirstPackaging(closure)
