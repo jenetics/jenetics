@@ -28,7 +28,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version @__version__@ &mdash; <em>$Date$</em>
  */
 
 apply from: "${rootDir}/gradle/commons.gradle"
