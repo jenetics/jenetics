@@ -59,6 +59,7 @@ import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.WorkResult
 import org.gradle.process.ExecResult
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
@@ -162,7 +163,7 @@ class ProjectAdapter implements Project {
 
 	@Override
 	public Object configure(final Object o, final Closure closure) {
-		return project.configure(o, closuer)
+		return project.configure(o, closure)
 	}
 
 	@Override
@@ -589,7 +590,7 @@ class ProjectAdapter implements Project {
 
 	@Override
 	public Task task(final Map<String, ?> arg, final String name, final Closure closure) {
-		return project.task(arg, name, closuer)
+		return project.task(arg, name, closure)
 	}
 
 	@Override
@@ -619,5 +620,18 @@ class ProjectAdapter implements Project {
 		return project.zipTree(tree)
 	}
 
+	/*
+	def methodMissing(String name, args) {
+		project.methodMissing(name, args)
+	}
+
+	def propertyMissing(String name, value) {
+		project.propertyMissing(name, value)
+	}
+
+	def propertyMissing(String name) {
+		project.propertyMissing(name)
+	}
+	*/
 
 }
