@@ -31,8 +31,6 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
 
-apply from: "${rootDir}/gradle/commons.gradle"
-
 task build {
 	ext {
 		buildTempDir = file("${buildDir}/tmp")
@@ -75,7 +73,7 @@ build.doLast {
 	lyx.execute()
 }
 
-clean << {
+task clean << {
 	buildDir.deleteDir()
 }
 

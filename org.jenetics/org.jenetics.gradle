@@ -27,10 +27,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
 
-apply plugin: 'java'
-apply from: "${rootDir}/gradle/commons.gradle"
-apply plugin: 'packaging'
-
 dependencies {
 	compile Include.JScience
 	testCompile Include.TestNG

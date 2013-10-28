@@ -27,6 +27,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.Version
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
