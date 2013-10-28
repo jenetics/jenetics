@@ -37,8 +37,6 @@ new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
-apply from: "${rootDir}/gradle/commons.gradle"
-apply plugin: 'packaging'
 
 
 ext {
