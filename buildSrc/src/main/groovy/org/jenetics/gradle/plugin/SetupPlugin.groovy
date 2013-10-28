@@ -78,6 +78,10 @@ class SetupPlugin implements Plugin<Project> {
 		_project.plugins.apply(EclipsePlugin)
 		_project.plugins.apply(IdeaPlugin)
 
+		_project.clean.doLast {
+			_project.file("${_project.projectDir}/test-output").deleteDir()
+		}
+
 		configureOsgi()
 		configureTestReporting()
 		configureJavadoc()
