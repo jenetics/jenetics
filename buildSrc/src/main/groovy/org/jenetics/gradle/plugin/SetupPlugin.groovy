@@ -21,6 +21,7 @@ package org.jenetics.gradle.plugin
 
 import java.io.File
 
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
@@ -33,6 +34,7 @@ import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 
 import org.jenetics.gradle.task.ColorizerTask
+import org.jenetics.gradle.task.Lyx2PDFTask
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -58,6 +60,11 @@ class SetupPlugin implements Plugin<Project> {
 		if (hasGroovySources()) {
 			_project.plugins.apply(GroovyPlugin)
 		}
+		if (hasLyxSources()) {
+			applyLyx()
+		}
+
+		_project.plugins.apply(PackagingPlugin)
 
 		_project.tasks.withType(JavaCompile) { JavaCompile compile ->
 			compile.options.encoding = 'UTF-8'
@@ -65,15 +72,56 @@ class SetupPlugin implements Plugin<Project> {
 		_project.tasks.withType(JavaCompile) { JavaCompile compile ->
 			compile.options.compilerArgs = ["-Xlint:${XLINT_OPTIONS.join(',')}"]
 		}
-
-		_project.plugins.apply(PackagingPlugin)
 	}
 
 	private void applyJava() {
 		_project.plugins.apply(EclipsePlugin)
 		_project.plugins.apply(IdeaPlugin)
 
-		// Configure OSGi manifest.
+		configureOsgi()
+		configureTestReporting()
+		configureJavadoc()
+	}
+
+	private void applyLyx() {
+		_project.task('build') << {
+			_project.copy {
+				from("${_project.projectDir}/src/main") {
+					include 'lyx/manual.lyx'
+				}
+				into temporaryDir
+				filter(ReplaceTokens, tokens: [
+					__identifier__: _project.identifier,
+					__year__: _project.copyrightYear,
+					__identifier__: _project.manualIdentifier
+				])
+			}
+			_project.copy {
+				from("${_project.projectDir}/src/main") {
+					exclude 'lyx/manual.lyx'
+				}
+				into temporaryDir
+			}
+		}
+
+		_project.task('lyx', type: Lyx2PDFTask) {
+			document = _project.file("${_project.build.temporaryDir}/lyx/manual.lyx")
+			doLast {
+				_project.copy {
+					from "${_project.build.temporaryDir}/lyx/manual.pdf"
+					into "${_project.buildDir}/doc"
+					rename { String fileName ->
+						fileName.replace('manual.pdf', "manual-${_project.version}.pdf")
+					}
+				}
+			}
+		}
+		_project.build.doLast {
+			_project.lyx.execute()
+		}
+	}
+
+	private void configureOsgi() {
 		_project.plugins.apply(OsgiPlugin)
 		_project.jar {
 			manifest {
@@ -95,8 +143,9 @@ class SetupPlugin implements Plugin<Project> {
 				)
 			}
 		}
+	}
 
-		// Add and configure test (reporting).
+	private void configureTestReporting() {
 		_project.plugins.apply(JacocoPlugin)
 		_project.test {
 			useTestNG {
@@ -115,8 +164,9 @@ class SetupPlugin implements Plugin<Project> {
 		_project.task('testReport', dependsOn: 'test') << {
 			_project.jacocoTestReport.execute()
 		}
+	}
 
-		// Configure javadoc
+	private void configureJavadoc() {
 		_project.javadoc {
 			_project.configure(options) {
 				memberLevel = 'PROTECTED'
@@ -194,6 +244,10 @@ class SetupPlugin implements Plugin<Project> {
 
 	private boolean hasScalaSources() {
 		hasSources('scala')
+	}
+
+	private boolean hasLyxSources() {
+		hasSources('lyx')
 	}
 
 	private boolean hasSources(final String source) {
