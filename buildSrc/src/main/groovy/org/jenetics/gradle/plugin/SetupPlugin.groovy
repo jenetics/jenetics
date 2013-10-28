@@ -19,6 +19,8 @@
  */
 package org.jenetics.gradle.plugin
 
+import java.text.SimpleDateFormat
+
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -38,6 +40,10 @@ import org.jenetics.gradle.task.ColorizerTask
  */
 class SetupPlugin extends JeneticsPlugin {
 
+	private Calendar now = Calendar.getInstance()
+	private int year = now.get(Calendar.YEAR)
+	private String copyrightYear = "2007-${year}"
+	private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 
 	@Override
 	void apply(final Project project) {
@@ -142,7 +148,7 @@ class SetupPlugin extends JeneticsPlugin {
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
-				bottom = "&copy; ${project.copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${project.dateformat.format(project.now.time)})</i>"
+				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
 				stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 				exclude 'org/*/internal/**'
