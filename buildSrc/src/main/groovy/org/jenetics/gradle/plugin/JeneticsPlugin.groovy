@@ -22,14 +22,16 @@ package org.jenetics.gradle.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
  */
-protected class JeneticsPlugin implements Plugin<Project> {
-
-	Project project
+protected class JeneticsPlugin
+	extends ProjectAdapter
+	implements Plugin<Project>
+{
 
 	@Override
 	public void apply(final Project project) {

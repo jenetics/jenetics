@@ -88,7 +88,7 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void configureOsgi() {
-		project.plugins.apply(OsgiPlugin)
+		plugins.apply(OsgiPlugin)
 		project.jar {
 			manifest {
 				version = version
