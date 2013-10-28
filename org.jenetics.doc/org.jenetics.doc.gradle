@@ -28,10 +28,8 @@ import org.jenetics.gradle.task.Lyx2PDFTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version @__version__@ &mdash; <em>$Date: 2013-10-27 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
  */
-
-apply from: "${rootDir}/gradle/commons.gradle"
 
 task build {
 	ext {
@@ -75,7 +73,7 @@ build.doLast {
 	lyx.execute()
 }
 
-clean << {
+task clean << {
 	buildDir.deleteDir()
 }
 

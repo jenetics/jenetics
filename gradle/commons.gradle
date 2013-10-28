@@ -23,7 +23,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version @__version__@ &mdash; <em>$Date: 2013-10-26 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
  */
 
 tasks.withType(Compile) {
@@ -31,13 +31,13 @@ tasks.withType(Compile) {
 }
  
 if (project.plugins.hasPlugin('java')) {
-	apply plugin: 'eclipse'
-	apply plugin: 'idea'
+	//apply plugin: 'eclipse'
+	//apply plugin: 'idea'
 	
-	apply from: "${rootDir}/gradle/javadoc.gradle"
-	apply from: "${rootDir}/gradle/xlint.gradle"
-	apply from: "${rootDir}/gradle/manifest.gradle"
-	apply from: "${rootDir}/gradle/test.gradle"
+	//apply from: "${rootDir}/gradle/javadoc.gradle"
+	//apply from: "${rootDir}/gradle/xlint.gradle"
+	//apply from: "${rootDir}/gradle/manifest.gradle"
+	//apply from: "${rootDir}/gradle/test.gradle"
 }
 
 if (tasks.findByPath('clean') == null) {

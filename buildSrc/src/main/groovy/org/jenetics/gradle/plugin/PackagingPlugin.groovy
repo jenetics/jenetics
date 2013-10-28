@@ -27,10 +27,11 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.Version
 
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-27 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
  */
 class PackagingPlugin implements Plugin<Project> {
 
