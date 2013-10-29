@@ -48,7 +48,7 @@ class LyxPlugin extends JeneticsPlugin {
 	private void applyLyx() {
 		task(BUILD) << {
 			copy {
-				from("${project.projectDir}/src/main") {
+				from("${projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
 				into temporaryDir

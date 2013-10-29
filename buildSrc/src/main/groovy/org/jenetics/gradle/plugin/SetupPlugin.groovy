@@ -75,11 +75,11 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void applyJava() {
-		project.plugins.apply(EclipsePlugin)
-		project.plugins.apply(IdeaPlugin)
+		plugins.apply(EclipsePlugin)
+		plugins.apply(IdeaPlugin)
 
-		project.clean.doLast {
-			project.file("${project.projectDir}/test-output").deleteDir()
+		clean.doLast {
+			file("${projectDir}/test-output").deleteDir()
 		}
 
 		configureOsgi()
@@ -94,25 +94,25 @@ class SetupPlugin extends JeneticsPlugin {
 				version = version
 				symbolicName = project.name
 				name = project.name
-				instruction 'Bundle-Vendor', project.jenetics.author
-				instruction 'Bundle-Description', project.jenetics.description
-				instruction 'Bundle-DocURL', project.jenetics.url
+				instruction 'Bundle-Vendor', jenetics.author
+				instruction 'Bundle-Description', jenetics.description
+				instruction 'Bundle-DocURL', jenetics.url
 
 				attributes(
-					'Implementation-Title': project.name,
+					'Implementation-Title': name,
 					'Implementation-Version': version,
-					'Implementation-URL': project.jenetics.url,
-					'Implementation-Vendor': project.jenetics.name,
+					'Implementation-URL': jenetics.url,
+					'Implementation-Vendor': jenetics.name,
 					'ProjectName': project.jenetics.name,
 					'Version': version,
-					'Maintainer': project.jenetics.author
+					'Maintainer': jenetics.author
 				)
 			}
 		}
 	}
 
 	private void configureTestReporting() {
-		project.plugins.apply(JacocoPlugin)
+		plugins.apply(JacocoPlugin)
 		project.test {
 			useTestNG {
 				//parallel = 'tests' // 'methods'
@@ -127,7 +127,7 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
-		project.task('testReport', dependsOn: 'test') << {
+		task('testReport', dependsOn: 'test') << {
 			project.jacocoTestReport.execute()
 		}
 	}
@@ -146,10 +146,10 @@ class SetupPlugin extends JeneticsPlugin {
 					'http://jscience.org/api/',
 					'http://javolution.org/target/site/apidocs/'
 				]
-				windowTitle = "Jenetics ${project.version}"
-				docTitle = "<h1>Jenetics ${project.version}</h1>"
+				windowTitle = "Jenetics ${version}"
+				docTitle = "<h1>Jenetics ${version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
-				stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 				exclude 'org/*/internal/**'
 
@@ -161,33 +161,33 @@ class SetupPlugin extends JeneticsPlugin {
 			}
 		}
 
-		project.task('colorize', type: ColorizerTask) {
-			directory = project.file(project.javadoc.destinationDir.path)
+		task('colorize', type: ColorizerTask) {
+			directory = file(project.javadoc.destinationDir.path)
 		}
 
-		project.task('java2html') {
+		task('java2html') {
 			ext {
 				destination = project.javadoc.destinationDir.path
 			}
 
 			doLast {
-				project.javaexec {
+				javaexec {
 					main = 'de.java2html.Java2Html'
 					args = [
 						'-srcdir', 'src/main/java',
 						'-targetdir', "${destination}/src-html"
 					]
-					classpath = project.files("${project.rootDir}/buildSrc/lib/java2html.jar")
+					classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
 				}
-				project.copy {
+				copy {
 					from 'src/main/java/org/*/doc-files'
 					into "${destination}/org/*/doc-files"
 				}
-				project.copy {
+				copy {
 					from 'src/main/java/org/*/stat/doc-files'
 					into "${destination}/org/*/stat/doc-files"
 				}
-				project.copy {
+				copy {
 					from 'src/main/java/org/*/util/doc-files'
 					into "${destination}/org/*/util/doc-files"
 				}
