@@ -620,7 +620,7 @@ class ProjectAdapter implements Project {
 		return project.zipTree(tree)
 	}
 
-	/*
+
 	def methodMissing(String name, args) {
 		project.methodMissing(name, args)
 	}
@@ -632,6 +632,6 @@ class ProjectAdapter implements Project {
 	def propertyMissing(String name) {
 		project.propertyMissing(name)
 	}
-	*/
+
 
 }
