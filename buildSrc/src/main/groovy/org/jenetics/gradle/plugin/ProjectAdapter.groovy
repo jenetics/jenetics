@@ -63,7 +63,7 @@ import org.gradle.process.ExecResult
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-29 $</em>
  */
 class ProjectAdapter implements Project {
 
@@ -620,7 +620,7 @@ class ProjectAdapter implements Project {
 		return project.zipTree(tree)
 	}
 
-	/*
+
 	def methodMissing(String name, args) {
 		project.methodMissing(name, args)
 	}
@@ -632,6 +632,6 @@ class ProjectAdapter implements Project {
 	def propertyMissing(String name) {
 		project.propertyMissing(name)
 	}
-	*/
+
 
 }
