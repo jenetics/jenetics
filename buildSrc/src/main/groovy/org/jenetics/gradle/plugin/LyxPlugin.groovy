@@ -29,7 +29,7 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-28 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-29 $</em>
  */
 class LyxPlugin extends JeneticsPlugin {
 
@@ -48,7 +48,7 @@ class LyxPlugin extends JeneticsPlugin {
 	private void applyLyx() {
 		task(BUILD) << {
 			copy {
-				from("${project.projectDir}/src/main") {
+				from("${projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
 				into temporaryDir
