@@ -23,7 +23,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.arrays.forEach;
 import static org.jenetics.util.object.NonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
@@ -68,7 +67,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-16 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-10-31 $</em>
  */
 public class Histogram<C> extends AbstractAccumulator<C> {
 
@@ -112,7 +111,7 @@ public class Histogram<C> extends AbstractAccumulator<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		forEach(classes, NonNull);
+		Arrays.asList(classes).forEach(NonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}

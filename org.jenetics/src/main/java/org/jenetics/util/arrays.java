@@ -33,7 +33,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-10-31 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}
@@ -441,51 +441,6 @@ public final class arrays extends StaticObject {
 	public static int indexOf(final Object[] array, final Object element) {
 		return indexOf(array, 0, array.length, element);
 	}
-
-	/**
-	 * Iterates over all elements of the given {@code array} as long as the
-	 * {@code predicate} returns {@code true} (which means <i>continue</i>) and
-	 * returns the index the iteration has been interrupted. -1 is returned if
-	 * all elements were visited.
-	 * <p/>
-	 * Can be used to check all array elements for nullness.
-	 *
-	 * [code]
-	 * public void foo(final Integer[] values) {
-	 *     arrays.foreach(values, object.NonNull);
-	 *     ...
-	 * }
-	 * [/code]
-	 *
-	 * @param array the array to iterate.
-	 * @param consumer the code to apply to every element.
-	 * @throws NullPointerException if one of the elements are {@code null}.
-	 */
-	public static <T> void forEach(
-		final T[] array,
-		final Consumer<? super T> consumer
-	) {
-		for (int i = 0; i < array.length; ++i) {
-			consumer.accept(array[i]);
-		}
-	}
-
-	/**
-	 * Iterates over all elements of the given {@code values}
-	 *
-	 * @param values the values to iterate.
-	 * @param consumer the code to apply to each element.
-	 * @throws NullPointerException if one of the elements are {@code null}.
-	 */
-	public static <T> void forEach(
-		final Iterable<? extends T> values,
-		final Consumer<? super T> consumer
-	) {
-		for (final T value : values) {
-			consumer.accept(value);
-		}
-	}
-
 
 	/**
 	 * Map the array from type A to an other array of type B.
