@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -33,7 +32,7 @@ import java.util.function.Function;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-10-31 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
  */
 public final class arrays extends StaticObject {
 	private arrays() {}

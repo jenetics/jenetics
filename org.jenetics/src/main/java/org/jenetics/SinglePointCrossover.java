@@ -52,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-11-01 $</em>
  */
 public class SinglePointCrossover<G extends Gene<?, G>>
 	extends MultiPointCrossover<G>
@@ -76,8 +76,6 @@ public class SinglePointCrossover<G extends Gene<?, G>>
 	public SinglePointCrossover() {
 		this(0.05);
 	}
-
-
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {

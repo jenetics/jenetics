@@ -19,56 +19,26 @@
  */
 package org.jenetics;
 
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
  * @since @__version__@
  */
-public class StatisticsCollector<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>,
-	A
->
-	implements Collector<Phenotype<G, C>, A, Stats<G, C>>
-{
+public class Stats<G extends Gene<?, G>, C extends Comparable<? super C>> {
+	protected Optimize _optimize;
+	protected int _generation;
+	protected Phenotype<G, C> _best;
+	protected Phenotype<G, C> _worst;
+	protected int _samples;
+	protected double _ageMean;
+	protected double _ageVariance;
+	protected int _killed;
+	protected int _invalid;
 
-	Collectors f;
-
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<Phenotype<G, C>, ?, Stats<G, C>> collector() {
-		return null;
-	}
-
-	@Override
-	public Supplier<A> supplier() {
-		return null;
-	}
-
-	@Override
-	public BiConsumer<A, Phenotype<G, C>> accumulator() {
-		return null;
-	}
-
-	@Override
-	public BinaryOperator<A> combiner() {
-		return null;
-	}
-
-	@Override
-	public Function<A, Stats<G, C>> finisher() {
-		return null;
-	}
-
-	@Override
-	public Set<Characteristics> characteristics() {
 		return null;
 	}
 }

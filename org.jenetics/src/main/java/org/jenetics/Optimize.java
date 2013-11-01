@@ -27,7 +27,7 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-22 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
  */
 public enum Optimize {
 

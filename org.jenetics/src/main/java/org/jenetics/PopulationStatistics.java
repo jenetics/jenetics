@@ -19,56 +19,34 @@
  */
 package org.jenetics;
 
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
  * @since @__version__@
  */
-public class StatisticsCollector<
+public interface PopulationStatistics<
 	G extends Gene<?, G>,
-	C extends Comparable<? super C>,
-	A
+	C extends Comparable<? super C>
 >
-	implements Collector<Phenotype<G, C>, A, Stats<G, C>>
 {
+	/*
+	protected Optimize _optimize = Optimize.MAXIMUM;
+	protected int _generation = 0;
+	protected Phenotype<G, C> _best = null;
+	protected Phenotype<G, C> _worst = null;
+	protected int _samples = 0;
+	protected double _ageMean = NaN;
+	protected double _ageVariance = NaN;
+	protected int _killed = 0;
+	protected int _invalid = 0;
+	*/
 
-	Collectors f;
+	public Phenotype<G, C> getBestPhenotype();
 
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<Phenotype<G, C>, ?, Stats<G, C>> collector() {
-		return null;
-	}
+	public Phenotype<G, C> getWorstPhenotype();
 
-	@Override
-	public Supplier<A> supplier() {
-		return null;
-	}
+	//public Moment<Double> getAgeMoment();
 
-	@Override
-	public BiConsumer<A, Phenotype<G, C>> accumulator() {
-		return null;
-	}
+	public int getPopulationSize();
 
-	@Override
-	public BinaryOperator<A> combiner() {
-		return null;
-	}
-
-	@Override
-	public Function<A, Stats<G, C>> finisher() {
-		return null;
-	}
-
-	@Override
-	public Set<Characteristics> characteristics() {
-		return null;
-	}
 }

@@ -26,32 +26,66 @@ import java.util.function.Supplier;
  * Implements an lazily evaluated value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-09-25 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
  * @since @__version__@
  */
-public final class Lazy<T> implements Supplier<T> {
+public abstract class Lazy<T> implements Supplier<T> {
 
-	private final Supplier<T> _supplier;
-
-	private volatile boolean _evaluated = false;
-	private T _value;
-
-	public Lazy(final Supplier<T> supplier) {
-		_supplier = Objects.requireNonNull(supplier);
+	private Lazy() {
 	}
 
-	@Override
-	public T get() {
-		return _evaluated ? _value : evaluate();
+	public static <T> Lazy<T> valueOf(final Supplier<T> supplier) {
+		return new Value<>(supplier);
 	}
 
-	private synchronized T evaluate() {
-		if (!_evaluated) {
-			_value = _supplier.get();
-			_evaluated = true;
+	private static final class Value<T> extends Lazy<T> {
+		private final Supplier<T> _supplier;
+
+		private boolean _evaluated = false;
+		private T _value;
+
+		private Value(final Supplier<T> supplier) {
+			_supplier = Objects.requireNonNull(supplier);
 		}
 
-		return _value;
+		@Override
+		public T get() {
+			return _evaluated ? _value : evaluate();
+		}
+
+		private T evaluate() {
+			if (!_evaluated) {
+				_value = _supplier.get();
+				_evaluated = true;
+			}
+
+			return _value;
+		}
+	}
+
+	private static final class Safe<T> extends Lazy<T> {
+		private final Supplier<T> _supplier;
+
+		private volatile boolean _evaluated = false;
+		private T _value;
+
+		private Safe(final Supplier<T> supplier) {
+			_supplier = Objects.requireNonNull(supplier);
+		}
+
+		@Override
+		public T get() {
+			return _evaluated ? _value : evaluate();
+		}
+
+		private synchronized T evaluate() {
+			if (!_evaluated) {
+				_value = _supplier.get();
+				_evaluated = true;
+			}
+
+			return _value;
+		}
 	}
 
 }
