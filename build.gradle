@@ -73,7 +73,7 @@ allprojects { Project prj ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.9-rc-2'
+	gradleVersion = '1.9-rc-3'
 }
 
 task alljavadoc(type: Javadoc) {
