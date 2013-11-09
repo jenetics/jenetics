@@ -27,11 +27,11 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-09-25 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-10 $</em>
  * @since @__version__@
  */
 public class LazyTest {
-
+/*
 	@Test
 	public void singleInitialization() {
 		final AtomicInteger count = new AtomicInteger(0);
@@ -43,5 +43,5 @@ public class LazyTest {
 			Assert.assertEquals("value_1", value.get());
 		}
 	}
-
+*/
 }
