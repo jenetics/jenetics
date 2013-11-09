@@ -19,9 +19,16 @@
  */
 package org.jenetics;
 
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-10 $</em>
  * @since @__version__@
  */
 public interface PopulationStatistics<
@@ -47,6 +54,75 @@ public interface PopulationStatistics<
 
 	//public Moment<Double> getAgeMoment();
 
+	public double getAgeMean();
+
+	public double getAgeVariance();
+
 	public int getPopulationSize();
+
+
+	public static class MStats<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+	{
+		public Phenotype<G, C> bestPhenotype;
+		public Phenotype<G, C> worstPhenotype;
+	}
+
+	public static class Collector<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+		implements java.util.stream.Collector<Phenotype<G, C>, MStats<G, C>, PopulationStatistics<G, C>>
+	{
+		@Override
+		public Supplier<MStats<G, C>> supplier() {
+			return () -> new MStats();
+		}
+
+		@Override
+		public BiConsumer<MStats<G, C>, Phenotype<G, C>> accumulator() {
+			return (ms, pt) -> {
+				if (pt.compareTo(ms.bestPhenotype) > 0) {
+					ms.bestPhenotype = pt;
+				}
+				if (pt.compareTo(ms.worstPhenotype) < 0) {
+					ms.worstPhenotype = pt;
+				}
+			};
+		}
+
+		@Override
+		public BinaryOperator<MStats<G, C>> combiner() {
+			return (ms1, ms2) -> {
+				final MStats<G, C> result = new MStats<>();
+				if (ms1.bestPhenotype.compareTo(ms2.bestPhenotype) > 0) {
+					result.bestPhenotype = ms1.bestPhenotype;
+				} else {
+					result.bestPhenotype = ms2.bestPhenotype;
+				}
+				if (ms1.worstPhenotype.compareTo(ms2.worstPhenotype) < 0) {
+					result.worstPhenotype = ms1.worstPhenotype;
+				} else {
+					result.worstPhenotype = ms2.worstPhenotype;
+				}
+
+				return result;
+			};
+		}
+
+		@Override
+		public Function<MStats<G, C>, PopulationStatistics<G, C>> finisher() {
+			return ms -> {
+				return (PopulationStatistics<G, C>)null;
+			};
+		}
+
+		@Override
+		public Set<Characteristics> characteristics() {
+			return null;
+		}
+	}
 
 }
