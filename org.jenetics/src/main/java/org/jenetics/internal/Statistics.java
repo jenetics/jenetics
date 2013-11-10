@@ -19,6 +19,7 @@
  */
 package org.jenetics.internal;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -96,15 +97,15 @@ public class Statistics<
 
 			@Override
 			public Function<MStat<G, C>, Statistics<G, C>> finisher() {
-				return MStat::finish;
+				return ms -> new Statistics<>(ms.best, ms.worst, ms.age);
 			}
 
 			@Override
 			public Set<Characteristics> characteristics() {
-				return EnumSet.of(
+				return Collections.unmodifiableSet(EnumSet.of(
 					Characteristics.CONCURRENT,
 					Characteristics.UNORDERED
-				);
+				));
 			}
 		};
 	}
@@ -118,11 +119,11 @@ public class Statistics<
 		Variance<Integer> age = new Variance<>();
 
 		void updateBest(final Phenotype<G, C> pt, final Optimize optimize) {
-			best = best == null ? best : optimize.best(best, pt);
+			best = best == null ? pt : optimize.best(best, pt);
 		}
 
 		void updateWorst(final Phenotype<G, C> pt, final Optimize optimize) {
-			worst = worst == null ? worst : optimize.worst(worst, pt);
+			worst = worst == null ? pt : optimize.worst(worst, pt);
 		}
 
 		void updateAge(final int value) {
@@ -135,10 +136,6 @@ public class Statistics<
 			result.worst = optimize.worst(worst, other.worst);
 			result.age = age.merge(other.age);
 			return result;
-		}
-
-		Statistics<G, C> finish() {
-			return new Statistics<G, C>(best, worst, age);
 		}
 	}
 
