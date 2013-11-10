@@ -160,7 +160,7 @@ public class Statistics<
 			final double m = samples == 0 ? Double.NaN : ageSum/(double)samples;
 			final double v = samples == 0 ? Double.NaN : (
 				samples == 1 ? 0 :
-				(squareAgeSum - (2*m*samples*ageSum) + samples*m*m)/(samples - 1)
+				((double)squareAgeSum - (double)ageSum*ageSum/(double)samples)/((double)(samples - 1))
 			);
 
 			return new Statistics<G, C>(samples, best, worst, m, v);
