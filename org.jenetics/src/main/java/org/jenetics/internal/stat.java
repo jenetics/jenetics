@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -81,7 +83,10 @@ public final class stat extends StaticObject {
 
 			@Override
 			public Set<Characteristics> characteristics() {
-				return null;
+				return Collections.unmodifiableSet(EnumSet.of(
+					Characteristics.CONCURRENT,
+					Characteristics.UNORDERED
+				));
 			}
 		};
 	}
