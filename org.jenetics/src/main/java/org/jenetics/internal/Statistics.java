@@ -30,6 +30,7 @@ import java.util.stream.Collector;
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
+import org.jenetics.stat.Variance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -42,28 +43,18 @@ public class Statistics<
 >
 {
 
-	private final int _populationSize;
 	private final Phenotype<G, C> _bestPhenotype;
 	private final Phenotype<G, C> _worstPhenotype;
-	private final double _ageMean;
-	private final double _ageVariance;
+	private final Variance<Integer> _age;
 
 	public Statistics(
-		final int populationSize,
 		final Phenotype<G, C> bestPhenotype,
 		final Phenotype<G, C> worstPhenotype,
-		final double ageMean,
-		final double ageVariance
+		final Variance<Integer> age
 	) {
-		_populationSize = populationSize;
 		_bestPhenotype = bestPhenotype;
 		_worstPhenotype = worstPhenotype;
-		_ageMean = ageMean;
-		_ageVariance = ageVariance;
-	}
-
-	public int getPopulationSize() {
-		return _populationSize;
+		_age = age;
 	}
 
 	public Phenotype<G, C> getBestPhenotype() {
@@ -74,12 +65,8 @@ public class Statistics<
 		return _worstPhenotype;
 	}
 
-	public double getAgeMean() {
-		return _ageMean;
-	}
-
-	public double getAgeVariance() {
-		return _ageVariance;
+	public Variance<Integer> getAge() {
+		return _age;
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -128,9 +115,7 @@ public class Statistics<
 	> {
 		Phenotype<G, C> best;
 		Phenotype<G, C> worst;
-		int samples = 0;
-		long ageSum = 0;
-		long squareAgeSum = 0;
+		Variance<Integer> age = new Variance<>();
 
 		void updateBest(final Phenotype<G, C> pt, final Optimize optimize) {
 			best = best == null ? best : optimize.best(best, pt);
@@ -140,30 +125,21 @@ public class Statistics<
 			worst = worst == null ? worst : optimize.worst(worst, pt);
 		}
 
-		void updateAge(final int age) {
-			samples += 1;
-			ageSum += age;
-			squareAgeSum += age*age;
+		void updateAge(final int value) {
+			age.accumulate(value);
 		}
 
 		MStat<G, C> combine(final MStat<G, C> other, final Optimize optimize) {
 			final MStat<G, C> result = new MStat<>();
 			result.best = optimize.best(best, other.best);
 			result.worst = optimize.worst(worst, other.worst);
-			result.samples = samples + other.samples;
-			result.ageSum = ageSum + other.ageSum;
-			result.squareAgeSum = squareAgeSum + other.squareAgeSum;
+			result.age = age.merge(other.age);
 			return result;
 		}
 
 		Statistics<G, C> finish() {
-			final double m = samples == 0 ? Double.NaN : ageSum/(double)samples;
-			final double v = samples == 0 ? Double.NaN : (
-				samples == 1 ? 0 :
-				((double)squareAgeSum - (double)ageSum*ageSum/(double)samples)/((double)(samples - 1))
-			);
-
-			return new Statistics<G, C>(samples, best, worst, m, v);
+			return new Statistics<G, C>(best, worst, age);
 		}
 	}
+
 }

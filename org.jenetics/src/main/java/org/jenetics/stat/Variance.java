@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-
 /**
  * <p>Calculate the variance from a finite sample of <i>N</i> observations.</p>
  * <p><img src="doc-files/variance.gif"
@@ -44,7 +43,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-10 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -77,16 +76,41 @@ public class Variance<N extends Number> extends Mean<N> {
 	 */
 	@Override
 	public void accumulate(final N value) {
+		accumulate(value.doubleValue());
+	}
+
+	public void accumulate(final double value) {
 		if (_samples == 0) {
 			_mean = 0;
 			_m2 = 0;
 		}
 
-		final double data = value.doubleValue();
+		final double data = value;
 		final double delta = data - _mean;
 
 		_mean += delta/(++_samples);
 		_m2 += delta*(data - _mean);
+	}
+
+	/**
+	 * Merges the result of two variances into one.
+	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Parallel_algorithm">
+	 *     Parallel variance calculation</a>
+	 *
+	 * @param other the other variance to merge.
+	 * @return a new variance containing the merged result of {@code this} and
+	 *         {@code other}.
+	 */
+	public Variance merge(final Variance other) {
+		final Variance result = new Variance();
+
+		final double r = other._mean - _mean;
+		result._samples = _samples + other._samples;
+		result._mean = _mean + r*(other._samples/(double)result._samples);
+		result._m2 = _m2 + other._m2 + r*r*(_samples*other._samples/(double)result._samples);
+
+		return result;
 	}
 
 	@Override
