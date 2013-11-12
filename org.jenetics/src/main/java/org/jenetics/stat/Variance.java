@@ -98,7 +98,7 @@ public class Variance<N extends Number> extends Mean<N> {
 	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Parallel_algorithm">
 	 *     Parallel variance calculation</a>
 	 *
-	 * @param other the other variance to merge.
+	 * @param other the other variance to combine.
 	 * @return a new variance containing the merged result of {@code this} and
 	 *         {@code other}.
 	 */
