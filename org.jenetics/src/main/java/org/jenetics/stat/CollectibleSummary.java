@@ -19,6 +19,9 @@
  */
 package org.jenetics.stat;
 
+import static org.jenetics.util.object.eq;
+import static org.jenetics.util.object.hashCodeOf;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
@@ -39,6 +42,9 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _t = 0.0;
 
 	private double _mean = Double.NaN;
+	private double _variance = Double.NaN;
+	private double _skewness = Double.NaN;
+	private double _kurtosis = Double.NaN;
 
 	void accumulate(final N number) {
 		++_samples;
@@ -100,22 +106,52 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getMean() {
-		return 0;
+		return _mean;
 	}
 
 	@Override
 	public double getVariance() {
-		return 0;
+		return _variance;
 	}
 
 	@Override
 	public double getSkewness() {
-		return 0;
+		return _skewness;
 	}
 
 	@Override
 	public double getKurtosis() {
-		return 0;
+		return _kurtosis;
+	}
+
+	@Override
+	public int hashCode() {
+		return hashCodeOf(CollectibleSummary.class)
+			.and(_samples)
+			.and(_min)
+			.and(_max)
+			.and(_sum)
+			.and(_mean)
+			.and(_variance)
+			.and(_skewness)
+			.and(_kurtosis).value();
+	}
+
+	@Override
+	public boolean equals(final Object other) {
+		if (other == null || other.getClass() != getClass()) {
+			return false;
+		}
+
+		final CollectibleSummary sum = (CollectibleSummary)other;
+		return eq(_samples, sum._samples) &&
+				eq(_min, sum._min) &&
+				eq(_max, sum._max) &&
+				eq(_sum, sum._sum) &&
+				eq(_mean, sum._mean) &&
+				eq(_variance, sum._variance) &&
+				eq(_skewness, sum._skewness) &&
+				eq(_kurtosis, sum._kurtosis);
 	}
 
 }
