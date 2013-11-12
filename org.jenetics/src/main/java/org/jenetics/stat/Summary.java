@@ -45,20 +45,29 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 
 	public static <N extends Number & Comparable<? super N>>
 	Collector<N, ?, Summary<N>> collector() {
-		return new Collector<N, MSum<N>, Summary<N>>() {
-			@Override public Supplier<MSum<N>> supplier() {
-				return MSum::new;
+		return new Collector<N, CollectibleSummary<N>, Summary<N>>() {
+			@Override
+			public Supplier<CollectibleSummary<N>> supplier() {
+				return CollectibleSummary::new;
 			}
-			@Override public BiConsumer<MSum<N>, N> accumulator() {
-				return MSum<N>::accumulate;
+
+			@Override
+			public BiConsumer<CollectibleSummary<N>, N> accumulator() {
+				return CollectibleSummary<N>::accumulate;
 			}
-			@Override public BinaryOperator<MSum<N>> combiner() {
-				return MSum<N>::combine;
+
+			@Override
+			public BinaryOperator<CollectibleSummary<N>> combiner() {
+				return CollectibleSummary<N>::combine;
 			}
-			@Override public Function<MSum<N>, Summary<N>> finisher() {
+
+			@Override
+			public Function<CollectibleSummary<N>, Summary<N>> finisher() {
 				return s -> s;
 			}
-			@Override public Set<Characteristics> characteristics() {
+
+			@Override
+			public Set<Characteristics> characteristics() {
 				return Collections.unmodifiableSet(EnumSet.of(
 					Characteristics.CONCURRENT,
 					Characteristics.UNORDERED
@@ -68,7 +77,7 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 	}
 }
 
-final class MSum<N extends Number & Comparable<? super N>>
+final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	implements Summary<N>
 {
 
@@ -110,8 +119,8 @@ final class MSum<N extends Number & Comparable<? super N>>
 		_sum = _t;
 	}
 
-	MSum<N> combine(final MSum<N> other) {
-		final MSum<N> result = new MSum<>();
+	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
+		final CollectibleSummary<N> result = new CollectibleSummary<>();
 
 		result._samples += other._samples;
 		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
