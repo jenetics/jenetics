@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
  * @since @__version__@
  */
 public interface PopulationStatistics<
@@ -78,7 +78,7 @@ public interface PopulationStatistics<
 	{
 		@Override
 		public Supplier<MStats<G, C>> supplier() {
-			return () -> new MStats();
+			return () -> new MStats<>();
 		}
 
 		@Override

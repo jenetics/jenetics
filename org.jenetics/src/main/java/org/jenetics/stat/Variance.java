@@ -43,7 +43,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__version__@ &mdash; <em>$Date: 2013-11-10 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
  */
 public class Variance<N extends Number> extends Mean<N> {
 
@@ -102,8 +102,8 @@ public class Variance<N extends Number> extends Mean<N> {
 	 * @return a new variance containing the merged result of {@code this} and
 	 *         {@code other}.
 	 */
-	public Variance merge(final Variance other) {
-		final Variance result = new Variance();
+	public Variance<N> merge(final Variance<N> other) {
+		final Variance<N> result = new Variance<>();
 
 		final double r = other._mean - _mean;
 		result._samples = _samples + other._samples;
