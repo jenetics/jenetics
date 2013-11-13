@@ -27,10 +27,11 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-13 $</em>
  * @since @__version__@
  */
 public interface Summary<N extends Number & Comparable<? super N>> {
@@ -69,8 +70,9 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 			@Override
 			public Set<Characteristics> characteristics() {
 				return Collections.unmodifiableSet(EnumSet.of(
-					Characteristics.CONCURRENT,
-					Characteristics.UNORDERED
+					//Characteristics.CONCURRENT,
+					//Characteristics.UNORDERED,
+					Characteristics.IDENTITY_FINISH
 				));
 			}
 		};

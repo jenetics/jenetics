@@ -19,12 +19,13 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.Double.NaN;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-13 $</em>
  * @since @__version__@
  */
 final class CollectibleSummary<N extends Number & Comparable<? super N>>
@@ -41,16 +42,21 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _y = 0.0;
 	private double _t = 0.0;
 
-	private double _mean = Double.NaN;
-	private double _variance = Double.NaN;
-	private double _skewness = Double.NaN;
-	private double _kurtosis = Double.NaN;
+	private double _mean = NaN;
+	private double _skewness = NaN;
+	private double _kurtosis = NaN;
+
+	// Helper variable for calculating the variance.
+	private double _m2 = NaN;
 
 	void accumulate(final N number) {
+		final double value = number.doubleValue();
+
 		++_samples;
 		updateMin(number);
 		updateMax(number);
-		updateSum(number.doubleValue());
+		updateSum(value);
+		updateMoment(value);
 	}
 
 	private void updateMin(final N number) {
@@ -72,16 +78,42 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		_sum = _t;
 	}
 
+	public void updateMoment(final double value) {
+		if (_samples == 1) {
+			_mean = 0;
+			_m2 = 0;
+		}
+
+		final double data = value;
+		final double delta = data - _mean;
+
+		_mean += delta/_samples;
+		_m2 += delta*(data - _mean);
+	}
+
 	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
 		final CollectibleSummary<N> result = new CollectibleSummary<>();
 
-		result._samples += other._samples;
+		result._samples = _samples + other._samples;
 		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
 		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
 		result.updateSum(_sum);
 		result.updateSum(other._sum);
 
+		combineVariance(other, result);
 		return result;
+	}
+
+	private void combineVariance(
+		final CollectibleSummary<N> other,
+		final CollectibleSummary<N> result
+	) {
+		final double delta = other._mean - _mean;
+		result._samples = _samples + other._samples;
+		result._mean = _mean + delta*other._samples/(double)result._samples;
+
+		result._m2 = _m2 + other._m2 +
+			delta*delta*_samples*other._samples/(double)result._samples;
 	}
 
 	@Override
@@ -111,7 +143,15 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getVariance() {
-		return _variance;
+		double variance = NaN;
+
+		if (_samples == 1) {
+			variance = _m2;
+		} else if (_samples > 1) {
+			variance = _m2/(_samples - 1);
+		}
+
+		return variance;
 	}
 
 	@Override
@@ -132,7 +172,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 			.and(_max)
 			.and(_sum)
 			.and(_mean)
-			.and(_variance)
+			.and(_m2)
 			.and(_skewness)
 			.and(_kurtosis).value();
 	}
@@ -149,7 +189,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 				eq(_max, sum._max) &&
 				eq(_sum, sum._sum) &&
 				eq(_mean, sum._mean) &&
-				eq(_variance, sum._variance) &&
+				eq(_m2, sum._m2) &&
 				eq(_skewness, sum._skewness) &&
 				eq(_kurtosis, sum._kurtosis);
 	}
