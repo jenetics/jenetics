@@ -58,6 +58,8 @@ public class SummaryTest {
 		Assert.assertEquals(summary.getSum(), expected.getSum(), 0.00001);
 		Assert.assertEquals(summary.getMean(), expected.getMean(), 0.00001);
 		Assert.assertEquals(summary.getVariance(), expected.getVariance(), 0.00001);
+		Assert.assertEquals(summary.getSkewness(), expected.getSkewness(), 0.00001);
+		Assert.assertEquals(summary.getKurtosis(), expected.getKurtosis(), 0.00001);
 
 		final Summary<Double> psummary = numbers.parallelStream().collect(Summary.collector());
 		Assert.assertEquals(psummary.getSampleSize(), numbers.size());

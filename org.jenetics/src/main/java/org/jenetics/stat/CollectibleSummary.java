@@ -32,7 +32,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	implements Summary<N>
 {
 
-	private long _samples = 0L;
+	private long _n = 0L;
 	private N _min;
 	private N _max;
 
@@ -43,16 +43,13 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _t = 0.0;
 
 	private double _mean = NaN;
-	private double _skewness = NaN;
-	private double _kurtosis = NaN;
-
-	// Helper variable for calculating the variance.
 	private double _m2 = NaN;
+	private double _m3 = NaN;
+	private double _m4 = NaN;
 
 	void accumulate(final N number) {
 		final double value = number.doubleValue();
 
-		++_samples;
 		updateMin(number);
 		updateMax(number);
 		updateSum(value);
@@ -79,22 +76,60 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	}
 
 	public void updateMoment(final double value) {
-		if (_samples == 1) {
+
+		if (_n == 0) {
 			_mean = 0;
 			_m2 = 0;
+			_m3 = 0;
+			_m4 = 0;
 		}
-
+/*
 		final double data = value;
 		final double delta = data - _mean;
 
-		_mean += delta/_samples;
+		_mean += delta/ _n;
 		_m2 += delta*(data - _mean);
+*/
+
+		final double n1 = _n;
+		++_n;
+		final double delta = value - _mean;
+		final double deltaN = delta/_n;
+		final double deltaN2 = deltaN*deltaN;
+		final double term1 = delta*deltaN*n1;
+		_mean += deltaN;
+		_m4 += term1*deltaN2 *(_n*_n - 3*_n + 3) + 6*deltaN2*_m2 - 4*deltaN*_m3;
+		_m3 += term1*deltaN*(_n - 2) - 3*deltaN*_m2;
+		_m2 += term1;
 	}
 
+/*
+	def online_kurtosis(data):
+	n = 0
+	mean = 0
+	M2 = 0
+	M3 = 0
+	M4 = 0
+
+	for x in data:
+		n1 = n
+		n = n + 1
+		delta = x - mean
+		delta_n = delta / n
+		delta_n2 = delta_n * delta_n
+		term1 = delta * delta_n * n1
+		mean = mean + delta_n
+		M4 = M4 + term1 * delta_n2 * (n*n - 3*n + 3) + 6 * delta_n2 * M2 - 4 * delta_n * M3
+		M3 = M3 + term1 * delta_n * (n - 2) - 3 * delta_n * M2
+		M2 = M2 + term1
+
+	kurtosis = (n*M4) / (M2*M2) - 3
+	return kurtosis
+*/
 	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
 		final CollectibleSummary<N> result = new CollectibleSummary<>();
 
-		result._samples = _samples + other._samples;
+		result._n = _n + other._n;
 		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
 		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
 		result.updateSum(_sum);
@@ -109,16 +144,16 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		final CollectibleSummary<N> result
 	) {
 		final double delta = other._mean - _mean;
-		result._samples = _samples + other._samples;
-		result._mean = _mean + delta*other._samples/(double)result._samples;
+		result._n = _n + other._n;
+		result._mean = _mean + delta*other._n /(double)result._n;
 
 		result._m2 = _m2 + other._m2 +
-			delta*delta*_samples*other._samples/(double)result._samples;
+			delta*delta* _n *other._n /(double)result._n;
 	}
 
 	@Override
 	public long getSampleSize() {
-		return _samples;
+		return _n;
 	}
 
 	@Override
@@ -145,10 +180,10 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	public double getVariance() {
 		double variance = NaN;
 
-		if (_samples == 1) {
+		if (_n == 1) {
 			variance = _m2;
-		} else if (_samples > 1) {
-			variance = _m2/(_samples - 1);
+		} else if (_n > 1) {
+			variance = _m2/(_n - 1);
 		}
 
 		return variance;
@@ -156,25 +191,36 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getSkewness() {
-		return _skewness;
+		if (_n < 3) {
+			return Double.NaN;
+		}
+
+		double variance = _m2/(_n - 1);
+		if (variance < 10E-20) {
+			return 0.0d;
+		} else {
+			double n0 = _n;
+			return (n0*_m3) /
+				((n0 - 1)*(n0 -2)*Math.sqrt(variance)*variance);
+		}
 	}
 
 	@Override
 	public double getKurtosis() {
-		return _kurtosis;
+		return (_n*_m4)/(_m2*_m2) - 3;
 	}
 
 	@Override
 	public int hashCode() {
 		return hashCodeOf(CollectibleSummary.class)
-			.and(_samples)
+			.and(_n)
 			.and(_min)
 			.and(_max)
 			.and(_sum)
 			.and(_mean)
 			.and(_m2)
-			.and(_skewness)
-			.and(_kurtosis).value();
+			.and(_m3)
+			.and(_m4).value();
 	}
 
 	@Override
@@ -184,14 +230,14 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		}
 
 		final CollectibleSummary sum = (CollectibleSummary)other;
-		return eq(_samples, sum._samples) &&
+		return eq(_n, sum._n) &&
 				eq(_min, sum._min) &&
 				eq(_max, sum._max) &&
 				eq(_sum, sum._sum) &&
 				eq(_mean, sum._mean) &&
 				eq(_m2, sum._m2) &&
-				eq(_skewness, sum._skewness) &&
-				eq(_kurtosis, sum._kurtosis);
+				eq(_m3, sum._m3) &&
+				eq(_m4, sum._m4);
 	}
 
 }
