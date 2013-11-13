@@ -43,7 +43,7 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-04 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-13 $</em>
  */
 abstract class IntStreamAdapter implements IntStream {
 
@@ -104,16 +104,6 @@ abstract class IntStreamAdapter implements IntStream {
 	@Override
 	public IntStream limit(final long maxSize) {
 		return _adoptee.limit(maxSize);
-	}
-
-	@Override
-	public IntStream substream(final long startInclusive) {
-		return _adoptee.substream(startInclusive);
-	}
-
-	@Override
-	public IntStream substream(final long startInclusive, final long endExclusive) {
-		return _adoptee.substream(startInclusive, endExclusive);
 	}
 
 	@Override
@@ -248,6 +238,11 @@ abstract class IntStreamAdapter implements IntStream {
 	@Override
 	public IntStream unordered() {
 		return _adoptee.unordered();
+	}
+
+	@Override
+	public IntStream skip(final long n) {
+		return _adoptee.skip(n);
 	}
 
 	@Override
