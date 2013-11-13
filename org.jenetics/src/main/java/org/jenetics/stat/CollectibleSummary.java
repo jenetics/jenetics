@@ -25,7 +25,7 @@ import static org.jenetics.util.object.hashCodeOf;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
  * @since @__version__@
  */
 final class CollectibleSummary<N extends Number & Comparable<? super N>>
@@ -53,7 +53,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		updateMin(number);
 		updateMax(number);
 		updateSum(value);
-		updateMoment(value);
+		updateMoments(value);
 	}
 
 	private void updateMin(final N number) {
@@ -75,7 +75,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		_sum = _t;
 	}
 
-	public void updateMoment(final double value) {
+	private void updateMoments(final double value) {
 
 		if (_n == 0) {
 			_mean = 0;
@@ -135,11 +135,12 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		result.updateSum(_sum);
 		result.updateSum(other._sum);
 
-		combineVariance(other, result);
+		combineMoments(other, result);
 		return result;
 	}
 
-	private void combineVariance(
+	// http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+	private void combineMoments(
 		final CollectibleSummary<N> other,
 		final CollectibleSummary<N> result
 	) {
@@ -149,6 +150,19 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 		result._m2 = _m2 + other._m2 +
 			delta*delta* _n *other._n /(double)result._n;
+
+		result._m3 = _m3 + other._m3 +
+			delta*delta*delta*(
+				_n*other._n*(_n - other._n)/(result._n*result._n)
+			) +
+			3*delta*(_n*other._m2 - other._n*_m2)/result._n;
+
+		result._m4 = _m4 + other._m4 +
+			delta*delta*delta*delta*(
+				_n*other._n*(_n*_n - _n*other._n + other._n*other._n)/(result._n*result._n*result._n)
+			) +
+			6*delta*delta*(_n*_n*other._m2 + other._n*other._n*_m2)/(result._n*result._n) +
+			4*delta*(_n*other._m3 - other._n*_m3)/result._n;
 	}
 
 	@Override
@@ -207,7 +221,20 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getKurtosis() {
-		return (_n*_m4)/(_m2*_m2) - 3;
+		//return (_n*_m4)/(_m2*_m2) - 3;
+		double kurtosis = Double.NaN;
+		if (_n > 3) {
+			final double variance = _m2/(_n - 1);
+			if (_n <= 3 || variance < 10E-20) {
+				kurtosis = 0.0;
+			} else {
+				kurtosis =
+					(_n * (_n + 1)*_m4 -
+						3*_m2*_m2*(_n - 1))/
+						((_n - 1)*(_n -2)*(_n -3)*variance*variance);
+			}
+		}
+		return kurtosis;
 	}
 
 	@Override
