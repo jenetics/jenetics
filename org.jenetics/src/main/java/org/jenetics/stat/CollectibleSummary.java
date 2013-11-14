@@ -29,9 +29,7 @@ import static org.jenetics.util.object.hashCodeOf;
  * @since @__version__@
  */
 final class CollectibleSummary<N extends Number & Comparable<? super N>>
-	implements
-		Summary<N>,
-		Collectible<N, CollectibleSummary<N>>
+	implements Summary<N>
 {
 
 	private long _n = 0L;
@@ -49,8 +47,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _m3 = NaN;
 	private double _m4 = NaN;
 
-	@Override
-	public void accumulate(final N number) {
+	void accumulate(final N number) {
 		final double value = number.doubleValue();
 
 		updateMin(number);
@@ -129,8 +126,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	kurtosis = (n*M4) / (M2*M2) - 3
 	return kurtosis
 */
-	@Override
-	public CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
+	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
 		final CollectibleSummary<N> result = new CollectibleSummary<>();
 
 		result._n = _n + other._n;

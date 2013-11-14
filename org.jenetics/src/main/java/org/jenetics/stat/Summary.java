@@ -19,8 +19,8 @@
  */
 package org.jenetics.stat;
 
-import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Collector.Characteristics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,11 +39,12 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 
 	public static <N extends Number & Comparable<? super N>>
 	Collector<N, ?, Summary<N>> collector() {
-		return new CollectorImpl<N, CollectibleSummary<N>, Summary<N>>(
+		return Collector.<N, CollectibleSummary<N>, Summary<N>>of(
 			CollectibleSummary::new,
 			CollectibleSummary::accumulate,
 			CollectibleSummary::combine,
-			s -> s
+			s -> s,
+			Characteristics.IDENTITY_FINISH
 		);
 	}
 
