@@ -19,19 +19,12 @@
  */
 package org.jenetics.stat;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-13 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
  * @since @__version__@
  */
 public interface Summary<N extends Number & Comparable<? super N>> {
@@ -46,36 +39,13 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 
 	public static <N extends Number & Comparable<? super N>>
 	Collector<N, ?, Summary<N>> collector() {
-		return new Collector<N, CollectibleSummary<N>, Summary<N>>() {
-			@Override
-			public Supplier<CollectibleSummary<N>> supplier() {
-				return CollectibleSummary::new;
-			}
-
-			@Override
-			public BiConsumer<CollectibleSummary<N>, N> accumulator() {
-				return CollectibleSummary<N>::accumulate;
-			}
-
-			@Override
-			public BinaryOperator<CollectibleSummary<N>> combiner() {
-				return CollectibleSummary<N>::combine;
-			}
-
-			@Override
-			public Function<CollectibleSummary<N>, Summary<N>> finisher() {
-				return s -> s;
-			}
-
-			@Override
-			public Set<Characteristics> characteristics() {
-				return Collections.unmodifiableSet(EnumSet.of(
-					//Characteristics.CONCURRENT,
-					//Characteristics.UNORDERED,
-					Characteristics.IDENTITY_FINISH
-				));
-			}
-		};
+		return new CollectorImpl<N, CollectibleSummary<N>, Summary<N>>(
+			CollectibleSummary::new,
+			CollectibleSummary::accumulate,
+			CollectibleSummary::combine,
+			s -> s
+		);
 	}
+
 }
 

@@ -21,13 +21,13 @@ package org.jenetics.stat;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-12 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
  * @since @__version__@
  */
 interface Collectible<N, C extends Collectible<N, C>> {
 
 	void accumulate(final N sample);
 
-	C merge(final C other);
+	C combine(final C other);
 
 }
