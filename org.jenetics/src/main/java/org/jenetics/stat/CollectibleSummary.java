@@ -20,6 +20,7 @@
 package org.jenetics.stat;
 
 import static java.lang.Double.NaN;
+import static java.lang.Math.sqrt;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -33,15 +34,14 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 {
 
 	private long _n = 0L;
-	private N _min;
-	private N _max;
+	private N _min = null;
+	private N _max = null;
 
 	// Sum variables which are used for the Kahan summation algorithm.
 	private double _sum = 0.0;
 	private double _c = 0.0;
-	private double _y = 0.0;
-	private double _t = 0.0;
 
+	// Variables used for statistical moments.
 	private double _mean = NaN;
 	private double _m2 = NaN;
 	private double _m3 = NaN;
@@ -50,46 +50,38 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	void accumulate(final N number) {
 		final double value = number.doubleValue();
 
-		updateMin(number);
-		updateMax(number);
-		updateSum(value);
-		updateMoments(value);
+		accumulateMin(number);
+		accumulateMax(number);
+		accumulateSum(value);
+		accumulateMoments(value);
 	}
 
-	private void updateMin(final N number) {
-		if (_min == null || _min.compareTo(number) > 0) {
-			_min = number;
+	private void accumulateMin(final N value) {
+		if (_min == null || _min.compareTo(value) > 0) {
+			_min = value;
 		}
 	}
 
-	private void updateMax(final N number) {
-		if (_max == null || _max.compareTo(number) < 0) {
-			_max = number;
+	private void accumulateMax(final N value) {
+		if (_max == null || _max.compareTo(value) < 0) {
+			_max = value;
 		}
 	}
 
-	private void updateSum(final double number) {
-		_y = number - _c;
-		_t = _sum + _y;
-		_c = _t - _sum - _y;
-		_sum = _t;
+	private void accumulateSum(final double value) {
+		final double y = value - _c;
+		final double t = _sum + y;
+		_c = t - _sum - y;
+		_sum = t;
 	}
 
-	private void updateMoments(final double value) {
-
+	private void accumulateMoments(final double value) {
 		if (_n == 0) {
 			_mean = 0;
 			_m2 = 0;
 			_m3 = 0;
 			_m4 = 0;
 		}
-/*
-		final double data = value;
-		final double delta = data - _mean;
-
-		_mean += delta/ _n;
-		_m2 += delta*(data - _mean);
-*/
 
 		final double n1 = _n;
 		++_n;
@@ -103,37 +95,14 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		_m2 += term1;
 	}
 
-/*
-	def online_kurtosis(data):
-	n = 0
-	mean = 0
-	M2 = 0
-	M3 = 0
-	M4 = 0
-
-	for x in data:
-		n1 = n
-		n = n + 1
-		delta = x - mean
-		delta_n = delta / n
-		delta_n2 = delta_n * delta_n
-		term1 = delta * delta_n * n1
-		mean = mean + delta_n
-		M4 = M4 + term1 * delta_n2 * (n*n - 3*n + 3) + 6 * delta_n2 * M2 - 4 * delta_n * M3
-		M3 = M3 + term1 * delta_n * (n - 2) - 3 * delta_n * M2
-		M2 = M2 + term1
-
-	kurtosis = (n*M4) / (M2*M2) - 3
-	return kurtosis
-*/
 	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
 		final CollectibleSummary<N> result = new CollectibleSummary<>();
 
 		result._n = _n + other._n;
 		result._min = _min.compareTo(other._min) < 0 ? _min : other._min;
 		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
-		result.updateSum(_sum);
-		result.updateSum(other._sum);
+		result.accumulateSum(_sum);
+		result.accumulateSum(other._sum);
 
 		combineMoments(other, result);
 		return result;
@@ -141,28 +110,28 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	// http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
 	private void combineMoments(
-		final CollectibleSummary<N> other,
-		final CollectibleSummary<N> result
+		final CollectibleSummary<N> b,
+		final CollectibleSummary<N> r
 	) {
-		final double delta = other._mean - _mean;
-		result._n = _n + other._n;
-		result._mean = _mean + delta*other._n /(double)result._n;
+		final double d = b._mean - _mean;
+		final double d2 = d*d;
+		final double d3 = d2*d;
+		final double d4 = d3*d;
 
-		result._m2 = _m2 + other._m2 +
-			delta*delta* _n *other._n /(double)result._n;
+		r._n = _n + b._n;
 
-		result._m3 = _m3 + other._m3 +
-			delta*delta*delta*(
-				_n*other._n*(_n - other._n)/(result._n*result._n)
-			) +
-			3*delta*(_n*other._m2 - other._n*_m2)/result._n;
+		r._mean = _mean + d*b._n /(double)r._n;
 
-		result._m4 = _m4 + other._m4 +
-			delta*delta*delta*delta*(
-				_n*other._n*(_n*_n - _n*other._n + other._n*other._n)/(result._n*result._n*result._n)
-			) +
-			6*delta*delta*(_n*_n*other._m2 + other._n*other._n*_m2)/(result._n*result._n) +
-			4*delta*(_n*other._m3 - other._n*_m3)/result._n;
+		r._m2 = _m2 + b._m2 + d2* _n *b._n /(double)r._n;
+
+		r._m3 = _m3 + b._m3 + d3*(_n*b._n*(_n - b._n)/(r._n*r._n)) +
+				3*d*(_n*b._m2 - b._n*_m2)/r._n;
+
+		r._m4 = _m4 + b._m4 + d4*(
+					_n*b._n*(_n*_n - _n*b._n + b._n*b._n)/(r._n*r._n*r._n)
+				) +
+				6.0*d*d*(_n*_n*b._m2 + b._n*b._n*_m2)/(r._n*r._n) +
+				4.0*d*(_n*b._m3 - b._n*_m3)/r._n;
 	}
 
 	@Override
@@ -192,46 +161,42 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getVariance() {
-		double variance = NaN;
-
+		double var = NaN;
 		if (_n == 1) {
-			variance = _m2;
+			var = _m2;
 		} else if (_n > 1) {
-			variance = _m2/(_n - 1);
+			var = _m2/(_n - 1);
 		}
 
-		return variance;
+		return var;
 	}
 
 	@Override
 	public double getSkewness() {
-		if (_n < 3) {
-			return Double.NaN;
+		double skewness = NaN;
+		if (_n >= 3) {
+			final double var = _m2/(_n - 1);
+			if (var < 10E-20) {
+				skewness = 0.0d;
+			} else {
+				skewness = (_n*_m3) /((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
+			}
 		}
 
-		double variance = _m2/(_n - 1);
-		if (variance < 10E-20) {
-			return 0.0d;
-		} else {
-			double n0 = _n;
-			return (n0*_m3) /
-				((n0 - 1)*(n0 -2)*Math.sqrt(variance)*variance);
-		}
+		return skewness;
 	}
 
 	@Override
 	public double getKurtosis() {
-		//return (_n*_m4)/(_m2*_m2) - 3;
-		double kurtosis = Double.NaN;
+		double kurtosis = NaN;
 		if (_n > 3) {
-			final double variance = _m2/(_n - 1);
-			if (_n <= 3 || variance < 10E-20) {
+			final double var = _m2/(_n - 1);
+			if (_n <= 3 || var < 10E-20) {
 				kurtosis = 0.0;
 			} else {
-				kurtosis =
-					(_n * (_n + 1)*_m4 -
-						3*_m2*_m2*(_n - 1))/
-						((_n - 1)*(_n -2)*(_n -3)*variance*variance);
+				kurtosis = (_n * (_n + 1)*_m4 -
+							3*_m2*_m2*(_n - 1))/
+								((_n - 1)*(_n -2)*(_n -3)*var*var);
 			}
 		}
 		return kurtosis;

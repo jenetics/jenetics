@@ -23,11 +23,19 @@ import java.util.stream.Collector;
 import java.util.stream.Collector.Characteristics;
 
 /**
+ * Reporting interface for basic univariate statistics.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
  * @since @__version__@
  */
 public interface Summary<N extends Number & Comparable<? super N>> {
+
+	/**
+	 * Return the number of
+	 *
+	 * @return
+	 */
 	public long getSampleCount();
 	public N getMin();
 	public N getMax();
