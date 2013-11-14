@@ -46,7 +46,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _c = 0.0;
 
 	// Variables used for statistical moments.
-	private double _mean = 0.0;
+	private double _m1 = 0.0;
 	private double _m2 = 0.0;
 	private double _m3 = 0.0;
 	private double _m4 = 0.0;
@@ -74,11 +74,11 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	private void accumulateMoments(final double value) {
 		++_n;
-		final double d = value - _mean;
+		final double d = value - _m1;
 		final double dN = d/_n;
 		final double dN2 = dN*dN;
 		final double t1 = d*dN*(_n - 1.0);
-		_mean += dN;
+		_m1 += dN;
 		_m4 += t1*dN2 *(_n*_n - 3.0*_n + 3.0) + 6.0*dN2*_m2 - 4.0*dN*_m3;
 		_m3 += t1*dN*(_n - 2.0) - 3.0*dN*_m2;
 		_m2 += t1;
@@ -115,14 +115,14 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		final CollectibleSummary<N> b,
 		final CollectibleSummary<N> r
 	) {
-		final double d = b._mean - _mean;
+		final double d = b._m1 - _m1;
 		final double d2 = d*d;
 		final double d3 = d2*d;
 		final double d4 = d3*d;
 
 		r._n = _n + b._n;
 
-		r._mean = _mean + d*b._n /(double)r._n;
+		r._m1 = _m1 + d*b._n /(double)r._n;
 
 		r._m2 = _m2 + b._m2 + d2* _n *b._n /(double)r._n;
 
@@ -158,7 +158,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getMean() {
-		return _n == 0 ? NaN : _mean;
+		return _n == 0 ? NaN : _m1;
 	}
 
 	@Override
@@ -211,7 +211,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 			.and(_min)
 			.and(_max)
 			.and(_sum)
-			.and(_mean)
+			.and(_m1)
 			.and(_m2)
 			.and(_m3)
 			.and(_m4).value();
@@ -228,7 +228,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 				eq(_min, sum._min) &&
 				eq(_max, sum._max) &&
 				eq(_sum, sum._sum) &&
-				eq(_mean, sum._mean) &&
+				eq(_m1, sum._m1) &&
 				eq(_m2, sum._m2) &&
 				eq(_m3, sum._m3) &&
 				eq(_m4, sum._m4);
