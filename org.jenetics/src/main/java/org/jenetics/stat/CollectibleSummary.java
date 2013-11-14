@@ -166,7 +166,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	}
 
 	@Override
-	public long getSampleSize() {
+	public long getSampleCount() {
 		return _n;
 	}
 

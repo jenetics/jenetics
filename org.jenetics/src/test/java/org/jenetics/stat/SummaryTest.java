@@ -52,7 +52,7 @@ public class SummaryTest {
 		numbers.forEach(expected::addValue);
 
 		final Summary<Double> summary = numbers.stream().collect(Summary.collector());
-		Assert.assertEquals(summary.getSampleSize(), numbers.size());
+		Assert.assertEquals(summary.getSampleCount(), numbers.size());
 		Assert.assertEquals(summary.getMin(), expected.getMin());
 		Assert.assertEquals(summary.getMax(), expected.getMax());
 		Assert.assertEquals(summary.getSum(), expected.getSum(), 0.00001);
@@ -62,7 +62,7 @@ public class SummaryTest {
 		Assert.assertEquals(summary.getKurtosis(), expected.getKurtosis(), 0.00001);
 
 		final Summary<Double> psummary = numbers.parallelStream().collect(Summary.collector());
-		Assert.assertEquals(psummary.getSampleSize(), numbers.size());
+		Assert.assertEquals(psummary.getSampleCount(), numbers.size());
 		Assert.assertEquals(psummary.getMin(), expected.getMin());
 		Assert.assertEquals(psummary.getMax(), expected.getMax());
 		Assert.assertEquals(psummary.getSum(), expected.getSum(), 0.00001);

@@ -28,7 +28,7 @@ import java.util.stream.Collector.Characteristics;
  * @since @__version__@
  */
 public interface Summary<N extends Number & Comparable<? super N>> {
-	public long getSampleSize();
+	public long getSampleCount();
 	public N getMin();
 	public N getMax();
 	public double getSum();
