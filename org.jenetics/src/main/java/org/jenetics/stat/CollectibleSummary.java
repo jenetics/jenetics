@@ -24,7 +24,11 @@ import static java.lang.Math.sqrt;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
+import java.util.Objects;
+
 /**
+ * Mutable implementation of the statistical {@code Summary} interface.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
  * @since @__version__@
@@ -37,9 +41,8 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private N _min = null;
 	private N _max = null;
 
-	// Sum variables which are used for the Kahan summation algorithm.
 	private double _sum = 0.0;
-	private double _c = 0.0;
+	private double _c = 0.0; // Used for the Kahan summation algorithm.
 
 	// Variables used for statistical moments.
 	private double _mean = NaN;
@@ -47,6 +50,11 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private double _m3 = NaN;
 	private double _m4 = NaN;
 
+	/**
+	 * Accumulates the given number.
+	 *
+	 * @param number the {@code number to accumulate}.
+	 */
 	void accumulate(final N number) {
 		final double value = number.doubleValue();
 
@@ -83,19 +91,28 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 			_m4 = 0;
 		}
 
-		final double n1 = _n;
 		++_n;
-		final double delta = value - _mean;
-		final double deltaN = delta/_n;
-		final double deltaN2 = deltaN*deltaN;
-		final double term1 = delta*deltaN*n1;
-		_mean += deltaN;
-		_m4 += term1*deltaN2 *(_n*_n - 3*_n + 3) + 6*deltaN2*_m2 - 4*deltaN*_m3;
-		_m3 += term1*deltaN*(_n - 2) - 3*deltaN*_m2;
-		_m2 += term1;
+		final double d = value - _mean;
+		final double dN = d/_n;
+		final double dN2 = dN*dN;
+		final double t1 = d*dN*(_n - 1.0);
+		_mean += dN;
+		_m4 += t1*dN2 *(_n*_n - 3*_n + 3) + 6*dN2*_m2 - 4*dN*_m3;
+		_m3 += t1*dN*(_n - 2) - 3*dN*_m2;
+		_m2 += t1;
 	}
 
+	/**
+	 * Combine two summary statistic objects.
+	 *
+	 * @param other the other statistical summary to combine with {@code this}
+	 *        one.
+	 * @return a new statistical summary objects.
+	 * @throws java.lang.NullPointerException if the other statistical summary
+	 *         is {@code null}.
+	 */
 	CollectibleSummary<N> combine(final CollectibleSummary<N> other) {
+		Objects.requireNonNull(other);
 		final CollectibleSummary<N> result = new CollectibleSummary<>();
 
 		result._n = _n + other._n;
@@ -103,12 +120,15 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 		result._max = _max.compareTo(other._max) > 0 ? _max : other._max;
 		result.accumulateSum(_sum);
 		result.accumulateSum(other._sum);
-
 		combineMoments(other, result);
+
 		return result;
 	}
 
-	// http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
+	/**
+	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
+	 *      Computing Higher-Order Moments Online</a>
+	 */
 	private void combineMoments(
 		final CollectibleSummary<N> b,
 		final CollectibleSummary<N> r
@@ -216,12 +236,12 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	}
 
 	@Override
-	public boolean equals(final Object other) {
-		if (other == null || other.getClass() != getClass()) {
+	public boolean equals(final Object obj) {
+		if (obj == null || obj.getClass() != getClass()) {
 			return false;
 		}
 
-		final CollectibleSummary sum = (CollectibleSummary)other;
+		final CollectibleSummary sum = (CollectibleSummary)obj;
 		return eq(_n, sum._n) &&
 				eq(_min, sum._min) &&
 				eq(_max, sum._max) &&
