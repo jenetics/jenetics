@@ -234,4 +234,13 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 				eq(_m4, sum._m4);
 	}
 
+	@Override
+	public String toString() {
+		return String.format(
+			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s2=%s, S=%s, K=%s]",
+			_n, _min, _max, _sum,
+			getMean(), getVariance(), getSkewness(), getKurtosis()
+		);
+	}
+
 }
