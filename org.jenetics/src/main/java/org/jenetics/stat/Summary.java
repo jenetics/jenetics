@@ -25,6 +25,11 @@ import java.util.stream.Collector.Characteristics;
 /**
  * Reporting interface for basic univariate statistics.
  *
+ * [code]
+ * final Stream<Integer> numbers = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+ * final Summary<Integer> summary = numbers.collect(Summary.collector());
+ * [/code]
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
  * @since @__version__@
@@ -32,19 +37,86 @@ import java.util.stream.Collector.Characteristics;
 public interface Summary<N extends Number & Comparable<? super N>> {
 
 	/**
-	 * Return the number of
+	 * Return the number of accumulated/collected samples.
 	 *
-	 * @return
+	 * @return the number of accumulated/collected samples.
 	 */
 	public long getSampleCount();
+
+	/**
+	 * Return the minimum value.
+	 *
+	 * @return the minimum value. Is {@code null} if the sample count is zero.
+	 */
 	public N getMin();
+
+	/**
+	 * Return the maximum value.
+	 *
+	 * @return the maximum value. Is {@code null} if the sample count is zero.
+	 */
 	public N getMax();
+
+	/**
+	 * Returns the sum of the values that have been added to <i>Univariate</i>.
+	 * The sum is calculated using the
+	 * <a href="http://en.wikipedia.org/wiki/Kahan_summation_algorithm">
+	 * Kahan summation algorithm</a>.
+	 *
+	 * @return the sum of the values.
+	 */
 	public double getSum();
+
+	/**
+	 * Returns the arithmetic <a href="http://www.xycoon.com/arithmetic_mean.htm">
+	 * mean</a> of the available values
+	 *
+	 * @return the mean or Double.NaN if no values have been added.
+	 */
 	public double getMean();
+
+	/**
+	 * Returns the (sample) variance of the accumulated values.
+	 *
+	 * <p>This method returns the bias-corrected sample variance (using
+	 * {@code n - 1} in the denominator).
+	 *
+	 * @return the variance, Double.NaN if no values have been added or 0.0 for
+	 *         a single accumulated value.
+	 */
 	public double getVariance();
+
+	/**
+	 * Returns the skewness of the available values. Skewness is a measure of
+	 * the asymmetry of a given distribution.
+	 *
+	 * @return the skewness, Double.NaN if no values have been added or 0.0 for
+	 *         a value set &lt;=2.
+	 */
 	public double getSkewness();
+
+	/**
+	 * Returns the Kurtosis of the available values. Kurtosis is a measure of
+	 * the <i>peakedness</i> of a distribution
+	 *
+	 * @return the kurtosis, Double.NaN if no values have been added, or 0.0 for
+	 *         a value set &lt;=3.
+	 */
 	public double getKurtosis();
 
+	/**
+	 * Return a {@link java.util.stream.Collector} which can be used to
+	 * <i>collect</i> statistical summary information of a given number
+	 * {@link java.util.stream.Stream}.
+	 *
+	 * [code]
+	 * final Stream<Integer> numbers = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	 * final Summary<Integer> summary = numbers.collect(Summary.collector());
+	 * [/code]
+	 *
+	 * @param <N> the number type to collect.
+	 * @return a statistical summary information collector.
+	 */
 	public static <N extends Number & Comparable<? super N>>
 	Collector<N, ?, Summary<N>> collector() {
 		return Collector.<N, CollectibleSummary<N>, Summary<N>>of(
