@@ -42,13 +42,14 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	private N _max = null;
 
 	private double _sum = 0.0;
-	private double _c = 0.0; // Used for the Kahan summation algorithm.
+	// Used for the Kahan summation algorithm.
+	private double _c = 0.0;
 
 	// Variables used for statistical moments.
-	private double _mean = NaN;
-	private double _m2 = NaN;
-	private double _m3 = NaN;
-	private double _m4 = NaN;
+	private double _mean = 0.0;
+	private double _m2 = 0.0;
+	private double _m3 = 0.0;
+	private double _m4 = 0.0;
 
 	/**
 	 * Accumulates the given number.
@@ -58,22 +59,10 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	void accumulate(final N number) {
 		final double value = number.doubleValue();
 
-		accumulateMin(number);
-		accumulateMax(number);
+		if (_min == null || _min.compareTo(number) > 0) _min = number;
+		if (_max == null || _max.compareTo(number) < 0) _max = number;
 		accumulateSum(value);
 		accumulateMoments(value);
-	}
-
-	private void accumulateMin(final N value) {
-		if (_min == null || _min.compareTo(value) > 0) {
-			_min = value;
-		}
-	}
-
-	private void accumulateMax(final N value) {
-		if (_max == null || _max.compareTo(value) < 0) {
-			_max = value;
-		}
 	}
 
 	private void accumulateSum(final double value) {
@@ -84,21 +73,14 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	}
 
 	private void accumulateMoments(final double value) {
-		if (_n == 0) {
-			_mean = 0;
-			_m2 = 0;
-			_m3 = 0;
-			_m4 = 0;
-		}
-
 		++_n;
 		final double d = value - _mean;
 		final double dN = d/_n;
 		final double dN2 = dN*dN;
 		final double t1 = d*dN*(_n - 1.0);
 		_mean += dN;
-		_m4 += t1*dN2 *(_n*_n - 3*_n + 3) + 6*dN2*_m2 - 4*dN*_m3;
-		_m3 += t1*dN*(_n - 2) - 3*dN*_m2;
+		_m4 += t1*dN2 *(_n*_n - 3.0*_n + 3.0) + 6.0*dN2*_m2 - 4.0*dN*_m3;
+		_m3 += t1*dN*(_n - 2.0) - 3.0*dN*_m2;
 		_m2 += t1;
 	}
 
@@ -176,7 +158,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 	@Override
 	public double getMean() {
-		return _mean;
+		return _n == 0 ? NaN : _mean;
 	}
 
 	@Override
