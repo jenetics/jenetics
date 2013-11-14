@@ -25,6 +25,7 @@ import java.util.Random;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -42,32 +43,69 @@ public class SummaryTest {
 		return numbers;
 	}
 
-	@Test
-	public void summary() {
-		final List<Double> numbers = numbers(10000);
+	@Test(dataProvider = "sampleCounts")
+	public void summary(final Integer sampleCounts, final Double epsilon) {
+		final List<Double> numbers = numbers(sampleCounts);
 
 		final DescriptiveStatistics expected = new DescriptiveStatistics();
 		numbers.forEach(expected::addValue);
 
 		final Summary<Double> summary = numbers.stream().collect(Summary.collector());
 		Assert.assertEquals(summary.getSampleCount(), numbers.size());
-		Assert.assertEquals(summary.getMin(), expected.getMin());
-		Assert.assertEquals(summary.getMax(), expected.getMax());
-		Assert.assertEquals(summary.getSum(), expected.getSum(), 0.00001);
-		Assert.assertEquals(summary.getMean(), expected.getMean(), 0.00001);
-		Assert.assertEquals(summary.getVariance(), expected.getVariance(), 0.00001);
-		Assert.assertEquals(summary.getSkewness(), expected.getSkewness(), 0.00001);
-		Assert.assertEquals(summary.getKurtosis(), expected.getKurtosis(), 0.00001);
+		assertEqualsDouble(
+			summary.getMin() == null ? Double.NaN : summary.getMin(),
+			expected.getMin(), 0.0
+		);
+		assertEqualsDouble(
+			summary.getMax() == null ? Double.NaN : summary.getMax(),
+			expected.getMax(), 0.0
+		);
+		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
+		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
+		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
+		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
+		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
 
 		final Summary<Double> psummary = numbers.parallelStream().collect(Summary.collector());
 		Assert.assertEquals(psummary.getSampleCount(), numbers.size());
-		Assert.assertEquals(psummary.getMin(), expected.getMin());
-		Assert.assertEquals(psummary.getMax(), expected.getMax());
-		Assert.assertEquals(psummary.getSum(), expected.getSum(), 0.00001);
-		Assert.assertEquals(psummary.getMean(), expected.getMean(), 0.00001);
-		Assert.assertEquals(psummary.getVariance(), expected.getVariance(), 0.00001);
-		Assert.assertEquals(psummary.getSkewness(), expected.getSkewness(), 0.00001);
-		Assert.assertEquals(psummary.getKurtosis(), expected.getKurtosis(), 0.00001);
+		assertEqualsDouble(
+			psummary.getMin() == null ? Double.NaN : summary.getMin(),
+			expected.getMin(), 0.0
+		);
+		assertEqualsDouble(
+			psummary.getMax() == null ? Double.NaN : summary.getMax(),
+			expected.getMax(), 0.0
+		);
+		assertEqualsDouble(psummary.getSum(), expected.getSum(), epsilon);
+		assertEqualsDouble(psummary.getMean(), expected.getMean(), epsilon);
+		assertEqualsDouble(psummary.getVariance(), expected.getVariance(), epsilon);
+		assertEqualsDouble(psummary.getSkewness(), expected.getSkewness(), epsilon);
+		assertEqualsDouble(psummary.getKurtosis(), expected.getKurtosis(), epsilon);
+	}
+
+	private static void assertEqualsDouble(final double a, final double b, final double e) {
+		if (Double.isNaN(b)) {
+			Assert.assertTrue(
+				Double.isNaN(a),
+				String.format("Expected: Double.NaN \nActual: %s", a)
+			);
+		} else {
+			Assert.assertEquals(a, b, e);
+		}
+	}
+
+	@DataProvider(name = "sampleCounts")
+	public Object[][] sampleCounts() {
+		return new Object[][] {
+			{0, 0.0},
+			{1, 0.0},
+			{2, 0.05},
+			{3, 0.05},
+			{100, 0.05},
+			{1000, 0.0001},
+			{10000, 0.00001},
+			{100000, 0.000001}
+		};
 	}
 
 }
