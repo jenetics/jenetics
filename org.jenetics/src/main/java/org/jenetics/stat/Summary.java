@@ -114,6 +114,11 @@ public interface Summary<N extends Number & Comparable<? super N>> {
 	 * final Summary<Integer> summary = numbers.collect(Summary.collector());
 	 * [/code]
 	 *
+	 * @see <a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">
+	 *      Algorithms for calculating variance.</a>
+	 * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
+	 *      Computing Higher-Order Moments Online</a>
+	 *
 	 * @param <N> the number type to collect.
 	 * @return a statistical summary information collector.
 	 */
