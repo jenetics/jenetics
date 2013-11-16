@@ -30,7 +30,7 @@ import java.util.Objects;
  * Mutable implementation of the statistical {@code Summary} interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-14 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-16 $</em>
  * @since @__version__@
  */
 final class CollectibleSummary<N extends Number & Comparable<? super N>>
@@ -61,6 +61,7 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 
 		if (_min == null || _min.compareTo(number) > 0) _min = number;
 		if (_max == null || _max.compareTo(number) < 0) _max = number;
+		++_n;
 		accumulateSum(value);
 		accumulateMoments(value);
 	}
@@ -73,7 +74,6 @@ final class CollectibleSummary<N extends Number & Comparable<? super N>>
 	}
 
 	private void accumulateMoments(final double value) {
-		++_n;
 		final double d = value - _m1;
 		final double dN = d/_n;
 		final double dN2 = dN*dN;
