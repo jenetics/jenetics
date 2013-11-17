@@ -21,13 +21,15 @@ package org.jenetics;
 
 import java.util.stream.Collector;
 
+import org.jenetics.stat.Summary;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version @__version__@ &mdash; <em>$Date: 2013-11-01 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-11-17 $</em>
  * @since @__version__@
  */
-public class Stats<G extends Gene<?, G>, C extends Comparable<? super C>> {
-	protected Optimize _optimize;
+public interface Stats<G extends Gene<?, G>, C extends Comparable<? super C>> {
+	/*protected Optimize _optimize;
 	protected int _generation;
 	protected Phenotype<G, C> _best;
 	protected Phenotype<G, C> _worst;
@@ -35,7 +37,17 @@ public class Stats<G extends Gene<?, G>, C extends Comparable<? super C>> {
 	protected double _ageMean;
 	protected double _ageVariance;
 	protected int _killed;
-	protected int _invalid;
+	protected int _invalid;*/
+
+	public Optimize getOptimize();
+	public int getGeneration();
+	public Phenotype<G, C> getBestPhenotype();
+	public Phenotype<G, C> getWorstPhenotype();
+	public int getSampleCount();
+	public Summary<Integer> getAgeSummary();
+	public int getKillCount();
+	public int getInvalidCount();
+
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<Phenotype<G, C>, ?, Stats<G, C>> collector() {
