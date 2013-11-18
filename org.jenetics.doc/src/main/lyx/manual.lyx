@@ -9463,6 +9463,108 @@ test
 
 \series bold
 \emph on
+Apache Commons Math
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+\emph on
+Apache Commons Math
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+: 
+\emph on
+3.2
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://commons.apache.org/proper/commons-math/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.2-bin.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+: 
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Apache License, Version 2.0"
+target "http://testng.org/license"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+: 
+\emph on
+test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
 Java2Html
 \begin_inset Index idx
 status collapsed
@@ -9596,7 +9698,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 1.8 (
+: 1.9 (
 \emph on
 or later
 \emph default
@@ -9637,7 +9739,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-1.8-bin.zip
+http://services.gradle.org/distributions/gradle-1.9-bin.zip
 \end_layout
 
 \end_inset
