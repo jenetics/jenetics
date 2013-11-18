@@ -17,16 +17,48 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.gradle.plugin
+
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date$</em>
  */
+protected class JeneticsPlugin
+	extends ProjectAdapter
+	implements Plugin<Project>
+{
 
-task clean << {
-	buildDir.deleteDir()
+	@Override
+	public void apply(final Project project) {
+		this.project = project
+	}
+
+	protected boolean hasJavaSources() {
+		hasSources('java')
+	}
+
+	protected boolean hasGroovySources() {
+		hasSources('groovy')
+	}
+
+	protected boolean hasScalaSources() {
+		hasSources('scala')
+	}
+
+	protected boolean hasLyxSources() {
+		hasSources('lyx')
+	}
+
+	protected boolean hasSources(final String source) {
+		def srcDir = project.file("${project.projectDir}/src/main/${source}")
+		def testDir = project.file("${project.projectDir}/src/test/${source}")
+
+		srcDir.isDirectory() || testDir.isDirectory()
+	}
+
 }
-
-
