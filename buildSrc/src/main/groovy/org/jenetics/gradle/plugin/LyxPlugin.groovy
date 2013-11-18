@@ -28,8 +28,8 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  * Plugin which adds a build task for creating a PDF file from the lyx sources.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2013-10-29 $</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date: 2013-11-18 $</em>
  */
 class LyxPlugin extends JeneticsPlugin {
 
