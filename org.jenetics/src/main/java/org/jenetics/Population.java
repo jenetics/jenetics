@@ -23,9 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
-import java.util.AbstractCollection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,10 +36,8 @@ import javolution.xml.XMLFormat;
 import javolution.xml.XMLSerializable;
 import javolution.xml.stream.XMLStreamException;
 
-import org.jenetics.util.Concurrent;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
-import org.jenetics.util.arrays;
 
 /**
  * A population is a collection of Phenotypes.
@@ -112,35 +108,11 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		final Factory<? extends Phenotype<G, C>> factory,
 		final int count
 	) {
-		final PhenotypeArray<G, C> array = new PhenotypeArray<>(count);
-		fill(factory, array._array);
-		_population.addAll(array);
-
-		return this;
-	}
-
-	private static <
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-	void fill(
-		final Factory<? extends Phenotype<G, C>> factory,
-		final Object[] array
-	) {
-		try (Concurrent c = new Concurrent()) {
-			final int threads = c.getParallelism();
-			final int[] parts = arrays.partition(array.length, threads);
-
-			for (int i = 0; i < parts.length - 1; ++i) {
-				final int part = i;
-
-				c.execute(new Runnable() { @Override public void run() {
-					for (int j = parts[part]; j < parts[part + 1]; ++j) {
-						array[j] = factory.newInstance();
-					}
-				}});
-			}
+		for (int i = count; --i >= 0;) {
+			_population.add(factory.newInstance());
 		}
+		//lists.fill(_population, factory, count);
+		return this;
 	}
 
 	/**
@@ -420,39 +392,6 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		public void read(final InputElement xml, final Population p) {
 		}
 	};
-
-
-	private static final class PhenotypeArray<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		extends AbstractCollection<Phenotype<G, C>>
-	{
-
-		final Object[] _array;
-
-		PhenotypeArray(final int size) {
-			_array = new Object[size];
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public Iterator<Phenotype<G, C>> iterator() {
-			return Arrays.asList((Phenotype<G, C>[])_array).iterator();
-		}
-
-		@Override
-		public int size() {
-			return _array.length;
-		}
-
-		@Override
-		public Object[] toArray() {
-			return _array;
-		}
-
-	}
-
 
 }
 
