@@ -39,8 +39,8 @@ import javolution.context.LocalContext;
  * [/code]
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date$</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class Concurrent implements Executor, AutoCloseable {
 
