@@ -29,6 +29,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 dependencies {
 	compile Include.JScience
+	
+	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 }
 
