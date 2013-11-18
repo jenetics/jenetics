@@ -1,3 +1,5 @@
+Improve Gradle build scripts.
+
 Jenetics-1.4.1
 - Fix bug in ListIterator implementation of the 'Seq' classes.
 
