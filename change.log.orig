@@ -3,7 +3,6 @@ Jenetics-1.5.0
 - Mark some 'arrays' class methods as deprecated.
 - Fix/streamline BitChromosome constructors.
 - Improve Gradle build scripts.
-- The 'org.jenetics.util.Concurrency' class has been deprecated and was replaced by 'org.jenetics.util.Concurrent'.
 
 Jenetics-1.4.1
 - Fix bug in ListIterator implementation of the 'Seq' classes.
