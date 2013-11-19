@@ -23,7 +23,7 @@ import org.testng.Assert;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2013-11-19 $</em>
  */
 public final class StatisticsAssert {
 
@@ -38,7 +38,7 @@ public final class StatisticsAssert {
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 
-		final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
+		final double maxChi = ChiSquare.chi(0.999, degreeOfFreedom)*2;
 
 		if (χ2 > maxChi) {
 			System.out.println(String.format(
