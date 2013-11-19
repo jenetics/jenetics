@@ -44,21 +44,21 @@ public final class StatisticsAssert extends StaticObject {
 
 		if (χ2 > maxChi) {
 			System.out.println(String.format(
-					"The histogram %s doesn't follow the distribution %s. \n" +
-					"χ2 must be smaller than %f but was %f",
-					histogram, distribution,
-					maxChi, χ2
-				));
+				"The histogram %s doesn't follow the distribution %s. \n" +
+				"χ2 must be smaller than %f but was %f",
+				histogram, distribution,
+				maxChi, χ2
+			));
 		}
 
 		Assert.assertTrue(
 				χ2 <= maxChi,
 				String.format(
-						"The histogram %s doesn't follow the distribution %s. \n" +
-						"χ2 must be smaller than %f but was %f",
-						histogram, distribution,
-						maxChi, χ2
-					)
+					"The histogram %s doesn't follow the distribution %s. \n" +
+					"χ2 must be smaller than %f but was %f",
+					histogram, distribution,
+					maxChi, χ2
+				)
 			);
 	}
 
