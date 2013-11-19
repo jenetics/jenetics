@@ -37,7 +37,7 @@ new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'
-
+apply plugin: 'packaging'
 
 ext {
 	now = Calendar.getInstance()

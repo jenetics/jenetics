@@ -84,7 +84,7 @@ class PackagingPlugin implements Plugin<Project> {
 			this
 		)
 
-		if (project.plugins.hasPlugin('java') && project.name != 'buildSrc') {
+		if (project.plugins.hasPlugin('java')) {
 			jarjar()
 		}
 		packaging()
@@ -343,6 +343,7 @@ class PackagingPluginExtension {
 	String name = 'Jenetics'
 	String author = 'Franz Wilhelmstötter'
 	String url = 'http://jenetics.sourceforge.net'
+	Boolean jar = true
 	Boolean jarjar = true
 	Boolean javadoc = true
 

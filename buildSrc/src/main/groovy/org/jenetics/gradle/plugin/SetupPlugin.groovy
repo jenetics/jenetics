@@ -52,8 +52,7 @@ class SetupPlugin extends JeneticsPlugin {
 		if (hasScalaSources()) {
 			project.plugins.apply(ScalaPlugin)
 			applyJava()
-		}
-		if (hasJavaSources() && !hasScalaSources()) {
+		} else if (hasJavaSources()) {
 			project.plugins.apply(JavaPlugin)
 			applyJava()
 		}
@@ -63,8 +62,6 @@ class SetupPlugin extends JeneticsPlugin {
 		if (hasLyxSources()) {
 			project.plugins.apply(LyxPlugin)
 		}
-
-		project.plugins.apply(PackagingPlugin)
 
 		project.tasks.withType(JavaCompile) { JavaCompile compile ->
 			compile.options.encoding = 'UTF-8'
@@ -79,12 +76,14 @@ class SetupPlugin extends JeneticsPlugin {
 		plugins.apply(IdeaPlugin)
 
 		clean.doLast {
-			file("${projectDir}/test-output").deleteDir()
+			file("${project.projectDir}/test-output").deleteDir()
 		}
 
-		configureOsgi()
-		configureTestReporting()
-		configureJavadoc()
+		if (!isBuildSrc()) {
+			configureOsgi()
+			configureTestReporting()
+			configureJavadoc()
+		}
 	}
 
 	private void configureOsgi() {
