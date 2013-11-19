@@ -38,7 +38,7 @@ public final class StatisticsAssert {
 		final int degreeOfFreedom = histogram.length();
 		assert (degreeOfFreedom > 0);
 
-		final double maxChi = ChiSquare.chi_999(degreeOfFreedom)*2;
+		final double maxChi = ChiSquare.chi(0.999, degreeOfFreedom)*2;
 
 		if (χ2 > maxChi) {
 			System.out.println(String.format(
