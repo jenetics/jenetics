@@ -344,7 +344,7 @@ public class LCG64ShiftRandom extends Random64 {
 		}
 
 		@Override
-		public void jump(final long step) {
+		public synchronized void jump(final long step) {
 			super.jump(step);
 		}
 
