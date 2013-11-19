@@ -30,7 +30,7 @@ import org.jenetics.gradle.task.ChecksumTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5 &mdash; <em>$Date: 2013-11-18 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
@@ -73,7 +73,7 @@ allprojects { Project prj ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.9-rc-4'
+	gradleVersion = '1.9'
 }
 
 task alljavadoc(type: Javadoc) {
