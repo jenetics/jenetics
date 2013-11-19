@@ -31,7 +31,7 @@ import org.jenetics.gradle.Version
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-20 $</em>
  */
 class PackagingPlugin implements Plugin<Project> {
 
@@ -221,17 +221,9 @@ class PackagingPlugin implements Plugin<Project> {
 					// Copy the build library
 					_project.copy {
 						from("${_project.buildDir}/libs")
-						include '*-jarjar*.jar'
-						into _exportLibDir
-					}
-				}
-			}
-			if (_project.tasks.findByPath('jar') != null) {
-				_project.tasks.findByPath('jar').doLast {
-					// Copy the build library
-					_project.copy {
-						from("${_project.buildDir}/libs")
-						exclude '*-jarjar*.jar'
+						if (!_project.packaging.jarjar) {
+							exclude '*-jarjar*.jar'
+						}
 						into _exportLibDir
 					}
 				}
