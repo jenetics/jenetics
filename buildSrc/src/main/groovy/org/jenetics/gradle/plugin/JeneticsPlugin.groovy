@@ -54,6 +54,10 @@ protected class JeneticsPlugin
 		hasSources('lyx')
 	}
 
+	protected boolean isBuildSrc() {
+		project.name == 'buildSrc'
+	}
+
 	protected boolean hasSources(final String source) {
 		def srcDir = project.file("${project.projectDir}/src/main/${source}")
 		def testDir = project.file("${project.projectDir}/src/test/${source}")

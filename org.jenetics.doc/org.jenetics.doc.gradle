@@ -25,8 +25,7 @@
  * @version 1.5 &mdash; <em>$Date$</em>
  */
 
-task clean << {
-	buildDir.deleteDir()
-}
+apply plugin: 'packaging'
+
 
 

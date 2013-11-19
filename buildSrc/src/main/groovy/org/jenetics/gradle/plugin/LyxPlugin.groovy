@@ -48,7 +48,7 @@ class LyxPlugin extends JeneticsPlugin {
 	private void applyLyx() {
 		task(BUILD) << {
 			copy {
-				from("${projectDir}/src/main") {
+				from("${project.projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
 				into temporaryDir
@@ -59,7 +59,7 @@ class LyxPlugin extends JeneticsPlugin {
 				])
 			}
 			copy {
-				from("${projectDir}/src/main") {
+				from("${project.projectDir}/src/main") {
 					exclude 'lyx/manual.lyx'
 				}
 				into temporaryDir
@@ -71,7 +71,7 @@ class LyxPlugin extends JeneticsPlugin {
 			doLast {
 				copy {
 					from "${project.build.temporaryDir}/lyx/manual.pdf"
-					into "${buildDir}/doc"
+					into "${project.buildDir}/doc"
 					rename { String fileName ->
 						fileName.replace('manual.pdf', "manual-${version}.pdf")
 					}
@@ -79,8 +79,10 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		project.build.doLast {
-			project.lyx.execute()
+		project.build.finalizedBy(project.lyx)
+
+		task('clean') << {
+			project.buildDir.deleteDir()
 		}
 	}
 

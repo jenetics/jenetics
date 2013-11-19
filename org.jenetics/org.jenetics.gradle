@@ -27,6 +27,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version 1.5 &mdash; <em>$Date$</em>
  */
 
+apply plugin: 'packaging'
+ 
 dependencies {
 	compile Include.JScience
 	
