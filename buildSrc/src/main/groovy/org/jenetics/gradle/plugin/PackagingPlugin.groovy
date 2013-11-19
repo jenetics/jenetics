@@ -84,7 +84,10 @@ class PackagingPlugin implements Plugin<Project> {
 			this
 		)
 
-		if (project.plugins.hasPlugin('java')) {
+		if (project.plugins.hasPlugin('java') &&
+			_project.packaging.jarjar &&
+			_project.name != 'buildSrc')
+		{
 			jarjar()
 		}
 		packaging()
@@ -218,9 +221,17 @@ class PackagingPlugin implements Plugin<Project> {
 					// Copy the build library
 					_project.copy {
 						from("${_project.buildDir}/libs")
-						if (!_project.packaging.jarjar) {
-							exclude '*-jarjar*.jar'
-						}
+						include '*-jarjar*.jar'
+						into _exportLibDir
+					}
+				}
+			}
+			if (_project.tasks.findByPath('jar') != null) {
+				_project.tasks.findByPath('jar').doLast {
+					// Copy the build library
+					_project.copy {
+						from("${_project.buildDir}/libs")
+						exclude '*-jarjar*.jar'
 						into _exportLibDir
 					}
 				}
