@@ -60,9 +60,7 @@ allprojects {
 }
 
 subprojects { Project prj ->
-	if (prj.name != 'buildSrc') {
-		prj.plugins.apply(SetupPlugin.class)
-	}
+	prj.plugins.apply(SetupPlugin.class)
 }
 
 allprojects { Project prj ->
