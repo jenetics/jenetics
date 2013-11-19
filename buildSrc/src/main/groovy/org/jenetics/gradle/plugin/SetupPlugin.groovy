@@ -146,8 +146,8 @@ class SetupPlugin extends JeneticsPlugin {
 					'http://jscience.org/api/',
 					'http://javolution.org/target/site/apidocs/'
 				]
-				windowTitle = "Jenetics ${version}"
-				docTitle = "<h1>Jenetics ${version}</h1>"
+				windowTitle = "Jenetics ${project.version}"
+				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
 				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
