@@ -161,13 +161,12 @@ class SetupPlugin extends JeneticsPlugin {
 
 			// Copy the doc-files.
 			doLast {
-				println("COPY to ${project.javadoc.destinationDir.path}")
 				copy {
 					from('src/main/java') {
 						include 'org/**/doc-files/*.*'
 					}
 					includeEmptyDirs = false
-					into project.javadoc.destinationDir.path
+					into destinationDir.path
 				}
 			}
 		}
