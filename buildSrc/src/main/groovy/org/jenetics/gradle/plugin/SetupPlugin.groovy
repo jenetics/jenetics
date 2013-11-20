@@ -36,7 +36,7 @@ import org.jenetics.gradle.task.ColorizerTask
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-19 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-20 $</em>
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -158,6 +158,18 @@ class SetupPlugin extends JeneticsPlugin {
 				//group('Core API', ['org.jenetics']).
 				//group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
 			}
+
+			// Copy the doc-files.
+			doLast {
+				println("COPY to ${project.javadoc.destinationDir.path}")
+				copy {
+					from('src/main/java') {
+						include 'org/**/doc-files/*.*'
+					}
+					includeEmptyDirs = false
+					into project.javadoc.destinationDir.path
+				}
+			}
 		}
 
 		task('colorize', type: ColorizerTask) {
@@ -178,18 +190,7 @@ class SetupPlugin extends JeneticsPlugin {
 					]
 					classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
 				}
-				copy {
-					from 'src/main/java/org/*/doc-files'
-					into "${destination}/org/*/doc-files"
-				}
-				copy {
-					from 'src/main/java/org/*/stat/doc-files'
-					into "${destination}/org/*/stat/doc-files"
-				}
-				copy {
-					from 'src/main/java/org/*/util/doc-files'
-					into "${destination}/org/*/util/doc-files"
-				}
+
 			}
 		}
 
