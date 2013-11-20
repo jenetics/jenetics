@@ -33,12 +33,12 @@ import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-30 $</em>
+ * @version <em>$Date: 2013-11-20 $</em>
  */
 @Suite("Population")
 public class PopulationTest {
 
-	private int SIZE = 1000000;
+	private int SIZE = 1_000_000;
 	private final int LOOPS = 20;
 
 	private final Population<Float64Gene, Float64> _population = newFloat64GenePopulation(
