@@ -19,6 +19,8 @@
  */
 package org.jenetics.internal.util;
 
+import static java.lang.String.format;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -83,6 +85,8 @@ public final class DieHarder {
 		dieharderArgs.add("-g");
 		dieharderArgs.add("200");
 
+		printv();
+
 		final long start = System.currentTimeMillis();
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
 		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-a", "-g", "200");
@@ -113,10 +117,28 @@ public final class DieHarder {
 
 	private static void printt(final String title, final Object... args) {
 		System.out.println("#=============================================================================#");
-		System.out.println(String.format(
-			"# %-76s#", String.format(title, args)
+		System.out.println(format(
+			"# %-76s#", format(title, args)
 		));
 		System.out.println("#=============================================================================#");
+	}
+
+	private static void printv() {
+		System.out.println("#=============================================================================#");
+		System.out.println(format(
+			"# %-76s#", format("java version \"%s\"", p("java.version"))
+		));
+		System.out.println(format(
+			"# %-76s#", format("%s (build %s)", p("java.runtime.name"), p("java.runtime.version"))
+		));
+		System.out.println(format(
+			"# %-76s#", format("%s (build %s)", p("java.vm.name"), p("java.vm.version"))
+		));
+		System.out.println("#=============================================================================#");
+	}
+
+	private static String p(final String name) {
+		return System.getProperty(name);
 	}
 
 }
