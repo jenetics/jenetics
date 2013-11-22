@@ -25,7 +25,7 @@ import org.jenetics.util.math;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2013-11-22 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-23 $</em>
  */
 public class SeedRandom extends Random64 {
 
@@ -43,6 +43,7 @@ public class SeedRandom extends Random64 {
 # Testing: org.jenetics.internal.util.SeedRandom                              #
 #=============================================================================#
 #=============================================================================#
+# Linux 3.11.0-13-generic (amd64)                                             #
 # java version "1.7.0_45"                                                     #
 # Java(TM) SE Runtime Environment (build 1.7.0_45-b18)                        #
 # Java HotSpot(TM) 64-Bit Server VM (build 24.45-b08)                         #
