@@ -50,7 +50,7 @@ public final class DieHarder {
 			try {
 				while (!Thread.currentThread().isInterrupted()) {
 					for (int i = 0; i < 1000; ++i) {
-						_out.writeInt(_random.nextInt());
+						_out.writeLong(_random.nextLong());
 					}
 				}
 			} catch (IOException ignore) {
