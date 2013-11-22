@@ -31,7 +31,7 @@ import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date$</em>
  */
 public final class DieHarder {
 
