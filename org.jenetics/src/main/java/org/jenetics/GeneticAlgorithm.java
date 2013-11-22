@@ -34,7 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.jscience.mathematics.number.Float64;
 
 import org.jenetics.util.Array;
-import org.jenetics.util.Concurrent;
+import org.jenetics.util.Concurrency;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-18 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-22 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -460,8 +460,10 @@ public class GeneticAlgorithm<
 
 	private void evaluate() {
 		_evaluateTimer.start();
-		try (final Concurrent c = new Concurrent()) {
-			c.execute(_population);
+		try (Concurrency c = Concurrency.start()) {
+			for (int i =  _population.size(); --i >= 0;) {
+				c.execute(_population.get(i));
+			}
 		}
 		_evaluateTimer.stop();
 	}
@@ -498,7 +500,7 @@ public class GeneticAlgorithm<
 		final int numberOfOffspring = getNumberOfOffsprings();
 		assert (numberOfSurvivors + numberOfOffspring == _populationSize);
 
-		try (Concurrent c = new Concurrent()) {
+		try (Concurrency c = Concurrency.start()) {
 			c.execute(new Runnable() { @Override public void run() {
 				final Population<G, C> survivors = _survivorSelector.select(
 					_population, numberOfSurvivors, _optimization
@@ -526,7 +528,7 @@ public class GeneticAlgorithm<
 		assert (survivors.size() + offsprings.size() == _populationSize);
 		final Population<G, C> population = new Population<>(_populationSize);
 
-		try (Concurrent c = new Concurrent()) {
+		try (Concurrency c = Concurrency.start()) {
 			// Kill survivors which are to old and replace it with new one.
 			c.execute(new Runnable() { @Override public void run() {
 				for (int i = 0, n = survivors.size(); i < n; ++i) {
