@@ -24,7 +24,8 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-11-22 $</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date: 2013-11-22 $</em>
  */
 public class SeedRandom extends Random64 {
 
