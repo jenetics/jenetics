@@ -26,7 +26,9 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -71,7 +73,11 @@ public final class DieHarder {
 		Random random = null;
 		try {
 			random = (Random)Class.forName(randomName).newInstance();
-			printt("Testing: %s", randomName);
+			printt(
+				"Testing: %s (%s)",
+				randomName,
+				new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
+			);
 		} catch (Exception e) {
 			System.out.println("Can't create random class " + randomName);
 			return;
@@ -116,29 +122,38 @@ public final class DieHarder {
 	}
 
 	private static void printt(final String title, final Object... args) {
-		System.out.println("#=============================================================================#");
-		System.out.println(format(
-			"# %-76s#", format(title, args)
-		));
-		System.out.println("#=============================================================================#");
+		println("#=============================================================================#");
+		println("# %-76s#", format(title, args));
+		println("#=============================================================================#");
 	}
 
 	private static void printv() {
-		System.out.println("#=============================================================================#");
-		System.out.println(format(
-			"# %-76s#", format("java version \"%s\"", p("java.version"))
-		));
-		System.out.println(format(
-			"# %-76s#", format("%s (build %s)", p("java.runtime.name"), p("java.runtime.version"))
-		));
-		System.out.println(format(
-			"# %-76s#", format("%s (build %s)", p("java.vm.name"), p("java.vm.version"))
-		));
-		System.out.println("#=============================================================================#");
+		println("#=============================================================================#");
+		println(
+			"# %-76s#",
+			format("%s %s (%s) ", p("os.name"), p("os.version"), p("os.arch"))
+		);
+		println(
+			"# %-76s#",
+			format("java version \"%s\"", p("java.version"))
+		);
+		println(
+			"# %-76s#",
+			format("%s (build %s)", p("java.runtime.name"), p("java.runtime.version"))
+		);
+		println(
+			"# %-76s#",
+			format("%s (build %s)", p("java.vm.name"), p("java.vm.version"))
+		);
+		println("#=============================================================================#");
 	}
 
 	private static String p(final String name) {
 		return System.getProperty(name);
+	}
+
+	private static void println(final String pattern, final Object... args) {
+		System.out.println(format(pattern, args));
 	}
 
 }
