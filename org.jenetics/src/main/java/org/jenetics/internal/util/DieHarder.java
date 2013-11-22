@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.util;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -31,7 +31,7 @@ import java.util.Random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date$</em>
+ * @version <em>$Date: 2013-11-22 $</em>
  */
 public final class DieHarder {
 
