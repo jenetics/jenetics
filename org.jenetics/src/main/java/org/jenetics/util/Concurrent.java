@@ -42,7 +42,8 @@ import javolution.context.LocalContext;
  * @since 1.5
  * @version 1.5 &mdash; <em>$Date$</em>
  */
-public final class Concurrent implements Executor, AutoCloseable {
+@Deprecated
+final class Concurrent implements Executor, AutoCloseable {
 
 	/* ************************************************************************
 	 * Static concurrent context.
