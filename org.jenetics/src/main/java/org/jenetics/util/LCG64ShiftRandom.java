@@ -71,7 +71,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
- * @version 1.1 &mdash; <em>$Date: 2013-11-22 $</em>
+ * @version 1.1 &mdash; <em>$Date: 2013-11-23 $</em>
  */
 public class LCG64ShiftRandom extends Random64 {
 
@@ -84,7 +84,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-11-22 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-11-23 $</em>
 	 */
 	public static final class Param implements Serializable {
 
@@ -184,7 +184,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-11-22 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-11-23 $</em>
 	 */
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
@@ -274,7 +274,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-11-22 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-11-23 $</em>
 	 */
 	public static class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
@@ -610,6 +610,7 @@ public class LCG64ShiftRandom extends Random64 {
 # Testing: org.jenetics.util.LCG64ShiftRandom                                 #
 #=============================================================================#
 #=============================================================================#
+# Linux 3.11.0-13-generic (amd64)                                             #
 # java version "1.7.0_45"                                                     #
 # Java(TM) SE Runtime Environment (build 1.7.0_45-b18)                        #
 # Java HotSpot(TM) 64-Bit Server VM (build 24.45-b08)                         #
