@@ -65,7 +65,7 @@ public final class DieHarder {
 
 	public static void main(final String[] args) throws Exception {
 		if ( args.length < 1) {
-			System.out.println("Usage: java org.jenetics.util.DieHarder <random-class-name>");
+			System.out.println("Usage: java org.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 
