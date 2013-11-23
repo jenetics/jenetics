@@ -47,8 +47,8 @@ import java.io.Serializable;
  *     src="doc-files/lcg-non-linear.gif"
  * />
  * </p></div>
- * which destroys the lattice structure introduced by the recursion. The period of
- * this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
+ * which destroys the lattice structure introduced by the recursion. The period
+ * of this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
  * {@code mod} 4 = 1.
  * <p/>
  *

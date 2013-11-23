@@ -30,30 +30,42 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
 /**
+ * Class for testing a given random engine using the
+ * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">dieharder</a>
+ * test application.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
  * @version 1.5 &mdash; <em>$Date: 2013-11-23 $</em>
  */
 public final class DieHarder {
 
+	/**
+	 * Writes random numbers to an given data output stream.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.5
+	 * @version 1.5 &mdash; <em>$Date: 2013-11-23 $</em>
+	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
 		private final DataOutputStream _out;
 
 		public Randomizer(final Random random, final DataOutputStream out) {
-			_random = random;
-			_out = out;
+			_random = Objects.requireNonNull(random);
+			_out = Objects.requireNonNull(out);
 		}
 
 		@Override
 		public void run() {
 			try {
 				while (!Thread.currentThread().isInterrupted()) {
-					for (int i = 0; i < 1000; ++i) {
+					for (int i = 0; i < 2048; ++i) {
 						_out.writeLong(_random.nextLong());
 					}
 				}
@@ -65,7 +77,7 @@ public final class DieHarder {
 
 	public static void main(final String[] args) throws Exception {
 		if ( args.length < 1) {
-			System.out.println("Usage: java org.jenetics.internal.util.DieHarder <random-class-name>");
+			println("Usage: java org.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 
@@ -95,8 +107,6 @@ public final class DieHarder {
 
 		final long start = System.currentTimeMillis();
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
-		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-a", "-g", "200");
-		//final ProcessBuilder builder = new ProcessBuilder("dieharder", "-d", "1", "-g", "200");
 		final Process dieharder = builder.start();
 
 		final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
