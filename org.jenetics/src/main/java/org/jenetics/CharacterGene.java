@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-08-30 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-23 $</em>
  */
 public final class CharacterGene
 	implements
@@ -81,6 +81,15 @@ public final class CharacterGene
 	@Override
 	public Character getAllele() {
 		return _character;
+	}
+
+	/**
+	 * Return the {@code char} value of this character gene.
+	 *
+	 * @return the {@code char} value.
+	 */
+	public char getChar() {
+		return _character.charValue();
 	}
 
 	/**
