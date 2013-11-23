@@ -21,11 +21,10 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,9 +53,9 @@ public final class DieHarder {
 	 */
 	private static final class Randomizer implements Runnable {
 		private final Random _random;
-		private final DataOutputStream _out;
+		private final OutputStream _out;
 
-		public Randomizer(final Random random, final DataOutputStream out) {
+		public Randomizer(final Random random, final OutputStream out) {
 			_random = Objects.requireNonNull(random);
 			_out = Objects.requireNonNull(out);
 		}
@@ -64,10 +63,10 @@ public final class DieHarder {
 		@Override
 		public void run() {
 			try {
+				final byte[] data = new byte[4096];
 				while (!Thread.currentThread().isInterrupted()) {
-					for (int i = 0; i < 2048; ++i) {
-						_out.writeLong(_random.nextLong());
-					}
+					_random.nextBytes(data);
+					_out.write(data);
 				}
 			} catch (IOException ignore) {
 			}
@@ -109,10 +108,10 @@ public final class DieHarder {
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
 		final Process dieharder = builder.start();
 
-		final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
+		final Thread randomizer = new Thread(new Randomizer(
+			random,
 			dieharder.getOutputStream()
 		));
-		final Thread randomizer = new Thread(new Randomizer(random, out));
 		randomizer.start();
 
 		final BufferedReader stdout = new BufferedReader (
