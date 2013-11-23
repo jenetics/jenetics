@@ -88,7 +88,7 @@ public final class CharacterGene
 	 *
 	 * @return the {@code char} value.
 	 */
-	public char getChar() {
+	public char charValue() {
 		return _character.charValue();
 	}
 
@@ -312,9 +312,9 @@ public final class CharacterGene
 			throws XMLStreamException
 		{
 			final String validCharacters = xml.getAttribute(
-					VALID_CHARS,
-					DEFAULT_CHARACTERS.toString()
-				);
+				VALID_CHARS,
+				DEFAULT_CHARACTERS.toString()
+			);
 			final String character = xml.getText().toString();
 
 			return CharacterGene.valueOf(character.charAt(0), new CharSeq(validCharacters));
