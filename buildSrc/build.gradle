@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-11-25 $</em>
  */ 
  
 apply plugin: 'java'
@@ -29,13 +29,7 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-apply plugin: 'packaging'
-
-dependencies {
-	compile gradleApi()
-}
-
-packaging {
-	jarjar = false
-	javadoc = false
+project.tasks.withType(JavaCompile) { JavaCompile compile ->
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
 }
