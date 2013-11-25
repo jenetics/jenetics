@@ -24,9 +24,6 @@
  * @version 1.4 &mdash; <em>$Date$</em>
  */
  
-// The Gradle build project.
-include 'buildSrc'
- 
 // The Jenetics projects.
 include 'org.jenetics'
 include 'org.jenetics.example'
