@@ -49,7 +49,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-11-18 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-11-25 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -191,10 +191,17 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 * value in descending order.
 	 */
 	public void sort() {
-		sort(Optimize.MAXIMUM.<C>descending());
+		sortWith(Optimize.MAXIMUM.<C>descending());
 	}
 
+	/*
+	@Deprecated
 	public void sort(final Comparator<? super C> comparator) {
+		quicksort(0, size() - 1, comparator);
+	}
+	*/
+
+	public void sortWith(final Comparator<? super C> comparator) {
 		quicksort(0, size() - 1, comparator);
 	}
 
