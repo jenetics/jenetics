@@ -25,15 +25,15 @@
  * <a href="http://en.wikipedia.org/wiki/Genetic_algorithm" >Genetic Algorithm</a>
  * (GA) implementation. The project has very few dependencies to other libraries.
  * At runtime it only depends on the <em>Jenetics</em> library.
- * <p/>
+ * <p>
  * The order of the single execution steps of genetic algorithms may slightly
  * differ from implementation to implementation. The following pseudo-code shows
  * the <em>Jenetics</em> genetic algorithm steps.
  *
- * <img width="556" heigth="78" align="BOTTOM" border="0"
- *      src="doc-files/genetic-algorithm.png" />
+ * <img width="556" height="78" align="BOTTOM" border="0"
+ *      src="doc-files/genetic-algorithm.png" >
  *
- * <p/>
+ * <p>
  * Line (1) creates the initial population and the line (2) calculates the
  * fitness value of the individuals. (This is done by the
  * {@code GeneticAlgorithm.setup()} method.) Line (4) increases the generation
@@ -46,7 +46,7 @@
  *
  *
  * <h3>Data structures</h3>
- * <p><img alt="Structure Diagram" src="doc-files/StructureClassDiagram.svg" ></img><p/>
+ * <p><img alt="Structure Diagram" src="doc-files/StructureClassDiagram.svg" ></p>
  *
  * The diagram above shows the main data structures of the GA implementation.
  * The {@link org.jenetics.Gene} is the base of the building block. Genes are
@@ -62,7 +62,7 @@
  * {@code Factory} interface and can therefore be used as prototype for creating
  * the initial Population and for creating new random Genotypes.
  *
- * [code]
+ * <pre>
  * public static void main(final String[] args) {
  *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
@@ -75,7 +75,7 @@
  *     ga.evolve(100);
  *     System.out.println(ga.getBestPhenotype());
  * }
- * [/code]
+ * </pre>
  *
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@code BitChromosome} with length 10. The one to zero
@@ -308,7 +308,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-27 $</em>
  */
 package org.jenetics;
 
