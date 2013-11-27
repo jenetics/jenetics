@@ -37,7 +37,7 @@ import org.jenetics.util.ISeq;
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
  * of this class must assure that the protected member {@code _genes} is not
- * {@code null} and the length of the {@code genes} > 0.
+ * {@code null} and the length of the {@code genes} &gt; 0.
  *
  * @param <G> the gene type.
  *

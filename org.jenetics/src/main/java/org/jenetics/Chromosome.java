@@ -72,7 +72,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @param index The gene index.
 	 * @return the wanted gene.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index < 1 || index >= length()).
+	 *          (index &lt; 1 || index &gt;= length()).
 	 */
 	public G getGene(final int index);
 
