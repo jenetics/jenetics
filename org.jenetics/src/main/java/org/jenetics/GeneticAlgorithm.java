@@ -51,12 +51,12 @@ import org.jenetics.util.functions;
  *
  * [code]
  * public static void main(final String[] args) {
- *     final Factory<Genotype<BitGene>> gtf = Genotype.valueOf(
+ *     final Factory〈Genotype〈BitGene〉〉 gtf = Genotype.valueOf(
  *         BitChromosome.valueOf(10, 0.5)
  *     );
- *     final Function<Genotype<BitGene> Float64> ff = ...
- *     final GeneticAlgorithm<BitGene, Float64>
- *     ga = new GeneticAlgorithm<>(gtf, ff, Optimize.MAXIMUM)
+ *     final Function〈Genotype〈BitGene〉 Float64〉 ff = ...
+ *     final GeneticAlgorithm〈BitGene, Float64〉
+ *     ga = new GeneticAlgorithm〈〉(gtf, ff, Optimize.MAXIMUM);
  *
  *     ga.setup();
  *     ga.evolve(100);
@@ -64,6 +64,7 @@ import org.jenetics.util.functions;
  * }
  * [/code]
  *
+ * <p>
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@link BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
@@ -77,17 +78,17 @@ import org.jenetics.util.functions;
  * {@code ga.setup()} call creates the initial population and calculates its
  * fitness value. Then the GA evolves 100 generations ({@code ga.evolve(100)})
  * an prints the best phenotype found so far onto the console.
- * <p/>
+ * </p>
  * In a more advanced setup you may want to change the default mutation and/or
  * selection strategies.
  *
  * [code]
  * public static void main(final String[] args) {
  *     ...
- *     ga.setSelectors(new RouletteWheelSelector<BitGene>());
+ *     ga.setSelectors(new RouletteWheelSelector〈BitGene〉());
  *     ga.setAlterers(
- *         new SinglePointCrossover<BitGene>(0.1),
- *         new Mutator<BitGene>(0.01)
+ *         new SinglePointCrossover〈BitGene〉(0.1),
+ *         new Mutator〈BitGene〉(0.01)
  *     );
  *
  *     ga.setup();
@@ -119,8 +120,8 @@ import org.jenetics.util.functions;
  * IO.xml.write(ga.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population<Float64Gene,Float64> population =
- *     (Population<Float64Gene, Float64)IO.xml.read(file);
+ * Population〈Float64Gene,Float64〉 population =
+ *     (Population〈Float64Gene, Float64〉)IO.xml.read(file);
  * ga.setPopulation(population);
  * [/code]
  *
@@ -135,7 +136,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-22 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -588,16 +589,17 @@ public class GeneticAlgorithm<
 	}
 
 	/**
+	 * <p>
 	 * If you are using the {@code GeneticAlgorithm} in an threaded environment
 	 * and you want to change some of the GAs parameters you can use the returned
 	 * {@link Lock} to synchronize your parameter changes. The GA acquires the
 	 * lock at the begin of the {@link #setup()} and the {@link #evolve()}
 	 * methods and releases it at the end of these methods.
-	 * <p/>
+	 * </p>
 	 * To set one ore more GA parameter you will write code like this:
 	 * [code]
-	 * final GeneticAlgorithm<Float64Gene, Float64> ga = ...
-	 * final Function<GeneticAlgorithm<?, ?>, Boolean> until = ...
+	 * final GeneticAlgorithm〈Float64Gene, Float64〉 ga = ...
+	 * final Function〈GeneticAlgorithm〈?, ?〉, Boolean〉 until = ...
 	 *
 	 * //Starting the GA in separate thread.
 	 * final Thread thread = new Thread(new Runnable() {
@@ -633,8 +635,8 @@ public class GeneticAlgorithm<
 	 * [code]
 	 * ga.getLock().lock();
 	 * try {
-	 *     final Statistics<?, ?> statistics = ga.getStatistic();
-	 *     final Function<?, ?> scaler = ga.getFitnessScaler();
+	 *     final Statistics〈?, ?〉 statistics = ga.getStatistic();
+	 *     final Function〈?, ?〉 scaler = ga.getFitnessScaler();
 	 * } finally {
 	 *     ga.getLock().unlock();
 	 * }
@@ -644,7 +646,7 @@ public class GeneticAlgorithm<
 	 * {@code scaler} where used together within the same {@link #evolve()} step.
 	 *
 	 * @return the lock acquired in the {@link #setup()} and the {@link #evolve()}
-	 * 		  method.
+	 *         method.
 	 */
 	public Lock getLock() {
 		return _lock;
@@ -662,6 +664,7 @@ public class GeneticAlgorithm<
 	}
 
 	/**
+	 * <p>
 	 * Return the used fitness {@link Function} of the GA. The fitness function
 	 * is also an important part when modeling the GA. It takes a genotype as
 	 * argument and returns, at least, a Comparable object as result---the
@@ -669,12 +672,12 @@ public class GeneticAlgorithm<
 	 * to select the offspring- and survivor population. Some selectors have
 	 * stronger requirements to the fitness value than a Comparable, but this
 	 * constraints is checked by the Java type system at compile time.
-	 * <p/>
+	 * </p>
 	 * The following example shows the simplest possible fitness function. It's
 	 * the identity function and returns the allele of an 1x1  float genotype.
 	 * [code]
-	 * class Id implements Function<Genotype<Float64Gene>, Float64> {
-	 *     public Float64 apply(final Genotype<Float64Gene> genotype) {
+	 * class Id implements Function〈Genotype〈Float64Gene〉, Float64〉 {
+	 *     public Float64 apply(final Genotype〈Float64Gene〉 genotype) {
 	 *         return genotype.getGene().getAllele();
 	 *     }
 	 * }
@@ -702,17 +705,19 @@ public class GeneticAlgorithm<
 	 * configuration the raw-fitness is equal to the actual fitness value, that
 	 * means, the used fitness scaler is the identity function.
 	 * [code]
-	 * class Sqrt extends Function<Float64, Float64> {
+	 * class Sqrt extends Function〈Float64, Float64〉 {
 	 *     public Float64 apply(final Float64 value) {
 	 *         return Float64.valueOf(sqrt(value.doubleValue()));
 	 *     }
 	 * }
 	 * [/code]
+	 *
+	 * <p>
 	 * The listing above shows a fitness scaler which reduces the the raw-fitness
 	 * to its square root. This gives weaker individuals a greater changes being
 	 * selected and weakens the influence of super-individuals.
-	 * <p/>
-	 * <b>When using a fitness scaler you have to take care, that your scaler
+	 * </p>
+	 * When using a fitness scaler you have to take care, that your scaler
 	 * doesn't destroy your fitness value. This can be the case when your
 	 * fitness value is negative and your fitness scaler squares the value.
 	 * Trying to find the minimum will not work in this configuration.</b>

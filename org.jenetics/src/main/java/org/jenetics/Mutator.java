@@ -44,6 +44,7 @@ import org.jenetics.util.MSeq;
  *	</li>
  * </ul>
  *
+ * <p>
  * The mutation probability is the parameter that must be optimized. The optimal
  * value of the mutation rate depends on the role mutation plays. If mutation is
  * the only source of exploration (if there is no crossover) then the mutation
@@ -64,7 +65,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-13 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -146,13 +147,14 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	}
 
 	/**
+	 * <p>
 	 * Template method which gives an (re)implementation of the mutation class
 	 * the possibility to perform its own mutation operation, based on a
 	 * writable gene array and the gene mutation probability <i>p</i>.
-	 * <p/>
+	 * </p>
 	 * This implementation, for example, does it in this way:
 	 * [code]
-	 * protected int mutate(final MSeq<G> genes, final double p) {
+	 * protected int mutate(final MSeq〈G〉 genes, final double p) {
 	 *     final IndexStream stream = IndexStream.Random(genes.length(), p);
 	 *
 	 *     int alterations = 0;

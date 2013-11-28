@@ -45,7 +45,7 @@ import org.jenetics.util.Verifiable;
  * structural representative of an individual. This class is the encoded problem
  * solution with one to many {@link Chromosome}.
  * <p><div align="center">
- * <img src="doc-files/Genotype.svg" width="400" height="252" />
+ * <img src="doc-files/Genotype.svg" width="400" height="252" >
  * </p></div>
  * The chromosomes of a genotype doesn't have to have necessarily the same size.
  * It is only required that all genes are from the same type and the genes within
@@ -53,7 +53,7 @@ import org.jenetics.util.Verifiable;
  * for number genes.
  *
  * [code]
- * final Genotype<Float64Gene> genotype = Genotype.valueOf(
+ * final Genotype〈Float64Gene〉 genotype = Genotype.valueOf(
  *     new Float64Chromosome(0.0, 1.0, 8),
  *     new Float64Chromosome(1.0, 2.0, 10),
  *     new Float64Chromosome(0.0, 10.0, 9),
@@ -66,7 +66,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -116,8 +116,8 @@ public final class Genotype<G extends Gene<?, G>>
 	/**
 	 * Return the first chromosome. This is a shortcut for
 	 * [code]
-	 * final Genotype<Float64Gene> gt = ...
-	 * final Chromosome<Float64Gene> chromosome = gt.getChromosome(0);
+	 * final Genotype〈Float64Gene〉 gt = ...
+	 * final Chromosome〈Float64Gene〉 chromosome = gt.getChromosome(0);
 	 * [/code]
 	 *
 	 * @return The first chromosome.
@@ -133,7 +133,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first {@link Gene} of the first {@link Chromosome} of this
 	 * {@code Genotype}. This is a shortcut for
 	 * [code]
-	 * final Genotype<Float64Gene> gt = ...
+	 * final Genotype〈Float64Gene〉 gt = ...
 	 * final Float64Gene gene = gt.getChromosome(0).getGene(0);
 	 * [/code]
 	 *

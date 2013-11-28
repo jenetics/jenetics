@@ -32,10 +32,10 @@ import javolution.lang.Immutable;
  * survival probabilities to the sorted individuals using an exponential
  * function.
  * </p>
- * <p/><img
+ * <p><img
  *        src="doc-files/exponential-rank-selector.gif"
  *        alt="P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1}"
- *     />,
+ *     >,
  * </p>
  * where <i>c</i> must within the range {@code [0..1)}.
  *
@@ -52,7 +52,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,

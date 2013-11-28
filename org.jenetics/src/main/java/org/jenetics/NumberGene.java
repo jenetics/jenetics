@@ -36,7 +36,7 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-11-28 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -200,8 +200,8 @@ public abstract class NumberGene<
 	 * {@code equals} method also takes the {@code min} and {@code max} value
 	 * into account.
 	 * [code]
-	 * final NumberGene<?, ?> ng1 = ...
-	 * final NumberGene<?, ?> ng2 = ...
+	 * final NumberGene〈?, ?〉 ng1 = ...
+	 * final NumberGene〈?, ?〉 ng2 = ...
 	 *
 	 * if (ng1.equals(ng2) {
 	 *     // Holds for every ng1 and ng2.
