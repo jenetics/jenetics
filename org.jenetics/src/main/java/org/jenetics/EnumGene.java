@@ -36,22 +36,23 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * <p>
  * Gene which holds enumerable (countable) genes. Will be used for combinatorial
  * problems in combination with the {@link PermutationChromosome}.
- * <p/>
+ * </p>
  * The following code shows how to create a combinatorial genotype factory which
  * can be used when creating an {@link GeneticAlgorithm} instance.
  * [code]
- * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.valueOf(
+ * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final Factory〈Genotype〈EnumGene〈Integer〉〉〉 gtf = Genotype.valueOf(
  *     PermutationChromosome.valueOf(alleles)
  * );
  * [/code]
  *
  * The following code shows the assurances of the {@code EnumGene}.
  * [code]
- * final ISeq<Integer> alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
- * final EnumGene<Integer> gene = EnumGene.valueOf(alleles, 5);
+ * final ISeq〈Integer〉 alleles = Array.box(1, 2, 3, 4, 5, 6, 7, 8).toISeq();
+ * final EnumGene〈Integer〉 gene = EnumGene.valueOf(alleles, 5);
  *
  * assert(gene.getAlleleIndex() == 5);
  * assert(gene.getAllele() == gene.getValidAlleles().get(5));
