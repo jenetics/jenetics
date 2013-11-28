@@ -40,7 +40,6 @@ import org.jenetics.util.Function;
 import org.jenetics.util.Timer;
 import org.jenetics.util.functions;
 
-
 /**
  * <h3>Getting started</h3>
  *
