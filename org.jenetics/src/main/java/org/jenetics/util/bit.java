@@ -168,9 +168,8 @@ public final class bit extends StaticObject {
 	 * @param end the end bit index of the {@code data} byte array, exclusively.
 	 * @param otherData the other byte array to swap the elements with.
 	 * @param otherStart the start index of the {@code otherData} byte array.
-	 * @throws IndexOutOfBoundsException if {@code start > end}.
-	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *         end >= data.length*8 || otherStart < 0 ||
+	 * @throws IndexOutOfBoundsException if {@code start > end} or
+	 *         if {@code start < 0 || end >= data.length*8 || otherStart < 0 ||
 	 *         otherStart + (end - start) >= otherData.length*8}
 	 */
 	public static void swap(

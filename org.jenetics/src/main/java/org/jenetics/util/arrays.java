@@ -902,7 +902,7 @@ public final class arrays extends StaticObject {
 	}
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forEach(Iterable, Function)} instead.
 	 */
 	@Deprecated

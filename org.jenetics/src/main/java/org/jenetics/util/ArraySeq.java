@@ -53,7 +53,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	 * @param end the end index of the given array (exclusively)
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 * @throws IndexOutOfBoundsException for an illegal start/end point index
-	 *          value ({@code start < 0 || end > array.lenght || start > end}).
+	 *          value ({@code start < 0 || end > array.length || start > end}).
 	 */
 	ArraySeq(final ArrayRef array, final int start, final int end) {
 		requireNonNull(array, "Array");
@@ -216,7 +216,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forEach(Function)} instead.
 	 */
 	@Deprecated
@@ -237,7 +237,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 	}
 
 	/**
-	 * @deprecated Align the naming with the upcomming JDK 1.8 release. Use
+	 * @deprecated Align the naming with the upcoming JDK 1.8 release. Use
 	 *             {@link #forAll(Function)} instead.
 	 */
 	@Deprecated
@@ -254,7 +254,7 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 		for (int i = _start; i < _end && valid; ++i) {
 			@SuppressWarnings("unchecked")
 			final T element = (T)_array.data[i];
-			valid = predicate.apply(element).booleanValue();
+			valid = predicate.apply(element);
 		}
 		return valid;
 	}
@@ -385,7 +385,8 @@ abstract class ArraySeq<T> implements Seq<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return arrays.equals(this, obj);
+		return obj == this ||
+				obj instanceof ArraySeq<?> && arrays.equals(this, obj);
 	}
 
 	@Override
