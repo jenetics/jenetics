@@ -43,7 +43,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -322,7 +322,7 @@ public class CharacterChromosome
 		final Array<CharacterGene> genes = new Array<>(length);
 		for (int i = 0; i < length; ++i) {
 			final CharacterGene gene = CharacterGene.valueOf(
-				Character.valueOf(in.readChar()),
+				in.readChar(),
 				_validCharacters
 			);
 			genes.set(i, gene);

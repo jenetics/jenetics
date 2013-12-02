@@ -28,7 +28,7 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-10-24 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
@@ -90,7 +90,10 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		@Override
-		public void uncheckedOffsetSet(final int absoluteIndex, final BitGene value) {
+		public void uncheckedOffsetSet(
+			final int absoluteIndex,
+			final BitGene value
+		) {
 			bit.set(_array, absoluteIndex, value.booleanValue());
 		}
 
