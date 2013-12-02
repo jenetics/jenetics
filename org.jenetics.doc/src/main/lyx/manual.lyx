@@ -650,12 +650,17 @@ Gradle
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-Version 1.6 or higher: 
+The used Gradle version is 1.9 and it is downloaded automatically if you
+ build the library with the wrapper script 
+\family typewriter
+./gradlew
+\family default
+: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -677,6 +682,17 @@ status collapsed
 \begin_layout Plain Layout
 
 https://sourceforge.net/projects/jenetics/files/jenetics/
+\end_layout
+
+\end_inset
+
+ or 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://bitbucket.org/fwilhelm/jenetics/downloads
 \end_layout
 
 \end_inset
@@ -732,7 +748,8 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-This manual is not an introduction or a tutorial for genetic algorithms.
+This manual is not an introduction or a tutorial for genetic algorithms
+ in general.
  It is assumed that the reader has a knowledge about the structure and the
  functionality of genetic algorithms.
  A good GA introduction can be found in 
@@ -5931,8 +5948,8 @@ status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.7.0_25-b15)---Java HotSpot(TM) 64-Bit Server VM (build
- 23.25-b01, mixed mode) 
+ Environment (build 1.7.0_45-b18)---Java HotSpot(TM) 64-Bit Server VM (build
+ 24.45-b08, mixed mode) 
 \end_layout
 
 \end_inset
@@ -6169,7 +6186,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $243\cdot10^{6}$
+\begin_inset Formula $247\cdot10^{6}$
 \end_inset
 
 
@@ -6181,7 +6198,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $210\cdot10^{6}$
+\begin_inset Formula $213\cdot10^{6}$
 \end_inset
 
 
@@ -6193,7 +6210,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $216\cdot10^{6}$
+\begin_inset Formula $209\cdot10^{6}$
 \end_inset
 
 
@@ -6505,7 +6522,7 @@ Population<Float64Gene,Float64> population =
 
 \begin_layout Plain Layout
 
-    (Population<Float64Gene, Float64)IO.xml.read(file);
+    (Population<Float64Gene, Float64>)IO.xml.read(file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -8060,7 +8077,7 @@ evaluate
 \family typewriter
 Statistics.Calculator
 \family default
- class return a builder, preconfigured with your actual statistics values,
+ class return a builder, pre-configured with your actual statistics values,
  which will create the actual statistics object.
  This indirection is necessary because the GA is setting additional statistical
  information about killed and invalid individuals to the statistics object.
