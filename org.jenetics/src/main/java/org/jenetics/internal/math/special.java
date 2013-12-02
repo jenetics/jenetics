@@ -29,7 +29,7 @@ import org.jenetics.util.StaticObject;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class special extends StaticObject {
 	private special() {}
@@ -64,7 +64,7 @@ public final class special extends StaticObject {
 	 * TODO: Implement gamma function.
 	 *
 	 * @param x
-	 * @return
+	 * @return the gamma value
 	 */
 	static double Γ(final double x) {
 		return x;
