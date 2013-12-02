@@ -105,7 +105,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * Set the <i>array</i> element at the specified absolute position in the
 	 * {@code ArrayProxy}. The array boundaries are not checked.
 	 *
-	 * @param index absolute index of the <i>array</i> element
+	 * @param absoluteIndex absolute index of the <i>array</i> element
 	 */
 	public abstract void uncheckedOffsetSet(final int absoluteIndex, final T value);
 
@@ -158,9 +158,8 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * @param end the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
 	 * @param otherStart the start index of the {@code other} array.
-	 * @throws IndexOutOfBoundsException if {@code start > end}.
-	 * @throws IndexOutOfBoundsException if {@code start < 0 ||
-	 *         end >= this.length() || otherStart < 0 ||
+	 * @throws IndexOutOfBoundsException if {@code start > end} or
+	 *         if {@code start < 0 || end >= this.length() || otherStart < 0 ||
 	 *         otherStart + (end - start) >= other.length()}
 	 */
 	public void swap(
@@ -190,7 +189,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 *     public void cloneIfSealed() {
 	 *         if (_sealed) {
 	 *             _array = _array.clone();
-	 *             _selaed = false;
+	 *             _sealed = false;
 	 *         }
 	 *     }
 	 * [/code]

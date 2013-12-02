@@ -386,7 +386,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> valueOf(
 		final C... separators
 	) {
-		return new Histogram<>(COMPARATOR, separators);
+		return new Histogram<C>(COMPARATOR, separators);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})

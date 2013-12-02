@@ -91,7 +91,7 @@ public class ArrayProxyIterator<T> implements ListIterator<T> {
 	@Override
 	public void add(final T value) {
 		throw new UnsupportedOperationException(
-			"Can't change Iteratior size."
+			"Can't change Iterator size."
 		);
 	}
 
