@@ -90,7 +90,10 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		@Override
-		public void uncheckedOffsetSet(final int absoluteIndex, final BitGene value) {
+		public void uncheckedOffsetSet(
+			final int absoluteIndex,
+			final BitGene value
+		) {
 			bit.set(_array, absoluteIndex, value.booleanValue());
 		}
 

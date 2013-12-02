@@ -323,6 +323,7 @@ public class BitChromosome extends Number<BitChromosome>
 	/**
 	 * @return a byte array which represents this {@code BitChromosome}. The
 	 *         length of the array is {@code (int)Math.ceil(length()/8.0)}.
+	 *
 	 * @see #toByteArray(byte[])
 	 */
 	public byte[] toByteArray() {
