@@ -67,7 +67,7 @@ import org.jenetics.util.functions;
  * The genotype factory, {@code gtf}, in the example above will create genotypes
  * which consists of one {@link BitChromosome} with length 10. The one to zero
  * probability of the newly created genotypes is set to 0.5. The fitness function
- * is parameterized with a {@link BitGene} and a {@link Float64}. That means
+ * is parametrized with a {@link BitGene} and a {@link Float64}. That means
  * that the fitness function is calculating the fitness value as {@link Float64}.
  * The return type of the fitness function must be at least a {@link Comparable}.
  * The {@code GeneticAlgorithm} object is then created with the genotype factory
@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,

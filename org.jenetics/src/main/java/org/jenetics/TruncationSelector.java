@@ -35,7 +35,7 @@ import static org.jenetics.util.object.hashCodeOf;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-25 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -92,10 +92,7 @@ public final class TruncationSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof TruncationSelector<?, ?>;
+		return obj == this || obj instanceof TruncationSelector<?, ?>;
 	}
 
 	@Override

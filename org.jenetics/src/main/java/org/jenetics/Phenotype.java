@@ -49,7 +49,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -230,7 +230,7 @@ public final class Phenotype<
 
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
-	 * {@link FitnessFunction} and age as this {@link Phenotype}.
+	 * {@link Function} and age as this {@link Phenotype}.
 	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.

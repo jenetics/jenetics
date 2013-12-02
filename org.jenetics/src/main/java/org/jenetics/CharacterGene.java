@@ -43,7 +43,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-11-23 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class CharacterGene
 	implements
@@ -72,10 +72,10 @@ public final class CharacterGene
 
 	@Override
 	public boolean isValid() {
-		if (_valid) {
+		if (_valid == null) {
 			_valid = _validCharacters.contains(_character);
 		}
-		return _valid.booleanValue();
+		return _valid;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public final class CharacterGene
 	 * @return the {@code char} value.
 	 */
 	public char charValue() {
-		return _character.charValue();
+		return _character;
 	}
 
 	/**

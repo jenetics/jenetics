@@ -65,7 +65,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -188,10 +188,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof Mutator<?>;
+		return obj == this || obj instanceof Mutator<?>;
 	}
 
 	@Override

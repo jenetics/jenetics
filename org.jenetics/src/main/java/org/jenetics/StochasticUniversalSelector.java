@@ -45,7 +45,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-10-23 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -121,14 +121,8 @@ public class StochasticUniversalSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return obj == this ||
+				obj != null && obj.getClass() == getClass() && super.equals(obj);
 	}
 
 	@Override

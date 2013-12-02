@@ -48,7 +48,7 @@ import org.jenetics.util.bit;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-10-15 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -158,7 +158,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		StringBuilder out = new StringBuilder();
+		final StringBuilder out = new StringBuilder();
 		out.append(_genes.get(0).getAllele());
 		for (int i = 1; i < length(); ++i) {
 			out.append("|").append(_genes.get(i).getAllele());

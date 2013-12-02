@@ -42,7 +42,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
@@ -164,10 +164,8 @@ public class Integer64Chromosome
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof Integer64Chromosome && super.equals(obj);
+		return obj == this ||
+				obj instanceof Integer64Chromosome && super.equals(obj);
 	}
 
 	/* *************************************************************************
