@@ -19,7 +19,6 @@
  */
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import org.apache.tools.ant.filters.ReplaceTokens
 
 import org.jenetics.gradle.PropertiesLoader
@@ -40,6 +39,8 @@ apply plugin: 'signing'
 apply plugin: 'packaging'
 
 ext {
+    javaVersion = '1.7'
+
 	now = Calendar.getInstance()
 	year = now.get(Calendar.YEAR);
 	copyrightYear = "2007-${year}".toString()
