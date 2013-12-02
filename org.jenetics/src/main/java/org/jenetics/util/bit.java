@@ -544,7 +544,7 @@ public final class bit extends StaticObject {
 			((long)(data[4] & 255) << 24) +
 			((data[5] & 255) << 16) +
 			((data[6] & 255) <<  8) +
-			((data[7] & 255) <<  0));
+			((data[7] & 255)));
 	}
 
 	static byte[] toBytes(final long value) {
@@ -556,7 +556,7 @@ public final class bit extends StaticObject {
 		bytes[4] = (byte)(value >>> 24);
 		bytes[5] = (byte)(value >>> 16);
 		bytes[6] = (byte)(value >>>  8);
-		bytes[7] = (byte)(value >>>  0);
+		bytes[7] = (byte)(value);
 		return bytes;
 	}
 
@@ -567,10 +567,10 @@ public final class bit extends StaticObject {
 			);
 		}
 
-		data[0 + start] = (byte)((v >>> 24) & 0xFF);
+		data[0]         = (byte)((v >>> 24) & 0xFF);
 		data[1 + start] = (byte)((v >>> 16) & 0xFF);
 		data[2 + start] = (byte)((v >>>  8) & 0xFF);
-		data[3 + start] = (byte)((v >>>  0) & 0xFF);
+		data[3 + start] = (byte)((v)        & 0xFF);
 
 		return data;
 	}
@@ -582,10 +582,10 @@ public final class bit extends StaticObject {
 			);
 		}
 
-		return ((data[0 + start] << 24) +
+		return ((data[start]     << 24) +
 				(data[1 + start] << 16) +
 				(data[2 + start] << 8) +
-				(data[3 + start] << 0));
+				(data[3 + start]));
 	}
 
 }
