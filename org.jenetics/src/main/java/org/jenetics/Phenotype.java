@@ -230,7 +230,7 @@ public final class Phenotype<
 
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
-	 * {@link FitnessFunction} and age as this {@link Phenotype}.
+	 * {@link Function} and age as this {@link Phenotype}.
 	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.

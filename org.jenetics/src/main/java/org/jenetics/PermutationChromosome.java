@@ -158,7 +158,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		StringBuilder out = new StringBuilder();
+		final StringBuilder out = new StringBuilder();
 		out.append(_genes.get(0).getAllele());
 		for (int i = 1; i < length(); ++i) {
 			out.append("|").append(_genes.get(i).getAllele());

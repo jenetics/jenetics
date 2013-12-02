@@ -35,13 +35,13 @@ public final class termination extends StaticObject {
 	static class SteadyFitness<C extends Comparable<? super C>>
 		implements Function<Statistics<?, C>, Boolean>
 	{
-		private final int _genenerations;
+		private final int _generations;
 
 		private C _fitness;
 		private int _stableGenerations = 0;
 
 		public SteadyFitness(final int generations) {
-			_genenerations = generations;
+			_generations = generations;
 		}
 
 		@Override
@@ -54,7 +54,7 @@ public final class termination extends StaticObject {
 			} else {
 				final Optimize opt = statistics.getOptimize();
 				if (opt.compare(_fitness, statistics.getBestFitness()) >= 0) {
-					proceed = ++_stableGenerations <= _genenerations;
+					proceed = ++_stableGenerations <= _generations;
 				} else {
 					_fitness = statistics.getBestFitness();
 					_stableGenerations = 1;

@@ -121,14 +121,8 @@ public class StochasticUniversalSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return obj == this ||
+				obj != null && obj.getClass() == getClass() && super.equals(obj);
 	}
 
 	@Override

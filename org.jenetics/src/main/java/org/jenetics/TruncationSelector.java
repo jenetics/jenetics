@@ -92,10 +92,7 @@ public final class TruncationSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof TruncationSelector<?, ?>;
+		return obj == this || obj instanceof TruncationSelector<?, ?>;
 	}
 
 	@Override

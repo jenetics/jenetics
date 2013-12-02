@@ -94,14 +94,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return true;
+		return obj == this || obj != null && obj.getClass() == getClass();
 	}
 
 	@Override

@@ -164,10 +164,8 @@ public class Integer64Chromosome
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof Integer64Chromosome && super.equals(obj);
+		return obj == this ||
+				obj instanceof Integer64Chromosome && super.equals(obj);
 	}
 
 	/* *************************************************************************

@@ -188,10 +188,7 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof Mutator<?>;
+		return obj == this || obj instanceof Mutator<?>;
 	}
 
 	@Override

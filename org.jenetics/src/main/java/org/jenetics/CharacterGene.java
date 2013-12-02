@@ -72,10 +72,10 @@ public final class CharacterGene
 
 	@Override
 	public boolean isValid() {
-		if (_valid) {
+		if (_valid == null) {
 			_valid = _validCharacters.contains(_character);
 		}
-		return _valid.booleanValue();
+		return _valid;
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public final class CharacterGene
 	 * @return the {@code char} value.
 	 */
 	public char charValue() {
-		return _character.charValue();
+		return _character;
 	}
 
 	/**

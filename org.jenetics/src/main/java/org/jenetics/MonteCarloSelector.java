@@ -87,10 +87,7 @@ public final class MonteCarloSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof MonteCarloSelector<?, ?>;
+		return obj == this || obj instanceof MonteCarloSelector<?, ?>;
 	}
 
 	@Override
