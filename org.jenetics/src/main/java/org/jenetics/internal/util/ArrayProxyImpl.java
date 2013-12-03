@@ -58,17 +58,17 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T uncheckedOffsetGet(final int absoluteIndex) {
+	public T __get(final int absoluteIndex) {
 		return (T)_array[absoluteIndex];
 	}
 
 	@Override
-	public void uncheckedOffsetSet(final int absoluteIndex, final T value) {
+	public void __set(final int absoluteIndex, final T value) {
 		_array[absoluteIndex] = value;
 	}
 
 	@Override
-	public ArrayProxyImpl<T> sub(final int start, final int end) {
+	public ArrayProxyImpl<T> slice(final int start, final int end) {
 		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
 	}
 

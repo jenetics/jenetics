@@ -56,7 +56,7 @@ public class ArrayProxyList<T> extends AbstractList<T>
 			for (int i = _proxy._start, n = _proxy._end;
 				i < n && index == -1; ++i)
 			{
-				if (_proxy.uncheckedOffsetGet(i) == null) {
+				if (_proxy.__get(i) == null) {
 					index = i;
 				}
 			}
@@ -64,7 +64,7 @@ public class ArrayProxyList<T> extends AbstractList<T>
 			for (int i = _proxy._start, n = _proxy._end;
 				i < n && index == -1; ++i)
 			{
-				if (element.equals(_proxy.uncheckedOffsetGet(i))) {
+				if (element.equals(_proxy.__get(i))) {
 					index = i;
 				}
 			}

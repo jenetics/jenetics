@@ -85,12 +85,12 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		@Override
-		public BitGene uncheckedOffsetGet(final int absoluteIndex) {
+		public BitGene __get(final int absoluteIndex) {
 			return BitGene.valueOf(bit.get(_array, absoluteIndex));
 		}
 
 		@Override
-		public void uncheckedOffsetSet(
+		public void __set(
 			final int absoluteIndex,
 			final BitGene value
 		) {
@@ -98,7 +98,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		@Override
-		public Proxy sub(final int start, final int end) {
+		public Proxy slice(final int start, final int end) {
 			return new Proxy(_array, start + _start, end + _start);
 		}
 
