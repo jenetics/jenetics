@@ -23,13 +23,12 @@ import static java.lang.String.format;
 
 import org.jenetics.util.Copyable;
 
-
 /**
  * Abstraction for an ordered and bounded sequence of elements.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-03 $</em>
  */
 public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 
@@ -44,6 +43,44 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	}
 
 	/**
+	 * Return the <i>array</i> element at the specified, absolute position in
+	 * the {@code ArrayProxy}. The array boundaries are not checked.
+	 *
+	 * @param absoluteIndex absolute index of the element to return
+	 * @return the <i>array</i> element at the specified absolute position
+	 */
+	public abstract T __get(final int absoluteIndex);
+
+	/**
+	 * Set the <i>array</i> element at the specified absolute position in the
+	 * {@code ArrayProxy}. The array boundaries are not checked.
+	 *
+	 * @param absoluteIndex absolute index of the <i>array</i> element
+	 */
+	public abstract void __set(final int absoluteIndex, final T value);
+
+	/**
+	 * Return the <i>array</i> element at the specified position in the
+	 * {@code ArrayProxy}. The array boundaries are not checked.
+	 *
+	 * @param index index of the element to return
+	 * @return the <i>array</i> element at the specified position
+	 */
+	public T uncheckedGet(final int index) {
+		return __get(index + _start);
+	}
+
+	/**
+	 * Set the <i>array</i> element at the specified position in the
+	 * {@code ArrayProxy}. The array boundaries are not checked.
+	 *
+	 * @param index index of the <i>array</i> element
+	 */
+	public void uncheckedSet(final int index, final T value) {
+		__set(index + _start, value);
+	}
+
+	/**
 	 * Return the <i>array</i> element at the specified position in the
 	 * {@code ArrayProxy}.
 	 *
@@ -54,7 +91,7 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 */
 	public T get(final int index) {
 		checkIndex(index);
-		return uncheckedOffsetGet(index + _start);
+		return __get(index + _start);
 	}
 
 	/**
@@ -68,46 +105,8 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 */
 	public void set(final int index, final T value) {
 		checkIndex(index);
-		uncheckedOffsetSet(index + _start, value);
+		__set(index + _start, value);
 	}
-
-	/**
-	 * Return the <i>array</i> element at the specified position in the
-	 * {@code ArrayProxy}. The array boundaries are not checked.
-	 *
-	 * @param index index of the element to return
-	 * @return the <i>array</i> element at the specified position
-	 */
-	public T uncheckedGet(final int index) {
-		return uncheckedOffsetGet(index + _start);
-	}
-
-	/**
-	 * Set the <i>array</i> element at the specified position in the
-	 * {@code ArrayProxy}. The array boundaries are not checked.
-	 *
-	 * @param index index of the <i>array</i> element
-	 */
-	public void uncheckedSet(final int index, final T value) {
-		uncheckedOffsetSet(index + _start, value);
-	}
-
-	/**
-	 * Return the <i>array</i> element at the specified, absolute position in the
-	 * {@code ArrayProxy}. The array boundaries are not checked.
-	 *
-	 * @param absoluteIndex absolute index of the element to return
-	 * @return the <i>array</i> element at the specified absolute position
-	 */
-	public abstract T uncheckedOffsetGet(final int absoluteIndex);
-
-	/**
-	 * Set the <i>array</i> element at the specified absolute position in the
-	 * {@code ArrayProxy}. The array boundaries are not checked.
-	 *
-	 * @param absoluteIndex absolute index of the <i>array</i> element
-	 */
-	public abstract void uncheckedOffsetSet(final int absoluteIndex, final T value);
 
 	/**
 	 * Return a new sub {@code ArrayProxy} object with the given start and end
@@ -116,13 +115,13 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * array.
 	 *
 	 * @param start the start index of the new sub {@code ArrayProxy} object,
-	 *         inclusively.
+	 *        inclusively.
 	 * @param end the end index of the new sub {@code ArrayProxy} object,
-	 *         exclusively.
+	 *        exclusively.
 	 * @return a new array proxy (view) with the given start and end index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public abstract ArrayProxy<T> sub(final int start, final int end);
+	public abstract ArrayProxy<T> slice(final int start, final int end);
 
 	/**
 	 * Return a new sub {@code ArrayProxy} object with the given start index.
@@ -130,12 +129,12 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * proxy it is possible to <i>write through</i> the original array.
 	 *
 	 * @param start the start index of the new sub {@code ArrayProxy} object,
-	 *         inclusively.
+	 *        inclusively.
 	 * @return a new array proxy (view) with the given start index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public ArrayProxy<T> sub(final int start) {
-		return sub(start, _length);
+	public ArrayProxy<T> slice(final int start) {
+		return slice(start, _length);
 	}
 
 	/**
@@ -214,6 +213,13 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 */
 	public abstract ArrayProxy<T> seal();
 
+	/**
+	 * Checks the given index.
+	 *
+	 * @param index the index to check.
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
+	 *         not in the valid range.
+	 */
 	protected final void checkIndex(final int index) {
 		if (index < 0 || index >= _length) {
 			throw new ArrayIndexOutOfBoundsException(format(

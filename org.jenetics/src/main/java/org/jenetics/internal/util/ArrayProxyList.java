@@ -27,7 +27,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-03 $</em>
  */
 public class ArrayProxyList<T> extends AbstractList<T>
 	implements RandomAccess
@@ -56,7 +56,7 @@ public class ArrayProxyList<T> extends AbstractList<T>
 			for (int i = _proxy._start, n = _proxy._end;
 				i < n && index == -1; ++i)
 			{
-				if (_proxy.uncheckedOffsetGet(i) == null) {
+				if (_proxy.__get(i) == null) {
 					index = i;
 				}
 			}
@@ -64,7 +64,7 @@ public class ArrayProxyList<T> extends AbstractList<T>
 			for (int i = _proxy._start, n = _proxy._end;
 				i < n && index == -1; ++i)
 			{
-				if (element.equals(_proxy.uncheckedOffsetGet(i))) {
+				if (element.equals(_proxy.__get(i))) {
 					index = i;
 				}
 			}

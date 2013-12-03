@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-03 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-03 $</em>
  */
 public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
@@ -58,17 +58,17 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T uncheckedOffsetGet(final int absoluteIndex) {
+	public T __get(final int absoluteIndex) {
 		return (T)_array[absoluteIndex];
 	}
 
 	@Override
-	public void uncheckedOffsetSet(final int absoluteIndex, final T value) {
+	public void __set(final int absoluteIndex, final T value) {
 		_array[absoluteIndex] = value;
 	}
 
 	@Override
-	public ArrayProxyImpl<T> sub(final int start, final int end) {
+	public ArrayProxyImpl<T> slice(final int start, final int end) {
 		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
 	}
 
