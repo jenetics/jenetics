@@ -32,16 +32,12 @@ import org.jenetics.util.bit;
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
-	public BitGeneArray(final Proxy proxy) {
+	BitGeneArray(final Proxy proxy) {
 		super(proxy);
 	}
 
-	public BitGeneArray(final byte[] array, final int start, final int end) {
+	BitGeneArray(final byte[] array, final int start, final int end) {
 		this(new Proxy(array, start, end));
-	}
-
-	public BitGeneArray(final int length) {
-		this(new Proxy(length));
 	}
 
 	@Override
