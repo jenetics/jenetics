@@ -38,6 +38,8 @@ random-x86_64
 *.iml
 *.ipr
 *.iws
+.idea
+classes/*
 
 ## Netbeans
 .nb-gradle/**
