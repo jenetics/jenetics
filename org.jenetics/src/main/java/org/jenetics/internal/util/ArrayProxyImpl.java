@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
