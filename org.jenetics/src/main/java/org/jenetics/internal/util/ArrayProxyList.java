@@ -27,7 +27,7 @@ import java.util.RandomAccess;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-12-03 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-04 $</em>
  */
 public class ArrayProxyList<T> extends AbstractList<T>
 	implements RandomAccess
