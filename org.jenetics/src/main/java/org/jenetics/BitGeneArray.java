@@ -94,25 +94,25 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		}
 
 		@Override
-		public Proxy slice(final int start, final int end) {
-			return new Proxy(_array, start + _start, end + _start);
+		public Proxy slice(final int from, final int until) {
+			return new Proxy(_array, from + _start, until + _start);
 		}
 
 		@Override
 		public void swap(
-			final int start, final int end,
-			final ArrayProxy<BitGene> other, final int otherStart
+			final int from, final int until,
+			final ArrayProxy<BitGene> other, final int otherFrom
 		) {
 			cloneIfSealed();
 			other.cloneIfSealed();
 
 			if (other instanceof Proxy) {
-				swap(start, end, (Proxy)other, otherStart);
+				swap(from, until, (Proxy)other, otherFrom);
 			} else {
-				for (int i = (end - start); --i >= 0;) {
-					final BitGene temp = uncheckedGet(i + start);
-					uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
-					other.uncheckedSet(otherStart + i, temp);
+				for (int i = (until - from); --i >= 0;) {
+					final BitGene temp = uncheckedGet(i + from);
+					uncheckedSet(i + from, other.uncheckedGet(otherFrom + i));
+					other.uncheckedSet(otherFrom + i, temp);
 				}
 			}
 		}

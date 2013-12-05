@@ -67,8 +67,8 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	}
 
 	@Override
-	public ArrayProxyImpl<T> slice(final int start, final int end) {
-		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
+	public ArrayProxyImpl<T> slice(final int from, final int until) {
+		return new ArrayProxyImpl<>(_array, from + _start, until + _start);
 	}
 
 	@Override
