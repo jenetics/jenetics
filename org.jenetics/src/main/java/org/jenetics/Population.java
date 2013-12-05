@@ -360,7 +360,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		StringBuilder out = new StringBuilder();
 
 		for (Phenotype<?, ?> pt : this) {
-			out.append(pt.toString()).append("\n");
+			out.append(pt).append("\n");
 		}
 
 		return out.toString();

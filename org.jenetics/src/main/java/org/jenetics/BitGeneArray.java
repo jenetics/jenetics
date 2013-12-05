@@ -71,7 +71,7 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		private byte[] _array;
 		private boolean _sealed = false;
 
-		protected Proxy(final byte[] array, final int start, final int end) {
+		Proxy(final byte[] array, final int start, final int end) {
 			super(start, end);
 			_array = array;
 		}

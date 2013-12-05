@@ -93,9 +93,9 @@ public class BitChromosome extends Number<BitChromosome>
 	private BitChromosome(final byte[] bits, final int length) {
 		this(
 			bits,
-			length != -1 ? length : bits.length*8,
+			length == -1 ? bits.length*8 : length,
 			(double)bit.count(bits)/
-			(double)(length != -1 ? length : bits.length*8)
+			(double)(length == -1 ? bits.length*8 : length)
 		);
 	}
 

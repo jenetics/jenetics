@@ -87,8 +87,8 @@ public final class LinearRankSelector<
 	public LinearRankSelector(final double nminus) {
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
-					"nminus is smaller than zero: %s", nminus
-				));
+				"nminus is smaller than zero: %s", nminus
+			));
 		}
 
 		_nminus = nminus;

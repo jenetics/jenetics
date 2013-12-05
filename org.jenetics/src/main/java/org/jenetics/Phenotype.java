@@ -339,9 +339,25 @@ public final class Phenotype<
 	 *
 	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
+	 *
+	 * @deprecated Fixing type, use {@link #RawFitness()} instead.
 	 */
+	@Deprecated
 	public static <C extends Comparable<? super C>>
 	Function<Phenotype<?, C>, C> RawFitnees()
+	{
+		return RawFitness();
+	}
+
+	/**
+	 * Create a {@link Function} which return the phenotype raw fitness when
+	 * calling {@code converter.convert(phenotype)}.
+	 *
+	 * @param <C> the fitness value type.
+	 * @return a raw fitness {@link Function}.
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<Phenotype<?, C>, C> RawFitness()
 	{
 		return new Function<Phenotype<?, C>, C>() {
 			@Override public C apply(final Phenotype<?, C> value) {
