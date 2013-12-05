@@ -28,7 +28,7 @@ import org.jenetics.util.Copyable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 
@@ -37,6 +37,12 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	protected final int _length;
 
 	protected ArrayProxy(final int start, final int end) {
+		if (start < 0 || end < 0 || end > start) {
+			throw new IllegalArgumentException(format(
+				"Invalid indexes [%d, %d)", start, end
+			));
+		}
+
 		_start = start;
 		_end = end;
 		_length = _end - _start;
