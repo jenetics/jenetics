@@ -836,7 +836,7 @@ public class GeneticAlgorithm<
 	/**
 	 * Set both, the offspring selector and the survivor selector.
 	 *
-	 * @param selector The selector for the offsprings and the survivors.
+	 * @param selector The selector for the offspring and the survivors.
 	 * @throws NullPointerException if the {@code selector} is {@code null}
 	 */
 	public void setSelectors(final Selector<G, C> selector) {
@@ -848,7 +848,8 @@ public class GeneticAlgorithm<
 	 * Set the offspring fraction.
 	 *
 	 * @param offspringFraction The offspring fraction.
-	 * @throws IllegalArgumentException if the offspring fraction is out of range.
+	 * @throws IllegalArgumentException if the offspring fraction is out of
+	 *         range.
 	 */
 	public void setOffspringFraction(final double offspringFraction) {
 		_offspringFraction = checkProbability(offspringFraction);
@@ -934,8 +935,8 @@ public class GeneticAlgorithm<
 		final Population<G, C> pop = new Population<>(population.size());
 		for (Phenotype<G, C> phenotype : population) {
 			pop.add(phenotype.newInstance(
-					_fitnessFunction, _fitnessScaler, _generation
-				));
+				_fitnessFunction, _fitnessScaler, _generation
+			));
 		}
 
 		_population = pop;
@@ -1035,7 +1036,9 @@ public class GeneticAlgorithm<
 	 * @throws NullPointerException if the given {@code calculator} is
 	 *         {@code null}.
 	 */
-	public void setStatisticsCalculator(final Statistics.Calculator<G, C> calculator) {
+	public void setStatisticsCalculator(
+		final Statistics.Calculator<G, C> calculator
+	) {
 		_calculator = requireNonNull(calculator, "Statistic calculator");
 	}
 

@@ -58,7 +58,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-11-28 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -87,8 +87,8 @@ public final class LinearRankSelector<
 	public LinearRankSelector(final double nminus) {
 		if (nminus < 0) {
 			throw new IllegalArgumentException(format(
-					"nminus is smaller than zero: %s", nminus
-				));
+				"nminus is smaller than zero: %s", nminus
+			));
 		}
 
 		_nminus = nminus;

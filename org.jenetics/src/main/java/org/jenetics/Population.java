@@ -49,7 +49,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-11-25 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
@@ -360,7 +360,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		StringBuilder out = new StringBuilder();
 
 		for (Phenotype<?, ?> pt : this) {
-			out.append(pt.toString()).append("\n");
+			out.append(pt).append("\n");
 		}
 
 		return out.toString();

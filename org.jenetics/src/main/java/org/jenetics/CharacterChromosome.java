@@ -43,7 +43,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public class CharacterChromosome
 	extends
@@ -214,7 +214,7 @@ public class CharacterChromosome
 	public String toString() {
 		final StringBuilder out = new StringBuilder();
 		for (CharacterGene gene : this) {
-			out.append(gene.toString());
+			out.append(gene);
 		}
 		return out.toString();
 	}
