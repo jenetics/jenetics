@@ -197,7 +197,7 @@ public class GeneticAlgorithm<
 	private final Timer _executionTimer = new Timer("Execution time");
 	private final Timer _selectTimer = new Timer("Select time");
 	private final Timer _alterTimer = new Timer("Alter time");
-	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
+	private final Timer _combineTimer = new Timer("Combine survivors and offspring time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 
