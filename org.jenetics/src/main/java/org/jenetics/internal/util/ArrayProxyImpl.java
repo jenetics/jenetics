@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.5 &mdash; <em>$Date: 2013-12-04 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 
@@ -67,8 +67,8 @@ public final class ArrayProxyImpl<T> extends ArrayProxy<T> {
 	}
 
 	@Override
-	public ArrayProxyImpl<T> slice(final int start, final int end) {
-		return new ArrayProxyImpl<>(_array, start + _start, end + _start);
+	public ArrayProxyImpl<T> slice(final int from, final int until) {
+		return new ArrayProxyImpl<>(_array, from + _start, until + _start);
 	}
 
 	@Override

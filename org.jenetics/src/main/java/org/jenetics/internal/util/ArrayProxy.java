@@ -120,27 +120,27 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * sub-array proxy it is possible to <i>write through</i> the original
 	 * array.
 	 *
-	 * @param start the start index of the new sub {@code ArrayProxy} object,
+	 * @param from the start index of the new sub {@code ArrayProxy} object,
 	 *        inclusively.
-	 * @param end the end index of the new sub {@code ArrayProxy} object,
+	 * @param until the end index of the new sub {@code ArrayProxy} object,
 	 *        exclusively.
 	 * @return a new array proxy (view) with the given start and end index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public abstract ArrayProxy<T> slice(final int start, final int end);
+	public abstract ArrayProxy<T> slice(final int from, final int until);
 
 	/**
 	 * Return a new sub {@code ArrayProxy} object with the given start index.
 	 * The underlying array storage is not copied. With the returned sub-array
 	 * proxy it is possible to <i>write through</i> the original array.
 	 *
-	 * @param start the start index of the new sub {@code ArrayProxy} object,
+	 * @param from the start index of the new sub {@code ArrayProxy} object,
 	 *        inclusively.
 	 * @return a new array proxy (view) with the given start index.
 	 * @throws IndexOutOfBoundsException if the given indexes are out of bounds.
 	 */
-	public ArrayProxy<T> slice(final int start) {
-		return slice(start, _length);
+	public ArrayProxy<T> slice(final int from) {
+		return slice(from, _length);
 	}
 
 	/**
@@ -149,39 +149,39 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	 * version, depending on the underlying data structure.
 	 *
 	 * <pre>
-	 *            start                end
+	 *            from                until
 	 *              |                   |
 	 * this:  +---+---+---+---+---+---+---+---+---+---+---+---+
 	 *              +---------------+
 	 *                          +---------------+
 	 * other: +---+---+---+---+---+---+---+---+---+---+---+---+
 	 *                          |
-	 *                      otherStart
+	 *                      otherFrom
 	 * </pre>
 	 *
-	 * @param start the start index of {@code this} range, inclusively.
-	 * @param end the end index of {@code this} range, exclusively.
+	 * @param from the start index of {@code this} range, inclusively.
+	 * @param until the end index of {@code this} range, exclusively.
 	 * @param other the other array to swap the elements with.
-	 * @param otherStart the start index of the {@code other} array.
+	 * @param otherFrom the start index of the {@code other} array.
 	 * @throws IndexOutOfBoundsException if {@code start > end} or
-	 *         if {@code start < 0 || end >= this.length() || otherStart < 0 ||
-	 *         otherStart + (end - start) >= other.length()}
+	 *         if {@code from < 0 || until >= this.length() || otherFrom < 0 ||
+	 *         otherFrom + (until - from) >= other.length()}
 	 */
 	public void swap(
-		final int start,
-		final int end,
+		final int from,
+		final int until,
 		final ArrayProxy<T> other,
-		final int otherStart
+		final int otherFrom
 	) {
-		checkIndex(start, end);
-		other.checkIndex(otherStart, otherStart + (end - start));
+		checkIndex(from, until);
+		other.checkIndex(otherFrom, otherFrom + (until - from));
 		cloneIfSealed();
 		other.cloneIfSealed();
 
-		for (int i = (end - start); --i >= 0;) {
-			final T temp = uncheckedGet(i + start);
-			uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
-			other.uncheckedSet(otherStart + i, temp);
+		for (int i = (until - from); --i >= 0;) {
+			final T temp = uncheckedGet(i + from);
+			uncheckedSet(i + from, other.uncheckedGet(otherFrom + i));
+			other.uncheckedSet(otherFrom + i, temp);
 		}
 	}
 
@@ -222,27 +222,35 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	/**
 	 * Checks the given index.
 	 *
-	 * @param index the index to check.
+	 * @param from the index to check.
 	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
 	 *         not in the valid range.
 	 */
-	protected final void checkIndex(final int index) {
-		if (index < 0 || index >= _length) {
+	protected final void checkIndex(final int from) {
+		if (from < 0 || from >= _length) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"Index %s is out of bounds [0, %s)", index, _length
+				"Index %s is out of bounds [0, %s)", from, _length
 			));
 		}
 	}
 
-	protected final void checkIndex(final int from, final int to) {
-		if (from > to) {
+	/**
+	 * Check the given {@code from} and {@code until} indices.
+	 *
+	 * @param from the start index, inclusively.
+	 * @param until the end index, exclusively.
+	 * @throws java.lang.ArrayIndexOutOfBoundsException if the given index is
+	 *         not in the valid range.
+	 */
+	protected final void checkIndex(final int from, final int until) {
+		if (from > until) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"fromIndex(%d) > toIndex(%d)", from, to
+				"fromIndex(%d) > toIndex(%d)", from, until
 			));
 		}
-		if (from < 0 || to > _length) {
+		if (from < 0 || until > _length) {
 			throw new ArrayIndexOutOfBoundsException(format(
-				"Invalid index range: [%d, %s)", from, to
+				"Invalid index range: [%d, %s)", from, until
 			));
 		}
 	}
