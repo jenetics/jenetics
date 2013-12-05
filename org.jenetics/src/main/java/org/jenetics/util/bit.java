@@ -566,7 +566,7 @@ public final class bit extends StaticObject {
 			);
 		}
 
-		data[0]         = (byte)((v >>> 24) & 0xFF);
+		data[start]     = (byte)((v >>> 24) & 0xFF);
 		data[1 + start] = (byte)((v >>> 16) & 0xFF);
 		data[2 + start] = (byte)((v >>>  8) & 0xFF);
 		data[3 + start] = (byte)((v)        & 0xFF);

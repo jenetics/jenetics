@@ -739,7 +739,7 @@ public final class Array<T>
 	 */
 	public static <T> Array<T> valueOf(final Collection<? extends T> values) {
 		Array<T> array = empty();
-		if (values.size() > 0) {
+		if (!values.isEmpty()) {
 			array = new Array<>(values.size());
 			int index = 0;
 			for (Iterator<? extends T>
