@@ -135,7 +135,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public class GeneticAlgorithm<
 	G extends Gene<?, G>,
@@ -197,7 +197,7 @@ public class GeneticAlgorithm<
 	private final Timer _executionTimer = new Timer("Execution time");
 	private final Timer _selectTimer = new Timer("Select time");
 	private final Timer _alterTimer = new Timer("Alter time");
-	private final Timer _combineTimer = new Timer("Combine survivors and offsprings time");
+	private final Timer _combineTimer = new Timer("Combine survivors and offspring time");
 	private final Timer _statisticTimer = new Timer("Statistic time");
 	private final Timer _evaluateTimer = new Timer("Evaluate time");
 
