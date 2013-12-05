@@ -7509,12 +7509,12 @@ status open
 
 \begin_layout Plain Layout
 
-public interface Chromosome<T extends Gene<?, T>>
+public interface Chromosome<G extends Gene<?, G>>
 \end_layout
 
 \begin_layout Plain Layout
 
-	extends Factory<Chromosome<T>>, Iterable<T>, Verifiable, 
+	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -7529,22 +7529,22 @@ public interface Chromosome<T extends Gene<?, T>>
 
 \begin_layout Plain Layout
 
-    public Chromosome<T> newInstance(ISeq<T> genes);
+    public Chromosome<G> newInstance(ISeq<G> genes);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T getGene();
+    public G getGene();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T getGene(int index);
+    public G getGene(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public ISeq<T> toSeq();
+    public ISeq<G> toSeq();
 \end_layout
 
 \begin_layout Plain Layout
