@@ -38,7 +38,7 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
@@ -566,7 +566,7 @@ public final class bit extends StaticObject {
 			);
 		}
 
-		data[0]         = (byte)((v >>> 24) & 0xFF);
+		data[start]     = (byte)((v >>> 24) & 0xFF);
 		data[1 + start] = (byte)((v >>> 16) & 0xFF);
 		data[2 + start] = (byte)((v >>>  8) & 0xFF);
 		data[3 + start] = (byte)((v)        & 0xFF);
