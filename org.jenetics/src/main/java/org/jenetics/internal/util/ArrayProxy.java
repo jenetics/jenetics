@@ -37,6 +37,12 @@ public abstract class ArrayProxy<T> implements Copyable<ArrayProxy<T>> {
 	protected final int _length;
 
 	protected ArrayProxy(final int start, final int end) {
+		if (start < 0 || end < 0 || end > start) {
+			throw new IllegalArgumentException(format(
+				"Invalid indexes [%d, %d)", start, end
+			));
+		}
+
 		_start = start;
 		_end = end;
 		_length = _end - _start;
