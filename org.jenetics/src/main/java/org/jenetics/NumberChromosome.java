@@ -91,7 +91,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the byte value of the {@link Gene} with the given {@code index}.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index &lt; 0 || index &gt;= length()).
+	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public byte byteValue(final int index) {
 		return getGene(index).getAllele().byteValue();
