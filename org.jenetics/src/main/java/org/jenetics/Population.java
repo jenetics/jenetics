@@ -49,7 +49,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-12-06 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-06 $</em>
  */
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements
