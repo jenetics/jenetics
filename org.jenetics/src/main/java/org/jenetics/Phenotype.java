@@ -340,7 +340,7 @@ public final class Phenotype<
 	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
 	 *
-	 * @deprecated Fixing type, use {@link #RawFitness()} instead.
+	 * @deprecated Fixing typo, use {@link #RawFitness()} instead.
 	 */
 	@Deprecated
 	public static <C extends Comparable<? super C>>
