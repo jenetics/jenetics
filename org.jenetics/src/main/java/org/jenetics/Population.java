@@ -194,13 +194,31 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		sortWith(Optimize.MAXIMUM.<C>descending());
 	}
 
-	/*
+	/**
+	 * Sort this population according the order defined by the given
+	 * {@code comparator}.
+	 *
+	 * @param comparator the comparator which defines the sorting order.
+	 * @throws java.lang.NullPointerException if the {@code comparator} is
+	 *         {@code null}.
+	 *
+	 * @deprecated This method conflicts with the default method of the
+	 *             {@link java.util.List} interface introduced in Java 8. Use
+	 *             {@link #sortWith(java.util.Comparator)} instead.
+	 */
 	@Deprecated
 	public void sort(final Comparator<? super C> comparator) {
-		quicksort(0, size() - 1, comparator);
+		sortWith(comparator);
 	}
-	*/
 
+	/**
+	 * Sort this population according the order defined by the given
+	 * {@code comparator}.
+	 *
+	 * @param comparator the comparator which defines the sorting order.
+	 * @throws java.lang.NullPointerException if the {@code comparator} is
+	 *         {@code null}.
+	 */
 	public void sortWith(final Comparator<? super C> comparator) {
 		quicksort(0, size() - 1, comparator);
 	}
