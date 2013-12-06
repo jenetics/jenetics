@@ -32,7 +32,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-06 $</em>
  */
 public abstract class NumberChromosome<
 	N extends Number<N>,
@@ -91,7 +91,7 @@ public abstract class NumberChromosome<
 	 * @param index the index of the {@link NumberGene}.
 	 * @return the byte value of the {@link Gene} with the given {@code index}.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index &lt; 0 || index &gt;= length()).
+	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public byte byteValue(final int index) {
 		return getGene(index).getAllele().byteValue();
