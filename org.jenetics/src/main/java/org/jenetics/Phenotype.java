@@ -49,7 +49,7 @@ import org.jenetics.util.functions;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-06 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -340,7 +340,7 @@ public final class Phenotype<
 	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
 	 *
-	 * @deprecated Fixing type, use {@link #RawFitness()} instead.
+	 * @deprecated Fixing typo, use {@link #RawFitness()} instead.
 	 */
 	@Deprecated
 	public static <C extends Comparable<? super C>>
