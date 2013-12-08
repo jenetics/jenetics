@@ -120,7 +120,7 @@ public abstract class IO {
 			final ObjectInputStream oin = new ObjectInputStream(in);
 			try {
 				return type.cast(oin.readObject());
-			} catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException | ClassCastException e) {
 				throw new IOException(e);
 			}
 		}
