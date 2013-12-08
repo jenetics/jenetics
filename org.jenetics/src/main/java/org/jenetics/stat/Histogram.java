@@ -70,7 +70,7 @@ import org.jenetics.util.arrays;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
  */
 public class Histogram<C> extends MappedAccumulator<C> {
 
@@ -533,7 +533,7 @@ public class Histogram<C> extends MappedAccumulator<C> {
 		for (int i = 1, n = pts - rest; i < n; ++i) {
 			separators[i - 1] = i*bulk + min;
 		}
-		for (int i = 0, n = rest; i < n; ++i) {
+		for (int i = 0; i < rest; ++i) {
 			separators[separators.length - rest + i] =
 					(pts - rest)*bulk + i*(bulk + 1) + min;
 		}

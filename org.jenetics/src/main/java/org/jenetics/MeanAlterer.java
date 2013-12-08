@@ -39,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -83,9 +83,9 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 		// Calculate the mean value of the gene array.
 		final MSeq<G> mean = mean(
-				c1.get(cindex).toSeq().copy(),
-				c2.get(cindex).toSeq()
-			);
+			c1.get(cindex).toSeq().copy(),
+			c2.get(cindex).toSeq()
+		);
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 
