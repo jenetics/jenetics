@@ -130,7 +130,7 @@ public abstract class IndexStream {
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date$</em>
+ * @version 1.5 &mdash; <em>$Date$</em>
  */
 final class RandomIndexStream extends IndexStream {
 	private final int _n;
@@ -156,12 +156,22 @@ final class RandomIndexStream extends IndexStream {
 	}
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */
 final class RandomIndexStreamP0 extends IndexStream {
 	@Override public int next() {
 		return -1;
 	}
 }
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date$</em>
+ */
 final class RandomIndexStreamP1 extends IndexStream {
 	private final int _n;
 	private int _pos = -1;
