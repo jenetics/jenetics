@@ -112,7 +112,7 @@ public abstract class IndexStream {
 		}
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
-				"n must be greate than zero: %d", n
+				"n must be greater than zero: %d", n
 			));
 		}
 
