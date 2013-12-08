@@ -83,9 +83,9 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 		// Calculate the mean value of the gene array.
 		final MSeq<G> mean = mean(
-				c1.get(cindex).toSeq().copy(),
-				c2.get(cindex).toSeq()
-			);
+			c1.get(cindex).toSeq().copy(),
+			c2.get(cindex).toSeq()
+		);
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 
