@@ -280,10 +280,14 @@ public class LCG64ShiftRandom extends Random64 {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and
-		 * a safe seed.
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code param} is null.
 		 */
-		public ThreadSafe() {
+		public ThreadSafe(final long seed, final Param param) {
+			super(seed, param);
 		}
 
 		/**
@@ -293,7 +297,7 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @param seed the seed of the PRNG
 		 */
 		public ThreadSafe(final long seed) {
-			super(seed);
+			this(seed, Param.DEFAULT);
 		}
 
 		/**
@@ -304,18 +308,15 @@ public class LCG64ShiftRandom extends Random64 {
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			super(param);
+			this(math.random.seed(), param);
 		}
 
 		/**
-		 * Create a new PRNG instance with the given parameter and seed.
-		 *
-		 * @param seed the seed of the PRNG.
-		 * @param param the parameter of the PRNG.
-		 * @throws NullPointerException if the given {@code param} is null.
+		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and
+		 * a safe seed.
 		 */
-		public ThreadSafe(final long seed, final Param param) {
-			super(seed, param);
+		public ThreadSafe() {
+			this(math.random.seed(), Param.DEFAULT);
 		}
 
 		@Override
