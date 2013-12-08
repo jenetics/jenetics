@@ -116,7 +116,13 @@ public abstract class IndexStream {
 			));
 		}
 
-		return new RandomIndexStream(n, p, random);
+		IndexStream stream = new RandomIndexStream(n, p, random);
+		if (Double.compare(p, 0.0) == 0) {
+			stream = new RandomIndexStreamP0();
+		} else if (Double.compare(p, 1.0) == 0) {
+			stream = new RandomIndexStreamP1(n);
+		}
+		return stream;
 	}
 
 }
@@ -144,7 +150,29 @@ final class RandomIndexStream extends IndexStream {
 		while (_pos < _n && _random.nextInt() >= _p) {
 			++_pos;
 		}
-		return (_pos < _n - 1) ? ++_pos : -1;
+		++_pos;
+
+		return _pos < _n ? _pos : -1;
+	}
+}
+
+final class RandomIndexStreamP0 extends IndexStream {
+	@Override public int next() {
+		return -1;
+	}
+}
+
+final class RandomIndexStreamP1 extends IndexStream {
+	private final int _n;
+	private int _pos = -1;
+
+	RandomIndexStreamP1(final int n) {
+		_n = n;
+	}
+
+	@Override public int next() {
+		++_pos;
+		return _pos < _n ? _pos : -1;
 	}
 }
 
