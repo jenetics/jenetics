@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.lang.Math.abs;
-import static java.lang.String.format;
 import static org.jenetics.util.math.pow;
 import static org.jenetics.util.math.ulpDistance;
 import static org.jenetics.util.math.statistics.min;
@@ -43,7 +42,7 @@ import javolution.lang.Immutable;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-12-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -99,7 +98,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	public String toString() {
-		return format("%s", getClass().getSimpleName());
+		return getClass().getSimpleName();
 	}
 
 }
