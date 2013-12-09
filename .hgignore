@@ -40,6 +40,7 @@ random-x86_64
 *.iws
 
 ## Netbeans
+.nb-gradle/**
 nbproject/**
 nbbuild/**
 build.xml

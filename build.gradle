@@ -50,7 +50,7 @@ ext {
 	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
 	manualIdentifier = "${version}---${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-	
+
 	// Define some 'global' path variables.
 	exportDir = file("${buildDir}/package/${identifier}")
 	exportProjectDir = file("${exportDir}/project")
@@ -79,23 +79,23 @@ subprojects { project ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '1.7'
+	gradleVersion = '1.8'
 }
 
 task alljavadoc(type: Javadoc) {
-	def jeneticsProjects = subprojects.findAll { project -> 
+	def jeneticsProjects = subprojects.findAll { project ->
 		project.name.startsWith('org.jeneti') &&
 		project.name != 'org.jenetics.doc'
 	}
 	configure(jeneticsProjects) {
 		apply plugin: 'java'
 	}
-	
+
 	source jeneticsProjects.collect { p ->
 		p.sourceSets.main.allJava
 	}
 	destinationDir = file("${buildDir}/alljavadoc")
-	
+
 	// Might need a classpath
 	classpath = files(jeneticsProjects.collect { project ->
 		project.sourceSets.main.compileClasspath
@@ -131,7 +131,9 @@ task packaging(overwrite: true) {
 				exclude '*.iws'
 				exclude '.project'
 				exclude '.classpath'
+				exclude '.settings'
 				exclude 'build'
+				exclude 'out'
 			}
 			into exportProjectDir
 			filter(ReplaceTokens, tokens: [
@@ -145,7 +147,7 @@ task packaging(overwrite: true) {
 			}
 			into exportProjectDir
 		}
-		
+
 		// Copy 'buildSrc' files.
 		copy {
 			from(project('buildSrc').projectDir) {
@@ -157,6 +159,7 @@ task packaging(overwrite: true) {
 				include 'src/**/*.cpp'
 				include 'src/**/*.h'
 				include 'src/**/*.hpp'
+				exclude '.gradle'
 			}
 			into file("${exportProjectDir}/buildSrc")
 			filter(ReplaceTokens, tokens: [
