@@ -23,8 +23,8 @@ import org.jenetics.util.Random32;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-05-21 $</em>
+ * @since @__version__@
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public class LCG32ShiftRandom extends Random32 {
 

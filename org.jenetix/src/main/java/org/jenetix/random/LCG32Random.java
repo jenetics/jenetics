@@ -30,8 +30,8 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-20 $</em>
+ * @since @__version__@
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public class LCG32Random extends Random32 {
 
@@ -44,7 +44,7 @@ public class LCG32Random extends Random32 {
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
-	 * @version 1.1 &mdash; <em>$Date: 2013-06-20 $</em>
+	 * @version 1.1 &mdash; <em>$Date: 2013-12-09 $</em>
 	 */
 	public static final class Param implements Serializable {
 

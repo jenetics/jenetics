@@ -24,8 +24,8 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__new_version__@
- * @version @__new_version__@ &mdash; <em>$Date: 2013-06-21 $</em>
+ * @since @__version__@
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public class XORShiftRandom extends Random32 {
 

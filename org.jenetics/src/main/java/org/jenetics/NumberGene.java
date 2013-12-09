@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-12-09 $</em>
+ * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -55,8 +55,8 @@ public abstract class NumberGene<
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since @__new_version__@
-	 * @version @__new_version__@ &mdash; <em>$Date: 2013-12-09 $</em>
+	 * @since @__version__@
+	 * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
 	 */
 	public static abstract class Builder<
 		N extends Number<N>,
