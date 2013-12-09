@@ -34,14 +34,18 @@ public abstract class Random32 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
 
-	protected Random32(long seed) {
+	protected Random32(final long seed) {
 		super(seed);
 	}
 
 	protected Random32() {
+		this(math.random.seed());
 	}
 
-	// Force to explicitly override the Random.nextInt() method.
+	/**
+	 * Force to explicitly override the Random.nexInt() method. All other
+	 * methods of this class are implemented by calling this method.
+	 */
 	@Override
 	public abstract int nextInt();
 
