@@ -31,7 +31,7 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2012-12-19 $</em>
+ * @version <em>$Date$</em>
  */
 template<class Random>
 class TRNGRandomOutput {
