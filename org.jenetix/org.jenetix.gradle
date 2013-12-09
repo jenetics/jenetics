@@ -18,97 +18,37 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
-import org.jenetics.gradle.Include
-import org.jenetics.gradle.task.ColorizerTask
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since @__version__@
  * @version @__version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 
-apply plugin: 'jacoco'
-apply plugin: 'osgi'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-
-apply from: "${rootDir}/gradle/commons.gradle"
-apply from: "${rootDir}/gradle/javadoc.gradle"
-
-jar {
-	manifest {
-		version = version
-		symbolicName = project.name
-		name = project.name
-		instruction 'Export-Package',
-					'org.jenetix',
-					'org.jenetix.random'
-		instruction 'Bundle-Vendor', jenetics.author
-		instruction 'Bundle-Description', jenetics.description
-		instruction 'Bundle-DocUR', jenetics.url
-
-		attributes 'Implementation-Title': project.name,
-					'Implementation-Version': version,
-					'Implementation-URL': jenetics.url,
-					'Implementation-Vendor': jenetics.name,
-					'ProjectName': jenetics.name,
-					'Version': version,
-					'Maintainer': jenetics.author
-	}
-}
-
-task jarjar(type: Jar, dependsOn: build) {
-	baseName = "${project.name}-all"
-	from files(sourceSets.main.output.classesDir)
-	from {
-		configurations.compile.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
-
-	manifest {
-		attributes 'Implementation-Title': "${project.name}-all",
-					'Implementation-Versionv': version,
-					'Implementation-URL': jenetics.url,
-					'Implementation-Vendor': jenetics.name,
-					'ProjectName': jenetics.name,
-					'Version': version,
-					'Maintainer': jenetics.author
-	}
-}
-
-task pack(dependsOn: [jarjar, javadoc, jacocoTestReport]){}
-
-export.dependsOn(pack)
-
-test {
-	useTestNG()
-	options {
-		suites "src/test/java/org/jenetix/testng.xml"
-	}
-}
-
-export.doLast {
-	copy {
-		from("${buildDir}/reports") {
-			include 'tests/**'
-			include 'jacoco/**'
-			include '*.gradle'
-			exclude '.gradle'
-		}
-		into "${exportReportDir}/${project.name}"
-	}
-}
-
+apply plugin: 'packaging'
+ 
+compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
+ 
 dependencies {
-	compile Include.JScience
 	compile project(':org.jenetics')
+	compile Include.JScience
 	
+	testCompile Include.Apache.Commons.Math
+	testCompile Include.TestNG
 	testCompile project(':org.jenetics').sourceSets.test.output
-    testCompile Include.TestNG
 }
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetix',
+	'org.jenetix.util',
+	'org.jenetix.random'
+)
+
+packaging {
+	name = 'Jenetix'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+}
+
 
 
 
