@@ -51,7 +51,7 @@ For building the library change into the `<builddir>` directory (or one of the m
 For packaging (building)  the source call
 
     $ cd <build-dir>
-    $ ./gradlew pack
+    $ ./gradlew packaging
 
 
 

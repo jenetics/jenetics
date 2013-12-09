@@ -1,3 +1,6 @@
+Jenetics-1.4.1
+- Fix bug in ListIterator implementation of the 'Seq' classes.
+
 Jenetics-1.4.0
 - Performance improvements of 'BitChromosome' class.
 - Add method 'BitChromosome.bitCount()'.

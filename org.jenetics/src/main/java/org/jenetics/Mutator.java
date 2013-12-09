@@ -64,7 +64,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 
@@ -153,12 +153,10 @@ public class Mutator<G extends Gene<?, G>> extends AbstractAlterer<G> {
 	 * This implementation, for example, does it in this way:
 	 * [code]
 	 * protected int mutate(final MSeq<G> genes, final double p) {
-	 *     final Random random = RandomRegistry.getRandom();
-	 *     final ProbabilityIndexIterator it =
-	 *         new ProbabilityIndexIterator(genes.length(), p, random);
+	 *     final IndexStream stream = IndexStream.Random(genes.length(), p);
 	 *
 	 *     int alterations = 0;
-	 *     for (int i = it.next(); i != -1; i = it.next()) {
+	 *     for (int i = stream.next(); i != -1; i = stream.next()) {
 	 *         genes.set(i, genes.get(i).newInstance());
 	 *         ++alterations;
 	 *     }
