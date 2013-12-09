@@ -24,6 +24,7 @@ import static org.jenetics.util.object.eq;
 import static org.jenetics.util.object.hashCodeOf;
 
 import java.util.Objects;
+import java.util.Random;
 
 import javolution.context.ObjectFactory;
 
@@ -63,7 +64,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.5 &mdash; <em>$Date: 2013-11-28 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class EnumGene<A>
 	implements
@@ -119,8 +120,9 @@ public final class EnumGene<A>
 	public EnumGene<A> newInstance() {
 		@SuppressWarnings("unchecked")
 		final EnumGene<A> gene = FACTORY.object();
+		final Random random = RandomRegistry.getRandom();
 
-		gene._alleleIndex = RandomRegistry.getRandom().nextInt(_validAlleles.length());
+		gene._alleleIndex = random.nextInt(_validAlleles.length());
 		gene._validAlleles = _validAlleles;
 		return gene;
 	}
