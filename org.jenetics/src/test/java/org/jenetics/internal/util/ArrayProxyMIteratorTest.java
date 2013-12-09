@@ -29,7 +29,7 @@ import org.jenetics.util.math;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-01 $</em>
+ * @version <em>$Date: 2013-09-18 $</em>
  */
 public class ArrayProxyMIteratorTest {
 
@@ -47,13 +47,71 @@ public class ArrayProxyMIteratorTest {
 		random.setSeed(seed);
 		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
 		while (it.hasNext()) {
-			it.set(random.nextInt());
 			it.next();
+			it.set(random.nextInt());
 		}
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy._length; ++i) {
 			Assert.assertEquals(proxy.get(i).intValue(), random.nextInt());
+		}
+	}
+
+	@Test
+	public void setValueForward() {
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, 111);
+		}
+
+		for (int i = 0; i < proxy._length; ++i) {
+			final Integer value = proxy.get(i);
+			Assert.assertEquals(value, new Integer(111));
+		}
+
+		int count = 0;
+		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		while (it.hasNext()) {
+			it.next();
+			it.set(222);
+			++count;
+		}
+
+		Assert.assertEquals(count, proxy._length);
+		for (int i = 0; i < proxy._length; ++i) {
+			final Integer value = proxy.get(i);
+			Assert.assertEquals(value, new Integer(222));
+		}
+	}
+
+	@Test
+	public void setValueBackward() {
+		final ArrayProxy<Integer> proxy = new ArrayProxyImpl<>(1000);
+		for (int i = 0; i < proxy._length; ++i) {
+			proxy.set(i, 111);
+		}
+
+		for (int i = 0; i < proxy._length; ++i) {
+			final Integer value = proxy.get(i);
+			Assert.assertEquals(value, new Integer(111));
+		}
+
+		final ListIterator<Integer> it = new ArrayProxyMIterator<>(proxy);
+		while (it.hasNext()) {
+			it.next();
+		}
+
+		int count = 0;
+		while (it.hasPrevious()) {
+			it.previous();
+			it.set(222);
+			++count;
+		}
+
+		Assert.assertEquals(count, proxy._length);
+		for (int i = 0; i < proxy._length; ++i) {
+			final Integer value = proxy.get(i);
+			Assert.assertEquals(value, new Integer(222));
 		}
 	}
 

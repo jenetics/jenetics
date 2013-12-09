@@ -38,15 +38,15 @@ import org.jscience.mathematics.number.LargeInteger;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.4 &mdash; <em>$Date: 2013-09-08 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class bit extends StaticObject {
 	private bit() {}
 
 	/**
-	 * Lookup table for counting the number of set bits in an {@code byte} value.
+	 * Lookup table for counting the number of set bits in a {@code byte} value.
 	 */
-	private static final byte[] BIT_SET_TABLE = new byte[] {
+	private static final byte[] BIT_SET_TABLE = {
 		(byte)1, (byte)2, (byte)2, (byte)3, (byte)2, (byte)3, (byte)3, (byte)4,
 		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
 		(byte)2, (byte)3, (byte)3, (byte)4, (byte)3, (byte)4, (byte)4, (byte)5,
@@ -80,7 +80,6 @@ public final class bit extends StaticObject {
 		(byte)3, (byte)4, (byte)4, (byte)5, (byte)4, (byte)5, (byte)5, (byte)6,
 		(byte)4, (byte)5, (byte)5, (byte)6, (byte)5, (byte)6, (byte)6, (byte)7
 	};
-
 	private static final int BIT_SET_TABLE_INDEX_OFFSET = 128;
 
 	/**
@@ -183,7 +182,6 @@ public final class bit extends StaticObject {
 			set(data, i + start, get(otherData, otherStart + i));
 			set(otherData, otherStart + i, temp);
 		}
-
 	}
 
 	/**
@@ -248,7 +246,6 @@ public final class bit extends StaticObject {
 				carry = nextCarry;
 			}
 		}
-
 
 		return data;
 	}
