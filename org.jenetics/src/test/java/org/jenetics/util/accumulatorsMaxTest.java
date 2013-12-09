@@ -19,7 +19,7 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.util.arrays.shuffle;
+import static org.jenetics.util.shuffling.shuffle;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -32,7 +32,7 @@ import org.jenetics.util.accumulators.Max;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @version <em>$Date: 2013-10-17 $</em>
  */
 public class accumulatorsMaxTest
 	extends MappedAccumulatorTester<accumulators.Max<Double>>

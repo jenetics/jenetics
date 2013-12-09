@@ -32,7 +32,6 @@ import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
 
-
 /**
  * <p>
  * The order ({@link #getOrder()}) of this Recombination implementation is two.
@@ -40,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 	extends Recombinator<G>
@@ -84,9 +83,9 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 		// Calculate the mean value of the gene array.
 		final MSeq<G> mean = mean(
-				c1.get(cindex).toSeq().copy(),
-				c2.get(cindex).toSeq()
-			);
+			c1.get(cindex).toSeq().copy(),
+			c2.get(cindex).toSeq()
+		);
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 
@@ -113,14 +112,7 @@ public final class MeanAlterer<G extends Gene<?, G> & Mean<G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (!(obj instanceof MeanAlterer<?>)) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return obj == this || obj instanceof MeanAlterer<?> && super.equals(obj);
 	}
 
 	@Override

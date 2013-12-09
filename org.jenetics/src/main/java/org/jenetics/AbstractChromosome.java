@@ -29,19 +29,21 @@ import static org.jenetics.util.object.hashCodeOf;
 import java.util.Iterator;
 import java.util.RandomAccess;
 
+import org.jenetics.internal.util.cast;
+
 import org.jenetics.util.Function;
 import org.jenetics.util.ISeq;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors
- * of this class must assure that the protected member <code>_genes</code> is not
- * <code>null</code> and the length of the <code>genes</code> > 0.
+ * of this class must assure that the protected member {@code _genes} is not
+ * {@code null} and the length of the {@code genes} &gt; 0.
  *
  * @param <G> the gene type.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.5 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
@@ -72,7 +74,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *          smaller than one.
 	 */
-	protected AbstractChromosome(final ISeq<G> genes) {
+	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
 		assert (genes.indexWhere(Null) == -1) : "Found at least on null gene.";
 
@@ -82,7 +84,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 			));
 		}
 
-		_genes = genes;
+		_genes = cast.apply(genes);
 	}
 
 	@Override
@@ -120,7 +122,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the index of the first occurrence of the given <code>gene</code>.
+	 * Return the index of the first occurrence of the given {@code gene}.
 	 *
 	 * @param gene the {@link Gene} to search for.
 	 * @return the index of the searched gene, or -1 if the given gene was not

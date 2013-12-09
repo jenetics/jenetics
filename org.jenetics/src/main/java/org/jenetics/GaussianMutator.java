@@ -40,14 +40,14 @@ import org.jenetics.util.math;
  * <img
  *     src="doc-files/gaussian-mutator-var.gif"
  *     alt="\hat{\sigma }^2 = \left ( \frac{ g_{max} - g_{min} }{4}\right )^2"
- * />
+ * >
  * </p>
  * The new value will be cropped to the gene's boundaries.
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class GaussianMutator<G extends NumberGene<?, G>>
 	extends Mutator<G>

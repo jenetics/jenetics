@@ -39,7 +39,7 @@ import org.jenetics.util.math;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class Integer64Gene
 	extends NumberGene<Integer64, Integer64Gene>
@@ -262,7 +262,7 @@ public final class Integer64Gene
 			element.add(gene.getAllele().longValue());
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Gene gene) {
+		public void read(final InputElement e, final Integer64Gene g) {
 		}
 	};
 

@@ -46,7 +46,7 @@ import javolution.lang.Immutable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.2 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class CharSeq
 	extends AbstractCharSeq
@@ -192,9 +192,9 @@ public final class CharSeq
 			@Override public Character next() {
 				if (!hasNext()) {
 					throw new NoSuchElementException(format(
-							"Index %s is out of range [0, %s)",
-							_pos, _characters.length
-						));
+						"Index %s is out of range [0, %s)",
+						_pos, _characters.length
+					));
 				}
 				return _characters[_pos++];
 			}
@@ -265,15 +265,15 @@ public final class CharSeq
 			} else if (pattern.charAt(i) == '-') {
 				if (i <= 0 || i >= (pattern.length() - 1)) {
 					throw new PatternSyntaxException(
-							"Dangling range operator '-'", pattern.toString(),
-							pattern.length() - 1
-						);
+						"Dangling range operator '-'", pattern.toString(),
+						pattern.length() - 1
+					);
 				}
 
 				final String range = expand(
-						pattern.charAt(i - 1),
-						pattern.charAt(i + 1)
-					);
+					pattern.charAt(i - 1),
+					pattern.charAt(i + 1)
+				);
 				out.append(range);
 
 				++i;

@@ -39,7 +39,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version @__new_version__@ &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public abstract class NumberGene<
 	N extends Number<N>,
@@ -56,7 +56,7 @@ public abstract class NumberGene<
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since @__new_version__@
-	 * @version @__new_version__@ &mdash; <em>$Date: 2013-09-02 $</em>
+	 * @version @__new_version__@ &mdash; <em>$Date: 2013-12-09 $</em>
 	 */
 	public static abstract class Builder<
 		N extends Number<N>,
@@ -165,13 +165,13 @@ public abstract class NumberGene<
 	protected transient N _min;
 
 	/**
-	 * The maximum value of this <code>NumberGene</code>. This field is marked
+	 * The maximum value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
 	 */
 	protected transient N _max;
 
 	/**
-	 * The value of this <code>NumberGene</code>. This field is marked
+	 * The value of this {@code NumberGene}. This field is marked
 	 * as transient and must serialized manually by sub classes.
 	 */
 	protected transient N _value;
@@ -226,7 +226,7 @@ public abstract class NumberGene<
 	}
 
 	/**
-	 * Set the <code>NumerGene</code>.
+	 * Set the {@code NumerGene}.
 	 *
 	 * @param value The value of the number gene.
 	 * @param min The allowed min value of the gene.
@@ -320,8 +320,8 @@ public abstract class NumberGene<
 	 * {@code equals} method also takes the {@code min} and {@code max} value
 	 * into account.
 	 * [code]
-	 * final NumberGene<?, ?> ng1 = ...
-	 * final NumberGene<?, ?> ng2 = ...
+	 * final NumberGene〈?, ?〉 ng1 = ...
+	 * final NumberGene〈?, ?〉 ng2 = ...
 	 *
 	 * if (ng1.equals(ng2) {
 	 *     // Holds for every ng1 and ng2.

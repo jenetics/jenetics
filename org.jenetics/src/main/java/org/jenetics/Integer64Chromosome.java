@@ -43,7 +43,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public class Integer64Chromosome
 	extends NumberChromosome<Integer64, Integer64Gene>
@@ -67,8 +67,8 @@ public class Integer64Chromosome
 	 *
 	 * @param genes the genes of the new chromosome.
 	 * @throws NullPointerException if the given genes array is {@code null}.
-	 * @throws IllegalArgumentException if the {@code genes.length} is smaller than
-	 *         one.
+	 * @throws IllegalArgumentException if the {@code genes.length} is smaller
+	 *         than one.
 	 */
 	public Integer64Chromosome(final Integer64Gene... genes) {
 		this(Array.valueOf(genes).toISeq());
@@ -165,10 +165,8 @@ public class Integer64Chromosome
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		return obj instanceof Integer64Chromosome && super.equals(obj);
+		return obj == this ||
+				obj instanceof Integer64Chromosome && super.equals(obj);
 	}
 
 	/* *************************************************************************
@@ -242,9 +240,7 @@ public class Integer64Chromosome
 			}
 		}
 		@Override
-		public void read(final InputElement element, final Integer64Chromosome chromosome)
-			throws XMLStreamException
-		{
+		public void read(final InputElement e, final Integer64Chromosome c) {
 		}
 	};
 

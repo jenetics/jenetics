@@ -37,19 +37,19 @@ import org.jenetics.util.functions;
 
 
 /**
- * The <code>Phenotype</code> consists of a {@link Genotype} plus a
+ * The {@code Phenotype} consists of a {@link Genotype} plus a
  * fitness {@link Function}, where the fitness {@link Function} represents the
  * environment where the {@link Genotype} lives.
  * This class implements the {@link Comparable} interface, to define a natural
- * order between two <code>Phenotype</code>s. The natural order of the
- * <code>Phenotypes</code> is defined by its fitness value (given by the
+ * order between two {@code Phenotype}s. The natural order of the
+ * {@code Phenotypes} is defined by its fitness value (given by the
  * fitness {@link Function}.
- * The <code>Phenotype</code> is immutable and therefore can't be changed after
+ * The {@code Phenotype} is immutable and therefore can't be changed after
  * creation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -79,11 +79,11 @@ public final class Phenotype<
 	}
 
 	/**
-	 * This method returns a copy of the <code>Genotype</code>, to guarantee a
+	 * This method returns a copy of the {@code Genotype}, to guarantee a
 	 * immutable class.
 	 *
-	 * @return the cloned <code>Genotype</code> of this <code>Phenotype</code>.
-	 * @throws NullPointerException if one of the arguments is <code>null</code>.
+	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public Genotype<G> getGenotype() {
 		return _genotype;
@@ -131,9 +131,9 @@ public final class Phenotype<
 	}
 
 	/**
-	 * Return the fitness value of this <code>Phenotype</code>.
+	 * Return the fitness value of this {@code Phenotype}.
 	 *
-	 * @return The fitness value of this <code>Phenotype</code>.
+	 * @return The fitness value of this {@code Phenotype}.
 	 */
 	public C getFitness() {
 		evaluate();
@@ -230,7 +230,7 @@ public final class Phenotype<
 
 	/**
 	 * Factory method for creating a new {@link Phenotype} with the same
-	 * {@link FitnessFunction} and age as this {@link Phenotype}.
+	 * {@link Function} and age as this {@link Phenotype}.
 	 *
 	 * @param genotype the new genotype of the new phenotype.
 	 * @param generation date of birth (generation) of the new phenotype.
@@ -339,9 +339,25 @@ public final class Phenotype<
 	 *
 	 * @param <C> the fitness value type.
 	 * @return a raw fitness {@link Function}.
+	 *
+	 * @deprecated Fixing typo, use {@link #RawFitness()} instead.
 	 */
+	@Deprecated
 	public static <C extends Comparable<? super C>>
 	Function<Phenotype<?, C>, C> RawFitnees()
+	{
+		return RawFitness();
+	}
+
+	/**
+	 * Create a {@link Function} which return the phenotype raw fitness when
+	 * calling {@code converter.convert(phenotype)}.
+	 *
+	 * @param <C> the fitness value type.
+	 * @return a raw fitness {@link Function}.
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<Phenotype<?, C>, C> RawFitness()
 	{
 		return new Function<Phenotype<?, C>, C>() {
 			@Override public C apply(final Phenotype<?, C> value) {
@@ -368,8 +384,8 @@ public final class Phenotype<
 	}
 
 	/**
-	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only
-	 * the age of the <code>Phenotype</code> can be incremented.
+	 * The {@code Genotype} is copied to guarantee an immutable class. Only
+	 * the age of the {@code Phenotype} can be incremented.
 	 *
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.
@@ -387,8 +403,8 @@ public final class Phenotype<
 	}
 
 	/**
-	 * The <code>Genotype</code> is copied to guarantee an immutable class. Only
-	 * the age of the <code>Phenotype</code> can be incremented.
+	 * The {@code Genotype} is copied to guarantee an immutable class. Only
+	 * the age of the {@code Phenotype} can be incremented.
 	 *
 	 * @param genotype the genotype of this phenotype.
 	 * @param fitnessFunction the fitness function of this phenotype.

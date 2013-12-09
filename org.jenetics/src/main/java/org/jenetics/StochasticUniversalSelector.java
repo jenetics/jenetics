@@ -19,7 +19,6 @@
  */
 package org.jenetics;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.object.hashCodeOf;
 
@@ -27,7 +26,7 @@ import org.jenetics.util.RandomRegistry;
 
 
 /**
- * <code>StochasticUniversalSelector</code> is a method for selecting a
+ * {@code StochasticUniversalSelector} is a method for selecting a
  * population according to some given probability in a way that minimize chance
  * fluctuations. It can be viewed as a type of roulette game where now we have
  * P equally spaced points which we spin.
@@ -45,7 +44,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-09 $</em>
  */
 public class StochasticUniversalSelector<
 	G extends Gene<?, G>,
@@ -121,19 +120,13 @@ public class StochasticUniversalSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || obj.getClass() != getClass()) {
-			return false;
-		}
-
-		return super.equals(obj);
+		return obj == this ||
+				obj != null && obj.getClass() == getClass() && super.equals(obj);
 	}
 
 	@Override
 	public String toString() {
-		return format("%s", getClass().getSimpleName());
+		return getClass().getSimpleName();
 	}
 
 }
