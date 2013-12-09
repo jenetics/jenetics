@@ -8,6 +8,8 @@ keyword=
 
 [keyword]
 **.java =
+**.gradle =
+**.xml =
 
 [keywordmaps]
 Date = {date|shortdate}
