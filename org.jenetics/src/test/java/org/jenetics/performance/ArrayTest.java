@@ -27,10 +27,11 @@ import org.jenetics.util.Array;
 import org.jenetics.util.Factory;
 import org.jenetics.util.Function;
 import org.jenetics.util.arrays;
+import org.jenetics.util.shuffling;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-09-18 $</em>
+ * @version <em>$Date: 2013-10-17 $</em>
  */
 @Suite("Array")
 public class ArrayTest {
@@ -145,7 +146,7 @@ public class ArrayTest {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			arrays.shuffle(_array);
+			shuffling.shuffle(_array);
 		}
 
 		@Override
@@ -168,7 +169,7 @@ public class ArrayTest {
 			for (int i = _array.length(); --i >= 0;) {
 				_array.set(i, i);
 			}
-			arrays.shuffle(_array);
+			shuffling.shuffle(_array);
 		}
 
 		@Override

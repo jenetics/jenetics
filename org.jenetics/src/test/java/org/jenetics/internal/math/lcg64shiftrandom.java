@@ -17,19 +17,29 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package org.jenetics.internal.math;
+
+import org.jenetics.util.StaticObject;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2013-08-29 $</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date: 2013-11-24 $</em>
  */
-public class SeedRandom extends Random64 {
+public class lcg64shiftrandom extends StaticObject {
+	private lcg64shiftrandom() {}
 
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	public long nextLong() {
-		return math.random.seed();
+	public static final class State {
+		public long r = 0;
 	}
 
+
+
 }
+
+
+
+
+
+
+

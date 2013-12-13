@@ -28,20 +28,16 @@ import org.jenetics.util.bit;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.4 &mdash; <em>$Date: 2013-12-05 $</em>
  */
 final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 
-	public BitGeneArray(final Proxy proxy) {
+	BitGeneArray(final Proxy proxy) {
 		super(proxy);
 	}
 
-	public BitGeneArray(final byte[] array, final int start, final int end) {
+	BitGeneArray(final byte[] array, final int start, final int end) {
 		this(new Proxy(array, start, end));
-	}
-
-	public BitGeneArray(final int length) {
-		this(new Proxy(length));
 	}
 
 	@Override
@@ -75,48 +71,48 @@ final class BitGeneArray extends ArrayProxyMSeq<BitGene> {
 		private byte[] _array;
 		private boolean _sealed = false;
 
-		protected Proxy(final byte[] array, final int start, final int end) {
+		Proxy(final byte[] array, final int start, final int end) {
 			super(start, end);
 			_array = array;
 		}
 
 		Proxy(final int length) {
-			this(
-				new byte[(length & 7) == 0 ? (length >>> 3) : (length >>> 3) + 1],
-				0, length
-			);
+			this(bit.newArray(length), 0, length);
 		}
 
 		@Override
-		public BitGene uncheckedOffsetGet(final int absoluteIndex) {
+		public BitGene __get(final int absoluteIndex) {
 			return BitGene.valueOf(bit.get(_array, absoluteIndex));
 		}
 
 		@Override
-		public void uncheckedOffsetSet(final int absoluteIndex, final BitGene value) {
+		public void __set(
+			final int absoluteIndex,
+			final BitGene value
+		) {
 			bit.set(_array, absoluteIndex, value.booleanValue());
 		}
 
 		@Override
-		public Proxy sub(final int start, final int end) {
-			return new Proxy(_array, start + _start, end + _start);
+		public Proxy slice(final int from, final int until) {
+			return new Proxy(_array, from + _start, until + _start);
 		}
 
 		@Override
 		public void swap(
-			final int start, final int end,
-			final ArrayProxy<BitGene> other, final int otherStart
+			final int from, final int until,
+			final ArrayProxy<BitGene> other, final int otherFrom
 		) {
 			cloneIfSealed();
 			other.cloneIfSealed();
 
 			if (other instanceof Proxy) {
-				swap(start, end, (Proxy)other, otherStart);
+				swap(from, until, (Proxy)other, otherFrom);
 			} else {
-				for (int i = (end - start); --i >= 0;) {
-					final BitGene temp = uncheckedGet(i + start);
-					uncheckedSet(i + start, other.uncheckedGet(otherStart + i));
-					other.uncheckedSet(otherStart + i, temp);
+				for (int i = (until - from); --i >= 0;) {
+					final BitGene temp = uncheckedGet(i + from);
+					uncheckedSet(i + from, other.uncheckedGet(otherFrom + i));
+					other.uncheckedSet(otherFrom + i, temp);
 				}
 			}
 		}

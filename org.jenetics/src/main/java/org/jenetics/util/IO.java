@@ -50,7 +50,7 @@ import javolution.xml.stream.XMLStreamException;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+ * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
  */
 public abstract class IO {
 
@@ -120,7 +120,7 @@ public abstract class IO {
 			final ObjectInputStream oin = new ObjectInputStream(in);
 			try {
 				return type.cast(oin.readObject());
-			} catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException | ClassCastException e) {
 				throw new IOException(e);
 			}
 		}
@@ -296,7 +296,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
 	 */
 	private static final class NonClosableOutputStream extends OutputStream {
 		private final OutputStream _adoptee;
@@ -312,7 +312,7 @@ public abstract class IO {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			return _adoptee.equals(obj);
 		}
 
@@ -350,7 +350,7 @@ public abstract class IO {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 1.0 &mdash; <em>$Date: 2013-09-01 $</em>
+	 * @version 1.0 &mdash; <em>$Date: 2013-12-08 $</em>
 	 */
 	private static final class NonClosableInputStream extends InputStream {
 		private final InputStream _adoptee;

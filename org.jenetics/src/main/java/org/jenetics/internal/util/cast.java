@@ -17,27 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.internal.util;
+
+import org.jenetics.util.ISeq;
+import org.jenetics.util.StaticObject;
 
 /**
+ * Some helper methods for safe cast operations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2013-09-02 $</em>
+ * @since 1.5
+ * @version 1.5 &mdash; <em>$Date: 2013-10-15 $</em>
  */
+public class cast extends StaticObject {
+	private cast() {}
 
-tasks.withType(AbstractCompile).all { AbstractCompile compile ->
-	def xlintOptions = [
-		'cast',
-		'classfile',
-		'deprecation',
-		'dep-ann',
-		'divzero',
-		'finally',
-		'overrides',
-		'rawtypes',
-		'serial',
-		'try',
-		'unchecked'
-	]
-	
-	compile.options.compilerArgs = ["-Xlint:${xlintOptions.join(',')}"]
+	@SuppressWarnings("unchecked")
+	public static <A, B extends A> ISeq<A> apply(final ISeq<B> seq) {
+		return (ISeq<A>)seq;
+	}
+
 }
