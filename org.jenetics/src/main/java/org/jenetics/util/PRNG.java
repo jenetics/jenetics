@@ -27,7 +27,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.2 &mdash; <em>$Date: 2013-12-05 $</em>
+ * @version 1.2 &mdash; <em>$Date: 2013-12-16 $</em>
  */
 abstract class PRNG extends Random {
 
@@ -81,7 +81,6 @@ abstract class PRNG extends Random {
 	public long nextLong(final long min, final long max) {
 		return math.random.nextLong(this, min, max);
 	}
-
 
 	/**
 	 * Returns a pseudorandom, uniformly distributed int value between 0
