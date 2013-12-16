@@ -82,7 +82,6 @@ abstract class PRNG extends Random {
 		return math.random.nextLong(this, min, max);
 	}
 
-
 	/**
 	 * Returns a pseudorandom, uniformly distributed int value between 0
 	 * (inclusive) and the specified value (exclusive), drawn from the given
